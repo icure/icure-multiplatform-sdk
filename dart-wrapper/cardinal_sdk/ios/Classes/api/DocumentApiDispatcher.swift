@@ -9,6 +9,7 @@ class DocumentApiDispatcher {
     resultCallback: @escaping (
       String?,
       String?,
+      String?,
       String?
     ) -> Void
   ) -> Bool {
@@ -79,6 +80,7 @@ class DocumentApiDispatcher {
   private static func createDocument(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     DocumentApi.shared.createDocument(
@@ -89,6 +91,7 @@ class DocumentApiDispatcher {
   }
 
   private static func withEncryptionMetadata(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -107,6 +110,7 @@ class DocumentApiDispatcher {
   private static func getAndTryDecryptMainAttachment(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     DocumentApi.shared.getAndTryDecryptMainAttachment(
@@ -119,6 +123,7 @@ class DocumentApiDispatcher {
   private static func getAndDecryptMainAttachment(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     DocumentApi.shared.getAndDecryptMainAttachment(
@@ -129,6 +134,7 @@ class DocumentApiDispatcher {
   }
 
   private static func encryptAndSetMainAttachment(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -145,6 +151,7 @@ class DocumentApiDispatcher {
   private static func getAndDecryptSecondaryAttachment(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     DocumentApi.shared.getAndDecryptSecondaryAttachment(
@@ -156,6 +163,7 @@ class DocumentApiDispatcher {
   }
 
   private static func encryptAndSetSecondaryAttachment(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -173,6 +181,7 @@ class DocumentApiDispatcher {
   private static func getEncryptionKeysOf(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     DocumentApi.shared.getEncryptionKeysOf(
@@ -183,6 +192,7 @@ class DocumentApiDispatcher {
   }
 
   private static func hasWriteAccess(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -197,6 +207,7 @@ class DocumentApiDispatcher {
   private static func decryptPatientIdOf(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     DocumentApi.shared.decryptPatientIdOf(
@@ -207,6 +218,7 @@ class DocumentApiDispatcher {
   }
 
   private static func createDelegationDeAnonymizationMetadata(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -222,6 +234,7 @@ class DocumentApiDispatcher {
   private static func decrypt(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     DocumentApi.shared.decrypt(
@@ -234,6 +247,7 @@ class DocumentApiDispatcher {
   private static func tryDecrypt(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     DocumentApi.shared.tryDecrypt(
@@ -244,6 +258,7 @@ class DocumentApiDispatcher {
   }
 
   private static func tryDecryptAttachment(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -259,6 +274,7 @@ class DocumentApiDispatcher {
   private static func matchDocumentsBy(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     DocumentApi.shared.matchDocumentsBy(
@@ -271,6 +287,7 @@ class DocumentApiDispatcher {
   private static func matchDocumentsBySorted(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     DocumentApi.shared.matchDocumentsBySorted(
@@ -281,6 +298,7 @@ class DocumentApiDispatcher {
   }
 
   private static func deleteDocumentById(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -296,6 +314,7 @@ class DocumentApiDispatcher {
   private static func deleteDocumentsByIds(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     DocumentApi.shared.deleteDocumentsByIds(
@@ -306,6 +325,7 @@ class DocumentApiDispatcher {
   }
 
   private static func purgeDocumentById(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -321,6 +341,7 @@ class DocumentApiDispatcher {
   private static func deleteDocument(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     DocumentApi.shared.deleteDocument(
@@ -331,6 +352,7 @@ class DocumentApiDispatcher {
   }
 
   private static func deleteDocuments(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -345,6 +367,7 @@ class DocumentApiDispatcher {
   private static func purgeDocument(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     DocumentApi.shared.purgeDocument(
@@ -355,6 +378,7 @@ class DocumentApiDispatcher {
   }
 
   private static func getRawMainAttachment(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -369,6 +393,7 @@ class DocumentApiDispatcher {
   private static func getRawSecondaryAttachment(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     DocumentApi.shared.getRawSecondaryAttachment(
@@ -380,6 +405,7 @@ class DocumentApiDispatcher {
   }
 
   private static func setRawMainAttachment(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -396,6 +422,7 @@ class DocumentApiDispatcher {
   }
 
   private static func setRawSecondaryAttachment(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -415,6 +442,7 @@ class DocumentApiDispatcher {
   private static func deleteMainAttachment(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     DocumentApi.shared.deleteMainAttachment(
@@ -426,6 +454,7 @@ class DocumentApiDispatcher {
   }
 
   private static func deleteSecondaryAttachment(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -442,6 +471,7 @@ class DocumentApiDispatcher {
   private static func shareWith(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     DocumentApi.shared.shareWith(
@@ -454,6 +484,7 @@ class DocumentApiDispatcher {
   }
 
   private static func shareWithMany(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -469,6 +500,7 @@ class DocumentApiDispatcher {
   private static func filterDocumentsBy(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     DocumentApi.shared.filterDocumentsBy(
@@ -481,6 +513,7 @@ class DocumentApiDispatcher {
   private static func filterDocumentsBySorted(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     DocumentApi.shared.filterDocumentsBySorted(
@@ -491,6 +524,7 @@ class DocumentApiDispatcher {
   }
 
   private static func undeleteDocumentById(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -506,6 +540,7 @@ class DocumentApiDispatcher {
   private static func undeleteDocument(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     DocumentApi.shared.undeleteDocument(
@@ -516,6 +551,7 @@ class DocumentApiDispatcher {
   }
 
   private static func modifyDocument(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -530,6 +566,7 @@ class DocumentApiDispatcher {
   private static func getDocument(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     DocumentApi.shared.getDocument(
@@ -540,6 +577,7 @@ class DocumentApiDispatcher {
   }
 
   private static func getDocuments(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -554,6 +592,7 @@ class DocumentApiDispatcher {
   private static func modifyDocuments(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     DocumentApi.shared.modifyDocuments(
@@ -564,6 +603,7 @@ class DocumentApiDispatcher {
   }
 
   private static func encrypted_shareWith(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -580,6 +620,7 @@ class DocumentApiDispatcher {
   private static func encrypted_shareWithMany(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     DocumentApi.encrypted.shared.shareWithMany(
@@ -591,6 +632,7 @@ class DocumentApiDispatcher {
   }
 
   private static func encrypted_filterDocumentsBy(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -605,6 +647,7 @@ class DocumentApiDispatcher {
   private static func encrypted_filterDocumentsBySorted(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     DocumentApi.encrypted.shared.filterDocumentsBySorted(
@@ -615,6 +658,7 @@ class DocumentApiDispatcher {
   }
 
   private static func encrypted_undeleteDocumentById(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -630,6 +674,7 @@ class DocumentApiDispatcher {
   private static func encrypted_undeleteDocument(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     DocumentApi.encrypted.shared.undeleteDocument(
@@ -640,6 +685,7 @@ class DocumentApiDispatcher {
   }
 
   private static func encrypted_modifyDocument(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -654,6 +700,7 @@ class DocumentApiDispatcher {
   private static func encrypted_getDocument(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     DocumentApi.encrypted.shared.getDocument(
@@ -664,6 +711,7 @@ class DocumentApiDispatcher {
   }
 
   private static func encrypted_getDocuments(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -678,6 +726,7 @@ class DocumentApiDispatcher {
   private static func encrypted_modifyDocuments(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     DocumentApi.encrypted.shared.modifyDocuments(
@@ -688,6 +737,7 @@ class DocumentApiDispatcher {
   }
 
   private static func tryAndRecover_shareWith(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -704,6 +754,7 @@ class DocumentApiDispatcher {
   private static func tryAndRecover_shareWithMany(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     DocumentApi.tryAndRecover.shared.shareWithMany(
@@ -715,6 +766,7 @@ class DocumentApiDispatcher {
   }
 
   private static func tryAndRecover_filterDocumentsBy(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -729,6 +781,7 @@ class DocumentApiDispatcher {
   private static func tryAndRecover_filterDocumentsBySorted(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     DocumentApi.tryAndRecover.shared.filterDocumentsBySorted(
@@ -739,6 +792,7 @@ class DocumentApiDispatcher {
   }
 
   private static func tryAndRecover_undeleteDocumentById(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -754,6 +808,7 @@ class DocumentApiDispatcher {
   private static func tryAndRecover_undeleteDocument(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     DocumentApi.tryAndRecover.shared.undeleteDocument(
@@ -764,6 +819,7 @@ class DocumentApiDispatcher {
   }
 
   private static func tryAndRecover_modifyDocument(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -778,6 +834,7 @@ class DocumentApiDispatcher {
   private static func tryAndRecover_getDocument(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     DocumentApi.tryAndRecover.shared.getDocument(
@@ -790,6 +847,7 @@ class DocumentApiDispatcher {
   private static func tryAndRecover_getDocuments(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     DocumentApi.tryAndRecover.shared.getDocuments(
@@ -800,6 +858,7 @@ class DocumentApiDispatcher {
   }
 
   private static func tryAndRecover_modifyDocuments(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?

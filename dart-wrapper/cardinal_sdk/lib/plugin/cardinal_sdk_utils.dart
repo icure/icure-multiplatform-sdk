@@ -1,3 +1,5 @@
+import 'dart:convert';
+import 'package:cardinal_sdk/utils/internal/platform_exception_convertion.dart';
 import 'package:flutter/services.dart';
 
 abstract class CardinalSdkPlatformUtilsPlugin {
@@ -17,7 +19,7 @@ class CardinalSdkMethodChannelUtils extends CardinalSdkPlatformUtilsPlugin {
         {
           "resourceId": resourceId
         }
-    );
+    ).catchError(convertPlatformException);
     return;
   }
 
@@ -28,7 +30,7 @@ class CardinalSdkMethodChannelUtils extends CardinalSdkPlatformUtilsPlugin {
         {
           "cancellationToken": cancellationToken
         }
-    );
+    ).catchError(convertPlatformException);
     return;
   }
 }

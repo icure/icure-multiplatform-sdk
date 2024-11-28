@@ -20,6 +20,7 @@ public object PermissionApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     userIdString: String,

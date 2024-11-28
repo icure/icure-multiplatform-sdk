@@ -9,6 +9,7 @@ class HealthcarePartyFiltersDispatcher {
     resultCallback: @escaping (
       String?,
       String?,
+      String?,
       String?
     ) -> Void
   ) -> Bool {
@@ -30,6 +31,7 @@ class HealthcarePartyFiltersDispatcher {
   private static func all(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     HealthcarePartyFilters.shared.all(
@@ -38,6 +40,7 @@ class HealthcarePartyFiltersDispatcher {
   }
 
   private static func byIdentifiers(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -49,6 +52,7 @@ class HealthcarePartyFiltersDispatcher {
   }
 
   private static func byCode(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -63,6 +67,7 @@ class HealthcarePartyFiltersDispatcher {
   private static func byTag(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     HealthcarePartyFilters.shared.byTag(
@@ -75,6 +80,7 @@ class HealthcarePartyFiltersDispatcher {
   private static func byIds(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     HealthcarePartyFilters.shared.byIds(
@@ -84,6 +90,7 @@ class HealthcarePartyFiltersDispatcher {
   }
 
   private static func byName(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -98,6 +105,7 @@ class HealthcarePartyFiltersDispatcher {
   private static func byNationalIdentifier(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     HealthcarePartyFilters.shared.byNationalIdentifier(
@@ -110,6 +118,7 @@ class HealthcarePartyFiltersDispatcher {
   private static func byParentId(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     HealthcarePartyFilters.shared.byParentId(
@@ -119,6 +128,7 @@ class HealthcarePartyFiltersDispatcher {
   }
 
   private static func byTypeSpecialtyPostCode(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?

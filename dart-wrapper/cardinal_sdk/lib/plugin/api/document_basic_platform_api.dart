@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:cardinal_sdk/filters/filter_options.dart';
 import 'package:cardinal_sdk/model/document.dart';
 import 'dart:convert';
+import 'package:cardinal_sdk/utils/internal/platform_exception_convertion.dart';
 import 'package:cardinal_sdk/utils/pagination/paginated_list_iterator.dart';
 import 'package:cardinal_sdk/model/couchdb/doc_identifier.dart';
 import 'package:cardinal_sdk/model/id_with_mandatory_rev.dart';
@@ -20,7 +21,7 @@ class DocumentBasicPlatformApi {
 				"sdkId": sdkId,
 				"filter": jsonEncode(BaseFilterOptions.encode(filter)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method matchDocumentsBy");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toList();
@@ -33,7 +34,7 @@ class DocumentBasicPlatformApi {
 				"sdkId": sdkId,
 				"filter": jsonEncode(BaseSortableFilterOptions.encode(filter)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method matchDocumentsBySorted");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toList();
@@ -46,7 +47,7 @@ class DocumentBasicPlatformApi {
 				"sdkId": sdkId,
 				"filter": jsonEncode(BaseFilterOptions.encode(filter)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method filterDocumentsBy");
 		final parsedResJson = jsonDecode(res);
 		return PaginatedListIterator(parsedResJson, (x0) => EncryptedDocument.fromJSON(x0));
@@ -59,7 +60,7 @@ class DocumentBasicPlatformApi {
 				"sdkId": sdkId,
 				"filter": jsonEncode(BaseSortableFilterOptions.encode(filter)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method filterDocumentsBySorted");
 		final parsedResJson = jsonDecode(res);
 		return PaginatedListIterator(parsedResJson, (x0) => EncryptedDocument.fromJSON(x0));
@@ -73,7 +74,7 @@ class DocumentBasicPlatformApi {
 				"entityId": jsonEncode(entityId),
 				"rev": jsonEncode(rev),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method deleteDocumentById");
 		final parsedResJson = jsonDecode(res);
 		return DocIdentifier.fromJSON(parsedResJson);
@@ -86,7 +87,7 @@ class DocumentBasicPlatformApi {
 				"sdkId": sdkId,
 				"entityIds": jsonEncode(entityIds.map((x0) => IdWithMandatoryRev.encode(x0)).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method deleteDocumentsByIds");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => DocIdentifier.fromJSON(x1) ).toList();
@@ -100,7 +101,7 @@ class DocumentBasicPlatformApi {
 				"id": jsonEncode(id),
 				"rev": jsonEncode(rev),
 			}
-		);
+		).catchError(convertPlatformException);
 	}
 
 	Future<DocIdentifier> deleteDocument(String sdkId, Document document) async {
@@ -110,7 +111,7 @@ class DocumentBasicPlatformApi {
 				"sdkId": sdkId,
 				"document": jsonEncode(Document.encode(document)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method deleteDocument");
 		final parsedResJson = jsonDecode(res);
 		return DocIdentifier.fromJSON(parsedResJson);
@@ -123,7 +124,7 @@ class DocumentBasicPlatformApi {
 				"sdkId": sdkId,
 				"documents": jsonEncode(documents.map((x0) => Document.encode(x0)).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method deleteDocuments");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => DocIdentifier.fromJSON(x1) ).toList();
@@ -136,7 +137,7 @@ class DocumentBasicPlatformApi {
 				"sdkId": sdkId,
 				"document": jsonEncode(Document.encode(document)),
 			}
-		);
+		).catchError(convertPlatformException);
 	}
 
 	Future<Uint8List> getRawMainAttachment(String sdkId, String documentId) async {
@@ -146,7 +147,7 @@ class DocumentBasicPlatformApi {
 				"sdkId": sdkId,
 				"documentId": jsonEncode(documentId),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getRawMainAttachment");
 		final parsedResJson = jsonDecode(res);
 		return base64Decode(parsedResJson as String);
@@ -160,7 +161,7 @@ class DocumentBasicPlatformApi {
 				"documentId": jsonEncode(documentId),
 				"key": jsonEncode(key),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getRawSecondaryAttachment");
 		final parsedResJson = jsonDecode(res);
 		return base64Decode(parsedResJson as String);
@@ -177,7 +178,7 @@ class DocumentBasicPlatformApi {
 				"attachment": jsonEncode(base64Encode(attachment as List<int>)),
 				"encrypted": jsonEncode(encrypted),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method setRawMainAttachment");
 		final parsedResJson = jsonDecode(res);
 		return EncryptedDocument.fromJSON(parsedResJson);
@@ -195,7 +196,7 @@ class DocumentBasicPlatformApi {
 				"attachment": jsonEncode(base64Encode(attachment as List<int>)),
 				"encrypted": jsonEncode(encrypted),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method setRawSecondaryAttachment");
 		final parsedResJson = jsonDecode(res);
 		return EncryptedDocument.fromJSON(parsedResJson);
@@ -209,7 +210,7 @@ class DocumentBasicPlatformApi {
 				"entityId": jsonEncode(entityId),
 				"rev": jsonEncode(rev),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method deleteMainAttachment");
 		final parsedResJson = jsonDecode(res);
 		return EncryptedDocument.fromJSON(parsedResJson);
@@ -224,7 +225,7 @@ class DocumentBasicPlatformApi {
 				"key": jsonEncode(key),
 				"rev": jsonEncode(rev),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method deleteSecondaryAttachment");
 		final parsedResJson = jsonDecode(res);
 		return EncryptedDocument.fromJSON(parsedResJson);
@@ -238,7 +239,7 @@ class DocumentBasicPlatformApi {
 				"id": jsonEncode(id),
 				"rev": jsonEncode(rev),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method undeleteDocumentById");
 		final parsedResJson = jsonDecode(res);
 		return EncryptedDocument.fromJSON(parsedResJson);
@@ -251,7 +252,7 @@ class DocumentBasicPlatformApi {
 				"sdkId": sdkId,
 				"document": jsonEncode(Document.encode(document)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method undeleteDocument");
 		final parsedResJson = jsonDecode(res);
 		return EncryptedDocument.fromJSON(parsedResJson);
@@ -264,7 +265,7 @@ class DocumentBasicPlatformApi {
 				"sdkId": sdkId,
 				"entity": jsonEncode(EncryptedDocument.encode(entity)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method modifyDocument");
 		final parsedResJson = jsonDecode(res);
 		return EncryptedDocument.fromJSON(parsedResJson);
@@ -277,7 +278,7 @@ class DocumentBasicPlatformApi {
 				"sdkId": sdkId,
 				"entityId": jsonEncode(entityId),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getDocument");
 		final parsedResJson = jsonDecode(res);
 		return EncryptedDocument.fromJSON(parsedResJson);
@@ -290,7 +291,7 @@ class DocumentBasicPlatformApi {
 				"sdkId": sdkId,
 				"entityIds": jsonEncode(entityIds.map((x0) => x0).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getDocuments");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => EncryptedDocument.fromJSON(x1) ).toList();
@@ -303,7 +304,7 @@ class DocumentBasicPlatformApi {
 				"sdkId": sdkId,
 				"entities": jsonEncode(entities.map((x0) => EncryptedDocument.encode(x0)).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method modifyDocuments");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => EncryptedDocument.fromJSON(x1) ).toList();

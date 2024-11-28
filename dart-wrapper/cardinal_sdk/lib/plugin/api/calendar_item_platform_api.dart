@@ -2,6 +2,7 @@
 import 'package:flutter/services.dart';
 import 'package:cardinal_sdk/model/calendar_item.dart';
 import 'dart:convert';
+import 'package:cardinal_sdk/utils/internal/platform_exception_convertion.dart';
 import 'package:cardinal_sdk/model/patient.dart';
 import 'package:cardinal_sdk/model/user.dart';
 import 'package:cardinal_sdk/model/embed/access_level.dart';
@@ -33,7 +34,7 @@ class CalendarItemPlatformApi {
 				"sdkId": sdkId,
 				"entity": jsonEncode(DecryptedCalendarItem.encode(entity)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method createCalendarItem");
 		final parsedResJson = jsonDecode(res);
 		return DecryptedCalendarItem.fromJSON(parsedResJson);
@@ -50,7 +51,7 @@ class CalendarItemPlatformApi {
 				"delegates": jsonEncode(delegates.map((k0, v0) => MapEntry(k0, AccessLevel.encode(v0)))),
 				"secretId": jsonEncode(SecretIdUseOption.encode(secretId)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method withEncryptionMetadata");
 		final parsedResJson = jsonDecode(res);
 		return DecryptedCalendarItem.fromJSON(parsedResJson);
@@ -63,7 +64,7 @@ class CalendarItemPlatformApi {
 				"sdkId": sdkId,
 				"calendarItem": jsonEncode(CalendarItem.encode(calendarItem)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getEncryptionKeysOf");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => (x1 as HexString) ).toSet();
@@ -76,7 +77,7 @@ class CalendarItemPlatformApi {
 				"sdkId": sdkId,
 				"calendarItem": jsonEncode(CalendarItem.encode(calendarItem)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method hasWriteAccess");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as bool);
@@ -89,7 +90,7 @@ class CalendarItemPlatformApi {
 				"sdkId": sdkId,
 				"calendarItem": jsonEncode(CalendarItem.encode(calendarItem)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method decryptPatientIdOf");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toSet();
@@ -103,7 +104,7 @@ class CalendarItemPlatformApi {
 				"entity": jsonEncode(CalendarItem.encode(entity)),
 				"delegates": jsonEncode(delegates.map((x0) => x0).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 	}
 
 	Future<DecryptedCalendarItem> decrypt(String sdkId, EncryptedCalendarItem calendarItem) async {
@@ -113,7 +114,7 @@ class CalendarItemPlatformApi {
 				"sdkId": sdkId,
 				"calendarItem": jsonEncode(EncryptedCalendarItem.encode(calendarItem)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method decrypt");
 		final parsedResJson = jsonDecode(res);
 		return DecryptedCalendarItem.fromJSON(parsedResJson);
@@ -126,7 +127,7 @@ class CalendarItemPlatformApi {
 				"sdkId": sdkId,
 				"calendarItem": jsonEncode(EncryptedCalendarItem.encode(calendarItem)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method tryDecrypt");
 		final parsedResJson = jsonDecode(res);
 		return CalendarItem.fromJSON(parsedResJson);
@@ -139,7 +140,7 @@ class CalendarItemPlatformApi {
 				"sdkId": sdkId,
 				"filter": jsonEncode(FilterOptions.encode(filter)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method matchCalendarItemsBy");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toList();
@@ -152,7 +153,7 @@ class CalendarItemPlatformApi {
 				"sdkId": sdkId,
 				"filter": jsonEncode(SortableFilterOptions.encode(filter)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method matchCalendarItemsBySorted");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toList();
@@ -166,7 +167,7 @@ class CalendarItemPlatformApi {
 				"entityId": jsonEncode(entityId),
 				"rev": jsonEncode(rev),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method deleteCalendarItemById");
 		final parsedResJson = jsonDecode(res);
 		return DocIdentifier.fromJSON(parsedResJson);
@@ -179,7 +180,7 @@ class CalendarItemPlatformApi {
 				"sdkId": sdkId,
 				"entityIds": jsonEncode(entityIds.map((x0) => IdWithMandatoryRev.encode(x0)).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method deleteCalendarItemsByIds");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => DocIdentifier.fromJSON(x1) ).toList();
@@ -193,7 +194,7 @@ class CalendarItemPlatformApi {
 				"id": jsonEncode(id),
 				"rev": jsonEncode(rev),
 			}
-		);
+		).catchError(convertPlatformException);
 	}
 
 	Future<DocIdentifier> deleteCalendarItem(String sdkId, CalendarItem calendarItem) async {
@@ -203,7 +204,7 @@ class CalendarItemPlatformApi {
 				"sdkId": sdkId,
 				"calendarItem": jsonEncode(CalendarItem.encode(calendarItem)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method deleteCalendarItem");
 		final parsedResJson = jsonDecode(res);
 		return DocIdentifier.fromJSON(parsedResJson);
@@ -216,7 +217,7 @@ class CalendarItemPlatformApi {
 				"sdkId": sdkId,
 				"calendarItems": jsonEncode(calendarItems.map((x0) => CalendarItem.encode(x0)).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method deleteCalendarItems");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => DocIdentifier.fromJSON(x1) ).toList();
@@ -229,7 +230,7 @@ class CalendarItemPlatformApi {
 				"sdkId": sdkId,
 				"calendarItem": jsonEncode(CalendarItem.encode(calendarItem)),
 			}
-		);
+		).catchError(convertPlatformException);
 	}
 
 	Future<DecryptedCalendarItem> shareWith(String sdkId, String delegateId, DecryptedCalendarItem calendarItem, CalendarItemShareOptions? options) async {
@@ -241,7 +242,7 @@ class CalendarItemPlatformApi {
 				"calendarItem": jsonEncode(DecryptedCalendarItem.encode(calendarItem)),
 				"options": jsonEncode(options == null ? null : CalendarItemShareOptions.encode(options!)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method shareWith");
 		final parsedResJson = jsonDecode(res);
 		return DecryptedCalendarItem.fromJSON(parsedResJson);
@@ -255,7 +256,7 @@ class CalendarItemPlatformApi {
 				"calendarItem": jsonEncode(DecryptedCalendarItem.encode(calendarItem)),
 				"delegates": jsonEncode(delegates.map((k0, v0) => MapEntry(k0, CalendarItemShareOptions.encode(v0)))),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method shareWithMany");
 		final parsedResJson = jsonDecode(res);
 		return DecryptedCalendarItem.fromJSON(parsedResJson);
@@ -270,7 +271,7 @@ class CalendarItemPlatformApi {
 				"patient": jsonEncode(Patient.encode(patient)),
 				"shareLinkWithDelegates": jsonEncode(shareLinkWithDelegates.map((x0) => x0).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method linkToPatient");
 		final parsedResJson = jsonDecode(res);
 		return DecryptedCalendarItem.fromJSON(parsedResJson);
@@ -283,7 +284,7 @@ class CalendarItemPlatformApi {
 				"sdkId": sdkId,
 				"filter": jsonEncode(FilterOptions.encode(filter)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method filterCalendarItemsBy");
 		final parsedResJson = jsonDecode(res);
 		return PaginatedListIterator(parsedResJson, (x0) => DecryptedCalendarItem.fromJSON(x0));
@@ -296,7 +297,7 @@ class CalendarItemPlatformApi {
 				"sdkId": sdkId,
 				"filter": jsonEncode(SortableFilterOptions.encode(filter)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method filterCalendarItemsBySorted");
 		final parsedResJson = jsonDecode(res);
 		return PaginatedListIterator(parsedResJson, (x0) => DecryptedCalendarItem.fromJSON(x0));
@@ -310,7 +311,7 @@ class CalendarItemPlatformApi {
 				"id": jsonEncode(id),
 				"rev": jsonEncode(rev),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method undeleteCalendarItemById");
 		final parsedResJson = jsonDecode(res);
 		return DecryptedCalendarItem.fromJSON(parsedResJson);
@@ -323,7 +324,7 @@ class CalendarItemPlatformApi {
 				"sdkId": sdkId,
 				"calendarItem": jsonEncode(CalendarItem.encode(calendarItem)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method undeleteCalendarItem");
 		final parsedResJson = jsonDecode(res);
 		return DecryptedCalendarItem.fromJSON(parsedResJson);
@@ -336,7 +337,7 @@ class CalendarItemPlatformApi {
 				"sdkId": sdkId,
 				"entity": jsonEncode(DecryptedCalendarItem.encode(entity)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method modifyCalendarItem");
 		final parsedResJson = jsonDecode(res);
 		return DecryptedCalendarItem.fromJSON(parsedResJson);
@@ -349,7 +350,7 @@ class CalendarItemPlatformApi {
 				"sdkId": sdkId,
 				"entityId": jsonEncode(entityId),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getCalendarItem");
 		final parsedResJson = jsonDecode(res);
 		return DecryptedCalendarItem.fromJSON(parsedResJson);
@@ -362,7 +363,7 @@ class CalendarItemPlatformApi {
 				"sdkId": sdkId,
 				"entityIds": jsonEncode(entityIds.map((x0) => x0).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getCalendarItems");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => DecryptedCalendarItem.fromJSON(x1) ).toList();
@@ -377,7 +378,7 @@ class CalendarItemPlatformApi {
 				"filter": jsonEncode(FilterOptions.encode(filter)),
 				"subscriptionConfig": jsonEncode(subscriptionConfig == null ? null : EntitySubscriptionConfiguration.encode(subscriptionConfig!)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method subscribeToEvents");
 		final parsedResJson = jsonDecode(res);
 		return EntitySubscription(parsedResJson, (x0) => EncryptedCalendarItem.fromJSON(x0));
@@ -397,7 +398,7 @@ class TryAndRecoverCalendarItemPlatformApi {
 				"calendarItem": jsonEncode(CalendarItem.encode(calendarItem)),
 				"options": jsonEncode(options == null ? null : CalendarItemShareOptions.encode(options!)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method shareWith");
 		final parsedResJson = jsonDecode(res);
 		return CalendarItem.fromJSON(parsedResJson);
@@ -411,7 +412,7 @@ class TryAndRecoverCalendarItemPlatformApi {
 				"calendarItem": jsonEncode(CalendarItem.encode(calendarItem)),
 				"delegates": jsonEncode(delegates.map((k0, v0) => MapEntry(k0, CalendarItemShareOptions.encode(v0)))),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method shareWithMany");
 		final parsedResJson = jsonDecode(res);
 		return CalendarItem.fromJSON(parsedResJson);
@@ -426,7 +427,7 @@ class TryAndRecoverCalendarItemPlatformApi {
 				"patient": jsonEncode(Patient.encode(patient)),
 				"shareLinkWithDelegates": jsonEncode(shareLinkWithDelegates.map((x0) => x0).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method linkToPatient");
 		final parsedResJson = jsonDecode(res);
 		return CalendarItem.fromJSON(parsedResJson);
@@ -439,7 +440,7 @@ class TryAndRecoverCalendarItemPlatformApi {
 				"sdkId": sdkId,
 				"filter": jsonEncode(FilterOptions.encode(filter)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method filterCalendarItemsBy");
 		final parsedResJson = jsonDecode(res);
 		return PaginatedListIterator(parsedResJson, (x0) => CalendarItem.fromJSON(x0));
@@ -452,7 +453,7 @@ class TryAndRecoverCalendarItemPlatformApi {
 				"sdkId": sdkId,
 				"filter": jsonEncode(SortableFilterOptions.encode(filter)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method filterCalendarItemsBySorted");
 		final parsedResJson = jsonDecode(res);
 		return PaginatedListIterator(parsedResJson, (x0) => CalendarItem.fromJSON(x0));
@@ -466,7 +467,7 @@ class TryAndRecoverCalendarItemPlatformApi {
 				"id": jsonEncode(id),
 				"rev": jsonEncode(rev),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method undeleteCalendarItemById");
 		final parsedResJson = jsonDecode(res);
 		return CalendarItem.fromJSON(parsedResJson);
@@ -479,7 +480,7 @@ class TryAndRecoverCalendarItemPlatformApi {
 				"sdkId": sdkId,
 				"calendarItem": jsonEncode(CalendarItem.encode(calendarItem)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method undeleteCalendarItem");
 		final parsedResJson = jsonDecode(res);
 		return CalendarItem.fromJSON(parsedResJson);
@@ -492,7 +493,7 @@ class TryAndRecoverCalendarItemPlatformApi {
 				"sdkId": sdkId,
 				"entity": jsonEncode(CalendarItem.encode(entity)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method modifyCalendarItem");
 		final parsedResJson = jsonDecode(res);
 		return CalendarItem.fromJSON(parsedResJson);
@@ -505,7 +506,7 @@ class TryAndRecoverCalendarItemPlatformApi {
 				"sdkId": sdkId,
 				"entityId": jsonEncode(entityId),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getCalendarItem");
 		final parsedResJson = jsonDecode(res);
 		return CalendarItem.fromJSON(parsedResJson);
@@ -518,7 +519,7 @@ class TryAndRecoverCalendarItemPlatformApi {
 				"sdkId": sdkId,
 				"entityIds": jsonEncode(entityIds.map((x0) => x0).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getCalendarItems");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => CalendarItem.fromJSON(x1) ).toList();
@@ -538,7 +539,7 @@ class EncryptedCalendarItemPlatformApi {
 				"calendarItem": jsonEncode(EncryptedCalendarItem.encode(calendarItem)),
 				"options": jsonEncode(options == null ? null : CalendarItemShareOptions.encode(options!)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method shareWith");
 		final parsedResJson = jsonDecode(res);
 		return EncryptedCalendarItem.fromJSON(parsedResJson);
@@ -552,7 +553,7 @@ class EncryptedCalendarItemPlatformApi {
 				"calendarItem": jsonEncode(EncryptedCalendarItem.encode(calendarItem)),
 				"delegates": jsonEncode(delegates.map((k0, v0) => MapEntry(k0, CalendarItemShareOptions.encode(v0)))),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method shareWithMany");
 		final parsedResJson = jsonDecode(res);
 		return EncryptedCalendarItem.fromJSON(parsedResJson);
@@ -567,7 +568,7 @@ class EncryptedCalendarItemPlatformApi {
 				"patient": jsonEncode(Patient.encode(patient)),
 				"shareLinkWithDelegates": jsonEncode(shareLinkWithDelegates.map((x0) => x0).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method linkToPatient");
 		final parsedResJson = jsonDecode(res);
 		return EncryptedCalendarItem.fromJSON(parsedResJson);
@@ -580,7 +581,7 @@ class EncryptedCalendarItemPlatformApi {
 				"sdkId": sdkId,
 				"filter": jsonEncode(FilterOptions.encode(filter)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method filterCalendarItemsBy");
 		final parsedResJson = jsonDecode(res);
 		return PaginatedListIterator(parsedResJson, (x0) => EncryptedCalendarItem.fromJSON(x0));
@@ -593,7 +594,7 @@ class EncryptedCalendarItemPlatformApi {
 				"sdkId": sdkId,
 				"filter": jsonEncode(SortableFilterOptions.encode(filter)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method filterCalendarItemsBySorted");
 		final parsedResJson = jsonDecode(res);
 		return PaginatedListIterator(parsedResJson, (x0) => EncryptedCalendarItem.fromJSON(x0));
@@ -607,7 +608,7 @@ class EncryptedCalendarItemPlatformApi {
 				"id": jsonEncode(id),
 				"rev": jsonEncode(rev),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method undeleteCalendarItemById");
 		final parsedResJson = jsonDecode(res);
 		return EncryptedCalendarItem.fromJSON(parsedResJson);
@@ -620,7 +621,7 @@ class EncryptedCalendarItemPlatformApi {
 				"sdkId": sdkId,
 				"calendarItem": jsonEncode(CalendarItem.encode(calendarItem)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method undeleteCalendarItem");
 		final parsedResJson = jsonDecode(res);
 		return EncryptedCalendarItem.fromJSON(parsedResJson);
@@ -633,7 +634,7 @@ class EncryptedCalendarItemPlatformApi {
 				"sdkId": sdkId,
 				"entity": jsonEncode(EncryptedCalendarItem.encode(entity)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method modifyCalendarItem");
 		final parsedResJson = jsonDecode(res);
 		return EncryptedCalendarItem.fromJSON(parsedResJson);
@@ -646,7 +647,7 @@ class EncryptedCalendarItemPlatformApi {
 				"sdkId": sdkId,
 				"entityId": jsonEncode(entityId),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getCalendarItem");
 		final parsedResJson = jsonDecode(res);
 		return EncryptedCalendarItem.fromJSON(parsedResJson);
@@ -659,7 +660,7 @@ class EncryptedCalendarItemPlatformApi {
 				"sdkId": sdkId,
 				"entityIds": jsonEncode(entityIds.map((x0) => x0).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getCalendarItems");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => EncryptedCalendarItem.fromJSON(x1) ).toList();

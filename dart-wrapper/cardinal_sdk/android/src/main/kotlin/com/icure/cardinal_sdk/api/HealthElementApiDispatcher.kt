@@ -15,6 +15,7 @@ public object HealthElementApiDispatcher {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
   ): Boolean = when(methodName) {
     "createHealthElement" -> createHealthElement(parameters, resultCallback)
@@ -72,6 +73,7 @@ public object HealthElementApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     HealthElementApi.createHealthElement(
       resultCallback,
@@ -84,6 +86,7 @@ public object HealthElementApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     HealthElementApi.createHealthElements(
       resultCallback,
@@ -93,6 +96,7 @@ public object HealthElementApiDispatcher {
   }
 
   private fun withEncryptionMetadata(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -112,6 +116,7 @@ public object HealthElementApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     HealthElementApi.getEncryptionKeysOf(
       resultCallback,
@@ -124,6 +129,7 @@ public object HealthElementApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     HealthElementApi.hasWriteAccess(
       resultCallback,
@@ -133,6 +139,7 @@ public object HealthElementApiDispatcher {
   }
 
   private fun decryptPatientIdOf(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -149,6 +156,7 @@ public object HealthElementApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     HealthElementApi.createDelegationDeAnonymizationMetadata(
       resultCallback,
@@ -159,6 +167,7 @@ public object HealthElementApiDispatcher {
   }
 
   private fun decrypt(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -174,6 +183,7 @@ public object HealthElementApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     HealthElementApi.tryDecrypt(
       resultCallback,
@@ -183,6 +193,7 @@ public object HealthElementApiDispatcher {
   }
 
   private fun matchHealthElementsBy(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -198,6 +209,7 @@ public object HealthElementApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     HealthElementApi.matchHealthElementsBySorted(
       resultCallback,
@@ -207,6 +219,7 @@ public object HealthElementApiDispatcher {
   }
 
   private fun deleteHealthElementById(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -223,6 +236,7 @@ public object HealthElementApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     HealthElementApi.deleteHealthElementsByIds(
       resultCallback,
@@ -232,6 +246,7 @@ public object HealthElementApiDispatcher {
   }
 
   private fun purgeHealthElementById(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -248,6 +263,7 @@ public object HealthElementApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     HealthElementApi.deleteHealthElement(
       resultCallback,
@@ -257,6 +273,7 @@ public object HealthElementApiDispatcher {
   }
 
   private fun deleteHealthElements(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -272,6 +289,7 @@ public object HealthElementApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     HealthElementApi.purgeHealthElement(
       resultCallback,
@@ -281,6 +299,7 @@ public object HealthElementApiDispatcher {
   }
 
   private fun shareWith(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -298,6 +317,7 @@ public object HealthElementApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     HealthElementApi.shareWithMany(
       resultCallback,
@@ -308,6 +328,7 @@ public object HealthElementApiDispatcher {
   }
 
   private fun filterHealthElementsBy(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -323,6 +344,7 @@ public object HealthElementApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     HealthElementApi.filterHealthElementsBySorted(
       resultCallback,
@@ -332,6 +354,7 @@ public object HealthElementApiDispatcher {
   }
 
   private fun undeleteHealthElementById(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -348,6 +371,7 @@ public object HealthElementApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     HealthElementApi.undeleteHealthElement(
       resultCallback,
@@ -357,6 +381,7 @@ public object HealthElementApiDispatcher {
   }
 
   private fun modifyHealthElement(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -372,6 +397,7 @@ public object HealthElementApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     HealthElementApi.modifyHealthElements(
       resultCallback,
@@ -381,6 +407,7 @@ public object HealthElementApiDispatcher {
   }
 
   private fun getHealthElement(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -396,6 +423,7 @@ public object HealthElementApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     HealthElementApi.getHealthElements(
       resultCallback,
@@ -405,6 +433,7 @@ public object HealthElementApiDispatcher {
   }
 
   private fun subscribeToEvents(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -422,6 +451,7 @@ public object HealthElementApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     HealthElementApi.encrypted.shareWith(
       resultCallback,
@@ -433,6 +463,7 @@ public object HealthElementApiDispatcher {
   }
 
   private fun encrypted_shareWithMany(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -449,6 +480,7 @@ public object HealthElementApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     HealthElementApi.encrypted.filterHealthElementsBy(
       resultCallback,
@@ -462,6 +494,7 @@ public object HealthElementApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     HealthElementApi.encrypted.filterHealthElementsBySorted(
       resultCallback,
@@ -471,6 +504,7 @@ public object HealthElementApiDispatcher {
   }
 
   private fun encrypted_undeleteHealthElementById(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -487,6 +521,7 @@ public object HealthElementApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     HealthElementApi.encrypted.undeleteHealthElement(
       resultCallback,
@@ -496,6 +531,7 @@ public object HealthElementApiDispatcher {
   }
 
   private fun encrypted_modifyHealthElement(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -511,6 +547,7 @@ public object HealthElementApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     HealthElementApi.encrypted.modifyHealthElements(
       resultCallback,
@@ -520,6 +557,7 @@ public object HealthElementApiDispatcher {
   }
 
   private fun encrypted_getHealthElement(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -535,6 +573,7 @@ public object HealthElementApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     HealthElementApi.encrypted.getHealthElements(
       resultCallback,
@@ -544,6 +583,7 @@ public object HealthElementApiDispatcher {
   }
 
   private fun tryAndRecover_shareWith(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -561,6 +601,7 @@ public object HealthElementApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     HealthElementApi.tryAndRecover.shareWithMany(
       resultCallback,
@@ -572,6 +613,7 @@ public object HealthElementApiDispatcher {
 
   private fun tryAndRecover_filterHealthElementsBy(parameters: Map<String, String>,
       resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -588,6 +630,7 @@ public object HealthElementApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     HealthElementApi.tryAndRecover.filterHealthElementsBySorted(
       resultCallback,
@@ -598,6 +641,7 @@ public object HealthElementApiDispatcher {
 
   private fun tryAndRecover_undeleteHealthElementById(parameters: Map<String, String>,
       resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -614,6 +658,7 @@ public object HealthElementApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     HealthElementApi.tryAndRecover.undeleteHealthElement(
       resultCallback,
@@ -623,6 +668,7 @@ public object HealthElementApiDispatcher {
   }
 
   private fun tryAndRecover_modifyHealthElement(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -638,6 +684,7 @@ public object HealthElementApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     HealthElementApi.tryAndRecover.modifyHealthElements(
       resultCallback,
@@ -650,6 +697,7 @@ public object HealthElementApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     HealthElementApi.tryAndRecover.getHealthElement(
       resultCallback,
@@ -659,6 +707,7 @@ public object HealthElementApiDispatcher {
   }
 
   private fun tryAndRecover_getHealthElements(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,

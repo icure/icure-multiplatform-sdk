@@ -18,6 +18,7 @@ public object ApplicationSettingsApi {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit, sdkId: String) {
     ApiScope.execute(
       dartResultCallback,
@@ -28,6 +29,7 @@ public object ApplicationSettingsApi {
 
   public fun createApplicationSettings(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -50,6 +52,7 @@ public object ApplicationSettingsApi {
 
   public fun updateApplicationSettings(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,

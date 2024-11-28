@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:cardinal_sdk/filters/filter_options.dart';
 import 'package:cardinal_sdk/model/contact.dart';
 import 'dart:convert';
+import 'package:cardinal_sdk/utils/internal/platform_exception_convertion.dart';
 import 'package:cardinal_sdk/model/embed/service.dart';
 import 'package:cardinal_sdk/model/patient.dart';
 import 'package:cardinal_sdk/model/user.dart';
@@ -35,7 +36,7 @@ class ContactPlatformApi {
 				"sdkId": sdkId,
 				"filter": jsonEncode(FilterOptions.encode(filter)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method matchContactsBy");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toList();
@@ -48,7 +49,7 @@ class ContactPlatformApi {
 				"sdkId": sdkId,
 				"filter": jsonEncode(FilterOptions.encode(filter)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method matchServicesBy");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toList();
@@ -61,7 +62,7 @@ class ContactPlatformApi {
 				"sdkId": sdkId,
 				"filter": jsonEncode(SortableFilterOptions.encode(filter)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method matchContactsBySorted");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toList();
@@ -74,7 +75,7 @@ class ContactPlatformApi {
 				"sdkId": sdkId,
 				"filter": jsonEncode(SortableFilterOptions.encode(filter)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method matchServicesBySorted");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toList();
@@ -87,7 +88,7 @@ class ContactPlatformApi {
 				"sdkId": sdkId,
 				"entity": jsonEncode(DecryptedContact.encode(entity)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method createContact");
 		final parsedResJson = jsonDecode(res);
 		return DecryptedContact.fromJSON(parsedResJson);
@@ -100,7 +101,7 @@ class ContactPlatformApi {
 				"sdkId": sdkId,
 				"entities": jsonEncode(entities.map((x0) => DecryptedContact.encode(x0)).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method createContacts");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => DecryptedContact.fromJSON(x1) ).toList();
@@ -117,7 +118,7 @@ class ContactPlatformApi {
 				"delegates": jsonEncode(delegates.map((k0, v0) => MapEntry(k0, AccessLevel.encode(v0)))),
 				"secretId": jsonEncode(SecretIdUseOption.encode(secretId)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method withEncryptionMetadata");
 		final parsedResJson = jsonDecode(res);
 		return DecryptedContact.fromJSON(parsedResJson);
@@ -130,7 +131,7 @@ class ContactPlatformApi {
 				"sdkId": sdkId,
 				"contact": jsonEncode(Contact.encode(contact)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getEncryptionKeysOf");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => (x1 as HexString) ).toSet();
@@ -143,7 +144,7 @@ class ContactPlatformApi {
 				"sdkId": sdkId,
 				"contact": jsonEncode(Contact.encode(contact)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method hasWriteAccess");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as bool);
@@ -156,7 +157,7 @@ class ContactPlatformApi {
 				"sdkId": sdkId,
 				"contact": jsonEncode(Contact.encode(contact)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method decryptPatientIdOf");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toSet();
@@ -170,7 +171,7 @@ class ContactPlatformApi {
 				"entity": jsonEncode(Contact.encode(entity)),
 				"delegates": jsonEncode(delegates.map((x0) => x0).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 	}
 
 	Future<DecryptedContact> decrypt(String sdkId, EncryptedContact contact) async {
@@ -180,7 +181,7 @@ class ContactPlatformApi {
 				"sdkId": sdkId,
 				"contact": jsonEncode(EncryptedContact.encode(contact)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method decrypt");
 		final parsedResJson = jsonDecode(res);
 		return DecryptedContact.fromJSON(parsedResJson);
@@ -193,7 +194,7 @@ class ContactPlatformApi {
 				"sdkId": sdkId,
 				"contact": jsonEncode(EncryptedContact.encode(contact)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method tryDecrypt");
 		final parsedResJson = jsonDecode(res);
 		return Contact.fromJSON(parsedResJson);
@@ -206,7 +207,7 @@ class ContactPlatformApi {
 				"sdkId": sdkId,
 				"service": jsonEncode(EncryptedService.encode(service)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method decryptService");
 		final parsedResJson = jsonDecode(res);
 		return DecryptedService.fromJSON(parsedResJson);
@@ -219,7 +220,7 @@ class ContactPlatformApi {
 				"sdkId": sdkId,
 				"service": jsonEncode(EncryptedService.encode(service)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method tryDecryptService");
 		final parsedResJson = jsonDecode(res);
 		return Service.fromJSON(parsedResJson);
@@ -233,7 +234,7 @@ class ContactPlatformApi {
 				"filter": jsonEncode(FilterOptions.encode(filter)),
 				"subscriptionConfig": jsonEncode(subscriptionConfig == null ? null : EntitySubscriptionConfiguration.encode(subscriptionConfig!)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method subscribeToServiceCreateOrUpdateEvents");
 		final parsedResJson = jsonDecode(res);
 		return EntitySubscription(parsedResJson, (x0) => EncryptedService.fromJSON(x0));
@@ -247,7 +248,7 @@ class ContactPlatformApi {
 				"entityId": jsonEncode(entityId),
 				"rev": jsonEncode(rev),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method deleteContactById");
 		final parsedResJson = jsonDecode(res);
 		return DocIdentifier.fromJSON(parsedResJson);
@@ -260,7 +261,7 @@ class ContactPlatformApi {
 				"sdkId": sdkId,
 				"entityIds": jsonEncode(entityIds.map((x0) => IdWithMandatoryRev.encode(x0)).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method deleteContactsByIds");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => DocIdentifier.fromJSON(x1) ).toList();
@@ -274,7 +275,7 @@ class ContactPlatformApi {
 				"id": jsonEncode(id),
 				"rev": jsonEncode(rev),
 			}
-		);
+		).catchError(convertPlatformException);
 	}
 
 	Future<DocIdentifier> deleteContact(String sdkId, Contact contact) async {
@@ -284,7 +285,7 @@ class ContactPlatformApi {
 				"sdkId": sdkId,
 				"contact": jsonEncode(Contact.encode(contact)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method deleteContact");
 		final parsedResJson = jsonDecode(res);
 		return DocIdentifier.fromJSON(parsedResJson);
@@ -297,7 +298,7 @@ class ContactPlatformApi {
 				"sdkId": sdkId,
 				"contacts": jsonEncode(contacts.map((x0) => Contact.encode(x0)).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method deleteContacts");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => DocIdentifier.fromJSON(x1) ).toList();
@@ -310,7 +311,7 @@ class ContactPlatformApi {
 				"sdkId": sdkId,
 				"contact": jsonEncode(Contact.encode(contact)),
 			}
-		);
+		).catchError(convertPlatformException);
 	}
 
 	Future<List<LabelledOccurence>> getServiceCodesOccurrences(String sdkId, String codeType, int minOccurrences) async {
@@ -321,7 +322,7 @@ class ContactPlatformApi {
 				"codeType": jsonEncode(codeType),
 				"minOccurrences": jsonEncode(minOccurrences),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getServiceCodesOccurrences");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => LabelledOccurence.fromJSON(x1) ).toList();
@@ -336,7 +337,7 @@ class ContactPlatformApi {
 				"contact": jsonEncode(DecryptedContact.encode(contact)),
 				"options": jsonEncode(options == null ? null : ContactShareOptions.encode(options!)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method shareWith");
 		final parsedResJson = jsonDecode(res);
 		return DecryptedContact.fromJSON(parsedResJson);
@@ -350,7 +351,7 @@ class ContactPlatformApi {
 				"contact": jsonEncode(DecryptedContact.encode(contact)),
 				"delegates": jsonEncode(delegates.map((k0, v0) => MapEntry(k0, ContactShareOptions.encode(v0)))),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method shareWithMany");
 		final parsedResJson = jsonDecode(res);
 		return DecryptedContact.fromJSON(parsedResJson);
@@ -363,7 +364,7 @@ class ContactPlatformApi {
 				"sdkId": sdkId,
 				"filter": jsonEncode(FilterOptions.encode(filter)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method filterContactsBy");
 		final parsedResJson = jsonDecode(res);
 		return PaginatedListIterator(parsedResJson, (x0) => DecryptedContact.fromJSON(x0));
@@ -376,7 +377,7 @@ class ContactPlatformApi {
 				"sdkId": sdkId,
 				"filter": jsonEncode(FilterOptions.encode(filter)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method filterServicesBy");
 		final parsedResJson = jsonDecode(res);
 		return PaginatedListIterator(parsedResJson, (x0) => DecryptedService.fromJSON(x0));
@@ -389,7 +390,7 @@ class ContactPlatformApi {
 				"sdkId": sdkId,
 				"filter": jsonEncode(SortableFilterOptions.encode(filter)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method filterContactsBySorted");
 		final parsedResJson = jsonDecode(res);
 		return PaginatedListIterator(parsedResJson, (x0) => DecryptedContact.fromJSON(x0));
@@ -402,7 +403,7 @@ class ContactPlatformApi {
 				"sdkId": sdkId,
 				"filter": jsonEncode(SortableFilterOptions.encode(filter)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method filterServicesBySorted");
 		final parsedResJson = jsonDecode(res);
 		return PaginatedListIterator(parsedResJson, (x0) => DecryptedService.fromJSON(x0));
@@ -416,7 +417,7 @@ class ContactPlatformApi {
 				"id": jsonEncode(id),
 				"rev": jsonEncode(rev),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method undeleteContactById");
 		final parsedResJson = jsonDecode(res);
 		return DecryptedContact.fromJSON(parsedResJson);
@@ -429,7 +430,7 @@ class ContactPlatformApi {
 				"sdkId": sdkId,
 				"contact": jsonEncode(Contact.encode(contact)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method undeleteContact");
 		final parsedResJson = jsonDecode(res);
 		return DecryptedContact.fromJSON(parsedResJson);
@@ -442,7 +443,7 @@ class ContactPlatformApi {
 				"sdkId": sdkId,
 				"entity": jsonEncode(DecryptedContact.encode(entity)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method modifyContact");
 		final parsedResJson = jsonDecode(res);
 		return DecryptedContact.fromJSON(parsedResJson);
@@ -455,7 +456,7 @@ class ContactPlatformApi {
 				"sdkId": sdkId,
 				"entities": jsonEncode(entities.map((x0) => DecryptedContact.encode(x0)).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method modifyContacts");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => DecryptedContact.fromJSON(x1) ).toList();
@@ -468,7 +469,7 @@ class ContactPlatformApi {
 				"sdkId": sdkId,
 				"entityId": jsonEncode(entityId),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getContact");
 		final parsedResJson = jsonDecode(res);
 		return DecryptedContact.fromJSON(parsedResJson);
@@ -481,7 +482,7 @@ class ContactPlatformApi {
 				"sdkId": sdkId,
 				"entityIds": jsonEncode(entityIds.map((x0) => x0).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getContacts");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => DecryptedContact.fromJSON(x1) ).toList();
@@ -494,7 +495,7 @@ class ContactPlatformApi {
 				"sdkId": sdkId,
 				"serviceId": jsonEncode(serviceId),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getService");
 		final parsedResJson = jsonDecode(res);
 		return DecryptedService.fromJSON(parsedResJson);
@@ -507,7 +508,7 @@ class ContactPlatformApi {
 				"sdkId": sdkId,
 				"entityIds": jsonEncode(entityIds.map((x0) => x0).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getServices");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => DecryptedService.fromJSON(x1) ).toList();
@@ -522,7 +523,7 @@ class ContactPlatformApi {
 				"filter": jsonEncode(FilterOptions.encode(filter)),
 				"subscriptionConfig": jsonEncode(subscriptionConfig == null ? null : EntitySubscriptionConfiguration.encode(subscriptionConfig!)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method subscribeToEvents");
 		final parsedResJson = jsonDecode(res);
 		return EntitySubscription(parsedResJson, (x0) => EncryptedContact.fromJSON(x0));
@@ -542,7 +543,7 @@ class TryAndRecoverContactPlatformApi {
 				"contact": jsonEncode(Contact.encode(contact)),
 				"options": jsonEncode(options == null ? null : ContactShareOptions.encode(options!)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method shareWith");
 		final parsedResJson = jsonDecode(res);
 		return Contact.fromJSON(parsedResJson);
@@ -556,7 +557,7 @@ class TryAndRecoverContactPlatformApi {
 				"contact": jsonEncode(Contact.encode(contact)),
 				"delegates": jsonEncode(delegates.map((k0, v0) => MapEntry(k0, ContactShareOptions.encode(v0)))),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method shareWithMany");
 		final parsedResJson = jsonDecode(res);
 		return Contact.fromJSON(parsedResJson);
@@ -569,7 +570,7 @@ class TryAndRecoverContactPlatformApi {
 				"sdkId": sdkId,
 				"filter": jsonEncode(FilterOptions.encode(filter)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method filterContactsBy");
 		final parsedResJson = jsonDecode(res);
 		return PaginatedListIterator(parsedResJson, (x0) => Contact.fromJSON(x0));
@@ -582,7 +583,7 @@ class TryAndRecoverContactPlatformApi {
 				"sdkId": sdkId,
 				"filter": jsonEncode(FilterOptions.encode(filter)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method filterServicesBy");
 		final parsedResJson = jsonDecode(res);
 		return PaginatedListIterator(parsedResJson, (x0) => Service.fromJSON(x0));
@@ -595,7 +596,7 @@ class TryAndRecoverContactPlatformApi {
 				"sdkId": sdkId,
 				"filter": jsonEncode(SortableFilterOptions.encode(filter)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method filterContactsBySorted");
 		final parsedResJson = jsonDecode(res);
 		return PaginatedListIterator(parsedResJson, (x0) => Contact.fromJSON(x0));
@@ -608,7 +609,7 @@ class TryAndRecoverContactPlatformApi {
 				"sdkId": sdkId,
 				"filter": jsonEncode(SortableFilterOptions.encode(filter)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method filterServicesBySorted");
 		final parsedResJson = jsonDecode(res);
 		return PaginatedListIterator(parsedResJson, (x0) => Service.fromJSON(x0));
@@ -622,7 +623,7 @@ class TryAndRecoverContactPlatformApi {
 				"id": jsonEncode(id),
 				"rev": jsonEncode(rev),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method undeleteContactById");
 		final parsedResJson = jsonDecode(res);
 		return Contact.fromJSON(parsedResJson);
@@ -635,7 +636,7 @@ class TryAndRecoverContactPlatformApi {
 				"sdkId": sdkId,
 				"contact": jsonEncode(Contact.encode(contact)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method undeleteContact");
 		final parsedResJson = jsonDecode(res);
 		return Contact.fromJSON(parsedResJson);
@@ -648,7 +649,7 @@ class TryAndRecoverContactPlatformApi {
 				"sdkId": sdkId,
 				"entity": jsonEncode(Contact.encode(entity)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method modifyContact");
 		final parsedResJson = jsonDecode(res);
 		return Contact.fromJSON(parsedResJson);
@@ -661,7 +662,7 @@ class TryAndRecoverContactPlatformApi {
 				"sdkId": sdkId,
 				"entities": jsonEncode(entities.map((x0) => Contact.encode(x0)).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method modifyContacts");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => Contact.fromJSON(x1) ).toList();
@@ -674,7 +675,7 @@ class TryAndRecoverContactPlatformApi {
 				"sdkId": sdkId,
 				"entityId": jsonEncode(entityId),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getContact");
 		final parsedResJson = jsonDecode(res);
 		return Contact.fromJSON(parsedResJson);
@@ -687,7 +688,7 @@ class TryAndRecoverContactPlatformApi {
 				"sdkId": sdkId,
 				"entityIds": jsonEncode(entityIds.map((x0) => x0).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getContacts");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => Contact.fromJSON(x1) ).toList();
@@ -700,7 +701,7 @@ class TryAndRecoverContactPlatformApi {
 				"sdkId": sdkId,
 				"serviceId": jsonEncode(serviceId),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getService");
 		final parsedResJson = jsonDecode(res);
 		return Service.fromJSON(parsedResJson);
@@ -713,7 +714,7 @@ class TryAndRecoverContactPlatformApi {
 				"sdkId": sdkId,
 				"entityIds": jsonEncode(entityIds.map((x0) => x0).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getServices");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => Service.fromJSON(x1) ).toList();
@@ -733,7 +734,7 @@ class EncryptedContactPlatformApi {
 				"contact": jsonEncode(EncryptedContact.encode(contact)),
 				"options": jsonEncode(options == null ? null : ContactShareOptions.encode(options!)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method shareWith");
 		final parsedResJson = jsonDecode(res);
 		return EncryptedContact.fromJSON(parsedResJson);
@@ -747,7 +748,7 @@ class EncryptedContactPlatformApi {
 				"contact": jsonEncode(EncryptedContact.encode(contact)),
 				"delegates": jsonEncode(delegates.map((k0, v0) => MapEntry(k0, ContactShareOptions.encode(v0)))),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method shareWithMany");
 		final parsedResJson = jsonDecode(res);
 		return EncryptedContact.fromJSON(parsedResJson);
@@ -760,7 +761,7 @@ class EncryptedContactPlatformApi {
 				"sdkId": sdkId,
 				"filter": jsonEncode(FilterOptions.encode(filter)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method filterContactsBy");
 		final parsedResJson = jsonDecode(res);
 		return PaginatedListIterator(parsedResJson, (x0) => EncryptedContact.fromJSON(x0));
@@ -773,7 +774,7 @@ class EncryptedContactPlatformApi {
 				"sdkId": sdkId,
 				"filter": jsonEncode(FilterOptions.encode(filter)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method filterServicesBy");
 		final parsedResJson = jsonDecode(res);
 		return PaginatedListIterator(parsedResJson, (x0) => EncryptedService.fromJSON(x0));
@@ -786,7 +787,7 @@ class EncryptedContactPlatformApi {
 				"sdkId": sdkId,
 				"filter": jsonEncode(SortableFilterOptions.encode(filter)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method filterContactsBySorted");
 		final parsedResJson = jsonDecode(res);
 		return PaginatedListIterator(parsedResJson, (x0) => EncryptedContact.fromJSON(x0));
@@ -799,7 +800,7 @@ class EncryptedContactPlatformApi {
 				"sdkId": sdkId,
 				"filter": jsonEncode(SortableFilterOptions.encode(filter)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method filterServicesBySorted");
 		final parsedResJson = jsonDecode(res);
 		return PaginatedListIterator(parsedResJson, (x0) => EncryptedService.fromJSON(x0));
@@ -813,7 +814,7 @@ class EncryptedContactPlatformApi {
 				"id": jsonEncode(id),
 				"rev": jsonEncode(rev),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method undeleteContactById");
 		final parsedResJson = jsonDecode(res);
 		return EncryptedContact.fromJSON(parsedResJson);
@@ -826,7 +827,7 @@ class EncryptedContactPlatformApi {
 				"sdkId": sdkId,
 				"contact": jsonEncode(Contact.encode(contact)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method undeleteContact");
 		final parsedResJson = jsonDecode(res);
 		return EncryptedContact.fromJSON(parsedResJson);
@@ -839,7 +840,7 @@ class EncryptedContactPlatformApi {
 				"sdkId": sdkId,
 				"entity": jsonEncode(EncryptedContact.encode(entity)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method modifyContact");
 		final parsedResJson = jsonDecode(res);
 		return EncryptedContact.fromJSON(parsedResJson);
@@ -852,7 +853,7 @@ class EncryptedContactPlatformApi {
 				"sdkId": sdkId,
 				"entities": jsonEncode(entities.map((x0) => EncryptedContact.encode(x0)).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method modifyContacts");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => EncryptedContact.fromJSON(x1) ).toList();
@@ -865,7 +866,7 @@ class EncryptedContactPlatformApi {
 				"sdkId": sdkId,
 				"entityId": jsonEncode(entityId),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getContact");
 		final parsedResJson = jsonDecode(res);
 		return EncryptedContact.fromJSON(parsedResJson);
@@ -878,7 +879,7 @@ class EncryptedContactPlatformApi {
 				"sdkId": sdkId,
 				"entityIds": jsonEncode(entityIds.map((x0) => x0).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getContacts");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => EncryptedContact.fromJSON(x1) ).toList();
@@ -891,7 +892,7 @@ class EncryptedContactPlatformApi {
 				"sdkId": sdkId,
 				"serviceId": jsonEncode(serviceId),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getService");
 		final parsedResJson = jsonDecode(res);
 		return EncryptedService.fromJSON(parsedResJson);
@@ -904,7 +905,7 @@ class EncryptedContactPlatformApi {
 				"sdkId": sdkId,
 				"entityIds": jsonEncode(entityIds.map((x0) => x0).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getServices");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => EncryptedService.fromJSON(x1) ).toList();

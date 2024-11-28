@@ -15,6 +15,7 @@ public object TarificationApiDispatcher {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
   ): Boolean = when(methodName) {
     "getTarification" -> getTarification(parameters, resultCallback)
@@ -26,6 +27,7 @@ public object TarificationApiDispatcher {
   }?.let { true } ?: false
 
   private fun getTarification(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -41,6 +43,7 @@ public object TarificationApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     TarificationApi.createTarification(
       resultCallback,
@@ -50,6 +53,7 @@ public object TarificationApiDispatcher {
   }
 
   private fun getTarifications(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -65,6 +69,7 @@ public object TarificationApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     TarificationApi.modifyTarification(
       resultCallback,
@@ -74,6 +79,7 @@ public object TarificationApiDispatcher {
   }
 
   private fun getTarificationWithParts(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,

@@ -2,6 +2,7 @@
 import 'package:flutter/services.dart';
 import 'package:cardinal_sdk/model/sdk/key_pair_update_notification.dart';
 import 'dart:convert';
+import 'package:cardinal_sdk/utils/internal/platform_exception_convertion.dart';
 import 'package:cardinal_sdk/model/specializations/spki_hex_string.dart';
 import 'package:cardinal_sdk/model/data_owner_type.dart';
 
@@ -17,7 +18,7 @@ class CardinalMaintenanceTaskPlatformApi {
 				"sdkId": sdkId,
 				"updateRequest": jsonEncode(KeyPairUpdateNotification.encode(updateRequest)),
 			}
-		);
+		).catchError(convertPlatformException);
 	}
 
 	Future<void> createKeyPairUpdateNotificationsToAllDelegationCounterparts(String sdkId, SpkiHexString key, Set<DataOwnerType>? requestToOwnerTypes) async {
@@ -28,7 +29,7 @@ class CardinalMaintenanceTaskPlatformApi {
 				"key": jsonEncode(key),
 				"requestToOwnerTypes": jsonEncode(requestToOwnerTypes?.map((x0) => DataOwnerType.encode(x0)).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 	}
 
 	Future<void> createKeyPairUpdateNotificationTo(String sdkId, String dataOwnerId, SpkiHexString key) async {
@@ -39,6 +40,6 @@ class CardinalMaintenanceTaskPlatformApi {
 				"dataOwnerId": jsonEncode(dataOwnerId),
 				"key": jsonEncode(key),
 			}
-		);
+		).catchError(convertPlatformException);
 	}
 }

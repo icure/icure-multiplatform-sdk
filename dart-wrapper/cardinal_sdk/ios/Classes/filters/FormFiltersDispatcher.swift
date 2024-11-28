@@ -9,6 +9,7 @@ class FormFiltersDispatcher {
     resultCallback: @escaping (
       String?,
       String?,
+      String?,
       String?
     ) -> Void
   ) -> Bool {
@@ -29,6 +30,7 @@ class FormFiltersDispatcher {
   private static func byParentIdForDataOwner(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     FormFilters.shared.byParentIdForDataOwner(
@@ -41,6 +43,7 @@ class FormFiltersDispatcher {
   private static func byParentIdForSelf(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     FormFilters.shared.byParentIdForSelf(
@@ -50,6 +53,7 @@ class FormFiltersDispatcher {
   }
 
   private static func byPatientsOpeningDateForDataOwner(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -67,6 +71,7 @@ class FormFiltersDispatcher {
   private static func byPatientsOpeningDateForSelf(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     FormFilters.shared.byPatientsOpeningDateForSelf(
@@ -79,6 +84,7 @@ class FormFiltersDispatcher {
   }
 
   private static func byPatientSecretIdsOpeningDateForDataOwner(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -96,6 +102,7 @@ class FormFiltersDispatcher {
   private static func byPatientSecretIdsOpeningDateForSelf(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     FormFilters.shared.byPatientSecretIdsOpeningDateForSelf(
@@ -110,6 +117,7 @@ class FormFiltersDispatcher {
   private static func byLogicalUuid(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     FormFilters.shared.byLogicalUuid(
@@ -120,6 +128,7 @@ class FormFiltersDispatcher {
   }
 
   private static func byUniqueId(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?

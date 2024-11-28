@@ -9,6 +9,7 @@ class PermissionApiDispatcher {
     resultCallback: @escaping (
       String?,
       String?,
+      String?,
       String?
     ) -> Void
   ) -> Bool {
@@ -20,6 +21,7 @@ class PermissionApiDispatcher {
   }
 
   private static func modifyUserPermissions(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?

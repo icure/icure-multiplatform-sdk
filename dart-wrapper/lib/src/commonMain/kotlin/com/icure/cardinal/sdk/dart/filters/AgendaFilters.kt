@@ -17,6 +17,7 @@ public object AgendaFilters {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     DartResult.resolve(
       dartResultCallback,
@@ -28,6 +29,7 @@ public object AgendaFilters {
   }
 
   public fun byUser(dartResultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -47,6 +49,7 @@ public object AgendaFilters {
   }
 
   public fun readableByUser(dartResultCallback: (
+    String?,
     String?,
     String?,
     String?,

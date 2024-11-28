@@ -2,6 +2,7 @@
 import 'package:flutter/services.dart';
 import 'package:cardinal_sdk/filters/filter_options.dart';
 import 'dart:convert';
+import 'package:cardinal_sdk/utils/internal/platform_exception_convertion.dart';
 import 'package:cardinal_sdk/model/health_element.dart';
 import 'package:cardinal_sdk/model/base/identifier.dart';
 import 'package:cardinal_sdk/model/patient.dart';
@@ -17,7 +18,7 @@ class HealthElementPlatformFilters {
 			{
 				"dataOwnerId": jsonEncode(dataOwnerId),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method allHealthElementsForDataOwner");
 		final parsedResJson = jsonDecode(res);
 		return BaseFilterOptions.fromJSON(parsedResJson);
@@ -28,7 +29,7 @@ class HealthElementPlatformFilters {
 			'HealthElementFilters.allHealthElementsForSelf',
 			{
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method allHealthElementsForSelf");
 		final parsedResJson = jsonDecode(res);
 		return FilterOptions.fromJSON(parsedResJson);
@@ -41,7 +42,7 @@ class HealthElementPlatformFilters {
 				"dataOwnerId": jsonEncode(dataOwnerId),
 				"identifiers": jsonEncode(identifiers.map((x0) => Identifier.encode(x0)).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method byIdentifiersForDataOwner");
 		final parsedResJson = jsonDecode(res);
 		return BaseSortableFilterOptions.fromJSON(parsedResJson);
@@ -53,7 +54,7 @@ class HealthElementPlatformFilters {
 			{
 				"identifiers": jsonEncode(identifiers.map((x0) => Identifier.encode(x0)).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method byIdentifiersForSelf");
 		final parsedResJson = jsonDecode(res);
 		return SortableFilterOptions.fromJSON(parsedResJson);
@@ -67,7 +68,7 @@ class HealthElementPlatformFilters {
 				"codeType": jsonEncode(codeType),
 				"codeCode": jsonEncode(codeCode),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method byCodeForDataOwner");
 		final parsedResJson = jsonDecode(res);
 		return BaseSortableFilterOptions.fromJSON(parsedResJson);
@@ -80,7 +81,7 @@ class HealthElementPlatformFilters {
 				"codeType": jsonEncode(codeType),
 				"codeCode": jsonEncode(codeCode),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method byCodeForSelf");
 		final parsedResJson = jsonDecode(res);
 		return SortableFilterOptions.fromJSON(parsedResJson);
@@ -94,7 +95,7 @@ class HealthElementPlatformFilters {
 				"tagType": jsonEncode(tagType),
 				"tagCode": jsonEncode(tagCode),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method byTagForDataOwner");
 		final parsedResJson = jsonDecode(res);
 		return BaseSortableFilterOptions.fromJSON(parsedResJson);
@@ -107,7 +108,7 @@ class HealthElementPlatformFilters {
 				"tagType": jsonEncode(tagType),
 				"tagCode": jsonEncode(tagCode),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method byTagForSelf");
 		final parsedResJson = jsonDecode(res);
 		return SortableFilterOptions.fromJSON(parsedResJson);
@@ -120,7 +121,7 @@ class HealthElementPlatformFilters {
 				"dataOwnerId": jsonEncode(dataOwnerId),
 				"patients": jsonEncode(patients.map((x0) => Patient.encode(x0)).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method byPatientsForDataOwner");
 		final parsedResJson = jsonDecode(res);
 		return SortableFilterOptions.fromJSON(parsedResJson);
@@ -132,7 +133,7 @@ class HealthElementPlatformFilters {
 			{
 				"patients": jsonEncode(patients.map((x0) => Patient.encode(x0)).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method byPatientsForSelf");
 		final parsedResJson = jsonDecode(res);
 		return SortableFilterOptions.fromJSON(parsedResJson);
@@ -145,7 +146,7 @@ class HealthElementPlatformFilters {
 				"dataOwnerId": jsonEncode(dataOwnerId),
 				"secretIds": jsonEncode(secretIds.map((x0) => x0).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method byPatientsSecretIdsForDataOwner");
 		final parsedResJson = jsonDecode(res);
 		return BaseSortableFilterOptions.fromJSON(parsedResJson);
@@ -157,7 +158,7 @@ class HealthElementPlatformFilters {
 			{
 				"secretIds": jsonEncode(secretIds.map((x0) => x0).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method byPatientsSecretIdsForSelf");
 		final parsedResJson = jsonDecode(res);
 		return SortableFilterOptions.fromJSON(parsedResJson);
@@ -169,7 +170,7 @@ class HealthElementPlatformFilters {
 			{
 				"ids": jsonEncode(ids.map((x0) => x0).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method byIds");
 		final parsedResJson = jsonDecode(res);
 		return BaseSortableFilterOptions.fromJSON(parsedResJson);
@@ -185,7 +186,7 @@ class HealthElementPlatformFilters {
 				"to": jsonEncode(to),
 				"descending": jsonEncode(descending),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method byPatientsOpeningDateForDataOwner");
 		final parsedResJson = jsonDecode(res);
 		return SortableFilterOptions.fromJSON(parsedResJson);
@@ -200,7 +201,7 @@ class HealthElementPlatformFilters {
 				"to": jsonEncode(to),
 				"descending": jsonEncode(descending),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method byPatientsOpeningDateForSelf");
 		final parsedResJson = jsonDecode(res);
 		return SortableFilterOptions.fromJSON(parsedResJson);
@@ -216,7 +217,7 @@ class HealthElementPlatformFilters {
 				"to": jsonEncode(to),
 				"descending": jsonEncode(descending),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method byPatientSecretIdsOpeningDateForDataOwner");
 		final parsedResJson = jsonDecode(res);
 		return BaseSortableFilterOptions.fromJSON(parsedResJson);
@@ -231,7 +232,7 @@ class HealthElementPlatformFilters {
 				"to": jsonEncode(to),
 				"descending": jsonEncode(descending),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method byPatientSecretIdsOpeningDateForSelf");
 		final parsedResJson = jsonDecode(res);
 		return SortableFilterOptions.fromJSON(parsedResJson);
@@ -244,7 +245,7 @@ class HealthElementPlatformFilters {
 				"dataOwnerId": jsonEncode(dataOwnerId),
 				"status": jsonEncode(status),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method byStatusForDataOwner");
 		final parsedResJson = jsonDecode(res);
 		return BaseFilterOptions.fromJSON(parsedResJson);
@@ -256,7 +257,7 @@ class HealthElementPlatformFilters {
 			{
 				"status": jsonEncode(status),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method byStatusForSelf");
 		final parsedResJson = jsonDecode(res);
 		return FilterOptions.fromJSON(parsedResJson);

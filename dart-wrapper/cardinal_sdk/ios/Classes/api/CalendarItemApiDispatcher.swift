@@ -9,6 +9,7 @@ class CalendarItemApiDispatcher {
     resultCallback: @escaping (
       String?,
       String?,
+      String?,
       String?
     ) -> Void
   ) -> Bool {
@@ -68,6 +69,7 @@ class CalendarItemApiDispatcher {
   private static func createCalendarItem(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     CalendarItemApi.shared.createCalendarItem(
@@ -78,6 +80,7 @@ class CalendarItemApiDispatcher {
   }
 
   private static func withEncryptionMetadata(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -96,6 +99,7 @@ class CalendarItemApiDispatcher {
   private static func getEncryptionKeysOf(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     CalendarItemApi.shared.getEncryptionKeysOf(
@@ -106,6 +110,7 @@ class CalendarItemApiDispatcher {
   }
 
   private static func hasWriteAccess(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -120,6 +125,7 @@ class CalendarItemApiDispatcher {
   private static func decryptPatientIdOf(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     CalendarItemApi.shared.decryptPatientIdOf(
@@ -130,6 +136,7 @@ class CalendarItemApiDispatcher {
   }
 
   private static func createDelegationDeAnonymizationMetadata(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -145,6 +152,7 @@ class CalendarItemApiDispatcher {
   private static func decrypt(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     CalendarItemApi.shared.decrypt(
@@ -155,6 +163,7 @@ class CalendarItemApiDispatcher {
   }
 
   private static func tryDecrypt(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -169,6 +178,7 @@ class CalendarItemApiDispatcher {
   private static func matchCalendarItemsBy(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     CalendarItemApi.shared.matchCalendarItemsBy(
@@ -181,6 +191,7 @@ class CalendarItemApiDispatcher {
   private static func matchCalendarItemsBySorted(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     CalendarItemApi.shared.matchCalendarItemsBySorted(
@@ -191,6 +202,7 @@ class CalendarItemApiDispatcher {
   }
 
   private static func deleteCalendarItemById(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -206,6 +218,7 @@ class CalendarItemApiDispatcher {
   private static func deleteCalendarItemsByIds(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     CalendarItemApi.shared.deleteCalendarItemsByIds(
@@ -216,6 +229,7 @@ class CalendarItemApiDispatcher {
   }
 
   private static func purgeCalendarItemById(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -231,6 +245,7 @@ class CalendarItemApiDispatcher {
   private static func deleteCalendarItem(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     CalendarItemApi.shared.deleteCalendarItem(
@@ -241,6 +256,7 @@ class CalendarItemApiDispatcher {
   }
 
   private static func deleteCalendarItems(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -255,6 +271,7 @@ class CalendarItemApiDispatcher {
   private static func purgeCalendarItem(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     CalendarItemApi.shared.purgeCalendarItem(
@@ -265,6 +282,7 @@ class CalendarItemApiDispatcher {
   }
 
   private static func shareWith(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -281,6 +299,7 @@ class CalendarItemApiDispatcher {
   private static func shareWithMany(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     CalendarItemApi.shared.shareWithMany(
@@ -292,6 +311,7 @@ class CalendarItemApiDispatcher {
   }
 
   private static func linkToPatient(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -308,6 +328,7 @@ class CalendarItemApiDispatcher {
   private static func filterCalendarItemsBy(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     CalendarItemApi.shared.filterCalendarItemsBy(
@@ -320,6 +341,7 @@ class CalendarItemApiDispatcher {
   private static func filterCalendarItemsBySorted(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     CalendarItemApi.shared.filterCalendarItemsBySorted(
@@ -330,6 +352,7 @@ class CalendarItemApiDispatcher {
   }
 
   private static func undeleteCalendarItemById(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -345,6 +368,7 @@ class CalendarItemApiDispatcher {
   private static func undeleteCalendarItem(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     CalendarItemApi.shared.undeleteCalendarItem(
@@ -355,6 +379,7 @@ class CalendarItemApiDispatcher {
   }
 
   private static func modifyCalendarItem(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -369,6 +394,7 @@ class CalendarItemApiDispatcher {
   private static func getCalendarItem(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     CalendarItemApi.shared.getCalendarItem(
@@ -381,6 +407,7 @@ class CalendarItemApiDispatcher {
   private static func getCalendarItems(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     CalendarItemApi.shared.getCalendarItems(
@@ -391,6 +418,7 @@ class CalendarItemApiDispatcher {
   }
 
   private static func subscribeToEvents(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -407,6 +435,7 @@ class CalendarItemApiDispatcher {
   private static func encrypted_shareWith(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     CalendarItemApi.encrypted.shared.shareWith(
@@ -421,6 +450,7 @@ class CalendarItemApiDispatcher {
   private static func encrypted_shareWithMany(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     CalendarItemApi.encrypted.shared.shareWithMany(
@@ -432,6 +462,7 @@ class CalendarItemApiDispatcher {
   }
 
   private static func encrypted_linkToPatient(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -448,6 +479,7 @@ class CalendarItemApiDispatcher {
   private static func encrypted_filterCalendarItemsBy(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     CalendarItemApi.encrypted.shared.filterCalendarItemsBy(
@@ -460,6 +492,7 @@ class CalendarItemApiDispatcher {
   private static func encrypted_filterCalendarItemsBySorted(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     CalendarItemApi.encrypted.shared.filterCalendarItemsBySorted(
@@ -470,6 +503,7 @@ class CalendarItemApiDispatcher {
   }
 
   private static func encrypted_undeleteCalendarItemById(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -485,6 +519,7 @@ class CalendarItemApiDispatcher {
   private static func encrypted_undeleteCalendarItem(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     CalendarItemApi.encrypted.shared.undeleteCalendarItem(
@@ -495,6 +530,7 @@ class CalendarItemApiDispatcher {
   }
 
   private static func encrypted_modifyCalendarItem(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -509,6 +545,7 @@ class CalendarItemApiDispatcher {
   private static func encrypted_getCalendarItem(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     CalendarItemApi.encrypted.shared.getCalendarItem(
@@ -521,6 +558,7 @@ class CalendarItemApiDispatcher {
   private static func encrypted_getCalendarItems(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     CalendarItemApi.encrypted.shared.getCalendarItems(
@@ -531,6 +569,7 @@ class CalendarItemApiDispatcher {
   }
 
   private static func tryAndRecover_shareWith(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -547,6 +586,7 @@ class CalendarItemApiDispatcher {
   private static func tryAndRecover_shareWithMany(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     CalendarItemApi.tryAndRecover.shared.shareWithMany(
@@ -558,6 +598,7 @@ class CalendarItemApiDispatcher {
   }
 
   private static func tryAndRecover_linkToPatient(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -574,6 +615,7 @@ class CalendarItemApiDispatcher {
   private static func tryAndRecover_filterCalendarItemsBy(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     CalendarItemApi.tryAndRecover.shared.filterCalendarItemsBy(
@@ -586,6 +628,7 @@ class CalendarItemApiDispatcher {
   private static func tryAndRecover_filterCalendarItemsBySorted(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     CalendarItemApi.tryAndRecover.shared.filterCalendarItemsBySorted(
@@ -596,6 +639,7 @@ class CalendarItemApiDispatcher {
   }
 
   private static func tryAndRecover_undeleteCalendarItemById(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -611,6 +655,7 @@ class CalendarItemApiDispatcher {
   private static func tryAndRecover_undeleteCalendarItem(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     CalendarItemApi.tryAndRecover.shared.undeleteCalendarItem(
@@ -621,6 +666,7 @@ class CalendarItemApiDispatcher {
   }
 
   private static func tryAndRecover_modifyCalendarItem(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -635,6 +681,7 @@ class CalendarItemApiDispatcher {
   private static func tryAndRecover_getCalendarItem(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     CalendarItemApi.tryAndRecover.shared.getCalendarItem(
@@ -645,6 +692,7 @@ class CalendarItemApiDispatcher {
   }
 
   private static func tryAndRecover_getCalendarItems(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?

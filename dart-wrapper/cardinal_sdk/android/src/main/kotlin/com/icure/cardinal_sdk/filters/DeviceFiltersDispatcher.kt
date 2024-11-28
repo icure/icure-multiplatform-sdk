@@ -15,6 +15,7 @@ public object DeviceFiltersDispatcher {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
   ): Boolean = when(methodName) {
     "all" -> all(parameters, resultCallback)
@@ -24,6 +25,7 @@ public object DeviceFiltersDispatcher {
   }?.let { true } ?: false
 
   private fun all(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -37,6 +39,7 @@ public object DeviceFiltersDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     DeviceFilters.byResponsible(
       resultCallback,
@@ -45,6 +48,7 @@ public object DeviceFiltersDispatcher {
   }
 
   private fun byIds(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,

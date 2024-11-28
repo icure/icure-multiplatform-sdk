@@ -7,6 +7,7 @@ include("sdk-codegen")
 include("ktor-curl")
 include("dart-wrapper:lib")
 include("dart-wrapper:cardinal_sdk")
+include("dart-wrapper")
 
 pluginManagement {
 	repositories {

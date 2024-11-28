@@ -1,5 +1,6 @@
 // auto-generated file
 import 'package:flutter/services.dart';
+import 'package:cardinal_sdk/utils/internal/platform_exception_convertion.dart';
 import 'dart:convert';
 import 'package:cardinal_sdk/model/indexing_info.dart';
 import 'package:cardinal_sdk/model/replication_info.dart';
@@ -17,7 +18,7 @@ class SystemPlatformApi {
 			{
 				"sdkId": sdkId,
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getVersion");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as String);
@@ -29,7 +30,7 @@ class SystemPlatformApi {
 			{
 				"sdkId": sdkId,
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method isReady");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as String);
@@ -41,7 +42,7 @@ class SystemPlatformApi {
 			{
 				"sdkId": sdkId,
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getProcessInfo");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as String);
@@ -53,7 +54,7 @@ class SystemPlatformApi {
 			{
 				"sdkId": sdkId,
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getIndexingInfo");
 		final parsedResJson = jsonDecode(res);
 		return IndexingInfo.fromJSON(parsedResJson);
@@ -65,7 +66,7 @@ class SystemPlatformApi {
 			{
 				"sdkId": sdkId,
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getReplicationInfo");
 		final parsedResJson = jsonDecode(res);
 		return ReplicationInfo.fromJSON(parsedResJson);
@@ -79,7 +80,7 @@ class SystemPlatformApi {
 				"entityName": jsonEncode(entityName),
 				"warmup": jsonEncode(warmup),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method updateDesignDoc");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as bool);
@@ -92,7 +93,7 @@ class SystemPlatformApi {
 				"sdkId": sdkId,
 				"limit": jsonEncode(limit),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method resolvePatientsConflicts");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => IdWithRev.fromJSON(x1) ).toList();
@@ -105,7 +106,7 @@ class SystemPlatformApi {
 				"sdkId": sdkId,
 				"limit": jsonEncode(limit),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method resolveContactsConflicts");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => IdWithRev.fromJSON(x1) ).toList();
@@ -118,7 +119,7 @@ class SystemPlatformApi {
 				"sdkId": sdkId,
 				"limit": jsonEncode(limit),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method resolveFormsConflicts");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => IdWithRev.fromJSON(x1) ).toList();
@@ -131,7 +132,7 @@ class SystemPlatformApi {
 				"sdkId": sdkId,
 				"limit": jsonEncode(limit),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method resolveHealthElementsConflicts");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => IdWithRev.fromJSON(x1) ).toList();
@@ -144,7 +145,7 @@ class SystemPlatformApi {
 				"sdkId": sdkId,
 				"limit": jsonEncode(limit),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method resolveInvoicesConflicts");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => IdWithRev.fromJSON(x1) ).toList();
@@ -157,7 +158,7 @@ class SystemPlatformApi {
 				"sdkId": sdkId,
 				"limit": jsonEncode(limit),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method resolveMessagesConflicts");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => IdWithRev.fromJSON(x1) ).toList();
@@ -171,7 +172,7 @@ class SystemPlatformApi {
 				"ids": jsonEncode(ids),
 				"limit": jsonEncode(limit),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method resolveDocumentsConflicts");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => IdWithRev.fromJSON(x1) ).toList();
@@ -184,7 +185,7 @@ class SystemPlatformApi {
 				"sdkId": sdkId,
 				"groupId": jsonEncode(groupId),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getIndexingInfoByGroup");
 		final parsedResJson = jsonDecode(res);
 		return IndexingInfo.fromJSON(parsedResJson);
@@ -197,7 +198,7 @@ class SystemPlatformApi {
 				"sdkId": sdkId,
 				"id": jsonEncode(id),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getReplicatorInfo");
 		final parsedResJson = jsonDecode(res);
 		return ReplicatorDocument.fromJSON(parsedResJson);
@@ -210,7 +211,7 @@ class SystemPlatformApi {
 				"sdkId": sdkId,
 				"mapName": jsonEncode(mapName),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method evictAllFromMap");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as String);

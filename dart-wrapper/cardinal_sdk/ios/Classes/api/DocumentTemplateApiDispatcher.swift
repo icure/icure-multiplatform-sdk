@@ -9,6 +9,7 @@ class DocumentTemplateApiDispatcher {
     resultCallback: @escaping (
       String?,
       String?,
+      String?,
       String?
     ) -> Void
   ) -> Bool {
@@ -33,6 +34,7 @@ class DocumentTemplateApiDispatcher {
   private static func getDocumentTemplate(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     DocumentTemplateApi.shared.getDocumentTemplate(
@@ -43,6 +45,7 @@ class DocumentTemplateApiDispatcher {
   }
 
   private static func createDocumentTemplate(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -57,6 +60,7 @@ class DocumentTemplateApiDispatcher {
   private static func modifyDocumentTemplate(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     DocumentTemplateApi.shared.modifyDocumentTemplate(
@@ -67,6 +71,7 @@ class DocumentTemplateApiDispatcher {
   }
 
   private static func deleteDocumentTemplates(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -81,6 +86,7 @@ class DocumentTemplateApiDispatcher {
   private static func listDocumentTemplatesBySpeciality(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     DocumentTemplateApi.shared.listDocumentTemplatesBySpeciality(
@@ -91,6 +97,7 @@ class DocumentTemplateApiDispatcher {
   }
 
   private static func listDocumentTemplatesByDocumentType(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -105,6 +112,7 @@ class DocumentTemplateApiDispatcher {
   private static func listDocumentTemplatesByDocumentTypeForCurrentUser(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     DocumentTemplateApi.shared.listDocumentTemplatesByDocumentTypeForCurrentUser(
@@ -117,6 +125,7 @@ class DocumentTemplateApiDispatcher {
   private static func listDocumentTemplates(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     DocumentTemplateApi.shared.listDocumentTemplates(
@@ -126,6 +135,7 @@ class DocumentTemplateApiDispatcher {
   }
 
   private static func getDocumentTemplateAttachment(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -141,6 +151,7 @@ class DocumentTemplateApiDispatcher {
   private static func getAttachmentText(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     DocumentTemplateApi.shared.getAttachmentText(
@@ -154,6 +165,7 @@ class DocumentTemplateApiDispatcher {
   private static func setDocumentTemplateAttachment(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     DocumentTemplateApi.shared.setDocumentTemplateAttachment(
@@ -165,6 +177,7 @@ class DocumentTemplateApiDispatcher {
   }
 
   private static func getAttachmentUrl(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?

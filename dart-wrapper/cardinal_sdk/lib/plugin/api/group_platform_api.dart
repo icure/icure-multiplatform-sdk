@@ -1,6 +1,7 @@
 // auto-generated file
 import 'package:flutter/services.dart';
 import 'package:cardinal_sdk/model/group.dart';
+import 'package:cardinal_sdk/utils/internal/platform_exception_convertion.dart';
 import 'dart:convert';
 import 'package:cardinal_sdk/model/embed/group_type.dart';
 import 'package:cardinal_sdk/model/database_initialisation.dart';
@@ -29,7 +30,7 @@ class GroupPlatformApi {
 			{
 				"sdkId": sdkId,
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method listGroups");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => Group.fromJSON(x1) ).toList();
@@ -42,7 +43,7 @@ class GroupPlatformApi {
 				"sdkId": sdkId,
 				"id": jsonEncode(id),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getGroup");
 		final parsedResJson = jsonDecode(res);
 		return Group.fromJSON(parsedResJson);
@@ -64,7 +65,7 @@ class GroupPlatformApi {
 				"applicationId": jsonEncode(applicationId),
 				"initialisationData": jsonEncode(DatabaseInitialisation.encode(initialisationData)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method createGroup");
 		final parsedResJson = jsonDecode(res);
 		return Group.fromJSON(parsedResJson);
@@ -79,7 +80,7 @@ class GroupPlatformApi {
 				"role": jsonEncode(role == null ? null : PermissionType.encode(role!)),
 				"registrationInformation": jsonEncode(RegistrationInformation.encode(registrationInformation)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method registerNewGroupAdministrator");
 		final parsedResJson = jsonDecode(res);
 		return RegistrationSuccess.fromJSON(parsedResJson);
@@ -91,7 +92,7 @@ class GroupPlatformApi {
 			{
 				"sdkId": sdkId,
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method listApps");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => Group.fromJSON(x1) ).toList();
@@ -104,7 +105,7 @@ class GroupPlatformApi {
 				"sdkId": sdkId,
 				"id": jsonEncode(id),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getNameOfGroupParent");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as String);
@@ -118,7 +119,7 @@ class GroupPlatformApi {
 				"id": jsonEncode(id),
 				"name": jsonEncode(name),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method modifyGroupName");
 		final parsedResJson = jsonDecode(res);
 		return Group.fromJSON(parsedResJson);
@@ -133,7 +134,7 @@ class GroupPlatformApi {
 				"duration": jsonEncode(duration),
 				"description": jsonEncode(description),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getOperationToken");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as String);
@@ -146,7 +147,7 @@ class GroupPlatformApi {
 				"sdkId": sdkId,
 				"tokenId": jsonEncode(tokenId),
 			}
-		);
+		).catchError(convertPlatformException);
 	}
 
 	Future<Group> setDefaultRoles(String sdkId, String groupId, String userType, List<String> roleIds) async {
@@ -158,7 +159,7 @@ class GroupPlatformApi {
 				"userType": jsonEncode(userType),
 				"roleIds": jsonEncode(roleIds.map((x0) => x0).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method setDefaultRoles");
 		final parsedResJson = jsonDecode(res);
 		return Group.fromJSON(parsedResJson);
@@ -171,7 +172,7 @@ class GroupPlatformApi {
 				"sdkId": sdkId,
 				"groupId": jsonEncode(groupId),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getDefaultRoles");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as Map<String, dynamic>).map((k1, v1) => MapEntry(UserType.fromJSON(k1), (v1 as List<dynamic>).map((x2) => RoleConfiguration.fromJSON(x2) ).toList()));
@@ -184,7 +185,7 @@ class GroupPlatformApi {
 				"sdkId": sdkId,
 				"id": jsonEncode(id),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method deleteGroup");
 		final parsedResJson = jsonDecode(res);
 		return Group.fromJSON(parsedResJson);
@@ -198,7 +199,7 @@ class GroupPlatformApi {
 				"childGroupId": jsonEncode(childGroupId),
 				"operationToken": jsonEncode(operationToken),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method changeSuperGroup");
 		final parsedResJson = jsonDecode(res);
 		return Group.fromJSON(parsedResJson);
@@ -211,7 +212,7 @@ class GroupPlatformApi {
 				"sdkId": sdkId,
 				"id": jsonEncode(id),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method hardDeleteGroup");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => GroupDeletionReport.fromJSON(x1) ).toList();
@@ -225,7 +226,7 @@ class GroupPlatformApi {
 				"id": jsonEncode(id),
 				"properties": jsonEncode(ListOfProperties.encode(properties)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method modifyGroupProperties");
 		final parsedResJson = jsonDecode(res);
 		return Group.fromJSON(parsedResJson);
@@ -239,7 +240,7 @@ class GroupPlatformApi {
 				"id": jsonEncode(id),
 				"password": jsonEncode(password),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method setGroupPassword");
 		final parsedResJson = jsonDecode(res);
 		return Group.fromJSON(parsedResJson);
@@ -255,7 +256,7 @@ class GroupPlatformApi {
 				"warmup": jsonEncode(warmup),
 				"dryRun": jsonEncode(dryRun),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method initDesignDocs");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => DesignDocument.fromJSON(x1) ).toList();
@@ -270,7 +271,7 @@ class GroupPlatformApi {
 				"limit": jsonEncode(limit),
 				"warmup": jsonEncode(warmup),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method solveConflicts");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => IdWithRev.fromJSON(x1) ).toList();
@@ -286,7 +287,7 @@ class GroupPlatformApi {
 				"n": jsonEncode(n),
 				"databases": jsonEncode(databases.map((x0) => x0).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 	}
 
 	Future<List<GroupDatabasesInfo>> getGroupsStorageInfos(String sdkId, List<String> groups) async {
@@ -296,7 +297,7 @@ class GroupPlatformApi {
 				"sdkId": sdkId,
 				"groups": jsonEncode(groups.map((x0) => x0).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getGroupsStorageInfos");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => GroupDatabasesInfo.fromJSON(x1) ).toList();
@@ -309,7 +310,7 @@ class GroupPlatformApi {
 				"sdkId": sdkId,
 				"id": jsonEncode(id),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getReplicationInfo");
 		final parsedResJson = jsonDecode(res);
 		return ReplicationInfo.fromJSON(parsedResJson);
@@ -322,7 +323,7 @@ class GroupPlatformApi {
 				"sdkId": sdkId,
 				"id": jsonEncode(id),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getHierarchy");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toList();
@@ -334,7 +335,7 @@ class GroupPlatformApi {
 			{
 				"sdkId": sdkId,
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method listAllGroupsIds");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => DocIdentifier.fromJSON(x1) ).toList();

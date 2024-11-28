@@ -24,6 +24,7 @@ public object ShamirKeysManagerApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     dataOwnerString: String,
@@ -43,6 +44,7 @@ public object ShamirKeysManagerApi {
 
   public fun updateSelfSplits(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,

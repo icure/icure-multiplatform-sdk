@@ -15,6 +15,7 @@ public object MaintenanceTaskFiltersDispatcher {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
   ): Boolean = when(methodName) {
     "byIds" -> byIds(parameters, resultCallback)
@@ -31,6 +32,7 @@ public object MaintenanceTaskFiltersDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     MaintenanceTaskFilters.byIds(
       resultCallback,
@@ -39,6 +41,7 @@ public object MaintenanceTaskFiltersDispatcher {
   }
 
   private fun byIdentifiersForDataOwner(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -54,6 +57,7 @@ public object MaintenanceTaskFiltersDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     MaintenanceTaskFilters.byIdentifiersForSelf(
       resultCallback,
@@ -62,6 +66,7 @@ public object MaintenanceTaskFiltersDispatcher {
   }
 
   private fun byTypeForDataOwner(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -77,6 +82,7 @@ public object MaintenanceTaskFiltersDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     MaintenanceTaskFilters.byTypeForSelf(
       resultCallback,
@@ -85,6 +91,7 @@ public object MaintenanceTaskFiltersDispatcher {
   }
 
   private fun afterDateForDataOwner(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -97,6 +104,7 @@ public object MaintenanceTaskFiltersDispatcher {
   }
 
   private fun afterDateForSelf(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,

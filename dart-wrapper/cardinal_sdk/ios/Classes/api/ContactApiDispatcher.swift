@@ -9,6 +9,7 @@ class ContactApiDispatcher {
     resultCallback: @escaping (
       String?,
       String?,
+      String?,
       String?
     ) -> Void
   ) -> Bool {
@@ -87,6 +88,7 @@ class ContactApiDispatcher {
   private static func matchContactsBy(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     ContactApi.shared.matchContactsBy(
@@ -97,6 +99,7 @@ class ContactApiDispatcher {
   }
 
   private static func matchServicesBy(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -111,6 +114,7 @@ class ContactApiDispatcher {
   private static func matchContactsBySorted(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     ContactApi.shared.matchContactsBySorted(
@@ -121,6 +125,7 @@ class ContactApiDispatcher {
   }
 
   private static func matchServicesBySorted(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -135,6 +140,7 @@ class ContactApiDispatcher {
   private static func createContact(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     ContactApi.shared.createContact(
@@ -147,6 +153,7 @@ class ContactApiDispatcher {
   private static func createContacts(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     ContactApi.shared.createContacts(
@@ -157,6 +164,7 @@ class ContactApiDispatcher {
   }
 
   private static func withEncryptionMetadata(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -175,6 +183,7 @@ class ContactApiDispatcher {
   private static func getEncryptionKeysOf(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     ContactApi.shared.getEncryptionKeysOf(
@@ -185,6 +194,7 @@ class ContactApiDispatcher {
   }
 
   private static func hasWriteAccess(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -199,6 +209,7 @@ class ContactApiDispatcher {
   private static func decryptPatientIdOf(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     ContactApi.shared.decryptPatientIdOf(
@@ -209,6 +220,7 @@ class ContactApiDispatcher {
   }
 
   private static func createDelegationDeAnonymizationMetadata(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -224,6 +236,7 @@ class ContactApiDispatcher {
   private static func decrypt(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     ContactApi.shared.decrypt(
@@ -234,6 +247,7 @@ class ContactApiDispatcher {
   }
 
   private static func tryDecrypt(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -248,6 +262,7 @@ class ContactApiDispatcher {
   private static func decryptService(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     ContactApi.shared.decryptService(
@@ -260,6 +275,7 @@ class ContactApiDispatcher {
   private static func tryDecryptService(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     ContactApi.shared.tryDecryptService(
@@ -270,6 +286,7 @@ class ContactApiDispatcher {
   }
 
   private static func subscribeToServiceCreateOrUpdateEvents(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -285,6 +302,7 @@ class ContactApiDispatcher {
   private static func deleteContactById(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     ContactApi.shared.deleteContactById(
@@ -298,6 +316,7 @@ class ContactApiDispatcher {
   private static func deleteContactsByIds(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     ContactApi.shared.deleteContactsByIds(
@@ -308,6 +327,7 @@ class ContactApiDispatcher {
   }
 
   private static func purgeContactById(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -323,6 +343,7 @@ class ContactApiDispatcher {
   private static func deleteContact(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     ContactApi.shared.deleteContact(
@@ -333,6 +354,7 @@ class ContactApiDispatcher {
   }
 
   private static func deleteContacts(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -347,6 +369,7 @@ class ContactApiDispatcher {
   private static func purgeContact(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     ContactApi.shared.purgeContact(
@@ -357,6 +380,7 @@ class ContactApiDispatcher {
   }
 
   private static func getServiceCodesOccurrences(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -370,6 +394,7 @@ class ContactApiDispatcher {
   }
 
   private static func shareWith(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -386,6 +411,7 @@ class ContactApiDispatcher {
   private static func shareWithMany(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     ContactApi.shared.shareWithMany(
@@ -397,6 +423,7 @@ class ContactApiDispatcher {
   }
 
   private static func filterContactsBy(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -411,6 +438,7 @@ class ContactApiDispatcher {
   private static func filterServicesBy(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     ContactApi.shared.filterServicesBy(
@@ -421,6 +449,7 @@ class ContactApiDispatcher {
   }
 
   private static func filterContactsBySorted(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -435,6 +464,7 @@ class ContactApiDispatcher {
   private static func filterServicesBySorted(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     ContactApi.shared.filterServicesBySorted(
@@ -445,6 +475,7 @@ class ContactApiDispatcher {
   }
 
   private static func undeleteContactById(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -460,6 +491,7 @@ class ContactApiDispatcher {
   private static func undeleteContact(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     ContactApi.shared.undeleteContact(
@@ -470,6 +502,7 @@ class ContactApiDispatcher {
   }
 
   private static func modifyContact(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -484,6 +517,7 @@ class ContactApiDispatcher {
   private static func modifyContacts(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     ContactApi.shared.modifyContacts(
@@ -494,6 +528,7 @@ class ContactApiDispatcher {
   }
 
   private static func getContact(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -508,6 +543,7 @@ class ContactApiDispatcher {
   private static func getContacts(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     ContactApi.shared.getContacts(
@@ -518,6 +554,7 @@ class ContactApiDispatcher {
   }
 
   private static func getService(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -532,6 +569,7 @@ class ContactApiDispatcher {
   private static func getServices(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     ContactApi.shared.getServices(
@@ -542,6 +580,7 @@ class ContactApiDispatcher {
   }
 
   private static func subscribeToEvents(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -558,6 +597,7 @@ class ContactApiDispatcher {
   private static func encrypted_shareWith(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     ContactApi.encrypted.shared.shareWith(
@@ -570,6 +610,7 @@ class ContactApiDispatcher {
   }
 
   private static func encrypted_shareWithMany(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -585,6 +626,7 @@ class ContactApiDispatcher {
   private static func encrypted_filterContactsBy(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     ContactApi.encrypted.shared.filterContactsBy(
@@ -595,6 +637,7 @@ class ContactApiDispatcher {
   }
 
   private static func encrypted_filterServicesBy(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -609,6 +652,7 @@ class ContactApiDispatcher {
   private static func encrypted_filterContactsBySorted(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     ContactApi.encrypted.shared.filterContactsBySorted(
@@ -621,6 +665,7 @@ class ContactApiDispatcher {
   private static func encrypted_filterServicesBySorted(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     ContactApi.encrypted.shared.filterServicesBySorted(
@@ -631,6 +676,7 @@ class ContactApiDispatcher {
   }
 
   private static func encrypted_undeleteContactById(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -646,6 +692,7 @@ class ContactApiDispatcher {
   private static func encrypted_undeleteContact(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     ContactApi.encrypted.shared.undeleteContact(
@@ -656,6 +703,7 @@ class ContactApiDispatcher {
   }
 
   private static func encrypted_modifyContact(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -670,6 +718,7 @@ class ContactApiDispatcher {
   private static func encrypted_modifyContacts(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     ContactApi.encrypted.shared.modifyContacts(
@@ -680,6 +729,7 @@ class ContactApiDispatcher {
   }
 
   private static func encrypted_getContact(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -694,6 +744,7 @@ class ContactApiDispatcher {
   private static func encrypted_getContacts(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     ContactApi.encrypted.shared.getContacts(
@@ -704,6 +755,7 @@ class ContactApiDispatcher {
   }
 
   private static func encrypted_getService(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -718,6 +770,7 @@ class ContactApiDispatcher {
   private static func encrypted_getServices(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     ContactApi.encrypted.shared.getServices(
@@ -728,6 +781,7 @@ class ContactApiDispatcher {
   }
 
   private static func tryAndRecover_shareWith(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -744,6 +798,7 @@ class ContactApiDispatcher {
   private static func tryAndRecover_shareWithMany(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     ContactApi.tryAndRecover.shared.shareWithMany(
@@ -755,6 +810,7 @@ class ContactApiDispatcher {
   }
 
   private static func tryAndRecover_filterContactsBy(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -769,6 +825,7 @@ class ContactApiDispatcher {
   private static func tryAndRecover_filterServicesBy(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     ContactApi.tryAndRecover.shared.filterServicesBy(
@@ -779,6 +836,7 @@ class ContactApiDispatcher {
   }
 
   private static func tryAndRecover_filterContactsBySorted(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -793,6 +851,7 @@ class ContactApiDispatcher {
   private static func tryAndRecover_filterServicesBySorted(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     ContactApi.tryAndRecover.shared.filterServicesBySorted(
@@ -803,6 +862,7 @@ class ContactApiDispatcher {
   }
 
   private static func tryAndRecover_undeleteContactById(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -818,6 +878,7 @@ class ContactApiDispatcher {
   private static func tryAndRecover_undeleteContact(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     ContactApi.tryAndRecover.shared.undeleteContact(
@@ -828,6 +889,7 @@ class ContactApiDispatcher {
   }
 
   private static func tryAndRecover_modifyContact(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -842,6 +904,7 @@ class ContactApiDispatcher {
   private static func tryAndRecover_modifyContacts(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     ContactApi.tryAndRecover.shared.modifyContacts(
@@ -852,6 +915,7 @@ class ContactApiDispatcher {
   }
 
   private static func tryAndRecover_getContact(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -866,6 +930,7 @@ class ContactApiDispatcher {
   private static func tryAndRecover_getContacts(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     ContactApi.tryAndRecover.shared.getContacts(
@@ -878,6 +943,7 @@ class ContactApiDispatcher {
   private static func tryAndRecover_getService(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     ContactApi.tryAndRecover.shared.getService(
@@ -888,6 +954,7 @@ class ContactApiDispatcher {
   }
 
   private static func tryAndRecover_getServices(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?

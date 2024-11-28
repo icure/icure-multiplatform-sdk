@@ -2,6 +2,7 @@
 import 'package:flutter/services.dart';
 import 'package:cardinal_sdk/model/place.dart';
 import 'dart:convert';
+import 'package:cardinal_sdk/utils/internal/platform_exception_convertion.dart';
 import 'package:cardinal_sdk/model/couchdb/doc_identifier.dart';
 
 
@@ -16,7 +17,7 @@ class PlacePlatformApi {
 				"sdkId": sdkId,
 				"placeId": jsonEncode(placeId),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getPlace");
 		final parsedResJson = jsonDecode(res);
 		return Place.fromJSON(parsedResJson);
@@ -29,7 +30,7 @@ class PlacePlatformApi {
 				"sdkId": sdkId,
 				"place": jsonEncode(Place.encode(place)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method createPlace");
 		final parsedResJson = jsonDecode(res);
 		return Place.fromJSON(parsedResJson);
@@ -42,7 +43,7 @@ class PlacePlatformApi {
 				"sdkId": sdkId,
 				"place": jsonEncode(Place.encode(place)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method modifyPlace");
 		final parsedResJson = jsonDecode(res);
 		return Place.fromJSON(parsedResJson);
@@ -55,7 +56,7 @@ class PlacePlatformApi {
 				"sdkId": sdkId,
 				"placeIds": jsonEncode(placeIds.map((x0) => x0).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method deletePlaces");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => DocIdentifier.fromJSON(x1) ).toList();

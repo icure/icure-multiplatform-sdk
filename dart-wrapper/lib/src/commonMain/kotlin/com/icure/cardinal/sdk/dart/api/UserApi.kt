@@ -35,6 +35,7 @@ public object UserApi {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit, sdkId: String) {
     ApiScope.execute(
       dartResultCallback,
@@ -45,6 +46,7 @@ public object UserApi {
 
   public fun createUser(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -70,6 +72,7 @@ public object UserApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     userIdString: String,
@@ -89,6 +92,7 @@ public object UserApi {
 
   public fun getUsers(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -114,6 +118,7 @@ public object UserApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     emailString: String,
@@ -133,6 +138,7 @@ public object UserApi {
 
   public fun getUserByPhoneNumber(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -158,6 +164,7 @@ public object UserApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     idString: String,
@@ -177,6 +184,7 @@ public object UserApi {
 
   public fun findByPatientId(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -202,6 +210,7 @@ public object UserApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     userString: String,
@@ -224,6 +233,7 @@ public object UserApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     healthcarePartyIdString: String,
@@ -243,6 +253,7 @@ public object UserApi {
 
   public fun modifyProperties(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -271,6 +282,7 @@ public object UserApi {
 
   public fun getToken(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -314,6 +326,7 @@ public object UserApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     filterString: String,
@@ -340,6 +353,7 @@ public object UserApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     filterString: String,
@@ -359,6 +373,7 @@ public object UserApi {
 
   public fun filterUsersBySorted(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -388,6 +403,7 @@ public object UserApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     filterString: String,
@@ -409,6 +425,7 @@ public object UserApi {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit, sdkId: String) {
     ApiScope.execute(
       dartResultCallback,
@@ -419,6 +436,7 @@ public object UserApi {
 
   public fun getUsersInGroup(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -450,6 +468,7 @@ public object UserApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     groupIdString: String,
@@ -475,6 +494,7 @@ public object UserApi {
 
   public fun modifyUserInGroup(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -506,6 +526,7 @@ public object UserApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     userIdString: String,
@@ -531,6 +552,7 @@ public object UserApi {
 
   public fun setUserRolesInGroup(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -568,6 +590,7 @@ public object UserApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     userIdString: String,
@@ -587,6 +610,7 @@ public object UserApi {
 
   public fun resetUserRolesInGroup(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -615,6 +639,7 @@ public object UserApi {
 
   public fun getTokenInGroup(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -664,6 +689,7 @@ public object UserApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     userIdentifierString: String,
@@ -704,6 +730,7 @@ public object UserApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     groupIdString: String,
@@ -736,6 +763,7 @@ public object UserApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     groupIdString: String,
@@ -761,6 +789,7 @@ public object UserApi {
 
   public fun filterUsersInGroupBySorted(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -796,6 +825,7 @@ public object UserApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     groupIdString: String,
@@ -821,6 +851,7 @@ public object UserApi {
 
   public fun enable2faForUserWithGroup(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -858,6 +889,7 @@ public object UserApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     userIdString: String,
@@ -883,6 +915,7 @@ public object UserApi {
 
   public fun disable2faForUserWithGroup(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -914,6 +947,7 @@ public object UserApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     userIdString: String,
@@ -936,6 +970,7 @@ public object UserApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     userString: String,
@@ -955,6 +990,7 @@ public object UserApi {
 
   public fun createAdminUserInGroup(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -986,6 +1022,7 @@ public object UserApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     entityIdString: String,
@@ -1011,6 +1048,7 @@ public object UserApi {
 
   public fun deleteUserInGroupById(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -1048,6 +1086,7 @@ public object UserApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     idString: String,
@@ -1073,6 +1112,7 @@ public object UserApi {
 
   public fun undeleteUserById(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -1104,6 +1144,7 @@ public object UserApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     userString: String,
@@ -1123,6 +1164,7 @@ public object UserApi {
 
   public fun deleteUserInGroup(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -1154,6 +1196,7 @@ public object UserApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     userString: String,
@@ -1176,6 +1219,7 @@ public object UserApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     userString: String,
@@ -1195,6 +1239,7 @@ public object UserApi {
 
   public fun subscribeToEvents(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,

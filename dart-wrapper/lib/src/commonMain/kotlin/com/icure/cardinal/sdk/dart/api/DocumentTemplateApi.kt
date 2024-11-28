@@ -22,6 +22,7 @@ public object DocumentTemplateApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     documentTemplateIdString: String,
@@ -41,6 +42,7 @@ public object DocumentTemplateApi {
 
   public fun createDocumentTemplate(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -66,6 +68,7 @@ public object DocumentTemplateApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     documentTemplateString: String,
@@ -85,6 +88,7 @@ public object DocumentTemplateApi {
 
   public fun deleteDocumentTemplates(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -110,6 +114,7 @@ public object DocumentTemplateApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     specialityCodeString: String,
@@ -129,6 +134,7 @@ public object DocumentTemplateApi {
 
   public fun listDocumentTemplatesByDocumentType(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -154,6 +160,7 @@ public object DocumentTemplateApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     documentTypeCodeString: String,
@@ -175,6 +182,7 @@ public object DocumentTemplateApi {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit, sdkId: String) {
     ApiScope.execute(
       dartResultCallback,
@@ -185,6 +193,7 @@ public object DocumentTemplateApi {
 
   public fun getDocumentTemplateAttachment(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -216,6 +225,7 @@ public object DocumentTemplateApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     documentTemplateIdString: String,
@@ -244,6 +254,7 @@ public object DocumentTemplateApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     documentTemplateIdString: String,
@@ -269,6 +280,7 @@ public object DocumentTemplateApi {
 
   public fun getAttachmentUrl(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,

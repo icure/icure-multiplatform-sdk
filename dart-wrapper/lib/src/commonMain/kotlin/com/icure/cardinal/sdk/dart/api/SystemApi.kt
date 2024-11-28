@@ -25,6 +25,7 @@ public object SystemApi {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit, sdkId: String) {
     ApiScope.execute(
       dartResultCallback,
@@ -34,6 +35,7 @@ public object SystemApi {
   }
 
   public fun isReady(dartResultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -49,6 +51,7 @@ public object SystemApi {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit, sdkId: String) {
     ApiScope.execute(
       dartResultCallback,
@@ -58,6 +61,7 @@ public object SystemApi {
   }
 
   public fun getIndexingInfo(dartResultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -73,6 +77,7 @@ public object SystemApi {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit, sdkId: String) {
     ApiScope.execute(
       dartResultCallback,
@@ -83,6 +88,7 @@ public object SystemApi {
 
   public fun updateDesignDoc(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -114,6 +120,7 @@ public object SystemApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     limitString: String,
@@ -133,6 +140,7 @@ public object SystemApi {
 
   public fun resolveContactsConflicts(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -158,6 +166,7 @@ public object SystemApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     limitString: String,
@@ -177,6 +186,7 @@ public object SystemApi {
 
   public fun resolveHealthElementsConflicts(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -202,6 +212,7 @@ public object SystemApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     limitString: String,
@@ -224,6 +235,7 @@ public object SystemApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     limitString: String,
@@ -243,6 +255,7 @@ public object SystemApi {
 
   public fun resolveDocumentsConflicts(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -274,6 +287,7 @@ public object SystemApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     groupIdString: String,
@@ -296,6 +310,7 @@ public object SystemApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     idString: String,
@@ -315,6 +330,7 @@ public object SystemApi {
 
   public fun evictAllFromMap(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,

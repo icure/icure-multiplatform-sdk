@@ -15,6 +15,7 @@ public object MedicalLocationApiDispatcher {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
   ): Boolean = when(methodName) {
     "createMedicalLocation" -> createMedicalLocation(parameters, resultCallback)
@@ -33,6 +34,7 @@ public object MedicalLocationApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     MedicalLocationApi.createMedicalLocation(
       resultCallback,
@@ -42,6 +44,7 @@ public object MedicalLocationApiDispatcher {
   }
 
   private fun deleteMedicalLocations(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -57,6 +60,7 @@ public object MedicalLocationApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     MedicalLocationApi.getMedicalLocation(
       resultCallback,
@@ -66,6 +70,7 @@ public object MedicalLocationApiDispatcher {
   }
 
   private fun modifyMedicalLocation(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -81,6 +86,7 @@ public object MedicalLocationApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     MedicalLocationApi.getMedicalLocations(
       resultCallback,
@@ -90,6 +96,7 @@ public object MedicalLocationApiDispatcher {
   }
 
   private fun matchMedicalLocationsBy(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -105,6 +112,7 @@ public object MedicalLocationApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     MedicalLocationApi.matchMedicalLocationsBySorted(
       resultCallback,
@@ -117,6 +125,7 @@ public object MedicalLocationApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     MedicalLocationApi.filterMedicalLocationsBy(
       resultCallback,
@@ -126,6 +135,7 @@ public object MedicalLocationApiDispatcher {
   }
 
   private fun filterMedicalLocationsBySorted(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,

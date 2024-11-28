@@ -9,6 +9,7 @@ class DeviceFiltersDispatcher {
     resultCallback: @escaping (
       String?,
       String?,
+      String?,
       String?
     ) -> Void
   ) -> Bool {
@@ -24,6 +25,7 @@ class DeviceFiltersDispatcher {
   private static func all(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     DeviceFilters.shared.all(
@@ -32,6 +34,7 @@ class DeviceFiltersDispatcher {
   }
 
   private static func byResponsible(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -43,6 +46,7 @@ class DeviceFiltersDispatcher {
   }
 
   private static func byIds(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?

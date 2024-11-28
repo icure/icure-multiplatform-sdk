@@ -2,6 +2,7 @@
 import 'package:flutter/services.dart';
 import 'package:cardinal_sdk/model/health_element.dart';
 import 'dart:convert';
+import 'package:cardinal_sdk/utils/internal/platform_exception_convertion.dart';
 import 'package:cardinal_sdk/model/patient.dart';
 import 'package:cardinal_sdk/model/user.dart';
 import 'package:cardinal_sdk/model/embed/access_level.dart';
@@ -33,7 +34,7 @@ class HealthElementPlatformApi {
 				"sdkId": sdkId,
 				"entity": jsonEncode(DecryptedHealthElement.encode(entity)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method createHealthElement");
 		final parsedResJson = jsonDecode(res);
 		return DecryptedHealthElement.fromJSON(parsedResJson);
@@ -46,7 +47,7 @@ class HealthElementPlatformApi {
 				"sdkId": sdkId,
 				"entities": jsonEncode(entities.map((x0) => DecryptedHealthElement.encode(x0)).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method createHealthElements");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => DecryptedHealthElement.fromJSON(x1) ).toList();
@@ -63,7 +64,7 @@ class HealthElementPlatformApi {
 				"delegates": jsonEncode(delegates.map((k0, v0) => MapEntry(k0, AccessLevel.encode(v0)))),
 				"secretId": jsonEncode(SecretIdUseOption.encode(secretId)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method withEncryptionMetadata");
 		final parsedResJson = jsonDecode(res);
 		return DecryptedHealthElement.fromJSON(parsedResJson);
@@ -76,7 +77,7 @@ class HealthElementPlatformApi {
 				"sdkId": sdkId,
 				"healthElement": jsonEncode(HealthElement.encode(healthElement)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getEncryptionKeysOf");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => (x1 as HexString) ).toSet();
@@ -89,7 +90,7 @@ class HealthElementPlatformApi {
 				"sdkId": sdkId,
 				"healthElement": jsonEncode(HealthElement.encode(healthElement)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method hasWriteAccess");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as bool);
@@ -102,7 +103,7 @@ class HealthElementPlatformApi {
 				"sdkId": sdkId,
 				"healthElement": jsonEncode(HealthElement.encode(healthElement)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method decryptPatientIdOf");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toSet();
@@ -116,7 +117,7 @@ class HealthElementPlatformApi {
 				"entity": jsonEncode(HealthElement.encode(entity)),
 				"delegates": jsonEncode(delegates.map((x0) => x0).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 	}
 
 	Future<DecryptedHealthElement> decrypt(String sdkId, EncryptedHealthElement healthElement) async {
@@ -126,7 +127,7 @@ class HealthElementPlatformApi {
 				"sdkId": sdkId,
 				"healthElement": jsonEncode(EncryptedHealthElement.encode(healthElement)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method decrypt");
 		final parsedResJson = jsonDecode(res);
 		return DecryptedHealthElement.fromJSON(parsedResJson);
@@ -139,7 +140,7 @@ class HealthElementPlatformApi {
 				"sdkId": sdkId,
 				"healthElement": jsonEncode(EncryptedHealthElement.encode(healthElement)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method tryDecrypt");
 		final parsedResJson = jsonDecode(res);
 		return HealthElement.fromJSON(parsedResJson);
@@ -152,7 +153,7 @@ class HealthElementPlatformApi {
 				"sdkId": sdkId,
 				"filter": jsonEncode(FilterOptions.encode(filter)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method matchHealthElementsBy");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toList();
@@ -165,7 +166,7 @@ class HealthElementPlatformApi {
 				"sdkId": sdkId,
 				"filter": jsonEncode(SortableFilterOptions.encode(filter)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method matchHealthElementsBySorted");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toList();
@@ -179,7 +180,7 @@ class HealthElementPlatformApi {
 				"entityId": jsonEncode(entityId),
 				"rev": jsonEncode(rev),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method deleteHealthElementById");
 		final parsedResJson = jsonDecode(res);
 		return DocIdentifier.fromJSON(parsedResJson);
@@ -192,7 +193,7 @@ class HealthElementPlatformApi {
 				"sdkId": sdkId,
 				"entityIds": jsonEncode(entityIds.map((x0) => IdWithMandatoryRev.encode(x0)).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method deleteHealthElementsByIds");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => DocIdentifier.fromJSON(x1) ).toList();
@@ -206,7 +207,7 @@ class HealthElementPlatformApi {
 				"id": jsonEncode(id),
 				"rev": jsonEncode(rev),
 			}
-		);
+		).catchError(convertPlatformException);
 	}
 
 	Future<DocIdentifier> deleteHealthElement(String sdkId, HealthElement healthElement) async {
@@ -216,7 +217,7 @@ class HealthElementPlatformApi {
 				"sdkId": sdkId,
 				"healthElement": jsonEncode(HealthElement.encode(healthElement)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method deleteHealthElement");
 		final parsedResJson = jsonDecode(res);
 		return DocIdentifier.fromJSON(parsedResJson);
@@ -229,7 +230,7 @@ class HealthElementPlatformApi {
 				"sdkId": sdkId,
 				"healthElements": jsonEncode(healthElements.map((x0) => HealthElement.encode(x0)).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method deleteHealthElements");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => DocIdentifier.fromJSON(x1) ).toList();
@@ -242,7 +243,7 @@ class HealthElementPlatformApi {
 				"sdkId": sdkId,
 				"healthElement": jsonEncode(HealthElement.encode(healthElement)),
 			}
-		);
+		).catchError(convertPlatformException);
 	}
 
 	Future<DecryptedHealthElement> shareWith(String sdkId, String delegateId, DecryptedHealthElement healthElement, HealthElementShareOptions? options) async {
@@ -254,7 +255,7 @@ class HealthElementPlatformApi {
 				"healthElement": jsonEncode(DecryptedHealthElement.encode(healthElement)),
 				"options": jsonEncode(options == null ? null : HealthElementShareOptions.encode(options!)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method shareWith");
 		final parsedResJson = jsonDecode(res);
 		return DecryptedHealthElement.fromJSON(parsedResJson);
@@ -268,7 +269,7 @@ class HealthElementPlatformApi {
 				"healthElement": jsonEncode(DecryptedHealthElement.encode(healthElement)),
 				"delegates": jsonEncode(delegates.map((k0, v0) => MapEntry(k0, HealthElementShareOptions.encode(v0)))),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method shareWithMany");
 		final parsedResJson = jsonDecode(res);
 		return DecryptedHealthElement.fromJSON(parsedResJson);
@@ -281,7 +282,7 @@ class HealthElementPlatformApi {
 				"sdkId": sdkId,
 				"filter": jsonEncode(FilterOptions.encode(filter)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method filterHealthElementsBy");
 		final parsedResJson = jsonDecode(res);
 		return PaginatedListIterator(parsedResJson, (x0) => DecryptedHealthElement.fromJSON(x0));
@@ -294,7 +295,7 @@ class HealthElementPlatformApi {
 				"sdkId": sdkId,
 				"filter": jsonEncode(SortableFilterOptions.encode(filter)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method filterHealthElementsBySorted");
 		final parsedResJson = jsonDecode(res);
 		return PaginatedListIterator(parsedResJson, (x0) => DecryptedHealthElement.fromJSON(x0));
@@ -308,7 +309,7 @@ class HealthElementPlatformApi {
 				"id": jsonEncode(id),
 				"rev": jsonEncode(rev),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method undeleteHealthElementById");
 		final parsedResJson = jsonDecode(res);
 		return DecryptedHealthElement.fromJSON(parsedResJson);
@@ -321,7 +322,7 @@ class HealthElementPlatformApi {
 				"sdkId": sdkId,
 				"healthElement": jsonEncode(HealthElement.encode(healthElement)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method undeleteHealthElement");
 		final parsedResJson = jsonDecode(res);
 		return DecryptedHealthElement.fromJSON(parsedResJson);
@@ -334,7 +335,7 @@ class HealthElementPlatformApi {
 				"sdkId": sdkId,
 				"entity": jsonEncode(DecryptedHealthElement.encode(entity)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method modifyHealthElement");
 		final parsedResJson = jsonDecode(res);
 		return DecryptedHealthElement.fromJSON(parsedResJson);
@@ -347,7 +348,7 @@ class HealthElementPlatformApi {
 				"sdkId": sdkId,
 				"entities": jsonEncode(entities.map((x0) => DecryptedHealthElement.encode(x0)).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method modifyHealthElements");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => DecryptedHealthElement.fromJSON(x1) ).toList();
@@ -360,7 +361,7 @@ class HealthElementPlatformApi {
 				"sdkId": sdkId,
 				"entityId": jsonEncode(entityId),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getHealthElement");
 		final parsedResJson = jsonDecode(res);
 		return DecryptedHealthElement.fromJSON(parsedResJson);
@@ -373,7 +374,7 @@ class HealthElementPlatformApi {
 				"sdkId": sdkId,
 				"entityIds": jsonEncode(entityIds.map((x0) => x0).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getHealthElements");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => DecryptedHealthElement.fromJSON(x1) ).toList();
@@ -388,7 +389,7 @@ class HealthElementPlatformApi {
 				"filter": jsonEncode(FilterOptions.encode(filter)),
 				"subscriptionConfig": jsonEncode(subscriptionConfig == null ? null : EntitySubscriptionConfiguration.encode(subscriptionConfig!)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method subscribeToEvents");
 		final parsedResJson = jsonDecode(res);
 		return EntitySubscription(parsedResJson, (x0) => EncryptedHealthElement.fromJSON(x0));
@@ -408,7 +409,7 @@ class TryAndRecoverHealthElementPlatformApi {
 				"healthElement": jsonEncode(HealthElement.encode(healthElement)),
 				"options": jsonEncode(options == null ? null : HealthElementShareOptions.encode(options!)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method shareWith");
 		final parsedResJson = jsonDecode(res);
 		return HealthElement.fromJSON(parsedResJson);
@@ -422,7 +423,7 @@ class TryAndRecoverHealthElementPlatformApi {
 				"healthElement": jsonEncode(HealthElement.encode(healthElement)),
 				"delegates": jsonEncode(delegates.map((k0, v0) => MapEntry(k0, HealthElementShareOptions.encode(v0)))),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method shareWithMany");
 		final parsedResJson = jsonDecode(res);
 		return HealthElement.fromJSON(parsedResJson);
@@ -435,7 +436,7 @@ class TryAndRecoverHealthElementPlatformApi {
 				"sdkId": sdkId,
 				"filter": jsonEncode(FilterOptions.encode(filter)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method filterHealthElementsBy");
 		final parsedResJson = jsonDecode(res);
 		return PaginatedListIterator(parsedResJson, (x0) => HealthElement.fromJSON(x0));
@@ -448,7 +449,7 @@ class TryAndRecoverHealthElementPlatformApi {
 				"sdkId": sdkId,
 				"filter": jsonEncode(SortableFilterOptions.encode(filter)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method filterHealthElementsBySorted");
 		final parsedResJson = jsonDecode(res);
 		return PaginatedListIterator(parsedResJson, (x0) => HealthElement.fromJSON(x0));
@@ -462,7 +463,7 @@ class TryAndRecoverHealthElementPlatformApi {
 				"id": jsonEncode(id),
 				"rev": jsonEncode(rev),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method undeleteHealthElementById");
 		final parsedResJson = jsonDecode(res);
 		return HealthElement.fromJSON(parsedResJson);
@@ -475,7 +476,7 @@ class TryAndRecoverHealthElementPlatformApi {
 				"sdkId": sdkId,
 				"healthElement": jsonEncode(HealthElement.encode(healthElement)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method undeleteHealthElement");
 		final parsedResJson = jsonDecode(res);
 		return HealthElement.fromJSON(parsedResJson);
@@ -488,7 +489,7 @@ class TryAndRecoverHealthElementPlatformApi {
 				"sdkId": sdkId,
 				"entity": jsonEncode(HealthElement.encode(entity)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method modifyHealthElement");
 		final parsedResJson = jsonDecode(res);
 		return HealthElement.fromJSON(parsedResJson);
@@ -501,7 +502,7 @@ class TryAndRecoverHealthElementPlatformApi {
 				"sdkId": sdkId,
 				"entities": jsonEncode(entities.map((x0) => HealthElement.encode(x0)).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method modifyHealthElements");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => HealthElement.fromJSON(x1) ).toList();
@@ -514,7 +515,7 @@ class TryAndRecoverHealthElementPlatformApi {
 				"sdkId": sdkId,
 				"entityId": jsonEncode(entityId),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getHealthElement");
 		final parsedResJson = jsonDecode(res);
 		return HealthElement.fromJSON(parsedResJson);
@@ -527,7 +528,7 @@ class TryAndRecoverHealthElementPlatformApi {
 				"sdkId": sdkId,
 				"entityIds": jsonEncode(entityIds.map((x0) => x0).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getHealthElements");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => HealthElement.fromJSON(x1) ).toList();
@@ -547,7 +548,7 @@ class EncryptedHealthElementPlatformApi {
 				"healthElement": jsonEncode(EncryptedHealthElement.encode(healthElement)),
 				"options": jsonEncode(options == null ? null : HealthElementShareOptions.encode(options!)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method shareWith");
 		final parsedResJson = jsonDecode(res);
 		return EncryptedHealthElement.fromJSON(parsedResJson);
@@ -561,7 +562,7 @@ class EncryptedHealthElementPlatformApi {
 				"healthElement": jsonEncode(EncryptedHealthElement.encode(healthElement)),
 				"delegates": jsonEncode(delegates.map((k0, v0) => MapEntry(k0, HealthElementShareOptions.encode(v0)))),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method shareWithMany");
 		final parsedResJson = jsonDecode(res);
 		return EncryptedHealthElement.fromJSON(parsedResJson);
@@ -574,7 +575,7 @@ class EncryptedHealthElementPlatformApi {
 				"sdkId": sdkId,
 				"filter": jsonEncode(FilterOptions.encode(filter)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method filterHealthElementsBy");
 		final parsedResJson = jsonDecode(res);
 		return PaginatedListIterator(parsedResJson, (x0) => EncryptedHealthElement.fromJSON(x0));
@@ -587,7 +588,7 @@ class EncryptedHealthElementPlatformApi {
 				"sdkId": sdkId,
 				"filter": jsonEncode(SortableFilterOptions.encode(filter)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method filterHealthElementsBySorted");
 		final parsedResJson = jsonDecode(res);
 		return PaginatedListIterator(parsedResJson, (x0) => EncryptedHealthElement.fromJSON(x0));
@@ -601,7 +602,7 @@ class EncryptedHealthElementPlatformApi {
 				"id": jsonEncode(id),
 				"rev": jsonEncode(rev),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method undeleteHealthElementById");
 		final parsedResJson = jsonDecode(res);
 		return EncryptedHealthElement.fromJSON(parsedResJson);
@@ -614,7 +615,7 @@ class EncryptedHealthElementPlatformApi {
 				"sdkId": sdkId,
 				"healthElement": jsonEncode(HealthElement.encode(healthElement)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method undeleteHealthElement");
 		final parsedResJson = jsonDecode(res);
 		return EncryptedHealthElement.fromJSON(parsedResJson);
@@ -627,7 +628,7 @@ class EncryptedHealthElementPlatformApi {
 				"sdkId": sdkId,
 				"entity": jsonEncode(EncryptedHealthElement.encode(entity)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method modifyHealthElement");
 		final parsedResJson = jsonDecode(res);
 		return EncryptedHealthElement.fromJSON(parsedResJson);
@@ -640,7 +641,7 @@ class EncryptedHealthElementPlatformApi {
 				"sdkId": sdkId,
 				"entities": jsonEncode(entities.map((x0) => EncryptedHealthElement.encode(x0)).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method modifyHealthElements");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => EncryptedHealthElement.fromJSON(x1) ).toList();
@@ -653,7 +654,7 @@ class EncryptedHealthElementPlatformApi {
 				"sdkId": sdkId,
 				"entityId": jsonEncode(entityId),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getHealthElement");
 		final parsedResJson = jsonDecode(res);
 		return EncryptedHealthElement.fromJSON(parsedResJson);
@@ -666,7 +667,7 @@ class EncryptedHealthElementPlatformApi {
 				"sdkId": sdkId,
 				"entityIds": jsonEncode(entityIds.map((x0) => x0).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getHealthElements");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => EncryptedHealthElement.fromJSON(x1) ).toList();

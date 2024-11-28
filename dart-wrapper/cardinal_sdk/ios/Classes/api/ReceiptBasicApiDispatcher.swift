@@ -9,6 +9,7 @@ class ReceiptBasicApiDispatcher {
     resultCallback: @escaping (
       String?,
       String?,
+      String?,
       String?
     ) -> Void
   ) -> Bool {
@@ -28,6 +29,7 @@ class ReceiptBasicApiDispatcher {
   private static func deleteReceipt(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     ReceiptBasicApi.shared.deleteReceipt(
@@ -38,6 +40,7 @@ class ReceiptBasicApiDispatcher {
   }
 
   private static func deleteReceipts(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -52,6 +55,7 @@ class ReceiptBasicApiDispatcher {
   private static func getRawReceiptAttachment(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     ReceiptBasicApi.shared.getRawReceiptAttachment(
@@ -63,6 +67,7 @@ class ReceiptBasicApiDispatcher {
   }
 
   private static func setRawReceiptAttachment(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -80,6 +85,7 @@ class ReceiptBasicApiDispatcher {
   private static func modifyReceipt(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     ReceiptBasicApi.shared.modifyReceipt(
@@ -92,6 +98,7 @@ class ReceiptBasicApiDispatcher {
   private static func getReceipt(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     ReceiptBasicApi.shared.getReceipt(
@@ -102,6 +109,7 @@ class ReceiptBasicApiDispatcher {
   }
 
   private static func listByReference(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?

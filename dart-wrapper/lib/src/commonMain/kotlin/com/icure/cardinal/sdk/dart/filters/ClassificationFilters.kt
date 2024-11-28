@@ -25,6 +25,7 @@ public object ClassificationFilters {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     dataOwnerIdString: String,
     patientsString: String,
@@ -71,6 +72,7 @@ public object ClassificationFilters {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     patientsString: String,
     fromString: String,
@@ -108,6 +110,7 @@ public object ClassificationFilters {
 
   public fun byPatientSecretIdsCreatedForDataOwner(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -154,6 +157,7 @@ public object ClassificationFilters {
 
   public fun byPatientSecretIdsCreatedForSelf(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,

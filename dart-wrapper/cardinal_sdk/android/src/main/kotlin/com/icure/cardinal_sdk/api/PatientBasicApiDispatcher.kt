@@ -15,6 +15,7 @@ public object PatientBasicApiDispatcher {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
   ): Boolean = when(methodName) {
     "matchPatientsBy" -> matchPatientsBy(parameters, resultCallback)
@@ -45,6 +46,7 @@ public object PatientBasicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     PatientBasicApi.matchPatientsBy(
       resultCallback,
@@ -54,6 +56,7 @@ public object PatientBasicApiDispatcher {
   }
 
   private fun matchPatientsBySorted(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -69,6 +72,7 @@ public object PatientBasicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     PatientBasicApi.filterPatientsBy(
       resultCallback,
@@ -81,6 +85,7 @@ public object PatientBasicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     PatientBasicApi.filterPatientsBySorted(
       resultCallback,
@@ -90,6 +95,7 @@ public object PatientBasicApiDispatcher {
   }
 
   private fun deletePatientById(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -106,6 +112,7 @@ public object PatientBasicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     PatientBasicApi.deletePatientsByIds(
       resultCallback,
@@ -115,6 +122,7 @@ public object PatientBasicApiDispatcher {
   }
 
   private fun purgePatientById(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -131,6 +139,7 @@ public object PatientBasicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     PatientBasicApi.deletePatient(
       resultCallback,
@@ -140,6 +149,7 @@ public object PatientBasicApiDispatcher {
   }
 
   private fun deletePatients(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -155,6 +165,7 @@ public object PatientBasicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     PatientBasicApi.purgePatient(
       resultCallback,
@@ -164,6 +175,7 @@ public object PatientBasicApiDispatcher {
   }
 
   private fun getDataOwnersWithAccessTo(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -179,6 +191,7 @@ public object PatientBasicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     PatientBasicApi.undeletePatient(
       resultCallback,
@@ -191,6 +204,7 @@ public object PatientBasicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     PatientBasicApi.modifyPatient(
       resultCallback,
@@ -200,6 +214,7 @@ public object PatientBasicApiDispatcher {
   }
 
   private fun undeletePatientById(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -216,6 +231,7 @@ public object PatientBasicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     PatientBasicApi.undeletePatients(
       resultCallback,
@@ -228,6 +244,7 @@ public object PatientBasicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     PatientBasicApi.getPatient(
       resultCallback,
@@ -237,6 +254,7 @@ public object PatientBasicApiDispatcher {
   }
 
   private fun getPatientResolvingMerges(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -253,6 +271,7 @@ public object PatientBasicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     PatientBasicApi.getPatients(
       resultCallback,
@@ -262,6 +281,7 @@ public object PatientBasicApiDispatcher {
   }
 
   private fun modifyPatients(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -277,6 +297,7 @@ public object PatientBasicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     PatientBasicApi.mergePatients(
       resultCallback,
@@ -287,6 +308,7 @@ public object PatientBasicApiDispatcher {
   }
 
   private fun subscribeToEvents(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,

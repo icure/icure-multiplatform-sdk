@@ -15,6 +15,7 @@ public object MessageApiDispatcher {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
   ): Boolean = when(methodName) {
     "createMessage" -> createMessage(parameters, resultCallback)
@@ -72,6 +73,7 @@ public object MessageApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     MessageApi.createMessage(
       resultCallback,
@@ -84,6 +86,7 @@ public object MessageApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     MessageApi.createMessageInTopic(
       resultCallback,
@@ -93,6 +96,7 @@ public object MessageApiDispatcher {
   }
 
   private fun withEncryptionMetadata(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -112,6 +116,7 @@ public object MessageApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     MessageApi.getEncryptionKeysOf(
       resultCallback,
@@ -124,6 +129,7 @@ public object MessageApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     MessageApi.hasWriteAccess(
       resultCallback,
@@ -133,6 +139,7 @@ public object MessageApiDispatcher {
   }
 
   private fun decryptPatientIdOf(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -149,6 +156,7 @@ public object MessageApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     MessageApi.createDelegationDeAnonymizationMetadata(
       resultCallback,
@@ -159,6 +167,7 @@ public object MessageApiDispatcher {
   }
 
   private fun decrypt(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -174,6 +183,7 @@ public object MessageApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     MessageApi.tryDecrypt(
       resultCallback,
@@ -183,6 +193,7 @@ public object MessageApiDispatcher {
   }
 
   private fun matchMessagesBy(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -198,6 +209,7 @@ public object MessageApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     MessageApi.matchMessagesBySorted(
       resultCallback,
@@ -207,6 +219,7 @@ public object MessageApiDispatcher {
   }
 
   private fun deleteMessageById(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -223,6 +236,7 @@ public object MessageApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     MessageApi.deleteMessagesByIds(
       resultCallback,
@@ -232,6 +246,7 @@ public object MessageApiDispatcher {
   }
 
   private fun purgeMessageById(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -248,6 +263,7 @@ public object MessageApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     MessageApi.deleteMessage(
       resultCallback,
@@ -257,6 +273,7 @@ public object MessageApiDispatcher {
   }
 
   private fun deleteMessages(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -272,6 +289,7 @@ public object MessageApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     MessageApi.purgeMessage(
       resultCallback,
@@ -281,6 +299,7 @@ public object MessageApiDispatcher {
   }
 
   private fun shareWith(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -298,6 +317,7 @@ public object MessageApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     MessageApi.shareWithMany(
       resultCallback,
@@ -308,6 +328,7 @@ public object MessageApiDispatcher {
   }
 
   private fun filterMessagesBy(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -323,6 +344,7 @@ public object MessageApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     MessageApi.filterMessagesBySorted(
       resultCallback,
@@ -332,6 +354,7 @@ public object MessageApiDispatcher {
   }
 
   private fun undeleteMessage(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -347,6 +370,7 @@ public object MessageApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     MessageApi.modifyMessage(
       resultCallback,
@@ -356,6 +380,7 @@ public object MessageApiDispatcher {
   }
 
   private fun undeleteMessageById(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -372,6 +397,7 @@ public object MessageApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     MessageApi.getMessage(
       resultCallback,
@@ -384,6 +410,7 @@ public object MessageApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     MessageApi.getMessages(
       resultCallback,
@@ -393,6 +420,7 @@ public object MessageApiDispatcher {
   }
 
   private fun setMessagesReadStatus(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -411,6 +439,7 @@ public object MessageApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     MessageApi.subscribeToEvents(
       resultCallback,
@@ -422,6 +451,7 @@ public object MessageApiDispatcher {
   }
 
   private fun encrypted_shareWith(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -439,6 +469,7 @@ public object MessageApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     MessageApi.encrypted.shareWithMany(
       resultCallback,
@@ -449,6 +480,7 @@ public object MessageApiDispatcher {
   }
 
   private fun encrypted_filterMessagesBy(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -464,6 +496,7 @@ public object MessageApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     MessageApi.encrypted.filterMessagesBySorted(
       resultCallback,
@@ -473,6 +506,7 @@ public object MessageApiDispatcher {
   }
 
   private fun encrypted_undeleteMessage(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -488,6 +522,7 @@ public object MessageApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     MessageApi.encrypted.modifyMessage(
       resultCallback,
@@ -497,6 +532,7 @@ public object MessageApiDispatcher {
   }
 
   private fun encrypted_undeleteMessageById(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -513,6 +549,7 @@ public object MessageApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     MessageApi.encrypted.getMessage(
       resultCallback,
@@ -525,6 +562,7 @@ public object MessageApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     MessageApi.encrypted.getMessages(
       resultCallback,
@@ -534,6 +572,7 @@ public object MessageApiDispatcher {
   }
 
   private fun encrypted_setMessagesReadStatus(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -552,6 +591,7 @@ public object MessageApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     MessageApi.tryAndRecover.shareWith(
       resultCallback,
@@ -563,6 +603,7 @@ public object MessageApiDispatcher {
   }
 
   private fun tryAndRecover_shareWithMany(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -579,6 +620,7 @@ public object MessageApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     MessageApi.tryAndRecover.filterMessagesBy(
       resultCallback,
@@ -589,6 +631,7 @@ public object MessageApiDispatcher {
 
   private fun tryAndRecover_filterMessagesBySorted(parameters: Map<String, String>,
       resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -604,6 +647,7 @@ public object MessageApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     MessageApi.tryAndRecover.undeleteMessage(
       resultCallback,
@@ -616,6 +660,7 @@ public object MessageApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     MessageApi.tryAndRecover.modifyMessage(
       resultCallback,
@@ -625,6 +670,7 @@ public object MessageApiDispatcher {
   }
 
   private fun tryAndRecover_undeleteMessageById(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -641,6 +687,7 @@ public object MessageApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     MessageApi.tryAndRecover.getMessage(
       resultCallback,
@@ -653,6 +700,7 @@ public object MessageApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     MessageApi.tryAndRecover.getMessages(
       resultCallback,
@@ -662,6 +710,7 @@ public object MessageApiDispatcher {
   }
 
   private fun tryAndRecover_setMessagesReadStatus(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,

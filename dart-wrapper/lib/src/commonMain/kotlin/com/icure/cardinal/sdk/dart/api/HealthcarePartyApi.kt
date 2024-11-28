@@ -34,6 +34,7 @@ public object HealthcarePartyApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     healthcarePartyIdString: String,
@@ -56,6 +57,7 @@ public object HealthcarePartyApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     pString: String,
@@ -75,6 +77,7 @@ public object HealthcarePartyApi {
 
   public fun modifyHealthcarePartyInGroup(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -106,6 +109,7 @@ public object HealthcarePartyApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     groupIdString: String,
@@ -133,6 +137,7 @@ public object HealthcarePartyApi {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit, sdkId: String) {
     ApiScope.execute(
       dartResultCallback,
@@ -143,6 +148,7 @@ public object HealthcarePartyApi {
 
   public fun listHealthcarePartiesByName(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -168,6 +174,7 @@ public object HealthcarePartyApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     healthcarePartyIdsString: String,
@@ -187,6 +194,7 @@ public object HealthcarePartyApi {
 
   public fun listHealthcarePartiesByParentId(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -212,6 +220,7 @@ public object HealthcarePartyApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     healthcarePartyIdString: String,
@@ -231,6 +240,7 @@ public object HealthcarePartyApi {
 
   public fun modifyHealthcareParty(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -256,6 +266,7 @@ public object HealthcarePartyApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     filterString: String,
@@ -275,6 +286,7 @@ public object HealthcarePartyApi {
 
   public fun filterHealthPartiesBy(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -305,6 +317,7 @@ public object HealthcarePartyApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     filterString: String,
@@ -324,6 +337,7 @@ public object HealthcarePartyApi {
 
   public fun filterHealthPartiesBySorted(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -354,6 +368,7 @@ public object HealthcarePartyApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     groupIdString: String,
@@ -379,6 +394,7 @@ public object HealthcarePartyApi {
 
   public fun registerPatient(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -428,6 +444,7 @@ public object HealthcarePartyApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     entityIdString: String,
@@ -456,6 +473,7 @@ public object HealthcarePartyApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     entityIdsString: String,
@@ -475,6 +493,7 @@ public object HealthcarePartyApi {
 
   public fun deleteHealthcarePartyInGroupById(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -512,6 +531,7 @@ public object HealthcarePartyApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     groupIdString: String,
@@ -537,6 +557,7 @@ public object HealthcarePartyApi {
 
   public fun purgeHealthcarePartyById(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -568,6 +589,7 @@ public object HealthcarePartyApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     idString: String,
@@ -596,6 +618,7 @@ public object HealthcarePartyApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     healthcarePartyString: String,
@@ -615,6 +638,7 @@ public object HealthcarePartyApi {
 
   public fun deleteHealthcareParties(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -640,6 +664,7 @@ public object HealthcarePartyApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     healthcarePartyString: String,
@@ -662,6 +687,7 @@ public object HealthcarePartyApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     healthcarePartyString: String,
@@ -681,6 +707,7 @@ public object HealthcarePartyApi {
 
   public fun deleteHealthcarePartyInGroup(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -712,6 +739,7 @@ public object HealthcarePartyApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     groupIdString: String,
@@ -737,6 +765,7 @@ public object HealthcarePartyApi {
 
   public fun subscribeToEvents(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,

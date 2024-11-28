@@ -9,6 +9,7 @@ class HealthElementFiltersDispatcher {
     resultCallback: @escaping (
       String?,
       String?,
+      String?,
       String?
     ) -> Void
   ) -> Bool {
@@ -40,6 +41,7 @@ class HealthElementFiltersDispatcher {
   private static func allHealthElementsForDataOwner(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     HealthElementFilters.shared.allHealthElementsForDataOwner(
@@ -51,6 +53,7 @@ class HealthElementFiltersDispatcher {
   private static func allHealthElementsForSelf(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     HealthElementFilters.shared.allHealthElementsForSelf(
@@ -59,6 +62,7 @@ class HealthElementFiltersDispatcher {
   }
 
   private static func byIdentifiersForDataOwner(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -73,6 +77,7 @@ class HealthElementFiltersDispatcher {
   private static func byIdentifiersForSelf(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     HealthElementFilters.shared.byIdentifiersForSelf(
@@ -82,6 +87,7 @@ class HealthElementFiltersDispatcher {
   }
 
   private static func byCodeForDataOwner(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -97,6 +103,7 @@ class HealthElementFiltersDispatcher {
   private static func byCodeForSelf(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     HealthElementFilters.shared.byCodeForSelf(
@@ -107,6 +114,7 @@ class HealthElementFiltersDispatcher {
   }
 
   private static func byTagForDataOwner(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -122,6 +130,7 @@ class HealthElementFiltersDispatcher {
   private static func byTagForSelf(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     HealthElementFilters.shared.byTagForSelf(
@@ -132,6 +141,7 @@ class HealthElementFiltersDispatcher {
   }
 
   private static func byPatientsForDataOwner(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -146,6 +156,7 @@ class HealthElementFiltersDispatcher {
   private static func byPatientsForSelf(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     HealthElementFilters.shared.byPatientsForSelf(
@@ -155,6 +166,7 @@ class HealthElementFiltersDispatcher {
   }
 
   private static func byPatientsSecretIdsForDataOwner(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -169,6 +181,7 @@ class HealthElementFiltersDispatcher {
   private static func byPatientsSecretIdsForSelf(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     HealthElementFilters.shared.byPatientsSecretIdsForSelf(
@@ -180,6 +193,7 @@ class HealthElementFiltersDispatcher {
   private static func byIds(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     HealthElementFilters.shared.byIds(
@@ -189,6 +203,7 @@ class HealthElementFiltersDispatcher {
   }
 
   private static func byPatientsOpeningDateForDataOwner(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -206,6 +221,7 @@ class HealthElementFiltersDispatcher {
   private static func byPatientsOpeningDateForSelf(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     HealthElementFilters.shared.byPatientsOpeningDateForSelf(
@@ -218,6 +234,7 @@ class HealthElementFiltersDispatcher {
   }
 
   private static func byPatientSecretIdsOpeningDateForDataOwner(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -235,6 +252,7 @@ class HealthElementFiltersDispatcher {
   private static func byPatientSecretIdsOpeningDateForSelf(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     HealthElementFilters.shared.byPatientSecretIdsOpeningDateForSelf(
@@ -249,6 +267,7 @@ class HealthElementFiltersDispatcher {
   private static func byStatusForDataOwner(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     HealthElementFilters.shared.byStatusForDataOwner(
@@ -259,6 +278,7 @@ class HealthElementFiltersDispatcher {
   }
 
   private static func byStatusForSelf(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?

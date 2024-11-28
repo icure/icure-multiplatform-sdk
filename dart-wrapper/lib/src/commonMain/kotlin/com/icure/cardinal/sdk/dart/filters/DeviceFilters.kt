@@ -19,6 +19,7 @@ public object DeviceFilters {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     DartResult.resolve(
       dartResultCallback,
@@ -30,6 +31,7 @@ public object DeviceFilters {
   }
 
   public fun byResponsible(dartResultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -49,6 +51,7 @@ public object DeviceFilters {
   }
 
   public fun byIds(dartResultCallback: (
+    String?,
     String?,
     String?,
     String?,

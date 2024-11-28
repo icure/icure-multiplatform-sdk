@@ -15,6 +15,7 @@ public object PatientFiltersDispatcher {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
   ): Boolean = when(methodName) {
     "allPatientsForDataOwner" -> allPatientsForDataOwner(parameters, resultCallback)
@@ -49,6 +50,7 @@ public object PatientFiltersDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     PatientFilters.allPatientsForDataOwner(
       resultCallback,
@@ -57,6 +59,7 @@ public object PatientFiltersDispatcher {
   }
 
   private fun allPatientsForSelf(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -70,6 +73,7 @@ public object PatientFiltersDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     PatientFilters.byIds(
       resultCallback,
@@ -78,6 +82,7 @@ public object PatientFiltersDispatcher {
   }
 
   private fun byIdentifiersForDataOwner(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -93,6 +98,7 @@ public object PatientFiltersDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     PatientFilters.bySsinsForDataOwner(
       resultCallback,
@@ -102,6 +108,7 @@ public object PatientFiltersDispatcher {
   }
 
   private fun byDateOfBirthBetweenForDataOwner(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -118,6 +125,7 @@ public object PatientFiltersDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     PatientFilters.byFuzzyNameForDataOwner(
       resultCallback,
@@ -128,6 +136,7 @@ public object PatientFiltersDispatcher {
 
   private fun byGenderEducationProfessionForDataOwner(parameters: Map<String, String>,
       resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -145,6 +154,7 @@ public object PatientFiltersDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     PatientFilters.byActiveForDataOwner(
       resultCallback,
@@ -154,6 +164,7 @@ public object PatientFiltersDispatcher {
   }
 
   private fun byTelecomForDataOwner(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -167,6 +178,7 @@ public object PatientFiltersDispatcher {
 
   private fun byAddressPostalCodeHouseNumberForDataOwner(parameters: Map<String, String>,
       resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -184,6 +196,7 @@ public object PatientFiltersDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     PatientFilters.byAddressForDataOwner(
       resultCallback,
@@ -193,6 +206,7 @@ public object PatientFiltersDispatcher {
   }
 
   private fun byExternalIdForDataOwner(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -208,6 +222,7 @@ public object PatientFiltersDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     PatientFilters.byIdentifiersForSelf(
       resultCallback,
@@ -219,6 +234,7 @@ public object PatientFiltersDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     PatientFilters.bySsinsForSelf(
       resultCallback,
@@ -227,6 +243,7 @@ public object PatientFiltersDispatcher {
   }
 
   private fun byDateOfBirthBetweenForSelf(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -242,6 +259,7 @@ public object PatientFiltersDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     PatientFilters.byNameForSelf(
       resultCallback,
@@ -250,6 +268,7 @@ public object PatientFiltersDispatcher {
   }
 
   private fun byGenderEducationProfessionForSelf(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -266,6 +285,7 @@ public object PatientFiltersDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     PatientFilters.byActiveForSelf(
       resultCallback,
@@ -274,6 +294,7 @@ public object PatientFiltersDispatcher {
   }
 
   private fun byTelecomForSelf(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -286,6 +307,7 @@ public object PatientFiltersDispatcher {
 
   private fun byAddressPostalCodeHouseNumberForSelf(parameters: Map<String, String>,
       resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -302,6 +324,7 @@ public object PatientFiltersDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     PatientFilters.byAddressForSelf(
       resultCallback,
@@ -310,6 +333,7 @@ public object PatientFiltersDispatcher {
   }
 
   private fun byExternalIdForSelf(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -324,6 +348,7 @@ public object PatientFiltersDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     PatientFilters.byModificationDateForDataOwner(
       resultCallback,
@@ -335,6 +360,7 @@ public object PatientFiltersDispatcher {
   }
 
   private fun byModificationDateForSelf(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,

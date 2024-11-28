@@ -15,6 +15,7 @@ public object KeywordApiDispatcher {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
   ): Boolean = when(methodName) {
     "getKeyword" -> getKeyword(parameters, resultCallback)
@@ -26,6 +27,7 @@ public object KeywordApiDispatcher {
   }?.let { true } ?: false
 
   private fun getKeyword(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -41,6 +43,7 @@ public object KeywordApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     KeywordApi.createKeyword(
       resultCallback,
@@ -50,6 +53,7 @@ public object KeywordApiDispatcher {
   }
 
   private fun modifyKeyword(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -65,6 +69,7 @@ public object KeywordApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     KeywordApi.getKeywordsByUser(
       resultCallback,
@@ -74,6 +79,7 @@ public object KeywordApiDispatcher {
   }
 
   private fun deleteKeywords(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,

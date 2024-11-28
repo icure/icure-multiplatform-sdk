@@ -20,6 +20,7 @@ public object CodeFilters {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     DartResult.resolve(
       dartResultCallback,
@@ -31,6 +32,7 @@ public object CodeFilters {
   }
 
   public fun byIds(dartResultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -51,6 +53,7 @@ public object CodeFilters {
 
   public fun byQualifiedLink(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -79,6 +82,7 @@ public object CodeFilters {
 
   public fun byRegionTypeCodeVersion(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -122,6 +126,7 @@ public object CodeFilters {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     languageString: String,
     typeString: String,
@@ -159,6 +164,7 @@ public object CodeFilters {
 
   public fun byLanguageTypesLabelRegionVersion(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,

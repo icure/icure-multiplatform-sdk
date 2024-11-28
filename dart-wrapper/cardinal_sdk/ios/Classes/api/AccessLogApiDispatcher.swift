@@ -9,6 +9,7 @@ class AccessLogApiDispatcher {
     resultCallback: @escaping (
       String?,
       String?,
+      String?,
       String?
     ) -> Void
   ) -> Bool {
@@ -64,6 +65,7 @@ class AccessLogApiDispatcher {
   private static func createAccessLog(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     AccessLogApi.shared.createAccessLog(
@@ -74,6 +76,7 @@ class AccessLogApiDispatcher {
   }
 
   private static func withEncryptionMetadata(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -92,6 +95,7 @@ class AccessLogApiDispatcher {
   private static func getEncryptionKeysOf(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     AccessLogApi.shared.getEncryptionKeysOf(
@@ -102,6 +106,7 @@ class AccessLogApiDispatcher {
   }
 
   private static func hasWriteAccess(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -116,6 +121,7 @@ class AccessLogApiDispatcher {
   private static func decryptPatientIdOf(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     AccessLogApi.shared.decryptPatientIdOf(
@@ -126,6 +132,7 @@ class AccessLogApiDispatcher {
   }
 
   private static func createDelegationDeAnonymizationMetadata(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -141,6 +148,7 @@ class AccessLogApiDispatcher {
   private static func decrypt(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     AccessLogApi.shared.decrypt(
@@ -151,6 +159,7 @@ class AccessLogApiDispatcher {
   }
 
   private static func tryDecrypt(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -165,6 +174,7 @@ class AccessLogApiDispatcher {
   private static func matchAccessLogsBy(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     AccessLogApi.shared.matchAccessLogsBy(
@@ -177,6 +187,7 @@ class AccessLogApiDispatcher {
   private static func matchAccessLogsBySorted(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     AccessLogApi.shared.matchAccessLogsBySorted(
@@ -187,6 +198,7 @@ class AccessLogApiDispatcher {
   }
 
   private static func deleteAccessLogById(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -202,6 +214,7 @@ class AccessLogApiDispatcher {
   private static func deleteAccessLogsByIds(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     AccessLogApi.shared.deleteAccessLogsByIds(
@@ -212,6 +225,7 @@ class AccessLogApiDispatcher {
   }
 
   private static func purgeAccessLogById(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -227,6 +241,7 @@ class AccessLogApiDispatcher {
   private static func deleteAccessLog(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     AccessLogApi.shared.deleteAccessLog(
@@ -237,6 +252,7 @@ class AccessLogApiDispatcher {
   }
 
   private static func deleteAccessLogs(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -251,6 +267,7 @@ class AccessLogApiDispatcher {
   private static func purgeAccessLog(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     AccessLogApi.shared.purgeAccessLog(
@@ -261,6 +278,7 @@ class AccessLogApiDispatcher {
   }
 
   private static func shareWith(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -277,6 +295,7 @@ class AccessLogApiDispatcher {
   private static func shareWithMany(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     AccessLogApi.shared.shareWithMany(
@@ -288,6 +307,7 @@ class AccessLogApiDispatcher {
   }
 
   private static func filterAccessLogsBy(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -302,6 +322,7 @@ class AccessLogApiDispatcher {
   private static func filterAccessLogsBySorted(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     AccessLogApi.shared.filterAccessLogsBySorted(
@@ -312,6 +333,7 @@ class AccessLogApiDispatcher {
   }
 
   private static func undeleteAccessLogById(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -327,6 +349,7 @@ class AccessLogApiDispatcher {
   private static func undeleteAccessLog(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     AccessLogApi.shared.undeleteAccessLog(
@@ -337,6 +360,7 @@ class AccessLogApiDispatcher {
   }
 
   private static func modifyAccessLog(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -351,6 +375,7 @@ class AccessLogApiDispatcher {
   private static func getAccessLog(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     AccessLogApi.shared.getAccessLog(
@@ -363,6 +388,7 @@ class AccessLogApiDispatcher {
   private static func getAccessLogs(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     AccessLogApi.shared.getAccessLogs(
@@ -373,6 +399,7 @@ class AccessLogApiDispatcher {
   }
 
   private static func encrypted_shareWith(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -389,6 +416,7 @@ class AccessLogApiDispatcher {
   private static func encrypted_shareWithMany(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     AccessLogApi.encrypted.shared.shareWithMany(
@@ -400,6 +428,7 @@ class AccessLogApiDispatcher {
   }
 
   private static func encrypted_filterAccessLogsBy(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -414,6 +443,7 @@ class AccessLogApiDispatcher {
   private static func encrypted_filterAccessLogsBySorted(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     AccessLogApi.encrypted.shared.filterAccessLogsBySorted(
@@ -424,6 +454,7 @@ class AccessLogApiDispatcher {
   }
 
   private static func encrypted_undeleteAccessLogById(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -439,6 +470,7 @@ class AccessLogApiDispatcher {
   private static func encrypted_undeleteAccessLog(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     AccessLogApi.encrypted.shared.undeleteAccessLog(
@@ -449,6 +481,7 @@ class AccessLogApiDispatcher {
   }
 
   private static func encrypted_modifyAccessLog(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -463,6 +496,7 @@ class AccessLogApiDispatcher {
   private static func encrypted_getAccessLog(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     AccessLogApi.encrypted.shared.getAccessLog(
@@ -475,6 +509,7 @@ class AccessLogApiDispatcher {
   private static func encrypted_getAccessLogs(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     AccessLogApi.encrypted.shared.getAccessLogs(
@@ -485,6 +520,7 @@ class AccessLogApiDispatcher {
   }
 
   private static func tryAndRecover_shareWith(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -501,6 +537,7 @@ class AccessLogApiDispatcher {
   private static func tryAndRecover_shareWithMany(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     AccessLogApi.tryAndRecover.shared.shareWithMany(
@@ -512,6 +549,7 @@ class AccessLogApiDispatcher {
   }
 
   private static func tryAndRecover_filterAccessLogsBy(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -526,6 +564,7 @@ class AccessLogApiDispatcher {
   private static func tryAndRecover_filterAccessLogsBySorted(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     AccessLogApi.tryAndRecover.shared.filterAccessLogsBySorted(
@@ -536,6 +575,7 @@ class AccessLogApiDispatcher {
   }
 
   private static func tryAndRecover_undeleteAccessLogById(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -551,6 +591,7 @@ class AccessLogApiDispatcher {
   private static func tryAndRecover_undeleteAccessLog(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     AccessLogApi.tryAndRecover.shared.undeleteAccessLog(
@@ -561,6 +602,7 @@ class AccessLogApiDispatcher {
   }
 
   private static func tryAndRecover_modifyAccessLog(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -575,6 +617,7 @@ class AccessLogApiDispatcher {
   private static func tryAndRecover_getAccessLog(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     AccessLogApi.tryAndRecover.shared.getAccessLog(
@@ -585,6 +628,7 @@ class AccessLogApiDispatcher {
   }
 
   private static func tryAndRecover_getAccessLogs(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?

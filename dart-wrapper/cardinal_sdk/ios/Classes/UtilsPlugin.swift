@@ -7,9 +7,9 @@ class UtilsPlugin {
 		let args = call.arguments as! [String: String]
 		let methodName = call.method
 
-		let completed = UtilsPlugin.dispatch(methodName: methodName, parameters: args) { success, errorCode, errorMessage in
+		let completed = UtilsPlugin.dispatch(methodName: methodName, parameters: args) { success, errorCode, errorMessage, errorDetails in
 			if (errorCode != nil){
-				result(FlutterError(code: errorCode!, message: errorMessage, details: nil))
+				result(FlutterError(code: errorCode!, message: errorMessage, details: errorDetails))
 			}
 			else {
 				result(success)
@@ -27,6 +27,7 @@ class UtilsPlugin {
 		resultCallback: @escaping (
 			String?,
 			String?,
+			String?,
 			String?
 		) -> Void
 	) -> Bool {
@@ -40,17 +41,27 @@ class UtilsPlugin {
 
 	private static func releasePlatformResource(
 		parameters: [String : String],
-		resultCallback: @escaping (String?,String?, String?) -> Void
+		resultCallback: @escaping (
+			String?,
+			String?,
+			String?,
+			String?
+		) -> Void
 	) {
 		ResourceUtils.shared.releasePlatformResource(
 			dartResultCallback: resultCallback,
 			resourceId: parameters["resourceId"]!
 		)
 	}
-	
+
 	private static func cancelJob(
 		parameters: [String : String],
-		resultCallback: @escaping (String?,String?, String?) -> Void
+		resultCallback: @escaping (
+			String?,
+			String?,
+			String?,
+			String?
+		) -> Void
 	) {
 		ApiScope.shared.cancel(
 			dartResultCallback: resultCallback,

@@ -15,6 +15,7 @@ public object HealthElementBasicApiDispatcher {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
   ): Boolean = when(methodName) {
     "matchHealthElementsBy" -> matchHealthElementsBy(parameters, resultCallback)
@@ -41,6 +42,7 @@ public object HealthElementBasicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     HealthElementBasicApi.matchHealthElementsBy(
       resultCallback,
@@ -50,6 +52,7 @@ public object HealthElementBasicApiDispatcher {
   }
 
   private fun matchHealthElementsBySorted(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -65,6 +68,7 @@ public object HealthElementBasicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     HealthElementBasicApi.filterHealthElementsBy(
       resultCallback,
@@ -77,6 +81,7 @@ public object HealthElementBasicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     HealthElementBasicApi.filterHealthElementsBySorted(
       resultCallback,
@@ -86,6 +91,7 @@ public object HealthElementBasicApiDispatcher {
   }
 
   private fun deleteHealthElementById(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -102,6 +108,7 @@ public object HealthElementBasicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     HealthElementBasicApi.deleteHealthElementsByIds(
       resultCallback,
@@ -111,6 +118,7 @@ public object HealthElementBasicApiDispatcher {
   }
 
   private fun purgeHealthElementById(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -127,6 +135,7 @@ public object HealthElementBasicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     HealthElementBasicApi.deleteHealthElement(
       resultCallback,
@@ -136,6 +145,7 @@ public object HealthElementBasicApiDispatcher {
   }
 
   private fun deleteHealthElements(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -151,6 +161,7 @@ public object HealthElementBasicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     HealthElementBasicApi.purgeHealthElement(
       resultCallback,
@@ -160,6 +171,7 @@ public object HealthElementBasicApiDispatcher {
   }
 
   private fun undeleteHealthElementById(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -176,6 +188,7 @@ public object HealthElementBasicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     HealthElementBasicApi.undeleteHealthElement(
       resultCallback,
@@ -185,6 +198,7 @@ public object HealthElementBasicApiDispatcher {
   }
 
   private fun modifyHealthElement(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -200,6 +214,7 @@ public object HealthElementBasicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     HealthElementBasicApi.modifyHealthElements(
       resultCallback,
@@ -209,6 +224,7 @@ public object HealthElementBasicApiDispatcher {
   }
 
   private fun getHealthElement(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -224,6 +240,7 @@ public object HealthElementBasicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     HealthElementBasicApi.getHealthElements(
       resultCallback,
@@ -233,6 +250,7 @@ public object HealthElementBasicApiDispatcher {
   }
 
   private fun subscribeToEvents(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,

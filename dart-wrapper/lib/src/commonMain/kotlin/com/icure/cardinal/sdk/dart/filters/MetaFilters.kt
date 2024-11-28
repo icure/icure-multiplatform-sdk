@@ -19,6 +19,7 @@ object MetaFilters {
 			String?,
 			String?,
 			String?,
+			String?,
 		) -> Unit,
 		leftString: String,
 		rightString: String
@@ -35,6 +36,7 @@ object MetaFilters {
 
 	fun sortableIntersection(
 		dartResultCallback: (
+			String?,
 			String?,
 			String?,
 			String?,
@@ -57,6 +59,7 @@ object MetaFilters {
 			String?,
 			String?,
 			String?,
+			String?,
 		) -> Unit,
 		leftString: String,
 		rightString: String
@@ -73,6 +76,7 @@ object MetaFilters {
 
 	fun baseSortableIntersection(
 		dartResultCallback: (
+			String?,
 			String?,
 			String?,
 			String?,
@@ -95,6 +99,7 @@ object MetaFilters {
 			String?,
 			String?,
 			String?,
+			String?,
 		) -> Unit,
 		leftString: String,
 		rightString: String
@@ -111,6 +116,7 @@ object MetaFilters {
 
 	fun sortableDifference(
 		dartResultCallback: (
+			String?,
 			String?,
 			String?,
 			String?,
@@ -133,6 +139,7 @@ object MetaFilters {
 			String?,
 			String?,
 			String?,
+			String?,
 		) -> Unit,
 		leftString: String,
 		rightString: String
@@ -149,6 +156,7 @@ object MetaFilters {
 
 	fun baseSortableDifference(
 		dartResultCallback: (
+			String?,
 			String?,
 			String?,
 			String?,
@@ -171,6 +179,7 @@ object MetaFilters {
 			String?,
 			String?,
 			String?,
+			String?,
 		) -> Unit,
 		leftString: String,
 		rightString: String
@@ -187,6 +196,7 @@ object MetaFilters {
 
 	fun baseUnion(
 		dartResultCallback: (
+			String?,
 			String?,
 			String?,
 			String?,

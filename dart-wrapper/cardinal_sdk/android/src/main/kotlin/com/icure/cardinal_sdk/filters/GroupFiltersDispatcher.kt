@@ -15,6 +15,7 @@ public object GroupFiltersDispatcher {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
   ): Boolean = when(methodName) {
     "all" -> all(parameters, resultCallback)
@@ -24,6 +25,7 @@ public object GroupFiltersDispatcher {
   }?.let { true } ?: false
 
   private fun all(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -37,6 +39,7 @@ public object GroupFiltersDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     GroupFilters.bySuperGroup(
       resultCallback,
@@ -45,6 +48,7 @@ public object GroupFiltersDispatcher {
   }
 
   private fun withContent(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,

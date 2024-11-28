@@ -24,6 +24,7 @@ public object EntityTemplateApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     documentTemplateIdString: String,
@@ -43,6 +44,7 @@ public object EntityTemplateApi {
 
   public fun createEntityTemplate(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -68,6 +70,7 @@ public object EntityTemplateApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     documentTemplateString: String,
@@ -87,6 +90,7 @@ public object EntityTemplateApi {
 
   public fun listEntityTemplatesBy(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -130,6 +134,7 @@ public object EntityTemplateApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     typeString: String,
@@ -161,6 +166,7 @@ public object EntityTemplateApi {
 
   public fun listEntityTemplatesByKeyword(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -204,6 +210,7 @@ public object EntityTemplateApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     typeString: String,
@@ -238,6 +245,7 @@ public object EntityTemplateApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     entityTemplateIdsString: String,
@@ -257,6 +265,7 @@ public object EntityTemplateApi {
 
   public fun modifyEntityTemplates(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -282,6 +291,7 @@ public object EntityTemplateApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     entityTemplatesString: String,
@@ -301,6 +311,7 @@ public object EntityTemplateApi {
 
   public fun deleteEntityTemplates(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,

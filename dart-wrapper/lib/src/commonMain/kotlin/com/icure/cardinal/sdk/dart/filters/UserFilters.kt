@@ -19,6 +19,7 @@ public object UserFilters {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     DartResult.resolve(
       dartResultCallback,
@@ -30,6 +31,7 @@ public object UserFilters {
   }
 
   public fun byIds(dartResultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -52,6 +54,7 @@ public object UserFilters {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit, patientIdString: String) {
     val patientId = fullLanguageInteropJson.decodeFromString(
       String.serializer(),
@@ -71,6 +74,7 @@ public object UserFilters {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit, healthcarePartyIdString: String) {
     val healthcarePartyId = fullLanguageInteropJson.decodeFromString(
       String.serializer(),
@@ -87,6 +91,7 @@ public object UserFilters {
   }
 
   public fun byNameEmailOrPhone(dartResultCallback: (
+    String?,
     String?,
     String?,
     String?,

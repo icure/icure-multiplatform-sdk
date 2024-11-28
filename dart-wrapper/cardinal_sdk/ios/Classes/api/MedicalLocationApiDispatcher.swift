@@ -9,6 +9,7 @@ class MedicalLocationApiDispatcher {
     resultCallback: @escaping (
       String?,
       String?,
+      String?,
       String?
     ) -> Void
   ) -> Bool {
@@ -30,6 +31,7 @@ class MedicalLocationApiDispatcher {
   private static func createMedicalLocation(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     MedicalLocationApi.shared.createMedicalLocation(
@@ -40,6 +42,7 @@ class MedicalLocationApiDispatcher {
   }
 
   private static func deleteMedicalLocations(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -54,6 +57,7 @@ class MedicalLocationApiDispatcher {
   private static func getMedicalLocation(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     MedicalLocationApi.shared.getMedicalLocation(
@@ -64,6 +68,7 @@ class MedicalLocationApiDispatcher {
   }
 
   private static func modifyMedicalLocation(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -78,6 +83,7 @@ class MedicalLocationApiDispatcher {
   private static func getMedicalLocations(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     MedicalLocationApi.shared.getMedicalLocations(
@@ -88,6 +94,7 @@ class MedicalLocationApiDispatcher {
   }
 
   private static func matchMedicalLocationsBy(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -102,6 +109,7 @@ class MedicalLocationApiDispatcher {
   private static func matchMedicalLocationsBySorted(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     MedicalLocationApi.shared.matchMedicalLocationsBySorted(
@@ -114,6 +122,7 @@ class MedicalLocationApiDispatcher {
   private static func filterMedicalLocationsBy(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     MedicalLocationApi.shared.filterMedicalLocationsBy(
@@ -124,6 +133,7 @@ class MedicalLocationApiDispatcher {
   }
 
   private static func filterMedicalLocationsBySorted(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?

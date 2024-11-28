@@ -15,6 +15,7 @@ public object FormBasicApiDispatcher {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
   ): Boolean = when(methodName) {
     "matchFormsBy" -> matchFormsBy(parameters, resultCallback)
@@ -47,6 +48,7 @@ public object FormBasicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     FormBasicApi.matchFormsBy(
       resultCallback,
@@ -56,6 +58,7 @@ public object FormBasicApiDispatcher {
   }
 
   private fun matchFormsBySorted(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -71,6 +74,7 @@ public object FormBasicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     FormBasicApi.filterFormsBy(
       resultCallback,
@@ -83,6 +87,7 @@ public object FormBasicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     FormBasicApi.filterFormsBySorted(
       resultCallback,
@@ -92,6 +97,7 @@ public object FormBasicApiDispatcher {
   }
 
   private fun deleteFormById(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -108,6 +114,7 @@ public object FormBasicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     FormBasicApi.deleteFormsByIds(
       resultCallback,
@@ -117,6 +124,7 @@ public object FormBasicApiDispatcher {
   }
 
   private fun purgeFormById(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -133,6 +141,7 @@ public object FormBasicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     FormBasicApi.deleteForm(
       resultCallback,
@@ -142,6 +151,7 @@ public object FormBasicApiDispatcher {
   }
 
   private fun deleteForms(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -157,6 +167,7 @@ public object FormBasicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     FormBasicApi.purgeForm(
       resultCallback,
@@ -166,6 +177,7 @@ public object FormBasicApiDispatcher {
   }
 
   private fun getFormTemplate(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -182,6 +194,7 @@ public object FormBasicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     FormBasicApi.createFormTemplate(
       resultCallback,
@@ -191,6 +204,7 @@ public object FormBasicApiDispatcher {
   }
 
   private fun deleteFormTemplate(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -206,6 +220,7 @@ public object FormBasicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     FormBasicApi.updateFormTemplate(
       resultCallback,
@@ -215,6 +230,7 @@ public object FormBasicApiDispatcher {
   }
 
   private fun setTemplateAttachment(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -231,6 +247,7 @@ public object FormBasicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     FormBasicApi.modifyForm(
       resultCallback,
@@ -240,6 +257,7 @@ public object FormBasicApiDispatcher {
   }
 
   private fun undeleteFormById(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -256,6 +274,7 @@ public object FormBasicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     FormBasicApi.undeleteForm(
       resultCallback,
@@ -265,6 +284,7 @@ public object FormBasicApiDispatcher {
   }
 
   private fun modifyForms(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -280,6 +300,7 @@ public object FormBasicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     FormBasicApi.getForm(
       resultCallback,
@@ -289,6 +310,7 @@ public object FormBasicApiDispatcher {
   }
 
   private fun getForms(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -304,6 +326,7 @@ public object FormBasicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     FormBasicApi.getLatestFormByLogicalUuid(
       resultCallback,
@@ -313,6 +336,7 @@ public object FormBasicApiDispatcher {
   }
 
   private fun getLatestFormByUniqueId(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,

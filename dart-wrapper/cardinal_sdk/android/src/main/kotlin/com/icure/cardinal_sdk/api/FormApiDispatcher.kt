@@ -15,6 +15,7 @@ public object FormApiDispatcher {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
   ): Boolean = when(methodName) {
     "createForm" -> createForm(parameters, resultCallback)
@@ -82,6 +83,7 @@ public object FormApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     FormApi.createForm(
       resultCallback,
@@ -94,6 +96,7 @@ public object FormApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     FormApi.createForms(
       resultCallback,
@@ -103,6 +106,7 @@ public object FormApiDispatcher {
   }
 
   private fun withEncryptionMetadata(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -122,6 +126,7 @@ public object FormApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     FormApi.getEncryptionKeysOf(
       resultCallback,
@@ -134,6 +139,7 @@ public object FormApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     FormApi.hasWriteAccess(
       resultCallback,
@@ -143,6 +149,7 @@ public object FormApiDispatcher {
   }
 
   private fun decryptPatientIdOf(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -159,6 +166,7 @@ public object FormApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     FormApi.createDelegationDeAnonymizationMetadata(
       resultCallback,
@@ -169,6 +177,7 @@ public object FormApiDispatcher {
   }
 
   private fun decrypt(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -184,6 +193,7 @@ public object FormApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     FormApi.tryDecrypt(
       resultCallback,
@@ -193,6 +203,7 @@ public object FormApiDispatcher {
   }
 
   private fun matchFormsBy(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -208,6 +219,7 @@ public object FormApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     FormApi.matchFormsBySorted(
       resultCallback,
@@ -217,6 +229,7 @@ public object FormApiDispatcher {
   }
 
   private fun deleteFormById(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -233,6 +246,7 @@ public object FormApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     FormApi.deleteFormsByIds(
       resultCallback,
@@ -242,6 +256,7 @@ public object FormApiDispatcher {
   }
 
   private fun purgeFormById(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -258,6 +273,7 @@ public object FormApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     FormApi.deleteForm(
       resultCallback,
@@ -267,6 +283,7 @@ public object FormApiDispatcher {
   }
 
   private fun deleteForms(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -282,6 +299,7 @@ public object FormApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     FormApi.purgeForm(
       resultCallback,
@@ -291,6 +309,7 @@ public object FormApiDispatcher {
   }
 
   private fun getFormTemplate(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -307,6 +326,7 @@ public object FormApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     FormApi.createFormTemplate(
       resultCallback,
@@ -316,6 +336,7 @@ public object FormApiDispatcher {
   }
 
   private fun deleteFormTemplate(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -331,6 +352,7 @@ public object FormApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     FormApi.updateFormTemplate(
       resultCallback,
@@ -340,6 +362,7 @@ public object FormApiDispatcher {
   }
 
   private fun setTemplateAttachment(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -353,6 +376,7 @@ public object FormApiDispatcher {
   }
 
   private fun shareWith(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -370,6 +394,7 @@ public object FormApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     FormApi.shareWithMany(
       resultCallback,
@@ -380,6 +405,7 @@ public object FormApiDispatcher {
   }
 
   private fun filterFormsBy(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -395,6 +421,7 @@ public object FormApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     FormApi.filterFormsBySorted(
       resultCallback,
@@ -407,6 +434,7 @@ public object FormApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     FormApi.modifyForm(
       resultCallback,
@@ -416,6 +444,7 @@ public object FormApiDispatcher {
   }
 
   private fun undeleteFormById(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -432,6 +461,7 @@ public object FormApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     FormApi.undeleteForm(
       resultCallback,
@@ -441,6 +471,7 @@ public object FormApiDispatcher {
   }
 
   private fun modifyForms(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -456,6 +487,7 @@ public object FormApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     FormApi.getForm(
       resultCallback,
@@ -465,6 +497,7 @@ public object FormApiDispatcher {
   }
 
   private fun getForms(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -480,6 +513,7 @@ public object FormApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     FormApi.getLatestFormByLogicalUuid(
       resultCallback,
@@ -492,6 +526,7 @@ public object FormApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     FormApi.getLatestFormByUniqueId(
       resultCallback,
@@ -501,6 +536,7 @@ public object FormApiDispatcher {
   }
 
   private fun encrypted_shareWith(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -518,6 +554,7 @@ public object FormApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     FormApi.encrypted.shareWithMany(
       resultCallback,
@@ -528,6 +565,7 @@ public object FormApiDispatcher {
   }
 
   private fun encrypted_filterFormsBy(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -543,6 +581,7 @@ public object FormApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     FormApi.encrypted.filterFormsBySorted(
       resultCallback,
@@ -555,6 +594,7 @@ public object FormApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     FormApi.encrypted.modifyForm(
       resultCallback,
@@ -564,6 +604,7 @@ public object FormApiDispatcher {
   }
 
   private fun encrypted_undeleteFormById(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -580,6 +621,7 @@ public object FormApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     FormApi.encrypted.undeleteForm(
       resultCallback,
@@ -589,6 +631,7 @@ public object FormApiDispatcher {
   }
 
   private fun encrypted_modifyForms(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -604,6 +647,7 @@ public object FormApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     FormApi.encrypted.getForm(
       resultCallback,
@@ -613,6 +657,7 @@ public object FormApiDispatcher {
   }
 
   private fun encrypted_getForms(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -629,6 +674,7 @@ public object FormApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     FormApi.encrypted.getLatestFormByLogicalUuid(
       resultCallback,
@@ -641,6 +687,7 @@ public object FormApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     FormApi.encrypted.getLatestFormByUniqueId(
       resultCallback,
@@ -650,6 +697,7 @@ public object FormApiDispatcher {
   }
 
   private fun tryAndRecover_shareWith(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -667,6 +715,7 @@ public object FormApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     FormApi.tryAndRecover.shareWithMany(
       resultCallback,
@@ -677,6 +726,7 @@ public object FormApiDispatcher {
   }
 
   private fun tryAndRecover_filterFormsBy(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -692,6 +742,7 @@ public object FormApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     FormApi.tryAndRecover.filterFormsBySorted(
       resultCallback,
@@ -704,6 +755,7 @@ public object FormApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     FormApi.tryAndRecover.modifyForm(
       resultCallback,
@@ -713,6 +765,7 @@ public object FormApiDispatcher {
   }
 
   private fun tryAndRecover_undeleteFormById(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -729,6 +782,7 @@ public object FormApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     FormApi.tryAndRecover.undeleteForm(
       resultCallback,
@@ -738,6 +792,7 @@ public object FormApiDispatcher {
   }
 
   private fun tryAndRecover_modifyForms(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -753,6 +808,7 @@ public object FormApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     FormApi.tryAndRecover.getForm(
       resultCallback,
@@ -762,6 +818,7 @@ public object FormApiDispatcher {
   }
 
   private fun tryAndRecover_getForms(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -778,6 +835,7 @@ public object FormApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     FormApi.tryAndRecover.getLatestFormByLogicalUuid(
       resultCallback,
@@ -788,6 +846,7 @@ public object FormApiDispatcher {
 
   private fun tryAndRecover_getLatestFormByUniqueId(parameters: Map<String, String>,
       resultCallback: (
+    String?,
     String?,
     String?,
     String?,

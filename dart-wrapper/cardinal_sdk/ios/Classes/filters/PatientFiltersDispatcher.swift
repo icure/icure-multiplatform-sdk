@@ -9,6 +9,7 @@ class PatientFiltersDispatcher {
     resultCallback: @escaping (
       String?,
       String?,
+      String?,
       String?
     ) -> Void
   ) -> Bool {
@@ -46,6 +47,7 @@ class PatientFiltersDispatcher {
   private static func allPatientsForDataOwner(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     PatientFilters.shared.allPatientsForDataOwner(
@@ -55,6 +57,7 @@ class PatientFiltersDispatcher {
   }
 
   private static func allPatientsForSelf(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -67,6 +70,7 @@ class PatientFiltersDispatcher {
   private static func byIds(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     PatientFilters.shared.byIds(
@@ -76,6 +80,7 @@ class PatientFiltersDispatcher {
   }
 
   private static func byIdentifiersForDataOwner(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -90,6 +95,7 @@ class PatientFiltersDispatcher {
   private static func bySsinsForDataOwner(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     PatientFilters.shared.bySsinsForDataOwner(
@@ -100,6 +106,7 @@ class PatientFiltersDispatcher {
   }
 
   private static func byDateOfBirthBetweenForDataOwner(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -115,6 +122,7 @@ class PatientFiltersDispatcher {
   private static func byFuzzyNameForDataOwner(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     PatientFilters.shared.byFuzzyNameForDataOwner(
@@ -125,6 +133,7 @@ class PatientFiltersDispatcher {
   }
 
   private static func byGenderEducationProfessionForDataOwner(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -141,6 +150,7 @@ class PatientFiltersDispatcher {
   private static func byActiveForDataOwner(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     PatientFilters.shared.byActiveForDataOwner(
@@ -153,6 +163,7 @@ class PatientFiltersDispatcher {
   private static func byTelecomForDataOwner(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     PatientFilters.shared.byTelecomForDataOwner(
@@ -163,6 +174,7 @@ class PatientFiltersDispatcher {
   }
 
   private static func byAddressPostalCodeHouseNumberForDataOwner(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -179,6 +191,7 @@ class PatientFiltersDispatcher {
   private static func byAddressForDataOwner(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     PatientFilters.shared.byAddressForDataOwner(
@@ -189,6 +202,7 @@ class PatientFiltersDispatcher {
   }
 
   private static func byExternalIdForDataOwner(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -203,6 +217,7 @@ class PatientFiltersDispatcher {
   private static func byIdentifiersForSelf(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     PatientFilters.shared.byIdentifiersForSelf(
@@ -214,6 +229,7 @@ class PatientFiltersDispatcher {
   private static func bySsinsForSelf(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     PatientFilters.shared.bySsinsForSelf(
@@ -223,6 +239,7 @@ class PatientFiltersDispatcher {
   }
 
   private static func byDateOfBirthBetweenForSelf(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -237,6 +254,7 @@ class PatientFiltersDispatcher {
   private static func byNameForSelf(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     PatientFilters.shared.byNameForSelf(
@@ -246,6 +264,7 @@ class PatientFiltersDispatcher {
   }
 
   private static func byGenderEducationProfessionForSelf(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -261,6 +280,7 @@ class PatientFiltersDispatcher {
   private static func byActiveForSelf(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     PatientFilters.shared.byActiveForSelf(
@@ -272,6 +292,7 @@ class PatientFiltersDispatcher {
   private static func byTelecomForSelf(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     PatientFilters.shared.byTelecomForSelf(
@@ -281,6 +302,7 @@ class PatientFiltersDispatcher {
   }
 
   private static func byAddressPostalCodeHouseNumberForSelf(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -296,6 +318,7 @@ class PatientFiltersDispatcher {
   private static func byAddressForSelf(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     PatientFilters.shared.byAddressForSelf(
@@ -307,6 +330,7 @@ class PatientFiltersDispatcher {
   private static func byExternalIdForSelf(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     PatientFilters.shared.byExternalIdForSelf(
@@ -316,6 +340,7 @@ class PatientFiltersDispatcher {
   }
 
   private static func byModificationDateForDataOwner(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -330,6 +355,7 @@ class PatientFiltersDispatcher {
   }
 
   private static func byModificationDateForSelf(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?

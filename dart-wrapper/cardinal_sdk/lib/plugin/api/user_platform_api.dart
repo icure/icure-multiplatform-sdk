@@ -1,6 +1,7 @@
 // auto-generated file
 import 'package:flutter/services.dart';
 import 'package:cardinal_sdk/model/user.dart';
+import 'package:cardinal_sdk/utils/internal/platform_exception_convertion.dart';
 import 'dart:convert';
 import 'package:cardinal_sdk/model/property_stub.dart';
 import 'package:cardinal_sdk/filters/filter_options.dart';
@@ -25,7 +26,7 @@ class UserPlatformApi {
 			{
 				"sdkId": sdkId,
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getCurrentUser");
 		final parsedResJson = jsonDecode(res);
 		return User.fromJSON(parsedResJson);
@@ -38,7 +39,7 @@ class UserPlatformApi {
 				"sdkId": sdkId,
 				"user": jsonEncode(User.encode(user)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method createUser");
 		final parsedResJson = jsonDecode(res);
 		return User.fromJSON(parsedResJson);
@@ -51,7 +52,7 @@ class UserPlatformApi {
 				"sdkId": sdkId,
 				"userId": jsonEncode(userId),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getUser");
 		final parsedResJson = jsonDecode(res);
 		return User.fromJSON(parsedResJson);
@@ -64,7 +65,7 @@ class UserPlatformApi {
 				"sdkId": sdkId,
 				"userIds": jsonEncode(userIds.map((x0) => x0).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getUsers");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => User.fromJSON(x1) ).toList();
@@ -77,7 +78,7 @@ class UserPlatformApi {
 				"sdkId": sdkId,
 				"email": jsonEncode(email),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getUserByEmail");
 		final parsedResJson = jsonDecode(res);
 		return User.fromJSON(parsedResJson);
@@ -90,7 +91,7 @@ class UserPlatformApi {
 				"sdkId": sdkId,
 				"phoneNumber": jsonEncode(phoneNumber),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getUserByPhoneNumber");
 		final parsedResJson = jsonDecode(res);
 		return User.fromJSON(parsedResJson);
@@ -103,7 +104,7 @@ class UserPlatformApi {
 				"sdkId": sdkId,
 				"id": jsonEncode(id),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method findByHcpartyId");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toList();
@@ -116,7 +117,7 @@ class UserPlatformApi {
 				"sdkId": sdkId,
 				"id": jsonEncode(id),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method findByPatientId");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toList();
@@ -129,7 +130,7 @@ class UserPlatformApi {
 				"sdkId": sdkId,
 				"user": jsonEncode(User.encode(user)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method modifyUser");
 		final parsedResJson = jsonDecode(res);
 		return User.fromJSON(parsedResJson);
@@ -142,7 +143,7 @@ class UserPlatformApi {
 				"sdkId": sdkId,
 				"healthcarePartyId": jsonEncode(healthcarePartyId),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method assignHealthcareParty");
 		final parsedResJson = jsonDecode(res);
 		return User.fromJSON(parsedResJson);
@@ -156,7 +157,7 @@ class UserPlatformApi {
 				"userId": jsonEncode(userId),
 				"properties": jsonEncode(properties?.map((x0) => EncryptedPropertyStub.encode(x0)).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method modifyProperties");
 		final parsedResJson = jsonDecode(res);
 		return User.fromJSON(parsedResJson);
@@ -172,7 +173,7 @@ class UserPlatformApi {
 				"tokenValidity": jsonEncode(tokenValidity),
 				"token": jsonEncode(token),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getToken");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as String);
@@ -185,7 +186,7 @@ class UserPlatformApi {
 				"sdkId": sdkId,
 				"filter": jsonEncode(BaseFilterOptions.encode(filter)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method filterUsersBy");
 		final parsedResJson = jsonDecode(res);
 		return PaginatedListIterator(parsedResJson, (x0) => User.fromJSON(x0));
@@ -198,7 +199,7 @@ class UserPlatformApi {
 				"sdkId": sdkId,
 				"filter": jsonEncode(BaseFilterOptions.encode(filter)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method matchUsersBy");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toList();
@@ -211,7 +212,7 @@ class UserPlatformApi {
 				"sdkId": sdkId,
 				"filter": jsonEncode(BaseSortableFilterOptions.encode(filter)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method filterUsersBySorted");
 		final parsedResJson = jsonDecode(res);
 		return PaginatedListIterator(parsedResJson, (x0) => User.fromJSON(x0));
@@ -224,7 +225,7 @@ class UserPlatformApi {
 				"sdkId": sdkId,
 				"filter": jsonEncode(BaseSortableFilterOptions.encode(filter)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method matchUsersBySorted");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toList();
@@ -236,7 +237,7 @@ class UserPlatformApi {
 			{
 				"sdkId": sdkId,
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getMatchingUsers");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => UserGroup.fromJSON(x1) ).toList();
@@ -250,7 +251,7 @@ class UserPlatformApi {
 				"groupId": jsonEncode(groupId),
 				"userIds": jsonEncode(userIds.map((x0) => x0).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getUsersInGroup");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => User.fromJSON(x1) ).toList();
@@ -264,7 +265,7 @@ class UserPlatformApi {
 				"groupId": jsonEncode(groupId),
 				"user": jsonEncode(User.encode(user)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method createUserInGroup");
 		final parsedResJson = jsonDecode(res);
 		return User.fromJSON(parsedResJson);
@@ -278,7 +279,7 @@ class UserPlatformApi {
 				"groupId": jsonEncode(groupId),
 				"user": jsonEncode(User.encode(user)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method modifyUserInGroup");
 		final parsedResJson = jsonDecode(res);
 		return User.fromJSON(parsedResJson);
@@ -292,7 +293,7 @@ class UserPlatformApi {
 				"userId": jsonEncode(userId),
 				"rolesId": jsonEncode(ListOfIds.encode(rolesId)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method setUserRoles");
 		final parsedResJson = jsonDecode(res);
 		return User.fromJSON(parsedResJson);
@@ -307,7 +308,7 @@ class UserPlatformApi {
 				"groupId": jsonEncode(groupId),
 				"rolesId": jsonEncode(ListOfIds.encode(rolesId)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method setUserRolesInGroup");
 		final parsedResJson = jsonDecode(res);
 		return User.fromJSON(parsedResJson);
@@ -320,7 +321,7 @@ class UserPlatformApi {
 				"sdkId": sdkId,
 				"userId": jsonEncode(userId),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method resetUserRoles");
 		final parsedResJson = jsonDecode(res);
 		return User.fromJSON(parsedResJson);
@@ -334,7 +335,7 @@ class UserPlatformApi {
 				"userId": jsonEncode(userId),
 				"groupId": jsonEncode(groupId),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method resetUserRolesInGroup");
 		final parsedResJson = jsonDecode(res);
 		return User.fromJSON(parsedResJson);
@@ -351,7 +352,7 @@ class UserPlatformApi {
 				"token": jsonEncode(token),
 				"tokenValidity": jsonEncode(tokenValidity),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getTokenInGroup");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as String);
@@ -367,7 +368,7 @@ class UserPlatformApi {
 				"token": jsonEncode(token),
 				"tokenValidity": jsonEncode(tokenValidity),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getTokenInAllGroups");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => TokenWithGroup.fromJSON(x1) ).toList();
@@ -381,7 +382,7 @@ class UserPlatformApi {
 				"groupId": jsonEncode(groupId),
 				"filter": jsonEncode(BaseFilterOptions.encode(filter)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method filterUsersInGroupBy");
 		final parsedResJson = jsonDecode(res);
 		return PaginatedListIterator(parsedResJson, (x0) => User.fromJSON(x0));
@@ -395,7 +396,7 @@ class UserPlatformApi {
 				"groupId": jsonEncode(groupId),
 				"filter": jsonEncode(BaseFilterOptions.encode(filter)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method matchUsersInGroupBy");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toList();
@@ -409,7 +410,7 @@ class UserPlatformApi {
 				"groupId": jsonEncode(groupId),
 				"filter": jsonEncode(BaseSortableFilterOptions.encode(filter)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method filterUsersInGroupBySorted");
 		final parsedResJson = jsonDecode(res);
 		return PaginatedListIterator(parsedResJson, (x0) => User.fromJSON(x0));
@@ -423,7 +424,7 @@ class UserPlatformApi {
 				"groupId": jsonEncode(groupId),
 				"filter": jsonEncode(BaseSortableFilterOptions.encode(filter)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method matchUsersInGroupBySorted");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toList();
@@ -438,7 +439,7 @@ class UserPlatformApi {
 				"groupId": jsonEncode(groupId),
 				"request": jsonEncode(Enable2faRequest.encode(request)),
 			}
-		);
+		).catchError(convertPlatformException);
 	}
 
 	Future<void> enable2faForUser(String sdkId, String userId, Enable2faRequest request) async {
@@ -449,7 +450,7 @@ class UserPlatformApi {
 				"userId": jsonEncode(userId),
 				"request": jsonEncode(Enable2faRequest.encode(request)),
 			}
-		);
+		).catchError(convertPlatformException);
 	}
 
 	Future<void> disable2faForUserWithGroup(String sdkId, String userId, String groupId) async {
@@ -460,7 +461,7 @@ class UserPlatformApi {
 				"userId": jsonEncode(userId),
 				"groupId": jsonEncode(groupId),
 			}
-		);
+		).catchError(convertPlatformException);
 	}
 
 	Future<void> disable2faForUser(String sdkId, String userId) async {
@@ -470,7 +471,7 @@ class UserPlatformApi {
 				"sdkId": sdkId,
 				"userId": jsonEncode(userId),
 			}
-		);
+		).catchError(convertPlatformException);
 	}
 
 	Future<User> createAdminUser(String sdkId, User user) async {
@@ -480,7 +481,7 @@ class UserPlatformApi {
 				"sdkId": sdkId,
 				"user": jsonEncode(User.encode(user)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method createAdminUser");
 		final parsedResJson = jsonDecode(res);
 		return User.fromJSON(parsedResJson);
@@ -494,7 +495,7 @@ class UserPlatformApi {
 				"groupId": jsonEncode(groupId),
 				"user": jsonEncode(User.encode(user)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method createAdminUserInGroup");
 		final parsedResJson = jsonDecode(res);
 		return User.fromJSON(parsedResJson);
@@ -508,7 +509,7 @@ class UserPlatformApi {
 				"entityId": jsonEncode(entityId),
 				"rev": jsonEncode(rev),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method deleteUserById");
 		final parsedResJson = jsonDecode(res);
 		return DocIdentifier.fromJSON(parsedResJson);
@@ -523,7 +524,7 @@ class UserPlatformApi {
 				"entityId": jsonEncode(entityId),
 				"rev": jsonEncode(rev),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method deleteUserInGroupById");
 		final parsedResJson = jsonDecode(res);
 		return DocIdentifier.fromJSON(parsedResJson);
@@ -537,7 +538,7 @@ class UserPlatformApi {
 				"id": jsonEncode(id),
 				"rev": jsonEncode(rev),
 			}
-		);
+		).catchError(convertPlatformException);
 	}
 
 	Future<User> undeleteUserById(String sdkId, String id, String rev) async {
@@ -548,7 +549,7 @@ class UserPlatformApi {
 				"id": jsonEncode(id),
 				"rev": jsonEncode(rev),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method undeleteUserById");
 		final parsedResJson = jsonDecode(res);
 		return User.fromJSON(parsedResJson);
@@ -561,7 +562,7 @@ class UserPlatformApi {
 				"sdkId": sdkId,
 				"user": jsonEncode(User.encode(user)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method deleteUser");
 		final parsedResJson = jsonDecode(res);
 		return DocIdentifier.fromJSON(parsedResJson);
@@ -575,7 +576,7 @@ class UserPlatformApi {
 				"groupId": jsonEncode(groupId),
 				"user": jsonEncode(User.encode(user)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method deleteUserInGroup");
 		final parsedResJson = jsonDecode(res);
 		return DocIdentifier.fromJSON(parsedResJson);
@@ -588,7 +589,7 @@ class UserPlatformApi {
 				"sdkId": sdkId,
 				"user": jsonEncode(User.encode(user)),
 			}
-		);
+		).catchError(convertPlatformException);
 	}
 
 	Future<User> undeleteUser(String sdkId, User user) async {
@@ -598,7 +599,7 @@ class UserPlatformApi {
 				"sdkId": sdkId,
 				"user": jsonEncode(User.encode(user)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method undeleteUser");
 		final parsedResJson = jsonDecode(res);
 		return User.fromJSON(parsedResJson);
@@ -613,7 +614,7 @@ class UserPlatformApi {
 				"filter": jsonEncode(FilterOptions.encode(filter)),
 				"subscriptionConfig": jsonEncode(subscriptionConfig == null ? null : EntitySubscriptionConfiguration.encode(subscriptionConfig!)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method subscribeToEvents");
 		final parsedResJson = jsonDecode(res);
 		return EntitySubscription(parsedResJson, (x0) => User.fromJSON(x0));

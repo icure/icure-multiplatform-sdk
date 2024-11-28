@@ -112,8 +112,8 @@ sealed class Patient implements StoredDocument, ICureDocument<String>, Person, H
 	abstract CodeStub? nativeCountry;
 	abstract CodeStub? socialStatus;
 	abstract CodeStub? mainSourceOfIncome;
-	abstract List<SchoolingInfo> schoolingInfos;
-	abstract List<EmploymentInfo> employementInfos;
+	List<SchoolingInfo> get schoolingInfos;
+	List<EmploymentInfo> get employementInfos;
 
 	static Map<String, dynamic> encode(Patient value) {
 		switch (value) {
@@ -244,8 +244,8 @@ class EncryptedPatient implements Patient {
 	@override CodeStub? nativeCountry = null;
 	@override CodeStub? socialStatus = null;
 	@override CodeStub? mainSourceOfIncome = null;
-	@override List<SchoolingInfo> schoolingInfos = [];
-	@override List<EmploymentInfo> employementInfos = [];
+	@override List<EncryptedSchoolingInfo> schoolingInfos = [];
+	@override List<EncryptedEmploymentInfo> employementInfos = [];
 	EncryptedPatient(
 		this.id,
 		{
@@ -326,8 +326,8 @@ class EncryptedPatient implements Patient {
 			CodeStub? nativeCountry,
 			CodeStub? socialStatus,
 			CodeStub? mainSourceOfIncome,
-			List<SchoolingInfo>? schoolingInfos,
-			List<EmploymentInfo>? employementInfos
+			List<EncryptedSchoolingInfo>? schoolingInfos,
+			List<EncryptedEmploymentInfo>? employementInfos
 		}) : identifier = identifier ?? [],
 		rev = rev ?? null,
 		created = created ?? null,
@@ -488,8 +488,8 @@ class EncryptedPatient implements Patient {
 			nativeCountry: data["nativeCountry"] == null ? null : CodeStub.fromJSON(data["nativeCountry"]),
 			socialStatus: data["socialStatus"] == null ? null : CodeStub.fromJSON(data["socialStatus"]),
 			mainSourceOfIncome: data["mainSourceOfIncome"] == null ? null : CodeStub.fromJSON(data["mainSourceOfIncome"]),
-			schoolingInfos: (data["schoolingInfos"] as List<dynamic>).map((x0) => SchoolingInfo.fromJSON(x0) ).toList(),
-			employementInfos: (data["employementInfos"] as List<dynamic>).map((x0) => EmploymentInfo.fromJSON(x0) ).toList(),
+			schoolingInfos: (data["schoolingInfos"] as List<dynamic>).map((x0) => EncryptedSchoolingInfo.fromJSON(x0) ).toList(),
+			employementInfos: (data["employementInfos"] as List<dynamic>).map((x0) => EncryptedEmploymentInfo.fromJSON(x0) ).toList(),
 		);
 	}
 
@@ -573,8 +573,8 @@ class EncryptedPatient implements Patient {
 			"nativeCountry" : value.nativeCountry == null ? null : CodeStub.encode(value.nativeCountry!),
 			"socialStatus" : value.socialStatus == null ? null : CodeStub.encode(value.socialStatus!),
 			"mainSourceOfIncome" : value.mainSourceOfIncome == null ? null : CodeStub.encode(value.mainSourceOfIncome!),
-			"schoolingInfos" : value.schoolingInfos.map((x0) => SchoolingInfo.encode(x0)).toList(),
-			"employementInfos" : value.employementInfos.map((x0) => EmploymentInfo.encode(x0)).toList()
+			"schoolingInfos" : value.schoolingInfos.map((x0) => EncryptedSchoolingInfo.encode(x0)).toList(),
+			"employementInfos" : value.employementInfos.map((x0) => EncryptedEmploymentInfo.encode(x0)).toList()
 		};
 		return entityAsMap;
 	}
@@ -680,8 +680,8 @@ class DecryptedPatient implements Patient {
 	@override CodeStub? nativeCountry = null;
 	@override CodeStub? socialStatus = null;
 	@override CodeStub? mainSourceOfIncome = null;
-	@override List<SchoolingInfo> schoolingInfos = [];
-	@override List<EmploymentInfo> employementInfos = [];
+	@override List<DecryptedSchoolingInfo> schoolingInfos = [];
+	@override List<DecryptedEmploymentInfo> employementInfos = [];
 	DecryptedPatient(
 		this.id,
 		{
@@ -762,8 +762,8 @@ class DecryptedPatient implements Patient {
 			CodeStub? nativeCountry,
 			CodeStub? socialStatus,
 			CodeStub? mainSourceOfIncome,
-			List<SchoolingInfo>? schoolingInfos,
-			List<EmploymentInfo>? employementInfos
+			List<DecryptedSchoolingInfo>? schoolingInfos,
+			List<DecryptedEmploymentInfo>? employementInfos
 		}) : identifier = identifier ?? [],
 		rev = rev ?? null,
 		created = created ?? null,
@@ -924,8 +924,8 @@ class DecryptedPatient implements Patient {
 			nativeCountry: data["nativeCountry"] == null ? null : CodeStub.fromJSON(data["nativeCountry"]),
 			socialStatus: data["socialStatus"] == null ? null : CodeStub.fromJSON(data["socialStatus"]),
 			mainSourceOfIncome: data["mainSourceOfIncome"] == null ? null : CodeStub.fromJSON(data["mainSourceOfIncome"]),
-			schoolingInfos: (data["schoolingInfos"] as List<dynamic>).map((x0) => SchoolingInfo.fromJSON(x0) ).toList(),
-			employementInfos: (data["employementInfos"] as List<dynamic>).map((x0) => EmploymentInfo.fromJSON(x0) ).toList(),
+			schoolingInfos: (data["schoolingInfos"] as List<dynamic>).map((x0) => DecryptedSchoolingInfo.fromJSON(x0) ).toList(),
+			employementInfos: (data["employementInfos"] as List<dynamic>).map((x0) => DecryptedEmploymentInfo.fromJSON(x0) ).toList(),
 		);
 	}
 
@@ -1009,8 +1009,8 @@ class DecryptedPatient implements Patient {
 			"nativeCountry" : value.nativeCountry == null ? null : CodeStub.encode(value.nativeCountry!),
 			"socialStatus" : value.socialStatus == null ? null : CodeStub.encode(value.socialStatus!),
 			"mainSourceOfIncome" : value.mainSourceOfIncome == null ? null : CodeStub.encode(value.mainSourceOfIncome!),
-			"schoolingInfos" : value.schoolingInfos.map((x0) => SchoolingInfo.encode(x0)).toList(),
-			"employementInfos" : value.employementInfos.map((x0) => EmploymentInfo.encode(x0)).toList()
+			"schoolingInfos" : value.schoolingInfos.map((x0) => DecryptedSchoolingInfo.encode(x0)).toList(),
+			"employementInfos" : value.employementInfos.map((x0) => DecryptedEmploymentInfo.encode(x0)).toList()
 		};
 		return entityAsMap;
 	}

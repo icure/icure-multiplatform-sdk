@@ -15,6 +15,7 @@ public object SystemApiDispatcher {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
   ): Boolean = when(methodName) {
     "getVersion" -> getVersion(parameters, resultCallback)
@@ -40,6 +41,7 @@ public object SystemApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     SystemApi.getVersion(
       resultCallback,
@@ -48,6 +50,7 @@ public object SystemApiDispatcher {
   }
 
   private fun isReady(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -62,6 +65,7 @@ public object SystemApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     SystemApi.getProcessInfo(
       resultCallback,
@@ -70,6 +74,7 @@ public object SystemApiDispatcher {
   }
 
   private fun getIndexingInfo(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -84,6 +89,7 @@ public object SystemApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     SystemApi.getReplicationInfo(
       resultCallback,
@@ -92,6 +98,7 @@ public object SystemApiDispatcher {
   }
 
   private fun updateDesignDoc(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -108,6 +115,7 @@ public object SystemApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     SystemApi.resolvePatientsConflicts(
       resultCallback,
@@ -117,6 +125,7 @@ public object SystemApiDispatcher {
   }
 
   private fun resolveContactsConflicts(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -132,6 +141,7 @@ public object SystemApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     SystemApi.resolveFormsConflicts(
       resultCallback,
@@ -141,6 +151,7 @@ public object SystemApiDispatcher {
   }
 
   private fun resolveHealthElementsConflicts(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -156,6 +167,7 @@ public object SystemApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     SystemApi.resolveInvoicesConflicts(
       resultCallback,
@@ -168,6 +180,7 @@ public object SystemApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     SystemApi.resolveMessagesConflicts(
       resultCallback,
@@ -177,6 +190,7 @@ public object SystemApiDispatcher {
   }
 
   private fun resolveDocumentsConflicts(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -193,6 +207,7 @@ public object SystemApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     SystemApi.getIndexingInfoByGroup(
       resultCallback,
@@ -205,6 +220,7 @@ public object SystemApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     SystemApi.getReplicatorInfo(
       resultCallback,
@@ -214,6 +230,7 @@ public object SystemApiDispatcher {
   }
 
   private fun evictAllFromMap(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,

@@ -9,6 +9,7 @@ class DataOwnerApiDispatcher {
     resultCallback: @escaping (
       String?,
       String?,
+      String?,
       String?
     ) -> Void
   ) -> Bool {
@@ -32,6 +33,7 @@ class DataOwnerApiDispatcher {
   private static func getCurrentDataOwner(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     DataOwnerApi.shared.getCurrentDataOwner(
@@ -41,6 +43,7 @@ class DataOwnerApiDispatcher {
   }
 
   private static func getCurrentDataOwnerStub(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -54,6 +57,7 @@ class DataOwnerApiDispatcher {
   private static func getCurrentDataOwnerId(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     DataOwnerApi.shared.getCurrentDataOwnerId(
@@ -65,6 +69,7 @@ class DataOwnerApiDispatcher {
   private static func getCurrentDataOwnerHierarchyIds(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     DataOwnerApi.shared.getCurrentDataOwnerHierarchyIds(
@@ -74,6 +79,7 @@ class DataOwnerApiDispatcher {
   }
 
   private static func getDataOwner(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -88,6 +94,7 @@ class DataOwnerApiDispatcher {
   private static func getCryptoActorStub(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     DataOwnerApi.shared.getCryptoActorStub(
@@ -98,6 +105,7 @@ class DataOwnerApiDispatcher {
   }
 
   private static func getCurrentDataOwnerHierarchyIdsFrom(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -112,6 +120,7 @@ class DataOwnerApiDispatcher {
   private static func getCurrentDataOwnerHierarchy(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     DataOwnerApi.shared.getCurrentDataOwnerHierarchy(
@@ -121,6 +130,7 @@ class DataOwnerApiDispatcher {
   }
 
   private static func modifyDataOwnerStub(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -135,6 +145,7 @@ class DataOwnerApiDispatcher {
   private static func getCurrentDataOwnerType(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     DataOwnerApi.shared.getCurrentDataOwnerType(
@@ -144,6 +155,7 @@ class DataOwnerApiDispatcher {
   }
 
   private static func clearCurrentDataOwnerIdsCache(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?

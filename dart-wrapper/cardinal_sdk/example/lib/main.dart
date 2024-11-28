@@ -8,6 +8,7 @@ import 'package:cardinal_sdk/auth/authentication_method.dart';
 import 'package:cardinal_sdk/auth/authentication_process_telecom_type.dart';
 import 'package:cardinal_sdk/auth/captcha_options.dart';
 import 'package:cardinal_sdk/auth/credentials.dart';
+import 'package:cardinal_sdk/errors/cardinal_argument_error.dart';
 import 'package:cardinal_sdk/filters/filter_options.dart';
 import 'package:cardinal_sdk/filters/meta_filters.dart';
 import 'package:cardinal_sdk/filters/patient_filters.dart';
@@ -87,8 +88,8 @@ class _AuthFormState extends State<AuthForm> {
       null,
       "https://api.icure.cloud",
       "https://msg-gw.icure.cloud",
-      throw UnimplementedError("Take the specId from the cockpit"),
-      throw UnimplementedError("Take the processId from the cockpit"),
+      "ic-ltremam-1281efbd-6c43-45ad-9175-ab46d5d4736a",
+      "51aff1c1-19f7-4153-9824-bd4d0c1ee520",
       AuthenticationProcessTelecomType.email,
       email,
       CaptchaOptions.KerberusDelegated(),
@@ -175,6 +176,25 @@ class _AuthFormState extends State<AuthForm> {
     print("Close reason ${await subscription.getCloseReason()}");
     print("Done iterating");
     await doFilterExample();
+    try {
+      await sdk.patient.createPatient(DecryptedPatient(
+          generateUuid(),
+          firstName: "Gino",
+          lastName: "Bros-${generateUuid()}",
+          note: "Should not work"
+      ));
+      print("Did not fail???");
+    } catch (e) {
+      if (e is ArgumentError) {
+        if (e is CardinalArgumentError) {
+          print("Got CardinalArgumentError as expected");
+        } else {
+          print("Argument error is not CardinalArgumentError???");
+        }
+      } else {
+        print("Unexpected error???");
+      }
+    }
   }
 
   @override

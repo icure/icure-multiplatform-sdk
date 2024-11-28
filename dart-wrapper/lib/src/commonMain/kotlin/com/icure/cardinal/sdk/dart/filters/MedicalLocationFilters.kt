@@ -17,6 +17,7 @@ public object MedicalLocationFilters {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     DartResult.resolve(
       dartResultCallback,
@@ -28,6 +29,7 @@ public object MedicalLocationFilters {
   }
 
   public fun byPostCode(dartResultCallback: (
+    String?,
     String?,
     String?,
     String?,

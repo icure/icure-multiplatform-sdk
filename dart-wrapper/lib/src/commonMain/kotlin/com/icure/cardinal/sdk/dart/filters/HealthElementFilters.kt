@@ -28,6 +28,7 @@ public object HealthElementFilters {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit, dataOwnerIdString: String) {
     val dataOwnerId = fullLanguageInteropJson.decodeFromString(
       String.serializer(),
@@ -47,6 +48,7 @@ public object HealthElementFilters {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     DartResult.resolve(
       dartResultCallback,
@@ -59,6 +61,7 @@ public object HealthElementFilters {
 
   public fun byIdentifiersForDataOwner(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -89,6 +92,7 @@ public object HealthElementFilters {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit, identifiersString: String) {
     val identifiers = fullLanguageInteropJson.decodeFromString(
       ListSerializer(Identifier.serializer()),
@@ -106,6 +110,7 @@ public object HealthElementFilters {
 
   public fun byCodeForDataOwner(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -143,6 +148,7 @@ public object HealthElementFilters {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     codeTypeString: String,
     codeCodeString: String,
@@ -168,6 +174,7 @@ public object HealthElementFilters {
 
   public fun byTagForDataOwner(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -205,6 +212,7 @@ public object HealthElementFilters {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     tagTypeString: String,
     tagCodeString: String,
@@ -230,6 +238,7 @@ public object HealthElementFilters {
 
   public fun byPatientsForDataOwner(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -260,6 +269,7 @@ public object HealthElementFilters {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit, patientsString: String) {
     val patients = fullLanguageInteropJson.decodeFromString(
       ListSerializer(PolymorphicSerializer(Patient::class)),
@@ -277,6 +287,7 @@ public object HealthElementFilters {
 
   public fun byPatientsSecretIdsForDataOwner(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -307,6 +318,7 @@ public object HealthElementFilters {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit, secretIdsString: String) {
     val secretIds = fullLanguageInteropJson.decodeFromString(
       ListSerializer(String.serializer()),
@@ -323,6 +335,7 @@ public object HealthElementFilters {
   }
 
   public fun byIds(dartResultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -343,6 +356,7 @@ public object HealthElementFilters {
 
   public fun byPatientsOpeningDateForDataOwner(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -392,6 +406,7 @@ public object HealthElementFilters {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     patientsString: String,
     fromString: String,
@@ -429,6 +444,7 @@ public object HealthElementFilters {
 
   public fun byPatientSecretIdsOpeningDateForDataOwner(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -478,6 +494,7 @@ public object HealthElementFilters {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     secretIdsString: String,
     fromString: String,
@@ -518,6 +535,7 @@ public object HealthElementFilters {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     dataOwnerIdString: String,
     statusString: String,
@@ -542,6 +560,7 @@ public object HealthElementFilters {
   }
 
   public fun byStatusForSelf(dartResultCallback: (
+    String?,
     String?,
     String?,
     String?,

@@ -6,6 +6,7 @@ func dispatchApi(
   resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void
 ) -> Bool {

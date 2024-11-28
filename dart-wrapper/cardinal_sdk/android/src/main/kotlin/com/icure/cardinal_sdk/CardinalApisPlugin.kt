@@ -15,9 +15,9 @@ object CardinalApisPlugin : MethodChannel.MethodCallHandler {
                 apiName = apiName,
                 methodName = methodName,
                 parameters = (call.arguments as Map<String, String>?).orEmpty()
-            ) { success, errorCode, errorMessage ->
+            ) { success, errorCode, errorMessage, errorDetail ->
                 if (errorCode != null)
-                    result.error(errorCode, errorMessage, null)
+                    result.error(errorCode, errorMessage, errorDetail)
                 else
                     result.success(success)
             }

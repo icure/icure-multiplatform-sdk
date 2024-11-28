@@ -9,6 +9,7 @@ class ApplicationSettingsApiDispatcher {
     resultCallback: @escaping (
       String?,
       String?,
+      String?,
       String?
     ) -> Void
   ) -> Bool {
@@ -24,6 +25,7 @@ class ApplicationSettingsApiDispatcher {
   private static func getApplicationSettings(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     ApplicationSettingsApi.shared.getApplicationSettings(
@@ -33,6 +35,7 @@ class ApplicationSettingsApiDispatcher {
   }
 
   private static func createApplicationSettings(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -45,6 +48,7 @@ class ApplicationSettingsApiDispatcher {
   }
 
   private static func updateApplicationSettings(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?

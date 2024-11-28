@@ -2,6 +2,7 @@
 import 'package:flutter/services.dart';
 import 'package:cardinal_sdk/model/entity_reference.dart';
 import 'dart:convert';
+import 'package:cardinal_sdk/utils/internal/platform_exception_convertion.dart';
 
 
 class EntityReferencePlatformApi {
@@ -15,7 +16,7 @@ class EntityReferencePlatformApi {
 				"sdkId": sdkId,
 				"prefix": jsonEncode(prefix),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getLatest");
 		final parsedResJson = jsonDecode(res);
 		return EntityReference.fromJSON(parsedResJson);
@@ -28,7 +29,7 @@ class EntityReferencePlatformApi {
 				"sdkId": sdkId,
 				"entityReference": jsonEncode(EntityReference.encode(entityReference)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method createEntityReference");
 		final parsedResJson = jsonDecode(res);
 		return EntityReference.fromJSON(parsedResJson);

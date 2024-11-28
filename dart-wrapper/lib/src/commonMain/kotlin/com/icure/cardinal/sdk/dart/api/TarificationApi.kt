@@ -20,6 +20,7 @@ public object TarificationApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     tarificationIdString: String,
@@ -39,6 +40,7 @@ public object TarificationApi {
 
   public fun createTarification(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -64,6 +66,7 @@ public object TarificationApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     tarificationIdsString: String,
@@ -86,6 +89,7 @@ public object TarificationApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     tarificationString: String,
@@ -105,6 +109,7 @@ public object TarificationApi {
 
   public fun getTarificationWithParts(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,

@@ -9,6 +9,7 @@ class FrontEndMigrationApiDispatcher {
     resultCallback: @escaping (
       String?,
       String?,
+      String?,
       String?
     ) -> Void
   ) -> Bool {
@@ -27,6 +28,7 @@ class FrontEndMigrationApiDispatcher {
   private static func getFrontEndMigration(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     FrontEndMigrationApi.shared.getFrontEndMigration(
@@ -37,6 +39,7 @@ class FrontEndMigrationApiDispatcher {
   }
 
   private static func createFrontEndMigration(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -51,6 +54,7 @@ class FrontEndMigrationApiDispatcher {
   private static func getFrontEndMigrations(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     FrontEndMigrationApi.shared.getFrontEndMigrations(
@@ -60,6 +64,7 @@ class FrontEndMigrationApiDispatcher {
   }
 
   private static func deleteFrontEndMigration(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -74,6 +79,7 @@ class FrontEndMigrationApiDispatcher {
   private static func getFrontEndMigrationByName(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     FrontEndMigrationApi.shared.getFrontEndMigrationByName(
@@ -84,6 +90,7 @@ class FrontEndMigrationApiDispatcher {
   }
 
   private static func modifyFrontEndMigration(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?

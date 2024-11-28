@@ -15,6 +15,7 @@ public object MessageBasicApiDispatcher {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
   ): Boolean = when(methodName) {
     "matchMessagesBy" -> matchMessagesBy(parameters, resultCallback)
@@ -41,6 +42,7 @@ public object MessageBasicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     MessageBasicApi.matchMessagesBy(
       resultCallback,
@@ -50,6 +52,7 @@ public object MessageBasicApiDispatcher {
   }
 
   private fun matchMessagesBySorted(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -65,6 +68,7 @@ public object MessageBasicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     MessageBasicApi.filterMessagesBy(
       resultCallback,
@@ -77,6 +81,7 @@ public object MessageBasicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     MessageBasicApi.filterMessagesBySorted(
       resultCallback,
@@ -86,6 +91,7 @@ public object MessageBasicApiDispatcher {
   }
 
   private fun deleteMessageById(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -102,6 +108,7 @@ public object MessageBasicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     MessageBasicApi.deleteMessagesByIds(
       resultCallback,
@@ -111,6 +118,7 @@ public object MessageBasicApiDispatcher {
   }
 
   private fun purgeMessageById(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -127,6 +135,7 @@ public object MessageBasicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     MessageBasicApi.deleteMessage(
       resultCallback,
@@ -136,6 +145,7 @@ public object MessageBasicApiDispatcher {
   }
 
   private fun deleteMessages(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -151,6 +161,7 @@ public object MessageBasicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     MessageBasicApi.purgeMessage(
       resultCallback,
@@ -160,6 +171,7 @@ public object MessageBasicApiDispatcher {
   }
 
   private fun undeleteMessage(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -175,6 +187,7 @@ public object MessageBasicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     MessageBasicApi.modifyMessage(
       resultCallback,
@@ -184,6 +197,7 @@ public object MessageBasicApiDispatcher {
   }
 
   private fun undeleteMessageById(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -200,6 +214,7 @@ public object MessageBasicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     MessageBasicApi.getMessage(
       resultCallback,
@@ -209,6 +224,7 @@ public object MessageBasicApiDispatcher {
   }
 
   private fun getMessages(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -224,6 +240,7 @@ public object MessageBasicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     MessageBasicApi.setMessagesReadStatus(
       resultCallback,
@@ -236,6 +253,7 @@ public object MessageBasicApiDispatcher {
   }
 
   private fun subscribeToEvents(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,

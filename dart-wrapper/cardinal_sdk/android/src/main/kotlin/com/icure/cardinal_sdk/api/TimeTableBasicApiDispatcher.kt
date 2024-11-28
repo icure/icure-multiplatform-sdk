@@ -15,6 +15,7 @@ public object TimeTableBasicApiDispatcher {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
   ): Boolean = when(methodName) {
     "matchTimeTablesBy" -> matchTimeTablesBy(parameters, resultCallback)
@@ -39,6 +40,7 @@ public object TimeTableBasicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     TimeTableBasicApi.matchTimeTablesBy(
       resultCallback,
@@ -48,6 +50,7 @@ public object TimeTableBasicApiDispatcher {
   }
 
   private fun matchTimeTablesBySorted(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -63,6 +66,7 @@ public object TimeTableBasicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     TimeTableBasicApi.filterTimeTablesBy(
       resultCallback,
@@ -75,6 +79,7 @@ public object TimeTableBasicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     TimeTableBasicApi.filterTimeTablesBySorted(
       resultCallback,
@@ -84,6 +89,7 @@ public object TimeTableBasicApiDispatcher {
   }
 
   private fun deleteTimeTableById(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -100,6 +106,7 @@ public object TimeTableBasicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     TimeTableBasicApi.deleteTimeTablesByIds(
       resultCallback,
@@ -109,6 +116,7 @@ public object TimeTableBasicApiDispatcher {
   }
 
   private fun purgeTimeTableById(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -125,6 +133,7 @@ public object TimeTableBasicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     TimeTableBasicApi.deleteTimeTable(
       resultCallback,
@@ -134,6 +143,7 @@ public object TimeTableBasicApiDispatcher {
   }
 
   private fun deleteTimeTables(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -149,6 +159,7 @@ public object TimeTableBasicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     TimeTableBasicApi.purgeTimeTable(
       resultCallback,
@@ -158,6 +169,7 @@ public object TimeTableBasicApiDispatcher {
   }
 
   private fun undeleteTimeTable(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -173,6 +185,7 @@ public object TimeTableBasicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     TimeTableBasicApi.modifyTimeTable(
       resultCallback,
@@ -182,6 +195,7 @@ public object TimeTableBasicApiDispatcher {
   }
 
   private fun undeleteTimeTableById(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -198,6 +212,7 @@ public object TimeTableBasicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     TimeTableBasicApi.getTimeTable(
       resultCallback,
@@ -207,6 +222,7 @@ public object TimeTableBasicApiDispatcher {
   }
 
   private fun getTimeTables(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,

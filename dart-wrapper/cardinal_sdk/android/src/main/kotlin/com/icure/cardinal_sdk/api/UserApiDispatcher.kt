@@ -15,6 +15,7 @@ public object UserApiDispatcher {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
   ): Boolean = when(methodName) {
     "getCurrentUser" -> getCurrentUser(parameters, resultCallback)
@@ -69,6 +70,7 @@ public object UserApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     UserApi.getCurrentUser(
       resultCallback,
@@ -77,6 +79,7 @@ public object UserApiDispatcher {
   }
 
   private fun createUser(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -92,6 +95,7 @@ public object UserApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     UserApi.getUser(
       resultCallback,
@@ -101,6 +105,7 @@ public object UserApiDispatcher {
   }
 
   private fun getUsers(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -116,6 +121,7 @@ public object UserApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     UserApi.getUserByEmail(
       resultCallback,
@@ -125,6 +131,7 @@ public object UserApiDispatcher {
   }
 
   private fun getUserByPhoneNumber(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -140,6 +147,7 @@ public object UserApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     UserApi.findByHcpartyId(
       resultCallback,
@@ -149,6 +157,7 @@ public object UserApiDispatcher {
   }
 
   private fun findByPatientId(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -164,6 +173,7 @@ public object UserApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     UserApi.modifyUser(
       resultCallback,
@@ -173,6 +183,7 @@ public object UserApiDispatcher {
   }
 
   private fun assignHealthcareParty(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -188,6 +199,7 @@ public object UserApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     UserApi.modifyProperties(
       resultCallback,
@@ -198,6 +210,7 @@ public object UserApiDispatcher {
   }
 
   private fun getToken(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -216,6 +229,7 @@ public object UserApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     UserApi.filterUsersBy(
       resultCallback,
@@ -225,6 +239,7 @@ public object UserApiDispatcher {
   }
 
   private fun matchUsersBy(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -240,6 +255,7 @@ public object UserApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     UserApi.filterUsersBySorted(
       resultCallback,
@@ -249,6 +265,7 @@ public object UserApiDispatcher {
   }
 
   private fun matchUsersBySorted(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -264,6 +281,7 @@ public object UserApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     UserApi.getMatchingUsers(
       resultCallback,
@@ -272,6 +290,7 @@ public object UserApiDispatcher {
   }
 
   private fun getUsersInGroup(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -288,6 +307,7 @@ public object UserApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     UserApi.createUserInGroup(
       resultCallback,
@@ -298,6 +318,7 @@ public object UserApiDispatcher {
   }
 
   private fun modifyUserInGroup(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -314,6 +335,7 @@ public object UserApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     UserApi.setUserRoles(
       resultCallback,
@@ -324,6 +346,7 @@ public object UserApiDispatcher {
   }
 
   private fun setUserRolesInGroup(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -341,6 +364,7 @@ public object UserApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     UserApi.resetUserRoles(
       resultCallback,
@@ -350,6 +374,7 @@ public object UserApiDispatcher {
   }
 
   private fun resetUserRolesInGroup(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -363,6 +388,7 @@ public object UserApiDispatcher {
   }
 
   private fun getTokenInGroup(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -382,6 +408,7 @@ public object UserApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     UserApi.getTokenInAllGroups(
       resultCallback,
@@ -394,6 +421,7 @@ public object UserApiDispatcher {
   }
 
   private fun filterUsersInGroupBy(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -410,6 +438,7 @@ public object UserApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     UserApi.matchUsersInGroupBy(
       resultCallback,
@@ -420,6 +449,7 @@ public object UserApiDispatcher {
   }
 
   private fun filterUsersInGroupBySorted(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -436,6 +466,7 @@ public object UserApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     UserApi.matchUsersInGroupBySorted(
       resultCallback,
@@ -446,6 +477,7 @@ public object UserApiDispatcher {
   }
 
   private fun enable2faForUserWithGroup(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -463,6 +495,7 @@ public object UserApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     UserApi.enable2faForUser(
       resultCallback,
@@ -473,6 +506,7 @@ public object UserApiDispatcher {
   }
 
   private fun disable2faForUserWithGroup(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -489,6 +523,7 @@ public object UserApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     UserApi.disable2faForUser(
       resultCallback,
@@ -501,6 +536,7 @@ public object UserApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     UserApi.createAdminUser(
       resultCallback,
@@ -510,6 +546,7 @@ public object UserApiDispatcher {
   }
 
   private fun createAdminUserInGroup(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -526,6 +563,7 @@ public object UserApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     UserApi.deleteUserById(
       resultCallback,
@@ -536,6 +574,7 @@ public object UserApiDispatcher {
   }
 
   private fun deleteUserInGroupById(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -553,6 +592,7 @@ public object UserApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     UserApi.purgeUserById(
       resultCallback,
@@ -563,6 +603,7 @@ public object UserApiDispatcher {
   }
 
   private fun undeleteUserById(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -579,6 +620,7 @@ public object UserApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     UserApi.deleteUser(
       resultCallback,
@@ -588,6 +630,7 @@ public object UserApiDispatcher {
   }
 
   private fun deleteUserInGroup(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -604,6 +647,7 @@ public object UserApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     UserApi.purgeUser(
       resultCallback,
@@ -616,6 +660,7 @@ public object UserApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     UserApi.undeleteUser(
       resultCallback,
@@ -625,6 +670,7 @@ public object UserApiDispatcher {
   }
 
   private fun subscribeToEvents(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,

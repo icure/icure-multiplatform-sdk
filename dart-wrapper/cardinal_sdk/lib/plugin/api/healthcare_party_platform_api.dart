@@ -2,6 +2,7 @@
 import 'package:flutter/services.dart';
 import 'package:cardinal_sdk/model/healthcare_party.dart';
 import 'dart:convert';
+import 'package:cardinal_sdk/utils/internal/platform_exception_convertion.dart';
 import 'package:cardinal_sdk/model/public_key.dart';
 import 'package:cardinal_sdk/filters/filter_options.dart';
 import 'package:cardinal_sdk/utils/pagination/paginated_list_iterator.dart';
@@ -24,7 +25,7 @@ class HealthcarePartyPlatformApi {
 				"sdkId": sdkId,
 				"healthcarePartyId": jsonEncode(healthcarePartyId),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getHealthcareParty");
 		final parsedResJson = jsonDecode(res);
 		return HealthcareParty.fromJSON(parsedResJson);
@@ -37,7 +38,7 @@ class HealthcarePartyPlatformApi {
 				"sdkId": sdkId,
 				"p": jsonEncode(HealthcareParty.encode(p)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method createHealthcareParty");
 		final parsedResJson = jsonDecode(res);
 		return HealthcareParty.fromJSON(parsedResJson);
@@ -51,7 +52,7 @@ class HealthcarePartyPlatformApi {
 				"groupId": jsonEncode(groupId),
 				"healthcareParty": jsonEncode(HealthcareParty.encode(healthcareParty)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method modifyHealthcarePartyInGroup");
 		final parsedResJson = jsonDecode(res);
 		return HealthcareParty.fromJSON(parsedResJson);
@@ -65,7 +66,7 @@ class HealthcarePartyPlatformApi {
 				"groupId": jsonEncode(groupId),
 				"healthcareParty": jsonEncode(HealthcareParty.encode(healthcareParty)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method createHealthcarePartyInGroup");
 		final parsedResJson = jsonDecode(res);
 		return HealthcareParty.fromJSON(parsedResJson);
@@ -77,7 +78,7 @@ class HealthcarePartyPlatformApi {
 			{
 				"sdkId": sdkId,
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getCurrentHealthcareParty");
 		final parsedResJson = jsonDecode(res);
 		return HealthcareParty.fromJSON(parsedResJson);
@@ -90,7 +91,7 @@ class HealthcarePartyPlatformApi {
 				"sdkId": sdkId,
 				"name": jsonEncode(name),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method listHealthcarePartiesByName");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => HealthcareParty.fromJSON(x1) ).toList();
@@ -103,7 +104,7 @@ class HealthcarePartyPlatformApi {
 				"sdkId": sdkId,
 				"healthcarePartyIds": jsonEncode(healthcarePartyIds.map((x0) => x0).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getHealthcareParties");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => HealthcareParty.fromJSON(x1) ).toList();
@@ -116,7 +117,7 @@ class HealthcarePartyPlatformApi {
 				"sdkId": sdkId,
 				"parentId": jsonEncode(parentId),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method listHealthcarePartiesByParentId");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => HealthcareParty.fromJSON(x1) ).toList();
@@ -129,7 +130,7 @@ class HealthcarePartyPlatformApi {
 				"sdkId": sdkId,
 				"healthcarePartyId": jsonEncode(healthcarePartyId),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getPublicKey");
 		final parsedResJson = jsonDecode(res);
 		return PublicKey.fromJSON(parsedResJson);
@@ -142,7 +143,7 @@ class HealthcarePartyPlatformApi {
 				"sdkId": sdkId,
 				"healthcareParty": jsonEncode(HealthcareParty.encode(healthcareParty)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method modifyHealthcareParty");
 		final parsedResJson = jsonDecode(res);
 		return HealthcareParty.fromJSON(parsedResJson);
@@ -155,7 +156,7 @@ class HealthcarePartyPlatformApi {
 				"sdkId": sdkId,
 				"filter": jsonEncode(BaseFilterOptions.encode(filter)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method matchHealthcarePartiesBy");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toList();
@@ -168,7 +169,7 @@ class HealthcarePartyPlatformApi {
 				"sdkId": sdkId,
 				"filter": jsonEncode(BaseFilterOptions.encode(filter)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method filterHealthPartiesBy");
 		final parsedResJson = jsonDecode(res);
 		return PaginatedListIterator(parsedResJson, (x0) => HealthcareParty.fromJSON(x0));
@@ -181,7 +182,7 @@ class HealthcarePartyPlatformApi {
 				"sdkId": sdkId,
 				"filter": jsonEncode(BaseSortableFilterOptions.encode(filter)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method matchHealthcarePartiesBySorted");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toList();
@@ -194,7 +195,7 @@ class HealthcarePartyPlatformApi {
 				"sdkId": sdkId,
 				"filter": jsonEncode(BaseSortableFilterOptions.encode(filter)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method filterHealthPartiesBySorted");
 		final parsedResJson = jsonDecode(res);
 		return PaginatedListIterator(parsedResJson, (x0) => HealthcareParty.fromJSON(x0));
@@ -208,7 +209,7 @@ class HealthcarePartyPlatformApi {
 				"groupId": jsonEncode(groupId),
 				"healthcarePartyIds": jsonEncode(healthcarePartyIds?.map((x0) => x0).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getHealthcarePartiesInGroup");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => HealthcareParty.fromJSON(x1) ).toList();
@@ -225,7 +226,7 @@ class HealthcarePartyPlatformApi {
 				"useShortToken": jsonEncode(useShortToken),
 				"hcp": jsonEncode(HealthcareParty.encode(hcp)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method registerPatient");
 		final parsedResJson = jsonDecode(res);
 		return DataOwnerRegistrationSuccess.fromJSON(parsedResJson);
@@ -239,7 +240,7 @@ class HealthcarePartyPlatformApi {
 				"entityId": jsonEncode(entityId),
 				"rev": jsonEncode(rev),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method deleteHealthcarePartyById");
 		final parsedResJson = jsonDecode(res);
 		return DocIdentifier.fromJSON(parsedResJson);
@@ -252,7 +253,7 @@ class HealthcarePartyPlatformApi {
 				"sdkId": sdkId,
 				"entityIds": jsonEncode(entityIds.map((x0) => IdWithMandatoryRev.encode(x0)).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method deleteHealthcarePartiesByIds");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => DocIdentifier.fromJSON(x1) ).toList();
@@ -267,7 +268,7 @@ class HealthcarePartyPlatformApi {
 				"entityId": jsonEncode(entityId),
 				"rev": jsonEncode(rev),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method deleteHealthcarePartyInGroupById");
 		final parsedResJson = jsonDecode(res);
 		return DocIdentifier.fromJSON(parsedResJson);
@@ -281,7 +282,7 @@ class HealthcarePartyPlatformApi {
 				"groupId": jsonEncode(groupId),
 				"entityIds": jsonEncode(entityIds.map((x0) => IdWithMandatoryRev.encode(x0)).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method deleteHealthcarePartiesInGroupByIds");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => DocIdentifier.fromJSON(x1) ).toList();
@@ -295,7 +296,7 @@ class HealthcarePartyPlatformApi {
 				"id": jsonEncode(id),
 				"rev": jsonEncode(rev),
 			}
-		);
+		).catchError(convertPlatformException);
 	}
 
 	Future<HealthcareParty> undeleteHealthcarePartyById(String sdkId, String id, String rev) async {
@@ -306,7 +307,7 @@ class HealthcarePartyPlatformApi {
 				"id": jsonEncode(id),
 				"rev": jsonEncode(rev),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method undeleteHealthcarePartyById");
 		final parsedResJson = jsonDecode(res);
 		return HealthcareParty.fromJSON(parsedResJson);
@@ -319,7 +320,7 @@ class HealthcarePartyPlatformApi {
 				"sdkId": sdkId,
 				"healthcareParty": jsonEncode(HealthcareParty.encode(healthcareParty)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method deleteHealthcareParty");
 		final parsedResJson = jsonDecode(res);
 		return DocIdentifier.fromJSON(parsedResJson);
@@ -332,7 +333,7 @@ class HealthcarePartyPlatformApi {
 				"sdkId": sdkId,
 				"healthcareParties": jsonEncode(healthcareParties.map((x0) => HealthcareParty.encode(x0)).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method deleteHealthcareParties");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => DocIdentifier.fromJSON(x1) ).toList();
@@ -345,7 +346,7 @@ class HealthcarePartyPlatformApi {
 				"sdkId": sdkId,
 				"healthcareParty": jsonEncode(HealthcareParty.encode(healthcareParty)),
 			}
-		);
+		).catchError(convertPlatformException);
 	}
 
 	Future<HealthcareParty> undeleteHealthcareParty(String sdkId, HealthcareParty healthcareParty) async {
@@ -355,7 +356,7 @@ class HealthcarePartyPlatformApi {
 				"sdkId": sdkId,
 				"healthcareParty": jsonEncode(HealthcareParty.encode(healthcareParty)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method undeleteHealthcareParty");
 		final parsedResJson = jsonDecode(res);
 		return HealthcareParty.fromJSON(parsedResJson);
@@ -369,7 +370,7 @@ class HealthcarePartyPlatformApi {
 				"groupId": jsonEncode(groupId),
 				"hcp": jsonEncode(HealthcareParty.encode(hcp)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method deleteHealthcarePartyInGroup");
 		final parsedResJson = jsonDecode(res);
 		return DocIdentifier.fromJSON(parsedResJson);
@@ -383,7 +384,7 @@ class HealthcarePartyPlatformApi {
 				"groupId": jsonEncode(groupId),
 				"healthcareParties": jsonEncode(healthcareParties.map((x0) => HealthcareParty.encode(x0)).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method deleteHealthcarePartiesInGroup");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => DocIdentifier.fromJSON(x1) ).toList();
@@ -398,7 +399,7 @@ class HealthcarePartyPlatformApi {
 				"filter": jsonEncode(FilterOptions.encode(filter)),
 				"subscriptionConfig": jsonEncode(subscriptionConfig == null ? null : EntitySubscriptionConfiguration.encode(subscriptionConfig!)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method subscribeToEvents");
 		final parsedResJson = jsonDecode(res);
 		return EntitySubscription(parsedResJson, (x0) => HealthcareParty.fromJSON(x0));

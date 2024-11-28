@@ -2,6 +2,7 @@
 import 'package:flutter/services.dart';
 import 'package:cardinal_sdk/model/patient.dart';
 import 'dart:convert';
+import 'package:cardinal_sdk/utils/internal/platform_exception_convertion.dart';
 import 'package:cardinal_sdk/model/specializations/hex_string.dart';
 import 'package:cardinal_sdk/model/user.dart';
 import 'package:cardinal_sdk/model/embed/access_level.dart';
@@ -34,7 +35,7 @@ class PatientPlatformApi {
 				"sdkId": sdkId,
 				"patient": jsonEncode(Patient.encode(patient)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getSecretIdsOf");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toSet();
@@ -47,7 +48,7 @@ class PatientPlatformApi {
 				"sdkId": sdkId,
 				"patient": jsonEncode(Patient.encode(patient)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getEncryptionKeysOf");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => (x1 as HexString) ).toSet();
@@ -60,7 +61,7 @@ class PatientPlatformApi {
 				"sdkId": sdkId,
 				"patient": jsonEncode(DecryptedPatient.encode(patient)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method createPatient");
 		final parsedResJson = jsonDecode(res);
 		return DecryptedPatient.fromJSON(parsedResJson);
@@ -75,7 +76,7 @@ class PatientPlatformApi {
 				"user": jsonEncode(user == null ? null : User.encode(user!)),
 				"delegates": jsonEncode(delegates.map((k0, v0) => MapEntry(k0, AccessLevel.encode(v0)))),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method withEncryptionMetadata");
 		final parsedResJson = jsonDecode(res);
 		return DecryptedPatient.fromJSON(parsedResJson);
@@ -88,7 +89,7 @@ class PatientPlatformApi {
 				"sdkId": sdkId,
 				"patient": jsonEncode(Patient.encode(patient)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method hasWriteAccess");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as bool);
@@ -102,7 +103,7 @@ class PatientPlatformApi {
 				"entity": jsonEncode(Patient.encode(entity)),
 				"delegates": jsonEncode(delegates.map((x0) => x0).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 	}
 
 	Future<DecryptedPatient> decrypt(String sdkId, EncryptedPatient patient) async {
@@ -112,7 +113,7 @@ class PatientPlatformApi {
 				"sdkId": sdkId,
 				"patient": jsonEncode(EncryptedPatient.encode(patient)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method decrypt");
 		final parsedResJson = jsonDecode(res);
 		return DecryptedPatient.fromJSON(parsedResJson);
@@ -125,7 +126,7 @@ class PatientPlatformApi {
 				"sdkId": sdkId,
 				"patient": jsonEncode(EncryptedPatient.encode(patient)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method tryDecrypt");
 		final parsedResJson = jsonDecode(res);
 		return Patient.fromJSON(parsedResJson);
@@ -138,7 +139,7 @@ class PatientPlatformApi {
 				"sdkId": sdkId,
 				"patientDtos": jsonEncode(patientDtos.map((x0) => DecryptedPatient.encode(x0)).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method createPatients");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => IdWithRev.fromJSON(x1) ).toList();
@@ -152,7 +153,7 @@ class PatientPlatformApi {
 				"patientId": jsonEncode(patientId),
 				"delegatesWithShareType": jsonEncode(delegatesWithShareType.map((k0, v0) => MapEntry(k0, v0.map((x1) => ShareAllPatientDataOptionsTag.encode(x1)).toList()))),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method shareAllDataOfPatient");
 		final parsedResJson = jsonDecode(res);
 		return ShareAllPatientDataOptionsResult.fromJSON(parsedResJson);
@@ -165,7 +166,7 @@ class PatientPlatformApi {
 				"sdkId": sdkId,
 				"patient": jsonEncode(Patient.encode(patient)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getConfidentialSecretIdsOf");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toSet();
@@ -178,7 +179,7 @@ class PatientPlatformApi {
 				"sdkId": sdkId,
 				"patientId": jsonEncode(patientId),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method forceInitializeExchangeDataToNewlyInvitedPatient");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as bool);
@@ -191,7 +192,7 @@ class PatientPlatformApi {
 				"sdkId": sdkId,
 				"filter": jsonEncode(FilterOptions.encode(filter)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method matchPatientsBy");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toList();
@@ -204,7 +205,7 @@ class PatientPlatformApi {
 				"sdkId": sdkId,
 				"filter": jsonEncode(SortableFilterOptions.encode(filter)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method matchPatientsBySorted");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toList();
@@ -217,7 +218,7 @@ class PatientPlatformApi {
 				"sdkId": sdkId,
 				"sharingWith": jsonEncode(sharingWith.map((k0, v0) => MapEntry(k0, AccessLevel.encode(v0)))),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method ensureEncryptionMetadataForSelfIsInitialized");
 		final parsedResJson = jsonDecode(res);
 		return EncryptedPatient.fromJSON(parsedResJson);
@@ -231,7 +232,7 @@ class PatientPlatformApi {
 				"entityId": jsonEncode(entityId),
 				"rev": jsonEncode(rev),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method deletePatientById");
 		final parsedResJson = jsonDecode(res);
 		return DocIdentifier.fromJSON(parsedResJson);
@@ -244,7 +245,7 @@ class PatientPlatformApi {
 				"sdkId": sdkId,
 				"entityIds": jsonEncode(entityIds.map((x0) => IdWithMandatoryRev.encode(x0)).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method deletePatientsByIds");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => DocIdentifier.fromJSON(x1) ).toList();
@@ -258,7 +259,7 @@ class PatientPlatformApi {
 				"id": jsonEncode(id),
 				"rev": jsonEncode(rev),
 			}
-		);
+		).catchError(convertPlatformException);
 	}
 
 	Future<DocIdentifier> deletePatient(String sdkId, Patient patient) async {
@@ -268,7 +269,7 @@ class PatientPlatformApi {
 				"sdkId": sdkId,
 				"patient": jsonEncode(Patient.encode(patient)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method deletePatient");
 		final parsedResJson = jsonDecode(res);
 		return DocIdentifier.fromJSON(parsedResJson);
@@ -281,7 +282,7 @@ class PatientPlatformApi {
 				"sdkId": sdkId,
 				"patients": jsonEncode(patients.map((x0) => Patient.encode(x0)).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method deletePatients");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => DocIdentifier.fromJSON(x1) ).toList();
@@ -294,7 +295,7 @@ class PatientPlatformApi {
 				"sdkId": sdkId,
 				"patient": jsonEncode(Patient.encode(patient)),
 			}
-		);
+		).catchError(convertPlatformException);
 	}
 
 	Future<EntityAccessInformation> getDataOwnersWithAccessTo(String sdkId, Patient patient) async {
@@ -304,7 +305,7 @@ class PatientPlatformApi {
 				"sdkId": sdkId,
 				"patient": jsonEncode(Patient.encode(patient)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getDataOwnersWithAccessTo");
 		final parsedResJson = jsonDecode(res);
 		return EntityAccessInformation.fromJSON(parsedResJson);
@@ -319,7 +320,7 @@ class PatientPlatformApi {
 				"patient": jsonEncode(DecryptedPatient.encode(patient)),
 				"options": jsonEncode(options == null ? null : PatientShareOptions.encode(options!)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method shareWith");
 		final parsedResJson = jsonDecode(res);
 		return DecryptedPatient.fromJSON(parsedResJson);
@@ -333,7 +334,7 @@ class PatientPlatformApi {
 				"patient": jsonEncode(DecryptedPatient.encode(patient)),
 				"delegates": jsonEncode(delegates.map((k0, v0) => MapEntry(k0, PatientShareOptions.encode(v0)))),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method shareWithMany");
 		final parsedResJson = jsonDecode(res);
 		return DecryptedPatient.fromJSON(parsedResJson);
@@ -346,7 +347,7 @@ class PatientPlatformApi {
 				"sdkId": sdkId,
 				"patient": jsonEncode(DecryptedPatient.encode(patient)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method initializeConfidentialSecretId");
 		final parsedResJson = jsonDecode(res);
 		return DecryptedPatient.fromJSON(parsedResJson);
@@ -359,7 +360,7 @@ class PatientPlatformApi {
 				"sdkId": sdkId,
 				"filter": jsonEncode(FilterOptions.encode(filter)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method filterPatientsBy");
 		final parsedResJson = jsonDecode(res);
 		return PaginatedListIterator(parsedResJson, (x0) => DecryptedPatient.fromJSON(x0));
@@ -372,7 +373,7 @@ class PatientPlatformApi {
 				"sdkId": sdkId,
 				"filter": jsonEncode(SortableFilterOptions.encode(filter)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method filterPatientsBySorted");
 		final parsedResJson = jsonDecode(res);
 		return PaginatedListIterator(parsedResJson, (x0) => DecryptedPatient.fromJSON(x0));
@@ -385,7 +386,7 @@ class PatientPlatformApi {
 				"sdkId": sdkId,
 				"patient": jsonEncode(Patient.encode(patient)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method undeletePatient");
 		final parsedResJson = jsonDecode(res);
 		return Patient.fromJSON(parsedResJson);
@@ -398,7 +399,7 @@ class PatientPlatformApi {
 				"sdkId": sdkId,
 				"entity": jsonEncode(DecryptedPatient.encode(entity)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method modifyPatient");
 		final parsedResJson = jsonDecode(res);
 		return DecryptedPatient.fromJSON(parsedResJson);
@@ -412,7 +413,7 @@ class PatientPlatformApi {
 				"id": jsonEncode(id),
 				"rev": jsonEncode(rev),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method undeletePatientById");
 		final parsedResJson = jsonDecode(res);
 		return DecryptedPatient.fromJSON(parsedResJson);
@@ -425,7 +426,7 @@ class PatientPlatformApi {
 				"sdkId": sdkId,
 				"ids": jsonEncode(ids.map((x0) => IdWithMandatoryRev.encode(x0)).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method undeletePatients");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => DecryptedPatient.fromJSON(x1) ).toList();
@@ -438,7 +439,7 @@ class PatientPlatformApi {
 				"sdkId": sdkId,
 				"entityId": jsonEncode(entityId),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getPatient");
 		final parsedResJson = jsonDecode(res);
 		return DecryptedPatient.fromJSON(parsedResJson);
@@ -452,7 +453,7 @@ class PatientPlatformApi {
 				"patientId": jsonEncode(patientId),
 				"maxMergeDepth": jsonEncode(maxMergeDepth),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getPatientResolvingMerges");
 		final parsedResJson = jsonDecode(res);
 		return DecryptedPatient.fromJSON(parsedResJson);
@@ -465,7 +466,7 @@ class PatientPlatformApi {
 				"sdkId": sdkId,
 				"patientIds": jsonEncode(patientIds.map((x0) => x0).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getPatients");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => DecryptedPatient.fromJSON(x1) ).toList();
@@ -478,7 +479,7 @@ class PatientPlatformApi {
 				"sdkId": sdkId,
 				"patientDtos": jsonEncode(patientDtos.map((x0) => EncryptedPatient.encode(x0)).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method modifyPatients");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => IdWithRev.fromJSON(x1) ).toList();
@@ -492,7 +493,7 @@ class PatientPlatformApi {
 				"from": jsonEncode(Patient.encode(from)),
 				"mergedInto": jsonEncode(DecryptedPatient.encode(mergedInto)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method mergePatients");
 		final parsedResJson = jsonDecode(res);
 		return DecryptedPatient.fromJSON(parsedResJson);
@@ -507,7 +508,7 @@ class PatientPlatformApi {
 				"filter": jsonEncode(FilterOptions.encode(filter)),
 				"subscriptionConfig": jsonEncode(subscriptionConfig == null ? null : EntitySubscriptionConfiguration.encode(subscriptionConfig!)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method subscribeToEvents");
 		final parsedResJson = jsonDecode(res);
 		return EntitySubscription(parsedResJson, (x0) => EncryptedPatient.fromJSON(x0));
@@ -527,7 +528,7 @@ class TryAndRecoverPatientPlatformApi {
 				"patient": jsonEncode(Patient.encode(patient)),
 				"options": jsonEncode(options == null ? null : PatientShareOptions.encode(options!)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method shareWith");
 		final parsedResJson = jsonDecode(res);
 		return Patient.fromJSON(parsedResJson);
@@ -541,7 +542,7 @@ class TryAndRecoverPatientPlatformApi {
 				"patient": jsonEncode(Patient.encode(patient)),
 				"delegates": jsonEncode(delegates.map((k0, v0) => MapEntry(k0, PatientShareOptions.encode(v0)))),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method shareWithMany");
 		final parsedResJson = jsonDecode(res);
 		return Patient.fromJSON(parsedResJson);
@@ -554,7 +555,7 @@ class TryAndRecoverPatientPlatformApi {
 				"sdkId": sdkId,
 				"patient": jsonEncode(Patient.encode(patient)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method initializeConfidentialSecretId");
 		final parsedResJson = jsonDecode(res);
 		return Patient.fromJSON(parsedResJson);
@@ -567,7 +568,7 @@ class TryAndRecoverPatientPlatformApi {
 				"sdkId": sdkId,
 				"filter": jsonEncode(FilterOptions.encode(filter)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method filterPatientsBy");
 		final parsedResJson = jsonDecode(res);
 		return PaginatedListIterator(parsedResJson, (x0) => Patient.fromJSON(x0));
@@ -580,7 +581,7 @@ class TryAndRecoverPatientPlatformApi {
 				"sdkId": sdkId,
 				"filter": jsonEncode(SortableFilterOptions.encode(filter)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method filterPatientsBySorted");
 		final parsedResJson = jsonDecode(res);
 		return PaginatedListIterator(parsedResJson, (x0) => Patient.fromJSON(x0));
@@ -593,7 +594,7 @@ class TryAndRecoverPatientPlatformApi {
 				"sdkId": sdkId,
 				"patient": jsonEncode(Patient.encode(patient)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method undeletePatient");
 		final parsedResJson = jsonDecode(res);
 		return Patient.fromJSON(parsedResJson);
@@ -606,7 +607,7 @@ class TryAndRecoverPatientPlatformApi {
 				"sdkId": sdkId,
 				"entity": jsonEncode(Patient.encode(entity)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method modifyPatient");
 		final parsedResJson = jsonDecode(res);
 		return Patient.fromJSON(parsedResJson);
@@ -620,7 +621,7 @@ class TryAndRecoverPatientPlatformApi {
 				"id": jsonEncode(id),
 				"rev": jsonEncode(rev),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method undeletePatientById");
 		final parsedResJson = jsonDecode(res);
 		return Patient.fromJSON(parsedResJson);
@@ -633,7 +634,7 @@ class TryAndRecoverPatientPlatformApi {
 				"sdkId": sdkId,
 				"ids": jsonEncode(ids.map((x0) => IdWithMandatoryRev.encode(x0)).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method undeletePatients");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => Patient.fromJSON(x1) ).toList();
@@ -646,7 +647,7 @@ class TryAndRecoverPatientPlatformApi {
 				"sdkId": sdkId,
 				"entityId": jsonEncode(entityId),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getPatient");
 		final parsedResJson = jsonDecode(res);
 		return Patient.fromJSON(parsedResJson);
@@ -660,7 +661,7 @@ class TryAndRecoverPatientPlatformApi {
 				"patientId": jsonEncode(patientId),
 				"maxMergeDepth": jsonEncode(maxMergeDepth),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getPatientResolvingMerges");
 		final parsedResJson = jsonDecode(res);
 		return Patient.fromJSON(parsedResJson);
@@ -673,7 +674,7 @@ class TryAndRecoverPatientPlatformApi {
 				"sdkId": sdkId,
 				"patientIds": jsonEncode(patientIds.map((x0) => x0).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getPatients");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => Patient.fromJSON(x1) ).toList();
@@ -686,7 +687,7 @@ class TryAndRecoverPatientPlatformApi {
 				"sdkId": sdkId,
 				"patientDtos": jsonEncode(patientDtos.map((x0) => EncryptedPatient.encode(x0)).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method modifyPatients");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => IdWithRev.fromJSON(x1) ).toList();
@@ -700,7 +701,7 @@ class TryAndRecoverPatientPlatformApi {
 				"from": jsonEncode(Patient.encode(from)),
 				"mergedInto": jsonEncode(Patient.encode(mergedInto)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method mergePatients");
 		final parsedResJson = jsonDecode(res);
 		return Patient.fromJSON(parsedResJson);
@@ -720,7 +721,7 @@ class EncryptedPatientPlatformApi {
 				"patient": jsonEncode(EncryptedPatient.encode(patient)),
 				"options": jsonEncode(options == null ? null : PatientShareOptions.encode(options!)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method shareWith");
 		final parsedResJson = jsonDecode(res);
 		return EncryptedPatient.fromJSON(parsedResJson);
@@ -734,7 +735,7 @@ class EncryptedPatientPlatformApi {
 				"patient": jsonEncode(EncryptedPatient.encode(patient)),
 				"delegates": jsonEncode(delegates.map((k0, v0) => MapEntry(k0, PatientShareOptions.encode(v0)))),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method shareWithMany");
 		final parsedResJson = jsonDecode(res);
 		return EncryptedPatient.fromJSON(parsedResJson);
@@ -747,7 +748,7 @@ class EncryptedPatientPlatformApi {
 				"sdkId": sdkId,
 				"patient": jsonEncode(EncryptedPatient.encode(patient)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method initializeConfidentialSecretId");
 		final parsedResJson = jsonDecode(res);
 		return EncryptedPatient.fromJSON(parsedResJson);
@@ -760,7 +761,7 @@ class EncryptedPatientPlatformApi {
 				"sdkId": sdkId,
 				"filter": jsonEncode(FilterOptions.encode(filter)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method filterPatientsBy");
 		final parsedResJson = jsonDecode(res);
 		return PaginatedListIterator(parsedResJson, (x0) => EncryptedPatient.fromJSON(x0));
@@ -773,7 +774,7 @@ class EncryptedPatientPlatformApi {
 				"sdkId": sdkId,
 				"filter": jsonEncode(SortableFilterOptions.encode(filter)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method filterPatientsBySorted");
 		final parsedResJson = jsonDecode(res);
 		return PaginatedListIterator(parsedResJson, (x0) => EncryptedPatient.fromJSON(x0));
@@ -786,7 +787,7 @@ class EncryptedPatientPlatformApi {
 				"sdkId": sdkId,
 				"patient": jsonEncode(Patient.encode(patient)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method undeletePatient");
 		final parsedResJson = jsonDecode(res);
 		return Patient.fromJSON(parsedResJson);
@@ -799,7 +800,7 @@ class EncryptedPatientPlatformApi {
 				"sdkId": sdkId,
 				"entity": jsonEncode(EncryptedPatient.encode(entity)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method modifyPatient");
 		final parsedResJson = jsonDecode(res);
 		return EncryptedPatient.fromJSON(parsedResJson);
@@ -813,7 +814,7 @@ class EncryptedPatientPlatformApi {
 				"id": jsonEncode(id),
 				"rev": jsonEncode(rev),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method undeletePatientById");
 		final parsedResJson = jsonDecode(res);
 		return EncryptedPatient.fromJSON(parsedResJson);
@@ -826,7 +827,7 @@ class EncryptedPatientPlatformApi {
 				"sdkId": sdkId,
 				"ids": jsonEncode(ids.map((x0) => IdWithMandatoryRev.encode(x0)).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method undeletePatients");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => EncryptedPatient.fromJSON(x1) ).toList();
@@ -839,7 +840,7 @@ class EncryptedPatientPlatformApi {
 				"sdkId": sdkId,
 				"entityId": jsonEncode(entityId),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getPatient");
 		final parsedResJson = jsonDecode(res);
 		return EncryptedPatient.fromJSON(parsedResJson);
@@ -853,7 +854,7 @@ class EncryptedPatientPlatformApi {
 				"patientId": jsonEncode(patientId),
 				"maxMergeDepth": jsonEncode(maxMergeDepth),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getPatientResolvingMerges");
 		final parsedResJson = jsonDecode(res);
 		return EncryptedPatient.fromJSON(parsedResJson);
@@ -866,7 +867,7 @@ class EncryptedPatientPlatformApi {
 				"sdkId": sdkId,
 				"patientIds": jsonEncode(patientIds.map((x0) => x0).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getPatients");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => EncryptedPatient.fromJSON(x1) ).toList();
@@ -879,7 +880,7 @@ class EncryptedPatientPlatformApi {
 				"sdkId": sdkId,
 				"patientDtos": jsonEncode(patientDtos.map((x0) => EncryptedPatient.encode(x0)).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method modifyPatients");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => IdWithRev.fromJSON(x1) ).toList();
@@ -893,7 +894,7 @@ class EncryptedPatientPlatformApi {
 				"from": jsonEncode(Patient.encode(from)),
 				"mergedInto": jsonEncode(EncryptedPatient.encode(mergedInto)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method mergePatients");
 		final parsedResJson = jsonDecode(res);
 		return EncryptedPatient.fromJSON(parsedResJson);

@@ -15,6 +15,7 @@ public object PlaceApiDispatcher {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
   ): Boolean = when(methodName) {
     "getPlace" -> getPlace(parameters, resultCallback)
@@ -25,6 +26,7 @@ public object PlaceApiDispatcher {
   }?.let { true } ?: false
 
   private fun getPlace(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -40,6 +42,7 @@ public object PlaceApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     PlaceApi.createPlace(
       resultCallback,
@@ -52,6 +55,7 @@ public object PlaceApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     PlaceApi.modifyPlace(
       resultCallback,
@@ -61,6 +65,7 @@ public object PlaceApiDispatcher {
   }
 
   private fun deletePlaces(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,

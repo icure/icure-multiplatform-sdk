@@ -9,6 +9,7 @@ class DocumentBasicApiDispatcher {
     resultCallback: @escaping (
       String?,
       String?,
+      String?,
       String?
     ) -> Void
   ) -> Bool {
@@ -43,6 +44,7 @@ class DocumentBasicApiDispatcher {
   private static func matchDocumentsBy(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     DocumentBasicApi.shared.matchDocumentsBy(
@@ -53,6 +55,7 @@ class DocumentBasicApiDispatcher {
   }
 
   private static func matchDocumentsBySorted(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -67,6 +70,7 @@ class DocumentBasicApiDispatcher {
   private static func filterDocumentsBy(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     DocumentBasicApi.shared.filterDocumentsBy(
@@ -79,6 +83,7 @@ class DocumentBasicApiDispatcher {
   private static func filterDocumentsBySorted(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     DocumentBasicApi.shared.filterDocumentsBySorted(
@@ -89,6 +94,7 @@ class DocumentBasicApiDispatcher {
   }
 
   private static func deleteDocumentById(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -104,6 +110,7 @@ class DocumentBasicApiDispatcher {
   private static func deleteDocumentsByIds(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     DocumentBasicApi.shared.deleteDocumentsByIds(
@@ -114,6 +121,7 @@ class DocumentBasicApiDispatcher {
   }
 
   private static func purgeDocumentById(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -129,6 +137,7 @@ class DocumentBasicApiDispatcher {
   private static func deleteDocument(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     DocumentBasicApi.shared.deleteDocument(
@@ -139,6 +148,7 @@ class DocumentBasicApiDispatcher {
   }
 
   private static func deleteDocuments(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -153,6 +163,7 @@ class DocumentBasicApiDispatcher {
   private static func purgeDocument(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     DocumentBasicApi.shared.purgeDocument(
@@ -163,6 +174,7 @@ class DocumentBasicApiDispatcher {
   }
 
   private static func getRawMainAttachment(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -177,6 +189,7 @@ class DocumentBasicApiDispatcher {
   private static func getRawSecondaryAttachment(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     DocumentBasicApi.shared.getRawSecondaryAttachment(
@@ -188,6 +201,7 @@ class DocumentBasicApiDispatcher {
   }
 
   private static func setRawMainAttachment(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -204,6 +218,7 @@ class DocumentBasicApiDispatcher {
   }
 
   private static func setRawSecondaryAttachment(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -223,6 +238,7 @@ class DocumentBasicApiDispatcher {
   private static func deleteMainAttachment(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     DocumentBasicApi.shared.deleteMainAttachment(
@@ -234,6 +250,7 @@ class DocumentBasicApiDispatcher {
   }
 
   private static func deleteSecondaryAttachment(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -250,6 +267,7 @@ class DocumentBasicApiDispatcher {
   private static func undeleteDocumentById(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     DocumentBasicApi.shared.undeleteDocumentById(
@@ -261,6 +279,7 @@ class DocumentBasicApiDispatcher {
   }
 
   private static func undeleteDocument(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -275,6 +294,7 @@ class DocumentBasicApiDispatcher {
   private static func modifyDocument(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     DocumentBasicApi.shared.modifyDocument(
@@ -285,6 +305,7 @@ class DocumentBasicApiDispatcher {
   }
 
   private static func getDocument(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -299,6 +320,7 @@ class DocumentBasicApiDispatcher {
   private static func getDocuments(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     DocumentBasicApi.shared.getDocuments(
@@ -309,6 +331,7 @@ class DocumentBasicApiDispatcher {
   }
 
   private static func modifyDocuments(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?

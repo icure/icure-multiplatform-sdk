@@ -7,15 +7,41 @@ import kotlin.String
 
 // WARNING: This file is auto-generated. If you change it manually, your changes will be lost.
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
+sealed interface SchoolingInfo : Encryptable {
+	public val startDate: Long?
 
-@Serializable
-data class SchoolingInfo(
-	public val startDate: Long? = null,
-	public val endDate: Long? = null,
-	public val school: String? = null,
-	public val typeOfEducation: CodeStub? = null,
-) {
+	public val endDate: Long?
+
+	public val school: String?
+
+	public val typeOfEducation: CodeStub?
+
+	override val encryptedSelf: String?
 	// region SchoolingInfo-SchoolingInfo
 
+	// endregion
+}
+
+@Serializable
+data class DecryptedSchoolingInfo(
+	override val startDate: Long? = null,
+	override val endDate: Long? = null,
+	override val school: String? = null,
+	override val typeOfEducation: CodeStub? = null,
+	override val encryptedSelf: String?,
+) : SchoolingInfo {
+	// region SchoolingInfo-DecryptedSchoolingInfo
+	// endregion
+}
+
+@Serializable
+data class EncryptedSchoolingInfo(
+	override val startDate: Long? = null,
+	override val endDate: Long? = null,
+	override val school: String? = null,
+	override val typeOfEducation: CodeStub? = null,
+	override val encryptedSelf: String?,
+) : SchoolingInfo {
+	// region SchoolingInfo-EncryptedSchoolingInfo
 	// endregion
 }

@@ -9,6 +9,7 @@ class MessageFiltersDispatcher {
     resultCallback: @escaping (
       String?,
       String?,
+      String?,
       String?
     ) -> Void
   ) -> Bool {
@@ -39,6 +40,7 @@ class MessageFiltersDispatcher {
   private static func allMessagesForDataOwner(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     MessageFilters.shared.allMessagesForDataOwner(
@@ -50,6 +52,7 @@ class MessageFiltersDispatcher {
   private static func allMessagesForSelf(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     MessageFilters.shared.allMessagesForSelf(
@@ -58,6 +61,7 @@ class MessageFiltersDispatcher {
   }
 
   private static func byTransportGuidForDataOwner(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -72,6 +76,7 @@ class MessageFiltersDispatcher {
   private static func byTransportGuidForSelf(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     MessageFilters.shared.byTransportGuidForSelf(
@@ -81,6 +86,7 @@ class MessageFiltersDispatcher {
   }
 
   private static func fromAddressForDataOwner(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -95,6 +101,7 @@ class MessageFiltersDispatcher {
   private static func fromAddressForSelf(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     MessageFilters.shared.fromAddressForSelf(
@@ -104,6 +111,7 @@ class MessageFiltersDispatcher {
   }
 
   private static func byPatientsSentDateForDataOwner(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -121,6 +129,7 @@ class MessageFiltersDispatcher {
   private static func byPatientsSentDateForSelf(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     MessageFilters.shared.byPatientsSentDateForSelf(
@@ -133,6 +142,7 @@ class MessageFiltersDispatcher {
   }
 
   private static func byPatientSecretIdsSentDateForDataOwner(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -150,6 +160,7 @@ class MessageFiltersDispatcher {
   private static func byPatientSecretIdsSentDateForSelf(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     MessageFilters.shared.byPatientSecretIdsSentDateForSelf(
@@ -164,6 +175,7 @@ class MessageFiltersDispatcher {
   private static func toAddressForDataOwner(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     MessageFilters.shared.toAddressForDataOwner(
@@ -176,6 +188,7 @@ class MessageFiltersDispatcher {
   private static func toAddressForSelf(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     MessageFilters.shared.toAddressForSelf(
@@ -185,6 +198,7 @@ class MessageFiltersDispatcher {
   }
 
   private static func byTransportGuidSentDateForDataOwner(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -202,6 +216,7 @@ class MessageFiltersDispatcher {
   private static func byTransportGuidSentDateForSelf(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     MessageFilters.shared.byTransportGuidSentDateForSelf(
@@ -216,6 +231,7 @@ class MessageFiltersDispatcher {
   private static func latestByTransportGuidForDataOwner(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     MessageFilters.shared.latestByTransportGuidForDataOwner(
@@ -226,6 +242,7 @@ class MessageFiltersDispatcher {
   }
 
   private static func latestByTransportGuidForSelf(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -239,6 +256,7 @@ class MessageFiltersDispatcher {
   private static func byInvoiceIds(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     MessageFilters.shared.byInvoiceIds(
@@ -248,6 +266,7 @@ class MessageFiltersDispatcher {
   }
 
   private static func byParentIds(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?

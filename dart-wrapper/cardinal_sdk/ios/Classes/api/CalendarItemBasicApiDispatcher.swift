@@ -9,6 +9,7 @@ class CalendarItemBasicApiDispatcher {
     resultCallback: @escaping (
       String?,
       String?,
+      String?,
       String?
     ) -> Void
   ) -> Bool {
@@ -37,6 +38,7 @@ class CalendarItemBasicApiDispatcher {
   private static func matchCalendarItemsBy(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     CalendarItemBasicApi.shared.matchCalendarItemsBy(
@@ -47,6 +49,7 @@ class CalendarItemBasicApiDispatcher {
   }
 
   private static func matchCalendarItemsBySorted(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -61,6 +64,7 @@ class CalendarItemBasicApiDispatcher {
   private static func filterCalendarItemsBy(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     CalendarItemBasicApi.shared.filterCalendarItemsBy(
@@ -73,6 +77,7 @@ class CalendarItemBasicApiDispatcher {
   private static func filterCalendarItemsBySorted(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     CalendarItemBasicApi.shared.filterCalendarItemsBySorted(
@@ -83,6 +88,7 @@ class CalendarItemBasicApiDispatcher {
   }
 
   private static func deleteCalendarItemById(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -98,6 +104,7 @@ class CalendarItemBasicApiDispatcher {
   private static func deleteCalendarItemsByIds(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     CalendarItemBasicApi.shared.deleteCalendarItemsByIds(
@@ -108,6 +115,7 @@ class CalendarItemBasicApiDispatcher {
   }
 
   private static func purgeCalendarItemById(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -123,6 +131,7 @@ class CalendarItemBasicApiDispatcher {
   private static func deleteCalendarItem(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     CalendarItemBasicApi.shared.deleteCalendarItem(
@@ -133,6 +142,7 @@ class CalendarItemBasicApiDispatcher {
   }
 
   private static func deleteCalendarItems(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -147,6 +157,7 @@ class CalendarItemBasicApiDispatcher {
   private static func purgeCalendarItem(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     CalendarItemBasicApi.shared.purgeCalendarItem(
@@ -157,6 +168,7 @@ class CalendarItemBasicApiDispatcher {
   }
 
   private static func undeleteCalendarItemById(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -172,6 +184,7 @@ class CalendarItemBasicApiDispatcher {
   private static func undeleteCalendarItem(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     CalendarItemBasicApi.shared.undeleteCalendarItem(
@@ -182,6 +195,7 @@ class CalendarItemBasicApiDispatcher {
   }
 
   private static func modifyCalendarItem(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -196,6 +210,7 @@ class CalendarItemBasicApiDispatcher {
   private static func getCalendarItem(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     CalendarItemBasicApi.shared.getCalendarItem(
@@ -208,6 +223,7 @@ class CalendarItemBasicApiDispatcher {
   private static func getCalendarItems(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     CalendarItemBasicApi.shared.getCalendarItems(
@@ -218,6 +234,7 @@ class CalendarItemBasicApiDispatcher {
   }
 
   private static func subscribeToEvents(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?

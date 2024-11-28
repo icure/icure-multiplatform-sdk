@@ -28,6 +28,7 @@ public object ContactFilters {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit, dataOwnerIdString: String) {
     val dataOwnerId = fullLanguageInteropJson.decodeFromString(
       String.serializer(),
@@ -47,6 +48,7 @@ public object ContactFilters {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     DartResult.resolve(
       dartResultCallback,
@@ -59,6 +61,7 @@ public object ContactFilters {
 
   public fun byFormIdsForDataOwner(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -89,6 +92,7 @@ public object ContactFilters {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit, formIdsString: String) {
     val formIds = fullLanguageInteropJson.decodeFromString(
       SetSerializer(String.serializer()),
@@ -106,6 +110,7 @@ public object ContactFilters {
 
   public fun byPatientsOpeningDateForDataOwner(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -155,6 +160,7 @@ public object ContactFilters {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     patientsString: String,
     fromString: String,
@@ -192,6 +198,7 @@ public object ContactFilters {
 
   public fun byPatientSecretIdsOpeningDateForDataOwner(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -241,6 +248,7 @@ public object ContactFilters {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     secretIdsString: String,
     fromString: String,
@@ -280,6 +288,7 @@ public object ContactFilters {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit, externalIdString: String) {
     val externalId = fullLanguageInteropJson.decodeFromString(
       String.serializer(),
@@ -296,6 +305,7 @@ public object ContactFilters {
   }
 
   public fun byIdentifiersForSelf(dartResultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -316,6 +326,7 @@ public object ContactFilters {
 
   public fun byIdentifiersForDataOwner(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -344,6 +355,7 @@ public object ContactFilters {
 
   public fun byCodeAndOpeningDateForDataOwner(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -393,6 +405,7 @@ public object ContactFilters {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     codeTypeString: String,
     codeCodeString: String,
@@ -430,6 +443,7 @@ public object ContactFilters {
 
   public fun byTagAndOpeningDateForDataOwner(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -479,6 +493,7 @@ public object ContactFilters {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     dataOwnerIdString: String,
     startDateString: String,
@@ -519,6 +534,7 @@ public object ContactFilters {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     startDateString: String,
     endDateString: String,
@@ -553,6 +569,7 @@ public object ContactFilters {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     tagTypeString: String,
     tagCodeString: String,
@@ -578,6 +595,7 @@ public object ContactFilters {
 
   public fun byServiceTagForDataOwner(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -615,6 +633,7 @@ public object ContactFilters {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     codeTypeString: String,
     codeCodeString: String,
@@ -640,6 +659,7 @@ public object ContactFilters {
 
   public fun byServiceCodeForDataOwner(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -674,6 +694,7 @@ public object ContactFilters {
 
   public fun byTagAndOpeningDateForSelf(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -717,6 +738,7 @@ public object ContactFilters {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     dataOwnerIdString: String,
     patientsString: String,
@@ -744,6 +766,7 @@ public object ContactFilters {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit, patientsString: String) {
     val patients = fullLanguageInteropJson.decodeFromString(
       ListSerializer(PolymorphicSerializer(Patient::class)),
@@ -761,6 +784,7 @@ public object ContactFilters {
 
   public fun byPatientsSecretIdsForDataOwner(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -791,6 +815,7 @@ public object ContactFilters {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit, secretIdsString: String) {
     val secretIds = fullLanguageInteropJson.decodeFromString(
       ListSerializer(String.serializer()),
@@ -807,6 +832,7 @@ public object ContactFilters {
   }
 
   public fun byServiceIds(dartResultCallback: (
+    String?,
     String?,
     String?,
     String?,

@@ -28,6 +28,7 @@ public object ServiceFilters {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit, dataOwnerIdString: String) {
     val dataOwnerId = fullLanguageInteropJson.decodeFromString(
       String.serializer(),
@@ -47,6 +48,7 @@ public object ServiceFilters {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     DartResult.resolve(
       dartResultCallback,
@@ -59,6 +61,7 @@ public object ServiceFilters {
 
   public fun byIdentifiersForDataOwner(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -87,6 +90,7 @@ public object ServiceFilters {
 
   public fun byCodeAndValueDateForDataOwner(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -136,6 +140,7 @@ public object ServiceFilters {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     dataOwnerIdString: String,
     tagTypeString: String,
@@ -182,6 +187,7 @@ public object ServiceFilters {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     dataOwnerIdString: String,
     patientsString: String,
@@ -207,6 +213,7 @@ public object ServiceFilters {
 
   public fun byPatientsSecretIdsForDataOwner(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -238,6 +245,7 @@ public object ServiceFilters {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     dataOwnerIdString: String,
     healthElementIdsString: String,
@@ -265,6 +273,7 @@ public object ServiceFilters {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit, identifiersString: String) {
     val identifiers = fullLanguageInteropJson.decodeFromString(
       ListSerializer(Identifier.serializer()),
@@ -282,6 +291,7 @@ public object ServiceFilters {
 
   public fun byCodeAndValueDateForSelf(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -325,6 +335,7 @@ public object ServiceFilters {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     tagTypeString: String,
     tagCodeString: String,
@@ -364,6 +375,7 @@ public object ServiceFilters {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit, patientsString: String) {
     val patients = fullLanguageInteropJson.decodeFromString(
       ListSerializer(PolymorphicSerializer(Patient::class)),
@@ -380,6 +392,7 @@ public object ServiceFilters {
   }
 
   public fun byPatientsSecretIdsForSelf(dartResultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -402,6 +415,7 @@ public object ServiceFilters {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit, healthElementIdsString: String) {
     val healthElementIds = fullLanguageInteropJson.decodeFromString(
       ListSerializer(String.serializer()),
@@ -418,6 +432,7 @@ public object ServiceFilters {
   }
 
   public fun byIds(dartResultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -440,6 +455,7 @@ public object ServiceFilters {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit, associationIdString: String) {
     val associationId = fullLanguageInteropJson.decodeFromString(
       String.serializer(),
@@ -457,6 +473,7 @@ public object ServiceFilters {
 
   public fun byQualifiedLink(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -485,6 +502,7 @@ public object ServiceFilters {
 
   public fun byPatientsDateForDataOwner(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -534,6 +552,7 @@ public object ServiceFilters {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     patientsString: String,
     fromString: String,
@@ -571,6 +590,7 @@ public object ServiceFilters {
 
   public fun byPatientSecretIdsDateForDataOwner(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -617,6 +637,7 @@ public object ServiceFilters {
 
   public fun byPatientSecretIdsDateForSelf(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,

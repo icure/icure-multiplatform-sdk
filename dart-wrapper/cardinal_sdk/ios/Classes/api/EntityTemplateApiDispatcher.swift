@@ -9,6 +9,7 @@ class EntityTemplateApiDispatcher {
     resultCallback: @escaping (
       String?,
       String?,
+      String?,
       String?
     ) -> Void
   ) -> Bool {
@@ -32,6 +33,7 @@ class EntityTemplateApiDispatcher {
   private static func getEntityTemplate(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     EntityTemplateApi.shared.getEntityTemplate(
@@ -42,6 +44,7 @@ class EntityTemplateApiDispatcher {
   }
 
   private static func createEntityTemplate(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -56,6 +59,7 @@ class EntityTemplateApiDispatcher {
   private static func modifyEntityTemplate(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     EntityTemplateApi.shared.modifyEntityTemplate(
@@ -66,6 +70,7 @@ class EntityTemplateApiDispatcher {
   }
 
   private static func listEntityTemplatesBy(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -83,6 +88,7 @@ class EntityTemplateApiDispatcher {
   private static func listAllEntityTemplatesBy(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     EntityTemplateApi.shared.listAllEntityTemplatesBy(
@@ -95,6 +101,7 @@ class EntityTemplateApiDispatcher {
   }
 
   private static func listEntityTemplatesByKeyword(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -112,6 +119,7 @@ class EntityTemplateApiDispatcher {
   private static func findAllEntityTemplatesByKeyword(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     EntityTemplateApi.shared.findAllEntityTemplatesByKeyword(
@@ -126,6 +134,7 @@ class EntityTemplateApiDispatcher {
   private static func getEntityTemplates(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     EntityTemplateApi.shared.getEntityTemplates(
@@ -136,6 +145,7 @@ class EntityTemplateApiDispatcher {
   }
 
   private static func modifyEntityTemplates(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -150,6 +160,7 @@ class EntityTemplateApiDispatcher {
   private static func createEntityTemplates(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     EntityTemplateApi.shared.createEntityTemplates(
@@ -160,6 +171,7 @@ class EntityTemplateApiDispatcher {
   }
 
   private static func deleteEntityTemplates(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?

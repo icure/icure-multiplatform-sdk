@@ -12,9 +12,9 @@ object SubscriptionPlugin : MethodChannel.MethodCallHandler {
 			!dispatch(
 				methodName = call.method,
 				parameters = (call.arguments as Map<String, String>?).orEmpty()
-			) { success, errorCode, errorMessage ->
+			) { success, errorCode, errorMessage, errorDetail ->
 				if (errorCode != null)
-					result.error(errorCode, errorMessage, null)
+					result.error(errorCode, errorMessage, errorDetail)
 				else
 					result.success(success)
 			}
@@ -25,6 +25,7 @@ object SubscriptionPlugin : MethodChannel.MethodCallHandler {
 		methodName: String,
 		parameters: Map<String, String>,
 		resultCallback: (
+			String?,
 			String?,
 			String?,
 			String?,
@@ -41,6 +42,7 @@ object SubscriptionPlugin : MethodChannel.MethodCallHandler {
 		String?,
 		String?,
 		String?,
+		String?,
 	) -> Unit) {
 		EntitySubscription.close(
 			resultCallback,
@@ -49,6 +51,7 @@ object SubscriptionPlugin : MethodChannel.MethodCallHandler {
 	}
 
 	private fun getCloseReason(parameters: Map<String, String>, resultCallback: (
+		String?,
 		String?,
 		String?,
 		String?,
@@ -63,6 +66,7 @@ object SubscriptionPlugin : MethodChannel.MethodCallHandler {
 		String?,
 		String?,
 		String?,
+		String?,
 	) -> Unit) {
 		EntitySubscription.getEvent(
 			resultCallback,
@@ -71,6 +75,7 @@ object SubscriptionPlugin : MethodChannel.MethodCallHandler {
 	}
 
 	private fun waitForEvent(parameters: Map<String, String>, resultCallback: (
+		String?,
 		String?,
 		String?,
 		String?,
