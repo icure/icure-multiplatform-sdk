@@ -76,6 +76,7 @@ class SubscriptionPlugin {
 	) {
 		EntitySubscription.shared.waitForEvent(
 			dartResultCallback: resultCallback,
+			cancellationToken: Int64(parameters["cancellationToken"]!),
 			subscriptionId: parameters["subscriptionId"]!,
 			timeoutString: parameters["timeout"]!
 		)

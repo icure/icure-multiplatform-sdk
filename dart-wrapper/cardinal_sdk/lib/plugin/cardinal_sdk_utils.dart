@@ -1,8 +1,8 @@
-import 'dart:convert';
 import 'package:flutter/services.dart';
 
 abstract class CardinalSdkPlatformUtilsPlugin {
   Future<void> releasePlatformResource(String resourceId);
+  Future<void> cancelJob(int cancellationToken);
 }
 
 class CardinalSdkMethodChannelUtils extends CardinalSdkPlatformUtilsPlugin {
@@ -16,6 +16,17 @@ class CardinalSdkMethodChannelUtils extends CardinalSdkPlatformUtilsPlugin {
         'releasePlatformResource',
         {
           "resourceId": resourceId
+        }
+    );
+    return;
+  }
+
+  @override
+  Future<void> cancelJob(int cancellationToken) async {
+    await _methodChannel.invokeMethod<String>(
+        'cancelJob',
+        {
+          "cancellationToken": cancellationToken
         }
     );
     return;

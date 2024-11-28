@@ -1,5 +1,6 @@
 package com.icure.cardinal_sdk
 
+import com.icure.cardinal.sdk.dart.utils.ApiScope
 import com.icure.cardinal.sdk.dart.utils.ResourceUtils
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
@@ -31,6 +32,7 @@ object UtilsPlugin : MethodChannel.MethodCallHandler {
 		) -> Unit,
 	): Boolean = when(methodName) {
 		"releasePlatformResource" -> releasePlatformResource(parameters, resultCallback)
+		"cancelJob" -> cancelJob(parameters, resultCallback)
 		else -> null
 	}?.let { true } ?: false
 
@@ -45,4 +47,14 @@ object UtilsPlugin : MethodChannel.MethodCallHandler {
 		)
 	}
 
+	private fun cancelJob(parameters: Map<String, String>, resultCallback: (
+		String?,
+		String?,
+		String?,
+	) -> Unit) {
+		ApiScope.cancel(
+			resultCallback,
+			parameters.getValue("cancellationToken").toLong()
+		)
+	}
 }

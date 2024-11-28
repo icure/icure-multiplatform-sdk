@@ -77,6 +77,7 @@ object SubscriptionPlugin : MethodChannel.MethodCallHandler {
 	) -> Unit) {
 		EntitySubscription.waitForEvent(
 			resultCallback,
+			parameters.getValue("cancellationToken").toLong(),
 			parameters.getValue("subscriptionId"),
 			parameters.getValue("timeout")
 		)
