@@ -21,6 +21,7 @@ public object CryptoApi {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit, sdkId: String) {
     ApiScope.execute(
       dartResultCallback,
@@ -31,6 +32,7 @@ public object CryptoApi {
 
   public fun currentDataOwnerKeys(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,

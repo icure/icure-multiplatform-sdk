@@ -30,6 +30,7 @@ public object DocumentBasicApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     filterString: String,
@@ -52,6 +53,7 @@ public object DocumentBasicApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     filterString: String,
@@ -71,6 +73,7 @@ public object DocumentBasicApi {
 
   public fun filterDocumentsBy(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -100,6 +103,7 @@ public object DocumentBasicApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     filterString: String,
@@ -124,6 +128,7 @@ public object DocumentBasicApi {
 
   public fun deleteDocumentById(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -155,6 +160,7 @@ public object DocumentBasicApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     entityIdsString: String,
@@ -174,6 +180,7 @@ public object DocumentBasicApi {
 
   public fun purgeDocumentById(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -205,6 +212,7 @@ public object DocumentBasicApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     documentString: String,
@@ -224,6 +232,7 @@ public object DocumentBasicApi {
 
   public fun deleteDocuments(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -249,6 +258,7 @@ public object DocumentBasicApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     documentString: String,
@@ -271,6 +281,7 @@ public object DocumentBasicApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     documentIdString: String,
@@ -290,6 +301,7 @@ public object DocumentBasicApi {
 
   public fun getRawSecondaryAttachment(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -318,6 +330,7 @@ public object DocumentBasicApi {
 
   public fun setRawMainAttachment(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -364,6 +377,7 @@ public object DocumentBasicApi {
 
   public fun setRawSecondaryAttachment(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -419,6 +433,7 @@ public object DocumentBasicApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     entityIdString: String,
@@ -444,6 +459,7 @@ public object DocumentBasicApi {
 
   public fun deleteSecondaryAttachment(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -481,6 +497,7 @@ public object DocumentBasicApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     idString: String,
@@ -509,6 +526,7 @@ public object DocumentBasicApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     documentString: String,
@@ -528,6 +546,7 @@ public object DocumentBasicApi {
 
   public fun modifyDocument(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -553,6 +572,7 @@ public object DocumentBasicApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     entityIdString: String,
@@ -575,6 +595,7 @@ public object DocumentBasicApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     entityIdsString: String,
@@ -594,6 +615,7 @@ public object DocumentBasicApi {
 
   public fun modifyDocuments(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,

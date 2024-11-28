@@ -15,6 +15,7 @@ public object ContactBasicApiDispatcher {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
   ): Boolean = when(methodName) {
     "matchContactsBy" -> matchContactsBy(parameters, resultCallback)
@@ -49,6 +50,7 @@ public object ContactBasicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     ContactBasicApi.matchContactsBy(
       resultCallback,
@@ -58,6 +60,7 @@ public object ContactBasicApiDispatcher {
   }
 
   private fun matchServicesBy(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -73,6 +76,7 @@ public object ContactBasicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     ContactBasicApi.matchContactsBySorted(
       resultCallback,
@@ -82,6 +86,7 @@ public object ContactBasicApiDispatcher {
   }
 
   private fun matchServicesBySorted(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -97,6 +102,7 @@ public object ContactBasicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     ContactBasicApi.filterContactsBy(
       resultCallback,
@@ -106,6 +112,7 @@ public object ContactBasicApiDispatcher {
   }
 
   private fun filterServicesBy(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -121,6 +128,7 @@ public object ContactBasicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     ContactBasicApi.filterContactsBySorted(
       resultCallback,
@@ -130,6 +138,7 @@ public object ContactBasicApiDispatcher {
   }
 
   private fun filterServicesBySorted(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -146,6 +155,7 @@ public object ContactBasicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     ContactBasicApi.subscribeToServiceCreateOrUpdateEvents(
       resultCallback,
@@ -156,6 +166,7 @@ public object ContactBasicApiDispatcher {
   }
 
   private fun deleteContactById(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -172,6 +183,7 @@ public object ContactBasicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     ContactBasicApi.deleteContactsByIds(
       resultCallback,
@@ -181,6 +193,7 @@ public object ContactBasicApiDispatcher {
   }
 
   private fun purgeContactById(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -197,6 +210,7 @@ public object ContactBasicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     ContactBasicApi.deleteContact(
       resultCallback,
@@ -206,6 +220,7 @@ public object ContactBasicApiDispatcher {
   }
 
   private fun deleteContacts(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -221,6 +236,7 @@ public object ContactBasicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     ContactBasicApi.purgeContact(
       resultCallback,
@@ -230,6 +246,7 @@ public object ContactBasicApiDispatcher {
   }
 
   private fun getServiceCodesOccurrences(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -246,6 +263,7 @@ public object ContactBasicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     ContactBasicApi.undeleteContactById(
       resultCallback,
@@ -256,6 +274,7 @@ public object ContactBasicApiDispatcher {
   }
 
   private fun undeleteContact(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -271,6 +290,7 @@ public object ContactBasicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     ContactBasicApi.modifyContact(
       resultCallback,
@@ -280,6 +300,7 @@ public object ContactBasicApiDispatcher {
   }
 
   private fun modifyContacts(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -295,6 +316,7 @@ public object ContactBasicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     ContactBasicApi.getContact(
       resultCallback,
@@ -304,6 +326,7 @@ public object ContactBasicApiDispatcher {
   }
 
   private fun getContacts(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -319,6 +342,7 @@ public object ContactBasicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     ContactBasicApi.getService(
       resultCallback,
@@ -331,6 +355,7 @@ public object ContactBasicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     ContactBasicApi.getServices(
       resultCallback,
@@ -340,6 +365,7 @@ public object ContactBasicApiDispatcher {
   }
 
   private fun subscribeToEvents(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,

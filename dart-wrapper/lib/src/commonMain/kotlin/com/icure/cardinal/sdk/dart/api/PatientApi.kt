@@ -43,6 +43,7 @@ public object PatientApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     patientString: String,
@@ -62,6 +63,7 @@ public object PatientApi {
 
   public fun getEncryptionKeysOf(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -87,6 +89,7 @@ public object PatientApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     patientString: String,
@@ -106,6 +109,7 @@ public object PatientApi {
 
   public fun withEncryptionMetadata(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -143,6 +147,7 @@ public object PatientApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     patientString: String,
@@ -162,6 +167,7 @@ public object PatientApi {
 
   public fun createDelegationDeAnonymizationMetadata(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -193,6 +199,7 @@ public object PatientApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     patientString: String,
@@ -212,6 +219,7 @@ public object PatientApi {
 
   public fun tryDecrypt(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -237,6 +245,7 @@ public object PatientApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     patientDtosString: String,
@@ -256,6 +265,7 @@ public object PatientApi {
 
   public fun shareAllDataOfPatient(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -288,6 +298,7 @@ public object PatientApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     patientString: String,
@@ -307,6 +318,7 @@ public object PatientApi {
 
   public fun forceInitializeExchangeDataToNewlyInvitedPatient(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -332,6 +344,7 @@ public object PatientApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     filterString: String,
@@ -351,6 +364,7 @@ public object PatientApi {
 
   public fun matchPatientsBySorted(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -376,6 +390,7 @@ public object PatientApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     sharingWithString: String,
@@ -395,6 +410,7 @@ public object PatientApi {
 
   public fun deletePatientById(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -426,6 +442,7 @@ public object PatientApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     entityIdsString: String,
@@ -445,6 +462,7 @@ public object PatientApi {
 
   public fun purgePatientById(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -476,6 +494,7 @@ public object PatientApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     patientString: String,
@@ -495,6 +514,7 @@ public object PatientApi {
 
   public fun deletePatients(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -520,6 +540,7 @@ public object PatientApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     patientString: String,
@@ -542,6 +563,7 @@ public object PatientApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     patientString: String,
@@ -561,6 +583,7 @@ public object PatientApi {
 
   public fun shareWith(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -598,6 +621,7 @@ public object PatientApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     patientString: String,
@@ -626,6 +650,7 @@ public object PatientApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     patientString: String,
@@ -645,6 +670,7 @@ public object PatientApi {
 
   public fun filterPatientsBy(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -674,6 +700,7 @@ public object PatientApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     filterString: String,
@@ -700,6 +727,7 @@ public object PatientApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     patientString: String,
@@ -722,6 +750,7 @@ public object PatientApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     entityString: String,
@@ -741,6 +770,7 @@ public object PatientApi {
 
   public fun undeletePatientById(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -772,6 +802,7 @@ public object PatientApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     idsString: String,
@@ -794,6 +825,7 @@ public object PatientApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     entityIdString: String,
@@ -813,6 +845,7 @@ public object PatientApi {
 
   public fun getPatientResolvingMerges(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -844,6 +877,7 @@ public object PatientApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     patientIdsString: String,
@@ -866,6 +900,7 @@ public object PatientApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     patientDtosString: String,
@@ -885,6 +920,7 @@ public object PatientApi {
 
   public fun mergePatients(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -913,6 +949,7 @@ public object PatientApi {
 
   public fun subscribeToEvents(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -956,6 +993,7 @@ public object PatientApi {
         String?,
         String?,
         String?,
+        String?,
       ) -> Unit,
       sdkId: String,
       delegateIdString: String,
@@ -990,6 +1028,7 @@ public object PatientApi {
         String?,
         String?,
         String?,
+        String?,
       ) -> Unit,
       sdkId: String,
       patientString: String,
@@ -1018,6 +1057,7 @@ public object PatientApi {
         String?,
         String?,
         String?,
+        String?,
       ) -> Unit,
       sdkId: String,
       patientString: String,
@@ -1037,6 +1077,7 @@ public object PatientApi {
 
     public fun filterPatientsBy(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -1067,6 +1108,7 @@ public object PatientApi {
         String?,
         String?,
         String?,
+        String?,
       ) -> Unit,
       sdkId: String,
       filterString: String,
@@ -1094,6 +1136,7 @@ public object PatientApi {
         String?,
         String?,
         String?,
+        String?,
       ) -> Unit,
       sdkId: String,
       patientString: String,
@@ -1116,6 +1159,7 @@ public object PatientApi {
         String?,
         String?,
         String?,
+        String?,
       ) -> Unit,
       sdkId: String,
       entityString: String,
@@ -1135,6 +1179,7 @@ public object PatientApi {
 
     public fun undeletePatientById(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -1166,6 +1211,7 @@ public object PatientApi {
         String?,
         String?,
         String?,
+        String?,
       ) -> Unit,
       sdkId: String,
       idsString: String,
@@ -1188,6 +1234,7 @@ public object PatientApi {
         String?,
         String?,
         String?,
+        String?,
       ) -> Unit,
       sdkId: String,
       entityIdString: String,
@@ -1207,6 +1254,7 @@ public object PatientApi {
 
     public fun getPatientResolvingMerges(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -1238,6 +1286,7 @@ public object PatientApi {
         String?,
         String?,
         String?,
+        String?,
       ) -> Unit,
       sdkId: String,
       patientIdsString: String,
@@ -1260,6 +1309,7 @@ public object PatientApi {
         String?,
         String?,
         String?,
+        String?,
       ) -> Unit,
       sdkId: String,
       patientDtosString: String,
@@ -1279,6 +1329,7 @@ public object PatientApi {
 
     public fun mergePatients(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -1310,6 +1361,7 @@ public object PatientApi {
   public object tryAndRecover {
     public fun shareWith(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -1347,6 +1399,7 @@ public object PatientApi {
         String?,
         String?,
         String?,
+        String?,
       ) -> Unit,
       sdkId: String,
       patientString: String,
@@ -1375,6 +1428,7 @@ public object PatientApi {
         String?,
         String?,
         String?,
+        String?,
       ) -> Unit,
       sdkId: String,
       patientString: String,
@@ -1394,6 +1448,7 @@ public object PatientApi {
 
     public fun filterPatientsBy(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -1424,6 +1479,7 @@ public object PatientApi {
         String?,
         String?,
         String?,
+        String?,
       ) -> Unit,
       sdkId: String,
       filterString: String,
@@ -1451,6 +1507,7 @@ public object PatientApi {
         String?,
         String?,
         String?,
+        String?,
       ) -> Unit,
       sdkId: String,
       patientString: String,
@@ -1473,6 +1530,7 @@ public object PatientApi {
         String?,
         String?,
         String?,
+        String?,
       ) -> Unit,
       sdkId: String,
       entityString: String,
@@ -1492,6 +1550,7 @@ public object PatientApi {
 
     public fun undeletePatientById(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -1523,6 +1582,7 @@ public object PatientApi {
         String?,
         String?,
         String?,
+        String?,
       ) -> Unit,
       sdkId: String,
       idsString: String,
@@ -1545,6 +1605,7 @@ public object PatientApi {
         String?,
         String?,
         String?,
+        String?,
       ) -> Unit,
       sdkId: String,
       entityIdString: String,
@@ -1564,6 +1625,7 @@ public object PatientApi {
 
     public fun getPatientResolvingMerges(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -1595,6 +1657,7 @@ public object PatientApi {
         String?,
         String?,
         String?,
+        String?,
       ) -> Unit,
       sdkId: String,
       patientIdsString: String,
@@ -1617,6 +1680,7 @@ public object PatientApi {
         String?,
         String?,
         String?,
+        String?,
       ) -> Unit,
       sdkId: String,
       patientDtosString: String,
@@ -1636,6 +1700,7 @@ public object PatientApi {
 
     public fun mergePatients(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,

@@ -9,6 +9,7 @@ class TopicApiDispatcher {
     resultCallback: @escaping (
       String?,
       String?,
+      String?,
       String?
     ) -> Void
   ) -> Bool {
@@ -71,6 +72,7 @@ class TopicApiDispatcher {
   private static func createTopic(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     TopicApi.shared.createTopic(
@@ -81,6 +83,7 @@ class TopicApiDispatcher {
   }
 
   private static func withEncryptionMetadata(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -99,6 +102,7 @@ class TopicApiDispatcher {
   private static func getEncryptionKeysOf(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     TopicApi.shared.getEncryptionKeysOf(
@@ -109,6 +113,7 @@ class TopicApiDispatcher {
   }
 
   private static func hasWriteAccess(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -123,6 +128,7 @@ class TopicApiDispatcher {
   private static func decryptPatientIdOf(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     TopicApi.shared.decryptPatientIdOf(
@@ -133,6 +139,7 @@ class TopicApiDispatcher {
   }
 
   private static func createDelegationDeAnonymizationMetadata(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -148,6 +155,7 @@ class TopicApiDispatcher {
   private static func decrypt(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     TopicApi.shared.decrypt(
@@ -158,6 +166,7 @@ class TopicApiDispatcher {
   }
 
   private static func tryDecrypt(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -172,6 +181,7 @@ class TopicApiDispatcher {
   private static func matchTopicsBy(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     TopicApi.shared.matchTopicsBy(
@@ -184,6 +194,7 @@ class TopicApiDispatcher {
   private static func matchTopicsBySorted(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     TopicApi.shared.matchTopicsBySorted(
@@ -194,6 +205,7 @@ class TopicApiDispatcher {
   }
 
   private static func deleteTopicById(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -209,6 +221,7 @@ class TopicApiDispatcher {
   private static func deleteTopicsByIds(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     TopicApi.shared.deleteTopicsByIds(
@@ -219,6 +232,7 @@ class TopicApiDispatcher {
   }
 
   private static func purgeTopicById(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -234,6 +248,7 @@ class TopicApiDispatcher {
   private static func deleteTopic(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     TopicApi.shared.deleteTopic(
@@ -244,6 +259,7 @@ class TopicApiDispatcher {
   }
 
   private static func deleteTopics(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -258,6 +274,7 @@ class TopicApiDispatcher {
   private static func purgeTopic(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     TopicApi.shared.purgeTopic(
@@ -268,6 +285,7 @@ class TopicApiDispatcher {
   }
 
   private static func shareWith(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -284,6 +302,7 @@ class TopicApiDispatcher {
   private static func shareWithMany(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     TopicApi.shared.shareWithMany(
@@ -295,6 +314,7 @@ class TopicApiDispatcher {
   }
 
   private static func filterTopicsBy(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -309,6 +329,7 @@ class TopicApiDispatcher {
   private static func filterTopicsBySorted(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     TopicApi.shared.filterTopicsBySorted(
@@ -319,6 +340,7 @@ class TopicApiDispatcher {
   }
 
   private static func undeleteTopic(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -333,6 +355,7 @@ class TopicApiDispatcher {
   private static func modifyTopic(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     TopicApi.shared.modifyTopic(
@@ -343,6 +366,7 @@ class TopicApiDispatcher {
   }
 
   private static func undeleteTopicById(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -358,6 +382,7 @@ class TopicApiDispatcher {
   private static func getTopic(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     TopicApi.shared.getTopic(
@@ -370,6 +395,7 @@ class TopicApiDispatcher {
   private static func getTopics(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     TopicApi.shared.getTopics(
@@ -380,6 +406,7 @@ class TopicApiDispatcher {
   }
 
   private static func addParticipant(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -396,6 +423,7 @@ class TopicApiDispatcher {
   private static func removeParticipant(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     TopicApi.shared.removeParticipant(
@@ -407,6 +435,7 @@ class TopicApiDispatcher {
   }
 
   private static func subscribeToEvents(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -423,6 +452,7 @@ class TopicApiDispatcher {
   private static func encrypted_shareWith(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     TopicApi.encrypted.shared.shareWith(
@@ -435,6 +465,7 @@ class TopicApiDispatcher {
   }
 
   private static func encrypted_shareWithMany(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -450,6 +481,7 @@ class TopicApiDispatcher {
   private static func encrypted_filterTopicsBy(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     TopicApi.encrypted.shared.filterTopicsBy(
@@ -460,6 +492,7 @@ class TopicApiDispatcher {
   }
 
   private static func encrypted_filterTopicsBySorted(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -474,6 +507,7 @@ class TopicApiDispatcher {
   private static func encrypted_undeleteTopic(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     TopicApi.encrypted.shared.undeleteTopic(
@@ -486,6 +520,7 @@ class TopicApiDispatcher {
   private static func encrypted_modifyTopic(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     TopicApi.encrypted.shared.modifyTopic(
@@ -496,6 +531,7 @@ class TopicApiDispatcher {
   }
 
   private static func encrypted_undeleteTopicById(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -511,6 +547,7 @@ class TopicApiDispatcher {
   private static func encrypted_getTopic(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     TopicApi.encrypted.shared.getTopic(
@@ -523,6 +560,7 @@ class TopicApiDispatcher {
   private static func encrypted_getTopics(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     TopicApi.encrypted.shared.getTopics(
@@ -533,6 +571,7 @@ class TopicApiDispatcher {
   }
 
   private static func encrypted_addParticipant(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -549,6 +588,7 @@ class TopicApiDispatcher {
   private static func encrypted_removeParticipant(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     TopicApi.encrypted.shared.removeParticipant(
@@ -560,6 +600,7 @@ class TopicApiDispatcher {
   }
 
   private static func tryAndRecover_shareWith(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -576,6 +617,7 @@ class TopicApiDispatcher {
   private static func tryAndRecover_shareWithMany(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     TopicApi.tryAndRecover.shared.shareWithMany(
@@ -587,6 +629,7 @@ class TopicApiDispatcher {
   }
 
   private static func tryAndRecover_filterTopicsBy(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -601,6 +644,7 @@ class TopicApiDispatcher {
   private static func tryAndRecover_filterTopicsBySorted(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     TopicApi.tryAndRecover.shared.filterTopicsBySorted(
@@ -611,6 +655,7 @@ class TopicApiDispatcher {
   }
 
   private static func tryAndRecover_undeleteTopic(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -625,6 +670,7 @@ class TopicApiDispatcher {
   private static func tryAndRecover_modifyTopic(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     TopicApi.tryAndRecover.shared.modifyTopic(
@@ -635,6 +681,7 @@ class TopicApiDispatcher {
   }
 
   private static func tryAndRecover_undeleteTopicById(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -650,6 +697,7 @@ class TopicApiDispatcher {
   private static func tryAndRecover_getTopic(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     TopicApi.tryAndRecover.shared.getTopic(
@@ -660,6 +708,7 @@ class TopicApiDispatcher {
   }
 
   private static func tryAndRecover_getTopics(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -674,6 +723,7 @@ class TopicApiDispatcher {
   private static func tryAndRecover_addParticipant(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     TopicApi.tryAndRecover.shared.addParticipant(
@@ -686,6 +736,7 @@ class TopicApiDispatcher {
   }
 
   private static func tryAndRecover_removeParticipant(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?

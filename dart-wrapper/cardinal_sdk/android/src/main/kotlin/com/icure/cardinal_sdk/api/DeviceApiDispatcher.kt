@@ -15,6 +15,7 @@ public object DeviceApiDispatcher {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
   ): Boolean = when(methodName) {
     "getDevice" -> getDevice(parameters, resultCallback)
@@ -47,6 +48,7 @@ public object DeviceApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     DeviceApi.getDevice(
       resultCallback,
@@ -56,6 +58,7 @@ public object DeviceApiDispatcher {
   }
 
   private fun getDevices(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -71,6 +74,7 @@ public object DeviceApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     DeviceApi.createDevice(
       resultCallback,
@@ -80,6 +84,7 @@ public object DeviceApiDispatcher {
   }
 
   private fun modifyDevice(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -95,6 +100,7 @@ public object DeviceApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     DeviceApi.createDevices(
       resultCallback,
@@ -104,6 +110,7 @@ public object DeviceApiDispatcher {
   }
 
   private fun modifyDevices(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -119,6 +126,7 @@ public object DeviceApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     DeviceApi.filterDevicesBy(
       resultCallback,
@@ -128,6 +136,7 @@ public object DeviceApiDispatcher {
   }
 
   private fun filterDevicesBySorted(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -143,6 +152,7 @@ public object DeviceApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     DeviceApi.matchDevicesBy(
       resultCallback,
@@ -155,6 +165,7 @@ public object DeviceApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     DeviceApi.matchDevicesBySorted(
       resultCallback,
@@ -164,6 +175,7 @@ public object DeviceApiDispatcher {
   }
 
   private fun deleteDeviceById(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -180,6 +192,7 @@ public object DeviceApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     DeviceApi.deleteDevicesByIds(
       resultCallback,
@@ -189,6 +202,7 @@ public object DeviceApiDispatcher {
   }
 
   private fun purgeDeviceById(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -205,6 +219,7 @@ public object DeviceApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     DeviceApi.undeleteDeviceById(
       resultCallback,
@@ -215,6 +230,7 @@ public object DeviceApiDispatcher {
   }
 
   private fun deleteDevice(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -230,6 +246,7 @@ public object DeviceApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     DeviceApi.deleteDevices(
       resultCallback,
@@ -239,6 +256,7 @@ public object DeviceApiDispatcher {
   }
 
   private fun purgeDevice(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -254,6 +272,7 @@ public object DeviceApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     DeviceApi.undeleteDevice(
       resultCallback,
@@ -263,6 +282,7 @@ public object DeviceApiDispatcher {
   }
 
   private fun getDevicesInGroup(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -279,6 +299,7 @@ public object DeviceApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     DeviceApi.modifyDeviceInGroup(
       resultCallback,
@@ -289,6 +310,7 @@ public object DeviceApiDispatcher {
   }
 
   private fun createDeviceInGroup(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -305,6 +327,7 @@ public object DeviceApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     DeviceApi.deleteDevicesInGroup(
       resultCallback,
@@ -315,6 +338,7 @@ public object DeviceApiDispatcher {
   }
 
   private fun subscribeToEvents(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,

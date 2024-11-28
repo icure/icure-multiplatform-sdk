@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:cardinal_sdk/filters/filter_options.dart';
 import 'package:cardinal_sdk/model/topic.dart';
 import 'dart:convert';
+import 'package:cardinal_sdk/utils/internal/platform_exception_convertion.dart';
 import 'package:cardinal_sdk/utils/pagination/paginated_list_iterator.dart';
 import 'package:cardinal_sdk/model/couchdb/doc_identifier.dart';
 import 'package:cardinal_sdk/model/id_with_mandatory_rev.dart';
@@ -23,7 +24,7 @@ class TopicBasicPlatformApi {
 				"sdkId": sdkId,
 				"filter": jsonEncode(BaseFilterOptions.encode(filter)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method matchTopicsBy");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toList();
@@ -36,7 +37,7 @@ class TopicBasicPlatformApi {
 				"sdkId": sdkId,
 				"filter": jsonEncode(BaseSortableFilterOptions.encode(filter)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method matchTopicsBySorted");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toList();
@@ -49,7 +50,7 @@ class TopicBasicPlatformApi {
 				"sdkId": sdkId,
 				"filter": jsonEncode(BaseFilterOptions.encode(filter)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method filterTopicsBy");
 		final parsedResJson = jsonDecode(res);
 		return PaginatedListIterator(parsedResJson, (x0) => EncryptedTopic.fromJSON(x0));
@@ -62,7 +63,7 @@ class TopicBasicPlatformApi {
 				"sdkId": sdkId,
 				"filter": jsonEncode(BaseSortableFilterOptions.encode(filter)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method filterTopicsBySorted");
 		final parsedResJson = jsonDecode(res);
 		return PaginatedListIterator(parsedResJson, (x0) => EncryptedTopic.fromJSON(x0));
@@ -76,7 +77,7 @@ class TopicBasicPlatformApi {
 				"entityId": jsonEncode(entityId),
 				"rev": jsonEncode(rev),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method deleteTopicById");
 		final parsedResJson = jsonDecode(res);
 		return DocIdentifier.fromJSON(parsedResJson);
@@ -89,7 +90,7 @@ class TopicBasicPlatformApi {
 				"sdkId": sdkId,
 				"entityIds": jsonEncode(entityIds.map((x0) => IdWithMandatoryRev.encode(x0)).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method deleteTopicsByIds");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => DocIdentifier.fromJSON(x1) ).toList();
@@ -103,7 +104,7 @@ class TopicBasicPlatformApi {
 				"id": jsonEncode(id),
 				"rev": jsonEncode(rev),
 			}
-		);
+		).catchError(convertPlatformException);
 	}
 
 	Future<DocIdentifier> deleteTopic(String sdkId, Topic topic) async {
@@ -113,7 +114,7 @@ class TopicBasicPlatformApi {
 				"sdkId": sdkId,
 				"topic": jsonEncode(Topic.encode(topic)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method deleteTopic");
 		final parsedResJson = jsonDecode(res);
 		return DocIdentifier.fromJSON(parsedResJson);
@@ -126,7 +127,7 @@ class TopicBasicPlatformApi {
 				"sdkId": sdkId,
 				"topics": jsonEncode(topics.map((x0) => Topic.encode(x0)).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method deleteTopics");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => DocIdentifier.fromJSON(x1) ).toList();
@@ -139,7 +140,7 @@ class TopicBasicPlatformApi {
 				"sdkId": sdkId,
 				"topic": jsonEncode(Topic.encode(topic)),
 			}
-		);
+		).catchError(convertPlatformException);
 	}
 
 	Future<Topic> undeleteTopic(String sdkId, Topic topic) async {
@@ -149,7 +150,7 @@ class TopicBasicPlatformApi {
 				"sdkId": sdkId,
 				"topic": jsonEncode(Topic.encode(topic)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method undeleteTopic");
 		final parsedResJson = jsonDecode(res);
 		return Topic.fromJSON(parsedResJson);
@@ -162,7 +163,7 @@ class TopicBasicPlatformApi {
 				"sdkId": sdkId,
 				"entity": jsonEncode(EncryptedTopic.encode(entity)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method modifyTopic");
 		final parsedResJson = jsonDecode(res);
 		return EncryptedTopic.fromJSON(parsedResJson);
@@ -176,7 +177,7 @@ class TopicBasicPlatformApi {
 				"id": jsonEncode(id),
 				"rev": jsonEncode(rev),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method undeleteTopicById");
 		final parsedResJson = jsonDecode(res);
 		return EncryptedTopic.fromJSON(parsedResJson);
@@ -189,7 +190,7 @@ class TopicBasicPlatformApi {
 				"sdkId": sdkId,
 				"entityId": jsonEncode(entityId),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getTopic");
 		final parsedResJson = jsonDecode(res);
 		return EncryptedTopic.fromJSON(parsedResJson);
@@ -202,7 +203,7 @@ class TopicBasicPlatformApi {
 				"sdkId": sdkId,
 				"entityIds": jsonEncode(entityIds.map((x0) => x0).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getTopics");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => EncryptedTopic.fromJSON(x1) ).toList();
@@ -217,7 +218,7 @@ class TopicBasicPlatformApi {
 				"dataOwnerId": jsonEncode(dataOwnerId),
 				"topicRole": jsonEncode(TopicRole.encode(topicRole)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method addParticipant");
 		final parsedResJson = jsonDecode(res);
 		return EncryptedTopic.fromJSON(parsedResJson);
@@ -231,7 +232,7 @@ class TopicBasicPlatformApi {
 				"entityId": jsonEncode(entityId),
 				"dataOwnerId": jsonEncode(dataOwnerId),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method removeParticipant");
 		final parsedResJson = jsonDecode(res);
 		return EncryptedTopic.fromJSON(parsedResJson);
@@ -246,7 +247,7 @@ class TopicBasicPlatformApi {
 				"filter": jsonEncode(BaseFilterOptions.encode(filter)),
 				"subscriptionConfig": jsonEncode(subscriptionConfig == null ? null : EntitySubscriptionConfiguration.encode(subscriptionConfig!)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method subscribeToEvents");
 		final parsedResJson = jsonDecode(res);
 		return EntitySubscription(parsedResJson, (x0) => EncryptedTopic.fromJSON(x0));

@@ -9,6 +9,7 @@ class FormBasicApiDispatcher {
     resultCallback: @escaping (
       String?,
       String?,
+      String?,
       String?
     ) -> Void
   ) -> Bool {
@@ -44,6 +45,7 @@ class FormBasicApiDispatcher {
   private static func matchFormsBy(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     FormBasicApi.shared.matchFormsBy(
@@ -54,6 +56,7 @@ class FormBasicApiDispatcher {
   }
 
   private static func matchFormsBySorted(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -68,6 +71,7 @@ class FormBasicApiDispatcher {
   private static func filterFormsBy(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     FormBasicApi.shared.filterFormsBy(
@@ -80,6 +84,7 @@ class FormBasicApiDispatcher {
   private static func filterFormsBySorted(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     FormBasicApi.shared.filterFormsBySorted(
@@ -90,6 +95,7 @@ class FormBasicApiDispatcher {
   }
 
   private static func deleteFormById(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -105,6 +111,7 @@ class FormBasicApiDispatcher {
   private static func deleteFormsByIds(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     FormBasicApi.shared.deleteFormsByIds(
@@ -115,6 +122,7 @@ class FormBasicApiDispatcher {
   }
 
   private static func purgeFormById(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -130,6 +138,7 @@ class FormBasicApiDispatcher {
   private static func deleteForm(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     FormBasicApi.shared.deleteForm(
@@ -140,6 +149,7 @@ class FormBasicApiDispatcher {
   }
 
   private static func deleteForms(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -154,6 +164,7 @@ class FormBasicApiDispatcher {
   private static func purgeForm(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     FormBasicApi.shared.purgeForm(
@@ -164,6 +175,7 @@ class FormBasicApiDispatcher {
   }
 
   private static func getFormTemplate(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -179,6 +191,7 @@ class FormBasicApiDispatcher {
   private static func createFormTemplate(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     FormBasicApi.shared.createFormTemplate(
@@ -189,6 +202,7 @@ class FormBasicApiDispatcher {
   }
 
   private static func deleteFormTemplate(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -203,6 +217,7 @@ class FormBasicApiDispatcher {
   private static func updateFormTemplate(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     FormBasicApi.shared.updateFormTemplate(
@@ -213,6 +228,7 @@ class FormBasicApiDispatcher {
   }
 
   private static func setTemplateAttachment(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -228,6 +244,7 @@ class FormBasicApiDispatcher {
   private static func modifyForm(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     FormBasicApi.shared.modifyForm(
@@ -238,6 +255,7 @@ class FormBasicApiDispatcher {
   }
 
   private static func undeleteFormById(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -253,6 +271,7 @@ class FormBasicApiDispatcher {
   private static func undeleteForm(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     FormBasicApi.shared.undeleteForm(
@@ -263,6 +282,7 @@ class FormBasicApiDispatcher {
   }
 
   private static func modifyForms(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -277,6 +297,7 @@ class FormBasicApiDispatcher {
   private static func getForm(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     FormBasicApi.shared.getForm(
@@ -287,6 +308,7 @@ class FormBasicApiDispatcher {
   }
 
   private static func getForms(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -301,6 +323,7 @@ class FormBasicApiDispatcher {
   private static func getLatestFormByLogicalUuid(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     FormBasicApi.shared.getLatestFormByLogicalUuid(
@@ -311,6 +334,7 @@ class FormBasicApiDispatcher {
   }
 
   private static func getLatestFormByUniqueId(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?

@@ -9,6 +9,7 @@ class CryptoApiDispatcher {
     resultCallback: @escaping (
       String?,
       String?,
+      String?,
       String?
     ) -> Void
   ) -> Bool {
@@ -23,6 +24,7 @@ class CryptoApiDispatcher {
   private static func forceReload(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     CryptoApi.shared.forceReload(
@@ -32,6 +34,7 @@ class CryptoApiDispatcher {
   }
 
   private static func currentDataOwnerKeys(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?

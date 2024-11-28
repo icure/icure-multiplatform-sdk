@@ -9,6 +9,7 @@ class FormApiDispatcher {
     resultCallback: @escaping (
       String?,
       String?,
+      String?,
       String?
     ) -> Void
   ) -> Bool {
@@ -79,6 +80,7 @@ class FormApiDispatcher {
   private static func createForm(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     FormApi.shared.createForm(
@@ -91,6 +93,7 @@ class FormApiDispatcher {
   private static func createForms(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     FormApi.shared.createForms(
@@ -101,6 +104,7 @@ class FormApiDispatcher {
   }
 
   private static func withEncryptionMetadata(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -119,6 +123,7 @@ class FormApiDispatcher {
   private static func getEncryptionKeysOf(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     FormApi.shared.getEncryptionKeysOf(
@@ -129,6 +134,7 @@ class FormApiDispatcher {
   }
 
   private static func hasWriteAccess(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -143,6 +149,7 @@ class FormApiDispatcher {
   private static func decryptPatientIdOf(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     FormApi.shared.decryptPatientIdOf(
@@ -153,6 +160,7 @@ class FormApiDispatcher {
   }
 
   private static func createDelegationDeAnonymizationMetadata(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -168,6 +176,7 @@ class FormApiDispatcher {
   private static func decrypt(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     FormApi.shared.decrypt(
@@ -178,6 +187,7 @@ class FormApiDispatcher {
   }
 
   private static func tryDecrypt(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -192,6 +202,7 @@ class FormApiDispatcher {
   private static func matchFormsBy(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     FormApi.shared.matchFormsBy(
@@ -204,6 +215,7 @@ class FormApiDispatcher {
   private static func matchFormsBySorted(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     FormApi.shared.matchFormsBySorted(
@@ -214,6 +226,7 @@ class FormApiDispatcher {
   }
 
   private static func deleteFormById(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -229,6 +242,7 @@ class FormApiDispatcher {
   private static func deleteFormsByIds(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     FormApi.shared.deleteFormsByIds(
@@ -239,6 +253,7 @@ class FormApiDispatcher {
   }
 
   private static func purgeFormById(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -254,6 +269,7 @@ class FormApiDispatcher {
   private static func deleteForm(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     FormApi.shared.deleteForm(
@@ -264,6 +280,7 @@ class FormApiDispatcher {
   }
 
   private static func deleteForms(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -278,6 +295,7 @@ class FormApiDispatcher {
   private static func purgeForm(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     FormApi.shared.purgeForm(
@@ -288,6 +306,7 @@ class FormApiDispatcher {
   }
 
   private static func getFormTemplate(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -303,6 +322,7 @@ class FormApiDispatcher {
   private static func createFormTemplate(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     FormApi.shared.createFormTemplate(
@@ -313,6 +333,7 @@ class FormApiDispatcher {
   }
 
   private static func deleteFormTemplate(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -327,6 +348,7 @@ class FormApiDispatcher {
   private static func updateFormTemplate(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     FormApi.shared.updateFormTemplate(
@@ -337,6 +359,7 @@ class FormApiDispatcher {
   }
 
   private static func setTemplateAttachment(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -350,6 +373,7 @@ class FormApiDispatcher {
   }
 
   private static func shareWith(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -366,6 +390,7 @@ class FormApiDispatcher {
   private static func shareWithMany(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     FormApi.shared.shareWithMany(
@@ -377,6 +402,7 @@ class FormApiDispatcher {
   }
 
   private static func filterFormsBy(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -391,6 +417,7 @@ class FormApiDispatcher {
   private static func filterFormsBySorted(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     FormApi.shared.filterFormsBySorted(
@@ -403,6 +430,7 @@ class FormApiDispatcher {
   private static func modifyForm(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     FormApi.shared.modifyForm(
@@ -413,6 +441,7 @@ class FormApiDispatcher {
   }
 
   private static func undeleteFormById(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -428,6 +457,7 @@ class FormApiDispatcher {
   private static func undeleteForm(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     FormApi.shared.undeleteForm(
@@ -438,6 +468,7 @@ class FormApiDispatcher {
   }
 
   private static func modifyForms(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -452,6 +483,7 @@ class FormApiDispatcher {
   private static func getForm(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     FormApi.shared.getForm(
@@ -462,6 +494,7 @@ class FormApiDispatcher {
   }
 
   private static func getForms(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -476,6 +509,7 @@ class FormApiDispatcher {
   private static func getLatestFormByLogicalUuid(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     FormApi.shared.getLatestFormByLogicalUuid(
@@ -488,6 +522,7 @@ class FormApiDispatcher {
   private static func getLatestFormByUniqueId(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     FormApi.shared.getLatestFormByUniqueId(
@@ -498,6 +533,7 @@ class FormApiDispatcher {
   }
 
   private static func encrypted_shareWith(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -514,6 +550,7 @@ class FormApiDispatcher {
   private static func encrypted_shareWithMany(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     FormApi.encrypted.shared.shareWithMany(
@@ -525,6 +562,7 @@ class FormApiDispatcher {
   }
 
   private static func encrypted_filterFormsBy(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -539,6 +577,7 @@ class FormApiDispatcher {
   private static func encrypted_filterFormsBySorted(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     FormApi.encrypted.shared.filterFormsBySorted(
@@ -551,6 +590,7 @@ class FormApiDispatcher {
   private static func encrypted_modifyForm(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     FormApi.encrypted.shared.modifyForm(
@@ -561,6 +601,7 @@ class FormApiDispatcher {
   }
 
   private static func encrypted_undeleteFormById(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -576,6 +617,7 @@ class FormApiDispatcher {
   private static func encrypted_undeleteForm(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     FormApi.encrypted.shared.undeleteForm(
@@ -586,6 +628,7 @@ class FormApiDispatcher {
   }
 
   private static func encrypted_modifyForms(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -600,6 +643,7 @@ class FormApiDispatcher {
   private static func encrypted_getForm(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     FormApi.encrypted.shared.getForm(
@@ -610,6 +654,7 @@ class FormApiDispatcher {
   }
 
   private static func encrypted_getForms(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -624,6 +669,7 @@ class FormApiDispatcher {
   private static func encrypted_getLatestFormByLogicalUuid(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     FormApi.encrypted.shared.getLatestFormByLogicalUuid(
@@ -636,6 +682,7 @@ class FormApiDispatcher {
   private static func encrypted_getLatestFormByUniqueId(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     FormApi.encrypted.shared.getLatestFormByUniqueId(
@@ -646,6 +693,7 @@ class FormApiDispatcher {
   }
 
   private static func tryAndRecover_shareWith(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -662,6 +710,7 @@ class FormApiDispatcher {
   private static func tryAndRecover_shareWithMany(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     FormApi.tryAndRecover.shared.shareWithMany(
@@ -673,6 +722,7 @@ class FormApiDispatcher {
   }
 
   private static func tryAndRecover_filterFormsBy(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -687,6 +737,7 @@ class FormApiDispatcher {
   private static func tryAndRecover_filterFormsBySorted(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     FormApi.tryAndRecover.shared.filterFormsBySorted(
@@ -699,6 +750,7 @@ class FormApiDispatcher {
   private static func tryAndRecover_modifyForm(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     FormApi.tryAndRecover.shared.modifyForm(
@@ -709,6 +761,7 @@ class FormApiDispatcher {
   }
 
   private static func tryAndRecover_undeleteFormById(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -724,6 +777,7 @@ class FormApiDispatcher {
   private static func tryAndRecover_undeleteForm(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     FormApi.tryAndRecover.shared.undeleteForm(
@@ -734,6 +788,7 @@ class FormApiDispatcher {
   }
 
   private static func tryAndRecover_modifyForms(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -748,6 +803,7 @@ class FormApiDispatcher {
   private static func tryAndRecover_getForm(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     FormApi.tryAndRecover.shared.getForm(
@@ -758,6 +814,7 @@ class FormApiDispatcher {
   }
 
   private static func tryAndRecover_getForms(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -772,6 +829,7 @@ class FormApiDispatcher {
   private static func tryAndRecover_getLatestFormByLogicalUuid(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     FormApi.tryAndRecover.shared.getLatestFormByLogicalUuid(
@@ -782,6 +840,7 @@ class FormApiDispatcher {
   }
 
   private static func tryAndRecover_getLatestFormByUniqueId(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?

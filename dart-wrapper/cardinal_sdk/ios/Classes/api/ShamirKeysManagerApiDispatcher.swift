@@ -9,6 +9,7 @@ class ShamirKeysManagerApiDispatcher {
     resultCallback: @escaping (
       String?,
       String?,
+      String?,
       String?
     ) -> Void
   ) -> Bool {
@@ -23,6 +24,7 @@ class ShamirKeysManagerApiDispatcher {
   private static func getExistingSplitsInfo(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     ShamirKeysManagerApi.shared.getExistingSplitsInfo(
@@ -33,6 +35,7 @@ class ShamirKeysManagerApiDispatcher {
   }
 
   private static func updateSelfSplits(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?

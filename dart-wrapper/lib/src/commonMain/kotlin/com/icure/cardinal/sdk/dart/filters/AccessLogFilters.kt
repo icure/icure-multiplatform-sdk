@@ -25,6 +25,7 @@ public object AccessLogFilters {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     dataOwnerIdString: String,
     patientsString: String,
@@ -71,6 +72,7 @@ public object AccessLogFilters {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     patientsString: String,
     fromString: String,
@@ -108,6 +110,7 @@ public object AccessLogFilters {
 
   public fun byPatientSecretIdsDateForDataOwner(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -157,6 +160,7 @@ public object AccessLogFilters {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     secretIdsString: String,
     fromString: String,
@@ -197,6 +201,7 @@ public object AccessLogFilters {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     fromString: String,
     toString: String,
@@ -228,6 +233,7 @@ public object AccessLogFilters {
 
   public fun byUserTypeDate(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,

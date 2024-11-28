@@ -31,6 +31,7 @@ public object FormBasicApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     filterString: String,
@@ -53,6 +54,7 @@ public object FormBasicApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     filterString: String,
@@ -72,6 +74,7 @@ public object FormBasicApi {
 
   public fun filterFormsBy(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -101,6 +104,7 @@ public object FormBasicApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     filterString: String,
@@ -124,6 +128,7 @@ public object FormBasicApi {
 
   public fun deleteFormById(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -155,6 +160,7 @@ public object FormBasicApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     entityIdsString: String,
@@ -174,6 +180,7 @@ public object FormBasicApi {
 
   public fun purgeFormById(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -205,6 +212,7 @@ public object FormBasicApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     formString: String,
@@ -224,6 +232,7 @@ public object FormBasicApi {
 
   public fun deleteForms(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -249,6 +258,7 @@ public object FormBasicApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     formString: String,
@@ -268,6 +278,7 @@ public object FormBasicApi {
 
   public fun getFormTemplate(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -299,6 +310,7 @@ public object FormBasicApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     formTemplateString: String,
@@ -318,6 +330,7 @@ public object FormBasicApi {
 
   public fun deleteFormTemplate(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -343,6 +356,7 @@ public object FormBasicApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     formTemplateString: String,
@@ -362,6 +376,7 @@ public object FormBasicApi {
 
   public fun setTemplateAttachment(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -393,6 +408,7 @@ public object FormBasicApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     entityString: String,
@@ -412,6 +428,7 @@ public object FormBasicApi {
 
   public fun undeleteFormById(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -443,6 +460,7 @@ public object FormBasicApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     formString: String,
@@ -462,6 +480,7 @@ public object FormBasicApi {
 
   public fun modifyForms(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -487,6 +506,7 @@ public object FormBasicApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     entityIdString: String,
@@ -506,6 +526,7 @@ public object FormBasicApi {
 
   public fun getForms(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -531,6 +552,7 @@ public object FormBasicApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     logicalUuidString: String,
@@ -550,6 +572,7 @@ public object FormBasicApi {
 
   public fun getLatestFormByUniqueId(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,

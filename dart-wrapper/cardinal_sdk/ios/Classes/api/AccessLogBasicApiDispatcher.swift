@@ -9,6 +9,7 @@ class AccessLogBasicApiDispatcher {
     resultCallback: @escaping (
       String?,
       String?,
+      String?,
       String?
     ) -> Void
   ) -> Bool {
@@ -36,6 +37,7 @@ class AccessLogBasicApiDispatcher {
   private static func matchAccessLogsBy(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     AccessLogBasicApi.shared.matchAccessLogsBy(
@@ -46,6 +48,7 @@ class AccessLogBasicApiDispatcher {
   }
 
   private static func matchAccessLogsBySorted(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -60,6 +63,7 @@ class AccessLogBasicApiDispatcher {
   private static func filterAccessLogsBy(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     AccessLogBasicApi.shared.filterAccessLogsBy(
@@ -72,6 +76,7 @@ class AccessLogBasicApiDispatcher {
   private static func filterAccessLogsBySorted(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     AccessLogBasicApi.shared.filterAccessLogsBySorted(
@@ -82,6 +87,7 @@ class AccessLogBasicApiDispatcher {
   }
 
   private static func deleteAccessLogById(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -97,6 +103,7 @@ class AccessLogBasicApiDispatcher {
   private static func deleteAccessLogsByIds(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     AccessLogBasicApi.shared.deleteAccessLogsByIds(
@@ -107,6 +114,7 @@ class AccessLogBasicApiDispatcher {
   }
 
   private static func purgeAccessLogById(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -122,6 +130,7 @@ class AccessLogBasicApiDispatcher {
   private static func deleteAccessLog(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     AccessLogBasicApi.shared.deleteAccessLog(
@@ -132,6 +141,7 @@ class AccessLogBasicApiDispatcher {
   }
 
   private static func deleteAccessLogs(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -146,6 +156,7 @@ class AccessLogBasicApiDispatcher {
   private static func purgeAccessLog(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     AccessLogBasicApi.shared.purgeAccessLog(
@@ -156,6 +167,7 @@ class AccessLogBasicApiDispatcher {
   }
 
   private static func undeleteAccessLogById(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -171,6 +183,7 @@ class AccessLogBasicApiDispatcher {
   private static func undeleteAccessLog(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     AccessLogBasicApi.shared.undeleteAccessLog(
@@ -181,6 +194,7 @@ class AccessLogBasicApiDispatcher {
   }
 
   private static func modifyAccessLog(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -195,6 +209,7 @@ class AccessLogBasicApiDispatcher {
   private static func getAccessLog(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     AccessLogBasicApi.shared.getAccessLog(
@@ -205,6 +220,7 @@ class AccessLogBasicApiDispatcher {
   }
 
   private static func getAccessLogs(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?

@@ -9,6 +9,7 @@ class SystemApiDispatcher {
     resultCallback: @escaping (
       String?,
       String?,
+      String?,
       String?
     ) -> Void
   ) -> Bool {
@@ -37,6 +38,7 @@ class SystemApiDispatcher {
   private static func getVersion(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     SystemApi.shared.getVersion(
@@ -46,6 +48,7 @@ class SystemApiDispatcher {
   }
 
   private static func isReady(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -59,6 +62,7 @@ class SystemApiDispatcher {
   private static func getProcessInfo(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     SystemApi.shared.getProcessInfo(
@@ -68,6 +72,7 @@ class SystemApiDispatcher {
   }
 
   private static func getIndexingInfo(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -81,6 +86,7 @@ class SystemApiDispatcher {
   private static func getReplicationInfo(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     SystemApi.shared.getReplicationInfo(
@@ -90,6 +96,7 @@ class SystemApiDispatcher {
   }
 
   private static func updateDesignDoc(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -105,6 +112,7 @@ class SystemApiDispatcher {
   private static func resolvePatientsConflicts(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     SystemApi.shared.resolvePatientsConflicts(
@@ -115,6 +123,7 @@ class SystemApiDispatcher {
   }
 
   private static func resolveContactsConflicts(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -129,6 +138,7 @@ class SystemApiDispatcher {
   private static func resolveFormsConflicts(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     SystemApi.shared.resolveFormsConflicts(
@@ -139,6 +149,7 @@ class SystemApiDispatcher {
   }
 
   private static func resolveHealthElementsConflicts(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -153,6 +164,7 @@ class SystemApiDispatcher {
   private static func resolveInvoicesConflicts(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     SystemApi.shared.resolveInvoicesConflicts(
@@ -165,6 +177,7 @@ class SystemApiDispatcher {
   private static func resolveMessagesConflicts(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     SystemApi.shared.resolveMessagesConflicts(
@@ -175,6 +188,7 @@ class SystemApiDispatcher {
   }
 
   private static func resolveDocumentsConflicts(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -190,6 +204,7 @@ class SystemApiDispatcher {
   private static func getIndexingInfoByGroup(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     SystemApi.shared.getIndexingInfoByGroup(
@@ -202,6 +217,7 @@ class SystemApiDispatcher {
   private static func getReplicatorInfo(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     SystemApi.shared.getReplicatorInfo(
@@ -212,6 +228,7 @@ class SystemApiDispatcher {
   }
 
   private static func evictAllFromMap(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?

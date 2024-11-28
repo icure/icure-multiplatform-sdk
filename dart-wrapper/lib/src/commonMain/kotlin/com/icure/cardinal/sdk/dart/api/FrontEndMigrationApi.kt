@@ -21,6 +21,7 @@ public object FrontEndMigrationApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     frontEndMigrationIdString: String,
@@ -40,6 +41,7 @@ public object FrontEndMigrationApi {
 
   public fun createFrontEndMigration(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -64,6 +66,7 @@ public object FrontEndMigrationApi {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit, sdkId: String) {
     ApiScope.execute(
       dartResultCallback,
@@ -74,6 +77,7 @@ public object FrontEndMigrationApi {
 
   public fun deleteFrontEndMigration(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -99,6 +103,7 @@ public object FrontEndMigrationApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     frontEndMigrationNameString: String,
@@ -118,6 +123,7 @@ public object FrontEndMigrationApi {
 
   public fun modifyFrontEndMigration(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,

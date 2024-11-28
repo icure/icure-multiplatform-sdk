@@ -2,6 +2,7 @@
 import 'package:flutter/services.dart';
 import 'package:cardinal_sdk/model/couchdb/doc_identifier.dart';
 import 'dart:convert';
+import 'package:cardinal_sdk/utils/internal/platform_exception_convertion.dart';
 import 'dart:typed_data';
 import 'package:cardinal_sdk/model/receipt.dart';
 
@@ -17,7 +18,7 @@ class ReceiptBasicPlatformApi {
 				"sdkId": sdkId,
 				"entityId": jsonEncode(entityId),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method deleteReceipt");
 		final parsedResJson = jsonDecode(res);
 		return DocIdentifier.fromJSON(parsedResJson);
@@ -30,7 +31,7 @@ class ReceiptBasicPlatformApi {
 				"sdkId": sdkId,
 				"entityIds": jsonEncode(entityIds.map((x0) => x0).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method deleteReceipts");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => DocIdentifier.fromJSON(x1) ).toList();
@@ -44,7 +45,7 @@ class ReceiptBasicPlatformApi {
 				"receiptId": jsonEncode(receiptId),
 				"attachmentId": jsonEncode(attachmentId),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getRawReceiptAttachment");
 		final parsedResJson = jsonDecode(res);
 		return base64Decode(parsedResJson as String);
@@ -60,7 +61,7 @@ class ReceiptBasicPlatformApi {
 				"blobType": jsonEncode(blobType),
 				"attachment": jsonEncode(base64Encode(attachment as List<int>)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method setRawReceiptAttachment");
 		final parsedResJson = jsonDecode(res);
 		return EncryptedReceipt.fromJSON(parsedResJson);
@@ -73,7 +74,7 @@ class ReceiptBasicPlatformApi {
 				"sdkId": sdkId,
 				"entity": jsonEncode(EncryptedReceipt.encode(entity)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method modifyReceipt");
 		final parsedResJson = jsonDecode(res);
 		return EncryptedReceipt.fromJSON(parsedResJson);
@@ -86,7 +87,7 @@ class ReceiptBasicPlatformApi {
 				"sdkId": sdkId,
 				"entityId": jsonEncode(entityId),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getReceipt");
 		final parsedResJson = jsonDecode(res);
 		return EncryptedReceipt.fromJSON(parsedResJson);
@@ -99,7 +100,7 @@ class ReceiptBasicPlatformApi {
 				"sdkId": sdkId,
 				"reference": jsonEncode(reference),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method listByReference");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => EncryptedReceipt.fromJSON(x1) ).toList();

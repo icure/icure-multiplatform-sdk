@@ -12,9 +12,9 @@ object PaginationPlugin : MethodChannel.MethodCallHandler {
 			!dispatch(
 				methodName = call.method,
 				parameters = (call.arguments as Map<String, String>?).orEmpty()
-			) { success, errorCode, errorMessage ->
+			) { success, errorCode, errorMessage, errorDetail ->
 				if (errorCode != null)
-					result.error(errorCode, errorMessage, null)
+					result.error(errorCode, errorMessage, errorDetail)
 				else
 					result.success(success)
 			}
@@ -25,6 +25,7 @@ object PaginationPlugin : MethodChannel.MethodCallHandler {
 		methodName: String,
 		parameters: Map<String, String>,
 		resultCallback: (
+			String?,
 			String?,
 			String?,
 			String?,
@@ -39,6 +40,7 @@ object PaginationPlugin : MethodChannel.MethodCallHandler {
 		String?,
 		String?,
 		String?,
+		String?,
 	) -> Unit) {
 		PaginatedListIterator.hasNext(
 			resultCallback,
@@ -47,6 +49,7 @@ object PaginationPlugin : MethodChannel.MethodCallHandler {
 	}
 
 	private fun next(parameters: Map<String, String>, resultCallback: (
+		String?,
 		String?,
 		String?,
 		String?,

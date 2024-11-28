@@ -14,6 +14,7 @@ public fun dispatchApi(
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit,
 ): Boolean = when (apiName) {
   "KeywordApi" -> KeywordApiDispatcher.dispatch(methodName, parameters, resultCallback)

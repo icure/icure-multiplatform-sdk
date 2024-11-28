@@ -15,6 +15,7 @@ public object AgendaFiltersDispatcher {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
   ): Boolean = when(methodName) {
     "all" -> all(parameters, resultCallback)
@@ -24,6 +25,7 @@ public object AgendaFiltersDispatcher {
   }?.let { true } ?: false
 
   private fun all(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -37,6 +39,7 @@ public object AgendaFiltersDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     AgendaFilters.byUser(
       resultCallback,
@@ -45,6 +48,7 @@ public object AgendaFiltersDispatcher {
   }
 
   private fun readableByUser(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,

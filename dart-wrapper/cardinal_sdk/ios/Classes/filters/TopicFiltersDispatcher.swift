@@ -9,6 +9,7 @@ class TopicFiltersDispatcher {
     resultCallback: @escaping (
       String?,
       String?,
+      String?,
       String?
     ) -> Void
   ) -> Bool {
@@ -24,6 +25,7 @@ class TopicFiltersDispatcher {
   private static func allTopicsForDataOwner(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     TopicFilters.shared.allTopicsForDataOwner(
@@ -35,6 +37,7 @@ class TopicFiltersDispatcher {
   private static func allTopicsForSelf(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     TopicFilters.shared.allTopicsForSelf(
@@ -43,6 +46,7 @@ class TopicFiltersDispatcher {
   }
 
   private static func byParticipant(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?

@@ -6,7 +6,7 @@ import kotlinx.serialization.KSerializer
 
 object DartResult {
 	fun <T> resolve(
-		resultCallback: (success: String?, failureCode: String?, failureMessage: String?) -> Unit,
+		resultCallback: (success: String?, failureCode: String?, failureMessage: String?, failureDetails: String?) -> Unit,
 		resultSerializer: KSerializer<T>,
 		method: () -> T
 	) {
@@ -15,7 +15,7 @@ object DartResult {
 
 	@OptIn(InternalIcureApi::class)
 	inline fun <T> inlineResolve(
-		resultCallback: (success: String?, failureCode: String?, failureMessage: String?) -> Unit,
+		resultCallback: (success: String?, failureCode: String?, failureMessage: String?, failureDetails: String?) -> Unit,
 		resultSerializer: KSerializer<T>,
 		method:  () -> T
 	) {
@@ -23,12 +23,14 @@ object DartResult {
 			resultCallback(
 				Serialization.fullLanguageInteropJson.encodeToString(resultSerializer, method()),
 				null,
+				null,
 				null
 			)
 		} catch (e: Exception) {
 			resultCallback(
 				null,
 				e::class.simpleName ?: "UnknownException",
+				e.message,
 				e.stackTraceToString()
 			)
 		}

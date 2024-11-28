@@ -15,6 +15,7 @@ public object MessageFiltersDispatcher {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
   ): Boolean = when(methodName) {
     "allMessagesForDataOwner" -> allMessagesForDataOwner(parameters, resultCallback)
@@ -42,6 +43,7 @@ public object MessageFiltersDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     MessageFilters.allMessagesForDataOwner(
       resultCallback,
@@ -53,6 +55,7 @@ public object MessageFiltersDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     MessageFilters.allMessagesForSelf(
       resultCallback,
@@ -60,6 +63,7 @@ public object MessageFiltersDispatcher {
   }
 
   private fun byTransportGuidForDataOwner(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -75,6 +79,7 @@ public object MessageFiltersDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     MessageFilters.byTransportGuidForSelf(
       resultCallback,
@@ -83,6 +88,7 @@ public object MessageFiltersDispatcher {
   }
 
   private fun fromAddressForDataOwner(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -98,6 +104,7 @@ public object MessageFiltersDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     MessageFilters.fromAddressForSelf(
       resultCallback,
@@ -106,6 +113,7 @@ public object MessageFiltersDispatcher {
   }
 
   private fun byPatientsSentDateForDataOwner(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -124,6 +132,7 @@ public object MessageFiltersDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     MessageFilters.byPatientsSentDateForSelf(
       resultCallback,
@@ -136,6 +145,7 @@ public object MessageFiltersDispatcher {
 
   private fun byPatientSecretIdsSentDateForDataOwner(parameters: Map<String, String>,
       resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -154,6 +164,7 @@ public object MessageFiltersDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     MessageFilters.byPatientSecretIdsSentDateForSelf(
       resultCallback,
@@ -165,6 +176,7 @@ public object MessageFiltersDispatcher {
   }
 
   private fun toAddressForDataOwner(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -180,6 +192,7 @@ public object MessageFiltersDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     MessageFilters.toAddressForSelf(
       resultCallback,
@@ -188,6 +201,7 @@ public object MessageFiltersDispatcher {
   }
 
   private fun byTransportGuidSentDateForDataOwner(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -206,6 +220,7 @@ public object MessageFiltersDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     MessageFilters.byTransportGuidSentDateForSelf(
       resultCallback,
@@ -217,6 +232,7 @@ public object MessageFiltersDispatcher {
   }
 
   private fun latestByTransportGuidForDataOwner(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -232,6 +248,7 @@ public object MessageFiltersDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     MessageFilters.latestByTransportGuidForSelf(
       resultCallback,
@@ -243,6 +260,7 @@ public object MessageFiltersDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     MessageFilters.byInvoiceIds(
       resultCallback,
@@ -251,6 +269,7 @@ public object MessageFiltersDispatcher {
   }
 
   private fun byParentIds(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,

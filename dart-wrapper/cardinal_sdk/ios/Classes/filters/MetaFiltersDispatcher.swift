@@ -9,6 +9,7 @@ class MetaFiltersDispatcher {
     resultCallback: @escaping (
       String?,
       String?,
+      String?,
       String?
     ) -> Void
   ) -> Bool {
@@ -31,6 +32,7 @@ class MetaFiltersDispatcher {
   private static func intersection(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     MetaFilters.shared.intersection(
@@ -40,6 +42,7 @@ class MetaFiltersDispatcher {
     )
   }
   private static func sortableIntersection(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -53,6 +56,7 @@ class MetaFiltersDispatcher {
   private static func baseIntersection(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     MetaFilters.shared.baseIntersection(
@@ -62,6 +66,7 @@ class MetaFiltersDispatcher {
     )
   }
   private static func baseSortableIntersection(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -75,6 +80,7 @@ class MetaFiltersDispatcher {
   private static func difference(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     MetaFilters.shared.difference(
@@ -84,6 +90,7 @@ class MetaFiltersDispatcher {
     )
   }
   private static func sortableDifference(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -97,6 +104,7 @@ class MetaFiltersDispatcher {
   private static func baseDifference(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     MetaFilters.shared.baseDifference(
@@ -106,6 +114,7 @@ class MetaFiltersDispatcher {
     )
   }
   private static func baseSortableDifference(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -119,6 +128,7 @@ class MetaFiltersDispatcher {
   private static func union(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     MetaFilters.shared.union(
@@ -128,6 +138,7 @@ class MetaFiltersDispatcher {
     )
   }
   private static func baseUnion(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?

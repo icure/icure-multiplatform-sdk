@@ -24,6 +24,7 @@ public object MaintenanceTaskFilters {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit, idsString: String) {
     val ids = fullLanguageInteropJson.decodeFromString(
       ListSerializer(String.serializer()),
@@ -41,6 +42,7 @@ public object MaintenanceTaskFilters {
 
   public fun byIdentifiersForDataOwner(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -71,6 +73,7 @@ public object MaintenanceTaskFilters {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit, identifiersString: String) {
     val identifiers = fullLanguageInteropJson.decodeFromString(
       ListSerializer(Identifier.serializer()),
@@ -88,6 +91,7 @@ public object MaintenanceTaskFilters {
 
   public fun byTypeForDataOwner(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -118,6 +122,7 @@ public object MaintenanceTaskFilters {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit, typeString: String) {
     val type = fullLanguageInteropJson.decodeFromString(
       String.serializer(),
@@ -135,6 +140,7 @@ public object MaintenanceTaskFilters {
 
   public fun afterDateForDataOwner(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -162,6 +168,7 @@ public object MaintenanceTaskFilters {
   }
 
   public fun afterDateForSelf(dartResultCallback: (
+    String?,
     String?,
     String?,
     String?,

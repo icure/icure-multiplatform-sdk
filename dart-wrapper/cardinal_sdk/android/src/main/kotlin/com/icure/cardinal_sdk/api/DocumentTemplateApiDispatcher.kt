@@ -15,6 +15,7 @@ public object DocumentTemplateApiDispatcher {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
   ): Boolean = when(methodName) {
     "getDocumentTemplate" -> getDocumentTemplate(parameters, resultCallback)
@@ -36,6 +37,7 @@ public object DocumentTemplateApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     DocumentTemplateApi.getDocumentTemplate(
       resultCallback,
@@ -45,6 +47,7 @@ public object DocumentTemplateApiDispatcher {
   }
 
   private fun createDocumentTemplate(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -60,6 +63,7 @@ public object DocumentTemplateApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     DocumentTemplateApi.modifyDocumentTemplate(
       resultCallback,
@@ -69,6 +73,7 @@ public object DocumentTemplateApiDispatcher {
   }
 
   private fun deleteDocumentTemplates(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -84,6 +89,7 @@ public object DocumentTemplateApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     DocumentTemplateApi.listDocumentTemplatesBySpeciality(
       resultCallback,
@@ -93,6 +99,7 @@ public object DocumentTemplateApiDispatcher {
   }
 
   private fun listDocumentTemplatesByDocumentType(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -109,6 +116,7 @@ public object DocumentTemplateApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     DocumentTemplateApi.listDocumentTemplatesByDocumentTypeForCurrentUser(
       resultCallback,
@@ -121,6 +129,7 @@ public object DocumentTemplateApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     DocumentTemplateApi.listDocumentTemplates(
       resultCallback,
@@ -129,6 +138,7 @@ public object DocumentTemplateApiDispatcher {
   }
 
   private fun getDocumentTemplateAttachment(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -145,6 +155,7 @@ public object DocumentTemplateApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     DocumentTemplateApi.getAttachmentText(
       resultCallback,
@@ -158,6 +169,7 @@ public object DocumentTemplateApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     DocumentTemplateApi.setDocumentTemplateAttachment(
       resultCallback,
@@ -168,6 +180,7 @@ public object DocumentTemplateApiDispatcher {
   }
 
   private fun getAttachmentUrl(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,

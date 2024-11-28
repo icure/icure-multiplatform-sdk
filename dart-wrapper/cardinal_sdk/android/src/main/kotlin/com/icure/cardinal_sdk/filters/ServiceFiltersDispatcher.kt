@@ -15,6 +15,7 @@ public object ServiceFiltersDispatcher {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
   ): Boolean = when(methodName) {
     "allServicesForDataOwner" -> allServicesForDataOwner(parameters, resultCallback)
@@ -45,6 +46,7 @@ public object ServiceFiltersDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     ServiceFilters.allServicesForDataOwner(
       resultCallback,
@@ -53,6 +55,7 @@ public object ServiceFiltersDispatcher {
   }
 
   private fun allServicesForSelf(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -66,6 +69,7 @@ public object ServiceFiltersDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     ServiceFilters.byIdentifiersForDataOwner(
       resultCallback,
@@ -75,6 +79,7 @@ public object ServiceFiltersDispatcher {
   }
 
   private fun byCodeAndValueDateForDataOwner(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -93,6 +98,7 @@ public object ServiceFiltersDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     ServiceFilters.byTagAndValueDateForDataOwner(
       resultCallback,
@@ -108,6 +114,7 @@ public object ServiceFiltersDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     ServiceFilters.byPatientsForDataOwner(
       resultCallback,
@@ -117,6 +124,7 @@ public object ServiceFiltersDispatcher {
   }
 
   private fun byPatientsSecretIdsForDataOwner(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -133,6 +141,7 @@ public object ServiceFiltersDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     ServiceFilters.byHealthElementIdFromSubContactForDataOwner(
       resultCallback,
@@ -145,6 +154,7 @@ public object ServiceFiltersDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     ServiceFilters.byIdentifiersForSelf(
       resultCallback,
@@ -153,6 +163,7 @@ public object ServiceFiltersDispatcher {
   }
 
   private fun byCodeAndValueDateForSelf(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -170,6 +181,7 @@ public object ServiceFiltersDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     ServiceFilters.byTagAndValueDateForSelf(
       resultCallback,
@@ -184,6 +196,7 @@ public object ServiceFiltersDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     ServiceFilters.byPatientsForSelf(
       resultCallback,
@@ -192,6 +205,7 @@ public object ServiceFiltersDispatcher {
   }
 
   private fun byPatientsSecretIdsForSelf(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -207,6 +221,7 @@ public object ServiceFiltersDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     ServiceFilters.byHealthElementIdFromSubContactForSelf(
       resultCallback,
@@ -215,6 +230,7 @@ public object ServiceFiltersDispatcher {
   }
 
   private fun byIds(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -229,6 +245,7 @@ public object ServiceFiltersDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     ServiceFilters.byAssociationId(
       resultCallback,
@@ -237,6 +254,7 @@ public object ServiceFiltersDispatcher {
   }
 
   private fun byQualifiedLink(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -249,6 +267,7 @@ public object ServiceFiltersDispatcher {
   }
 
   private fun byPatientsDateForDataOwner(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -267,6 +286,7 @@ public object ServiceFiltersDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     ServiceFilters.byPatientsDateForSelf(
       resultCallback,
@@ -278,6 +298,7 @@ public object ServiceFiltersDispatcher {
   }
 
   private fun byPatientSecretIdsDateForDataOwner(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -293,6 +314,7 @@ public object ServiceFiltersDispatcher {
   }
 
   private fun byPatientSecretIdsDateForSelf(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,

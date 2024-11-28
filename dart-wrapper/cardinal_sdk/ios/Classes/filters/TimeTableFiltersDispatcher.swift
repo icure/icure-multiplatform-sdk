@@ -9,6 +9,7 @@ class TimeTableFiltersDispatcher {
     resultCallback: @escaping (
       String?,
       String?,
+      String?,
       String?
     ) -> Void
   ) -> Bool {
@@ -23,6 +24,7 @@ class TimeTableFiltersDispatcher {
   private static func byAgendaId(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     TimeTableFilters.shared.byAgendaId(
@@ -32,6 +34,7 @@ class TimeTableFiltersDispatcher {
   }
 
   private static func byPeriodAndAgendaId(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?

@@ -15,6 +15,7 @@ public object CodeFiltersDispatcher {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
   ): Boolean = when(methodName) {
     "all" -> all(parameters, resultCallback)
@@ -30,6 +31,7 @@ public object CodeFiltersDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     CodeFilters.all(
       resultCallback,
@@ -37,6 +39,7 @@ public object CodeFiltersDispatcher {
   }
 
   private fun byIds(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -51,6 +54,7 @@ public object CodeFiltersDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     CodeFilters.byQualifiedLink(
       resultCallback,
@@ -60,6 +64,7 @@ public object CodeFiltersDispatcher {
   }
 
   private fun byRegionTypeCodeVersion(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -77,6 +82,7 @@ public object CodeFiltersDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     CodeFilters.byLanguageTypeLabelRegion(
       resultCallback,
@@ -88,6 +94,7 @@ public object CodeFiltersDispatcher {
   }
 
   private fun byLanguageTypesLabelRegionVersion(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,

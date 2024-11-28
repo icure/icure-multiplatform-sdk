@@ -36,6 +36,7 @@ public object ContactBasicApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     filterString: String,
@@ -55,6 +56,7 @@ public object ContactBasicApi {
 
   public fun matchServicesBy(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -80,6 +82,7 @@ public object ContactBasicApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     filterString: String,
@@ -102,6 +105,7 @@ public object ContactBasicApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     filterString: String,
@@ -121,6 +125,7 @@ public object ContactBasicApi {
 
   public fun filterContactsBy(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -150,6 +155,7 @@ public object ContactBasicApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     filterString: String,
@@ -173,6 +179,7 @@ public object ContactBasicApi {
 
   public fun filterContactsBySorted(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -202,6 +209,7 @@ public object ContactBasicApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     filterString: String,
@@ -225,6 +233,7 @@ public object ContactBasicApi {
 
   public fun subscribeToServiceCreateOrUpdateEvents(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -261,6 +270,7 @@ public object ContactBasicApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     entityIdString: String,
@@ -289,6 +299,7 @@ public object ContactBasicApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     entityIdsString: String,
@@ -308,6 +319,7 @@ public object ContactBasicApi {
 
   public fun purgeContactById(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -339,6 +351,7 @@ public object ContactBasicApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     contactString: String,
@@ -358,6 +371,7 @@ public object ContactBasicApi {
 
   public fun deleteContacts(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -383,6 +397,7 @@ public object ContactBasicApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     contactString: String,
@@ -402,6 +417,7 @@ public object ContactBasicApi {
 
   public fun getServiceCodesOccurrences(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -433,6 +449,7 @@ public object ContactBasicApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     idString: String,
@@ -461,6 +478,7 @@ public object ContactBasicApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     contactString: String,
@@ -480,6 +498,7 @@ public object ContactBasicApi {
 
   public fun modifyContact(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -505,6 +524,7 @@ public object ContactBasicApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     entitiesString: String,
@@ -524,6 +544,7 @@ public object ContactBasicApi {
 
   public fun getContact(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -549,6 +570,7 @@ public object ContactBasicApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     entityIdsString: String,
@@ -568,6 +590,7 @@ public object ContactBasicApi {
 
   public fun getService(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -593,6 +616,7 @@ public object ContactBasicApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     entityIdsString: String,
@@ -612,6 +636,7 @@ public object ContactBasicApi {
 
   public fun subscribeToEvents(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,

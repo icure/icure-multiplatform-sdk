@@ -15,6 +15,7 @@ public object TopicBasicApiDispatcher {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
   ): Boolean = when(methodName) {
     "matchTopicsBy" -> matchTopicsBy(parameters, resultCallback)
@@ -42,6 +43,7 @@ public object TopicBasicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     TopicBasicApi.matchTopicsBy(
       resultCallback,
@@ -51,6 +53,7 @@ public object TopicBasicApiDispatcher {
   }
 
   private fun matchTopicsBySorted(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -66,6 +69,7 @@ public object TopicBasicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     TopicBasicApi.filterTopicsBy(
       resultCallback,
@@ -78,6 +82,7 @@ public object TopicBasicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     TopicBasicApi.filterTopicsBySorted(
       resultCallback,
@@ -87,6 +92,7 @@ public object TopicBasicApiDispatcher {
   }
 
   private fun deleteTopicById(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -103,6 +109,7 @@ public object TopicBasicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     TopicBasicApi.deleteTopicsByIds(
       resultCallback,
@@ -112,6 +119,7 @@ public object TopicBasicApiDispatcher {
   }
 
   private fun purgeTopicById(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -128,6 +136,7 @@ public object TopicBasicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     TopicBasicApi.deleteTopic(
       resultCallback,
@@ -137,6 +146,7 @@ public object TopicBasicApiDispatcher {
   }
 
   private fun deleteTopics(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -152,6 +162,7 @@ public object TopicBasicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     TopicBasicApi.purgeTopic(
       resultCallback,
@@ -161,6 +172,7 @@ public object TopicBasicApiDispatcher {
   }
 
   private fun undeleteTopic(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -176,6 +188,7 @@ public object TopicBasicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     TopicBasicApi.modifyTopic(
       resultCallback,
@@ -185,6 +198,7 @@ public object TopicBasicApiDispatcher {
   }
 
   private fun undeleteTopicById(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -201,6 +215,7 @@ public object TopicBasicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     TopicBasicApi.getTopic(
       resultCallback,
@@ -213,6 +228,7 @@ public object TopicBasicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     TopicBasicApi.getTopics(
       resultCallback,
@@ -222,6 +238,7 @@ public object TopicBasicApiDispatcher {
   }
 
   private fun addParticipant(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -239,6 +256,7 @@ public object TopicBasicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     TopicBasicApi.removeParticipant(
       resultCallback,
@@ -249,6 +267,7 @@ public object TopicBasicApiDispatcher {
   }
 
   private fun subscribeToEvents(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,

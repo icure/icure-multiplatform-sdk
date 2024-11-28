@@ -39,6 +39,7 @@ public object GroupApi {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit, sdkId: String) {
     ApiScope.execute(
       dartResultCallback,
@@ -49,6 +50,7 @@ public object GroupApi {
 
   public fun getGroup(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -71,6 +73,7 @@ public object GroupApi {
 
   public fun createGroup(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -150,6 +153,7 @@ public object GroupApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     typeString: String,
@@ -183,6 +187,7 @@ public object GroupApi {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit, sdkId: String) {
     ApiScope.execute(
       dartResultCallback,
@@ -193,6 +198,7 @@ public object GroupApi {
 
   public fun getNameOfGroupParent(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -215,6 +221,7 @@ public object GroupApi {
 
   public fun modifyGroupName(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -243,6 +250,7 @@ public object GroupApi {
 
   public fun getOperationToken(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -280,6 +288,7 @@ public object GroupApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     tokenIdString: String,
@@ -299,6 +308,7 @@ public object GroupApi {
 
   public fun setDefaultRoles(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -336,6 +346,7 @@ public object GroupApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     groupIdString: String,
@@ -358,6 +369,7 @@ public object GroupApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     idString: String,
@@ -377,6 +389,7 @@ public object GroupApi {
 
   public fun changeSuperGroup(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -408,6 +421,7 @@ public object GroupApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     idString: String,
@@ -427,6 +441,7 @@ public object GroupApi {
 
   public fun modifyGroupProperties(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -458,6 +473,7 @@ public object GroupApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     idString: String,
@@ -483,6 +499,7 @@ public object GroupApi {
 
   public fun initDesignDocs(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -526,6 +543,7 @@ public object GroupApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     idString: String,
@@ -557,6 +575,7 @@ public object GroupApi {
 
   public fun resetStorage(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -600,6 +619,7 @@ public object GroupApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     groupsString: String,
@@ -619,6 +639,7 @@ public object GroupApi {
 
   public fun getReplicationInfo(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -644,6 +665,7 @@ public object GroupApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     idString: String,
@@ -662,6 +684,7 @@ public object GroupApi {
   }
 
   public fun listAllGroupsIds(dartResultCallback: (
+    String?,
     String?,
     String?,
     String?,

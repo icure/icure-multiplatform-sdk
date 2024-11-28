@@ -41,6 +41,7 @@ public object HealthElementApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     entityString: String,
@@ -63,6 +64,7 @@ public object HealthElementApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     entitiesString: String,
@@ -82,6 +84,7 @@ public object HealthElementApi {
 
   public fun withEncryptionMetadata(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -131,6 +134,7 @@ public object HealthElementApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     healthElementString: String,
@@ -150,6 +154,7 @@ public object HealthElementApi {
 
   public fun hasWriteAccess(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -175,6 +180,7 @@ public object HealthElementApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     healthElementString: String,
@@ -194,6 +200,7 @@ public object HealthElementApi {
 
   public fun createDelegationDeAnonymizationMetadata(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -225,6 +232,7 @@ public object HealthElementApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     healthElementString: String,
@@ -244,6 +252,7 @@ public object HealthElementApi {
 
   public fun tryDecrypt(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -269,6 +278,7 @@ public object HealthElementApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     filterString: String,
@@ -291,6 +301,7 @@ public object HealthElementApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     filterString: String,
@@ -310,6 +321,7 @@ public object HealthElementApi {
 
   public fun deleteHealthElementById(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -341,6 +353,7 @@ public object HealthElementApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     entityIdsString: String,
@@ -360,6 +373,7 @@ public object HealthElementApi {
 
   public fun purgeHealthElementById(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -391,6 +405,7 @@ public object HealthElementApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     healthElementString: String,
@@ -410,6 +425,7 @@ public object HealthElementApi {
 
   public fun deleteHealthElements(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -435,6 +451,7 @@ public object HealthElementApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     healthElementString: String,
@@ -454,6 +471,7 @@ public object HealthElementApi {
 
   public fun shareWith(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -491,6 +509,7 @@ public object HealthElementApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     healthElementString: String,
@@ -516,6 +535,7 @@ public object HealthElementApi {
 
   public fun filterHealthElementsBy(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -546,6 +566,7 @@ public object HealthElementApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     filterString: String,
@@ -570,6 +591,7 @@ public object HealthElementApi {
 
   public fun undeleteHealthElementById(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -601,6 +623,7 @@ public object HealthElementApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     healthElementString: String,
@@ -620,6 +643,7 @@ public object HealthElementApi {
 
   public fun modifyHealthElement(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -645,6 +669,7 @@ public object HealthElementApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     entitiesString: String,
@@ -664,6 +689,7 @@ public object HealthElementApi {
 
   public fun getHealthElement(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -689,6 +715,7 @@ public object HealthElementApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     entityIdsString: String,
@@ -708,6 +735,7 @@ public object HealthElementApi {
 
   public fun subscribeToEvents(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -751,6 +779,7 @@ public object HealthElementApi {
         String?,
         String?,
         String?,
+        String?,
       ) -> Unit,
       sdkId: String,
       delegateIdString: String,
@@ -785,6 +814,7 @@ public object HealthElementApi {
         String?,
         String?,
         String?,
+        String?,
       ) -> Unit,
       sdkId: String,
       healthElementString: String,
@@ -810,6 +840,7 @@ public object HealthElementApi {
 
     public fun filterHealthElementsBy(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -840,6 +871,7 @@ public object HealthElementApi {
         String?,
         String?,
         String?,
+        String?,
       ) -> Unit,
       sdkId: String,
       filterString: String,
@@ -864,6 +896,7 @@ public object HealthElementApi {
 
     public fun undeleteHealthElementById(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -895,6 +928,7 @@ public object HealthElementApi {
         String?,
         String?,
         String?,
+        String?,
       ) -> Unit,
       sdkId: String,
       healthElementString: String,
@@ -914,6 +948,7 @@ public object HealthElementApi {
 
     public fun modifyHealthElement(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -939,6 +974,7 @@ public object HealthElementApi {
         String?,
         String?,
         String?,
+        String?,
       ) -> Unit,
       sdkId: String,
       entitiesString: String,
@@ -958,6 +994,7 @@ public object HealthElementApi {
 
     public fun getHealthElement(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -983,6 +1020,7 @@ public object HealthElementApi {
         String?,
         String?,
         String?,
+        String?,
       ) -> Unit,
       sdkId: String,
       entityIdsString: String,
@@ -1005,6 +1043,7 @@ public object HealthElementApi {
   public object tryAndRecover {
     public fun shareWith(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -1042,6 +1081,7 @@ public object HealthElementApi {
         String?,
         String?,
         String?,
+        String?,
       ) -> Unit,
       sdkId: String,
       healthElementString: String,
@@ -1067,6 +1107,7 @@ public object HealthElementApi {
 
     public fun filterHealthElementsBy(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -1097,6 +1138,7 @@ public object HealthElementApi {
         String?,
         String?,
         String?,
+        String?,
       ) -> Unit,
       sdkId: String,
       filterString: String,
@@ -1121,6 +1163,7 @@ public object HealthElementApi {
 
     public fun undeleteHealthElementById(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -1152,6 +1195,7 @@ public object HealthElementApi {
         String?,
         String?,
         String?,
+        String?,
       ) -> Unit,
       sdkId: String,
       healthElementString: String,
@@ -1171,6 +1215,7 @@ public object HealthElementApi {
 
     public fun modifyHealthElement(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -1196,6 +1241,7 @@ public object HealthElementApi {
         String?,
         String?,
         String?,
+        String?,
       ) -> Unit,
       sdkId: String,
       entitiesString: String,
@@ -1218,6 +1264,7 @@ public object HealthElementApi {
         String?,
         String?,
         String?,
+        String?,
       ) -> Unit,
       sdkId: String,
       entityIdString: String,
@@ -1237,6 +1284,7 @@ public object HealthElementApi {
 
     public fun getHealthElements(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,

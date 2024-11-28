@@ -15,6 +15,7 @@ public object DataOwnerApiDispatcher {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
   ): Boolean = when(methodName) {
     "getCurrentDataOwner" -> getCurrentDataOwner(parameters, resultCallback)
@@ -35,6 +36,7 @@ public object DataOwnerApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     DataOwnerApi.getCurrentDataOwner(
       resultCallback,
@@ -43,6 +45,7 @@ public object DataOwnerApiDispatcher {
   }
 
   private fun getCurrentDataOwnerStub(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -57,6 +60,7 @@ public object DataOwnerApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     DataOwnerApi.getCurrentDataOwnerId(
       resultCallback,
@@ -68,6 +72,7 @@ public object DataOwnerApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     DataOwnerApi.getCurrentDataOwnerHierarchyIds(
       resultCallback,
@@ -76,6 +81,7 @@ public object DataOwnerApiDispatcher {
   }
 
   private fun getDataOwner(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -91,6 +97,7 @@ public object DataOwnerApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     DataOwnerApi.getCryptoActorStub(
       resultCallback,
@@ -100,6 +107,7 @@ public object DataOwnerApiDispatcher {
   }
 
   private fun getCurrentDataOwnerHierarchyIdsFrom(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -115,6 +123,7 @@ public object DataOwnerApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     DataOwnerApi.getCurrentDataOwnerHierarchy(
       resultCallback,
@@ -123,6 +132,7 @@ public object DataOwnerApiDispatcher {
   }
 
   private fun modifyDataOwnerStub(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -138,6 +148,7 @@ public object DataOwnerApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     DataOwnerApi.getCurrentDataOwnerType(
       resultCallback,
@@ -146,6 +157,7 @@ public object DataOwnerApiDispatcher {
   }
 
   private fun clearCurrentDataOwnerIdsCache(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,

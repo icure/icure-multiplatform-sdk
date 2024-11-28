@@ -9,6 +9,7 @@ object ResourceUtils {
 			String?,
 			String?,
 			String?,
+			String?,
 		) -> Unit,
 		resourceId: String,
 	) {

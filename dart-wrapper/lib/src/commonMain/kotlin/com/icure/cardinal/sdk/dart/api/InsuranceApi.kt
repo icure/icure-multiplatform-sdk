@@ -21,6 +21,7 @@ public object InsuranceApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     insuranceIdString: String,
@@ -40,6 +41,7 @@ public object InsuranceApi {
 
   public fun getInsurances(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -65,6 +67,7 @@ public object InsuranceApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     insuranceString: String,
@@ -84,6 +87,7 @@ public object InsuranceApi {
 
   public fun deleteInsurance(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -109,6 +113,7 @@ public object InsuranceApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     insuranceCodeString: String,
@@ -131,6 +136,7 @@ public object InsuranceApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     insuranceNameString: String,
@@ -150,6 +156,7 @@ public object InsuranceApi {
 
   public fun modifyInsurance(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,

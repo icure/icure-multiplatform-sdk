@@ -9,6 +9,7 @@ class KeywordApiDispatcher {
     resultCallback: @escaping (
       String?,
       String?,
+      String?,
       String?
     ) -> Void
   ) -> Bool {
@@ -26,6 +27,7 @@ class KeywordApiDispatcher {
   private static func getKeyword(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     KeywordApi.shared.getKeyword(
@@ -36,6 +38,7 @@ class KeywordApiDispatcher {
   }
 
   private static func createKeyword(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -50,6 +53,7 @@ class KeywordApiDispatcher {
   private static func modifyKeyword(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     KeywordApi.shared.modifyKeyword(
@@ -62,6 +66,7 @@ class KeywordApiDispatcher {
   private static func getKeywordsByUser(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     KeywordApi.shared.getKeywordsByUser(
@@ -72,6 +77,7 @@ class KeywordApiDispatcher {
   }
 
   private static func deleteKeywords(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?

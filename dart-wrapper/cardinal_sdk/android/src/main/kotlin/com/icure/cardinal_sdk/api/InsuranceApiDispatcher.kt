@@ -15,6 +15,7 @@ public object InsuranceApiDispatcher {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
   ): Boolean = when(methodName) {
     "getInsurance" -> getInsurance(parameters, resultCallback)
@@ -31,6 +32,7 @@ public object InsuranceApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     InsuranceApi.getInsurance(
       resultCallback,
@@ -40,6 +42,7 @@ public object InsuranceApiDispatcher {
   }
 
   private fun getInsurances(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -55,6 +58,7 @@ public object InsuranceApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     InsuranceApi.createInsurance(
       resultCallback,
@@ -64,6 +68,7 @@ public object InsuranceApiDispatcher {
   }
 
   private fun deleteInsurance(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -79,6 +84,7 @@ public object InsuranceApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     InsuranceApi.listInsurancesByCode(
       resultCallback,
@@ -91,6 +97,7 @@ public object InsuranceApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     InsuranceApi.listInsurancesByName(
       resultCallback,
@@ -100,6 +107,7 @@ public object InsuranceApiDispatcher {
   }
 
   private fun modifyInsurance(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,

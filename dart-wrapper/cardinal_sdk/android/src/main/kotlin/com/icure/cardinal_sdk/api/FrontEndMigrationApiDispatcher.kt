@@ -15,6 +15,7 @@ public object FrontEndMigrationApiDispatcher {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
   ): Boolean = when(methodName) {
     "getFrontEndMigration" -> getFrontEndMigration(parameters, resultCallback)
@@ -30,6 +31,7 @@ public object FrontEndMigrationApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     FrontEndMigrationApi.getFrontEndMigration(
       resultCallback,
@@ -39,6 +41,7 @@ public object FrontEndMigrationApiDispatcher {
   }
 
   private fun createFrontEndMigration(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -54,6 +57,7 @@ public object FrontEndMigrationApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     FrontEndMigrationApi.getFrontEndMigrations(
       resultCallback,
@@ -62,6 +66,7 @@ public object FrontEndMigrationApiDispatcher {
   }
 
   private fun deleteFrontEndMigration(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -77,6 +82,7 @@ public object FrontEndMigrationApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     FrontEndMigrationApi.getFrontEndMigrationByName(
       resultCallback,
@@ -86,6 +92,7 @@ public object FrontEndMigrationApiDispatcher {
   }
 
   private fun modifyFrontEndMigration(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,

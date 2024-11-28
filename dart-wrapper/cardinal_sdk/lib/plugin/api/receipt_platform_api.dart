@@ -2,6 +2,7 @@
 import 'package:flutter/services.dart';
 import 'package:cardinal_sdk/model/receipt.dart';
 import 'dart:convert';
+import 'package:cardinal_sdk/utils/internal/platform_exception_convertion.dart';
 import 'package:cardinal_sdk/model/patient.dart';
 import 'package:cardinal_sdk/model/user.dart';
 import 'package:cardinal_sdk/model/embed/access_level.dart';
@@ -28,7 +29,7 @@ class ReceiptPlatformApi {
 				"sdkId": sdkId,
 				"entity": jsonEncode(DecryptedReceipt.encode(entity)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method createReceipt");
 		final parsedResJson = jsonDecode(res);
 		return DecryptedReceipt.fromJSON(parsedResJson);
@@ -45,7 +46,7 @@ class ReceiptPlatformApi {
 				"delegates": jsonEncode(delegates.map((k0, v0) => MapEntry(k0, AccessLevel.encode(v0)))),
 				"secretId": jsonEncode(SecretIdUseOption.encode(secretId)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method withEncryptionMetadata");
 		final parsedResJson = jsonDecode(res);
 		return DecryptedReceipt.fromJSON(parsedResJson);
@@ -59,7 +60,7 @@ class ReceiptPlatformApi {
 				"receipt": jsonEncode(Receipt.encode(receipt)),
 				"attachmentId": jsonEncode(attachmentId),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getAndDecryptReceiptAttachment");
 		final parsedResJson = jsonDecode(res);
 		return base64Decode(parsedResJson as String);
@@ -74,7 +75,7 @@ class ReceiptPlatformApi {
 				"blobType": jsonEncode(blobType),
 				"attachment": jsonEncode(base64Encode(attachment as List<int>)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method encryptAndSetReceiptAttachment");
 		final parsedResJson = jsonDecode(res);
 		return EncryptedReceipt.fromJSON(parsedResJson);
@@ -87,7 +88,7 @@ class ReceiptPlatformApi {
 				"sdkId": sdkId,
 				"receipt": jsonEncode(Receipt.encode(receipt)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getEncryptionKeysOf");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => (x1 as HexString) ).toSet();
@@ -100,7 +101,7 @@ class ReceiptPlatformApi {
 				"sdkId": sdkId,
 				"receipt": jsonEncode(Receipt.encode(receipt)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method hasWriteAccess");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as bool);
@@ -113,7 +114,7 @@ class ReceiptPlatformApi {
 				"sdkId": sdkId,
 				"receipt": jsonEncode(Receipt.encode(receipt)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method decryptPatientIdOf");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toSet();
@@ -127,7 +128,7 @@ class ReceiptPlatformApi {
 				"entity": jsonEncode(Receipt.encode(entity)),
 				"delegates": jsonEncode(delegates.map((x0) => x0).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 	}
 
 	Future<Receipt> logReceipt(String sdkId, User user, String docId, List<String> refs, String blobType, Uint8List blob) async {
@@ -141,7 +142,7 @@ class ReceiptPlatformApi {
 				"blobType": jsonEncode(blobType),
 				"blob": jsonEncode(base64Encode(blob as List<int>)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method logReceipt");
 		final parsedResJson = jsonDecode(res);
 		return Receipt.fromJSON(parsedResJson);
@@ -154,7 +155,7 @@ class ReceiptPlatformApi {
 				"sdkId": sdkId,
 				"receipt": jsonEncode(EncryptedReceipt.encode(receipt)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method decrypt");
 		final parsedResJson = jsonDecode(res);
 		return DecryptedReceipt.fromJSON(parsedResJson);
@@ -167,7 +168,7 @@ class ReceiptPlatformApi {
 				"sdkId": sdkId,
 				"receipt": jsonEncode(EncryptedReceipt.encode(receipt)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method tryDecrypt");
 		final parsedResJson = jsonDecode(res);
 		return Receipt.fromJSON(parsedResJson);
@@ -180,7 +181,7 @@ class ReceiptPlatformApi {
 				"sdkId": sdkId,
 				"entityId": jsonEncode(entityId),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method deleteReceipt");
 		final parsedResJson = jsonDecode(res);
 		return DocIdentifier.fromJSON(parsedResJson);
@@ -193,7 +194,7 @@ class ReceiptPlatformApi {
 				"sdkId": sdkId,
 				"entityIds": jsonEncode(entityIds.map((x0) => x0).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method deleteReceipts");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => DocIdentifier.fromJSON(x1) ).toList();
@@ -207,7 +208,7 @@ class ReceiptPlatformApi {
 				"receiptId": jsonEncode(receiptId),
 				"attachmentId": jsonEncode(attachmentId),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getRawReceiptAttachment");
 		final parsedResJson = jsonDecode(res);
 		return base64Decode(parsedResJson as String);
@@ -223,7 +224,7 @@ class ReceiptPlatformApi {
 				"blobType": jsonEncode(blobType),
 				"attachment": jsonEncode(base64Encode(attachment as List<int>)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method setRawReceiptAttachment");
 		final parsedResJson = jsonDecode(res);
 		return EncryptedReceipt.fromJSON(parsedResJson);
@@ -238,7 +239,7 @@ class ReceiptPlatformApi {
 				"receipt": jsonEncode(DecryptedReceipt.encode(receipt)),
 				"options": jsonEncode(options == null ? null : ReceiptShareOptions.encode(options!)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method shareWith");
 		final parsedResJson = jsonDecode(res);
 		return DecryptedReceipt.fromJSON(parsedResJson);
@@ -252,7 +253,7 @@ class ReceiptPlatformApi {
 				"receipt": jsonEncode(DecryptedReceipt.encode(receipt)),
 				"delegates": jsonEncode(delegates.map((k0, v0) => MapEntry(k0, ReceiptShareOptions.encode(v0)))),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method shareWithMany");
 		final parsedResJson = jsonDecode(res);
 		return DecryptedReceipt.fromJSON(parsedResJson);
@@ -265,7 +266,7 @@ class ReceiptPlatformApi {
 				"sdkId": sdkId,
 				"entity": jsonEncode(DecryptedReceipt.encode(entity)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method modifyReceipt");
 		final parsedResJson = jsonDecode(res);
 		return DecryptedReceipt.fromJSON(parsedResJson);
@@ -278,7 +279,7 @@ class ReceiptPlatformApi {
 				"sdkId": sdkId,
 				"entityId": jsonEncode(entityId),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getReceipt");
 		final parsedResJson = jsonDecode(res);
 		return DecryptedReceipt.fromJSON(parsedResJson);
@@ -291,7 +292,7 @@ class ReceiptPlatformApi {
 				"sdkId": sdkId,
 				"reference": jsonEncode(reference),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method listByReference");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => DecryptedReceipt.fromJSON(x1) ).toList();
@@ -311,7 +312,7 @@ class TryAndRecoverReceiptPlatformApi {
 				"receipt": jsonEncode(Receipt.encode(receipt)),
 				"options": jsonEncode(options == null ? null : ReceiptShareOptions.encode(options!)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method shareWith");
 		final parsedResJson = jsonDecode(res);
 		return Receipt.fromJSON(parsedResJson);
@@ -325,7 +326,7 @@ class TryAndRecoverReceiptPlatformApi {
 				"receipt": jsonEncode(Receipt.encode(receipt)),
 				"delegates": jsonEncode(delegates.map((k0, v0) => MapEntry(k0, ReceiptShareOptions.encode(v0)))),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method shareWithMany");
 		final parsedResJson = jsonDecode(res);
 		return Receipt.fromJSON(parsedResJson);
@@ -338,7 +339,7 @@ class TryAndRecoverReceiptPlatformApi {
 				"sdkId": sdkId,
 				"entity": jsonEncode(Receipt.encode(entity)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method modifyReceipt");
 		final parsedResJson = jsonDecode(res);
 		return Receipt.fromJSON(parsedResJson);
@@ -351,7 +352,7 @@ class TryAndRecoverReceiptPlatformApi {
 				"sdkId": sdkId,
 				"entityId": jsonEncode(entityId),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getReceipt");
 		final parsedResJson = jsonDecode(res);
 		return Receipt.fromJSON(parsedResJson);
@@ -364,7 +365,7 @@ class TryAndRecoverReceiptPlatformApi {
 				"sdkId": sdkId,
 				"reference": jsonEncode(reference),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method listByReference");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => Receipt.fromJSON(x1) ).toList();
@@ -384,7 +385,7 @@ class EncryptedReceiptPlatformApi {
 				"receipt": jsonEncode(EncryptedReceipt.encode(receipt)),
 				"options": jsonEncode(options == null ? null : ReceiptShareOptions.encode(options!)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method shareWith");
 		final parsedResJson = jsonDecode(res);
 		return EncryptedReceipt.fromJSON(parsedResJson);
@@ -398,7 +399,7 @@ class EncryptedReceiptPlatformApi {
 				"receipt": jsonEncode(EncryptedReceipt.encode(receipt)),
 				"delegates": jsonEncode(delegates.map((k0, v0) => MapEntry(k0, ReceiptShareOptions.encode(v0)))),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method shareWithMany");
 		final parsedResJson = jsonDecode(res);
 		return EncryptedReceipt.fromJSON(parsedResJson);
@@ -411,7 +412,7 @@ class EncryptedReceiptPlatformApi {
 				"sdkId": sdkId,
 				"entity": jsonEncode(EncryptedReceipt.encode(entity)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method modifyReceipt");
 		final parsedResJson = jsonDecode(res);
 		return EncryptedReceipt.fromJSON(parsedResJson);
@@ -424,7 +425,7 @@ class EncryptedReceiptPlatformApi {
 				"sdkId": sdkId,
 				"entityId": jsonEncode(entityId),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getReceipt");
 		final parsedResJson = jsonDecode(res);
 		return EncryptedReceipt.fromJSON(parsedResJson);
@@ -437,7 +438,7 @@ class EncryptedReceiptPlatformApi {
 				"sdkId": sdkId,
 				"reference": jsonEncode(reference),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method listByReference");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => EncryptedReceipt.fromJSON(x1) ).toList();

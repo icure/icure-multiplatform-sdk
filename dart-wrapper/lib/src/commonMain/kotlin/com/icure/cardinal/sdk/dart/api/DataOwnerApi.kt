@@ -21,6 +21,7 @@ public object DataOwnerApi {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit, sdkId: String) {
     ApiScope.execute(
       dartResultCallback,
@@ -30,6 +31,7 @@ public object DataOwnerApi {
   }
 
   public fun getCurrentDataOwnerStub(dartResultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -45,6 +47,7 @@ public object DataOwnerApi {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit, sdkId: String) {
     ApiScope.execute(
       dartResultCallback,
@@ -54,6 +57,7 @@ public object DataOwnerApi {
   }
 
   public fun getCurrentDataOwnerHierarchyIds(dartResultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -67,6 +71,7 @@ public object DataOwnerApi {
 
   public fun getDataOwner(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -92,6 +97,7 @@ public object DataOwnerApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     ownerIdString: String,
@@ -111,6 +117,7 @@ public object DataOwnerApi {
 
   public fun getCurrentDataOwnerHierarchyIdsFrom(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -135,6 +142,7 @@ public object DataOwnerApi {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit, sdkId: String) {
     ApiScope.execute(
       dartResultCallback,
@@ -145,6 +153,7 @@ public object DataOwnerApi {
 
   public fun modifyDataOwnerStub(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -169,6 +178,7 @@ public object DataOwnerApi {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit, sdkId: String) {
     ApiScope.execute(
       dartResultCallback,
@@ -178,6 +188,7 @@ public object DataOwnerApi {
   }
 
   public fun clearCurrentDataOwnerIdsCache(dartResultCallback: (
+    String?,
     String?,
     String?,
     String?,

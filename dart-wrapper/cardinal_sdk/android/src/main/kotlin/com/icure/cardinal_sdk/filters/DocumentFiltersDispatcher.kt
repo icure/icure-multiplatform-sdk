@@ -15,6 +15,7 @@ public object DocumentFiltersDispatcher {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
   ): Boolean = when(methodName) {
     "byPatientsCreatedForDataOwner" -> byPatientsCreatedForDataOwner(parameters, resultCallback)
@@ -29,6 +30,7 @@ public object DocumentFiltersDispatcher {
   }?.let { true } ?: false
 
   private fun byPatientsCreatedForDataOwner(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -47,6 +49,7 @@ public object DocumentFiltersDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     DocumentFilters.byPatientsCreatedForSelf(
       resultCallback,
@@ -59,6 +62,7 @@ public object DocumentFiltersDispatcher {
 
   private fun byPatientSecretIdsCreatedForDataOwner(parameters: Map<String, String>,
       resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -77,6 +81,7 @@ public object DocumentFiltersDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     DocumentFilters.byPatientSecretIdsCreatedForSelf(
       resultCallback,
@@ -88,6 +93,7 @@ public object DocumentFiltersDispatcher {
   }
 
   private fun byPatientsAndTypeForDataOwner(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -104,6 +110,7 @@ public object DocumentFiltersDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     DocumentFilters.byPatientsAndTypeForSelf(
       resultCallback,
@@ -117,6 +124,7 @@ public object DocumentFiltersDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     DocumentFilters.byPatientSecretIdsAndTypeForDataOwner(
       resultCallback,
@@ -127,6 +135,7 @@ public object DocumentFiltersDispatcher {
   }
 
   private fun byPatientSecretIdsAndTypeForSelf(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,

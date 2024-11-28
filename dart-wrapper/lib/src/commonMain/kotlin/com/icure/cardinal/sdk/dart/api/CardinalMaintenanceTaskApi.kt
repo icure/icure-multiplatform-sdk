@@ -23,6 +23,7 @@ public object CardinalMaintenanceTaskApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     updateRequestString: String,
@@ -42,6 +43,7 @@ public object CardinalMaintenanceTaskApi {
 
   public fun createKeyPairUpdateNotificationsToAllDelegationCounterparts(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -70,6 +72,7 @@ public object CardinalMaintenanceTaskApi {
 
   public fun createKeyPairUpdateNotificationTo(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,

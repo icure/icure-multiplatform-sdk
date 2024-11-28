@@ -9,6 +9,7 @@ class HealthElementBasicApiDispatcher {
     resultCallback: @escaping (
       String?,
       String?,
+      String?,
       String?
     ) -> Void
   ) -> Bool {
@@ -38,6 +39,7 @@ class HealthElementBasicApiDispatcher {
   private static func matchHealthElementsBy(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     HealthElementBasicApi.shared.matchHealthElementsBy(
@@ -48,6 +50,7 @@ class HealthElementBasicApiDispatcher {
   }
 
   private static func matchHealthElementsBySorted(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -62,6 +65,7 @@ class HealthElementBasicApiDispatcher {
   private static func filterHealthElementsBy(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     HealthElementBasicApi.shared.filterHealthElementsBy(
@@ -74,6 +78,7 @@ class HealthElementBasicApiDispatcher {
   private static func filterHealthElementsBySorted(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     HealthElementBasicApi.shared.filterHealthElementsBySorted(
@@ -84,6 +89,7 @@ class HealthElementBasicApiDispatcher {
   }
 
   private static func deleteHealthElementById(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -99,6 +105,7 @@ class HealthElementBasicApiDispatcher {
   private static func deleteHealthElementsByIds(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     HealthElementBasicApi.shared.deleteHealthElementsByIds(
@@ -109,6 +116,7 @@ class HealthElementBasicApiDispatcher {
   }
 
   private static func purgeHealthElementById(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -124,6 +132,7 @@ class HealthElementBasicApiDispatcher {
   private static func deleteHealthElement(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     HealthElementBasicApi.shared.deleteHealthElement(
@@ -134,6 +143,7 @@ class HealthElementBasicApiDispatcher {
   }
 
   private static func deleteHealthElements(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -148,6 +158,7 @@ class HealthElementBasicApiDispatcher {
   private static func purgeHealthElement(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     HealthElementBasicApi.shared.purgeHealthElement(
@@ -158,6 +169,7 @@ class HealthElementBasicApiDispatcher {
   }
 
   private static func undeleteHealthElementById(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -173,6 +185,7 @@ class HealthElementBasicApiDispatcher {
   private static func undeleteHealthElement(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     HealthElementBasicApi.shared.undeleteHealthElement(
@@ -183,6 +196,7 @@ class HealthElementBasicApiDispatcher {
   }
 
   private static func modifyHealthElement(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -197,6 +211,7 @@ class HealthElementBasicApiDispatcher {
   private static func modifyHealthElements(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     HealthElementBasicApi.shared.modifyHealthElements(
@@ -207,6 +222,7 @@ class HealthElementBasicApiDispatcher {
   }
 
   private static func getHealthElement(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -221,6 +237,7 @@ class HealthElementBasicApiDispatcher {
   private static func getHealthElements(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     HealthElementBasicApi.shared.getHealthElements(
@@ -231,6 +248,7 @@ class HealthElementBasicApiDispatcher {
   }
 
   private static func subscribeToEvents(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?

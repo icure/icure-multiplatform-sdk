@@ -15,6 +15,7 @@ public object AccessLogFiltersDispatcher {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
   ): Boolean = when(methodName) {
     "byPatientsDateForDataOwner" -> byPatientsDateForDataOwner(parameters, resultCallback)
@@ -27,6 +28,7 @@ public object AccessLogFiltersDispatcher {
   }?.let { true } ?: false
 
   private fun byPatientsDateForDataOwner(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -45,6 +47,7 @@ public object AccessLogFiltersDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     AccessLogFilters.byPatientsDateForSelf(
       resultCallback,
@@ -56,6 +59,7 @@ public object AccessLogFiltersDispatcher {
   }
 
   private fun byPatientSecretIdsDateForDataOwner(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -74,6 +78,7 @@ public object AccessLogFiltersDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     AccessLogFilters.byPatientSecretIdsDateForSelf(
       resultCallback,
@@ -88,6 +93,7 @@ public object AccessLogFiltersDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     AccessLogFilters.byDate(
       resultCallback,
@@ -98,6 +104,7 @@ public object AccessLogFiltersDispatcher {
   }
 
   private fun byUserTypeDate(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,

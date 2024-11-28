@@ -15,6 +15,7 @@ public object CryptoApiDispatcher {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
   ): Boolean = when(methodName) {
     "forceReload" -> forceReload(parameters, resultCallback)
@@ -26,6 +27,7 @@ public object CryptoApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     CryptoApi.forceReload(
       resultCallback,
@@ -34,6 +36,7 @@ public object CryptoApiDispatcher {
   }
 
   private fun currentDataOwnerKeys(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,

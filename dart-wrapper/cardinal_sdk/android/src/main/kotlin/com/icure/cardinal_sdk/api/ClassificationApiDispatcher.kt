@@ -15,6 +15,7 @@ public object ClassificationApiDispatcher {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
   ): Boolean = when(methodName) {
     "createClassification" -> createClassification(parameters, resultCallback)
@@ -57,6 +58,7 @@ public object ClassificationApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     ClassificationApi.createClassification(
       resultCallback,
@@ -66,6 +68,7 @@ public object ClassificationApiDispatcher {
   }
 
   private fun withEncryptionMetadata(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -85,6 +88,7 @@ public object ClassificationApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     ClassificationApi.getEncryptionKeysOf(
       resultCallback,
@@ -97,6 +101,7 @@ public object ClassificationApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     ClassificationApi.hasWriteAccess(
       resultCallback,
@@ -106,6 +111,7 @@ public object ClassificationApiDispatcher {
   }
 
   private fun decryptPatientIdOf(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -122,6 +128,7 @@ public object ClassificationApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     ClassificationApi.createDelegationDeAnonymizationMetadata(
       resultCallback,
@@ -132,6 +139,7 @@ public object ClassificationApiDispatcher {
   }
 
   private fun decrypt(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -147,6 +155,7 @@ public object ClassificationApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     ClassificationApi.tryDecrypt(
       resultCallback,
@@ -156,6 +165,7 @@ public object ClassificationApiDispatcher {
   }
 
   private fun matchClassificationsBy(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -171,6 +181,7 @@ public object ClassificationApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     ClassificationApi.matchClassificationsBySorted(
       resultCallback,
@@ -180,6 +191,7 @@ public object ClassificationApiDispatcher {
   }
 
   private fun deleteClassification(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -195,6 +207,7 @@ public object ClassificationApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     ClassificationApi.deleteClassifications(
       resultCallback,
@@ -204,6 +217,7 @@ public object ClassificationApiDispatcher {
   }
 
   private fun shareWith(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -221,6 +235,7 @@ public object ClassificationApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     ClassificationApi.shareWithMany(
       resultCallback,
@@ -231,6 +246,7 @@ public object ClassificationApiDispatcher {
   }
 
   private fun filterClassificationsBy(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -246,6 +262,7 @@ public object ClassificationApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     ClassificationApi.filterClassificationsBySorted(
       resultCallback,
@@ -255,6 +272,7 @@ public object ClassificationApiDispatcher {
   }
 
   private fun modifyClassification(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -270,6 +288,7 @@ public object ClassificationApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     ClassificationApi.getClassification(
       resultCallback,
@@ -282,6 +301,7 @@ public object ClassificationApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     ClassificationApi.getClassifications(
       resultCallback,
@@ -291,6 +311,7 @@ public object ClassificationApiDispatcher {
   }
 
   private fun encrypted_shareWith(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -308,6 +329,7 @@ public object ClassificationApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     ClassificationApi.encrypted.shareWithMany(
       resultCallback,
@@ -318,6 +340,7 @@ public object ClassificationApiDispatcher {
   }
 
   private fun encrypted_filterClassificationsBy(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -334,6 +357,7 @@ public object ClassificationApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     ClassificationApi.encrypted.filterClassificationsBySorted(
       resultCallback,
@@ -343,6 +367,7 @@ public object ClassificationApiDispatcher {
   }
 
   private fun encrypted_modifyClassification(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -358,6 +383,7 @@ public object ClassificationApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     ClassificationApi.encrypted.getClassification(
       resultCallback,
@@ -370,6 +396,7 @@ public object ClassificationApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     ClassificationApi.encrypted.getClassifications(
       resultCallback,
@@ -379,6 +406,7 @@ public object ClassificationApiDispatcher {
   }
 
   private fun tryAndRecover_shareWith(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -396,6 +424,7 @@ public object ClassificationApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     ClassificationApi.tryAndRecover.shareWithMany(
       resultCallback,
@@ -407,6 +436,7 @@ public object ClassificationApiDispatcher {
 
   private fun tryAndRecover_filterClassificationsBy(parameters: Map<String, String>,
       resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -423,6 +453,7 @@ public object ClassificationApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     ClassificationApi.tryAndRecover.filterClassificationsBySorted(
       resultCallback,
@@ -432,6 +463,7 @@ public object ClassificationApiDispatcher {
   }
 
   private fun tryAndRecover_modifyClassification(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -447,6 +479,7 @@ public object ClassificationApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     ClassificationApi.tryAndRecover.getClassification(
       resultCallback,
@@ -456,6 +489,7 @@ public object ClassificationApiDispatcher {
   }
 
   private fun tryAndRecover_getClassifications(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,

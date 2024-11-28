@@ -25,6 +25,7 @@ public object CodeApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     regionString: String,
@@ -65,6 +66,7 @@ public object CodeApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     regionString: String,
@@ -90,6 +92,7 @@ public object CodeApi {
 
   public fun listTagTypesBy(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -121,6 +124,7 @@ public object CodeApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     cString: String,
@@ -143,6 +147,7 @@ public object CodeApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     codeBatchString: String,
@@ -162,6 +167,7 @@ public object CodeApi {
 
   public fun createCodesInGroup(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -190,6 +196,7 @@ public object CodeApi {
 
   public fun isCodeValid(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -224,6 +231,7 @@ public object CodeApi {
 
   public fun getCodeByRegionLanguageTypeLabel(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -267,6 +275,7 @@ public object CodeApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     codeIdsString: String,
@@ -286,6 +295,7 @@ public object CodeApi {
 
   public fun getCodesInGroup(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -317,6 +327,7 @@ public object CodeApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     codeIdString: String,
@@ -336,6 +347,7 @@ public object CodeApi {
 
   public fun getCodeWithParts(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -373,6 +385,7 @@ public object CodeApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     codeDtoString: String,
@@ -395,6 +408,7 @@ public object CodeApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     codeBatchString: String,
@@ -414,6 +428,7 @@ public object CodeApi {
 
   public fun modifyCodesInGroup(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -445,6 +460,7 @@ public object CodeApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     filterString: String,
@@ -468,6 +484,7 @@ public object CodeApi {
 
   public fun filterCodesBySorted(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -497,6 +514,7 @@ public object CodeApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     filterString: String,
@@ -519,6 +537,7 @@ public object CodeApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     filterString: String,
@@ -538,6 +557,7 @@ public object CodeApi {
 
   public fun importCodes(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,

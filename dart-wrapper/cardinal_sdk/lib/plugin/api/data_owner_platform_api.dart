@@ -1,6 +1,7 @@
 // auto-generated file
 import 'package:flutter/services.dart';
 import 'package:cardinal_sdk/model/data_owner_with_type.dart';
+import 'package:cardinal_sdk/utils/internal/platform_exception_convertion.dart';
 import 'dart:convert';
 import 'package:cardinal_sdk/model/crypto_actor_stub_with_type.dart';
 import 'package:cardinal_sdk/model/data_owner_type.dart';
@@ -16,7 +17,7 @@ class DataOwnerPlatformApi {
 			{
 				"sdkId": sdkId,
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getCurrentDataOwner");
 		final parsedResJson = jsonDecode(res);
 		return DataOwnerWithType.fromJSON(parsedResJson);
@@ -28,7 +29,7 @@ class DataOwnerPlatformApi {
 			{
 				"sdkId": sdkId,
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getCurrentDataOwnerStub");
 		final parsedResJson = jsonDecode(res);
 		return CryptoActorStubWithType.fromJSON(parsedResJson);
@@ -40,7 +41,7 @@ class DataOwnerPlatformApi {
 			{
 				"sdkId": sdkId,
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getCurrentDataOwnerId");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as String);
@@ -52,7 +53,7 @@ class DataOwnerPlatformApi {
 			{
 				"sdkId": sdkId,
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getCurrentDataOwnerHierarchyIds");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toList();
@@ -65,7 +66,7 @@ class DataOwnerPlatformApi {
 				"sdkId": sdkId,
 				"ownerId": jsonEncode(ownerId),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getDataOwner");
 		final parsedResJson = jsonDecode(res);
 		return DataOwnerWithType.fromJSON(parsedResJson);
@@ -78,7 +79,7 @@ class DataOwnerPlatformApi {
 				"sdkId": sdkId,
 				"ownerId": jsonEncode(ownerId),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getCryptoActorStub");
 		final parsedResJson = jsonDecode(res);
 		return CryptoActorStubWithType.fromJSON(parsedResJson);
@@ -91,7 +92,7 @@ class DataOwnerPlatformApi {
 				"sdkId": sdkId,
 				"parentId": jsonEncode(parentId),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getCurrentDataOwnerHierarchyIdsFrom");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toList();
@@ -103,7 +104,7 @@ class DataOwnerPlatformApi {
 			{
 				"sdkId": sdkId,
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getCurrentDataOwnerHierarchy");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => DataOwnerWithType.fromJSON(x1) ).toList();
@@ -116,7 +117,7 @@ class DataOwnerPlatformApi {
 				"sdkId": sdkId,
 				"cryptoActorStubWithTypeDto": jsonEncode(CryptoActorStubWithType.encode(cryptoActorStubWithTypeDto)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method modifyDataOwnerStub");
 		final parsedResJson = jsonDecode(res);
 		return CryptoActorStubWithType.fromJSON(parsedResJson);
@@ -128,7 +129,7 @@ class DataOwnerPlatformApi {
 			{
 				"sdkId": sdkId,
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getCurrentDataOwnerType");
 		final parsedResJson = jsonDecode(res);
 		return DataOwnerType.fromJSON(parsedResJson);
@@ -140,6 +141,6 @@ class DataOwnerPlatformApi {
 			{
 				"sdkId": sdkId,
 			}
-		);
+		).catchError(convertPlatformException);
 	}
 }

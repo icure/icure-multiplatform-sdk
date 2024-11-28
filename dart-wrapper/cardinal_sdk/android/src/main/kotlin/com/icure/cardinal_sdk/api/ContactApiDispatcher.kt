@@ -15,6 +15,7 @@ public object ContactApiDispatcher {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
   ): Boolean = when(methodName) {
     "matchContactsBy" -> matchContactsBy(parameters, resultCallback)
@@ -90,6 +91,7 @@ public object ContactApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     ContactApi.matchContactsBy(
       resultCallback,
@@ -99,6 +101,7 @@ public object ContactApiDispatcher {
   }
 
   private fun matchServicesBy(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -114,6 +117,7 @@ public object ContactApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     ContactApi.matchContactsBySorted(
       resultCallback,
@@ -123,6 +127,7 @@ public object ContactApiDispatcher {
   }
 
   private fun matchServicesBySorted(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -138,6 +143,7 @@ public object ContactApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     ContactApi.createContact(
       resultCallback,
@@ -150,6 +156,7 @@ public object ContactApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     ContactApi.createContacts(
       resultCallback,
@@ -159,6 +166,7 @@ public object ContactApiDispatcher {
   }
 
   private fun withEncryptionMetadata(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -178,6 +186,7 @@ public object ContactApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     ContactApi.getEncryptionKeysOf(
       resultCallback,
@@ -190,6 +199,7 @@ public object ContactApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     ContactApi.hasWriteAccess(
       resultCallback,
@@ -199,6 +209,7 @@ public object ContactApiDispatcher {
   }
 
   private fun decryptPatientIdOf(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -215,6 +226,7 @@ public object ContactApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     ContactApi.createDelegationDeAnonymizationMetadata(
       resultCallback,
@@ -225,6 +237,7 @@ public object ContactApiDispatcher {
   }
 
   private fun decrypt(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -240,6 +253,7 @@ public object ContactApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     ContactApi.tryDecrypt(
       resultCallback,
@@ -252,6 +266,7 @@ public object ContactApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     ContactApi.decryptService(
       resultCallback,
@@ -261,6 +276,7 @@ public object ContactApiDispatcher {
   }
 
   private fun tryDecryptService(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -277,6 +293,7 @@ public object ContactApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     ContactApi.subscribeToServiceCreateOrUpdateEvents(
       resultCallback,
@@ -287,6 +304,7 @@ public object ContactApiDispatcher {
   }
 
   private fun deleteContactById(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -303,6 +321,7 @@ public object ContactApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     ContactApi.deleteContactsByIds(
       resultCallback,
@@ -312,6 +331,7 @@ public object ContactApiDispatcher {
   }
 
   private fun purgeContactById(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -328,6 +348,7 @@ public object ContactApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     ContactApi.deleteContact(
       resultCallback,
@@ -337,6 +358,7 @@ public object ContactApiDispatcher {
   }
 
   private fun deleteContacts(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -352,6 +374,7 @@ public object ContactApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     ContactApi.purgeContact(
       resultCallback,
@@ -361,6 +384,7 @@ public object ContactApiDispatcher {
   }
 
   private fun getServiceCodesOccurrences(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -374,6 +398,7 @@ public object ContactApiDispatcher {
   }
 
   private fun shareWith(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -391,6 +416,7 @@ public object ContactApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     ContactApi.shareWithMany(
       resultCallback,
@@ -401,6 +427,7 @@ public object ContactApiDispatcher {
   }
 
   private fun filterContactsBy(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -416,6 +443,7 @@ public object ContactApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     ContactApi.filterServicesBy(
       resultCallback,
@@ -425,6 +453,7 @@ public object ContactApiDispatcher {
   }
 
   private fun filterContactsBySorted(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -440,6 +469,7 @@ public object ContactApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     ContactApi.filterServicesBySorted(
       resultCallback,
@@ -449,6 +479,7 @@ public object ContactApiDispatcher {
   }
 
   private fun undeleteContactById(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -465,6 +496,7 @@ public object ContactApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     ContactApi.undeleteContact(
       resultCallback,
@@ -474,6 +506,7 @@ public object ContactApiDispatcher {
   }
 
   private fun modifyContact(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -489,6 +522,7 @@ public object ContactApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     ContactApi.modifyContacts(
       resultCallback,
@@ -498,6 +532,7 @@ public object ContactApiDispatcher {
   }
 
   private fun getContact(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -513,6 +548,7 @@ public object ContactApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     ContactApi.getContacts(
       resultCallback,
@@ -522,6 +558,7 @@ public object ContactApiDispatcher {
   }
 
   private fun getService(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -537,6 +574,7 @@ public object ContactApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     ContactApi.getServices(
       resultCallback,
@@ -546,6 +584,7 @@ public object ContactApiDispatcher {
   }
 
   private fun subscribeToEvents(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -563,6 +602,7 @@ public object ContactApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     ContactApi.encrypted.shareWith(
       resultCallback,
@@ -574,6 +614,7 @@ public object ContactApiDispatcher {
   }
 
   private fun encrypted_shareWithMany(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -590,6 +631,7 @@ public object ContactApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     ContactApi.encrypted.filterContactsBy(
       resultCallback,
@@ -599,6 +641,7 @@ public object ContactApiDispatcher {
   }
 
   private fun encrypted_filterServicesBy(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -614,6 +657,7 @@ public object ContactApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     ContactApi.encrypted.filterContactsBySorted(
       resultCallback,
@@ -626,6 +670,7 @@ public object ContactApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     ContactApi.encrypted.filterServicesBySorted(
       resultCallback,
@@ -635,6 +680,7 @@ public object ContactApiDispatcher {
   }
 
   private fun encrypted_undeleteContactById(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -651,6 +697,7 @@ public object ContactApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     ContactApi.encrypted.undeleteContact(
       resultCallback,
@@ -660,6 +707,7 @@ public object ContactApiDispatcher {
   }
 
   private fun encrypted_modifyContact(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -675,6 +723,7 @@ public object ContactApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     ContactApi.encrypted.modifyContacts(
       resultCallback,
@@ -684,6 +733,7 @@ public object ContactApiDispatcher {
   }
 
   private fun encrypted_getContact(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -699,6 +749,7 @@ public object ContactApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     ContactApi.encrypted.getContacts(
       resultCallback,
@@ -708,6 +759,7 @@ public object ContactApiDispatcher {
   }
 
   private fun encrypted_getService(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -723,6 +775,7 @@ public object ContactApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     ContactApi.encrypted.getServices(
       resultCallback,
@@ -732,6 +785,7 @@ public object ContactApiDispatcher {
   }
 
   private fun tryAndRecover_shareWith(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -749,6 +803,7 @@ public object ContactApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     ContactApi.tryAndRecover.shareWithMany(
       resultCallback,
@@ -762,6 +817,7 @@ public object ContactApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     ContactApi.tryAndRecover.filterContactsBy(
       resultCallback,
@@ -771,6 +827,7 @@ public object ContactApiDispatcher {
   }
 
   private fun tryAndRecover_filterServicesBy(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -787,6 +844,7 @@ public object ContactApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     ContactApi.tryAndRecover.filterContactsBySorted(
       resultCallback,
@@ -800,6 +858,7 @@ public object ContactApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     ContactApi.tryAndRecover.filterServicesBySorted(
       resultCallback,
@@ -809,6 +868,7 @@ public object ContactApiDispatcher {
   }
 
   private fun tryAndRecover_undeleteContactById(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -825,6 +885,7 @@ public object ContactApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     ContactApi.tryAndRecover.undeleteContact(
       resultCallback,
@@ -834,6 +895,7 @@ public object ContactApiDispatcher {
   }
 
   private fun tryAndRecover_modifyContact(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -849,6 +911,7 @@ public object ContactApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     ContactApi.tryAndRecover.modifyContacts(
       resultCallback,
@@ -858,6 +921,7 @@ public object ContactApiDispatcher {
   }
 
   private fun tryAndRecover_getContact(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -873,6 +937,7 @@ public object ContactApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     ContactApi.tryAndRecover.getContacts(
       resultCallback,
@@ -885,6 +950,7 @@ public object ContactApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     ContactApi.tryAndRecover.getService(
       resultCallback,
@@ -894,6 +960,7 @@ public object ContactApiDispatcher {
   }
 
   private fun tryAndRecover_getServices(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,

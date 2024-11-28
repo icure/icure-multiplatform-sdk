@@ -28,6 +28,7 @@ public object PatientFilters {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit, dataOwnerIdString: String) {
     val dataOwnerId = fullLanguageInteropJson.decodeFromString(
       String.serializer(),
@@ -47,6 +48,7 @@ public object PatientFilters {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     DartResult.resolve(
       dartResultCallback,
@@ -58,6 +60,7 @@ public object PatientFilters {
   }
 
   public fun byIds(dartResultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -78,6 +81,7 @@ public object PatientFilters {
 
   public fun byIdentifiersForDataOwner(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -109,6 +113,7 @@ public object PatientFilters {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     dataOwnerIdString: String,
     ssinsString: String,
@@ -134,6 +139,7 @@ public object PatientFilters {
 
   public fun byDateOfBirthBetweenForDataOwner(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -171,6 +177,7 @@ public object PatientFilters {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     dataOwnerIdString: String,
     searchStringString: String,
@@ -196,6 +203,7 @@ public object PatientFilters {
 
   public fun byGenderEducationProfessionForDataOwner(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -239,6 +247,7 @@ public object PatientFilters {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     dataOwnerIdString: String,
     activeString: String,
@@ -267,6 +276,7 @@ public object PatientFilters {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     dataOwnerIdString: String,
     searchStringString: String,
@@ -292,6 +302,7 @@ public object PatientFilters {
 
   public fun byAddressPostalCodeHouseNumberForDataOwner(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -335,6 +346,7 @@ public object PatientFilters {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     dataOwnerIdString: String,
     searchStringString: String,
@@ -360,6 +372,7 @@ public object PatientFilters {
 
   public fun byExternalIdForDataOwner(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -390,6 +403,7 @@ public object PatientFilters {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit, identifiersString: String) {
     val identifiers = fullLanguageInteropJson.decodeFromString(
       ListSerializer(Identifier.serializer()),
@@ -406,6 +420,7 @@ public object PatientFilters {
   }
 
   public fun bySsinsForSelf(dartResultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -426,6 +441,7 @@ public object PatientFilters {
 
   public fun byDateOfBirthBetweenForSelf(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -456,6 +472,7 @@ public object PatientFilters {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit, searchStringString: String) {
     val searchString = fullLanguageInteropJson.decodeFromString(
       String.serializer(),
@@ -473,6 +490,7 @@ public object PatientFilters {
 
   public fun byGenderEducationProfessionForSelf(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -509,6 +527,7 @@ public object PatientFilters {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit, activeString: String) {
     val active = fullLanguageInteropJson.decodeFromString(
       Boolean.serializer(),
@@ -525,6 +544,7 @@ public object PatientFilters {
   }
 
   public fun byTelecomForSelf(dartResultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -545,6 +565,7 @@ public object PatientFilters {
 
   public fun byAddressPostalCodeHouseNumberForSelf(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -581,6 +602,7 @@ public object PatientFilters {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit, searchStringString: String) {
     val searchString = fullLanguageInteropJson.decodeFromString(
       String.serializer(),
@@ -597,6 +619,7 @@ public object PatientFilters {
   }
 
   public fun byExternalIdForSelf(dartResultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -617,6 +640,7 @@ public object PatientFilters {
 
   public fun byModificationDateForDataOwner(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -657,6 +681,7 @@ public object PatientFilters {
 
   public fun byModificationDateForSelf(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,

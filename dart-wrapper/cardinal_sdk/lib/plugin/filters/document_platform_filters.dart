@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:cardinal_sdk/model/patient.dart';
 import 'package:cardinal_sdk/filters/filter_options.dart';
 import 'dart:convert';
+import 'package:cardinal_sdk/utils/internal/platform_exception_convertion.dart';
 import 'package:cardinal_sdk/model/document.dart';
 import 'package:cardinal_sdk/model/embed/document_type.dart';
 
@@ -21,7 +22,7 @@ class DocumentPlatformFilters {
 				"to": jsonEncode(to?.millisecondsSinceEpoch),
 				"descending": jsonEncode(descending),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method byPatientsCreatedForDataOwner");
 		final parsedResJson = jsonDecode(res);
 		return SortableFilterOptions.fromJSON(parsedResJson);
@@ -36,7 +37,7 @@ class DocumentPlatformFilters {
 				"to": jsonEncode(to?.millisecondsSinceEpoch),
 				"descending": jsonEncode(descending),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method byPatientsCreatedForSelf");
 		final parsedResJson = jsonDecode(res);
 		return SortableFilterOptions.fromJSON(parsedResJson);
@@ -52,7 +53,7 @@ class DocumentPlatformFilters {
 				"to": jsonEncode(to?.millisecondsSinceEpoch),
 				"descending": jsonEncode(descending),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method byPatientSecretIdsCreatedForDataOwner");
 		final parsedResJson = jsonDecode(res);
 		return BaseSortableFilterOptions.fromJSON(parsedResJson);
@@ -67,7 +68,7 @@ class DocumentPlatformFilters {
 				"to": jsonEncode(to?.millisecondsSinceEpoch),
 				"descending": jsonEncode(descending),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method byPatientSecretIdsCreatedForSelf");
 		final parsedResJson = jsonDecode(res);
 		return SortableFilterOptions.fromJSON(parsedResJson);
@@ -81,7 +82,7 @@ class DocumentPlatformFilters {
 				"documentType": jsonEncode(DocumentType.encode(documentType)),
 				"patients": jsonEncode(patients.map((x0) => Patient.encode(x0)).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method byPatientsAndTypeForDataOwner");
 		final parsedResJson = jsonDecode(res);
 		return FilterOptions.fromJSON(parsedResJson);
@@ -94,7 +95,7 @@ class DocumentPlatformFilters {
 				"documentType": jsonEncode(DocumentType.encode(documentType)),
 				"patients": jsonEncode(patients.map((x0) => Patient.encode(x0)).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method byPatientsAndTypeForSelf");
 		final parsedResJson = jsonDecode(res);
 		return FilterOptions.fromJSON(parsedResJson);
@@ -108,7 +109,7 @@ class DocumentPlatformFilters {
 				"documentType": jsonEncode(DocumentType.encode(documentType)),
 				"secretIds": jsonEncode(secretIds.map((x0) => x0).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method byPatientSecretIdsAndTypeForDataOwner");
 		final parsedResJson = jsonDecode(res);
 		return FilterOptions.fromJSON(parsedResJson);
@@ -121,7 +122,7 @@ class DocumentPlatformFilters {
 				"documentType": jsonEncode(DocumentType.encode(documentType)),
 				"secretIds": jsonEncode(secretIds.map((x0) => x0).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method byPatientSecretIdsAndTypeForSelf");
 		final parsedResJson = jsonDecode(res);
 		return FilterOptions.fromJSON(parsedResJson);

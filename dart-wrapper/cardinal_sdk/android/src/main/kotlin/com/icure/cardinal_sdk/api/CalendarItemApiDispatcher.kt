@@ -15,6 +15,7 @@ public object CalendarItemApiDispatcher {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
   ): Boolean = when(methodName) {
     "createCalendarItem" -> createCalendarItem(parameters, resultCallback)
@@ -71,6 +72,7 @@ public object CalendarItemApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     CalendarItemApi.createCalendarItem(
       resultCallback,
@@ -80,6 +82,7 @@ public object CalendarItemApiDispatcher {
   }
 
   private fun withEncryptionMetadata(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -99,6 +102,7 @@ public object CalendarItemApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     CalendarItemApi.getEncryptionKeysOf(
       resultCallback,
@@ -111,6 +115,7 @@ public object CalendarItemApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     CalendarItemApi.hasWriteAccess(
       resultCallback,
@@ -120,6 +125,7 @@ public object CalendarItemApiDispatcher {
   }
 
   private fun decryptPatientIdOf(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -136,6 +142,7 @@ public object CalendarItemApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     CalendarItemApi.createDelegationDeAnonymizationMetadata(
       resultCallback,
@@ -146,6 +153,7 @@ public object CalendarItemApiDispatcher {
   }
 
   private fun decrypt(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -161,6 +169,7 @@ public object CalendarItemApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     CalendarItemApi.tryDecrypt(
       resultCallback,
@@ -170,6 +179,7 @@ public object CalendarItemApiDispatcher {
   }
 
   private fun matchCalendarItemsBy(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -185,6 +195,7 @@ public object CalendarItemApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     CalendarItemApi.matchCalendarItemsBySorted(
       resultCallback,
@@ -194,6 +205,7 @@ public object CalendarItemApiDispatcher {
   }
 
   private fun deleteCalendarItemById(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -210,6 +222,7 @@ public object CalendarItemApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     CalendarItemApi.deleteCalendarItemsByIds(
       resultCallback,
@@ -219,6 +232,7 @@ public object CalendarItemApiDispatcher {
   }
 
   private fun purgeCalendarItemById(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -235,6 +249,7 @@ public object CalendarItemApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     CalendarItemApi.deleteCalendarItem(
       resultCallback,
@@ -244,6 +259,7 @@ public object CalendarItemApiDispatcher {
   }
 
   private fun deleteCalendarItems(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -259,6 +275,7 @@ public object CalendarItemApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     CalendarItemApi.purgeCalendarItem(
       resultCallback,
@@ -268,6 +285,7 @@ public object CalendarItemApiDispatcher {
   }
 
   private fun shareWith(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -285,6 +303,7 @@ public object CalendarItemApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     CalendarItemApi.shareWithMany(
       resultCallback,
@@ -295,6 +314,7 @@ public object CalendarItemApiDispatcher {
   }
 
   private fun linkToPatient(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -312,6 +332,7 @@ public object CalendarItemApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     CalendarItemApi.filterCalendarItemsBy(
       resultCallback,
@@ -324,6 +345,7 @@ public object CalendarItemApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     CalendarItemApi.filterCalendarItemsBySorted(
       resultCallback,
@@ -333,6 +355,7 @@ public object CalendarItemApiDispatcher {
   }
 
   private fun undeleteCalendarItemById(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -349,6 +372,7 @@ public object CalendarItemApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     CalendarItemApi.undeleteCalendarItem(
       resultCallback,
@@ -358,6 +382,7 @@ public object CalendarItemApiDispatcher {
   }
 
   private fun modifyCalendarItem(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -373,6 +398,7 @@ public object CalendarItemApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     CalendarItemApi.getCalendarItem(
       resultCallback,
@@ -385,6 +411,7 @@ public object CalendarItemApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     CalendarItemApi.getCalendarItems(
       resultCallback,
@@ -394,6 +421,7 @@ public object CalendarItemApiDispatcher {
   }
 
   private fun subscribeToEvents(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -411,6 +439,7 @@ public object CalendarItemApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     CalendarItemApi.encrypted.shareWith(
       resultCallback,
@@ -425,6 +454,7 @@ public object CalendarItemApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     CalendarItemApi.encrypted.shareWithMany(
       resultCallback,
@@ -435,6 +465,7 @@ public object CalendarItemApiDispatcher {
   }
 
   private fun encrypted_linkToPatient(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -452,6 +483,7 @@ public object CalendarItemApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     CalendarItemApi.encrypted.filterCalendarItemsBy(
       resultCallback,
@@ -465,6 +497,7 @@ public object CalendarItemApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     CalendarItemApi.encrypted.filterCalendarItemsBySorted(
       resultCallback,
@@ -474,6 +507,7 @@ public object CalendarItemApiDispatcher {
   }
 
   private fun encrypted_undeleteCalendarItemById(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -490,6 +524,7 @@ public object CalendarItemApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     CalendarItemApi.encrypted.undeleteCalendarItem(
       resultCallback,
@@ -499,6 +534,7 @@ public object CalendarItemApiDispatcher {
   }
 
   private fun encrypted_modifyCalendarItem(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -514,6 +550,7 @@ public object CalendarItemApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     CalendarItemApi.encrypted.getCalendarItem(
       resultCallback,
@@ -526,6 +563,7 @@ public object CalendarItemApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     CalendarItemApi.encrypted.getCalendarItems(
       resultCallback,
@@ -535,6 +573,7 @@ public object CalendarItemApiDispatcher {
   }
 
   private fun tryAndRecover_shareWith(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -552,6 +591,7 @@ public object CalendarItemApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     CalendarItemApi.tryAndRecover.shareWithMany(
       resultCallback,
@@ -562,6 +602,7 @@ public object CalendarItemApiDispatcher {
   }
 
   private fun tryAndRecover_linkToPatient(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -579,6 +620,7 @@ public object CalendarItemApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     CalendarItemApi.tryAndRecover.filterCalendarItemsBy(
       resultCallback,
@@ -589,6 +631,7 @@ public object CalendarItemApiDispatcher {
 
   private fun tryAndRecover_filterCalendarItemsBySorted(parameters: Map<String, String>,
       resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -605,6 +648,7 @@ public object CalendarItemApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     CalendarItemApi.tryAndRecover.undeleteCalendarItemById(
       resultCallback,
@@ -615,6 +659,7 @@ public object CalendarItemApiDispatcher {
   }
 
   private fun tryAndRecover_undeleteCalendarItem(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -630,6 +675,7 @@ public object CalendarItemApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     CalendarItemApi.tryAndRecover.modifyCalendarItem(
       resultCallback,
@@ -642,6 +688,7 @@ public object CalendarItemApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     CalendarItemApi.tryAndRecover.getCalendarItem(
       resultCallback,
@@ -651,6 +698,7 @@ public object CalendarItemApiDispatcher {
   }
 
   private fun tryAndRecover_getCalendarItems(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,

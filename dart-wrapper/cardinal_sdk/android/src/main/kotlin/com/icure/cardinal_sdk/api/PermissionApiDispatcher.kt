@@ -15,6 +15,7 @@ public object PermissionApiDispatcher {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
   ): Boolean = when(methodName) {
     "modifyUserPermissions" -> modifyUserPermissions(parameters, resultCallback)
@@ -22,6 +23,7 @@ public object PermissionApiDispatcher {
   }?.let { true } ?: false
 
   private fun modifyUserPermissions(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,

@@ -18,6 +18,7 @@ public object GroupFilters {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     DartResult.resolve(
       dartResultCallback,
@@ -29,6 +30,7 @@ public object GroupFilters {
   }
 
   public fun bySuperGroup(dartResultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -49,6 +51,7 @@ public object GroupFilters {
 
   public fun withContent(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,

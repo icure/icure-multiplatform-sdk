@@ -9,6 +9,7 @@ class RoleApiDispatcher {
     resultCallback: @escaping (
       String?,
       String?,
+      String?,
       String?
     ) -> Void
   ) -> Bool {
@@ -20,6 +21,7 @@ class RoleApiDispatcher {
   }
 
   private static func getAllRoles(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?

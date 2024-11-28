@@ -46,6 +46,7 @@ public object ContactApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     filterString: String,
@@ -65,6 +66,7 @@ public object ContactApi {
 
   public fun matchServicesBy(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -90,6 +92,7 @@ public object ContactApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     filterString: String,
@@ -109,6 +112,7 @@ public object ContactApi {
 
   public fun matchServicesBySorted(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -134,6 +138,7 @@ public object ContactApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     entityString: String,
@@ -156,6 +161,7 @@ public object ContactApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     entitiesString: String,
@@ -175,6 +181,7 @@ public object ContactApi {
 
   public fun withEncryptionMetadata(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -224,6 +231,7 @@ public object ContactApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     contactString: String,
@@ -243,6 +251,7 @@ public object ContactApi {
 
   public fun hasWriteAccess(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -268,6 +277,7 @@ public object ContactApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     contactString: String,
@@ -287,6 +297,7 @@ public object ContactApi {
 
   public fun createDelegationDeAnonymizationMetadata(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -318,6 +329,7 @@ public object ContactApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     contactString: String,
@@ -337,6 +349,7 @@ public object ContactApi {
 
   public fun tryDecrypt(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -362,6 +375,7 @@ public object ContactApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     serviceString: String,
@@ -384,6 +398,7 @@ public object ContactApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     serviceString: String,
@@ -403,6 +418,7 @@ public object ContactApi {
 
   public fun subscribeToServiceCreateOrUpdateEvents(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -439,6 +455,7 @@ public object ContactApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     entityIdString: String,
@@ -467,6 +484,7 @@ public object ContactApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     entityIdsString: String,
@@ -486,6 +504,7 @@ public object ContactApi {
 
   public fun purgeContactById(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -517,6 +536,7 @@ public object ContactApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     contactString: String,
@@ -536,6 +556,7 @@ public object ContactApi {
 
   public fun deleteContacts(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -561,6 +582,7 @@ public object ContactApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     contactString: String,
@@ -580,6 +602,7 @@ public object ContactApi {
 
   public fun getServiceCodesOccurrences(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -608,6 +631,7 @@ public object ContactApi {
 
   public fun shareWith(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -645,6 +669,7 @@ public object ContactApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     contactString: String,
@@ -670,6 +695,7 @@ public object ContactApi {
 
   public fun filterContactsBy(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -699,6 +725,7 @@ public object ContactApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     filterString: String,
@@ -722,6 +749,7 @@ public object ContactApi {
 
   public fun filterContactsBySorted(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -751,6 +779,7 @@ public object ContactApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     filterString: String,
@@ -774,6 +803,7 @@ public object ContactApi {
 
   public fun undeleteContactById(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -805,6 +835,7 @@ public object ContactApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     contactString: String,
@@ -824,6 +855,7 @@ public object ContactApi {
 
   public fun modifyContact(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -849,6 +881,7 @@ public object ContactApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     entitiesString: String,
@@ -868,6 +901,7 @@ public object ContactApi {
 
   public fun getContact(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -893,6 +927,7 @@ public object ContactApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     entityIdsString: String,
@@ -912,6 +947,7 @@ public object ContactApi {
 
   public fun getService(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -937,6 +973,7 @@ public object ContactApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     entityIdsString: String,
@@ -956,6 +993,7 @@ public object ContactApi {
 
   public fun subscribeToEvents(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -999,6 +1037,7 @@ public object ContactApi {
         String?,
         String?,
         String?,
+        String?,
       ) -> Unit,
       sdkId: String,
       delegateIdString: String,
@@ -1033,6 +1072,7 @@ public object ContactApi {
         String?,
         String?,
         String?,
+        String?,
       ) -> Unit,
       sdkId: String,
       contactString: String,
@@ -1058,6 +1098,7 @@ public object ContactApi {
 
     public fun filterContactsBy(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -1088,6 +1129,7 @@ public object ContactApi {
         String?,
         String?,
         String?,
+        String?,
       ) -> Unit,
       sdkId: String,
       filterString: String,
@@ -1112,6 +1154,7 @@ public object ContactApi {
 
     public fun filterContactsBySorted(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -1142,6 +1185,7 @@ public object ContactApi {
         String?,
         String?,
         String?,
+        String?,
       ) -> Unit,
       sdkId: String,
       filterString: String,
@@ -1166,6 +1210,7 @@ public object ContactApi {
 
     public fun undeleteContactById(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -1197,6 +1242,7 @@ public object ContactApi {
         String?,
         String?,
         String?,
+        String?,
       ) -> Unit,
       sdkId: String,
       contactString: String,
@@ -1216,6 +1262,7 @@ public object ContactApi {
 
     public fun modifyContact(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -1241,6 +1288,7 @@ public object ContactApi {
         String?,
         String?,
         String?,
+        String?,
       ) -> Unit,
       sdkId: String,
       entitiesString: String,
@@ -1260,6 +1308,7 @@ public object ContactApi {
 
     public fun getContact(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -1285,6 +1334,7 @@ public object ContactApi {
         String?,
         String?,
         String?,
+        String?,
       ) -> Unit,
       sdkId: String,
       entityIdsString: String,
@@ -1304,6 +1354,7 @@ public object ContactApi {
 
     public fun getService(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -1329,6 +1380,7 @@ public object ContactApi {
         String?,
         String?,
         String?,
+        String?,
       ) -> Unit,
       sdkId: String,
       entityIdsString: String,
@@ -1351,6 +1403,7 @@ public object ContactApi {
   public object tryAndRecover {
     public fun shareWith(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -1388,6 +1441,7 @@ public object ContactApi {
         String?,
         String?,
         String?,
+        String?,
       ) -> Unit,
       sdkId: String,
       contactString: String,
@@ -1413,6 +1467,7 @@ public object ContactApi {
 
     public fun filterContactsBy(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -1443,6 +1498,7 @@ public object ContactApi {
         String?,
         String?,
         String?,
+        String?,
       ) -> Unit,
       sdkId: String,
       filterString: String,
@@ -1467,6 +1523,7 @@ public object ContactApi {
 
     public fun filterContactsBySorted(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -1497,6 +1554,7 @@ public object ContactApi {
         String?,
         String?,
         String?,
+        String?,
       ) -> Unit,
       sdkId: String,
       filterString: String,
@@ -1521,6 +1579,7 @@ public object ContactApi {
 
     public fun undeleteContactById(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -1552,6 +1611,7 @@ public object ContactApi {
         String?,
         String?,
         String?,
+        String?,
       ) -> Unit,
       sdkId: String,
       contactString: String,
@@ -1571,6 +1631,7 @@ public object ContactApi {
 
     public fun modifyContact(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -1596,6 +1657,7 @@ public object ContactApi {
         String?,
         String?,
         String?,
+        String?,
       ) -> Unit,
       sdkId: String,
       entitiesString: String,
@@ -1615,6 +1677,7 @@ public object ContactApi {
 
     public fun getContact(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -1640,6 +1703,7 @@ public object ContactApi {
         String?,
         String?,
         String?,
+        String?,
       ) -> Unit,
       sdkId: String,
       entityIdsString: String,
@@ -1662,6 +1726,7 @@ public object ContactApi {
         String?,
         String?,
         String?,
+        String?,
       ) -> Unit,
       sdkId: String,
       serviceIdString: String,
@@ -1681,6 +1746,7 @@ public object ContactApi {
 
     public fun getServices(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,

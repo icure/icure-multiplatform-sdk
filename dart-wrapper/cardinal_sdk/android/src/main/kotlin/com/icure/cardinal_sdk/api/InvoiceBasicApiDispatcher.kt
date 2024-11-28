@@ -15,6 +15,7 @@ public object InvoiceBasicApiDispatcher {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
   ): Boolean = when(methodName) {
     "deleteInvoice" -> deleteInvoice(parameters, resultCallback)
@@ -45,6 +46,7 @@ public object InvoiceBasicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     InvoiceBasicApi.deleteInvoice(
       resultCallback,
@@ -54,6 +56,7 @@ public object InvoiceBasicApiDispatcher {
   }
 
   private fun getTarificationsCodesOccurrences(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -69,6 +72,7 @@ public object InvoiceBasicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     InvoiceBasicApi.modifyInvoice(
       resultCallback,
@@ -78,6 +82,7 @@ public object InvoiceBasicApiDispatcher {
   }
 
   private fun modifyInvoices(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -93,6 +98,7 @@ public object InvoiceBasicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     InvoiceBasicApi.getInvoice(
       resultCallback,
@@ -102,6 +108,7 @@ public object InvoiceBasicApiDispatcher {
   }
 
   private fun getInvoices(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -117,6 +124,7 @@ public object InvoiceBasicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     InvoiceBasicApi.reassignInvoice(
       resultCallback,
@@ -126,6 +134,7 @@ public object InvoiceBasicApiDispatcher {
   }
 
   private fun mergeTo(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -142,6 +151,7 @@ public object InvoiceBasicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     InvoiceBasicApi.validate(
       resultCallback,
@@ -153,6 +163,7 @@ public object InvoiceBasicApiDispatcher {
   }
 
   private fun appendCodes(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -175,6 +186,7 @@ public object InvoiceBasicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     InvoiceBasicApi.removeCodes(
       resultCallback,
@@ -190,6 +202,7 @@ public object InvoiceBasicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     InvoiceBasicApi.listInvoicesByHcPartyAndGroupId(
       resultCallback,
@@ -202,6 +215,7 @@ public object InvoiceBasicApiDispatcher {
   private
       fun listInvoicesByHcPartySentMediumTypeInvoiceTypeSentDate(parameters: Map<String, String>,
       resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -222,6 +236,7 @@ public object InvoiceBasicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     InvoiceBasicApi.listInvoicesByContactIds(
       resultCallback,
@@ -231,6 +246,7 @@ public object InvoiceBasicApiDispatcher {
   }
 
   private fun listInvoicesByRecipientsIds(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -246,6 +262,7 @@ public object InvoiceBasicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     InvoiceBasicApi.listToInsurances(
       resultCallback,
@@ -255,6 +272,7 @@ public object InvoiceBasicApiDispatcher {
   }
 
   private fun listToInsurancesUnsent(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -270,6 +288,7 @@ public object InvoiceBasicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     InvoiceBasicApi.listToPatients(
       resultCallback,
@@ -279,6 +298,7 @@ public object InvoiceBasicApiDispatcher {
   }
 
   private fun listToPatientsUnsent(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -294,6 +314,7 @@ public object InvoiceBasicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     InvoiceBasicApi.listInvoicesByIds(
       resultCallback,
@@ -304,6 +325,7 @@ public object InvoiceBasicApiDispatcher {
 
   private fun listInvoicesByHcpartySendingModeStatusDate(parameters: Map<String, String>,
       resultCallback: (
+    String?,
     String?,
     String?,
     String?,

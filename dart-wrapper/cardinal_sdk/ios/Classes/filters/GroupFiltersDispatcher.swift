@@ -9,6 +9,7 @@ class GroupFiltersDispatcher {
     resultCallback: @escaping (
       String?,
       String?,
+      String?,
       String?
     ) -> Void
   ) -> Bool {
@@ -24,6 +25,7 @@ class GroupFiltersDispatcher {
   private static func all(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     GroupFilters.shared.all(
@@ -32,6 +34,7 @@ class GroupFiltersDispatcher {
   }
 
   private static func bySuperGroup(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -43,6 +46,7 @@ class GroupFiltersDispatcher {
   }
 
   private static func withContent(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?

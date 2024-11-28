@@ -9,6 +9,7 @@ class InsuranceApiDispatcher {
     resultCallback: @escaping (
       String?,
       String?,
+      String?,
       String?
     ) -> Void
   ) -> Bool {
@@ -28,6 +29,7 @@ class InsuranceApiDispatcher {
   private static func getInsurance(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     InsuranceApi.shared.getInsurance(
@@ -38,6 +40,7 @@ class InsuranceApiDispatcher {
   }
 
   private static func getInsurances(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -52,6 +55,7 @@ class InsuranceApiDispatcher {
   private static func createInsurance(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     InsuranceApi.shared.createInsurance(
@@ -62,6 +66,7 @@ class InsuranceApiDispatcher {
   }
 
   private static func deleteInsurance(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -76,6 +81,7 @@ class InsuranceApiDispatcher {
   private static func listInsurancesByCode(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     InsuranceApi.shared.listInsurancesByCode(
@@ -88,6 +94,7 @@ class InsuranceApiDispatcher {
   private static func listInsurancesByName(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     InsuranceApi.shared.listInsurancesByName(
@@ -98,6 +105,7 @@ class InsuranceApiDispatcher {
   }
 
   private static func modifyInsurance(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?

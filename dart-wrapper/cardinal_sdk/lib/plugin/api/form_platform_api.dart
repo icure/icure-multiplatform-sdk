@@ -2,6 +2,7 @@
 import 'package:flutter/services.dart';
 import 'package:cardinal_sdk/model/form.dart';
 import 'dart:convert';
+import 'package:cardinal_sdk/utils/internal/platform_exception_convertion.dart';
 import 'package:cardinal_sdk/model/patient.dart';
 import 'package:cardinal_sdk/model/user.dart';
 import 'package:cardinal_sdk/model/embed/access_level.dart';
@@ -32,7 +33,7 @@ class FormPlatformApi {
 				"sdkId": sdkId,
 				"entity": jsonEncode(DecryptedForm.encode(entity)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method createForm");
 		final parsedResJson = jsonDecode(res);
 		return DecryptedForm.fromJSON(parsedResJson);
@@ -45,7 +46,7 @@ class FormPlatformApi {
 				"sdkId": sdkId,
 				"entities": jsonEncode(entities.map((x0) => DecryptedForm.encode(x0)).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method createForms");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => DecryptedForm.fromJSON(x1) ).toList();
@@ -62,7 +63,7 @@ class FormPlatformApi {
 				"delegates": jsonEncode(delegates.map((k0, v0) => MapEntry(k0, AccessLevel.encode(v0)))),
 				"secretId": jsonEncode(SecretIdUseOption.encode(secretId)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method withEncryptionMetadata");
 		final parsedResJson = jsonDecode(res);
 		return DecryptedForm.fromJSON(parsedResJson);
@@ -75,7 +76,7 @@ class FormPlatformApi {
 				"sdkId": sdkId,
 				"form": jsonEncode(Form.encode(form)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getEncryptionKeysOf");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => (x1 as HexString) ).toSet();
@@ -88,7 +89,7 @@ class FormPlatformApi {
 				"sdkId": sdkId,
 				"form": jsonEncode(Form.encode(form)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method hasWriteAccess");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as bool);
@@ -101,7 +102,7 @@ class FormPlatformApi {
 				"sdkId": sdkId,
 				"form": jsonEncode(Form.encode(form)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method decryptPatientIdOf");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toSet();
@@ -115,7 +116,7 @@ class FormPlatformApi {
 				"entity": jsonEncode(Form.encode(entity)),
 				"delegates": jsonEncode(delegates.map((x0) => x0).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 	}
 
 	Future<DecryptedForm> decrypt(String sdkId, EncryptedForm form) async {
@@ -125,7 +126,7 @@ class FormPlatformApi {
 				"sdkId": sdkId,
 				"form": jsonEncode(EncryptedForm.encode(form)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method decrypt");
 		final parsedResJson = jsonDecode(res);
 		return DecryptedForm.fromJSON(parsedResJson);
@@ -138,7 +139,7 @@ class FormPlatformApi {
 				"sdkId": sdkId,
 				"form": jsonEncode(EncryptedForm.encode(form)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method tryDecrypt");
 		final parsedResJson = jsonDecode(res);
 		return Form.fromJSON(parsedResJson);
@@ -151,7 +152,7 @@ class FormPlatformApi {
 				"sdkId": sdkId,
 				"filter": jsonEncode(FilterOptions.encode(filter)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method matchFormsBy");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toList();
@@ -164,7 +165,7 @@ class FormPlatformApi {
 				"sdkId": sdkId,
 				"filter": jsonEncode(SortableFilterOptions.encode(filter)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method matchFormsBySorted");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toList();
@@ -178,7 +179,7 @@ class FormPlatformApi {
 				"entityId": jsonEncode(entityId),
 				"rev": jsonEncode(rev),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method deleteFormById");
 		final parsedResJson = jsonDecode(res);
 		return DocIdentifier.fromJSON(parsedResJson);
@@ -191,7 +192,7 @@ class FormPlatformApi {
 				"sdkId": sdkId,
 				"entityIds": jsonEncode(entityIds.map((x0) => IdWithMandatoryRev.encode(x0)).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method deleteFormsByIds");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => DocIdentifier.fromJSON(x1) ).toList();
@@ -205,7 +206,7 @@ class FormPlatformApi {
 				"id": jsonEncode(id),
 				"rev": jsonEncode(rev),
 			}
-		);
+		).catchError(convertPlatformException);
 	}
 
 	Future<DocIdentifier> deleteForm(String sdkId, Form form) async {
@@ -215,7 +216,7 @@ class FormPlatformApi {
 				"sdkId": sdkId,
 				"form": jsonEncode(Form.encode(form)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method deleteForm");
 		final parsedResJson = jsonDecode(res);
 		return DocIdentifier.fromJSON(parsedResJson);
@@ -228,7 +229,7 @@ class FormPlatformApi {
 				"sdkId": sdkId,
 				"forms": jsonEncode(forms.map((x0) => Form.encode(x0)).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method deleteForms");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => DocIdentifier.fromJSON(x1) ).toList();
@@ -241,7 +242,7 @@ class FormPlatformApi {
 				"sdkId": sdkId,
 				"form": jsonEncode(Form.encode(form)),
 			}
-		);
+		).catchError(convertPlatformException);
 	}
 
 	Future<FormTemplate> getFormTemplate(String sdkId, String formTemplateId, bool? raw) async {
@@ -252,7 +253,7 @@ class FormPlatformApi {
 				"formTemplateId": jsonEncode(formTemplateId),
 				"raw": jsonEncode(raw),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getFormTemplate");
 		final parsedResJson = jsonDecode(res);
 		return FormTemplate.fromJSON(parsedResJson);
@@ -265,7 +266,7 @@ class FormPlatformApi {
 				"sdkId": sdkId,
 				"formTemplate": jsonEncode(FormTemplate.encode(formTemplate)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method createFormTemplate");
 		final parsedResJson = jsonDecode(res);
 		return FormTemplate.fromJSON(parsedResJson);
@@ -278,7 +279,7 @@ class FormPlatformApi {
 				"sdkId": sdkId,
 				"formTemplateId": jsonEncode(formTemplateId),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method deleteFormTemplate");
 		final parsedResJson = jsonDecode(res);
 		return DocIdentifier.fromJSON(parsedResJson);
@@ -291,7 +292,7 @@ class FormPlatformApi {
 				"sdkId": sdkId,
 				"formTemplate": jsonEncode(FormTemplate.encode(formTemplate)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method updateFormTemplate");
 		final parsedResJson = jsonDecode(res);
 		return FormTemplate.fromJSON(parsedResJson);
@@ -305,7 +306,7 @@ class FormPlatformApi {
 				"formTemplateId": jsonEncode(formTemplateId),
 				"payload": jsonEncode(base64Encode(payload as List<int>)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method setTemplateAttachment");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as String);
@@ -320,7 +321,7 @@ class FormPlatformApi {
 				"form": jsonEncode(DecryptedForm.encode(form)),
 				"options": jsonEncode(options == null ? null : FormShareOptions.encode(options!)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method shareWith");
 		final parsedResJson = jsonDecode(res);
 		return DecryptedForm.fromJSON(parsedResJson);
@@ -334,7 +335,7 @@ class FormPlatformApi {
 				"form": jsonEncode(DecryptedForm.encode(form)),
 				"delegates": jsonEncode(delegates.map((k0, v0) => MapEntry(k0, FormShareOptions.encode(v0)))),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method shareWithMany");
 		final parsedResJson = jsonDecode(res);
 		return DecryptedForm.fromJSON(parsedResJson);
@@ -347,7 +348,7 @@ class FormPlatformApi {
 				"sdkId": sdkId,
 				"filter": jsonEncode(FilterOptions.encode(filter)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method filterFormsBy");
 		final parsedResJson = jsonDecode(res);
 		return PaginatedListIterator(parsedResJson, (x0) => DecryptedForm.fromJSON(x0));
@@ -360,7 +361,7 @@ class FormPlatformApi {
 				"sdkId": sdkId,
 				"filter": jsonEncode(SortableFilterOptions.encode(filter)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method filterFormsBySorted");
 		final parsedResJson = jsonDecode(res);
 		return PaginatedListIterator(parsedResJson, (x0) => DecryptedForm.fromJSON(x0));
@@ -373,7 +374,7 @@ class FormPlatformApi {
 				"sdkId": sdkId,
 				"entity": jsonEncode(DecryptedForm.encode(entity)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method modifyForm");
 		final parsedResJson = jsonDecode(res);
 		return DecryptedForm.fromJSON(parsedResJson);
@@ -387,7 +388,7 @@ class FormPlatformApi {
 				"id": jsonEncode(id),
 				"rev": jsonEncode(rev),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method undeleteFormById");
 		final parsedResJson = jsonDecode(res);
 		return DecryptedForm.fromJSON(parsedResJson);
@@ -400,7 +401,7 @@ class FormPlatformApi {
 				"sdkId": sdkId,
 				"form": jsonEncode(Form.encode(form)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method undeleteForm");
 		final parsedResJson = jsonDecode(res);
 		return DecryptedForm.fromJSON(parsedResJson);
@@ -413,7 +414,7 @@ class FormPlatformApi {
 				"sdkId": sdkId,
 				"entities": jsonEncode(entities.map((x0) => DecryptedForm.encode(x0)).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method modifyForms");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => DecryptedForm.fromJSON(x1) ).toList();
@@ -426,7 +427,7 @@ class FormPlatformApi {
 				"sdkId": sdkId,
 				"entityId": jsonEncode(entityId),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getForm");
 		final parsedResJson = jsonDecode(res);
 		return DecryptedForm.fromJSON(parsedResJson);
@@ -439,7 +440,7 @@ class FormPlatformApi {
 				"sdkId": sdkId,
 				"entityIds": jsonEncode(entityIds.map((x0) => x0).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getForms");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => DecryptedForm.fromJSON(x1) ).toList();
@@ -452,7 +453,7 @@ class FormPlatformApi {
 				"sdkId": sdkId,
 				"logicalUuid": jsonEncode(logicalUuid),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getLatestFormByLogicalUuid");
 		final parsedResJson = jsonDecode(res);
 		return DecryptedForm.fromJSON(parsedResJson);
@@ -465,7 +466,7 @@ class FormPlatformApi {
 				"sdkId": sdkId,
 				"uniqueId": jsonEncode(uniqueId),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getLatestFormByUniqueId");
 		final parsedResJson = jsonDecode(res);
 		return DecryptedForm.fromJSON(parsedResJson);
@@ -485,7 +486,7 @@ class TryAndRecoverFormPlatformApi {
 				"form": jsonEncode(Form.encode(form)),
 				"options": jsonEncode(options == null ? null : FormShareOptions.encode(options!)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method shareWith");
 		final parsedResJson = jsonDecode(res);
 		return Form.fromJSON(parsedResJson);
@@ -499,7 +500,7 @@ class TryAndRecoverFormPlatformApi {
 				"form": jsonEncode(Form.encode(form)),
 				"delegates": jsonEncode(delegates.map((k0, v0) => MapEntry(k0, FormShareOptions.encode(v0)))),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method shareWithMany");
 		final parsedResJson = jsonDecode(res);
 		return Form.fromJSON(parsedResJson);
@@ -512,7 +513,7 @@ class TryAndRecoverFormPlatformApi {
 				"sdkId": sdkId,
 				"filter": jsonEncode(FilterOptions.encode(filter)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method filterFormsBy");
 		final parsedResJson = jsonDecode(res);
 		return PaginatedListIterator(parsedResJson, (x0) => Form.fromJSON(x0));
@@ -525,7 +526,7 @@ class TryAndRecoverFormPlatformApi {
 				"sdkId": sdkId,
 				"filter": jsonEncode(SortableFilterOptions.encode(filter)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method filterFormsBySorted");
 		final parsedResJson = jsonDecode(res);
 		return PaginatedListIterator(parsedResJson, (x0) => Form.fromJSON(x0));
@@ -538,7 +539,7 @@ class TryAndRecoverFormPlatformApi {
 				"sdkId": sdkId,
 				"entity": jsonEncode(Form.encode(entity)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method modifyForm");
 		final parsedResJson = jsonDecode(res);
 		return Form.fromJSON(parsedResJson);
@@ -552,7 +553,7 @@ class TryAndRecoverFormPlatformApi {
 				"id": jsonEncode(id),
 				"rev": jsonEncode(rev),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method undeleteFormById");
 		final parsedResJson = jsonDecode(res);
 		return Form.fromJSON(parsedResJson);
@@ -565,7 +566,7 @@ class TryAndRecoverFormPlatformApi {
 				"sdkId": sdkId,
 				"form": jsonEncode(Form.encode(form)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method undeleteForm");
 		final parsedResJson = jsonDecode(res);
 		return Form.fromJSON(parsedResJson);
@@ -578,7 +579,7 @@ class TryAndRecoverFormPlatformApi {
 				"sdkId": sdkId,
 				"entities": jsonEncode(entities.map((x0) => Form.encode(x0)).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method modifyForms");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => Form.fromJSON(x1) ).toList();
@@ -591,7 +592,7 @@ class TryAndRecoverFormPlatformApi {
 				"sdkId": sdkId,
 				"entityId": jsonEncode(entityId),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getForm");
 		final parsedResJson = jsonDecode(res);
 		return Form.fromJSON(parsedResJson);
@@ -604,7 +605,7 @@ class TryAndRecoverFormPlatformApi {
 				"sdkId": sdkId,
 				"entityIds": jsonEncode(entityIds.map((x0) => x0).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getForms");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => Form.fromJSON(x1) ).toList();
@@ -617,7 +618,7 @@ class TryAndRecoverFormPlatformApi {
 				"sdkId": sdkId,
 				"logicalUuid": jsonEncode(logicalUuid),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getLatestFormByLogicalUuid");
 		final parsedResJson = jsonDecode(res);
 		return Form.fromJSON(parsedResJson);
@@ -630,7 +631,7 @@ class TryAndRecoverFormPlatformApi {
 				"sdkId": sdkId,
 				"uniqueId": jsonEncode(uniqueId),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getLatestFormByUniqueId");
 		final parsedResJson = jsonDecode(res);
 		return Form.fromJSON(parsedResJson);
@@ -650,7 +651,7 @@ class EncryptedFormPlatformApi {
 				"form": jsonEncode(EncryptedForm.encode(form)),
 				"options": jsonEncode(options == null ? null : FormShareOptions.encode(options!)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method shareWith");
 		final parsedResJson = jsonDecode(res);
 		return EncryptedForm.fromJSON(parsedResJson);
@@ -664,7 +665,7 @@ class EncryptedFormPlatformApi {
 				"form": jsonEncode(EncryptedForm.encode(form)),
 				"delegates": jsonEncode(delegates.map((k0, v0) => MapEntry(k0, FormShareOptions.encode(v0)))),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method shareWithMany");
 		final parsedResJson = jsonDecode(res);
 		return EncryptedForm.fromJSON(parsedResJson);
@@ -677,7 +678,7 @@ class EncryptedFormPlatformApi {
 				"sdkId": sdkId,
 				"filter": jsonEncode(FilterOptions.encode(filter)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method filterFormsBy");
 		final parsedResJson = jsonDecode(res);
 		return PaginatedListIterator(parsedResJson, (x0) => EncryptedForm.fromJSON(x0));
@@ -690,7 +691,7 @@ class EncryptedFormPlatformApi {
 				"sdkId": sdkId,
 				"filter": jsonEncode(SortableFilterOptions.encode(filter)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method filterFormsBySorted");
 		final parsedResJson = jsonDecode(res);
 		return PaginatedListIterator(parsedResJson, (x0) => EncryptedForm.fromJSON(x0));
@@ -703,7 +704,7 @@ class EncryptedFormPlatformApi {
 				"sdkId": sdkId,
 				"entity": jsonEncode(EncryptedForm.encode(entity)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method modifyForm");
 		final parsedResJson = jsonDecode(res);
 		return EncryptedForm.fromJSON(parsedResJson);
@@ -717,7 +718,7 @@ class EncryptedFormPlatformApi {
 				"id": jsonEncode(id),
 				"rev": jsonEncode(rev),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method undeleteFormById");
 		final parsedResJson = jsonDecode(res);
 		return EncryptedForm.fromJSON(parsedResJson);
@@ -730,7 +731,7 @@ class EncryptedFormPlatformApi {
 				"sdkId": sdkId,
 				"form": jsonEncode(Form.encode(form)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method undeleteForm");
 		final parsedResJson = jsonDecode(res);
 		return EncryptedForm.fromJSON(parsedResJson);
@@ -743,7 +744,7 @@ class EncryptedFormPlatformApi {
 				"sdkId": sdkId,
 				"entities": jsonEncode(entities.map((x0) => EncryptedForm.encode(x0)).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method modifyForms");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => EncryptedForm.fromJSON(x1) ).toList();
@@ -756,7 +757,7 @@ class EncryptedFormPlatformApi {
 				"sdkId": sdkId,
 				"entityId": jsonEncode(entityId),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getForm");
 		final parsedResJson = jsonDecode(res);
 		return EncryptedForm.fromJSON(parsedResJson);
@@ -769,7 +770,7 @@ class EncryptedFormPlatformApi {
 				"sdkId": sdkId,
 				"entityIds": jsonEncode(entityIds.map((x0) => x0).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getForms");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => EncryptedForm.fromJSON(x1) ).toList();
@@ -782,7 +783,7 @@ class EncryptedFormPlatformApi {
 				"sdkId": sdkId,
 				"logicalUuid": jsonEncode(logicalUuid),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getLatestFormByLogicalUuid");
 		final parsedResJson = jsonDecode(res);
 		return EncryptedForm.fromJSON(parsedResJson);
@@ -795,7 +796,7 @@ class EncryptedFormPlatformApi {
 				"sdkId": sdkId,
 				"uniqueId": jsonEncode(uniqueId),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getLatestFormByUniqueId");
 		final parsedResJson = jsonDecode(res);
 		return EncryptedForm.fromJSON(parsedResJson);

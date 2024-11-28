@@ -32,6 +32,7 @@ public object HealthElementBasicApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     filterString: String,
@@ -54,6 +55,7 @@ public object HealthElementBasicApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     filterString: String,
@@ -73,6 +75,7 @@ public object HealthElementBasicApi {
 
   public fun filterHealthElementsBy(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -103,6 +106,7 @@ public object HealthElementBasicApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     filterString: String,
@@ -127,6 +131,7 @@ public object HealthElementBasicApi {
 
   public fun deleteHealthElementById(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -158,6 +163,7 @@ public object HealthElementBasicApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     entityIdsString: String,
@@ -177,6 +183,7 @@ public object HealthElementBasicApi {
 
   public fun purgeHealthElementById(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -208,6 +215,7 @@ public object HealthElementBasicApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     healthElementString: String,
@@ -227,6 +235,7 @@ public object HealthElementBasicApi {
 
   public fun deleteHealthElements(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -252,6 +261,7 @@ public object HealthElementBasicApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     healthElementString: String,
@@ -271,6 +281,7 @@ public object HealthElementBasicApi {
 
   public fun undeleteHealthElementById(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -302,6 +313,7 @@ public object HealthElementBasicApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     healthElementString: String,
@@ -321,6 +333,7 @@ public object HealthElementBasicApi {
 
   public fun modifyHealthElement(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -346,6 +359,7 @@ public object HealthElementBasicApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     entitiesString: String,
@@ -365,6 +379,7 @@ public object HealthElementBasicApi {
 
   public fun getHealthElement(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -390,6 +405,7 @@ public object HealthElementBasicApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     entityIdsString: String,
@@ -409,6 +425,7 @@ public object HealthElementBasicApi {
 
   public fun subscribeToEvents(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,

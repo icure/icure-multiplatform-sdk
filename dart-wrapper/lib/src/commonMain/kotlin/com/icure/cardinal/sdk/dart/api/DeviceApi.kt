@@ -32,6 +32,7 @@ public object DeviceApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     deviceIdString: String,
@@ -51,6 +52,7 @@ public object DeviceApi {
 
   public fun getDevices(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -76,6 +78,7 @@ public object DeviceApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     pString: String,
@@ -95,6 +98,7 @@ public object DeviceApi {
 
   public fun modifyDevice(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -120,6 +124,7 @@ public object DeviceApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     devicesString: String,
@@ -142,6 +147,7 @@ public object DeviceApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     devicesString: String,
@@ -161,6 +167,7 @@ public object DeviceApi {
 
   public fun filterDevicesBy(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -190,6 +197,7 @@ public object DeviceApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     filterString: String,
@@ -216,6 +224,7 @@ public object DeviceApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     filterString: String,
@@ -238,6 +247,7 @@ public object DeviceApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     filterString: String,
@@ -257,6 +267,7 @@ public object DeviceApi {
 
   public fun deleteDeviceById(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -288,6 +299,7 @@ public object DeviceApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     entityIdsString: String,
@@ -307,6 +319,7 @@ public object DeviceApi {
 
   public fun purgeDeviceById(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -338,6 +351,7 @@ public object DeviceApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     idString: String,
@@ -366,6 +380,7 @@ public object DeviceApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     deviceString: String,
@@ -385,6 +400,7 @@ public object DeviceApi {
 
   public fun deleteDevices(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -410,6 +426,7 @@ public object DeviceApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     deviceString: String,
@@ -432,6 +449,7 @@ public object DeviceApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     deviceString: String,
@@ -451,6 +469,7 @@ public object DeviceApi {
 
   public fun getDevicesInGroup(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -482,6 +501,7 @@ public object DeviceApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     groupIdString: String,
@@ -507,6 +527,7 @@ public object DeviceApi {
 
   public fun createDeviceInGroup(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -538,6 +559,7 @@ public object DeviceApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     groupIdString: String,
@@ -563,6 +585,7 @@ public object DeviceApi {
 
   public fun subscribeToEvents(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,

@@ -15,6 +15,7 @@ public object DocumentBasicApiDispatcher {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
   ): Boolean = when(methodName) {
     "matchDocumentsBy" -> matchDocumentsBy(parameters, resultCallback)
@@ -46,6 +47,7 @@ public object DocumentBasicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     DocumentBasicApi.matchDocumentsBy(
       resultCallback,
@@ -55,6 +57,7 @@ public object DocumentBasicApiDispatcher {
   }
 
   private fun matchDocumentsBySorted(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -70,6 +73,7 @@ public object DocumentBasicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     DocumentBasicApi.filterDocumentsBy(
       resultCallback,
@@ -82,6 +86,7 @@ public object DocumentBasicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     DocumentBasicApi.filterDocumentsBySorted(
       resultCallback,
@@ -91,6 +96,7 @@ public object DocumentBasicApiDispatcher {
   }
 
   private fun deleteDocumentById(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -107,6 +113,7 @@ public object DocumentBasicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     DocumentBasicApi.deleteDocumentsByIds(
       resultCallback,
@@ -116,6 +123,7 @@ public object DocumentBasicApiDispatcher {
   }
 
   private fun purgeDocumentById(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -132,6 +140,7 @@ public object DocumentBasicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     DocumentBasicApi.deleteDocument(
       resultCallback,
@@ -141,6 +150,7 @@ public object DocumentBasicApiDispatcher {
   }
 
   private fun deleteDocuments(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -156,6 +166,7 @@ public object DocumentBasicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     DocumentBasicApi.purgeDocument(
       resultCallback,
@@ -168,6 +179,7 @@ public object DocumentBasicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     DocumentBasicApi.getRawMainAttachment(
       resultCallback,
@@ -177,6 +189,7 @@ public object DocumentBasicApiDispatcher {
   }
 
   private fun getRawSecondaryAttachment(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -193,6 +206,7 @@ public object DocumentBasicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     DocumentBasicApi.setRawMainAttachment(
       resultCallback,
@@ -206,6 +220,7 @@ public object DocumentBasicApiDispatcher {
   }
 
   private fun setRawSecondaryAttachment(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -226,6 +241,7 @@ public object DocumentBasicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     DocumentBasicApi.deleteMainAttachment(
       resultCallback,
@@ -236,6 +252,7 @@ public object DocumentBasicApiDispatcher {
   }
 
   private fun deleteSecondaryAttachment(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -253,6 +270,7 @@ public object DocumentBasicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     DocumentBasicApi.undeleteDocumentById(
       resultCallback,
@@ -263,6 +281,7 @@ public object DocumentBasicApiDispatcher {
   }
 
   private fun undeleteDocument(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -278,6 +297,7 @@ public object DocumentBasicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     DocumentBasicApi.modifyDocument(
       resultCallback,
@@ -287,6 +307,7 @@ public object DocumentBasicApiDispatcher {
   }
 
   private fun getDocument(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -302,6 +323,7 @@ public object DocumentBasicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     DocumentBasicApi.getDocuments(
       resultCallback,
@@ -311,6 +333,7 @@ public object DocumentBasicApiDispatcher {
   }
 
   private fun modifyDocuments(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,

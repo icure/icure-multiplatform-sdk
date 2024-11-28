@@ -9,6 +9,7 @@ class MaintenanceTaskApiDispatcher {
     resultCallback: @escaping (
       String?,
       String?,
+      String?,
       String?
     ) -> Void
   ) -> Bool {
@@ -65,6 +66,7 @@ class MaintenanceTaskApiDispatcher {
   private static func createMaintenanceTask(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     MaintenanceTaskApi.shared.createMaintenanceTask(
@@ -75,6 +77,7 @@ class MaintenanceTaskApiDispatcher {
   }
 
   private static func withEncryptionMetadata(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -91,6 +94,7 @@ class MaintenanceTaskApiDispatcher {
   private static func getEncryptionKeysOf(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     MaintenanceTaskApi.shared.getEncryptionKeysOf(
@@ -101,6 +105,7 @@ class MaintenanceTaskApiDispatcher {
   }
 
   private static func hasWriteAccess(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -115,6 +120,7 @@ class MaintenanceTaskApiDispatcher {
   private static func decryptPatientIdOf(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     MaintenanceTaskApi.shared.decryptPatientIdOf(
@@ -125,6 +131,7 @@ class MaintenanceTaskApiDispatcher {
   }
 
   private static func createDelegationDeAnonymizationMetadata(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -140,6 +147,7 @@ class MaintenanceTaskApiDispatcher {
   private static func decrypt(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     MaintenanceTaskApi.shared.decrypt(
@@ -150,6 +158,7 @@ class MaintenanceTaskApiDispatcher {
   }
 
   private static func tryDecrypt(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -164,6 +173,7 @@ class MaintenanceTaskApiDispatcher {
   private static func matchMaintenanceTasksBy(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     MaintenanceTaskApi.shared.matchMaintenanceTasksBy(
@@ -176,6 +186,7 @@ class MaintenanceTaskApiDispatcher {
   private static func matchMaintenanceTasksBySorted(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     MaintenanceTaskApi.shared.matchMaintenanceTasksBySorted(
@@ -186,6 +197,7 @@ class MaintenanceTaskApiDispatcher {
   }
 
   private static func deleteMaintenanceTaskById(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -201,6 +213,7 @@ class MaintenanceTaskApiDispatcher {
   private static func deleteMaintenanceTasksByIds(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     MaintenanceTaskApi.shared.deleteMaintenanceTasksByIds(
@@ -211,6 +224,7 @@ class MaintenanceTaskApiDispatcher {
   }
 
   private static func purgeMaintenanceTaskById(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -226,6 +240,7 @@ class MaintenanceTaskApiDispatcher {
   private static func deleteMaintenanceTask(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     MaintenanceTaskApi.shared.deleteMaintenanceTask(
@@ -236,6 +251,7 @@ class MaintenanceTaskApiDispatcher {
   }
 
   private static func deleteMaintenanceTasks(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -250,6 +266,7 @@ class MaintenanceTaskApiDispatcher {
   private static func purgeMaintenanceTask(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     MaintenanceTaskApi.shared.purgeMaintenanceTask(
@@ -260,6 +277,7 @@ class MaintenanceTaskApiDispatcher {
   }
 
   private static func shareWith(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -276,6 +294,7 @@ class MaintenanceTaskApiDispatcher {
   private static func shareWithMany(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     MaintenanceTaskApi.shared.shareWithMany(
@@ -287,6 +306,7 @@ class MaintenanceTaskApiDispatcher {
   }
 
   private static func filterMaintenanceTasksBy(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -301,6 +321,7 @@ class MaintenanceTaskApiDispatcher {
   private static func filterMaintenanceTasksBySorted(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     MaintenanceTaskApi.shared.filterMaintenanceTasksBySorted(
@@ -313,6 +334,7 @@ class MaintenanceTaskApiDispatcher {
   private static func undeleteMaintenanceTask(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     MaintenanceTaskApi.shared.undeleteMaintenanceTask(
@@ -323,6 +345,7 @@ class MaintenanceTaskApiDispatcher {
   }
 
   private static func undeleteMaintenanceTaskById(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -338,6 +361,7 @@ class MaintenanceTaskApiDispatcher {
   private static func modifyMaintenanceTask(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     MaintenanceTaskApi.shared.modifyMaintenanceTask(
@@ -348,6 +372,7 @@ class MaintenanceTaskApiDispatcher {
   }
 
   private static func getMaintenanceTask(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -362,6 +387,7 @@ class MaintenanceTaskApiDispatcher {
   private static func getMaintenanceTasks(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     MaintenanceTaskApi.shared.getMaintenanceTasks(
@@ -372,6 +398,7 @@ class MaintenanceTaskApiDispatcher {
   }
 
   private static func subscribeToEvents(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -388,6 +415,7 @@ class MaintenanceTaskApiDispatcher {
   private static func encrypted_shareWith(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     MaintenanceTaskApi.encrypted.shared.shareWith(
@@ -400,6 +428,7 @@ class MaintenanceTaskApiDispatcher {
   }
 
   private static func encrypted_shareWithMany(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -415,6 +444,7 @@ class MaintenanceTaskApiDispatcher {
   private static func encrypted_filterMaintenanceTasksBy(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     MaintenanceTaskApi.encrypted.shared.filterMaintenanceTasksBy(
@@ -425,6 +455,7 @@ class MaintenanceTaskApiDispatcher {
   }
 
   private static func encrypted_filterMaintenanceTasksBySorted(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -439,6 +470,7 @@ class MaintenanceTaskApiDispatcher {
   private static func encrypted_undeleteMaintenanceTask(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     MaintenanceTaskApi.encrypted.shared.undeleteMaintenanceTask(
@@ -449,6 +481,7 @@ class MaintenanceTaskApiDispatcher {
   }
 
   private static func encrypted_undeleteMaintenanceTaskById(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -464,6 +497,7 @@ class MaintenanceTaskApiDispatcher {
   private static func encrypted_modifyMaintenanceTask(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     MaintenanceTaskApi.encrypted.shared.modifyMaintenanceTask(
@@ -474,6 +508,7 @@ class MaintenanceTaskApiDispatcher {
   }
 
   private static func encrypted_getMaintenanceTask(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -488,6 +523,7 @@ class MaintenanceTaskApiDispatcher {
   private static func encrypted_getMaintenanceTasks(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     MaintenanceTaskApi.encrypted.shared.getMaintenanceTasks(
@@ -498,6 +534,7 @@ class MaintenanceTaskApiDispatcher {
   }
 
   private static func tryAndRecover_shareWith(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -514,6 +551,7 @@ class MaintenanceTaskApiDispatcher {
   private static func tryAndRecover_shareWithMany(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     MaintenanceTaskApi.tryAndRecover.shared.shareWithMany(
@@ -525,6 +563,7 @@ class MaintenanceTaskApiDispatcher {
   }
 
   private static func tryAndRecover_filterMaintenanceTasksBy(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -539,6 +578,7 @@ class MaintenanceTaskApiDispatcher {
   private static func tryAndRecover_filterMaintenanceTasksBySorted(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     MaintenanceTaskApi.tryAndRecover.shared.filterMaintenanceTasksBySorted(
@@ -551,6 +591,7 @@ class MaintenanceTaskApiDispatcher {
   private static func tryAndRecover_undeleteMaintenanceTask(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     MaintenanceTaskApi.tryAndRecover.shared.undeleteMaintenanceTask(
@@ -561,6 +602,7 @@ class MaintenanceTaskApiDispatcher {
   }
 
   private static func tryAndRecover_undeleteMaintenanceTaskById(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -576,6 +618,7 @@ class MaintenanceTaskApiDispatcher {
   private static func tryAndRecover_modifyMaintenanceTask(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     MaintenanceTaskApi.tryAndRecover.shared.modifyMaintenanceTask(
@@ -588,6 +631,7 @@ class MaintenanceTaskApiDispatcher {
   private static func tryAndRecover_getMaintenanceTask(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     MaintenanceTaskApi.tryAndRecover.shared.getMaintenanceTask(
@@ -598,6 +642,7 @@ class MaintenanceTaskApiDispatcher {
   }
 
   private static func tryAndRecover_getMaintenanceTasks(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?

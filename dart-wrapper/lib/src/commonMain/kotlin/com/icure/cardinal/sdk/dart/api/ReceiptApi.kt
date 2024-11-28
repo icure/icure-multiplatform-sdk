@@ -35,6 +35,7 @@ public object ReceiptApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     entityString: String,
@@ -54,6 +55,7 @@ public object ReceiptApi {
 
   public fun withEncryptionMetadata(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -103,6 +105,7 @@ public object ReceiptApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     receiptString: String,
@@ -128,6 +131,7 @@ public object ReceiptApi {
 
   public fun encryptAndSetReceiptAttachment(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -165,6 +169,7 @@ public object ReceiptApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     receiptString: String,
@@ -184,6 +189,7 @@ public object ReceiptApi {
 
   public fun hasWriteAccess(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -209,6 +215,7 @@ public object ReceiptApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     receiptString: String,
@@ -228,6 +235,7 @@ public object ReceiptApi {
 
   public fun createDelegationDeAnonymizationMetadata(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -256,6 +264,7 @@ public object ReceiptApi {
 
   public fun logReceipt(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -305,6 +314,7 @@ public object ReceiptApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     receiptString: String,
@@ -324,6 +334,7 @@ public object ReceiptApi {
 
   public fun tryDecrypt(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -349,6 +360,7 @@ public object ReceiptApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     entityIdString: String,
@@ -371,6 +383,7 @@ public object ReceiptApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     entityIdsString: String,
@@ -390,6 +403,7 @@ public object ReceiptApi {
 
   public fun getRawReceiptAttachment(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -418,6 +432,7 @@ public object ReceiptApi {
 
   public fun setRawReceiptAttachment(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -461,6 +476,7 @@ public object ReceiptApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     delegateIdString: String,
@@ -495,6 +511,7 @@ public object ReceiptApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     receiptString: String,
@@ -523,6 +540,7 @@ public object ReceiptApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     entityString: String,
@@ -542,6 +560,7 @@ public object ReceiptApi {
 
   public fun getReceipt(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -567,6 +586,7 @@ public object ReceiptApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     referenceString: String,
@@ -588,6 +608,7 @@ public object ReceiptApi {
   public object encrypted {
     public fun shareWith(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -625,6 +646,7 @@ public object ReceiptApi {
         String?,
         String?,
         String?,
+        String?,
       ) -> Unit,
       sdkId: String,
       receiptString: String,
@@ -653,6 +675,7 @@ public object ReceiptApi {
         String?,
         String?,
         String?,
+        String?,
       ) -> Unit,
       sdkId: String,
       entityString: String,
@@ -672,6 +695,7 @@ public object ReceiptApi {
 
     public fun getReceipt(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -697,6 +721,7 @@ public object ReceiptApi {
         String?,
         String?,
         String?,
+        String?,
       ) -> Unit,
       sdkId: String,
       referenceString: String,
@@ -719,6 +744,7 @@ public object ReceiptApi {
   public object tryAndRecover {
     public fun shareWith(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -756,6 +782,7 @@ public object ReceiptApi {
         String?,
         String?,
         String?,
+        String?,
       ) -> Unit,
       sdkId: String,
       receiptString: String,
@@ -784,6 +811,7 @@ public object ReceiptApi {
         String?,
         String?,
         String?,
+        String?,
       ) -> Unit,
       sdkId: String,
       entityString: String,
@@ -806,6 +834,7 @@ public object ReceiptApi {
         String?,
         String?,
         String?,
+        String?,
       ) -> Unit,
       sdkId: String,
       entityIdString: String,
@@ -825,6 +854,7 @@ public object ReceiptApi {
 
     public fun listByReference(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,

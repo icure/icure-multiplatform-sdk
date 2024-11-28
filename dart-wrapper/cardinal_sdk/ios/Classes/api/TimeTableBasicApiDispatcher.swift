@@ -9,6 +9,7 @@ class TimeTableBasicApiDispatcher {
     resultCallback: @escaping (
       String?,
       String?,
+      String?,
       String?
     ) -> Void
   ) -> Bool {
@@ -36,6 +37,7 @@ class TimeTableBasicApiDispatcher {
   private static func matchTimeTablesBy(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     TimeTableBasicApi.shared.matchTimeTablesBy(
@@ -46,6 +48,7 @@ class TimeTableBasicApiDispatcher {
   }
 
   private static func matchTimeTablesBySorted(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -60,6 +63,7 @@ class TimeTableBasicApiDispatcher {
   private static func filterTimeTablesBy(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     TimeTableBasicApi.shared.filterTimeTablesBy(
@@ -72,6 +76,7 @@ class TimeTableBasicApiDispatcher {
   private static func filterTimeTablesBySorted(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     TimeTableBasicApi.shared.filterTimeTablesBySorted(
@@ -82,6 +87,7 @@ class TimeTableBasicApiDispatcher {
   }
 
   private static func deleteTimeTableById(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -97,6 +103,7 @@ class TimeTableBasicApiDispatcher {
   private static func deleteTimeTablesByIds(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     TimeTableBasicApi.shared.deleteTimeTablesByIds(
@@ -107,6 +114,7 @@ class TimeTableBasicApiDispatcher {
   }
 
   private static func purgeTimeTableById(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -122,6 +130,7 @@ class TimeTableBasicApiDispatcher {
   private static func deleteTimeTable(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     TimeTableBasicApi.shared.deleteTimeTable(
@@ -132,6 +141,7 @@ class TimeTableBasicApiDispatcher {
   }
 
   private static func deleteTimeTables(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -146,6 +156,7 @@ class TimeTableBasicApiDispatcher {
   private static func purgeTimeTable(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     TimeTableBasicApi.shared.purgeTimeTable(
@@ -156,6 +167,7 @@ class TimeTableBasicApiDispatcher {
   }
 
   private static func undeleteTimeTable(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -170,6 +182,7 @@ class TimeTableBasicApiDispatcher {
   private static func modifyTimeTable(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     TimeTableBasicApi.shared.modifyTimeTable(
@@ -180,6 +193,7 @@ class TimeTableBasicApiDispatcher {
   }
 
   private static func undeleteTimeTableById(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -195,6 +209,7 @@ class TimeTableBasicApiDispatcher {
   private static func getTimeTable(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     TimeTableBasicApi.shared.getTimeTable(
@@ -205,6 +220,7 @@ class TimeTableBasicApiDispatcher {
   }
 
   private static func getTimeTables(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?

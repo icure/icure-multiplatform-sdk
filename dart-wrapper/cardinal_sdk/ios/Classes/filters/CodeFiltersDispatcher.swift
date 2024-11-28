@@ -9,6 +9,7 @@ class CodeFiltersDispatcher {
     resultCallback: @escaping (
       String?,
       String?,
+      String?,
       String?
     ) -> Void
   ) -> Bool {
@@ -27,6 +28,7 @@ class CodeFiltersDispatcher {
   private static func all(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     CodeFilters.shared.all(
@@ -35,6 +37,7 @@ class CodeFiltersDispatcher {
   }
 
   private static func byIds(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -48,6 +51,7 @@ class CodeFiltersDispatcher {
   private static func byQualifiedLink(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     CodeFilters.shared.byQualifiedLink(
@@ -58,6 +62,7 @@ class CodeFiltersDispatcher {
   }
 
   private static func byRegionTypeCodeVersion(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -74,6 +79,7 @@ class CodeFiltersDispatcher {
   private static func byLanguageTypeLabelRegion(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     CodeFilters.shared.byLanguageTypeLabelRegion(
@@ -86,6 +92,7 @@ class CodeFiltersDispatcher {
   }
 
   private static func byLanguageTypesLabelRegionVersion(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?

@@ -9,6 +9,7 @@ class HealthcarePartyApiDispatcher {
     resultCallback: @escaping (
       String?,
       String?,
+      String?,
       String?
     ) -> Void
   ) -> Bool {
@@ -50,6 +51,7 @@ class HealthcarePartyApiDispatcher {
   private static func getHealthcareParty(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     HealthcarePartyApi.shared.getHealthcareParty(
@@ -62,6 +64,7 @@ class HealthcarePartyApiDispatcher {
   private static func createHealthcareParty(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     HealthcarePartyApi.shared.createHealthcareParty(
@@ -72,6 +75,7 @@ class HealthcarePartyApiDispatcher {
   }
 
   private static func modifyHealthcarePartyInGroup(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -87,6 +91,7 @@ class HealthcarePartyApiDispatcher {
   private static func createHealthcarePartyInGroup(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     HealthcarePartyApi.shared.createHealthcarePartyInGroup(
@@ -100,6 +105,7 @@ class HealthcarePartyApiDispatcher {
   private static func getCurrentHealthcareParty(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     HealthcarePartyApi.shared.getCurrentHealthcareParty(
@@ -109,6 +115,7 @@ class HealthcarePartyApiDispatcher {
   }
 
   private static func listHealthcarePartiesByName(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -123,6 +130,7 @@ class HealthcarePartyApiDispatcher {
   private static func getHealthcareParties(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     HealthcarePartyApi.shared.getHealthcareParties(
@@ -133,6 +141,7 @@ class HealthcarePartyApiDispatcher {
   }
 
   private static func listHealthcarePartiesByParentId(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -147,6 +156,7 @@ class HealthcarePartyApiDispatcher {
   private static func getPublicKey(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     HealthcarePartyApi.shared.getPublicKey(
@@ -157,6 +167,7 @@ class HealthcarePartyApiDispatcher {
   }
 
   private static func modifyHealthcareParty(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -171,6 +182,7 @@ class HealthcarePartyApiDispatcher {
   private static func matchHealthcarePartiesBy(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     HealthcarePartyApi.shared.matchHealthcarePartiesBy(
@@ -181,6 +193,7 @@ class HealthcarePartyApiDispatcher {
   }
 
   private static func filterHealthPartiesBy(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -195,6 +208,7 @@ class HealthcarePartyApiDispatcher {
   private static func matchHealthcarePartiesBySorted(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     HealthcarePartyApi.shared.matchHealthcarePartiesBySorted(
@@ -205,6 +219,7 @@ class HealthcarePartyApiDispatcher {
   }
 
   private static func filterHealthPartiesBySorted(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -219,6 +234,7 @@ class HealthcarePartyApiDispatcher {
   private static func getHealthcarePartiesInGroup(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     HealthcarePartyApi.shared.getHealthcarePartiesInGroup(
@@ -230,6 +246,7 @@ class HealthcarePartyApiDispatcher {
   }
 
   private static func registerPatient(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -248,6 +265,7 @@ class HealthcarePartyApiDispatcher {
   private static func deleteHealthcarePartyById(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     HealthcarePartyApi.shared.deleteHealthcarePartyById(
@@ -261,6 +279,7 @@ class HealthcarePartyApiDispatcher {
   private static func deleteHealthcarePartiesByIds(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     HealthcarePartyApi.shared.deleteHealthcarePartiesByIds(
@@ -271,6 +290,7 @@ class HealthcarePartyApiDispatcher {
   }
 
   private static func deleteHealthcarePartyInGroupById(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -287,6 +307,7 @@ class HealthcarePartyApiDispatcher {
   private static func deleteHealthcarePartiesInGroupByIds(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     HealthcarePartyApi.shared.deleteHealthcarePartiesInGroupByIds(
@@ -298,6 +319,7 @@ class HealthcarePartyApiDispatcher {
   }
 
   private static func purgeHealthcarePartyById(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -313,6 +335,7 @@ class HealthcarePartyApiDispatcher {
   private static func undeleteHealthcarePartyById(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     HealthcarePartyApi.shared.undeleteHealthcarePartyById(
@@ -324,6 +347,7 @@ class HealthcarePartyApiDispatcher {
   }
 
   private static func deleteHealthcareParty(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -338,6 +362,7 @@ class HealthcarePartyApiDispatcher {
   private static func deleteHealthcareParties(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     HealthcarePartyApi.shared.deleteHealthcareParties(
@@ -348,6 +373,7 @@ class HealthcarePartyApiDispatcher {
   }
 
   private static func purgeHealthcareParty(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -362,6 +388,7 @@ class HealthcarePartyApiDispatcher {
   private static func undeleteHealthcareParty(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     HealthcarePartyApi.shared.undeleteHealthcareParty(
@@ -372,6 +399,7 @@ class HealthcarePartyApiDispatcher {
   }
 
   private static func deleteHealthcarePartyInGroup(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -387,6 +415,7 @@ class HealthcarePartyApiDispatcher {
   private static func deleteHealthcarePartiesInGroup(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     HealthcarePartyApi.shared.deleteHealthcarePartiesInGroup(
@@ -398,6 +427,7 @@ class HealthcarePartyApiDispatcher {
   }
 
   private static func subscribeToEvents(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?

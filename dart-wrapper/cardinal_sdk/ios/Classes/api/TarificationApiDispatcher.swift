@@ -9,6 +9,7 @@ class TarificationApiDispatcher {
     resultCallback: @escaping (
       String?,
       String?,
+      String?,
       String?
     ) -> Void
   ) -> Bool {
@@ -26,6 +27,7 @@ class TarificationApiDispatcher {
   private static func getTarification(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     TarificationApi.shared.getTarification(
@@ -36,6 +38,7 @@ class TarificationApiDispatcher {
   }
 
   private static func createTarification(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -50,6 +53,7 @@ class TarificationApiDispatcher {
   private static func getTarifications(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     TarificationApi.shared.getTarifications(
@@ -62,6 +66,7 @@ class TarificationApiDispatcher {
   private static func modifyTarification(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     TarificationApi.shared.modifyTarification(
@@ -72,6 +77,7 @@ class TarificationApiDispatcher {
   }
 
   private static func getTarificationWithParts(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?

@@ -15,6 +15,7 @@ public object AccessLogApiDispatcher {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
   ): Boolean = when(methodName) {
     "createAccessLog" -> createAccessLog(parameters, resultCallback)
@@ -67,6 +68,7 @@ public object AccessLogApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     AccessLogApi.createAccessLog(
       resultCallback,
@@ -76,6 +78,7 @@ public object AccessLogApiDispatcher {
   }
 
   private fun withEncryptionMetadata(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -95,6 +98,7 @@ public object AccessLogApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     AccessLogApi.getEncryptionKeysOf(
       resultCallback,
@@ -107,6 +111,7 @@ public object AccessLogApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     AccessLogApi.hasWriteAccess(
       resultCallback,
@@ -116,6 +121,7 @@ public object AccessLogApiDispatcher {
   }
 
   private fun decryptPatientIdOf(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -132,6 +138,7 @@ public object AccessLogApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     AccessLogApi.createDelegationDeAnonymizationMetadata(
       resultCallback,
@@ -142,6 +149,7 @@ public object AccessLogApiDispatcher {
   }
 
   private fun decrypt(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -157,6 +165,7 @@ public object AccessLogApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     AccessLogApi.tryDecrypt(
       resultCallback,
@@ -166,6 +175,7 @@ public object AccessLogApiDispatcher {
   }
 
   private fun matchAccessLogsBy(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -181,6 +191,7 @@ public object AccessLogApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     AccessLogApi.matchAccessLogsBySorted(
       resultCallback,
@@ -190,6 +201,7 @@ public object AccessLogApiDispatcher {
   }
 
   private fun deleteAccessLogById(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -206,6 +218,7 @@ public object AccessLogApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     AccessLogApi.deleteAccessLogsByIds(
       resultCallback,
@@ -215,6 +228,7 @@ public object AccessLogApiDispatcher {
   }
 
   private fun purgeAccessLogById(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -231,6 +245,7 @@ public object AccessLogApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     AccessLogApi.deleteAccessLog(
       resultCallback,
@@ -240,6 +255,7 @@ public object AccessLogApiDispatcher {
   }
 
   private fun deleteAccessLogs(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -255,6 +271,7 @@ public object AccessLogApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     AccessLogApi.purgeAccessLog(
       resultCallback,
@@ -264,6 +281,7 @@ public object AccessLogApiDispatcher {
   }
 
   private fun shareWith(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -281,6 +299,7 @@ public object AccessLogApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     AccessLogApi.shareWithMany(
       resultCallback,
@@ -291,6 +310,7 @@ public object AccessLogApiDispatcher {
   }
 
   private fun filterAccessLogsBy(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -306,6 +326,7 @@ public object AccessLogApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     AccessLogApi.filterAccessLogsBySorted(
       resultCallback,
@@ -315,6 +336,7 @@ public object AccessLogApiDispatcher {
   }
 
   private fun undeleteAccessLogById(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -331,6 +353,7 @@ public object AccessLogApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     AccessLogApi.undeleteAccessLog(
       resultCallback,
@@ -340,6 +363,7 @@ public object AccessLogApiDispatcher {
   }
 
   private fun modifyAccessLog(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -355,6 +379,7 @@ public object AccessLogApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     AccessLogApi.getAccessLog(
       resultCallback,
@@ -367,6 +392,7 @@ public object AccessLogApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     AccessLogApi.getAccessLogs(
       resultCallback,
@@ -376,6 +402,7 @@ public object AccessLogApiDispatcher {
   }
 
   private fun encrypted_shareWith(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -393,6 +420,7 @@ public object AccessLogApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     AccessLogApi.encrypted.shareWithMany(
       resultCallback,
@@ -403,6 +431,7 @@ public object AccessLogApiDispatcher {
   }
 
   private fun encrypted_filterAccessLogsBy(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -418,6 +447,7 @@ public object AccessLogApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     AccessLogApi.encrypted.filterAccessLogsBySorted(
       resultCallback,
@@ -427,6 +457,7 @@ public object AccessLogApiDispatcher {
   }
 
   private fun encrypted_undeleteAccessLogById(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -443,6 +474,7 @@ public object AccessLogApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     AccessLogApi.encrypted.undeleteAccessLog(
       resultCallback,
@@ -452,6 +484,7 @@ public object AccessLogApiDispatcher {
   }
 
   private fun encrypted_modifyAccessLog(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -467,6 +500,7 @@ public object AccessLogApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     AccessLogApi.encrypted.getAccessLog(
       resultCallback,
@@ -479,6 +513,7 @@ public object AccessLogApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     AccessLogApi.encrypted.getAccessLogs(
       resultCallback,
@@ -488,6 +523,7 @@ public object AccessLogApiDispatcher {
   }
 
   private fun tryAndRecover_shareWith(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -505,6 +541,7 @@ public object AccessLogApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     AccessLogApi.tryAndRecover.shareWithMany(
       resultCallback,
@@ -515,6 +552,7 @@ public object AccessLogApiDispatcher {
   }
 
   private fun tryAndRecover_filterAccessLogsBy(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -531,6 +569,7 @@ public object AccessLogApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     AccessLogApi.tryAndRecover.filterAccessLogsBySorted(
       resultCallback,
@@ -540,6 +579,7 @@ public object AccessLogApiDispatcher {
   }
 
   private fun tryAndRecover_undeleteAccessLogById(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -556,6 +596,7 @@ public object AccessLogApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     AccessLogApi.tryAndRecover.undeleteAccessLog(
       resultCallback,
@@ -565,6 +606,7 @@ public object AccessLogApiDispatcher {
   }
 
   private fun tryAndRecover_modifyAccessLog(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -580,6 +622,7 @@ public object AccessLogApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     AccessLogApi.tryAndRecover.getAccessLog(
       resultCallback,
@@ -589,6 +632,7 @@ public object AccessLogApiDispatcher {
   }
 
   private fun tryAndRecover_getAccessLogs(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,

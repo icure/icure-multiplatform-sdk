@@ -15,6 +15,7 @@ public object UserFiltersDispatcher {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
   ): Boolean = when(methodName) {
     "all" -> all(parameters, resultCallback)
@@ -29,6 +30,7 @@ public object UserFiltersDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     UserFilters.all(
       resultCallback,
@@ -36,6 +38,7 @@ public object UserFiltersDispatcher {
   }
 
   private fun byIds(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -50,6 +53,7 @@ public object UserFiltersDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     UserFilters.byPatientId(
       resultCallback,
@@ -61,6 +65,7 @@ public object UserFiltersDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     UserFilters.byHealthcarePartyId(
       resultCallback,
@@ -69,6 +74,7 @@ public object UserFiltersDispatcher {
   }
 
   private fun byNameEmailOrPhone(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,

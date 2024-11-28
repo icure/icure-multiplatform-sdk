@@ -39,6 +39,7 @@ public object MaintenanceTaskApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     entityString: String,
@@ -58,6 +59,7 @@ public object MaintenanceTaskApi {
 
   public fun withEncryptionMetadata(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -95,6 +97,7 @@ public object MaintenanceTaskApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     maintenanceTaskString: String,
@@ -114,6 +117,7 @@ public object MaintenanceTaskApi {
 
   public fun hasWriteAccess(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -139,6 +143,7 @@ public object MaintenanceTaskApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     maintenanceTaskString: String,
@@ -158,6 +163,7 @@ public object MaintenanceTaskApi {
 
   public fun createDelegationDeAnonymizationMetadata(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -189,6 +195,7 @@ public object MaintenanceTaskApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     maintenanceTaskString: String,
@@ -208,6 +215,7 @@ public object MaintenanceTaskApi {
 
   public fun tryDecrypt(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -233,6 +241,7 @@ public object MaintenanceTaskApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     filterString: String,
@@ -255,6 +264,7 @@ public object MaintenanceTaskApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     filterString: String,
@@ -274,6 +284,7 @@ public object MaintenanceTaskApi {
 
   public fun deleteMaintenanceTaskById(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -305,6 +316,7 @@ public object MaintenanceTaskApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     entityIdsString: String,
@@ -324,6 +336,7 @@ public object MaintenanceTaskApi {
 
   public fun purgeMaintenanceTaskById(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -355,6 +368,7 @@ public object MaintenanceTaskApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     maintenanceTaskString: String,
@@ -374,6 +388,7 @@ public object MaintenanceTaskApi {
 
   public fun deleteMaintenanceTasks(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -399,6 +414,7 @@ public object MaintenanceTaskApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     maintenanceTaskString: String,
@@ -418,6 +434,7 @@ public object MaintenanceTaskApi {
 
   public fun shareWith(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -455,6 +472,7 @@ public object MaintenanceTaskApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     maintenanceTaskString: String,
@@ -480,6 +498,7 @@ public object MaintenanceTaskApi {
 
   public fun filterMaintenanceTasksBy(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -510,6 +529,7 @@ public object MaintenanceTaskApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     filterString: String,
@@ -537,6 +557,7 @@ public object MaintenanceTaskApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     maintenanceTaskString: String,
@@ -556,6 +577,7 @@ public object MaintenanceTaskApi {
 
   public fun undeleteMaintenanceTaskById(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -587,6 +609,7 @@ public object MaintenanceTaskApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     entityString: String,
@@ -606,6 +629,7 @@ public object MaintenanceTaskApi {
 
   public fun getMaintenanceTask(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -631,6 +655,7 @@ public object MaintenanceTaskApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     entityIdsString: String,
@@ -650,6 +675,7 @@ public object MaintenanceTaskApi {
 
   public fun subscribeToEvents(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -693,6 +719,7 @@ public object MaintenanceTaskApi {
         String?,
         String?,
         String?,
+        String?,
       ) -> Unit,
       sdkId: String,
       delegateIdString: String,
@@ -727,6 +754,7 @@ public object MaintenanceTaskApi {
         String?,
         String?,
         String?,
+        String?,
       ) -> Unit,
       sdkId: String,
       maintenanceTaskString: String,
@@ -752,6 +780,7 @@ public object MaintenanceTaskApi {
 
     public fun filterMaintenanceTasksBy(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -782,6 +811,7 @@ public object MaintenanceTaskApi {
         String?,
         String?,
         String?,
+        String?,
       ) -> Unit,
       sdkId: String,
       filterString: String,
@@ -809,6 +839,7 @@ public object MaintenanceTaskApi {
         String?,
         String?,
         String?,
+        String?,
       ) -> Unit,
       sdkId: String,
       maintenanceTaskString: String,
@@ -828,6 +859,7 @@ public object MaintenanceTaskApi {
 
     public fun undeleteMaintenanceTaskById(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -859,6 +891,7 @@ public object MaintenanceTaskApi {
         String?,
         String?,
         String?,
+        String?,
       ) -> Unit,
       sdkId: String,
       entityString: String,
@@ -878,6 +911,7 @@ public object MaintenanceTaskApi {
 
     public fun getMaintenanceTask(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -903,6 +937,7 @@ public object MaintenanceTaskApi {
         String?,
         String?,
         String?,
+        String?,
       ) -> Unit,
       sdkId: String,
       entityIdsString: String,
@@ -925,6 +960,7 @@ public object MaintenanceTaskApi {
   public object tryAndRecover {
     public fun shareWith(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -962,6 +998,7 @@ public object MaintenanceTaskApi {
         String?,
         String?,
         String?,
+        String?,
       ) -> Unit,
       sdkId: String,
       maintenanceTaskString: String,
@@ -987,6 +1024,7 @@ public object MaintenanceTaskApi {
 
     public fun filterMaintenanceTasksBy(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -1017,6 +1055,7 @@ public object MaintenanceTaskApi {
         String?,
         String?,
         String?,
+        String?,
       ) -> Unit,
       sdkId: String,
       filterString: String,
@@ -1044,6 +1083,7 @@ public object MaintenanceTaskApi {
         String?,
         String?,
         String?,
+        String?,
       ) -> Unit,
       sdkId: String,
       maintenanceTaskString: String,
@@ -1063,6 +1103,7 @@ public object MaintenanceTaskApi {
 
     public fun undeleteMaintenanceTaskById(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -1094,6 +1135,7 @@ public object MaintenanceTaskApi {
         String?,
         String?,
         String?,
+        String?,
       ) -> Unit,
       sdkId: String,
       entityString: String,
@@ -1116,6 +1158,7 @@ public object MaintenanceTaskApi {
         String?,
         String?,
         String?,
+        String?,
       ) -> Unit,
       sdkId: String,
       entityIdString: String,
@@ -1135,6 +1178,7 @@ public object MaintenanceTaskApi {
 
     public fun getMaintenanceTasks(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,

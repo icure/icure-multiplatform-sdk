@@ -2,6 +2,7 @@
 import 'package:flutter/services.dart';
 import 'package:cardinal_sdk/model/time_table.dart';
 import 'dart:convert';
+import 'package:cardinal_sdk/utils/internal/platform_exception_convertion.dart';
 import 'package:cardinal_sdk/model/patient.dart';
 import 'package:cardinal_sdk/model/user.dart';
 import 'package:cardinal_sdk/model/embed/access_level.dart';
@@ -30,7 +31,7 @@ class TimeTablePlatformApi {
 				"sdkId": sdkId,
 				"entity": jsonEncode(DecryptedTimeTable.encode(entity)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method createTimeTable");
 		final parsedResJson = jsonDecode(res);
 		return DecryptedTimeTable.fromJSON(parsedResJson);
@@ -47,7 +48,7 @@ class TimeTablePlatformApi {
 				"delegates": jsonEncode(delegates.map((k0, v0) => MapEntry(k0, AccessLevel.encode(v0)))),
 				"secretId": jsonEncode(SecretIdUseOption.encode(secretId)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method withEncryptionMetadata");
 		final parsedResJson = jsonDecode(res);
 		return DecryptedTimeTable.fromJSON(parsedResJson);
@@ -60,7 +61,7 @@ class TimeTablePlatformApi {
 				"sdkId": sdkId,
 				"timeTable": jsonEncode(TimeTable.encode(timeTable)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getEncryptionKeysOf");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => (x1 as HexString) ).toSet();
@@ -73,7 +74,7 @@ class TimeTablePlatformApi {
 				"sdkId": sdkId,
 				"timeTable": jsonEncode(TimeTable.encode(timeTable)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method hasWriteAccess");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as bool);
@@ -86,7 +87,7 @@ class TimeTablePlatformApi {
 				"sdkId": sdkId,
 				"timeTable": jsonEncode(TimeTable.encode(timeTable)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method decryptPatientIdOf");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toSet();
@@ -100,7 +101,7 @@ class TimeTablePlatformApi {
 				"entity": jsonEncode(TimeTable.encode(entity)),
 				"delegates": jsonEncode(delegates.map((x0) => x0).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 	}
 
 	Future<DecryptedTimeTable> decrypt(String sdkId, EncryptedTimeTable timeTable) async {
@@ -110,7 +111,7 @@ class TimeTablePlatformApi {
 				"sdkId": sdkId,
 				"timeTable": jsonEncode(EncryptedTimeTable.encode(timeTable)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method decrypt");
 		final parsedResJson = jsonDecode(res);
 		return DecryptedTimeTable.fromJSON(parsedResJson);
@@ -123,7 +124,7 @@ class TimeTablePlatformApi {
 				"sdkId": sdkId,
 				"timeTable": jsonEncode(EncryptedTimeTable.encode(timeTable)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method tryDecrypt");
 		final parsedResJson = jsonDecode(res);
 		return TimeTable.fromJSON(parsedResJson);
@@ -136,7 +137,7 @@ class TimeTablePlatformApi {
 				"sdkId": sdkId,
 				"filter": jsonEncode(FilterOptions.encode(filter)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method matchTimeTablesBy");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toList();
@@ -149,7 +150,7 @@ class TimeTablePlatformApi {
 				"sdkId": sdkId,
 				"filter": jsonEncode(SortableFilterOptions.encode(filter)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method matchTimeTablesBySorted");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toList();
@@ -163,7 +164,7 @@ class TimeTablePlatformApi {
 				"entityId": jsonEncode(entityId),
 				"rev": jsonEncode(rev),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method deleteTimeTableById");
 		final parsedResJson = jsonDecode(res);
 		return DocIdentifier.fromJSON(parsedResJson);
@@ -176,7 +177,7 @@ class TimeTablePlatformApi {
 				"sdkId": sdkId,
 				"entityIds": jsonEncode(entityIds.map((x0) => IdWithMandatoryRev.encode(x0)).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method deleteTimeTablesByIds");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => DocIdentifier.fromJSON(x1) ).toList();
@@ -190,7 +191,7 @@ class TimeTablePlatformApi {
 				"id": jsonEncode(id),
 				"rev": jsonEncode(rev),
 			}
-		);
+		).catchError(convertPlatformException);
 	}
 
 	Future<DocIdentifier> deleteTimeTable(String sdkId, TimeTable timeTable) async {
@@ -200,7 +201,7 @@ class TimeTablePlatformApi {
 				"sdkId": sdkId,
 				"timeTable": jsonEncode(TimeTable.encode(timeTable)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method deleteTimeTable");
 		final parsedResJson = jsonDecode(res);
 		return DocIdentifier.fromJSON(parsedResJson);
@@ -213,7 +214,7 @@ class TimeTablePlatformApi {
 				"sdkId": sdkId,
 				"timeTables": jsonEncode(timeTables.map((x0) => TimeTable.encode(x0)).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method deleteTimeTables");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => DocIdentifier.fromJSON(x1) ).toList();
@@ -226,7 +227,7 @@ class TimeTablePlatformApi {
 				"sdkId": sdkId,
 				"timeTable": jsonEncode(TimeTable.encode(timeTable)),
 			}
-		);
+		).catchError(convertPlatformException);
 	}
 
 	Future<DecryptedTimeTable> shareWith(String sdkId, String delegateId, DecryptedTimeTable timeTable, TimeTableShareOptions? options) async {
@@ -238,7 +239,7 @@ class TimeTablePlatformApi {
 				"timeTable": jsonEncode(DecryptedTimeTable.encode(timeTable)),
 				"options": jsonEncode(options == null ? null : TimeTableShareOptions.encode(options!)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method shareWith");
 		final parsedResJson = jsonDecode(res);
 		return DecryptedTimeTable.fromJSON(parsedResJson);
@@ -252,7 +253,7 @@ class TimeTablePlatformApi {
 				"timeTable": jsonEncode(DecryptedTimeTable.encode(timeTable)),
 				"delegates": jsonEncode(delegates.map((k0, v0) => MapEntry(k0, TimeTableShareOptions.encode(v0)))),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method shareWithMany");
 		final parsedResJson = jsonDecode(res);
 		return DecryptedTimeTable.fromJSON(parsedResJson);
@@ -265,7 +266,7 @@ class TimeTablePlatformApi {
 				"sdkId": sdkId,
 				"filter": jsonEncode(FilterOptions.encode(filter)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method filterTimeTablesBy");
 		final parsedResJson = jsonDecode(res);
 		return PaginatedListIterator(parsedResJson, (x0) => DecryptedTimeTable.fromJSON(x0));
@@ -278,7 +279,7 @@ class TimeTablePlatformApi {
 				"sdkId": sdkId,
 				"filter": jsonEncode(SortableFilterOptions.encode(filter)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method filterTimeTablesBySorted");
 		final parsedResJson = jsonDecode(res);
 		return PaginatedListIterator(parsedResJson, (x0) => DecryptedTimeTable.fromJSON(x0));
@@ -291,7 +292,7 @@ class TimeTablePlatformApi {
 				"sdkId": sdkId,
 				"timeTable": jsonEncode(TimeTable.encode(timeTable)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method undeleteTimeTable");
 		final parsedResJson = jsonDecode(res);
 		return TimeTable.fromJSON(parsedResJson);
@@ -304,7 +305,7 @@ class TimeTablePlatformApi {
 				"sdkId": sdkId,
 				"entity": jsonEncode(DecryptedTimeTable.encode(entity)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method modifyTimeTable");
 		final parsedResJson = jsonDecode(res);
 		return DecryptedTimeTable.fromJSON(parsedResJson);
@@ -318,7 +319,7 @@ class TimeTablePlatformApi {
 				"id": jsonEncode(id),
 				"rev": jsonEncode(rev),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method undeleteTimeTableById");
 		final parsedResJson = jsonDecode(res);
 		return DecryptedTimeTable.fromJSON(parsedResJson);
@@ -331,7 +332,7 @@ class TimeTablePlatformApi {
 				"sdkId": sdkId,
 				"entityId": jsonEncode(entityId),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getTimeTable");
 		final parsedResJson = jsonDecode(res);
 		return DecryptedTimeTable.fromJSON(parsedResJson);
@@ -344,7 +345,7 @@ class TimeTablePlatformApi {
 				"sdkId": sdkId,
 				"timeTableIds": jsonEncode(timeTableIds.map((x0) => x0).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getTimeTables");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => DecryptedTimeTable.fromJSON(x1) ).toList();
@@ -364,7 +365,7 @@ class TryAndRecoverTimeTablePlatformApi {
 				"timeTable": jsonEncode(TimeTable.encode(timeTable)),
 				"options": jsonEncode(options == null ? null : TimeTableShareOptions.encode(options!)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method shareWith");
 		final parsedResJson = jsonDecode(res);
 		return TimeTable.fromJSON(parsedResJson);
@@ -378,7 +379,7 @@ class TryAndRecoverTimeTablePlatformApi {
 				"timeTable": jsonEncode(TimeTable.encode(timeTable)),
 				"delegates": jsonEncode(delegates.map((k0, v0) => MapEntry(k0, TimeTableShareOptions.encode(v0)))),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method shareWithMany");
 		final parsedResJson = jsonDecode(res);
 		return TimeTable.fromJSON(parsedResJson);
@@ -391,7 +392,7 @@ class TryAndRecoverTimeTablePlatformApi {
 				"sdkId": sdkId,
 				"filter": jsonEncode(FilterOptions.encode(filter)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method filterTimeTablesBy");
 		final parsedResJson = jsonDecode(res);
 		return PaginatedListIterator(parsedResJson, (x0) => TimeTable.fromJSON(x0));
@@ -404,7 +405,7 @@ class TryAndRecoverTimeTablePlatformApi {
 				"sdkId": sdkId,
 				"filter": jsonEncode(SortableFilterOptions.encode(filter)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method filterTimeTablesBySorted");
 		final parsedResJson = jsonDecode(res);
 		return PaginatedListIterator(parsedResJson, (x0) => TimeTable.fromJSON(x0));
@@ -417,7 +418,7 @@ class TryAndRecoverTimeTablePlatformApi {
 				"sdkId": sdkId,
 				"timeTable": jsonEncode(TimeTable.encode(timeTable)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method undeleteTimeTable");
 		final parsedResJson = jsonDecode(res);
 		return TimeTable.fromJSON(parsedResJson);
@@ -430,7 +431,7 @@ class TryAndRecoverTimeTablePlatformApi {
 				"sdkId": sdkId,
 				"entity": jsonEncode(TimeTable.encode(entity)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method modifyTimeTable");
 		final parsedResJson = jsonDecode(res);
 		return TimeTable.fromJSON(parsedResJson);
@@ -444,7 +445,7 @@ class TryAndRecoverTimeTablePlatformApi {
 				"id": jsonEncode(id),
 				"rev": jsonEncode(rev),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method undeleteTimeTableById");
 		final parsedResJson = jsonDecode(res);
 		return TimeTable.fromJSON(parsedResJson);
@@ -457,7 +458,7 @@ class TryAndRecoverTimeTablePlatformApi {
 				"sdkId": sdkId,
 				"entityId": jsonEncode(entityId),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getTimeTable");
 		final parsedResJson = jsonDecode(res);
 		return TimeTable.fromJSON(parsedResJson);
@@ -470,7 +471,7 @@ class TryAndRecoverTimeTablePlatformApi {
 				"sdkId": sdkId,
 				"timeTableIds": jsonEncode(timeTableIds.map((x0) => x0).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getTimeTables");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => TimeTable.fromJSON(x1) ).toList();
@@ -490,7 +491,7 @@ class EncryptedTimeTablePlatformApi {
 				"timeTable": jsonEncode(EncryptedTimeTable.encode(timeTable)),
 				"options": jsonEncode(options == null ? null : TimeTableShareOptions.encode(options!)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method shareWith");
 		final parsedResJson = jsonDecode(res);
 		return EncryptedTimeTable.fromJSON(parsedResJson);
@@ -504,7 +505,7 @@ class EncryptedTimeTablePlatformApi {
 				"timeTable": jsonEncode(EncryptedTimeTable.encode(timeTable)),
 				"delegates": jsonEncode(delegates.map((k0, v0) => MapEntry(k0, TimeTableShareOptions.encode(v0)))),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method shareWithMany");
 		final parsedResJson = jsonDecode(res);
 		return EncryptedTimeTable.fromJSON(parsedResJson);
@@ -517,7 +518,7 @@ class EncryptedTimeTablePlatformApi {
 				"sdkId": sdkId,
 				"filter": jsonEncode(FilterOptions.encode(filter)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method filterTimeTablesBy");
 		final parsedResJson = jsonDecode(res);
 		return PaginatedListIterator(parsedResJson, (x0) => EncryptedTimeTable.fromJSON(x0));
@@ -530,7 +531,7 @@ class EncryptedTimeTablePlatformApi {
 				"sdkId": sdkId,
 				"filter": jsonEncode(SortableFilterOptions.encode(filter)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method filterTimeTablesBySorted");
 		final parsedResJson = jsonDecode(res);
 		return PaginatedListIterator(parsedResJson, (x0) => EncryptedTimeTable.fromJSON(x0));
@@ -543,7 +544,7 @@ class EncryptedTimeTablePlatformApi {
 				"sdkId": sdkId,
 				"timeTable": jsonEncode(TimeTable.encode(timeTable)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method undeleteTimeTable");
 		final parsedResJson = jsonDecode(res);
 		return TimeTable.fromJSON(parsedResJson);
@@ -556,7 +557,7 @@ class EncryptedTimeTablePlatformApi {
 				"sdkId": sdkId,
 				"entity": jsonEncode(EncryptedTimeTable.encode(entity)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method modifyTimeTable");
 		final parsedResJson = jsonDecode(res);
 		return EncryptedTimeTable.fromJSON(parsedResJson);
@@ -570,7 +571,7 @@ class EncryptedTimeTablePlatformApi {
 				"id": jsonEncode(id),
 				"rev": jsonEncode(rev),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method undeleteTimeTableById");
 		final parsedResJson = jsonDecode(res);
 		return EncryptedTimeTable.fromJSON(parsedResJson);
@@ -583,7 +584,7 @@ class EncryptedTimeTablePlatformApi {
 				"sdkId": sdkId,
 				"entityId": jsonEncode(entityId),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getTimeTable");
 		final parsedResJson = jsonDecode(res);
 		return EncryptedTimeTable.fromJSON(parsedResJson);
@@ -596,7 +597,7 @@ class EncryptedTimeTablePlatformApi {
 				"sdkId": sdkId,
 				"timeTableIds": jsonEncode(timeTableIds.map((x0) => x0).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getTimeTables");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => EncryptedTimeTable.fromJSON(x1) ).toList();
