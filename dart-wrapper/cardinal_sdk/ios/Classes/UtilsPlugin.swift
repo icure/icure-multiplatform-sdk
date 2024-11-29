@@ -64,8 +64,8 @@ class UtilsPlugin {
 		) -> Void
 	) {
 		ApiScope.shared.cancel(
-			dartResultCallback: resultCallback,
-			cancellationToken: Int64(parameters["cancellationToken"]!),
+			resultCallback: resultCallback,
+			cancellationToken: Int64(parameters["cancellationToken"]!)!
 		)
 	}
 }
