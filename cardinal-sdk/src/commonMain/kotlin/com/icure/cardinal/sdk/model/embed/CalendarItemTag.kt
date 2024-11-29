@@ -31,6 +31,7 @@ data class DecryptedCalendarItemTag(
 	override val encryptedSelf: Base64String?,
 ) : CalendarItemTag {
 	// region CalendarItemTag-DecryptedCalendarItemTag
+
 	// endregion
 }
 
@@ -43,5 +44,6 @@ data class EncryptedCalendarItemTag(
 	override val encryptedSelf: Base64String?,
 ) : CalendarItemTag {
 	// region CalendarItemTag-EncryptedCalendarItemTag
+
 	// endregion
 }
