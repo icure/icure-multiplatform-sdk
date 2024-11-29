@@ -1,6 +1,7 @@
 package com.icure.cardinal.sdk.model.embed
 
 import com.icure.cardinal.sdk.model.base.CodeStub
+import com.icure.cardinal.sdk.model.specializations.Base64String
 import kotlinx.serialization.Serializable
 import kotlin.Long
 import kotlin.String
@@ -16,7 +17,7 @@ sealed interface EmploymentInfo : Encryptable {
 
 	public val employer: Employer?
 
-	override val encryptedSelf: String?
+	override val encryptedSelf: Base64String?
 	// region EmploymentInfo-EmploymentInfo
 
 	// endregion
@@ -28,9 +29,10 @@ data class DecryptedEmploymentInfo(
 	override val endDate: Long? = null,
 	override val professionType: CodeStub? = null,
 	override val employer: Employer? = null,
-	override val encryptedSelf: String?,
+	override val encryptedSelf: Base64String?,
 ) : EmploymentInfo {
 	// region EmploymentInfo-DecryptedEmploymentInfo
+
 	// endregion
 }
 
@@ -40,8 +42,9 @@ data class EncryptedEmploymentInfo(
 	override val endDate: Long? = null,
 	override val professionType: CodeStub? = null,
 	override val employer: Employer? = null,
-	override val encryptedSelf: String?,
+	override val encryptedSelf: Base64String?,
 ) : EmploymentInfo {
 	// region EmploymentInfo-EncryptedEmploymentInfo
+
 	// endregion
 }

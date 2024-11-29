@@ -19,6 +19,9 @@ import io.ktor.http.contentType
 import io.ktor.http.takeFrom
 import io.ktor.util.date.GMTDate
 import kotlinx.serialization.json.Json
+import kotlin.Int
+import kotlin.String
+import kotlin.collections.Map
 import kotlin.time.Duration
 
 // WARNING: This class is auto-generated. If you change it manually, your changes will be lost.
@@ -85,12 +88,15 @@ class RawRecoveryDataApiImpl(
 			accept(Application.Json)
 		}.wrap()
 
-	override suspend fun getRecoveryDataWaiting(id: String, timeoutSeconds: Int?): HttpResponse<RecoveryData> =
+	override suspend fun getRecoveryDataWaiting(
+		id: String,
+		timeoutSeconds: Int?,
+	): HttpResponse<RecoveryData> =
 		get(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "recoverydata", "waiting", id)
-				timeoutSeconds?.let { parameter("timeoutSeconds", it) }
+				parameter("timeoutSeconds", timeoutSeconds)
 				parameter("ts", GMTDate().timestamp)
 			}
 			accept(Application.Json)
