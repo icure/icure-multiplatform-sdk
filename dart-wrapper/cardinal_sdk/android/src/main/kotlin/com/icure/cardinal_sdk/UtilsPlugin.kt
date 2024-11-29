@@ -53,6 +53,7 @@ object UtilsPlugin : MethodChannel.MethodCallHandler {
 		String?,
 		String?,
 		String?,
+		String?,
 	) -> Unit) {
 		ApiScope.cancel(
 			resultCallback,

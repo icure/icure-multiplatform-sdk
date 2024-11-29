@@ -82,8 +82,8 @@ object EntitySubscription {
 		)
 		ApiScope.executeCancellable(
 			dartResultCallback,
-			JsonElement.serializer().nullable,
-			cancellationToken
+			cancellationToken,
+			JsonElement.serializer().nullable
 		) {
 			NativeReferences.get<EntitySubscriptionWithSerializer<*>>(subscriptionId).waitForEvent(timeout)
 		}

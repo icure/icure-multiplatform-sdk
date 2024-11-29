@@ -32,9 +32,9 @@ object ApiScope {
 	}
 
 	fun <T> executeCancellable(
-		resultCallback: (success: String?, failureCode: String?, failureMessage: String?) -> Unit,
-		resultSerializer: KSerializer<T>,
+		resultCallback: (success: String?, failureCode: String?, failureMessage: String?, failureDetails: String?) -> Unit,
 		cancellationToken: Long,
+		resultSerializer: KSerializer<T>,
 		method: suspend () -> T,
 	) {
 		scope.launch {
@@ -48,10 +48,10 @@ object ApiScope {
 	}
 
 	fun cancel(
-		resultCallback: (success: String?, failureCode: String?, failureMessage: String?) -> Unit,
+		resultCallback: (success: String?, failureCode: String?, failureMessage: String?, failureDetails: String?) -> Unit,
 		cancellationToken: Long
 	) {
 		cancellableJobs[cancellationToken]?.cancel()
-		resultCallback("{}", null, null)
+		resultCallback("{}", null, null, null)
 	}
 }

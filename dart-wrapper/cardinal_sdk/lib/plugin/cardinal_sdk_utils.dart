@@ -28,7 +28,7 @@ class CardinalSdkMethodChannelUtils extends CardinalSdkPlatformUtilsPlugin {
     await _methodChannel.invokeMethod<String>(
         'cancelJob',
         {
-          "cancellationToken": cancellationToken
+          "cancellationToken": cancellationToken.toString()
         }
     ).catchError(convertPlatformException);
     return;

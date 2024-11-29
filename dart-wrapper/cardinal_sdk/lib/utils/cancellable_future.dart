@@ -11,7 +11,7 @@ class CancellableFuture<T> implements Future<T> {
   final Future<T> _future;
   final int _cancellationToken;
 
-  CancellableFuture.internal(this._future, this._cancellationToken);
+  CancellableFuture.internalConstructor(this._future, this._cancellationToken);
 
   @override
   Stream<T> asStream() {
@@ -20,7 +20,7 @@ class CancellableFuture<T> implements Future<T> {
 
   @override
   CancellableFuture<T> catchError(Function onError, {bool Function(Object error)? test}) {
-    return CancellableFuture.internal(
+    return CancellableFuture.internalConstructor(
         this._future.catchError(onError, test: test),
         this._cancellationToken
     );
@@ -28,7 +28,7 @@ class CancellableFuture<T> implements Future<T> {
 
   @override
   CancellableFuture<R> then<R>(FutureOr<R> Function(T value) onValue, {Function? onError}) {
-    return CancellableFuture.internal(
+    return CancellableFuture.internalConstructor(
         this._future.then(onValue, onError: onError),
         this._cancellationToken
     );
@@ -36,7 +36,7 @@ class CancellableFuture<T> implements Future<T> {
 
   @override
   CancellableFuture<T> timeout(Duration timeLimit, {FutureOr<T> Function()? onTimeout}) {
-    return CancellableFuture.internal(
+    return CancellableFuture.internalConstructor(
         this._future.timeout(timeLimit, onTimeout: onTimeout),
         this._cancellationToken
     );
@@ -44,7 +44,7 @@ class CancellableFuture<T> implements Future<T> {
 
   @override
   CancellableFuture<T> whenComplete(FutureOr<void> Function() action) {
-    return CancellableFuture.internal(
+    return CancellableFuture.internalConstructor(
         this._future.whenComplete(action),
         this._cancellationToken
     );
