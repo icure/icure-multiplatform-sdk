@@ -220,9 +220,9 @@ tasks.register("prepareDistributionPackage") {
 	val filesNeedingPatch = setOf(
 		"$moduleName.mjs",
 		"$moduleName.d.ts",
-		"ktor-ktor-client-ktor-client-core.mjs",
 		"ktor-ktor-utils.mjs",
-		"package.json"
+		"ktor-ktor-client-ktor-client-core.mjs",
+		"package.json",
 	)
 	doLast {
 		copy {
@@ -275,12 +275,9 @@ tasks.register("prepareDistributionPackage") {
 			into = tsPackage.resolve("ktor-ktor-client-ktor-client-core.mjs"),
 			importing = listOf(
 				Import.Default("nodeWs_imported", from = "ws"),
-				Import.Default("nodeFetch_imported", from = "node-fetch"),
 			),
 			replacing = listOf(
 				Replacement("eval('require')('ws')", with = "nodeWs_imported"),
-				Replacement("eval('require')('node-fetch')", with = "nodeFetch_imported"),
-				Replacement("eval('require')('abort-controller')", with = "AbortController")
 			)
 		)
 		copyJsPatching(
