@@ -1,10 +1,10 @@
 package com.icure.cardinal.sdk.crypto
 
+import com.icure.cardinal.sdk.crypto.entities.EncryptedFieldsManifest
+import com.icure.cardinal.sdk.utils.InternalCardinalException
 import com.icure.kryptom.crypto.AesAlgorithm
 import com.icure.kryptom.crypto.AesKey
-import com.icure.cardinal.sdk.crypto.entities.EncryptedFieldsManifest
 import com.icure.utils.InternalIcureApi
-import com.icure.cardinal.sdk.utils.InternalCardinalException
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonElement
@@ -217,6 +217,6 @@ interface JsonEncryptionService {
 
 		@Suppress("RegExpRedundantEscape") // Suppressed because in node is not redundant
 		private val ENCRYPTED_FIELD_MANIFEST_REGEX =
-			Regex("^([_a-zA-Z][_a-zA-Z0-9]*)(?:(\\.\\*\\.|\\[\\]\\.|\\.)(?:[_a-zA-Z].*|\\[.*\\]))?$")
+			Regex("^([_a-zA-Z][_a-zA-Z0-9]*|\\*)(?:(\\.\\*\\.|\\[\\]\\.|\\.)(?:[_a-zA-Z].*|\\*|\\[.*\\]))?$")
 	}
 }

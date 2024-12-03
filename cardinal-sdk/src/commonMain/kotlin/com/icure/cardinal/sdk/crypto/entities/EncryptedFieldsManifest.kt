@@ -35,4 +35,14 @@ data class EncryptedFieldsManifest(
 	val arraysValuesKeys: Map<String, EncryptedFieldsManifest>,
 ) {
 	val allKeys get() = topLevelFields + nestedObjectsKeys.keys + mapsValuesKeys.keys + arraysValuesKeys.keys
+
+	init {
+		if (topLevelFields.any { it == "*" }) {
+			require (topLevelFields.size == 1 && nestedObjectsKeys.isEmpty() && mapsValuesKeys.isEmpty() && arraysValuesKeys.isEmpty()) {
+				"Wildcard encryption configuration is not compatible with other encryption configurations"
+			}
+		}
+	}
+
+	val fullFieldsEncryption get() = topLevelFields.firstOrNull() == "*"
 }

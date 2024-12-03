@@ -4,17 +4,82 @@ from cardinal_sdk.CryptoStrategies import CryptoStrategies
 from cardinal_sdk.storage.StorageFacadeOptions import StorageOptions
 from cardinal_sdk.options.JsonPatcher import JsonPatcher
 
+
 @dataclass
 class EncryptedFieldsConfiguration:
-    access_log: List[str] = field(default_factory=lambda: ["detail", "objectId"])
-    calendar_item: List[str] = field(default_factory=lambda: ["details", "title", "patientId"])
-    contact: List[str] = field(default_factory=lambda: ["descr", "notes[].markdown"])
-    service: List[str] = field(default_factory=lambda: ["notes[].markdown"])
-    health_element: List[str] = field(default_factory=lambda: ["descr", "note", "notes[].markdown"])
-    maintenance_task: List[str] = field(default_factory=lambda: ["properties"])
-    patient: List[str] = field(default_factory=lambda: ["note", "notes[].markdown"])
-    message: List[str] = field(default_factory=lambda: ["subject"])
-    topic: List[str] = field(default_factory=lambda: ["description", "linkedServices", "linkedHealthElements"])
+    access_log: List[str] = field(default_factory=lambda: [
+        "detail",
+        "objectId",
+        "patientId"
+    ])
+    calendar_item: List[str] = field(default_factory=lambda: [
+        "details",
+        "title",
+        "patientId",
+        "phoneNumber",
+        "address",
+        "addressText",
+        "meetingTags[].*",
+        "flowItem"
+    ])
+    contact: List[str] = field(default_factory=lambda: [
+        "descr",
+        "notes[].markdown",
+        "location",
+        "encounterLocation",
+        "participants",
+    ])
+    service: List[str] = field(default_factory=lambda: [
+        "notes[].markdown",
+        "comment",
+    ])
+    health_element: List[str] = field(default_factory=lambda: [
+        "descr",
+        "note",
+        "notes[].markdown"
+    ])
+    maintenance_task: List[str] = field(default_factory=lambda: [
+        "properties"
+    ])
+    patient: List[str] = field(default_factory=lambda: [
+        "note",
+        "notes[].markdown",
+        "created",
+        "modified",
+        "companyName",
+        "languages",
+        "civility",
+        "birthSex",
+        "personalStatus",
+        "administrativeNote",
+        "nationality",
+        "race",
+        "ethnicity",
+        "picture",
+        "insurabilities[].*",
+        "partnerships[].*",
+        "patientHealthCareParties[].*",
+        "financialInstitutionInformation[].*",
+        "medicalHouseContracts[].*",
+        "patientProfessions",
+        "comment",
+        "warning",
+        "fatherBirthCountry",
+        "birthCountry",
+        "nativeCountry",
+        "socialStatus",
+        "mainSourceOfIncome",
+        "schoolingInfos[].*",
+        "employementInfos[].*",
+    ])
+    message: List[str] = field(default_factory=lambda: [
+        "subject"
+    ])
+    topic: List[str] = field(default_factory=lambda: [
+        "description",
+        "linkedServices",
+        "linkedHealthElements"
+    ])
     document: List[str] = field(default_factory=lambda: [])
     form: List[str] = field(default_factory=lambda: [])
     receipt: List[str] = field(default_factory=lambda: [])

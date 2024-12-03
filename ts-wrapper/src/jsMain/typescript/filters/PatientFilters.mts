@@ -63,11 +63,6 @@ interface PatientFiltersFactory {
 
 	byExternalIdForSelf(externalIdPrefix: string): SortableFilterOptions<Patient>;
 
-	byModificationDateForDataOwner(dataOwnerId: string,
-			options?: { from?: number | undefined, to?: number | undefined, descending?: boolean }): BaseSortableFilterOptions<Patient>;
-
-	byModificationDateForSelf(options?: { from?: number | undefined, to?: number | undefined, descending?: boolean }): SortableFilterOptions<Patient>;
-
 }
 
 export const PatientFilters: PatientFiltersFactory = {
@@ -93,7 +88,5 @@ export const PatientFilters: PatientFiltersFactory = {
 			byTelecomForSelf: (searchString) => InternalPatientFiltersObj.getInstance().byTelecomForSelf(searchString),
 			byAddressPostalCodeHouseNumberForSelf: (searchString, postalCode, options) => InternalPatientFiltersObj.getInstance().byAddressPostalCodeHouseNumberForSelf(searchString, postalCode, options),
 			byAddressForSelf: (searchString) => InternalPatientFiltersObj.getInstance().byAddressForSelf(searchString),
-			byExternalIdForSelf: (externalIdPrefix) => InternalPatientFiltersObj.getInstance().byExternalIdForSelf(externalIdPrefix),
-			byModificationDateForDataOwner: (dataOwnerId, options) => InternalPatientFiltersObj.getInstance().byModificationDateForDataOwner(dataOwnerId, options),
-			byModificationDateForSelf: (options) => InternalPatientFiltersObj.getInstance().byModificationDateForSelf(options)
+			byExternalIdForSelf: (externalIdPrefix) => InternalPatientFiltersObj.getInstance().byExternalIdForSelf(externalIdPrefix)
 		};

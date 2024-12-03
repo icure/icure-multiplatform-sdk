@@ -1,16 +1,16 @@
 package com.icure.cardinal.sdk.crypto.impl
 
+import com.icure.cardinal.sdk.crypto.JsonEncryptionService
+import com.icure.cardinal.sdk.crypto.entities.EncryptedFieldsManifest
+import com.icure.cardinal.sdk.model.embed.Encryptable
+import com.icure.cardinal.sdk.utils.IllegalEntityException
+import com.icure.cardinal.sdk.utils.Serialization
 import com.icure.kryptom.crypto.AesAlgorithm
 import com.icure.kryptom.crypto.AesKey
 import com.icure.kryptom.crypto.CryptoService
 import com.icure.kryptom.utils.base64Decode
 import com.icure.kryptom.utils.base64Encode
-import com.icure.cardinal.sdk.crypto.JsonEncryptionService
-import com.icure.cardinal.sdk.crypto.entities.EncryptedFieldsManifest
-import com.icure.cardinal.sdk.model.embed.Encryptable
-import com.icure.cardinal.sdk.utils.IllegalEntityException
 import com.icure.utils.InternalIcureApi
-import com.icure.cardinal.sdk.utils.Serialization
 import io.ktor.utils.io.charsets.Charsets
 import io.ktor.utils.io.core.toByteArray
 import kotlinx.serialization.json.JsonArray
@@ -42,62 +42,77 @@ class JsonEncryptionServiceImpl(
 		doEncrypt: suspend (ByteArray) -> ByteArray,
 		doDecrypt: suspend (ByteArray) -> ByteArray
 	): JsonObject {
-		val objWithoutSecrets = plainJson.mapNotNull { (key, value) ->
-			(
-				manifest.nestedObjectsKeys[key]?.let { subManifest ->
-					when (value) {
-						JsonNull -> value
-						is JsonObject -> encrypt(value, subManifest, doEncrypt, doDecrypt)
-						else -> throw IllegalArgumentException("${manifest.path}$key should be an object or null")
-					}
-				} ?: manifest.arraysValuesKeys[key]?.let { subManifest ->
-					when (value) {
-						JsonNull -> value
-						is JsonArray -> JsonArray(value.mapIndexed { index, item ->
-							when (item) {
-								JsonNull -> item
-								is JsonObject -> encrypt(item, subManifest, doEncrypt, doDecrypt)
-								else -> throw IllegalArgumentException("All items of ${manifest.path}$key should objects or null (invalid item at index ${manifest.path}$key[$index])")
-							}
-						})
-						else -> throw IllegalArgumentException("${manifest.path}$key should be an array or null")
-					}
-				} ?: manifest.mapsValuesKeys[key]?.let { subManifest ->
-					when (value) {
-						JsonNull -> value
-						is JsonObject -> JsonObject(value.jsonObject.mapValues { (k, v) ->
-							when (v) {
-								JsonNull -> v
-								is JsonObject -> encrypt(v, subManifest, doEncrypt, doDecrypt)
-								else -> throw IllegalArgumentException("All values in map-like object ${manifest.path}$key should be objects or null (invalid value at ${manifest.path}$key.$k)")
-							}
-						})
-						else -> throw IllegalArgumentException("${manifest.path}$key should be an object or null")
-					}
-				} ?: value.takeUnless { manifest.topLevelFields.contains(key) }
-				)?.let { key to it }
-		}.toMap()
-		val objToEncrypt = plainJson.filter { (key, _) ->
-			manifest.topLevelFields.contains(key)
-		}
 		val encryptedSelfContent = plainJson[ENCRYPTED_SELF]?.jsonPrimitive?.content?.let {
 			kotlin.runCatching {
 				val decryptedBytes = doDecrypt(base64Decode(it))
 				Serialization.json.parseToJsonElement(decryptedBytes.decodeToString()).jsonObject
 			}.getOrNull()
 		}
-		return if (encryptedSelfContent != objToEncrypt) {
-			JsonObject(
-				objWithoutSecrets + Pair(
-					ENCRYPTED_SELF,
-					JsonPrimitive(
-						base64Encode(
-							doEncrypt(JsonObject(objToEncrypt).toString().toByteArray(Charsets.UTF_8))
+		return if (manifest.fullFieldsEncryption) {
+			val objWithoutEncryptedSelf = plainJson - ENCRYPTED_SELF
+			if (JsonObject(objWithoutEncryptedSelf) == encryptedSelfContent) {
+				JsonObject(mapOf(ENCRYPTED_SELF to plainJson.getValue(ENCRYPTED_SELF)))
+			} else  {
+				JsonObject(mapOf(
+					ENCRYPTED_SELF to JsonPrimitive(
+						base64Encode(doEncrypt(JsonObject(objWithoutEncryptedSelf).toString().toByteArray(Charsets.UTF_8)))
+					)
+				))
+			}
+		} else {
+			val objWithoutSecrets = plainJson.mapNotNull { (key, value) ->
+				(
+					manifest.nestedObjectsKeys[key]?.let { subManifest ->
+						when (value) {
+							JsonNull -> value
+							is JsonObject -> encrypt(value, subManifest, doEncrypt, doDecrypt)
+							else -> throw IllegalArgumentException("${manifest.path}$key should be an object or null")
+						}
+					} ?: manifest.arraysValuesKeys[key]?.let { subManifest ->
+						when (value) {
+							JsonNull -> value
+							is JsonArray -> JsonArray(value.mapIndexed { index, item ->
+								when (item) {
+									JsonNull -> item
+									is JsonObject -> encrypt(item, subManifest, doEncrypt, doDecrypt)
+									else -> throw IllegalArgumentException("All items of ${manifest.path}$key should objects or null (invalid item at index ${manifest.path}$key[$index])")
+								}
+							})
+
+							else -> throw IllegalArgumentException("${manifest.path}$key should be an array or null")
+						}
+					} ?: manifest.mapsValuesKeys[key]?.let { subManifest ->
+						when (value) {
+							JsonNull -> value
+							is JsonObject -> JsonObject(value.jsonObject.mapValues { (k, v) ->
+								when (v) {
+									JsonNull -> v
+									is JsonObject -> encrypt(v, subManifest, doEncrypt, doDecrypt)
+									else -> throw IllegalArgumentException("All values in map-like object ${manifest.path}$key should be objects or null (invalid value at ${manifest.path}$key.$k)")
+								}
+							})
+
+							else -> throw IllegalArgumentException("${manifest.path}$key should be an object or null")
+						}
+					} ?: value.takeUnless { manifest.topLevelFields.contains(key) }
+					)?.let { key to it }
+			}.toMap()
+			val objToEncrypt = plainJson.filter { (key, _) ->
+				manifest.topLevelFields.contains(key)
+			}
+			if (encryptedSelfContent != objToEncrypt) {
+				JsonObject(
+					objWithoutSecrets + Pair(
+						ENCRYPTED_SELF,
+						JsonPrimitive(
+							base64Encode(
+								doEncrypt(JsonObject(objToEncrypt).toString().toByteArray(Charsets.UTF_8))
+							)
 						)
 					)
 				)
-			)
-		} else JsonObject(objWithoutSecrets)
+			} else JsonObject(objWithoutSecrets)
+		}
 	}
 
 	override fun requiresEncryption(plainJson: JsonObject, manifest: EncryptedFieldsManifest): Boolean =
