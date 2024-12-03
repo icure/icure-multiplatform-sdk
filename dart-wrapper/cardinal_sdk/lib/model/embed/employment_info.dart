@@ -1,6 +1,7 @@
 // auto-generated file
 import 'package:cardinal_sdk/model/base/code_stub.dart';
 import 'package:cardinal_sdk/model/embed/employer.dart';
+import 'package:cardinal_sdk/model/specializations/base64string.dart';
 import 'package:cardinal_sdk/model/embed/employment_info.dart';
 import 'package:cardinal_sdk/model/embed/encryptable.dart';
 
@@ -10,7 +11,7 @@ sealed class EmploymentInfo implements Encryptable {
 	abstract int? endDate;
 	abstract CodeStub? professionType;
 	abstract Employer? employer;
-	@override abstract String? encryptedSelf;
+	@override abstract Base64String? encryptedSelf;
 
 	static Map<String, dynamic> encode(EmploymentInfo value) {
 		switch (value) {
@@ -46,7 +47,7 @@ class DecryptedEmploymentInfo implements EmploymentInfo {
 	@override int? endDate = null;
 	@override CodeStub? professionType = null;
 	@override Employer? employer = null;
-	@override String? encryptedSelf;
+	@override Base64String? encryptedSelf;
 	DecryptedEmploymentInfo({
 			this.encryptedSelf,
 			int? startDate,
@@ -64,7 +65,7 @@ class DecryptedEmploymentInfo implements EmploymentInfo {
 			endDate: (data["endDate"] as int?),
 			professionType: data["professionType"] == null ? null : CodeStub.fromJSON(data["professionType"]),
 			employer: data["employer"] == null ? null : Employer.fromJSON(data["employer"]),
-			encryptedSelf: (data["encryptedSelf"] as String?)
+			encryptedSelf: (data["encryptedSelf"] as Base64String?)
 		);
 	}
 
@@ -85,7 +86,7 @@ class EncryptedEmploymentInfo implements EmploymentInfo {
 	@override int? endDate = null;
 	@override CodeStub? professionType = null;
 	@override Employer? employer = null;
-	@override String? encryptedSelf;
+	@override Base64String? encryptedSelf;
 	EncryptedEmploymentInfo({
 			this.encryptedSelf,
 			int? startDate,
@@ -103,7 +104,7 @@ class EncryptedEmploymentInfo implements EmploymentInfo {
 			endDate: (data["endDate"] as int?),
 			professionType: data["professionType"] == null ? null : CodeStub.fromJSON(data["professionType"]),
 			employer: data["employer"] == null ? null : Employer.fromJSON(data["employer"]),
-			encryptedSelf: (data["encryptedSelf"] as String?)
+			encryptedSelf: (data["encryptedSelf"] as Base64String?)
 		);
 	}
 

@@ -1,5 +1,7 @@
 from typing import Generic, TypeVar, List, Optional, Callable
 from ctypes import c_void_p, cast, c_char_p
+
+from cardinal_sdk.async_utils import execute_async_method_job
 from cardinal_sdk.kotlin_types import symbols, DATA_RESULT_CALLBACK_FUNC
 from cardinal_sdk.model.CallResult import create_result_from_json
 import asyncio
@@ -28,23 +30,15 @@ class PaginatedListIterator(Generic[T]):
             return result_info.success
 
     async def has_next_async(self) -> bool:
-        loop = asyncio.get_running_loop()
-        future = loop.create_future()
-        def make_result_and_complete(success, failure):
-            if failure is not None:
-                result = Exception(failure.decode('utf-8'))
-                loop.call_soon_threadsafe(lambda: future.set_exception(result))
-            else:
-                result = json.loads(success.decode('utf-8'))
-                loop.call_soon_threadsafe(lambda: future.set_result(result))
-        callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-        loop.run_in_executor(
+        def do_decode(x):
+            return x
+        return await execute_async_method_job(
             self.__executor,
+            True,
+            do_decode,
             symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PaginatedListIterator.hasNextAsync,
             self.__producer,
-            callback
         )
-        return await future
 
     def next_blocking(self, limit: int) -> List[T]:
         call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PaginatedListIterator.nextBlocking(self.__producer, limit)
@@ -56,22 +50,13 @@ class PaginatedListIterator(Generic[T]):
             return [self.__deserializer(item) for item in result_info.success]
 
     async def next_async(self, limit: int) -> List[T]:
-        loop = asyncio.get_running_loop()
-        future = loop.create_future()
-        def make_result_and_complete(success, failure):
-            if failure is not None:
-                result = Exception(failure.decode('utf-8'))
-                loop.call_soon_threadsafe(lambda: future.set_exception(result))
-            else:
-                result = [self.__deserializer(item) for item in json.loads(success)]
-                loop.call_soon_threadsafe(lambda: future.set_result(result))
-        callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-        loop.run_in_executor(
+        def do_decode(x):
+            return [self.__deserializer(item) for item in x]
+        return await execute_async_method_job(
             self.__executor,
+            True,
+            do_decode,
             symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PaginatedListIterator.nextAsync,
             self.__producer,
-            limit,
-            callback
+            limit
         )
-        return await future
-

@@ -12,7 +12,7 @@ import {DecryptedAddress, EncryptedAddress} from './embed/Address.mjs';
 import {Annotation} from './embed/Annotation.mjs';
 import {DeactivationReason} from './embed/DeactivationReason.mjs';
 import {Delegation} from './embed/Delegation.mjs';
-import {EmploymentInfo} from './embed/EmploymentInfo.mjs';
+import {DecryptedEmploymentInfo, EmploymentInfo, EncryptedEmploymentInfo} from './embed/EmploymentInfo.mjs';
 import {Encryptable} from './embed/Encryptable.mjs';
 import {DecryptedFinancialInstitutionInformation, EncryptedFinancialInstitutionInformation, FinancialInstitutionInformation} from './embed/FinancialInstitutionInformation.mjs';
 import {Gender} from './embed/Gender.mjs';
@@ -22,7 +22,7 @@ import {Partnership} from './embed/Partnership.mjs';
 import {DecryptedPatientHealthCareParty, EncryptedPatientHealthCareParty, PatientHealthCareParty} from './embed/PatientHealthCareParty.mjs';
 import {PersonName} from './embed/PersonName.mjs';
 import {PersonalStatus} from './embed/PersonalStatus.mjs';
-import {SchoolingInfo} from './embed/SchoolingInfo.mjs';
+import {DecryptedSchoolingInfo, EncryptedSchoolingInfo, SchoolingInfo} from './embed/SchoolingInfo.mjs';
 import {SecurityMetadata} from './embed/SecurityMetadata.mjs';
 import {Base64String} from './specializations/Base64String.mjs';
 import {HexString} from './specializations/HexString.mjs';
@@ -291,9 +291,9 @@ export class DecryptedPatient {
 
 	mainSourceOfIncome: CodeStub | undefined = undefined;
 
-	schoolingInfos: Array<SchoolingInfo> = [];
+	schoolingInfos: Array<DecryptedSchoolingInfo> = [];
 
-	employementInfos: Array<EmploymentInfo> = [];
+	employementInfos: Array<DecryptedEmploymentInfo> = [];
 
 	readonly isEncrypted: false = false;
 
@@ -543,9 +543,9 @@ export class EncryptedPatient {
 
 	mainSourceOfIncome: CodeStub | undefined = undefined;
 
-	schoolingInfos: Array<SchoolingInfo> = [];
+	schoolingInfos: Array<EncryptedSchoolingInfo> = [];
 
-	employementInfos: Array<EmploymentInfo> = [];
+	employementInfos: Array<EncryptedEmploymentInfo> = [];
 
 	readonly isEncrypted: true = true;
 

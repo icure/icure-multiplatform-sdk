@@ -8,6 +8,7 @@ import 'package:cardinal_sdk/auth/authentication_method.dart';
 import 'package:cardinal_sdk/auth/authentication_process_telecom_type.dart';
 import 'package:cardinal_sdk/auth/captcha_options.dart';
 import 'package:cardinal_sdk/auth/credentials.dart';
+import 'package:cardinal_sdk/errors/cancellation_exception.dart';
 import 'package:cardinal_sdk/errors/cardinal_argument_error.dart';
 import 'package:cardinal_sdk/filters/filter_options.dart';
 import 'package:cardinal_sdk/filters/meta_filters.dart';
@@ -88,8 +89,8 @@ class _AuthFormState extends State<AuthForm> {
       null,
       "https://api.icure.cloud",
       "https://msg-gw.icure.cloud",
-      "ic-ltremam-1281efbd-6c43-45ad-9175-ab46d5d4736a",
-      "51aff1c1-19f7-4153-9824-bd4d0c1ee520",
+      throw UnimplementedError("Take the specId from the cockpit"),
+      throw UnimplementedError("Take the processId from the cockpit"),
       AuthenticationProcessTelecomType.email,
       email,
       CaptchaOptions.KerberusDelegated(),
@@ -169,6 +170,22 @@ class _AuthFormState extends State<AuthForm> {
       } else {
         sleep(const Duration(seconds: 1));
         print("GetEvent returned ${await subscription.getEvent()}");
+      }
+    }
+    print("Cancel wait for event");
+    final waitToCancel = subscription.waitForEvent(const Duration(seconds:60));
+    await Future.delayed(const Duration(seconds: 2));
+    print("Cancelling");
+    await waitToCancel.cancel();
+    try {
+      print("Waiting on cancelled");
+      await waitToCancel;
+      print("Did not fail???");
+    } catch (e) {
+      if (e is CancellationException) {
+        print("Future cancelled");
+      } else {
+        print("Unexpected error??? ${e.toString()}");
       }
     }
     print("Closing");

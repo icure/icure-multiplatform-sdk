@@ -1,7 +1,10 @@
 import 'package:cardinal_sdk/model/base/identifiable.dart';
+import 'package:cardinal_sdk/model/patient.dart';
 import 'package:cardinal_sdk/plugin/cardinal_sdk_platform_interface.dart';
 import 'package:cardinal_sdk/subscription/entity_subscription_close_reason.dart';
 import 'package:cardinal_sdk/subscription/entity_subscription_event.dart';
+import 'package:cardinal_sdk/utils/cancellable_future.dart';
+import 'package:cardinal_sdk/utils/internal/cancellation_token_provider.dart';
 
 class EntitySubscription<T extends Identifiable<String>> {
   final String _instanceId;
@@ -37,14 +40,18 @@ class EntitySubscription<T extends Identifiable<String>> {
     }
   }
 
-  Future<EntitySubscriptionEvent<T>?> waitForEvent(Duration timeout) async {
-    final eventJson = await CardinalSdkPlatformInterface.instance
+  CancellableFuture<EntitySubscriptionEvent<T>?> waitForEvent(Duration timeout) {
+    final cancellationToken = CancellationTokenProvider.getNextToken();
+    final resPromise = CardinalSdkPlatformInterface.instance
         .subscription
-        .waitForEvent(_instanceId, timeout);
-    if (eventJson != null) {
-      return EntitySubscriptionEvent.fromJSON(eventJson, _decodeT);
-    } else {
-      return null;
-    }
+        .waitForEvent(_instanceId, timeout, cancellationToken)
+        .then((eventJson) {
+          if (eventJson != null) {
+            return EntitySubscriptionEvent.fromJSON(eventJson, _decodeT);
+          } else {
+            return null;
+          }
+        });
+    return CancellableFuture.internalConstructor(resPromise, cancellationToken);
   }
 }

@@ -7,7 +7,7 @@ abstract class CardinalSdkPlatformSubscriptionPlugin {
   Future<void> close(String sdkId);
   Future<EntitySubscriptionCloseReason?> getCloseReason(String sdkId);
   Future<Map<String, dynamic>?> getEvent(String sdkId);
-  Future<Map<String, dynamic>?> waitForEvent(String sdkId, Duration timeout);
+  Future<Map<String, dynamic>?> waitForEvent(String sdkId, Duration timeout, int cancellationToken);
 }
 
 class CardinalSdkMethodChannelSubscription extends CardinalSdkPlatformSubscriptionPlugin {
@@ -52,12 +52,13 @@ class CardinalSdkMethodChannelSubscription extends CardinalSdkPlatformSubscripti
   }
 
   @override
-  Future<Map<String, dynamic>?> waitForEvent(String subscriptionId, Duration timeout) async {
+  Future<Map<String, dynamic>?> waitForEvent(String subscriptionId, Duration timeout, int cancellationToken) async {
     final res = await _methodChannel.invokeMethod<String>(
         'waitForEvent',
         {
           "subscriptionId": subscriptionId,
-          "timeout": jsonEncode(timeout.inMilliseconds)
+          "timeout": jsonEncode(timeout.inMilliseconds),
+          "cancellationToken": cancellationToken.toString()
         }
     ).catchError(convertPlatformException);
     if (res == null) throw AssertionError("received null result from platform method waitForEvent");

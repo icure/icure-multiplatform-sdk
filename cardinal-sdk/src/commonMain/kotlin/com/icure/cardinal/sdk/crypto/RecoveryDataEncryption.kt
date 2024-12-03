@@ -3,6 +3,7 @@ package com.icure.cardinal.sdk.crypto
 import com.icure.cardinal.sdk.api.raw.RawRecoveryDataApi
 import com.icure.cardinal.sdk.crypto.entities.ExchangeDataRecoveryDetails
 import com.icure.cardinal.sdk.crypto.entities.RecoveryDataKey
+import com.icure.cardinal.sdk.crypto.entities.RecoveryKeyOptions
 import com.icure.cardinal.sdk.crypto.entities.RecoveryKeySize
 import com.icure.cardinal.sdk.crypto.entities.RecoveryResult
 import com.icure.cardinal.sdk.model.specializations.SpkiHexString
@@ -31,7 +32,7 @@ interface RecoveryDataEncryption {
 		recipient: String,
 		keyPairs: Map<String, List<RsaKeypair<RsaAlgorithm.RsaEncryptionAlgorithm>>>,
 		lifetimeSeconds: Int?,
-		recoveryKeySize: RecoveryKeySize
+		recoveryKeyOptions: RecoveryKeyOptions?
 	): RecoveryDataKey
 
 	/**
@@ -40,6 +41,15 @@ interface RecoveryDataEncryption {
 	suspend fun getAndDecryptKeyPairsRecoveryData(
 		recoveryKey: RecoveryDataKey,
 		autoDelete: Boolean
+	): RecoveryResult<Map<String, Map<SpkiHexString, RsaKeypair<RsaAlgorithm.RsaEncryptionAlgorithm>>>>
+
+	/**
+	 * Gets the content of the key recovery data corresponding to the provided recovery key.
+	 */
+	suspend fun waitAndDecryptKeyPairsRecoveryData(
+		recoveryKey: RecoveryDataKey,
+		autoDelete: Boolean,
+		waitSeconds: Int
 	): RecoveryResult<Map<String, Map<SpkiHexString, RsaKeypair<RsaAlgorithm.RsaEncryptionAlgorithm>>>>
 
 	/**
@@ -52,7 +62,7 @@ interface RecoveryDataEncryption {
 		recipient: String,
 		exchangeDataInfo: List<ExchangeDataRecoveryDetails>,
 		lifetimeSeconds: Int?,
-		recoveryKeySize: RecoveryKeySize
+		recoveryKeyOptions: RecoveryKeyOptions?
 	): RecoveryDataKey
 
 	/**
@@ -61,4 +71,6 @@ interface RecoveryDataEncryption {
 	suspend fun getAndDecryptExchangeDataRecoveryData(
 		recoveryKey: RecoveryDataKey
 	): RecoveryResult<List<ExchangeDataRecoveryDetails>>
+
+	suspend fun generateNewKey(size: RecoveryKeySize): RecoveryDataKey
 }

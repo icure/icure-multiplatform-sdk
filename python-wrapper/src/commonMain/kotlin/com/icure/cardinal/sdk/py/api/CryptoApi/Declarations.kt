@@ -16,6 +16,7 @@ import kotlin.String
 import kotlin.Unit
 import kotlinx.cinterop.ByteVarOf
 import kotlinx.cinterop.CFunction
+import kotlinx.cinterop.COpaquePointer
 import kotlinx.cinterop.CPointer
 import kotlinx.cinterop.CValues
 import kotlinx.cinterop.ExperimentalForeignApi
@@ -35,7 +36,7 @@ public fun forceReloadBlocking(sdk: CardinalApis): String = kotlin.runCatching {
 @OptIn(ExperimentalForeignApi::class)
 public fun forceReloadAsync(sdk: CardinalApis,
 		resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
-		CValues<ByteVarOf<Byte>>?) -> Unit>>): Unit = kotlin.runCatching {
+		CValues<ByteVarOf<Byte>>?) -> Unit>>): COpaquePointer? = kotlin.runCatching {
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.crypto.forceReload()
@@ -69,7 +70,7 @@ public fun currentDataOwnerKeysAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<CurrentDataOwnerKeysParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {

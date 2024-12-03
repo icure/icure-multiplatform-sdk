@@ -64,7 +64,49 @@ class RecoveryDataKey private constructor(
 		cryptoService.aes.loadKey(AesAlgorithm.CbcWithPkcs7Padding, _hex.decodedBytes())
 }
 
+/**
+ * Allows to configure which recovery key to use when creating recovery data.
+ */
+@Serializable
+sealed interface RecoveryKeyOptions {
+	/**
+	 * Generate a new key for the recovery data. This is the default behavior, and should be used in most cases.
+	 * @param recoveryKeySize specifies the size of the recovery key to generate
+	 */
+	@Serializable
+	data class Generate(
+		val recoveryKeySize: RecoveryKeySize = RecoveryKeySize.Bytes32
+	): RecoveryKeyOptions
+
+	/**
+	 * Specifies to use a pre-created recovery key.
+	 */
+	@Serializable
+	class Use(
+		val key: RecoveryDataKey
+	): RecoveryKeyOptions {
+		init {
+			require(key.asRawBytes().let { it.size == 16 || it.size == 32 }) {
+				"Recovery key should be 16 or 32 bytes"
+			}
+		}
+	}
+}
+
+/**
+ * Possible sizes for a recovery key.
+ */
+@Serializable
 enum class RecoveryKeySize {
+	/**
+	 * The recovery key is 16 bytes long.
+	 * We recommend using this only with one-use recovery data of limited duration in cases where the user needs to
+	 * input the recovery key manually.
+	 */
 	Bytes16,
+	/**
+	 * The recovery key is 32 bytes long.
+	 * This is the default recovery key length.
+	 */
 	Bytes32
 }

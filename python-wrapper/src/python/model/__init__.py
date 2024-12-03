@@ -930,8 +930,8 @@ class EncryptedPatient:
 	native_country: Optional['CodeStub'] = None
 	social_status: Optional['CodeStub'] = None
 	main_source_of_income: Optional['CodeStub'] = None
-	schooling_infos: List['SchoolingInfo'] = field(default_factory=list)
-	employement_infos: List['EmploymentInfo'] = field(default_factory=list)
+	schooling_infos: List['EncryptedSchoolingInfo'] = field(default_factory=list)
+	employement_infos: List['EncryptedEmploymentInfo'] = field(default_factory=list)
 
 	def __serialize__(self) -> object:
 		return {
@@ -1103,8 +1103,8 @@ class EncryptedPatient:
 			native_country=CodeStub._deserialize(deserialized_dict.get("nativeCountry")) if deserialized_dict.get("nativeCountry") is not None else None,
 			social_status=CodeStub._deserialize(deserialized_dict.get("socialStatus")) if deserialized_dict.get("socialStatus") is not None else None,
 			main_source_of_income=CodeStub._deserialize(deserialized_dict.get("mainSourceOfIncome")) if deserialized_dict.get("mainSourceOfIncome") is not None else None,
-			schooling_infos=[SchoolingInfo._deserialize(x0) for x0 in deserialized_dict["schoolingInfos"]],
-			employement_infos=[EmploymentInfo._deserialize(x0) for x0 in deserialized_dict["employementInfos"]],
+			schooling_infos=[EncryptedSchoolingInfo._deserialize(x0) for x0 in deserialized_dict["schoolingInfos"]],
+			employement_infos=[EncryptedEmploymentInfo._deserialize(x0) for x0 in deserialized_dict["employementInfos"]],
 		)
 
 @dataclass
@@ -1187,8 +1187,8 @@ class DecryptedPatient:
 	native_country: Optional['CodeStub'] = None
 	social_status: Optional['CodeStub'] = None
 	main_source_of_income: Optional['CodeStub'] = None
-	schooling_infos: List['SchoolingInfo'] = field(default_factory=list)
-	employement_infos: List['EmploymentInfo'] = field(default_factory=list)
+	schooling_infos: List['DecryptedSchoolingInfo'] = field(default_factory=list)
+	employement_infos: List['DecryptedEmploymentInfo'] = field(default_factory=list)
 
 	def __serialize__(self) -> object:
 		return {
@@ -1360,8 +1360,8 @@ class DecryptedPatient:
 			native_country=CodeStub._deserialize(deserialized_dict.get("nativeCountry")) if deserialized_dict.get("nativeCountry") is not None else None,
 			social_status=CodeStub._deserialize(deserialized_dict.get("socialStatus")) if deserialized_dict.get("socialStatus") is not None else None,
 			main_source_of_income=CodeStub._deserialize(deserialized_dict.get("mainSourceOfIncome")) if deserialized_dict.get("mainSourceOfIncome") is not None else None,
-			schooling_infos=[SchoolingInfo._deserialize(x0) for x0 in deserialized_dict["schoolingInfos"]],
-			employement_infos=[EmploymentInfo._deserialize(x0) for x0 in deserialized_dict["employementInfos"]],
+			schooling_infos=[DecryptedSchoolingInfo._deserialize(x0) for x0 in deserialized_dict["schoolingInfos"]],
+			employement_infos=[DecryptedEmploymentInfo._deserialize(x0) for x0 in deserialized_dict["employementInfos"]],
 		)
 
 Patient = Union['EncryptedPatient', 'DecryptedPatient']
@@ -2195,7 +2195,7 @@ class DecryptedCalendarItem:
 	agenda_id: Optional[str] = None
 	hcp_id: Optional[str] = None
 	recurrence_id: Optional[str] = None
-	meeting_tags: List['CalendarItemTag'] = field(default_factory=list)
+	meeting_tags: List['DecryptedCalendarItemTag'] = field(default_factory=list)
 	flow_item: Optional['FlowItem'] = None
 	secret_foreign_keys: List[str] = field(default_factory=list)
 	crypted_foreign_keys: Dict[str, List['Delegation']] = field(default_factory=dict)
@@ -2290,7 +2290,7 @@ class DecryptedCalendarItem:
 			agenda_id=deserialized_dict.get("agendaId"),
 			hcp_id=deserialized_dict.get("hcpId"),
 			recurrence_id=deserialized_dict.get("recurrenceId"),
-			meeting_tags=[CalendarItemTag._deserialize(x0) for x0 in deserialized_dict["meetingTags"]],
+			meeting_tags=[DecryptedCalendarItemTag._deserialize(x0) for x0 in deserialized_dict["meetingTags"]],
 			flow_item=FlowItem._deserialize(deserialized_dict.get("flowItem")) if deserialized_dict.get("flowItem") is not None else None,
 			secret_foreign_keys=[x0 for x0 in deserialized_dict["secretForeignKeys"]],
 			crypted_foreign_keys=dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["cryptedForeignKeys"].items())),
@@ -2335,7 +2335,7 @@ class EncryptedCalendarItem:
 	agenda_id: Optional[str] = None
 	hcp_id: Optional[str] = None
 	recurrence_id: Optional[str] = None
-	meeting_tags: List['CalendarItemTag'] = field(default_factory=list)
+	meeting_tags: List['EncryptedCalendarItemTag'] = field(default_factory=list)
 	flow_item: Optional['FlowItem'] = None
 	secret_foreign_keys: List[str] = field(default_factory=list)
 	crypted_foreign_keys: Dict[str, List['Delegation']] = field(default_factory=dict)
@@ -2430,7 +2430,7 @@ class EncryptedCalendarItem:
 			agenda_id=deserialized_dict.get("agendaId"),
 			hcp_id=deserialized_dict.get("hcpId"),
 			recurrence_id=deserialized_dict.get("recurrenceId"),
-			meeting_tags=[CalendarItemTag._deserialize(x0) for x0 in deserialized_dict["meetingTags"]],
+			meeting_tags=[EncryptedCalendarItemTag._deserialize(x0) for x0 in deserialized_dict["meetingTags"]],
 			flow_item=FlowItem._deserialize(deserialized_dict.get("flowItem")) if deserialized_dict.get("flowItem") is not None else None,
 			secret_foreign_keys=[x0 for x0 in deserialized_dict["secretForeignKeys"]],
 			crypted_foreign_keys=dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["cryptedForeignKeys"].items())),
@@ -2997,6 +2997,22 @@ class FormTemplate:
 			layout_attachment_id=deserialized_dict.get("layoutAttachmentId"),
 			template_layout_attachment_id=deserialized_dict.get("templateLayoutAttachmentId"),
 		)
+
+class RecoveryKeySize(Enum):
+	Bytes16 = "Bytes16"
+	Bytes32 = "Bytes32"
+
+	def __serialize__(self) -> object:
+		return self.value
+
+	@classmethod
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'RecoveryKeySize':
+		if data == "Bytes16":
+			return RecoveryKeySize.Bytes16
+		elif data == "Bytes32":
+			return RecoveryKeySize.Bytes32
+		else:
+			raise Exception(f"{data} is not a valid value for RecoveryKeySize enum.")
 
 class ShareAllPatientDataOptions(metaclass=SingletonMeta):
 
@@ -9061,7 +9077,8 @@ def deserialize_medical_house_contract(data: Union[str, Dict[str, object]]) -> '
 		raise Exception(f"{qualifier} is not a known subclass of MedicalHouseContract")
 
 @dataclass
-class SchoolingInfo:
+class EncryptedSchoolingInfo:
+	encrypted_self: Optional['Base64String']
 	start_date: Optional[int] = None
 	end_date: Optional[int] = None
 	school: Optional[str] = None
@@ -9073,10 +9090,11 @@ class SchoolingInfo:
 			"endDate": self.end_date,
 			"school": self.school,
 			"typeOfEducation": self.type_of_education.__serialize__() if self.type_of_education is not None else None,
+			"encryptedSelf": self.encrypted_self,
 		}
 
 	@classmethod
-	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'SchoolingInfo':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'EncryptedSchoolingInfo':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -9087,10 +9105,74 @@ class SchoolingInfo:
 			end_date=deserialized_dict.get("endDate"),
 			school=deserialized_dict.get("school"),
 			type_of_education=CodeStub._deserialize(deserialized_dict.get("typeOfEducation")) if deserialized_dict.get("typeOfEducation") is not None else None,
+			encrypted_self=deserialized_dict.get("encryptedSelf"),
 		)
 
 @dataclass
-class EmploymentInfo:
+class DecryptedSchoolingInfo:
+	encrypted_self: Optional['Base64String']
+	start_date: Optional[int] = None
+	end_date: Optional[int] = None
+	school: Optional[str] = None
+	type_of_education: Optional['CodeStub'] = None
+
+	def __serialize__(self) -> object:
+		return {
+			"startDate": self.start_date,
+			"endDate": self.end_date,
+			"school": self.school,
+			"typeOfEducation": self.type_of_education.__serialize__() if self.type_of_education is not None else None,
+			"encryptedSelf": self.encrypted_self,
+		}
+
+	@classmethod
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'DecryptedSchoolingInfo':
+		deserialized_dict: dict[str, object]
+		if isinstance(data, str):
+			deserialized_dict = json.loads(data)
+		else:
+			deserialized_dict = data
+		return cls(
+			start_date=deserialized_dict.get("startDate"),
+			end_date=deserialized_dict.get("endDate"),
+			school=deserialized_dict.get("school"),
+			type_of_education=CodeStub._deserialize(deserialized_dict.get("typeOfEducation")) if deserialized_dict.get("typeOfEducation") is not None else None,
+			encrypted_self=deserialized_dict.get("encryptedSelf"),
+		)
+
+SchoolingInfo = Union['EncryptedSchoolingInfo', 'DecryptedSchoolingInfo']
+
+def serialize_schooling_info(schooling_info: SchoolingInfo) -> object:
+	if isinstance(schooling_info, EncryptedSchoolingInfo):
+		serialized_entity = schooling_info.__serialize__()
+		serialized_entity.update({"kotlinType": "com.icure.cardinal.sdk.model.embed.EncryptedSchoolingInfo"})
+		return serialized_entity
+	elif isinstance(schooling_info, DecryptedSchoolingInfo):
+		serialized_entity = schooling_info.__serialize__()
+		serialized_entity.update({"kotlinType": "com.icure.cardinal.sdk.model.embed.DecryptedSchoolingInfo"})
+		return serialized_entity
+	else:
+		raise Exception(f"{type(schooling_info)} is not a known subclass of SchoolingInfo")
+
+def deserialize_schooling_info(data: Union[str, Dict[str, object]]) -> 'SchoolingInfo':
+	deserialized_dict: dict[str, object]
+	if isinstance(data, str):
+		deserialized_dict = json.loads(data)
+	else:
+		deserialized_dict = data
+	qualifier = deserialized_dict.get("kotlinType")
+	if qualifier is None:
+		raise Exception("Missing qualifier: kotlinType")
+	if qualifier == "com.icure.cardinal.sdk.model.embed.EncryptedSchoolingInfo":
+		return EncryptedSchoolingInfo._deserialize(deserialized_dict)
+	elif qualifier == "com.icure.cardinal.sdk.model.embed.DecryptedSchoolingInfo":
+		return DecryptedSchoolingInfo._deserialize(deserialized_dict)
+	else:
+		raise Exception(f"{qualifier} is not a known subclass of SchoolingInfo")
+
+@dataclass
+class DecryptedEmploymentInfo:
+	encrypted_self: Optional['Base64String']
 	start_date: Optional[int] = None
 	end_date: Optional[int] = None
 	profession_type: Optional['CodeStub'] = None
@@ -9102,10 +9184,11 @@ class EmploymentInfo:
 			"endDate": self.end_date,
 			"professionType": self.profession_type.__serialize__() if self.profession_type is not None else None,
 			"employer": self.employer.__serialize__() if self.employer is not None else None,
+			"encryptedSelf": self.encrypted_self,
 		}
 
 	@classmethod
-	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'EmploymentInfo':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'DecryptedEmploymentInfo':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -9116,7 +9199,70 @@ class EmploymentInfo:
 			end_date=deserialized_dict.get("endDate"),
 			profession_type=CodeStub._deserialize(deserialized_dict.get("professionType")) if deserialized_dict.get("professionType") is not None else None,
 			employer=Employer._deserialize(deserialized_dict.get("employer")) if deserialized_dict.get("employer") is not None else None,
+			encrypted_self=deserialized_dict.get("encryptedSelf"),
 		)
+
+@dataclass
+class EncryptedEmploymentInfo:
+	encrypted_self: Optional['Base64String']
+	start_date: Optional[int] = None
+	end_date: Optional[int] = None
+	profession_type: Optional['CodeStub'] = None
+	employer: Optional['Employer'] = None
+
+	def __serialize__(self) -> object:
+		return {
+			"startDate": self.start_date,
+			"endDate": self.end_date,
+			"professionType": self.profession_type.__serialize__() if self.profession_type is not None else None,
+			"employer": self.employer.__serialize__() if self.employer is not None else None,
+			"encryptedSelf": self.encrypted_self,
+		}
+
+	@classmethod
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'EncryptedEmploymentInfo':
+		deserialized_dict: dict[str, object]
+		if isinstance(data, str):
+			deserialized_dict = json.loads(data)
+		else:
+			deserialized_dict = data
+		return cls(
+			start_date=deserialized_dict.get("startDate"),
+			end_date=deserialized_dict.get("endDate"),
+			profession_type=CodeStub._deserialize(deserialized_dict.get("professionType")) if deserialized_dict.get("professionType") is not None else None,
+			employer=Employer._deserialize(deserialized_dict.get("employer")) if deserialized_dict.get("employer") is not None else None,
+			encrypted_self=deserialized_dict.get("encryptedSelf"),
+		)
+
+EmploymentInfo = Union['DecryptedEmploymentInfo', 'EncryptedEmploymentInfo']
+
+def serialize_employment_info(employment_info: EmploymentInfo) -> object:
+	if isinstance(employment_info, DecryptedEmploymentInfo):
+		serialized_entity = employment_info.__serialize__()
+		serialized_entity.update({"kotlinType": "com.icure.cardinal.sdk.model.embed.DecryptedEmploymentInfo"})
+		return serialized_entity
+	elif isinstance(employment_info, EncryptedEmploymentInfo):
+		serialized_entity = employment_info.__serialize__()
+		serialized_entity.update({"kotlinType": "com.icure.cardinal.sdk.model.embed.EncryptedEmploymentInfo"})
+		return serialized_entity
+	else:
+		raise Exception(f"{type(employment_info)} is not a known subclass of EmploymentInfo")
+
+def deserialize_employment_info(data: Union[str, Dict[str, object]]) -> 'EmploymentInfo':
+	deserialized_dict: dict[str, object]
+	if isinstance(data, str):
+		deserialized_dict = json.loads(data)
+	else:
+		deserialized_dict = data
+	qualifier = deserialized_dict.get("kotlinType")
+	if qualifier is None:
+		raise Exception("Missing qualifier: kotlinType")
+	if qualifier == "com.icure.cardinal.sdk.model.embed.DecryptedEmploymentInfo":
+		return DecryptedEmploymentInfo._deserialize(deserialized_dict)
+	elif qualifier == "com.icure.cardinal.sdk.model.embed.EncryptedEmploymentInfo":
+		return EncryptedEmploymentInfo._deserialize(deserialized_dict)
+	else:
+		raise Exception(f"{qualifier} is not a known subclass of EmploymentInfo")
 
 class UsersType(Enum):
 	Database = "database"
@@ -9608,7 +9754,8 @@ class DeletedAttachment:
 		)
 
 @dataclass
-class CalendarItemTag:
+class EncryptedCalendarItemTag:
+	encrypted_self: Optional['Base64String']
 	code: Optional[str] = None
 	date: Optional[int] = None
 	user_id: Optional[str] = None
@@ -9620,10 +9767,11 @@ class CalendarItemTag:
 			"date": self.date,
 			"userId": self.user_id,
 			"userName": self.user_name,
+			"encryptedSelf": self.encrypted_self,
 		}
 
 	@classmethod
-	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'CalendarItemTag':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'EncryptedCalendarItemTag':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -9634,7 +9782,70 @@ class CalendarItemTag:
 			date=deserialized_dict.get("date"),
 			user_id=deserialized_dict.get("userId"),
 			user_name=deserialized_dict.get("userName"),
+			encrypted_self=deserialized_dict.get("encryptedSelf"),
 		)
+
+@dataclass
+class DecryptedCalendarItemTag:
+	encrypted_self: Optional['Base64String']
+	code: Optional[str] = None
+	date: Optional[int] = None
+	user_id: Optional[str] = None
+	user_name: Optional[str] = None
+
+	def __serialize__(self) -> object:
+		return {
+			"code": self.code,
+			"date": self.date,
+			"userId": self.user_id,
+			"userName": self.user_name,
+			"encryptedSelf": self.encrypted_self,
+		}
+
+	@classmethod
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'DecryptedCalendarItemTag':
+		deserialized_dict: dict[str, object]
+		if isinstance(data, str):
+			deserialized_dict = json.loads(data)
+		else:
+			deserialized_dict = data
+		return cls(
+			code=deserialized_dict.get("code"),
+			date=deserialized_dict.get("date"),
+			user_id=deserialized_dict.get("userId"),
+			user_name=deserialized_dict.get("userName"),
+			encrypted_self=deserialized_dict.get("encryptedSelf"),
+		)
+
+CalendarItemTag = Union['EncryptedCalendarItemTag', 'DecryptedCalendarItemTag']
+
+def serialize_calendar_item_tag(calendar_item_tag: CalendarItemTag) -> object:
+	if isinstance(calendar_item_tag, EncryptedCalendarItemTag):
+		serialized_entity = calendar_item_tag.__serialize__()
+		serialized_entity.update({"kotlinType": "com.icure.cardinal.sdk.model.embed.EncryptedCalendarItemTag"})
+		return serialized_entity
+	elif isinstance(calendar_item_tag, DecryptedCalendarItemTag):
+		serialized_entity = calendar_item_tag.__serialize__()
+		serialized_entity.update({"kotlinType": "com.icure.cardinal.sdk.model.embed.DecryptedCalendarItemTag"})
+		return serialized_entity
+	else:
+		raise Exception(f"{type(calendar_item_tag)} is not a known subclass of CalendarItemTag")
+
+def deserialize_calendar_item_tag(data: Union[str, Dict[str, object]]) -> 'CalendarItemTag':
+	deserialized_dict: dict[str, object]
+	if isinstance(data, str):
+		deserialized_dict = json.loads(data)
+	else:
+		deserialized_dict = data
+	qualifier = deserialized_dict.get("kotlinType")
+	if qualifier is None:
+		raise Exception("Missing qualifier: kotlinType")
+	if qualifier == "com.icure.cardinal.sdk.model.embed.EncryptedCalendarItemTag":
+		return EncryptedCalendarItemTag._deserialize(deserialized_dict)
+	elif qualifier == "com.icure.cardinal.sdk.model.embed.DecryptedCalendarItemTag":
+		return DecryptedCalendarItemTag._deserialize(deserialized_dict)
+	else:
+		raise Exception(f"{qualifier} is not a known subclass of CalendarItemTag")
 
 @dataclass
 class FlowItem:

@@ -3,6 +3,7 @@ package com.icure.cardinal.sdk.py.api.RecoveryApi
 
 import com.icure.cardinal.sdk.CardinalApis
 import com.icure.cardinal.sdk.crypto.entities.RecoveryDataKey
+import com.icure.cardinal.sdk.crypto.entities.RecoveryKeySize
 import com.icure.cardinal.sdk.py.utils.failureToPyStringAsyncCallback
 import com.icure.cardinal.sdk.py.utils.toPyString
 import com.icure.cardinal.sdk.py.utils.toPyStringAsyncCallback
@@ -15,6 +16,7 @@ import kotlin.String
 import kotlin.Unit
 import kotlinx.cinterop.ByteVarOf
 import kotlinx.cinterop.CFunction
+import kotlinx.cinterop.COpaquePointer
 import kotlinx.cinterop.CPointer
 import kotlinx.cinterop.CValues
 import kotlinx.cinterop.ExperimentalForeignApi
@@ -49,7 +51,7 @@ public fun purgeRecoveryInfoAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<PurgeRecoveryInfoParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
@@ -85,7 +87,7 @@ public fun purgeAllRecoveryInfoForAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<PurgeAllRecoveryInfoForParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
@@ -122,7 +124,7 @@ public fun purgeAllKeyPairRecoveryInfoForAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams =
 			fullLanguageInteropJson.decodeFromString<PurgeAllKeyPairRecoveryInfoForParams>(params)
 	GlobalScope.launch {
@@ -160,7 +162,7 @@ public fun purgeAllExchangeDataRecoveryInfoForAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams =
 			fullLanguageInteropJson.decodeFromString<PurgeAllExchangeDataRecoveryInfoForParams>(params)
 	GlobalScope.launch {
@@ -169,5 +171,41 @@ public fun purgeAllExchangeDataRecoveryInfoForAsync(
 				decodedParams.dataOwnerId,
 			)
 		}.toPyStringAsyncCallback(Int.serializer(), resultCallback)
+	}
+}.failureToPyStringAsyncCallback(resultCallback)
+
+@Serializable
+private class PreGenerateRecoveryKeyParams(
+	public val keySize: RecoveryKeySize,
+)
+
+@OptIn(InternalIcureApi::class)
+public fun preGenerateRecoveryKeyBlocking(sdk: CardinalApis, params: String): String =
+		kotlin.runCatching {
+	val decodedParams = fullLanguageInteropJson.decodeFromString<PreGenerateRecoveryKeyParams>(params)
+	runBlocking {
+		sdk.recovery.preGenerateRecoveryKey(
+			decodedParams.keySize,
+		)
+	}
+}.toPyString(RecoveryDataKey.serializer())
+
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
+public fun preGenerateRecoveryKeyAsync(
+	sdk: CardinalApis,
+	params: String,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): COpaquePointer? = kotlin.runCatching {
+	val decodedParams = fullLanguageInteropJson.decodeFromString<PreGenerateRecoveryKeyParams>(params)
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.recovery.preGenerateRecoveryKey(
+				decodedParams.keySize,
+			)
+		}.toPyStringAsyncCallback(RecoveryDataKey.serializer(), resultCallback)
 	}
 }.failureToPyStringAsyncCallback(resultCallback)

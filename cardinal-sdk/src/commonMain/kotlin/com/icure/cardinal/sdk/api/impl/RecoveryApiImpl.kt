@@ -6,6 +6,7 @@ import com.icure.cardinal.sdk.crypto.InternalCryptoServices
 import com.icure.cardinal.sdk.crypto.entities.ExchangeDataRecoveryDetails
 import com.icure.cardinal.sdk.crypto.entities.RecoveryDataKey
 import com.icure.cardinal.sdk.crypto.entities.RecoveryDataUseFailureReason
+import com.icure.cardinal.sdk.crypto.entities.RecoveryKeyOptions
 import com.icure.cardinal.sdk.crypto.entities.RecoveryKeySize
 import com.icure.cardinal.sdk.crypto.entities.RecoveryResult
 import com.icure.cardinal.sdk.crypto.entities.VerifiedRsaEncryptionKeysSet
@@ -34,7 +35,7 @@ internal class RecoveryApiImpl(
 	override suspend fun createRecoveryInfoForAvailableKeyPairs(
 		includeParentsKeys: Boolean,
 		lifetimeSeconds: Int?,
-		recoveryKeySize: RecoveryKeySize
+		recoveryKeyOptions: RecoveryKeyOptions?
 	): RecoveryDataKey {
 		val selfId = crypto.dataOwnerApi.getCurrentDataOwnerId()
 		val allAvailableKeys = crypto.userEncryptionKeysManager.getCurrentUserHierarchyAvailableKeypairs()
@@ -50,7 +51,7 @@ internal class RecoveryApiImpl(
 				} else null
 			}
 		}
-		return crypto.recoveryDataEncryption.createAndSaveKeyPairsRecoveryDataFor(selfId, keyPairsToSave, lifetimeSeconds, recoveryKeySize)
+		return crypto.recoveryDataEncryption.createAndSaveKeyPairsRecoveryDataFor(selfId, keyPairsToSave, lifetimeSeconds, recoveryKeyOptions)
 	}
 
 	override suspend fun recoverKeyPairs(
@@ -59,10 +60,17 @@ internal class RecoveryApiImpl(
 	): RecoveryResult<Map<String, Map<SpkiHexString, RsaKeypair<RsaAlgorithm.RsaEncryptionAlgorithm>>>> =
 		crypto.recoveryDataEncryption.getAndDecryptKeyPairsRecoveryData(recoveryKey, autoDelete)
 
+	override suspend fun recoverKeyPairsWaitingForCreation(
+		recoveryKey: RecoveryDataKey,
+		autoDelete: Boolean,
+		waitSeconds: Int
+	): RecoveryResult<Map<String, Map<SpkiHexString, RsaKeypair<RsaAlgorithm.RsaEncryptionAlgorithm>>>> =
+		crypto.recoveryDataEncryption.waitAndDecryptKeyPairsRecoveryData(recoveryKey, autoDelete, waitSeconds)
+
 	override suspend fun createExchangeDataRecoveryInfo(
 		delegateId: String,
 		lifetimeSeconds: Int?,
-		recoveryKeySize: RecoveryKeySize
+		recoveryKeyOptions: RecoveryKeyOptions?
 	): RecoveryDataKey {
 		val exchangeDataToDelegate = crypto.exchangeDataManager.base.getExchangeDataByDelegatorDelegatePair(
 			crypto.dataOwnerApi.getCurrentDataOwnerId(),
@@ -79,7 +87,7 @@ internal class RecoveryApiImpl(
 				)
 			}
 		}
-		return crypto.recoveryDataEncryption.createAndSaveExchangeDataRecoveryData(delegateId, decryptedInformation, lifetimeSeconds, recoveryKeySize)
+		return crypto.recoveryDataEncryption.createAndSaveExchangeDataRecoveryData(delegateId, decryptedInformation, lifetimeSeconds, recoveryKeyOptions)
 	}
 
 	override suspend fun recoverExchangeData(recoveryKey: RecoveryDataKey): RecoveryDataUseFailureReason? =
@@ -139,4 +147,7 @@ internal class RecoveryApiImpl(
 		successBody().let {
 			it.numberValue?.toInt() ?: throw InternalCardinalException("Could not parse count from response body: $it")
 		}
+
+	override suspend fun preGenerateRecoveryKey(keySize: RecoveryKeySize): RecoveryDataKey =
+		crypto.recoveryDataEncryption.generateNewKey(keySize)
 }

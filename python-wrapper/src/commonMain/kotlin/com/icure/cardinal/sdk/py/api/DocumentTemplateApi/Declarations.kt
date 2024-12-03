@@ -20,6 +20,7 @@ import kotlin.Unit
 import kotlin.collections.List
 import kotlinx.cinterop.ByteVarOf
 import kotlinx.cinterop.CFunction
+import kotlinx.cinterop.COpaquePointer
 import kotlinx.cinterop.CPointer
 import kotlinx.cinterop.CValues
 import kotlinx.cinterop.ExperimentalForeignApi
@@ -55,7 +56,7 @@ public fun getDocumentTemplateAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<GetDocumentTemplateParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
@@ -91,7 +92,7 @@ public fun createDocumentTemplateAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<CreateDocumentTemplateParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
@@ -127,7 +128,7 @@ public fun modifyDocumentTemplateAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<ModifyDocumentTemplateParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
@@ -163,7 +164,7 @@ public fun deleteDocumentTemplatesAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<DeleteDocumentTemplatesParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
@@ -200,7 +201,7 @@ public fun listDocumentTemplatesBySpecialityAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams =
 			fullLanguageInteropJson.decodeFromString<ListDocumentTemplatesBySpecialityParams>(params)
 	GlobalScope.launch {
@@ -238,7 +239,7 @@ public fun listDocumentTemplatesByDocumentTypeAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams =
 			fullLanguageInteropJson.decodeFromString<ListDocumentTemplatesByDocumentTypeParams>(params)
 	GlobalScope.launch {
@@ -276,7 +277,7 @@ public fun listDocumentTemplatesByDocumentTypeForCurrentUserAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams =
 			fullLanguageInteropJson.decodeFromString<ListDocumentTemplatesByDocumentTypeForCurrentUserParams>(params)
 	GlobalScope.launch {
@@ -297,7 +298,7 @@ public fun listDocumentTemplatesBlocking(sdk: CardinalNonCryptoApis): String = k
 @OptIn(ExperimentalForeignApi::class)
 public fun listDocumentTemplatesAsync(sdk: CardinalNonCryptoApis,
 		resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
-		CValues<ByteVarOf<Byte>>?) -> Unit>>): Unit = kotlin.runCatching {
+		CValues<ByteVarOf<Byte>>?) -> Unit>>): COpaquePointer? = kotlin.runCatching {
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.documentTemplate.listDocumentTemplates()
@@ -335,7 +336,7 @@ public fun findAllDocumentTemplatesAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams =
 			fullLanguageInteropJson.decodeFromString<FindAllDocumentTemplatesParams>(params)
 	GlobalScope.launch {
@@ -377,7 +378,7 @@ public fun getDocumentTemplateAttachmentAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams =
 			fullLanguageInteropJson.decodeFromString<GetDocumentTemplateAttachmentParams>(params)
 	GlobalScope.launch {
@@ -417,7 +418,7 @@ public fun getAttachmentTextAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<GetAttachmentTextParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
@@ -459,7 +460,7 @@ public fun setDocumentTemplateAttachmentAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams =
 			fullLanguageInteropJson.decodeFromString<SetDocumentTemplateAttachmentParams>(params)
 	GlobalScope.launch {

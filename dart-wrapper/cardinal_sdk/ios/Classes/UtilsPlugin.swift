@@ -33,6 +33,7 @@ class UtilsPlugin {
 	) -> Bool {
 		switch methodName {
 			case "releasePlatformResource": releasePlatformResource(parameters: parameters, resultCallback: resultCallback)
+			case "cancelJob": cancelJob(parameters: parameters, resultCallback: resultCallback)
 			default: return false
 		}
 		return true
@@ -50,6 +51,21 @@ class UtilsPlugin {
 		ResourceUtils.shared.releasePlatformResource(
 			dartResultCallback: resultCallback,
 			resourceId: parameters["resourceId"]!
+		)
+	}
+
+	private static func cancelJob(
+		parameters: [String : String],
+		resultCallback: @escaping (
+			String?,
+			String?,
+			String?,
+			String?
+		) -> Void
+	) {
+		ApiScope.shared.cancel(
+			resultCallback: resultCallback,
+			cancellationToken: Int64(parameters["cancellationToken"]!)!
 		)
 	}
 }

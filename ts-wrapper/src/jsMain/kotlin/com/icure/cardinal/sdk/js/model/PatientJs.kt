@@ -12,18 +12,22 @@ import com.icure.cardinal.sdk.js.model.base.PersonJs
 import com.icure.cardinal.sdk.js.model.base.StoredDocumentJs
 import com.icure.cardinal.sdk.js.model.embed.AnnotationJs
 import com.icure.cardinal.sdk.js.model.embed.DecryptedAddressJs
+import com.icure.cardinal.sdk.js.model.embed.DecryptedEmploymentInfoJs
 import com.icure.cardinal.sdk.js.model.embed.DecryptedFinancialInstitutionInformationJs
 import com.icure.cardinal.sdk.js.model.embed.DecryptedInsurabilityJs
 import com.icure.cardinal.sdk.js.model.embed.DecryptedMedicalHouseContractJs
 import com.icure.cardinal.sdk.js.model.embed.DecryptedPatientHealthCarePartyJs
+import com.icure.cardinal.sdk.js.model.embed.DecryptedSchoolingInfoJs
 import com.icure.cardinal.sdk.js.model.embed.DelegationJs
 import com.icure.cardinal.sdk.js.model.embed.EmploymentInfoJs
 import com.icure.cardinal.sdk.js.model.embed.EncryptableJs
 import com.icure.cardinal.sdk.js.model.embed.EncryptedAddressJs
+import com.icure.cardinal.sdk.js.model.embed.EncryptedEmploymentInfoJs
 import com.icure.cardinal.sdk.js.model.embed.EncryptedFinancialInstitutionInformationJs
 import com.icure.cardinal.sdk.js.model.embed.EncryptedInsurabilityJs
 import com.icure.cardinal.sdk.js.model.embed.EncryptedMedicalHouseContractJs
 import com.icure.cardinal.sdk.js.model.embed.EncryptedPatientHealthCarePartyJs
+import com.icure.cardinal.sdk.js.model.embed.EncryptedSchoolingInfoJs
 import com.icure.cardinal.sdk.js.model.embed.FinancialInstitutionInformationJs
 import com.icure.cardinal.sdk.js.model.embed.InsurabilityJs
 import com.icure.cardinal.sdk.js.model.embed.MedicalHouseContractJs
@@ -305,9 +309,9 @@ public external class DecryptedPatientJs(
 
 	override val mainSourceOfIncome: CodeStubJs?
 
-	override val schoolingInfos: Array<SchoolingInfoJs>
+	override val schoolingInfos: Array<DecryptedSchoolingInfoJs>
 
-	override val employementInfos: Array<EmploymentInfoJs>
+	override val employementInfos: Array<DecryptedEmploymentInfoJs>
 
 	override val isEncrypted: Boolean
 
@@ -474,9 +478,9 @@ public external class EncryptedPatientJs(
 
 	override val mainSourceOfIncome: CodeStubJs?
 
-	override val schoolingInfos: Array<SchoolingInfoJs>
+	override val schoolingInfos: Array<EncryptedSchoolingInfoJs>
 
-	override val employementInfos: Array<EmploymentInfoJs>
+	override val employementInfos: Array<EncryptedEmploymentInfoJs>
 
 	override val isEncrypted: Boolean
 

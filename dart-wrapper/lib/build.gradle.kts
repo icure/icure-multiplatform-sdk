@@ -17,7 +17,7 @@ val mavenReleasesRepository: String by project
 
 group = "com.icure"
 
-val version = "1.0.0-RC.2"
+val version = "1.0.0-RC.3"
 project.version = version
 
 kotlin {

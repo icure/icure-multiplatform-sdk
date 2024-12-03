@@ -19,6 +19,7 @@ import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.cinterop.asStableRef
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.KSerializer
@@ -30,7 +31,7 @@ import kotlinx.serialization.json.JsonElement
 fun hasNextAsync(
 	iteratorAndSerializerPtr: COpaquePointer,
 	resultCallback: CPointer<CFunction<(result: CValues<ByteVarOf<Byte>>?, error: CValues<ByteVarOf<Byte>>?) -> Unit>>
-) {
+): COpaquePointer? =
 	kotlin.runCatching {
 		val iteratorAndSerializer = iteratorAndSerializerPtr.get()
 		GlobalScope.launch {
@@ -39,7 +40,6 @@ fun hasNextAsync(
 			}.toPyStringAsyncCallback(Boolean.serializer(), resultCallback)
 		}
 	}.failureToPyStringAsyncCallback(resultCallback)
-}
 
 @OptIn(ExperimentalForeignApi::class, InternalIcureApi::class)
 fun hasNextBlocking(
@@ -56,7 +56,7 @@ fun nextAsync(
 	iteratorAndSerializerPtr: COpaquePointer,
 	limit: Int,
 	resultCallback: CPointer<CFunction<(result: CValues<ByteVarOf<Byte>>?, error: CValues<ByteVarOf<Byte>>?) -> Unit>>
-) {
+): COpaquePointer? =
 	kotlin.runCatching {
 		val iteratorAndSerializer = iteratorAndSerializerPtr.get()
 		require(limit > 0) { "Limit must be greater than 0" }
@@ -66,7 +66,6 @@ fun nextAsync(
 			}.toPyJsonAsyncCallback(resultCallback)
 		}
 	}.failureToPyStringAsyncCallback(resultCallback)
-}
 
 @OptIn(ExperimentalForeignApi::class, InternalIcureApi::class)
 fun nextBlocking(

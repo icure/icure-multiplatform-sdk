@@ -10,9 +10,11 @@ import com.icure.cardinal.sdk.js.model.base.StoredDocumentJs
 import com.icure.cardinal.sdk.js.model.embed.AddressJs
 import com.icure.cardinal.sdk.js.model.embed.CalendarItemTagJs
 import com.icure.cardinal.sdk.js.model.embed.DecryptedAddressJs
+import com.icure.cardinal.sdk.js.model.embed.DecryptedCalendarItemTagJs
 import com.icure.cardinal.sdk.js.model.embed.DelegationJs
 import com.icure.cardinal.sdk.js.model.embed.EncryptableJs
 import com.icure.cardinal.sdk.js.model.embed.EncryptedAddressJs
+import com.icure.cardinal.sdk.js.model.embed.EncryptedCalendarItemTagJs
 import com.icure.cardinal.sdk.js.model.embed.FlowItemJs
 import com.icure.cardinal.sdk.js.model.embed.SecurityMetadataJs
 import com.icure.cardinal.sdk.js.utils.Record
@@ -147,7 +149,7 @@ public external class DecryptedCalendarItemJs(
 
 	override val recurrenceId: String?
 
-	override val meetingTags: Array<CalendarItemTagJs>
+	override val meetingTags: Array<DecryptedCalendarItemTagJs>
 
 	override val flowItem: FlowItemJs?
 
@@ -236,7 +238,7 @@ public external class EncryptedCalendarItemJs(
 
 	override val recurrenceId: String?
 
-	override val meetingTags: Array<CalendarItemTagJs>
+	override val meetingTags: Array<EncryptedCalendarItemTagJs>
 
 	override val flowItem: FlowItemJs?
 

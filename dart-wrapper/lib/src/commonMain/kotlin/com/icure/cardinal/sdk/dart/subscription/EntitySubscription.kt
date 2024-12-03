@@ -72,6 +72,7 @@ object EntitySubscription {
 			String?,
 			String?,
 		) -> Unit,
+		cancellationToken: Long,
 		subscriptionId: String,
 		timeoutString: String
 	) {
@@ -79,12 +80,12 @@ object EntitySubscription {
 			Int.serializer(),
 			timeoutString
 		)
-		ApiScope.execute(
+		ApiScope.executeCancellable(
 			dartResultCallback,
+			cancellationToken,
 			JsonElement.serializer().nullable
 		) {
 			NativeReferences.get<EntitySubscriptionWithSerializer<*>>(subscriptionId).waitForEvent(timeout)
 		}
 	}
-
 }
