@@ -2998,6 +2998,8 @@ class ReceiptBasicApi(Structure):
 
 class RecoveryApi(Structure):
 	_fields_ = [
+		("preGenerateRecoveryKeyAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
+		("preGenerateRecoveryKeyBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("purgeAllExchangeDataRecoveryInfoForAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("purgeAllExchangeDataRecoveryInfoForBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("purgeAllKeyPairRecoveryInfoForAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
@@ -3893,7 +3895,7 @@ class EntitySubscription(Structure):
 		("close", CFUNCTYPE(c_void_p, c_void_p)),
 		("getCloseReason", CFUNCTYPE(c_void_p, c_void_p)),
 		("getEvent", CFUNCTYPE(c_void_p, c_void_p)),
-		("waitForEventAsync", CFUNCTYPE(None, c_void_p, c_int32, c_void_p)),
+		("waitForEventAsync", CFUNCTYPE(c_void_p, c_void_p, c_int32, c_void_p)),
 		("waitForEventBlocking", CFUNCTYPE(c_void_p, c_void_p, c_int32)),
 	]
 
@@ -3901,6 +3903,15 @@ class EntitySubscription(Structure):
 class subscription(Structure):
 	_fields_ = [
 		("EntitySubscription", EntitySubscription),
+	]
+
+
+class PaginatedListIterator(Structure):
+	_fields_ = [
+		("hasNextAsync", CFUNCTYPE(c_void_p, c_void_p, c_void_p)),
+		("hasNextBlocking", CFUNCTYPE(c_void_p, c_void_p)),
+		("nextAsync", CFUNCTYPE(c_void_p, c_void_p, c_int32, c_void_p)),
+		("nextBlocking", CFUNCTYPE(c_void_p, c_void_p, c_int32)),
 	]
 
 
@@ -3912,19 +3923,11 @@ class PyResult(Structure):
 	]
 
 
-class PaginatedListIterator(Structure):
-	_fields_ = [
-		("hasNextAsync", CFUNCTYPE(None, c_void_p, c_void_p)),
-		("hasNextBlocking", CFUNCTYPE(c_void_p, c_void_p)),
-		("nextAsync", CFUNCTYPE(None, c_void_p, c_int32, c_void_p)),
-		("nextBlocking", CFUNCTYPE(c_void_p, c_void_p, c_int32)),
-	]
-
-
 class utils(Structure):
 	_fields_ = [
-		("PyResult", PyResult),
 		("PaginatedListIterator", PaginatedListIterator),
+		("PyResult", PyResult),
+		("cancelJob", CFUNCTYPE(None, c_void_p)),
 		("setCallbackFailure", CFUNCTYPE(None, c_void_p, c_char_p)),
 		("setCallbackResult", CFUNCTYPE(None, c_void_p, c_char_p)),
 		("disposeStablePtr", CFUNCTYPE(None, c_void_p)),

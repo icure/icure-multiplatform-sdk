@@ -29,6 +29,7 @@ import kotlin.collections.Map
 import kotlin.collections.Set
 import kotlinx.cinterop.ByteVarOf
 import kotlinx.cinterop.CFunction
+import kotlinx.cinterop.COpaquePointer
 import kotlinx.cinterop.CPointer
 import kotlinx.cinterop.CValues
 import kotlinx.cinterop.ExperimentalForeignApi
@@ -65,7 +66,7 @@ public fun createReceiptAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<CreateReceiptParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
@@ -110,7 +111,7 @@ public fun withEncryptionMetadataAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<WithEncryptionMetadataParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
@@ -153,7 +154,7 @@ public fun getAndDecryptReceiptAttachmentAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams =
 			fullLanguageInteropJson.decodeFromString<GetAndDecryptReceiptAttachmentParams>(params)
 	GlobalScope.launch {
@@ -198,7 +199,7 @@ public fun encryptAndSetReceiptAttachmentAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams =
 			fullLanguageInteropJson.decodeFromString<EncryptAndSetReceiptAttachmentParams>(params)
 	GlobalScope.launch {
@@ -237,7 +238,7 @@ public fun getEncryptionKeysOfAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<GetEncryptionKeysOfParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
@@ -272,7 +273,7 @@ public fun hasWriteAccessAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<HasWriteAccessParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
@@ -308,7 +309,7 @@ public fun decryptPatientIdOfAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<DecryptPatientIdOfParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
@@ -347,7 +348,7 @@ public fun createDelegationDeAnonymizationMetadataAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams =
 			fullLanguageInteropJson.decodeFromString<CreateDelegationDeAnonymizationMetadataParams>(params)
 	GlobalScope.launch {
@@ -394,7 +395,7 @@ public fun logReceiptAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<LogReceiptParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
@@ -433,7 +434,7 @@ public fun decryptAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<DecryptParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
@@ -468,7 +469,7 @@ public fun tryDecryptAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<TryDecryptParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
@@ -503,7 +504,7 @@ public fun deleteReceiptAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<DeleteReceiptParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
@@ -538,7 +539,7 @@ public fun deleteReceiptsAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<DeleteReceiptsParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
@@ -576,7 +577,7 @@ public fun getRawReceiptAttachmentAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<GetRawReceiptAttachmentParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
@@ -621,7 +622,7 @@ public fun setRawReceiptAttachmentAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<SetRawReceiptAttachmentParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
@@ -663,7 +664,7 @@ public fun shareWithAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<ShareWithParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
@@ -702,7 +703,7 @@ public fun shareWithManyAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<ShareWithManyParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
@@ -738,7 +739,7 @@ public fun modifyReceiptAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<ModifyReceiptParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
@@ -773,7 +774,7 @@ public fun getReceiptAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<GetReceiptParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
@@ -808,7 +809,7 @@ public fun listByReferenceAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<ListByReferenceParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {

@@ -1,5 +1,6 @@
 // auto-generated file
 import 'package:cardinal_sdk/model/base/code_stub.dart';
+import 'package:cardinal_sdk/model/specializations/base64string.dart';
 import 'package:cardinal_sdk/model/embed/schooling_info.dart';
 import 'package:cardinal_sdk/model/embed/encryptable.dart';
 
@@ -9,7 +10,7 @@ sealed class SchoolingInfo implements Encryptable {
 	abstract int? endDate;
 	abstract String? school;
 	abstract CodeStub? typeOfEducation;
-	@override abstract String? encryptedSelf;
+	@override abstract Base64String? encryptedSelf;
 
 	static Map<String, dynamic> encode(SchoolingInfo value) {
 		switch (value) {
@@ -45,7 +46,7 @@ class EncryptedSchoolingInfo implements SchoolingInfo {
 	@override int? endDate = null;
 	@override String? school = null;
 	@override CodeStub? typeOfEducation = null;
-	@override String? encryptedSelf;
+	@override Base64String? encryptedSelf;
 	EncryptedSchoolingInfo({
 			this.encryptedSelf,
 			int? startDate,
@@ -63,7 +64,7 @@ class EncryptedSchoolingInfo implements SchoolingInfo {
 			endDate: (data["endDate"] as int?),
 			school: (data["school"] as String?),
 			typeOfEducation: data["typeOfEducation"] == null ? null : CodeStub.fromJSON(data["typeOfEducation"]),
-			encryptedSelf: (data["encryptedSelf"] as String?)
+			encryptedSelf: (data["encryptedSelf"] as Base64String?)
 		);
 	}
 
@@ -84,7 +85,7 @@ class DecryptedSchoolingInfo implements SchoolingInfo {
 	@override int? endDate = null;
 	@override String? school = null;
 	@override CodeStub? typeOfEducation = null;
-	@override String? encryptedSelf;
+	@override Base64String? encryptedSelf;
 	DecryptedSchoolingInfo({
 			this.encryptedSelf,
 			int? startDate,
@@ -102,7 +103,7 @@ class DecryptedSchoolingInfo implements SchoolingInfo {
 			endDate: (data["endDate"] as int?),
 			school: (data["school"] as String?),
 			typeOfEducation: data["typeOfEducation"] == null ? null : CodeStub.fromJSON(data["typeOfEducation"]),
-			encryptedSelf: (data["encryptedSelf"] as String?)
+			encryptedSelf: (data["encryptedSelf"] as Base64String?)
 		);
 	}
 

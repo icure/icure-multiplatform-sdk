@@ -20,6 +20,7 @@ import com.icure.cardinal.sdk.subscription.EntitySubscriptionConfiguration
 import com.icure.cardinal.sdk.subscription.SubscriptionEventType
 import com.icure.cardinal.sdk.utils.Serialization.fullLanguageInteropJson
 import com.icure.utils.InternalIcureApi
+import kotlin.Int
 import kotlin.Long
 import kotlin.OptIn
 import kotlin.String
@@ -1233,6 +1234,31 @@ public object UserApi {
       User.serializer()) {
       NativeReferences.get<CardinalSdk>(sdkId).user.undeleteUser(
         user,
+      )
+    }
+  }
+
+  public fun example(
+    dartResultCallback: (
+      String?,
+      String?,
+      String?,
+      String?,
+    ) -> Unit,
+    cancellationToken: Long,
+    sdkId: String,
+    timeoutSecondsString: String,
+  ) {
+    val timeoutSeconds = fullLanguageInteropJson.decodeFromString(
+      Int.serializer(),
+      timeoutSecondsString
+    )
+    ApiScope.executeCancellable(
+      dartResultCallback,
+      cancellationToken,
+      User.serializer()) {
+      NativeReferences.get<CardinalSdk>(sdkId).user.example(
+        timeoutSeconds,
       )
     }
   }

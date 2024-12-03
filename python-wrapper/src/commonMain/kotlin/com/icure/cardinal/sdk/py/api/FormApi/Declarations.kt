@@ -76,7 +76,7 @@ public fun createFormAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<CreateFormParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
@@ -111,7 +111,7 @@ public fun createFormsAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<CreateFormsParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
@@ -156,7 +156,7 @@ public fun withEncryptionMetadataAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<WithEncryptionMetadataParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
@@ -196,7 +196,7 @@ public fun getEncryptionKeysOfAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<GetEncryptionKeysOfParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
@@ -231,7 +231,7 @@ public fun hasWriteAccessAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<HasWriteAccessParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
@@ -267,7 +267,7 @@ public fun decryptPatientIdOfAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<DecryptPatientIdOfParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
@@ -306,7 +306,7 @@ public fun createDelegationDeAnonymizationMetadataAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams =
 			fullLanguageInteropJson.decodeFromString<CreateDelegationDeAnonymizationMetadataParams>(params)
 	GlobalScope.launch {
@@ -343,7 +343,7 @@ public fun decryptAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<DecryptParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
@@ -378,7 +378,7 @@ public fun tryDecryptAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<TryDecryptParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
@@ -413,7 +413,7 @@ public fun matchFormsByAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<MatchFormsByParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
@@ -449,7 +449,7 @@ public fun matchFormsBySortedAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<MatchFormsBySortedParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
@@ -485,7 +485,7 @@ public fun deleteFormUnsafeAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<DeleteFormUnsafeParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
@@ -521,7 +521,7 @@ public fun deleteFormsUnsafeAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<DeleteFormsUnsafeParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
@@ -558,7 +558,7 @@ public fun deleteFormByIdAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<DeleteFormByIdParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
@@ -595,7 +595,7 @@ public fun deleteFormsByIdsAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<DeleteFormsByIdsParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
@@ -632,7 +632,7 @@ public fun purgeFormByIdAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<PurgeFormByIdParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
@@ -668,7 +668,7 @@ public fun deleteFormAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<DeleteFormParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
@@ -703,7 +703,7 @@ public fun deleteFormsAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<DeleteFormsParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
@@ -738,7 +738,7 @@ public fun purgeFormAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<PurgeFormParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
@@ -775,7 +775,7 @@ public fun getFormTemplateAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<GetFormTemplateParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
@@ -816,7 +816,7 @@ public fun getFormTemplatesByGuidAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<GetFormTemplatesByGuidParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
@@ -857,7 +857,7 @@ public fun listFormTemplatesBySpecialityAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams =
 			fullLanguageInteropJson.decodeFromString<ListFormTemplatesBySpecialityParams>(params)
 	GlobalScope.launch {
@@ -897,7 +897,7 @@ public fun getFormTemplatesAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<GetFormTemplatesParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
@@ -934,7 +934,7 @@ public fun createFormTemplateAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<CreateFormTemplateParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
@@ -970,7 +970,7 @@ public fun deleteFormTemplateAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<DeleteFormTemplateParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
@@ -1006,7 +1006,7 @@ public fun updateFormTemplateAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<UpdateFormTemplateParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
@@ -1046,7 +1046,7 @@ public fun setTemplateAttachmentAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<SetTemplateAttachmentParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
@@ -1086,7 +1086,7 @@ public fun shareWithAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<ShareWithParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
@@ -1125,7 +1125,7 @@ public fun shareWithManyAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<ShareWithManyParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
@@ -1171,7 +1171,7 @@ public fun findFormsByHcPartyPatientAsync(
 	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(COpaquePointer?, CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams =
 			fullLanguageInteropJson.decodeFromString<FindFormsByHcPartyPatientParams>(params)
 	GlobalScope.launch {
@@ -1212,7 +1212,7 @@ public fun filterFormsByAsync(
 	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(COpaquePointer?, CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<FilterFormsByParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
@@ -1249,7 +1249,7 @@ public fun filterFormsBySortedAsync(
 	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(COpaquePointer?, CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<FilterFormsBySortedParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
@@ -1285,7 +1285,7 @@ public fun modifyFormAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<ModifyFormParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
@@ -1323,7 +1323,7 @@ public fun undeleteFormByIdAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<UndeleteFormByIdParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
@@ -1359,7 +1359,7 @@ public fun undeleteFormAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<UndeleteFormParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
@@ -1394,7 +1394,7 @@ public fun modifyFormsAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<ModifyFormsParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
@@ -1429,7 +1429,7 @@ public fun getFormAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<GetFormParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
@@ -1464,7 +1464,7 @@ public fun getFormsAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<GetFormsParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
@@ -1501,7 +1501,7 @@ public fun getLatestFormByLogicalUuidAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams =
 			fullLanguageInteropJson.decodeFromString<GetLatestFormByLogicalUuidParams>(params)
 	GlobalScope.launch {
@@ -1538,7 +1538,7 @@ public fun getLatestFormByUniqueIdAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<GetLatestFormByUniqueIdParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
@@ -1574,7 +1574,7 @@ public fun getFormsByLogicalUuidAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<GetFormsByLogicalUuidParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
@@ -1610,7 +1610,7 @@ public fun getFormsByUniqueIdAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<GetFormsByUniqueIdParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
@@ -1648,7 +1648,7 @@ public fun getChildrenFormsAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<GetChildrenFormsParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {

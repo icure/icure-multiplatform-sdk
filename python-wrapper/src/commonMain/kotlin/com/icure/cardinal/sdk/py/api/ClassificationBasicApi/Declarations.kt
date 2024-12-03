@@ -60,7 +60,7 @@ public fun matchClassificationsByAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<MatchClassificationsByParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
@@ -97,7 +97,7 @@ public fun matchClassificationsBySortedAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams =
 			fullLanguageInteropJson.decodeFromString<MatchClassificationsBySortedParams>(params)
 	GlobalScope.launch {
@@ -134,7 +134,7 @@ public fun filterClassificationsByAsync(
 	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(COpaquePointer?, CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<FilterClassificationsByParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
@@ -172,7 +172,7 @@ public fun filterClassificationsBySortedAsync(
 	sdk: CardinalBaseApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(COpaquePointer?, CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams =
 			fullLanguageInteropJson.decodeFromString<FilterClassificationsBySortedParams>(params)
 	GlobalScope.launch {
@@ -210,7 +210,7 @@ public fun deleteClassificationAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<DeleteClassificationParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
@@ -246,7 +246,7 @@ public fun deleteClassificationsAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<DeleteClassificationsParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
@@ -282,7 +282,7 @@ public fun modifyClassificationAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<ModifyClassificationParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
@@ -318,7 +318,7 @@ public fun getClassificationAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<GetClassificationParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
@@ -354,7 +354,7 @@ public fun getClassificationsAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<GetClassificationsParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {

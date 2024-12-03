@@ -18,6 +18,7 @@ import kotlin.Unit
 import kotlin.collections.List
 import kotlinx.cinterop.ByteVarOf
 import kotlinx.cinterop.CFunction
+import kotlinx.cinterop.COpaquePointer
 import kotlinx.cinterop.CPointer
 import kotlinx.cinterop.CValues
 import kotlinx.cinterop.ExperimentalForeignApi
@@ -52,7 +53,7 @@ public fun getKeywordAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<GetKeywordParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
@@ -88,7 +89,7 @@ public fun createKeywordAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<CreateKeywordParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
@@ -126,7 +127,7 @@ public fun getKeywordsAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<GetKeywordsParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
@@ -163,7 +164,7 @@ public fun modifyKeywordAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<ModifyKeywordParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
@@ -199,7 +200,7 @@ public fun getKeywordsByUserAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<GetKeywordsByUserParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
@@ -235,7 +236,7 @@ public fun deleteKeywordsAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<DeleteKeywordsParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {

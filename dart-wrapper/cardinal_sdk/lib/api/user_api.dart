@@ -9,6 +9,8 @@ import 'package:cardinal_sdk/model/list_of_ids.dart';
 import 'package:cardinal_sdk/model/security/token_with_group.dart';
 import 'package:cardinal_sdk/model/security/enable2fa_request.dart';
 import 'package:cardinal_sdk/model/couchdb/doc_identifier.dart';
+import 'package:cardinal_sdk/utils/internal/cancellation_token_provider.dart';
+import 'package:cardinal_sdk/utils/cancellable_future.dart';
 import 'package:cardinal_sdk/subscription/subscription_event_type.dart';
 import 'package:cardinal_sdk/subscription/entity_subscription_configuration.dart';
 import 'package:cardinal_sdk/subscription/entity_subscription.dart';
@@ -354,6 +356,18 @@ class UserApi {
 		return await CardinalSdkPlatformInterface.instance.apis.user.undeleteUser(
 			_sdkId,
 			user,
+		);
+	}
+
+	CancellableFuture<User> example(int timeoutSeconds) {
+		final cancellationToken = CancellationTokenProvider.getNextToken();
+		return CancellableFuture.internalConstructor(
+			CardinalSdkPlatformInterface.instance.apis.user.example(
+				cancellationToken,
+				_sdkId,
+				timeoutSeconds,
+				),
+			cancellationToken
 		);
 	}
 

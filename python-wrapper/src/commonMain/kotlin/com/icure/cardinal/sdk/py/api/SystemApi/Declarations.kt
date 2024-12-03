@@ -19,6 +19,7 @@ import kotlin.String
 import kotlin.Unit
 import kotlinx.cinterop.ByteVarOf
 import kotlinx.cinterop.CFunction
+import kotlinx.cinterop.COpaquePointer
 import kotlinx.cinterop.CPointer
 import kotlinx.cinterop.CValues
 import kotlinx.cinterop.ExperimentalForeignApi
@@ -38,7 +39,7 @@ public fun getVersionBlocking(sdk: CardinalNonCryptoApis): String = kotlin.runCa
 @OptIn(ExperimentalForeignApi::class)
 public fun getVersionAsync(sdk: CardinalNonCryptoApis,
 		resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
-		CValues<ByteVarOf<Byte>>?) -> Unit>>): Unit = kotlin.runCatching {
+		CValues<ByteVarOf<Byte>>?) -> Unit>>): COpaquePointer? = kotlin.runCatching {
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.system.getVersion()
@@ -55,7 +56,7 @@ public fun isReadyBlocking(sdk: CardinalNonCryptoApis): String = kotlin.runCatch
 @OptIn(ExperimentalForeignApi::class)
 public fun isReadyAsync(sdk: CardinalNonCryptoApis,
 		resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
-		CValues<ByteVarOf<Byte>>?) -> Unit>>): Unit = kotlin.runCatching {
+		CValues<ByteVarOf<Byte>>?) -> Unit>>): COpaquePointer? = kotlin.runCatching {
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.system.isReady()
@@ -72,7 +73,7 @@ public fun getProcessInfoBlocking(sdk: CardinalNonCryptoApis): String = kotlin.r
 @OptIn(ExperimentalForeignApi::class)
 public fun getProcessInfoAsync(sdk: CardinalNonCryptoApis,
 		resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
-		CValues<ByteVarOf<Byte>>?) -> Unit>>): Unit = kotlin.runCatching {
+		CValues<ByteVarOf<Byte>>?) -> Unit>>): COpaquePointer? = kotlin.runCatching {
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.system.getProcessInfo()
@@ -89,7 +90,7 @@ public fun getIndexingInfoBlocking(sdk: CardinalNonCryptoApis): String = kotlin.
 @OptIn(ExperimentalForeignApi::class)
 public fun getIndexingInfoAsync(sdk: CardinalNonCryptoApis,
 		resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
-		CValues<ByteVarOf<Byte>>?) -> Unit>>): Unit = kotlin.runCatching {
+		CValues<ByteVarOf<Byte>>?) -> Unit>>): COpaquePointer? = kotlin.runCatching {
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.system.getIndexingInfo()
@@ -106,7 +107,7 @@ public fun getReplicationInfoBlocking(sdk: CardinalNonCryptoApis): String = kotl
 @OptIn(ExperimentalForeignApi::class)
 public fun getReplicationInfoAsync(sdk: CardinalNonCryptoApis,
 		resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
-		CValues<ByteVarOf<Byte>>?) -> Unit>>): Unit = kotlin.runCatching {
+		CValues<ByteVarOf<Byte>>?) -> Unit>>): COpaquePointer? = kotlin.runCatching {
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.system.getReplicationInfo()
@@ -141,7 +142,7 @@ public fun updateDesignDocAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<UpdateDesignDocParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
@@ -179,7 +180,7 @@ public fun resolvePatientsConflictsAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams =
 			fullLanguageInteropJson.decodeFromString<ResolvePatientsConflictsParams>(params)
 	GlobalScope.launch {
@@ -217,7 +218,7 @@ public fun resolveContactsConflictsAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams =
 			fullLanguageInteropJson.decodeFromString<ResolveContactsConflictsParams>(params)
 	GlobalScope.launch {
@@ -254,7 +255,7 @@ public fun resolveFormsConflictsAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<ResolveFormsConflictsParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
@@ -291,7 +292,7 @@ public fun resolveHealthElementsConflictsAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams =
 			fullLanguageInteropJson.decodeFromString<ResolveHealthElementsConflictsParams>(params)
 	GlobalScope.launch {
@@ -329,7 +330,7 @@ public fun resolveInvoicesConflictsAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams =
 			fullLanguageInteropJson.decodeFromString<ResolveInvoicesConflictsParams>(params)
 	GlobalScope.launch {
@@ -367,7 +368,7 @@ public fun resolveMessagesConflictsAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams =
 			fullLanguageInteropJson.decodeFromString<ResolveMessagesConflictsParams>(params)
 	GlobalScope.launch {
@@ -407,7 +408,7 @@ public fun resolveDocumentsConflictsAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams =
 			fullLanguageInteropJson.decodeFromString<ResolveDocumentsConflictsParams>(params)
 	GlobalScope.launch {
@@ -445,7 +446,7 @@ public fun getIndexingInfoByGroupAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<GetIndexingInfoByGroupParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
@@ -481,7 +482,7 @@ public fun getReplicatorInfoAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<GetReplicatorInfoParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
@@ -517,7 +518,7 @@ public fun evictAllFromMapAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<EvictAllFromMapParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {

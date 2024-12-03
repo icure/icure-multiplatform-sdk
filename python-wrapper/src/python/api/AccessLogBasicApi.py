@@ -1,9 +1,9 @@
 # auto-generated file
-import asyncio
 import json
 from cardinal_sdk.filters.FilterOptions import BaseFilterOptions, BaseSortableFilterOptions
 from cardinal_sdk.model import AccessLog, EncryptedAccessLog, DocIdentifier, IdWithMandatoryRev, serialize_access_log
-from cardinal_sdk.kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols, PTR_RESULT_CALLBACK_FUNC
+from cardinal_sdk.async_utils import execute_async_method_job
+from cardinal_sdk.kotlin_types import symbols
 from typing import List
 from cardinal_sdk.model.CallResult import create_result_from_json, interpret_kt_error
 from ctypes import cast, c_char_p
@@ -16,27 +16,19 @@ class AccessLogBasicApi:
 		self.cardinal_sdk = cardinal_sdk
 
 	async def match_access_logs_by_async(self, filter: BaseFilterOptions[AccessLog]) -> List[str]:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = [x1 for x1 in json.loads(success.decode('utf-8'))]
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return [x1 for x1 in raw_result]
 		payload = {
 			"filter": filter.__serialize__(),
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.AccessLogBasicApi.matchAccessLogsByAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def match_access_logs_by_blocking(self, filter: BaseFilterOptions[AccessLog]) -> List[str]:
 		payload = {
@@ -55,27 +47,19 @@ class AccessLogBasicApi:
 			return return_value
 
 	async def match_access_logs_by_sorted_async(self, filter: BaseSortableFilterOptions[AccessLog]) -> List[str]:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = [x1 for x1 in json.loads(success.decode('utf-8'))]
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return [x1 for x1 in raw_result]
 		payload = {
 			"filter": filter.__serialize__(),
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.AccessLogBasicApi.matchAccessLogsBySortedAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def match_access_logs_by_sorted_blocking(self, filter: BaseSortableFilterOptions[AccessLog]) -> List[str]:
 		payload = {
@@ -94,31 +78,23 @@ class AccessLogBasicApi:
 			return return_value
 
 	async def filter_access_logs_by_async(self, filter: BaseFilterOptions[AccessLog]) -> PaginatedListIterator[EncryptedAccessLog]:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = PaginatedListIterator[EncryptedAccessLog](
-					producer = success,
-					deserializer = lambda x: EncryptedAccessLog._deserialize(x),
-					executor = self.cardinal_sdk._executor
-				)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return PaginatedListIterator[EncryptedAccessLog](
+				producer = raw_result,
+				deserializer = lambda x: EncryptedAccessLog._deserialize(x),
+				executor = self.cardinal_sdk._executor
+			)
 		payload = {
 			"filter": filter.__serialize__(),
 		}
-		callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			False,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.AccessLogBasicApi.filterAccessLogsByAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def filter_access_logs_by_blocking(self, filter: BaseFilterOptions[AccessLog]) -> PaginatedListIterator[EncryptedAccessLog]:
 		payload = {
@@ -144,31 +120,23 @@ class AccessLogBasicApi:
 			)
 
 	async def filter_access_logs_by_sorted_async(self, filter: BaseSortableFilterOptions[AccessLog]) -> PaginatedListIterator[EncryptedAccessLog]:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = PaginatedListIterator[EncryptedAccessLog](
-					producer = success,
-					deserializer = lambda x: EncryptedAccessLog._deserialize(x),
-					executor = self.cardinal_sdk._executor
-				)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return PaginatedListIterator[EncryptedAccessLog](
+				producer = raw_result,
+				deserializer = lambda x: EncryptedAccessLog._deserialize(x),
+				executor = self.cardinal_sdk._executor
+			)
 		payload = {
 			"filter": filter.__serialize__(),
 		}
-		callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			False,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.AccessLogBasicApi.filterAccessLogsBySortedAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def filter_access_logs_by_sorted_blocking(self, filter: BaseSortableFilterOptions[AccessLog]) -> PaginatedListIterator[EncryptedAccessLog]:
 		payload = {
@@ -194,28 +162,20 @@ class AccessLogBasicApi:
 			)
 
 	async def delete_access_log_by_id_async(self, entity_id: str, rev: str) -> DocIdentifier:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = DocIdentifier._deserialize(json.loads(success.decode('utf-8')))
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return DocIdentifier._deserialize(raw_result)
 		payload = {
 			"entityId": entity_id,
 			"rev": rev,
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.AccessLogBasicApi.deleteAccessLogByIdAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def delete_access_log_by_id_blocking(self, entity_id: str, rev: str) -> DocIdentifier:
 		payload = {
@@ -235,27 +195,19 @@ class AccessLogBasicApi:
 			return return_value
 
 	async def delete_access_logs_by_ids_async(self, entity_ids: List[IdWithMandatoryRev]) -> List[DocIdentifier]:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = [DocIdentifier._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return [DocIdentifier._deserialize(x1) for x1 in raw_result]
 		payload = {
 			"entityIds": [x0.__serialize__() for x0 in entity_ids],
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.AccessLogBasicApi.deleteAccessLogsByIdsAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def delete_access_logs_by_ids_blocking(self, entity_ids: List[IdWithMandatoryRev]) -> List[DocIdentifier]:
 		payload = {
@@ -274,28 +226,20 @@ class AccessLogBasicApi:
 			return return_value
 
 	async def purge_access_log_by_id_async(self, id: str, rev: str) -> None:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = json.loads(success.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return raw_result
 		payload = {
 			"id": id,
 			"rev": rev,
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.AccessLogBasicApi.purgeAccessLogByIdAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def purge_access_log_by_id_blocking(self, id: str, rev: str) -> None:
 		payload = {
@@ -312,27 +256,19 @@ class AccessLogBasicApi:
 			raise interpret_kt_error(result_info.failure)
 
 	async def delete_access_log_async(self, access_log: AccessLog) -> DocIdentifier:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = DocIdentifier._deserialize(json.loads(success.decode('utf-8')))
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return DocIdentifier._deserialize(raw_result)
 		payload = {
 			"accessLog": serialize_access_log(access_log),
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.AccessLogBasicApi.deleteAccessLogAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def delete_access_log_blocking(self, access_log: AccessLog) -> DocIdentifier:
 		payload = {
@@ -351,27 +287,19 @@ class AccessLogBasicApi:
 			return return_value
 
 	async def delete_access_logs_async(self, access_logs: List[AccessLog]) -> List[DocIdentifier]:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = [DocIdentifier._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return [DocIdentifier._deserialize(x1) for x1 in raw_result]
 		payload = {
 			"accessLogs": [serialize_access_log(x0) for x0 in access_logs],
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.AccessLogBasicApi.deleteAccessLogsAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def delete_access_logs_blocking(self, access_logs: List[AccessLog]) -> List[DocIdentifier]:
 		payload = {
@@ -390,27 +318,19 @@ class AccessLogBasicApi:
 			return return_value
 
 	async def purge_access_log_async(self, access_log: AccessLog) -> None:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = json.loads(success.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return raw_result
 		payload = {
 			"accessLog": serialize_access_log(access_log),
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.AccessLogBasicApi.purgeAccessLogAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def purge_access_log_blocking(self, access_log: AccessLog) -> None:
 		payload = {
@@ -426,28 +346,20 @@ class AccessLogBasicApi:
 			raise interpret_kt_error(result_info.failure)
 
 	async def undelete_access_log_by_id_async(self, id: str, rev: str) -> EncryptedAccessLog:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = EncryptedAccessLog._deserialize(json.loads(success.decode('utf-8')))
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return EncryptedAccessLog._deserialize(raw_result)
 		payload = {
 			"id": id,
 			"rev": rev,
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.AccessLogBasicApi.undeleteAccessLogByIdAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def undelete_access_log_by_id_blocking(self, id: str, rev: str) -> EncryptedAccessLog:
 		payload = {
@@ -467,27 +379,19 @@ class AccessLogBasicApi:
 			return return_value
 
 	async def undelete_access_log_async(self, access_log: AccessLog) -> EncryptedAccessLog:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = EncryptedAccessLog._deserialize(json.loads(success.decode('utf-8')))
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return EncryptedAccessLog._deserialize(raw_result)
 		payload = {
 			"accessLog": serialize_access_log(access_log),
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.AccessLogBasicApi.undeleteAccessLogAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def undelete_access_log_blocking(self, access_log: AccessLog) -> EncryptedAccessLog:
 		payload = {
@@ -506,27 +410,19 @@ class AccessLogBasicApi:
 			return return_value
 
 	async def modify_access_log_async(self, entity: EncryptedAccessLog) -> EncryptedAccessLog:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = EncryptedAccessLog._deserialize(json.loads(success.decode('utf-8')))
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return EncryptedAccessLog._deserialize(raw_result)
 		payload = {
 			"entity": entity.__serialize__(),
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.AccessLogBasicApi.modifyAccessLogAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def modify_access_log_blocking(self, entity: EncryptedAccessLog) -> EncryptedAccessLog:
 		payload = {
@@ -545,27 +441,19 @@ class AccessLogBasicApi:
 			return return_value
 
 	async def get_access_log_async(self, entity_id: str) -> EncryptedAccessLog:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = EncryptedAccessLog._deserialize(json.loads(success.decode('utf-8')))
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return EncryptedAccessLog._deserialize(raw_result)
 		payload = {
 			"entityId": entity_id,
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.AccessLogBasicApi.getAccessLogAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def get_access_log_blocking(self, entity_id: str) -> EncryptedAccessLog:
 		payload = {
@@ -584,27 +472,19 @@ class AccessLogBasicApi:
 			return return_value
 
 	async def get_access_logs_async(self, entity_ids: List[str]) -> List[EncryptedAccessLog]:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = [EncryptedAccessLog._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return [EncryptedAccessLog._deserialize(x1) for x1 in raw_result]
 		payload = {
 			"entityIds": [x0 for x0 in entity_ids],
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.AccessLogBasicApi.getAccessLogsAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def get_access_logs_blocking(self, entity_ids: List[str]) -> List[EncryptedAccessLog]:
 		payload = {

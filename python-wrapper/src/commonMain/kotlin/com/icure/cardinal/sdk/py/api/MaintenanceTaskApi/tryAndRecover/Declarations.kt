@@ -63,7 +63,7 @@ public fun shareWithAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<ShareWithParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
@@ -102,7 +102,7 @@ public fun shareWithManyAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<ShareWithManyParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
@@ -140,7 +140,7 @@ public fun filterMaintenanceTasksByAsync(
 	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(COpaquePointer?, CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams =
 			fullLanguageInteropJson.decodeFromString<FilterMaintenanceTasksByParams>(params)
 	GlobalScope.launch {
@@ -179,7 +179,7 @@ public fun filterMaintenanceTasksBySortedAsync(
 	sdk: CardinalApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(COpaquePointer?, CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams =
 			fullLanguageInteropJson.decodeFromString<FilterMaintenanceTasksBySortedParams>(params)
 	GlobalScope.launch {
@@ -217,7 +217,7 @@ public fun undeleteMaintenanceTaskAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<UndeleteMaintenanceTaskParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
@@ -256,7 +256,7 @@ public fun undeleteMaintenanceTaskByIdAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams =
 			fullLanguageInteropJson.decodeFromString<UndeleteMaintenanceTaskByIdParams>(params)
 	GlobalScope.launch {
@@ -294,7 +294,7 @@ public fun modifyMaintenanceTaskAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<ModifyMaintenanceTaskParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
@@ -330,7 +330,7 @@ public fun getMaintenanceTaskAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<GetMaintenanceTaskParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
@@ -366,7 +366,7 @@ public fun getMaintenanceTasksAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<GetMaintenanceTasksParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {

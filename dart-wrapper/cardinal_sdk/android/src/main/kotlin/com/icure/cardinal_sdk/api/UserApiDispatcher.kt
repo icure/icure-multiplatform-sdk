@@ -62,6 +62,7 @@ public object UserApiDispatcher {
     "deleteUserInGroup" -> deleteUserInGroup(parameters, resultCallback)
     "purgeUser" -> purgeUser(parameters, resultCallback)
     "undeleteUser" -> undeleteUser(parameters, resultCallback)
+    "example" -> example(parameters, resultCallback)
     "subscribeToEvents" -> subscribeToEvents(parameters, resultCallback)
     else -> null
   }?.let { true } ?: false
@@ -666,6 +667,20 @@ public object UserApiDispatcher {
       resultCallback,
       parameters.getValue("sdkId"),
       parameters.getValue("user"),
+    )
+  }
+
+  private fun example(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    UserApi.example(
+      resultCallback,
+      parameters.getValue("cancellationToken").toLong(),
+      parameters.getValue("sdkId"),
+      parameters.getValue("timeoutSeconds"),
     )
   }
 

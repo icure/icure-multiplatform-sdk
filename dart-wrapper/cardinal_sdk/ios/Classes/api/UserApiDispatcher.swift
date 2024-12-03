@@ -58,6 +58,7 @@ class UserApiDispatcher {
     case "deleteUserInGroup": deleteUserInGroup(parameters: parameters, resultCallback: resultCallback)
     case "purgeUser": purgeUser(parameters: parameters, resultCallback: resultCallback)
     case "undeleteUser": undeleteUser(parameters: parameters, resultCallback: resultCallback)
+    case "example": example(parameters: parameters, resultCallback: resultCallback)
     case "subscribeToEvents": subscribeToEvents(parameters: parameters, resultCallback: resultCallback)
     default: return false
     }
@@ -664,6 +665,20 @@ class UserApiDispatcher {
     	dartResultCallback: resultCallback,
     	sdkId: parameters["sdkId"]!,
     	userString: parameters["user"]!
+    )
+  }
+
+  private static func example(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    UserApi.shared.example(
+    	dartResultCallback: resultCallback,
+    	cancellationToken: Int64(parameters["cancellationToken"]!)!,
+    	sdkId: parameters["sdkId"]!,
+    	timeoutSecondsString: parameters["timeoutSeconds"]!
     )
   }
 

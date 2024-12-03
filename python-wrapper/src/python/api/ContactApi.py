@@ -1,9 +1,9 @@
 # auto-generated file
-import asyncio
 import json
 from cardinal_sdk.filters.FilterOptions import FilterOptions, SortableFilterOptions
 from cardinal_sdk.model import Contact, Service, DecryptedContact, Patient, User, AccessLevel, SecretIdUseOption, SecretIdUseOptionUseAnySharedWithParent, serialize_patient, serialize_secret_id_use_option, serialize_contact, EncryptedContact, deserialize_contact, EncryptedService, DecryptedService, deserialize_service, EntitySubscriptionConfiguration, DocIdentifier, IdWithMandatoryRev, LabelledOccurence, ContactShareOptions, SubscriptionEventType
-from cardinal_sdk.kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols, PTR_RESULT_CALLBACK_FUNC
+from cardinal_sdk.async_utils import execute_async_method_job
+from cardinal_sdk.kotlin_types import symbols
 from typing import List, Optional, Dict
 from cardinal_sdk.model.CallResult import create_result_from_json, interpret_kt_error
 from ctypes import cast, c_char_p
@@ -20,29 +20,21 @@ class ContactApi:
 			self.cardinal_sdk = cardinal_sdk
 
 		async def share_with_async(self, delegate_id: str, contact: EncryptedContact, options: Optional[ContactShareOptions] = None) -> EncryptedContact:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = EncryptedContact._deserialize(json.loads(success.decode('utf-8')))
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
+			def do_decode(raw_result):
+				return EncryptedContact._deserialize(raw_result)
 			payload = {
 				"delegateId": delegate_id,
 				"contact": contact.__serialize__(),
 				"options": options.__serialize__() if options is not None else None,
 			}
-			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
+			return await execute_async_method_job(
 				self.cardinal_sdk._executor,
+				True,
+				do_decode,
 				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ContactApi.encrypted.shareWithAsync,
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
-				callback
 			)
-			return await future
 
 		def share_with_blocking(self, delegate_id: str, contact: EncryptedContact, options: Optional[ContactShareOptions] = None) -> EncryptedContact:
 			payload = {
@@ -63,28 +55,20 @@ class ContactApi:
 				return return_value
 
 		async def share_with_many_async(self, contact: EncryptedContact, delegates: Dict[str, ContactShareOptions]) -> EncryptedContact:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = EncryptedContact._deserialize(json.loads(success.decode('utf-8')))
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
+			def do_decode(raw_result):
+				return EncryptedContact._deserialize(raw_result)
 			payload = {
 				"contact": contact.__serialize__(),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 			}
-			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
+			return await execute_async_method_job(
 				self.cardinal_sdk._executor,
+				True,
+				do_decode,
 				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ContactApi.encrypted.shareWithManyAsync,
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
-				callback
 			)
-			return await future
 
 		def share_with_many_blocking(self, contact: EncryptedContact, delegates: Dict[str, ContactShareOptions]) -> EncryptedContact:
 			payload = {
@@ -104,31 +88,23 @@ class ContactApi:
 				return return_value
 
 		async def filter_contacts_by_async(self, filter: FilterOptions[Contact]) -> PaginatedListIterator[EncryptedContact]:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = PaginatedListIterator[EncryptedContact](
-						producer = success,
-						deserializer = lambda x: EncryptedContact._deserialize(x),
-						executor = self.cardinal_sdk._executor
-					)
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
+			def do_decode(raw_result):
+				return PaginatedListIterator[EncryptedContact](
+					producer = raw_result,
+					deserializer = lambda x: EncryptedContact._deserialize(x),
+					executor = self.cardinal_sdk._executor
+				)
 			payload = {
 				"filter": filter.__serialize__(),
 			}
-			callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
+			return await execute_async_method_job(
 				self.cardinal_sdk._executor,
+				False,
+				do_decode,
 				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ContactApi.encrypted.filterContactsByAsync,
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
-				callback
 			)
-			return await future
 
 		def filter_contacts_by_blocking(self, filter: FilterOptions[Contact]) -> PaginatedListIterator[EncryptedContact]:
 			payload = {
@@ -154,31 +130,23 @@ class ContactApi:
 				)
 
 		async def filter_services_by_async(self, filter: FilterOptions[Service]) -> PaginatedListIterator[EncryptedService]:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = PaginatedListIterator[EncryptedService](
-						producer = success,
-						deserializer = lambda x: EncryptedService._deserialize(x),
-						executor = self.cardinal_sdk._executor
-					)
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
+			def do_decode(raw_result):
+				return PaginatedListIterator[EncryptedService](
+					producer = raw_result,
+					deserializer = lambda x: EncryptedService._deserialize(x),
+					executor = self.cardinal_sdk._executor
+				)
 			payload = {
 				"filter": filter.__serialize__(),
 			}
-			callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
+			return await execute_async_method_job(
 				self.cardinal_sdk._executor,
+				False,
+				do_decode,
 				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ContactApi.encrypted.filterServicesByAsync,
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
-				callback
 			)
-			return await future
 
 		def filter_services_by_blocking(self, filter: FilterOptions[Service]) -> PaginatedListIterator[EncryptedService]:
 			payload = {
@@ -204,31 +172,23 @@ class ContactApi:
 				)
 
 		async def filter_contacts_by_sorted_async(self, filter: SortableFilterOptions[Contact]) -> PaginatedListIterator[EncryptedContact]:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = PaginatedListIterator[EncryptedContact](
-						producer = success,
-						deserializer = lambda x: EncryptedContact._deserialize(x),
-						executor = self.cardinal_sdk._executor
-					)
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
+			def do_decode(raw_result):
+				return PaginatedListIterator[EncryptedContact](
+					producer = raw_result,
+					deserializer = lambda x: EncryptedContact._deserialize(x),
+					executor = self.cardinal_sdk._executor
+				)
 			payload = {
 				"filter": filter.__serialize__(),
 			}
-			callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
+			return await execute_async_method_job(
 				self.cardinal_sdk._executor,
+				False,
+				do_decode,
 				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ContactApi.encrypted.filterContactsBySortedAsync,
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
-				callback
 			)
-			return await future
 
 		def filter_contacts_by_sorted_blocking(self, filter: SortableFilterOptions[Contact]) -> PaginatedListIterator[EncryptedContact]:
 			payload = {
@@ -254,31 +214,23 @@ class ContactApi:
 				)
 
 		async def filter_services_by_sorted_async(self, filter: SortableFilterOptions[Service]) -> PaginatedListIterator[EncryptedService]:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = PaginatedListIterator[EncryptedService](
-						producer = success,
-						deserializer = lambda x: EncryptedService._deserialize(x),
-						executor = self.cardinal_sdk._executor
-					)
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
+			def do_decode(raw_result):
+				return PaginatedListIterator[EncryptedService](
+					producer = raw_result,
+					deserializer = lambda x: EncryptedService._deserialize(x),
+					executor = self.cardinal_sdk._executor
+				)
 			payload = {
 				"filter": filter.__serialize__(),
 			}
-			callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
+			return await execute_async_method_job(
 				self.cardinal_sdk._executor,
+				False,
+				do_decode,
 				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ContactApi.encrypted.filterServicesBySortedAsync,
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
-				callback
 			)
-			return await future
 
 		def filter_services_by_sorted_blocking(self, filter: SortableFilterOptions[Service]) -> PaginatedListIterator[EncryptedService]:
 			payload = {
@@ -304,28 +256,20 @@ class ContactApi:
 				)
 
 		async def undelete_contact_by_id_async(self, id: str, rev: str) -> EncryptedContact:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = EncryptedContact._deserialize(json.loads(success.decode('utf-8')))
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
+			def do_decode(raw_result):
+				return EncryptedContact._deserialize(raw_result)
 			payload = {
 				"id": id,
 				"rev": rev,
 			}
-			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
+			return await execute_async_method_job(
 				self.cardinal_sdk._executor,
+				True,
+				do_decode,
 				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ContactApi.encrypted.undeleteContactByIdAsync,
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
-				callback
 			)
-			return await future
 
 		def undelete_contact_by_id_blocking(self, id: str, rev: str) -> EncryptedContact:
 			payload = {
@@ -345,27 +289,19 @@ class ContactApi:
 				return return_value
 
 		async def undelete_contact_async(self, contact: Contact) -> EncryptedContact:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = EncryptedContact._deserialize(json.loads(success.decode('utf-8')))
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
+			def do_decode(raw_result):
+				return EncryptedContact._deserialize(raw_result)
 			payload = {
 				"contact": serialize_contact(contact),
 			}
-			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
+			return await execute_async_method_job(
 				self.cardinal_sdk._executor,
+				True,
+				do_decode,
 				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ContactApi.encrypted.undeleteContactAsync,
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
-				callback
 			)
-			return await future
 
 		def undelete_contact_blocking(self, contact: Contact) -> EncryptedContact:
 			payload = {
@@ -384,27 +320,19 @@ class ContactApi:
 				return return_value
 
 		async def modify_contact_async(self, entity: EncryptedContact) -> EncryptedContact:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = EncryptedContact._deserialize(json.loads(success.decode('utf-8')))
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
+			def do_decode(raw_result):
+				return EncryptedContact._deserialize(raw_result)
 			payload = {
 				"entity": entity.__serialize__(),
 			}
-			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
+			return await execute_async_method_job(
 				self.cardinal_sdk._executor,
+				True,
+				do_decode,
 				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ContactApi.encrypted.modifyContactAsync,
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
-				callback
 			)
-			return await future
 
 		def modify_contact_blocking(self, entity: EncryptedContact) -> EncryptedContact:
 			payload = {
@@ -423,27 +351,19 @@ class ContactApi:
 				return return_value
 
 		async def modify_contacts_async(self, entities: List[EncryptedContact]) -> List[EncryptedContact]:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = [EncryptedContact._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
+			def do_decode(raw_result):
+				return [EncryptedContact._deserialize(x1) for x1 in raw_result]
 			payload = {
 				"entities": [x0.__serialize__() for x0 in entities],
 			}
-			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
+			return await execute_async_method_job(
 				self.cardinal_sdk._executor,
+				True,
+				do_decode,
 				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ContactApi.encrypted.modifyContactsAsync,
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
-				callback
 			)
-			return await future
 
 		def modify_contacts_blocking(self, entities: List[EncryptedContact]) -> List[EncryptedContact]:
 			payload = {
@@ -462,27 +382,19 @@ class ContactApi:
 				return return_value
 
 		async def get_contact_async(self, entity_id: str) -> EncryptedContact:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = EncryptedContact._deserialize(json.loads(success.decode('utf-8')))
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
+			def do_decode(raw_result):
+				return EncryptedContact._deserialize(raw_result)
 			payload = {
 				"entityId": entity_id,
 			}
-			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
+			return await execute_async_method_job(
 				self.cardinal_sdk._executor,
+				True,
+				do_decode,
 				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ContactApi.encrypted.getContactAsync,
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
-				callback
 			)
-			return await future
 
 		def get_contact_blocking(self, entity_id: str) -> EncryptedContact:
 			payload = {
@@ -501,27 +413,19 @@ class ContactApi:
 				return return_value
 
 		async def get_contacts_async(self, entity_ids: List[str]) -> List[EncryptedContact]:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = [EncryptedContact._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
+			def do_decode(raw_result):
+				return [EncryptedContact._deserialize(x1) for x1 in raw_result]
 			payload = {
 				"entityIds": [x0 for x0 in entity_ids],
 			}
-			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
+			return await execute_async_method_job(
 				self.cardinal_sdk._executor,
+				True,
+				do_decode,
 				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ContactApi.encrypted.getContactsAsync,
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
-				callback
 			)
-			return await future
 
 		def get_contacts_blocking(self, entity_ids: List[str]) -> List[EncryptedContact]:
 			payload = {
@@ -540,27 +444,19 @@ class ContactApi:
 				return return_value
 
 		async def get_service_async(self, service_id: str) -> EncryptedService:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = EncryptedService._deserialize(json.loads(success.decode('utf-8')))
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
+			def do_decode(raw_result):
+				return EncryptedService._deserialize(raw_result)
 			payload = {
 				"serviceId": service_id,
 			}
-			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
+			return await execute_async_method_job(
 				self.cardinal_sdk._executor,
+				True,
+				do_decode,
 				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ContactApi.encrypted.getServiceAsync,
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
-				callback
 			)
-			return await future
 
 		def get_service_blocking(self, service_id: str) -> EncryptedService:
 			payload = {
@@ -579,27 +475,19 @@ class ContactApi:
 				return return_value
 
 		async def get_services_async(self, entity_ids: List[str]) -> List[EncryptedService]:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = [EncryptedService._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
+			def do_decode(raw_result):
+				return [EncryptedService._deserialize(x1) for x1 in raw_result]
 			payload = {
 				"entityIds": [x0 for x0 in entity_ids],
 			}
-			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
+			return await execute_async_method_job(
 				self.cardinal_sdk._executor,
+				True,
+				do_decode,
 				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ContactApi.encrypted.getServicesAsync,
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
-				callback
 			)
-			return await future
 
 		def get_services_blocking(self, entity_ids: List[str]) -> List[EncryptedService]:
 			payload = {
@@ -623,29 +511,21 @@ class ContactApi:
 			self.cardinal_sdk = cardinal_sdk
 
 		async def share_with_async(self, delegate_id: str, contact: Contact, options: Optional[ContactShareOptions] = None) -> Contact:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = deserialize_contact(json.loads(success.decode('utf-8')))
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
+			def do_decode(raw_result):
+				return deserialize_contact(raw_result)
 			payload = {
 				"delegateId": delegate_id,
 				"contact": serialize_contact(contact),
 				"options": options.__serialize__() if options is not None else None,
 			}
-			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
+			return await execute_async_method_job(
 				self.cardinal_sdk._executor,
+				True,
+				do_decode,
 				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ContactApi.tryAndRecover.shareWithAsync,
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
-				callback
 			)
-			return await future
 
 		def share_with_blocking(self, delegate_id: str, contact: Contact, options: Optional[ContactShareOptions] = None) -> Contact:
 			payload = {
@@ -666,28 +546,20 @@ class ContactApi:
 				return return_value
 
 		async def share_with_many_async(self, contact: Contact, delegates: Dict[str, ContactShareOptions]) -> Contact:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = deserialize_contact(json.loads(success.decode('utf-8')))
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
+			def do_decode(raw_result):
+				return deserialize_contact(raw_result)
 			payload = {
 				"contact": serialize_contact(contact),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 			}
-			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
+			return await execute_async_method_job(
 				self.cardinal_sdk._executor,
+				True,
+				do_decode,
 				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ContactApi.tryAndRecover.shareWithManyAsync,
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
-				callback
 			)
-			return await future
 
 		def share_with_many_blocking(self, contact: Contact, delegates: Dict[str, ContactShareOptions]) -> Contact:
 			payload = {
@@ -707,31 +579,23 @@ class ContactApi:
 				return return_value
 
 		async def filter_contacts_by_async(self, filter: FilterOptions[Contact]) -> PaginatedListIterator[Contact]:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = PaginatedListIterator[Contact](
-						producer = success,
-						deserializer = lambda x: deserialize_contact(x),
-						executor = self.cardinal_sdk._executor
-					)
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
+			def do_decode(raw_result):
+				return PaginatedListIterator[Contact](
+					producer = raw_result,
+					deserializer = lambda x: deserialize_contact(x),
+					executor = self.cardinal_sdk._executor
+				)
 			payload = {
 				"filter": filter.__serialize__(),
 			}
-			callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
+			return await execute_async_method_job(
 				self.cardinal_sdk._executor,
+				False,
+				do_decode,
 				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ContactApi.tryAndRecover.filterContactsByAsync,
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
-				callback
 			)
-			return await future
 
 		def filter_contacts_by_blocking(self, filter: FilterOptions[Contact]) -> PaginatedListIterator[Contact]:
 			payload = {
@@ -757,31 +621,23 @@ class ContactApi:
 				)
 
 		async def filter_services_by_async(self, filter: FilterOptions[Service]) -> PaginatedListIterator[Service]:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = PaginatedListIterator[Service](
-						producer = success,
-						deserializer = lambda x: deserialize_service(x),
-						executor = self.cardinal_sdk._executor
-					)
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
+			def do_decode(raw_result):
+				return PaginatedListIterator[Service](
+					producer = raw_result,
+					deserializer = lambda x: deserialize_service(x),
+					executor = self.cardinal_sdk._executor
+				)
 			payload = {
 				"filter": filter.__serialize__(),
 			}
-			callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
+			return await execute_async_method_job(
 				self.cardinal_sdk._executor,
+				False,
+				do_decode,
 				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ContactApi.tryAndRecover.filterServicesByAsync,
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
-				callback
 			)
-			return await future
 
 		def filter_services_by_blocking(self, filter: FilterOptions[Service]) -> PaginatedListIterator[Service]:
 			payload = {
@@ -807,31 +663,23 @@ class ContactApi:
 				)
 
 		async def filter_contacts_by_sorted_async(self, filter: SortableFilterOptions[Contact]) -> PaginatedListIterator[Contact]:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = PaginatedListIterator[Contact](
-						producer = success,
-						deserializer = lambda x: deserialize_contact(x),
-						executor = self.cardinal_sdk._executor
-					)
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
+			def do_decode(raw_result):
+				return PaginatedListIterator[Contact](
+					producer = raw_result,
+					deserializer = lambda x: deserialize_contact(x),
+					executor = self.cardinal_sdk._executor
+				)
 			payload = {
 				"filter": filter.__serialize__(),
 			}
-			callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
+			return await execute_async_method_job(
 				self.cardinal_sdk._executor,
+				False,
+				do_decode,
 				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ContactApi.tryAndRecover.filterContactsBySortedAsync,
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
-				callback
 			)
-			return await future
 
 		def filter_contacts_by_sorted_blocking(self, filter: SortableFilterOptions[Contact]) -> PaginatedListIterator[Contact]:
 			payload = {
@@ -857,31 +705,23 @@ class ContactApi:
 				)
 
 		async def filter_services_by_sorted_async(self, filter: SortableFilterOptions[Service]) -> PaginatedListIterator[Service]:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = PaginatedListIterator[Service](
-						producer = success,
-						deserializer = lambda x: deserialize_service(x),
-						executor = self.cardinal_sdk._executor
-					)
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
+			def do_decode(raw_result):
+				return PaginatedListIterator[Service](
+					producer = raw_result,
+					deserializer = lambda x: deserialize_service(x),
+					executor = self.cardinal_sdk._executor
+				)
 			payload = {
 				"filter": filter.__serialize__(),
 			}
-			callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
+			return await execute_async_method_job(
 				self.cardinal_sdk._executor,
+				False,
+				do_decode,
 				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ContactApi.tryAndRecover.filterServicesBySortedAsync,
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
-				callback
 			)
-			return await future
 
 		def filter_services_by_sorted_blocking(self, filter: SortableFilterOptions[Service]) -> PaginatedListIterator[Service]:
 			payload = {
@@ -907,28 +747,20 @@ class ContactApi:
 				)
 
 		async def undelete_contact_by_id_async(self, id: str, rev: str) -> Contact:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = deserialize_contact(json.loads(success.decode('utf-8')))
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
+			def do_decode(raw_result):
+				return deserialize_contact(raw_result)
 			payload = {
 				"id": id,
 				"rev": rev,
 			}
-			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
+			return await execute_async_method_job(
 				self.cardinal_sdk._executor,
+				True,
+				do_decode,
 				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ContactApi.tryAndRecover.undeleteContactByIdAsync,
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
-				callback
 			)
-			return await future
 
 		def undelete_contact_by_id_blocking(self, id: str, rev: str) -> Contact:
 			payload = {
@@ -948,27 +780,19 @@ class ContactApi:
 				return return_value
 
 		async def undelete_contact_async(self, contact: Contact) -> Contact:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = deserialize_contact(json.loads(success.decode('utf-8')))
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
+			def do_decode(raw_result):
+				return deserialize_contact(raw_result)
 			payload = {
 				"contact": serialize_contact(contact),
 			}
-			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
+			return await execute_async_method_job(
 				self.cardinal_sdk._executor,
+				True,
+				do_decode,
 				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ContactApi.tryAndRecover.undeleteContactAsync,
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
-				callback
 			)
-			return await future
 
 		def undelete_contact_blocking(self, contact: Contact) -> Contact:
 			payload = {
@@ -987,27 +811,19 @@ class ContactApi:
 				return return_value
 
 		async def modify_contact_async(self, entity: Contact) -> Contact:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = deserialize_contact(json.loads(success.decode('utf-8')))
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
+			def do_decode(raw_result):
+				return deserialize_contact(raw_result)
 			payload = {
 				"entity": serialize_contact(entity),
 			}
-			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
+			return await execute_async_method_job(
 				self.cardinal_sdk._executor,
+				True,
+				do_decode,
 				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ContactApi.tryAndRecover.modifyContactAsync,
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
-				callback
 			)
-			return await future
 
 		def modify_contact_blocking(self, entity: Contact) -> Contact:
 			payload = {
@@ -1026,27 +842,19 @@ class ContactApi:
 				return return_value
 
 		async def modify_contacts_async(self, entities: List[Contact]) -> List[Contact]:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = [deserialize_contact(x1) for x1 in json.loads(success.decode('utf-8'))]
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
+			def do_decode(raw_result):
+				return [deserialize_contact(x1) for x1 in raw_result]
 			payload = {
 				"entities": [serialize_contact(x0) for x0 in entities],
 			}
-			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
+			return await execute_async_method_job(
 				self.cardinal_sdk._executor,
+				True,
+				do_decode,
 				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ContactApi.tryAndRecover.modifyContactsAsync,
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
-				callback
 			)
-			return await future
 
 		def modify_contacts_blocking(self, entities: List[Contact]) -> List[Contact]:
 			payload = {
@@ -1065,27 +873,19 @@ class ContactApi:
 				return return_value
 
 		async def get_contact_async(self, entity_id: str) -> Contact:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = deserialize_contact(json.loads(success.decode('utf-8')))
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
+			def do_decode(raw_result):
+				return deserialize_contact(raw_result)
 			payload = {
 				"entityId": entity_id,
 			}
-			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
+			return await execute_async_method_job(
 				self.cardinal_sdk._executor,
+				True,
+				do_decode,
 				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ContactApi.tryAndRecover.getContactAsync,
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
-				callback
 			)
-			return await future
 
 		def get_contact_blocking(self, entity_id: str) -> Contact:
 			payload = {
@@ -1104,27 +904,19 @@ class ContactApi:
 				return return_value
 
 		async def get_contacts_async(self, entity_ids: List[str]) -> List[Contact]:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = [deserialize_contact(x1) for x1 in json.loads(success.decode('utf-8'))]
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
+			def do_decode(raw_result):
+				return [deserialize_contact(x1) for x1 in raw_result]
 			payload = {
 				"entityIds": [x0 for x0 in entity_ids],
 			}
-			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
+			return await execute_async_method_job(
 				self.cardinal_sdk._executor,
+				True,
+				do_decode,
 				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ContactApi.tryAndRecover.getContactsAsync,
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
-				callback
 			)
-			return await future
 
 		def get_contacts_blocking(self, entity_ids: List[str]) -> List[Contact]:
 			payload = {
@@ -1143,27 +935,19 @@ class ContactApi:
 				return return_value
 
 		async def get_service_async(self, service_id: str) -> Service:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = deserialize_service(json.loads(success.decode('utf-8')))
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
+			def do_decode(raw_result):
+				return deserialize_service(raw_result)
 			payload = {
 				"serviceId": service_id,
 			}
-			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
+			return await execute_async_method_job(
 				self.cardinal_sdk._executor,
+				True,
+				do_decode,
 				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ContactApi.tryAndRecover.getServiceAsync,
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
-				callback
 			)
-			return await future
 
 		def get_service_blocking(self, service_id: str) -> Service:
 			payload = {
@@ -1182,27 +966,19 @@ class ContactApi:
 				return return_value
 
 		async def get_services_async(self, entity_ids: List[str]) -> List[Service]:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = [deserialize_service(x1) for x1 in json.loads(success.decode('utf-8'))]
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
+			def do_decode(raw_result):
+				return [deserialize_service(x1) for x1 in raw_result]
 			payload = {
 				"entityIds": [x0 for x0 in entity_ids],
 			}
-			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
+			return await execute_async_method_job(
 				self.cardinal_sdk._executor,
+				True,
+				do_decode,
 				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ContactApi.tryAndRecover.getServicesAsync,
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
-				callback
 			)
-			return await future
 
 		def get_services_blocking(self, entity_ids: List[str]) -> List[Service]:
 			payload = {
@@ -1226,27 +1002,19 @@ class ContactApi:
 		self.try_and_recover = ContactApi.ContactFlavouredApi(self.cardinal_sdk)
 
 	async def match_contacts_by_async(self, filter: FilterOptions[Contact]) -> List[str]:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = [x1 for x1 in json.loads(success.decode('utf-8'))]
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return [x1 for x1 in raw_result]
 		payload = {
 			"filter": filter.__serialize__(),
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ContactApi.matchContactsByAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def match_contacts_by_blocking(self, filter: FilterOptions[Contact]) -> List[str]:
 		payload = {
@@ -1265,27 +1033,19 @@ class ContactApi:
 			return return_value
 
 	async def match_services_by_async(self, filter: FilterOptions[Service]) -> List[str]:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = [x1 for x1 in json.loads(success.decode('utf-8'))]
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return [x1 for x1 in raw_result]
 		payload = {
 			"filter": filter.__serialize__(),
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ContactApi.matchServicesByAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def match_services_by_blocking(self, filter: FilterOptions[Service]) -> List[str]:
 		payload = {
@@ -1304,27 +1064,19 @@ class ContactApi:
 			return return_value
 
 	async def match_contacts_by_sorted_async(self, filter: SortableFilterOptions[Contact]) -> List[str]:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = [x1 for x1 in json.loads(success.decode('utf-8'))]
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return [x1 for x1 in raw_result]
 		payload = {
 			"filter": filter.__serialize__(),
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ContactApi.matchContactsBySortedAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def match_contacts_by_sorted_blocking(self, filter: SortableFilterOptions[Contact]) -> List[str]:
 		payload = {
@@ -1343,27 +1095,19 @@ class ContactApi:
 			return return_value
 
 	async def match_services_by_sorted_async(self, filter: SortableFilterOptions[Service]) -> List[str]:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = [x1 for x1 in json.loads(success.decode('utf-8'))]
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return [x1 for x1 in raw_result]
 		payload = {
 			"filter": filter.__serialize__(),
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ContactApi.matchServicesBySortedAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def match_services_by_sorted_blocking(self, filter: SortableFilterOptions[Service]) -> List[str]:
 		payload = {
@@ -1382,27 +1126,19 @@ class ContactApi:
 			return return_value
 
 	async def create_contact_async(self, entity: DecryptedContact) -> DecryptedContact:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = DecryptedContact._deserialize(json.loads(success.decode('utf-8')))
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return DecryptedContact._deserialize(raw_result)
 		payload = {
 			"entity": entity.__serialize__(),
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ContactApi.createContactAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def create_contact_blocking(self, entity: DecryptedContact) -> DecryptedContact:
 		payload = {
@@ -1421,27 +1157,19 @@ class ContactApi:
 			return return_value
 
 	async def create_contacts_async(self, entities: List[DecryptedContact]) -> List[DecryptedContact]:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = [DecryptedContact._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return [DecryptedContact._deserialize(x1) for x1 in raw_result]
 		payload = {
 			"entities": [x0.__serialize__() for x0 in entities],
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ContactApi.createContactsAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def create_contacts_blocking(self, entities: List[DecryptedContact]) -> List[DecryptedContact]:
 		payload = {
@@ -1460,15 +1188,8 @@ class ContactApi:
 			return return_value
 
 	async def with_encryption_metadata_async(self, base: Optional[DecryptedContact], patient: Patient, user: Optional[User] = None, delegates: Dict[str, AccessLevel] = {}, secret_id: SecretIdUseOption = SecretIdUseOptionUseAnySharedWithParent()) -> DecryptedContact:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = DecryptedContact._deserialize(json.loads(success.decode('utf-8')))
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return DecryptedContact._deserialize(raw_result)
 		payload = {
 			"base": base.__serialize__() if base is not None else None,
 			"patient": serialize_patient(patient),
@@ -1476,15 +1197,14 @@ class ContactApi:
 			"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 			"secretId": serialize_secret_id_use_option(secret_id),
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ContactApi.withEncryptionMetadataAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def with_encryption_metadata_blocking(self, base: Optional[DecryptedContact], patient: Patient, user: Optional[User] = None, delegates: Dict[str, AccessLevel] = {}, secret_id: SecretIdUseOption = SecretIdUseOptionUseAnySharedWithParent()) -> DecryptedContact:
 		payload = {
@@ -1507,27 +1227,19 @@ class ContactApi:
 			return return_value
 
 	async def get_encryption_keys_of_async(self, contact: Contact) -> List[HexString]:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = [x1 for x1 in json.loads(success.decode('utf-8'))]
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return [x1 for x1 in raw_result]
 		payload = {
 			"contact": serialize_contact(contact),
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ContactApi.getEncryptionKeysOfAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def get_encryption_keys_of_blocking(self, contact: Contact) -> List[HexString]:
 		payload = {
@@ -1546,27 +1258,19 @@ class ContactApi:
 			return return_value
 
 	async def has_write_access_async(self, contact: Contact) -> bool:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = json.loads(success.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return raw_result
 		payload = {
 			"contact": serialize_contact(contact),
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ContactApi.hasWriteAccessAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def has_write_access_blocking(self, contact: Contact) -> bool:
 		payload = {
@@ -1585,27 +1289,19 @@ class ContactApi:
 			return return_value
 
 	async def decrypt_patient_id_of_async(self, contact: Contact) -> List[str]:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = [x1 for x1 in json.loads(success.decode('utf-8'))]
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return [x1 for x1 in raw_result]
 		payload = {
 			"contact": serialize_contact(contact),
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ContactApi.decryptPatientIdOfAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def decrypt_patient_id_of_blocking(self, contact: Contact) -> List[str]:
 		payload = {
@@ -1624,28 +1320,20 @@ class ContactApi:
 			return return_value
 
 	async def create_delegation_de_anonymization_metadata_async(self, entity: Contact, delegates: List[str]) -> None:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = json.loads(success.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return raw_result
 		payload = {
 			"entity": serialize_contact(entity),
 			"delegates": [x0 for x0 in delegates],
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ContactApi.createDelegationDeAnonymizationMetadataAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def create_delegation_de_anonymization_metadata_blocking(self, entity: Contact, delegates: List[str]) -> None:
 		payload = {
@@ -1662,27 +1350,19 @@ class ContactApi:
 			raise interpret_kt_error(result_info.failure)
 
 	async def decrypt_async(self, contact: EncryptedContact) -> DecryptedContact:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = DecryptedContact._deserialize(json.loads(success.decode('utf-8')))
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return DecryptedContact._deserialize(raw_result)
 		payload = {
 			"contact": contact.__serialize__(),
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ContactApi.decryptAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def decrypt_blocking(self, contact: EncryptedContact) -> DecryptedContact:
 		payload = {
@@ -1701,27 +1381,19 @@ class ContactApi:
 			return return_value
 
 	async def try_decrypt_async(self, contact: EncryptedContact) -> Contact:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = deserialize_contact(json.loads(success.decode('utf-8')))
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return deserialize_contact(raw_result)
 		payload = {
 			"contact": contact.__serialize__(),
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ContactApi.tryDecryptAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def try_decrypt_blocking(self, contact: EncryptedContact) -> Contact:
 		payload = {
@@ -1740,27 +1412,19 @@ class ContactApi:
 			return return_value
 
 	async def decrypt_service_async(self, service: EncryptedService) -> DecryptedService:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = DecryptedService._deserialize(json.loads(success.decode('utf-8')))
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return DecryptedService._deserialize(raw_result)
 		payload = {
 			"service": service.__serialize__(),
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ContactApi.decryptServiceAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def decrypt_service_blocking(self, service: EncryptedService) -> DecryptedService:
 		payload = {
@@ -1779,27 +1443,19 @@ class ContactApi:
 			return return_value
 
 	async def try_decrypt_service_async(self, service: EncryptedService) -> Service:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = deserialize_service(json.loads(success.decode('utf-8')))
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return deserialize_service(raw_result)
 		payload = {
 			"service": service.__serialize__(),
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ContactApi.tryDecryptServiceAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def try_decrypt_service_blocking(self, service: EncryptedService) -> Service:
 		payload = {
@@ -1818,32 +1474,24 @@ class ContactApi:
 			return return_value
 
 	async def subscribe_to_service_create_or_update_events_async(self, filter: FilterOptions[Service], subscription_config: Optional[EntitySubscriptionConfiguration] = None) -> EntitySubscription[EncryptedService]:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = EntitySubscription[EncryptedService](
-					producer = success,
-					deserializer = lambda x: EncryptedService._deserialize(x),
-					executor = self.cardinal_sdk._executor
-				)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return EntitySubscription[EncryptedService](
+				producer = raw_result,
+				deserializer = lambda x: EncryptedService._deserialize(x),
+				executor = self.cardinal_sdk._executor
+			)
 		payload = {
 			"filter": filter.__serialize__(),
 			"subscriptionConfig": subscription_config.__serialize__() if subscription_config is not None else None,
 		}
-		callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			False,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ContactApi.subscribeToServiceCreateOrUpdateEventsAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def subscribe_to_service_create_or_update_events_blocking(self, filter: FilterOptions[Service], subscription_config: Optional[EntitySubscriptionConfiguration] = None) -> EntitySubscription[EncryptedService]:
 		payload = {
@@ -1870,28 +1518,20 @@ class ContactApi:
 			)
 
 	async def delete_contact_by_id_async(self, entity_id: str, rev: str) -> DocIdentifier:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = DocIdentifier._deserialize(json.loads(success.decode('utf-8')))
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return DocIdentifier._deserialize(raw_result)
 		payload = {
 			"entityId": entity_id,
 			"rev": rev,
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ContactApi.deleteContactByIdAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def delete_contact_by_id_blocking(self, entity_id: str, rev: str) -> DocIdentifier:
 		payload = {
@@ -1911,27 +1551,19 @@ class ContactApi:
 			return return_value
 
 	async def delete_contacts_by_ids_async(self, entity_ids: List[IdWithMandatoryRev]) -> List[DocIdentifier]:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = [DocIdentifier._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return [DocIdentifier._deserialize(x1) for x1 in raw_result]
 		payload = {
 			"entityIds": [x0.__serialize__() for x0 in entity_ids],
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ContactApi.deleteContactsByIdsAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def delete_contacts_by_ids_blocking(self, entity_ids: List[IdWithMandatoryRev]) -> List[DocIdentifier]:
 		payload = {
@@ -1950,28 +1582,20 @@ class ContactApi:
 			return return_value
 
 	async def purge_contact_by_id_async(self, id: str, rev: str) -> None:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = json.loads(success.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return raw_result
 		payload = {
 			"id": id,
 			"rev": rev,
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ContactApi.purgeContactByIdAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def purge_contact_by_id_blocking(self, id: str, rev: str) -> None:
 		payload = {
@@ -1988,27 +1612,19 @@ class ContactApi:
 			raise interpret_kt_error(result_info.failure)
 
 	async def delete_contact_async(self, contact: Contact) -> DocIdentifier:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = DocIdentifier._deserialize(json.loads(success.decode('utf-8')))
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return DocIdentifier._deserialize(raw_result)
 		payload = {
 			"contact": serialize_contact(contact),
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ContactApi.deleteContactAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def delete_contact_blocking(self, contact: Contact) -> DocIdentifier:
 		payload = {
@@ -2027,27 +1643,19 @@ class ContactApi:
 			return return_value
 
 	async def delete_contacts_async(self, contacts: List[Contact]) -> List[DocIdentifier]:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = [DocIdentifier._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return [DocIdentifier._deserialize(x1) for x1 in raw_result]
 		payload = {
 			"contacts": [serialize_contact(x0) for x0 in contacts],
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ContactApi.deleteContactsAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def delete_contacts_blocking(self, contacts: List[Contact]) -> List[DocIdentifier]:
 		payload = {
@@ -2066,27 +1674,19 @@ class ContactApi:
 			return return_value
 
 	async def purge_contact_async(self, contact: Contact) -> None:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = json.loads(success.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return raw_result
 		payload = {
 			"contact": serialize_contact(contact),
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ContactApi.purgeContactAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def purge_contact_blocking(self, contact: Contact) -> None:
 		payload = {
@@ -2102,28 +1702,20 @@ class ContactApi:
 			raise interpret_kt_error(result_info.failure)
 
 	async def get_service_codes_occurrences_async(self, code_type: str, min_occurrences: int) -> List[LabelledOccurence]:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = [LabelledOccurence._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return [LabelledOccurence._deserialize(x1) for x1 in raw_result]
 		payload = {
 			"codeType": code_type,
 			"minOccurrences": min_occurrences,
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ContactApi.getServiceCodesOccurrencesAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def get_service_codes_occurrences_blocking(self, code_type: str, min_occurrences: int) -> List[LabelledOccurence]:
 		payload = {
@@ -2143,29 +1735,21 @@ class ContactApi:
 			return return_value
 
 	async def share_with_async(self, delegate_id: str, contact: DecryptedContact, options: Optional[ContactShareOptions] = None) -> DecryptedContact:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = DecryptedContact._deserialize(json.loads(success.decode('utf-8')))
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return DecryptedContact._deserialize(raw_result)
 		payload = {
 			"delegateId": delegate_id,
 			"contact": contact.__serialize__(),
 			"options": options.__serialize__() if options is not None else None,
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ContactApi.shareWithAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def share_with_blocking(self, delegate_id: str, contact: DecryptedContact, options: Optional[ContactShareOptions] = None) -> DecryptedContact:
 		payload = {
@@ -2186,28 +1770,20 @@ class ContactApi:
 			return return_value
 
 	async def share_with_many_async(self, contact: DecryptedContact, delegates: Dict[str, ContactShareOptions]) -> DecryptedContact:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = DecryptedContact._deserialize(json.loads(success.decode('utf-8')))
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return DecryptedContact._deserialize(raw_result)
 		payload = {
 			"contact": contact.__serialize__(),
 			"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ContactApi.shareWithManyAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def share_with_many_blocking(self, contact: DecryptedContact, delegates: Dict[str, ContactShareOptions]) -> DecryptedContact:
 		payload = {
@@ -2227,31 +1803,23 @@ class ContactApi:
 			return return_value
 
 	async def filter_contacts_by_async(self, filter: FilterOptions[Contact]) -> PaginatedListIterator[DecryptedContact]:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = PaginatedListIterator[DecryptedContact](
-					producer = success,
-					deserializer = lambda x: DecryptedContact._deserialize(x),
-					executor = self.cardinal_sdk._executor
-				)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return PaginatedListIterator[DecryptedContact](
+				producer = raw_result,
+				deserializer = lambda x: DecryptedContact._deserialize(x),
+				executor = self.cardinal_sdk._executor
+			)
 		payload = {
 			"filter": filter.__serialize__(),
 		}
-		callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			False,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ContactApi.filterContactsByAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def filter_contacts_by_blocking(self, filter: FilterOptions[Contact]) -> PaginatedListIterator[DecryptedContact]:
 		payload = {
@@ -2277,31 +1845,23 @@ class ContactApi:
 			)
 
 	async def filter_services_by_async(self, filter: FilterOptions[Service]) -> PaginatedListIterator[DecryptedService]:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = PaginatedListIterator[DecryptedService](
-					producer = success,
-					deserializer = lambda x: DecryptedService._deserialize(x),
-					executor = self.cardinal_sdk._executor
-				)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return PaginatedListIterator[DecryptedService](
+				producer = raw_result,
+				deserializer = lambda x: DecryptedService._deserialize(x),
+				executor = self.cardinal_sdk._executor
+			)
 		payload = {
 			"filter": filter.__serialize__(),
 		}
-		callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			False,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ContactApi.filterServicesByAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def filter_services_by_blocking(self, filter: FilterOptions[Service]) -> PaginatedListIterator[DecryptedService]:
 		payload = {
@@ -2327,31 +1887,23 @@ class ContactApi:
 			)
 
 	async def filter_contacts_by_sorted_async(self, filter: SortableFilterOptions[Contact]) -> PaginatedListIterator[DecryptedContact]:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = PaginatedListIterator[DecryptedContact](
-					producer = success,
-					deserializer = lambda x: DecryptedContact._deserialize(x),
-					executor = self.cardinal_sdk._executor
-				)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return PaginatedListIterator[DecryptedContact](
+				producer = raw_result,
+				deserializer = lambda x: DecryptedContact._deserialize(x),
+				executor = self.cardinal_sdk._executor
+			)
 		payload = {
 			"filter": filter.__serialize__(),
 		}
-		callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			False,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ContactApi.filterContactsBySortedAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def filter_contacts_by_sorted_blocking(self, filter: SortableFilterOptions[Contact]) -> PaginatedListIterator[DecryptedContact]:
 		payload = {
@@ -2377,31 +1929,23 @@ class ContactApi:
 			)
 
 	async def filter_services_by_sorted_async(self, filter: SortableFilterOptions[Service]) -> PaginatedListIterator[DecryptedService]:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = PaginatedListIterator[DecryptedService](
-					producer = success,
-					deserializer = lambda x: DecryptedService._deserialize(x),
-					executor = self.cardinal_sdk._executor
-				)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return PaginatedListIterator[DecryptedService](
+				producer = raw_result,
+				deserializer = lambda x: DecryptedService._deserialize(x),
+				executor = self.cardinal_sdk._executor
+			)
 		payload = {
 			"filter": filter.__serialize__(),
 		}
-		callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			False,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ContactApi.filterServicesBySortedAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def filter_services_by_sorted_blocking(self, filter: SortableFilterOptions[Service]) -> PaginatedListIterator[DecryptedService]:
 		payload = {
@@ -2427,28 +1971,20 @@ class ContactApi:
 			)
 
 	async def undelete_contact_by_id_async(self, id: str, rev: str) -> DecryptedContact:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = DecryptedContact._deserialize(json.loads(success.decode('utf-8')))
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return DecryptedContact._deserialize(raw_result)
 		payload = {
 			"id": id,
 			"rev": rev,
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ContactApi.undeleteContactByIdAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def undelete_contact_by_id_blocking(self, id: str, rev: str) -> DecryptedContact:
 		payload = {
@@ -2468,27 +2004,19 @@ class ContactApi:
 			return return_value
 
 	async def undelete_contact_async(self, contact: Contact) -> DecryptedContact:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = DecryptedContact._deserialize(json.loads(success.decode('utf-8')))
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return DecryptedContact._deserialize(raw_result)
 		payload = {
 			"contact": serialize_contact(contact),
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ContactApi.undeleteContactAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def undelete_contact_blocking(self, contact: Contact) -> DecryptedContact:
 		payload = {
@@ -2507,27 +2035,19 @@ class ContactApi:
 			return return_value
 
 	async def modify_contact_async(self, entity: DecryptedContact) -> DecryptedContact:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = DecryptedContact._deserialize(json.loads(success.decode('utf-8')))
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return DecryptedContact._deserialize(raw_result)
 		payload = {
 			"entity": entity.__serialize__(),
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ContactApi.modifyContactAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def modify_contact_blocking(self, entity: DecryptedContact) -> DecryptedContact:
 		payload = {
@@ -2546,27 +2066,19 @@ class ContactApi:
 			return return_value
 
 	async def modify_contacts_async(self, entities: List[DecryptedContact]) -> List[DecryptedContact]:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = [DecryptedContact._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return [DecryptedContact._deserialize(x1) for x1 in raw_result]
 		payload = {
 			"entities": [x0.__serialize__() for x0 in entities],
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ContactApi.modifyContactsAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def modify_contacts_blocking(self, entities: List[DecryptedContact]) -> List[DecryptedContact]:
 		payload = {
@@ -2585,27 +2097,19 @@ class ContactApi:
 			return return_value
 
 	async def get_contact_async(self, entity_id: str) -> DecryptedContact:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = DecryptedContact._deserialize(json.loads(success.decode('utf-8')))
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return DecryptedContact._deserialize(raw_result)
 		payload = {
 			"entityId": entity_id,
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ContactApi.getContactAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def get_contact_blocking(self, entity_id: str) -> DecryptedContact:
 		payload = {
@@ -2624,27 +2128,19 @@ class ContactApi:
 			return return_value
 
 	async def get_contacts_async(self, entity_ids: List[str]) -> List[DecryptedContact]:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = [DecryptedContact._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return [DecryptedContact._deserialize(x1) for x1 in raw_result]
 		payload = {
 			"entityIds": [x0 for x0 in entity_ids],
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ContactApi.getContactsAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def get_contacts_blocking(self, entity_ids: List[str]) -> List[DecryptedContact]:
 		payload = {
@@ -2663,27 +2159,19 @@ class ContactApi:
 			return return_value
 
 	async def get_service_async(self, service_id: str) -> DecryptedService:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = DecryptedService._deserialize(json.loads(success.decode('utf-8')))
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return DecryptedService._deserialize(raw_result)
 		payload = {
 			"serviceId": service_id,
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ContactApi.getServiceAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def get_service_blocking(self, service_id: str) -> DecryptedService:
 		payload = {
@@ -2702,27 +2190,19 @@ class ContactApi:
 			return return_value
 
 	async def get_services_async(self, entity_ids: List[str]) -> List[DecryptedService]:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = [DecryptedService._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return [DecryptedService._deserialize(x1) for x1 in raw_result]
 		payload = {
 			"entityIds": [x0 for x0 in entity_ids],
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ContactApi.getServicesAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def get_services_blocking(self, entity_ids: List[str]) -> List[DecryptedService]:
 		payload = {
@@ -2741,33 +2221,25 @@ class ContactApi:
 			return return_value
 
 	async def subscribe_to_events_async(self, events: List[SubscriptionEventType], filter: FilterOptions[Contact], subscription_config: Optional[EntitySubscriptionConfiguration] = None) -> EntitySubscription[EncryptedContact]:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = EntitySubscription[EncryptedContact](
-					producer = success,
-					deserializer = lambda x: EncryptedContact._deserialize(x),
-					executor = self.cardinal_sdk._executor
-				)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return EntitySubscription[EncryptedContact](
+				producer = raw_result,
+				deserializer = lambda x: EncryptedContact._deserialize(x),
+				executor = self.cardinal_sdk._executor
+			)
 		payload = {
 			"events": [x0.__serialize__() for x0 in events],
 			"filter": filter.__serialize__(),
 			"subscriptionConfig": subscription_config.__serialize__() if subscription_config is not None else None,
 		}
-		callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			False,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ContactApi.subscribeToEventsAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def subscribe_to_events_blocking(self, events: List[SubscriptionEventType], filter: FilterOptions[Contact], subscription_config: Optional[EntitySubscriptionConfiguration] = None) -> EntitySubscription[EncryptedContact]:
 		payload = {

@@ -1,9 +1,9 @@
 # auto-generated file
-import asyncio
 import json
 import base64
 from cardinal_sdk.model import DecryptedReceipt, Patient, User, AccessLevel, SecretIdUseOption, SecretIdUseOptionUseAnySharedWithParent, serialize_patient, serialize_secret_id_use_option, Receipt, serialize_receipt, EncryptedReceipt, deserialize_receipt, DocIdentifier, ReceiptShareOptions
-from cardinal_sdk.kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols
+from cardinal_sdk.async_utils import execute_async_method_job
+from cardinal_sdk.kotlin_types import symbols
 from cardinal_sdk.model.CallResult import create_result_from_json, interpret_kt_error
 from ctypes import cast, c_char_p
 from typing import Optional, Dict, List
@@ -18,29 +18,21 @@ class ReceiptApi:
 			self.cardinal_sdk = cardinal_sdk
 
 		async def share_with_async(self, delegate_id: str, receipt: EncryptedReceipt, options: Optional[ReceiptShareOptions] = None) -> EncryptedReceipt:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = EncryptedReceipt._deserialize(json.loads(success.decode('utf-8')))
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
+			def do_decode(raw_result):
+				return EncryptedReceipt._deserialize(raw_result)
 			payload = {
 				"delegateId": delegate_id,
 				"receipt": receipt.__serialize__(),
 				"options": options.__serialize__() if options is not None else None,
 			}
-			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
+			return await execute_async_method_job(
 				self.cardinal_sdk._executor,
+				True,
+				do_decode,
 				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ReceiptApi.encrypted.shareWithAsync,
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
-				callback
 			)
-			return await future
 
 		def share_with_blocking(self, delegate_id: str, receipt: EncryptedReceipt, options: Optional[ReceiptShareOptions] = None) -> EncryptedReceipt:
 			payload = {
@@ -61,28 +53,20 @@ class ReceiptApi:
 				return return_value
 
 		async def share_with_many_async(self, receipt: EncryptedReceipt, delegates: Dict[str, ReceiptShareOptions]) -> EncryptedReceipt:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = EncryptedReceipt._deserialize(json.loads(success.decode('utf-8')))
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
+			def do_decode(raw_result):
+				return EncryptedReceipt._deserialize(raw_result)
 			payload = {
 				"receipt": receipt.__serialize__(),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 			}
-			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
+			return await execute_async_method_job(
 				self.cardinal_sdk._executor,
+				True,
+				do_decode,
 				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ReceiptApi.encrypted.shareWithManyAsync,
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
-				callback
 			)
-			return await future
 
 		def share_with_many_blocking(self, receipt: EncryptedReceipt, delegates: Dict[str, ReceiptShareOptions]) -> EncryptedReceipt:
 			payload = {
@@ -102,27 +86,19 @@ class ReceiptApi:
 				return return_value
 
 		async def modify_receipt_async(self, entity: EncryptedReceipt) -> EncryptedReceipt:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = EncryptedReceipt._deserialize(json.loads(success.decode('utf-8')))
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
+			def do_decode(raw_result):
+				return EncryptedReceipt._deserialize(raw_result)
 			payload = {
 				"entity": entity.__serialize__(),
 			}
-			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
+			return await execute_async_method_job(
 				self.cardinal_sdk._executor,
+				True,
+				do_decode,
 				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ReceiptApi.encrypted.modifyReceiptAsync,
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
-				callback
 			)
-			return await future
 
 		def modify_receipt_blocking(self, entity: EncryptedReceipt) -> EncryptedReceipt:
 			payload = {
@@ -141,27 +117,19 @@ class ReceiptApi:
 				return return_value
 
 		async def get_receipt_async(self, entity_id: str) -> EncryptedReceipt:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = EncryptedReceipt._deserialize(json.loads(success.decode('utf-8')))
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
+			def do_decode(raw_result):
+				return EncryptedReceipt._deserialize(raw_result)
 			payload = {
 				"entityId": entity_id,
 			}
-			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
+			return await execute_async_method_job(
 				self.cardinal_sdk._executor,
+				True,
+				do_decode,
 				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ReceiptApi.encrypted.getReceiptAsync,
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
-				callback
 			)
-			return await future
 
 		def get_receipt_blocking(self, entity_id: str) -> EncryptedReceipt:
 			payload = {
@@ -180,27 +148,19 @@ class ReceiptApi:
 				return return_value
 
 		async def list_by_reference_async(self, reference: str) -> List[EncryptedReceipt]:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = [EncryptedReceipt._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
+			def do_decode(raw_result):
+				return [EncryptedReceipt._deserialize(x1) for x1 in raw_result]
 			payload = {
 				"reference": reference,
 			}
-			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
+			return await execute_async_method_job(
 				self.cardinal_sdk._executor,
+				True,
+				do_decode,
 				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ReceiptApi.encrypted.listByReferenceAsync,
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
-				callback
 			)
-			return await future
 
 		def list_by_reference_blocking(self, reference: str) -> List[EncryptedReceipt]:
 			payload = {
@@ -224,29 +184,21 @@ class ReceiptApi:
 			self.cardinal_sdk = cardinal_sdk
 
 		async def share_with_async(self, delegate_id: str, receipt: Receipt, options: Optional[ReceiptShareOptions] = None) -> Receipt:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = deserialize_receipt(json.loads(success.decode('utf-8')))
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
+			def do_decode(raw_result):
+				return deserialize_receipt(raw_result)
 			payload = {
 				"delegateId": delegate_id,
 				"receipt": serialize_receipt(receipt),
 				"options": options.__serialize__() if options is not None else None,
 			}
-			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
+			return await execute_async_method_job(
 				self.cardinal_sdk._executor,
+				True,
+				do_decode,
 				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ReceiptApi.tryAndRecover.shareWithAsync,
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
-				callback
 			)
-			return await future
 
 		def share_with_blocking(self, delegate_id: str, receipt: Receipt, options: Optional[ReceiptShareOptions] = None) -> Receipt:
 			payload = {
@@ -267,28 +219,20 @@ class ReceiptApi:
 				return return_value
 
 		async def share_with_many_async(self, receipt: Receipt, delegates: Dict[str, ReceiptShareOptions]) -> Receipt:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = deserialize_receipt(json.loads(success.decode('utf-8')))
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
+			def do_decode(raw_result):
+				return deserialize_receipt(raw_result)
 			payload = {
 				"receipt": serialize_receipt(receipt),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 			}
-			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
+			return await execute_async_method_job(
 				self.cardinal_sdk._executor,
+				True,
+				do_decode,
 				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ReceiptApi.tryAndRecover.shareWithManyAsync,
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
-				callback
 			)
-			return await future
 
 		def share_with_many_blocking(self, receipt: Receipt, delegates: Dict[str, ReceiptShareOptions]) -> Receipt:
 			payload = {
@@ -308,27 +252,19 @@ class ReceiptApi:
 				return return_value
 
 		async def modify_receipt_async(self, entity: Receipt) -> Receipt:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = deserialize_receipt(json.loads(success.decode('utf-8')))
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
+			def do_decode(raw_result):
+				return deserialize_receipt(raw_result)
 			payload = {
 				"entity": serialize_receipt(entity),
 			}
-			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
+			return await execute_async_method_job(
 				self.cardinal_sdk._executor,
+				True,
+				do_decode,
 				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ReceiptApi.tryAndRecover.modifyReceiptAsync,
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
-				callback
 			)
-			return await future
 
 		def modify_receipt_blocking(self, entity: Receipt) -> Receipt:
 			payload = {
@@ -347,27 +283,19 @@ class ReceiptApi:
 				return return_value
 
 		async def get_receipt_async(self, entity_id: str) -> Receipt:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = deserialize_receipt(json.loads(success.decode('utf-8')))
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
+			def do_decode(raw_result):
+				return deserialize_receipt(raw_result)
 			payload = {
 				"entityId": entity_id,
 			}
-			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
+			return await execute_async_method_job(
 				self.cardinal_sdk._executor,
+				True,
+				do_decode,
 				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ReceiptApi.tryAndRecover.getReceiptAsync,
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
-				callback
 			)
-			return await future
 
 		def get_receipt_blocking(self, entity_id: str) -> Receipt:
 			payload = {
@@ -386,27 +314,19 @@ class ReceiptApi:
 				return return_value
 
 		async def list_by_reference_async(self, reference: str) -> List[Receipt]:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = [deserialize_receipt(x1) for x1 in json.loads(success.decode('utf-8'))]
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
+			def do_decode(raw_result):
+				return [deserialize_receipt(x1) for x1 in raw_result]
 			payload = {
 				"reference": reference,
 			}
-			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
+			return await execute_async_method_job(
 				self.cardinal_sdk._executor,
+				True,
+				do_decode,
 				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ReceiptApi.tryAndRecover.listByReferenceAsync,
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
-				callback
 			)
-			return await future
 
 		def list_by_reference_blocking(self, reference: str) -> List[Receipt]:
 			payload = {
@@ -430,27 +350,19 @@ class ReceiptApi:
 		self.try_and_recover = ReceiptApi.ReceiptFlavouredApi(self.cardinal_sdk)
 
 	async def create_receipt_async(self, entity: DecryptedReceipt) -> DecryptedReceipt:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = DecryptedReceipt._deserialize(json.loads(success.decode('utf-8')))
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return DecryptedReceipt._deserialize(raw_result)
 		payload = {
 			"entity": entity.__serialize__(),
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ReceiptApi.createReceiptAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def create_receipt_blocking(self, entity: DecryptedReceipt) -> DecryptedReceipt:
 		payload = {
@@ -469,15 +381,8 @@ class ReceiptApi:
 			return return_value
 
 	async def with_encryption_metadata_async(self, base: Optional[DecryptedReceipt], patient: Optional[Patient], user: Optional[User] = None, delegates: Dict[str, AccessLevel] = {}, secret_id: SecretIdUseOption = SecretIdUseOptionUseAnySharedWithParent()) -> DecryptedReceipt:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = DecryptedReceipt._deserialize(json.loads(success.decode('utf-8')))
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return DecryptedReceipt._deserialize(raw_result)
 		payload = {
 			"base": base.__serialize__() if base is not None else None,
 			"patient": serialize_patient(patient) if patient is not None else None,
@@ -485,15 +390,14 @@ class ReceiptApi:
 			"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 			"secretId": serialize_secret_id_use_option(secret_id),
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ReceiptApi.withEncryptionMetadataAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def with_encryption_metadata_blocking(self, base: Optional[DecryptedReceipt], patient: Optional[Patient], user: Optional[User] = None, delegates: Dict[str, AccessLevel] = {}, secret_id: SecretIdUseOption = SecretIdUseOptionUseAnySharedWithParent()) -> DecryptedReceipt:
 		payload = {
@@ -516,28 +420,20 @@ class ReceiptApi:
 			return return_value
 
 	async def get_and_decrypt_receipt_attachment_async(self, receipt: Receipt, attachment_id: str) -> bytearray:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = bytearray(base64.b64decode(json.loads(success.decode('utf-8'))))
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return bytearray(base64.b64decode(raw_result))
 		payload = {
 			"receipt": serialize_receipt(receipt),
 			"attachmentId": attachment_id,
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ReceiptApi.getAndDecryptReceiptAttachmentAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def get_and_decrypt_receipt_attachment_blocking(self, receipt: Receipt, attachment_id: str) -> bytearray:
 		payload = {
@@ -557,29 +453,21 @@ class ReceiptApi:
 			return return_value
 
 	async def encrypt_and_set_receipt_attachment_async(self, receipt: Receipt, blob_type: str, attachment: bytearray) -> EncryptedReceipt:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = EncryptedReceipt._deserialize(json.loads(success.decode('utf-8')))
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return EncryptedReceipt._deserialize(raw_result)
 		payload = {
 			"receipt": serialize_receipt(receipt),
 			"blobType": blob_type,
 			"attachment": base64.b64encode(attachment).decode('utf-8'),
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ReceiptApi.encryptAndSetReceiptAttachmentAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def encrypt_and_set_receipt_attachment_blocking(self, receipt: Receipt, blob_type: str, attachment: bytearray) -> EncryptedReceipt:
 		payload = {
@@ -600,27 +488,19 @@ class ReceiptApi:
 			return return_value
 
 	async def get_encryption_keys_of_async(self, receipt: Receipt) -> List[HexString]:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = [x1 for x1 in json.loads(success.decode('utf-8'))]
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return [x1 for x1 in raw_result]
 		payload = {
 			"receipt": serialize_receipt(receipt),
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ReceiptApi.getEncryptionKeysOfAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def get_encryption_keys_of_blocking(self, receipt: Receipt) -> List[HexString]:
 		payload = {
@@ -639,27 +519,19 @@ class ReceiptApi:
 			return return_value
 
 	async def has_write_access_async(self, receipt: Receipt) -> bool:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = json.loads(success.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return raw_result
 		payload = {
 			"receipt": serialize_receipt(receipt),
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ReceiptApi.hasWriteAccessAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def has_write_access_blocking(self, receipt: Receipt) -> bool:
 		payload = {
@@ -678,27 +550,19 @@ class ReceiptApi:
 			return return_value
 
 	async def decrypt_patient_id_of_async(self, receipt: Receipt) -> List[str]:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = [x1 for x1 in json.loads(success.decode('utf-8'))]
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return [x1 for x1 in raw_result]
 		payload = {
 			"receipt": serialize_receipt(receipt),
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ReceiptApi.decryptPatientIdOfAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def decrypt_patient_id_of_blocking(self, receipt: Receipt) -> List[str]:
 		payload = {
@@ -717,28 +581,20 @@ class ReceiptApi:
 			return return_value
 
 	async def create_delegation_de_anonymization_metadata_async(self, entity: Receipt, delegates: List[str]) -> None:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = json.loads(success.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return raw_result
 		payload = {
 			"entity": serialize_receipt(entity),
 			"delegates": [x0 for x0 in delegates],
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ReceiptApi.createDelegationDeAnonymizationMetadataAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def create_delegation_de_anonymization_metadata_blocking(self, entity: Receipt, delegates: List[str]) -> None:
 		payload = {
@@ -755,15 +611,8 @@ class ReceiptApi:
 			raise interpret_kt_error(result_info.failure)
 
 	async def log_receipt_async(self, user: User, doc_id: str, refs: List[str], blob_type: str, blob: bytearray) -> Receipt:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = deserialize_receipt(json.loads(success.decode('utf-8')))
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return deserialize_receipt(raw_result)
 		payload = {
 			"user": user.__serialize__(),
 			"docId": doc_id,
@@ -771,15 +620,14 @@ class ReceiptApi:
 			"blobType": blob_type,
 			"blob": base64.b64encode(blob).decode('utf-8'),
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ReceiptApi.logReceiptAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def log_receipt_blocking(self, user: User, doc_id: str, refs: List[str], blob_type: str, blob: bytearray) -> Receipt:
 		payload = {
@@ -802,27 +650,19 @@ class ReceiptApi:
 			return return_value
 
 	async def decrypt_async(self, receipt: EncryptedReceipt) -> DecryptedReceipt:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = DecryptedReceipt._deserialize(json.loads(success.decode('utf-8')))
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return DecryptedReceipt._deserialize(raw_result)
 		payload = {
 			"receipt": receipt.__serialize__(),
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ReceiptApi.decryptAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def decrypt_blocking(self, receipt: EncryptedReceipt) -> DecryptedReceipt:
 		payload = {
@@ -841,27 +681,19 @@ class ReceiptApi:
 			return return_value
 
 	async def try_decrypt_async(self, receipt: EncryptedReceipt) -> Receipt:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = deserialize_receipt(json.loads(success.decode('utf-8')))
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return deserialize_receipt(raw_result)
 		payload = {
 			"receipt": receipt.__serialize__(),
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ReceiptApi.tryDecryptAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def try_decrypt_blocking(self, receipt: EncryptedReceipt) -> Receipt:
 		payload = {
@@ -880,27 +712,19 @@ class ReceiptApi:
 			return return_value
 
 	async def delete_receipt_async(self, entity_id: str) -> DocIdentifier:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = DocIdentifier._deserialize(json.loads(success.decode('utf-8')))
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return DocIdentifier._deserialize(raw_result)
 		payload = {
 			"entityId": entity_id,
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ReceiptApi.deleteReceiptAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def delete_receipt_blocking(self, entity_id: str) -> DocIdentifier:
 		payload = {
@@ -919,27 +743,19 @@ class ReceiptApi:
 			return return_value
 
 	async def delete_receipts_async(self, entity_ids: List[str]) -> List[DocIdentifier]:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = [DocIdentifier._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return [DocIdentifier._deserialize(x1) for x1 in raw_result]
 		payload = {
 			"entityIds": [x0 for x0 in entity_ids],
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ReceiptApi.deleteReceiptsAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def delete_receipts_blocking(self, entity_ids: List[str]) -> List[DocIdentifier]:
 		payload = {
@@ -958,28 +774,20 @@ class ReceiptApi:
 			return return_value
 
 	async def get_raw_receipt_attachment_async(self, receipt_id: str, attachment_id: str) -> bytearray:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = bytearray(base64.b64decode(json.loads(success.decode('utf-8'))))
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return bytearray(base64.b64decode(raw_result))
 		payload = {
 			"receiptId": receipt_id,
 			"attachmentId": attachment_id,
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ReceiptApi.getRawReceiptAttachmentAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def get_raw_receipt_attachment_blocking(self, receipt_id: str, attachment_id: str) -> bytearray:
 		payload = {
@@ -999,30 +807,22 @@ class ReceiptApi:
 			return return_value
 
 	async def set_raw_receipt_attachment_async(self, receipt_id: str, rev: str, blob_type: str, attachment: bytearray) -> EncryptedReceipt:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = EncryptedReceipt._deserialize(json.loads(success.decode('utf-8')))
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return EncryptedReceipt._deserialize(raw_result)
 		payload = {
 			"receiptId": receipt_id,
 			"rev": rev,
 			"blobType": blob_type,
 			"attachment": base64.b64encode(attachment).decode('utf-8'),
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ReceiptApi.setRawReceiptAttachmentAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def set_raw_receipt_attachment_blocking(self, receipt_id: str, rev: str, blob_type: str, attachment: bytearray) -> EncryptedReceipt:
 		payload = {
@@ -1044,29 +844,21 @@ class ReceiptApi:
 			return return_value
 
 	async def share_with_async(self, delegate_id: str, receipt: DecryptedReceipt, options: Optional[ReceiptShareOptions] = None) -> DecryptedReceipt:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = DecryptedReceipt._deserialize(json.loads(success.decode('utf-8')))
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return DecryptedReceipt._deserialize(raw_result)
 		payload = {
 			"delegateId": delegate_id,
 			"receipt": receipt.__serialize__(),
 			"options": options.__serialize__() if options is not None else None,
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ReceiptApi.shareWithAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def share_with_blocking(self, delegate_id: str, receipt: DecryptedReceipt, options: Optional[ReceiptShareOptions] = None) -> DecryptedReceipt:
 		payload = {
@@ -1087,28 +879,20 @@ class ReceiptApi:
 			return return_value
 
 	async def share_with_many_async(self, receipt: DecryptedReceipt, delegates: Dict[str, ReceiptShareOptions]) -> DecryptedReceipt:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = DecryptedReceipt._deserialize(json.loads(success.decode('utf-8')))
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return DecryptedReceipt._deserialize(raw_result)
 		payload = {
 			"receipt": receipt.__serialize__(),
 			"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ReceiptApi.shareWithManyAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def share_with_many_blocking(self, receipt: DecryptedReceipt, delegates: Dict[str, ReceiptShareOptions]) -> DecryptedReceipt:
 		payload = {
@@ -1128,27 +912,19 @@ class ReceiptApi:
 			return return_value
 
 	async def modify_receipt_async(self, entity: DecryptedReceipt) -> DecryptedReceipt:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = DecryptedReceipt._deserialize(json.loads(success.decode('utf-8')))
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return DecryptedReceipt._deserialize(raw_result)
 		payload = {
 			"entity": entity.__serialize__(),
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ReceiptApi.modifyReceiptAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def modify_receipt_blocking(self, entity: DecryptedReceipt) -> DecryptedReceipt:
 		payload = {
@@ -1167,27 +943,19 @@ class ReceiptApi:
 			return return_value
 
 	async def get_receipt_async(self, entity_id: str) -> DecryptedReceipt:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = DecryptedReceipt._deserialize(json.loads(success.decode('utf-8')))
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return DecryptedReceipt._deserialize(raw_result)
 		payload = {
 			"entityId": entity_id,
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ReceiptApi.getReceiptAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def get_receipt_blocking(self, entity_id: str) -> DecryptedReceipt:
 		payload = {
@@ -1206,27 +974,19 @@ class ReceiptApi:
 			return return_value
 
 	async def list_by_reference_async(self, reference: str) -> List[DecryptedReceipt]:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = [DecryptedReceipt._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return [DecryptedReceipt._deserialize(x1) for x1 in raw_result]
 		payload = {
 			"reference": reference,
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ReceiptApi.listByReferenceAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def list_by_reference_blocking(self, reference: str) -> List[DecryptedReceipt]:
 		payload = {

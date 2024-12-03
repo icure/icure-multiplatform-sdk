@@ -1,9 +1,9 @@
 # auto-generated file
-import asyncio
 import json
 import base64
 from cardinal_sdk.model import DecryptedForm, Patient, User, AccessLevel, SecretIdUseOption, SecretIdUseOptionUseAnySharedWithParent, serialize_patient, serialize_secret_id_use_option, Form, serialize_form, EncryptedForm, deserialize_form, DocIdentifier, IdWithMandatoryRev, FormTemplate, FormShareOptions
-from cardinal_sdk.kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols, PTR_RESULT_CALLBACK_FUNC
+from cardinal_sdk.async_utils import execute_async_method_job
+from cardinal_sdk.kotlin_types import symbols
 from cardinal_sdk.model.CallResult import create_result_from_json, interpret_kt_error
 from ctypes import cast, c_char_p
 from typing import List, Optional, Dict
@@ -20,29 +20,21 @@ class FormApi:
 			self.cardinal_sdk = cardinal_sdk
 
 		async def share_with_async(self, delegate_id: str, form: EncryptedForm, options: Optional[FormShareOptions] = None) -> EncryptedForm:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = EncryptedForm._deserialize(json.loads(success.decode('utf-8')))
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
+			def do_decode(raw_result):
+				return EncryptedForm._deserialize(raw_result)
 			payload = {
 				"delegateId": delegate_id,
 				"form": form.__serialize__(),
 				"options": options.__serialize__() if options is not None else None,
 			}
-			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
+			return await execute_async_method_job(
 				self.cardinal_sdk._executor,
+				True,
+				do_decode,
 				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.encrypted.shareWithAsync,
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
-				callback
 			)
-			return await future
 
 		def share_with_blocking(self, delegate_id: str, form: EncryptedForm, options: Optional[FormShareOptions] = None) -> EncryptedForm:
 			payload = {
@@ -63,28 +55,20 @@ class FormApi:
 				return return_value
 
 		async def share_with_many_async(self, form: EncryptedForm, delegates: Dict[str, FormShareOptions]) -> EncryptedForm:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = EncryptedForm._deserialize(json.loads(success.decode('utf-8')))
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
+			def do_decode(raw_result):
+				return EncryptedForm._deserialize(raw_result)
 			payload = {
 				"form": form.__serialize__(),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 			}
-			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
+			return await execute_async_method_job(
 				self.cardinal_sdk._executor,
+				True,
+				do_decode,
 				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.encrypted.shareWithManyAsync,
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
-				callback
 			)
-			return await future
 
 		def share_with_many_blocking(self, form: EncryptedForm, delegates: Dict[str, FormShareOptions]) -> EncryptedForm:
 			payload = {
@@ -104,31 +88,23 @@ class FormApi:
 				return return_value
 
 		async def filter_forms_by_async(self, filter: FilterOptions[Form]) -> PaginatedListIterator[EncryptedForm]:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = PaginatedListIterator[EncryptedForm](
-						producer = success,
-						deserializer = lambda x: EncryptedForm._deserialize(x),
-						executor = self.cardinal_sdk._executor
-					)
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
+			def do_decode(raw_result):
+				return PaginatedListIterator[EncryptedForm](
+					producer = raw_result,
+					deserializer = lambda x: EncryptedForm._deserialize(x),
+					executor = self.cardinal_sdk._executor
+				)
 			payload = {
 				"filter": filter.__serialize__(),
 			}
-			callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
+			return await execute_async_method_job(
 				self.cardinal_sdk._executor,
+				False,
+				do_decode,
 				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.encrypted.filterFormsByAsync,
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
-				callback
 			)
-			return await future
 
 		def filter_forms_by_blocking(self, filter: FilterOptions[Form]) -> PaginatedListIterator[EncryptedForm]:
 			payload = {
@@ -154,31 +130,23 @@ class FormApi:
 				)
 
 		async def filter_forms_by_sorted_async(self, filter: SortableFilterOptions[Form]) -> PaginatedListIterator[EncryptedForm]:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = PaginatedListIterator[EncryptedForm](
-						producer = success,
-						deserializer = lambda x: EncryptedForm._deserialize(x),
-						executor = self.cardinal_sdk._executor
-					)
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
+			def do_decode(raw_result):
+				return PaginatedListIterator[EncryptedForm](
+					producer = raw_result,
+					deserializer = lambda x: EncryptedForm._deserialize(x),
+					executor = self.cardinal_sdk._executor
+				)
 			payload = {
 				"filter": filter.__serialize__(),
 			}
-			callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
+			return await execute_async_method_job(
 				self.cardinal_sdk._executor,
+				False,
+				do_decode,
 				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.encrypted.filterFormsBySortedAsync,
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
-				callback
 			)
-			return await future
 
 		def filter_forms_by_sorted_blocking(self, filter: SortableFilterOptions[Form]) -> PaginatedListIterator[EncryptedForm]:
 			payload = {
@@ -204,27 +172,19 @@ class FormApi:
 				)
 
 		async def modify_form_async(self, entity: EncryptedForm) -> EncryptedForm:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = EncryptedForm._deserialize(json.loads(success.decode('utf-8')))
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
+			def do_decode(raw_result):
+				return EncryptedForm._deserialize(raw_result)
 			payload = {
 				"entity": entity.__serialize__(),
 			}
-			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
+			return await execute_async_method_job(
 				self.cardinal_sdk._executor,
+				True,
+				do_decode,
 				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.encrypted.modifyFormAsync,
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
-				callback
 			)
-			return await future
 
 		def modify_form_blocking(self, entity: EncryptedForm) -> EncryptedForm:
 			payload = {
@@ -243,28 +203,20 @@ class FormApi:
 				return return_value
 
 		async def undelete_form_by_id_async(self, id: str, rev: str) -> EncryptedForm:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = EncryptedForm._deserialize(json.loads(success.decode('utf-8')))
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
+			def do_decode(raw_result):
+				return EncryptedForm._deserialize(raw_result)
 			payload = {
 				"id": id,
 				"rev": rev,
 			}
-			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
+			return await execute_async_method_job(
 				self.cardinal_sdk._executor,
+				True,
+				do_decode,
 				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.encrypted.undeleteFormByIdAsync,
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
-				callback
 			)
-			return await future
 
 		def undelete_form_by_id_blocking(self, id: str, rev: str) -> EncryptedForm:
 			payload = {
@@ -284,27 +236,19 @@ class FormApi:
 				return return_value
 
 		async def undelete_form_async(self, form: Form) -> EncryptedForm:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = EncryptedForm._deserialize(json.loads(success.decode('utf-8')))
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
+			def do_decode(raw_result):
+				return EncryptedForm._deserialize(raw_result)
 			payload = {
 				"form": serialize_form(form),
 			}
-			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
+			return await execute_async_method_job(
 				self.cardinal_sdk._executor,
+				True,
+				do_decode,
 				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.encrypted.undeleteFormAsync,
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
-				callback
 			)
-			return await future
 
 		def undelete_form_blocking(self, form: Form) -> EncryptedForm:
 			payload = {
@@ -323,27 +267,19 @@ class FormApi:
 				return return_value
 
 		async def modify_forms_async(self, entities: List[EncryptedForm]) -> List[EncryptedForm]:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = [EncryptedForm._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
+			def do_decode(raw_result):
+				return [EncryptedForm._deserialize(x1) for x1 in raw_result]
 			payload = {
 				"entities": [x0.__serialize__() for x0 in entities],
 			}
-			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
+			return await execute_async_method_job(
 				self.cardinal_sdk._executor,
+				True,
+				do_decode,
 				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.encrypted.modifyFormsAsync,
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
-				callback
 			)
-			return await future
 
 		def modify_forms_blocking(self, entities: List[EncryptedForm]) -> List[EncryptedForm]:
 			payload = {
@@ -362,27 +298,19 @@ class FormApi:
 				return return_value
 
 		async def get_form_async(self, entity_id: str) -> EncryptedForm:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = EncryptedForm._deserialize(json.loads(success.decode('utf-8')))
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
+			def do_decode(raw_result):
+				return EncryptedForm._deserialize(raw_result)
 			payload = {
 				"entityId": entity_id,
 			}
-			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
+			return await execute_async_method_job(
 				self.cardinal_sdk._executor,
+				True,
+				do_decode,
 				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.encrypted.getFormAsync,
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
-				callback
 			)
-			return await future
 
 		def get_form_blocking(self, entity_id: str) -> EncryptedForm:
 			payload = {
@@ -401,27 +329,19 @@ class FormApi:
 				return return_value
 
 		async def get_forms_async(self, entity_ids: List[str]) -> List[EncryptedForm]:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = [EncryptedForm._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
+			def do_decode(raw_result):
+				return [EncryptedForm._deserialize(x1) for x1 in raw_result]
 			payload = {
 				"entityIds": [x0 for x0 in entity_ids],
 			}
-			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
+			return await execute_async_method_job(
 				self.cardinal_sdk._executor,
+				True,
+				do_decode,
 				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.encrypted.getFormsAsync,
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
-				callback
 			)
-			return await future
 
 		def get_forms_blocking(self, entity_ids: List[str]) -> List[EncryptedForm]:
 			payload = {
@@ -440,27 +360,19 @@ class FormApi:
 				return return_value
 
 		async def get_latest_form_by_logical_uuid_async(self, logical_uuid: str) -> EncryptedForm:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = EncryptedForm._deserialize(json.loads(success.decode('utf-8')))
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
+			def do_decode(raw_result):
+				return EncryptedForm._deserialize(raw_result)
 			payload = {
 				"logicalUuid": logical_uuid,
 			}
-			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
+			return await execute_async_method_job(
 				self.cardinal_sdk._executor,
+				True,
+				do_decode,
 				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.encrypted.getLatestFormByLogicalUuidAsync,
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
-				callback
 			)
-			return await future
 
 		def get_latest_form_by_logical_uuid_blocking(self, logical_uuid: str) -> EncryptedForm:
 			payload = {
@@ -479,27 +391,19 @@ class FormApi:
 				return return_value
 
 		async def get_latest_form_by_unique_id_async(self, unique_id: str) -> EncryptedForm:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = EncryptedForm._deserialize(json.loads(success.decode('utf-8')))
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
+			def do_decode(raw_result):
+				return EncryptedForm._deserialize(raw_result)
 			payload = {
 				"uniqueId": unique_id,
 			}
-			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
+			return await execute_async_method_job(
 				self.cardinal_sdk._executor,
+				True,
+				do_decode,
 				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.encrypted.getLatestFormByUniqueIdAsync,
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
-				callback
 			)
-			return await future
 
 		def get_latest_form_by_unique_id_blocking(self, unique_id: str) -> EncryptedForm:
 			payload = {
@@ -523,29 +427,21 @@ class FormApi:
 			self.cardinal_sdk = cardinal_sdk
 
 		async def share_with_async(self, delegate_id: str, form: Form, options: Optional[FormShareOptions] = None) -> Form:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = deserialize_form(json.loads(success.decode('utf-8')))
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
+			def do_decode(raw_result):
+				return deserialize_form(raw_result)
 			payload = {
 				"delegateId": delegate_id,
 				"form": serialize_form(form),
 				"options": options.__serialize__() if options is not None else None,
 			}
-			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
+			return await execute_async_method_job(
 				self.cardinal_sdk._executor,
+				True,
+				do_decode,
 				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.tryAndRecover.shareWithAsync,
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
-				callback
 			)
-			return await future
 
 		def share_with_blocking(self, delegate_id: str, form: Form, options: Optional[FormShareOptions] = None) -> Form:
 			payload = {
@@ -566,28 +462,20 @@ class FormApi:
 				return return_value
 
 		async def share_with_many_async(self, form: Form, delegates: Dict[str, FormShareOptions]) -> Form:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = deserialize_form(json.loads(success.decode('utf-8')))
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
+			def do_decode(raw_result):
+				return deserialize_form(raw_result)
 			payload = {
 				"form": serialize_form(form),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 			}
-			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
+			return await execute_async_method_job(
 				self.cardinal_sdk._executor,
+				True,
+				do_decode,
 				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.tryAndRecover.shareWithManyAsync,
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
-				callback
 			)
-			return await future
 
 		def share_with_many_blocking(self, form: Form, delegates: Dict[str, FormShareOptions]) -> Form:
 			payload = {
@@ -607,31 +495,23 @@ class FormApi:
 				return return_value
 
 		async def filter_forms_by_async(self, filter: FilterOptions[Form]) -> PaginatedListIterator[Form]:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = PaginatedListIterator[Form](
-						producer = success,
-						deserializer = lambda x: deserialize_form(x),
-						executor = self.cardinal_sdk._executor
-					)
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
+			def do_decode(raw_result):
+				return PaginatedListIterator[Form](
+					producer = raw_result,
+					deserializer = lambda x: deserialize_form(x),
+					executor = self.cardinal_sdk._executor
+				)
 			payload = {
 				"filter": filter.__serialize__(),
 			}
-			callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
+			return await execute_async_method_job(
 				self.cardinal_sdk._executor,
+				False,
+				do_decode,
 				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.tryAndRecover.filterFormsByAsync,
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
-				callback
 			)
-			return await future
 
 		def filter_forms_by_blocking(self, filter: FilterOptions[Form]) -> PaginatedListIterator[Form]:
 			payload = {
@@ -657,31 +537,23 @@ class FormApi:
 				)
 
 		async def filter_forms_by_sorted_async(self, filter: SortableFilterOptions[Form]) -> PaginatedListIterator[Form]:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = PaginatedListIterator[Form](
-						producer = success,
-						deserializer = lambda x: deserialize_form(x),
-						executor = self.cardinal_sdk._executor
-					)
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
+			def do_decode(raw_result):
+				return PaginatedListIterator[Form](
+					producer = raw_result,
+					deserializer = lambda x: deserialize_form(x),
+					executor = self.cardinal_sdk._executor
+				)
 			payload = {
 				"filter": filter.__serialize__(),
 			}
-			callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
+			return await execute_async_method_job(
 				self.cardinal_sdk._executor,
+				False,
+				do_decode,
 				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.tryAndRecover.filterFormsBySortedAsync,
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
-				callback
 			)
-			return await future
 
 		def filter_forms_by_sorted_blocking(self, filter: SortableFilterOptions[Form]) -> PaginatedListIterator[Form]:
 			payload = {
@@ -707,27 +579,19 @@ class FormApi:
 				)
 
 		async def modify_form_async(self, entity: Form) -> Form:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = deserialize_form(json.loads(success.decode('utf-8')))
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
+			def do_decode(raw_result):
+				return deserialize_form(raw_result)
 			payload = {
 				"entity": serialize_form(entity),
 			}
-			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
+			return await execute_async_method_job(
 				self.cardinal_sdk._executor,
+				True,
+				do_decode,
 				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.tryAndRecover.modifyFormAsync,
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
-				callback
 			)
-			return await future
 
 		def modify_form_blocking(self, entity: Form) -> Form:
 			payload = {
@@ -746,28 +610,20 @@ class FormApi:
 				return return_value
 
 		async def undelete_form_by_id_async(self, id: str, rev: str) -> Form:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = deserialize_form(json.loads(success.decode('utf-8')))
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
+			def do_decode(raw_result):
+				return deserialize_form(raw_result)
 			payload = {
 				"id": id,
 				"rev": rev,
 			}
-			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
+			return await execute_async_method_job(
 				self.cardinal_sdk._executor,
+				True,
+				do_decode,
 				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.tryAndRecover.undeleteFormByIdAsync,
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
-				callback
 			)
-			return await future
 
 		def undelete_form_by_id_blocking(self, id: str, rev: str) -> Form:
 			payload = {
@@ -787,27 +643,19 @@ class FormApi:
 				return return_value
 
 		async def undelete_form_async(self, form: Form) -> Form:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = deserialize_form(json.loads(success.decode('utf-8')))
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
+			def do_decode(raw_result):
+				return deserialize_form(raw_result)
 			payload = {
 				"form": serialize_form(form),
 			}
-			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
+			return await execute_async_method_job(
 				self.cardinal_sdk._executor,
+				True,
+				do_decode,
 				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.tryAndRecover.undeleteFormAsync,
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
-				callback
 			)
-			return await future
 
 		def undelete_form_blocking(self, form: Form) -> Form:
 			payload = {
@@ -826,27 +674,19 @@ class FormApi:
 				return return_value
 
 		async def modify_forms_async(self, entities: List[Form]) -> List[Form]:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = [deserialize_form(x1) for x1 in json.loads(success.decode('utf-8'))]
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
+			def do_decode(raw_result):
+				return [deserialize_form(x1) for x1 in raw_result]
 			payload = {
 				"entities": [serialize_form(x0) for x0 in entities],
 			}
-			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
+			return await execute_async_method_job(
 				self.cardinal_sdk._executor,
+				True,
+				do_decode,
 				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.tryAndRecover.modifyFormsAsync,
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
-				callback
 			)
-			return await future
 
 		def modify_forms_blocking(self, entities: List[Form]) -> List[Form]:
 			payload = {
@@ -865,27 +705,19 @@ class FormApi:
 				return return_value
 
 		async def get_form_async(self, entity_id: str) -> Form:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = deserialize_form(json.loads(success.decode('utf-8')))
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
+			def do_decode(raw_result):
+				return deserialize_form(raw_result)
 			payload = {
 				"entityId": entity_id,
 			}
-			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
+			return await execute_async_method_job(
 				self.cardinal_sdk._executor,
+				True,
+				do_decode,
 				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.tryAndRecover.getFormAsync,
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
-				callback
 			)
-			return await future
 
 		def get_form_blocking(self, entity_id: str) -> Form:
 			payload = {
@@ -904,27 +736,19 @@ class FormApi:
 				return return_value
 
 		async def get_forms_async(self, entity_ids: List[str]) -> List[Form]:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = [deserialize_form(x1) for x1 in json.loads(success.decode('utf-8'))]
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
+			def do_decode(raw_result):
+				return [deserialize_form(x1) for x1 in raw_result]
 			payload = {
 				"entityIds": [x0 for x0 in entity_ids],
 			}
-			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
+			return await execute_async_method_job(
 				self.cardinal_sdk._executor,
+				True,
+				do_decode,
 				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.tryAndRecover.getFormsAsync,
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
-				callback
 			)
-			return await future
 
 		def get_forms_blocking(self, entity_ids: List[str]) -> List[Form]:
 			payload = {
@@ -943,27 +767,19 @@ class FormApi:
 				return return_value
 
 		async def get_latest_form_by_logical_uuid_async(self, logical_uuid: str) -> Form:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = deserialize_form(json.loads(success.decode('utf-8')))
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
+			def do_decode(raw_result):
+				return deserialize_form(raw_result)
 			payload = {
 				"logicalUuid": logical_uuid,
 			}
-			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
+			return await execute_async_method_job(
 				self.cardinal_sdk._executor,
+				True,
+				do_decode,
 				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.tryAndRecover.getLatestFormByLogicalUuidAsync,
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
-				callback
 			)
-			return await future
 
 		def get_latest_form_by_logical_uuid_blocking(self, logical_uuid: str) -> Form:
 			payload = {
@@ -982,27 +798,19 @@ class FormApi:
 				return return_value
 
 		async def get_latest_form_by_unique_id_async(self, unique_id: str) -> Form:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = deserialize_form(json.loads(success.decode('utf-8')))
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
+			def do_decode(raw_result):
+				return deserialize_form(raw_result)
 			payload = {
 				"uniqueId": unique_id,
 			}
-			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
+			return await execute_async_method_job(
 				self.cardinal_sdk._executor,
+				True,
+				do_decode,
 				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.tryAndRecover.getLatestFormByUniqueIdAsync,
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
-				callback
 			)
-			return await future
 
 		def get_latest_form_by_unique_id_blocking(self, unique_id: str) -> Form:
 			payload = {
@@ -1026,27 +834,19 @@ class FormApi:
 		self.try_and_recover = FormApi.FormFlavouredApi(self.cardinal_sdk)
 
 	async def create_form_async(self, entity: DecryptedForm) -> DecryptedForm:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = DecryptedForm._deserialize(json.loads(success.decode('utf-8')))
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return DecryptedForm._deserialize(raw_result)
 		payload = {
 			"entity": entity.__serialize__(),
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.createFormAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def create_form_blocking(self, entity: DecryptedForm) -> DecryptedForm:
 		payload = {
@@ -1065,27 +865,19 @@ class FormApi:
 			return return_value
 
 	async def create_forms_async(self, entities: List[DecryptedForm]) -> List[DecryptedForm]:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = [DecryptedForm._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return [DecryptedForm._deserialize(x1) for x1 in raw_result]
 		payload = {
 			"entities": [x0.__serialize__() for x0 in entities],
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.createFormsAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def create_forms_blocking(self, entities: List[DecryptedForm]) -> List[DecryptedForm]:
 		payload = {
@@ -1104,15 +896,8 @@ class FormApi:
 			return return_value
 
 	async def with_encryption_metadata_async(self, base: Optional[DecryptedForm], patient: Patient, user: Optional[User] = None, delegates: Dict[str, AccessLevel] = {}, secret_id: SecretIdUseOption = SecretIdUseOptionUseAnySharedWithParent()) -> DecryptedForm:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = DecryptedForm._deserialize(json.loads(success.decode('utf-8')))
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return DecryptedForm._deserialize(raw_result)
 		payload = {
 			"base": base.__serialize__() if base is not None else None,
 			"patient": serialize_patient(patient),
@@ -1120,15 +905,14 @@ class FormApi:
 			"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 			"secretId": serialize_secret_id_use_option(secret_id),
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.withEncryptionMetadataAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def with_encryption_metadata_blocking(self, base: Optional[DecryptedForm], patient: Patient, user: Optional[User] = None, delegates: Dict[str, AccessLevel] = {}, secret_id: SecretIdUseOption = SecretIdUseOptionUseAnySharedWithParent()) -> DecryptedForm:
 		payload = {
@@ -1151,27 +935,19 @@ class FormApi:
 			return return_value
 
 	async def get_encryption_keys_of_async(self, form: Form) -> List[HexString]:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = [x1 for x1 in json.loads(success.decode('utf-8'))]
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return [x1 for x1 in raw_result]
 		payload = {
 			"form": serialize_form(form),
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.getEncryptionKeysOfAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def get_encryption_keys_of_blocking(self, form: Form) -> List[HexString]:
 		payload = {
@@ -1190,27 +966,19 @@ class FormApi:
 			return return_value
 
 	async def has_write_access_async(self, form: Form) -> bool:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = json.loads(success.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return raw_result
 		payload = {
 			"form": serialize_form(form),
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.hasWriteAccessAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def has_write_access_blocking(self, form: Form) -> bool:
 		payload = {
@@ -1229,27 +997,19 @@ class FormApi:
 			return return_value
 
 	async def decrypt_patient_id_of_async(self, form: Form) -> List[str]:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = [x1 for x1 in json.loads(success.decode('utf-8'))]
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return [x1 for x1 in raw_result]
 		payload = {
 			"form": serialize_form(form),
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.decryptPatientIdOfAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def decrypt_patient_id_of_blocking(self, form: Form) -> List[str]:
 		payload = {
@@ -1268,28 +1028,20 @@ class FormApi:
 			return return_value
 
 	async def create_delegation_de_anonymization_metadata_async(self, entity: Form, delegates: List[str]) -> None:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = json.loads(success.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return raw_result
 		payload = {
 			"entity": serialize_form(entity),
 			"delegates": [x0 for x0 in delegates],
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.createDelegationDeAnonymizationMetadataAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def create_delegation_de_anonymization_metadata_blocking(self, entity: Form, delegates: List[str]) -> None:
 		payload = {
@@ -1306,27 +1058,19 @@ class FormApi:
 			raise interpret_kt_error(result_info.failure)
 
 	async def decrypt_async(self, form: EncryptedForm) -> DecryptedForm:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = DecryptedForm._deserialize(json.loads(success.decode('utf-8')))
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return DecryptedForm._deserialize(raw_result)
 		payload = {
 			"form": form.__serialize__(),
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.decryptAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def decrypt_blocking(self, form: EncryptedForm) -> DecryptedForm:
 		payload = {
@@ -1345,27 +1089,19 @@ class FormApi:
 			return return_value
 
 	async def try_decrypt_async(self, form: EncryptedForm) -> Form:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = deserialize_form(json.loads(success.decode('utf-8')))
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return deserialize_form(raw_result)
 		payload = {
 			"form": form.__serialize__(),
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.tryDecryptAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def try_decrypt_blocking(self, form: EncryptedForm) -> Form:
 		payload = {
@@ -1384,27 +1120,19 @@ class FormApi:
 			return return_value
 
 	async def match_forms_by_async(self, filter: FilterOptions[Form]) -> List[str]:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = [x1 for x1 in json.loads(success.decode('utf-8'))]
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return [x1 for x1 in raw_result]
 		payload = {
 			"filter": filter.__serialize__(),
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.matchFormsByAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def match_forms_by_blocking(self, filter: FilterOptions[Form]) -> List[str]:
 		payload = {
@@ -1423,27 +1151,19 @@ class FormApi:
 			return return_value
 
 	async def match_forms_by_sorted_async(self, filter: SortableFilterOptions[Form]) -> List[str]:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = [x1 for x1 in json.loads(success.decode('utf-8'))]
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return [x1 for x1 in raw_result]
 		payload = {
 			"filter": filter.__serialize__(),
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.matchFormsBySortedAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def match_forms_by_sorted_blocking(self, filter: SortableFilterOptions[Form]) -> List[str]:
 		payload = {
@@ -1462,28 +1182,20 @@ class FormApi:
 			return return_value
 
 	async def delete_form_by_id_async(self, entity_id: str, rev: str) -> DocIdentifier:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = DocIdentifier._deserialize(json.loads(success.decode('utf-8')))
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return DocIdentifier._deserialize(raw_result)
 		payload = {
 			"entityId": entity_id,
 			"rev": rev,
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.deleteFormByIdAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def delete_form_by_id_blocking(self, entity_id: str, rev: str) -> DocIdentifier:
 		payload = {
@@ -1503,27 +1215,19 @@ class FormApi:
 			return return_value
 
 	async def delete_forms_by_ids_async(self, entity_ids: List[IdWithMandatoryRev]) -> List[DocIdentifier]:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = [DocIdentifier._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return [DocIdentifier._deserialize(x1) for x1 in raw_result]
 		payload = {
 			"entityIds": [x0.__serialize__() for x0 in entity_ids],
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.deleteFormsByIdsAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def delete_forms_by_ids_blocking(self, entity_ids: List[IdWithMandatoryRev]) -> List[DocIdentifier]:
 		payload = {
@@ -1542,28 +1246,20 @@ class FormApi:
 			return return_value
 
 	async def purge_form_by_id_async(self, id: str, rev: str) -> None:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = json.loads(success.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return raw_result
 		payload = {
 			"id": id,
 			"rev": rev,
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.purgeFormByIdAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def purge_form_by_id_blocking(self, id: str, rev: str) -> None:
 		payload = {
@@ -1580,27 +1276,19 @@ class FormApi:
 			raise interpret_kt_error(result_info.failure)
 
 	async def delete_form_async(self, form: Form) -> DocIdentifier:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = DocIdentifier._deserialize(json.loads(success.decode('utf-8')))
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return DocIdentifier._deserialize(raw_result)
 		payload = {
 			"form": serialize_form(form),
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.deleteFormAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def delete_form_blocking(self, form: Form) -> DocIdentifier:
 		payload = {
@@ -1619,27 +1307,19 @@ class FormApi:
 			return return_value
 
 	async def delete_forms_async(self, forms: List[Form]) -> List[DocIdentifier]:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = [DocIdentifier._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return [DocIdentifier._deserialize(x1) for x1 in raw_result]
 		payload = {
 			"forms": [serialize_form(x0) for x0 in forms],
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.deleteFormsAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def delete_forms_blocking(self, forms: List[Form]) -> List[DocIdentifier]:
 		payload = {
@@ -1658,27 +1338,19 @@ class FormApi:
 			return return_value
 
 	async def purge_form_async(self, form: Form) -> None:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = json.loads(success.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return raw_result
 		payload = {
 			"form": serialize_form(form),
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.purgeFormAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def purge_form_blocking(self, form: Form) -> None:
 		payload = {
@@ -1694,28 +1366,20 @@ class FormApi:
 			raise interpret_kt_error(result_info.failure)
 
 	async def get_form_template_async(self, form_template_id: str, raw: Optional[bool] = None) -> FormTemplate:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = FormTemplate._deserialize(json.loads(success.decode('utf-8')))
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return FormTemplate._deserialize(raw_result)
 		payload = {
 			"formTemplateId": form_template_id,
 			"raw": raw,
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.getFormTemplateAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def get_form_template_blocking(self, form_template_id: str, raw: Optional[bool] = None) -> FormTemplate:
 		payload = {
@@ -1735,27 +1399,19 @@ class FormApi:
 			return return_value
 
 	async def create_form_template_async(self, form_template: FormTemplate) -> FormTemplate:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = FormTemplate._deserialize(json.loads(success.decode('utf-8')))
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return FormTemplate._deserialize(raw_result)
 		payload = {
 			"formTemplate": form_template.__serialize__(),
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.createFormTemplateAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def create_form_template_blocking(self, form_template: FormTemplate) -> FormTemplate:
 		payload = {
@@ -1774,27 +1430,19 @@ class FormApi:
 			return return_value
 
 	async def delete_form_template_async(self, form_template_id: str) -> DocIdentifier:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = DocIdentifier._deserialize(json.loads(success.decode('utf-8')))
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return DocIdentifier._deserialize(raw_result)
 		payload = {
 			"formTemplateId": form_template_id,
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.deleteFormTemplateAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def delete_form_template_blocking(self, form_template_id: str) -> DocIdentifier:
 		payload = {
@@ -1813,27 +1461,19 @@ class FormApi:
 			return return_value
 
 	async def update_form_template_async(self, form_template: FormTemplate) -> FormTemplate:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = FormTemplate._deserialize(json.loads(success.decode('utf-8')))
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return FormTemplate._deserialize(raw_result)
 		payload = {
 			"formTemplate": form_template.__serialize__(),
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.updateFormTemplateAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def update_form_template_blocking(self, form_template: FormTemplate) -> FormTemplate:
 		payload = {
@@ -1852,28 +1492,20 @@ class FormApi:
 			return return_value
 
 	async def set_template_attachment_async(self, form_template_id: str, payload: bytearray) -> str:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = json.loads(success.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return raw_result
 		payload = {
 			"formTemplateId": form_template_id,
 			"payload": base64.b64encode(payload).decode('utf-8'),
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.setTemplateAttachmentAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def set_template_attachment_blocking(self, form_template_id: str, payload: bytearray) -> str:
 		payload = {
@@ -1893,29 +1525,21 @@ class FormApi:
 			return return_value
 
 	async def share_with_async(self, delegate_id: str, form: DecryptedForm, options: Optional[FormShareOptions] = None) -> DecryptedForm:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = DecryptedForm._deserialize(json.loads(success.decode('utf-8')))
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return DecryptedForm._deserialize(raw_result)
 		payload = {
 			"delegateId": delegate_id,
 			"form": form.__serialize__(),
 			"options": options.__serialize__() if options is not None else None,
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.shareWithAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def share_with_blocking(self, delegate_id: str, form: DecryptedForm, options: Optional[FormShareOptions] = None) -> DecryptedForm:
 		payload = {
@@ -1936,28 +1560,20 @@ class FormApi:
 			return return_value
 
 	async def share_with_many_async(self, form: DecryptedForm, delegates: Dict[str, FormShareOptions]) -> DecryptedForm:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = DecryptedForm._deserialize(json.loads(success.decode('utf-8')))
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return DecryptedForm._deserialize(raw_result)
 		payload = {
 			"form": form.__serialize__(),
 			"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.shareWithManyAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def share_with_many_blocking(self, form: DecryptedForm, delegates: Dict[str, FormShareOptions]) -> DecryptedForm:
 		payload = {
@@ -1977,31 +1593,23 @@ class FormApi:
 			return return_value
 
 	async def filter_forms_by_async(self, filter: FilterOptions[Form]) -> PaginatedListIterator[DecryptedForm]:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = PaginatedListIterator[DecryptedForm](
-					producer = success,
-					deserializer = lambda x: DecryptedForm._deserialize(x),
-					executor = self.cardinal_sdk._executor
-				)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return PaginatedListIterator[DecryptedForm](
+				producer = raw_result,
+				deserializer = lambda x: DecryptedForm._deserialize(x),
+				executor = self.cardinal_sdk._executor
+			)
 		payload = {
 			"filter": filter.__serialize__(),
 		}
-		callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			False,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.filterFormsByAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def filter_forms_by_blocking(self, filter: FilterOptions[Form]) -> PaginatedListIterator[DecryptedForm]:
 		payload = {
@@ -2027,31 +1635,23 @@ class FormApi:
 			)
 
 	async def filter_forms_by_sorted_async(self, filter: SortableFilterOptions[Form]) -> PaginatedListIterator[DecryptedForm]:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = PaginatedListIterator[DecryptedForm](
-					producer = success,
-					deserializer = lambda x: DecryptedForm._deserialize(x),
-					executor = self.cardinal_sdk._executor
-				)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return PaginatedListIterator[DecryptedForm](
+				producer = raw_result,
+				deserializer = lambda x: DecryptedForm._deserialize(x),
+				executor = self.cardinal_sdk._executor
+			)
 		payload = {
 			"filter": filter.__serialize__(),
 		}
-		callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			False,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.filterFormsBySortedAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def filter_forms_by_sorted_blocking(self, filter: SortableFilterOptions[Form]) -> PaginatedListIterator[DecryptedForm]:
 		payload = {
@@ -2077,27 +1677,19 @@ class FormApi:
 			)
 
 	async def modify_form_async(self, entity: DecryptedForm) -> DecryptedForm:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = DecryptedForm._deserialize(json.loads(success.decode('utf-8')))
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return DecryptedForm._deserialize(raw_result)
 		payload = {
 			"entity": entity.__serialize__(),
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.modifyFormAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def modify_form_blocking(self, entity: DecryptedForm) -> DecryptedForm:
 		payload = {
@@ -2116,28 +1708,20 @@ class FormApi:
 			return return_value
 
 	async def undelete_form_by_id_async(self, id: str, rev: str) -> DecryptedForm:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = DecryptedForm._deserialize(json.loads(success.decode('utf-8')))
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return DecryptedForm._deserialize(raw_result)
 		payload = {
 			"id": id,
 			"rev": rev,
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.undeleteFormByIdAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def undelete_form_by_id_blocking(self, id: str, rev: str) -> DecryptedForm:
 		payload = {
@@ -2157,27 +1741,19 @@ class FormApi:
 			return return_value
 
 	async def undelete_form_async(self, form: Form) -> DecryptedForm:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = DecryptedForm._deserialize(json.loads(success.decode('utf-8')))
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return DecryptedForm._deserialize(raw_result)
 		payload = {
 			"form": serialize_form(form),
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.undeleteFormAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def undelete_form_blocking(self, form: Form) -> DecryptedForm:
 		payload = {
@@ -2196,27 +1772,19 @@ class FormApi:
 			return return_value
 
 	async def modify_forms_async(self, entities: List[DecryptedForm]) -> List[DecryptedForm]:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = [DecryptedForm._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return [DecryptedForm._deserialize(x1) for x1 in raw_result]
 		payload = {
 			"entities": [x0.__serialize__() for x0 in entities],
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.modifyFormsAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def modify_forms_blocking(self, entities: List[DecryptedForm]) -> List[DecryptedForm]:
 		payload = {
@@ -2235,27 +1803,19 @@ class FormApi:
 			return return_value
 
 	async def get_form_async(self, entity_id: str) -> DecryptedForm:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = DecryptedForm._deserialize(json.loads(success.decode('utf-8')))
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return DecryptedForm._deserialize(raw_result)
 		payload = {
 			"entityId": entity_id,
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.getFormAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def get_form_blocking(self, entity_id: str) -> DecryptedForm:
 		payload = {
@@ -2274,27 +1834,19 @@ class FormApi:
 			return return_value
 
 	async def get_forms_async(self, entity_ids: List[str]) -> List[DecryptedForm]:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = [DecryptedForm._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return [DecryptedForm._deserialize(x1) for x1 in raw_result]
 		payload = {
 			"entityIds": [x0 for x0 in entity_ids],
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.getFormsAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def get_forms_blocking(self, entity_ids: List[str]) -> List[DecryptedForm]:
 		payload = {
@@ -2313,27 +1865,19 @@ class FormApi:
 			return return_value
 
 	async def get_latest_form_by_logical_uuid_async(self, logical_uuid: str) -> DecryptedForm:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = DecryptedForm._deserialize(json.loads(success.decode('utf-8')))
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return DecryptedForm._deserialize(raw_result)
 		payload = {
 			"logicalUuid": logical_uuid,
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.getLatestFormByLogicalUuidAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def get_latest_form_by_logical_uuid_blocking(self, logical_uuid: str) -> DecryptedForm:
 		payload = {
@@ -2352,27 +1896,19 @@ class FormApi:
 			return return_value
 
 	async def get_latest_form_by_unique_id_async(self, unique_id: str) -> DecryptedForm:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = DecryptedForm._deserialize(json.loads(success.decode('utf-8')))
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return DecryptedForm._deserialize(raw_result)
 		payload = {
 			"uniqueId": unique_id,
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormApi.getLatestFormByUniqueIdAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def get_latest_form_by_unique_id_blocking(self, unique_id: str) -> DecryptedForm:
 		payload = {

@@ -18,6 +18,7 @@ import kotlin.Unit
 import kotlin.collections.List
 import kotlinx.cinterop.ByteVarOf
 import kotlinx.cinterop.CFunction
+import kotlinx.cinterop.COpaquePointer
 import kotlinx.cinterop.CPointer
 import kotlinx.cinterop.CValues
 import kotlinx.cinterop.ExperimentalForeignApi
@@ -52,7 +53,7 @@ public fun deleteReceiptAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<DeleteReceiptParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
@@ -88,7 +89,7 @@ public fun deleteReceiptsAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<DeleteReceiptsParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
@@ -126,7 +127,7 @@ public fun getRawReceiptAttachmentAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<GetRawReceiptAttachmentParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
@@ -171,7 +172,7 @@ public fun setRawReceiptAttachmentAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<SetRawReceiptAttachmentParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
@@ -210,7 +211,7 @@ public fun modifyReceiptAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<ModifyReceiptParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
@@ -245,7 +246,7 @@ public fun getReceiptAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<GetReceiptParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
@@ -281,7 +282,7 @@ public fun listByReferenceAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<ListByReferenceParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
