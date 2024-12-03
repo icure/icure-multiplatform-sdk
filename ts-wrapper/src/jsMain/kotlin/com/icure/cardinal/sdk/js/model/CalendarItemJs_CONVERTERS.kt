@@ -12,8 +12,9 @@ import com.icure.cardinal.sdk.js.model.CheckedConverters.undefinedToNull
 import com.icure.cardinal.sdk.js.model.base.CodeStubJs
 import com.icure.cardinal.sdk.js.model.base.codeStub_fromJs
 import com.icure.cardinal.sdk.js.model.base.codeStub_toJs
-import com.icure.cardinal.sdk.js.model.embed.CalendarItemTagJs
+import com.icure.cardinal.sdk.js.model.embed.DecryptedCalendarItemTagJs
 import com.icure.cardinal.sdk.js.model.embed.DelegationJs
+import com.icure.cardinal.sdk.js.model.embed.EncryptedCalendarItemTagJs
 import com.icure.cardinal.sdk.js.model.embed.address_fromJs
 import com.icure.cardinal.sdk.js.model.embed.address_toJs
 import com.icure.cardinal.sdk.js.model.embed.calendarItemTag_fromJs
@@ -30,8 +31,9 @@ import com.icure.cardinal.sdk.model.CalendarItem
 import com.icure.cardinal.sdk.model.DecryptedCalendarItem
 import com.icure.cardinal.sdk.model.EncryptedCalendarItem
 import com.icure.cardinal.sdk.model.base.CodeStub
-import com.icure.cardinal.sdk.model.embed.CalendarItemTag
+import com.icure.cardinal.sdk.model.embed.DecryptedCalendarItemTag
 import com.icure.cardinal.sdk.model.embed.Delegation
+import com.icure.cardinal.sdk.model.embed.EncryptedCalendarItemTag
 import kotlin.Array
 import kotlin.String
 import kotlin.Suppress
@@ -146,7 +148,7 @@ public fun calendarItem_toJs(obj: DecryptedCalendarItem): DecryptedCalendarItemJ
 	)
 	val meetingTags = setToArray(
 		obj.meetingTags,
-		{ x1: CalendarItemTag ->
+		{ x1: DecryptedCalendarItemTag ->
 			calendarItemTag_toJs(x1)
 		},
 	)
@@ -309,7 +311,7 @@ public fun calendarItem_fromJs(obj: DecryptedCalendarItemJs): DecryptedCalendarI
 	val meetingTags = arrayToSet(
 		obj.meetingTags,
 		"obj.meetingTags",
-		{ x1: CalendarItemTagJs ->
+		{ x1: DecryptedCalendarItemTagJs ->
 			calendarItemTag_fromJs(x1)
 		},
 	)
@@ -531,7 +533,7 @@ public fun calendarItem_toJs(obj: EncryptedCalendarItem): EncryptedCalendarItemJ
 	)
 	val meetingTags = setToArray(
 		obj.meetingTags,
-		{ x1: CalendarItemTag ->
+		{ x1: EncryptedCalendarItemTag ->
 			calendarItemTag_toJs(x1)
 		},
 	)
@@ -694,7 +696,7 @@ public fun calendarItem_fromJs(obj: EncryptedCalendarItemJs): EncryptedCalendarI
 	val meetingTags = arrayToSet(
 		obj.meetingTags,
 		"obj.meetingTags",
-		{ x1: CalendarItemTagJs ->
+		{ x1: EncryptedCalendarItemTagJs ->
 			calendarItemTag_fromJs(x1)
 		},
 	)

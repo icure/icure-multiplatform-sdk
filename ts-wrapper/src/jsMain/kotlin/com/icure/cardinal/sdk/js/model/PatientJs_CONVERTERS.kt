@@ -21,20 +21,22 @@ import com.icure.cardinal.sdk.js.model.base.identifier_fromJs
 import com.icure.cardinal.sdk.js.model.base.identifier_toJs
 import com.icure.cardinal.sdk.js.model.embed.AnnotationJs
 import com.icure.cardinal.sdk.js.model.embed.DecryptedAddressJs
+import com.icure.cardinal.sdk.js.model.embed.DecryptedEmploymentInfoJs
 import com.icure.cardinal.sdk.js.model.embed.DecryptedFinancialInstitutionInformationJs
 import com.icure.cardinal.sdk.js.model.embed.DecryptedInsurabilityJs
 import com.icure.cardinal.sdk.js.model.embed.DecryptedMedicalHouseContractJs
 import com.icure.cardinal.sdk.js.model.embed.DecryptedPatientHealthCarePartyJs
+import com.icure.cardinal.sdk.js.model.embed.DecryptedSchoolingInfoJs
 import com.icure.cardinal.sdk.js.model.embed.DelegationJs
-import com.icure.cardinal.sdk.js.model.embed.EmploymentInfoJs
 import com.icure.cardinal.sdk.js.model.embed.EncryptedAddressJs
+import com.icure.cardinal.sdk.js.model.embed.EncryptedEmploymentInfoJs
 import com.icure.cardinal.sdk.js.model.embed.EncryptedFinancialInstitutionInformationJs
 import com.icure.cardinal.sdk.js.model.embed.EncryptedInsurabilityJs
 import com.icure.cardinal.sdk.js.model.embed.EncryptedMedicalHouseContractJs
 import com.icure.cardinal.sdk.js.model.embed.EncryptedPatientHealthCarePartyJs
+import com.icure.cardinal.sdk.js.model.embed.EncryptedSchoolingInfoJs
 import com.icure.cardinal.sdk.js.model.embed.PartnershipJs
 import com.icure.cardinal.sdk.js.model.embed.PersonNameJs
-import com.icure.cardinal.sdk.js.model.embed.SchoolingInfoJs
 import com.icure.cardinal.sdk.js.model.embed.address_fromJs
 import com.icure.cardinal.sdk.js.model.embed.address_toJs
 import com.icure.cardinal.sdk.js.model.embed.annotation_fromJs
@@ -78,22 +80,24 @@ import com.icure.cardinal.sdk.model.base.Identifier
 import com.icure.cardinal.sdk.model.embed.Annotation
 import com.icure.cardinal.sdk.model.embed.DeactivationReason
 import com.icure.cardinal.sdk.model.embed.DecryptedAddress
+import com.icure.cardinal.sdk.model.embed.DecryptedEmploymentInfo
 import com.icure.cardinal.sdk.model.embed.DecryptedFinancialInstitutionInformation
 import com.icure.cardinal.sdk.model.embed.DecryptedInsurability
 import com.icure.cardinal.sdk.model.embed.DecryptedMedicalHouseContract
 import com.icure.cardinal.sdk.model.embed.DecryptedPatientHealthCareParty
+import com.icure.cardinal.sdk.model.embed.DecryptedSchoolingInfo
 import com.icure.cardinal.sdk.model.embed.Delegation
-import com.icure.cardinal.sdk.model.embed.EmploymentInfo
 import com.icure.cardinal.sdk.model.embed.EncryptedAddress
+import com.icure.cardinal.sdk.model.embed.EncryptedEmploymentInfo
 import com.icure.cardinal.sdk.model.embed.EncryptedFinancialInstitutionInformation
 import com.icure.cardinal.sdk.model.embed.EncryptedInsurability
 import com.icure.cardinal.sdk.model.embed.EncryptedMedicalHouseContract
 import com.icure.cardinal.sdk.model.embed.EncryptedPatientHealthCareParty
+import com.icure.cardinal.sdk.model.embed.EncryptedSchoolingInfo
 import com.icure.cardinal.sdk.model.embed.Gender
 import com.icure.cardinal.sdk.model.embed.Partnership
 import com.icure.cardinal.sdk.model.embed.PersonName
 import com.icure.cardinal.sdk.model.embed.PersonalStatus
-import com.icure.cardinal.sdk.model.embed.SchoolingInfo
 import com.icure.cardinal.sdk.model.specializations.AesExchangeKeyEncryptionKeypairIdentifier
 import com.icure.cardinal.sdk.model.specializations.HexString
 import com.icure.cardinal.sdk.model.specializations.SpkiHexString
@@ -512,13 +516,13 @@ public fun patient_toJs(obj: DecryptedPatient): DecryptedPatientJs {
 	)
 	val schoolingInfos = listToArray(
 		obj.schoolingInfos,
-		{ x1: SchoolingInfo ->
+		{ x1: DecryptedSchoolingInfo ->
 			schoolingInfo_toJs(x1)
 		},
 	)
 	val employementInfos = listToArray(
 		obj.employementInfos,
-		{ x1: EmploymentInfo ->
+		{ x1: DecryptedEmploymentInfo ->
 			employmentInfo_toJs(x1)
 		},
 	)
@@ -954,14 +958,14 @@ public fun patient_fromJs(obj: DecryptedPatientJs): DecryptedPatient {
 	val schoolingInfos = arrayToList(
 		obj.schoolingInfos,
 		"obj.schoolingInfos",
-		{ x1: SchoolingInfoJs ->
+		{ x1: DecryptedSchoolingInfoJs ->
 			schoolingInfo_fromJs(x1)
 		},
 	)
 	val employementInfos = arrayToList(
 		obj.employementInfos,
 		"obj.employementInfos",
-		{ x1: EmploymentInfoJs ->
+		{ x1: DecryptedEmploymentInfoJs ->
 			employmentInfo_fromJs(x1)
 		},
 	)
@@ -1457,13 +1461,13 @@ public fun patient_toJs(obj: EncryptedPatient): EncryptedPatientJs {
 	)
 	val schoolingInfos = listToArray(
 		obj.schoolingInfos,
-		{ x1: SchoolingInfo ->
+		{ x1: EncryptedSchoolingInfo ->
 			schoolingInfo_toJs(x1)
 		},
 	)
 	val employementInfos = listToArray(
 		obj.employementInfos,
-		{ x1: EmploymentInfo ->
+		{ x1: EncryptedEmploymentInfo ->
 			employmentInfo_toJs(x1)
 		},
 	)
@@ -1899,14 +1903,14 @@ public fun patient_fromJs(obj: EncryptedPatientJs): EncryptedPatient {
 	val schoolingInfos = arrayToList(
 		obj.schoolingInfos,
 		"obj.schoolingInfos",
-		{ x1: SchoolingInfoJs ->
+		{ x1: EncryptedSchoolingInfoJs ->
 			schoolingInfo_fromJs(x1)
 		},
 	)
 	val employementInfos = arrayToList(
 		obj.employementInfos,
 		"obj.employementInfos",
-		{ x1: EmploymentInfoJs ->
+		{ x1: EncryptedEmploymentInfoJs ->
 			employmentInfo_fromJs(x1)
 		},
 	)

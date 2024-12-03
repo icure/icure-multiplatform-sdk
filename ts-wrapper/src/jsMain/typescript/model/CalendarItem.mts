@@ -5,7 +5,7 @@ import {HasEncryptionMetadata} from './base/HasEncryptionMetadata.mjs';
 import {ICureDocument} from './base/ICureDocument.mjs';
 import {StoredDocument} from './base/StoredDocument.mjs';
 import {Address, DecryptedAddress, EncryptedAddress} from './embed/Address.mjs';
-import {CalendarItemTag} from './embed/CalendarItemTag.mjs';
+import {CalendarItemTag, DecryptedCalendarItemTag, EncryptedCalendarItemTag} from './embed/CalendarItemTag.mjs';
 import {Delegation} from './embed/Delegation.mjs';
 import {Encryptable} from './embed/Encryptable.mjs';
 import {FlowItem} from './embed/FlowItem.mjs';
@@ -135,7 +135,7 @@ export class DecryptedCalendarItem {
 
 	recurrenceId: string | undefined = undefined;
 
-	meetingTags: Array<CalendarItemTag> = [];
+	meetingTags: Array<DecryptedCalendarItemTag> = [];
 
 	flowItem: FlowItem | undefined = undefined;
 
@@ -268,7 +268,7 @@ export class EncryptedCalendarItem {
 
 	recurrenceId: string | undefined = undefined;
 
-	meetingTags: Array<CalendarItemTag> = [];
+	meetingTags: Array<EncryptedCalendarItemTag> = [];
 
 	flowItem: FlowItem | undefined = undefined;
 

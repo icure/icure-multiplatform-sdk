@@ -605,20 +605,6 @@ class UserPlatformApi {
 		return User.fromJSON(parsedResJson);
 	}
 
-	Future<User> example(int cancellationToken, String sdkId, int timeoutSeconds) async {
-		final res = await _methodChannel.invokeMethod<String>(
-			'UserApi.example',
-			{
-				"cancellationToken": cancellationToken.toString(),
-				"sdkId": sdkId,
-				"timeoutSeconds": jsonEncode(timeoutSeconds),
-			}
-		).catchError(convertPlatformException);
-		if (res == null) throw AssertionError("received null result from platform method example");
-		final parsedResJson = jsonDecode(res);
-		return User.fromJSON(parsedResJson);
-	}
-
 	Future<EntitySubscription<User>> subscribeToEvents(String sdkId, Set<SubscriptionEventType> events, FilterOptions<User> filter, EntitySubscriptionConfiguration? subscriptionConfig) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'UserApi.subscribeToEvents',
