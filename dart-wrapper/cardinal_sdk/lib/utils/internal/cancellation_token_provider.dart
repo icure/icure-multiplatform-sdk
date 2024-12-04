@@ -1,4 +1,6 @@
 class CancellationTokenProvider {
+  CancellationTokenProvider._();
+
   static int _count = 0;
   static int getNextToken() {
     final res = _count;

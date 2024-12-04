@@ -64,12 +64,7 @@ class AuthenticationWithProcessStep {
   }
 }
 
-class CardinalSdk {
-  static final Finalizer<String> _finalizer = Finalizer((resourceId) =>
-      CardinalSdkPlatformInterface.instance.utils.releasePlatformResource(resourceId)
-  );
-
-  final String _sdkId;
+interface class CardinalApis {
   final ApplicationSettingsApi applicationSettings;
   final CodeApi code;
   final DeviceApi device;
@@ -106,42 +101,54 @@ class CardinalSdk {
   final CardinalMaintenanceTaskApi cardinalMaintenanceTask;
   final DataOwnerApi dataOwner;
 
+  CardinalApis({required this.applicationSettings, required this.code, required this.device, required this.documentTemplate, required this.entityReference, required this.entityTemplate, required this.frontEndMigration, required this.group, required this.healthcareParty, required this.system, required this.insurance, required this.keyword, required this.permission, required this.place, required this.role, required this.tarification, required this.user, required this.medicalLocation, required this.agenda, required this.accessLog, required this.calendarItem, required this.classification, required this.contact, required this.document, required this.form, required this.healthElement, required this.maintenanceTask, required this.message, required this.patient, required this.timeTable, required this.topic, required this.crypto, required this.cardinalMaintenanceTask, required this.dataOwner});
+}
+
+class CardinalSdk extends CardinalApis {
+  static final Finalizer<String> _finalizer = Finalizer((resourceId) =>
+      CardinalSdkPlatformInterface.instance.utils.releasePlatformResource(resourceId)
+  );
+
+  final String _sdkId;
+
   CardinalSdk._(
     this._sdkId
-  ) : applicationSettings = ApplicationSettingsApi(_sdkId),
-    code = CodeApi(_sdkId),
-    device = DeviceApi(_sdkId),
-    documentTemplate = DocumentTemplateApi(_sdkId),
-    entityReference = EntityReferenceApi(_sdkId),
-    entityTemplate = EntityTemplateApi(_sdkId),
-    frontEndMigration = FrontEndMigrationApi(_sdkId),
-    group = GroupApi(_sdkId),
-    healthcareParty = HealthcarePartyApi(_sdkId),
-    system = SystemApi(_sdkId),
-    insurance = InsuranceApi(_sdkId),
-    keyword = KeywordApi(_sdkId),
-    permission = PermissionApi(_sdkId),
-    place = PlaceApi(_sdkId),
-    role = RoleApi(_sdkId),
-    tarification = TarificationApi(_sdkId),
-    user = UserApi(_sdkId),
-    medicalLocation = MedicalLocationApi(_sdkId),
-    agenda = AgendaApi(_sdkId),
-    accessLog = AccessLogApi(_sdkId),
-    calendarItem = CalendarItemApi(_sdkId),
-    classification = ClassificationApi(_sdkId),
-    contact = ContactApi(_sdkId),
-    document = DocumentApi(_sdkId),
-    form = FormApi(_sdkId),
-    healthElement = HealthElementApi(_sdkId),
-    maintenanceTask = MaintenanceTaskApi(_sdkId),
-    message = MessageApi(_sdkId),
-    patient = PatientApi(_sdkId),
-    timeTable = TimeTableApi(_sdkId),
-    topic = TopicApi(_sdkId),
-    crypto = CryptoApi(_sdkId),
-    cardinalMaintenanceTask = CardinalMaintenanceTaskApi(_sdkId),
-    dataOwner = DataOwnerApi(_sdkId);
+  ) : super(
+      applicationSettings: ApplicationSettingsApi(_sdkId),
+      code: CodeApi(_sdkId),
+      device: DeviceApi(_sdkId),
+      documentTemplate: DocumentTemplateApi(_sdkId),
+      entityReference: EntityReferenceApi(_sdkId),
+      entityTemplate: EntityTemplateApi(_sdkId),
+      frontEndMigration: FrontEndMigrationApi(_sdkId),
+      group: GroupApi(_sdkId),
+      healthcareParty: HealthcarePartyApi(_sdkId),
+      system: SystemApi(_sdkId),
+      insurance: InsuranceApi(_sdkId),
+      keyword: KeywordApi(_sdkId),
+      permission: PermissionApi(_sdkId),
+      place: PlaceApi(_sdkId),
+      role: RoleApi(_sdkId),
+      tarification: TarificationApi(_sdkId),
+      user: UserApi(_sdkId),
+      medicalLocation: MedicalLocationApi(_sdkId),
+      agenda: AgendaApi(_sdkId),
+      accessLog: AccessLogApi(_sdkId),
+      calendarItem: CalendarItemApi(_sdkId),
+      classification: ClassificationApi(_sdkId),
+      contact: ContactApi(_sdkId),
+      document: DocumentApi(_sdkId),
+      form: FormApi(_sdkId),
+      healthElement: HealthElementApi(_sdkId),
+      maintenanceTask: MaintenanceTaskApi(_sdkId),
+      message: MessageApi(_sdkId),
+      patient: PatientApi(_sdkId),
+      timeTable: TimeTableApi(_sdkId),
+      topic: TopicApi(_sdkId),
+      crypto: CryptoApi(_sdkId),
+      cardinalMaintenanceTask: CardinalMaintenanceTaskApi(_sdkId),
+      dataOwner: DataOwnerApi(_sdkId)
+  );
 
   factory CardinalSdk._factory(String sdkId) {
     final sdk = CardinalSdk._(sdkId);
