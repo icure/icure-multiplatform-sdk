@@ -41,8 +41,6 @@ public object PatientFiltersDispatcher {
     "byAddressPostalCodeHouseNumberForSelf" -> byAddressPostalCodeHouseNumberForSelf(parameters, resultCallback)
     "byAddressForSelf" -> byAddressForSelf(parameters, resultCallback)
     "byExternalIdForSelf" -> byExternalIdForSelf(parameters, resultCallback)
-    "byModificationDateForDataOwner" -> byModificationDateForDataOwner(parameters, resultCallback)
-    "byModificationDateForSelf" -> byModificationDateForSelf(parameters, resultCallback)
     else -> null
   }?.let { true } ?: false
 
@@ -341,35 +339,6 @@ public object PatientFiltersDispatcher {
     PatientFilters.byExternalIdForSelf(
       resultCallback,
       parameters.getValue("externalIdPrefix"),
-    )
-  }
-
-  private fun byModificationDateForDataOwner(parameters: Map<String, String>, resultCallback: (
-    String?,
-    String?,
-    String?,
-    String?,
-  ) -> Unit) {
-    PatientFilters.byModificationDateForDataOwner(
-      resultCallback,
-      parameters.getValue("dataOwnerId"),
-      parameters.getValue("from"),
-      parameters.getValue("to"),
-      parameters.getValue("descending"),
-    )
-  }
-
-  private fun byModificationDateForSelf(parameters: Map<String, String>, resultCallback: (
-    String?,
-    String?,
-    String?,
-    String?,
-  ) -> Unit) {
-    PatientFilters.byModificationDateForSelf(
-      resultCallback,
-      parameters.getValue("from"),
-      parameters.getValue("to"),
-      parameters.getValue("descending"),
     )
   }
 }

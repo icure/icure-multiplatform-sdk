@@ -61,16 +61,6 @@ class EncryptedCareTeamMember implements CareTeamMember {
 		quality = quality ?? null,
 		encryptedSelf = encryptedSelf ?? null;
 
-	factory EncryptedCareTeamMember.fromJSON(Map<String, dynamic> data) {
-		return EncryptedCareTeamMember(
-			(data["id"] as String),
-			careTeamMemberType: data["careTeamMemberType"] == null ? null : CareTeamMemberType.fromJSON(data["careTeamMemberType"]),
-			healthcarePartyId: (data["healthcarePartyId"] as String?),
-			quality: data["quality"] == null ? null : CodeStub.fromJSON(data["quality"]),
-			encryptedSelf: (data["encryptedSelf"] as Base64String?),
-		);
-	}
-
 	static Map<String, dynamic> encode(EncryptedCareTeamMember value) {
 		Map<String, dynamic> entityAsMap = {
 			"id" : value.id,
@@ -80,6 +70,16 @@ class EncryptedCareTeamMember implements CareTeamMember {
 			"encryptedSelf" : value.encryptedSelf
 		};
 		return entityAsMap;
+	}
+
+	static EncryptedCareTeamMember fromJSON(Map<String, dynamic> data) {
+		return EncryptedCareTeamMember(
+			(data["id"] as String),
+			careTeamMemberType: data["careTeamMemberType"] == null ? null : CareTeamMemberType.fromJSON(data["careTeamMemberType"]),
+			healthcarePartyId: (data["healthcarePartyId"] as String?),
+			quality: data["quality"] == null ? null : CodeStub.fromJSON(data["quality"]),
+			encryptedSelf: (data["encryptedSelf"] as Base64String?),
+		);
 	}
 }
 
@@ -101,16 +101,6 @@ class DecryptedCareTeamMember implements CareTeamMember {
 		quality = quality ?? null,
 		encryptedSelf = encryptedSelf ?? null;
 
-	factory DecryptedCareTeamMember.fromJSON(Map<String, dynamic> data) {
-		return DecryptedCareTeamMember(
-			(data["id"] as String),
-			careTeamMemberType: data["careTeamMemberType"] == null ? null : CareTeamMemberType.fromJSON(data["careTeamMemberType"]),
-			healthcarePartyId: (data["healthcarePartyId"] as String?),
-			quality: data["quality"] == null ? null : CodeStub.fromJSON(data["quality"]),
-			encryptedSelf: (data["encryptedSelf"] as Base64String?),
-		);
-	}
-
 	static Map<String, dynamic> encode(DecryptedCareTeamMember value) {
 		Map<String, dynamic> entityAsMap = {
 			"id" : value.id,
@@ -120,5 +110,15 @@ class DecryptedCareTeamMember implements CareTeamMember {
 			"encryptedSelf" : value.encryptedSelf
 		};
 		return entityAsMap;
+	}
+
+	static DecryptedCareTeamMember fromJSON(Map<String, dynamic> data) {
+		return DecryptedCareTeamMember(
+			(data["id"] as String),
+			careTeamMemberType: data["careTeamMemberType"] == null ? null : CareTeamMemberType.fromJSON(data["careTeamMemberType"]),
+			healthcarePartyId: (data["healthcarePartyId"] as String?),
+			quality: data["quality"] == null ? null : CodeStub.fromJSON(data["quality"]),
+			encryptedSelf: (data["encryptedSelf"] as Base64String?),
+		);
 	}
 }

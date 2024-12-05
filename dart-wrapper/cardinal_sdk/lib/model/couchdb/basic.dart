@@ -9,18 +9,18 @@ class Basic {
 		this.password
 		);
 
-	factory Basic.fromJSON(Map<String, dynamic> data) {
-		return Basic(
-			(data["username"] as String),
-			(data["password"] as String)
-		);
-	}
-
 	static Map<String, dynamic> encode(Basic value) {
 		Map<String, dynamic> entityAsMap = {
 			"username" : value.username,
 			"password" : value.password
 		};
 		return entityAsMap;
+	}
+
+	static Basic fromJSON(Map<String, dynamic> data) {
+		return Basic(
+			(data["username"] as String),
+			(data["password"] as String)
+		);
 	}
 }

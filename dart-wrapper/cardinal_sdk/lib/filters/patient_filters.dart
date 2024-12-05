@@ -165,21 +165,4 @@ abstract class PatientFilters {
 			externalIdPrefix,
 		);
 	}
-
-	static Future<BaseSortableFilterOptions<Patient>> byModificationDateForDataOwner(String dataOwnerId, { int? from, int? to, bool descending = false }) async {
-		return CardinalSdkPlatformInterface.instance.filters.patient.byModificationDateForDataOwner(
-			dataOwnerId,
-			from: from,
-			to: to,
-			descending: descending,
-		);
-	}
-
-	static Future<SortableFilterOptions<Patient>> byModificationDateForSelf({ int? from, int? to, bool descending = false }) async {
-		return CardinalSdkPlatformInterface.instance.filters.patient.byModificationDateForSelf(
-			from: from,
-			to: to,
-			descending: descending,
-		);
-	}
 }

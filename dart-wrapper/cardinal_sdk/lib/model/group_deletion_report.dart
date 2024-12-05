@@ -11,14 +11,6 @@ class GroupDeletionReport {
 		this.server
 		);
 
-	factory GroupDeletionReport.fromJSON(Map<String, dynamic> data) {
-		return GroupDeletionReport(
-			(data["type"] as String),
-			(data["id"] as String),
-			(data["server"] as String)
-		);
-	}
-
 	static Map<String, dynamic> encode(GroupDeletionReport value) {
 		Map<String, dynamic> entityAsMap = {
 			"type" : value.type,
@@ -26,5 +18,13 @@ class GroupDeletionReport {
 			"server" : value.server
 		};
 		return entityAsMap;
+	}
+
+	static GroupDeletionReport fromJSON(Map<String, dynamic> data) {
+		return GroupDeletionReport(
+			(data["type"] as String),
+			(data["id"] as String),
+			(data["server"] as String)
+		);
 	}
 }

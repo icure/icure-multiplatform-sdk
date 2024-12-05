@@ -57,16 +57,6 @@ class EncryptedCalendarItemTag implements CalendarItemTag {
 		userId = userId ?? null,
 		userName = userName ?? null;
 
-	factory EncryptedCalendarItemTag.fromJSON(Map<String, dynamic> data) {
-		return EncryptedCalendarItemTag(
-			code: (data["code"] as String?),
-			date: (data["date"] as int?),
-			userId: (data["userId"] as String?),
-			userName: (data["userName"] as String?),
-			encryptedSelf: (data["encryptedSelf"] as Base64String?)
-		);
-	}
-
 	static Map<String, dynamic> encode(EncryptedCalendarItemTag value) {
 		Map<String, dynamic> entityAsMap = {
 			"code" : value.code,
@@ -76,6 +66,16 @@ class EncryptedCalendarItemTag implements CalendarItemTag {
 			"encryptedSelf" : value.encryptedSelf
 		};
 		return entityAsMap;
+	}
+
+	static EncryptedCalendarItemTag fromJSON(Map<String, dynamic> data) {
+		return EncryptedCalendarItemTag(
+			code: (data["code"] as String?),
+			date: (data["date"] as int?),
+			userId: (data["userId"] as String?),
+			userName: (data["userName"] as String?),
+			encryptedSelf: (data["encryptedSelf"] as Base64String?)
+		);
 	}
 }
 
@@ -96,16 +96,6 @@ class DecryptedCalendarItemTag implements CalendarItemTag {
 		userId = userId ?? null,
 		userName = userName ?? null;
 
-	factory DecryptedCalendarItemTag.fromJSON(Map<String, dynamic> data) {
-		return DecryptedCalendarItemTag(
-			code: (data["code"] as String?),
-			date: (data["date"] as int?),
-			userId: (data["userId"] as String?),
-			userName: (data["userName"] as String?),
-			encryptedSelf: (data["encryptedSelf"] as Base64String?)
-		);
-	}
-
 	static Map<String, dynamic> encode(DecryptedCalendarItemTag value) {
 		Map<String, dynamic> entityAsMap = {
 			"code" : value.code,
@@ -115,5 +105,15 @@ class DecryptedCalendarItemTag implements CalendarItemTag {
 			"encryptedSelf" : value.encryptedSelf
 		};
 		return entityAsMap;
+	}
+
+	static DecryptedCalendarItemTag fromJSON(Map<String, dynamic> data) {
+		return DecryptedCalendarItemTag(
+			code: (data["code"] as String?),
+			date: (data["date"] as int?),
+			userId: (data["userId"] as String?),
+			userName: (data["userName"] as String?),
+			encryptedSelf: (data["encryptedSelf"] as Base64String?)
+		);
 	}
 }

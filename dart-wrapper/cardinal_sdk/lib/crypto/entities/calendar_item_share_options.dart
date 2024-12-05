@@ -19,15 +19,6 @@ class CalendarItemShareOptions {
 		sharePatientId = sharePatientId ?? ShareMetadataBehaviour.ifAvailable,
 		shareSecretIds = shareSecretIds ?? SecretIdShareOptionsAllAvailable(false);
 
-	factory CalendarItemShareOptions.fromJSON(Map<String, dynamic> data) {
-		return CalendarItemShareOptions(
-			requestedPermissions: RequestedPermission.fromJSON(data["requestedPermissions"]),
-			shareEncryptionKey: ShareMetadataBehaviour.fromJSON(data["shareEncryptionKey"]),
-			sharePatientId: ShareMetadataBehaviour.fromJSON(data["sharePatientId"]),
-			shareSecretIds: SecretIdShareOptions.fromJSON(data["shareSecretIds"])
-		);
-	}
-
 	static Map<String, dynamic> encode(CalendarItemShareOptions value) {
 		Map<String, dynamic> entityAsMap = {
 			"requestedPermissions" : RequestedPermission.encode(value.requestedPermissions),
@@ -36,5 +27,14 @@ class CalendarItemShareOptions {
 			"shareSecretIds" : SecretIdShareOptions.encode(value.shareSecretIds)
 		};
 		return entityAsMap;
+	}
+
+	static CalendarItemShareOptions fromJSON(Map<String, dynamic> data) {
+		return CalendarItemShareOptions(
+			requestedPermissions: RequestedPermission.fromJSON(data["requestedPermissions"]),
+			shareEncryptionKey: ShareMetadataBehaviour.fromJSON(data["shareEncryptionKey"]),
+			sharePatientId: ShareMetadataBehaviour.fromJSON(data["sharePatientId"]),
+			shareSecretIds: SecretIdShareOptions.fromJSON(data["shareSecretIds"])
+		);
 	}
 }

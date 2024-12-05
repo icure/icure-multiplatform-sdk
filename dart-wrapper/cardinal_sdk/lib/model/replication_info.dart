@@ -31,15 +31,6 @@ class ReplicationInfo {
 		_pendingFrom = pendingFrom ?? null,
 		_pendingTo = pendingTo ?? null;
 
-	factory ReplicationInfo.fromJSON(Map<String, dynamic> data) {
-		return ReplicationInfo(
-			pendingFrom: (data["pendingFrom"] as int?),
-			pendingTo: (data["pendingTo"] as int?),
-			active: (data["active"] as bool),
-			running: (data["running"] as bool)
-		);
-	}
-
 	static Map<String, dynamic> encode(ReplicationInfo value) {
 		Map<String, dynamic> entityAsMap = {
 			"active" : value.active,
@@ -48,5 +39,14 @@ class ReplicationInfo {
 			"pendingTo" : value.pendingTo
 		};
 		return entityAsMap;
+	}
+
+	static ReplicationInfo fromJSON(Map<String, dynamic> data) {
+		return ReplicationInfo(
+			pendingFrom: (data["pendingFrom"] as int?),
+			pendingTo: (data["pendingTo"] as int?),
+			active: (data["active"] as bool),
+			running: (data["running"] as bool)
+		);
 	}
 }

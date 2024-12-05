@@ -11,18 +11,18 @@ class EntityWithTypeInfo<T extends HasEncryptionMetadata> {
 		this.type
 		);
 
-	factory EntityWithTypeInfo.fromJSON(Map<String, dynamic> data) {
-		return EntityWithTypeInfo(
-			HasEncryptionMetadata.fromJSON(data["entity"]) as T,
-			EntityWithEncryptionMetadataTypeName.fromJSON(data["type"])
-		);
-	}
-
-	static Map<String, dynamic> encode(EntityWithTypeInfo value) {
+	static Map<String, dynamic> encode<T extends HasEncryptionMetadata>(EntityWithTypeInfo<T> value, dynamic Function(T)  encodeT) {
 		Map<String, dynamic> entityAsMap = {
-			"entity" : HasEncryptionMetadata.encode(value.entity),
+			"entity" : encodeT(value.entity),
 			"type" : EntityWithEncryptionMetadataTypeName.encode(value.type)
 		};
 		return entityAsMap;
+	}
+
+	static EntityWithTypeInfo<T> fromJSON<T extends HasEncryptionMetadata>(Map<String, dynamic> data, T Function(dynamic)  decodeT) {
+		return EntityWithTypeInfo(
+			decodeT(data["entity"]),
+			EntityWithEncryptionMetadataTypeName.fromJSON(data["type"])
+		);
 	}
 }

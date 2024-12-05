@@ -16,15 +16,6 @@ class DatabaseSynchronization {
 		filter = filter ?? null,
 		localTarget = localTarget ?? null;
 
-	factory DatabaseSynchronization.fromJSON(Map<String, dynamic> data) {
-		return DatabaseSynchronization(
-			source: (data["source"] as String?),
-			target: (data["target"] as String?),
-			filter: (data["filter"] as String?),
-			localTarget: data["localTarget"] == null ? null : DatabaseSynchronizationTarget.fromJSON(data["localTarget"])
-		);
-	}
-
 	static Map<String, dynamic> encode(DatabaseSynchronization value) {
 		Map<String, dynamic> entityAsMap = {
 			"source" : value.source,
@@ -33,6 +24,15 @@ class DatabaseSynchronization {
 			"localTarget" : value.localTarget == null ? null : DatabaseSynchronizationTarget.encode(value.localTarget!)
 		};
 		return entityAsMap;
+	}
+
+	static DatabaseSynchronization fromJSON(Map<String, dynamic> data) {
+		return DatabaseSynchronization(
+			source: (data["source"] as String?),
+			target: (data["target"] as String?),
+			filter: (data["filter"] as String?),
+			localTarget: data["localTarget"] == null ? null : DatabaseSynchronizationTarget.fromJSON(data["localTarget"])
+		);
 	}
 }
 

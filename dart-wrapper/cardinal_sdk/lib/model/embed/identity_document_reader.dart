@@ -44,17 +44,6 @@ class IdentityDocumentReader {
 		_reasonManualEncoding = reasonManualEncoding ?? 0,
 		_reasonUsingVignette = reasonUsingVignette ?? 0;
 
-	factory IdentityDocumentReader.fromJSON(Map<String, dynamic> data) {
-		return IdentityDocumentReader(
-			eidDocumentSupportType: (data["eidDocumentSupportType"] as int),
-			reasonManualEncoding: (data["reasonManualEncoding"] as int),
-			reasonUsingVignette: (data["reasonUsingVignette"] as int),
-			justificatifDocumentNumber: (data["justificatifDocumentNumber"] as String?),
-			supportSerialNumber: (data["supportSerialNumber"] as String?),
-			timeReadingEIdDocument: (data["timeReadingEIdDocument"] as int?)
-		);
-	}
-
 	static Map<String, dynamic> encode(IdentityDocumentReader value) {
 		Map<String, dynamic> entityAsMap = {
 			"justificatifDocumentNumber" : value.justificatifDocumentNumber,
@@ -65,5 +54,16 @@ class IdentityDocumentReader {
 			"reasonUsingVignette" : value.reasonUsingVignette
 		};
 		return entityAsMap;
+	}
+
+	static IdentityDocumentReader fromJSON(Map<String, dynamic> data) {
+		return IdentityDocumentReader(
+			eidDocumentSupportType: (data["eidDocumentSupportType"] as int),
+			reasonManualEncoding: (data["reasonManualEncoding"] as int),
+			reasonUsingVignette: (data["reasonUsingVignette"] as int),
+			justificatifDocumentNumber: (data["justificatifDocumentNumber"] as String?),
+			supportSerialNumber: (data["supportSerialNumber"] as String?),
+			timeReadingEIdDocument: (data["timeReadingEIdDocument"] as int?)
+		);
 	}
 }

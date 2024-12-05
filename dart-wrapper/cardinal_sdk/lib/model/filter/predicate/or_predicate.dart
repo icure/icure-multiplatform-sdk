@@ -7,16 +7,16 @@ class OrPredicate implements Predicate {
 	OrPredicate({
 			List<Predicate>? predicates}) : predicates = predicates ?? [];
 
-	factory OrPredicate.fromJSON(Map<String, dynamic> data) {
-		return OrPredicate(
-			predicates: (data["predicates"] as List<dynamic>).map((x0) => Predicate.fromJSON(x0) ).toList()
-		);
-	}
-
 	static Map<String, dynamic> encode(OrPredicate value) {
 		Map<String, dynamic> entityAsMap = {
 			"predicates" : value.predicates.map((x0) => Predicate.encode(x0)).toList()
 		};
 		return entityAsMap;
+	}
+
+	static OrPredicate fromJSON(Map<String, dynamic> data) {
+		return OrPredicate(
+			predicates: (data["predicates"] as List<dynamic>).map((x0) => Predicate.fromJSON(x0) ).toList()
+		);
 	}
 }

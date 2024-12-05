@@ -157,36 +157,6 @@ class EncryptedPlanOfAction implements PlanOfAction {
 		_status = status ?? 0,
 		_numberOfCares = numberOfCares ?? null;
 
-	factory EncryptedPlanOfAction.fromJSON(Map<String, dynamic> data) {
-		return EncryptedPlanOfAction(
-			(data["id"] as String),
-			status: (data["status"] as int),
-			numberOfCares: (data["numberOfCares"] as int?),
-			created: (data["created"] as int?),
-			modified: (data["modified"] as int?),
-			author: (data["author"] as String?),
-			responsible: (data["responsible"] as String?),
-			medicalLocationId: (data["medicalLocationId"] as String?),
-			tags: (data["tags"] as List<dynamic>).map((x0) => CodeStub.fromJSON(x0) ).toSet(),
-			codes: (data["codes"] as List<dynamic>).map((x0) => CodeStub.fromJSON(x0) ).toSet(),
-			endOfLife: (data["endOfLife"] as int?),
-			prescriberId: (data["prescriberId"] as String?),
-			valueDate: (data["valueDate"] as int?),
-			openingDate: (data["openingDate"] as int?),
-			closingDate: (data["closingDate"] as int?),
-			deadlineDate: (data["deadlineDate"] as int?),
-			name: (data["name"] as String?),
-			descr: (data["descr"] as String?),
-			note: (data["note"] as String?),
-			idOpeningContact: (data["idOpeningContact"] as String?),
-			idClosingContact: (data["idClosingContact"] as String?),
-			documentIds: (data["documentIds"] as List<dynamic>).map((x0) => (x0 as String) ).toSet(),
-			careTeamMemberships: (data["careTeamMemberships"] as List<dynamic>).map((x0) => x0 == null ? null : EncryptedCareTeamMembership.fromJSON(x0) ).toList(),
-			relevant: (data["relevant"] as bool),
-			encryptedSelf: (data["encryptedSelf"] as Base64String?),
-		);
-	}
-
 	static Map<String, dynamic> encode(EncryptedPlanOfAction value) {
 		Map<String, dynamic> entityAsMap = {
 			"id" : value.id,
@@ -216,6 +186,36 @@ class EncryptedPlanOfAction implements PlanOfAction {
 			"encryptedSelf" : value.encryptedSelf
 		};
 		return entityAsMap;
+	}
+
+	static EncryptedPlanOfAction fromJSON(Map<String, dynamic> data) {
+		return EncryptedPlanOfAction(
+			(data["id"] as String),
+			status: (data["status"] as int),
+			numberOfCares: (data["numberOfCares"] as int?),
+			created: (data["created"] as int?),
+			modified: (data["modified"] as int?),
+			author: (data["author"] as String?),
+			responsible: (data["responsible"] as String?),
+			medicalLocationId: (data["medicalLocationId"] as String?),
+			tags: (data["tags"] as List<dynamic>).map((x0) => CodeStub.fromJSON(x0) ).toSet(),
+			codes: (data["codes"] as List<dynamic>).map((x0) => CodeStub.fromJSON(x0) ).toSet(),
+			endOfLife: (data["endOfLife"] as int?),
+			prescriberId: (data["prescriberId"] as String?),
+			valueDate: (data["valueDate"] as int?),
+			openingDate: (data["openingDate"] as int?),
+			closingDate: (data["closingDate"] as int?),
+			deadlineDate: (data["deadlineDate"] as int?),
+			name: (data["name"] as String?),
+			descr: (data["descr"] as String?),
+			note: (data["note"] as String?),
+			idOpeningContact: (data["idOpeningContact"] as String?),
+			idClosingContact: (data["idClosingContact"] as String?),
+			documentIds: (data["documentIds"] as List<dynamic>).map((x0) => (x0 as String) ).toSet(),
+			careTeamMemberships: (data["careTeamMemberships"] as List<dynamic>).map((x0) => x0 == null ? null : EncryptedCareTeamMembership.fromJSON(x0) ).toList(),
+			relevant: (data["relevant"] as bool),
+			encryptedSelf: (data["encryptedSelf"] as Base64String?),
+		);
 	}
 }
 
@@ -311,36 +311,6 @@ class DecryptedPlanOfAction implements PlanOfAction {
 		_status = status ?? 0,
 		_numberOfCares = numberOfCares ?? null;
 
-	factory DecryptedPlanOfAction.fromJSON(Map<String, dynamic> data) {
-		return DecryptedPlanOfAction(
-			(data["id"] as String),
-			status: (data["status"] as int),
-			numberOfCares: (data["numberOfCares"] as int?),
-			created: (data["created"] as int?),
-			modified: (data["modified"] as int?),
-			author: (data["author"] as String?),
-			responsible: (data["responsible"] as String?),
-			medicalLocationId: (data["medicalLocationId"] as String?),
-			tags: (data["tags"] as List<dynamic>).map((x0) => CodeStub.fromJSON(x0) ).toSet(),
-			codes: (data["codes"] as List<dynamic>).map((x0) => CodeStub.fromJSON(x0) ).toSet(),
-			endOfLife: (data["endOfLife"] as int?),
-			prescriberId: (data["prescriberId"] as String?),
-			valueDate: (data["valueDate"] as int?),
-			openingDate: (data["openingDate"] as int?),
-			closingDate: (data["closingDate"] as int?),
-			deadlineDate: (data["deadlineDate"] as int?),
-			name: (data["name"] as String?),
-			descr: (data["descr"] as String?),
-			note: (data["note"] as String?),
-			idOpeningContact: (data["idOpeningContact"] as String?),
-			idClosingContact: (data["idClosingContact"] as String?),
-			documentIds: (data["documentIds"] as List<dynamic>).map((x0) => (x0 as String) ).toSet(),
-			careTeamMemberships: (data["careTeamMemberships"] as List<dynamic>).map((x0) => x0 == null ? null : DecryptedCareTeamMembership.fromJSON(x0) ).toList(),
-			relevant: (data["relevant"] as bool),
-			encryptedSelf: (data["encryptedSelf"] as Base64String?),
-		);
-	}
-
 	static Map<String, dynamic> encode(DecryptedPlanOfAction value) {
 		Map<String, dynamic> entityAsMap = {
 			"id" : value.id,
@@ -370,5 +340,35 @@ class DecryptedPlanOfAction implements PlanOfAction {
 			"encryptedSelf" : value.encryptedSelf
 		};
 		return entityAsMap;
+	}
+
+	static DecryptedPlanOfAction fromJSON(Map<String, dynamic> data) {
+		return DecryptedPlanOfAction(
+			(data["id"] as String),
+			status: (data["status"] as int),
+			numberOfCares: (data["numberOfCares"] as int?),
+			created: (data["created"] as int?),
+			modified: (data["modified"] as int?),
+			author: (data["author"] as String?),
+			responsible: (data["responsible"] as String?),
+			medicalLocationId: (data["medicalLocationId"] as String?),
+			tags: (data["tags"] as List<dynamic>).map((x0) => CodeStub.fromJSON(x0) ).toSet(),
+			codes: (data["codes"] as List<dynamic>).map((x0) => CodeStub.fromJSON(x0) ).toSet(),
+			endOfLife: (data["endOfLife"] as int?),
+			prescriberId: (data["prescriberId"] as String?),
+			valueDate: (data["valueDate"] as int?),
+			openingDate: (data["openingDate"] as int?),
+			closingDate: (data["closingDate"] as int?),
+			deadlineDate: (data["deadlineDate"] as int?),
+			name: (data["name"] as String?),
+			descr: (data["descr"] as String?),
+			note: (data["note"] as String?),
+			idOpeningContact: (data["idOpeningContact"] as String?),
+			idClosingContact: (data["idClosingContact"] as String?),
+			documentIds: (data["documentIds"] as List<dynamic>).map((x0) => (x0 as String) ).toSet(),
+			careTeamMemberships: (data["careTeamMemberships"] as List<dynamic>).map((x0) => x0 == null ? null : DecryptedCareTeamMembership.fromJSON(x0) ).toList(),
+			relevant: (data["relevant"] as bool),
+			encryptedSelf: (data["encryptedSelf"] as Base64String?),
+		);
 	}
 }

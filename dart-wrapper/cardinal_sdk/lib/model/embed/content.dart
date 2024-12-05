@@ -94,24 +94,6 @@ class EncryptedContent implements Content {
 		ratio = ratio ?? null,
 		range = range ?? null;
 
-	factory EncryptedContent.fromJSON(Map<String, dynamic> data) {
-		return EncryptedContent(
-			stringValue: (data["stringValue"] as String?),
-			numberValue: (data["numberValue"] as num?)?.toDouble(),
-			booleanValue: (data["booleanValue"] as bool?),
-			instantValue: data["instantValue"] == null ? null : DateTime.fromMillisecondsSinceEpoch(data["instantValue"] as int),
-			fuzzyDateValue: (data["fuzzyDateValue"] as int?),
-			binaryValue: data["binaryValue"] == null ? null : base64Decode(data["binaryValue"] as String),
-			documentId: (data["documentId"] as String?),
-			measureValue: data["measureValue"] == null ? null : Measure.fromJSON(data["measureValue"]),
-			medicationValue: data["medicationValue"] == null ? null : Medication.fromJSON(data["medicationValue"]),
-			timeSeries: data["timeSeries"] == null ? null : TimeSeries.fromJSON(data["timeSeries"]),
-			compoundValue: (data["compoundValue"] as List<dynamic>?)?.map((x0) => EncryptedService.fromJSON(x0) ).toList(),
-			ratio: (data["ratio"] as List<dynamic>?)?.map((x0) => Measure.fromJSON(x0) ).toList(),
-			range: (data["range"] as List<dynamic>?)?.map((x0) => Measure.fromJSON(x0) ).toList()
-		);
-	}
-
 	static Map<String, dynamic> encode(EncryptedContent value) {
 		Map<String, dynamic> entityAsMap = {
 			"stringValue" : value.stringValue,
@@ -129,6 +111,24 @@ class EncryptedContent implements Content {
 			"range" : value.range?.map((x0) => Measure.encode(x0)).toList()
 		};
 		return entityAsMap;
+	}
+
+	static EncryptedContent fromJSON(Map<String, dynamic> data) {
+		return EncryptedContent(
+			stringValue: (data["stringValue"] as String?),
+			numberValue: (data["numberValue"] as num?)?.toDouble(),
+			booleanValue: (data["booleanValue"] as bool?),
+			instantValue: data["instantValue"] == null ? null : DateTime.fromMillisecondsSinceEpoch(data["instantValue"] as int),
+			fuzzyDateValue: (data["fuzzyDateValue"] as int?),
+			binaryValue: data["binaryValue"] == null ? null : base64Decode(data["binaryValue"] as String),
+			documentId: (data["documentId"] as String?),
+			measureValue: data["measureValue"] == null ? null : Measure.fromJSON(data["measureValue"]),
+			medicationValue: data["medicationValue"] == null ? null : Medication.fromJSON(data["medicationValue"]),
+			timeSeries: data["timeSeries"] == null ? null : TimeSeries.fromJSON(data["timeSeries"]),
+			compoundValue: (data["compoundValue"] as List<dynamic>?)?.map((x0) => EncryptedService.fromJSON(x0) ).toList(),
+			ratio: (data["ratio"] as List<dynamic>?)?.map((x0) => Measure.fromJSON(x0) ).toList(),
+			range: (data["range"] as List<dynamic>?)?.map((x0) => Measure.fromJSON(x0) ).toList()
+		);
 	}
 }
 
@@ -174,24 +174,6 @@ class DecryptedContent implements Content {
 		ratio = ratio ?? null,
 		range = range ?? null;
 
-	factory DecryptedContent.fromJSON(Map<String, dynamic> data) {
-		return DecryptedContent(
-			stringValue: (data["stringValue"] as String?),
-			numberValue: (data["numberValue"] as num?)?.toDouble(),
-			booleanValue: (data["booleanValue"] as bool?),
-			instantValue: data["instantValue"] == null ? null : DateTime.fromMillisecondsSinceEpoch(data["instantValue"] as int),
-			fuzzyDateValue: (data["fuzzyDateValue"] as int?),
-			binaryValue: data["binaryValue"] == null ? null : base64Decode(data["binaryValue"] as String),
-			documentId: (data["documentId"] as String?),
-			measureValue: data["measureValue"] == null ? null : Measure.fromJSON(data["measureValue"]),
-			medicationValue: data["medicationValue"] == null ? null : Medication.fromJSON(data["medicationValue"]),
-			timeSeries: data["timeSeries"] == null ? null : TimeSeries.fromJSON(data["timeSeries"]),
-			compoundValue: (data["compoundValue"] as List<dynamic>?)?.map((x0) => DecryptedService.fromJSON(x0) ).toList(),
-			ratio: (data["ratio"] as List<dynamic>?)?.map((x0) => Measure.fromJSON(x0) ).toList(),
-			range: (data["range"] as List<dynamic>?)?.map((x0) => Measure.fromJSON(x0) ).toList()
-		);
-	}
-
 	static Map<String, dynamic> encode(DecryptedContent value) {
 		Map<String, dynamic> entityAsMap = {
 			"stringValue" : value.stringValue,
@@ -209,5 +191,23 @@ class DecryptedContent implements Content {
 			"range" : value.range?.map((x0) => Measure.encode(x0)).toList()
 		};
 		return entityAsMap;
+	}
+
+	static DecryptedContent fromJSON(Map<String, dynamic> data) {
+		return DecryptedContent(
+			stringValue: (data["stringValue"] as String?),
+			numberValue: (data["numberValue"] as num?)?.toDouble(),
+			booleanValue: (data["booleanValue"] as bool?),
+			instantValue: data["instantValue"] == null ? null : DateTime.fromMillisecondsSinceEpoch(data["instantValue"] as int),
+			fuzzyDateValue: (data["fuzzyDateValue"] as int?),
+			binaryValue: data["binaryValue"] == null ? null : base64Decode(data["binaryValue"] as String),
+			documentId: (data["documentId"] as String?),
+			measureValue: data["measureValue"] == null ? null : Measure.fromJSON(data["measureValue"]),
+			medicationValue: data["medicationValue"] == null ? null : Medication.fromJSON(data["medicationValue"]),
+			timeSeries: data["timeSeries"] == null ? null : TimeSeries.fromJSON(data["timeSeries"]),
+			compoundValue: (data["compoundValue"] as List<dynamic>?)?.map((x0) => DecryptedService.fromJSON(x0) ).toList(),
+			ratio: (data["ratio"] as List<dynamic>?)?.map((x0) => Measure.fromJSON(x0) ).toList(),
+			range: (data["range"] as List<dynamic>?)?.map((x0) => Measure.fromJSON(x0) ).toList()
+		);
 	}
 }

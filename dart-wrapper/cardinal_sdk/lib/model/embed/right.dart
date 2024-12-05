@@ -16,15 +16,6 @@ class Right {
 		write = write ?? false,
 		administration = administration ?? false;
 
-	factory Right.fromJSON(Map<String, dynamic> data) {
-		return Right(
-			userId: (data["userId"] as String?),
-			read: (data["read"] as bool),
-			write: (data["write"] as bool),
-			administration: (data["administration"] as bool)
-		);
-	}
-
 	static Map<String, dynamic> encode(Right value) {
 		Map<String, dynamic> entityAsMap = {
 			"userId" : value.userId,
@@ -33,5 +24,14 @@ class Right {
 			"administration" : value.administration
 		};
 		return entityAsMap;
+	}
+
+	static Right fromJSON(Map<String, dynamic> data) {
+		return Right(
+			userId: (data["userId"] as String?),
+			read: (data["read"] as bool),
+			write: (data["write"] as bool),
+			administration: (data["administration"] as bool)
+		);
 	}
 }

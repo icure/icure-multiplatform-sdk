@@ -137,34 +137,6 @@ class DecryptedTopic implements Topic {
 		linkedHealthElements = linkedHealthElements ?? {},
 		linkedServices = linkedServices ?? {};
 
-	factory DecryptedTopic.fromJSON(Map<String, dynamic> data) {
-		return DecryptedTopic(
-			(data["id"] as String),
-			rev: (data["rev"] as String?),
-			created: (data["created"] as int?),
-			modified: (data["modified"] as int?),
-			healthElementId: (data["healthElementId"] as String?),
-			contactId: (data["contactId"] as String?),
-			description: (data["description"] as String?),
-			codes: (data["codes"] as List<dynamic>).map((x0) => CodeStub.fromJSON(x0) ).toSet(),
-			tags: (data["tags"] as List<dynamic>).map((x0) => CodeStub.fromJSON(x0) ).toSet(),
-			author: (data["author"] as String?),
-			responsible: (data["responsible"] as String?),
-			medicalLocationId: (data["medicalLocationId"] as String?),
-			endOfLife: (data["endOfLife"] as int?),
-			deletionDate: (data["deletionDate"] as int?),
-			activeParticipants: (data["activeParticipants"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), TopicRole.fromJSON(v0))),
-			securityMetadata: data["securityMetadata"] == null ? null : SecurityMetadata.fromJSON(data["securityMetadata"]),
-			secretForeignKeys: (data["secretForeignKeys"] as List<dynamic>).map((x0) => (x0 as String) ).toSet(),
-			cryptedForeignKeys: (data["cryptedForeignKeys"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as List<dynamic>).map((x1) => Delegation.fromJSON(x1) ).toSet())),
-			delegations: (data["delegations"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as List<dynamic>).map((x1) => Delegation.fromJSON(x1) ).toSet())),
-			encryptionKeys: (data["encryptionKeys"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as List<dynamic>).map((x1) => Delegation.fromJSON(x1) ).toSet())),
-			encryptedSelf: (data["encryptedSelf"] as Base64String?),
-			linkedHealthElements: (data["linkedHealthElements"] as List<dynamic>).map((x0) => (x0 as String) ).toSet(),
-			linkedServices: (data["linkedServices"] as List<dynamic>).map((x0) => (x0 as String) ).toSet(),
-		);
-	}
-
 	static Map<String, dynamic> encode(DecryptedTopic value) {
 		Map<String, dynamic> entityAsMap = {
 			"id" : value.id,
@@ -192,6 +164,34 @@ class DecryptedTopic implements Topic {
 			"linkedServices" : value.linkedServices.map((x0) => x0).toList()
 		};
 		return entityAsMap;
+	}
+
+	static DecryptedTopic fromJSON(Map<String, dynamic> data) {
+		return DecryptedTopic(
+			(data["id"] as String),
+			rev: (data["rev"] as String?),
+			created: (data["created"] as int?),
+			modified: (data["modified"] as int?),
+			healthElementId: (data["healthElementId"] as String?),
+			contactId: (data["contactId"] as String?),
+			description: (data["description"] as String?),
+			codes: (data["codes"] as List<dynamic>).map((x0) => CodeStub.fromJSON(x0) ).toSet(),
+			tags: (data["tags"] as List<dynamic>).map((x0) => CodeStub.fromJSON(x0) ).toSet(),
+			author: (data["author"] as String?),
+			responsible: (data["responsible"] as String?),
+			medicalLocationId: (data["medicalLocationId"] as String?),
+			endOfLife: (data["endOfLife"] as int?),
+			deletionDate: (data["deletionDate"] as int?),
+			activeParticipants: (data["activeParticipants"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), TopicRole.fromJSON(v0))),
+			securityMetadata: data["securityMetadata"] == null ? null : SecurityMetadata.fromJSON(data["securityMetadata"]),
+			secretForeignKeys: (data["secretForeignKeys"] as List<dynamic>).map((x0) => (x0 as String) ).toSet(),
+			cryptedForeignKeys: (data["cryptedForeignKeys"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as List<dynamic>).map((x1) => Delegation.fromJSON(x1) ).toSet())),
+			delegations: (data["delegations"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as List<dynamic>).map((x1) => Delegation.fromJSON(x1) ).toSet())),
+			encryptionKeys: (data["encryptionKeys"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as List<dynamic>).map((x1) => Delegation.fromJSON(x1) ).toSet())),
+			encryptedSelf: (data["encryptedSelf"] as Base64String?),
+			linkedHealthElements: (data["linkedHealthElements"] as List<dynamic>).map((x0) => (x0 as String) ).toSet(),
+			linkedServices: (data["linkedServices"] as List<dynamic>).map((x0) => (x0 as String) ).toSet(),
+		);
 	}
 }
 
@@ -267,34 +267,6 @@ class EncryptedTopic implements Topic {
 		linkedHealthElements = linkedHealthElements ?? {},
 		linkedServices = linkedServices ?? {};
 
-	factory EncryptedTopic.fromJSON(Map<String, dynamic> data) {
-		return EncryptedTopic(
-			(data["id"] as String),
-			rev: (data["rev"] as String?),
-			created: (data["created"] as int?),
-			modified: (data["modified"] as int?),
-			healthElementId: (data["healthElementId"] as String?),
-			contactId: (data["contactId"] as String?),
-			description: (data["description"] as String?),
-			codes: (data["codes"] as List<dynamic>).map((x0) => CodeStub.fromJSON(x0) ).toSet(),
-			tags: (data["tags"] as List<dynamic>).map((x0) => CodeStub.fromJSON(x0) ).toSet(),
-			author: (data["author"] as String?),
-			responsible: (data["responsible"] as String?),
-			medicalLocationId: (data["medicalLocationId"] as String?),
-			endOfLife: (data["endOfLife"] as int?),
-			deletionDate: (data["deletionDate"] as int?),
-			activeParticipants: (data["activeParticipants"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), TopicRole.fromJSON(v0))),
-			securityMetadata: data["securityMetadata"] == null ? null : SecurityMetadata.fromJSON(data["securityMetadata"]),
-			secretForeignKeys: (data["secretForeignKeys"] as List<dynamic>).map((x0) => (x0 as String) ).toSet(),
-			cryptedForeignKeys: (data["cryptedForeignKeys"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as List<dynamic>).map((x1) => Delegation.fromJSON(x1) ).toSet())),
-			delegations: (data["delegations"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as List<dynamic>).map((x1) => Delegation.fromJSON(x1) ).toSet())),
-			encryptionKeys: (data["encryptionKeys"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as List<dynamic>).map((x1) => Delegation.fromJSON(x1) ).toSet())),
-			encryptedSelf: (data["encryptedSelf"] as Base64String?),
-			linkedHealthElements: (data["linkedHealthElements"] as List<dynamic>).map((x0) => (x0 as String) ).toSet(),
-			linkedServices: (data["linkedServices"] as List<dynamic>).map((x0) => (x0 as String) ).toSet(),
-		);
-	}
-
 	static Map<String, dynamic> encode(EncryptedTopic value) {
 		Map<String, dynamic> entityAsMap = {
 			"id" : value.id,
@@ -322,5 +294,33 @@ class EncryptedTopic implements Topic {
 			"linkedServices" : value.linkedServices.map((x0) => x0).toList()
 		};
 		return entityAsMap;
+	}
+
+	static EncryptedTopic fromJSON(Map<String, dynamic> data) {
+		return EncryptedTopic(
+			(data["id"] as String),
+			rev: (data["rev"] as String?),
+			created: (data["created"] as int?),
+			modified: (data["modified"] as int?),
+			healthElementId: (data["healthElementId"] as String?),
+			contactId: (data["contactId"] as String?),
+			description: (data["description"] as String?),
+			codes: (data["codes"] as List<dynamic>).map((x0) => CodeStub.fromJSON(x0) ).toSet(),
+			tags: (data["tags"] as List<dynamic>).map((x0) => CodeStub.fromJSON(x0) ).toSet(),
+			author: (data["author"] as String?),
+			responsible: (data["responsible"] as String?),
+			medicalLocationId: (data["medicalLocationId"] as String?),
+			endOfLife: (data["endOfLife"] as int?),
+			deletionDate: (data["deletionDate"] as int?),
+			activeParticipants: (data["activeParticipants"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), TopicRole.fromJSON(v0))),
+			securityMetadata: data["securityMetadata"] == null ? null : SecurityMetadata.fromJSON(data["securityMetadata"]),
+			secretForeignKeys: (data["secretForeignKeys"] as List<dynamic>).map((x0) => (x0 as String) ).toSet(),
+			cryptedForeignKeys: (data["cryptedForeignKeys"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as List<dynamic>).map((x1) => Delegation.fromJSON(x1) ).toSet())),
+			delegations: (data["delegations"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as List<dynamic>).map((x1) => Delegation.fromJSON(x1) ).toSet())),
+			encryptionKeys: (data["encryptionKeys"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as List<dynamic>).map((x1) => Delegation.fromJSON(x1) ).toSet())),
+			encryptedSelf: (data["encryptedSelf"] as Base64String?),
+			linkedHealthElements: (data["linkedHealthElements"] as List<dynamic>).map((x0) => (x0 as String) ).toSet(),
+			linkedServices: (data["linkedServices"] as List<dynamic>).map((x0) => (x0 as String) ).toSet(),
+		);
 	}
 }

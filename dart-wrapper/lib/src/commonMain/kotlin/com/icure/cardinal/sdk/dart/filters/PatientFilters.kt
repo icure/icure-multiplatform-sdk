@@ -13,7 +13,6 @@ import com.icure.cardinal.sdk.utils.Serialization.fullLanguageInteropJson
 import com.icure.utils.InternalIcureApi
 import kotlin.Boolean
 import kotlin.Int
-import kotlin.Long
 import kotlin.OptIn
 import kotlin.String
 import kotlin.Unit
@@ -634,82 +633,6 @@ public object PatientFilters {
     ) {
       com.icure.cardinal.sdk.filters.PatientFilters.byExternalIdForSelf(
         externalIdPrefix,
-      )
-    }
-  }
-
-  public fun byModificationDateForDataOwner(
-    dartResultCallback: (
-      String?,
-      String?,
-      String?,
-      String?,
-    ) -> Unit,
-    dataOwnerIdString: String,
-    fromString: String,
-    toString: String,
-    descendingString: String,
-  ) {
-    val dataOwnerId = fullLanguageInteropJson.decodeFromString(
-      String.serializer(),
-      dataOwnerIdString
-    )
-    val from = fullLanguageInteropJson.decodeFromString(
-      Long.serializer().nullable,
-      fromString
-    )
-    val to = fullLanguageInteropJson.decodeFromString(
-      Long.serializer().nullable,
-      toString
-    )
-    val descending = fullLanguageInteropJson.decodeFromString(
-      Boolean.serializer(),
-      descendingString
-    )
-    DartResult.resolve(
-      dartResultCallback,
-      BaseSortableFilterOptions.serializer(PolymorphicSerializer(Patient::class))
-    ) {
-      com.icure.cardinal.sdk.filters.PatientFilters.byModificationDateForDataOwner(
-        dataOwnerId,
-        from,
-        to,
-        descending,
-      )
-    }
-  }
-
-  public fun byModificationDateForSelf(
-    dartResultCallback: (
-      String?,
-      String?,
-      String?,
-      String?,
-    ) -> Unit,
-    fromString: String,
-    toString: String,
-    descendingString: String,
-  ) {
-    val from = fullLanguageInteropJson.decodeFromString(
-      Long.serializer().nullable,
-      fromString
-    )
-    val to = fullLanguageInteropJson.decodeFromString(
-      Long.serializer().nullable,
-      toString
-    )
-    val descending = fullLanguageInteropJson.decodeFromString(
-      Boolean.serializer(),
-      descendingString
-    )
-    DartResult.resolve(
-      dartResultCallback,
-      SortableFilterOptions.serializer(PolymorphicSerializer(Patient::class))
-    ) {
-      com.icure.cardinal.sdk.filters.PatientFilters.byModificationDateForSelf(
-        from,
-        to,
-        descending,
       )
     }
   }

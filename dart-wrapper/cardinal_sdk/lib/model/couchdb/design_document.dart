@@ -32,20 +32,6 @@ class DesignDocument {
 		updateHandlers = updateHandlers ?? null,
 		filters = filters ?? {};
 
-	factory DesignDocument.fromJSON(Map<String, dynamic> data) {
-		return DesignDocument(
-			(data["id"] as String),
-			rev: (data["rev"] as String?),
-			revHistory: (data["revHistory"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as String))),
-			language: (data["language"] as String?),
-			views: (data["views"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), View.fromJSON(v0))),
-			lists: (data["lists"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as String))),
-			shows: (data["shows"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as String))),
-			updateHandlers: (data["updateHandlers"] as Map<String, dynamic>?)?.map((k0, v0) => MapEntry((k0 as String), (v0 as String))),
-			filters: (data["filters"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as String))),
-		);
-	}
-
 	static Map<String, dynamic> encode(DesignDocument value) {
 		Map<String, dynamic> entityAsMap = {
 			"id" : value.id,
@@ -59,5 +45,19 @@ class DesignDocument {
 			"filters" : value.filters.map((k0, v0) => MapEntry(k0, v0))
 		};
 		return entityAsMap;
+	}
+
+	static DesignDocument fromJSON(Map<String, dynamic> data) {
+		return DesignDocument(
+			(data["id"] as String),
+			rev: (data["rev"] as String?),
+			revHistory: (data["revHistory"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as String))),
+			language: (data["language"] as String?),
+			views: (data["views"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), View.fromJSON(v0))),
+			lists: (data["lists"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as String))),
+			shows: (data["shows"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as String))),
+			updateHandlers: (data["updateHandlers"] as Map<String, dynamic>?)?.map((k0, v0) => MapEntry((k0 as String), (v0 as String))),
+			filters: (data["filters"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as String))),
+		);
 	}
 }

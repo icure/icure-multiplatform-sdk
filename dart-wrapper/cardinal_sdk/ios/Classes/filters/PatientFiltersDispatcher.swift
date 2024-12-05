@@ -37,8 +37,6 @@ class PatientFiltersDispatcher {
     case "byAddressPostalCodeHouseNumberForSelf": byAddressPostalCodeHouseNumberForSelf(parameters: parameters, resultCallback: resultCallback)
     case "byAddressForSelf": byAddressForSelf(parameters: parameters, resultCallback: resultCallback)
     case "byExternalIdForSelf": byExternalIdForSelf(parameters: parameters, resultCallback: resultCallback)
-    case "byModificationDateForDataOwner": byModificationDateForDataOwner(parameters: parameters, resultCallback: resultCallback)
-    case "byModificationDateForSelf": byModificationDateForSelf(parameters: parameters, resultCallback: resultCallback)
     default: return false
     }
     return true
@@ -336,35 +334,6 @@ class PatientFiltersDispatcher {
     PatientFilters.shared.byExternalIdForSelf(
     	dartResultCallback: resultCallback,
     	externalIdPrefixString: parameters["externalIdPrefix"]!
-    )
-  }
-
-  private static func byModificationDateForDataOwner(parameters: [String : String], resultCallback: @escaping (
-    String?,
-    String?,
-    String?,
-    String?
-  ) -> Void) {
-    PatientFilters.shared.byModificationDateForDataOwner(
-    	dartResultCallback: resultCallback,
-    	dataOwnerIdString: parameters["dataOwnerId"]!,
-    	fromString: parameters["from"]!,
-    	toString: parameters["to"]!,
-    	descendingString: parameters["descending"]!
-    )
-  }
-
-  private static func byModificationDateForSelf(parameters: [String : String], resultCallback: @escaping (
-    String?,
-    String?,
-    String?,
-    String?
-  ) -> Void) {
-    PatientFilters.shared.byModificationDateForSelf(
-    	dartResultCallback: resultCallback,
-    	fromString: parameters["from"]!,
-    	toString: parameters["to"]!,
-    	descendingString: parameters["descending"]!
     )
   }
 

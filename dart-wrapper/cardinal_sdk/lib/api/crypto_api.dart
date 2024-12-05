@@ -1,8 +1,7 @@
 // auto-generated file
 import 'package:cardinal_sdk/api/shamir_keys_manager_api.dart';
 import 'package:cardinal_sdk/plugin/cardinal_sdk_platform_interface.dart';
-import 'package:cardinal_sdk/model/specializations/keypair_fingerprint_v1string.dart';
-import 'dart:typed_data';
+import 'package:cardinal_sdk/crypto/cardinal_keys.dart';
 
 
 class CryptoApi {
@@ -18,7 +17,7 @@ class CryptoApi {
 		);
 	}
 
-	Future<Map<String, Map<KeypairFingerprintV1String, Uint8List>>> currentDataOwnerKeys({ bool filterTrustedKeys = true }) async {
+	Future<Map<String, Map<CardinalRsaPublicKeyFingerprint, CardinalRsaPrivateKey>>> currentDataOwnerKeys({ bool filterTrustedKeys = true }) async {
 		return await CardinalSdkPlatformInterface.instance.apis.crypto.currentDataOwnerKeys(
 			_sdkId,
 			filterTrustedKeys,

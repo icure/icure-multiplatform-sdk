@@ -57,25 +57,6 @@ class ReplicatorDocument implements Versionable<String> {
 		revHistory = revHistory ?? null,
 		_errorCount = errorCount ?? null;
 
-	factory ReplicatorDocument.fromJSON(Map<String, dynamic> data) {
-		return ReplicatorDocument(
-			(data["id"] as String),
-			errorCount: (data["errorCount"] as int?),
-			rev: (data["rev"] as String?),
-			source: data["source"] == null ? null : Remote.fromJSON(data["source"]),
-			target: data["target"] == null ? null : Remote.fromJSON(data["target"]),
-			owner: (data["owner"] as String?),
-			create_target: (data["create_target"] as bool?),
-			continuous: (data["continuous"] as bool?),
-			doc_ids: (data["doc_ids"] as List<dynamic>?)?.map((x0) => (x0 as String) ).toList(),
-			replicationState: (data["replicationState"] as String?),
-			replicationStateTime: (data["replicationStateTime"] as String?),
-			replicationStats: data["replicationStats"] == null ? null : ReplicationStats.fromJSON(data["replicationStats"]),
-			revsInfo: (data["revsInfo"] as List<dynamic>?)?.map((x0) => (x0 as Map<String, dynamic>).map((k1, v1) => MapEntry((k1 as String), (v1 as String))) ).toList(),
-			revHistory: (data["revHistory"] as Map<String, dynamic>?)?.map((k0, v0) => MapEntry((k0 as String), (v0 as String))),
-		);
-	}
-
 	static Map<String, dynamic> encode(ReplicatorDocument value) {
 		Map<String, dynamic> entityAsMap = {
 			"id" : value.id,
@@ -94,5 +75,24 @@ class ReplicatorDocument implements Versionable<String> {
 			"revHistory" : value.revHistory?.map((k0, v0) => MapEntry(k0, v0))
 		};
 		return entityAsMap;
+	}
+
+	static ReplicatorDocument fromJSON(Map<String, dynamic> data) {
+		return ReplicatorDocument(
+			(data["id"] as String),
+			errorCount: (data["errorCount"] as int?),
+			rev: (data["rev"] as String?),
+			source: data["source"] == null ? null : Remote.fromJSON(data["source"]),
+			target: data["target"] == null ? null : Remote.fromJSON(data["target"]),
+			owner: (data["owner"] as String?),
+			create_target: (data["create_target"] as bool?),
+			continuous: (data["continuous"] as bool?),
+			doc_ids: (data["doc_ids"] as List<dynamic>?)?.map((x0) => (x0 as String) ).toList(),
+			replicationState: (data["replicationState"] as String?),
+			replicationStateTime: (data["replicationStateTime"] as String?),
+			replicationStats: data["replicationStats"] == null ? null : ReplicationStats.fromJSON(data["replicationStats"]),
+			revsInfo: (data["revsInfo"] as List<dynamic>?)?.map((x0) => (x0 as Map<String, dynamic>).map((k1, v1) => MapEntry((k1 as String), (v1 as String))) ).toList(),
+			revHistory: (data["revHistory"] as Map<String, dynamic>?)?.map((k0, v0) => MapEntry((k0 as String), (v0 as String))),
+		);
 	}
 }

@@ -160,53 +160,6 @@ class Medication {
 		_medicationSchemeSafeVersion = medicationSchemeSafeVersion ?? null,
 		_status = status ?? null;
 
-	factory Medication.fromJSON(Map<String, dynamic> data) {
-		return Medication(
-			numberOfPackages: (data["numberOfPackages"] as int?),
-			medicationSchemeSafeVersion: (data["medicationSchemeSafeVersion"] as int?),
-			status: (data["status"] as int?),
-			compoundPrescription: (data["compoundPrescription"] as String?),
-			substanceProduct: data["substanceProduct"] == null ? null : Substanceproduct.fromJSON(data["substanceProduct"]),
-			medicinalProduct: data["medicinalProduct"] == null ? null : Medicinalproduct.fromJSON(data["medicinalProduct"]),
-			batch: (data["batch"] as String?),
-			expirationDate: (data["expirationDate"] as int?),
-			instructionForPatient: (data["instructionForPatient"] as String?),
-			instructionForReimbursement: (data["instructionForReimbursement"] as String?),
-			commentForDelivery: (data["commentForDelivery"] as String?),
-			drugRoute: (data["drugRoute"] as String?),
-			temporality: (data["temporality"] as String?),
-			frequency: data["frequency"] == null ? null : CodeStub.fromJSON(data["frequency"]),
-			reimbursementReason: data["reimbursementReason"] == null ? null : CodeStub.fromJSON(data["reimbursementReason"]),
-			substitutionAllowed: (data["substitutionAllowed"] as bool?),
-			beginMoment: (data["beginMoment"] as int?),
-			endMoment: (data["endMoment"] as int?),
-			deliveryMoment: (data["deliveryMoment"] as int?),
-			endExecutionMoment: (data["endExecutionMoment"] as int?),
-			duration: data["duration"] == null ? null : Duration.fromJSON(data["duration"]),
-			renewal: data["renewal"] == null ? null : Renewal.fromJSON(data["renewal"]),
-			knownUsage: (data["knownUsage"] as bool?),
-			regimen: (data["regimen"] as List<dynamic>?)?.map((x0) => RegimenItem.fromJSON(x0) ).toList(),
-			posology: (data["posology"] as String?),
-			agreements: (data["agreements"] as Map<String, dynamic>?)?.map((k0, v0) => MapEntry((k0 as String), ParagraphAgreement.fromJSON(v0))),
-			medicationSchemeIdOnSafe: (data["medicationSchemeIdOnSafe"] as String?),
-			medicationSchemeTimeStampOnSafe: (data["medicationSchemeTimeStampOnSafe"] as int?),
-			medicationSchemeDocumentId: (data["medicationSchemeDocumentId"] as String?),
-			safeIdName: (data["safeIdName"] as String?),
-			idOnSafes: (data["idOnSafes"] as String?),
-			timestampOnSafe: (data["timestampOnSafe"] as int?),
-			changeValidated: (data["changeValidated"] as bool?),
-			newSafeMedication: (data["newSafeMedication"] as bool?),
-			medicationUse: (data["medicationUse"] as String?),
-			beginCondition: (data["beginCondition"] as String?),
-			endCondition: (data["endCondition"] as String?),
-			origin: (data["origin"] as String?),
-			medicationChanged: (data["medicationChanged"] as bool?),
-			posologyChanged: (data["posologyChanged"] as bool?),
-			suspension: (data["suspension"] as List<dynamic>?)?.map((x0) => Suspension.fromJSON(x0) ).toList(),
-			prescriptionRID: (data["prescriptionRID"] as String?)
-		);
-	}
-
 	static Map<String, dynamic> encode(Medication value) {
 		Map<String, dynamic> entityAsMap = {
 			"compoundPrescription" : value.compoundPrescription,
@@ -253,5 +206,52 @@ class Medication {
 			"status" : value.status
 		};
 		return entityAsMap;
+	}
+
+	static Medication fromJSON(Map<String, dynamic> data) {
+		return Medication(
+			numberOfPackages: (data["numberOfPackages"] as int?),
+			medicationSchemeSafeVersion: (data["medicationSchemeSafeVersion"] as int?),
+			status: (data["status"] as int?),
+			compoundPrescription: (data["compoundPrescription"] as String?),
+			substanceProduct: data["substanceProduct"] == null ? null : Substanceproduct.fromJSON(data["substanceProduct"]),
+			medicinalProduct: data["medicinalProduct"] == null ? null : Medicinalproduct.fromJSON(data["medicinalProduct"]),
+			batch: (data["batch"] as String?),
+			expirationDate: (data["expirationDate"] as int?),
+			instructionForPatient: (data["instructionForPatient"] as String?),
+			instructionForReimbursement: (data["instructionForReimbursement"] as String?),
+			commentForDelivery: (data["commentForDelivery"] as String?),
+			drugRoute: (data["drugRoute"] as String?),
+			temporality: (data["temporality"] as String?),
+			frequency: data["frequency"] == null ? null : CodeStub.fromJSON(data["frequency"]),
+			reimbursementReason: data["reimbursementReason"] == null ? null : CodeStub.fromJSON(data["reimbursementReason"]),
+			substitutionAllowed: (data["substitutionAllowed"] as bool?),
+			beginMoment: (data["beginMoment"] as int?),
+			endMoment: (data["endMoment"] as int?),
+			deliveryMoment: (data["deliveryMoment"] as int?),
+			endExecutionMoment: (data["endExecutionMoment"] as int?),
+			duration: data["duration"] == null ? null : Duration.fromJSON(data["duration"]),
+			renewal: data["renewal"] == null ? null : Renewal.fromJSON(data["renewal"]),
+			knownUsage: (data["knownUsage"] as bool?),
+			regimen: (data["regimen"] as List<dynamic>?)?.map((x0) => RegimenItem.fromJSON(x0) ).toList(),
+			posology: (data["posology"] as String?),
+			agreements: (data["agreements"] as Map<String, dynamic>?)?.map((k0, v0) => MapEntry((k0 as String), ParagraphAgreement.fromJSON(v0))),
+			medicationSchemeIdOnSafe: (data["medicationSchemeIdOnSafe"] as String?),
+			medicationSchemeTimeStampOnSafe: (data["medicationSchemeTimeStampOnSafe"] as int?),
+			medicationSchemeDocumentId: (data["medicationSchemeDocumentId"] as String?),
+			safeIdName: (data["safeIdName"] as String?),
+			idOnSafes: (data["idOnSafes"] as String?),
+			timestampOnSafe: (data["timestampOnSafe"] as int?),
+			changeValidated: (data["changeValidated"] as bool?),
+			newSafeMedication: (data["newSafeMedication"] as bool?),
+			medicationUse: (data["medicationUse"] as String?),
+			beginCondition: (data["beginCondition"] as String?),
+			endCondition: (data["endCondition"] as String?),
+			origin: (data["origin"] as String?),
+			medicationChanged: (data["medicationChanged"] as bool?),
+			posologyChanged: (data["posologyChanged"] as bool?),
+			suspension: (data["suspension"] as List<dynamic>?)?.map((x0) => Suspension.fromJSON(x0) ).toList(),
+			prescriptionRID: (data["prescriptionRID"] as String?)
+		);
 	}
 }

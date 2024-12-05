@@ -11,18 +11,18 @@ class FieldsGroup implements StructureElement {
 			List<StructureElement>? fields
 		}) : fields = fields ?? null;
 
-	factory FieldsGroup.fromJSON(Map<String, dynamic> data) {
-		return FieldsGroup(
-			(data["group"] as String),
-			fields: (data["fields"] as List<dynamic>?)?.map((x0) => StructureElement.fromJSON(x0) ).toList(),
-		);
-	}
-
 	static Map<String, dynamic> encode(FieldsGroup value) {
 		Map<String, dynamic> entityAsMap = {
 			"group" : value.group,
 			"fields" : value.fields?.map((x0) => StructureElement.encode(x0)).toList()
 		};
 		return entityAsMap;
+	}
+
+	static FieldsGroup fromJSON(Map<String, dynamic> data) {
+		return FieldsGroup(
+			(data["group"] as String),
+			fields: (data["fields"] as List<dynamic>?)?.map((x0) => StructureElement.fromJSON(x0) ).toList(),
+		);
 	}
 }

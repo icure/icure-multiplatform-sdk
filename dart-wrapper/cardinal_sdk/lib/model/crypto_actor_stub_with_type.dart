@@ -11,18 +11,18 @@ class CryptoActorStubWithType {
 		this.stub
 		);
 
-	factory CryptoActorStubWithType.fromJSON(Map<String, dynamic> data) {
-		return CryptoActorStubWithType(
-			DataOwnerType.fromJSON(data["type"]),
-			CryptoActorStub.fromJSON(data["stub"])
-		);
-	}
-
 	static Map<String, dynamic> encode(CryptoActorStubWithType value) {
 		Map<String, dynamic> entityAsMap = {
 			"type" : DataOwnerType.encode(value.type),
 			"stub" : CryptoActorStub.encode(value.stub)
 		};
 		return entityAsMap;
+	}
+
+	static CryptoActorStubWithType fromJSON(Map<String, dynamic> data) {
+		return CryptoActorStubWithType(
+			DataOwnerType.fromJSON(data["type"]),
+			CryptoActorStub.fromJSON(data["stub"])
+		);
 	}
 }

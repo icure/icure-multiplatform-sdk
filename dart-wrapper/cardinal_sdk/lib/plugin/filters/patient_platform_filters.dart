@@ -306,33 +306,4 @@ class PatientPlatformFilters {
 		final parsedResJson = jsonDecode(res);
 		return SortableFilterOptions.fromJSON(parsedResJson);
 	}
-
-	Future<BaseSortableFilterOptions<Patient>> byModificationDateForDataOwner(String dataOwnerId, { int? from, int? to, bool descending = false }) async {
-		final res = await _methodChannel.invokeMethod<String>(
-			'PatientFilters.byModificationDateForDataOwner',
-			{
-				"dataOwnerId": jsonEncode(dataOwnerId),
-				"from": jsonEncode(from),
-				"to": jsonEncode(to),
-				"descending": jsonEncode(descending),
-			}
-		).catchError(convertPlatformException);
-		if (res == null) throw AssertionError("received null result from platform method byModificationDateForDataOwner");
-		final parsedResJson = jsonDecode(res);
-		return BaseSortableFilterOptions.fromJSON(parsedResJson);
-	}
-
-	Future<SortableFilterOptions<Patient>> byModificationDateForSelf({ int? from, int? to, bool descending = false }) async {
-		final res = await _methodChannel.invokeMethod<String>(
-			'PatientFilters.byModificationDateForSelf',
-			{
-				"from": jsonEncode(from),
-				"to": jsonEncode(to),
-				"descending": jsonEncode(descending),
-			}
-		).catchError(convertPlatformException);
-		if (res == null) throw AssertionError("received null result from platform method byModificationDateForSelf");
-		final parsedResJson = jsonDecode(res);
-		return SortableFilterOptions.fromJSON(parsedResJson);
-	}
 }

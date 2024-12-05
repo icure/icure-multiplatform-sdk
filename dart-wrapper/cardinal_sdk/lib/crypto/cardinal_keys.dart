@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:convert/convert.dart';
@@ -12,8 +13,16 @@ class CardinalRsaPublicKey {
     return Uint8List.fromList(hex.decode(spkiHex));
   }
 
+  /// Representation of the public key in spki format, base64-encoded.
+  String get spkiBase64 {
+    return base64Encode(hex.decode(spkiHex));
+  }
+
   /// Create the key from its spki representation, hex-encoded.
   const CardinalRsaPublicKey.fromHex(this.spkiHex);
+
+  /// Create the key from its spki representation, base64-encoded.
+  CardinalRsaPublicKey.fromBase64(String spkiBase64) : spkiHex = hex.encode(base64Decode(spkiBase64));
 
   /// Create the key from its raw spki representation.
   CardinalRsaPublicKey.fromBytes(Uint8List spkiBytes) : spkiHex = hex.encode(spkiBytes);
@@ -25,7 +34,7 @@ class CardinalRsaPublicKey {
 
   /// The fingerprint for this public key
   CardinalRsaPublicKeyFingerprint fingerprint() {
-    return CardinalRsaPublicKeyFingerprint._(spkiHex.substring(spkiHex.length - 32));
+    return CardinalRsaPublicKeyFingerprint(spkiHex.substring(spkiHex.length - 32));
   }
 }
 
@@ -51,11 +60,20 @@ class CardinalRsaPrivateKey {
     return Uint8List.fromList(hex.decode(pkcs8Hex));
   }
 
+  /// Representation of the private key in pkcs8 format, base64-encoded.
+  String get pkcs8Base64 {
+    return base64Encode(hex.decode(pkcs8Hex));
+  }
+
   /// Create the key from its pkcs8 representation, hex-encoded.
   const CardinalRsaPrivateKey.fromHex(this.pkcs8Hex);
 
+  /// Create the key from its pkcs8 representation, base64-encoded.
+  CardinalRsaPrivateKey.fromBase64(String pkcs8Base64) : pkcs8Hex = hex.encode(base64Decode(pkcs8Base64));
+
   /// Create the key from its raw pkcs8 representation.
   CardinalRsaPrivateKey.fromBytes(Uint8List pkcs8Bytes) : pkcs8Hex = hex.encode(pkcs8Bytes);
+
 }
 
 /// The Rsa encryption algorithms used by cardinal

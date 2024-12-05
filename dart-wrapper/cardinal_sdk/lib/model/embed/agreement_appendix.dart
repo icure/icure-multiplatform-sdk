@@ -31,15 +31,6 @@ class AgreementAppendix {
 		_docSeq = docSeq ?? null,
 		_verseSeq = verseSeq ?? null;
 
-	factory AgreementAppendix.fromJSON(Map<String, dynamic> data) {
-		return AgreementAppendix(
-			docSeq: (data["docSeq"] as int?),
-			verseSeq: (data["verseSeq"] as int?),
-			documentId: (data["documentId"] as String?),
-			path: (data["path"] as String?)
-		);
-	}
-
 	static Map<String, dynamic> encode(AgreementAppendix value) {
 		Map<String, dynamic> entityAsMap = {
 			"docSeq" : value.docSeq,
@@ -48,5 +39,14 @@ class AgreementAppendix {
 			"path" : value.path
 		};
 		return entityAsMap;
+	}
+
+	static AgreementAppendix fromJSON(Map<String, dynamic> data) {
+		return AgreementAppendix(
+			docSeq: (data["docSeq"] as int?),
+			verseSeq: (data["verseSeq"] as int?),
+			documentId: (data["documentId"] as String?),
+			path: (data["path"] as String?)
+		);
 	}
 }

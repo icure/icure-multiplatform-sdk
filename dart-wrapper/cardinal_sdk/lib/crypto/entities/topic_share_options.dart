@@ -19,15 +19,6 @@ class TopicShareOptions {
 		sharePatientId = sharePatientId ?? ShareMetadataBehaviour.ifAvailable,
 		shareSecretIds = shareSecretIds ?? SecretIdShareOptionsAllAvailable(false);
 
-	factory TopicShareOptions.fromJSON(Map<String, dynamic> data) {
-		return TopicShareOptions(
-			requestedPermissions: RequestedPermission.fromJSON(data["requestedPermissions"]),
-			shareEncryptionKey: ShareMetadataBehaviour.fromJSON(data["shareEncryptionKey"]),
-			sharePatientId: ShareMetadataBehaviour.fromJSON(data["sharePatientId"]),
-			shareSecretIds: SecretIdShareOptions.fromJSON(data["shareSecretIds"])
-		);
-	}
-
 	static Map<String, dynamic> encode(TopicShareOptions value) {
 		Map<String, dynamic> entityAsMap = {
 			"requestedPermissions" : RequestedPermission.encode(value.requestedPermissions),
@@ -36,5 +27,14 @@ class TopicShareOptions {
 			"shareSecretIds" : SecretIdShareOptions.encode(value.shareSecretIds)
 		};
 		return entityAsMap;
+	}
+
+	static TopicShareOptions fromJSON(Map<String, dynamic> data) {
+		return TopicShareOptions(
+			requestedPermissions: RequestedPermission.fromJSON(data["requestedPermissions"]),
+			shareEncryptionKey: ShareMetadataBehaviour.fromJSON(data["shareEncryptionKey"]),
+			sharePatientId: ShareMetadataBehaviour.fromJSON(data["sharePatientId"]),
+			shareSecretIds: SecretIdShareOptions.fromJSON(data["shareSecretIds"])
+		);
 	}
 }

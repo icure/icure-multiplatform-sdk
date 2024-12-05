@@ -89,23 +89,6 @@ class EncryptedSecureDelegationKeyMap implements SecureDelegationKeyMap {
 		securityMetadata = securityMetadata ?? null,
 		deletionDate = deletionDate ?? null;
 
-	factory EncryptedSecureDelegationKeyMap.fromJSON(Map<String, dynamic> data) {
-		return EncryptedSecureDelegationKeyMap(
-			(data["id"] as String),
-			(data["delegationKey"] as String),
-			rev: (data["rev"] as String?),
-			delegator: (data["delegator"] as String?),
-			delegate: (data["delegate"] as String?),
-			secretForeignKeys: (data["secretForeignKeys"] as List<dynamic>).map((x0) => (x0 as String) ).toSet(),
-			cryptedForeignKeys: (data["cryptedForeignKeys"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as List<dynamic>).map((x1) => Delegation.fromJSON(x1) ).toSet())),
-			delegations: (data["delegations"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as List<dynamic>).map((x1) => Delegation.fromJSON(x1) ).toSet())),
-			encryptionKeys: (data["encryptionKeys"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as List<dynamic>).map((x1) => Delegation.fromJSON(x1) ).toSet())),
-			encryptedSelf: (data["encryptedSelf"] as Base64String?),
-			securityMetadata: data["securityMetadata"] == null ? null : SecurityMetadata.fromJSON(data["securityMetadata"]),
-			deletionDate: (data["deletionDate"] as int?),
-		);
-	}
-
 	static Map<String, dynamic> encode(EncryptedSecureDelegationKeyMap value) {
 		Map<String, dynamic> entityAsMap = {
 			"id" : value.id,
@@ -122,6 +105,23 @@ class EncryptedSecureDelegationKeyMap implements SecureDelegationKeyMap {
 			"deletionDate" : value.deletionDate
 		};
 		return entityAsMap;
+	}
+
+	static EncryptedSecureDelegationKeyMap fromJSON(Map<String, dynamic> data) {
+		return EncryptedSecureDelegationKeyMap(
+			(data["id"] as String),
+			(data["delegationKey"] as String),
+			rev: (data["rev"] as String?),
+			delegator: (data["delegator"] as String?),
+			delegate: (data["delegate"] as String?),
+			secretForeignKeys: (data["secretForeignKeys"] as List<dynamic>).map((x0) => (x0 as String) ).toSet(),
+			cryptedForeignKeys: (data["cryptedForeignKeys"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as List<dynamic>).map((x1) => Delegation.fromJSON(x1) ).toSet())),
+			delegations: (data["delegations"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as List<dynamic>).map((x1) => Delegation.fromJSON(x1) ).toSet())),
+			encryptionKeys: (data["encryptionKeys"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as List<dynamic>).map((x1) => Delegation.fromJSON(x1) ).toSet())),
+			encryptedSelf: (data["encryptedSelf"] as Base64String?),
+			securityMetadata: data["securityMetadata"] == null ? null : SecurityMetadata.fromJSON(data["securityMetadata"]),
+			deletionDate: (data["deletionDate"] as int?),
+		);
 	}
 }
 
@@ -163,23 +163,6 @@ class DecryptedSecureDelegationKeyMap implements SecureDelegationKeyMap {
 		securityMetadata = securityMetadata ?? null,
 		deletionDate = deletionDate ?? null;
 
-	factory DecryptedSecureDelegationKeyMap.fromJSON(Map<String, dynamic> data) {
-		return DecryptedSecureDelegationKeyMap(
-			(data["id"] as String),
-			(data["delegationKey"] as String),
-			rev: (data["rev"] as String?),
-			delegator: (data["delegator"] as String?),
-			delegate: (data["delegate"] as String?),
-			secretForeignKeys: (data["secretForeignKeys"] as List<dynamic>).map((x0) => (x0 as String) ).toSet(),
-			cryptedForeignKeys: (data["cryptedForeignKeys"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as List<dynamic>).map((x1) => Delegation.fromJSON(x1) ).toSet())),
-			delegations: (data["delegations"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as List<dynamic>).map((x1) => Delegation.fromJSON(x1) ).toSet())),
-			encryptionKeys: (data["encryptionKeys"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as List<dynamic>).map((x1) => Delegation.fromJSON(x1) ).toSet())),
-			encryptedSelf: (data["encryptedSelf"] as Base64String?),
-			securityMetadata: data["securityMetadata"] == null ? null : SecurityMetadata.fromJSON(data["securityMetadata"]),
-			deletionDate: (data["deletionDate"] as int?),
-		);
-	}
-
 	static Map<String, dynamic> encode(DecryptedSecureDelegationKeyMap value) {
 		Map<String, dynamic> entityAsMap = {
 			"id" : value.id,
@@ -196,5 +179,22 @@ class DecryptedSecureDelegationKeyMap implements SecureDelegationKeyMap {
 			"deletionDate" : value.deletionDate
 		};
 		return entityAsMap;
+	}
+
+	static DecryptedSecureDelegationKeyMap fromJSON(Map<String, dynamic> data) {
+		return DecryptedSecureDelegationKeyMap(
+			(data["id"] as String),
+			(data["delegationKey"] as String),
+			rev: (data["rev"] as String?),
+			delegator: (data["delegator"] as String?),
+			delegate: (data["delegate"] as String?),
+			secretForeignKeys: (data["secretForeignKeys"] as List<dynamic>).map((x0) => (x0 as String) ).toSet(),
+			cryptedForeignKeys: (data["cryptedForeignKeys"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as List<dynamic>).map((x1) => Delegation.fromJSON(x1) ).toSet())),
+			delegations: (data["delegations"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as List<dynamic>).map((x1) => Delegation.fromJSON(x1) ).toSet())),
+			encryptionKeys: (data["encryptionKeys"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as List<dynamic>).map((x1) => Delegation.fromJSON(x1) ).toSet())),
+			encryptedSelf: (data["encryptedSelf"] as Base64String?),
+			securityMetadata: data["securityMetadata"] == null ? null : SecurityMetadata.fromJSON(data["securityMetadata"]),
+			deletionDate: (data["deletionDate"] as int?),
+		);
 	}
 }

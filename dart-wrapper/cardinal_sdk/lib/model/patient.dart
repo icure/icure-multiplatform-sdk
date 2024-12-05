@@ -16,7 +16,7 @@ import 'package:cardinal_sdk/model/embed/financial_institution_information.dart'
 import 'package:cardinal_sdk/model/embed/medical_house_contract.dart';
 import 'package:cardinal_sdk/model/property_stub.dart';
 import 'package:cardinal_sdk/model/specializations/hex_string.dart';
-import 'package:cardinal_sdk/model/specializations/spki_hex_string.dart';
+import 'package:cardinal_sdk/crypto/cardinal_keys.dart';
 import 'package:cardinal_sdk/model/specializations/aes_exchange_key_encryption_keypair_identifier.dart';
 import 'package:cardinal_sdk/model/embed/delegation.dart';
 import 'package:cardinal_sdk/model/specializations/base64string.dart';
@@ -91,11 +91,11 @@ sealed class Patient implements StoredDocument, ICureDocument<String>, Person, H
 	abstract Map<String, List<String>> parameters;
 	Set<PropertyStub> get properties;
 	@override abstract Map<String, List<HexString>> hcPartyKeys;
-	@override abstract Map<SpkiHexString, Map<String, Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>>> aesExchangeKeys;
+	@override abstract Map<CardinalRsaPublicKey, Map<String, Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>>> aesExchangeKeys;
 	@override abstract Map<AesExchangeKeyEncryptionKeypairIdentifier, Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>> transferKeys;
 	@override abstract Map<String, HexString> privateKeyShamirPartitions;
-	@override abstract SpkiHexString? publicKey;
-	@override abstract Set<SpkiHexString> publicKeysForOaepWithSha256;
+	@override abstract CardinalRsaPublicKey? publicKey;
+	@override abstract Set<CardinalRsaPublicKey> publicKeysForOaepWithSha256;
 	@override abstract Set<String> secretForeignKeys;
 	@override abstract Map<String, Set<Delegation>> cryptedForeignKeys;
 	@override abstract Map<String, Set<Delegation>> delegations;
@@ -223,11 +223,11 @@ class EncryptedPatient implements Patient {
 	@override Map<String, List<String>> parameters = {};
 	@override Set<EncryptedPropertyStub> properties = {};
 	@override Map<String, List<HexString>> hcPartyKeys = {};
-	@override Map<SpkiHexString, Map<String, Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>>> aesExchangeKeys = {};
+	@override Map<CardinalRsaPublicKey, Map<String, Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>>> aesExchangeKeys = {};
 	@override Map<AesExchangeKeyEncryptionKeypairIdentifier, Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>> transferKeys = {};
 	@override Map<String, HexString> privateKeyShamirPartitions = {};
-	@override SpkiHexString? publicKey = null;
-	@override Set<SpkiHexString> publicKeysForOaepWithSha256 = {};
+	@override CardinalRsaPublicKey? publicKey = null;
+	@override Set<CardinalRsaPublicKey> publicKeysForOaepWithSha256 = {};
 	@override Set<String> secretForeignKeys = {};
 	@override Map<String, Set<Delegation>> cryptedForeignKeys = {};
 	@override Map<String, Set<Delegation>> delegations = {};
@@ -305,11 +305,11 @@ class EncryptedPatient implements Patient {
 			Map<String, List<String>>? parameters,
 			Set<EncryptedPropertyStub>? properties,
 			Map<String, List<HexString>>? hcPartyKeys,
-			Map<SpkiHexString, Map<String, Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>>>? aesExchangeKeys,
+			Map<CardinalRsaPublicKey, Map<String, Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>>>? aesExchangeKeys,
 			Map<AesExchangeKeyEncryptionKeypairIdentifier, Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>>? transferKeys,
 			Map<String, HexString>? privateKeyShamirPartitions,
-			SpkiHexString? publicKey,
-			Set<SpkiHexString>? publicKeysForOaepWithSha256,
+			CardinalRsaPublicKey? publicKey,
+			Set<CardinalRsaPublicKey>? publicKeysForOaepWithSha256,
 			Set<String>? secretForeignKeys,
 			Map<String, Set<Delegation>>? cryptedForeignKeys,
 			Map<String, Set<Delegation>>? delegations,
@@ -408,91 +408,6 @@ class EncryptedPatient implements Patient {
 		_dateOfBirth = dateOfBirth ?? null,
 		_dateOfDeath = dateOfDeath ?? null;
 
-	factory EncryptedPatient.fromJSON(Map<String, dynamic> data) {
-		return EncryptedPatient(
-			(data["id"] as String),
-			deactivationDate: (data["deactivationDate"] as int?),
-			dateOfBirth: (data["dateOfBirth"] as int?),
-			dateOfDeath: (data["dateOfDeath"] as int?),
-			identifier: (data["identifier"] as List<dynamic>).map((x0) => Identifier.fromJSON(x0) ).toList(),
-			rev: (data["rev"] as String?),
-			created: (data["created"] as int?),
-			modified: (data["modified"] as int?),
-			author: (data["author"] as String?),
-			responsible: (data["responsible"] as String?),
-			tags: (data["tags"] as List<dynamic>).map((x0) => CodeStub.fromJSON(x0) ).toSet(),
-			codes: (data["codes"] as List<dynamic>).map((x0) => CodeStub.fromJSON(x0) ).toSet(),
-			endOfLife: (data["endOfLife"] as int?),
-			deletionDate: (data["deletionDate"] as int?),
-			firstName: (data["firstName"] as String?),
-			lastName: (data["lastName"] as String?),
-			names: (data["names"] as List<dynamic>).map((x0) => PersonName.fromJSON(x0) ).toList(),
-			companyName: (data["companyName"] as String?),
-			languages: (data["languages"] as List<dynamic>).map((x0) => (x0 as String) ).toList(),
-			addresses: (data["addresses"] as List<dynamic>).map((x0) => EncryptedAddress.fromJSON(x0) ).toList(),
-			civility: (data["civility"] as String?),
-			gender: data["gender"] == null ? null : Gender.fromJSON(data["gender"]),
-			birthSex: data["birthSex"] == null ? null : Gender.fromJSON(data["birthSex"]),
-			mergeToPatientId: (data["mergeToPatientId"] as String?),
-			mergedIds: (data["mergedIds"] as List<dynamic>).map((x0) => (x0 as String) ).toSet(),
-			alias: (data["alias"] as String?),
-			active: (data["active"] as bool),
-			deactivationReason: DeactivationReason.fromJSON(data["deactivationReason"]),
-			ssin: (data["ssin"] as String?),
-			maidenName: (data["maidenName"] as String?),
-			spouseName: (data["spouseName"] as String?),
-			partnerName: (data["partnerName"] as String?),
-			personalStatus: data["personalStatus"] == null ? null : PersonalStatus.fromJSON(data["personalStatus"]),
-			timestampOfLatestEidReading: (data["timestampOfLatestEidReading"] as int?),
-			placeOfBirth: (data["placeOfBirth"] as String?),
-			placeOfDeath: (data["placeOfDeath"] as String?),
-			deceased: (data["deceased"] as bool?),
-			education: (data["education"] as String?),
-			profession: (data["profession"] as String?),
-			notes: (data["notes"] as List<dynamic>).map((x0) => Annotation.fromJSON(x0) ).toList(),
-			note: (data["note"] as String?),
-			administrativeNote: (data["administrativeNote"] as String?),
-			nationality: (data["nationality"] as String?),
-			race: (data["race"] as String?),
-			ethnicity: (data["ethnicity"] as String?),
-			preferredUserId: (data["preferredUserId"] as String?),
-			picture: data["picture"] == null ? null : base64Decode(data["picture"] as String),
-			externalId: (data["externalId"] as String?),
-			insurabilities: (data["insurabilities"] as List<dynamic>).map((x0) => EncryptedInsurability.fromJSON(x0) ).toList(),
-			partnerships: (data["partnerships"] as List<dynamic>).map((x0) => Partnership.fromJSON(x0) ).toList(),
-			patientHealthCareParties: (data["patientHealthCareParties"] as List<dynamic>).map((x0) => EncryptedPatientHealthCareParty.fromJSON(x0) ).toList(),
-			financialInstitutionInformation: (data["financialInstitutionInformation"] as List<dynamic>).map((x0) => EncryptedFinancialInstitutionInformation.fromJSON(x0) ).toList(),
-			medicalHouseContracts: (data["medicalHouseContracts"] as List<dynamic>).map((x0) => EncryptedMedicalHouseContract.fromJSON(x0) ).toList(),
-			patientProfessions: (data["patientProfessions"] as List<dynamic>).map((x0) => CodeStub.fromJSON(x0) ).toList(),
-			parameters: (data["parameters"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as List<dynamic>).map((x1) => (x1 as String) ).toList())),
-			properties: (data["properties"] as List<dynamic>).map((x0) => EncryptedPropertyStub.fromJSON(x0) ).toSet(),
-			hcPartyKeys: (data["hcPartyKeys"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as List<dynamic>).map((x1) => (x1 as HexString) ).toList())),
-			aesExchangeKeys: (data["aesExchangeKeys"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as SpkiHexString), (v0 as Map<String, dynamic>).map((k1, v1) => MapEntry((k1 as String), (v1 as Map<String, dynamic>).map((k2, v2) => MapEntry((k2 as AesExchangeKeyEncryptionKeypairIdentifier), (v2 as HexString))))))),
-			transferKeys: (data["transferKeys"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as AesExchangeKeyEncryptionKeypairIdentifier), (v0 as Map<String, dynamic>).map((k1, v1) => MapEntry((k1 as AesExchangeKeyEncryptionKeypairIdentifier), (v1 as HexString))))),
-			privateKeyShamirPartitions: (data["privateKeyShamirPartitions"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as HexString))),
-			publicKey: (data["publicKey"] as SpkiHexString?),
-			publicKeysForOaepWithSha256: (data["publicKeysForOaepWithSha256"] as List<dynamic>).map((x0) => (x0 as SpkiHexString) ).toSet(),
-			secretForeignKeys: (data["secretForeignKeys"] as List<dynamic>).map((x0) => (x0 as String) ).toSet(),
-			cryptedForeignKeys: (data["cryptedForeignKeys"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as List<dynamic>).map((x1) => Delegation.fromJSON(x1) ).toSet())),
-			delegations: (data["delegations"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as List<dynamic>).map((x1) => Delegation.fromJSON(x1) ).toSet())),
-			encryptionKeys: (data["encryptionKeys"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as List<dynamic>).map((x1) => Delegation.fromJSON(x1) ).toSet())),
-			encryptedSelf: (data["encryptedSelf"] as Base64String?),
-			securityMetadata: data["securityMetadata"] == null ? null : SecurityMetadata.fromJSON(data["securityMetadata"]),
-			medicalLocationId: (data["medicalLocationId"] as String?),
-			nonDuplicateIds: (data["nonDuplicateIds"] as List<dynamic>).map((x0) => (x0 as String) ).toSet(),
-			encryptedAdministrativesDocuments: (data["encryptedAdministrativesDocuments"] as List<dynamic>).map((x0) => (x0 as String) ).toSet(),
-			comment: (data["comment"] as String?),
-			warning: (data["warning"] as String?),
-			fatherBirthCountry: data["fatherBirthCountry"] == null ? null : CodeStub.fromJSON(data["fatherBirthCountry"]),
-			birthCountry: data["birthCountry"] == null ? null : CodeStub.fromJSON(data["birthCountry"]),
-			nativeCountry: data["nativeCountry"] == null ? null : CodeStub.fromJSON(data["nativeCountry"]),
-			socialStatus: data["socialStatus"] == null ? null : CodeStub.fromJSON(data["socialStatus"]),
-			mainSourceOfIncome: data["mainSourceOfIncome"] == null ? null : CodeStub.fromJSON(data["mainSourceOfIncome"]),
-			schoolingInfos: (data["schoolingInfos"] as List<dynamic>).map((x0) => EncryptedSchoolingInfo.fromJSON(x0) ).toList(),
-			employementInfos: (data["employementInfos"] as List<dynamic>).map((x0) => EncryptedEmploymentInfo.fromJSON(x0) ).toList(),
-		);
-	}
-
 	static Map<String, dynamic> encode(EncryptedPatient value) {
 		Map<String, dynamic> entityAsMap = {
 			"id" : value.id,
@@ -552,11 +467,11 @@ class EncryptedPatient implements Patient {
 			"parameters" : value.parameters.map((k0, v0) => MapEntry(k0, v0.map((x1) => x1).toList())),
 			"properties" : value.properties.map((x0) => EncryptedPropertyStub.encode(x0)).toList(),
 			"hcPartyKeys" : value.hcPartyKeys.map((k0, v0) => MapEntry(k0, v0.map((x1) => x1).toList())),
-			"aesExchangeKeys" : value.aesExchangeKeys.map((k0, v0) => MapEntry(k0, v0.map((k1, v1) => MapEntry(k1, v1.map((k2, v2) => MapEntry(k2, v2)))))),
+			"aesExchangeKeys" : value.aesExchangeKeys.map((k0, v0) => MapEntry(k0.spkiHex, v0.map((k1, v1) => MapEntry(k1, v1.map((k2, v2) => MapEntry(k2, v2)))))),
 			"transferKeys" : value.transferKeys.map((k0, v0) => MapEntry(k0, v0.map((k1, v1) => MapEntry(k1, v1)))),
 			"privateKeyShamirPartitions" : value.privateKeyShamirPartitions.map((k0, v0) => MapEntry(k0, v0)),
-			"publicKey" : value.publicKey,
-			"publicKeysForOaepWithSha256" : value.publicKeysForOaepWithSha256.map((x0) => x0).toList(),
+			"publicKey" : value.publicKey?.spkiHex,
+			"publicKeysForOaepWithSha256" : value.publicKeysForOaepWithSha256.map((x0) => x0.spkiHex).toList(),
 			"secretForeignKeys" : value.secretForeignKeys.map((x0) => x0).toList(),
 			"cryptedForeignKeys" : value.cryptedForeignKeys.map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.encode(x1)).toList())),
 			"delegations" : value.delegations.map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.encode(x1)).toList())),
@@ -577,6 +492,91 @@ class EncryptedPatient implements Patient {
 			"employementInfos" : value.employementInfos.map((x0) => EncryptedEmploymentInfo.encode(x0)).toList()
 		};
 		return entityAsMap;
+	}
+
+	static EncryptedPatient fromJSON(Map<String, dynamic> data) {
+		return EncryptedPatient(
+			(data["id"] as String),
+			deactivationDate: (data["deactivationDate"] as int?),
+			dateOfBirth: (data["dateOfBirth"] as int?),
+			dateOfDeath: (data["dateOfDeath"] as int?),
+			identifier: (data["identifier"] as List<dynamic>).map((x0) => Identifier.fromJSON(x0) ).toList(),
+			rev: (data["rev"] as String?),
+			created: (data["created"] as int?),
+			modified: (data["modified"] as int?),
+			author: (data["author"] as String?),
+			responsible: (data["responsible"] as String?),
+			tags: (data["tags"] as List<dynamic>).map((x0) => CodeStub.fromJSON(x0) ).toSet(),
+			codes: (data["codes"] as List<dynamic>).map((x0) => CodeStub.fromJSON(x0) ).toSet(),
+			endOfLife: (data["endOfLife"] as int?),
+			deletionDate: (data["deletionDate"] as int?),
+			firstName: (data["firstName"] as String?),
+			lastName: (data["lastName"] as String?),
+			names: (data["names"] as List<dynamic>).map((x0) => PersonName.fromJSON(x0) ).toList(),
+			companyName: (data["companyName"] as String?),
+			languages: (data["languages"] as List<dynamic>).map((x0) => (x0 as String) ).toList(),
+			addresses: (data["addresses"] as List<dynamic>).map((x0) => EncryptedAddress.fromJSON(x0) ).toList(),
+			civility: (data["civility"] as String?),
+			gender: data["gender"] == null ? null : Gender.fromJSON(data["gender"]),
+			birthSex: data["birthSex"] == null ? null : Gender.fromJSON(data["birthSex"]),
+			mergeToPatientId: (data["mergeToPatientId"] as String?),
+			mergedIds: (data["mergedIds"] as List<dynamic>).map((x0) => (x0 as String) ).toSet(),
+			alias: (data["alias"] as String?),
+			active: (data["active"] as bool),
+			deactivationReason: DeactivationReason.fromJSON(data["deactivationReason"]),
+			ssin: (data["ssin"] as String?),
+			maidenName: (data["maidenName"] as String?),
+			spouseName: (data["spouseName"] as String?),
+			partnerName: (data["partnerName"] as String?),
+			personalStatus: data["personalStatus"] == null ? null : PersonalStatus.fromJSON(data["personalStatus"]),
+			timestampOfLatestEidReading: (data["timestampOfLatestEidReading"] as int?),
+			placeOfBirth: (data["placeOfBirth"] as String?),
+			placeOfDeath: (data["placeOfDeath"] as String?),
+			deceased: (data["deceased"] as bool?),
+			education: (data["education"] as String?),
+			profession: (data["profession"] as String?),
+			notes: (data["notes"] as List<dynamic>).map((x0) => Annotation.fromJSON(x0) ).toList(),
+			note: (data["note"] as String?),
+			administrativeNote: (data["administrativeNote"] as String?),
+			nationality: (data["nationality"] as String?),
+			race: (data["race"] as String?),
+			ethnicity: (data["ethnicity"] as String?),
+			preferredUserId: (data["preferredUserId"] as String?),
+			picture: data["picture"] == null ? null : base64Decode(data["picture"] as String),
+			externalId: (data["externalId"] as String?),
+			insurabilities: (data["insurabilities"] as List<dynamic>).map((x0) => EncryptedInsurability.fromJSON(x0) ).toList(),
+			partnerships: (data["partnerships"] as List<dynamic>).map((x0) => Partnership.fromJSON(x0) ).toList(),
+			patientHealthCareParties: (data["patientHealthCareParties"] as List<dynamic>).map((x0) => EncryptedPatientHealthCareParty.fromJSON(x0) ).toList(),
+			financialInstitutionInformation: (data["financialInstitutionInformation"] as List<dynamic>).map((x0) => EncryptedFinancialInstitutionInformation.fromJSON(x0) ).toList(),
+			medicalHouseContracts: (data["medicalHouseContracts"] as List<dynamic>).map((x0) => EncryptedMedicalHouseContract.fromJSON(x0) ).toList(),
+			patientProfessions: (data["patientProfessions"] as List<dynamic>).map((x0) => CodeStub.fromJSON(x0) ).toList(),
+			parameters: (data["parameters"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as List<dynamic>).map((x1) => (x1 as String) ).toList())),
+			properties: (data["properties"] as List<dynamic>).map((x0) => EncryptedPropertyStub.fromJSON(x0) ).toSet(),
+			hcPartyKeys: (data["hcPartyKeys"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as List<dynamic>).map((x1) => (x1 as HexString) ).toList())),
+			aesExchangeKeys: (data["aesExchangeKeys"] as Map<String, dynamic>).map((k0, v0) => MapEntry(CardinalRsaPublicKey.fromHex(k0), (v0 as Map<String, dynamic>).map((k1, v1) => MapEntry((k1 as String), (v1 as Map<String, dynamic>).map((k2, v2) => MapEntry((k2 as AesExchangeKeyEncryptionKeypairIdentifier), (v2 as HexString))))))),
+			transferKeys: (data["transferKeys"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as AesExchangeKeyEncryptionKeypairIdentifier), (v0 as Map<String, dynamic>).map((k1, v1) => MapEntry((k1 as AesExchangeKeyEncryptionKeypairIdentifier), (v1 as HexString))))),
+			privateKeyShamirPartitions: (data["privateKeyShamirPartitions"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as HexString))),
+			publicKey: data["publicKey"] != null ? CardinalRsaPublicKey.fromHex(data["publicKey"]!) : null,
+			publicKeysForOaepWithSha256: (data["publicKeysForOaepWithSha256"] as List<dynamic>).map((x0) => CardinalRsaPublicKey.fromHex(x0) ).toSet(),
+			secretForeignKeys: (data["secretForeignKeys"] as List<dynamic>).map((x0) => (x0 as String) ).toSet(),
+			cryptedForeignKeys: (data["cryptedForeignKeys"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as List<dynamic>).map((x1) => Delegation.fromJSON(x1) ).toSet())),
+			delegations: (data["delegations"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as List<dynamic>).map((x1) => Delegation.fromJSON(x1) ).toSet())),
+			encryptionKeys: (data["encryptionKeys"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as List<dynamic>).map((x1) => Delegation.fromJSON(x1) ).toSet())),
+			encryptedSelf: (data["encryptedSelf"] as Base64String?),
+			securityMetadata: data["securityMetadata"] == null ? null : SecurityMetadata.fromJSON(data["securityMetadata"]),
+			medicalLocationId: (data["medicalLocationId"] as String?),
+			nonDuplicateIds: (data["nonDuplicateIds"] as List<dynamic>).map((x0) => (x0 as String) ).toSet(),
+			encryptedAdministrativesDocuments: (data["encryptedAdministrativesDocuments"] as List<dynamic>).map((x0) => (x0 as String) ).toSet(),
+			comment: (data["comment"] as String?),
+			warning: (data["warning"] as String?),
+			fatherBirthCountry: data["fatherBirthCountry"] == null ? null : CodeStub.fromJSON(data["fatherBirthCountry"]),
+			birthCountry: data["birthCountry"] == null ? null : CodeStub.fromJSON(data["birthCountry"]),
+			nativeCountry: data["nativeCountry"] == null ? null : CodeStub.fromJSON(data["nativeCountry"]),
+			socialStatus: data["socialStatus"] == null ? null : CodeStub.fromJSON(data["socialStatus"]),
+			mainSourceOfIncome: data["mainSourceOfIncome"] == null ? null : CodeStub.fromJSON(data["mainSourceOfIncome"]),
+			schoolingInfos: (data["schoolingInfos"] as List<dynamic>).map((x0) => EncryptedSchoolingInfo.fromJSON(x0) ).toList(),
+			employementInfos: (data["employementInfos"] as List<dynamic>).map((x0) => EncryptedEmploymentInfo.fromJSON(x0) ).toList(),
+		);
 	}
 }
 
@@ -659,11 +659,11 @@ class DecryptedPatient implements Patient {
 	@override Map<String, List<String>> parameters = {};
 	@override Set<DecryptedPropertyStub> properties = {};
 	@override Map<String, List<HexString>> hcPartyKeys = {};
-	@override Map<SpkiHexString, Map<String, Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>>> aesExchangeKeys = {};
+	@override Map<CardinalRsaPublicKey, Map<String, Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>>> aesExchangeKeys = {};
 	@override Map<AesExchangeKeyEncryptionKeypairIdentifier, Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>> transferKeys = {};
 	@override Map<String, HexString> privateKeyShamirPartitions = {};
-	@override SpkiHexString? publicKey = null;
-	@override Set<SpkiHexString> publicKeysForOaepWithSha256 = {};
+	@override CardinalRsaPublicKey? publicKey = null;
+	@override Set<CardinalRsaPublicKey> publicKeysForOaepWithSha256 = {};
 	@override Set<String> secretForeignKeys = {};
 	@override Map<String, Set<Delegation>> cryptedForeignKeys = {};
 	@override Map<String, Set<Delegation>> delegations = {};
@@ -741,11 +741,11 @@ class DecryptedPatient implements Patient {
 			Map<String, List<String>>? parameters,
 			Set<DecryptedPropertyStub>? properties,
 			Map<String, List<HexString>>? hcPartyKeys,
-			Map<SpkiHexString, Map<String, Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>>>? aesExchangeKeys,
+			Map<CardinalRsaPublicKey, Map<String, Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>>>? aesExchangeKeys,
 			Map<AesExchangeKeyEncryptionKeypairIdentifier, Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>>? transferKeys,
 			Map<String, HexString>? privateKeyShamirPartitions,
-			SpkiHexString? publicKey,
-			Set<SpkiHexString>? publicKeysForOaepWithSha256,
+			CardinalRsaPublicKey? publicKey,
+			Set<CardinalRsaPublicKey>? publicKeysForOaepWithSha256,
 			Set<String>? secretForeignKeys,
 			Map<String, Set<Delegation>>? cryptedForeignKeys,
 			Map<String, Set<Delegation>>? delegations,
@@ -844,91 +844,6 @@ class DecryptedPatient implements Patient {
 		_dateOfBirth = dateOfBirth ?? null,
 		_dateOfDeath = dateOfDeath ?? null;
 
-	factory DecryptedPatient.fromJSON(Map<String, dynamic> data) {
-		return DecryptedPatient(
-			(data["id"] as String),
-			deactivationDate: (data["deactivationDate"] as int?),
-			dateOfBirth: (data["dateOfBirth"] as int?),
-			dateOfDeath: (data["dateOfDeath"] as int?),
-			identifier: (data["identifier"] as List<dynamic>).map((x0) => Identifier.fromJSON(x0) ).toList(),
-			rev: (data["rev"] as String?),
-			created: (data["created"] as int?),
-			modified: (data["modified"] as int?),
-			author: (data["author"] as String?),
-			responsible: (data["responsible"] as String?),
-			tags: (data["tags"] as List<dynamic>).map((x0) => CodeStub.fromJSON(x0) ).toSet(),
-			codes: (data["codes"] as List<dynamic>).map((x0) => CodeStub.fromJSON(x0) ).toSet(),
-			endOfLife: (data["endOfLife"] as int?),
-			deletionDate: (data["deletionDate"] as int?),
-			firstName: (data["firstName"] as String?),
-			lastName: (data["lastName"] as String?),
-			names: (data["names"] as List<dynamic>).map((x0) => PersonName.fromJSON(x0) ).toList(),
-			companyName: (data["companyName"] as String?),
-			languages: (data["languages"] as List<dynamic>).map((x0) => (x0 as String) ).toList(),
-			addresses: (data["addresses"] as List<dynamic>).map((x0) => DecryptedAddress.fromJSON(x0) ).toList(),
-			civility: (data["civility"] as String?),
-			gender: data["gender"] == null ? null : Gender.fromJSON(data["gender"]),
-			birthSex: data["birthSex"] == null ? null : Gender.fromJSON(data["birthSex"]),
-			mergeToPatientId: (data["mergeToPatientId"] as String?),
-			mergedIds: (data["mergedIds"] as List<dynamic>).map((x0) => (x0 as String) ).toSet(),
-			alias: (data["alias"] as String?),
-			active: (data["active"] as bool),
-			deactivationReason: DeactivationReason.fromJSON(data["deactivationReason"]),
-			ssin: (data["ssin"] as String?),
-			maidenName: (data["maidenName"] as String?),
-			spouseName: (data["spouseName"] as String?),
-			partnerName: (data["partnerName"] as String?),
-			personalStatus: data["personalStatus"] == null ? null : PersonalStatus.fromJSON(data["personalStatus"]),
-			timestampOfLatestEidReading: (data["timestampOfLatestEidReading"] as int?),
-			placeOfBirth: (data["placeOfBirth"] as String?),
-			placeOfDeath: (data["placeOfDeath"] as String?),
-			deceased: (data["deceased"] as bool?),
-			education: (data["education"] as String?),
-			profession: (data["profession"] as String?),
-			notes: (data["notes"] as List<dynamic>).map((x0) => Annotation.fromJSON(x0) ).toList(),
-			note: (data["note"] as String?),
-			administrativeNote: (data["administrativeNote"] as String?),
-			nationality: (data["nationality"] as String?),
-			race: (data["race"] as String?),
-			ethnicity: (data["ethnicity"] as String?),
-			preferredUserId: (data["preferredUserId"] as String?),
-			picture: data["picture"] == null ? null : base64Decode(data["picture"] as String),
-			externalId: (data["externalId"] as String?),
-			insurabilities: (data["insurabilities"] as List<dynamic>).map((x0) => DecryptedInsurability.fromJSON(x0) ).toList(),
-			partnerships: (data["partnerships"] as List<dynamic>).map((x0) => Partnership.fromJSON(x0) ).toList(),
-			patientHealthCareParties: (data["patientHealthCareParties"] as List<dynamic>).map((x0) => DecryptedPatientHealthCareParty.fromJSON(x0) ).toList(),
-			financialInstitutionInformation: (data["financialInstitutionInformation"] as List<dynamic>).map((x0) => DecryptedFinancialInstitutionInformation.fromJSON(x0) ).toList(),
-			medicalHouseContracts: (data["medicalHouseContracts"] as List<dynamic>).map((x0) => DecryptedMedicalHouseContract.fromJSON(x0) ).toList(),
-			patientProfessions: (data["patientProfessions"] as List<dynamic>).map((x0) => CodeStub.fromJSON(x0) ).toList(),
-			parameters: (data["parameters"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as List<dynamic>).map((x1) => (x1 as String) ).toList())),
-			properties: (data["properties"] as List<dynamic>).map((x0) => DecryptedPropertyStub.fromJSON(x0) ).toSet(),
-			hcPartyKeys: (data["hcPartyKeys"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as List<dynamic>).map((x1) => (x1 as HexString) ).toList())),
-			aesExchangeKeys: (data["aesExchangeKeys"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as SpkiHexString), (v0 as Map<String, dynamic>).map((k1, v1) => MapEntry((k1 as String), (v1 as Map<String, dynamic>).map((k2, v2) => MapEntry((k2 as AesExchangeKeyEncryptionKeypairIdentifier), (v2 as HexString))))))),
-			transferKeys: (data["transferKeys"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as AesExchangeKeyEncryptionKeypairIdentifier), (v0 as Map<String, dynamic>).map((k1, v1) => MapEntry((k1 as AesExchangeKeyEncryptionKeypairIdentifier), (v1 as HexString))))),
-			privateKeyShamirPartitions: (data["privateKeyShamirPartitions"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as HexString))),
-			publicKey: (data["publicKey"] as SpkiHexString?),
-			publicKeysForOaepWithSha256: (data["publicKeysForOaepWithSha256"] as List<dynamic>).map((x0) => (x0 as SpkiHexString) ).toSet(),
-			secretForeignKeys: (data["secretForeignKeys"] as List<dynamic>).map((x0) => (x0 as String) ).toSet(),
-			cryptedForeignKeys: (data["cryptedForeignKeys"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as List<dynamic>).map((x1) => Delegation.fromJSON(x1) ).toSet())),
-			delegations: (data["delegations"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as List<dynamic>).map((x1) => Delegation.fromJSON(x1) ).toSet())),
-			encryptionKeys: (data["encryptionKeys"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as List<dynamic>).map((x1) => Delegation.fromJSON(x1) ).toSet())),
-			encryptedSelf: (data["encryptedSelf"] as Base64String?),
-			securityMetadata: data["securityMetadata"] == null ? null : SecurityMetadata.fromJSON(data["securityMetadata"]),
-			medicalLocationId: (data["medicalLocationId"] as String?),
-			nonDuplicateIds: (data["nonDuplicateIds"] as List<dynamic>).map((x0) => (x0 as String) ).toSet(),
-			encryptedAdministrativesDocuments: (data["encryptedAdministrativesDocuments"] as List<dynamic>).map((x0) => (x0 as String) ).toSet(),
-			comment: (data["comment"] as String?),
-			warning: (data["warning"] as String?),
-			fatherBirthCountry: data["fatherBirthCountry"] == null ? null : CodeStub.fromJSON(data["fatherBirthCountry"]),
-			birthCountry: data["birthCountry"] == null ? null : CodeStub.fromJSON(data["birthCountry"]),
-			nativeCountry: data["nativeCountry"] == null ? null : CodeStub.fromJSON(data["nativeCountry"]),
-			socialStatus: data["socialStatus"] == null ? null : CodeStub.fromJSON(data["socialStatus"]),
-			mainSourceOfIncome: data["mainSourceOfIncome"] == null ? null : CodeStub.fromJSON(data["mainSourceOfIncome"]),
-			schoolingInfos: (data["schoolingInfos"] as List<dynamic>).map((x0) => DecryptedSchoolingInfo.fromJSON(x0) ).toList(),
-			employementInfos: (data["employementInfos"] as List<dynamic>).map((x0) => DecryptedEmploymentInfo.fromJSON(x0) ).toList(),
-		);
-	}
-
 	static Map<String, dynamic> encode(DecryptedPatient value) {
 		Map<String, dynamic> entityAsMap = {
 			"id" : value.id,
@@ -988,11 +903,11 @@ class DecryptedPatient implements Patient {
 			"parameters" : value.parameters.map((k0, v0) => MapEntry(k0, v0.map((x1) => x1).toList())),
 			"properties" : value.properties.map((x0) => DecryptedPropertyStub.encode(x0)).toList(),
 			"hcPartyKeys" : value.hcPartyKeys.map((k0, v0) => MapEntry(k0, v0.map((x1) => x1).toList())),
-			"aesExchangeKeys" : value.aesExchangeKeys.map((k0, v0) => MapEntry(k0, v0.map((k1, v1) => MapEntry(k1, v1.map((k2, v2) => MapEntry(k2, v2)))))),
+			"aesExchangeKeys" : value.aesExchangeKeys.map((k0, v0) => MapEntry(k0.spkiHex, v0.map((k1, v1) => MapEntry(k1, v1.map((k2, v2) => MapEntry(k2, v2)))))),
 			"transferKeys" : value.transferKeys.map((k0, v0) => MapEntry(k0, v0.map((k1, v1) => MapEntry(k1, v1)))),
 			"privateKeyShamirPartitions" : value.privateKeyShamirPartitions.map((k0, v0) => MapEntry(k0, v0)),
-			"publicKey" : value.publicKey,
-			"publicKeysForOaepWithSha256" : value.publicKeysForOaepWithSha256.map((x0) => x0).toList(),
+			"publicKey" : value.publicKey?.spkiHex,
+			"publicKeysForOaepWithSha256" : value.publicKeysForOaepWithSha256.map((x0) => x0.spkiHex).toList(),
 			"secretForeignKeys" : value.secretForeignKeys.map((x0) => x0).toList(),
 			"cryptedForeignKeys" : value.cryptedForeignKeys.map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.encode(x1)).toList())),
 			"delegations" : value.delegations.map((k0, v0) => MapEntry(k0, v0.map((x1) => Delegation.encode(x1)).toList())),
@@ -1013,5 +928,90 @@ class DecryptedPatient implements Patient {
 			"employementInfos" : value.employementInfos.map((x0) => DecryptedEmploymentInfo.encode(x0)).toList()
 		};
 		return entityAsMap;
+	}
+
+	static DecryptedPatient fromJSON(Map<String, dynamic> data) {
+		return DecryptedPatient(
+			(data["id"] as String),
+			deactivationDate: (data["deactivationDate"] as int?),
+			dateOfBirth: (data["dateOfBirth"] as int?),
+			dateOfDeath: (data["dateOfDeath"] as int?),
+			identifier: (data["identifier"] as List<dynamic>).map((x0) => Identifier.fromJSON(x0) ).toList(),
+			rev: (data["rev"] as String?),
+			created: (data["created"] as int?),
+			modified: (data["modified"] as int?),
+			author: (data["author"] as String?),
+			responsible: (data["responsible"] as String?),
+			tags: (data["tags"] as List<dynamic>).map((x0) => CodeStub.fromJSON(x0) ).toSet(),
+			codes: (data["codes"] as List<dynamic>).map((x0) => CodeStub.fromJSON(x0) ).toSet(),
+			endOfLife: (data["endOfLife"] as int?),
+			deletionDate: (data["deletionDate"] as int?),
+			firstName: (data["firstName"] as String?),
+			lastName: (data["lastName"] as String?),
+			names: (data["names"] as List<dynamic>).map((x0) => PersonName.fromJSON(x0) ).toList(),
+			companyName: (data["companyName"] as String?),
+			languages: (data["languages"] as List<dynamic>).map((x0) => (x0 as String) ).toList(),
+			addresses: (data["addresses"] as List<dynamic>).map((x0) => DecryptedAddress.fromJSON(x0) ).toList(),
+			civility: (data["civility"] as String?),
+			gender: data["gender"] == null ? null : Gender.fromJSON(data["gender"]),
+			birthSex: data["birthSex"] == null ? null : Gender.fromJSON(data["birthSex"]),
+			mergeToPatientId: (data["mergeToPatientId"] as String?),
+			mergedIds: (data["mergedIds"] as List<dynamic>).map((x0) => (x0 as String) ).toSet(),
+			alias: (data["alias"] as String?),
+			active: (data["active"] as bool),
+			deactivationReason: DeactivationReason.fromJSON(data["deactivationReason"]),
+			ssin: (data["ssin"] as String?),
+			maidenName: (data["maidenName"] as String?),
+			spouseName: (data["spouseName"] as String?),
+			partnerName: (data["partnerName"] as String?),
+			personalStatus: data["personalStatus"] == null ? null : PersonalStatus.fromJSON(data["personalStatus"]),
+			timestampOfLatestEidReading: (data["timestampOfLatestEidReading"] as int?),
+			placeOfBirth: (data["placeOfBirth"] as String?),
+			placeOfDeath: (data["placeOfDeath"] as String?),
+			deceased: (data["deceased"] as bool?),
+			education: (data["education"] as String?),
+			profession: (data["profession"] as String?),
+			notes: (data["notes"] as List<dynamic>).map((x0) => Annotation.fromJSON(x0) ).toList(),
+			note: (data["note"] as String?),
+			administrativeNote: (data["administrativeNote"] as String?),
+			nationality: (data["nationality"] as String?),
+			race: (data["race"] as String?),
+			ethnicity: (data["ethnicity"] as String?),
+			preferredUserId: (data["preferredUserId"] as String?),
+			picture: data["picture"] == null ? null : base64Decode(data["picture"] as String),
+			externalId: (data["externalId"] as String?),
+			insurabilities: (data["insurabilities"] as List<dynamic>).map((x0) => DecryptedInsurability.fromJSON(x0) ).toList(),
+			partnerships: (data["partnerships"] as List<dynamic>).map((x0) => Partnership.fromJSON(x0) ).toList(),
+			patientHealthCareParties: (data["patientHealthCareParties"] as List<dynamic>).map((x0) => DecryptedPatientHealthCareParty.fromJSON(x0) ).toList(),
+			financialInstitutionInformation: (data["financialInstitutionInformation"] as List<dynamic>).map((x0) => DecryptedFinancialInstitutionInformation.fromJSON(x0) ).toList(),
+			medicalHouseContracts: (data["medicalHouseContracts"] as List<dynamic>).map((x0) => DecryptedMedicalHouseContract.fromJSON(x0) ).toList(),
+			patientProfessions: (data["patientProfessions"] as List<dynamic>).map((x0) => CodeStub.fromJSON(x0) ).toList(),
+			parameters: (data["parameters"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as List<dynamic>).map((x1) => (x1 as String) ).toList())),
+			properties: (data["properties"] as List<dynamic>).map((x0) => DecryptedPropertyStub.fromJSON(x0) ).toSet(),
+			hcPartyKeys: (data["hcPartyKeys"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as List<dynamic>).map((x1) => (x1 as HexString) ).toList())),
+			aesExchangeKeys: (data["aesExchangeKeys"] as Map<String, dynamic>).map((k0, v0) => MapEntry(CardinalRsaPublicKey.fromHex(k0), (v0 as Map<String, dynamic>).map((k1, v1) => MapEntry((k1 as String), (v1 as Map<String, dynamic>).map((k2, v2) => MapEntry((k2 as AesExchangeKeyEncryptionKeypairIdentifier), (v2 as HexString))))))),
+			transferKeys: (data["transferKeys"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as AesExchangeKeyEncryptionKeypairIdentifier), (v0 as Map<String, dynamic>).map((k1, v1) => MapEntry((k1 as AesExchangeKeyEncryptionKeypairIdentifier), (v1 as HexString))))),
+			privateKeyShamirPartitions: (data["privateKeyShamirPartitions"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as HexString))),
+			publicKey: data["publicKey"] != null ? CardinalRsaPublicKey.fromHex(data["publicKey"]!) : null,
+			publicKeysForOaepWithSha256: (data["publicKeysForOaepWithSha256"] as List<dynamic>).map((x0) => CardinalRsaPublicKey.fromHex(x0) ).toSet(),
+			secretForeignKeys: (data["secretForeignKeys"] as List<dynamic>).map((x0) => (x0 as String) ).toSet(),
+			cryptedForeignKeys: (data["cryptedForeignKeys"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as List<dynamic>).map((x1) => Delegation.fromJSON(x1) ).toSet())),
+			delegations: (data["delegations"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as List<dynamic>).map((x1) => Delegation.fromJSON(x1) ).toSet())),
+			encryptionKeys: (data["encryptionKeys"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as List<dynamic>).map((x1) => Delegation.fromJSON(x1) ).toSet())),
+			encryptedSelf: (data["encryptedSelf"] as Base64String?),
+			securityMetadata: data["securityMetadata"] == null ? null : SecurityMetadata.fromJSON(data["securityMetadata"]),
+			medicalLocationId: (data["medicalLocationId"] as String?),
+			nonDuplicateIds: (data["nonDuplicateIds"] as List<dynamic>).map((x0) => (x0 as String) ).toSet(),
+			encryptedAdministrativesDocuments: (data["encryptedAdministrativesDocuments"] as List<dynamic>).map((x0) => (x0 as String) ).toSet(),
+			comment: (data["comment"] as String?),
+			warning: (data["warning"] as String?),
+			fatherBirthCountry: data["fatherBirthCountry"] == null ? null : CodeStub.fromJSON(data["fatherBirthCountry"]),
+			birthCountry: data["birthCountry"] == null ? null : CodeStub.fromJSON(data["birthCountry"]),
+			nativeCountry: data["nativeCountry"] == null ? null : CodeStub.fromJSON(data["nativeCountry"]),
+			socialStatus: data["socialStatus"] == null ? null : CodeStub.fromJSON(data["socialStatus"]),
+			mainSourceOfIncome: data["mainSourceOfIncome"] == null ? null : CodeStub.fromJSON(data["mainSourceOfIncome"]),
+			schoolingInfos: (data["schoolingInfos"] as List<dynamic>).map((x0) => DecryptedSchoolingInfo.fromJSON(x0) ).toList(),
+			employementInfos: (data["employementInfos"] as List<dynamic>).map((x0) => DecryptedEmploymentInfo.fromJSON(x0) ).toList(),
+		);
 	}
 }

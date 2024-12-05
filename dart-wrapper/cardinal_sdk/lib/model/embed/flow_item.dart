@@ -103,44 +103,6 @@ class FlowItem {
 		description = description ?? null,
 		interventionCode = interventionCode ?? null;
 
-	factory FlowItem.fromJSON(Map<String, dynamic> data) {
-		return FlowItem(
-			id: (data["id"] as String?),
-			title: (data["title"] as String?),
-			comment: (data["comment"] as String?),
-			receptionDate: (data["receptionDate"] as int?),
-			processingDate: (data["processingDate"] as int?),
-			processer: (data["processer"] as String?),
-			cancellationDate: (data["cancellationDate"] as int?),
-			canceller: (data["canceller"] as String?),
-			cancellationReason: (data["cancellationReason"] as String?),
-			cancellationNote: (data["cancellationNote"] as String?),
-			status: (data["status"] as String?),
-			homeVisit: (data["homeVisit"] as bool?),
-			municipality: (data["municipality"] as String?),
-			town: (data["town"] as String?),
-			zipCode: (data["zipCode"] as String?),
-			street: (data["street"] as String?),
-			building: (data["building"] as String?),
-			buildingNumber: (data["buildingNumber"] as String?),
-			doorbellName: (data["doorbellName"] as String?),
-			floor: (data["floor"] as String?),
-			letterBox: (data["letterBox"] as String?),
-			notesOps: (data["notesOps"] as String?),
-			notesContact: (data["notesContact"] as String?),
-			latitude: (data["latitude"] as String?),
-			longitude: (data["longitude"] as String?),
-			type: (data["type"] as String?),
-			emergency: (data["emergency"] as bool?),
-			phoneNumber: (data["phoneNumber"] as String?),
-			patientId: (data["patientId"] as String?),
-			patientLastName: (data["patientLastName"] as String?),
-			patientFirstName: (data["patientFirstName"] as String?),
-			description: (data["description"] as String?),
-			interventionCode: (data["interventionCode"] as String?)
-		);
-	}
-
 	static Map<String, dynamic> encode(FlowItem value) {
 		Map<String, dynamic> entityAsMap = {
 			"id" : value.id,
@@ -178,5 +140,43 @@ class FlowItem {
 			"interventionCode" : value.interventionCode
 		};
 		return entityAsMap;
+	}
+
+	static FlowItem fromJSON(Map<String, dynamic> data) {
+		return FlowItem(
+			id: (data["id"] as String?),
+			title: (data["title"] as String?),
+			comment: (data["comment"] as String?),
+			receptionDate: (data["receptionDate"] as int?),
+			processingDate: (data["processingDate"] as int?),
+			processer: (data["processer"] as String?),
+			cancellationDate: (data["cancellationDate"] as int?),
+			canceller: (data["canceller"] as String?),
+			cancellationReason: (data["cancellationReason"] as String?),
+			cancellationNote: (data["cancellationNote"] as String?),
+			status: (data["status"] as String?),
+			homeVisit: (data["homeVisit"] as bool?),
+			municipality: (data["municipality"] as String?),
+			town: (data["town"] as String?),
+			zipCode: (data["zipCode"] as String?),
+			street: (data["street"] as String?),
+			building: (data["building"] as String?),
+			buildingNumber: (data["buildingNumber"] as String?),
+			doorbellName: (data["doorbellName"] as String?),
+			floor: (data["floor"] as String?),
+			letterBox: (data["letterBox"] as String?),
+			notesOps: (data["notesOps"] as String?),
+			notesContact: (data["notesContact"] as String?),
+			latitude: (data["latitude"] as String?),
+			longitude: (data["longitude"] as String?),
+			type: (data["type"] as String?),
+			emergency: (data["emergency"] as bool?),
+			phoneNumber: (data["phoneNumber"] as String?),
+			patientId: (data["patientId"] as String?),
+			patientLastName: (data["patientLastName"] as String?),
+			patientFirstName: (data["patientFirstName"] as String?),
+			description: (data["description"] as String?),
+			interventionCode: (data["interventionCode"] as String?)
+		);
 	}
 }

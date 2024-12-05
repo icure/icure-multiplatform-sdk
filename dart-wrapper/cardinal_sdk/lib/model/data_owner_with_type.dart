@@ -47,17 +47,17 @@ class DataOwnerWithTypeHcpDataOwner implements DataOwnerWithType {
 	@override HealthcareParty dataOwner;
 	DataOwnerWithTypeHcpDataOwner(this.dataOwner);
 
-	factory DataOwnerWithTypeHcpDataOwner.fromJSON(Map<String, dynamic> data) {
-		return DataOwnerWithTypeHcpDataOwner(
-			HealthcareParty.fromJSON(data["dataOwner"])
-		);
-	}
-
 	static Map<String, dynamic> encode(DataOwnerWithTypeHcpDataOwner value) {
 		Map<String, dynamic> entityAsMap = {
 			"dataOwner" : HealthcareParty.encode(value.dataOwner)
 		};
 		return entityAsMap;
+	}
+
+	static DataOwnerWithTypeHcpDataOwner fromJSON(Map<String, dynamic> data) {
+		return DataOwnerWithTypeHcpDataOwner(
+			HealthcareParty.fromJSON(data["dataOwner"])
+		);
 	}
 }
 
@@ -65,17 +65,17 @@ class DataOwnerWithTypePatientDataOwner implements DataOwnerWithType {
 	@override EncryptedPatient dataOwner;
 	DataOwnerWithTypePatientDataOwner(this.dataOwner);
 
-	factory DataOwnerWithTypePatientDataOwner.fromJSON(Map<String, dynamic> data) {
-		return DataOwnerWithTypePatientDataOwner(
-			EncryptedPatient.fromJSON(data["dataOwner"])
-		);
-	}
-
 	static Map<String, dynamic> encode(DataOwnerWithTypePatientDataOwner value) {
 		Map<String, dynamic> entityAsMap = {
 			"dataOwner" : EncryptedPatient.encode(value.dataOwner)
 		};
 		return entityAsMap;
+	}
+
+	static DataOwnerWithTypePatientDataOwner fromJSON(Map<String, dynamic> data) {
+		return DataOwnerWithTypePatientDataOwner(
+			EncryptedPatient.fromJSON(data["dataOwner"])
+		);
 	}
 }
 
@@ -83,16 +83,16 @@ class DataOwnerWithTypeDeviceDataOwner implements DataOwnerWithType {
 	@override Device dataOwner;
 	DataOwnerWithTypeDeviceDataOwner(this.dataOwner);
 
-	factory DataOwnerWithTypeDeviceDataOwner.fromJSON(Map<String, dynamic> data) {
-		return DataOwnerWithTypeDeviceDataOwner(
-			Device.fromJSON(data["dataOwner"])
-		);
-	}
-
 	static Map<String, dynamic> encode(DataOwnerWithTypeDeviceDataOwner value) {
 		Map<String, dynamic> entityAsMap = {
 			"dataOwner" : Device.encode(value.dataOwner)
 		};
 		return entityAsMap;
+	}
+
+	static DataOwnerWithTypeDeviceDataOwner fromJSON(Map<String, dynamic> data) {
+		return DataOwnerWithTypeDeviceDataOwner(
+			Device.fromJSON(data["dataOwner"])
+		);
 	}
 }

@@ -78,21 +78,6 @@ class DecryptedInsurability implements Insurability {
 		titularyId = titularyId ?? null,
 		encryptedSelf = encryptedSelf ?? null;
 
-	factory DecryptedInsurability.fromJSON(Map<String, dynamic> data) {
-		return DecryptedInsurability(
-			parameters: (data["parameters"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as String))),
-			hospitalisation: (data["hospitalisation"] as bool?),
-			ambulatory: (data["ambulatory"] as bool?),
-			dental: (data["dental"] as bool?),
-			identificationNumber: (data["identificationNumber"] as String?),
-			insuranceId: (data["insuranceId"] as String?),
-			startDate: (data["startDate"] as int?),
-			endDate: (data["endDate"] as int?),
-			titularyId: (data["titularyId"] as String?),
-			encryptedSelf: (data["encryptedSelf"] as Base64String?)
-		);
-	}
-
 	static Map<String, dynamic> encode(DecryptedInsurability value) {
 		Map<String, dynamic> entityAsMap = {
 			"parameters" : value.parameters.map((k0, v0) => MapEntry(k0, v0)),
@@ -107,6 +92,21 @@ class DecryptedInsurability implements Insurability {
 			"encryptedSelf" : value.encryptedSelf
 		};
 		return entityAsMap;
+	}
+
+	static DecryptedInsurability fromJSON(Map<String, dynamic> data) {
+		return DecryptedInsurability(
+			parameters: (data["parameters"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as String))),
+			hospitalisation: (data["hospitalisation"] as bool?),
+			ambulatory: (data["ambulatory"] as bool?),
+			dental: (data["dental"] as bool?),
+			identificationNumber: (data["identificationNumber"] as String?),
+			insuranceId: (data["insuranceId"] as String?),
+			startDate: (data["startDate"] as int?),
+			endDate: (data["endDate"] as int?),
+			titularyId: (data["titularyId"] as String?),
+			encryptedSelf: (data["encryptedSelf"] as Base64String?)
+		);
 	}
 }
 
@@ -143,21 +143,6 @@ class EncryptedInsurability implements Insurability {
 		titularyId = titularyId ?? null,
 		encryptedSelf = encryptedSelf ?? null;
 
-	factory EncryptedInsurability.fromJSON(Map<String, dynamic> data) {
-		return EncryptedInsurability(
-			parameters: (data["parameters"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as String))),
-			hospitalisation: (data["hospitalisation"] as bool?),
-			ambulatory: (data["ambulatory"] as bool?),
-			dental: (data["dental"] as bool?),
-			identificationNumber: (data["identificationNumber"] as String?),
-			insuranceId: (data["insuranceId"] as String?),
-			startDate: (data["startDate"] as int?),
-			endDate: (data["endDate"] as int?),
-			titularyId: (data["titularyId"] as String?),
-			encryptedSelf: (data["encryptedSelf"] as Base64String?)
-		);
-	}
-
 	static Map<String, dynamic> encode(EncryptedInsurability value) {
 		Map<String, dynamic> entityAsMap = {
 			"parameters" : value.parameters.map((k0, v0) => MapEntry(k0, v0)),
@@ -172,5 +157,20 @@ class EncryptedInsurability implements Insurability {
 			"encryptedSelf" : value.encryptedSelf
 		};
 		return entityAsMap;
+	}
+
+	static EncryptedInsurability fromJSON(Map<String, dynamic> data) {
+		return EncryptedInsurability(
+			parameters: (data["parameters"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as String))),
+			hospitalisation: (data["hospitalisation"] as bool?),
+			ambulatory: (data["ambulatory"] as bool?),
+			dental: (data["dental"] as bool?),
+			identificationNumber: (data["identificationNumber"] as String?),
+			insuranceId: (data["insuranceId"] as String?),
+			startDate: (data["startDate"] as int?),
+			endDate: (data["endDate"] as int?),
+			titularyId: (data["titularyId"] as String?),
+			encryptedSelf: (data["encryptedSelf"] as Base64String?)
+		);
 	}
 }

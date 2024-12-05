@@ -11,14 +11,6 @@ class RegistrationSuccess {
 		this.token
 		);
 
-	factory RegistrationSuccess.fromJSON(Map<String, dynamic> data) {
-		return RegistrationSuccess(
-			(data["groupId"] as String),
-			(data["userId"] as String),
-			(data["token"] as String)
-		);
-	}
-
 	static Map<String, dynamic> encode(RegistrationSuccess value) {
 		Map<String, dynamic> entityAsMap = {
 			"groupId" : value.groupId,
@@ -26,5 +18,13 @@ class RegistrationSuccess {
 			"token" : value.token
 		};
 		return entityAsMap;
+	}
+
+	static RegistrationSuccess fromJSON(Map<String, dynamic> data) {
+		return RegistrationSuccess(
+			(data["groupId"] as String),
+			(data["userId"] as String),
+			(data["token"] as String)
+		);
 	}
 }

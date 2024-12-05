@@ -20,16 +20,6 @@ class Role implements StoredDocument {
 		name = name ?? null,
 		permissions = permissions ?? {};
 
-	factory Role.fromJSON(Map<String, dynamic> data) {
-		return Role(
-			(data["id"] as String),
-			rev: (data["rev"] as String?),
-			deletionDate: (data["deletionDate"] as int?),
-			name: (data["name"] as String?),
-			permissions: (data["permissions"] as List<dynamic>).map((x0) => (x0 as String) ).toSet(),
-		);
-	}
-
 	static Map<String, dynamic> encode(Role value) {
 		Map<String, dynamic> entityAsMap = {
 			"id" : value.id,
@@ -39,5 +29,15 @@ class Role implements StoredDocument {
 			"permissions" : value.permissions.map((x0) => x0).toList()
 		};
 		return entityAsMap;
+	}
+
+	static Role fromJSON(Map<String, dynamic> data) {
+		return Role(
+			(data["id"] as String),
+			rev: (data["rev"] as String?),
+			deletionDate: (data["deletionDate"] as int?),
+			name: (data["name"] as String?),
+			permissions: (data["permissions"] as List<dynamic>).map((x0) => (x0 as String) ).toSet(),
+		);
 	}
 }

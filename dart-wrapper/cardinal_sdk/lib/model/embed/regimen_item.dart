@@ -33,17 +33,6 @@ class RegimenItem {
 		administratedQuantity = administratedQuantity ?? null,
 		_dayNumber = dayNumber ?? null;
 
-	factory RegimenItem.fromJSON(Map<String, dynamic> data) {
-		return RegimenItem(
-			dayNumber: (data["dayNumber"] as int?),
-			date: (data["date"] as int?),
-			weekday: data["weekday"] == null ? null : Weekday.fromJSON(data["weekday"]),
-			dayPeriod: data["dayPeriod"] == null ? null : CodeStub.fromJSON(data["dayPeriod"]),
-			timeOfDay: (data["timeOfDay"] as int?),
-			administratedQuantity: data["administratedQuantity"] == null ? null : AdministrationQuantity.fromJSON(data["administratedQuantity"])
-		);
-	}
-
 	static Map<String, dynamic> encode(RegimenItem value) {
 		Map<String, dynamic> entityAsMap = {
 			"date" : value.date,
@@ -54,5 +43,16 @@ class RegimenItem {
 			"administratedQuantity" : value.administratedQuantity == null ? null : AdministrationQuantity.encode(value.administratedQuantity!)
 		};
 		return entityAsMap;
+	}
+
+	static RegimenItem fromJSON(Map<String, dynamic> data) {
+		return RegimenItem(
+			dayNumber: (data["dayNumber"] as int?),
+			date: (data["date"] as int?),
+			weekday: data["weekday"] == null ? null : Weekday.fromJSON(data["weekday"]),
+			dayPeriod: data["dayPeriod"] == null ? null : CodeStub.fromJSON(data["dayPeriod"]),
+			timeOfDay: (data["timeOfDay"] as int?),
+			administratedQuantity: data["administratedQuantity"] == null ? null : AdministrationQuantity.fromJSON(data["administratedQuantity"])
+		);
 	}
 }

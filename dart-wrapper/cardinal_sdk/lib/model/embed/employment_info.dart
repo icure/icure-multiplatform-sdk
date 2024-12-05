@@ -59,16 +59,6 @@ class DecryptedEmploymentInfo implements EmploymentInfo {
 		professionType = professionType ?? null,
 		employer = employer ?? null;
 
-	factory DecryptedEmploymentInfo.fromJSON(Map<String, dynamic> data) {
-		return DecryptedEmploymentInfo(
-			startDate: (data["startDate"] as int?),
-			endDate: (data["endDate"] as int?),
-			professionType: data["professionType"] == null ? null : CodeStub.fromJSON(data["professionType"]),
-			employer: data["employer"] == null ? null : Employer.fromJSON(data["employer"]),
-			encryptedSelf: (data["encryptedSelf"] as Base64String?)
-		);
-	}
-
 	static Map<String, dynamic> encode(DecryptedEmploymentInfo value) {
 		Map<String, dynamic> entityAsMap = {
 			"startDate" : value.startDate,
@@ -78,6 +68,16 @@ class DecryptedEmploymentInfo implements EmploymentInfo {
 			"encryptedSelf" : value.encryptedSelf
 		};
 		return entityAsMap;
+	}
+
+	static DecryptedEmploymentInfo fromJSON(Map<String, dynamic> data) {
+		return DecryptedEmploymentInfo(
+			startDate: (data["startDate"] as int?),
+			endDate: (data["endDate"] as int?),
+			professionType: data["professionType"] == null ? null : CodeStub.fromJSON(data["professionType"]),
+			employer: data["employer"] == null ? null : Employer.fromJSON(data["employer"]),
+			encryptedSelf: (data["encryptedSelf"] as Base64String?)
+		);
 	}
 }
 
@@ -98,16 +98,6 @@ class EncryptedEmploymentInfo implements EmploymentInfo {
 		professionType = professionType ?? null,
 		employer = employer ?? null;
 
-	factory EncryptedEmploymentInfo.fromJSON(Map<String, dynamic> data) {
-		return EncryptedEmploymentInfo(
-			startDate: (data["startDate"] as int?),
-			endDate: (data["endDate"] as int?),
-			professionType: data["professionType"] == null ? null : CodeStub.fromJSON(data["professionType"]),
-			employer: data["employer"] == null ? null : Employer.fromJSON(data["employer"]),
-			encryptedSelf: (data["encryptedSelf"] as Base64String?)
-		);
-	}
-
 	static Map<String, dynamic> encode(EncryptedEmploymentInfo value) {
 		Map<String, dynamic> entityAsMap = {
 			"startDate" : value.startDate,
@@ -117,5 +107,15 @@ class EncryptedEmploymentInfo implements EmploymentInfo {
 			"encryptedSelf" : value.encryptedSelf
 		};
 		return entityAsMap;
+	}
+
+	static EncryptedEmploymentInfo fromJSON(Map<String, dynamic> data) {
+		return EncryptedEmploymentInfo(
+			startDate: (data["startDate"] as int?),
+			endDate: (data["endDate"] as int?),
+			professionType: data["professionType"] == null ? null : CodeStub.fromJSON(data["professionType"]),
+			employer: data["employer"] == null ? null : Employer.fromJSON(data["employer"]),
+			encryptedSelf: (data["encryptedSelf"] as Base64String?)
+		);
 	}
 }
