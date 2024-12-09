@@ -1,4 +1,5 @@
 // auto-generated file
+import 'package:cardinal_sdk/cardinal_sdk.dart';
 import 'package:cardinal_sdk/filters/filter_options.dart';
 import 'package:cardinal_sdk/model/topic.dart';
 import 'package:cardinal_sdk/plugin/cardinal_sdk_platform_interface.dart';
@@ -13,7 +14,11 @@ import 'package:cardinal_sdk/subscription/entity_subscription.dart';
 
 class TopicBasicApi {
 	final String _sdkId;
-	TopicBasicApi(this._sdkId);
+	final CardinalSdk _dartSdk;
+	TopicBasicApi(
+		this._sdkId,
+		this._dartSdk
+		);
 
 	Future<List<String>> matchTopicsBy(BaseFilterOptions<Topic> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.topicBasic.matchTopicsBy(

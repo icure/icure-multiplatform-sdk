@@ -1,4 +1,5 @@
 // auto-generated file
+import 'package:cardinal_sdk/cardinal_sdk.dart';
 import 'package:cardinal_sdk/model/document.dart';
 import 'package:cardinal_sdk/plugin/cardinal_sdk_platform_interface.dart';
 import 'package:cardinal_sdk/model/message.dart';
@@ -16,10 +17,12 @@ import 'package:cardinal_sdk/utils/pagination/paginated_list_iterator.dart';
 
 class DocumentApi {
 	final String _sdkId;
+	final CardinalSdk _dartSdk;
 	final TryAndRecoverDocumentApi tryAndRecover;
 	final EncryptedDocumentApi encrypted;
 	DocumentApi(
-		this._sdkId
+		this._sdkId,
+		this._dartSdk
 		) : tryAndRecover = TryAndRecoverDocumentApi(_sdkId),
 		encrypted = EncryptedDocumentApi(_sdkId);
 
@@ -323,7 +326,11 @@ class DocumentApi {
 
 class TryAndRecoverDocumentApi {
 	final String _sdkId;
-	TryAndRecoverDocumentApi(this._sdkId);
+	final CardinalSdk _dartSdk;
+	TryAndRecoverDocumentApi(
+		this._sdkId,
+		this._dartSdk
+		);
 
 	Future<Document> shareWith(String delegateId, Document document, { DocumentShareOptions? options }) async {
 		return await CardinalSdkPlatformInterface.instance.apis.document.tryAndRecover.shareWith(
@@ -402,7 +409,11 @@ class TryAndRecoverDocumentApi {
 
 class EncryptedDocumentApi {
 	final String _sdkId;
-	EncryptedDocumentApi(this._sdkId);
+	final CardinalSdk _dartSdk;
+	EncryptedDocumentApi(
+		this._sdkId,
+		this._dartSdk
+		);
 
 	Future<EncryptedDocument> shareWith(String delegateId, EncryptedDocument document, { DocumentShareOptions? options }) async {
 		return await CardinalSdkPlatformInterface.instance.apis.document.encrypted.shareWith(

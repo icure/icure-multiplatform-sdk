@@ -1,4 +1,5 @@
 // auto-generated file
+import 'package:cardinal_sdk/cardinal_sdk.dart';
 import 'package:cardinal_sdk/filters/filter_options.dart';
 import 'package:cardinal_sdk/model/time_table.dart';
 import 'package:cardinal_sdk/plugin/cardinal_sdk_platform_interface.dart';
@@ -9,7 +10,11 @@ import 'package:cardinal_sdk/model/id_with_mandatory_rev.dart';
 
 class TimeTableBasicApi {
 	final String _sdkId;
-	TimeTableBasicApi(this._sdkId);
+	final CardinalSdk _dartSdk;
+	TimeTableBasicApi(
+		this._sdkId,
+		this._dartSdk
+		);
 
 	Future<List<String>> matchTimeTablesBy(BaseFilterOptions<TimeTable> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.timeTableBasic.matchTimeTablesBy(

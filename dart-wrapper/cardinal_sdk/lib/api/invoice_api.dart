@@ -1,4 +1,5 @@
 // auto-generated file
+import 'package:cardinal_sdk/cardinal_sdk.dart';
 import 'package:cardinal_sdk/model/invoice.dart';
 import 'package:cardinal_sdk/plugin/cardinal_sdk_platform_interface.dart';
 import 'package:cardinal_sdk/model/patient.dart';
@@ -16,10 +17,12 @@ import 'package:cardinal_sdk/model/embed/invoice_type.dart';
 
 class InvoiceApi {
 	final String _sdkId;
+	final CardinalSdk _dartSdk;
 	final TryAndRecoverInvoiceApi tryAndRecover;
 	final EncryptedInvoiceApi encrypted;
 	InvoiceApi(
-		this._sdkId
+		this._sdkId,
+		this._dartSdk
 		) : tryAndRecover = TryAndRecoverInvoiceApi(_sdkId),
 		encrypted = EncryptedInvoiceApi(_sdkId);
 
@@ -282,7 +285,11 @@ class InvoiceApi {
 
 class TryAndRecoverInvoiceApi {
 	final String _sdkId;
-	TryAndRecoverInvoiceApi(this._sdkId);
+	final CardinalSdk _dartSdk;
+	TryAndRecoverInvoiceApi(
+		this._sdkId,
+		this._dartSdk
+		);
 
 	Future<Invoice> shareWith(String delegateId, Invoice invoice, { InvoiceShareOptions? options }) async {
 		return await CardinalSdkPlatformInterface.instance.apis.invoice.tryAndRecover.shareWith(
@@ -460,7 +467,11 @@ class TryAndRecoverInvoiceApi {
 
 class EncryptedInvoiceApi {
 	final String _sdkId;
-	EncryptedInvoiceApi(this._sdkId);
+	final CardinalSdk _dartSdk;
+	EncryptedInvoiceApi(
+		this._sdkId,
+		this._dartSdk
+		);
 
 	Future<EncryptedInvoice> shareWith(String delegateId, EncryptedInvoice invoice, { InvoiceShareOptions? options }) async {
 		return await CardinalSdkPlatformInterface.instance.apis.invoice.encrypted.shareWith(

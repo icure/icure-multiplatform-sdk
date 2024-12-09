@@ -1,4 +1,5 @@
 // auto-generated file
+import 'package:cardinal_sdk/cardinal_sdk.dart';
 import 'package:cardinal_sdk/plugin/cardinal_sdk_platform_interface.dart';
 import 'package:cardinal_sdk/model/healthcare_party.dart';
 import 'package:cardinal_sdk/model/public_key.dart';
@@ -14,7 +15,11 @@ import 'package:cardinal_sdk/subscription/entity_subscription.dart';
 
 class HealthcarePartyApi {
 	final String _sdkId;
-	HealthcarePartyApi(this._sdkId);
+	final CardinalSdk _dartSdk;
+	HealthcarePartyApi(
+		this._sdkId,
+		this._dartSdk
+		);
 
 	Future<HealthcareParty> getHealthcareParty(String healthcarePartyId) async {
 		return await CardinalSdkPlatformInterface.instance.apis.healthcareParty.getHealthcareParty(

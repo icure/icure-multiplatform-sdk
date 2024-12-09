@@ -1,4 +1,5 @@
 // auto-generated file
+import 'package:cardinal_sdk/cardinal_sdk.dart';
 import 'package:cardinal_sdk/plugin/cardinal_sdk_platform_interface.dart';
 import 'package:cardinal_sdk/model/insurance.dart';
 import 'package:cardinal_sdk/model/couchdb/doc_identifier.dart';
@@ -6,7 +7,11 @@ import 'package:cardinal_sdk/model/couchdb/doc_identifier.dart';
 
 class InsuranceApi {
 	final String _sdkId;
-	InsuranceApi(this._sdkId);
+	final CardinalSdk _dartSdk;
+	InsuranceApi(
+		this._sdkId,
+		this._dartSdk
+		);
 
 	Future<Insurance> getInsurance(String insuranceId) async {
 		return await CardinalSdkPlatformInterface.instance.apis.insurance.getInsurance(

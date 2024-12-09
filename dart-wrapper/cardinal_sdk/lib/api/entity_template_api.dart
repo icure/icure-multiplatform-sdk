@@ -1,4 +1,5 @@
 // auto-generated file
+import 'package:cardinal_sdk/cardinal_sdk.dart';
 import 'package:cardinal_sdk/plugin/cardinal_sdk_platform_interface.dart';
 import 'package:cardinal_sdk/model/entity_template.dart';
 import 'package:cardinal_sdk/model/id_with_mandatory_rev.dart';
@@ -7,7 +8,11 @@ import 'package:cardinal_sdk/model/couchdb/doc_identifier.dart';
 
 class EntityTemplateApi {
 	final String _sdkId;
-	EntityTemplateApi(this._sdkId);
+	final CardinalSdk _dartSdk;
+	EntityTemplateApi(
+		this._sdkId,
+		this._dartSdk
+		);
 
 	Future<EntityTemplate> getEntityTemplate(String documentTemplateId) async {
 		return await CardinalSdkPlatformInterface.instance.apis.entityTemplate.getEntityTemplate(

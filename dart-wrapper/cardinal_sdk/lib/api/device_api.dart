@@ -1,4 +1,5 @@
 // auto-generated file
+import 'package:cardinal_sdk/cardinal_sdk.dart';
 import 'package:cardinal_sdk/plugin/cardinal_sdk_platform_interface.dart';
 import 'package:cardinal_sdk/model/device.dart';
 import 'package:cardinal_sdk/model/id_with_rev.dart';
@@ -13,7 +14,11 @@ import 'package:cardinal_sdk/subscription/entity_subscription.dart';
 
 class DeviceApi {
 	final String _sdkId;
-	DeviceApi(this._sdkId);
+	final CardinalSdk _dartSdk;
+	DeviceApi(
+		this._sdkId,
+		this._dartSdk
+		);
 
 	Future<Device> getDevice(String deviceId) async {
 		return await CardinalSdkPlatformInterface.instance.apis.device.getDevice(

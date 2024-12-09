@@ -1,4 +1,5 @@
 // auto-generated file
+import 'package:cardinal_sdk/cardinal_sdk.dart';
 import 'package:cardinal_sdk/model/health_element.dart';
 import 'package:cardinal_sdk/plugin/cardinal_sdk_platform_interface.dart';
 import 'package:cardinal_sdk/model/patient.dart';
@@ -18,10 +19,12 @@ import 'package:cardinal_sdk/subscription/entity_subscription.dart';
 
 class HealthElementApi {
 	final String _sdkId;
+	final CardinalSdk _dartSdk;
 	final TryAndRecoverHealthElementApi tryAndRecover;
 	final EncryptedHealthElementApi encrypted;
 	HealthElementApi(
-		this._sdkId
+		this._sdkId,
+		this._dartSdk
 		) : tryAndRecover = TryAndRecoverHealthElementApi(_sdkId),
 		encrypted = EncryptedHealthElementApi(_sdkId);
 
@@ -237,7 +240,11 @@ class HealthElementApi {
 
 class TryAndRecoverHealthElementApi {
 	final String _sdkId;
-	TryAndRecoverHealthElementApi(this._sdkId);
+	final CardinalSdk _dartSdk;
+	TryAndRecoverHealthElementApi(
+		this._sdkId,
+		this._dartSdk
+		);
 
 	Future<HealthElement> shareWith(String delegateId, HealthElement healthElement, { HealthElementShareOptions? options }) async {
 		return await CardinalSdkPlatformInterface.instance.apis.healthElement.tryAndRecover.shareWith(
@@ -316,7 +323,11 @@ class TryAndRecoverHealthElementApi {
 
 class EncryptedHealthElementApi {
 	final String _sdkId;
-	EncryptedHealthElementApi(this._sdkId);
+	final CardinalSdk _dartSdk;
+	EncryptedHealthElementApi(
+		this._sdkId,
+		this._dartSdk
+		);
 
 	Future<EncryptedHealthElement> shareWith(String delegateId, EncryptedHealthElement healthElement, { HealthElementShareOptions? options }) async {
 		return await CardinalSdkPlatformInterface.instance.apis.healthElement.encrypted.shareWith(

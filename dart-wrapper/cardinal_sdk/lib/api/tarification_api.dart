@@ -1,11 +1,16 @@
 // auto-generated file
+import 'package:cardinal_sdk/cardinal_sdk.dart';
 import 'package:cardinal_sdk/plugin/cardinal_sdk_platform_interface.dart';
 import 'package:cardinal_sdk/model/tarification.dart';
 
 
 class TarificationApi {
 	final String _sdkId;
-	TarificationApi(this._sdkId);
+	final CardinalSdk _dartSdk;
+	TarificationApi(
+		this._sdkId,
+		this._dartSdk
+		);
 
 	Future<Tarification> getTarification(String tarificationId) async {
 		return await CardinalSdkPlatformInterface.instance.apis.tarification.getTarification(

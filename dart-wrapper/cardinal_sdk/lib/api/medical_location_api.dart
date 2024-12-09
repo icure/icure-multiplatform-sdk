@@ -1,4 +1,5 @@
 // auto-generated file
+import 'package:cardinal_sdk/cardinal_sdk.dart';
 import 'package:cardinal_sdk/model/medical_location.dart';
 import 'package:cardinal_sdk/plugin/cardinal_sdk_platform_interface.dart';
 import 'package:cardinal_sdk/model/list_of_ids.dart';
@@ -9,7 +10,11 @@ import 'package:cardinal_sdk/utils/pagination/paginated_list_iterator.dart';
 
 class MedicalLocationApi {
 	final String _sdkId;
-	MedicalLocationApi(this._sdkId);
+	final CardinalSdk _dartSdk;
+	MedicalLocationApi(
+		this._sdkId,
+		this._dartSdk
+		);
 
 	Future<MedicalLocation> createMedicalLocation(MedicalLocation medicalLocationDto) async {
 		return await CardinalSdkPlatformInterface.instance.apis.medicalLocation.createMedicalLocation(

@@ -1,4 +1,5 @@
 // auto-generated file
+import 'package:cardinal_sdk/cardinal_sdk.dart';
 import 'package:cardinal_sdk/model/access_log.dart';
 import 'package:cardinal_sdk/plugin/cardinal_sdk_platform_interface.dart';
 import 'package:cardinal_sdk/model/patient.dart';
@@ -15,10 +16,12 @@ import 'package:cardinal_sdk/utils/pagination/paginated_list_iterator.dart';
 
 class AccessLogApi {
 	final String _sdkId;
+	final CardinalSdk _dartSdk;
 	final TryAndRecoverAccessLogApi tryAndRecover;
 	final EncryptedAccessLogApi encrypted;
 	AccessLogApi(
-		this._sdkId
+		this._sdkId,
+		this._dartSdk
 		) : tryAndRecover = TryAndRecoverAccessLogApi(_sdkId),
 		encrypted = EncryptedAccessLogApi(_sdkId);
 
@@ -211,7 +214,11 @@ class AccessLogApi {
 
 class TryAndRecoverAccessLogApi {
 	final String _sdkId;
-	TryAndRecoverAccessLogApi(this._sdkId);
+	final CardinalSdk _dartSdk;
+	TryAndRecoverAccessLogApi(
+		this._sdkId,
+		this._dartSdk
+		);
 
 	Future<AccessLog> shareWith(String delegateId, AccessLog accessLog, { AccessLogShareOptions? options }) async {
 		return await CardinalSdkPlatformInterface.instance.apis.accessLog.tryAndRecover.shareWith(
@@ -283,7 +290,11 @@ class TryAndRecoverAccessLogApi {
 
 class EncryptedAccessLogApi {
 	final String _sdkId;
-	EncryptedAccessLogApi(this._sdkId);
+	final CardinalSdk _dartSdk;
+	EncryptedAccessLogApi(
+		this._sdkId,
+		this._dartSdk
+		);
 
 	Future<EncryptedAccessLog> shareWith(String delegateId, EncryptedAccessLog accessLog, { AccessLogShareOptions? options }) async {
 		return await CardinalSdkPlatformInterface.instance.apis.accessLog.encrypted.shareWith(
