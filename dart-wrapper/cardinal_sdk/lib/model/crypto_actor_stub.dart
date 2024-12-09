@@ -1,6 +1,6 @@
 // auto-generated file
 import 'package:cardinal_sdk/model/specializations/hex_string.dart';
-import 'package:cardinal_sdk/crypto/cardinal_keys.dart';
+import 'package:cardinal_sdk/crypto/entities/cardinal_keys.dart';
 import 'package:cardinal_sdk/model/specializations/aes_exchange_key_encryption_keypair_identifier.dart';
 import 'package:cardinal_sdk/model/base/code_stub.dart';
 import 'package:cardinal_sdk/model/base/versionable.dart';

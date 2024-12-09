@@ -1,15 +1,14 @@
-// auto-generated file
 import 'package:cardinal_sdk/crypto/entities/recovery_data_use_failure_reason.dart';
 
 
 sealed class RecoveryResult<T> {
-	abstract bool isSuccess;
+	bool get isSuccess;
 	T get value;
 
-	static Map<String, dynamic> encode(RecoveryResult value) {
+	static Map<String, dynamic> encode<T>(RecoveryResult<T> value, dynamic Function(T)  encodeT) {
 		switch (value) {
 			case RecoveryResultSuccess entity:
-				Map<String, dynamic> entityJson = RecoveryResultSuccess.encode(entity);
+				Map<String, dynamic> entityJson = RecoveryResultSuccess.encode(entity as RecoveryResultSuccess<T>, encodeT);
 				entityJson["kotlinType"] = "com.icure.cardinal.sdk.crypto.entities.RecoveryResult.Success";
 				return entityJson;
 			case RecoveryResultFailure entity:
@@ -19,14 +18,14 @@ sealed class RecoveryResult<T> {
 		}
 	}
 
-	static RecoveryResult fromJSON(Map<String, dynamic> data) {
+	static RecoveryResult<T> fromJSON<T>(Map<String, dynamic> data, T Function(dynamic) decodeT) {
 		if (data["kotlinType"] == null) {
 			throw ArgumentError('Missing discriminator: kotlinType');
 		}
 		String discriminator = data["kotlinType"];
 		switch (discriminator) {
 			case "com.icure.cardinal.sdk.crypto.entities.RecoveryResult.Success":
-				return RecoveryResultSuccess.fromJSON(data);
+				return RecoveryResultSuccess.fromJSON(data, decodeT);
 			case "com.icure.cardinal.sdk.crypto.entities.RecoveryResult.Failure":
 				return RecoveryResultFailure.fromJSON(data);
 			default:
@@ -35,13 +34,13 @@ sealed class RecoveryResult<T> {
 	}
 }
 
-class RecoveryResultSuccess<T> implements RecoveryResult {
-	T data;
-	RecoveryResultSuccess(this.data);
+class RecoveryResultSuccess<T> implements RecoveryResult<T> {
+	T _data;
+	RecoveryResultSuccess(this._data);
 
 	static Map<String, dynamic> encode<T>(RecoveryResultSuccess<T> value, dynamic Function(T)  encodeT) {
 		Map<String, dynamic> entityAsMap = {
-			"data" : encodeT(value.data)
+			"data" : encodeT(value._data)
 		};
 		return entityAsMap;
 	}
@@ -51,9 +50,15 @@ class RecoveryResultSuccess<T> implements RecoveryResult {
 			decodeT(data["data"])
 		);
 	}
+
+  @override
+  get isSuccess => true;
+
+  @override
+  get value => this._data;
 }
 
-class RecoveryResultFailure implements RecoveryResult {
+class RecoveryResultFailure implements RecoveryResult<Never> {
 	RecoveryDataUseFailureReason reason;
 	RecoveryResultFailure(this.reason);
 
@@ -69,4 +74,10 @@ class RecoveryResultFailure implements RecoveryResult {
 			RecoveryDataUseFailureReason.fromJSON(data["reason"])
 		);
 	}
+
+	@override
+	get isSuccess => false;
+
+	@override
+	get value => throw UnsupportedError("Failure result does not have a value");
 }

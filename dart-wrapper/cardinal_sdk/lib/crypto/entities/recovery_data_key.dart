@@ -44,4 +44,14 @@ class RecoveryDataKey {
     final base32Encoded = base32.encode(_bytes);
     return base32Encoded.replaceAll('=', '');
   }
+
+  static Map<String, dynamic> encode(RecoveryDataKey value) {
+    return {
+      "_hex": value.asHexString()
+    };
+  }
+
+  static RecoveryDataKey fromJSON(Map<String, dynamic> data) {
+    return RecoveryDataKey.fromHexString(data["_hex"] as String);
+  }
 }

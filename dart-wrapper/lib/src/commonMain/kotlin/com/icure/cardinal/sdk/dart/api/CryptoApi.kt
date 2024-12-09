@@ -5,7 +5,7 @@ import com.icure.cardinal.sdk.CardinalSdk
 import com.icure.cardinal.sdk.dart.utils.ApiScope
 import com.icure.cardinal.sdk.dart.utils.NativeReferences
 import com.icure.cardinal.sdk.model.specializations.KeypairFingerprintV1String
-import com.icure.cardinal.sdk.model.specializations.Pkcs8Bytes
+import com.icure.cardinal.sdk.serialization.Pkcs8BytesAsBase64Serializer
 import com.icure.cardinal.sdk.utils.Serialization.fullLanguageInteropJson
 import com.icure.utils.InternalIcureApi
 import kotlin.Boolean
@@ -47,7 +47,7 @@ public object CryptoApi {
     ApiScope.execute(
       dartResultCallback,
       MapSerializer(String.serializer(), MapSerializer(KeypairFingerprintV1String.serializer(),
-          Pkcs8Bytes.serializer()))) {
+          Pkcs8BytesAsBase64Serializer))) {
       NativeReferences.get<CardinalSdk>(sdkId).crypto.currentDataOwnerKeys(
         filterTrustedKeys,
       )

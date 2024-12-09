@@ -5,8 +5,7 @@ import 'package:cardinal_sdk/crypto/entities/recovery_data_key.dart';
 import 'dart:convert';
 import 'package:cardinal_sdk/utils/internal/platform_exception_convertion.dart';
 import 'package:cardinal_sdk/crypto/entities/recovery_result.dart';
-import 'package:cardinal_sdk/crypto/cardinal_keys.dart';
-import 'package:cardinal_sdk/model/kryptom/rsakeypair.dart';
+import 'package:cardinal_sdk/crypto/entities/cardinal_keys.dart';
 import 'package:cardinal_sdk/crypto/entities/recovery_data_use_failure_reason.dart';
 import 'package:cardinal_sdk/crypto/entities/recovery_key_size.dart';
 
@@ -30,7 +29,7 @@ class RecoveryPlatformApi {
 		return RecoveryDataKey.fromJSON(parsedResJson);
 	}
 
-	Future<RecoveryResult<Map<String, Map<CardinalRsaPublicKey, RsaKeyPair>>>> recoverKeyPairs(String sdkId, RecoveryDataKey recoveryKey, bool autoDelete) async {
+	Future<RecoveryResult<Map<String, Map<CardinalRsaPublicKey, CardinalRsaPrivateKey>>>> recoverKeyPairs(String sdkId, RecoveryDataKey recoveryKey, bool autoDelete) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'RecoveryApi.recoverKeyPairs',
 			{
@@ -41,10 +40,15 @@ class RecoveryPlatformApi {
 		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method recoverKeyPairs");
 		final parsedResJson = jsonDecode(res);
-		return RecoveryResult.fromJSON(parsedResJson);
+		return RecoveryResult.fromJSON(
+				parsedResJson,
+			(x1) {
+				return (x1 as Map<String, dynamic>).map((k2, v2) => MapEntry((k2 as String), (v2 as Map<String, dynamic>).map((k3, v3) => MapEntry(CardinalRsaPublicKey.fromHex(k3), CardinalRsaPrivateKey.fromBase64(v3)))));
+			},
+		);
 	}
 
-	Future<RecoveryResult<Map<String, Map<CardinalRsaPublicKey, RsaKeyPair>>>> recoverKeyPairsWaitingForCreation(int cancellationToken, String sdkId, RecoveryDataKey recoveryKey, bool autoDelete, int waitSeconds) async {
+	Future<RecoveryResult<Map<String, Map<CardinalRsaPublicKey, CardinalRsaPrivateKey>>>> recoverKeyPairsWaitingForCreation(int cancellationToken, String sdkId, RecoveryDataKey recoveryKey, bool autoDelete, int waitSeconds) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'RecoveryApi.recoverKeyPairsWaitingForCreation',
 			{
@@ -57,7 +61,12 @@ class RecoveryPlatformApi {
 		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method recoverKeyPairsWaitingForCreation");
 		final parsedResJson = jsonDecode(res);
-		return RecoveryResult.fromJSON(parsedResJson);
+		return RecoveryResult.fromJSON(
+				parsedResJson,
+			(x1) {
+				return (x1 as Map<String, dynamic>).map((k2, v2) => MapEntry((k2 as String), (v2 as Map<String, dynamic>).map((k3, v3) => MapEntry(CardinalRsaPublicKey.fromHex(k3), CardinalRsaPrivateKey.fromBase64(v3)))));
+			},
+		);
 	}
 
 	Future<RecoveryDataKey> createExchangeDataRecoveryInfo(String sdkId, String delegateId, int? lifetimeSeconds, RecoveryKeyOptions? recoveryKeyOptions) async {

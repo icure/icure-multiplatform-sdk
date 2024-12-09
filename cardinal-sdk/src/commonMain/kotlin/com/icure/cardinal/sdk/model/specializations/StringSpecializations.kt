@@ -131,12 +131,6 @@ value class SpkiHexString(
 
 @JvmInline
 @Serializable
-value class Pkcs8Bytes(
-	val bytes: ByteArray
-)
-
-@JvmInline
-@Serializable
 value class KeypairFingerprintV1String(
 	val s: String
 ) {

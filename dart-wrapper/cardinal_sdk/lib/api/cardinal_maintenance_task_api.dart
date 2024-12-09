@@ -1,7 +1,7 @@
 // auto-generated file
 import 'package:cardinal_sdk/model/sdk/key_pair_update_notification.dart';
 import 'package:cardinal_sdk/plugin/cardinal_sdk_platform_interface.dart';
-import 'package:cardinal_sdk/crypto/cardinal_keys.dart';
+import 'package:cardinal_sdk/crypto/entities/cardinal_keys.dart';
 import 'package:cardinal_sdk/model/data_owner_type.dart';
 
 

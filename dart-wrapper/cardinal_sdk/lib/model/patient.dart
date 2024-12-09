@@ -16,7 +16,7 @@ import 'package:cardinal_sdk/model/embed/financial_institution_information.dart'
 import 'package:cardinal_sdk/model/embed/medical_house_contract.dart';
 import 'package:cardinal_sdk/model/property_stub.dart';
 import 'package:cardinal_sdk/model/specializations/hex_string.dart';
-import 'package:cardinal_sdk/crypto/cardinal_keys.dart';
+import 'package:cardinal_sdk/crypto/entities/cardinal_keys.dart';
 import 'package:cardinal_sdk/model/specializations/aes_exchange_key_encryption_keypair_identifier.dart';
 import 'package:cardinal_sdk/model/embed/delegation.dart';
 import 'package:cardinal_sdk/model/specializations/base64string.dart';

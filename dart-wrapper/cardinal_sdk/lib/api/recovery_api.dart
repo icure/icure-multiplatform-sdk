@@ -3,8 +3,7 @@ import 'package:cardinal_sdk/crypto/entities/recovery_key_options.dart';
 import 'package:cardinal_sdk/plugin/cardinal_sdk_platform_interface.dart';
 import 'package:cardinal_sdk/crypto/entities/recovery_data_key.dart';
 import 'package:cardinal_sdk/crypto/entities/recovery_result.dart';
-import 'package:cardinal_sdk/crypto/cardinal_keys.dart';
-import 'package:cardinal_sdk/model/kryptom/rsakeypair.dart';
+import 'package:cardinal_sdk/crypto/entities/cardinal_keys.dart';
 import 'package:cardinal_sdk/utils/internal/cancellation_token_provider.dart';
 import 'package:cardinal_sdk/utils/cancellable_future.dart';
 import 'package:cardinal_sdk/crypto/entities/recovery_data_use_failure_reason.dart';
@@ -24,7 +23,7 @@ class RecoveryApi {
 		);
 	}
 
-	Future<RecoveryResult<Map<String, Map<CardinalRsaPublicKey, RsaKeyPair>>>> recoverKeyPairs(RecoveryDataKey recoveryKey, bool autoDelete) async {
+	Future<RecoveryResult<Map<String, Map<CardinalRsaPublicKey, CardinalRsaPrivateKey>>>> recoverKeyPairs(RecoveryDataKey recoveryKey, bool autoDelete) async {
 		return await CardinalSdkPlatformInterface.instance.apis.recovery.recoverKeyPairs(
 			_sdkId,
 			recoveryKey,
@@ -32,7 +31,7 @@ class RecoveryApi {
 		);
 	}
 
-	CancellableFuture<RecoveryResult<Map<String, Map<CardinalRsaPublicKey, RsaKeyPair>>>> recoverKeyPairsWaitingForCreation(RecoveryDataKey recoveryKey, bool autoDelete, int waitSeconds) {
+	CancellableFuture<RecoveryResult<Map<String, Map<CardinalRsaPublicKey, CardinalRsaPrivateKey>>>> recoverKeyPairsWaitingForCreation(RecoveryDataKey recoveryKey, bool autoDelete, int waitSeconds) {
 		final cancellationToken = CancellationTokenProvider.getNextToken();
 		return CancellableFuture.internalConstructor(
 			CardinalSdkPlatformInterface.instance.apis.recovery.recoverKeyPairsWaitingForCreation(

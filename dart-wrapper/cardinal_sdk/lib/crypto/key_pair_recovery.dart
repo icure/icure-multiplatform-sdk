@@ -1,7 +1,7 @@
-import 'package:cardinal_sdk/crypto/cardinal_keys.dart';
+import 'package:cardinal_sdk/crypto/entities/cardinal_keys.dart';
+import 'package:cardinal_sdk/crypto/entities/recovery_data_key.dart';
+import 'package:cardinal_sdk/crypto/entities/recovery_result.dart';
 import 'package:cardinal_sdk/utils/cancellable_future.dart';
-
-import 'entities/recovery_data_key.dart';
 
 /// Allows to recover user keypairs using builtin recovery mechanisms.
 /// This interface includes recovery methods that require some input from your application (e.g. a recovery key created from a different device).

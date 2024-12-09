@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:cardinal_sdk/model/sdk/key_pair_update_notification.dart';
 import 'dart:convert';
 import 'package:cardinal_sdk/utils/internal/platform_exception_convertion.dart';
-import 'package:cardinal_sdk/crypto/cardinal_keys.dart';
+import 'package:cardinal_sdk/crypto/entities/cardinal_keys.dart';
 import 'package:cardinal_sdk/model/data_owner_type.dart';
 
 

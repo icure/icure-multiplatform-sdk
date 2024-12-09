@@ -7,19 +7,14 @@ import com.icure.cardinal.sdk.crypto.entities.RecoveryDataUseFailureReason
 import com.icure.cardinal.sdk.crypto.entities.RecoveryKeyOptions
 import com.icure.cardinal.sdk.crypto.entities.RecoveryKeySize
 import com.icure.cardinal.sdk.crypto.entities.RecoveryResult
+import com.icure.cardinal.sdk.crypto.entities.map
 import com.icure.cardinal.sdk.dart.utils.ApiScope
 import com.icure.cardinal.sdk.dart.utils.NativeReferences
+import com.icure.cardinal.sdk.dart.utils.toPkcs8Bytes
 import com.icure.cardinal.sdk.model.specializations.SpkiHexString
-import com.icure.cardinal.sdk.py.serialization.RsaEncryptionAlgorithmSerializer
-import com.icure.cardinal.sdk.py.serialization.RsaKeypairSerializer
+import com.icure.cardinal.sdk.serialization.Pkcs8BytesAsBase64Serializer
 import com.icure.cardinal.sdk.utils.Serialization.fullLanguageInteropJson
 import com.icure.utils.InternalIcureApi
-import kotlin.Boolean
-import kotlin.Int
-import kotlin.Long
-import kotlin.OptIn
-import kotlin.String
-import kotlin.Unit
 import kotlinx.serialization.builtins.MapSerializer
 import kotlinx.serialization.builtins.nullable
 import kotlinx.serialization.builtins.serializer
@@ -83,12 +78,22 @@ public object RecoveryApi {
     ApiScope.execute(
       dartResultCallback,
       RecoveryResult.serializer(MapSerializer(String.serializer(),
-          MapSerializer(SpkiHexString.serializer(),
-          RsaKeypairSerializer(RsaEncryptionAlgorithmSerializer))))) {
-      NativeReferences.get<CardinalSdk>(sdkId).recovery.recoverKeyPairs(
+          MapSerializer(SpkiHexString.serializer(), Pkcs8BytesAsBase64Serializer)))) {
+      val res = NativeReferences.get<CardinalSdk>(sdkId).recovery.recoverKeyPairs(
         recoveryKey,
         autoDelete,
       )
+      res.map { x0 ->
+        x0.mapKeys { (k1, _) ->
+          k1
+        }.mapValues { (_, v1) ->
+          v1.mapKeys { (k2, _) ->
+            k2
+          }.mapValues { (_, v2) ->
+            v2.toPkcs8Bytes()
+          }
+        }
+      }
     }
   }
 
@@ -121,13 +126,23 @@ public object RecoveryApi {
       dartResultCallback,
       cancellationToken,
       RecoveryResult.serializer(MapSerializer(String.serializer(),
-          MapSerializer(SpkiHexString.serializer(),
-          RsaKeypairSerializer(RsaEncryptionAlgorithmSerializer))))) {
-      NativeReferences.get<CardinalSdk>(sdkId).recovery.recoverKeyPairsWaitingForCreation(
+          MapSerializer(SpkiHexString.serializer(), Pkcs8BytesAsBase64Serializer)))) {
+      val res = NativeReferences.get<CardinalSdk>(sdkId).recovery.recoverKeyPairsWaitingForCreation(
         recoveryKey,
         autoDelete,
         waitSeconds,
       )
+      res.map { x0 ->
+        x0.mapKeys { (k1, _) ->
+          k1
+        }.mapValues { (_, v1) ->
+          v1.mapKeys { (k2, _) ->
+            k2
+          }.mapValues { (_, v2) ->
+            v2.toPkcs8Bytes()
+          }
+        }
+      }
     }
   }
 

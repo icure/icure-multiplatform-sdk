@@ -13,7 +13,7 @@ import 'package:cardinal_sdk/model/embed/financial_institution_information.dart'
 import 'package:cardinal_sdk/model/embed/flat_rate_tarification.dart';
 import 'package:cardinal_sdk/model/property_stub.dart';
 import 'package:cardinal_sdk/model/specializations/hex_string.dart';
-import 'package:cardinal_sdk/crypto/cardinal_keys.dart';
+import 'package:cardinal_sdk/crypto/entities/cardinal_keys.dart';
 import 'package:cardinal_sdk/model/specializations/aes_exchange_key_encryption_keypair_identifier.dart';
 import 'dart:convert';
 import 'package:cardinal_sdk/model/base/stored_document.dart';
