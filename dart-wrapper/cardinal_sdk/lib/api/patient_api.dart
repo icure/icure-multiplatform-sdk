@@ -26,8 +26,8 @@ class PatientApi {
 	PatientApi(
 		this._sdkId,
 		this._dartSdk
-		) : tryAndRecover = TryAndRecoverPatientApi(_sdkId),
-		encrypted = EncryptedPatientApi(_sdkId);
+		) : tryAndRecover = TryAndRecoverPatientApi(_sdkId, _dartSdk),
+		encrypted = EncryptedPatientApi(_sdkId, _dartSdk);
 
 	Future<Set<String>> getSecretIdsOf(Patient patient) async {
 		return await CardinalSdkPlatformInterface.instance.apis.patient.getSecretIdsOf(

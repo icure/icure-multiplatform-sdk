@@ -23,8 +23,8 @@ class DocumentApi {
 	DocumentApi(
 		this._sdkId,
 		this._dartSdk
-		) : tryAndRecover = TryAndRecoverDocumentApi(_sdkId),
-		encrypted = EncryptedDocumentApi(_sdkId);
+		) : tryAndRecover = TryAndRecoverDocumentApi(_sdkId, _dartSdk),
+		encrypted = EncryptedDocumentApi(_sdkId, _dartSdk);
 
 	Future<DecryptedDocument> createDocument(DecryptedDocument entity) async {
 		return await CardinalSdkPlatformInterface.instance.apis.document.createDocument(

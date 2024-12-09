@@ -20,8 +20,8 @@ class ReceiptApi {
 	ReceiptApi(
 		this._sdkId,
 		this._dartSdk
-		) : tryAndRecover = TryAndRecoverReceiptApi(_sdkId),
-		encrypted = EncryptedReceiptApi(_sdkId);
+		) : tryAndRecover = TryAndRecoverReceiptApi(_sdkId, _dartSdk),
+		encrypted = EncryptedReceiptApi(_sdkId, _dartSdk);
 
 	Future<DecryptedReceipt> createReceipt(DecryptedReceipt entity) async {
 		return await CardinalSdkPlatformInterface.instance.apis.receipt.createReceipt(

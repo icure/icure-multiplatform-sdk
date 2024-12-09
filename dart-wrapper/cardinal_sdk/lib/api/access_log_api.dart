@@ -22,8 +22,8 @@ class AccessLogApi {
 	AccessLogApi(
 		this._sdkId,
 		this._dartSdk
-		) : tryAndRecover = TryAndRecoverAccessLogApi(_sdkId),
-		encrypted = EncryptedAccessLogApi(_sdkId);
+		) : tryAndRecover = TryAndRecoverAccessLogApi(_sdkId, _dartSdk),
+		encrypted = EncryptedAccessLogApi(_sdkId, _dartSdk);
 
 	Future<DecryptedAccessLog> createAccessLog(DecryptedAccessLog entity) async {
 		return await CardinalSdkPlatformInterface.instance.apis.accessLog.createAccessLog(

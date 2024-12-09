@@ -25,8 +25,8 @@ class MessageApi {
 	MessageApi(
 		this._sdkId,
 		this._dartSdk
-		) : tryAndRecover = TryAndRecoverMessageApi(_sdkId),
-		encrypted = EncryptedMessageApi(_sdkId);
+		) : tryAndRecover = TryAndRecoverMessageApi(_sdkId, _dartSdk),
+		encrypted = EncryptedMessageApi(_sdkId, _dartSdk);
 
 	Future<DecryptedMessage> createMessage(DecryptedMessage entity) async {
 		return await CardinalSdkPlatformInterface.instance.apis.message.createMessage(

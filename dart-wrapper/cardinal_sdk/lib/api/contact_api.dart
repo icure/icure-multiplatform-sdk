@@ -27,8 +27,8 @@ class ContactApi {
 	ContactApi(
 		this._sdkId,
 		this._dartSdk
-		) : tryAndRecover = TryAndRecoverContactApi(_sdkId),
-		encrypted = EncryptedContactApi(_sdkId);
+		) : tryAndRecover = TryAndRecoverContactApi(_sdkId, _dartSdk),
+		encrypted = EncryptedContactApi(_sdkId, _dartSdk);
 
 	Future<List<String>> matchContactsBy(FilterOptions<Contact> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.contact.matchContactsBy(

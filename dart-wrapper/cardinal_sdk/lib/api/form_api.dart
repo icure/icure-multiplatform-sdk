@@ -24,8 +24,8 @@ class FormApi {
 	FormApi(
 		this._sdkId,
 		this._dartSdk
-		) : tryAndRecover = TryAndRecoverFormApi(_sdkId),
-		encrypted = EncryptedFormApi(_sdkId);
+		) : tryAndRecover = TryAndRecoverFormApi(_sdkId, _dartSdk),
+		encrypted = EncryptedFormApi(_sdkId, _dartSdk);
 
 	Future<DecryptedForm> createForm(DecryptedForm entity) async {
 		return await CardinalSdkPlatformInterface.instance.apis.form.createForm(

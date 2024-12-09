@@ -23,8 +23,8 @@ class MaintenanceTaskApi {
 	MaintenanceTaskApi(
 		this._sdkId,
 		this._dartSdk
-		) : tryAndRecover = TryAndRecoverMaintenanceTaskApi(_sdkId),
-		encrypted = EncryptedMaintenanceTaskApi(_sdkId);
+		) : tryAndRecover = TryAndRecoverMaintenanceTaskApi(_sdkId, _dartSdk),
+		encrypted = EncryptedMaintenanceTaskApi(_sdkId, _dartSdk);
 
 	Future<DecryptedMaintenanceTask> createMaintenanceTask(DecryptedMaintenanceTask entity) async {
 		return await CardinalSdkPlatformInterface.instance.apis.maintenanceTask.createMaintenanceTask(

@@ -25,8 +25,8 @@ class HealthElementApi {
 	HealthElementApi(
 		this._sdkId,
 		this._dartSdk
-		) : tryAndRecover = TryAndRecoverHealthElementApi(_sdkId),
-		encrypted = EncryptedHealthElementApi(_sdkId);
+		) : tryAndRecover = TryAndRecoverHealthElementApi(_sdkId, _dartSdk),
+		encrypted = EncryptedHealthElementApi(_sdkId, _dartSdk);
 
 	Future<DecryptedHealthElement> createHealthElement(DecryptedHealthElement entity) async {
 		return await CardinalSdkPlatformInterface.instance.apis.healthElement.createHealthElement(

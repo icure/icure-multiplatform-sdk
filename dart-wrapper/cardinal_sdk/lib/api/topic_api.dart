@@ -26,8 +26,8 @@ class TopicApi {
 	TopicApi(
 		this._sdkId,
 		this._dartSdk
-		) : tryAndRecover = TryAndRecoverTopicApi(_sdkId),
-		encrypted = EncryptedTopicApi(_sdkId);
+		) : tryAndRecover = TryAndRecoverTopicApi(_sdkId, _dartSdk),
+		encrypted = EncryptedTopicApi(_sdkId, _dartSdk);
 
 	Future<DecryptedTopic> createTopic(DecryptedTopic entity) async {
 		return await CardinalSdkPlatformInterface.instance.apis.topic.createTopic(

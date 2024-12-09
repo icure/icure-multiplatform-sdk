@@ -12,7 +12,7 @@ class CryptoApi {
 	CryptoApi(
 		this._sdkId,
 		this._dartSdk
-		) : shamirKeysManager = ShamirKeysManagerApi(_sdkId);
+		) : shamirKeysManager = ShamirKeysManagerApi(_sdkId, _dartSdk);
 
 	Future<void> forceReload() async {
 		return await CardinalSdkPlatformInterface.instance.apis.crypto.forceReload(

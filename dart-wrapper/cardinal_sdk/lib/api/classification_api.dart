@@ -21,8 +21,8 @@ class ClassificationApi {
 	ClassificationApi(
 		this._sdkId,
 		this._dartSdk
-		) : tryAndRecover = TryAndRecoverClassificationApi(_sdkId),
-		encrypted = EncryptedClassificationApi(_sdkId);
+		) : tryAndRecover = TryAndRecoverClassificationApi(_sdkId, _dartSdk),
+		encrypted = EncryptedClassificationApi(_sdkId, _dartSdk);
 
 	Future<DecryptedClassification> createClassification(DecryptedClassification entity) async {
 		return await CardinalSdkPlatformInterface.instance.apis.classification.createClassification(

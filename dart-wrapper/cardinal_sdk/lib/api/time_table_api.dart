@@ -22,8 +22,8 @@ class TimeTableApi {
 	TimeTableApi(
 		this._sdkId,
 		this._dartSdk
-		) : tryAndRecover = TryAndRecoverTimeTableApi(_sdkId),
-		encrypted = EncryptedTimeTableApi(_sdkId);
+		) : tryAndRecover = TryAndRecoverTimeTableApi(_sdkId, _dartSdk),
+		encrypted = EncryptedTimeTableApi(_sdkId, _dartSdk);
 
 	Future<DecryptedTimeTable> createTimeTable(DecryptedTimeTable entity) async {
 		return await CardinalSdkPlatformInterface.instance.apis.timeTable.createTimeTable(

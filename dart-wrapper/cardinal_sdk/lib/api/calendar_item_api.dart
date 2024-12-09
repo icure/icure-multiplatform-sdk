@@ -25,8 +25,8 @@ class CalendarItemApi {
 	CalendarItemApi(
 		this._sdkId,
 		this._dartSdk
-		) : tryAndRecover = TryAndRecoverCalendarItemApi(_sdkId),
-		encrypted = EncryptedCalendarItemApi(_sdkId);
+		) : tryAndRecover = TryAndRecoverCalendarItemApi(_sdkId, _dartSdk),
+		encrypted = EncryptedCalendarItemApi(_sdkId, _dartSdk);
 
 	Future<DecryptedCalendarItem> createCalendarItem(DecryptedCalendarItem entity) async {
 		return await CardinalSdkPlatformInterface.instance.apis.calendarItem.createCalendarItem(

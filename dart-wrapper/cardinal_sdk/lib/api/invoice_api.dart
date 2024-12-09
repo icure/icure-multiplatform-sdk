@@ -23,8 +23,8 @@ class InvoiceApi {
 	InvoiceApi(
 		this._sdkId,
 		this._dartSdk
-		) : tryAndRecover = TryAndRecoverInvoiceApi(_sdkId),
-		encrypted = EncryptedInvoiceApi(_sdkId);
+		) : tryAndRecover = TryAndRecoverInvoiceApi(_sdkId, _dartSdk),
+		encrypted = EncryptedInvoiceApi(_sdkId, _dartSdk);
 
 	Future<DecryptedInvoice> createInvoice(DecryptedInvoice entity, String? prefix) async {
 		return await CardinalSdkPlatformInterface.instance.apis.invoice.createInvoice(
