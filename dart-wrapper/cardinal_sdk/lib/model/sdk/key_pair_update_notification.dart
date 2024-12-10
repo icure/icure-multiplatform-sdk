@@ -20,7 +20,7 @@ class KeyPairUpdateNotification {
 
 	static KeyPairUpdateNotification fromJSON(Map<String, dynamic> data) {
 		return KeyPairUpdateNotification(
-			CardinalRsaPublicKey.fromHex(data["newPublicKey"]),
+			CardinalRsaPublicKey.fromSpkiHex(data["newPublicKey"]),
 			(data["concernedDataOwnerId"] as String)
 		);
 	}

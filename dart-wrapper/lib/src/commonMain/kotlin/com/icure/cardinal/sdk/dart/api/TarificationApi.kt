@@ -1,7 +1,7 @@
 // auto-generated file
 package com.icure.cardinal.sdk.dart.api
 
-import com.icure.cardinal.sdk.CardinalSdk
+import com.icure.cardinal.sdk.CardinalApis
 import com.icure.cardinal.sdk.dart.utils.ApiScope
 import com.icure.cardinal.sdk.dart.utils.NativeReferences
 import com.icure.cardinal.sdk.model.Tarification
@@ -32,7 +32,7 @@ public object TarificationApi {
     ApiScope.execute(
       dartResultCallback,
       Tarification.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).tarification.getTarification(
+      NativeReferences.get<CardinalApis>(sdkId).tarification.getTarification(
         tarificationId,
       )
     }
@@ -55,7 +55,7 @@ public object TarificationApi {
     ApiScope.execute(
       dartResultCallback,
       Tarification.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).tarification.createTarification(
+      NativeReferences.get<CardinalApis>(sdkId).tarification.createTarification(
         tarification,
       )
     }
@@ -78,7 +78,7 @@ public object TarificationApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(Tarification.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).tarification.getTarifications(
+      NativeReferences.get<CardinalApis>(sdkId).tarification.getTarifications(
         tarificationIds,
       )
     }
@@ -101,7 +101,7 @@ public object TarificationApi {
     ApiScope.execute(
       dartResultCallback,
       Tarification.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).tarification.modifyTarification(
+      NativeReferences.get<CardinalApis>(sdkId).tarification.modifyTarification(
         tarification,
       )
     }
@@ -134,7 +134,7 @@ public object TarificationApi {
     ApiScope.execute(
       dartResultCallback,
       Tarification.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).tarification.getTarificationWithParts(
+      NativeReferences.get<CardinalApis>(sdkId).tarification.getTarificationWithParts(
         type,
         tarification,
         version,

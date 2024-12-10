@@ -19,13 +19,13 @@ class CardinalRsaPublicKey {
   }
 
   /// Create the key from its spki representation, hex-encoded.
-  const CardinalRsaPublicKey.fromHex(this.spkiHex);
+  const CardinalRsaPublicKey.fromSpkiHex(this.spkiHex);
 
   /// Create the key from its spki representation, base64-encoded.
-  CardinalRsaPublicKey.fromBase64(String spkiBase64) : spkiHex = hex.encode(base64Decode(spkiBase64));
+  CardinalRsaPublicKey.fromSpkiBase64(String spkiBase64) : spkiHex = hex.encode(base64Decode(spkiBase64));
 
   /// Create the key from its raw spki representation.
-  CardinalRsaPublicKey.fromBytes(Uint8List spkiBytes) : spkiHex = hex.encode(spkiBytes);
+  CardinalRsaPublicKey.fromSpkiBytes(Uint8List spkiBytes) : spkiHex = hex.encode(spkiBytes);
 
   @override
   String toString() {
@@ -66,18 +66,28 @@ class CardinalRsaPrivateKey {
   }
 
   /// Create the key from its pkcs8 representation, hex-encoded.
-  const CardinalRsaPrivateKey.fromHex(this.pkcs8Hex);
+  const CardinalRsaPrivateKey.fromPkcs8Hex(this.pkcs8Hex);
 
   /// Create the key from its pkcs8 representation, base64-encoded.
-  CardinalRsaPrivateKey.fromBase64(String pkcs8Base64) : pkcs8Hex = hex.encode(base64Decode(pkcs8Base64));
+  CardinalRsaPrivateKey.fromPkcs8Base64(String pkcs8Base64) : pkcs8Hex = hex.encode(base64Decode(pkcs8Base64));
 
   /// Create the key from its raw pkcs8 representation.
-  CardinalRsaPrivateKey.fromBytes(Uint8List pkcs8Bytes) : pkcs8Hex = hex.encode(pkcs8Bytes);
-
+  CardinalRsaPrivateKey.fromPkcs8Bytes(Uint8List pkcs8Bytes) : pkcs8Hex = hex.encode(pkcs8Bytes);
 }
 
 /// The Rsa encryption algorithms used by cardinal
 enum CardinalRsaEncryptionAlgorithm {
   oaepWithSha1,
   oaepWithSha256;
+
+  static decode(String data) {
+    switch (data) {
+      case "OaepWithSha1":
+        return CardinalRsaEncryptionAlgorithm.oaepWithSha1;
+      case "OaepWithSha256":
+        return CardinalRsaEncryptionAlgorithm.oaepWithSha256;
+      default:
+        throw ArgumentError('Invalid CardinalRsaEncryptionAlgorithm entry value $data');
+    }
+  }
 }

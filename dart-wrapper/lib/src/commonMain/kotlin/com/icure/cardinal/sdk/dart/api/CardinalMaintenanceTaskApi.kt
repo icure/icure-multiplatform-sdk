@@ -1,7 +1,7 @@
 // auto-generated file
 package com.icure.cardinal.sdk.dart.api
 
-import com.icure.cardinal.sdk.CardinalSdk
+import com.icure.cardinal.sdk.CardinalApis
 import com.icure.cardinal.sdk.dart.utils.ApiScope
 import com.icure.cardinal.sdk.dart.utils.NativeReferences
 import com.icure.cardinal.sdk.model.DataOwnerType
@@ -35,7 +35,7 @@ public object CardinalMaintenanceTaskApi {
     ApiScope.execute(
       dartResultCallback,
       Unit.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).cardinalMaintenanceTask.applyKeyPairUpdate(
+      NativeReferences.get<CardinalApis>(sdkId).cardinalMaintenanceTask.applyKeyPairUpdate(
         updateRequest,
       )
     }
@@ -63,7 +63,7 @@ public object CardinalMaintenanceTaskApi {
     ApiScope.execute(
       dartResultCallback,
       Unit.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).cardinalMaintenanceTask.createKeyPairUpdateNotificationsToAllDelegationCounterparts(
+      NativeReferences.get<CardinalApis>(sdkId).cardinalMaintenanceTask.createKeyPairUpdateNotificationsToAllDelegationCounterparts(
         key,
         requestToOwnerTypes,
       )
@@ -92,7 +92,7 @@ public object CardinalMaintenanceTaskApi {
     ApiScope.execute(
       dartResultCallback,
       Unit.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).cardinalMaintenanceTask.createKeyPairUpdateNotificationTo(
+      NativeReferences.get<CardinalApis>(sdkId).cardinalMaintenanceTask.createKeyPairUpdateNotificationTo(
         dataOwnerId,
         key,
       )

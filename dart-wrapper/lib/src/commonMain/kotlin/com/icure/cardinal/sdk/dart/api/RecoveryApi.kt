@@ -1,7 +1,7 @@
 // auto-generated file
 package com.icure.cardinal.sdk.dart.api
 
-import com.icure.cardinal.sdk.CardinalSdk
+import com.icure.cardinal.sdk.CardinalApis
 import com.icure.cardinal.sdk.crypto.entities.RecoveryDataKey
 import com.icure.cardinal.sdk.crypto.entities.RecoveryDataUseFailureReason
 import com.icure.cardinal.sdk.crypto.entities.RecoveryKeyOptions
@@ -54,7 +54,7 @@ public object RecoveryApi {
     ApiScope.execute(
       dartResultCallback,
       RecoveryDataKey.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).recovery.createRecoveryInfoForAvailableKeyPairs(
+      NativeReferences.get<CardinalApis>(sdkId).recovery.createRecoveryInfoForAvailableKeyPairs(
         includeParentsKeys,
         lifetimeSeconds,
         recoveryKeyOptions,
@@ -85,7 +85,7 @@ public object RecoveryApi {
       dartResultCallback,
       RecoveryResult.serializer(MapSerializer(String.serializer(),
           MapSerializer(SpkiHexString.serializer(), Pkcs8BytesAsBase64Serializer)))) {
-      val res = NativeReferences.get<CardinalSdk>(sdkId).recovery.recoverKeyPairs(
+      val res = NativeReferences.get<CardinalApis>(sdkId).recovery.recoverKeyPairs(
         recoveryKey,
         autoDelete,
       )
@@ -133,7 +133,8 @@ public object RecoveryApi {
       cancellationToken,
       RecoveryResult.serializer(MapSerializer(String.serializer(),
           MapSerializer(SpkiHexString.serializer(), Pkcs8BytesAsBase64Serializer)))) {
-      val res = NativeReferences.get<CardinalSdk>(sdkId).recovery.recoverKeyPairsWaitingForCreation(
+      val res =
+          NativeReferences.get<CardinalApis>(sdkId).recovery.recoverKeyPairsWaitingForCreation(
         recoveryKey,
         autoDelete,
         waitSeconds,
@@ -179,7 +180,7 @@ public object RecoveryApi {
     ApiScope.execute(
       dartResultCallback,
       RecoveryDataKey.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).recovery.createExchangeDataRecoveryInfo(
+      NativeReferences.get<CardinalApis>(sdkId).recovery.createExchangeDataRecoveryInfo(
         delegateId,
         lifetimeSeconds,
         recoveryKeyOptions,
@@ -204,7 +205,7 @@ public object RecoveryApi {
     ApiScope.execute(
       dartResultCallback,
       RecoveryDataUseFailureReason.serializer().nullable) {
-      NativeReferences.get<CardinalSdk>(sdkId).recovery.recoverExchangeData(
+      NativeReferences.get<CardinalApis>(sdkId).recovery.recoverExchangeData(
         recoveryKey,
       )
     }
@@ -227,7 +228,7 @@ public object RecoveryApi {
     ApiScope.execute(
       dartResultCallback,
       Unit.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).recovery.purgeRecoveryInfo(
+      NativeReferences.get<CardinalApis>(sdkId).recovery.purgeRecoveryInfo(
         recoveryKey,
       )
     }
@@ -250,7 +251,7 @@ public object RecoveryApi {
     ApiScope.execute(
       dartResultCallback,
       Int.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).recovery.purgeAllRecoveryInfoFor(
+      NativeReferences.get<CardinalApis>(sdkId).recovery.purgeAllRecoveryInfoFor(
         dataOwnerId,
       )
     }
@@ -273,7 +274,7 @@ public object RecoveryApi {
     ApiScope.execute(
       dartResultCallback,
       Int.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).recovery.purgeAllKeyPairRecoveryInfoFor(
+      NativeReferences.get<CardinalApis>(sdkId).recovery.purgeAllKeyPairRecoveryInfoFor(
         dataOwnerId,
       )
     }
@@ -296,7 +297,7 @@ public object RecoveryApi {
     ApiScope.execute(
       dartResultCallback,
       Int.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).recovery.purgeAllExchangeDataRecoveryInfoFor(
+      NativeReferences.get<CardinalApis>(sdkId).recovery.purgeAllExchangeDataRecoveryInfoFor(
         dataOwnerId,
       )
     }
@@ -319,7 +320,7 @@ public object RecoveryApi {
     ApiScope.execute(
       dartResultCallback,
       RecoveryDataKey.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).recovery.preGenerateRecoveryKey(
+      NativeReferences.get<CardinalApis>(sdkId).recovery.preGenerateRecoveryKey(
         keySize,
       )
     }

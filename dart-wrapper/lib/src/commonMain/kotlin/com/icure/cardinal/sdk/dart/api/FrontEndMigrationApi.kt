@@ -1,7 +1,7 @@
 // auto-generated file
 package com.icure.cardinal.sdk.dart.api
 
-import com.icure.cardinal.sdk.CardinalSdk
+import com.icure.cardinal.sdk.CardinalApis
 import com.icure.cardinal.sdk.dart.utils.ApiScope
 import com.icure.cardinal.sdk.dart.utils.NativeReferences
 import com.icure.cardinal.sdk.model.FrontEndMigration
@@ -33,7 +33,7 @@ public object FrontEndMigrationApi {
     ApiScope.execute(
       dartResultCallback,
       FrontEndMigration.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).frontEndMigration.getFrontEndMigration(
+      NativeReferences.get<CardinalApis>(sdkId).frontEndMigration.getFrontEndMigration(
         frontEndMigrationId,
       )
     }
@@ -56,7 +56,7 @@ public object FrontEndMigrationApi {
     ApiScope.execute(
       dartResultCallback,
       FrontEndMigration.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).frontEndMigration.createFrontEndMigration(
+      NativeReferences.get<CardinalApis>(sdkId).frontEndMigration.createFrontEndMigration(
         frontEndMigration,
       )
     }
@@ -71,7 +71,7 @@ public object FrontEndMigrationApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(FrontEndMigration.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).frontEndMigration.getFrontEndMigrations()
+      NativeReferences.get<CardinalApis>(sdkId).frontEndMigration.getFrontEndMigrations()
     }
   }
 
@@ -92,7 +92,7 @@ public object FrontEndMigrationApi {
     ApiScope.execute(
       dartResultCallback,
       DocIdentifier.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).frontEndMigration.deleteFrontEndMigration(
+      NativeReferences.get<CardinalApis>(sdkId).frontEndMigration.deleteFrontEndMigration(
         frontEndMigrationId,
       )
     }
@@ -115,7 +115,7 @@ public object FrontEndMigrationApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(FrontEndMigration.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).frontEndMigration.getFrontEndMigrationByName(
+      NativeReferences.get<CardinalApis>(sdkId).frontEndMigration.getFrontEndMigrationByName(
         frontEndMigrationName,
       )
     }
@@ -138,7 +138,7 @@ public object FrontEndMigrationApi {
     ApiScope.execute(
       dartResultCallback,
       FrontEndMigration.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).frontEndMigration.modifyFrontEndMigration(
+      NativeReferences.get<CardinalApis>(sdkId).frontEndMigration.modifyFrontEndMigration(
         frontEndMigration,
       )
     }

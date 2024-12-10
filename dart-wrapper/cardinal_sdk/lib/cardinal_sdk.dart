@@ -182,7 +182,7 @@ class CardinalSdk extends CardinalApis {
     _user = UserApi(_sdkId, this);
   }
 
-  factory CardinalSdk._factory(String sdkId) {
+  factory CardinalSdk.internal(String sdkId) {
     final sdk = CardinalSdk._(sdkId);
     _finalizer.attach(sdk, sdkId, detach: sdk);
     return sdk;
@@ -355,7 +355,7 @@ class CardinalSdkMethodChannelInitializers extends CardinalSdkInitializersPlugin
     ).catchError(convertPlatformException);
     if (res == null) throw AssertionError("received null result from platform method completeAuthentication");
     final parsedResJson = jsonDecode(res);
-    return CardinalSdk._factory(parsedResJson as String);
+    return CardinalSdk.internal(parsedResJson as String);
   }
 
   @override
@@ -378,6 +378,6 @@ class CardinalSdkMethodChannelInitializers extends CardinalSdkInitializersPlugin
     ).catchError(convertPlatformException);
     if (res == null) throw AssertionError("received null result from platform method initialize");
     final parsedResJson = jsonDecode(res);
-    return CardinalSdk._factory(parsedResJson as String);
+    return CardinalSdk.internal(parsedResJson as String);
   }
 }

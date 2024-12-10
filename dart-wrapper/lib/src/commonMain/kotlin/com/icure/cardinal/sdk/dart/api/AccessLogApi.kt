@@ -1,7 +1,7 @@
 // auto-generated file
 package com.icure.cardinal.sdk.dart.api
 
-import com.icure.cardinal.sdk.CardinalSdk
+import com.icure.cardinal.sdk.CardinalApis
 import com.icure.cardinal.sdk.crypto.entities.AccessLogShareOptions
 import com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption
 import com.icure.cardinal.sdk.dart.utils.ApiScope
@@ -50,7 +50,7 @@ public object AccessLogApi {
     ApiScope.execute(
       dartResultCallback,
       DecryptedAccessLog.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).accessLog.createAccessLog(
+      NativeReferences.get<CardinalApis>(sdkId).accessLog.createAccessLog(
         entity,
       )
     }
@@ -93,7 +93,7 @@ public object AccessLogApi {
     ApiScope.execute(
       dartResultCallback,
       DecryptedAccessLog.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).accessLog.withEncryptionMetadata(
+      NativeReferences.get<CardinalApis>(sdkId).accessLog.withEncryptionMetadata(
         base,
         patient,
         user,
@@ -120,7 +120,7 @@ public object AccessLogApi {
     ApiScope.execute(
       dartResultCallback,
       SetSerializer(HexString.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).accessLog.getEncryptionKeysOf(
+      NativeReferences.get<CardinalApis>(sdkId).accessLog.getEncryptionKeysOf(
         accessLog,
       )
     }
@@ -143,7 +143,7 @@ public object AccessLogApi {
     ApiScope.execute(
       dartResultCallback,
       Boolean.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).accessLog.hasWriteAccess(
+      NativeReferences.get<CardinalApis>(sdkId).accessLog.hasWriteAccess(
         accessLog,
       )
     }
@@ -166,7 +166,7 @@ public object AccessLogApi {
     ApiScope.execute(
       dartResultCallback,
       SetSerializer(String.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).accessLog.decryptPatientIdOf(
+      NativeReferences.get<CardinalApis>(sdkId).accessLog.decryptPatientIdOf(
         accessLog,
       )
     }
@@ -194,7 +194,7 @@ public object AccessLogApi {
     ApiScope.execute(
       dartResultCallback,
       Unit.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).accessLog.createDelegationDeAnonymizationMetadata(
+      NativeReferences.get<CardinalApis>(sdkId).accessLog.createDelegationDeAnonymizationMetadata(
         entity,
         delegates,
       )
@@ -218,7 +218,7 @@ public object AccessLogApi {
     ApiScope.execute(
       dartResultCallback,
       DecryptedAccessLog.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).accessLog.decrypt(
+      NativeReferences.get<CardinalApis>(sdkId).accessLog.decrypt(
         accessLog,
       )
     }
@@ -241,7 +241,7 @@ public object AccessLogApi {
     ApiScope.execute(
       dartResultCallback,
       PolymorphicSerializer(AccessLog::class)) {
-      NativeReferences.get<CardinalSdk>(sdkId).accessLog.tryDecrypt(
+      NativeReferences.get<CardinalApis>(sdkId).accessLog.tryDecrypt(
         accessLog,
       )
     }
@@ -264,7 +264,7 @@ public object AccessLogApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(String.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).accessLog.matchAccessLogsBy(
+      NativeReferences.get<CardinalApis>(sdkId).accessLog.matchAccessLogsBy(
         filter,
       )
     }
@@ -287,7 +287,7 @@ public object AccessLogApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(String.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).accessLog.matchAccessLogsBySorted(
+      NativeReferences.get<CardinalApis>(sdkId).accessLog.matchAccessLogsBySorted(
         filter,
       )
     }
@@ -315,7 +315,7 @@ public object AccessLogApi {
     ApiScope.execute(
       dartResultCallback,
       DocIdentifier.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).accessLog.deleteAccessLogById(
+      NativeReferences.get<CardinalApis>(sdkId).accessLog.deleteAccessLogById(
         entityId,
         rev,
       )
@@ -339,7 +339,7 @@ public object AccessLogApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(DocIdentifier.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).accessLog.deleteAccessLogsByIds(
+      NativeReferences.get<CardinalApis>(sdkId).accessLog.deleteAccessLogsByIds(
         entityIds,
       )
     }
@@ -367,7 +367,7 @@ public object AccessLogApi {
     ApiScope.execute(
       dartResultCallback,
       Unit.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).accessLog.purgeAccessLogById(
+      NativeReferences.get<CardinalApis>(sdkId).accessLog.purgeAccessLogById(
         id,
         rev,
       )
@@ -391,7 +391,7 @@ public object AccessLogApi {
     ApiScope.execute(
       dartResultCallback,
       DocIdentifier.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).accessLog.deleteAccessLog(
+      NativeReferences.get<CardinalApis>(sdkId).accessLog.deleteAccessLog(
         accessLog,
       )
     }
@@ -414,7 +414,7 @@ public object AccessLogApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(DocIdentifier.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).accessLog.deleteAccessLogs(
+      NativeReferences.get<CardinalApis>(sdkId).accessLog.deleteAccessLogs(
         accessLogs,
       )
     }
@@ -437,7 +437,7 @@ public object AccessLogApi {
     ApiScope.execute(
       dartResultCallback,
       Unit.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).accessLog.purgeAccessLog(
+      NativeReferences.get<CardinalApis>(sdkId).accessLog.purgeAccessLog(
         accessLog,
       )
     }
@@ -470,7 +470,7 @@ public object AccessLogApi {
     ApiScope.execute(
       dartResultCallback,
       DecryptedAccessLog.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).accessLog.shareWith(
+      NativeReferences.get<CardinalApis>(sdkId).accessLog.shareWith(
         delegateId,
         accessLog,
         options,
@@ -500,7 +500,7 @@ public object AccessLogApi {
     ApiScope.execute(
       dartResultCallback,
       DecryptedAccessLog.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).accessLog.shareWithMany(
+      NativeReferences.get<CardinalApis>(sdkId).accessLog.shareWithMany(
         accessLog,
         delegates,
       )
@@ -524,7 +524,7 @@ public object AccessLogApi {
     ApiScope.execute(
       dartResultCallback,
       String.serializer()) {
-      val richResult = NativeReferences.get<CardinalSdk>(sdkId).accessLog.filterAccessLogsBy(
+      val richResult = NativeReferences.get<CardinalApis>(sdkId).accessLog.filterAccessLogsBy(
         filter,
       )
       NativeReferences.create(PaginatedListIteratorWithSerializer(
@@ -551,7 +551,7 @@ public object AccessLogApi {
     ApiScope.execute(
       dartResultCallback,
       String.serializer()) {
-      val richResult = NativeReferences.get<CardinalSdk>(sdkId).accessLog.filterAccessLogsBySorted(
+      val richResult = NativeReferences.get<CardinalApis>(sdkId).accessLog.filterAccessLogsBySorted(
         filter,
       )
       NativeReferences.create(PaginatedListIteratorWithSerializer(
@@ -583,7 +583,7 @@ public object AccessLogApi {
     ApiScope.execute(
       dartResultCallback,
       DecryptedAccessLog.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).accessLog.undeleteAccessLogById(
+      NativeReferences.get<CardinalApis>(sdkId).accessLog.undeleteAccessLogById(
         id,
         rev,
       )
@@ -607,7 +607,7 @@ public object AccessLogApi {
     ApiScope.execute(
       dartResultCallback,
       DecryptedAccessLog.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).accessLog.undeleteAccessLog(
+      NativeReferences.get<CardinalApis>(sdkId).accessLog.undeleteAccessLog(
         accessLog,
       )
     }
@@ -630,7 +630,7 @@ public object AccessLogApi {
     ApiScope.execute(
       dartResultCallback,
       DecryptedAccessLog.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).accessLog.modifyAccessLog(
+      NativeReferences.get<CardinalApis>(sdkId).accessLog.modifyAccessLog(
         entity,
       )
     }
@@ -653,7 +653,7 @@ public object AccessLogApi {
     ApiScope.execute(
       dartResultCallback,
       DecryptedAccessLog.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).accessLog.getAccessLog(
+      NativeReferences.get<CardinalApis>(sdkId).accessLog.getAccessLog(
         entityId,
       )
     }
@@ -676,7 +676,7 @@ public object AccessLogApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(DecryptedAccessLog.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).accessLog.getAccessLogs(
+      NativeReferences.get<CardinalApis>(sdkId).accessLog.getAccessLogs(
         entityIds,
       )
     }
@@ -711,7 +711,7 @@ public object AccessLogApi {
       ApiScope.execute(
         dartResultCallback,
         EncryptedAccessLog.serializer()) {
-        NativeReferences.get<CardinalSdk>(sdkId).accessLog.encrypted.shareWith(
+        NativeReferences.get<CardinalApis>(sdkId).accessLog.encrypted.shareWith(
           delegateId,
           accessLog,
           options,
@@ -741,7 +741,7 @@ public object AccessLogApi {
       ApiScope.execute(
         dartResultCallback,
         EncryptedAccessLog.serializer()) {
-        NativeReferences.get<CardinalSdk>(sdkId).accessLog.encrypted.shareWithMany(
+        NativeReferences.get<CardinalApis>(sdkId).accessLog.encrypted.shareWithMany(
           accessLog,
           delegates,
         )
@@ -766,7 +766,7 @@ public object AccessLogApi {
         dartResultCallback,
         String.serializer()) {
         val richResult =
-            NativeReferences.get<CardinalSdk>(sdkId).accessLog.encrypted.filterAccessLogsBy(
+            NativeReferences.get<CardinalApis>(sdkId).accessLog.encrypted.filterAccessLogsBy(
           filter,
         )
         NativeReferences.create(PaginatedListIteratorWithSerializer(
@@ -794,7 +794,7 @@ public object AccessLogApi {
         dartResultCallback,
         String.serializer()) {
         val richResult =
-            NativeReferences.get<CardinalSdk>(sdkId).accessLog.encrypted.filterAccessLogsBySorted(
+            NativeReferences.get<CardinalApis>(sdkId).accessLog.encrypted.filterAccessLogsBySorted(
           filter,
         )
         NativeReferences.create(PaginatedListIteratorWithSerializer(
@@ -826,7 +826,7 @@ public object AccessLogApi {
       ApiScope.execute(
         dartResultCallback,
         EncryptedAccessLog.serializer()) {
-        NativeReferences.get<CardinalSdk>(sdkId).accessLog.encrypted.undeleteAccessLogById(
+        NativeReferences.get<CardinalApis>(sdkId).accessLog.encrypted.undeleteAccessLogById(
           id,
           rev,
         )
@@ -850,7 +850,7 @@ public object AccessLogApi {
       ApiScope.execute(
         dartResultCallback,
         EncryptedAccessLog.serializer()) {
-        NativeReferences.get<CardinalSdk>(sdkId).accessLog.encrypted.undeleteAccessLog(
+        NativeReferences.get<CardinalApis>(sdkId).accessLog.encrypted.undeleteAccessLog(
           accessLog,
         )
       }
@@ -873,7 +873,7 @@ public object AccessLogApi {
       ApiScope.execute(
         dartResultCallback,
         EncryptedAccessLog.serializer()) {
-        NativeReferences.get<CardinalSdk>(sdkId).accessLog.encrypted.modifyAccessLog(
+        NativeReferences.get<CardinalApis>(sdkId).accessLog.encrypted.modifyAccessLog(
           entity,
         )
       }
@@ -896,7 +896,7 @@ public object AccessLogApi {
       ApiScope.execute(
         dartResultCallback,
         EncryptedAccessLog.serializer()) {
-        NativeReferences.get<CardinalSdk>(sdkId).accessLog.encrypted.getAccessLog(
+        NativeReferences.get<CardinalApis>(sdkId).accessLog.encrypted.getAccessLog(
           entityId,
         )
       }
@@ -919,7 +919,7 @@ public object AccessLogApi {
       ApiScope.execute(
         dartResultCallback,
         ListSerializer(EncryptedAccessLog.serializer())) {
-        NativeReferences.get<CardinalSdk>(sdkId).accessLog.encrypted.getAccessLogs(
+        NativeReferences.get<CardinalApis>(sdkId).accessLog.encrypted.getAccessLogs(
           entityIds,
         )
       }
@@ -955,7 +955,7 @@ public object AccessLogApi {
       ApiScope.execute(
         dartResultCallback,
         PolymorphicSerializer(AccessLog::class)) {
-        NativeReferences.get<CardinalSdk>(sdkId).accessLog.tryAndRecover.shareWith(
+        NativeReferences.get<CardinalApis>(sdkId).accessLog.tryAndRecover.shareWith(
           delegateId,
           accessLog,
           options,
@@ -985,7 +985,7 @@ public object AccessLogApi {
       ApiScope.execute(
         dartResultCallback,
         PolymorphicSerializer(AccessLog::class)) {
-        NativeReferences.get<CardinalSdk>(sdkId).accessLog.tryAndRecover.shareWithMany(
+        NativeReferences.get<CardinalApis>(sdkId).accessLog.tryAndRecover.shareWithMany(
           accessLog,
           delegates,
         )
@@ -1010,7 +1010,7 @@ public object AccessLogApi {
         dartResultCallback,
         String.serializer()) {
         val richResult =
-            NativeReferences.get<CardinalSdk>(sdkId).accessLog.tryAndRecover.filterAccessLogsBy(
+            NativeReferences.get<CardinalApis>(sdkId).accessLog.tryAndRecover.filterAccessLogsBy(
           filter,
         )
         NativeReferences.create(PaginatedListIteratorWithSerializer(
@@ -1038,7 +1038,7 @@ public object AccessLogApi {
         dartResultCallback,
         String.serializer()) {
         val richResult =
-            NativeReferences.get<CardinalSdk>(sdkId).accessLog.tryAndRecover.filterAccessLogsBySorted(
+            NativeReferences.get<CardinalApis>(sdkId).accessLog.tryAndRecover.filterAccessLogsBySorted(
           filter,
         )
         NativeReferences.create(PaginatedListIteratorWithSerializer(
@@ -1070,7 +1070,7 @@ public object AccessLogApi {
       ApiScope.execute(
         dartResultCallback,
         PolymorphicSerializer(AccessLog::class)) {
-        NativeReferences.get<CardinalSdk>(sdkId).accessLog.tryAndRecover.undeleteAccessLogById(
+        NativeReferences.get<CardinalApis>(sdkId).accessLog.tryAndRecover.undeleteAccessLogById(
           id,
           rev,
         )
@@ -1094,7 +1094,7 @@ public object AccessLogApi {
       ApiScope.execute(
         dartResultCallback,
         PolymorphicSerializer(AccessLog::class)) {
-        NativeReferences.get<CardinalSdk>(sdkId).accessLog.tryAndRecover.undeleteAccessLog(
+        NativeReferences.get<CardinalApis>(sdkId).accessLog.tryAndRecover.undeleteAccessLog(
           accessLog,
         )
       }
@@ -1117,7 +1117,7 @@ public object AccessLogApi {
       ApiScope.execute(
         dartResultCallback,
         PolymorphicSerializer(AccessLog::class)) {
-        NativeReferences.get<CardinalSdk>(sdkId).accessLog.tryAndRecover.modifyAccessLog(
+        NativeReferences.get<CardinalApis>(sdkId).accessLog.tryAndRecover.modifyAccessLog(
           entity,
         )
       }
@@ -1140,7 +1140,7 @@ public object AccessLogApi {
       ApiScope.execute(
         dartResultCallback,
         PolymorphicSerializer(AccessLog::class)) {
-        NativeReferences.get<CardinalSdk>(sdkId).accessLog.tryAndRecover.getAccessLog(
+        NativeReferences.get<CardinalApis>(sdkId).accessLog.tryAndRecover.getAccessLog(
           entityId,
         )
       }
@@ -1163,7 +1163,7 @@ public object AccessLogApi {
       ApiScope.execute(
         dartResultCallback,
         ListSerializer(PolymorphicSerializer(AccessLog::class))) {
-        NativeReferences.get<CardinalSdk>(sdkId).accessLog.tryAndRecover.getAccessLogs(
+        NativeReferences.get<CardinalApis>(sdkId).accessLog.tryAndRecover.getAccessLogs(
           entityIds,
         )
       }

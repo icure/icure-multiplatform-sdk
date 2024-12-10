@@ -1,7 +1,7 @@
 // auto-generated file
 package com.icure.cardinal.sdk.dart.api
 
-import com.icure.cardinal.sdk.CardinalSdk
+import com.icure.cardinal.sdk.CardinalApis
 import com.icure.cardinal.sdk.dart.utils.ApiScope
 import com.icure.cardinal.sdk.dart.utils.NativeReferences
 import com.icure.cardinal.sdk.model.Place
@@ -33,7 +33,7 @@ public object PlaceApi {
     ApiScope.execute(
       dartResultCallback,
       Place.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).place.getPlace(
+      NativeReferences.get<CardinalApis>(sdkId).place.getPlace(
         placeId,
       )
     }
@@ -56,7 +56,7 @@ public object PlaceApi {
     ApiScope.execute(
       dartResultCallback,
       Place.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).place.createPlace(
+      NativeReferences.get<CardinalApis>(sdkId).place.createPlace(
         place,
       )
     }
@@ -79,7 +79,7 @@ public object PlaceApi {
     ApiScope.execute(
       dartResultCallback,
       Place.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).place.modifyPlace(
+      NativeReferences.get<CardinalApis>(sdkId).place.modifyPlace(
         place,
       )
     }
@@ -102,7 +102,7 @@ public object PlaceApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(DocIdentifier.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).place.deletePlaces(
+      NativeReferences.get<CardinalApis>(sdkId).place.deletePlaces(
         placeIds,
       )
     }

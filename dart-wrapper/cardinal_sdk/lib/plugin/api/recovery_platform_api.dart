@@ -43,7 +43,7 @@ class RecoveryPlatformApi {
 		return RecoveryResult.fromJSON(
 				parsedResJson,
 			(x1) {
-				return (x1 as Map<String, dynamic>).map((k2, v2) => MapEntry((k2 as String), (v2 as Map<String, dynamic>).map((k3, v3) => MapEntry(CardinalRsaPublicKey.fromHex(k3), CardinalRsaPrivateKey.fromBase64(v3)))));
+				return (x1 as Map<String, dynamic>).map((k2, v2) => MapEntry((k2 as String), (v2 as Map<String, dynamic>).map((k3, v3) => MapEntry(CardinalRsaPublicKey.fromSpkiHex(k3), CardinalRsaPrivateKey.fromPkcs8Base64(v3)))));
 			},
 		);
 	}
@@ -64,7 +64,7 @@ class RecoveryPlatformApi {
 		return RecoveryResult.fromJSON(
 				parsedResJson,
 			(x1) {
-				return (x1 as Map<String, dynamic>).map((k2, v2) => MapEntry((k2 as String), (v2 as Map<String, dynamic>).map((k3, v3) => MapEntry(CardinalRsaPublicKey.fromHex(k3), CardinalRsaPrivateKey.fromBase64(v3)))));
+				return (x1 as Map<String, dynamic>).map((k2, v2) => MapEntry((k2 as String), (v2 as Map<String, dynamic>).map((k3, v3) => MapEntry(CardinalRsaPublicKey.fromSpkiHex(k3), CardinalRsaPrivateKey.fromPkcs8Base64(v3)))));
 			},
 		);
 	}

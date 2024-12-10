@@ -1,7 +1,7 @@
 // auto-generated file
 package com.icure.cardinal.sdk.dart.api
 
-import com.icure.cardinal.sdk.CardinalSdk
+import com.icure.cardinal.sdk.CardinalApis
 import com.icure.cardinal.sdk.dart.utils.ApiScope
 import com.icure.cardinal.sdk.dart.utils.NativeReferences
 import com.icure.cardinal.sdk.filters.BaseFilterOptions
@@ -44,7 +44,7 @@ public object DeviceApi {
     ApiScope.execute(
       dartResultCallback,
       Device.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).device.getDevice(
+      NativeReferences.get<CardinalApis>(sdkId).device.getDevice(
         deviceId,
       )
     }
@@ -67,7 +67,7 @@ public object DeviceApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(Device.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).device.getDevices(
+      NativeReferences.get<CardinalApis>(sdkId).device.getDevices(
         deviceIds,
       )
     }
@@ -90,7 +90,7 @@ public object DeviceApi {
     ApiScope.execute(
       dartResultCallback,
       Device.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).device.createDevice(
+      NativeReferences.get<CardinalApis>(sdkId).device.createDevice(
         p,
       )
     }
@@ -113,7 +113,7 @@ public object DeviceApi {
     ApiScope.execute(
       dartResultCallback,
       Device.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).device.modifyDevice(
+      NativeReferences.get<CardinalApis>(sdkId).device.modifyDevice(
         device,
       )
     }
@@ -136,7 +136,7 @@ public object DeviceApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(IdWithRev.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).device.createDevices(
+      NativeReferences.get<CardinalApis>(sdkId).device.createDevices(
         devices,
       )
     }
@@ -159,7 +159,7 @@ public object DeviceApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(IdWithRev.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).device.modifyDevices(
+      NativeReferences.get<CardinalApis>(sdkId).device.modifyDevices(
         devices,
       )
     }
@@ -182,7 +182,7 @@ public object DeviceApi {
     ApiScope.execute(
       dartResultCallback,
       String.serializer()) {
-      val richResult = NativeReferences.get<CardinalSdk>(sdkId).device.filterDevicesBy(
+      val richResult = NativeReferences.get<CardinalApis>(sdkId).device.filterDevicesBy(
         filter,
       )
       NativeReferences.create(PaginatedListIteratorWithSerializer(
@@ -209,7 +209,7 @@ public object DeviceApi {
     ApiScope.execute(
       dartResultCallback,
       String.serializer()) {
-      val richResult = NativeReferences.get<CardinalSdk>(sdkId).device.filterDevicesBySorted(
+      val richResult = NativeReferences.get<CardinalApis>(sdkId).device.filterDevicesBySorted(
         filter,
       )
       NativeReferences.create(PaginatedListIteratorWithSerializer(
@@ -236,7 +236,7 @@ public object DeviceApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(String.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).device.matchDevicesBy(
+      NativeReferences.get<CardinalApis>(sdkId).device.matchDevicesBy(
         filter,
       )
     }
@@ -259,7 +259,7 @@ public object DeviceApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(String.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).device.matchDevicesBySorted(
+      NativeReferences.get<CardinalApis>(sdkId).device.matchDevicesBySorted(
         filter,
       )
     }
@@ -287,7 +287,7 @@ public object DeviceApi {
     ApiScope.execute(
       dartResultCallback,
       DocIdentifier.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).device.deleteDeviceById(
+      NativeReferences.get<CardinalApis>(sdkId).device.deleteDeviceById(
         entityId,
         rev,
       )
@@ -311,7 +311,7 @@ public object DeviceApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(DocIdentifier.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).device.deleteDevicesByIds(
+      NativeReferences.get<CardinalApis>(sdkId).device.deleteDevicesByIds(
         entityIds,
       )
     }
@@ -339,7 +339,7 @@ public object DeviceApi {
     ApiScope.execute(
       dartResultCallback,
       Unit.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).device.purgeDeviceById(
+      NativeReferences.get<CardinalApis>(sdkId).device.purgeDeviceById(
         id,
         rev,
       )
@@ -368,7 +368,7 @@ public object DeviceApi {
     ApiScope.execute(
       dartResultCallback,
       Device.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).device.undeleteDeviceById(
+      NativeReferences.get<CardinalApis>(sdkId).device.undeleteDeviceById(
         id,
         rev,
       )
@@ -392,7 +392,7 @@ public object DeviceApi {
     ApiScope.execute(
       dartResultCallback,
       DocIdentifier.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).device.deleteDevice(
+      NativeReferences.get<CardinalApis>(sdkId).device.deleteDevice(
         device,
       )
     }
@@ -415,7 +415,7 @@ public object DeviceApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(DocIdentifier.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).device.deleteDevices(
+      NativeReferences.get<CardinalApis>(sdkId).device.deleteDevices(
         devices,
       )
     }
@@ -438,7 +438,7 @@ public object DeviceApi {
     ApiScope.execute(
       dartResultCallback,
       Unit.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).device.purgeDevice(
+      NativeReferences.get<CardinalApis>(sdkId).device.purgeDevice(
         device,
       )
     }
@@ -461,7 +461,7 @@ public object DeviceApi {
     ApiScope.execute(
       dartResultCallback,
       Device.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).device.undeleteDevice(
+      NativeReferences.get<CardinalApis>(sdkId).device.undeleteDevice(
         device,
       )
     }
@@ -489,7 +489,7 @@ public object DeviceApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(Device.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).device.getDevicesInGroup(
+      NativeReferences.get<CardinalApis>(sdkId).device.getDevicesInGroup(
         groupId,
         deviceIds,
       )
@@ -518,7 +518,7 @@ public object DeviceApi {
     ApiScope.execute(
       dartResultCallback,
       Device.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).device.modifyDeviceInGroup(
+      NativeReferences.get<CardinalApis>(sdkId).device.modifyDeviceInGroup(
         groupId,
         device,
       )
@@ -547,7 +547,7 @@ public object DeviceApi {
     ApiScope.execute(
       dartResultCallback,
       Device.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).device.createDeviceInGroup(
+      NativeReferences.get<CardinalApis>(sdkId).device.createDeviceInGroup(
         groupId,
         device,
       )
@@ -576,7 +576,7 @@ public object DeviceApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(DocIdentifier.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).device.deleteDevicesInGroup(
+      NativeReferences.get<CardinalApis>(sdkId).device.deleteDevicesInGroup(
         groupId,
         deviceIds,
       )
@@ -610,7 +610,7 @@ public object DeviceApi {
     ApiScope.execute(
       dartResultCallback,
       String.serializer()) {
-      val richResult = NativeReferences.get<CardinalSdk>(sdkId).device.subscribeToEvents(
+      val richResult = NativeReferences.get<CardinalApis>(sdkId).device.subscribeToEvents(
         events,
         filter,
         subscriptionConfig,

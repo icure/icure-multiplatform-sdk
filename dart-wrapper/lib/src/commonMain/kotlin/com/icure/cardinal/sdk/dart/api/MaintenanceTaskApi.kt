@@ -1,7 +1,7 @@
 // auto-generated file
 package com.icure.cardinal.sdk.dart.api
 
-import com.icure.cardinal.sdk.CardinalSdk
+import com.icure.cardinal.sdk.CardinalApis
 import com.icure.cardinal.sdk.crypto.entities.MaintenanceTaskShareOptions
 import com.icure.cardinal.sdk.dart.utils.ApiScope
 import com.icure.cardinal.sdk.dart.utils.NativeReferences
@@ -51,7 +51,7 @@ public object MaintenanceTaskApi {
     ApiScope.execute(
       dartResultCallback,
       DecryptedMaintenanceTask.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).maintenanceTask.createMaintenanceTask(
+      NativeReferences.get<CardinalApis>(sdkId).maintenanceTask.createMaintenanceTask(
         entity,
       )
     }
@@ -84,7 +84,7 @@ public object MaintenanceTaskApi {
     ApiScope.execute(
       dartResultCallback,
       DecryptedMaintenanceTask.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).maintenanceTask.withEncryptionMetadata(
+      NativeReferences.get<CardinalApis>(sdkId).maintenanceTask.withEncryptionMetadata(
         maintenanceTask,
         user,
         delegates,
@@ -109,7 +109,7 @@ public object MaintenanceTaskApi {
     ApiScope.execute(
       dartResultCallback,
       SetSerializer(HexString.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).maintenanceTask.getEncryptionKeysOf(
+      NativeReferences.get<CardinalApis>(sdkId).maintenanceTask.getEncryptionKeysOf(
         maintenanceTask,
       )
     }
@@ -132,7 +132,7 @@ public object MaintenanceTaskApi {
     ApiScope.execute(
       dartResultCallback,
       Boolean.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).maintenanceTask.hasWriteAccess(
+      NativeReferences.get<CardinalApis>(sdkId).maintenanceTask.hasWriteAccess(
         maintenanceTask,
       )
     }
@@ -155,7 +155,7 @@ public object MaintenanceTaskApi {
     ApiScope.execute(
       dartResultCallback,
       SetSerializer(String.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).maintenanceTask.decryptPatientIdOf(
+      NativeReferences.get<CardinalApis>(sdkId).maintenanceTask.decryptPatientIdOf(
         maintenanceTask,
       )
     }
@@ -183,7 +183,7 @@ public object MaintenanceTaskApi {
     ApiScope.execute(
       dartResultCallback,
       Unit.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).maintenanceTask.createDelegationDeAnonymizationMetadata(
+      NativeReferences.get<CardinalApis>(sdkId).maintenanceTask.createDelegationDeAnonymizationMetadata(
         entity,
         delegates,
       )
@@ -207,7 +207,7 @@ public object MaintenanceTaskApi {
     ApiScope.execute(
       dartResultCallback,
       DecryptedMaintenanceTask.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).maintenanceTask.decrypt(
+      NativeReferences.get<CardinalApis>(sdkId).maintenanceTask.decrypt(
         maintenanceTask,
       )
     }
@@ -230,7 +230,7 @@ public object MaintenanceTaskApi {
     ApiScope.execute(
       dartResultCallback,
       PolymorphicSerializer(MaintenanceTask::class)) {
-      NativeReferences.get<CardinalSdk>(sdkId).maintenanceTask.tryDecrypt(
+      NativeReferences.get<CardinalApis>(sdkId).maintenanceTask.tryDecrypt(
         maintenanceTask,
       )
     }
@@ -253,7 +253,7 @@ public object MaintenanceTaskApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(String.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).maintenanceTask.matchMaintenanceTasksBy(
+      NativeReferences.get<CardinalApis>(sdkId).maintenanceTask.matchMaintenanceTasksBy(
         filter,
       )
     }
@@ -276,7 +276,7 @@ public object MaintenanceTaskApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(String.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).maintenanceTask.matchMaintenanceTasksBySorted(
+      NativeReferences.get<CardinalApis>(sdkId).maintenanceTask.matchMaintenanceTasksBySorted(
         filter,
       )
     }
@@ -304,7 +304,7 @@ public object MaintenanceTaskApi {
     ApiScope.execute(
       dartResultCallback,
       DocIdentifier.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).maintenanceTask.deleteMaintenanceTaskById(
+      NativeReferences.get<CardinalApis>(sdkId).maintenanceTask.deleteMaintenanceTaskById(
         entityId,
         rev,
       )
@@ -328,7 +328,7 @@ public object MaintenanceTaskApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(DocIdentifier.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).maintenanceTask.deleteMaintenanceTasksByIds(
+      NativeReferences.get<CardinalApis>(sdkId).maintenanceTask.deleteMaintenanceTasksByIds(
         entityIds,
       )
     }
@@ -356,7 +356,7 @@ public object MaintenanceTaskApi {
     ApiScope.execute(
       dartResultCallback,
       Unit.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).maintenanceTask.purgeMaintenanceTaskById(
+      NativeReferences.get<CardinalApis>(sdkId).maintenanceTask.purgeMaintenanceTaskById(
         id,
         rev,
       )
@@ -380,7 +380,7 @@ public object MaintenanceTaskApi {
     ApiScope.execute(
       dartResultCallback,
       DocIdentifier.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).maintenanceTask.deleteMaintenanceTask(
+      NativeReferences.get<CardinalApis>(sdkId).maintenanceTask.deleteMaintenanceTask(
         maintenanceTask,
       )
     }
@@ -403,7 +403,7 @@ public object MaintenanceTaskApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(DocIdentifier.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).maintenanceTask.deleteMaintenanceTasks(
+      NativeReferences.get<CardinalApis>(sdkId).maintenanceTask.deleteMaintenanceTasks(
         maintenanceTasks,
       )
     }
@@ -426,7 +426,7 @@ public object MaintenanceTaskApi {
     ApiScope.execute(
       dartResultCallback,
       Unit.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).maintenanceTask.purgeMaintenanceTask(
+      NativeReferences.get<CardinalApis>(sdkId).maintenanceTask.purgeMaintenanceTask(
         maintenanceTask,
       )
     }
@@ -459,7 +459,7 @@ public object MaintenanceTaskApi {
     ApiScope.execute(
       dartResultCallback,
       DecryptedMaintenanceTask.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).maintenanceTask.shareWith(
+      NativeReferences.get<CardinalApis>(sdkId).maintenanceTask.shareWith(
         delegateId,
         maintenanceTask,
         options,
@@ -489,7 +489,7 @@ public object MaintenanceTaskApi {
     ApiScope.execute(
       dartResultCallback,
       DecryptedMaintenanceTask.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).maintenanceTask.shareWithMany(
+      NativeReferences.get<CardinalApis>(sdkId).maintenanceTask.shareWithMany(
         maintenanceTask,
         delegates,
       )
@@ -514,7 +514,7 @@ public object MaintenanceTaskApi {
       dartResultCallback,
       String.serializer()) {
       val richResult =
-          NativeReferences.get<CardinalSdk>(sdkId).maintenanceTask.filterMaintenanceTasksBy(
+          NativeReferences.get<CardinalApis>(sdkId).maintenanceTask.filterMaintenanceTasksBy(
         filter,
       )
       NativeReferences.create(PaginatedListIteratorWithSerializer(
@@ -542,7 +542,7 @@ public object MaintenanceTaskApi {
       dartResultCallback,
       String.serializer()) {
       val richResult =
-          NativeReferences.get<CardinalSdk>(sdkId).maintenanceTask.filterMaintenanceTasksBySorted(
+          NativeReferences.get<CardinalApis>(sdkId).maintenanceTask.filterMaintenanceTasksBySorted(
         filter,
       )
       NativeReferences.create(PaginatedListIteratorWithSerializer(
@@ -569,7 +569,7 @@ public object MaintenanceTaskApi {
     ApiScope.execute(
       dartResultCallback,
       PolymorphicSerializer(MaintenanceTask::class)) {
-      NativeReferences.get<CardinalSdk>(sdkId).maintenanceTask.undeleteMaintenanceTask(
+      NativeReferences.get<CardinalApis>(sdkId).maintenanceTask.undeleteMaintenanceTask(
         maintenanceTask,
       )
     }
@@ -597,7 +597,7 @@ public object MaintenanceTaskApi {
     ApiScope.execute(
       dartResultCallback,
       DecryptedMaintenanceTask.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).maintenanceTask.undeleteMaintenanceTaskById(
+      NativeReferences.get<CardinalApis>(sdkId).maintenanceTask.undeleteMaintenanceTaskById(
         id,
         rev,
       )
@@ -621,7 +621,7 @@ public object MaintenanceTaskApi {
     ApiScope.execute(
       dartResultCallback,
       DecryptedMaintenanceTask.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).maintenanceTask.modifyMaintenanceTask(
+      NativeReferences.get<CardinalApis>(sdkId).maintenanceTask.modifyMaintenanceTask(
         entity,
       )
     }
@@ -644,7 +644,7 @@ public object MaintenanceTaskApi {
     ApiScope.execute(
       dartResultCallback,
       DecryptedMaintenanceTask.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).maintenanceTask.getMaintenanceTask(
+      NativeReferences.get<CardinalApis>(sdkId).maintenanceTask.getMaintenanceTask(
         entityId,
       )
     }
@@ -667,7 +667,7 @@ public object MaintenanceTaskApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(DecryptedMaintenanceTask.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).maintenanceTask.getMaintenanceTasks(
+      NativeReferences.get<CardinalApis>(sdkId).maintenanceTask.getMaintenanceTasks(
         entityIds,
       )
     }
@@ -700,7 +700,7 @@ public object MaintenanceTaskApi {
     ApiScope.execute(
       dartResultCallback,
       String.serializer()) {
-      val richResult = NativeReferences.get<CardinalSdk>(sdkId).maintenanceTask.subscribeToEvents(
+      val richResult = NativeReferences.get<CardinalApis>(sdkId).maintenanceTask.subscribeToEvents(
         events,
         filter,
         subscriptionConfig,
@@ -741,7 +741,7 @@ public object MaintenanceTaskApi {
       ApiScope.execute(
         dartResultCallback,
         EncryptedMaintenanceTask.serializer()) {
-        NativeReferences.get<CardinalSdk>(sdkId).maintenanceTask.encrypted.shareWith(
+        NativeReferences.get<CardinalApis>(sdkId).maintenanceTask.encrypted.shareWith(
           delegateId,
           maintenanceTask,
           options,
@@ -771,7 +771,7 @@ public object MaintenanceTaskApi {
       ApiScope.execute(
         dartResultCallback,
         EncryptedMaintenanceTask.serializer()) {
-        NativeReferences.get<CardinalSdk>(sdkId).maintenanceTask.encrypted.shareWithMany(
+        NativeReferences.get<CardinalApis>(sdkId).maintenanceTask.encrypted.shareWithMany(
           maintenanceTask,
           delegates,
         )
@@ -796,7 +796,7 @@ public object MaintenanceTaskApi {
         dartResultCallback,
         String.serializer()) {
         val richResult =
-            NativeReferences.get<CardinalSdk>(sdkId).maintenanceTask.encrypted.filterMaintenanceTasksBy(
+            NativeReferences.get<CardinalApis>(sdkId).maintenanceTask.encrypted.filterMaintenanceTasksBy(
           filter,
         )
         NativeReferences.create(PaginatedListIteratorWithSerializer(
@@ -824,7 +824,7 @@ public object MaintenanceTaskApi {
         dartResultCallback,
         String.serializer()) {
         val richResult =
-            NativeReferences.get<CardinalSdk>(sdkId).maintenanceTask.encrypted.filterMaintenanceTasksBySorted(
+            NativeReferences.get<CardinalApis>(sdkId).maintenanceTask.encrypted.filterMaintenanceTasksBySorted(
           filter,
         )
         NativeReferences.create(PaginatedListIteratorWithSerializer(
@@ -851,7 +851,7 @@ public object MaintenanceTaskApi {
       ApiScope.execute(
         dartResultCallback,
         PolymorphicSerializer(MaintenanceTask::class)) {
-        NativeReferences.get<CardinalSdk>(sdkId).maintenanceTask.encrypted.undeleteMaintenanceTask(
+        NativeReferences.get<CardinalApis>(sdkId).maintenanceTask.encrypted.undeleteMaintenanceTask(
           maintenanceTask,
         )
       }
@@ -879,7 +879,7 @@ public object MaintenanceTaskApi {
       ApiScope.execute(
         dartResultCallback,
         EncryptedMaintenanceTask.serializer()) {
-        NativeReferences.get<CardinalSdk>(sdkId).maintenanceTask.encrypted.undeleteMaintenanceTaskById(
+        NativeReferences.get<CardinalApis>(sdkId).maintenanceTask.encrypted.undeleteMaintenanceTaskById(
           id,
           rev,
         )
@@ -903,7 +903,7 @@ public object MaintenanceTaskApi {
       ApiScope.execute(
         dartResultCallback,
         EncryptedMaintenanceTask.serializer()) {
-        NativeReferences.get<CardinalSdk>(sdkId).maintenanceTask.encrypted.modifyMaintenanceTask(
+        NativeReferences.get<CardinalApis>(sdkId).maintenanceTask.encrypted.modifyMaintenanceTask(
           entity,
         )
       }
@@ -926,7 +926,7 @@ public object MaintenanceTaskApi {
       ApiScope.execute(
         dartResultCallback,
         EncryptedMaintenanceTask.serializer()) {
-        NativeReferences.get<CardinalSdk>(sdkId).maintenanceTask.encrypted.getMaintenanceTask(
+        NativeReferences.get<CardinalApis>(sdkId).maintenanceTask.encrypted.getMaintenanceTask(
           entityId,
         )
       }
@@ -949,7 +949,7 @@ public object MaintenanceTaskApi {
       ApiScope.execute(
         dartResultCallback,
         ListSerializer(EncryptedMaintenanceTask.serializer())) {
-        NativeReferences.get<CardinalSdk>(sdkId).maintenanceTask.encrypted.getMaintenanceTasks(
+        NativeReferences.get<CardinalApis>(sdkId).maintenanceTask.encrypted.getMaintenanceTasks(
           entityIds,
         )
       }
@@ -985,7 +985,7 @@ public object MaintenanceTaskApi {
       ApiScope.execute(
         dartResultCallback,
         PolymorphicSerializer(MaintenanceTask::class)) {
-        NativeReferences.get<CardinalSdk>(sdkId).maintenanceTask.tryAndRecover.shareWith(
+        NativeReferences.get<CardinalApis>(sdkId).maintenanceTask.tryAndRecover.shareWith(
           delegateId,
           maintenanceTask,
           options,
@@ -1015,7 +1015,7 @@ public object MaintenanceTaskApi {
       ApiScope.execute(
         dartResultCallback,
         PolymorphicSerializer(MaintenanceTask::class)) {
-        NativeReferences.get<CardinalSdk>(sdkId).maintenanceTask.tryAndRecover.shareWithMany(
+        NativeReferences.get<CardinalApis>(sdkId).maintenanceTask.tryAndRecover.shareWithMany(
           maintenanceTask,
           delegates,
         )
@@ -1040,7 +1040,7 @@ public object MaintenanceTaskApi {
         dartResultCallback,
         String.serializer()) {
         val richResult =
-            NativeReferences.get<CardinalSdk>(sdkId).maintenanceTask.tryAndRecover.filterMaintenanceTasksBy(
+            NativeReferences.get<CardinalApis>(sdkId).maintenanceTask.tryAndRecover.filterMaintenanceTasksBy(
           filter,
         )
         NativeReferences.create(PaginatedListIteratorWithSerializer(
@@ -1068,7 +1068,7 @@ public object MaintenanceTaskApi {
         dartResultCallback,
         String.serializer()) {
         val richResult =
-            NativeReferences.get<CardinalSdk>(sdkId).maintenanceTask.tryAndRecover.filterMaintenanceTasksBySorted(
+            NativeReferences.get<CardinalApis>(sdkId).maintenanceTask.tryAndRecover.filterMaintenanceTasksBySorted(
           filter,
         )
         NativeReferences.create(PaginatedListIteratorWithSerializer(
@@ -1095,7 +1095,7 @@ public object MaintenanceTaskApi {
       ApiScope.execute(
         dartResultCallback,
         PolymorphicSerializer(MaintenanceTask::class)) {
-        NativeReferences.get<CardinalSdk>(sdkId).maintenanceTask.tryAndRecover.undeleteMaintenanceTask(
+        NativeReferences.get<CardinalApis>(sdkId).maintenanceTask.tryAndRecover.undeleteMaintenanceTask(
           maintenanceTask,
         )
       }
@@ -1123,7 +1123,7 @@ public object MaintenanceTaskApi {
       ApiScope.execute(
         dartResultCallback,
         PolymorphicSerializer(MaintenanceTask::class)) {
-        NativeReferences.get<CardinalSdk>(sdkId).maintenanceTask.tryAndRecover.undeleteMaintenanceTaskById(
+        NativeReferences.get<CardinalApis>(sdkId).maintenanceTask.tryAndRecover.undeleteMaintenanceTaskById(
           id,
           rev,
         )
@@ -1147,7 +1147,7 @@ public object MaintenanceTaskApi {
       ApiScope.execute(
         dartResultCallback,
         PolymorphicSerializer(MaintenanceTask::class)) {
-        NativeReferences.get<CardinalSdk>(sdkId).maintenanceTask.tryAndRecover.modifyMaintenanceTask(
+        NativeReferences.get<CardinalApis>(sdkId).maintenanceTask.tryAndRecover.modifyMaintenanceTask(
           entity,
         )
       }
@@ -1170,7 +1170,7 @@ public object MaintenanceTaskApi {
       ApiScope.execute(
         dartResultCallback,
         PolymorphicSerializer(MaintenanceTask::class)) {
-        NativeReferences.get<CardinalSdk>(sdkId).maintenanceTask.tryAndRecover.getMaintenanceTask(
+        NativeReferences.get<CardinalApis>(sdkId).maintenanceTask.tryAndRecover.getMaintenanceTask(
           entityId,
         )
       }
@@ -1193,7 +1193,7 @@ public object MaintenanceTaskApi {
       ApiScope.execute(
         dartResultCallback,
         ListSerializer(PolymorphicSerializer(MaintenanceTask::class))) {
-        NativeReferences.get<CardinalSdk>(sdkId).maintenanceTask.tryAndRecover.getMaintenanceTasks(
+        NativeReferences.get<CardinalApis>(sdkId).maintenanceTask.tryAndRecover.getMaintenanceTasks(
           entityIds,
         )
       }

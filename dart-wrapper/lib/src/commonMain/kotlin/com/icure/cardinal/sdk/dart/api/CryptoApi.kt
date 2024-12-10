@@ -1,7 +1,7 @@
 // auto-generated file
 package com.icure.cardinal.sdk.dart.api
 
-import com.icure.cardinal.sdk.CardinalSdk
+import com.icure.cardinal.sdk.CardinalApis
 import com.icure.cardinal.sdk.dart.utils.ApiScope
 import com.icure.cardinal.sdk.dart.utils.NativeReferences
 import com.icure.cardinal.sdk.model.specializations.KeypairFingerprintV1String
@@ -26,7 +26,7 @@ public object CryptoApi {
     ApiScope.execute(
       dartResultCallback,
       Unit.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).crypto.forceReload()
+      NativeReferences.get<CardinalApis>(sdkId).crypto.forceReload()
     }
   }
 
@@ -48,7 +48,7 @@ public object CryptoApi {
       dartResultCallback,
       MapSerializer(String.serializer(), MapSerializer(KeypairFingerprintV1String.serializer(),
           Pkcs8BytesAsBase64Serializer))) {
-      NativeReferences.get<CardinalSdk>(sdkId).crypto.currentDataOwnerKeys(
+      NativeReferences.get<CardinalApis>(sdkId).crypto.currentDataOwnerKeys(
         filterTrustedKeys,
       )
     }

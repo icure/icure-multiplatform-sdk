@@ -20,6 +20,14 @@ class KeyDataRecoveryRequest {
   final List<UnavailableKeyInfo> unavailableKeys;
 
   const KeyDataRecoveryRequest({required this.dataOwnerDetails, required this.unknownKeys, required this.unavailableKeys});
+
+  static KeyDataRecoveryRequest decode(Map<String, dynamic> data) {
+    return KeyDataRecoveryRequest(
+        dataOwnerDetails: DataOwnerWithType.fromJSON(data["dataOwnerDetails"]! as Map<String, dynamic>),
+        unknownKeys: (data["unknownKeys"]! as List<dynamic>).map((x) => CardinalRsaPublicKey.fromSpkiHex(x as String)).toList(),
+        unavailableKeys: (data["unavailableKeys"]! as List<dynamic>).map((x) => UnavailableKeyInfo.decode(x as Map<String, dynamic>)).toList()
+    );
+  }
 }
 
 class UnavailableKeyInfo {
@@ -29,6 +37,13 @@ class UnavailableKeyInfo {
   final CardinalRsaEncryptionAlgorithm keyAlgorithm;
 
   const UnavailableKeyInfo({required this.publicKey, required this.keyAlgorithm});
+
+  static UnavailableKeyInfo decode(Map<String, dynamic> data) {
+    return UnavailableKeyInfo(
+        publicKey: CardinalRsaPublicKey.fromSpkiHex(data["publicKey"]! as String),
+        keyAlgorithm: CardinalRsaEncryptionAlgorithm.decode(data["keyAlgorithm"] as String)
+    );
+  }
 }
 
 /// Data recovered for a data owner.
@@ -43,6 +58,17 @@ class RecoveredKeyData {
   final Map<CardinalRsaPublicKeyFingerprint, bool> keyAuthenticity;
 
   const RecoveredKeyData({required this.recoveredKeys, required this.keyAuthenticity});
+
+  Map<String, dynamic> encode() {
+    return {
+      "recoveredKeys": recoveredKeys.map((k, v) {
+        return MapEntry(k.value, v.pkcs8Base64);
+      }),
+      "keyAuthenticity": keyAuthenticity.map((k, v) {
+        return MapEntry(k.value, v);
+      })
+    };
+  }
 }
 
 class KeyGenerationRequestResult {
@@ -53,17 +79,33 @@ class KeyGenerationRequestResult {
 
   /// Allows the SDK to generate a new key pair for the current data owner.
   factory KeyGenerationRequestResult.allow() {
-    return const KeyGenerationRequestResult._(ktType: "TODO", key: null);
+    return const KeyGenerationRequestResult._(
+        ktType: "com.icure.cardinal.sdk.dart.crypto.DartKeyGenerationRequestResult.Allow",
+        key: null
+    );
   }
 
   /// The SDK must not generate a new key for the data owner. The SDK initialisation should fail with a predefined error.
   factory KeyGenerationRequestResult.deny() {
-    return const KeyGenerationRequestResult._(ktType: "TODO", key: null);
+    return const KeyGenerationRequestResult._(
+        ktType: "com.icure.cardinal.sdk.dart.crypto.DartKeyGenerationRequestResult.Deny",
+        key: null
+    );
   }
 
   /// The SDK should use the provided key pair as a new key for the data owner.
   factory KeyGenerationRequestResult.use(CardinalRsaPrivateKey key) {
-    return KeyGenerationRequestResult._(ktType: "TODO", key: key.pkcs8Hex);
+    return KeyGenerationRequestResult._(
+        ktType: "com.icure.cardinal.sdk.dart.crypto.DartKeyGenerationRequestResult.Use",
+        key: key.pkcs8Hex
+    );
+  }
+
+  Map<String, dynamic> encode() {
+    return {
+      "type": _ktType,
+      "key": _key
+    };
   }
 }
 

@@ -1,16 +1,16 @@
 import 'dart:math';
 
+import 'package:cardinal_sdk/utils/internal/unsafe_uuid.dart';
+
 class CallbackReferences {
   CallbackReferences._();
 
-  static final _references = <String, String Function(String)>{};
-  static final _random = Random();
-  static final _hexAlphabet = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'];
+  static final _references = <String, Future<String> Function(Map<String, dynamic>)>{};
 
-  static String create(String Function(String) callback) {
+  static String create(Future<String> Function(Map<String, dynamic>) callback) {
     String id;
     do {
-      id = _generateId();
+      id = generateUnsafeId();
     } while (_references.containsKey(id));
     _references[id] = callback;
     return id;
@@ -29,18 +29,10 @@ class CallbackReferences {
     _references.remove(referenceId);
   }
 
-  static String Function(String) get(String referenceId) {
+  static Future<String> Function(Map<String, dynamic>) get(String referenceId) {
     if (!_references.containsKey(referenceId)) {
       throw ArgumentError('Callback for reference id $referenceId not found');
     }
     return _references[referenceId]!;
-  }
-
-  static String _generateId() {
-    return '${_generateHex(8)}-${_generateHex(4)}-${_generateHex(4)}-${_generateHex(4)}-${_generateHex(12)}';
-  }
-
-  static String _generateHex(int length) {
-    return List<String>.generate(length, (_) => _hexAlphabet[_random.nextInt(16)]).join();
   }
 }

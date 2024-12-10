@@ -1,7 +1,7 @@
 // auto-generated file
 package com.icure.cardinal.sdk.dart.api
 
-import com.icure.cardinal.sdk.CardinalSdk
+import com.icure.cardinal.sdk.CardinalApis
 import com.icure.cardinal.sdk.dart.utils.ApiScope
 import com.icure.cardinal.sdk.dart.utils.NativeReferences
 import com.icure.cardinal.sdk.filters.BaseFilterOptions
@@ -52,7 +52,7 @@ public object CodeApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(Code.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).code.listCodesByRegionTypeCodeVersion(
+      NativeReferences.get<CardinalApis>(sdkId).code.listCodesByRegionTypeCodeVersion(
         region,
         type,
         code,
@@ -83,7 +83,7 @@ public object CodeApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(String.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).code.listCodeTypesBy(
+      NativeReferences.get<CardinalApis>(sdkId).code.listCodeTypesBy(
         region,
         type,
       )
@@ -112,7 +112,7 @@ public object CodeApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(String.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).code.listTagTypesBy(
+      NativeReferences.get<CardinalApis>(sdkId).code.listTagTypesBy(
         region,
         type,
       )
@@ -136,7 +136,7 @@ public object CodeApi {
     ApiScope.execute(
       dartResultCallback,
       Code.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).code.createCode(
+      NativeReferences.get<CardinalApis>(sdkId).code.createCode(
         c,
       )
     }
@@ -159,7 +159,7 @@ public object CodeApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(Code.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).code.createCodes(
+      NativeReferences.get<CardinalApis>(sdkId).code.createCodes(
         codeBatch,
       )
     }
@@ -187,7 +187,7 @@ public object CodeApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(Code.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).code.createCodes(
+      NativeReferences.get<CardinalApis>(sdkId).code.createCodes(
         groupId,
         codeBatch,
       )
@@ -221,7 +221,7 @@ public object CodeApi {
     ApiScope.execute(
       dartResultCallback,
       BooleanResponse.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).code.isCodeValid(
+      NativeReferences.get<CardinalApis>(sdkId).code.isCodeValid(
         type,
         code,
         version,
@@ -261,7 +261,7 @@ public object CodeApi {
     ApiScope.execute(
       dartResultCallback,
       Code.serializer().nullable) {
-      NativeReferences.get<CardinalSdk>(sdkId).code.getCodeByRegionLanguageTypeLabel(
+      NativeReferences.get<CardinalApis>(sdkId).code.getCodeByRegionLanguageTypeLabel(
         region,
         label,
         type,
@@ -287,7 +287,7 @@ public object CodeApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(Code.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).code.getCodes(
+      NativeReferences.get<CardinalApis>(sdkId).code.getCodes(
         codeIds,
       )
     }
@@ -315,7 +315,7 @@ public object CodeApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(Code.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).code.getCodes(
+      NativeReferences.get<CardinalApis>(sdkId).code.getCodes(
         groupId,
         codeIds,
       )
@@ -339,7 +339,7 @@ public object CodeApi {
     ApiScope.execute(
       dartResultCallback,
       Code.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).code.getCode(
+      NativeReferences.get<CardinalApis>(sdkId).code.getCode(
         codeId,
       )
     }
@@ -372,7 +372,7 @@ public object CodeApi {
     ApiScope.execute(
       dartResultCallback,
       Code.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).code.getCodeWithParts(
+      NativeReferences.get<CardinalApis>(sdkId).code.getCodeWithParts(
         type,
         code,
         version,
@@ -397,7 +397,7 @@ public object CodeApi {
     ApiScope.execute(
       dartResultCallback,
       Code.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).code.modifyCode(
+      NativeReferences.get<CardinalApis>(sdkId).code.modifyCode(
         codeDto,
       )
     }
@@ -420,7 +420,7 @@ public object CodeApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(Code.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).code.modifyCodes(
+      NativeReferences.get<CardinalApis>(sdkId).code.modifyCodes(
         codeBatch,
       )
     }
@@ -448,7 +448,7 @@ public object CodeApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(Code.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).code.modifyCodes(
+      NativeReferences.get<CardinalApis>(sdkId).code.modifyCodes(
         groupId,
         codeBatch,
       )
@@ -472,7 +472,7 @@ public object CodeApi {
     ApiScope.execute(
       dartResultCallback,
       String.serializer()) {
-      val richResult = NativeReferences.get<CardinalSdk>(sdkId).code.filterCodesBy(
+      val richResult = NativeReferences.get<CardinalApis>(sdkId).code.filterCodesBy(
         filter,
       )
       NativeReferences.create(PaginatedListIteratorWithSerializer(
@@ -499,7 +499,7 @@ public object CodeApi {
     ApiScope.execute(
       dartResultCallback,
       String.serializer()) {
-      val richResult = NativeReferences.get<CardinalSdk>(sdkId).code.filterCodesBySorted(
+      val richResult = NativeReferences.get<CardinalApis>(sdkId).code.filterCodesBySorted(
         filter,
       )
       NativeReferences.create(PaginatedListIteratorWithSerializer(
@@ -526,7 +526,7 @@ public object CodeApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(String.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).code.matchCodesBy(
+      NativeReferences.get<CardinalApis>(sdkId).code.matchCodesBy(
         filter,
       )
     }
@@ -549,7 +549,7 @@ public object CodeApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(String.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).code.matchCodesBySorted(
+      NativeReferences.get<CardinalApis>(sdkId).code.matchCodesBySorted(
         filter,
       )
     }
@@ -572,7 +572,7 @@ public object CodeApi {
     ApiScope.execute(
       dartResultCallback,
       Unit.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).code.importCodes(
+      NativeReferences.get<CardinalApis>(sdkId).code.importCodes(
         codeType,
       )
     }

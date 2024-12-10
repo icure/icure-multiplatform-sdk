@@ -1,7 +1,7 @@
 // auto-generated file
 package com.icure.cardinal.sdk.dart.api
 
-import com.icure.cardinal.sdk.CardinalSdk
+import com.icure.cardinal.sdk.CardinalApis
 import com.icure.cardinal.sdk.dart.utils.ApiScope
 import com.icure.cardinal.sdk.dart.utils.NativeReferences
 import com.icure.cardinal.sdk.model.EntityTemplate
@@ -36,7 +36,7 @@ public object EntityTemplateApi {
     ApiScope.execute(
       dartResultCallback,
       EntityTemplate.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).entityTemplate.getEntityTemplate(
+      NativeReferences.get<CardinalApis>(sdkId).entityTemplate.getEntityTemplate(
         documentTemplateId,
       )
     }
@@ -59,7 +59,7 @@ public object EntityTemplateApi {
     ApiScope.execute(
       dartResultCallback,
       EntityTemplate.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).entityTemplate.createEntityTemplate(
+      NativeReferences.get<CardinalApis>(sdkId).entityTemplate.createEntityTemplate(
         applicationSettings,
       )
     }
@@ -82,7 +82,7 @@ public object EntityTemplateApi {
     ApiScope.execute(
       dartResultCallback,
       EntityTemplate.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).entityTemplate.modifyEntityTemplate(
+      NativeReferences.get<CardinalApis>(sdkId).entityTemplate.modifyEntityTemplate(
         documentTemplate,
       )
     }
@@ -120,7 +120,7 @@ public object EntityTemplateApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(EntityTemplate.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).entityTemplate.listEntityTemplatesBy(
+      NativeReferences.get<CardinalApis>(sdkId).entityTemplate.listEntityTemplatesBy(
         userId,
         type,
         searchString,
@@ -156,7 +156,7 @@ public object EntityTemplateApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(EntityTemplate.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).entityTemplate.listAllEntityTemplatesBy(
+      NativeReferences.get<CardinalApis>(sdkId).entityTemplate.listAllEntityTemplatesBy(
         type,
         searchString,
         includeEntities,
@@ -196,7 +196,7 @@ public object EntityTemplateApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(EntityTemplate.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).entityTemplate.listEntityTemplatesByKeyword(
+      NativeReferences.get<CardinalApis>(sdkId).entityTemplate.listEntityTemplatesByKeyword(
         userId,
         type,
         keyword,
@@ -232,7 +232,7 @@ public object EntityTemplateApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(EntityTemplate.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).entityTemplate.findAllEntityTemplatesByKeyword(
+      NativeReferences.get<CardinalApis>(sdkId).entityTemplate.findAllEntityTemplatesByKeyword(
         type,
         keyword,
         includeEntities,
@@ -257,7 +257,7 @@ public object EntityTemplateApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(EntityTemplate.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).entityTemplate.getEntityTemplates(
+      NativeReferences.get<CardinalApis>(sdkId).entityTemplate.getEntityTemplates(
         entityTemplateIds,
       )
     }
@@ -280,7 +280,7 @@ public object EntityTemplateApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(EntityTemplate.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).entityTemplate.modifyEntityTemplates(
+      NativeReferences.get<CardinalApis>(sdkId).entityTemplate.modifyEntityTemplates(
         entityTemplates,
       )
     }
@@ -303,7 +303,7 @@ public object EntityTemplateApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(EntityTemplate.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).entityTemplate.createEntityTemplates(
+      NativeReferences.get<CardinalApis>(sdkId).entityTemplate.createEntityTemplates(
         entityTemplates,
       )
     }
@@ -326,7 +326,7 @@ public object EntityTemplateApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(DocIdentifier.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).entityTemplate.deleteEntityTemplates(
+      NativeReferences.get<CardinalApis>(sdkId).entityTemplate.deleteEntityTemplates(
         entityTemplateIds,
       )
     }

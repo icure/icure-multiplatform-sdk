@@ -1,7 +1,7 @@
 // auto-generated file
 package com.icure.cardinal.sdk.dart.api
 
-import com.icure.cardinal.sdk.CardinalSdk
+import com.icure.cardinal.sdk.CardinalApis
 import com.icure.cardinal.sdk.dart.utils.ApiScope
 import com.icure.cardinal.sdk.dart.utils.NativeReferences
 import com.icure.cardinal.sdk.filters.BaseFilterOptions
@@ -40,7 +40,7 @@ public object UserApi {
     ApiScope.execute(
       dartResultCallback,
       User.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).user.getCurrentUser()
+      NativeReferences.get<CardinalApis>(sdkId).user.getCurrentUser()
     }
   }
 
@@ -61,7 +61,7 @@ public object UserApi {
     ApiScope.execute(
       dartResultCallback,
       User.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).user.createUser(
+      NativeReferences.get<CardinalApis>(sdkId).user.createUser(
         user,
       )
     }
@@ -84,7 +84,7 @@ public object UserApi {
     ApiScope.execute(
       dartResultCallback,
       User.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).user.getUser(
+      NativeReferences.get<CardinalApis>(sdkId).user.getUser(
         userId,
       )
     }
@@ -107,7 +107,7 @@ public object UserApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(User.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).user.getUsers(
+      NativeReferences.get<CardinalApis>(sdkId).user.getUsers(
         userIds,
       )
     }
@@ -130,7 +130,7 @@ public object UserApi {
     ApiScope.execute(
       dartResultCallback,
       User.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).user.getUserByEmail(
+      NativeReferences.get<CardinalApis>(sdkId).user.getUserByEmail(
         email,
       )
     }
@@ -153,7 +153,7 @@ public object UserApi {
     ApiScope.execute(
       dartResultCallback,
       User.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).user.getUserByPhoneNumber(
+      NativeReferences.get<CardinalApis>(sdkId).user.getUserByPhoneNumber(
         phoneNumber,
       )
     }
@@ -176,7 +176,7 @@ public object UserApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(String.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).user.findByHcpartyId(
+      NativeReferences.get<CardinalApis>(sdkId).user.findByHcpartyId(
         id,
       )
     }
@@ -199,7 +199,7 @@ public object UserApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(String.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).user.findByPatientId(
+      NativeReferences.get<CardinalApis>(sdkId).user.findByPatientId(
         id,
       )
     }
@@ -222,7 +222,7 @@ public object UserApi {
     ApiScope.execute(
       dartResultCallback,
       User.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).user.modifyUser(
+      NativeReferences.get<CardinalApis>(sdkId).user.modifyUser(
         user,
       )
     }
@@ -245,7 +245,7 @@ public object UserApi {
     ApiScope.execute(
       dartResultCallback,
       User.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).user.assignHealthcareParty(
+      NativeReferences.get<CardinalApis>(sdkId).user.assignHealthcareParty(
         healthcarePartyId,
       )
     }
@@ -273,7 +273,7 @@ public object UserApi {
     ApiScope.execute(
       dartResultCallback,
       User.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).user.modifyProperties(
+      NativeReferences.get<CardinalApis>(sdkId).user.modifyProperties(
         userId,
         properties,
       )
@@ -312,7 +312,7 @@ public object UserApi {
     ApiScope.execute(
       dartResultCallback,
       String.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).user.getToken(
+      NativeReferences.get<CardinalApis>(sdkId).user.getToken(
         userId,
         key,
         tokenValidity,
@@ -338,7 +338,7 @@ public object UserApi {
     ApiScope.execute(
       dartResultCallback,
       String.serializer()) {
-      val richResult = NativeReferences.get<CardinalSdk>(sdkId).user.filterUsersBy(
+      val richResult = NativeReferences.get<CardinalApis>(sdkId).user.filterUsersBy(
         filter,
       )
       NativeReferences.create(PaginatedListIteratorWithSerializer(
@@ -365,7 +365,7 @@ public object UserApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(String.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).user.matchUsersBy(
+      NativeReferences.get<CardinalApis>(sdkId).user.matchUsersBy(
         filter,
       )
     }
@@ -388,7 +388,7 @@ public object UserApi {
     ApiScope.execute(
       dartResultCallback,
       String.serializer()) {
-      val richResult = NativeReferences.get<CardinalSdk>(sdkId).user.filterUsersBySorted(
+      val richResult = NativeReferences.get<CardinalApis>(sdkId).user.filterUsersBySorted(
         filter,
       )
       NativeReferences.create(PaginatedListIteratorWithSerializer(
@@ -415,7 +415,7 @@ public object UserApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(String.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).user.matchUsersBySorted(
+      NativeReferences.get<CardinalApis>(sdkId).user.matchUsersBySorted(
         filter,
       )
     }
@@ -430,7 +430,7 @@ public object UserApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(UserGroup.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).user.getMatchingUsers()
+      NativeReferences.get<CardinalApis>(sdkId).user.getMatchingUsers()
     }
   }
 
@@ -456,7 +456,7 @@ public object UserApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(User.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).user.getUsersInGroup(
+      NativeReferences.get<CardinalApis>(sdkId).user.getUsersInGroup(
         groupId,
         userIds,
       )
@@ -485,7 +485,7 @@ public object UserApi {
     ApiScope.execute(
       dartResultCallback,
       User.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).user.createUserInGroup(
+      NativeReferences.get<CardinalApis>(sdkId).user.createUserInGroup(
         groupId,
         user,
       )
@@ -514,7 +514,7 @@ public object UserApi {
     ApiScope.execute(
       dartResultCallback,
       User.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).user.modifyUserInGroup(
+      NativeReferences.get<CardinalApis>(sdkId).user.modifyUserInGroup(
         groupId,
         user,
       )
@@ -543,7 +543,7 @@ public object UserApi {
     ApiScope.execute(
       dartResultCallback,
       User.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).user.setUserRoles(
+      NativeReferences.get<CardinalApis>(sdkId).user.setUserRoles(
         userId,
         rolesId,
       )
@@ -577,7 +577,7 @@ public object UserApi {
     ApiScope.execute(
       dartResultCallback,
       User.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).user.setUserRolesInGroup(
+      NativeReferences.get<CardinalApis>(sdkId).user.setUserRolesInGroup(
         userId,
         groupId,
         rolesId,
@@ -602,7 +602,7 @@ public object UserApi {
     ApiScope.execute(
       dartResultCallback,
       User.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).user.resetUserRoles(
+      NativeReferences.get<CardinalApis>(sdkId).user.resetUserRoles(
         userId,
       )
     }
@@ -630,7 +630,7 @@ public object UserApi {
     ApiScope.execute(
       dartResultCallback,
       User.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).user.resetUserRolesInGroup(
+      NativeReferences.get<CardinalApis>(sdkId).user.resetUserRolesInGroup(
         userId,
         groupId,
       )
@@ -674,7 +674,7 @@ public object UserApi {
     ApiScope.execute(
       dartResultCallback,
       String.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).user.getTokenInGroup(
+      NativeReferences.get<CardinalApis>(sdkId).user.getTokenInGroup(
         groupId,
         userId,
         key,
@@ -716,7 +716,7 @@ public object UserApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(TokenWithGroup.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).user.getTokenInAllGroups(
+      NativeReferences.get<CardinalApis>(sdkId).user.getTokenInAllGroups(
         userIdentifier,
         key,
         token,
@@ -747,7 +747,7 @@ public object UserApi {
     ApiScope.execute(
       dartResultCallback,
       String.serializer()) {
-      val richResult = NativeReferences.get<CardinalSdk>(sdkId).user.filterUsersInGroupBy(
+      val richResult = NativeReferences.get<CardinalApis>(sdkId).user.filterUsersInGroupBy(
         groupId,
         filter,
       )
@@ -780,7 +780,7 @@ public object UserApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(String.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).user.matchUsersInGroupBy(
+      NativeReferences.get<CardinalApis>(sdkId).user.matchUsersInGroupBy(
         groupId,
         filter,
       )
@@ -809,7 +809,7 @@ public object UserApi {
     ApiScope.execute(
       dartResultCallback,
       String.serializer()) {
-      val richResult = NativeReferences.get<CardinalSdk>(sdkId).user.filterUsersInGroupBySorted(
+      val richResult = NativeReferences.get<CardinalApis>(sdkId).user.filterUsersInGroupBySorted(
         groupId,
         filter,
       )
@@ -842,7 +842,7 @@ public object UserApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(String.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).user.matchUsersInGroupBySorted(
+      NativeReferences.get<CardinalApis>(sdkId).user.matchUsersInGroupBySorted(
         groupId,
         filter,
       )
@@ -876,7 +876,7 @@ public object UserApi {
     ApiScope.execute(
       dartResultCallback,
       Unit.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).user.enable2faForUser(
+      NativeReferences.get<CardinalApis>(sdkId).user.enable2faForUser(
         userId,
         groupId,
         request,
@@ -906,7 +906,7 @@ public object UserApi {
     ApiScope.execute(
       dartResultCallback,
       Unit.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).user.enable2faForUser(
+      NativeReferences.get<CardinalApis>(sdkId).user.enable2faForUser(
         userId,
         request,
       )
@@ -935,7 +935,7 @@ public object UserApi {
     ApiScope.execute(
       dartResultCallback,
       Unit.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).user.disable2faForUser(
+      NativeReferences.get<CardinalApis>(sdkId).user.disable2faForUser(
         userId,
         groupId,
       )
@@ -959,7 +959,7 @@ public object UserApi {
     ApiScope.execute(
       dartResultCallback,
       Unit.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).user.disable2faForUser(
+      NativeReferences.get<CardinalApis>(sdkId).user.disable2faForUser(
         userId,
       )
     }
@@ -982,7 +982,7 @@ public object UserApi {
     ApiScope.execute(
       dartResultCallback,
       User.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).user.createAdminUser(
+      NativeReferences.get<CardinalApis>(sdkId).user.createAdminUser(
         user,
       )
     }
@@ -1010,7 +1010,7 @@ public object UserApi {
     ApiScope.execute(
       dartResultCallback,
       User.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).user.createAdminUserInGroup(
+      NativeReferences.get<CardinalApis>(sdkId).user.createAdminUserInGroup(
         groupId,
         user,
       )
@@ -1039,7 +1039,7 @@ public object UserApi {
     ApiScope.execute(
       dartResultCallback,
       DocIdentifier.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).user.deleteUserById(
+      NativeReferences.get<CardinalApis>(sdkId).user.deleteUserById(
         entityId,
         rev,
       )
@@ -1073,7 +1073,7 @@ public object UserApi {
     ApiScope.execute(
       dartResultCallback,
       DocIdentifier.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).user.deleteUserInGroupById(
+      NativeReferences.get<CardinalApis>(sdkId).user.deleteUserInGroupById(
         groupId,
         entityId,
         rev,
@@ -1103,7 +1103,7 @@ public object UserApi {
     ApiScope.execute(
       dartResultCallback,
       Unit.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).user.purgeUserById(
+      NativeReferences.get<CardinalApis>(sdkId).user.purgeUserById(
         id,
         rev,
       )
@@ -1132,7 +1132,7 @@ public object UserApi {
     ApiScope.execute(
       dartResultCallback,
       User.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).user.undeleteUserById(
+      NativeReferences.get<CardinalApis>(sdkId).user.undeleteUserById(
         id,
         rev,
       )
@@ -1156,7 +1156,7 @@ public object UserApi {
     ApiScope.execute(
       dartResultCallback,
       DocIdentifier.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).user.deleteUser(
+      NativeReferences.get<CardinalApis>(sdkId).user.deleteUser(
         user,
       )
     }
@@ -1184,7 +1184,7 @@ public object UserApi {
     ApiScope.execute(
       dartResultCallback,
       DocIdentifier.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).user.deleteUserInGroup(
+      NativeReferences.get<CardinalApis>(sdkId).user.deleteUserInGroup(
         groupId,
         user,
       )
@@ -1208,7 +1208,7 @@ public object UserApi {
     ApiScope.execute(
       dartResultCallback,
       Unit.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).user.purgeUser(
+      NativeReferences.get<CardinalApis>(sdkId).user.purgeUser(
         user,
       )
     }
@@ -1231,7 +1231,7 @@ public object UserApi {
     ApiScope.execute(
       dartResultCallback,
       User.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).user.undeleteUser(
+      NativeReferences.get<CardinalApis>(sdkId).user.undeleteUser(
         user,
       )
     }
@@ -1264,7 +1264,7 @@ public object UserApi {
     ApiScope.execute(
       dartResultCallback,
       String.serializer()) {
-      val richResult = NativeReferences.get<CardinalSdk>(sdkId).user.subscribeToEvents(
+      val richResult = NativeReferences.get<CardinalApis>(sdkId).user.subscribeToEvents(
         events,
         filter,
         subscriptionConfig,

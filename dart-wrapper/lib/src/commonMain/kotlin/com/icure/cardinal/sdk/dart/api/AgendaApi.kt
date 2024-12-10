@@ -1,7 +1,7 @@
 // auto-generated file
 package com.icure.cardinal.sdk.dart.api
 
-import com.icure.cardinal.sdk.CardinalSdk
+import com.icure.cardinal.sdk.CardinalApis
 import com.icure.cardinal.sdk.dart.utils.ApiScope
 import com.icure.cardinal.sdk.dart.utils.NativeReferences
 import com.icure.cardinal.sdk.filters.BaseFilterOptions
@@ -37,7 +37,7 @@ public object AgendaApi {
     ApiScope.execute(
       dartResultCallback,
       Agenda.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).agenda.createAgenda(
+      NativeReferences.get<CardinalApis>(sdkId).agenda.createAgenda(
         agendaDto,
       )
     }
@@ -65,7 +65,7 @@ public object AgendaApi {
     ApiScope.execute(
       dartResultCallback,
       DocIdentifier.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).agenda.deleteAgendaById(
+      NativeReferences.get<CardinalApis>(sdkId).agenda.deleteAgendaById(
         entityId,
         rev,
       )
@@ -89,7 +89,7 @@ public object AgendaApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(DocIdentifier.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).agenda.deleteAgendasByIds(
+      NativeReferences.get<CardinalApis>(sdkId).agenda.deleteAgendasByIds(
         entityIds,
       )
     }
@@ -117,7 +117,7 @@ public object AgendaApi {
     ApiScope.execute(
       dartResultCallback,
       Unit.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).agenda.purgeAgendaById(
+      NativeReferences.get<CardinalApis>(sdkId).agenda.purgeAgendaById(
         id,
         rev,
       )
@@ -146,7 +146,7 @@ public object AgendaApi {
     ApiScope.execute(
       dartResultCallback,
       Agenda.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).agenda.undeleteAgendaById(
+      NativeReferences.get<CardinalApis>(sdkId).agenda.undeleteAgendaById(
         id,
         rev,
       )
@@ -170,7 +170,7 @@ public object AgendaApi {
     ApiScope.execute(
       dartResultCallback,
       DocIdentifier.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).agenda.deleteAgenda(
+      NativeReferences.get<CardinalApis>(sdkId).agenda.deleteAgenda(
         agenda,
       )
     }
@@ -193,7 +193,7 @@ public object AgendaApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(DocIdentifier.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).agenda.deleteAgendas(
+      NativeReferences.get<CardinalApis>(sdkId).agenda.deleteAgendas(
         agendas,
       )
     }
@@ -216,7 +216,7 @@ public object AgendaApi {
     ApiScope.execute(
       dartResultCallback,
       Unit.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).agenda.purgeAgenda(
+      NativeReferences.get<CardinalApis>(sdkId).agenda.purgeAgenda(
         agenda,
       )
     }
@@ -239,7 +239,7 @@ public object AgendaApi {
     ApiScope.execute(
       dartResultCallback,
       Agenda.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).agenda.undeleteAgenda(
+      NativeReferences.get<CardinalApis>(sdkId).agenda.undeleteAgenda(
         agenda,
       )
     }
@@ -262,7 +262,7 @@ public object AgendaApi {
     ApiScope.execute(
       dartResultCallback,
       Agenda.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).agenda.getAgenda(
+      NativeReferences.get<CardinalApis>(sdkId).agenda.getAgenda(
         agendaId,
       )
     }
@@ -285,7 +285,7 @@ public object AgendaApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(Agenda.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).agenda.getAgendas(
+      NativeReferences.get<CardinalApis>(sdkId).agenda.getAgendas(
         agendaIds,
       )
     }
@@ -308,7 +308,7 @@ public object AgendaApi {
     ApiScope.execute(
       dartResultCallback,
       Agenda.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).agenda.modifyAgenda(
+      NativeReferences.get<CardinalApis>(sdkId).agenda.modifyAgenda(
         agendaDto,
       )
     }
@@ -331,7 +331,7 @@ public object AgendaApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(String.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).agenda.matchAgendasBy(
+      NativeReferences.get<CardinalApis>(sdkId).agenda.matchAgendasBy(
         filter,
       )
     }
@@ -354,7 +354,7 @@ public object AgendaApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(String.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).agenda.matchAgendasBySorted(
+      NativeReferences.get<CardinalApis>(sdkId).agenda.matchAgendasBySorted(
         filter,
       )
     }
@@ -377,7 +377,7 @@ public object AgendaApi {
     ApiScope.execute(
       dartResultCallback,
       String.serializer()) {
-      val richResult = NativeReferences.get<CardinalSdk>(sdkId).agenda.filterAgendasBy(
+      val richResult = NativeReferences.get<CardinalApis>(sdkId).agenda.filterAgendasBy(
         filter,
       )
       NativeReferences.create(PaginatedListIteratorWithSerializer(
@@ -404,7 +404,7 @@ public object AgendaApi {
     ApiScope.execute(
       dartResultCallback,
       String.serializer()) {
-      val richResult = NativeReferences.get<CardinalSdk>(sdkId).agenda.filterAgendasBySorted(
+      val richResult = NativeReferences.get<CardinalApis>(sdkId).agenda.filterAgendasBySorted(
         filter,
       )
       NativeReferences.create(PaginatedListIteratorWithSerializer(
