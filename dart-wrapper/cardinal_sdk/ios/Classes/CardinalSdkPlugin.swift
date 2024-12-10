@@ -17,8 +17,24 @@ public class CardinalSdkPlugin: NSObject, FlutterPlugin {
 		utilsChannel.setMethodCallHandler(UtilsPlugin.handle)
 		filtersChannel.setMethodCallHandler(FiltersPlugin.handle)
 		registrar.addApplicationDelegate(CardinalSdkPlugin())
+        let callbackChannel = FlutterMethodChannel(name: "com.icure.cardinal.sdk/dartCallbacks", binaryMessenger: registrar.messenger())
+        DartCallbacksHandlerCompanion.shared.registerUsingMethodChannel { method, callbackId, args, resultCallback in
+            let arguments: [String: String] = args != nil
+              ? ["callbackId": callbackId, "params": args!]
+              : ["callbackId": callbackId]
+            callbackChannel.invokeMethod(method, arguments: arguments) { dartResult in
+                if let stringResult = dartResult as? String {
+                    resultCallback(stringResult, nil, nil, nil)
+                } else if let dartError = dartResult as? FlutterError {
+                    resultCallback(nil, dartError.code, dartError.message, dartError.details != nil ? String(describing: dartError.details) : nil)
+                } else {
+                    resultCallback(nil, "UnexpectedDartResult", String(reflecting: dartResult), nil)
+                }
+            }
+        }
 	}
 	public func detachFromEngine(for registrar: any FlutterPluginRegistrar) {
 		ApiScope.shared.teardown()
+        DartCallbacksHandlerCompanion.shared.unregister()
 	}
 }

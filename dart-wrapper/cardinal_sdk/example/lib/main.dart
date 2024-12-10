@@ -10,11 +10,13 @@ import 'package:cardinal_sdk/auth/captcha_options.dart';
 import 'package:cardinal_sdk/auth/credentials.dart';
 import 'package:cardinal_sdk/errors/cancellation_exception.dart';
 import 'package:cardinal_sdk/errors/cardinal_argument_error.dart';
+import 'package:cardinal_sdk/errors/dart_callback_exception.dart';
 import 'package:cardinal_sdk/filters/filter_options.dart';
 import 'package:cardinal_sdk/filters/meta_filters.dart';
 import 'package:cardinal_sdk/filters/patient_filters.dart';
 import 'package:cardinal_sdk/model/patient.dart';
 import 'package:cardinal_sdk/options/storage_options.dart';
+import 'package:cardinal_sdk/plugin/cardinal_sdk_platform_interface.dart';
 import 'package:cardinal_sdk/subscription/subscription_event_type.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
@@ -238,6 +240,24 @@ class _AuthFormState extends State<AuthForm> {
             onPressed: () => completeInitAndTry(codeController.text),
             child: Text('Try SDK'),
           ),
+          ElevatedButton(
+            onPressed: () async {
+              try {
+                final res = await CardinalSdkPlatformInterface.instance.utils.example((s) async {
+                  // throw CustomException("From dart exception: $s");
+                  return "From dart result: $s";
+                }, "This is a string from dart");
+                print("Got res $res");
+              } catch (e) {
+                if (e is DartCallbackException) {
+                  print("Got dart callback exception");
+                  print(e.dartException);
+                  print(e.dartStackTrace);
+                }
+              }
+            },
+            child: Text('Example'),
+          ),
         ],
       ),
     );
@@ -266,5 +286,16 @@ Future<void> forceGC({
     }
     await Future<void>.delayed(Duration.zero);
     allocateMemory();
+  }
+}
+
+class CustomException implements Exception {
+  final String message;
+
+  CustomException(this.message);
+
+  @override
+  String toString() {
+    return "CustomException($message)";
   }
 }

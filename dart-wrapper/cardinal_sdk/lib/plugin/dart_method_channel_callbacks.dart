@@ -7,8 +7,8 @@ import 'package:flutter/services.dart';
 class DartMethodChannelCallbacks {
   static const MethodChannel _methodChannel = MethodChannel("com.icure.cardinal.sdk/dartCallbacks");
   static Future<dynamic> Function(MethodCall) callHandler = (MethodCall call) async {
-    final args = call.arguments as Map<String, String>;
-    final callbackId = args["callbackId"]!;
+    final args = call.arguments as Map;
+    final callbackId = args["callbackId"]! as String;
     switch (call.method) {
       case "invoke":
         final callbackParams = jsonDecode(args["params"]!) as Map<String, dynamic>;
@@ -16,7 +16,7 @@ class DartMethodChannelCallbacks {
           return await CallbackReferences.get(callbackId)(callbackParams);
         } catch (e, trace) {
           throw PlatformException(
-            code: "dartException",
+            code: "CardinalDartCallbackException",
             details: ErrorReferences.create(ErrorReference(e, trace))
           );
         }
