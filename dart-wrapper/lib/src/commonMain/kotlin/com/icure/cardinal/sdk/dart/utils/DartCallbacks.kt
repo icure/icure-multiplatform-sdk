@@ -2,11 +2,12 @@ package com.icure.cardinal.sdk.dart.utils
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import kotlinx.serialization.json.JsonObject
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
 interface DartCallbacksHandler {
-	suspend fun invoke(callbackId: String, params: String): String
+	suspend fun invoke(callbackId: String, params: JsonObject): String
 	suspend fun delete(callbackId: String)
 	suspend fun duplicate(callbackId: String): String
 
@@ -51,8 +52,8 @@ private class MethodChannelDartCallbacksHandler(
 		) -> Unit
 	) -> Unit
 ) : DartCallbacksHandler {
-	override suspend fun invoke(callbackId: String, params: String): String =
-		suspendInvokeOnChannel("invoke", callbackId, params).successOrThrow()
+	override suspend fun invoke(callbackId: String, params: JsonObject): String =
+		suspendInvokeOnChannel("invoke", callbackId, params.toString()).successOrThrow()
 
 	override suspend fun delete(callbackId: String) {
 		suspendInvokeOnChannel("delete", callbackId, null).successOrThrow().also {
