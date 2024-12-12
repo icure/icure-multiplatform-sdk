@@ -80,7 +80,10 @@ class EncryptedFieldsConfiguration:
         "linkedServices",
         "linkedHealthElements"
     ])
-    document: List[str] = field(default_factory=lambda: [])
+    document: List[str] = field(default_factory=lambda: [
+        "medicalLocationId",
+        "name"
+    ])
     form: List[str] = field(default_factory=lambda: [])
     receipt: List[str] = field(default_factory=lambda: [])
     classification: List[str] = field(default_factory=lambda: [])

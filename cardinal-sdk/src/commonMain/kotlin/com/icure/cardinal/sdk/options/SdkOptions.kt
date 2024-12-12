@@ -242,7 +242,10 @@ data class EncryptedFieldsConfiguration(
 		"linkedServices",
 		"linkedHealthElements"
 	),
-	val document: Set<String> = emptySet(),
+	val document: Set<String> = setOf(
+		"medicalLocationId",
+		"name"
+	),
 	val form: Set<String> = emptySet(),
 	val receipt: Set<String> = emptySet(),
 	val classification: Set<String> = emptySet(),

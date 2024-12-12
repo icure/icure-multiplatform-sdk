@@ -201,7 +201,10 @@ class EncryptedFieldsConfiguration {
       "linkedServices",
       "linkedHealthElements"
     },
-    this.document = const {},
+    this.document = const {
+      "medicalLocationId",
+      "name"
+    },
     this.form = const {},
     this.receipt = const {},
     this.classification = const {},
