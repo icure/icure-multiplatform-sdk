@@ -5,7 +5,6 @@ import 'package:flutter/services.dart';
 abstract class CardinalSdkPlatformUtilsPlugin {
   Future<void> releasePlatformResource(String resourceId);
   Future<void> cancelJob(int cancellationToken);
-  Future<String> example(Future<String> Function(String) callback, String param);
 }
 
 class CardinalSdkMethodChannelUtils extends CardinalSdkPlatformUtilsPlugin {
@@ -33,21 +32,5 @@ class CardinalSdkMethodChannelUtils extends CardinalSdkPlatformUtilsPlugin {
         }
     ).catchError(convertPlatformException);
     return;
-  }
-
-  @override
-  Future<String> example(Future<String> Function(String) callback, String param) async {
-    final callbackId = CallbackReferences.create((params) async {
-      return callback(params["callbackParam"] as String);
-    });
-    final res = await _methodChannel.invokeMethod<String>(
-        'example',
-        {
-          "callbackId": callbackId,
-          "param": param
-        }
-    ).catchError(convertPlatformException);
-    CallbackReferences.delete(callbackId);
-    return res!;
   }
 }

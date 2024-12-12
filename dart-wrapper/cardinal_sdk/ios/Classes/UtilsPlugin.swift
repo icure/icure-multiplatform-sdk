@@ -34,7 +34,6 @@ class UtilsPlugin {
 		switch methodName {
 			case "releasePlatformResource": releasePlatformResource(parameters: parameters, resultCallback: resultCallback)
 			case "cancelJob": cancelJob(parameters: parameters, resultCallback: resultCallback)
-            case "example": Example.shared.doMethodWithCallback(dartResultCallback: resultCallback, callbackId: parameters["callbackId"]!, param: parameters["param"]!)
 			default: return false
 		}
 		return true

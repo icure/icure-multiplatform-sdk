@@ -26,7 +26,7 @@ public class CardinalSdkPlugin: NSObject, FlutterPlugin {
                 if let stringResult = dartResult as? String {
                     resultCallback(stringResult, nil, nil, nil)
                 } else if let dartError = dartResult as? FlutterError {
-                    resultCallback(nil, dartError.code, dartError.message, dartError.details != nil ? String(describing: dartError.details) : nil)
+                    resultCallback(nil, dartError.code, dartError.message, dartError.details != nil ? String(describing: dartError.details!) : nil)
                 } else {
                     resultCallback(nil, "UnexpectedDartResult", String(reflecting: dartResult), nil)
                 }

@@ -240,24 +240,6 @@ class _AuthFormState extends State<AuthForm> {
             onPressed: () => completeInitAndTry(codeController.text),
             child: Text('Try SDK'),
           ),
-          ElevatedButton(
-            onPressed: () async {
-              try {
-                final res = await CardinalSdkPlatformInterface.instance.utils.example((s) async {
-                  // throw CustomException("From dart exception: $s");
-                  return "From dart result: $s";
-                }, "This is a string from dart");
-                print("Got res $res");
-              } catch (e) {
-                if (e is DartCallbackException) {
-                  print("Got dart callback exception");
-                  print(e.dartException);
-                  print(e.dartStackTrace);
-                }
-              }
-            },
-            child: Text('Example'),
-          ),
         ],
       ),
     );

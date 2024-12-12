@@ -35,11 +35,6 @@ object UtilsPlugin : MethodChannel.MethodCallHandler {
 	): Boolean = when(methodName) {
 		"releasePlatformResource" -> releasePlatformResource(parameters, resultCallback)
 		"cancelJob" -> cancelJob(parameters, resultCallback)
-		"example" -> Example.doMethodWithCallback(
-			resultCallback,
-			parameters["callbackId"]!!,
-			parameters["param"]!!,
-		)
 		else -> null
 	}?.let { true } ?: false
 
