@@ -106,7 +106,7 @@ android {
 configureJvmTest()
 
 dependencies {
-	add("kspJvm", project(":sdk-codegen:ksp-json-processor"))
+	add("kspJvm", "com.icure:ksp-json-processor")
 }
 
 publishing {
