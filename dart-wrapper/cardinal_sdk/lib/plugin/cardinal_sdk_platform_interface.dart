@@ -1,5 +1,6 @@
 import 'package:cardinal_sdk/cardinal_sdk.dart';
 import 'package:cardinal_sdk/plugin/api/cardinal_sdk_method_channel_apis.dart';
+import 'package:cardinal_sdk/plugin/cardinal_sdk_crypto.dart';
 import 'package:cardinal_sdk/plugin/cardinal_sdk_pagination.dart';
 import 'package:cardinal_sdk/plugin/api/cardinal_sdk_platform_apis_plugin.dart';
 import 'package:cardinal_sdk/plugin/filters/cardinal_sdk_platform_filters_plugin.dart';
@@ -31,6 +32,7 @@ class CardinalSdkPlatformInterface extends PlatformInterface {
   CardinalSdkPlatformSubscriptionPlugin get subscription => throw UnimplementedError();
   CardinalSdkPlatformFiltersPlugin get filters => throw UnimplementedError();
   CardinalSdkPlatformUtilsPlugin get utils => throw UnimplementedError();
+  CardinalSdkPlatformCryptoPlugin get crypto => throw UnimplementedError();
 }
 
 class CardinalSdkMethodChannelInterface extends CardinalSdkPlatformInterface {
@@ -40,6 +42,7 @@ class CardinalSdkMethodChannelInterface extends CardinalSdkPlatformInterface {
   final _subscription = CardinalSdkMethodChannelSubscription();
   final _filters = CardinalSdkMethodChannelFilters();
   final _utils = CardinalSdkMethodChannelUtils();
+  final _crypto = CardinalSdkMethodChannelCrypto();
 
   CardinalSdkMethodChannelInterface() {
     DartMethodChannelCallbacks.register();
@@ -62,4 +65,7 @@ class CardinalSdkMethodChannelInterface extends CardinalSdkPlatformInterface {
 
   @override
   CardinalSdkPlatformUtilsPlugin get utils => _utils;
+
+  @override
+  CardinalSdkPlatformCryptoPlugin get crypto => _crypto;
 }

@@ -1,7 +1,6 @@
 package com.icure.cardinal_sdk
 
 import com.icure.cardinal.sdk.dart.utils.ApiScope
-import com.icure.cardinal.sdk.dart.utils.Example
 import com.icure.cardinal.sdk.dart.utils.ResourceUtils
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel

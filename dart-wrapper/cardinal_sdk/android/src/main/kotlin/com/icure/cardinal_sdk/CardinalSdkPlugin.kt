@@ -12,6 +12,7 @@ class CardinalSdkPlugin: FlutterPlugin {
   private lateinit var paginationChannel : MethodChannel
   private lateinit var subscriptionChannel : MethodChannel
   private lateinit var utilsChannel : MethodChannel
+  private lateinit var cryptoChannel : MethodChannel
 
   override fun onAttachedToEngine(flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
     ApiScope.setup()
@@ -27,6 +28,8 @@ class CardinalSdkPlugin: FlutterPlugin {
     subscriptionChannel.setMethodCallHandler(SubscriptionPlugin)
     utilsChannel = MethodChannel(flutterPluginBinding.binaryMessenger, "com.icure.cardinal.sdk/utils")
     utilsChannel.setMethodCallHandler(UtilsPlugin)
+    cryptoChannel = MethodChannel(flutterPluginBinding.binaryMessenger, "com.icure.cardinal.sdk/crypto")
+    cryptoChannel.setMethodCallHandler(CryptoPlugin)
     val callbackMethodChannel = MethodChannel(flutterPluginBinding.binaryMessenger, "com.icure.cardinal.sdk/dartCallbacks")
     DartCallbacksHandler.registerUsingMethodChannel { methodName, callbackId, args, resultCallback ->
       val arguments = listOfNotNull(
@@ -68,6 +71,7 @@ class CardinalSdkPlugin: FlutterPlugin {
     paginationChannel.setMethodCallHandler(null)
     subscriptionChannel.setMethodCallHandler(null)
     utilsChannel.setMethodCallHandler(null)
+    cryptoChannel.setMethodCallHandler(null)
     ApiScope.teardown()
     DartCallbacksHandler.unregister()
   }

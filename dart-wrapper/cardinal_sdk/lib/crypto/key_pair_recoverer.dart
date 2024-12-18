@@ -2,8 +2,8 @@ import 'package:cardinal_sdk/crypto/entities/cardinal_keys.dart';
 import 'package:cardinal_sdk/crypto/entities/recovery_data_key.dart';
 import 'package:cardinal_sdk/crypto/entities/recovery_result.dart';
 import 'package:cardinal_sdk/utils/cancellable_future.dart';
-
-import '../plugin/cardinal_sdk_platform_interface.dart';
+import 'package:cardinal_sdk/plugin/cardinal_sdk_platform_interface.dart';
+import 'package:cardinal_sdk/utils/internal/cancellation_token_provider.dart';
 
 /// Allows to recover user keypairs using builtin recovery mechanisms.
 /// This interface includes recovery methods that require some input from your application (e.g. a recovery key created from a different device).
@@ -19,23 +19,37 @@ class KeyPairRecoverer {
   /// - The `publicKeySpki` keys are all recovered public key pairs for the data owner, in hex-encoded spki format (full, no fingerprint). Usually
   ///   these are all the keys if the recovery data was created after the latest key for the user.
   /// - The `keyPair` is the imported privateKey + publicKey.
-  Future<RecoveryResult<Map<String, Map<CardinalRsaPublicKeyFingerprint, CardinalRsaPrivateKey>>>> recoverWithRecoveryKey(
+  Future<RecoveryResult<Map<String, Map<CardinalRsaPublicKey, CardinalRsaPrivateKey>>>> recoverWithRecoveryKey(
     RecoveryDataKey recoveryKey,
     bool autoDelete
-  ) {
-    throw "TODO";
+  ) async {
+    return await CardinalSdkPlatformInterface.instance.crypto.recoverWithRecoveryKey(
+      _nativeInstanceId,
+      recoveryKey,
+      autoDelete,
+    );
   }
 
   /// Equivalent to [recoverWithRecoveryKey] except that if there is no recovery data for the provided key it waits for
   /// up to [waitSeconds] seconds for it to be created.
   /// If the data wasn't created within the provided time frame this method will return a [RecoveryResult.Failure]
   /// result with [RecoveryDataUseFailureReason.Missing] at the end of the waiting period.
-  CancellableFuture<RecoveryResult<Map<String, Map<CardinalRsaPublicKeyFingerprint, CardinalRsaPrivateKey>>>> waitForRecoveryKey(
+  CancellableFuture<RecoveryResult<Map<String, Map<CardinalRsaPublicKey, CardinalRsaPrivateKey>>>> waitForRecoveryKey(
     RecoveryDataKey recoveryKey,
     bool autoDelete,
     int waitSeconds
   ) {
-    throw "TODO";
+    final cancellationToken = CancellationTokenProvider.getNextToken();
+    return CancellableFuture.internalConstructor(
+        CardinalSdkPlatformInterface.instance.crypto.waitForRecoveryKey(
+          _nativeInstanceId,
+          recoveryKey,
+          autoDelete,
+          waitSeconds,
+          cancellationToken,
+        ),
+        cancellationToken
+    );
   }
 
   final String _nativeInstanceId;

@@ -3,8 +3,7 @@ import 'package:cardinal_sdk/crypto/entities/cardinal_keys.dart';
 import 'package:cardinal_sdk/model/crypto_actor_stub_with_type.dart';
 import 'package:cardinal_sdk/model/data_owner_type.dart';
 import 'package:cardinal_sdk/model/data_owner_with_type.dart';
-
-import 'key_pair_recovery.dart';
+import 'package:cardinal_sdk/crypto/key_pair_recoverer.dart';
 
 /// A request to recover key data that was not found for a user.
 class KeyDataRecoveryRequest {

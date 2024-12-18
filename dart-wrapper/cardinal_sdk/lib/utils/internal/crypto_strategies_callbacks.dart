@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:cardinal_sdk/crypto/crypto_strategies.dart';
 import 'package:cardinal_sdk/model/data_owner_with_type.dart';
 import 'package:cardinal_sdk/crypto/entities/cardinal_keys.dart';
-import 'package:cardinal_sdk/crypto/key_pair_recovery.dart';
+import 'package:cardinal_sdk/crypto/key_pair_recoverer.dart';
 import 'package:cardinal_sdk/model/crypto_actor_stub_with_type.dart';
 import 'package:cardinal_sdk/cardinal_sdk.dart';
 

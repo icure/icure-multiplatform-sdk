@@ -9,13 +9,15 @@ public class CardinalSdkPlugin: NSObject, FlutterPlugin {
 		let filtersChannel = FlutterMethodChannel(name: "com.icure.cardinal.sdk/filters", binaryMessenger: registrar.messenger())
 		let paginationChannel = FlutterMethodChannel(name: "com.icure.cardinal.sdk/pagination", binaryMessenger: registrar.messenger())
 		let subscriptionChannel = FlutterMethodChannel(name: "com.icure.cardinal.sdk/subscription", binaryMessenger: registrar.messenger())
-		let utilsChannel = FlutterMethodChannel(name: "com.icure.cardinal.sdk/utils", binaryMessenger: registrar.messenger())
+        let utilsChannel = FlutterMethodChannel(name: "com.icure.cardinal.sdk/utils", binaryMessenger: registrar.messenger())
+		let cryptoChannel = FlutterMethodChannel(name: "com.icure.cardinal.sdk/crypto", binaryMessenger: registrar.messenger())
 		apiChannel.setMethodCallHandler(ApisPlugin.handle)
 		initializersChannel.setMethodCallHandler(InitializersPlugin.handle)
 		paginationChannel.setMethodCallHandler(PaginatedListIteratorPlugin.handle)
 		subscriptionChannel.setMethodCallHandler(SubscriptionPlugin.handle)
 		utilsChannel.setMethodCallHandler(UtilsPlugin.handle)
-		filtersChannel.setMethodCallHandler(FiltersPlugin.handle)
+        filtersChannel.setMethodCallHandler(FiltersPlugin.handle)
+        cryptoChannel.setMethodCallHandler(CryptoPlugin.handle)
 		registrar.addApplicationDelegate(CardinalSdkPlugin())
         let callbackChannel = FlutterMethodChannel(name: "com.icure.cardinal.sdk/dartCallbacks", binaryMessenger: registrar.messenger())
         DartCallbacksHandlerCompanion.shared.registerUsingMethodChannel { method, callbackId, args, resultCallback in
@@ -33,6 +35,7 @@ public class CardinalSdkPlugin: NSObject, FlutterPlugin {
             }
         }
 	}
+    
 	public func detachFromEngine(for registrar: any FlutterPluginRegistrar) {
 		ApiScope.shared.teardown()
         DartCallbacksHandlerCompanion.shared.unregister()

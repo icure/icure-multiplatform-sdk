@@ -16,7 +16,7 @@ import com.icure.cardinal.sdk.crypto.KeyPairRecoverer as IKeyPairRecoverer
 
 @OptIn(InternalIcureApi::class)
 object KeyPairRecoverer {
-	suspend fun recoverWithRecoveryKey(
+	fun recoverWithRecoveryKey(
 		dartResultCallback: (
 			String?,
 			String?,
@@ -65,7 +65,7 @@ object KeyPairRecoverer {
 		}
 	}
 
-	suspend fun waitForRecoveryKey(
+	fun waitForRecoveryKey(
 		dartResultCallback: (
 			String?,
 			String?,
