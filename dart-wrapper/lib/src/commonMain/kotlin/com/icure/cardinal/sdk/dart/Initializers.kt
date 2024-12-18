@@ -1,19 +1,16 @@
 package com.icure.cardinal.sdk.dart
 
-import com.icure.cardinal.sdk.CardinalApis
 import com.icure.cardinal.sdk.CardinalSdk
 import com.icure.cardinal.sdk.auth.AuthenticationProcessTelecomType
 import com.icure.cardinal.sdk.auth.AuthenticationProcessTemplateParameters
-import com.icure.cardinal.sdk.crypto.CryptoStrategies
 import com.icure.cardinal.sdk.dart.auth.CaptchaOptions
+import com.icure.cardinal.sdk.dart.options.DartCryptoStrategiesOptions
 import com.icure.cardinal.sdk.dart.options.DartSdkOptions
 import com.icure.cardinal.sdk.dart.utils.ApiScope
+import com.icure.cardinal.sdk.dart.utils.DisposableNativeReference
 import com.icure.cardinal.sdk.dart.utils.NativeReferences
 import com.icure.cardinal.sdk.storage.StorageFacade
 import com.icure.cardinal.sdk.utils.Serialization.fullLanguageInteropJson
-import com.icure.kryptom.crypto.CryptoService
-import com.icure.kryptom.crypto.RsaAlgorithm
-import com.icure.kryptom.crypto.RsaKeypair
 import com.icure.utils.InternalIcureApi
 import kotlinx.serialization.builtins.nullable
 import kotlinx.serialization.builtins.serializer
@@ -53,27 +50,25 @@ object Initializers {
 			dartResultCallback,
 			String.serializer()
 		) {
-			var didCreateNewKey = false
-			val sdk = CardinalSdk.initialize(
-				applicationId,
-				baseUrl,
-				authenticationMethod.toMultiplatform(),
-				storageFacade,
-				options.toMultiplatform().copy(
-					cryptoStrategies = object : CryptoStrategies {
-						override suspend fun notifyNewKeyCreated(
-							apis: CardinalApis,
-							key: RsaKeypair<RsaAlgorithm.RsaEncryptionAlgorithm.OaepWithSha256>,
-							cryptoPrimitives: CryptoService
-						) {
-							didCreateNewKey = true
-						}
-					}
+			val sdk = kotlin.runCatching {
+				CardinalSdk.initialize(
+					applicationId,
+					baseUrl,
+					authenticationMethod.toMultiplatform(),
+					storageFacade,
+					options.toMultiplatform()
 				)
-			)
-			// TODO remove this and crypto strategies
-			println("Sdk initialized - didCreateNewKey=$didCreateNewKey")
-			NativeReferences.create(sdk)
+			}.onFailure {
+				// Release crypto strategies in case of failure. If success the lifetime is managed by the sdk reference.
+				options.cryptoStrategies?.release()
+			}.also {
+				// We always release initialization resources: not needed anymore
+				options.releaseInitializationResources()
+			}.getOrThrow()
+			NativeReferences.create(DartCardinalSdkReference(
+				sdk,
+				options.cryptoStrategies
+			))
 		}
 	}
 
@@ -140,20 +135,30 @@ object Initializers {
 			dartResultCallback,
 			String.serializer()
 		) {
-			val authStep = CardinalSdk.initializeWithProcess(
-				applicationId,
-				baseUrl,
-				messageGatewayUrl,
-				externalServicesSpecId,
-				processId,
-				userTelecomType,
-				userTelecom,
-				captchaOptions.toMultiplatform(),
-				baseStorage,
-				authenticationProcessTemplateParameters,
-				options.toMultiplatform()
-			)
-			NativeReferences.create(authStep)
+			val authStep = kotlin.runCatching {
+				CardinalSdk.initializeWithProcess(
+					applicationId,
+					baseUrl,
+					messageGatewayUrl,
+					externalServicesSpecId,
+					processId,
+					userTelecomType,
+					userTelecom,
+					captchaOptions.toMultiplatform(),
+					baseStorage,
+					authenticationProcessTemplateParameters,
+					options.toMultiplatform()
+				)
+			}.onFailure {
+				options.cryptoStrategies?.release()
+				options.releaseInitializationResources()
+			}.getOrThrow()
+			// If not failed don't release initialization resources: they will be used in the complete authentication and
+			// will be released by the reference when disposed
+			NativeReferences.create(DartAuthenticationWithProcessStepReference(
+				authStep,
+				options
+			))
 		}
 	}
 
@@ -167,7 +172,7 @@ object Initializers {
 		authenticationStepId: String,
 		validationCodeString: String,
 	) {
-		val authStep = NativeReferences.get<CardinalSdk.AuthenticationWithProcessStep>(authenticationStepId)
+		val authStep = NativeReferences.get<DartAuthenticationWithProcessStepReference>(authenticationStepId)
 		val validationCode = fullLanguageInteropJson.decodeFromString(
 			String.serializer(),
 			validationCodeString,
@@ -176,8 +181,39 @@ object Initializers {
 			dartResultCallback,
 			String.serializer()
 		) {
-			val sdk = authStep.completeAuthentication(validationCode)
-			NativeReferences.create(sdk)
+			val sdk = kotlin.runCatching {
+				authStep.completeAuthentication(validationCode)
+			}.onSuccess {
+				// Mark additional use for crypto strategies if successful otherwise the dispose of the authStep reference
+				// will make them unusable to the sdk.
+				authStep.dartOptions.cryptoStrategies?.markUsed()
+			}.getOrThrow()
+			// Initialization resources will be disposed by the authStep reference.
+			NativeReferences.create(
+				DartCardinalSdkReference(
+					sdk,
+					authStep.dartOptions.cryptoStrategies
+				)
+			)
 		}
+	}
+}
+
+private class DartCardinalSdkReference(
+	sdk: CardinalSdk,
+	val cryptoStrategiesOptions: DartCryptoStrategiesOptions?,
+) : CardinalSdk by sdk, DisposableNativeReference {
+	override suspend fun dispose() {
+		cryptoStrategiesOptions?.release()
+	}
+}
+
+private class DartAuthenticationWithProcessStepReference(
+	authStep: CardinalSdk.AuthenticationWithProcessStep,
+	val dartOptions: DartSdkOptions,
+) : CardinalSdk.AuthenticationWithProcessStep by authStep, DisposableNativeReference {
+	override suspend fun dispose() {
+		dartOptions.releaseInitializationResources()
+		dartOptions.cryptoStrategies?.release()
 	}
 }

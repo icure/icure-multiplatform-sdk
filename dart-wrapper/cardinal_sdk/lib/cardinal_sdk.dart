@@ -59,8 +59,8 @@ class AuthenticationWithProcessStep {
     return authStep;
   }
 
-  Future<CardinalSdk> completeAuthentication(String validationCode) {
-    return CardinalSdkPlatformInterface.instance.initializers.completeAuthentication(_instanceId, validationCode);
+  Future<CardinalSdk> completeAuthentication(String validationCode) async {
+    return await CardinalSdkPlatformInterface.instance.initializers.completeAuthentication(_instanceId, validationCode);
   }
 }
 

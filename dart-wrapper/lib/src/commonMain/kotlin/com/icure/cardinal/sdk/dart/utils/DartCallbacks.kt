@@ -9,7 +9,7 @@ import kotlin.coroutines.suspendCoroutine
 interface DartCallbacksHandler {
 	suspend fun invoke(callbackId: String, params: JsonObject): String
 	suspend fun delete(callbackId: String)
-	suspend fun duplicate(callbackId: String): String
+	suspend fun markUsed(callbackId: String)
 
 	companion object {
 		private var _registered: DartCallbacksHandler? = null
@@ -57,12 +57,15 @@ private class MethodChannelDartCallbacksHandler(
 
 	override suspend fun delete(callbackId: String) {
 		suspendInvokeOnChannel("delete", callbackId, null).successOrThrow().also {
-			if (it != "") throw AssertionError("Delete should return empty string")
+			if (it != "") throw AssertionError("`delete` should return empty string")
 		}
 	}
 
-	override suspend fun duplicate(callbackId: String): String =
-		suspendInvokeOnChannel("duplicate", callbackId, null).successOrThrow()
+	override suspend fun markUsed(callbackId: String) {
+		suspendInvokeOnChannel("markUsed", callbackId, null).successOrThrow().also {
+			if (it != "") throw AssertionError("`markUsed` should return empty string")
+		}
+	}
 
 	private suspend fun suspendInvokeOnChannel(
 		methodName: String,

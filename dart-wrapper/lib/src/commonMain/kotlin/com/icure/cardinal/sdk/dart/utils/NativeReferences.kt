@@ -49,6 +49,6 @@ object NativeReferences {
 }
 
 interface DisposableNativeReference {
-	fun dispose()
+	suspend fun dispose()
 }
 

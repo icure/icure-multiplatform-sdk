@@ -2,34 +2,50 @@ import 'dart:math';
 
 import 'package:cardinal_sdk/utils/internal/unsafe_uuid.dart';
 
+
+
+class _Entry {
+  final Future<String> Function(Map<String, dynamic>) callback;
+  int rc = 1;
+
+  _Entry(this.callback);
+}
+
 class CallbackReferences {
   CallbackReferences._();
 
-  static final _references = <String, Future<String> Function(Map<String, dynamic>)>{};
+  static final _references = <String, _Entry>{};
 
   static String create(Future<String> Function(Map<String, dynamic>) callback) {
     String id;
     do {
       id = generateUnsafeId();
     } while (_references.containsKey(id));
-    _references[id] = callback;
+    _references[id] = _Entry(callback);
     return id;
   }
 
-  // Duplicates the entry for a certain reference id: this ensures that both the old and new entry need to be removed
-  // before the callback can actually be garbage collected
-  static String duplicate(String referenceId) {
-    return create(get(referenceId));
+  // Marks that the entry for a certain reference id should be deleted an additional time before being fully removed.
+  // For reference counting
+  static void markUsed(String referenceId) {
+    final ref = _get(referenceId);
+    ref.rc += 1;
   }
 
   static void delete(String referenceId) {
-    if (!_references.containsKey(referenceId)) {
-      throw ArgumentError('Callback for reference id $referenceId not found');
+    final ref = _get(referenceId);
+    if (ref.rc <= 1) {
+      _references.remove(referenceId);
+    } else {
+      ref.rc -= 1;
     }
-    _references.remove(referenceId);
   }
 
   static Future<String> Function(Map<String, dynamic>) get(String referenceId) {
+    return _get(referenceId).callback;
+  }
+
+  static _Entry _get(String referenceId) {
     if (!_references.containsKey(referenceId)) {
       throw ArgumentError('Callback for reference id $referenceId not found');
     }

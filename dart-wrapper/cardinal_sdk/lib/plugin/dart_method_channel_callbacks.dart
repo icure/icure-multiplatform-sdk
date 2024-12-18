@@ -23,8 +23,9 @@ class DartMethodChannelCallbacks {
       case "delete":
         CallbackReferences.delete(callbackId);
         return "";
-      case "duplicate":
-        return CallbackReferences.duplicate(callbackId);
+      case "markUsed":
+        CallbackReferences.markUsed(callbackId);
+        return "";
       default:
         throw UnsupportedError("Unsupported method ${call.method}");
     }
