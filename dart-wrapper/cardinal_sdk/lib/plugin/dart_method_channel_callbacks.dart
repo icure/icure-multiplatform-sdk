@@ -15,9 +15,11 @@ class DartMethodChannelCallbacks {
         try {
           return await CallbackReferences.get(callbackId)(callbackParams);
         } catch (e, trace) {
+          final errorReferenceId = ErrorReferences.create(ErrorReference(e, trace));
+          CallbackReferences.linkErrorReference(callbackReferenceId: callbackId, errorReferenceId: errorReferenceId);
           throw PlatformException(
             code: "CardinalDartCallbackException",
-            details: ErrorReferences.create(ErrorReference(e, trace))
+            details: errorReferenceId
           );
         }
       case "delete":

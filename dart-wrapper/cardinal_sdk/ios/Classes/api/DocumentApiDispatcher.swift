@@ -116,7 +116,8 @@ class DocumentApiDispatcher {
     DocumentApi.shared.getAndTryDecryptMainAttachment(
     	dartResultCallback: resultCallback,
     	sdkId: parameters["sdkId"]!,
-    	documentString: parameters["document"]!
+    	documentString: parameters["document"]!,
+    	decryptedAttachmentValidatorString: parameters["decryptedAttachmentValidator"]!
     )
   }
 
@@ -129,7 +130,8 @@ class DocumentApiDispatcher {
     DocumentApi.shared.getAndDecryptMainAttachment(
     	dartResultCallback: resultCallback,
     	sdkId: parameters["sdkId"]!,
-    	documentString: parameters["document"]!
+    	documentString: parameters["document"]!,
+    	decryptedAttachmentValidatorString: parameters["decryptedAttachmentValidator"]!
     )
   }
 
@@ -158,7 +160,8 @@ class DocumentApiDispatcher {
     	dartResultCallback: resultCallback,
     	sdkId: parameters["sdkId"]!,
     	documentString: parameters["document"]!,
-    	keyString: parameters["key"]!
+    	keyString: parameters["key"]!,
+    	decryptedAttachmentValidatorString: parameters["decryptedAttachmentValidator"]!
     )
   }
 
@@ -267,7 +270,8 @@ class DocumentApiDispatcher {
     	dartResultCallback: resultCallback,
     	sdkId: parameters["sdkId"]!,
     	documentString: parameters["document"]!,
-    	encryptedAttachmentString: parameters["encryptedAttachment"]!
+    	encryptedAttachmentString: parameters["encryptedAttachment"]!,
+    	decryptedAttachmentValidatorString: parameters["decryptedAttachmentValidator"]!
     )
   }
 

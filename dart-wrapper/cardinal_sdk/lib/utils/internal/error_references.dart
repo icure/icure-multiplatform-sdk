@@ -25,4 +25,8 @@ class ErrorReferences {
     _references.remove(referenceId);
     return res;
   }
+
+  static void remove(String referenceId) {
+    _references.remove(referenceId);
+  }
 }

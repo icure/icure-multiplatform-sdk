@@ -44,17 +44,19 @@ class DocumentApi {
 		);
 	}
 
-	Future<Uint8List?> getAndTryDecryptMainAttachment(Document document) async {
+	Future<Uint8List?> getAndTryDecryptMainAttachment(Document document, { bool Function(Uint8List)? decryptedAttachmentValidator }) async {
 		return await CardinalSdkPlatformInterface.instance.apis.document.getAndTryDecryptMainAttachment(
 			_sdkId,
 			document,
+			decryptedAttachmentValidator,
 		);
 	}
 
-	Future<Uint8List> getAndDecryptMainAttachment(Document document) async {
+	Future<Uint8List> getAndDecryptMainAttachment(Document document, { bool Function(Uint8List)? decryptedAttachmentValidator }) async {
 		return await CardinalSdkPlatformInterface.instance.apis.document.getAndDecryptMainAttachment(
 			_sdkId,
 			document,
+			decryptedAttachmentValidator,
 		);
 	}
 
@@ -67,11 +69,12 @@ class DocumentApi {
 		);
 	}
 
-	Future<Uint8List> getAndDecryptSecondaryAttachment(Document document, String key) async {
+	Future<Uint8List> getAndDecryptSecondaryAttachment(Document document, String key, { bool Function(Uint8List)? decryptedAttachmentValidator }) async {
 		return await CardinalSdkPlatformInterface.instance.apis.document.getAndDecryptSecondaryAttachment(
 			_sdkId,
 			document,
 			key,
+			decryptedAttachmentValidator,
 		);
 	}
 
@@ -128,11 +131,12 @@ class DocumentApi {
 		);
 	}
 
-	Future<Uint8List?> tryDecryptAttachment(Document document, Uint8List encryptedAttachment) async {
+	Future<Uint8List?> tryDecryptAttachment(Document document, Uint8List encryptedAttachment, { bool Function(Uint8List)? decryptedAttachmentValidator }) async {
 		return await CardinalSdkPlatformInterface.instance.apis.document.tryDecryptAttachment(
 			_sdkId,
 			document,
 			encryptedAttachment,
+			decryptedAttachmentValidator,
 		);
 	}
 

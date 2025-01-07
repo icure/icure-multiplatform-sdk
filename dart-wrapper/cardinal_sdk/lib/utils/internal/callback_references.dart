@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:cardinal_sdk/utils/internal/error_references.dart';
 import 'package:cardinal_sdk/utils/internal/unsafe_uuid.dart';
 
 
@@ -7,6 +8,7 @@ import 'package:cardinal_sdk/utils/internal/unsafe_uuid.dart';
 class _Entry {
   final Future<String> Function(Map<String, dynamic>) callback;
   int rc = 1;
+  List<String> linkedErrorReferences = [];
 
   _Entry(this.callback);
 }
@@ -36,6 +38,9 @@ class CallbackReferences {
     final ref = _get(referenceId);
     if (ref.rc <= 1) {
       _references.remove(referenceId);
+      for (final e in ref.linkedErrorReferences) {
+        ErrorReferences.remove(e);
+      }
     } else {
       ref.rc -= 1;
     }
@@ -50,5 +55,9 @@ class CallbackReferences {
       throw ArgumentError('Callback for reference id $referenceId not found');
     }
     return _references[referenceId]!;
+  }
+
+  static void linkErrorReference({required String callbackReferenceId, required String errorReferenceId }) {
+    _get(callbackReferenceId).linkedErrorReferences.add(errorReferenceId);
   }
 }

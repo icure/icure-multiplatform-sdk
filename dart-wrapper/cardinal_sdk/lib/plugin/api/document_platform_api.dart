@@ -8,6 +8,7 @@ import 'package:cardinal_sdk/model/user.dart';
 import 'package:cardinal_sdk/model/embed/access_level.dart';
 import 'package:cardinal_sdk/crypto/entities/secret_id_use_option.dart';
 import 'dart:typed_data';
+import 'package:cardinal_sdk/utils/internal/callback_references.dart';
 import 'package:cardinal_sdk/model/specializations/hex_string.dart';
 import 'package:cardinal_sdk/filters/filter_options.dart';
 import 'package:cardinal_sdk/model/couchdb/doc_identifier.dart';
@@ -55,30 +56,50 @@ class DocumentPlatformApi {
 		return DecryptedDocument.fromJSON(parsedResJson);
 	}
 
-	Future<Uint8List?> getAndTryDecryptMainAttachment(String sdkId, Document document) async {
-		final res = await _methodChannel.invokeMethod<String>(
-			'DocumentApi.getAndTryDecryptMainAttachment',
-			{
-				"sdkId": sdkId,
-				"document": jsonEncode(Document.encode(document)),
-			}
-		).catchError(convertPlatformException);
-		if (res == null) throw AssertionError("received null result from platform method getAndTryDecryptMainAttachment");
-		final parsedResJson = jsonDecode(res);
-		return parsedResJson == null ? null : base64Decode(parsedResJson as String);
+	Future<Uint8List?> getAndTryDecryptMainAttachment(String sdkId, Document document, bool Function(Uint8List)? decryptedAttachmentValidator) async {
+		final decryptedAttachmentValidatorCallbackId = decryptedAttachmentValidator != null ? CallbackReferences.create((data) async {
+			final x0 = base64Decode(data["x0"] as String);
+				final res = decryptedAttachmentValidator(x0);
+			return jsonEncode(res);
+		}) : null;
+		try {
+			final res = await _methodChannel.invokeMethod<String>(
+				'DocumentApi.getAndTryDecryptMainAttachment',
+				{
+					"sdkId": sdkId,
+					"document": jsonEncode(Document.encode(document)),
+					"decryptedAttachmentValidator": jsonEncode(decryptedAttachmentValidatorCallbackId),
+				}
+			).catchError(convertPlatformException);
+			if (res == null) throw AssertionError("received null result from platform method getAndTryDecryptMainAttachment");
+			final parsedResJson = jsonDecode(res);
+			return parsedResJson == null ? null : base64Decode(parsedResJson as String);
+		} finally {
+			if (decryptedAttachmentValidatorCallbackId != null) CallbackReferences.delete(decryptedAttachmentValidatorCallbackId);
+		}
 	}
 
-	Future<Uint8List> getAndDecryptMainAttachment(String sdkId, Document document) async {
-		final res = await _methodChannel.invokeMethod<String>(
-			'DocumentApi.getAndDecryptMainAttachment',
-			{
-				"sdkId": sdkId,
-				"document": jsonEncode(Document.encode(document)),
-			}
-		).catchError(convertPlatformException);
-		if (res == null) throw AssertionError("received null result from platform method getAndDecryptMainAttachment");
-		final parsedResJson = jsonDecode(res);
-		return base64Decode(parsedResJson as String);
+	Future<Uint8List> getAndDecryptMainAttachment(String sdkId, Document document, bool Function(Uint8List)? decryptedAttachmentValidator) async {
+		final decryptedAttachmentValidatorCallbackId = decryptedAttachmentValidator != null ? CallbackReferences.create((data) async {
+			final x0 = base64Decode(data["x0"] as String);
+				final res = decryptedAttachmentValidator(x0);
+			return jsonEncode(res);
+		}) : null;
+		try {
+			final res = await _methodChannel.invokeMethod<String>(
+				'DocumentApi.getAndDecryptMainAttachment',
+				{
+					"sdkId": sdkId,
+					"document": jsonEncode(Document.encode(document)),
+					"decryptedAttachmentValidator": jsonEncode(decryptedAttachmentValidatorCallbackId),
+				}
+			).catchError(convertPlatformException);
+			if (res == null) throw AssertionError("received null result from platform method getAndDecryptMainAttachment");
+			final parsedResJson = jsonDecode(res);
+			return base64Decode(parsedResJson as String);
+		} finally {
+			if (decryptedAttachmentValidatorCallbackId != null) CallbackReferences.delete(decryptedAttachmentValidatorCallbackId);
+		}
 	}
 
 	Future<EncryptedDocument> encryptAndSetMainAttachment(String sdkId, Document document, List<String>? utis, Uint8List attachment) async {
@@ -96,18 +117,28 @@ class DocumentPlatformApi {
 		return EncryptedDocument.fromJSON(parsedResJson);
 	}
 
-	Future<Uint8List> getAndDecryptSecondaryAttachment(String sdkId, Document document, String key) async {
-		final res = await _methodChannel.invokeMethod<String>(
-			'DocumentApi.getAndDecryptSecondaryAttachment',
-			{
-				"sdkId": sdkId,
-				"document": jsonEncode(Document.encode(document)),
-				"key": jsonEncode(key),
-			}
-		).catchError(convertPlatformException);
-		if (res == null) throw AssertionError("received null result from platform method getAndDecryptSecondaryAttachment");
-		final parsedResJson = jsonDecode(res);
-		return base64Decode(parsedResJson as String);
+	Future<Uint8List> getAndDecryptSecondaryAttachment(String sdkId, Document document, String key, bool Function(Uint8List)? decryptedAttachmentValidator) async {
+		final decryptedAttachmentValidatorCallbackId = decryptedAttachmentValidator != null ? CallbackReferences.create((data) async {
+			final x0 = base64Decode(data["x0"] as String);
+				final res = decryptedAttachmentValidator(x0);
+			return jsonEncode(res);
+		}) : null;
+		try {
+			final res = await _methodChannel.invokeMethod<String>(
+				'DocumentApi.getAndDecryptSecondaryAttachment',
+				{
+					"sdkId": sdkId,
+					"document": jsonEncode(Document.encode(document)),
+					"key": jsonEncode(key),
+					"decryptedAttachmentValidator": jsonEncode(decryptedAttachmentValidatorCallbackId),
+				}
+			).catchError(convertPlatformException);
+			if (res == null) throw AssertionError("received null result from platform method getAndDecryptSecondaryAttachment");
+			final parsedResJson = jsonDecode(res);
+			return base64Decode(parsedResJson as String);
+		} finally {
+			if (decryptedAttachmentValidatorCallbackId != null) CallbackReferences.delete(decryptedAttachmentValidatorCallbackId);
+		}
 	}
 
 	Future<EncryptedDocument> encryptAndSetSecondaryAttachment(String sdkId, Document document, String key, List<String>? utis, Uint8List attachment) async {
@@ -202,18 +233,28 @@ class DocumentPlatformApi {
 		return Document.fromJSON(parsedResJson);
 	}
 
-	Future<Uint8List?> tryDecryptAttachment(String sdkId, Document document, Uint8List encryptedAttachment) async {
-		final res = await _methodChannel.invokeMethod<String>(
-			'DocumentApi.tryDecryptAttachment',
-			{
-				"sdkId": sdkId,
-				"document": jsonEncode(Document.encode(document)),
-				"encryptedAttachment": jsonEncode(base64Encode(encryptedAttachment as List<int>)),
-			}
-		).catchError(convertPlatformException);
-		if (res == null) throw AssertionError("received null result from platform method tryDecryptAttachment");
-		final parsedResJson = jsonDecode(res);
-		return parsedResJson == null ? null : base64Decode(parsedResJson as String);
+	Future<Uint8List?> tryDecryptAttachment(String sdkId, Document document, Uint8List encryptedAttachment, bool Function(Uint8List)? decryptedAttachmentValidator) async {
+		final decryptedAttachmentValidatorCallbackId = decryptedAttachmentValidator != null ? CallbackReferences.create((data) async {
+			final x0 = base64Decode(data["x0"] as String);
+				final res = decryptedAttachmentValidator(x0);
+			return jsonEncode(res);
+		}) : null;
+		try {
+			final res = await _methodChannel.invokeMethod<String>(
+				'DocumentApi.tryDecryptAttachment',
+				{
+					"sdkId": sdkId,
+					"document": jsonEncode(Document.encode(document)),
+					"encryptedAttachment": jsonEncode(base64Encode(encryptedAttachment as List<int>)),
+					"decryptedAttachmentValidator": jsonEncode(decryptedAttachmentValidatorCallbackId),
+				}
+			).catchError(convertPlatformException);
+			if (res == null) throw AssertionError("received null result from platform method tryDecryptAttachment");
+			final parsedResJson = jsonDecode(res);
+			return parsedResJson == null ? null : base64Decode(parsedResJson as String);
+		} finally {
+			if (decryptedAttachmentValidatorCallbackId != null) CallbackReferences.delete(decryptedAttachmentValidatorCallbackId);
+		}
 	}
 
 	Future<List<String>> matchDocumentsBy(String sdkId, FilterOptions<Document> filter) async {

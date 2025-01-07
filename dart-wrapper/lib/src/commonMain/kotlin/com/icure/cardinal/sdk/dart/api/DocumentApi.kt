@@ -5,6 +5,7 @@ import com.icure.cardinal.sdk.CardinalApis
 import com.icure.cardinal.sdk.crypto.entities.DocumentShareOptions
 import com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption
 import com.icure.cardinal.sdk.dart.utils.ApiScope
+import com.icure.cardinal.sdk.dart.utils.DartCallbacksHandler
 import com.icure.cardinal.sdk.dart.utils.NativeReferences
 import com.icure.cardinal.sdk.filters.FilterOptions
 import com.icure.cardinal.sdk.filters.SortableFilterOptions
@@ -31,6 +32,7 @@ import kotlinx.serialization.builtins.MapSerializer
 import kotlinx.serialization.builtins.SetSerializer
 import kotlinx.serialization.builtins.nullable
 import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.json.JsonObject
 
 @OptIn(InternalIcureApi::class)
 public object DocumentApi {
@@ -113,16 +115,40 @@ public object DocumentApi {
     ) -> Unit,
     sdkId: String,
     documentString: String,
+    decryptedAttachmentValidatorString: String,
   ) {
     val document = fullLanguageInteropJson.decodeFromString(
       PolymorphicSerializer(Document::class),
       documentString
+    )
+    val decryptedAttachmentValidator = fullLanguageInteropJson.decodeFromString(
+      String.serializer().nullable,
+      decryptedAttachmentValidatorString
     )
     ApiScope.execute(
       dartResultCallback,
       ByteArraySerializer.nullable) {
       NativeReferences.get<CardinalApis>(sdkId).document.getAndTryDecryptMainAttachment(
         document,
+        decryptedAttachmentValidator?.let { callbackId ->
+          { x0 ->
+            val x0Json = fullLanguageInteropJson.encodeToJsonElement(
+              ByteArraySerializer,
+              x0
+            )
+            val dartResult = DartCallbacksHandler.registered.invoke(
+              callbackId,
+              JsonObject(mapOf(
+                "x0" to x0Json,
+              ))
+            )
+            fullLanguageInteropJson.decodeFromString(
+              Boolean.serializer(),
+              dartResult
+            )
+          }
+        }
+        ,
       )
     }
   }
@@ -136,16 +162,40 @@ public object DocumentApi {
     ) -> Unit,
     sdkId: String,
     documentString: String,
+    decryptedAttachmentValidatorString: String,
   ) {
     val document = fullLanguageInteropJson.decodeFromString(
       PolymorphicSerializer(Document::class),
       documentString
+    )
+    val decryptedAttachmentValidator = fullLanguageInteropJson.decodeFromString(
+      String.serializer().nullable,
+      decryptedAttachmentValidatorString
     )
     ApiScope.execute(
       dartResultCallback,
       ByteArraySerializer) {
       NativeReferences.get<CardinalApis>(sdkId).document.getAndDecryptMainAttachment(
         document,
+        decryptedAttachmentValidator?.let { callbackId ->
+          { x0 ->
+            val x0Json = fullLanguageInteropJson.encodeToJsonElement(
+              ByteArraySerializer,
+              x0
+            )
+            val dartResult = DartCallbacksHandler.registered.invoke(
+              callbackId,
+              JsonObject(mapOf(
+                "x0" to x0Json,
+              ))
+            )
+            fullLanguageInteropJson.decodeFromString(
+              Boolean.serializer(),
+              dartResult
+            )
+          }
+        }
+        ,
       )
     }
   }
@@ -195,6 +245,7 @@ public object DocumentApi {
     sdkId: String,
     documentString: String,
     keyString: String,
+    decryptedAttachmentValidatorString: String,
   ) {
     val document = fullLanguageInteropJson.decodeFromString(
       PolymorphicSerializer(Document::class),
@@ -204,12 +255,35 @@ public object DocumentApi {
       String.serializer(),
       keyString
     )
+    val decryptedAttachmentValidator = fullLanguageInteropJson.decodeFromString(
+      String.serializer().nullable,
+      decryptedAttachmentValidatorString
+    )
     ApiScope.execute(
       dartResultCallback,
       ByteArraySerializer) {
       NativeReferences.get<CardinalApis>(sdkId).document.getAndDecryptSecondaryAttachment(
         document,
         key,
+        decryptedAttachmentValidator?.let { callbackId ->
+          { x0 ->
+            val x0Json = fullLanguageInteropJson.encodeToJsonElement(
+              ByteArraySerializer,
+              x0
+            )
+            val dartResult = DartCallbacksHandler.registered.invoke(
+              callbackId,
+              JsonObject(mapOf(
+                "x0" to x0Json,
+              ))
+            )
+            fullLanguageInteropJson.decodeFromString(
+              Boolean.serializer(),
+              dartResult
+            )
+          }
+        }
+        ,
       )
     }
   }
@@ -409,6 +483,7 @@ public object DocumentApi {
     sdkId: String,
     documentString: String,
     encryptedAttachmentString: String,
+    decryptedAttachmentValidatorString: String,
   ) {
     val document = fullLanguageInteropJson.decodeFromString(
       PolymorphicSerializer(Document::class),
@@ -418,12 +493,35 @@ public object DocumentApi {
       ByteArraySerializer,
       encryptedAttachmentString
     )
+    val decryptedAttachmentValidator = fullLanguageInteropJson.decodeFromString(
+      String.serializer().nullable,
+      decryptedAttachmentValidatorString
+    )
     ApiScope.execute(
       dartResultCallback,
       ByteArraySerializer.nullable) {
       NativeReferences.get<CardinalApis>(sdkId).document.tryDecryptAttachment(
         document,
         encryptedAttachment,
+        decryptedAttachmentValidator?.let { callbackId ->
+          { x0 ->
+            val x0Json = fullLanguageInteropJson.encodeToJsonElement(
+              ByteArraySerializer,
+              x0
+            )
+            val dartResult = DartCallbacksHandler.registered.invoke(
+              callbackId,
+              JsonObject(mapOf(
+                "x0" to x0Json,
+              ))
+            )
+            fullLanguageInteropJson.decodeFromString(
+              Boolean.serializer(),
+              dartResult
+            )
+          }
+        }
+        ,
       )
     }
   }

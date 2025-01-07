@@ -11,7 +11,7 @@ class EntityWithTypeInfo<T extends HasEncryptionMetadata> {
 		this.type
 		);
 
-	static Map<String, dynamic> encode<T extends HasEncryptionMetadata>(EntityWithTypeInfo<T> value, dynamic Function(T)  encodeT) {
+	static Map<String, dynamic> encode<T extends HasEncryptionMetadata>(EntityWithTypeInfo<T> value, dynamic Function(T) encodeT) {
 		Map<String, dynamic> entityAsMap = {
 			"entity" : encodeT(value.entity),
 			"type" : EntityWithEncryptionMetadataTypeName.encode(value.type)
@@ -19,7 +19,7 @@ class EntityWithTypeInfo<T extends HasEncryptionMetadata> {
 		return entityAsMap;
 	}
 
-	static EntityWithTypeInfo<T> fromJSON<T extends HasEncryptionMetadata>(Map<String, dynamic> data, T Function(dynamic)  decodeT) {
+	static EntityWithTypeInfo<T> fromJSON<T extends HasEncryptionMetadata>(Map<String, dynamic> data, T Function(dynamic) decodeT) {
 		return EntityWithTypeInfo(
 			decodeT(data["entity"]),
 			EntityWithEncryptionMetadataTypeName.fromJSON(data["type"])
