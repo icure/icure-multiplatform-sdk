@@ -31,11 +31,11 @@ class CryptoStrategiesBridge(
 	private val notifyNewKeyCreatedCallback: String?,
 ): CryptoStrategies {
 	override suspend fun dataOwnerRequiresAnonymousDelegation(dataOwner: CryptoActorStubWithType): Boolean {
-		if (recoverAndVerifySelfHierarchyKeysCallback == null) {
+		if (dataOwnerRequiresAnonymousDelegationCallback == null) {
 			return super.dataOwnerRequiresAnonymousDelegation(dataOwner)
 		} else {
 			val res = DartCallbacksHandler.registered.invoke(
-				recoverAndVerifySelfHierarchyKeysCallback,
+				dataOwnerRequiresAnonymousDelegationCallback,
 				JsonObject(mapOf(
 					"dataOwner" to Serialization.fullLanguageInteropJson.encodeToJsonElement(
 						CryptoActorStubWithType.serializer(),
@@ -85,11 +85,11 @@ class CryptoStrategiesBridge(
 		key: RsaKeypair<RsaAlgorithm.RsaEncryptionAlgorithm.OaepWithSha256>,
 		cryptoPrimitives: CryptoService
 	) {
-		if (verifyDelegatePublicKeysCallback == null) {
+		if (notifyNewKeyCreatedCallback == null) {
 			super.notifyNewKeyCreated(apis, key, cryptoPrimitives)
 		} else {
 			DartCallbacksHandler.registered.invoke(
-				verifyDelegatePublicKeysCallback,
+				notifyNewKeyCreatedCallback,
 				JsonObject(mapOf(
 					"apis" to JsonPrimitive(NativeReferences.create(apis)),
 					"key" to Serialization.fullLanguageInteropJson.encodeToJsonElement(
@@ -106,11 +106,11 @@ class CryptoStrategiesBridge(
 		cryptoPrimitives: CryptoService,
 		keyPairRecoverer: KeyPairRecoverer
 	): Map<String, CryptoStrategies.RecoveredKeyData> {
-		if (dataOwnerRequiresAnonymousDelegationCallback == null) {
+		if (recoverAndVerifySelfHierarchyKeysCallback == null) {
 			return super.recoverAndVerifySelfHierarchyKeys(keysData, cryptoPrimitives, keyPairRecoverer)
 		} else {
 			val dartResultString = DartCallbacksHandler.registered.invoke(
-				dataOwnerRequiresAnonymousDelegationCallback,
+				recoverAndVerifySelfHierarchyKeysCallback,
 				JsonObject(mapOf(
 					"keyPairRecoverer" to JsonPrimitive(NativeReferences.create(keyPairRecoverer)),
 					"keysData" to Serialization.fullLanguageInteropJson.encodeToJsonElement(
@@ -146,11 +146,11 @@ class CryptoStrategiesBridge(
 		publicKeys: List<SpkiHexString>,
 		cryptoPrimitives: CryptoService
 	): List<SpkiHexString> {
-		if (notifyNewKeyCreatedCallback == null) {
+		if (verifyDelegatePublicKeysCallback == null) {
 			return super.verifyDelegatePublicKeys(delegate, publicKeys, cryptoPrimitives)
 		} else {
 			val res = DartCallbacksHandler.registered.invoke(
-				notifyNewKeyCreatedCallback,
+				verifyDelegatePublicKeysCallback,
 				JsonObject(mapOf(
 					"delegate" to Serialization.fullLanguageInteropJson.encodeToJsonElement(
 						CryptoActorStubWithType.serializer(),
