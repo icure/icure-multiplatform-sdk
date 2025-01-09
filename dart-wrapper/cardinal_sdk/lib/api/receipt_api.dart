@@ -1,5 +1,4 @@
 // auto-generated file
-import 'package:cardinal_sdk/cardinal_sdk.dart';
 import 'package:cardinal_sdk/model/receipt.dart';
 import 'package:cardinal_sdk/plugin/cardinal_sdk_platform_interface.dart';
 import 'package:cardinal_sdk/model/patient.dart';
@@ -14,7 +13,7 @@ import 'package:cardinal_sdk/crypto/entities/receipt_share_options.dart';
 
 class ReceiptApi {
 	final String _sdkId;
-	final CardinalSdk _dartSdk;
+	final Object _dartSdk;
 	final TryAndRecoverReceiptApi tryAndRecover;
 	final EncryptedReceiptApi encrypted;
 	ReceiptApi(
@@ -185,7 +184,7 @@ class ReceiptApi {
 
 class TryAndRecoverReceiptApi {
 	final String _sdkId;
-	final CardinalSdk _dartSdk;
+	final Object _dartSdk;
 	TryAndRecoverReceiptApi(
 		this._sdkId,
 		this._dartSdk
@@ -232,7 +231,7 @@ class TryAndRecoverReceiptApi {
 
 class EncryptedReceiptApi {
 	final String _sdkId;
-	final CardinalSdk _dartSdk;
+	final Object _dartSdk;
 	EncryptedReceiptApi(
 		this._sdkId,
 		this._dartSdk

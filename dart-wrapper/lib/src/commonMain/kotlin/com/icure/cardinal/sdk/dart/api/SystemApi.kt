@@ -1,7 +1,7 @@
 // auto-generated file
 package com.icure.cardinal.sdk.dart.api
 
-import com.icure.cardinal.sdk.CardinalApis
+import com.icure.cardinal.sdk.CardinalNonCryptoApis
 import com.icure.cardinal.sdk.dart.utils.ApiScope
 import com.icure.cardinal.sdk.dart.utils.NativeReferences
 import com.icure.cardinal.sdk.model.IdWithRev
@@ -30,7 +30,7 @@ public object SystemApi {
     ApiScope.execute(
       dartResultCallback,
       String.serializer()) {
-      NativeReferences.get<CardinalApis>(sdkId).system.getVersion()
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).system.getVersion()
     }
   }
 
@@ -43,7 +43,7 @@ public object SystemApi {
     ApiScope.execute(
       dartResultCallback,
       String.serializer()) {
-      NativeReferences.get<CardinalApis>(sdkId).system.isReady()
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).system.isReady()
     }
   }
 
@@ -56,7 +56,7 @@ public object SystemApi {
     ApiScope.execute(
       dartResultCallback,
       String.serializer()) {
-      NativeReferences.get<CardinalApis>(sdkId).system.getProcessInfo()
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).system.getProcessInfo()
     }
   }
 
@@ -69,7 +69,7 @@ public object SystemApi {
     ApiScope.execute(
       dartResultCallback,
       IndexingInfo.serializer()) {
-      NativeReferences.get<CardinalApis>(sdkId).system.getIndexingInfo()
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).system.getIndexingInfo()
     }
   }
 
@@ -82,7 +82,7 @@ public object SystemApi {
     ApiScope.execute(
       dartResultCallback,
       ReplicationInfo.serializer()) {
-      NativeReferences.get<CardinalApis>(sdkId).system.getReplicationInfo()
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).system.getReplicationInfo()
     }
   }
 
@@ -108,7 +108,7 @@ public object SystemApi {
     ApiScope.execute(
       dartResultCallback,
       Boolean.serializer()) {
-      NativeReferences.get<CardinalApis>(sdkId).system.updateDesignDoc(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).system.updateDesignDoc(
         entityName,
         warmup,
       )
@@ -132,7 +132,7 @@ public object SystemApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(IdWithRev.serializer())) {
-      NativeReferences.get<CardinalApis>(sdkId).system.resolvePatientsConflicts(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).system.resolvePatientsConflicts(
         limit,
       )
     }
@@ -155,7 +155,7 @@ public object SystemApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(IdWithRev.serializer())) {
-      NativeReferences.get<CardinalApis>(sdkId).system.resolveContactsConflicts(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).system.resolveContactsConflicts(
         limit,
       )
     }
@@ -178,7 +178,7 @@ public object SystemApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(IdWithRev.serializer())) {
-      NativeReferences.get<CardinalApis>(sdkId).system.resolveFormsConflicts(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).system.resolveFormsConflicts(
         limit,
       )
     }
@@ -201,7 +201,7 @@ public object SystemApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(IdWithRev.serializer())) {
-      NativeReferences.get<CardinalApis>(sdkId).system.resolveHealthElementsConflicts(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).system.resolveHealthElementsConflicts(
         limit,
       )
     }
@@ -224,7 +224,7 @@ public object SystemApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(IdWithRev.serializer())) {
-      NativeReferences.get<CardinalApis>(sdkId).system.resolveInvoicesConflicts(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).system.resolveInvoicesConflicts(
         limit,
       )
     }
@@ -247,7 +247,7 @@ public object SystemApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(IdWithRev.serializer())) {
-      NativeReferences.get<CardinalApis>(sdkId).system.resolveMessagesConflicts(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).system.resolveMessagesConflicts(
         limit,
       )
     }
@@ -275,7 +275,7 @@ public object SystemApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(IdWithRev.serializer())) {
-      NativeReferences.get<CardinalApis>(sdkId).system.resolveDocumentsConflicts(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).system.resolveDocumentsConflicts(
         ids,
         limit,
       )
@@ -299,7 +299,7 @@ public object SystemApi {
     ApiScope.execute(
       dartResultCallback,
       IndexingInfo.serializer()) {
-      NativeReferences.get<CardinalApis>(sdkId).system.getIndexingInfoByGroup(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).system.getIndexingInfoByGroup(
         groupId,
       )
     }
@@ -322,7 +322,7 @@ public object SystemApi {
     ApiScope.execute(
       dartResultCallback,
       ReplicatorDocument.serializer()) {
-      NativeReferences.get<CardinalApis>(sdkId).system.getReplicatorInfo(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).system.getReplicatorInfo(
         id,
       )
     }
@@ -345,7 +345,7 @@ public object SystemApi {
     ApiScope.execute(
       dartResultCallback,
       String.serializer()) {
-      NativeReferences.get<CardinalApis>(sdkId).system.evictAllFromMap(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).system.evictAllFromMap(
         mapName,
       )
     }

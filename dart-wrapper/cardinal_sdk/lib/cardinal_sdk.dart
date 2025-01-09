@@ -1,31 +1,41 @@
 import 'dart:convert';
 
 import 'package:cardinal_sdk/api/access_log_api.dart';
+import 'package:cardinal_sdk/api/access_log_basic_api.dart';
 import 'package:cardinal_sdk/api/agenda_api.dart';
 import 'package:cardinal_sdk/api/application_settings_api.dart';
 import 'package:cardinal_sdk/api/calendar_item_api.dart';
+import 'package:cardinal_sdk/api/calendar_item_basic_api.dart';
 import 'package:cardinal_sdk/api/cardinal_maintenance_task_api.dart';
 import 'package:cardinal_sdk/api/classification_api.dart';
+import 'package:cardinal_sdk/api/classification_basic_api.dart';
 import 'package:cardinal_sdk/api/code_api.dart';
 import 'package:cardinal_sdk/api/contact_api.dart';
+import 'package:cardinal_sdk/api/contact_basic_api.dart';
 import 'package:cardinal_sdk/api/crypto_api.dart';
 import 'package:cardinal_sdk/api/data_owner_api.dart';
 import 'package:cardinal_sdk/api/device_api.dart';
 import 'package:cardinal_sdk/api/document_api.dart';
+import 'package:cardinal_sdk/api/document_basic_api.dart';
 import 'package:cardinal_sdk/api/document_template_api.dart';
 import 'package:cardinal_sdk/api/entity_reference_api.dart';
 import 'package:cardinal_sdk/api/entity_template_api.dart';
 import 'package:cardinal_sdk/api/form_api.dart';
+import 'package:cardinal_sdk/api/form_basic_api.dart';
 import 'package:cardinal_sdk/api/front_end_migration_api.dart';
 import 'package:cardinal_sdk/api/group_api.dart';
 import 'package:cardinal_sdk/api/health_element_api.dart';
+import 'package:cardinal_sdk/api/health_element_basic_api.dart';
 import 'package:cardinal_sdk/api/healthcare_party_api.dart';
 import 'package:cardinal_sdk/api/insurance_api.dart';
 import 'package:cardinal_sdk/api/keyword_api.dart';
 import 'package:cardinal_sdk/api/maintenance_task_api.dart';
+import 'package:cardinal_sdk/api/maintenance_task_basic_api.dart';
 import 'package:cardinal_sdk/api/medical_location_api.dart';
 import 'package:cardinal_sdk/api/message_api.dart';
+import 'package:cardinal_sdk/api/message_basic_api.dart';
 import 'package:cardinal_sdk/api/patient_api.dart';
+import 'package:cardinal_sdk/api/patient_basic_api.dart';
 import 'package:cardinal_sdk/api/permission_api.dart';
 import 'package:cardinal_sdk/api/place_api.dart';
 import 'package:cardinal_sdk/api/recovery_api.dart';
@@ -33,7 +43,9 @@ import 'package:cardinal_sdk/api/role_api.dart';
 import 'package:cardinal_sdk/api/system_api.dart';
 import 'package:cardinal_sdk/api/tarification_api.dart';
 import 'package:cardinal_sdk/api/time_table_api.dart';
+import 'package:cardinal_sdk/api/time_table_basic_api.dart';
 import 'package:cardinal_sdk/api/topic_api.dart';
+import 'package:cardinal_sdk/api/topic_basic_api.dart';
 import 'package:cardinal_sdk/api/user_api.dart';
 import 'package:cardinal_sdk/auth/authentication_method.dart';
 import 'package:cardinal_sdk/plugin/cardinal_sdk_initializers.dart';
@@ -306,14 +318,203 @@ class CardinalSdk extends CardinalApis {
   @override
   UserApi get user => _user;
   @override
-  // TODO: implement recovery
   RecoveryApi get recovery => _recovery;
+}
+
+abstract interface class CardinalBaseApis {
+  ApplicationSettingsApi get applicationSettings;
+  CodeApi get code;
+  DeviceApi get device;
+  DocumentTemplateApi get documentTemplate;
+  EntityReferenceApi get entityReference;
+  EntityTemplateApi get entityTemplate;
+  FrontEndMigrationApi get frontEndMigration;
+  GroupApi get group;
+  HealthcarePartyApi get healthcareParty;
+  SystemApi get system;
+  InsuranceApi get insurance;
+  KeywordApi get keyword;
+  PermissionApi get permission;
+  PlaceApi get place;
+  RoleApi get role;
+  TarificationApi get tarification;
+  UserApi get user;
+  MedicalLocationApi get medicalLocation;
+  AgendaApi get agenda;
+  AccessLogBasicApi get accessLog;
+  CalendarItemBasicApi get calendarItem;
+  ClassificationBasicApi get classification;
+  ContactBasicApi get contact;
+  DocumentBasicApi get document;
+  FormBasicApi get form;
+  HealthElementBasicApi get healthElement;
+  MaintenanceTaskBasicApi get maintenanceTask;
+  MessageBasicApi get message;
+  PatientBasicApi get patient;
+  TimeTableBasicApi get timeTable;
+  TopicBasicApi get topic;
+}
+
+class CardinalBaseSdk extends CardinalBaseApis {
+  static final Finalizer<String> _finalizer = Finalizer((resourceId) =>
+      CardinalSdkPlatformInterface.instance.utils.releasePlatformResource(resourceId)
+  );
+
+  final String _sdkId;
+  late final ApplicationSettingsApi _applicationSettings;
+  late final CodeApi _code;
+  late final DeviceApi _device;
+  late final DocumentTemplateApi _documentTemplate;
+  late final EntityReferenceApi _entityReference;
+  late final EntityTemplateApi _entityTemplate;
+  late final FrontEndMigrationApi _frontEndMigration;
+  late final GroupApi _group;
+  late final HealthcarePartyApi _healthcareParty;
+  late final SystemApi _system;
+  late final InsuranceApi _insurance;
+  late final KeywordApi _keyword;
+  late final PermissionApi _permission;
+  late final PlaceApi _place;
+  late final RoleApi _role;
+  late final TarificationApi _tarification;
+  late final UserApi _user;
+  late final MedicalLocationApi _medicalLocation;
+  late final AgendaApi _agenda;
+  late final AccessLogBasicApi _accessLog;
+  late final CalendarItemBasicApi _calendarItem;
+  late final ClassificationBasicApi _classification;
+  late final ContactBasicApi _contact;
+  late final DocumentBasicApi _document;
+  late final FormBasicApi _form;
+  late final HealthElementBasicApi _healthElement;
+  late final MaintenanceTaskBasicApi _maintenanceTask;
+  late final MessageBasicApi _message;
+  late final PatientBasicApi _patient;
+  late final TimeTableBasicApi _timeTable;
+  late final TopicBasicApi _topic;
+
+  CardinalBaseSdk._(
+    this._sdkId
+  ) {
+    _applicationSettings = ApplicationSettingsApi(_sdkId, this);
+    _code = CodeApi(_sdkId, this);
+    _device = DeviceApi(_sdkId, this);
+    _documentTemplate = DocumentTemplateApi(_sdkId, this);
+    _entityReference = EntityReferenceApi(_sdkId, this);
+    _entityTemplate = EntityTemplateApi(_sdkId, this);
+    _frontEndMigration = FrontEndMigrationApi(_sdkId, this);
+    _group = GroupApi(_sdkId, this);
+    _healthcareParty = HealthcarePartyApi(_sdkId, this);
+    _system = SystemApi(_sdkId, this);
+    _insurance = InsuranceApi(_sdkId, this);
+    _keyword = KeywordApi(_sdkId, this);
+    _permission = PermissionApi(_sdkId, this);
+    _place = PlaceApi(_sdkId, this);
+    _role = RoleApi(_sdkId, this);
+    _tarification = TarificationApi(_sdkId, this);
+    _user = UserApi(_sdkId, this);
+    _medicalLocation = MedicalLocationApi(_sdkId, this);
+    _agenda = AgendaApi(_sdkId, this);
+    _accessLog = AccessLogBasicApi(_sdkId, this);
+    _calendarItem = CalendarItemBasicApi(_sdkId, this);
+    _classification = ClassificationBasicApi(_sdkId, this);
+    _contact = ContactBasicApi(_sdkId, this);
+    _document = DocumentBasicApi(_sdkId, this);
+    _form = FormBasicApi(_sdkId, this);
+    _healthElement = HealthElementBasicApi(_sdkId, this);
+    _maintenanceTask = MaintenanceTaskBasicApi(_sdkId, this);
+    _message = MessageBasicApi(_sdkId, this);
+    _patient = PatientBasicApi(_sdkId, this);
+    _timeTable = TimeTableBasicApi(_sdkId, this);
+    _topic = TopicBasicApi(_sdkId, this);
+  }
+
+  factory CardinalBaseSdk.internal(String sdkId) {
+    final sdk = CardinalBaseSdk._(sdkId);
+    _finalizer.attach(sdk, sdkId, detach: sdk);
+    return sdk;
+  }
+
+  static Future<CardinalBaseSdk> initialize(
+      String? applicationId,
+      String baseUrl,
+      AuthenticationMethod authenticationMethod,
+      {BasicSdkOptions options = const BasicSdkOptions()}
+      ) {
+    return CardinalSdkPlatformInterface.instance.initializers.initializeBase(
+        applicationId,
+        baseUrl,
+        authenticationMethod,
+        options
+    );
+  }
+
+  @override
+  ApplicationSettingsApi get applicationSettings => _applicationSettings;
+  @override
+  CodeApi get code => _code;
+  @override
+  DeviceApi get device => _device;
+  @override
+  DocumentTemplateApi get documentTemplate => _documentTemplate;
+  @override
+  EntityReferenceApi get entityReference => _entityReference;
+  @override
+  EntityTemplateApi get entityTemplate => _entityTemplate;
+  @override
+  FrontEndMigrationApi get frontEndMigration => _frontEndMigration;
+  @override
+  GroupApi get group => _group;
+  @override
+  HealthcarePartyApi get healthcareParty => _healthcareParty;
+  @override
+  SystemApi get system => _system;
+  @override
+  InsuranceApi get insurance => _insurance;
+  @override
+  KeywordApi get keyword => _keyword;
+  @override
+  PermissionApi get permission => _permission;
+  @override
+  PlaceApi get place => _place;
+  @override
+  RoleApi get role => _role;
+  @override
+  TarificationApi get tarification => _tarification;
+  @override
+  UserApi get user => _user;
+  @override
+  MedicalLocationApi get medicalLocation => _medicalLocation;
+  @override
+  AgendaApi get agenda => _agenda;
+  @override
+  AccessLogBasicApi get accessLog => _accessLog;
+  @override
+  CalendarItemBasicApi get calendarItem => _calendarItem;
+  @override
+  ClassificationBasicApi get classification => _classification;
+  @override
+  ContactBasicApi get contact => _contact;
+  @override
+  DocumentBasicApi get document => _document;
+  @override
+  FormBasicApi get form => _form;
+  @override
+  HealthElementBasicApi get healthElement => _healthElement;
+  @override
+  MaintenanceTaskBasicApi get maintenanceTask => _maintenanceTask;
+  @override
+  MessageBasicApi get message => _message;
+  @override
+  PatientBasicApi get patient => _patient;
+  @override
+  TimeTableBasicApi get timeTable => _timeTable;
+  @override
+  TopicBasicApi get topic => _topic;
 }
 
 class CardinalSdkMethodChannelInitializers extends CardinalSdkInitializersPlugin {
   static const MethodChannel _methodChannel = MethodChannel("com.icure.cardinal.sdk/initializers");
-
-
 
   @override
   Future<AuthenticationWithProcessStep> initializeWithProcess(
@@ -385,5 +586,26 @@ class CardinalSdkMethodChannelInitializers extends CardinalSdkInitializersPlugin
     if (res == null) throw AssertionError("received null result from platform method initialize");
     final parsedResJson = jsonDecode(res);
     return CardinalSdk.internal(parsedResJson as String);
+  }
+
+  @override
+  Future<CardinalBaseSdk> initializeBase(
+    String? applicationId,
+    String baseUrl,
+    AuthenticationMethod authenticationMethod,
+    BasicSdkOptions options
+  ) async {
+    final res = await _methodChannel.invokeMethod<String>(
+        "initializeBase",
+        {
+          "applicationId": jsonEncode(applicationId),
+          "baseUrl": jsonEncode(baseUrl),
+          "authenticationMethod": jsonEncode(AuthenticationMethod.encode(authenticationMethod)),
+          "options": jsonEncode(BasicSdkOptions.encode(options))
+        }
+    ).catchError(convertPlatformException);
+    if (res == null) throw AssertionError("received null result from platform method initialize");
+    final parsedResJson = jsonDecode(res);
+    return CardinalBaseSdk.internal(parsedResJson as String);
   }
 }

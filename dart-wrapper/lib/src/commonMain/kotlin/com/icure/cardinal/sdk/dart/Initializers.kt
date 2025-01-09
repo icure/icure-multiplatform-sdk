@@ -1,9 +1,11 @@
 package com.icure.cardinal.sdk.dart
 
+import com.icure.cardinal.sdk.CardinalBaseSdk
 import com.icure.cardinal.sdk.CardinalSdk
 import com.icure.cardinal.sdk.auth.AuthenticationProcessTelecomType
 import com.icure.cardinal.sdk.auth.AuthenticationProcessTemplateParameters
 import com.icure.cardinal.sdk.dart.auth.CaptchaOptions
+import com.icure.cardinal.sdk.dart.options.DartBasicSdkOptions
 import com.icure.cardinal.sdk.dart.options.DartCryptoStrategiesOptions
 import com.icure.cardinal.sdk.dart.options.DartSdkOptions
 import com.icure.cardinal.sdk.dart.utils.ApiScope
@@ -70,6 +72,55 @@ object Initializers {
 				sdk,
 				options.cryptoStrategies
 			))
+		}
+	}
+
+	fun initializeBaseSdk(
+		dartResultCallback: (
+			String?,
+			String?,
+			String?,
+			String?,
+		) -> Unit,
+		applicationIdString: String,
+		baseUrlString: String,
+		authenticationMethodString: String,
+		optionsString: String
+	) {
+		val applicationId = fullLanguageInteropJson.decodeFromString(
+			String.serializer().nullable,
+			applicationIdString,
+		)
+		val baseUrl = fullLanguageInteropJson.decodeFromString(
+			String.serializer(),
+			baseUrlString,
+		)
+		val authenticationMethod = fullLanguageInteropJson.decodeFromString(
+			com.icure.cardinal.sdk.dart.auth.AuthenticationMethod.serializer(),
+			authenticationMethodString
+		)
+		val options = fullLanguageInteropJson.decodeFromString(
+			DartBasicSdkOptions.serializer(),
+			optionsString
+		)
+		ApiScope.execute(
+			dartResultCallback,
+			String.serializer()
+		) {
+			val sdk = kotlin.runCatching {
+				CardinalBaseSdk.initialize(
+					applicationId,
+					baseUrl,
+					authenticationMethod.toMultiplatform(),
+					options.toMultiplatform()
+				)
+			}.onFailure {
+				options.releaseInitializationResources(it)
+			}.onSuccess {
+				// We release initialization resources also on success: not needed anymore
+				options.releaseInitializationResources(null)
+			}.getOrThrow()
+			NativeReferences.create(sdk)
 		}
 	}
 

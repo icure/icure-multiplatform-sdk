@@ -32,6 +32,7 @@ class InitializersPlugin {
 	) -> Bool {
 		switch methodName {
 		case "initialize": initialize(parameters: parameters, resultCallback: resultCallback)
+		case "initializeBase": initializeBase(parameters: parameters, resultCallback: resultCallback)
 		case "initializeWithAuthProcess": initializeWithAuthProcess(parameters: parameters, resultCallback: resultCallback)
 		case "completeAuthentication": completeAuthentication(parameters: parameters, resultCallback: resultCallback)
 		default: return false
@@ -54,6 +55,24 @@ class InitializersPlugin {
 			baseUrlString: parameters["baseUrl"]!,
 			authenticationMethodString: parameters["authenticationMethod"]!,
 			storageFacade: StorageHelper.shared.getStorage(options: parameters["storageOptions"]!),
+			optionsString: parameters["options"]!
+		)
+	}
+
+	private static func initializeBase(
+		parameters: [String : String],
+		resultCallback: @escaping (
+			String?,
+			String?,
+			String?,
+			String?
+		) -> Void
+	) -> Void {
+		Initializers.shared.initializeBaseSdk(
+			dartResultCallback: resultCallback,
+			applicationIdString: parameters["applicationId"]!,
+			baseUrlString: parameters["baseUrl"]!,
+			authenticationMethodString: parameters["authenticationMethod"]!,
 			optionsString: parameters["options"]!
 		)
 	}

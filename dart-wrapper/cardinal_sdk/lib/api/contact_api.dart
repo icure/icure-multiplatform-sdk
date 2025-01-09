@@ -1,5 +1,4 @@
 // auto-generated file
-import 'package:cardinal_sdk/cardinal_sdk.dart';
 import 'package:cardinal_sdk/filters/filter_options.dart';
 import 'package:cardinal_sdk/model/contact.dart';
 import 'package:cardinal_sdk/plugin/cardinal_sdk_platform_interface.dart';
@@ -21,7 +20,7 @@ import 'package:cardinal_sdk/subscription/subscription_event_type.dart';
 
 class ContactApi {
 	final String _sdkId;
-	final CardinalSdk _dartSdk;
+	final Object _dartSdk;
 	final TryAndRecoverContactApi tryAndRecover;
 	final EncryptedContactApi encrypted;
 	ContactApi(
@@ -314,7 +313,7 @@ class ContactApi {
 
 class TryAndRecoverContactApi {
 	final String _sdkId;
-	final CardinalSdk _dartSdk;
+	final Object _dartSdk;
 	TryAndRecoverContactApi(
 		this._sdkId,
 		this._dartSdk
@@ -425,7 +424,7 @@ class TryAndRecoverContactApi {
 
 class EncryptedContactApi {
 	final String _sdkId;
-	final CardinalSdk _dartSdk;
+	final Object _dartSdk;
 	EncryptedContactApi(
 		this._sdkId,
 		this._dartSdk

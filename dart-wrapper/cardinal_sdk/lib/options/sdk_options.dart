@@ -99,19 +99,12 @@ class BasicSdkOptions implements CommonSdkOptions {
     this.groupSelector
   });
 
-  factory BasicSdkOptions.fromJSON(Map<String, dynamic> data) {
-    return BasicSdkOptions(
-        encryptedFields: EncryptedFieldsConfiguration.fromJSON(data["encryptedFields"]),
-        saltPasswordWithApplicationId: data["saltPasswordWithApplicationId"] as bool,
-        lenientJson: data["lenientJson"] as bool,
-    );
-  }
-
   static Map<String, dynamic> encode(BasicSdkOptions value) {
     Map<String, dynamic> entityAsMap = {
       "encryptedFields": EncryptedFieldsConfiguration.encode(value.encryptedFields),
       "saltPasswordWithApplicationId": value.saltPasswordWithApplicationId,
-      "lenientJson": value.lenientJson
+      "lenientJson": value.lenientJson,
+      "groupSelector": _registerGroupSelectorCallback(value.groupSelector),
     };
     return entityAsMap;
   }
@@ -215,26 +208,6 @@ class EncryptedFieldsConfiguration {
     this.timeTable = const {},
     this.invoice = const {}
   });
-
-  factory EncryptedFieldsConfiguration.fromJSON(Map<String, dynamic> data) {
-    return EncryptedFieldsConfiguration(
-        accessLog: (data["accessLog"] as List<dynamic>).map((x) => x as String).toSet(),
-        calendarItem: (data["calendarItem"] as List<dynamic>).map((x) => x as String).toSet(),
-        contact: (data["contact"] as List<dynamic>).map((x) => x as String).toSet(),
-        service: (data["service"] as List<dynamic>).map((x) => x as String).toSet(),
-        healthElement: (data["healthElement"] as List<dynamic>).map((x) => x as String).toSet(),
-        maintenanceTask: (data["maintenanceTask"] as List<dynamic>).map((x) => x as String).toSet(),
-        patient: (data["patient"] as List<dynamic>).map((x) => x as String).toSet(),
-        message: (data["message"] as List<dynamic>).map((x) => x as String).toSet(),
-        topic: (data["topic"] as List<dynamic>).map((x) => x as String).toSet(),
-        document: (data["document"] as List<dynamic>).map((x) => x as String).toSet(),
-        form: (data["form"] as List<dynamic>).map((x) => x as String).toSet(),
-        receipt: (data["receipt"] as List<dynamic>).map((x) => x as String).toSet(),
-        classification: (data["classification"] as List<dynamic>).map((x) => x as String).toSet(),
-        timeTable: (data["timeTable"] as List<dynamic>).map((x) => x as String).toSet(),
-        invoice: (data["invoice"] as List<dynamic>).map((x) => x as String).toSet(),
-    );
-  }
 
   static Map<String, dynamic> encode(EncryptedFieldsConfiguration value) {
     Map<String, dynamic> entityAsMap = {

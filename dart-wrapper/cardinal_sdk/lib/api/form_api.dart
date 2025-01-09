@@ -1,5 +1,4 @@
 // auto-generated file
-import 'package:cardinal_sdk/cardinal_sdk.dart';
 import 'package:cardinal_sdk/model/form.dart';
 import 'package:cardinal_sdk/plugin/cardinal_sdk_platform_interface.dart';
 import 'package:cardinal_sdk/model/patient.dart';
@@ -18,7 +17,7 @@ import 'package:cardinal_sdk/utils/pagination/paginated_list_iterator.dart';
 
 class FormApi {
 	final String _sdkId;
-	final CardinalSdk _dartSdk;
+	final Object _dartSdk;
 	final TryAndRecoverFormApi tryAndRecover;
 	final EncryptedFormApi encrypted;
 	FormApi(
@@ -281,7 +280,7 @@ class FormApi {
 
 class TryAndRecoverFormApi {
 	final String _sdkId;
-	final CardinalSdk _dartSdk;
+	final Object _dartSdk;
 	TryAndRecoverFormApi(
 		this._sdkId,
 		this._dartSdk
@@ -378,7 +377,7 @@ class TryAndRecoverFormApi {
 
 class EncryptedFormApi {
 	final String _sdkId;
-	final CardinalSdk _dartSdk;
+	final Object _dartSdk;
 	EncryptedFormApi(
 		this._sdkId,
 		this._dartSdk

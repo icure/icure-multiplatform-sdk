@@ -1,5 +1,4 @@
 // auto-generated file
-import 'package:cardinal_sdk/cardinal_sdk.dart';
 import 'package:cardinal_sdk/model/invoice.dart';
 import 'package:cardinal_sdk/plugin/cardinal_sdk_platform_interface.dart';
 import 'package:cardinal_sdk/model/patient.dart';
@@ -17,7 +16,7 @@ import 'package:cardinal_sdk/model/embed/invoice_type.dart';
 
 class InvoiceApi {
 	final String _sdkId;
-	final CardinalSdk _dartSdk;
+	final Object _dartSdk;
 	final TryAndRecoverInvoiceApi tryAndRecover;
 	final EncryptedInvoiceApi encrypted;
 	InvoiceApi(
@@ -285,7 +284,7 @@ class InvoiceApi {
 
 class TryAndRecoverInvoiceApi {
 	final String _sdkId;
-	final CardinalSdk _dartSdk;
+	final Object _dartSdk;
 	TryAndRecoverInvoiceApi(
 		this._sdkId,
 		this._dartSdk
@@ -467,7 +466,7 @@ class TryAndRecoverInvoiceApi {
 
 class EncryptedInvoiceApi {
 	final String _sdkId;
-	final CardinalSdk _dartSdk;
+	final Object _dartSdk;
 	EncryptedInvoiceApi(
 		this._sdkId,
 		this._dartSdk

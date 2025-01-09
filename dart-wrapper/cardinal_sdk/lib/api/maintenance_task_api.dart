@@ -1,5 +1,4 @@
 // auto-generated file
-import 'package:cardinal_sdk/cardinal_sdk.dart';
 import 'package:cardinal_sdk/model/maintenance_task.dart';
 import 'package:cardinal_sdk/plugin/cardinal_sdk_platform_interface.dart';
 import 'package:cardinal_sdk/model/user.dart';
@@ -17,7 +16,7 @@ import 'package:cardinal_sdk/subscription/entity_subscription.dart';
 
 class MaintenanceTaskApi {
 	final String _sdkId;
-	final CardinalSdk _dartSdk;
+	final Object _dartSdk;
 	final TryAndRecoverMaintenanceTaskApi tryAndRecover;
 	final EncryptedMaintenanceTaskApi encrypted;
 	MaintenanceTaskApi(
@@ -222,7 +221,7 @@ class MaintenanceTaskApi {
 
 class TryAndRecoverMaintenanceTaskApi {
 	final String _sdkId;
-	final CardinalSdk _dartSdk;
+	final Object _dartSdk;
 	TryAndRecoverMaintenanceTaskApi(
 		this._sdkId,
 		this._dartSdk
@@ -298,7 +297,7 @@ class TryAndRecoverMaintenanceTaskApi {
 
 class EncryptedMaintenanceTaskApi {
 	final String _sdkId;
-	final CardinalSdk _dartSdk;
+	final Object _dartSdk;
 	EncryptedMaintenanceTaskApi(
 		this._sdkId,
 		this._dartSdk

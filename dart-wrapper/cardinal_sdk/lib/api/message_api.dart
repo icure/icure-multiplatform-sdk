@@ -1,5 +1,4 @@
 // auto-generated file
-import 'package:cardinal_sdk/cardinal_sdk.dart';
 import 'package:cardinal_sdk/model/message.dart';
 import 'package:cardinal_sdk/plugin/cardinal_sdk_platform_interface.dart';
 import 'package:cardinal_sdk/model/patient.dart';
@@ -19,7 +18,7 @@ import 'package:cardinal_sdk/subscription/entity_subscription.dart';
 
 class MessageApi {
 	final String _sdkId;
-	final CardinalSdk _dartSdk;
+	final Object _dartSdk;
 	final TryAndRecoverMessageApi tryAndRecover;
 	final EncryptedMessageApi encrypted;
 	MessageApi(
@@ -243,7 +242,7 @@ class MessageApi {
 
 class TryAndRecoverMessageApi {
 	final String _sdkId;
-	final CardinalSdk _dartSdk;
+	final Object _dartSdk;
 	TryAndRecoverMessageApi(
 		this._sdkId,
 		this._dartSdk
@@ -329,7 +328,7 @@ class TryAndRecoverMessageApi {
 
 class EncryptedMessageApi {
 	final String _sdkId;
-	final CardinalSdk _dartSdk;
+	final Object _dartSdk;
 	EncryptedMessageApi(
 		this._sdkId,
 		this._dartSdk

@@ -1,5 +1,4 @@
 // auto-generated file
-import 'package:cardinal_sdk/cardinal_sdk.dart';
 import 'package:cardinal_sdk/filters/filter_options.dart';
 import 'package:cardinal_sdk/model/document.dart';
 import 'package:cardinal_sdk/plugin/cardinal_sdk_platform_interface.dart';
@@ -11,7 +10,7 @@ import 'dart:typed_data';
 
 class DocumentBasicApi {
 	final String _sdkId;
-	final CardinalSdk _dartSdk;
+	final Object _dartSdk;
 	DocumentBasicApi(
 		this._sdkId,
 		this._dartSdk

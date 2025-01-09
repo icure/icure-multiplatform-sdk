@@ -1,5 +1,4 @@
 // auto-generated file
-import 'package:cardinal_sdk/cardinal_sdk.dart';
 import 'package:cardinal_sdk/model/document.dart';
 import 'package:cardinal_sdk/plugin/cardinal_sdk_platform_interface.dart';
 import 'package:cardinal_sdk/model/message.dart';
@@ -17,7 +16,7 @@ import 'package:cardinal_sdk/utils/pagination/paginated_list_iterator.dart';
 
 class DocumentApi {
 	final String _sdkId;
-	final CardinalSdk _dartSdk;
+	final Object _dartSdk;
 	final TryAndRecoverDocumentApi tryAndRecover;
 	final EncryptedDocumentApi encrypted;
 	DocumentApi(
@@ -330,7 +329,7 @@ class DocumentApi {
 
 class TryAndRecoverDocumentApi {
 	final String _sdkId;
-	final CardinalSdk _dartSdk;
+	final Object _dartSdk;
 	TryAndRecoverDocumentApi(
 		this._sdkId,
 		this._dartSdk
@@ -413,7 +412,7 @@ class TryAndRecoverDocumentApi {
 
 class EncryptedDocumentApi {
 	final String _sdkId;
-	final CardinalSdk _dartSdk;
+	final Object _dartSdk;
 	EncryptedDocumentApi(
 		this._sdkId,
 		this._dartSdk

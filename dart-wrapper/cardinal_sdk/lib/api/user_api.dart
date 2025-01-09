@@ -1,5 +1,4 @@
 // auto-generated file
-import 'package:cardinal_sdk/cardinal_sdk.dart';
 import 'package:cardinal_sdk/plugin/cardinal_sdk_platform_interface.dart';
 import 'package:cardinal_sdk/model/user.dart';
 import 'package:cardinal_sdk/model/property_stub.dart';
@@ -17,7 +16,7 @@ import 'package:cardinal_sdk/subscription/entity_subscription.dart';
 
 class UserApi {
 	final String _sdkId;
-	final CardinalSdk _dartSdk;
+	final Object _dartSdk;
 	UserApi(
 		this._sdkId,
 		this._dartSdk

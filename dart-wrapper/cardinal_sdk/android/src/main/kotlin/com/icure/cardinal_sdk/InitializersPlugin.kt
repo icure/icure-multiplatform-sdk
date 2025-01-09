@@ -35,6 +35,7 @@ class InitializersPlugin(
         ) -> Unit,
     ): Boolean = when (methodName) {
         "initialize" -> initialize(parameters, resultCallback)
+        "initializeBase" -> initializeBase(parameters, resultCallback)
         "initializeWithAuthProcess" -> initializeWithAuthProcess(parameters, resultCallback)
         "completeAuthentication" -> completeAuthentication(parameters, resultCallback)
         else -> null
@@ -58,6 +59,24 @@ class InitializersPlugin(
                 parameters.getValue("storageOptions"),
                 applicationContext
             ),
+            optionsString = parameters.getValue("options")
+        )
+    }
+
+    private fun initializeBase(
+        parameters: Map<String, String>,
+        resultCallback: (
+            String?,
+            String?,
+            String?,
+            String?,
+        ) -> Unit,
+    ) {
+        Initializers.initializeBaseSdk(
+            resultCallback,
+            applicationIdString = parameters.getValue("applicationId"),
+            baseUrlString = parameters.getValue("baseUrl"),
+            authenticationMethodString = parameters.getValue("authenticationMethod"),
             optionsString = parameters.getValue("options")
         )
     }

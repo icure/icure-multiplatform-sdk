@@ -14,6 +14,12 @@ abstract class CardinalSdkInitializersPlugin {
       StorageOptions storageOptions,
       SdkOptions options
   );
+  Future<CardinalBaseSdk> initializeBase(
+      String? applicationId,
+      String baseUrl,
+      AuthenticationMethod authenticationMethod,
+      BasicSdkOptions options
+  );
   Future<AuthenticationWithProcessStep> initializeWithProcess(
       String? applicationId,
       String baseUrl,

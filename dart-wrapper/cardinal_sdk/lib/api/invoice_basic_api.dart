@@ -1,5 +1,4 @@
 // auto-generated file
-import 'package:cardinal_sdk/cardinal_sdk.dart';
 import 'package:cardinal_sdk/plugin/cardinal_sdk_platform_interface.dart';
 import 'package:cardinal_sdk/model/couchdb/doc_identifier.dart';
 import 'package:cardinal_sdk/model/data/labelled_occurence.dart';
@@ -11,7 +10,7 @@ import 'package:cardinal_sdk/model/embed/invoice_type.dart';
 
 class InvoiceBasicApi {
 	final String _sdkId;
-	final CardinalSdk _dartSdk;
+	final Object _dartSdk;
 	InvoiceBasicApi(
 		this._sdkId,
 		this._dartSdk

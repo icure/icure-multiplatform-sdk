@@ -5,7 +5,9 @@ import com.icure.cardinal.sdk.dart.crypto.CryptoStrategiesBridge
 import com.icure.cardinal.sdk.dart.utils.DartCallbackException
 import com.icure.cardinal.sdk.dart.utils.DartCallbacksHandler
 import com.icure.cardinal.sdk.model.UserGroup
+import com.icure.cardinal.sdk.options.BasicSdkOptions
 import com.icure.cardinal.sdk.options.EncryptedFieldsConfiguration
+import com.icure.cardinal.sdk.options.GroupSelector
 import com.icure.cardinal.sdk.options.SdkOptions
 import com.icure.cardinal.sdk.utils.Serialization
 import com.icure.utils.InternalIcureApi
@@ -23,7 +25,6 @@ data class DartSdkOptions(
 	val cryptoStrategies: DartCryptoStrategiesOptions?,
 	val groupSelector: String?
 ) {
-	@OptIn(InternalIcureApi::class)
 	fun toMultiplatform(): SdkOptions = SdkOptions(
 		encryptedFields = encryptedFields,
 		saltPasswordWithApplicationId = saltPasswordWithApplicationId,
@@ -31,19 +32,7 @@ data class DartSdkOptions(
 		createTransferKeys = createTransferKeys,
 		lenientJson = lenientJson,
 		cryptoStrategies = cryptoStrategies?.bridge(),
-		groupSelector = groupSelector?.let { groupSelectorCallbackId ->
-			{ availableGroups ->
-				DartCallbacksHandler.registered.invoke(
-					groupSelectorCallbackId,
-					JsonObject(mapOf(
-						"availableGroups" to Serialization.fullLanguageInteropJson.encodeToJsonElement(
-							ListSerializer(UserGroup.serializer()),
-							availableGroups
-						)
-					))
-				)
-			}
-		}
+		groupSelector = groupSelector?.let(::makeGroupSelectorDartCallback)
 	)
 
 	// Release resources used only during initialization (for example releases group selector but not crypto strategies)
@@ -55,6 +44,44 @@ data class DartSdkOptions(
 			DartCallbacksHandler.registered.delete(it)
 		}
 	}
+}
+
+@Serializable
+data class DartBasicSdkOptions(
+	val encryptedFields: EncryptedFieldsConfiguration,
+	val saltPasswordWithApplicationId: Boolean,
+	val lenientJson: Boolean,
+	val groupSelector: String?
+) {
+	fun toMultiplatform(): BasicSdkOptions = BasicSdkOptions(
+		encryptedFields = encryptedFields,
+		saltPasswordWithApplicationId = saltPasswordWithApplicationId,
+		lenientJson = lenientJson,
+		groupSelector = groupSelector?.let(::makeGroupSelectorDartCallback)
+	)
+
+	// Release resources used only during initialization (for example releases group selector but not crypto strategies)
+	suspend fun releaseInitializationResources(exception: Throwable?) {
+		groupSelector?.also {
+			if (exception is DartCallbackException) {
+				DartCallbacksHandler.registered.preventErrorAutoRemove(it, exception.referenceId)
+			}
+			DartCallbacksHandler.registered.delete(it)
+		}
+	}
+}
+
+@OptIn(InternalIcureApi::class)
+private fun makeGroupSelectorDartCallback(dartCallbackId: String): GroupSelector = { availableGroups ->
+	DartCallbacksHandler.registered.invoke(
+		dartCallbackId,
+		JsonObject(mapOf(
+			"availableGroups" to Serialization.fullLanguageInteropJson.encodeToJsonElement(
+				ListSerializer(UserGroup.serializer()),
+				availableGroups
+			)
+		))
+	)
 }
 
 @Serializable

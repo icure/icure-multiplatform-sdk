@@ -1,7 +1,7 @@
 // auto-generated file
 package com.icure.cardinal.sdk.dart.api
 
-import com.icure.cardinal.sdk.CardinalApis
+import com.icure.cardinal.sdk.CardinalNonCryptoApis
 import com.icure.cardinal.sdk.dart.utils.ApiScope
 import com.icure.cardinal.sdk.dart.utils.NativeReferences
 import com.icure.cardinal.sdk.model.EntityReference
@@ -31,7 +31,7 @@ public object EntityReferenceApi {
     ApiScope.execute(
       dartResultCallback,
       EntityReference.serializer()) {
-      NativeReferences.get<CardinalApis>(sdkId).entityReference.getLatest(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).entityReference.getLatest(
         prefix,
       )
     }
@@ -54,7 +54,7 @@ public object EntityReferenceApi {
     ApiScope.execute(
       dartResultCallback,
       EntityReference.serializer()) {
-      NativeReferences.get<CardinalApis>(sdkId).entityReference.createEntityReference(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).entityReference.createEntityReference(
         entityReference,
       )
     }
