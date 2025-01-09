@@ -36,6 +36,8 @@ class InitializersPlugin(
     ): Boolean = when (methodName) {
         "initialize" -> initialize(parameters, resultCallback)
         "initializeBase" -> initializeBase(parameters, resultCallback)
+        "switchGroup" -> switchGroup(parameters, resultCallback)
+        "baseSwitchGroup" -> baseSwitchGroup(parameters, resultCallback)
         "initializeWithAuthProcess" -> initializeWithAuthProcess(parameters, resultCallback)
         "completeAuthentication" -> completeAuthentication(parameters, resultCallback)
         else -> null
@@ -78,6 +80,38 @@ class InitializersPlugin(
             baseUrlString = parameters.getValue("baseUrl"),
             authenticationMethodString = parameters.getValue("authenticationMethod"),
             optionsString = parameters.getValue("options")
+        )
+    }
+
+    private fun switchGroup(
+        parameters: Map<String, String>,
+        resultCallback: (
+            String?,
+            String?,
+            String?,
+            String?,
+        ) -> Unit,
+    ) {
+        Initializers.switchGroup(
+            resultCallback,
+            sdkId = parameters.getValue("sdkId"),
+            groupId = parameters.getValue("groupId"),
+        )
+    }
+
+    private fun baseSwitchGroup(
+        parameters: Map<String, String>,
+        resultCallback: (
+            String?,
+            String?,
+            String?,
+            String?,
+        ) -> Unit,
+    ) {
+        Initializers.baseSwitchGroup(
+            resultCallback,
+            sdkId = parameters.getValue("sdkId"),
+            groupId = parameters.getValue("groupId"),
         )
     }
 

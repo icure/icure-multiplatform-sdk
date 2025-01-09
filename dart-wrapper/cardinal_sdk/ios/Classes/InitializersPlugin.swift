@@ -33,6 +33,8 @@ class InitializersPlugin {
 		switch methodName {
 		case "initialize": initialize(parameters: parameters, resultCallback: resultCallback)
 		case "initializeBase": initializeBase(parameters: parameters, resultCallback: resultCallback)
+		case "switchGroup": switchGroup(parameters: parameters, resultCallback: resultCallback)
+		case "baseSwitchGroup": baseSwitchGroup(parameters: parameters, resultCallback: resultCallback)
 		case "initializeWithAuthProcess": initializeWithAuthProcess(parameters: parameters, resultCallback: resultCallback)
 		case "completeAuthentication": completeAuthentication(parameters: parameters, resultCallback: resultCallback)
 		default: return false
@@ -76,7 +78,39 @@ class InitializersPlugin {
 			optionsString: parameters["options"]!
 		)
 	}
-	
+
+	private static func switchGroup(
+		parameters: [String : String],
+		resultCallback: @escaping (
+			String?,
+			String?,
+			String?,
+			String?
+		) -> Void
+	) -> Void {
+		Initializers.shared.switchGroup(
+			dartResultCallback: resultCallback,
+			sdkId: parameters["sdkId"]!,
+			groupId: parameters["groupId"]!
+		)
+	}
+
+	private static func baseSwitchGroup(
+		parameters: [String : String],
+		resultCallback: @escaping (
+			String?,
+			String?,
+			String?,
+			String?
+		) -> Void
+	) -> Void {
+		Initializers.shared.baseSwitchGroup(
+			dartResultCallback: resultCallback,
+			sdkId: parameters["sdkId"]!,
+			groupId: parameters["groupId"]!
+		)
+	}
+
 	private static func initializeWithAuthProcess(
 		parameters: [String : String],
 		resultCallback: @escaping (

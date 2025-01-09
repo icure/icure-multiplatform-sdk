@@ -75,6 +75,53 @@ object Initializers {
 		}
 	}
 
+	fun switchGroup(
+		dartResultCallback: (
+			String?,
+			String?,
+			String?,
+			String?,
+		) -> Unit,
+		sdkId: String,
+		groupId: String
+	) {
+		ApiScope.execute(
+			dartResultCallback,
+			String.serializer()
+		) {
+			val sdk = NativeReferences.get<DartCardinalSdkReference>(sdkId)
+			val switchedSdk = kotlin.runCatching {
+				sdk.switchGroup(groupId)
+			}.onSuccess {
+				// We need to mark crypto strategies as used: crypto strategies should be GCd only when both the
+				// original and group switched sdk are GCd
+				sdk.cryptoStrategiesOptions?.markUsed()
+			}.getOrThrow()
+			NativeReferences.create(DartCardinalSdkReference(
+				switchedSdk,
+				sdk.cryptoStrategiesOptions
+			))
+		}
+	}
+
+	fun baseSwitchGroup(
+		dartResultCallback: (
+			String?,
+			String?,
+			String?,
+			String?,
+		) -> Unit,
+		sdkId: String,
+		groupId: String
+	) {
+		ApiScope.execute(
+			dartResultCallback,
+			String.serializer()
+		) {
+			NativeReferences.create(NativeReferences.get<CardinalBaseSdk>(sdkId).switchGroup(groupId))
+		}
+	}
+
 	fun initializeBaseSdk(
 		dartResultCallback: (
 			String?,

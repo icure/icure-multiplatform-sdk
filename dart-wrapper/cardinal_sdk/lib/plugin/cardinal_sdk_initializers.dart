@@ -19,6 +19,14 @@ abstract class CardinalSdkInitializersPlugin {
       String baseUrl,
       AuthenticationMethod authenticationMethod,
       BasicSdkOptions options
+    );
+  Future<CardinalSdk> switchGroup(
+      String sdkId,
+      String groupId
+  );
+  Future<CardinalBaseSdk> baseSwitchGroup(
+      String sdkId,
+      String groupId
   );
   Future<AuthenticationWithProcessStep> initializeWithProcess(
       String? applicationId,

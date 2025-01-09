@@ -319,6 +319,10 @@ class CardinalSdk extends CardinalApis {
   UserApi get user => _user;
   @override
   RecoveryApi get recovery => _recovery;
+
+  Future<CardinalSdk> switchGroup(String groupId) async {
+    return await CardinalSdkPlatformInterface.instance.initializers.switchGroup(_sdkId, groupId);
+  }
 }
 
 abstract interface class CardinalBaseApis {
@@ -511,6 +515,10 @@ class CardinalBaseSdk extends CardinalBaseApis {
   TimeTableBasicApi get timeTable => _timeTable;
   @override
   TopicBasicApi get topic => _topic;
+
+  Future<CardinalBaseSdk> switchGroup(String groupId) async {
+    return await CardinalSdkPlatformInterface.instance.initializers.baseSwitchGroup(_sdkId, groupId);
+  }
 }
 
 class CardinalSdkMethodChannelInitializers extends CardinalSdkInitializersPlugin {
@@ -604,7 +612,35 @@ class CardinalSdkMethodChannelInitializers extends CardinalSdkInitializersPlugin
           "options": jsonEncode(BasicSdkOptions.encode(options))
         }
     ).catchError(convertPlatformException);
-    if (res == null) throw AssertionError("received null result from platform method initialize");
+    if (res == null) throw AssertionError("received null result from platform method initializeBase");
+    final parsedResJson = jsonDecode(res);
+    return CardinalBaseSdk.internal(parsedResJson as String);
+  }
+
+  @override
+  Future<CardinalSdk> switchGroup(String sdkId, String groupId) async {
+    final res = await _methodChannel.invokeMethod<String>(
+        "switchGroup",
+        {
+          "sdkId": sdkId,
+          "groupId": groupId
+        }
+    ).catchError(convertPlatformException);
+    if (res == null) throw AssertionError("received null result from platform method switchGroup");
+    final parsedResJson = jsonDecode(res);
+    return CardinalSdk.internal(parsedResJson as String);
+  }
+
+  @override
+  Future<CardinalBaseSdk> baseSwitchGroup(String sdkId, String groupId) async {
+    final res = await _methodChannel.invokeMethod<String>(
+        "baseSwitchGroup",
+        {
+          "sdkId": sdkId,
+          "groupId": groupId
+        }
+    ).catchError(convertPlatformException);
+    if (res == null) throw AssertionError("received null result from platform method baseSwitchGroup");
     final parsedResJson = jsonDecode(res);
     return CardinalBaseSdk.internal(parsedResJson as String);
   }
