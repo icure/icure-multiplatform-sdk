@@ -46,26 +46,26 @@ internal class RecoveryResultSerializer<T : Any>(private val valueSerializer: KS
 	}
 	private val failureReasonSerializer = RecoveryDataUseFailureReason.serializer()
 	override val descriptor: SerialDescriptor = buildClassSerialDescriptor("RecoveryResult<${valueSerializer.descriptor.serialName}>") {
-		element<String>("type")
+		element<String>("kotlinType")
 		element("data", valueSerializer.descriptor, isOptional = true)
 		element("reason", failureReasonSerializer.descriptor, isOptional = true)
 	}
 
 	override fun deserialize(decoder: Decoder): RecoveryResult<T> = decoder.decodeStructure(descriptor) {
-		var type: String? = null
+		var kotlinType: String? = null
 		var data: T? = null
 		var reason: RecoveryDataUseFailureReason? = null
 
 		while (true) {
 			when (val index = decodeElementIndex(descriptor)) {
-				0 -> type = decodeStringElement(String.serializer().descriptor, 0)
+				0 -> kotlinType = decodeStringElement(String.serializer().descriptor, 0)
 				1 -> data = decodeSerializableElement(descriptor, 1, valueSerializer)
 				2 -> reason = decodeSerializableElement(descriptor, 2, failureReasonSerializer)
 				CompositeDecoder.DECODE_DONE -> break
 			}
 		}
 
-		when (type) {
+		when (kotlinType) {
 			SUCCESS_QUALIFIED_NAME -> {
 				if (data == null) throw SerializationException("Missing data for success recovery result")
 				Success(data)
@@ -75,7 +75,7 @@ internal class RecoveryResultSerializer<T : Any>(private val valueSerializer: KS
 				Failure(reason)
 			}
 			else -> {
-				throw SerializationException("Invalid/missing type for recovery result: $type")
+				throw SerializationException("Invalid/missing type for recovery result: $kotlinType")
 			}
 		}
 	}

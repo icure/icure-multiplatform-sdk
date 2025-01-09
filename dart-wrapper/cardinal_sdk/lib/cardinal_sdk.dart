@@ -28,6 +28,7 @@ import 'package:cardinal_sdk/api/message_api.dart';
 import 'package:cardinal_sdk/api/patient_api.dart';
 import 'package:cardinal_sdk/api/permission_api.dart';
 import 'package:cardinal_sdk/api/place_api.dart';
+import 'package:cardinal_sdk/api/recovery_api.dart';
 import 'package:cardinal_sdk/api/role_api.dart';
 import 'package:cardinal_sdk/api/system_api.dart';
 import 'package:cardinal_sdk/api/tarification_api.dart';
@@ -97,7 +98,7 @@ abstract interface class CardinalApis {
   TimeTableApi get timeTable;
   TopicApi get topic;
   CryptoApi get crypto;
-  // RecoveryApi get recovery;
+  RecoveryApi get recovery;
   CardinalMaintenanceTaskApi get cardinalMaintenanceTask;
   DataOwnerApi get dataOwner;
 }
@@ -142,6 +143,7 @@ class CardinalSdk extends CardinalApis {
   late final TimeTableApi _timeTable;
   late final TopicApi _topic;
   late final UserApi _user;
+  late final RecoveryApi _recovery;
 
   CardinalSdk._(
     this._sdkId
@@ -180,6 +182,7 @@ class CardinalSdk extends CardinalApis {
     _timeTable = TimeTableApi(_sdkId, this);
     _topic = TopicApi(_sdkId, this);
     _user = UserApi(_sdkId, this);
+    _recovery = RecoveryApi(_sdkId, this);
   }
 
   factory CardinalSdk.internal(String sdkId) {
@@ -302,6 +305,9 @@ class CardinalSdk extends CardinalApis {
   TopicApi get topic => _topic;
   @override
   UserApi get user => _user;
+  @override
+  // TODO: implement recovery
+  RecoveryApi get recovery => _recovery;
 }
 
 class CardinalSdkMethodChannelInitializers extends CardinalSdkInitializersPlugin {

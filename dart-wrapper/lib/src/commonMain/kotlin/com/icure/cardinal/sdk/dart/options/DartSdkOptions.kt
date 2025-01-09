@@ -2,6 +2,7 @@ package com.icure.cardinal.sdk.dart.options
 
 import com.icure.cardinal.sdk.crypto.CryptoStrategies
 import com.icure.cardinal.sdk.dart.crypto.CryptoStrategiesBridge
+import com.icure.cardinal.sdk.dart.utils.DartCallbackException
 import com.icure.cardinal.sdk.dart.utils.DartCallbacksHandler
 import com.icure.cardinal.sdk.model.UserGroup
 import com.icure.cardinal.sdk.options.EncryptedFieldsConfiguration
@@ -67,7 +68,14 @@ data class DartCryptoStrategiesOptions(
 		notifyNewKeyCreatedCallback = notifyNewKeyCreated,
 	)
 
-	suspend fun release() {
+	suspend fun release(exception: Throwable?) {
+		if (exception is DartCallbackException) {
+			DartCallbacksHandler.registered.preventErrorAutoRemove(recoverAndVerifySelfHierarchyKeys, exception.referenceId)
+			DartCallbacksHandler.registered.preventErrorAutoRemove(generateNewKeyForDataOwner, exception.referenceId)
+			DartCallbacksHandler.registered.preventErrorAutoRemove(verifyDelegatePublicKeys, exception.referenceId)
+			DartCallbacksHandler.registered.preventErrorAutoRemove(dataOwnerRequiresAnonymousDelegation, exception.referenceId)
+			DartCallbacksHandler.registered.preventErrorAutoRemove(notifyNewKeyCreated, exception.referenceId)
+		}
 		DartCallbacksHandler.registered.delete(recoverAndVerifySelfHierarchyKeys)
 		DartCallbacksHandler.registered.delete(generateNewKeyForDataOwner)
 		DartCallbacksHandler.registered.delete(verifyDelegatePublicKeys)

@@ -101,9 +101,11 @@ class KeyGenerationRequestResult {
   }
 
   Map<String, dynamic> encode() {
-    return {
-      "type": _ktType,
+    return _key != null ? {
+      "kotlinType": _ktType,
       "key": _key
+    } : {
+      "kotlinType": _ktType
     };
   }
 }

@@ -130,10 +130,12 @@ class CryptoStrategiesBridge(
 				val currDataOwnerRequest = keysData.first { it.dataOwnerDetails.dataOwner.id == dataOwnerId }
 				CryptoStrategies.RecoveredKeyData(
 					recoveredKeys = recoveredKeysData.recoveredKeys.mapValues { (fp, k) ->
-						val alg = currDataOwnerRequest.unavailableKeys.first {
+						val keyInfo = requireNotNull(currDataOwnerRequest.unavailableKeys.firstOrNull{
 							it.publicKey.fingerprintV1() == fp
-						}.keyAlgorithm
-						cryptoPrimitives.rsa.loadKeyPairPkcs8(alg, k.decode())
+						}) {
+							"Recovery function should return entries only for the requested keys: got unexpected entry ${fp.s}"
+						}
+						cryptoPrimitives.rsa.loadKeyPairPkcs8(keyInfo.keyAlgorithm, k.decode())
 					},
 					keyAuthenticity = recoveredKeysData.keyAuthenticity
 				)

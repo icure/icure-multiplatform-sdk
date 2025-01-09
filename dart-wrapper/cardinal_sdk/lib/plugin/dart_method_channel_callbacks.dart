@@ -28,6 +28,12 @@ class DartMethodChannelCallbacks {
       case "markUsed":
         CallbackReferences.markUsed(callbackId);
         return "";
+      case "preventErrorAutoRemove":
+        CallbackReferences.preventErrorAutoRemove(
+            callbackReferenceId: callbackId,
+            errorReferenceId: args["params"]! as String
+        );
+        return "";
       default:
         throw UnsupportedError("Unsupported method ${call.method}");
     }

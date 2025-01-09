@@ -10,6 +10,7 @@ interface DartCallbacksHandler {
 	suspend fun invoke(callbackId: String, params: JsonObject): String
 	suspend fun delete(callbackId: String)
 	suspend fun markUsed(callbackId: String)
+	suspend fun preventErrorAutoRemove(callbackId: String, errorReferenceId: String)
 
 	companion object {
 		private var _registered: DartCallbacksHandler? = null
@@ -67,6 +68,16 @@ private class MethodChannelDartCallbacksHandler(
 		}
 	}
 
+	override suspend fun preventErrorAutoRemove(callbackId: String, errorReferenceId: String) {
+		suspendInvokeOnChannel(
+			"preventErrorAutoRemove",
+			callbackId,
+			errorReferenceId
+		).successOrThrow().also {
+			if (it != "") throw AssertionError("`preventErrorAutoRemove` should return empty string")
+		}
+	}
+
 	private suspend fun suspendInvokeOnChannel(
 		methodName: String,
 		callbackId: String,
@@ -101,6 +112,6 @@ private class MethodChannelDartCallbacksHandler(
 }
 
 class DartCallbackException(
-	referenceId: String
+	val referenceId: String
 ) : Exception(referenceId)
 

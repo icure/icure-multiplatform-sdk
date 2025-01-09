@@ -8,4 +8,9 @@ class DartCallbackException implements Exception {
   final String? platformStackTrace;
 
   DartCallbackException({required this.dartException, required this.dartStackTrace, required this.platformStackTrace});
+
+  @override
+  String toString() {
+    return "DartCallbackException caused by: ${dartException.toString()}\n${dartStackTrace.toString()}";
+  }
 }

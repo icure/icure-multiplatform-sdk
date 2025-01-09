@@ -8,7 +8,7 @@ import 'package:cardinal_sdk/utils/internal/unsafe_uuid.dart';
 class _Entry {
   final Future<String> Function(Map<String, dynamic>) callback;
   int rc = 1;
-  List<String> linkedErrorReferences = [];
+  Set<String> linkedErrorReferences = {};
 
   _Entry(this.callback);
 }
@@ -59,5 +59,9 @@ class CallbackReferences {
 
   static void linkErrorReference({required String callbackReferenceId, required String errorReferenceId }) {
     _get(callbackReferenceId).linkedErrorReferences.add(errorReferenceId);
+  }
+
+  static void preventErrorAutoRemove({required String callbackReferenceId, required String errorReferenceId }) {
+    _get(callbackReferenceId).linkedErrorReferences.remove(errorReferenceId);
   }
 }
