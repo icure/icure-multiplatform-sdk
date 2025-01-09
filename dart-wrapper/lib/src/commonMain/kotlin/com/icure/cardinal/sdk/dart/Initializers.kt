@@ -59,11 +59,12 @@ object Initializers {
 					options.toMultiplatform()
 				)
 			}.onFailure {
-				// Release crypto strategies in case of failure. If success the lifetime is managed by the sdk reference.
+				// Release crypto strategies in case of failure.
 				options.cryptoStrategies?.release(it)
-			}.also {
-				// We always release initialization resources: not needed anymore
-				options.releaseInitializationResources()
+				options.releaseInitializationResources(it)
+			}.onSuccess {
+				// We release initialization resources also on success: not needed anymore
+				options.releaseInitializationResources(null)
 			}.getOrThrow()
 			NativeReferences.create(DartCardinalSdkReference(
 				sdk,
@@ -151,7 +152,7 @@ object Initializers {
 				)
 			}.onFailure {
 				options.cryptoStrategies?.release(it)
-				options.releaseInitializationResources()
+				options.releaseInitializationResources(it)
 			}.getOrThrow()
 			// If not failed don't release initialization resources: they will be used in the complete authentication and
 			// will be released by the reference when disposed
@@ -213,7 +214,7 @@ private class DartAuthenticationWithProcessStepReference(
 	val dartOptions: DartSdkOptions,
 ) : CardinalSdk.AuthenticationWithProcessStep by authStep, DisposableNativeReference {
 	override suspend fun dispose() {
-		dartOptions.releaseInitializationResources()
+		dartOptions.releaseInitializationResources(null)
 		dartOptions.cryptoStrategies?.release(null)
 	}
 }

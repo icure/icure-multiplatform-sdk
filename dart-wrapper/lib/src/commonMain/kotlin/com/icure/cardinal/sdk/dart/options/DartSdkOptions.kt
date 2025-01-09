@@ -47,8 +47,13 @@ data class DartSdkOptions(
 	)
 
 	// Release resources used only during initialization (for example releases group selector but not crypto strategies)
-	suspend fun releaseInitializationResources() {
-		groupSelector?.also { DartCallbacksHandler.registered.delete(groupSelector) }
+	suspend fun releaseInitializationResources(exception: Throwable?) {
+		groupSelector?.also {
+			if (exception is DartCallbackException) {
+				DartCallbacksHandler.registered.preventErrorAutoRemove(it, exception.referenceId)
+			}
+			DartCallbacksHandler.registered.delete(it)
+		}
 	}
 }
 
