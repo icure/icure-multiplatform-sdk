@@ -7,7 +7,7 @@ class CryptoPlugin {
 		let args = call.arguments as! [String: String]
 		let methodName = call.method
 
-		let completed = SubscriptionPlugin.dispatch(methodName: methodName, parameters: args) { success, errorCode, errorMessage, errorDetails in
+		let completed = CryptoPlugin.dispatch(methodName: methodName, parameters: args) { success, errorCode, errorMessage, errorDetails in
 			if (errorCode != nil){
 				result(FlutterError(code: errorCode!, message: errorMessage, details: errorDetails))
 			}
@@ -32,8 +32,8 @@ class CryptoPlugin {
 		) -> Void
 	) -> Bool {
 		switch methodName {
-			case "KeyPairRecoverer.waitForRecoveryKey": close(parameters: parameters, resultCallback: resultCallback)
-			case "KeyPairRecoverer.recoverWithRecoveryKey": getCloseReason(parameters: parameters, resultCallback: resultCallback)
+			case "KeyPairRecoverer.waitForRecoveryKey": waitForRecoveryKey(parameters: parameters, resultCallback: resultCallback)
+			case "KeyPairRecoverer.recoverWithRecoveryKey": recoverWithRecoveryKey(parameters: parameters, resultCallback: resultCallback)
 			default: return false
 		}
 		return true
