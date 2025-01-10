@@ -35,21 +35,6 @@ class EntityTemplate implements StoredDocument {
 		defaultTemplate = defaultTemplate ?? null,
 		entity = entity ?? [];
 
-	factory EntityTemplate.fromJSON(Map<String, dynamic> data) {
-		return EntityTemplate(
-			(data["id"] as String),
-			rev: (data["rev"] as String?),
-			deletionDate: (data["deletionDate"] as int?),
-			userId: (data["userId"] as String?),
-			descr: (data["descr"] as String?),
-			keywords: (data["keywords"] as List<dynamic>?)?.map((x0) => (x0 as String) ).toSet(),
-			entityType: (data["entityType"] as String?),
-			subType: (data["subType"] as String?),
-			defaultTemplate: (data["defaultTemplate"] as bool?),
-			entity: (data["entity"] as List<dynamic>).map((x0) => (x0 as Map<String, dynamic>) ).toList(),
-		);
-	}
-
 	static Map<String, dynamic> encode(EntityTemplate value) {
 		Map<String, dynamic> entityAsMap = {
 			"id" : value.id,
@@ -64,5 +49,20 @@ class EntityTemplate implements StoredDocument {
 			"entity" : value.entity.map((x0) => x0).toList()
 		};
 		return entityAsMap;
+	}
+
+	static EntityTemplate fromJSON(Map<String, dynamic> data) {
+		return EntityTemplate(
+			(data["id"] as String),
+			rev: (data["rev"] as String?),
+			deletionDate: (data["deletionDate"] as int?),
+			userId: (data["userId"] as String?),
+			descr: (data["descr"] as String?),
+			keywords: (data["keywords"] as List<dynamic>?)?.map((x0) => (x0 as String) ).toSet(),
+			entityType: (data["entityType"] as String?),
+			subType: (data["subType"] as String?),
+			defaultTemplate: (data["defaultTemplate"] as bool?),
+			entity: (data["entity"] as List<dynamic>).map((x0) => (x0 as Map<String, dynamic>) ).toList(),
+		);
 	}
 }

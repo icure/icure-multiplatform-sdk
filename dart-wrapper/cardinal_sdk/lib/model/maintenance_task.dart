@@ -131,32 +131,6 @@ class DecryptedMaintenanceTask implements MaintenanceTask {
 		encryptedSelf = encryptedSelf ?? null,
 		securityMetadata = securityMetadata ?? null;
 
-	factory DecryptedMaintenanceTask.fromJSON(Map<String, dynamic> data) {
-		return DecryptedMaintenanceTask(
-			(data["id"] as String),
-			rev: (data["rev"] as String?),
-			identifier: (data["identifier"] as List<dynamic>).map((x0) => Identifier.fromJSON(x0) ).toList(),
-			created: (data["created"] as int?),
-			modified: (data["modified"] as int?),
-			author: (data["author"] as String?),
-			responsible: (data["responsible"] as String?),
-			medicalLocationId: (data["medicalLocationId"] as String?),
-			tags: (data["tags"] as List<dynamic>).map((x0) => CodeStub.fromJSON(x0) ).toSet(),
-			codes: (data["codes"] as List<dynamic>).map((x0) => CodeStub.fromJSON(x0) ).toSet(),
-			endOfLife: (data["endOfLife"] as int?),
-			deletionDate: (data["deletionDate"] as int?),
-			taskType: (data["taskType"] as String?),
-			properties: (data["properties"] as List<dynamic>).map((x0) => DecryptedPropertyStub.fromJSON(x0) ).toSet(),
-			status: TaskStatus.fromJSON(data["status"]),
-			secretForeignKeys: (data["secretForeignKeys"] as List<dynamic>).map((x0) => (x0 as String) ).toSet(),
-			cryptedForeignKeys: (data["cryptedForeignKeys"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as List<dynamic>).map((x1) => Delegation.fromJSON(x1) ).toSet())),
-			delegations: (data["delegations"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as List<dynamic>).map((x1) => Delegation.fromJSON(x1) ).toSet())),
-			encryptionKeys: (data["encryptionKeys"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as List<dynamic>).map((x1) => Delegation.fromJSON(x1) ).toSet())),
-			encryptedSelf: (data["encryptedSelf"] as Base64String?),
-			securityMetadata: data["securityMetadata"] == null ? null : SecurityMetadata.fromJSON(data["securityMetadata"]),
-		);
-	}
-
 	static Map<String, dynamic> encode(DecryptedMaintenanceTask value) {
 		Map<String, dynamic> entityAsMap = {
 			"id" : value.id,
@@ -182,6 +156,32 @@ class DecryptedMaintenanceTask implements MaintenanceTask {
 			"securityMetadata" : value.securityMetadata == null ? null : SecurityMetadata.encode(value.securityMetadata!)
 		};
 		return entityAsMap;
+	}
+
+	static DecryptedMaintenanceTask fromJSON(Map<String, dynamic> data) {
+		return DecryptedMaintenanceTask(
+			(data["id"] as String),
+			rev: (data["rev"] as String?),
+			identifier: (data["identifier"] as List<dynamic>).map((x0) => Identifier.fromJSON(x0) ).toList(),
+			created: (data["created"] as int?),
+			modified: (data["modified"] as int?),
+			author: (data["author"] as String?),
+			responsible: (data["responsible"] as String?),
+			medicalLocationId: (data["medicalLocationId"] as String?),
+			tags: (data["tags"] as List<dynamic>).map((x0) => CodeStub.fromJSON(x0) ).toSet(),
+			codes: (data["codes"] as List<dynamic>).map((x0) => CodeStub.fromJSON(x0) ).toSet(),
+			endOfLife: (data["endOfLife"] as int?),
+			deletionDate: (data["deletionDate"] as int?),
+			taskType: (data["taskType"] as String?),
+			properties: (data["properties"] as List<dynamic>).map((x0) => DecryptedPropertyStub.fromJSON(x0) ).toSet(),
+			status: TaskStatus.fromJSON(data["status"]),
+			secretForeignKeys: (data["secretForeignKeys"] as List<dynamic>).map((x0) => (x0 as String) ).toSet(),
+			cryptedForeignKeys: (data["cryptedForeignKeys"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as List<dynamic>).map((x1) => Delegation.fromJSON(x1) ).toSet())),
+			delegations: (data["delegations"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as List<dynamic>).map((x1) => Delegation.fromJSON(x1) ).toSet())),
+			encryptionKeys: (data["encryptionKeys"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as List<dynamic>).map((x1) => Delegation.fromJSON(x1) ).toSet())),
+			encryptedSelf: (data["encryptedSelf"] as Base64String?),
+			securityMetadata: data["securityMetadata"] == null ? null : SecurityMetadata.fromJSON(data["securityMetadata"]),
+		);
 	}
 }
 
@@ -251,32 +251,6 @@ class EncryptedMaintenanceTask implements MaintenanceTask {
 		encryptedSelf = encryptedSelf ?? null,
 		securityMetadata = securityMetadata ?? null;
 
-	factory EncryptedMaintenanceTask.fromJSON(Map<String, dynamic> data) {
-		return EncryptedMaintenanceTask(
-			(data["id"] as String),
-			rev: (data["rev"] as String?),
-			identifier: (data["identifier"] as List<dynamic>).map((x0) => Identifier.fromJSON(x0) ).toList(),
-			created: (data["created"] as int?),
-			modified: (data["modified"] as int?),
-			author: (data["author"] as String?),
-			responsible: (data["responsible"] as String?),
-			medicalLocationId: (data["medicalLocationId"] as String?),
-			tags: (data["tags"] as List<dynamic>).map((x0) => CodeStub.fromJSON(x0) ).toSet(),
-			codes: (data["codes"] as List<dynamic>).map((x0) => CodeStub.fromJSON(x0) ).toSet(),
-			endOfLife: (data["endOfLife"] as int?),
-			deletionDate: (data["deletionDate"] as int?),
-			taskType: (data["taskType"] as String?),
-			properties: (data["properties"] as List<dynamic>).map((x0) => EncryptedPropertyStub.fromJSON(x0) ).toSet(),
-			status: TaskStatus.fromJSON(data["status"]),
-			secretForeignKeys: (data["secretForeignKeys"] as List<dynamic>).map((x0) => (x0 as String) ).toSet(),
-			cryptedForeignKeys: (data["cryptedForeignKeys"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as List<dynamic>).map((x1) => Delegation.fromJSON(x1) ).toSet())),
-			delegations: (data["delegations"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as List<dynamic>).map((x1) => Delegation.fromJSON(x1) ).toSet())),
-			encryptionKeys: (data["encryptionKeys"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as List<dynamic>).map((x1) => Delegation.fromJSON(x1) ).toSet())),
-			encryptedSelf: (data["encryptedSelf"] as Base64String?),
-			securityMetadata: data["securityMetadata"] == null ? null : SecurityMetadata.fromJSON(data["securityMetadata"]),
-		);
-	}
-
 	static Map<String, dynamic> encode(EncryptedMaintenanceTask value) {
 		Map<String, dynamic> entityAsMap = {
 			"id" : value.id,
@@ -302,5 +276,31 @@ class EncryptedMaintenanceTask implements MaintenanceTask {
 			"securityMetadata" : value.securityMetadata == null ? null : SecurityMetadata.encode(value.securityMetadata!)
 		};
 		return entityAsMap;
+	}
+
+	static EncryptedMaintenanceTask fromJSON(Map<String, dynamic> data) {
+		return EncryptedMaintenanceTask(
+			(data["id"] as String),
+			rev: (data["rev"] as String?),
+			identifier: (data["identifier"] as List<dynamic>).map((x0) => Identifier.fromJSON(x0) ).toList(),
+			created: (data["created"] as int?),
+			modified: (data["modified"] as int?),
+			author: (data["author"] as String?),
+			responsible: (data["responsible"] as String?),
+			medicalLocationId: (data["medicalLocationId"] as String?),
+			tags: (data["tags"] as List<dynamic>).map((x0) => CodeStub.fromJSON(x0) ).toSet(),
+			codes: (data["codes"] as List<dynamic>).map((x0) => CodeStub.fromJSON(x0) ).toSet(),
+			endOfLife: (data["endOfLife"] as int?),
+			deletionDate: (data["deletionDate"] as int?),
+			taskType: (data["taskType"] as String?),
+			properties: (data["properties"] as List<dynamic>).map((x0) => EncryptedPropertyStub.fromJSON(x0) ).toSet(),
+			status: TaskStatus.fromJSON(data["status"]),
+			secretForeignKeys: (data["secretForeignKeys"] as List<dynamic>).map((x0) => (x0 as String) ).toSet(),
+			cryptedForeignKeys: (data["cryptedForeignKeys"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as List<dynamic>).map((x1) => Delegation.fromJSON(x1) ).toSet())),
+			delegations: (data["delegations"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as List<dynamic>).map((x1) => Delegation.fromJSON(x1) ).toSet())),
+			encryptionKeys: (data["encryptionKeys"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as List<dynamic>).map((x1) => Delegation.fromJSON(x1) ).toSet())),
+			encryptedSelf: (data["encryptedSelf"] as Base64String?),
+			securityMetadata: data["securityMetadata"] == null ? null : SecurityMetadata.fromJSON(data["securityMetadata"]),
+		);
 	}
 }

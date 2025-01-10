@@ -101,38 +101,6 @@ class Tarification implements StoredDocument, CodeIdentification<String> {
 		letterValues = letterValues ?? [],
 		_level = level ?? null;
 
-	factory Tarification.fromJSON(Map<String, dynamic> data) {
-		return Tarification(
-			(data["id"] as String),
-			level: (data["level"] as int?),
-			rev: (data["rev"] as String?),
-			deletionDate: (data["deletionDate"] as int?),
-			label: (data["label"] as Map<String, dynamic>?)?.map((k0, v0) => MapEntry((k0 as String), (v0 as String))),
-			context: (data["context"] as String?),
-			type: (data["type"] as String?),
-			code: (data["code"] as String?),
-			version: (data["version"] as String?),
-			author: (data["author"] as String?),
-			regions: (data["regions"] as List<dynamic>).map((x0) => (x0 as String) ).toSet(),
-			periodicity: (data["periodicity"] as List<dynamic>).map((x0) => Periodicity.fromJSON(x0) ).toList(),
-			links: (data["links"] as List<dynamic>).map((x0) => (x0 as String) ).toList(),
-			qualifiedLinks: (data["qualifiedLinks"] as Map<String, dynamic>).map((k0, v0) => MapEntry(LinkQualification.fromJSON(k0), (v0 as List<dynamic>).map((x1) => (x1 as String) ).toList())),
-			flags: (data["flags"] as List<dynamic>).map((x0) => CodeFlag.fromJSON(x0) ).toSet(),
-			searchTerms: (data["searchTerms"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as List<dynamic>).map((x1) => (x1 as String) ).toSet())),
-			data: (data["data"] as String?),
-			appendices: (data["appendices"] as Map<String, dynamic>).map((k0, v0) => MapEntry(AppendixType.fromJSON(k0), (v0 as String))),
-			disabled: (data["disabled"] as bool),
-			valorisations: (data["valorisations"] as List<dynamic>).map((x0) => DecryptedValorisation.fromJSON(x0) ).toSet(),
-			category: (data["category"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as String))),
-			consultationCode: (data["consultationCode"] as bool?),
-			hasRelatedCode: (data["hasRelatedCode"] as bool?),
-			needsPrescriber: (data["needsPrescriber"] as bool?),
-			relatedCodes: (data["relatedCodes"] as List<dynamic>).map((x0) => (x0 as String) ).toSet(),
-			ngroup: (data["nGroup"] as String?),
-			letterValues: (data["letterValues"] as List<dynamic>).map((x0) => LetterValue.fromJSON(x0) ).toList(),
-		);
-	}
-
 	static Map<String, dynamic> encode(Tarification value) {
 		Map<String, dynamic> entityAsMap = {
 			"id" : value.id,
@@ -164,5 +132,37 @@ class Tarification implements StoredDocument, CodeIdentification<String> {
 			"letterValues" : value.letterValues.map((x0) => LetterValue.encode(x0)).toList()
 		};
 		return entityAsMap;
+	}
+
+	static Tarification fromJSON(Map<String, dynamic> data) {
+		return Tarification(
+			(data["id"] as String),
+			level: (data["level"] as int?),
+			rev: (data["rev"] as String?),
+			deletionDate: (data["deletionDate"] as int?),
+			label: (data["label"] as Map<String, dynamic>?)?.map((k0, v0) => MapEntry((k0 as String), (v0 as String))),
+			context: (data["context"] as String?),
+			type: (data["type"] as String?),
+			code: (data["code"] as String?),
+			version: (data["version"] as String?),
+			author: (data["author"] as String?),
+			regions: (data["regions"] as List<dynamic>).map((x0) => (x0 as String) ).toSet(),
+			periodicity: (data["periodicity"] as List<dynamic>).map((x0) => Periodicity.fromJSON(x0) ).toList(),
+			links: (data["links"] as List<dynamic>).map((x0) => (x0 as String) ).toList(),
+			qualifiedLinks: (data["qualifiedLinks"] as Map<String, dynamic>).map((k0, v0) => MapEntry(LinkQualification.fromJSON(k0), (v0 as List<dynamic>).map((x1) => (x1 as String) ).toList())),
+			flags: (data["flags"] as List<dynamic>).map((x0) => CodeFlag.fromJSON(x0) ).toSet(),
+			searchTerms: (data["searchTerms"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as List<dynamic>).map((x1) => (x1 as String) ).toSet())),
+			data: (data["data"] as String?),
+			appendices: (data["appendices"] as Map<String, dynamic>).map((k0, v0) => MapEntry(AppendixType.fromJSON(k0), (v0 as String))),
+			disabled: (data["disabled"] as bool),
+			valorisations: (data["valorisations"] as List<dynamic>).map((x0) => DecryptedValorisation.fromJSON(x0) ).toSet(),
+			category: (data["category"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as String))),
+			consultationCode: (data["consultationCode"] as bool?),
+			hasRelatedCode: (data["hasRelatedCode"] as bool?),
+			needsPrescriber: (data["needsPrescriber"] as bool?),
+			relatedCodes: (data["relatedCodes"] as List<dynamic>).map((x0) => (x0 as String) ).toSet(),
+			ngroup: (data["nGroup"] as String?),
+			letterValues: (data["letterValues"] as List<dynamic>).map((x0) => LetterValue.fromJSON(x0) ).toList(),
+		);
 	}
 }

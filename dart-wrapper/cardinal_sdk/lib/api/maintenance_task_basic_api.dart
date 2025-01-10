@@ -12,7 +12,11 @@ import 'package:cardinal_sdk/subscription/entity_subscription.dart';
 
 class MaintenanceTaskBasicApi {
 	final String _sdkId;
-	MaintenanceTaskBasicApi(this._sdkId);
+	final Object _dartSdk;
+	MaintenanceTaskBasicApi(
+		this._sdkId,
+		this._dartSdk
+		);
 
 	Future<List<String>> matchMaintenanceTasksBy(BaseFilterOptions<MaintenanceTask> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.maintenanceTaskBasic.matchMaintenanceTasksBy(

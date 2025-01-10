@@ -1,11 +1,11 @@
 package com.icure.cardinal.sdk.model.specializations
 
-import com.icure.kryptom.crypto.CryptoService
-import com.icure.kryptom.utils.hexToByteArray
-import com.icure.kryptom.utils.toHexString
 import com.icure.cardinal.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
 import com.icure.cardinal.sdk.utils.base64Encode
 import com.icure.cardinal.sdk.utils.concat
+import com.icure.kryptom.crypto.CryptoService
+import com.icure.kryptom.utils.hexToByteArray
+import com.icure.kryptom.utils.toHexString
 import io.ktor.utils.io.charsets.Charsets
 import io.ktor.utils.io.core.toByteArray
 import kotlinx.serialization.Serializable

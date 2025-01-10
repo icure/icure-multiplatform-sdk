@@ -20,12 +20,14 @@ import 'package:cardinal_sdk/subscription/subscription_event_type.dart';
 
 class ContactApi {
 	final String _sdkId;
+	final Object _dartSdk;
 	final TryAndRecoverContactApi tryAndRecover;
 	final EncryptedContactApi encrypted;
 	ContactApi(
-		this._sdkId
-		) : tryAndRecover = TryAndRecoverContactApi(_sdkId),
-		encrypted = EncryptedContactApi(_sdkId);
+		this._sdkId,
+		this._dartSdk
+		) : tryAndRecover = TryAndRecoverContactApi(_sdkId, _dartSdk),
+		encrypted = EncryptedContactApi(_sdkId, _dartSdk);
 
 	Future<List<String>> matchContactsBy(FilterOptions<Contact> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.contact.matchContactsBy(
@@ -311,7 +313,11 @@ class ContactApi {
 
 class TryAndRecoverContactApi {
 	final String _sdkId;
-	TryAndRecoverContactApi(this._sdkId);
+	final Object _dartSdk;
+	TryAndRecoverContactApi(
+		this._sdkId,
+		this._dartSdk
+		);
 
 	Future<Contact> shareWith(String delegateId, Contact contact, { ContactShareOptions? options }) async {
 		return await CardinalSdkPlatformInterface.instance.apis.contact.tryAndRecover.shareWith(
@@ -418,7 +424,11 @@ class TryAndRecoverContactApi {
 
 class EncryptedContactApi {
 	final String _sdkId;
-	EncryptedContactApi(this._sdkId);
+	final Object _dartSdk;
+	EncryptedContactApi(
+		this._sdkId,
+		this._dartSdk
+		);
 
 	Future<EncryptedContact> shareWith(String delegateId, EncryptedContact contact, { ContactShareOptions? options }) async {
 		return await CardinalSdkPlatformInterface.instance.apis.contact.encrypted.shareWith(

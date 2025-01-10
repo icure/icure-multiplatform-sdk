@@ -19,12 +19,14 @@ import 'package:cardinal_sdk/subscription/entity_subscription.dart';
 
 class PatientApi {
 	final String _sdkId;
+	final Object _dartSdk;
 	final TryAndRecoverPatientApi tryAndRecover;
 	final EncryptedPatientApi encrypted;
 	PatientApi(
-		this._sdkId
-		) : tryAndRecover = TryAndRecoverPatientApi(_sdkId),
-		encrypted = EncryptedPatientApi(_sdkId);
+		this._sdkId,
+		this._dartSdk
+		) : tryAndRecover = TryAndRecoverPatientApi(_sdkId, _dartSdk),
+		encrypted = EncryptedPatientApi(_sdkId, _dartSdk);
 
 	Future<Set<String>> getSecretIdsOf(Patient patient) async {
 		return await CardinalSdkPlatformInterface.instance.apis.patient.getSecretIdsOf(
@@ -302,7 +304,11 @@ class PatientApi {
 
 class TryAndRecoverPatientApi {
 	final String _sdkId;
-	TryAndRecoverPatientApi(this._sdkId);
+	final Object _dartSdk;
+	TryAndRecoverPatientApi(
+		this._sdkId,
+		this._dartSdk
+		);
 
 	Future<Patient> shareWith(String delegateId, Patient patient, { PatientShareOptions? options }) async {
 		return await CardinalSdkPlatformInterface.instance.apis.patient.tryAndRecover.shareWith(
@@ -411,7 +417,11 @@ class TryAndRecoverPatientApi {
 
 class EncryptedPatientApi {
 	final String _sdkId;
-	EncryptedPatientApi(this._sdkId);
+	final Object _dartSdk;
+	EncryptedPatientApi(
+		this._sdkId,
+		this._dartSdk
+		);
 
 	Future<EncryptedPatient> shareWith(String delegateId, EncryptedPatient patient, { PatientShareOptions? options }) async {
 		return await CardinalSdkPlatformInterface.instance.apis.patient.encrypted.shareWith(

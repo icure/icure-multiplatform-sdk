@@ -121,29 +121,6 @@ class EncryptedSubContact implements SubContact {
 		encryptedSelf = encryptedSelf ?? null,
 		_status = status ?? null;
 
-	factory EncryptedSubContact.fromJSON(Map<String, dynamic> data) {
-		return EncryptedSubContact(
-			status: (data["status"] as int?),
-			id: (data["id"] as String?),
-			created: (data["created"] as int?),
-			modified: (data["modified"] as int?),
-			author: (data["author"] as String?),
-			responsible: (data["responsible"] as String?),
-			medicalLocationId: (data["medicalLocationId"] as String?),
-			tags: (data["tags"] as List<dynamic>).map((x0) => CodeStub.fromJSON(x0) ).toSet(),
-			codes: (data["codes"] as List<dynamic>).map((x0) => CodeStub.fromJSON(x0) ).toSet(),
-			endOfLife: (data["endOfLife"] as int?),
-			descr: (data["descr"] as String?),
-			protocol: (data["protocol"] as String?),
-			formId: (data["formId"] as String?),
-			planOfActionId: (data["planOfActionId"] as String?),
-			healthElementId: (data["healthElementId"] as String?),
-			classificationId: (data["classificationId"] as String?),
-			services: (data["services"] as List<dynamic>).map((x0) => ServiceLink.fromJSON(x0) ).toList(),
-			encryptedSelf: (data["encryptedSelf"] as Base64String?)
-		);
-	}
-
 	static Map<String, dynamic> encode(EncryptedSubContact value) {
 		Map<String, dynamic> entityAsMap = {
 			"id" : value.id,
@@ -166,6 +143,29 @@ class EncryptedSubContact implements SubContact {
 			"encryptedSelf" : value.encryptedSelf
 		};
 		return entityAsMap;
+	}
+
+	static EncryptedSubContact fromJSON(Map<String, dynamic> data) {
+		return EncryptedSubContact(
+			status: (data["status"] as int?),
+			id: (data["id"] as String?),
+			created: (data["created"] as int?),
+			modified: (data["modified"] as int?),
+			author: (data["author"] as String?),
+			responsible: (data["responsible"] as String?),
+			medicalLocationId: (data["medicalLocationId"] as String?),
+			tags: (data["tags"] as List<dynamic>).map((x0) => CodeStub.fromJSON(x0) ).toSet(),
+			codes: (data["codes"] as List<dynamic>).map((x0) => CodeStub.fromJSON(x0) ).toSet(),
+			endOfLife: (data["endOfLife"] as int?),
+			descr: (data["descr"] as String?),
+			protocol: (data["protocol"] as String?),
+			formId: (data["formId"] as String?),
+			planOfActionId: (data["planOfActionId"] as String?),
+			healthElementId: (data["healthElementId"] as String?),
+			classificationId: (data["classificationId"] as String?),
+			services: (data["services"] as List<dynamic>).map((x0) => ServiceLink.fromJSON(x0) ).toList(),
+			encryptedSelf: (data["encryptedSelf"] as Base64String?)
+		);
 	}
 }
 
@@ -233,29 +233,6 @@ class DecryptedSubContact implements SubContact {
 		encryptedSelf = encryptedSelf ?? null,
 		_status = status ?? null;
 
-	factory DecryptedSubContact.fromJSON(Map<String, dynamic> data) {
-		return DecryptedSubContact(
-			status: (data["status"] as int?),
-			id: (data["id"] as String?),
-			created: (data["created"] as int?),
-			modified: (data["modified"] as int?),
-			author: (data["author"] as String?),
-			responsible: (data["responsible"] as String?),
-			medicalLocationId: (data["medicalLocationId"] as String?),
-			tags: (data["tags"] as List<dynamic>).map((x0) => CodeStub.fromJSON(x0) ).toSet(),
-			codes: (data["codes"] as List<dynamic>).map((x0) => CodeStub.fromJSON(x0) ).toSet(),
-			endOfLife: (data["endOfLife"] as int?),
-			descr: (data["descr"] as String?),
-			protocol: (data["protocol"] as String?),
-			formId: (data["formId"] as String?),
-			planOfActionId: (data["planOfActionId"] as String?),
-			healthElementId: (data["healthElementId"] as String?),
-			classificationId: (data["classificationId"] as String?),
-			services: (data["services"] as List<dynamic>).map((x0) => ServiceLink.fromJSON(x0) ).toList(),
-			encryptedSelf: (data["encryptedSelf"] as Base64String?)
-		);
-	}
-
 	static Map<String, dynamic> encode(DecryptedSubContact value) {
 		Map<String, dynamic> entityAsMap = {
 			"id" : value.id,
@@ -278,5 +255,28 @@ class DecryptedSubContact implements SubContact {
 			"encryptedSelf" : value.encryptedSelf
 		};
 		return entityAsMap;
+	}
+
+	static DecryptedSubContact fromJSON(Map<String, dynamic> data) {
+		return DecryptedSubContact(
+			status: (data["status"] as int?),
+			id: (data["id"] as String?),
+			created: (data["created"] as int?),
+			modified: (data["modified"] as int?),
+			author: (data["author"] as String?),
+			responsible: (data["responsible"] as String?),
+			medicalLocationId: (data["medicalLocationId"] as String?),
+			tags: (data["tags"] as List<dynamic>).map((x0) => CodeStub.fromJSON(x0) ).toSet(),
+			codes: (data["codes"] as List<dynamic>).map((x0) => CodeStub.fromJSON(x0) ).toSet(),
+			endOfLife: (data["endOfLife"] as int?),
+			descr: (data["descr"] as String?),
+			protocol: (data["protocol"] as String?),
+			formId: (data["formId"] as String?),
+			planOfActionId: (data["planOfActionId"] as String?),
+			healthElementId: (data["healthElementId"] as String?),
+			classificationId: (data["classificationId"] as String?),
+			services: (data["services"] as List<dynamic>).map((x0) => ServiceLink.fromJSON(x0) ).toList(),
+			encryptedSelf: (data["encryptedSelf"] as Base64String?)
+		);
 	}
 }

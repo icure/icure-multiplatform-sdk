@@ -82,22 +82,6 @@ class EncryptedValorisation implements Valorisation {
 		label = label ?? {},
 		encryptedSelf = encryptedSelf ?? null;
 
-	factory EncryptedValorisation.fromJSON(Map<String, dynamic> data) {
-		return EncryptedValorisation(
-			startOfValidity: (data["startOfValidity"] as int?),
-			endOfValidity: (data["endOfValidity"] as int?),
-			predicate: (data["predicate"] as String?),
-			reference: (data["reference"] as List<dynamic>?)?.map((x0) => (x0 as int) ).toList(),
-			totalAmount: (data["totalAmount"] as num?)?.toDouble(),
-			reimbursement: (data["reimbursement"] as num?)?.toDouble(),
-			patientIntervention: (data["patientIntervention"] as num?)?.toDouble(),
-			doctorSupplement: (data["doctorSupplement"] as num?)?.toDouble(),
-			vat: (data["vat"] as num?)?.toDouble(),
-			label: (data["label"] as Map<String, dynamic>?)?.map((k0, v0) => MapEntry((k0 as String), (v0 as String))),
-			encryptedSelf: (data["encryptedSelf"] as Base64String?)
-		);
-	}
-
 	static Map<String, dynamic> encode(EncryptedValorisation value) {
 		Map<String, dynamic> entityAsMap = {
 			"startOfValidity" : value.startOfValidity,
@@ -113,6 +97,22 @@ class EncryptedValorisation implements Valorisation {
 			"encryptedSelf" : value.encryptedSelf
 		};
 		return entityAsMap;
+	}
+
+	static EncryptedValorisation fromJSON(Map<String, dynamic> data) {
+		return EncryptedValorisation(
+			startOfValidity: (data["startOfValidity"] as int?),
+			endOfValidity: (data["endOfValidity"] as int?),
+			predicate: (data["predicate"] as String?),
+			reference: (data["reference"] as List<dynamic>?)?.map((x0) => (x0 as int) ).toList(),
+			totalAmount: (data["totalAmount"] as num?)?.toDouble(),
+			reimbursement: (data["reimbursement"] as num?)?.toDouble(),
+			patientIntervention: (data["patientIntervention"] as num?)?.toDouble(),
+			doctorSupplement: (data["doctorSupplement"] as num?)?.toDouble(),
+			vat: (data["vat"] as num?)?.toDouble(),
+			label: (data["label"] as Map<String, dynamic>?)?.map((k0, v0) => MapEntry((k0 as String), (v0 as String))),
+			encryptedSelf: (data["encryptedSelf"] as Base64String?)
+		);
 	}
 }
 
@@ -152,22 +152,6 @@ class DecryptedValorisation implements Valorisation {
 		label = label ?? {},
 		encryptedSelf = encryptedSelf ?? null;
 
-	factory DecryptedValorisation.fromJSON(Map<String, dynamic> data) {
-		return DecryptedValorisation(
-			startOfValidity: (data["startOfValidity"] as int?),
-			endOfValidity: (data["endOfValidity"] as int?),
-			predicate: (data["predicate"] as String?),
-			reference: (data["reference"] as List<dynamic>?)?.map((x0) => (x0 as int) ).toList(),
-			totalAmount: (data["totalAmount"] as num?)?.toDouble(),
-			reimbursement: (data["reimbursement"] as num?)?.toDouble(),
-			patientIntervention: (data["patientIntervention"] as num?)?.toDouble(),
-			doctorSupplement: (data["doctorSupplement"] as num?)?.toDouble(),
-			vat: (data["vat"] as num?)?.toDouble(),
-			label: (data["label"] as Map<String, dynamic>?)?.map((k0, v0) => MapEntry((k0 as String), (v0 as String))),
-			encryptedSelf: (data["encryptedSelf"] as Base64String?)
-		);
-	}
-
 	static Map<String, dynamic> encode(DecryptedValorisation value) {
 		Map<String, dynamic> entityAsMap = {
 			"startOfValidity" : value.startOfValidity,
@@ -183,5 +167,21 @@ class DecryptedValorisation implements Valorisation {
 			"encryptedSelf" : value.encryptedSelf
 		};
 		return entityAsMap;
+	}
+
+	static DecryptedValorisation fromJSON(Map<String, dynamic> data) {
+		return DecryptedValorisation(
+			startOfValidity: (data["startOfValidity"] as int?),
+			endOfValidity: (data["endOfValidity"] as int?),
+			predicate: (data["predicate"] as String?),
+			reference: (data["reference"] as List<dynamic>?)?.map((x0) => (x0 as int) ).toList(),
+			totalAmount: (data["totalAmount"] as num?)?.toDouble(),
+			reimbursement: (data["reimbursement"] as num?)?.toDouble(),
+			patientIntervention: (data["patientIntervention"] as num?)?.toDouble(),
+			doctorSupplement: (data["doctorSupplement"] as num?)?.toDouble(),
+			vat: (data["vat"] as num?)?.toDouble(),
+			label: (data["label"] as Map<String, dynamic>?)?.map((k0, v0) => MapEntry((k0 as String), (v0 as String))),
+			encryptedSelf: (data["encryptedSelf"] as Base64String?)
+		);
 	}
 }

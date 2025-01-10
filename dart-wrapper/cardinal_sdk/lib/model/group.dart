@@ -58,27 +58,6 @@ class Group implements StoredDocument, HasTags {
 		superGroup = superGroup ?? null,
 		applicationId = applicationId ?? null;
 
-	factory Group.fromJSON(Map<String, dynamic> data) {
-		return Group(
-			(data["id"] as String),
-			AuthenticationClass.fromJSON(data["minimumAuthenticationClassForElevatedPrivileges"]),
-			rev: (data["rev"] as String?),
-			deletionDate: (data["deletionDate"] as int?),
-			tags: (data["tags"] as List<dynamic>).map((x0) => CodeStub.fromJSON(x0) ).toSet(),
-			name: (data["name"] as String?),
-			password: (data["password"] as String?),
-			servers: (data["servers"] as List<dynamic>?)?.map((x0) => (x0 as String) ).toList(),
-			superAdmin: (data["superAdmin"] as bool),
-			properties: (data["properties"] as List<dynamic>).map((x0) => DecryptedPropertyStub.fromJSON(x0) ).toSet(),
-			defaultUserRoles: (data["defaultUserRoles"] as Map<String, dynamic>).map((k0, v0) => MapEntry(UserType.fromJSON(k0), (v0 as List<dynamic>).map((x1) => (x1 as String) ).toSet())),
-			operationTokens: (data["operationTokens"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), OperationToken.fromJSON(v0))),
-			sharedEntities: (data["sharedEntities"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as String))),
-			minimumKrakenVersion: (data["minimumKrakenVersion"] as String?),
-			superGroup: (data["superGroup"] as String?),
-			applicationId: (data["applicationId"] as String?),
-		);
-	}
-
 	static Map<String, dynamic> encode(Group value) {
 		Map<String, dynamic> entityAsMap = {
 			"id" : value.id,
@@ -99,5 +78,26 @@ class Group implements StoredDocument, HasTags {
 			"applicationId" : value.applicationId
 		};
 		return entityAsMap;
+	}
+
+	static Group fromJSON(Map<String, dynamic> data) {
+		return Group(
+			(data["id"] as String),
+			AuthenticationClass.fromJSON(data["minimumAuthenticationClassForElevatedPrivileges"]),
+			rev: (data["rev"] as String?),
+			deletionDate: (data["deletionDate"] as int?),
+			tags: (data["tags"] as List<dynamic>).map((x0) => CodeStub.fromJSON(x0) ).toSet(),
+			name: (data["name"] as String?),
+			password: (data["password"] as String?),
+			servers: (data["servers"] as List<dynamic>?)?.map((x0) => (x0 as String) ).toList(),
+			superAdmin: (data["superAdmin"] as bool),
+			properties: (data["properties"] as List<dynamic>).map((x0) => DecryptedPropertyStub.fromJSON(x0) ).toSet(),
+			defaultUserRoles: (data["defaultUserRoles"] as Map<String, dynamic>).map((k0, v0) => MapEntry(UserType.fromJSON(k0), (v0 as List<dynamic>).map((x1) => (x1 as String) ).toSet())),
+			operationTokens: (data["operationTokens"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), OperationToken.fromJSON(v0))),
+			sharedEntities: (data["sharedEntities"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as String))),
+			minimumKrakenVersion: (data["minimumKrakenVersion"] as String?),
+			superGroup: (data["superGroup"] as String?),
+			applicationId: (data["applicationId"] as String?),
+		);
 	}
 }

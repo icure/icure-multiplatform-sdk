@@ -16,15 +16,6 @@ class Section {
 		}) : description = description ?? null,
 		keywords = keywords ?? null;
 
-	factory Section.fromJSON(Map<String, dynamic> data) {
-		return Section(
-			(data["section"] as String),
-			(data["fields"] as List<dynamic>).map((x0) => StructureElement.fromJSON(x0) ).toList(),
-			description: (data["description"] as String?),
-			keywords: (data["keywords"] as List<dynamic>?)?.map((x0) => (x0 as String) ).toList(),
-		);
-	}
-
 	static Map<String, dynamic> encode(Section value) {
 		Map<String, dynamic> entityAsMap = {
 			"section" : value.section,
@@ -33,5 +24,14 @@ class Section {
 			"keywords" : value.keywords?.map((x0) => x0).toList()
 		};
 		return entityAsMap;
+	}
+
+	static Section fromJSON(Map<String, dynamic> data) {
+		return Section(
+			(data["section"] as String),
+			(data["fields"] as List<dynamic>).map((x0) => StructureElement.fromJSON(x0) ).toList(),
+			description: (data["description"] as String?),
+			keywords: (data["keywords"] as List<dynamic>?)?.map((x0) => (x0 as String) ).toList(),
+		);
 	}
 }

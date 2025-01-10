@@ -15,15 +15,6 @@ class DelegateShareOptions {
 		this.requestedPermissions
 		);
 
-	factory DelegateShareOptions.fromJSON(Map<String, dynamic> data) {
-		return DelegateShareOptions(
-			(data["shareSecretIds"] as List<dynamic>).map((x0) => (x0 as String) ).toSet(),
-			(data["shareEncryptionKeys"] as List<dynamic>).map((x0) => (x0 as HexString) ).toSet(),
-			(data["shareOwningEntityIds"] as List<dynamic>).map((x0) => (x0 as String) ).toSet(),
-			RequestedPermission.fromJSON(data["requestedPermissions"])
-		);
-	}
-
 	static Map<String, dynamic> encode(DelegateShareOptions value) {
 		Map<String, dynamic> entityAsMap = {
 			"shareSecretIds" : value.shareSecretIds.map((x0) => x0).toList(),
@@ -32,5 +23,14 @@ class DelegateShareOptions {
 			"requestedPermissions" : RequestedPermission.encode(value.requestedPermissions)
 		};
 		return entityAsMap;
+	}
+
+	static DelegateShareOptions fromJSON(Map<String, dynamic> data) {
+		return DelegateShareOptions(
+			(data["shareSecretIds"] as List<dynamic>).map((x0) => (x0 as String) ).toSet(),
+			(data["shareEncryptionKeys"] as List<dynamic>).map((x0) => (x0 as HexString) ).toSet(),
+			(data["shareOwningEntityIds"] as List<dynamic>).map((x0) => (x0 as String) ).toSet(),
+			RequestedPermission.fromJSON(data["requestedPermissions"])
+		);
 	}
 }

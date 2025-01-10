@@ -14,12 +14,14 @@ import 'package:cardinal_sdk/utils/pagination/paginated_list_iterator.dart';
 
 class ClassificationApi {
 	final String _sdkId;
+	final Object _dartSdk;
 	final TryAndRecoverClassificationApi tryAndRecover;
 	final EncryptedClassificationApi encrypted;
 	ClassificationApi(
-		this._sdkId
-		) : tryAndRecover = TryAndRecoverClassificationApi(_sdkId),
-		encrypted = EncryptedClassificationApi(_sdkId);
+		this._sdkId,
+		this._dartSdk
+		) : tryAndRecover = TryAndRecoverClassificationApi(_sdkId, _dartSdk),
+		encrypted = EncryptedClassificationApi(_sdkId, _dartSdk);
 
 	Future<DecryptedClassification> createClassification(DecryptedClassification entity) async {
 		return await CardinalSdkPlatformInterface.instance.apis.classification.createClassification(
@@ -165,7 +167,11 @@ class ClassificationApi {
 
 class TryAndRecoverClassificationApi {
 	final String _sdkId;
-	TryAndRecoverClassificationApi(this._sdkId);
+	final Object _dartSdk;
+	TryAndRecoverClassificationApi(
+		this._sdkId,
+		this._dartSdk
+		);
 
 	Future<Classification> shareWith(String delegateId, Classification classification, { ClassificationShareOptions? options }) async {
 		return await CardinalSdkPlatformInterface.instance.apis.classification.tryAndRecover.shareWith(
@@ -222,7 +228,11 @@ class TryAndRecoverClassificationApi {
 
 class EncryptedClassificationApi {
 	final String _sdkId;
-	EncryptedClassificationApi(this._sdkId);
+	final Object _dartSdk;
+	EncryptedClassificationApi(
+		this._sdkId,
+		this._dartSdk
+		);
 
 	Future<EncryptedClassification> shareWith(String delegateId, EncryptedClassification classification, { ClassificationShareOptions? options }) async {
 		return await CardinalSdkPlatformInterface.instance.apis.classification.encrypted.shareWith(

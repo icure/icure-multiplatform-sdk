@@ -1,7 +1,7 @@
 // auto-generated file
 package com.icure.cardinal.sdk.dart.api
 
-import com.icure.cardinal.sdk.CardinalSdk
+import com.icure.cardinal.sdk.CardinalNonCryptoApis
 import com.icure.cardinal.sdk.dart.utils.ApiScope
 import com.icure.cardinal.sdk.dart.utils.NativeReferences
 import com.icure.cardinal.sdk.filters.BaseFilterOptions
@@ -46,7 +46,7 @@ public object HealthcarePartyApi {
     ApiScope.execute(
       dartResultCallback,
       HealthcareParty.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).healthcareParty.getHealthcareParty(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).healthcareParty.getHealthcareParty(
         healthcarePartyId,
       )
     }
@@ -69,7 +69,7 @@ public object HealthcarePartyApi {
     ApiScope.execute(
       dartResultCallback,
       HealthcareParty.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).healthcareParty.createHealthcareParty(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).healthcareParty.createHealthcareParty(
         p,
       )
     }
@@ -97,7 +97,7 @@ public object HealthcarePartyApi {
     ApiScope.execute(
       dartResultCallback,
       HealthcareParty.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).healthcareParty.modifyHealthcarePartyInGroup(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).healthcareParty.modifyHealthcarePartyInGroup(
         groupId,
         healthcareParty,
       )
@@ -126,7 +126,7 @@ public object HealthcarePartyApi {
     ApiScope.execute(
       dartResultCallback,
       HealthcareParty.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).healthcareParty.createHealthcarePartyInGroup(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).healthcareParty.createHealthcarePartyInGroup(
         groupId,
         healthcareParty,
       )
@@ -142,7 +142,7 @@ public object HealthcarePartyApi {
     ApiScope.execute(
       dartResultCallback,
       HealthcareParty.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).healthcareParty.getCurrentHealthcareParty()
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).healthcareParty.getCurrentHealthcareParty()
     }
   }
 
@@ -163,7 +163,7 @@ public object HealthcarePartyApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(HealthcareParty.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).healthcareParty.listHealthcarePartiesByName(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).healthcareParty.listHealthcarePartiesByName(
         name,
       )
     }
@@ -186,7 +186,7 @@ public object HealthcarePartyApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(HealthcareParty.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).healthcareParty.getHealthcareParties(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).healthcareParty.getHealthcareParties(
         healthcarePartyIds,
       )
     }
@@ -209,7 +209,7 @@ public object HealthcarePartyApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(HealthcareParty.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).healthcareParty.listHealthcarePartiesByParentId(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).healthcareParty.listHealthcarePartiesByParentId(
         parentId,
       )
     }
@@ -232,7 +232,7 @@ public object HealthcarePartyApi {
     ApiScope.execute(
       dartResultCallback,
       PublicKey.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).healthcareParty.getPublicKey(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).healthcareParty.getPublicKey(
         healthcarePartyId,
       )
     }
@@ -255,7 +255,7 @@ public object HealthcarePartyApi {
     ApiScope.execute(
       dartResultCallback,
       HealthcareParty.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).healthcareParty.modifyHealthcareParty(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).healthcareParty.modifyHealthcareParty(
         healthcareParty,
       )
     }
@@ -278,7 +278,7 @@ public object HealthcarePartyApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(String.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).healthcareParty.matchHealthcarePartiesBy(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).healthcareParty.matchHealthcarePartiesBy(
         filter,
       )
     }
@@ -302,7 +302,7 @@ public object HealthcarePartyApi {
       dartResultCallback,
       String.serializer()) {
       val richResult =
-          NativeReferences.get<CardinalSdk>(sdkId).healthcareParty.filterHealthPartiesBy(
+          NativeReferences.get<CardinalNonCryptoApis>(sdkId).healthcareParty.filterHealthPartiesBy(
         filter,
       )
       NativeReferences.create(PaginatedListIteratorWithSerializer(
@@ -329,7 +329,7 @@ public object HealthcarePartyApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(String.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).healthcareParty.matchHealthcarePartiesBySorted(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).healthcareParty.matchHealthcarePartiesBySorted(
         filter,
       )
     }
@@ -353,7 +353,7 @@ public object HealthcarePartyApi {
       dartResultCallback,
       String.serializer()) {
       val richResult =
-          NativeReferences.get<CardinalSdk>(sdkId).healthcareParty.filterHealthPartiesBySorted(
+          NativeReferences.get<CardinalNonCryptoApis>(sdkId).healthcareParty.filterHealthPartiesBySorted(
         filter,
       )
       NativeReferences.create(PaginatedListIteratorWithSerializer(
@@ -385,7 +385,7 @@ public object HealthcarePartyApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(HealthcareParty.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).healthcareParty.getHealthcarePartiesInGroup(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).healthcareParty.getHealthcarePartiesInGroup(
         groupId,
         healthcarePartyIds,
       )
@@ -429,7 +429,7 @@ public object HealthcarePartyApi {
     ApiScope.execute(
       dartResultCallback,
       DataOwnerRegistrationSuccess.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).healthcareParty.registerPatient(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).healthcareParty.registerPatient(
         groupId,
         parentHcPartyId,
         token,
@@ -461,7 +461,7 @@ public object HealthcarePartyApi {
     ApiScope.execute(
       dartResultCallback,
       DocIdentifier.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).healthcareParty.deleteHealthcarePartyById(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).healthcareParty.deleteHealthcarePartyById(
         entityId,
         rev,
       )
@@ -485,7 +485,7 @@ public object HealthcarePartyApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(DocIdentifier.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).healthcareParty.deleteHealthcarePartiesByIds(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).healthcareParty.deleteHealthcarePartiesByIds(
         entityIds,
       )
     }
@@ -518,7 +518,7 @@ public object HealthcarePartyApi {
     ApiScope.execute(
       dartResultCallback,
       DocIdentifier.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).healthcareParty.deleteHealthcarePartyInGroupById(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).healthcareParty.deleteHealthcarePartyInGroupById(
         groupId,
         entityId,
         rev,
@@ -548,7 +548,7 @@ public object HealthcarePartyApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(DocIdentifier.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).healthcareParty.deleteHealthcarePartiesInGroupByIds(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).healthcareParty.deleteHealthcarePartiesInGroupByIds(
         groupId,
         entityIds,
       )
@@ -577,7 +577,7 @@ public object HealthcarePartyApi {
     ApiScope.execute(
       dartResultCallback,
       Unit.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).healthcareParty.purgeHealthcarePartyById(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).healthcareParty.purgeHealthcarePartyById(
         id,
         rev,
       )
@@ -606,7 +606,7 @@ public object HealthcarePartyApi {
     ApiScope.execute(
       dartResultCallback,
       HealthcareParty.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).healthcareParty.undeleteHealthcarePartyById(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).healthcareParty.undeleteHealthcarePartyById(
         id,
         rev,
       )
@@ -630,7 +630,7 @@ public object HealthcarePartyApi {
     ApiScope.execute(
       dartResultCallback,
       DocIdentifier.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).healthcareParty.deleteHealthcareParty(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).healthcareParty.deleteHealthcareParty(
         healthcareParty,
       )
     }
@@ -653,7 +653,7 @@ public object HealthcarePartyApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(DocIdentifier.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).healthcareParty.deleteHealthcareParties(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).healthcareParty.deleteHealthcareParties(
         healthcareParties,
       )
     }
@@ -676,7 +676,7 @@ public object HealthcarePartyApi {
     ApiScope.execute(
       dartResultCallback,
       Unit.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).healthcareParty.purgeHealthcareParty(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).healthcareParty.purgeHealthcareParty(
         healthcareParty,
       )
     }
@@ -699,7 +699,7 @@ public object HealthcarePartyApi {
     ApiScope.execute(
       dartResultCallback,
       HealthcareParty.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).healthcareParty.undeleteHealthcareParty(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).healthcareParty.undeleteHealthcareParty(
         healthcareParty,
       )
     }
@@ -727,7 +727,7 @@ public object HealthcarePartyApi {
     ApiScope.execute(
       dartResultCallback,
       DocIdentifier.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).healthcareParty.deleteHealthcarePartyInGroup(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).healthcareParty.deleteHealthcarePartyInGroup(
         groupId,
         hcp,
       )
@@ -756,7 +756,7 @@ public object HealthcarePartyApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(DocIdentifier.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).healthcareParty.deleteHealthcarePartiesInGroup(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).healthcareParty.deleteHealthcarePartiesInGroup(
         groupId,
         healthcareParties,
       )
@@ -790,7 +790,8 @@ public object HealthcarePartyApi {
     ApiScope.execute(
       dartResultCallback,
       String.serializer()) {
-      val richResult = NativeReferences.get<CardinalSdk>(sdkId).healthcareParty.subscribeToEvents(
+      val richResult =
+          NativeReferences.get<CardinalNonCryptoApis>(sdkId).healthcareParty.subscribeToEvents(
         events,
         filter,
         subscriptionConfig,

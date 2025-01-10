@@ -21,16 +21,6 @@ class Partnership {
 		meToOtherRelationshipDescription = meToOtherRelationshipDescription ?? null,
 		otherToMeRelationshipDescription = otherToMeRelationshipDescription ?? null;
 
-	factory Partnership.fromJSON(Map<String, dynamic> data) {
-		return Partnership(
-			type: data["type"] == null ? null : PartnershipType.fromJSON(data["type"]),
-			status: data["status"] == null ? null : PartnershipStatus.fromJSON(data["status"]),
-			partnerId: (data["partnerId"] as String?),
-			meToOtherRelationshipDescription: (data["meToOtherRelationshipDescription"] as String?),
-			otherToMeRelationshipDescription: (data["otherToMeRelationshipDescription"] as String?)
-		);
-	}
-
 	static Map<String, dynamic> encode(Partnership value) {
 		Map<String, dynamic> entityAsMap = {
 			"type" : value.type == null ? null : PartnershipType.encode(value.type!),
@@ -40,5 +30,15 @@ class Partnership {
 			"otherToMeRelationshipDescription" : value.otherToMeRelationshipDescription
 		};
 		return entityAsMap;
+	}
+
+	static Partnership fromJSON(Map<String, dynamic> data) {
+		return Partnership(
+			type: data["type"] == null ? null : PartnershipType.fromJSON(data["type"]),
+			status: data["status"] == null ? null : PartnershipStatus.fromJSON(data["status"]),
+			partnerId: (data["partnerId"] as String?),
+			meToOtherRelationshipDescription: (data["meToOtherRelationshipDescription"] as String?),
+			otherToMeRelationshipDescription: (data["otherToMeRelationshipDescription"] as String?)
+		);
 	}
 }

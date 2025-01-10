@@ -18,12 +18,14 @@ import 'package:cardinal_sdk/subscription/entity_subscription.dart';
 
 class HealthElementApi {
 	final String _sdkId;
+	final Object _dartSdk;
 	final TryAndRecoverHealthElementApi tryAndRecover;
 	final EncryptedHealthElementApi encrypted;
 	HealthElementApi(
-		this._sdkId
-		) : tryAndRecover = TryAndRecoverHealthElementApi(_sdkId),
-		encrypted = EncryptedHealthElementApi(_sdkId);
+		this._sdkId,
+		this._dartSdk
+		) : tryAndRecover = TryAndRecoverHealthElementApi(_sdkId, _dartSdk),
+		encrypted = EncryptedHealthElementApi(_sdkId, _dartSdk);
 
 	Future<DecryptedHealthElement> createHealthElement(DecryptedHealthElement entity) async {
 		return await CardinalSdkPlatformInterface.instance.apis.healthElement.createHealthElement(
@@ -237,7 +239,11 @@ class HealthElementApi {
 
 class TryAndRecoverHealthElementApi {
 	final String _sdkId;
-	TryAndRecoverHealthElementApi(this._sdkId);
+	final Object _dartSdk;
+	TryAndRecoverHealthElementApi(
+		this._sdkId,
+		this._dartSdk
+		);
 
 	Future<HealthElement> shareWith(String delegateId, HealthElement healthElement, { HealthElementShareOptions? options }) async {
 		return await CardinalSdkPlatformInterface.instance.apis.healthElement.tryAndRecover.shareWith(
@@ -316,7 +322,11 @@ class TryAndRecoverHealthElementApi {
 
 class EncryptedHealthElementApi {
 	final String _sdkId;
-	EncryptedHealthElementApi(this._sdkId);
+	final Object _dartSdk;
+	EncryptedHealthElementApi(
+		this._sdkId,
+		this._dartSdk
+		);
 
 	Future<EncryptedHealthElement> shareWith(String delegateId, EncryptedHealthElement healthElement, { HealthElementShareOptions? options }) async {
 		return await CardinalSdkPlatformInterface.instance.apis.healthElement.encrypted.shareWith(

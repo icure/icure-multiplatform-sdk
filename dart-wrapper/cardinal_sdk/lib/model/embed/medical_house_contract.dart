@@ -188,44 +188,6 @@ class DecryptedMedicalHouseContract implements MedicalHouseContract {
 		_unsubscriptionReasonId = unsubscriptionReasonId ?? null,
 		_status = status ?? null;
 
-	factory DecryptedMedicalHouseContract.fromJSON(Map<String, dynamic> data) {
-		return DecryptedMedicalHouseContract(
-			unsubscriptionReasonId: (data["unsubscriptionReasonId"] as int?),
-			status: (data["status"] as int?),
-			contractId: (data["contractId"] as String?),
-			validFrom: (data["validFrom"] as int?),
-			validTo: (data["validTo"] as int?),
-			mmNihii: (data["mmNihii"] as String?),
-			hcpId: (data["hcpId"] as String?),
-			changeType: data["changeType"] == null ? null : ContractChangeType.fromJSON(data["changeType"]),
-			parentContractId: (data["parentContractId"] as String?),
-			changedBy: (data["changedBy"] as String?),
-			startOfContract: (data["startOfContract"] as int?),
-			startOfCoverage: (data["startOfCoverage"] as int?),
-			endOfContract: (data["endOfContract"] as int?),
-			endOfCoverage: (data["endOfCoverage"] as int?),
-			kine: (data["kine"] as bool),
-			gp: (data["gp"] as bool),
-			ptd: (data["ptd"] as bool),
-			nurse: (data["nurse"] as bool),
-			noKine: (data["noKine"] as bool),
-			noGp: (data["noGp"] as bool),
-			noNurse: (data["noNurse"] as bool),
-			ptdStart: (data["ptdStart"] as int?),
-			ptdEnd: (data["ptdEnd"] as int?),
-			ptdLastInvoiced: (data["ptdLastInvoiced"] as int?),
-			startOfSuspension: (data["startOfSuspension"] as int?),
-			endOfSuspension: (data["endOfSuspension"] as int?),
-			suspensionReason: data["suspensionReason"] == null ? null : SuspensionReason.fromJSON(data["suspensionReason"]),
-			suspensionSource: (data["suspensionSource"] as String?),
-			forcedSuspension: (data["forcedSuspension"] as bool),
-			signatureType: data["signatureType"] == null ? null : MhcSignatureType.fromJSON(data["signatureType"]),
-			options: (data["options"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as String))),
-			receipts: (data["receipts"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as String))),
-			encryptedSelf: (data["encryptedSelf"] as Base64String?)
-		);
-	}
-
 	static Map<String, dynamic> encode(DecryptedMedicalHouseContract value) {
 		Map<String, dynamic> entityAsMap = {
 			"contractId" : value.contractId,
@@ -263,6 +225,44 @@ class DecryptedMedicalHouseContract implements MedicalHouseContract {
 			"encryptedSelf" : value.encryptedSelf
 		};
 		return entityAsMap;
+	}
+
+	static DecryptedMedicalHouseContract fromJSON(Map<String, dynamic> data) {
+		return DecryptedMedicalHouseContract(
+			unsubscriptionReasonId: (data["unsubscriptionReasonId"] as int?),
+			status: (data["status"] as int?),
+			contractId: (data["contractId"] as String?),
+			validFrom: (data["validFrom"] as int?),
+			validTo: (data["validTo"] as int?),
+			mmNihii: (data["mmNihii"] as String?),
+			hcpId: (data["hcpId"] as String?),
+			changeType: data["changeType"] == null ? null : ContractChangeType.fromJSON(data["changeType"]),
+			parentContractId: (data["parentContractId"] as String?),
+			changedBy: (data["changedBy"] as String?),
+			startOfContract: (data["startOfContract"] as int?),
+			startOfCoverage: (data["startOfCoverage"] as int?),
+			endOfContract: (data["endOfContract"] as int?),
+			endOfCoverage: (data["endOfCoverage"] as int?),
+			kine: (data["kine"] as bool),
+			gp: (data["gp"] as bool),
+			ptd: (data["ptd"] as bool),
+			nurse: (data["nurse"] as bool),
+			noKine: (data["noKine"] as bool),
+			noGp: (data["noGp"] as bool),
+			noNurse: (data["noNurse"] as bool),
+			ptdStart: (data["ptdStart"] as int?),
+			ptdEnd: (data["ptdEnd"] as int?),
+			ptdLastInvoiced: (data["ptdLastInvoiced"] as int?),
+			startOfSuspension: (data["startOfSuspension"] as int?),
+			endOfSuspension: (data["endOfSuspension"] as int?),
+			suspensionReason: data["suspensionReason"] == null ? null : SuspensionReason.fromJSON(data["suspensionReason"]),
+			suspensionSource: (data["suspensionSource"] as String?),
+			forcedSuspension: (data["forcedSuspension"] as bool),
+			signatureType: data["signatureType"] == null ? null : MhcSignatureType.fromJSON(data["signatureType"]),
+			options: (data["options"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as String))),
+			receipts: (data["receipts"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as String))),
+			encryptedSelf: (data["encryptedSelf"] as Base64String?)
+		);
 	}
 }
 
@@ -382,44 +382,6 @@ class EncryptedMedicalHouseContract implements MedicalHouseContract {
 		_unsubscriptionReasonId = unsubscriptionReasonId ?? null,
 		_status = status ?? null;
 
-	factory EncryptedMedicalHouseContract.fromJSON(Map<String, dynamic> data) {
-		return EncryptedMedicalHouseContract(
-			unsubscriptionReasonId: (data["unsubscriptionReasonId"] as int?),
-			status: (data["status"] as int?),
-			contractId: (data["contractId"] as String?),
-			validFrom: (data["validFrom"] as int?),
-			validTo: (data["validTo"] as int?),
-			mmNihii: (data["mmNihii"] as String?),
-			hcpId: (data["hcpId"] as String?),
-			changeType: data["changeType"] == null ? null : ContractChangeType.fromJSON(data["changeType"]),
-			parentContractId: (data["parentContractId"] as String?),
-			changedBy: (data["changedBy"] as String?),
-			startOfContract: (data["startOfContract"] as int?),
-			startOfCoverage: (data["startOfCoverage"] as int?),
-			endOfContract: (data["endOfContract"] as int?),
-			endOfCoverage: (data["endOfCoverage"] as int?),
-			kine: (data["kine"] as bool),
-			gp: (data["gp"] as bool),
-			ptd: (data["ptd"] as bool),
-			nurse: (data["nurse"] as bool),
-			noKine: (data["noKine"] as bool),
-			noGp: (data["noGp"] as bool),
-			noNurse: (data["noNurse"] as bool),
-			ptdStart: (data["ptdStart"] as int?),
-			ptdEnd: (data["ptdEnd"] as int?),
-			ptdLastInvoiced: (data["ptdLastInvoiced"] as int?),
-			startOfSuspension: (data["startOfSuspension"] as int?),
-			endOfSuspension: (data["endOfSuspension"] as int?),
-			suspensionReason: data["suspensionReason"] == null ? null : SuspensionReason.fromJSON(data["suspensionReason"]),
-			suspensionSource: (data["suspensionSource"] as String?),
-			forcedSuspension: (data["forcedSuspension"] as bool),
-			signatureType: data["signatureType"] == null ? null : MhcSignatureType.fromJSON(data["signatureType"]),
-			options: (data["options"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as String))),
-			receipts: (data["receipts"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as String))),
-			encryptedSelf: (data["encryptedSelf"] as Base64String?)
-		);
-	}
-
 	static Map<String, dynamic> encode(EncryptedMedicalHouseContract value) {
 		Map<String, dynamic> entityAsMap = {
 			"contractId" : value.contractId,
@@ -457,5 +419,43 @@ class EncryptedMedicalHouseContract implements MedicalHouseContract {
 			"encryptedSelf" : value.encryptedSelf
 		};
 		return entityAsMap;
+	}
+
+	static EncryptedMedicalHouseContract fromJSON(Map<String, dynamic> data) {
+		return EncryptedMedicalHouseContract(
+			unsubscriptionReasonId: (data["unsubscriptionReasonId"] as int?),
+			status: (data["status"] as int?),
+			contractId: (data["contractId"] as String?),
+			validFrom: (data["validFrom"] as int?),
+			validTo: (data["validTo"] as int?),
+			mmNihii: (data["mmNihii"] as String?),
+			hcpId: (data["hcpId"] as String?),
+			changeType: data["changeType"] == null ? null : ContractChangeType.fromJSON(data["changeType"]),
+			parentContractId: (data["parentContractId"] as String?),
+			changedBy: (data["changedBy"] as String?),
+			startOfContract: (data["startOfContract"] as int?),
+			startOfCoverage: (data["startOfCoverage"] as int?),
+			endOfContract: (data["endOfContract"] as int?),
+			endOfCoverage: (data["endOfCoverage"] as int?),
+			kine: (data["kine"] as bool),
+			gp: (data["gp"] as bool),
+			ptd: (data["ptd"] as bool),
+			nurse: (data["nurse"] as bool),
+			noKine: (data["noKine"] as bool),
+			noGp: (data["noGp"] as bool),
+			noNurse: (data["noNurse"] as bool),
+			ptdStart: (data["ptdStart"] as int?),
+			ptdEnd: (data["ptdEnd"] as int?),
+			ptdLastInvoiced: (data["ptdLastInvoiced"] as int?),
+			startOfSuspension: (data["startOfSuspension"] as int?),
+			endOfSuspension: (data["endOfSuspension"] as int?),
+			suspensionReason: data["suspensionReason"] == null ? null : SuspensionReason.fromJSON(data["suspensionReason"]),
+			suspensionSource: (data["suspensionSource"] as String?),
+			forcedSuspension: (data["forcedSuspension"] as bool),
+			signatureType: data["signatureType"] == null ? null : MhcSignatureType.fromJSON(data["signatureType"]),
+			options: (data["options"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as String))),
+			receipts: (data["receipts"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as String))),
+			encryptedSelf: (data["encryptedSelf"] as Base64String?)
+		);
 	}
 }

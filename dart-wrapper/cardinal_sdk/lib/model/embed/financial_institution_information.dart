@@ -70,19 +70,6 @@ class EncryptedFinancialInstitutionInformation implements FinancialInstitutionIn
 		preferredFiiForPartners = preferredFiiForPartners ?? {},
 		encryptedSelf = encryptedSelf ?? null;
 
-	factory EncryptedFinancialInstitutionInformation.fromJSON(Map<String, dynamic> data) {
-		return EncryptedFinancialInstitutionInformation(
-			name: (data["name"] as String?),
-			key: (data["key"] as String?),
-			bankAccount: (data["bankAccount"] as String?),
-			bic: (data["bic"] as String?),
-			proxyBankAccount: (data["proxyBankAccount"] as String?),
-			proxyBic: (data["proxyBic"] as String?),
-			preferredFiiForPartners: (data["preferredFiiForPartners"] as List<dynamic>).map((x0) => (x0 as String) ).toSet(),
-			encryptedSelf: (data["encryptedSelf"] as Base64String?)
-		);
-	}
-
 	static Map<String, dynamic> encode(EncryptedFinancialInstitutionInformation value) {
 		Map<String, dynamic> entityAsMap = {
 			"name" : value.name,
@@ -95,6 +82,19 @@ class EncryptedFinancialInstitutionInformation implements FinancialInstitutionIn
 			"encryptedSelf" : value.encryptedSelf
 		};
 		return entityAsMap;
+	}
+
+	static EncryptedFinancialInstitutionInformation fromJSON(Map<String, dynamic> data) {
+		return EncryptedFinancialInstitutionInformation(
+			name: (data["name"] as String?),
+			key: (data["key"] as String?),
+			bankAccount: (data["bankAccount"] as String?),
+			bic: (data["bic"] as String?),
+			proxyBankAccount: (data["proxyBankAccount"] as String?),
+			proxyBic: (data["proxyBic"] as String?),
+			preferredFiiForPartners: (data["preferredFiiForPartners"] as List<dynamic>).map((x0) => (x0 as String) ).toSet(),
+			encryptedSelf: (data["encryptedSelf"] as Base64String?)
+		);
 	}
 }
 
@@ -125,19 +125,6 @@ class DecryptedFinancialInstitutionInformation implements FinancialInstitutionIn
 		preferredFiiForPartners = preferredFiiForPartners ?? {},
 		encryptedSelf = encryptedSelf ?? null;
 
-	factory DecryptedFinancialInstitutionInformation.fromJSON(Map<String, dynamic> data) {
-		return DecryptedFinancialInstitutionInformation(
-			name: (data["name"] as String?),
-			key: (data["key"] as String?),
-			bankAccount: (data["bankAccount"] as String?),
-			bic: (data["bic"] as String?),
-			proxyBankAccount: (data["proxyBankAccount"] as String?),
-			proxyBic: (data["proxyBic"] as String?),
-			preferredFiiForPartners: (data["preferredFiiForPartners"] as List<dynamic>).map((x0) => (x0 as String) ).toSet(),
-			encryptedSelf: (data["encryptedSelf"] as Base64String?)
-		);
-	}
-
 	static Map<String, dynamic> encode(DecryptedFinancialInstitutionInformation value) {
 		Map<String, dynamic> entityAsMap = {
 			"name" : value.name,
@@ -150,5 +137,18 @@ class DecryptedFinancialInstitutionInformation implements FinancialInstitutionIn
 			"encryptedSelf" : value.encryptedSelf
 		};
 		return entityAsMap;
+	}
+
+	static DecryptedFinancialInstitutionInformation fromJSON(Map<String, dynamic> data) {
+		return DecryptedFinancialInstitutionInformation(
+			name: (data["name"] as String?),
+			key: (data["key"] as String?),
+			bankAccount: (data["bankAccount"] as String?),
+			bic: (data["bic"] as String?),
+			proxyBankAccount: (data["proxyBankAccount"] as String?),
+			proxyBic: (data["proxyBic"] as String?),
+			preferredFiiForPartners: (data["preferredFiiForPartners"] as List<dynamic>).map((x0) => (x0 as String) ).toSet(),
+			encryptedSelf: (data["encryptedSelf"] as Base64String?)
+		);
 	}
 }

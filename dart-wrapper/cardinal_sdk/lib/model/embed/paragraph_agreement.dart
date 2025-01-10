@@ -71,33 +71,6 @@ class ParagraphAgreement {
 		agreementAppendices = agreementAppendices ?? null,
 		documentId = documentId ?? null;
 
-	factory ParagraphAgreement.fromJSON(Map<String, dynamic> data) {
-		return ParagraphAgreement(
-			timestamp: (data["timestamp"] as int?),
-			paragraph: (data["paragraph"] as String?),
-			accepted: (data["accepted"] as bool?),
-			inTreatment: (data["inTreatment"] as bool?),
-			canceled: (data["canceled"] as bool?),
-			careProviderReference: (data["careProviderReference"] as String?),
-			decisionReference: (data["decisionReference"] as String?),
-			start: (data["start"] as int?),
-			end: (data["end"] as int?),
-			cancelationDate: (data["cancelationDate"] as int?),
-			quantityValue: (data["quantityValue"] as num?)?.toDouble(),
-			quantityUnit: (data["quantityUnit"] as String?),
-			ioRequestReference: (data["ioRequestReference"] as String?),
-			responseType: (data["responseType"] as String?),
-			refusalJustification: (data["refusalJustification"] as Map<String, dynamic>?)?.map((k0, v0) => MapEntry((k0 as String), (v0 as String))),
-			verses: (data["verses"] as List<dynamic>?)?.map((x0) => (x0 as int) ).toSet(),
-			coverageType: (data["coverageType"] as String?),
-			unitNumber: (data["unitNumber"] as num?)?.toDouble(),
-			strength: (data["strength"] as num?)?.toDouble(),
-			strengthUnit: (data["strengthUnit"] as String?),
-			agreementAppendices: (data["agreementAppendices"] as List<dynamic>?)?.map((x0) => AgreementAppendix.fromJSON(x0) ).toList(),
-			documentId: (data["documentId"] as String?)
-		);
-	}
-
 	static Map<String, dynamic> encode(ParagraphAgreement value) {
 		Map<String, dynamic> entityAsMap = {
 			"timestamp" : value.timestamp,
@@ -124,5 +97,32 @@ class ParagraphAgreement {
 			"documentId" : value.documentId
 		};
 		return entityAsMap;
+	}
+
+	static ParagraphAgreement fromJSON(Map<String, dynamic> data) {
+		return ParagraphAgreement(
+			timestamp: (data["timestamp"] as int?),
+			paragraph: (data["paragraph"] as String?),
+			accepted: (data["accepted"] as bool?),
+			inTreatment: (data["inTreatment"] as bool?),
+			canceled: (data["canceled"] as bool?),
+			careProviderReference: (data["careProviderReference"] as String?),
+			decisionReference: (data["decisionReference"] as String?),
+			start: (data["start"] as int?),
+			end: (data["end"] as int?),
+			cancelationDate: (data["cancelationDate"] as int?),
+			quantityValue: (data["quantityValue"] as num?)?.toDouble(),
+			quantityUnit: (data["quantityUnit"] as String?),
+			ioRequestReference: (data["ioRequestReference"] as String?),
+			responseType: (data["responseType"] as String?),
+			refusalJustification: (data["refusalJustification"] as Map<String, dynamic>?)?.map((k0, v0) => MapEntry((k0 as String), (v0 as String))),
+			verses: (data["verses"] as List<dynamic>?)?.map((x0) => (x0 as int) ).toSet(),
+			coverageType: (data["coverageType"] as String?),
+			unitNumber: (data["unitNumber"] as num?)?.toDouble(),
+			strength: (data["strength"] as num?)?.toDouble(),
+			strengthUnit: (data["strengthUnit"] as String?),
+			agreementAppendices: (data["agreementAppendices"] as List<dynamic>?)?.map((x0) => AgreementAppendix.fromJSON(x0) ).toList(),
+			documentId: (data["documentId"] as String?)
+		);
 	}
 }

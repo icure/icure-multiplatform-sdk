@@ -6,7 +6,11 @@ import 'package:cardinal_sdk/model/couchdb/doc_identifier.dart';
 
 class KeywordApi {
 	final String _sdkId;
-	KeywordApi(this._sdkId);
+	final Object _dartSdk;
+	KeywordApi(
+		this._sdkId,
+		this._dartSdk
+		);
 
 	Future<Keyword> getKeyword(String frontEndMigrationId) async {
 		return await CardinalSdkPlatformInterface.instance.apis.keyword.getKeyword(

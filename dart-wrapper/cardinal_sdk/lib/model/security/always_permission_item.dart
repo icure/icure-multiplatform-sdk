@@ -11,16 +11,16 @@ class AlwaysPermissionItem implements PermissionItem {
 		this.type
 		) : predicate = AlwaysPredicate();
 
-	factory AlwaysPermissionItem.fromJSON(Map<String, dynamic> data) {
-		return AlwaysPermissionItem(
-			PermissionType.fromJSON(data["type"])
-		);
-	}
-
 	static Map<String, dynamic> encode(AlwaysPermissionItem value) {
 		Map<String, dynamic> entityAsMap = {
 			"type" : PermissionType.encode(value.type)
 		};
 		return entityAsMap;
+	}
+
+	static AlwaysPermissionItem fromJSON(Map<String, dynamic> data) {
+		return AlwaysPermissionItem(
+			PermissionType.fromJSON(data["type"])
+		);
 	}
 }

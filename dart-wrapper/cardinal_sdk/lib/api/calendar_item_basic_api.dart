@@ -12,7 +12,11 @@ import 'package:cardinal_sdk/subscription/entity_subscription.dart';
 
 class CalendarItemBasicApi {
 	final String _sdkId;
-	CalendarItemBasicApi(this._sdkId);
+	final Object _dartSdk;
+	CalendarItemBasicApi(
+		this._sdkId,
+		this._dartSdk
+		);
 
 	Future<List<String>> matchCalendarItemsBy(BaseFilterOptions<CalendarItem> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.calendarItemBasic.matchCalendarItemsBy(

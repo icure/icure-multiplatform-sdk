@@ -24,6 +24,7 @@ func dispatchApi(
   case "CalendarItemBasicApi": return CalendarItemBasicApiDispatcher.dispatch(methodName: methodName, parameters: parameters, resultCallback: resultCallback)
   case "MaintenanceTaskApi": return MaintenanceTaskApiDispatcher.dispatch(methodName: methodName, parameters: parameters, resultCallback: resultCallback)
   case "FormBasicApi": return FormBasicApiDispatcher.dispatch(methodName: methodName, parameters: parameters, resultCallback: resultCallback)
+  case "RecoveryApi": return RecoveryApiDispatcher.dispatch(methodName: methodName, parameters: parameters, resultCallback: resultCallback)
   case "PatientApi": return PatientApiDispatcher.dispatch(methodName: methodName, parameters: parameters, resultCallback: resultCallback)
   case "MaintenanceTaskBasicApi": return MaintenanceTaskBasicApiDispatcher.dispatch(methodName: methodName, parameters: parameters, resultCallback: resultCallback)
   case "TarificationApi": return TarificationApiDispatcher.dispatch(methodName: methodName, parameters: parameters, resultCallback: resultCallback)

@@ -6,7 +6,11 @@ import 'package:cardinal_sdk/model/couchdb/doc_identifier.dart';
 
 class InsuranceApi {
 	final String _sdkId;
-	InsuranceApi(this._sdkId);
+	final Object _dartSdk;
+	InsuranceApi(
+		this._sdkId,
+		this._dartSdk
+		);
 
 	Future<Insurance> getInsurance(String insuranceId) async {
 		return await CardinalSdkPlatformInterface.instance.apis.insurance.getInsurance(

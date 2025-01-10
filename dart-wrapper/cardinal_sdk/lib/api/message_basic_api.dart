@@ -12,7 +12,11 @@ import 'package:cardinal_sdk/subscription/entity_subscription.dart';
 
 class MessageBasicApi {
 	final String _sdkId;
-	MessageBasicApi(this._sdkId);
+	final Object _dartSdk;
+	MessageBasicApi(
+		this._sdkId,
+		this._dartSdk
+		);
 
 	Future<List<String>> matchMessagesBy(BaseFilterOptions<Message> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.messageBasic.matchMessagesBy(

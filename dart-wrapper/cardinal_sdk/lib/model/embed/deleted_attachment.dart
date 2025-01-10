@@ -16,15 +16,6 @@ class DeletedAttachment {
 		key = key ?? null,
 		deletionTime = deletionTime ?? null;
 
-	factory DeletedAttachment.fromJSON(Map<String, dynamic> data) {
-		return DeletedAttachment(
-			couchDbAttachmentId: (data["couchDbAttachmentId"] as String?),
-			objectStoreAttachmentId: (data["objectStoreAttachmentId"] as String?),
-			key: (data["key"] as String?),
-			deletionTime: (data["deletionTime"] as int?)
-		);
-	}
-
 	static Map<String, dynamic> encode(DeletedAttachment value) {
 		Map<String, dynamic> entityAsMap = {
 			"couchDbAttachmentId" : value.couchDbAttachmentId,
@@ -33,5 +24,14 @@ class DeletedAttachment {
 			"deletionTime" : value.deletionTime
 		};
 		return entityAsMap;
+	}
+
+	static DeletedAttachment fromJSON(Map<String, dynamic> data) {
+		return DeletedAttachment(
+			couchDbAttachmentId: (data["couchDbAttachmentId"] as String?),
+			objectStoreAttachmentId: (data["objectStoreAttachmentId"] as String?),
+			key: (data["key"] as String?),
+			deletionTime: (data["deletionTime"] as int?)
+		);
 	}
 }

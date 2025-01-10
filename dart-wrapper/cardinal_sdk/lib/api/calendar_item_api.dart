@@ -18,12 +18,14 @@ import 'package:cardinal_sdk/subscription/entity_subscription.dart';
 
 class CalendarItemApi {
 	final String _sdkId;
+	final Object _dartSdk;
 	final TryAndRecoverCalendarItemApi tryAndRecover;
 	final EncryptedCalendarItemApi encrypted;
 	CalendarItemApi(
-		this._sdkId
-		) : tryAndRecover = TryAndRecoverCalendarItemApi(_sdkId),
-		encrypted = EncryptedCalendarItemApi(_sdkId);
+		this._sdkId,
+		this._dartSdk
+		) : tryAndRecover = TryAndRecoverCalendarItemApi(_sdkId, _dartSdk),
+		encrypted = EncryptedCalendarItemApi(_sdkId, _dartSdk);
 
 	Future<DecryptedCalendarItem> createCalendarItem(DecryptedCalendarItem entity) async {
 		return await CardinalSdkPlatformInterface.instance.apis.calendarItem.createCalendarItem(
@@ -232,7 +234,11 @@ class CalendarItemApi {
 
 class TryAndRecoverCalendarItemApi {
 	final String _sdkId;
-	TryAndRecoverCalendarItemApi(this._sdkId);
+	final Object _dartSdk;
+	TryAndRecoverCalendarItemApi(
+		this._sdkId,
+		this._dartSdk
+		);
 
 	Future<CalendarItem> shareWith(String delegateId, CalendarItem calendarItem, { CalendarItemShareOptions? options }) async {
 		return await CardinalSdkPlatformInterface.instance.apis.calendarItem.tryAndRecover.shareWith(
@@ -313,7 +319,11 @@ class TryAndRecoverCalendarItemApi {
 
 class EncryptedCalendarItemApi {
 	final String _sdkId;
-	EncryptedCalendarItemApi(this._sdkId);
+	final Object _dartSdk;
+	EncryptedCalendarItemApi(
+		this._sdkId,
+		this._dartSdk
+		);
 
 	Future<EncryptedCalendarItem> shareWith(String delegateId, EncryptedCalendarItem calendarItem, { CalendarItemShareOptions? options }) async {
 		return await CardinalSdkPlatformInterface.instance.apis.calendarItem.encrypted.shareWith(

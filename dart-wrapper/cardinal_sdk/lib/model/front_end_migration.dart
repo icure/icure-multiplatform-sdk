@@ -46,24 +46,6 @@ class FrontEndMigration implements StoredDocument {
 		processCount = processCount ?? null,
 		properties = properties ?? {};
 
-	factory FrontEndMigration.fromJSON(Map<String, dynamic> data) {
-		return FrontEndMigration(
-			(data["id"] as String),
-			rev: (data["rev"] as String?),
-			deletionDate: (data["deletionDate"] as int?),
-			name: (data["name"] as String?),
-			startDate: (data["startDate"] as int?),
-			endDate: (data["endDate"] as int?),
-			status: data["status"] == null ? null : FrontEndMigrationStatus.fromJSON(data["status"]),
-			logs: (data["logs"] as String?),
-			userId: (data["userId"] as String?),
-			startKey: (data["startKey"] as String?),
-			startKeyDocId: (data["startKeyDocId"] as String?),
-			processCount: (data["processCount"] as int?),
-			properties: (data["properties"] as List<dynamic>).map((x0) => DecryptedPropertyStub.fromJSON(x0) ).toSet(),
-		);
-	}
-
 	static Map<String, dynamic> encode(FrontEndMigration value) {
 		Map<String, dynamic> entityAsMap = {
 			"id" : value.id,
@@ -81,5 +63,23 @@ class FrontEndMigration implements StoredDocument {
 			"properties" : value.properties.map((x0) => DecryptedPropertyStub.encode(x0)).toList()
 		};
 		return entityAsMap;
+	}
+
+	static FrontEndMigration fromJSON(Map<String, dynamic> data) {
+		return FrontEndMigration(
+			(data["id"] as String),
+			rev: (data["rev"] as String?),
+			deletionDate: (data["deletionDate"] as int?),
+			name: (data["name"] as String?),
+			startDate: (data["startDate"] as int?),
+			endDate: (data["endDate"] as int?),
+			status: data["status"] == null ? null : FrontEndMigrationStatus.fromJSON(data["status"]),
+			logs: (data["logs"] as String?),
+			userId: (data["userId"] as String?),
+			startKey: (data["startKey"] as String?),
+			startKeyDocId: (data["startKeyDocId"] as String?),
+			processCount: (data["processCount"] as int?),
+			properties: (data["properties"] as List<dynamic>).map((x0) => DecryptedPropertyStub.fromJSON(x0) ).toSet(),
+		);
 	}
 }

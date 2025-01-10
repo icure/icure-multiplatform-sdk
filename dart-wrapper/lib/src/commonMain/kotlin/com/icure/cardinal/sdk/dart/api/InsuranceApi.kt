@@ -1,7 +1,7 @@
 // auto-generated file
 package com.icure.cardinal.sdk.dart.api
 
-import com.icure.cardinal.sdk.CardinalSdk
+import com.icure.cardinal.sdk.CardinalNonCryptoApis
 import com.icure.cardinal.sdk.dart.utils.ApiScope
 import com.icure.cardinal.sdk.dart.utils.NativeReferences
 import com.icure.cardinal.sdk.model.Insurance
@@ -33,7 +33,7 @@ public object InsuranceApi {
     ApiScope.execute(
       dartResultCallback,
       Insurance.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).insurance.getInsurance(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).insurance.getInsurance(
         insuranceId,
       )
     }
@@ -56,7 +56,7 @@ public object InsuranceApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(Insurance.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).insurance.getInsurances(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).insurance.getInsurances(
         insuranceIds,
       )
     }
@@ -79,7 +79,7 @@ public object InsuranceApi {
     ApiScope.execute(
       dartResultCallback,
       Insurance.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).insurance.createInsurance(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).insurance.createInsurance(
         insurance,
       )
     }
@@ -102,7 +102,7 @@ public object InsuranceApi {
     ApiScope.execute(
       dartResultCallback,
       DocIdentifier.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).insurance.deleteInsurance(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).insurance.deleteInsurance(
         insuranceId,
       )
     }
@@ -125,7 +125,7 @@ public object InsuranceApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(Insurance.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).insurance.listInsurancesByCode(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).insurance.listInsurancesByCode(
         insuranceCode,
       )
     }
@@ -148,7 +148,7 @@ public object InsuranceApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(Insurance.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).insurance.listInsurancesByName(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).insurance.listInsurancesByName(
         insuranceName,
       )
     }
@@ -171,7 +171,7 @@ public object InsuranceApi {
     ApiScope.execute(
       dartResultCallback,
       Insurance.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).insurance.modifyInsurance(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).insurance.modifyInsurance(
         insurance,
       )
     }

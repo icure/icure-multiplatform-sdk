@@ -194,45 +194,6 @@ class EncryptedHealthElement implements HealthElement {
 		securityMetadata = securityMetadata ?? null,
 		_status = status ?? 0;
 
-	factory EncryptedHealthElement.fromJSON(Map<String, dynamic> data) {
-		return EncryptedHealthElement(
-			(data["id"] as String),
-			status: (data["status"] as int),
-			identifiers: (data["identifiers"] as List<dynamic>).map((x0) => Identifier.fromJSON(x0) ).toList(),
-			rev: (data["rev"] as String?),
-			created: (data["created"] as int?),
-			modified: (data["modified"] as int?),
-			author: (data["author"] as String?),
-			responsible: (data["responsible"] as String?),
-			medicalLocationId: (data["medicalLocationId"] as String?),
-			tags: (data["tags"] as List<dynamic>).map((x0) => CodeStub.fromJSON(x0) ).toSet(),
-			codes: (data["codes"] as List<dynamic>).map((x0) => CodeStub.fromJSON(x0) ).toSet(),
-			endOfLife: (data["endOfLife"] as int?),
-			deletionDate: (data["deletionDate"] as int?),
-			healthElementId: (data["healthElementId"] as String?),
-			valueDate: (data["valueDate"] as int?),
-			openingDate: (data["openingDate"] as int?),
-			closingDate: (data["closingDate"] as int?),
-			descr: (data["descr"] as String?),
-			note: (data["note"] as String?),
-			notes: (data["notes"] as List<dynamic>).map((x0) => Annotation.fromJSON(x0) ).toList(),
-			relevant: (data["relevant"] as bool),
-			idOpeningContact: (data["idOpeningContact"] as String?),
-			idClosingContact: (data["idClosingContact"] as String?),
-			idService: (data["idService"] as String?),
-			laterality: data["laterality"] == null ? null : Laterality.fromJSON(data["laterality"]),
-			plansOfAction: (data["plansOfAction"] as List<dynamic>).map((x0) => EncryptedPlanOfAction.fromJSON(x0) ).toList(),
-			episodes: (data["episodes"] as List<dynamic>).map((x0) => EncryptedEpisode.fromJSON(x0) ).toList(),
-			careTeam: (data["careTeam"] as List<dynamic>).map((x0) => EncryptedCareTeamMember.fromJSON(x0) ).toList(),
-			secretForeignKeys: (data["secretForeignKeys"] as List<dynamic>).map((x0) => (x0 as String) ).toSet(),
-			cryptedForeignKeys: (data["cryptedForeignKeys"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as List<dynamic>).map((x1) => Delegation.fromJSON(x1) ).toSet())),
-			delegations: (data["delegations"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as List<dynamic>).map((x1) => Delegation.fromJSON(x1) ).toSet())),
-			encryptionKeys: (data["encryptionKeys"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as List<dynamic>).map((x1) => Delegation.fromJSON(x1) ).toSet())),
-			encryptedSelf: (data["encryptedSelf"] as Base64String?),
-			securityMetadata: data["securityMetadata"] == null ? null : SecurityMetadata.fromJSON(data["securityMetadata"]),
-		);
-	}
-
 	static Map<String, dynamic> encode(EncryptedHealthElement value) {
 		Map<String, dynamic> entityAsMap = {
 			"id" : value.id,
@@ -271,6 +232,45 @@ class EncryptedHealthElement implements HealthElement {
 			"securityMetadata" : value.securityMetadata == null ? null : SecurityMetadata.encode(value.securityMetadata!)
 		};
 		return entityAsMap;
+	}
+
+	static EncryptedHealthElement fromJSON(Map<String, dynamic> data) {
+		return EncryptedHealthElement(
+			(data["id"] as String),
+			status: (data["status"] as int),
+			identifiers: (data["identifiers"] as List<dynamic>).map((x0) => Identifier.fromJSON(x0) ).toList(),
+			rev: (data["rev"] as String?),
+			created: (data["created"] as int?),
+			modified: (data["modified"] as int?),
+			author: (data["author"] as String?),
+			responsible: (data["responsible"] as String?),
+			medicalLocationId: (data["medicalLocationId"] as String?),
+			tags: (data["tags"] as List<dynamic>).map((x0) => CodeStub.fromJSON(x0) ).toSet(),
+			codes: (data["codes"] as List<dynamic>).map((x0) => CodeStub.fromJSON(x0) ).toSet(),
+			endOfLife: (data["endOfLife"] as int?),
+			deletionDate: (data["deletionDate"] as int?),
+			healthElementId: (data["healthElementId"] as String?),
+			valueDate: (data["valueDate"] as int?),
+			openingDate: (data["openingDate"] as int?),
+			closingDate: (data["closingDate"] as int?),
+			descr: (data["descr"] as String?),
+			note: (data["note"] as String?),
+			notes: (data["notes"] as List<dynamic>).map((x0) => Annotation.fromJSON(x0) ).toList(),
+			relevant: (data["relevant"] as bool),
+			idOpeningContact: (data["idOpeningContact"] as String?),
+			idClosingContact: (data["idClosingContact"] as String?),
+			idService: (data["idService"] as String?),
+			laterality: data["laterality"] == null ? null : Laterality.fromJSON(data["laterality"]),
+			plansOfAction: (data["plansOfAction"] as List<dynamic>).map((x0) => EncryptedPlanOfAction.fromJSON(x0) ).toList(),
+			episodes: (data["episodes"] as List<dynamic>).map((x0) => EncryptedEpisode.fromJSON(x0) ).toList(),
+			careTeam: (data["careTeam"] as List<dynamic>).map((x0) => EncryptedCareTeamMember.fromJSON(x0) ).toList(),
+			secretForeignKeys: (data["secretForeignKeys"] as List<dynamic>).map((x0) => (x0 as String) ).toSet(),
+			cryptedForeignKeys: (data["cryptedForeignKeys"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as List<dynamic>).map((x1) => Delegation.fromJSON(x1) ).toSet())),
+			delegations: (data["delegations"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as List<dynamic>).map((x1) => Delegation.fromJSON(x1) ).toSet())),
+			encryptionKeys: (data["encryptionKeys"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as List<dynamic>).map((x1) => Delegation.fromJSON(x1) ).toSet())),
+			encryptedSelf: (data["encryptedSelf"] as Base64String?),
+			securityMetadata: data["securityMetadata"] == null ? null : SecurityMetadata.fromJSON(data["securityMetadata"]),
+		);
 	}
 }
 
@@ -386,45 +386,6 @@ class DecryptedHealthElement implements HealthElement {
 		securityMetadata = securityMetadata ?? null,
 		_status = status ?? 0;
 
-	factory DecryptedHealthElement.fromJSON(Map<String, dynamic> data) {
-		return DecryptedHealthElement(
-			(data["id"] as String),
-			status: (data["status"] as int),
-			identifiers: (data["identifiers"] as List<dynamic>).map((x0) => Identifier.fromJSON(x0) ).toList(),
-			rev: (data["rev"] as String?),
-			created: (data["created"] as int?),
-			modified: (data["modified"] as int?),
-			author: (data["author"] as String?),
-			responsible: (data["responsible"] as String?),
-			medicalLocationId: (data["medicalLocationId"] as String?),
-			tags: (data["tags"] as List<dynamic>).map((x0) => CodeStub.fromJSON(x0) ).toSet(),
-			codes: (data["codes"] as List<dynamic>).map((x0) => CodeStub.fromJSON(x0) ).toSet(),
-			endOfLife: (data["endOfLife"] as int?),
-			deletionDate: (data["deletionDate"] as int?),
-			healthElementId: (data["healthElementId"] as String?),
-			valueDate: (data["valueDate"] as int?),
-			openingDate: (data["openingDate"] as int?),
-			closingDate: (data["closingDate"] as int?),
-			descr: (data["descr"] as String?),
-			note: (data["note"] as String?),
-			notes: (data["notes"] as List<dynamic>).map((x0) => Annotation.fromJSON(x0) ).toList(),
-			relevant: (data["relevant"] as bool),
-			idOpeningContact: (data["idOpeningContact"] as String?),
-			idClosingContact: (data["idClosingContact"] as String?),
-			idService: (data["idService"] as String?),
-			laterality: data["laterality"] == null ? null : Laterality.fromJSON(data["laterality"]),
-			plansOfAction: (data["plansOfAction"] as List<dynamic>).map((x0) => DecryptedPlanOfAction.fromJSON(x0) ).toList(),
-			episodes: (data["episodes"] as List<dynamic>).map((x0) => DecryptedEpisode.fromJSON(x0) ).toList(),
-			careTeam: (data["careTeam"] as List<dynamic>).map((x0) => DecryptedCareTeamMember.fromJSON(x0) ).toList(),
-			secretForeignKeys: (data["secretForeignKeys"] as List<dynamic>).map((x0) => (x0 as String) ).toSet(),
-			cryptedForeignKeys: (data["cryptedForeignKeys"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as List<dynamic>).map((x1) => Delegation.fromJSON(x1) ).toSet())),
-			delegations: (data["delegations"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as List<dynamic>).map((x1) => Delegation.fromJSON(x1) ).toSet())),
-			encryptionKeys: (data["encryptionKeys"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as List<dynamic>).map((x1) => Delegation.fromJSON(x1) ).toSet())),
-			encryptedSelf: (data["encryptedSelf"] as Base64String?),
-			securityMetadata: data["securityMetadata"] == null ? null : SecurityMetadata.fromJSON(data["securityMetadata"]),
-		);
-	}
-
 	static Map<String, dynamic> encode(DecryptedHealthElement value) {
 		Map<String, dynamic> entityAsMap = {
 			"id" : value.id,
@@ -463,5 +424,44 @@ class DecryptedHealthElement implements HealthElement {
 			"securityMetadata" : value.securityMetadata == null ? null : SecurityMetadata.encode(value.securityMetadata!)
 		};
 		return entityAsMap;
+	}
+
+	static DecryptedHealthElement fromJSON(Map<String, dynamic> data) {
+		return DecryptedHealthElement(
+			(data["id"] as String),
+			status: (data["status"] as int),
+			identifiers: (data["identifiers"] as List<dynamic>).map((x0) => Identifier.fromJSON(x0) ).toList(),
+			rev: (data["rev"] as String?),
+			created: (data["created"] as int?),
+			modified: (data["modified"] as int?),
+			author: (data["author"] as String?),
+			responsible: (data["responsible"] as String?),
+			medicalLocationId: (data["medicalLocationId"] as String?),
+			tags: (data["tags"] as List<dynamic>).map((x0) => CodeStub.fromJSON(x0) ).toSet(),
+			codes: (data["codes"] as List<dynamic>).map((x0) => CodeStub.fromJSON(x0) ).toSet(),
+			endOfLife: (data["endOfLife"] as int?),
+			deletionDate: (data["deletionDate"] as int?),
+			healthElementId: (data["healthElementId"] as String?),
+			valueDate: (data["valueDate"] as int?),
+			openingDate: (data["openingDate"] as int?),
+			closingDate: (data["closingDate"] as int?),
+			descr: (data["descr"] as String?),
+			note: (data["note"] as String?),
+			notes: (data["notes"] as List<dynamic>).map((x0) => Annotation.fromJSON(x0) ).toList(),
+			relevant: (data["relevant"] as bool),
+			idOpeningContact: (data["idOpeningContact"] as String?),
+			idClosingContact: (data["idClosingContact"] as String?),
+			idService: (data["idService"] as String?),
+			laterality: data["laterality"] == null ? null : Laterality.fromJSON(data["laterality"]),
+			plansOfAction: (data["plansOfAction"] as List<dynamic>).map((x0) => DecryptedPlanOfAction.fromJSON(x0) ).toList(),
+			episodes: (data["episodes"] as List<dynamic>).map((x0) => DecryptedEpisode.fromJSON(x0) ).toList(),
+			careTeam: (data["careTeam"] as List<dynamic>).map((x0) => DecryptedCareTeamMember.fromJSON(x0) ).toList(),
+			secretForeignKeys: (data["secretForeignKeys"] as List<dynamic>).map((x0) => (x0 as String) ).toSet(),
+			cryptedForeignKeys: (data["cryptedForeignKeys"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as List<dynamic>).map((x1) => Delegation.fromJSON(x1) ).toSet())),
+			delegations: (data["delegations"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as List<dynamic>).map((x1) => Delegation.fromJSON(x1) ).toSet())),
+			encryptionKeys: (data["encryptionKeys"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as List<dynamic>).map((x1) => Delegation.fromJSON(x1) ).toSet())),
+			encryptedSelf: (data["encryptedSelf"] as Base64String?),
+			securityMetadata: data["securityMetadata"] == null ? null : SecurityMetadata.fromJSON(data["securityMetadata"]),
+		);
 	}
 }

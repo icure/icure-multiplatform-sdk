@@ -195,47 +195,6 @@ class EncryptedDocument implements Document {
 		encryptedSelf = encryptedSelf ?? null,
 		securityMetadata = securityMetadata ?? null;
 
-	factory EncryptedDocument.fromJSON(Map<String, dynamic> data) {
-		return EncryptedDocument(
-			(data["id"] as String),
-			rev: (data["rev"] as String?),
-			created: (data["created"] as int?),
-			modified: (data["modified"] as int?),
-			author: (data["author"] as String?),
-			responsible: (data["responsible"] as String?),
-			medicalLocationId: (data["medicalLocationId"] as String?),
-			tags: (data["tags"] as List<dynamic>).map((x0) => CodeStub.fromJSON(x0) ).toSet(),
-			codes: (data["codes"] as List<dynamic>).map((x0) => CodeStub.fromJSON(x0) ).toSet(),
-			endOfLife: (data["endOfLife"] as int?),
-			deletionDate: (data["deletionDate"] as int?),
-			documentLocation: data["documentLocation"] == null ? null : DocumentLocation.fromJSON(data["documentLocation"]),
-			documentType: data["documentType"] == null ? null : DocumentType.fromJSON(data["documentType"]),
-			documentStatus: data["documentStatus"] == null ? null : DocumentStatus.fromJSON(data["documentStatus"]),
-			externalUri: (data["externalUri"] as String?),
-			name: (data["name"] as String?),
-			version: (data["version"] as String?),
-			storedICureDocumentId: (data["storedICureDocumentId"] as String?),
-			externalUuid: (data["externalUuid"] as String?),
-			size: (data["size"] as int?),
-			hash: (data["hash"] as String?),
-			openingContactId: (data["openingContactId"] as String?),
-			attachmentId: (data["attachmentId"] as String?),
-			objectStoreReference: (data["objectStoreReference"] as String?),
-			mainUti: (data["mainUti"] as String?),
-			otherUtis: (data["otherUtis"] as List<dynamic>).map((x0) => (x0 as String) ).toSet(),
-			secondaryAttachments: (data["secondaryAttachments"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), DataAttachment.fromJSON(v0))),
-			deletedAttachments: (data["deletedAttachments"] as List<dynamic>).map((x0) => DeletedAttachment.fromJSON(x0) ).toList(),
-			encryptedAttachment: data["encryptedAttachment"] == null ? null : base64Decode(data["encryptedAttachment"] as String),
-			decryptedAttachment: data["decryptedAttachment"] == null ? null : base64Decode(data["decryptedAttachment"] as String),
-			secretForeignKeys: (data["secretForeignKeys"] as List<dynamic>).map((x0) => (x0 as String) ).toSet(),
-			cryptedForeignKeys: (data["cryptedForeignKeys"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as List<dynamic>).map((x1) => Delegation.fromJSON(x1) ).toSet())),
-			delegations: (data["delegations"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as List<dynamic>).map((x1) => Delegation.fromJSON(x1) ).toSet())),
-			encryptionKeys: (data["encryptionKeys"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as List<dynamic>).map((x1) => Delegation.fromJSON(x1) ).toSet())),
-			encryptedSelf: (data["encryptedSelf"] as Base64String?),
-			securityMetadata: data["securityMetadata"] == null ? null : SecurityMetadata.fromJSON(data["securityMetadata"]),
-		);
-	}
-
 	static Map<String, dynamic> encode(EncryptedDocument value) {
 		Map<String, dynamic> entityAsMap = {
 			"id" : value.id,
@@ -276,6 +235,47 @@ class EncryptedDocument implements Document {
 			"securityMetadata" : value.securityMetadata == null ? null : SecurityMetadata.encode(value.securityMetadata!)
 		};
 		return entityAsMap;
+	}
+
+	static EncryptedDocument fromJSON(Map<String, dynamic> data) {
+		return EncryptedDocument(
+			(data["id"] as String),
+			rev: (data["rev"] as String?),
+			created: (data["created"] as int?),
+			modified: (data["modified"] as int?),
+			author: (data["author"] as String?),
+			responsible: (data["responsible"] as String?),
+			medicalLocationId: (data["medicalLocationId"] as String?),
+			tags: (data["tags"] as List<dynamic>).map((x0) => CodeStub.fromJSON(x0) ).toSet(),
+			codes: (data["codes"] as List<dynamic>).map((x0) => CodeStub.fromJSON(x0) ).toSet(),
+			endOfLife: (data["endOfLife"] as int?),
+			deletionDate: (data["deletionDate"] as int?),
+			documentLocation: data["documentLocation"] == null ? null : DocumentLocation.fromJSON(data["documentLocation"]),
+			documentType: data["documentType"] == null ? null : DocumentType.fromJSON(data["documentType"]),
+			documentStatus: data["documentStatus"] == null ? null : DocumentStatus.fromJSON(data["documentStatus"]),
+			externalUri: (data["externalUri"] as String?),
+			name: (data["name"] as String?),
+			version: (data["version"] as String?),
+			storedICureDocumentId: (data["storedICureDocumentId"] as String?),
+			externalUuid: (data["externalUuid"] as String?),
+			size: (data["size"] as int?),
+			hash: (data["hash"] as String?),
+			openingContactId: (data["openingContactId"] as String?),
+			attachmentId: (data["attachmentId"] as String?),
+			objectStoreReference: (data["objectStoreReference"] as String?),
+			mainUti: (data["mainUti"] as String?),
+			otherUtis: (data["otherUtis"] as List<dynamic>).map((x0) => (x0 as String) ).toSet(),
+			secondaryAttachments: (data["secondaryAttachments"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), DataAttachment.fromJSON(v0))),
+			deletedAttachments: (data["deletedAttachments"] as List<dynamic>).map((x0) => DeletedAttachment.fromJSON(x0) ).toList(),
+			encryptedAttachment: data["encryptedAttachment"] == null ? null : base64Decode(data["encryptedAttachment"] as String),
+			decryptedAttachment: data["decryptedAttachment"] == null ? null : base64Decode(data["decryptedAttachment"] as String),
+			secretForeignKeys: (data["secretForeignKeys"] as List<dynamic>).map((x0) => (x0 as String) ).toSet(),
+			cryptedForeignKeys: (data["cryptedForeignKeys"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as List<dynamic>).map((x1) => Delegation.fromJSON(x1) ).toSet())),
+			delegations: (data["delegations"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as List<dynamic>).map((x1) => Delegation.fromJSON(x1) ).toSet())),
+			encryptionKeys: (data["encryptionKeys"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as List<dynamic>).map((x1) => Delegation.fromJSON(x1) ).toSet())),
+			encryptedSelf: (data["encryptedSelf"] as Base64String?),
+			securityMetadata: data["securityMetadata"] == null ? null : SecurityMetadata.fromJSON(data["securityMetadata"]),
+		);
 	}
 }
 
@@ -390,47 +390,6 @@ class DecryptedDocument implements Document {
 		encryptedSelf = encryptedSelf ?? null,
 		securityMetadata = securityMetadata ?? null;
 
-	factory DecryptedDocument.fromJSON(Map<String, dynamic> data) {
-		return DecryptedDocument(
-			(data["id"] as String),
-			rev: (data["rev"] as String?),
-			created: (data["created"] as int?),
-			modified: (data["modified"] as int?),
-			author: (data["author"] as String?),
-			responsible: (data["responsible"] as String?),
-			medicalLocationId: (data["medicalLocationId"] as String?),
-			tags: (data["tags"] as List<dynamic>).map((x0) => CodeStub.fromJSON(x0) ).toSet(),
-			codes: (data["codes"] as List<dynamic>).map((x0) => CodeStub.fromJSON(x0) ).toSet(),
-			endOfLife: (data["endOfLife"] as int?),
-			deletionDate: (data["deletionDate"] as int?),
-			documentLocation: data["documentLocation"] == null ? null : DocumentLocation.fromJSON(data["documentLocation"]),
-			documentType: data["documentType"] == null ? null : DocumentType.fromJSON(data["documentType"]),
-			documentStatus: data["documentStatus"] == null ? null : DocumentStatus.fromJSON(data["documentStatus"]),
-			externalUri: (data["externalUri"] as String?),
-			name: (data["name"] as String?),
-			version: (data["version"] as String?),
-			storedICureDocumentId: (data["storedICureDocumentId"] as String?),
-			externalUuid: (data["externalUuid"] as String?),
-			size: (data["size"] as int?),
-			hash: (data["hash"] as String?),
-			openingContactId: (data["openingContactId"] as String?),
-			attachmentId: (data["attachmentId"] as String?),
-			objectStoreReference: (data["objectStoreReference"] as String?),
-			mainUti: (data["mainUti"] as String?),
-			otherUtis: (data["otherUtis"] as List<dynamic>).map((x0) => (x0 as String) ).toSet(),
-			secondaryAttachments: (data["secondaryAttachments"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), DataAttachment.fromJSON(v0))),
-			deletedAttachments: (data["deletedAttachments"] as List<dynamic>).map((x0) => DeletedAttachment.fromJSON(x0) ).toList(),
-			encryptedAttachment: data["encryptedAttachment"] == null ? null : base64Decode(data["encryptedAttachment"] as String),
-			decryptedAttachment: data["decryptedAttachment"] == null ? null : base64Decode(data["decryptedAttachment"] as String),
-			secretForeignKeys: (data["secretForeignKeys"] as List<dynamic>).map((x0) => (x0 as String) ).toSet(),
-			cryptedForeignKeys: (data["cryptedForeignKeys"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as List<dynamic>).map((x1) => Delegation.fromJSON(x1) ).toSet())),
-			delegations: (data["delegations"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as List<dynamic>).map((x1) => Delegation.fromJSON(x1) ).toSet())),
-			encryptionKeys: (data["encryptionKeys"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as List<dynamic>).map((x1) => Delegation.fromJSON(x1) ).toSet())),
-			encryptedSelf: (data["encryptedSelf"] as Base64String?),
-			securityMetadata: data["securityMetadata"] == null ? null : SecurityMetadata.fromJSON(data["securityMetadata"]),
-		);
-	}
-
 	static Map<String, dynamic> encode(DecryptedDocument value) {
 		Map<String, dynamic> entityAsMap = {
 			"id" : value.id,
@@ -471,5 +430,46 @@ class DecryptedDocument implements Document {
 			"securityMetadata" : value.securityMetadata == null ? null : SecurityMetadata.encode(value.securityMetadata!)
 		};
 		return entityAsMap;
+	}
+
+	static DecryptedDocument fromJSON(Map<String, dynamic> data) {
+		return DecryptedDocument(
+			(data["id"] as String),
+			rev: (data["rev"] as String?),
+			created: (data["created"] as int?),
+			modified: (data["modified"] as int?),
+			author: (data["author"] as String?),
+			responsible: (data["responsible"] as String?),
+			medicalLocationId: (data["medicalLocationId"] as String?),
+			tags: (data["tags"] as List<dynamic>).map((x0) => CodeStub.fromJSON(x0) ).toSet(),
+			codes: (data["codes"] as List<dynamic>).map((x0) => CodeStub.fromJSON(x0) ).toSet(),
+			endOfLife: (data["endOfLife"] as int?),
+			deletionDate: (data["deletionDate"] as int?),
+			documentLocation: data["documentLocation"] == null ? null : DocumentLocation.fromJSON(data["documentLocation"]),
+			documentType: data["documentType"] == null ? null : DocumentType.fromJSON(data["documentType"]),
+			documentStatus: data["documentStatus"] == null ? null : DocumentStatus.fromJSON(data["documentStatus"]),
+			externalUri: (data["externalUri"] as String?),
+			name: (data["name"] as String?),
+			version: (data["version"] as String?),
+			storedICureDocumentId: (data["storedICureDocumentId"] as String?),
+			externalUuid: (data["externalUuid"] as String?),
+			size: (data["size"] as int?),
+			hash: (data["hash"] as String?),
+			openingContactId: (data["openingContactId"] as String?),
+			attachmentId: (data["attachmentId"] as String?),
+			objectStoreReference: (data["objectStoreReference"] as String?),
+			mainUti: (data["mainUti"] as String?),
+			otherUtis: (data["otherUtis"] as List<dynamic>).map((x0) => (x0 as String) ).toSet(),
+			secondaryAttachments: (data["secondaryAttachments"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), DataAttachment.fromJSON(v0))),
+			deletedAttachments: (data["deletedAttachments"] as List<dynamic>).map((x0) => DeletedAttachment.fromJSON(x0) ).toList(),
+			encryptedAttachment: data["encryptedAttachment"] == null ? null : base64Decode(data["encryptedAttachment"] as String),
+			decryptedAttachment: data["decryptedAttachment"] == null ? null : base64Decode(data["decryptedAttachment"] as String),
+			secretForeignKeys: (data["secretForeignKeys"] as List<dynamic>).map((x0) => (x0 as String) ).toSet(),
+			cryptedForeignKeys: (data["cryptedForeignKeys"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as List<dynamic>).map((x1) => Delegation.fromJSON(x1) ).toSet())),
+			delegations: (data["delegations"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as List<dynamic>).map((x1) => Delegation.fromJSON(x1) ).toSet())),
+			encryptionKeys: (data["encryptionKeys"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as List<dynamic>).map((x1) => Delegation.fromJSON(x1) ).toSet())),
+			encryptedSelf: (data["encryptedSelf"] as Base64String?),
+			securityMetadata: data["securityMetadata"] == null ? null : SecurityMetadata.fromJSON(data["securityMetadata"]),
+		);
 	}
 }

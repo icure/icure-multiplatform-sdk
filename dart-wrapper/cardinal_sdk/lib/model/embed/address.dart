@@ -109,27 +109,6 @@ class EncryptedAddress implements Address {
 		telecoms = telecoms ?? [],
 		encryptedSelf = encryptedSelf ?? null;
 
-	factory EncryptedAddress.fromJSON(Map<String, dynamic> data) {
-		return EncryptedAddress(
-			tags: (data["tags"] as List<dynamic>).map((x0) => CodeStub.fromJSON(x0) ).toSet(),
-			codes: (data["codes"] as List<dynamic>).map((x0) => CodeStub.fromJSON(x0) ).toSet(),
-			identifier: (data["identifier"] as List<dynamic>).map((x0) => Identifier.fromJSON(x0) ).toList(),
-			addressType: data["addressType"] == null ? null : AddressType.fromJSON(data["addressType"]),
-			descr: (data["descr"] as String?),
-			street: (data["street"] as String?),
-			houseNumber: (data["houseNumber"] as String?),
-			postboxNumber: (data["postboxNumber"] as String?),
-			postalCode: (data["postalCode"] as String?),
-			city: (data["city"] as String?),
-			state: (data["state"] as String?),
-			country: (data["country"] as String?),
-			note: (data["note"] as String?),
-			notes: (data["notes"] as List<dynamic>).map((x0) => Annotation.fromJSON(x0) ).toList(),
-			telecoms: (data["telecoms"] as List<dynamic>).map((x0) => EncryptedTelecom.fromJSON(x0) ).toList(),
-			encryptedSelf: (data["encryptedSelf"] as Base64String?)
-		);
-	}
-
 	static Map<String, dynamic> encode(EncryptedAddress value) {
 		Map<String, dynamic> entityAsMap = {
 			"tags" : value.tags.map((x0) => CodeStub.encode(x0)).toList(),
@@ -150,6 +129,27 @@ class EncryptedAddress implements Address {
 			"encryptedSelf" : value.encryptedSelf
 		};
 		return entityAsMap;
+	}
+
+	static EncryptedAddress fromJSON(Map<String, dynamic> data) {
+		return EncryptedAddress(
+			tags: (data["tags"] as List<dynamic>).map((x0) => CodeStub.fromJSON(x0) ).toSet(),
+			codes: (data["codes"] as List<dynamic>).map((x0) => CodeStub.fromJSON(x0) ).toSet(),
+			identifier: (data["identifier"] as List<dynamic>).map((x0) => Identifier.fromJSON(x0) ).toList(),
+			addressType: data["addressType"] == null ? null : AddressType.fromJSON(data["addressType"]),
+			descr: (data["descr"] as String?),
+			street: (data["street"] as String?),
+			houseNumber: (data["houseNumber"] as String?),
+			postboxNumber: (data["postboxNumber"] as String?),
+			postalCode: (data["postalCode"] as String?),
+			city: (data["city"] as String?),
+			state: (data["state"] as String?),
+			country: (data["country"] as String?),
+			note: (data["note"] as String?),
+			notes: (data["notes"] as List<dynamic>).map((x0) => Annotation.fromJSON(x0) ).toList(),
+			telecoms: (data["telecoms"] as List<dynamic>).map((x0) => EncryptedTelecom.fromJSON(x0) ).toList(),
+			encryptedSelf: (data["encryptedSelf"] as Base64String?)
+		);
 	}
 }
 
@@ -204,27 +204,6 @@ class DecryptedAddress implements Address {
 		telecoms = telecoms ?? [],
 		encryptedSelf = encryptedSelf ?? null;
 
-	factory DecryptedAddress.fromJSON(Map<String, dynamic> data) {
-		return DecryptedAddress(
-			tags: (data["tags"] as List<dynamic>).map((x0) => CodeStub.fromJSON(x0) ).toSet(),
-			codes: (data["codes"] as List<dynamic>).map((x0) => CodeStub.fromJSON(x0) ).toSet(),
-			identifier: (data["identifier"] as List<dynamic>).map((x0) => Identifier.fromJSON(x0) ).toList(),
-			addressType: data["addressType"] == null ? null : AddressType.fromJSON(data["addressType"]),
-			descr: (data["descr"] as String?),
-			street: (data["street"] as String?),
-			houseNumber: (data["houseNumber"] as String?),
-			postboxNumber: (data["postboxNumber"] as String?),
-			postalCode: (data["postalCode"] as String?),
-			city: (data["city"] as String?),
-			state: (data["state"] as String?),
-			country: (data["country"] as String?),
-			note: (data["note"] as String?),
-			notes: (data["notes"] as List<dynamic>).map((x0) => Annotation.fromJSON(x0) ).toList(),
-			telecoms: (data["telecoms"] as List<dynamic>).map((x0) => DecryptedTelecom.fromJSON(x0) ).toList(),
-			encryptedSelf: (data["encryptedSelf"] as Base64String?)
-		);
-	}
-
 	static Map<String, dynamic> encode(DecryptedAddress value) {
 		Map<String, dynamic> entityAsMap = {
 			"tags" : value.tags.map((x0) => CodeStub.encode(x0)).toList(),
@@ -245,5 +224,26 @@ class DecryptedAddress implements Address {
 			"encryptedSelf" : value.encryptedSelf
 		};
 		return entityAsMap;
+	}
+
+	static DecryptedAddress fromJSON(Map<String, dynamic> data) {
+		return DecryptedAddress(
+			tags: (data["tags"] as List<dynamic>).map((x0) => CodeStub.fromJSON(x0) ).toSet(),
+			codes: (data["codes"] as List<dynamic>).map((x0) => CodeStub.fromJSON(x0) ).toSet(),
+			identifier: (data["identifier"] as List<dynamic>).map((x0) => Identifier.fromJSON(x0) ).toList(),
+			addressType: data["addressType"] == null ? null : AddressType.fromJSON(data["addressType"]),
+			descr: (data["descr"] as String?),
+			street: (data["street"] as String?),
+			houseNumber: (data["houseNumber"] as String?),
+			postboxNumber: (data["postboxNumber"] as String?),
+			postalCode: (data["postalCode"] as String?),
+			city: (data["city"] as String?),
+			state: (data["state"] as String?),
+			country: (data["country"] as String?),
+			note: (data["note"] as String?),
+			notes: (data["notes"] as List<dynamic>).map((x0) => Annotation.fromJSON(x0) ).toList(),
+			telecoms: (data["telecoms"] as List<dynamic>).map((x0) => DecryptedTelecom.fromJSON(x0) ).toList(),
+			encryptedSelf: (data["encryptedSelf"] as Base64String?)
+		);
 	}
 }

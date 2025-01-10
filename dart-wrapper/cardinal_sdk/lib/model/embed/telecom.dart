@@ -55,15 +55,6 @@ class EncryptedTelecom implements Telecom {
 		telecomDescription = telecomDescription ?? null,
 		encryptedSelf = encryptedSelf ?? null;
 
-	factory EncryptedTelecom.fromJSON(Map<String, dynamic> data) {
-		return EncryptedTelecom(
-			telecomType: data["telecomType"] == null ? null : TelecomType.fromJSON(data["telecomType"]),
-			telecomNumber: (data["telecomNumber"] as String?),
-			telecomDescription: (data["telecomDescription"] as String?),
-			encryptedSelf: (data["encryptedSelf"] as Base64String?)
-		);
-	}
-
 	static Map<String, dynamic> encode(EncryptedTelecom value) {
 		Map<String, dynamic> entityAsMap = {
 			"telecomType" : value.telecomType == null ? null : TelecomType.encode(value.telecomType!),
@@ -72,6 +63,15 @@ class EncryptedTelecom implements Telecom {
 			"encryptedSelf" : value.encryptedSelf
 		};
 		return entityAsMap;
+	}
+
+	static EncryptedTelecom fromJSON(Map<String, dynamic> data) {
+		return EncryptedTelecom(
+			telecomType: data["telecomType"] == null ? null : TelecomType.fromJSON(data["telecomType"]),
+			telecomNumber: (data["telecomNumber"] as String?),
+			telecomDescription: (data["telecomDescription"] as String?),
+			encryptedSelf: (data["encryptedSelf"] as Base64String?)
+		);
 	}
 }
 
@@ -90,15 +90,6 @@ class DecryptedTelecom implements Telecom {
 		telecomDescription = telecomDescription ?? null,
 		encryptedSelf = encryptedSelf ?? null;
 
-	factory DecryptedTelecom.fromJSON(Map<String, dynamic> data) {
-		return DecryptedTelecom(
-			telecomType: data["telecomType"] == null ? null : TelecomType.fromJSON(data["telecomType"]),
-			telecomNumber: (data["telecomNumber"] as String?),
-			telecomDescription: (data["telecomDescription"] as String?),
-			encryptedSelf: (data["encryptedSelf"] as Base64String?)
-		);
-	}
-
 	static Map<String, dynamic> encode(DecryptedTelecom value) {
 		Map<String, dynamic> entityAsMap = {
 			"telecomType" : value.telecomType == null ? null : TelecomType.encode(value.telecomType!),
@@ -107,5 +98,14 @@ class DecryptedTelecom implements Telecom {
 			"encryptedSelf" : value.encryptedSelf
 		};
 		return entityAsMap;
+	}
+
+	static DecryptedTelecom fromJSON(Map<String, dynamic> data) {
+		return DecryptedTelecom(
+			telecomType: data["telecomType"] == null ? null : TelecomType.fromJSON(data["telecomType"]),
+			telecomNumber: (data["telecomNumber"] as String?),
+			telecomDescription: (data["telecomDescription"] as String?),
+			encryptedSelf: (data["encryptedSelf"] as Base64String?)
+		);
 	}
 }

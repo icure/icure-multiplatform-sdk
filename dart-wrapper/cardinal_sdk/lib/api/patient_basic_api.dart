@@ -14,7 +14,11 @@ import 'package:cardinal_sdk/subscription/entity_subscription.dart';
 
 class PatientBasicApi {
 	final String _sdkId;
-	PatientBasicApi(this._sdkId);
+	final Object _dartSdk;
+	PatientBasicApi(
+		this._sdkId,
+		this._dartSdk
+		);
 
 	Future<List<String>> matchPatientsBy(BaseFilterOptions<Patient> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.patientBasic.matchPatientsBy(

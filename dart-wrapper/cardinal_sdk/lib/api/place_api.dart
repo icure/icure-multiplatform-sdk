@@ -6,7 +6,11 @@ import 'package:cardinal_sdk/model/couchdb/doc_identifier.dart';
 
 class PlaceApi {
 	final String _sdkId;
-	PlaceApi(this._sdkId);
+	final Object _dartSdk;
+	PlaceApi(
+		this._sdkId,
+		this._dartSdk
+		);
 
 	Future<Place> getPlace(String placeId) async {
 		return await CardinalSdkPlatformInterface.instance.apis.place.getPlace(

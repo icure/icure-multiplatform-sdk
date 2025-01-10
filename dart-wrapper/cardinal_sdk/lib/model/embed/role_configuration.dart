@@ -10,19 +10,19 @@ class RoleConfiguration {
 			Set<String>? roles
 		}) : roles = roles ?? {};
 
-	factory RoleConfiguration.fromJSON(Map<String, dynamic> data) {
-		return RoleConfiguration(
-			RoleConfigurationSource.fromJSON(data["source"]),
-			roles: (data["roles"] as List<dynamic>).map((x0) => (x0 as String) ).toSet(),
-		);
-	}
-
 	static Map<String, dynamic> encode(RoleConfiguration value) {
 		Map<String, dynamic> entityAsMap = {
 			"source" : RoleConfigurationSource.encode(value.source),
 			"roles" : value.roles.map((x0) => x0).toList()
 		};
 		return entityAsMap;
+	}
+
+	static RoleConfiguration fromJSON(Map<String, dynamic> data) {
+		return RoleConfiguration(
+			RoleConfigurationSource.fromJSON(data["source"]),
+			roles: (data["roles"] as List<dynamic>).map((x0) => (x0 as String) ).toSet(),
+		);
 	}
 }
 

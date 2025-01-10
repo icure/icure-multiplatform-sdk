@@ -9,7 +9,11 @@ import 'package:cardinal_sdk/model/id_with_mandatory_rev.dart';
 
 class TimeTableBasicApi {
 	final String _sdkId;
-	TimeTableBasicApi(this._sdkId);
+	final Object _dartSdk;
+	TimeTableBasicApi(
+		this._sdkId,
+		this._dartSdk
+		);
 
 	Future<List<String>> matchTimeTablesBy(BaseFilterOptions<TimeTable> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.timeTableBasic.matchTimeTablesBy(

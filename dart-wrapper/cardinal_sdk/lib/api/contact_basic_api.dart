@@ -14,7 +14,11 @@ import 'package:cardinal_sdk/subscription/subscription_event_type.dart';
 
 class ContactBasicApi {
 	final String _sdkId;
-	ContactBasicApi(this._sdkId);
+	final Object _dartSdk;
+	ContactBasicApi(
+		this._sdkId,
+		this._dartSdk
+		);
 
 	Future<List<String>> matchContactsBy(BaseFilterOptions<Contact> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.contactBasic.matchContactsBy(

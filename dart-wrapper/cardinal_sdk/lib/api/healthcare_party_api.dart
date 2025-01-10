@@ -14,7 +14,11 @@ import 'package:cardinal_sdk/subscription/entity_subscription.dart';
 
 class HealthcarePartyApi {
 	final String _sdkId;
-	HealthcarePartyApi(this._sdkId);
+	final Object _dartSdk;
+	HealthcarePartyApi(
+		this._sdkId,
+		this._dartSdk
+		);
 
 	Future<HealthcareParty> getHealthcareParty(String healthcarePartyId) async {
 		return await CardinalSdkPlatformInterface.instance.apis.healthcareParty.getHealthcareParty(

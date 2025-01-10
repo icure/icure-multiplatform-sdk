@@ -31,19 +31,6 @@ class SecureDelegation {
 		parentDelegations = parentDelegations ?? {},
 		exchangeDataId = exchangeDataId ?? null;
 
-	factory SecureDelegation.fromJSON(Map<String, dynamic> data) {
-		return SecureDelegation(
-			AccessLevel.fromJSON(data["permissions"]),
-			delegator: (data["delegator"] as String?),
-			delegate: (data["delegate"] as String?),
-			secretIds: (data["secretIds"] as List<dynamic>).map((x0) => (x0 as Base64String) ).toSet(),
-			encryptionKeys: (data["encryptionKeys"] as List<dynamic>).map((x0) => (x0 as Base64String) ).toSet(),
-			owningEntityIds: (data["owningEntityIds"] as List<dynamic>).map((x0) => (x0 as Base64String) ).toSet(),
-			parentDelegations: (data["parentDelegations"] as List<dynamic>).map((x0) => (x0 as SecureDelegationKeyString) ).toSet(),
-			exchangeDataId: (data["exchangeDataId"] as String?),
-		);
-	}
-
 	static Map<String, dynamic> encode(SecureDelegation value) {
 		Map<String, dynamic> entityAsMap = {
 			"delegator" : value.delegator,
@@ -56,5 +43,18 @@ class SecureDelegation {
 			"permissions" : AccessLevel.encode(value.permissions)
 		};
 		return entityAsMap;
+	}
+
+	static SecureDelegation fromJSON(Map<String, dynamic> data) {
+		return SecureDelegation(
+			AccessLevel.fromJSON(data["permissions"]),
+			delegator: (data["delegator"] as String?),
+			delegate: (data["delegate"] as String?),
+			secretIds: (data["secretIds"] as List<dynamic>).map((x0) => (x0 as Base64String) ).toSet(),
+			encryptionKeys: (data["encryptionKeys"] as List<dynamic>).map((x0) => (x0 as Base64String) ).toSet(),
+			owningEntityIds: (data["owningEntityIds"] as List<dynamic>).map((x0) => (x0 as Base64String) ).toSet(),
+			parentDelegations: (data["parentDelegations"] as List<dynamic>).map((x0) => (x0 as SecureDelegationKeyString) ).toSet(),
+			exchangeDataId: (data["exchangeDataId"] as String?),
+		);
 	}
 }

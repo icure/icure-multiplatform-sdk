@@ -50,25 +50,6 @@ class Agenda implements StoredDocument, ICureDocument<String> {
 		userId = userId ?? null,
 		rights = rights ?? [];
 
-	factory Agenda.fromJSON(Map<String, dynamic> data) {
-		return Agenda(
-			(data["id"] as String),
-			rev: (data["rev"] as String?),
-			created: (data["created"] as int?),
-			modified: (data["modified"] as int?),
-			author: (data["author"] as String?),
-			responsible: (data["responsible"] as String?),
-			medicalLocationId: (data["medicalLocationId"] as String?),
-			tags: (data["tags"] as List<dynamic>).map((x0) => CodeStub.fromJSON(x0) ).toSet(),
-			codes: (data["codes"] as List<dynamic>).map((x0) => CodeStub.fromJSON(x0) ).toSet(),
-			endOfLife: (data["endOfLife"] as int?),
-			deletionDate: (data["deletionDate"] as int?),
-			name: (data["name"] as String?),
-			userId: (data["userId"] as String?),
-			rights: (data["rights"] as List<dynamic>).map((x0) => Right.fromJSON(x0) ).toList(),
-		);
-	}
-
 	static Map<String, dynamic> encode(Agenda value) {
 		Map<String, dynamic> entityAsMap = {
 			"id" : value.id,
@@ -87,5 +68,24 @@ class Agenda implements StoredDocument, ICureDocument<String> {
 			"rights" : value.rights.map((x0) => Right.encode(x0)).toList()
 		};
 		return entityAsMap;
+	}
+
+	static Agenda fromJSON(Map<String, dynamic> data) {
+		return Agenda(
+			(data["id"] as String),
+			rev: (data["rev"] as String?),
+			created: (data["created"] as int?),
+			modified: (data["modified"] as int?),
+			author: (data["author"] as String?),
+			responsible: (data["responsible"] as String?),
+			medicalLocationId: (data["medicalLocationId"] as String?),
+			tags: (data["tags"] as List<dynamic>).map((x0) => CodeStub.fromJSON(x0) ).toSet(),
+			codes: (data["codes"] as List<dynamic>).map((x0) => CodeStub.fromJSON(x0) ).toSet(),
+			endOfLife: (data["endOfLife"] as int?),
+			deletionDate: (data["deletionDate"] as int?),
+			name: (data["name"] as String?),
+			userId: (data["userId"] as String?),
+			rights: (data["rights"] as List<dynamic>).map((x0) => Right.fromJSON(x0) ).toList(),
+		);
 	}
 }

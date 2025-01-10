@@ -63,21 +63,6 @@ class DatabaseInfo {
 		_w = w ?? null,
 		_r = r ?? null;
 
-	factory DatabaseInfo.fromJSON(Map<String, dynamic> data) {
-		return DatabaseInfo(
-			(data["id"] as String),
-			q: (data["q"] as int?),
-			n: (data["n"] as int?),
-			w: (data["w"] as int?),
-			r: (data["r"] as int?),
-			updateSeq: (data["updateSeq"] as String?),
-			fileSize: (data["fileSize"] as int?),
-			externalSize: (data["externalSize"] as int?),
-			activeSize: (data["activeSize"] as int?),
-			docs: (data["docs"] as int?),
-		);
-	}
-
 	static Map<String, dynamic> encode(DatabaseInfo value) {
 		Map<String, dynamic> entityAsMap = {
 			"id" : value.id,
@@ -92,5 +77,20 @@ class DatabaseInfo {
 			"r" : value.r
 		};
 		return entityAsMap;
+	}
+
+	static DatabaseInfo fromJSON(Map<String, dynamic> data) {
+		return DatabaseInfo(
+			(data["id"] as String),
+			q: (data["q"] as int?),
+			n: (data["n"] as int?),
+			w: (data["w"] as int?),
+			r: (data["r"] as int?),
+			updateSeq: (data["updateSeq"] as String?),
+			fileSize: (data["fileSize"] as int?),
+			externalSize: (data["externalSize"] as int?),
+			activeSize: (data["activeSize"] as int?),
+			docs: (data["docs"] as int?),
+		);
 	}
 }

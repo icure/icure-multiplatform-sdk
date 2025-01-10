@@ -16,12 +16,14 @@ import 'package:cardinal_sdk/utils/pagination/paginated_list_iterator.dart';
 
 class DocumentApi {
 	final String _sdkId;
+	final Object _dartSdk;
 	final TryAndRecoverDocumentApi tryAndRecover;
 	final EncryptedDocumentApi encrypted;
 	DocumentApi(
-		this._sdkId
-		) : tryAndRecover = TryAndRecoverDocumentApi(_sdkId),
-		encrypted = EncryptedDocumentApi(_sdkId);
+		this._sdkId,
+		this._dartSdk
+		) : tryAndRecover = TryAndRecoverDocumentApi(_sdkId, _dartSdk),
+		encrypted = EncryptedDocumentApi(_sdkId, _dartSdk);
 
 	Future<DecryptedDocument> createDocument(DecryptedDocument entity) async {
 		return await CardinalSdkPlatformInterface.instance.apis.document.createDocument(
@@ -41,17 +43,19 @@ class DocumentApi {
 		);
 	}
 
-	Future<Uint8List?> getAndTryDecryptMainAttachment(Document document) async {
+	Future<Uint8List?> getAndTryDecryptMainAttachment(Document document, { bool Function(Uint8List)? decryptedAttachmentValidator }) async {
 		return await CardinalSdkPlatformInterface.instance.apis.document.getAndTryDecryptMainAttachment(
 			_sdkId,
 			document,
+			decryptedAttachmentValidator,
 		);
 	}
 
-	Future<Uint8List> getAndDecryptMainAttachment(Document document) async {
+	Future<Uint8List> getAndDecryptMainAttachment(Document document, { bool Function(Uint8List)? decryptedAttachmentValidator }) async {
 		return await CardinalSdkPlatformInterface.instance.apis.document.getAndDecryptMainAttachment(
 			_sdkId,
 			document,
+			decryptedAttachmentValidator,
 		);
 	}
 
@@ -64,11 +68,12 @@ class DocumentApi {
 		);
 	}
 
-	Future<Uint8List> getAndDecryptSecondaryAttachment(Document document, String key) async {
+	Future<Uint8List> getAndDecryptSecondaryAttachment(Document document, String key, { bool Function(Uint8List)? decryptedAttachmentValidator }) async {
 		return await CardinalSdkPlatformInterface.instance.apis.document.getAndDecryptSecondaryAttachment(
 			_sdkId,
 			document,
 			key,
+			decryptedAttachmentValidator,
 		);
 	}
 
@@ -125,11 +130,12 @@ class DocumentApi {
 		);
 	}
 
-	Future<Uint8List?> tryDecryptAttachment(Document document, Uint8List encryptedAttachment) async {
+	Future<Uint8List?> tryDecryptAttachment(Document document, Uint8List encryptedAttachment, { bool Function(Uint8List)? decryptedAttachmentValidator }) async {
 		return await CardinalSdkPlatformInterface.instance.apis.document.tryDecryptAttachment(
 			_sdkId,
 			document,
 			encryptedAttachment,
+			decryptedAttachmentValidator,
 		);
 	}
 
@@ -323,7 +329,11 @@ class DocumentApi {
 
 class TryAndRecoverDocumentApi {
 	final String _sdkId;
-	TryAndRecoverDocumentApi(this._sdkId);
+	final Object _dartSdk;
+	TryAndRecoverDocumentApi(
+		this._sdkId,
+		this._dartSdk
+		);
 
 	Future<Document> shareWith(String delegateId, Document document, { DocumentShareOptions? options }) async {
 		return await CardinalSdkPlatformInterface.instance.apis.document.tryAndRecover.shareWith(
@@ -402,7 +412,11 @@ class TryAndRecoverDocumentApi {
 
 class EncryptedDocumentApi {
 	final String _sdkId;
-	EncryptedDocumentApi(this._sdkId);
+	final Object _dartSdk;
+	EncryptedDocumentApi(
+		this._sdkId,
+		this._dartSdk
+		);
 
 	Future<EncryptedDocument> shareWith(String delegateId, EncryptedDocument document, { DocumentShareOptions? options }) async {
 		return await CardinalSdkPlatformInterface.instance.apis.document.encrypted.shareWith(

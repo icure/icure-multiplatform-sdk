@@ -1,7 +1,7 @@
 // auto-generated file
 package com.icure.cardinal.sdk.dart.api
 
-import com.icure.cardinal.sdk.CardinalSdk
+import com.icure.cardinal.sdk.CardinalNonCryptoApis
 import com.icure.cardinal.sdk.dart.utils.ApiScope
 import com.icure.cardinal.sdk.dart.utils.NativeReferences
 import com.icure.cardinal.sdk.model.DocumentTemplate
@@ -34,7 +34,7 @@ public object DocumentTemplateApi {
     ApiScope.execute(
       dartResultCallback,
       DocumentTemplate.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).documentTemplate.getDocumentTemplate(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).documentTemplate.getDocumentTemplate(
         documentTemplateId,
       )
     }
@@ -57,7 +57,7 @@ public object DocumentTemplateApi {
     ApiScope.execute(
       dartResultCallback,
       DocumentTemplate.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).documentTemplate.createDocumentTemplate(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).documentTemplate.createDocumentTemplate(
         documentTemplate,
       )
     }
@@ -80,7 +80,7 @@ public object DocumentTemplateApi {
     ApiScope.execute(
       dartResultCallback,
       DocumentTemplate.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).documentTemplate.modifyDocumentTemplate(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).documentTemplate.modifyDocumentTemplate(
         documentTemplate,
       )
     }
@@ -103,7 +103,7 @@ public object DocumentTemplateApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(DocIdentifier.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).documentTemplate.deleteDocumentTemplates(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).documentTemplate.deleteDocumentTemplates(
         documentTemplateIds,
       )
     }
@@ -126,7 +126,7 @@ public object DocumentTemplateApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(DocumentTemplate.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).documentTemplate.listDocumentTemplatesBySpeciality(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).documentTemplate.listDocumentTemplatesBySpeciality(
         specialityCode,
       )
     }
@@ -149,7 +149,7 @@ public object DocumentTemplateApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(DocumentTemplate.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).documentTemplate.listDocumentTemplatesByDocumentType(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).documentTemplate.listDocumentTemplatesByDocumentType(
         documentTypeCode,
       )
     }
@@ -172,7 +172,7 @@ public object DocumentTemplateApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(DocumentTemplate.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).documentTemplate.listDocumentTemplatesByDocumentTypeForCurrentUser(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).documentTemplate.listDocumentTemplatesByDocumentTypeForCurrentUser(
         documentTypeCode,
       )
     }
@@ -187,7 +187,7 @@ public object DocumentTemplateApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(DocumentTemplate.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).documentTemplate.listDocumentTemplates()
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).documentTemplate.listDocumentTemplates()
     }
   }
 
@@ -213,7 +213,7 @@ public object DocumentTemplateApi {
     ApiScope.execute(
       dartResultCallback,
       ByteArraySerializer) {
-      NativeReferences.get<CardinalSdk>(sdkId).documentTemplate.getDocumentTemplateAttachment(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).documentTemplate.getDocumentTemplateAttachment(
         documentTemplateId,
         attachmentId,
       )
@@ -242,7 +242,7 @@ public object DocumentTemplateApi {
     ApiScope.execute(
       dartResultCallback,
       ByteArraySerializer) {
-      NativeReferences.get<CardinalSdk>(sdkId).documentTemplate.getAttachmentText(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).documentTemplate.getAttachmentText(
         documentTemplateId,
         attachmentId,
       )
@@ -271,7 +271,7 @@ public object DocumentTemplateApi {
     ApiScope.execute(
       dartResultCallback,
       DocumentTemplate.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).documentTemplate.setDocumentTemplateAttachment(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).documentTemplate.setDocumentTemplateAttachment(
         documentTemplateId,
         payload,
       )
@@ -300,7 +300,7 @@ public object DocumentTemplateApi {
     ApiScope.execute(
       dartResultCallback,
       String.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).documentTemplate.getAttachmentUrl(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).documentTemplate.getAttachmentUrl(
         documentId,
         attachmentId,
       )

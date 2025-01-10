@@ -1,10 +1,11 @@
 // auto-generated file
 package com.icure.cardinal.sdk.dart.api
 
-import com.icure.cardinal.sdk.CardinalSdk
+import com.icure.cardinal.sdk.CardinalApis
 import com.icure.cardinal.sdk.crypto.entities.DocumentShareOptions
 import com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption
 import com.icure.cardinal.sdk.dart.utils.ApiScope
+import com.icure.cardinal.sdk.dart.utils.DartCallbacksHandler
 import com.icure.cardinal.sdk.dart.utils.NativeReferences
 import com.icure.cardinal.sdk.filters.FilterOptions
 import com.icure.cardinal.sdk.filters.SortableFilterOptions
@@ -31,6 +32,7 @@ import kotlinx.serialization.builtins.MapSerializer
 import kotlinx.serialization.builtins.SetSerializer
 import kotlinx.serialization.builtins.nullable
 import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.json.JsonObject
 
 @OptIn(InternalIcureApi::class)
 public object DocumentApi {
@@ -51,7 +53,7 @@ public object DocumentApi {
     ApiScope.execute(
       dartResultCallback,
       DecryptedDocument.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).document.createDocument(
+      NativeReferences.get<CardinalApis>(sdkId).document.createDocument(
         entity,
       )
     }
@@ -94,7 +96,7 @@ public object DocumentApi {
     ApiScope.execute(
       dartResultCallback,
       DecryptedDocument.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).document.withEncryptionMetadata(
+      NativeReferences.get<CardinalApis>(sdkId).document.withEncryptionMetadata(
         base,
         message,
         user,
@@ -113,16 +115,40 @@ public object DocumentApi {
     ) -> Unit,
     sdkId: String,
     documentString: String,
+    decryptedAttachmentValidatorString: String,
   ) {
     val document = fullLanguageInteropJson.decodeFromString(
       PolymorphicSerializer(Document::class),
       documentString
     )
+    val decryptedAttachmentValidator = fullLanguageInteropJson.decodeFromString(
+      String.serializer().nullable,
+      decryptedAttachmentValidatorString
+    )
     ApiScope.execute(
       dartResultCallback,
       ByteArraySerializer.nullable) {
-      NativeReferences.get<CardinalSdk>(sdkId).document.getAndTryDecryptMainAttachment(
+      NativeReferences.get<CardinalApis>(sdkId).document.getAndTryDecryptMainAttachment(
         document,
+        decryptedAttachmentValidator?.let { callbackId ->
+          { x0 ->
+            val x0Json = fullLanguageInteropJson.encodeToJsonElement(
+              ByteArraySerializer,
+              x0
+            )
+            val dartResult = DartCallbacksHandler.registered.invoke(
+              callbackId,
+              JsonObject(mapOf(
+                "x0" to x0Json,
+              ))
+            )
+            fullLanguageInteropJson.decodeFromString(
+              Boolean.serializer(),
+              dartResult
+            )
+          }
+        }
+        ,
       )
     }
   }
@@ -136,16 +162,40 @@ public object DocumentApi {
     ) -> Unit,
     sdkId: String,
     documentString: String,
+    decryptedAttachmentValidatorString: String,
   ) {
     val document = fullLanguageInteropJson.decodeFromString(
       PolymorphicSerializer(Document::class),
       documentString
     )
+    val decryptedAttachmentValidator = fullLanguageInteropJson.decodeFromString(
+      String.serializer().nullable,
+      decryptedAttachmentValidatorString
+    )
     ApiScope.execute(
       dartResultCallback,
       ByteArraySerializer) {
-      NativeReferences.get<CardinalSdk>(sdkId).document.getAndDecryptMainAttachment(
+      NativeReferences.get<CardinalApis>(sdkId).document.getAndDecryptMainAttachment(
         document,
+        decryptedAttachmentValidator?.let { callbackId ->
+          { x0 ->
+            val x0Json = fullLanguageInteropJson.encodeToJsonElement(
+              ByteArraySerializer,
+              x0
+            )
+            val dartResult = DartCallbacksHandler.registered.invoke(
+              callbackId,
+              JsonObject(mapOf(
+                "x0" to x0Json,
+              ))
+            )
+            fullLanguageInteropJson.decodeFromString(
+              Boolean.serializer(),
+              dartResult
+            )
+          }
+        }
+        ,
       )
     }
   }
@@ -177,7 +227,7 @@ public object DocumentApi {
     ApiScope.execute(
       dartResultCallback,
       EncryptedDocument.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).document.encryptAndSetMainAttachment(
+      NativeReferences.get<CardinalApis>(sdkId).document.encryptAndSetMainAttachment(
         document,
         utis,
         attachment,
@@ -195,6 +245,7 @@ public object DocumentApi {
     sdkId: String,
     documentString: String,
     keyString: String,
+    decryptedAttachmentValidatorString: String,
   ) {
     val document = fullLanguageInteropJson.decodeFromString(
       PolymorphicSerializer(Document::class),
@@ -204,12 +255,35 @@ public object DocumentApi {
       String.serializer(),
       keyString
     )
+    val decryptedAttachmentValidator = fullLanguageInteropJson.decodeFromString(
+      String.serializer().nullable,
+      decryptedAttachmentValidatorString
+    )
     ApiScope.execute(
       dartResultCallback,
       ByteArraySerializer) {
-      NativeReferences.get<CardinalSdk>(sdkId).document.getAndDecryptSecondaryAttachment(
+      NativeReferences.get<CardinalApis>(sdkId).document.getAndDecryptSecondaryAttachment(
         document,
         key,
+        decryptedAttachmentValidator?.let { callbackId ->
+          { x0 ->
+            val x0Json = fullLanguageInteropJson.encodeToJsonElement(
+              ByteArraySerializer,
+              x0
+            )
+            val dartResult = DartCallbacksHandler.registered.invoke(
+              callbackId,
+              JsonObject(mapOf(
+                "x0" to x0Json,
+              ))
+            )
+            fullLanguageInteropJson.decodeFromString(
+              Boolean.serializer(),
+              dartResult
+            )
+          }
+        }
+        ,
       )
     }
   }
@@ -246,7 +320,7 @@ public object DocumentApi {
     ApiScope.execute(
       dartResultCallback,
       EncryptedDocument.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).document.encryptAndSetSecondaryAttachment(
+      NativeReferences.get<CardinalApis>(sdkId).document.encryptAndSetSecondaryAttachment(
         document,
         key,
         utis,
@@ -272,7 +346,7 @@ public object DocumentApi {
     ApiScope.execute(
       dartResultCallback,
       SetSerializer(HexString.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).document.getEncryptionKeysOf(
+      NativeReferences.get<CardinalApis>(sdkId).document.getEncryptionKeysOf(
         document,
       )
     }
@@ -295,7 +369,7 @@ public object DocumentApi {
     ApiScope.execute(
       dartResultCallback,
       Boolean.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).document.hasWriteAccess(
+      NativeReferences.get<CardinalApis>(sdkId).document.hasWriteAccess(
         document,
       )
     }
@@ -318,7 +392,7 @@ public object DocumentApi {
     ApiScope.execute(
       dartResultCallback,
       SetSerializer(String.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).document.decryptPatientIdOf(
+      NativeReferences.get<CardinalApis>(sdkId).document.decryptPatientIdOf(
         document,
       )
     }
@@ -346,7 +420,7 @@ public object DocumentApi {
     ApiScope.execute(
       dartResultCallback,
       Unit.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).document.createDelegationDeAnonymizationMetadata(
+      NativeReferences.get<CardinalApis>(sdkId).document.createDelegationDeAnonymizationMetadata(
         entity,
         delegates,
       )
@@ -370,7 +444,7 @@ public object DocumentApi {
     ApiScope.execute(
       dartResultCallback,
       DecryptedDocument.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).document.decrypt(
+      NativeReferences.get<CardinalApis>(sdkId).document.decrypt(
         document,
       )
     }
@@ -393,7 +467,7 @@ public object DocumentApi {
     ApiScope.execute(
       dartResultCallback,
       PolymorphicSerializer(Document::class)) {
-      NativeReferences.get<CardinalSdk>(sdkId).document.tryDecrypt(
+      NativeReferences.get<CardinalApis>(sdkId).document.tryDecrypt(
         document,
       )
     }
@@ -409,6 +483,7 @@ public object DocumentApi {
     sdkId: String,
     documentString: String,
     encryptedAttachmentString: String,
+    decryptedAttachmentValidatorString: String,
   ) {
     val document = fullLanguageInteropJson.decodeFromString(
       PolymorphicSerializer(Document::class),
@@ -418,12 +493,35 @@ public object DocumentApi {
       ByteArraySerializer,
       encryptedAttachmentString
     )
+    val decryptedAttachmentValidator = fullLanguageInteropJson.decodeFromString(
+      String.serializer().nullable,
+      decryptedAttachmentValidatorString
+    )
     ApiScope.execute(
       dartResultCallback,
       ByteArraySerializer.nullable) {
-      NativeReferences.get<CardinalSdk>(sdkId).document.tryDecryptAttachment(
+      NativeReferences.get<CardinalApis>(sdkId).document.tryDecryptAttachment(
         document,
         encryptedAttachment,
+        decryptedAttachmentValidator?.let { callbackId ->
+          { x0 ->
+            val x0Json = fullLanguageInteropJson.encodeToJsonElement(
+              ByteArraySerializer,
+              x0
+            )
+            val dartResult = DartCallbacksHandler.registered.invoke(
+              callbackId,
+              JsonObject(mapOf(
+                "x0" to x0Json,
+              ))
+            )
+            fullLanguageInteropJson.decodeFromString(
+              Boolean.serializer(),
+              dartResult
+            )
+          }
+        }
+        ,
       )
     }
   }
@@ -445,7 +543,7 @@ public object DocumentApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(String.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).document.matchDocumentsBy(
+      NativeReferences.get<CardinalApis>(sdkId).document.matchDocumentsBy(
         filter,
       )
     }
@@ -468,7 +566,7 @@ public object DocumentApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(String.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).document.matchDocumentsBySorted(
+      NativeReferences.get<CardinalApis>(sdkId).document.matchDocumentsBySorted(
         filter,
       )
     }
@@ -496,7 +594,7 @@ public object DocumentApi {
     ApiScope.execute(
       dartResultCallback,
       DocIdentifier.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).document.deleteDocumentById(
+      NativeReferences.get<CardinalApis>(sdkId).document.deleteDocumentById(
         entityId,
         rev,
       )
@@ -520,7 +618,7 @@ public object DocumentApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(DocIdentifier.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).document.deleteDocumentsByIds(
+      NativeReferences.get<CardinalApis>(sdkId).document.deleteDocumentsByIds(
         entityIds,
       )
     }
@@ -548,7 +646,7 @@ public object DocumentApi {
     ApiScope.execute(
       dartResultCallback,
       Unit.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).document.purgeDocumentById(
+      NativeReferences.get<CardinalApis>(sdkId).document.purgeDocumentById(
         id,
         rev,
       )
@@ -572,7 +670,7 @@ public object DocumentApi {
     ApiScope.execute(
       dartResultCallback,
       DocIdentifier.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).document.deleteDocument(
+      NativeReferences.get<CardinalApis>(sdkId).document.deleteDocument(
         document,
       )
     }
@@ -595,7 +693,7 @@ public object DocumentApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(DocIdentifier.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).document.deleteDocuments(
+      NativeReferences.get<CardinalApis>(sdkId).document.deleteDocuments(
         documents,
       )
     }
@@ -618,7 +716,7 @@ public object DocumentApi {
     ApiScope.execute(
       dartResultCallback,
       Unit.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).document.purgeDocument(
+      NativeReferences.get<CardinalApis>(sdkId).document.purgeDocument(
         document,
       )
     }
@@ -641,7 +739,7 @@ public object DocumentApi {
     ApiScope.execute(
       dartResultCallback,
       ByteArraySerializer) {
-      NativeReferences.get<CardinalSdk>(sdkId).document.getRawMainAttachment(
+      NativeReferences.get<CardinalApis>(sdkId).document.getRawMainAttachment(
         documentId,
       )
     }
@@ -669,7 +767,7 @@ public object DocumentApi {
     ApiScope.execute(
       dartResultCallback,
       ByteArraySerializer) {
-      NativeReferences.get<CardinalSdk>(sdkId).document.getRawSecondaryAttachment(
+      NativeReferences.get<CardinalApis>(sdkId).document.getRawSecondaryAttachment(
         documentId,
         key,
       )
@@ -713,7 +811,7 @@ public object DocumentApi {
     ApiScope.execute(
       dartResultCallback,
       EncryptedDocument.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).document.setRawMainAttachment(
+      NativeReferences.get<CardinalApis>(sdkId).document.setRawMainAttachment(
         documentId,
         rev,
         utis,
@@ -765,7 +863,7 @@ public object DocumentApi {
     ApiScope.execute(
       dartResultCallback,
       EncryptedDocument.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).document.setRawSecondaryAttachment(
+      NativeReferences.get<CardinalApis>(sdkId).document.setRawSecondaryAttachment(
         documentId,
         key,
         rev,
@@ -798,7 +896,7 @@ public object DocumentApi {
     ApiScope.execute(
       dartResultCallback,
       EncryptedDocument.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).document.deleteMainAttachment(
+      NativeReferences.get<CardinalApis>(sdkId).document.deleteMainAttachment(
         entityId,
         rev,
       )
@@ -832,7 +930,7 @@ public object DocumentApi {
     ApiScope.execute(
       dartResultCallback,
       EncryptedDocument.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).document.deleteSecondaryAttachment(
+      NativeReferences.get<CardinalApis>(sdkId).document.deleteSecondaryAttachment(
         documentId,
         key,
         rev,
@@ -867,7 +965,7 @@ public object DocumentApi {
     ApiScope.execute(
       dartResultCallback,
       DecryptedDocument.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).document.shareWith(
+      NativeReferences.get<CardinalApis>(sdkId).document.shareWith(
         delegateId,
         document,
         options,
@@ -897,7 +995,7 @@ public object DocumentApi {
     ApiScope.execute(
       dartResultCallback,
       DecryptedDocument.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).document.shareWithMany(
+      NativeReferences.get<CardinalApis>(sdkId).document.shareWithMany(
         document,
         delegates,
       )
@@ -921,7 +1019,7 @@ public object DocumentApi {
     ApiScope.execute(
       dartResultCallback,
       String.serializer()) {
-      val richResult = NativeReferences.get<CardinalSdk>(sdkId).document.filterDocumentsBy(
+      val richResult = NativeReferences.get<CardinalApis>(sdkId).document.filterDocumentsBy(
         filter,
       )
       NativeReferences.create(PaginatedListIteratorWithSerializer(
@@ -948,7 +1046,7 @@ public object DocumentApi {
     ApiScope.execute(
       dartResultCallback,
       String.serializer()) {
-      val richResult = NativeReferences.get<CardinalSdk>(sdkId).document.filterDocumentsBySorted(
+      val richResult = NativeReferences.get<CardinalApis>(sdkId).document.filterDocumentsBySorted(
         filter,
       )
       NativeReferences.create(PaginatedListIteratorWithSerializer(
@@ -980,7 +1078,7 @@ public object DocumentApi {
     ApiScope.execute(
       dartResultCallback,
       DecryptedDocument.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).document.undeleteDocumentById(
+      NativeReferences.get<CardinalApis>(sdkId).document.undeleteDocumentById(
         id,
         rev,
       )
@@ -1004,7 +1102,7 @@ public object DocumentApi {
     ApiScope.execute(
       dartResultCallback,
       DecryptedDocument.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).document.undeleteDocument(
+      NativeReferences.get<CardinalApis>(sdkId).document.undeleteDocument(
         document,
       )
     }
@@ -1027,7 +1125,7 @@ public object DocumentApi {
     ApiScope.execute(
       dartResultCallback,
       DecryptedDocument.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).document.modifyDocument(
+      NativeReferences.get<CardinalApis>(sdkId).document.modifyDocument(
         entity,
       )
     }
@@ -1050,7 +1148,7 @@ public object DocumentApi {
     ApiScope.execute(
       dartResultCallback,
       DecryptedDocument.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).document.getDocument(
+      NativeReferences.get<CardinalApis>(sdkId).document.getDocument(
         entityId,
       )
     }
@@ -1073,7 +1171,7 @@ public object DocumentApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(DecryptedDocument.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).document.getDocuments(
+      NativeReferences.get<CardinalApis>(sdkId).document.getDocuments(
         entityIds,
       )
     }
@@ -1096,7 +1194,7 @@ public object DocumentApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(DecryptedDocument.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).document.modifyDocuments(
+      NativeReferences.get<CardinalApis>(sdkId).document.modifyDocuments(
         entities,
       )
     }
@@ -1131,7 +1229,7 @@ public object DocumentApi {
       ApiScope.execute(
         dartResultCallback,
         EncryptedDocument.serializer()) {
-        NativeReferences.get<CardinalSdk>(sdkId).document.encrypted.shareWith(
+        NativeReferences.get<CardinalApis>(sdkId).document.encrypted.shareWith(
           delegateId,
           document,
           options,
@@ -1161,7 +1259,7 @@ public object DocumentApi {
       ApiScope.execute(
         dartResultCallback,
         EncryptedDocument.serializer()) {
-        NativeReferences.get<CardinalSdk>(sdkId).document.encrypted.shareWithMany(
+        NativeReferences.get<CardinalApis>(sdkId).document.encrypted.shareWithMany(
           document,
           delegates,
         )
@@ -1186,7 +1284,7 @@ public object DocumentApi {
         dartResultCallback,
         String.serializer()) {
         val richResult =
-            NativeReferences.get<CardinalSdk>(sdkId).document.encrypted.filterDocumentsBy(
+            NativeReferences.get<CardinalApis>(sdkId).document.encrypted.filterDocumentsBy(
           filter,
         )
         NativeReferences.create(PaginatedListIteratorWithSerializer(
@@ -1214,7 +1312,7 @@ public object DocumentApi {
         dartResultCallback,
         String.serializer()) {
         val richResult =
-            NativeReferences.get<CardinalSdk>(sdkId).document.encrypted.filterDocumentsBySorted(
+            NativeReferences.get<CardinalApis>(sdkId).document.encrypted.filterDocumentsBySorted(
           filter,
         )
         NativeReferences.create(PaginatedListIteratorWithSerializer(
@@ -1246,7 +1344,7 @@ public object DocumentApi {
       ApiScope.execute(
         dartResultCallback,
         EncryptedDocument.serializer()) {
-        NativeReferences.get<CardinalSdk>(sdkId).document.encrypted.undeleteDocumentById(
+        NativeReferences.get<CardinalApis>(sdkId).document.encrypted.undeleteDocumentById(
           id,
           rev,
         )
@@ -1270,7 +1368,7 @@ public object DocumentApi {
       ApiScope.execute(
         dartResultCallback,
         EncryptedDocument.serializer()) {
-        NativeReferences.get<CardinalSdk>(sdkId).document.encrypted.undeleteDocument(
+        NativeReferences.get<CardinalApis>(sdkId).document.encrypted.undeleteDocument(
           document,
         )
       }
@@ -1293,7 +1391,7 @@ public object DocumentApi {
       ApiScope.execute(
         dartResultCallback,
         EncryptedDocument.serializer()) {
-        NativeReferences.get<CardinalSdk>(sdkId).document.encrypted.modifyDocument(
+        NativeReferences.get<CardinalApis>(sdkId).document.encrypted.modifyDocument(
           entity,
         )
       }
@@ -1316,7 +1414,7 @@ public object DocumentApi {
       ApiScope.execute(
         dartResultCallback,
         EncryptedDocument.serializer()) {
-        NativeReferences.get<CardinalSdk>(sdkId).document.encrypted.getDocument(
+        NativeReferences.get<CardinalApis>(sdkId).document.encrypted.getDocument(
           entityId,
         )
       }
@@ -1339,7 +1437,7 @@ public object DocumentApi {
       ApiScope.execute(
         dartResultCallback,
         ListSerializer(EncryptedDocument.serializer())) {
-        NativeReferences.get<CardinalSdk>(sdkId).document.encrypted.getDocuments(
+        NativeReferences.get<CardinalApis>(sdkId).document.encrypted.getDocuments(
           entityIds,
         )
       }
@@ -1362,7 +1460,7 @@ public object DocumentApi {
       ApiScope.execute(
         dartResultCallback,
         ListSerializer(EncryptedDocument.serializer())) {
-        NativeReferences.get<CardinalSdk>(sdkId).document.encrypted.modifyDocuments(
+        NativeReferences.get<CardinalApis>(sdkId).document.encrypted.modifyDocuments(
           entities,
         )
       }
@@ -1398,7 +1496,7 @@ public object DocumentApi {
       ApiScope.execute(
         dartResultCallback,
         PolymorphicSerializer(Document::class)) {
-        NativeReferences.get<CardinalSdk>(sdkId).document.tryAndRecover.shareWith(
+        NativeReferences.get<CardinalApis>(sdkId).document.tryAndRecover.shareWith(
           delegateId,
           document,
           options,
@@ -1428,7 +1526,7 @@ public object DocumentApi {
       ApiScope.execute(
         dartResultCallback,
         PolymorphicSerializer(Document::class)) {
-        NativeReferences.get<CardinalSdk>(sdkId).document.tryAndRecover.shareWithMany(
+        NativeReferences.get<CardinalApis>(sdkId).document.tryAndRecover.shareWithMany(
           document,
           delegates,
         )
@@ -1453,7 +1551,7 @@ public object DocumentApi {
         dartResultCallback,
         String.serializer()) {
         val richResult =
-            NativeReferences.get<CardinalSdk>(sdkId).document.tryAndRecover.filterDocumentsBy(
+            NativeReferences.get<CardinalApis>(sdkId).document.tryAndRecover.filterDocumentsBy(
           filter,
         )
         NativeReferences.create(PaginatedListIteratorWithSerializer(
@@ -1481,7 +1579,7 @@ public object DocumentApi {
         dartResultCallback,
         String.serializer()) {
         val richResult =
-            NativeReferences.get<CardinalSdk>(sdkId).document.tryAndRecover.filterDocumentsBySorted(
+            NativeReferences.get<CardinalApis>(sdkId).document.tryAndRecover.filterDocumentsBySorted(
           filter,
         )
         NativeReferences.create(PaginatedListIteratorWithSerializer(
@@ -1513,7 +1611,7 @@ public object DocumentApi {
       ApiScope.execute(
         dartResultCallback,
         PolymorphicSerializer(Document::class)) {
-        NativeReferences.get<CardinalSdk>(sdkId).document.tryAndRecover.undeleteDocumentById(
+        NativeReferences.get<CardinalApis>(sdkId).document.tryAndRecover.undeleteDocumentById(
           id,
           rev,
         )
@@ -1537,7 +1635,7 @@ public object DocumentApi {
       ApiScope.execute(
         dartResultCallback,
         PolymorphicSerializer(Document::class)) {
-        NativeReferences.get<CardinalSdk>(sdkId).document.tryAndRecover.undeleteDocument(
+        NativeReferences.get<CardinalApis>(sdkId).document.tryAndRecover.undeleteDocument(
           document,
         )
       }
@@ -1560,7 +1658,7 @@ public object DocumentApi {
       ApiScope.execute(
         dartResultCallback,
         PolymorphicSerializer(Document::class)) {
-        NativeReferences.get<CardinalSdk>(sdkId).document.tryAndRecover.modifyDocument(
+        NativeReferences.get<CardinalApis>(sdkId).document.tryAndRecover.modifyDocument(
           entity,
         )
       }
@@ -1583,7 +1681,7 @@ public object DocumentApi {
       ApiScope.execute(
         dartResultCallback,
         PolymorphicSerializer(Document::class)) {
-        NativeReferences.get<CardinalSdk>(sdkId).document.tryAndRecover.getDocument(
+        NativeReferences.get<CardinalApis>(sdkId).document.tryAndRecover.getDocument(
           entityId,
         )
       }
@@ -1606,7 +1704,7 @@ public object DocumentApi {
       ApiScope.execute(
         dartResultCallback,
         ListSerializer(PolymorphicSerializer(Document::class))) {
-        NativeReferences.get<CardinalSdk>(sdkId).document.tryAndRecover.getDocuments(
+        NativeReferences.get<CardinalApis>(sdkId).document.tryAndRecover.getDocuments(
           entityIds,
         )
       }
@@ -1629,7 +1727,7 @@ public object DocumentApi {
       ApiScope.execute(
         dartResultCallback,
         ListSerializer(PolymorphicSerializer(Document::class))) {
-        NativeReferences.get<CardinalSdk>(sdkId).document.tryAndRecover.modifyDocuments(
+        NativeReferences.get<CardinalApis>(sdkId).document.tryAndRecover.modifyDocuments(
           entities,
         )
       }

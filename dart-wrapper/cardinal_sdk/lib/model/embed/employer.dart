@@ -12,18 +12,18 @@ class Employer implements Named {
 		}) : name = name ?? null,
 		addresse = addresse ?? null;
 
-	factory Employer.fromJSON(Map<String, dynamic> data) {
-		return Employer(
-			name: (data["name"] as String?),
-			addresse: data["addresse"] == null ? null : DecryptedAddress.fromJSON(data["addresse"])
-		);
-	}
-
 	static Map<String, dynamic> encode(Employer value) {
 		Map<String, dynamic> entityAsMap = {
 			"name" : value.name,
 			"addresse" : value.addresse == null ? null : DecryptedAddress.encode(value.addresse!)
 		};
 		return entityAsMap;
+	}
+
+	static Employer fromJSON(Map<String, dynamic> data) {
+		return Employer(
+			name: (data["name"] as String?),
+			addresse: data["addresse"] == null ? null : DecryptedAddress.fromJSON(data["addresse"])
+		);
 	}
 }

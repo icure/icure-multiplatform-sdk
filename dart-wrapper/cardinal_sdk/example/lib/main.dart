@@ -10,11 +10,13 @@ import 'package:cardinal_sdk/auth/captcha_options.dart';
 import 'package:cardinal_sdk/auth/credentials.dart';
 import 'package:cardinal_sdk/errors/cancellation_exception.dart';
 import 'package:cardinal_sdk/errors/cardinal_argument_error.dart';
+import 'package:cardinal_sdk/errors/dart_callback_exception.dart';
 import 'package:cardinal_sdk/filters/filter_options.dart';
 import 'package:cardinal_sdk/filters/meta_filters.dart';
 import 'package:cardinal_sdk/filters/patient_filters.dart';
 import 'package:cardinal_sdk/model/patient.dart';
 import 'package:cardinal_sdk/options/storage_options.dart';
+import 'package:cardinal_sdk/plugin/cardinal_sdk_platform_interface.dart';
 import 'package:cardinal_sdk/subscription/subscription_event_type.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
@@ -266,5 +268,16 @@ Future<void> forceGC({
     }
     await Future<void>.delayed(Duration.zero);
     allocateMemory();
+  }
+}
+
+class CustomException implements Exception {
+  final String message;
+
+  CustomException(this.message);
+
+  @override
+  String toString() {
+    return "CustomException($message)";
   }
 }

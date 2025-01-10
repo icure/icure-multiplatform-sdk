@@ -12,14 +12,6 @@ class GroupDatabasesInfo {
 		this.gcpStorageSize
 		);
 
-	factory GroupDatabasesInfo.fromJSON(Map<String, dynamic> data) {
-		return GroupDatabasesInfo(
-			(data["groupId"] as String),
-			(data["databasesInfo"] as List<dynamic>).map((x0) => DatabaseInfo.fromJSON(x0) ).toList(),
-			(data["gcpStorageSize"] as int)
-		);
-	}
-
 	static Map<String, dynamic> encode(GroupDatabasesInfo value) {
 		Map<String, dynamic> entityAsMap = {
 			"groupId" : value.groupId,
@@ -27,5 +19,13 @@ class GroupDatabasesInfo {
 			"gcpStorageSize" : value.gcpStorageSize
 		};
 		return entityAsMap;
+	}
+
+	static GroupDatabasesInfo fromJSON(Map<String, dynamic> data) {
+		return GroupDatabasesInfo(
+			(data["groupId"] as String),
+			(data["databasesInfo"] as List<dynamic>).map((x0) => DatabaseInfo.fromJSON(x0) ).toList(),
+			(data["gcpStorageSize"] as int)
+		);
 	}
 }

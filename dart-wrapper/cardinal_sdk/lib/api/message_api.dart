@@ -18,12 +18,14 @@ import 'package:cardinal_sdk/subscription/entity_subscription.dart';
 
 class MessageApi {
 	final String _sdkId;
+	final Object _dartSdk;
 	final TryAndRecoverMessageApi tryAndRecover;
 	final EncryptedMessageApi encrypted;
 	MessageApi(
-		this._sdkId
-		) : tryAndRecover = TryAndRecoverMessageApi(_sdkId),
-		encrypted = EncryptedMessageApi(_sdkId);
+		this._sdkId,
+		this._dartSdk
+		) : tryAndRecover = TryAndRecoverMessageApi(_sdkId, _dartSdk),
+		encrypted = EncryptedMessageApi(_sdkId, _dartSdk);
 
 	Future<DecryptedMessage> createMessage(DecryptedMessage entity) async {
 		return await CardinalSdkPlatformInterface.instance.apis.message.createMessage(
@@ -240,7 +242,11 @@ class MessageApi {
 
 class TryAndRecoverMessageApi {
 	final String _sdkId;
-	TryAndRecoverMessageApi(this._sdkId);
+	final Object _dartSdk;
+	TryAndRecoverMessageApi(
+		this._sdkId,
+		this._dartSdk
+		);
 
 	Future<Message> shareWith(String delegateId, Message message, { MessageShareOptions? options }) async {
 		return await CardinalSdkPlatformInterface.instance.apis.message.tryAndRecover.shareWith(
@@ -322,7 +328,11 @@ class TryAndRecoverMessageApi {
 
 class EncryptedMessageApi {
 	final String _sdkId;
-	EncryptedMessageApi(this._sdkId);
+	final Object _dartSdk;
+	EncryptedMessageApi(
+		this._sdkId,
+		this._dartSdk
+		);
 
 	Future<EncryptedMessage> shareWith(String delegateId, EncryptedMessage message, { MessageShareOptions? options }) async {
 		return await CardinalSdkPlatformInterface.instance.apis.message.encrypted.shareWith(

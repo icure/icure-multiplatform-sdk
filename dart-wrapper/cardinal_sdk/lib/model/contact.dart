@@ -178,43 +178,6 @@ class DecryptedContact implements Contact {
 		securityMetadata = securityMetadata ?? null,
 		notes = notes ?? [];
 
-	factory DecryptedContact.fromJSON(Map<String, dynamic> data) {
-		return DecryptedContact(
-			(data["id"] as String),
-			rev: (data["rev"] as String?),
-			created: (data["created"] as int?),
-			modified: (data["modified"] as int?),
-			author: (data["author"] as String?),
-			responsible: (data["responsible"] as String?),
-			medicalLocationId: (data["medicalLocationId"] as String?),
-			tags: (data["tags"] as List<dynamic>).map((x0) => CodeStub.fromJSON(x0) ).toSet(),
-			codes: (data["codes"] as List<dynamic>).map((x0) => CodeStub.fromJSON(x0) ).toSet(),
-			identifier: (data["identifier"] as List<dynamic>).map((x0) => Identifier.fromJSON(x0) ).toList(),
-			endOfLife: (data["endOfLife"] as int?),
-			deletionDate: (data["deletionDate"] as int?),
-			groupId: (data["groupId"] as String?),
-			openingDate: (data["openingDate"] as int?),
-			closingDate: (data["closingDate"] as int?),
-			descr: (data["descr"] as String?),
-			location: (data["location"] as String?),
-			externalId: (data["externalId"] as String?),
-			encounterType: data["encounterType"] == null ? null : CodeStub.fromJSON(data["encounterType"]),
-			encounterLocation: data["encounterLocation"] == null ? null : DecryptedAddress.fromJSON(data["encounterLocation"]),
-			subContacts: (data["subContacts"] as List<dynamic>).map((x0) => DecryptedSubContact.fromJSON(x0) ).toSet(),
-			services: (data["services"] as List<dynamic>).map((x0) => DecryptedService.fromJSON(x0) ).toSet(),
-			participants: (data["participants"] as Map<String, dynamic>).map((k0, v0) => MapEntry(ParticipantType.fromJSON(k0), (v0 as String))),
-			healthcarePartyId: (data["healthcarePartyId"] as String?),
-			modifiedContactId: (data["modifiedContactId"] as String?),
-			secretForeignKeys: (data["secretForeignKeys"] as List<dynamic>).map((x0) => (x0 as String) ).toSet(),
-			cryptedForeignKeys: (data["cryptedForeignKeys"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as List<dynamic>).map((x1) => Delegation.fromJSON(x1) ).toSet())),
-			delegations: (data["delegations"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as List<dynamic>).map((x1) => Delegation.fromJSON(x1) ).toSet())),
-			encryptionKeys: (data["encryptionKeys"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as List<dynamic>).map((x1) => Delegation.fromJSON(x1) ).toSet())),
-			encryptedSelf: (data["encryptedSelf"] as Base64String?),
-			securityMetadata: data["securityMetadata"] == null ? null : SecurityMetadata.fromJSON(data["securityMetadata"]),
-			notes: (data["notes"] as List<dynamic>).map((x0) => Annotation.fromJSON(x0) ).toList(),
-		);
-	}
-
 	static Map<String, dynamic> encode(DecryptedContact value) {
 		Map<String, dynamic> entityAsMap = {
 			"id" : value.id,
@@ -251,6 +214,43 @@ class DecryptedContact implements Contact {
 			"notes" : value.notes.map((x0) => Annotation.encode(x0)).toList()
 		};
 		return entityAsMap;
+	}
+
+	static DecryptedContact fromJSON(Map<String, dynamic> data) {
+		return DecryptedContact(
+			(data["id"] as String),
+			rev: (data["rev"] as String?),
+			created: (data["created"] as int?),
+			modified: (data["modified"] as int?),
+			author: (data["author"] as String?),
+			responsible: (data["responsible"] as String?),
+			medicalLocationId: (data["medicalLocationId"] as String?),
+			tags: (data["tags"] as List<dynamic>).map((x0) => CodeStub.fromJSON(x0) ).toSet(),
+			codes: (data["codes"] as List<dynamic>).map((x0) => CodeStub.fromJSON(x0) ).toSet(),
+			identifier: (data["identifier"] as List<dynamic>).map((x0) => Identifier.fromJSON(x0) ).toList(),
+			endOfLife: (data["endOfLife"] as int?),
+			deletionDate: (data["deletionDate"] as int?),
+			groupId: (data["groupId"] as String?),
+			openingDate: (data["openingDate"] as int?),
+			closingDate: (data["closingDate"] as int?),
+			descr: (data["descr"] as String?),
+			location: (data["location"] as String?),
+			externalId: (data["externalId"] as String?),
+			encounterType: data["encounterType"] == null ? null : CodeStub.fromJSON(data["encounterType"]),
+			encounterLocation: data["encounterLocation"] == null ? null : DecryptedAddress.fromJSON(data["encounterLocation"]),
+			subContacts: (data["subContacts"] as List<dynamic>).map((x0) => DecryptedSubContact.fromJSON(x0) ).toSet(),
+			services: (data["services"] as List<dynamic>).map((x0) => DecryptedService.fromJSON(x0) ).toSet(),
+			participants: (data["participants"] as Map<String, dynamic>).map((k0, v0) => MapEntry(ParticipantType.fromJSON(k0), (v0 as String))),
+			healthcarePartyId: (data["healthcarePartyId"] as String?),
+			modifiedContactId: (data["modifiedContactId"] as String?),
+			secretForeignKeys: (data["secretForeignKeys"] as List<dynamic>).map((x0) => (x0 as String) ).toSet(),
+			cryptedForeignKeys: (data["cryptedForeignKeys"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as List<dynamic>).map((x1) => Delegation.fromJSON(x1) ).toSet())),
+			delegations: (data["delegations"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as List<dynamic>).map((x1) => Delegation.fromJSON(x1) ).toSet())),
+			encryptionKeys: (data["encryptionKeys"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as List<dynamic>).map((x1) => Delegation.fromJSON(x1) ).toSet())),
+			encryptedSelf: (data["encryptedSelf"] as Base64String?),
+			securityMetadata: data["securityMetadata"] == null ? null : SecurityMetadata.fromJSON(data["securityMetadata"]),
+			notes: (data["notes"] as List<dynamic>).map((x0) => Annotation.fromJSON(x0) ).toList(),
+		);
 	}
 }
 
@@ -353,43 +353,6 @@ class EncryptedContact implements Contact {
 		securityMetadata = securityMetadata ?? null,
 		notes = notes ?? [];
 
-	factory EncryptedContact.fromJSON(Map<String, dynamic> data) {
-		return EncryptedContact(
-			(data["id"] as String),
-			rev: (data["rev"] as String?),
-			created: (data["created"] as int?),
-			modified: (data["modified"] as int?),
-			author: (data["author"] as String?),
-			responsible: (data["responsible"] as String?),
-			medicalLocationId: (data["medicalLocationId"] as String?),
-			tags: (data["tags"] as List<dynamic>).map((x0) => CodeStub.fromJSON(x0) ).toSet(),
-			codes: (data["codes"] as List<dynamic>).map((x0) => CodeStub.fromJSON(x0) ).toSet(),
-			identifier: (data["identifier"] as List<dynamic>).map((x0) => Identifier.fromJSON(x0) ).toList(),
-			endOfLife: (data["endOfLife"] as int?),
-			deletionDate: (data["deletionDate"] as int?),
-			groupId: (data["groupId"] as String?),
-			openingDate: (data["openingDate"] as int?),
-			closingDate: (data["closingDate"] as int?),
-			descr: (data["descr"] as String?),
-			location: (data["location"] as String?),
-			externalId: (data["externalId"] as String?),
-			encounterType: data["encounterType"] == null ? null : CodeStub.fromJSON(data["encounterType"]),
-			encounterLocation: data["encounterLocation"] == null ? null : EncryptedAddress.fromJSON(data["encounterLocation"]),
-			subContacts: (data["subContacts"] as List<dynamic>).map((x0) => EncryptedSubContact.fromJSON(x0) ).toSet(),
-			services: (data["services"] as List<dynamic>).map((x0) => EncryptedService.fromJSON(x0) ).toSet(),
-			participants: (data["participants"] as Map<String, dynamic>).map((k0, v0) => MapEntry(ParticipantType.fromJSON(k0), (v0 as String))),
-			healthcarePartyId: (data["healthcarePartyId"] as String?),
-			modifiedContactId: (data["modifiedContactId"] as String?),
-			secretForeignKeys: (data["secretForeignKeys"] as List<dynamic>).map((x0) => (x0 as String) ).toSet(),
-			cryptedForeignKeys: (data["cryptedForeignKeys"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as List<dynamic>).map((x1) => Delegation.fromJSON(x1) ).toSet())),
-			delegations: (data["delegations"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as List<dynamic>).map((x1) => Delegation.fromJSON(x1) ).toSet())),
-			encryptionKeys: (data["encryptionKeys"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as List<dynamic>).map((x1) => Delegation.fromJSON(x1) ).toSet())),
-			encryptedSelf: (data["encryptedSelf"] as Base64String?),
-			securityMetadata: data["securityMetadata"] == null ? null : SecurityMetadata.fromJSON(data["securityMetadata"]),
-			notes: (data["notes"] as List<dynamic>).map((x0) => Annotation.fromJSON(x0) ).toList(),
-		);
-	}
-
 	static Map<String, dynamic> encode(EncryptedContact value) {
 		Map<String, dynamic> entityAsMap = {
 			"id" : value.id,
@@ -426,5 +389,42 @@ class EncryptedContact implements Contact {
 			"notes" : value.notes.map((x0) => Annotation.encode(x0)).toList()
 		};
 		return entityAsMap;
+	}
+
+	static EncryptedContact fromJSON(Map<String, dynamic> data) {
+		return EncryptedContact(
+			(data["id"] as String),
+			rev: (data["rev"] as String?),
+			created: (data["created"] as int?),
+			modified: (data["modified"] as int?),
+			author: (data["author"] as String?),
+			responsible: (data["responsible"] as String?),
+			medicalLocationId: (data["medicalLocationId"] as String?),
+			tags: (data["tags"] as List<dynamic>).map((x0) => CodeStub.fromJSON(x0) ).toSet(),
+			codes: (data["codes"] as List<dynamic>).map((x0) => CodeStub.fromJSON(x0) ).toSet(),
+			identifier: (data["identifier"] as List<dynamic>).map((x0) => Identifier.fromJSON(x0) ).toList(),
+			endOfLife: (data["endOfLife"] as int?),
+			deletionDate: (data["deletionDate"] as int?),
+			groupId: (data["groupId"] as String?),
+			openingDate: (data["openingDate"] as int?),
+			closingDate: (data["closingDate"] as int?),
+			descr: (data["descr"] as String?),
+			location: (data["location"] as String?),
+			externalId: (data["externalId"] as String?),
+			encounterType: data["encounterType"] == null ? null : CodeStub.fromJSON(data["encounterType"]),
+			encounterLocation: data["encounterLocation"] == null ? null : EncryptedAddress.fromJSON(data["encounterLocation"]),
+			subContacts: (data["subContacts"] as List<dynamic>).map((x0) => EncryptedSubContact.fromJSON(x0) ).toSet(),
+			services: (data["services"] as List<dynamic>).map((x0) => EncryptedService.fromJSON(x0) ).toSet(),
+			participants: (data["participants"] as Map<String, dynamic>).map((k0, v0) => MapEntry(ParticipantType.fromJSON(k0), (v0 as String))),
+			healthcarePartyId: (data["healthcarePartyId"] as String?),
+			modifiedContactId: (data["modifiedContactId"] as String?),
+			secretForeignKeys: (data["secretForeignKeys"] as List<dynamic>).map((x0) => (x0 as String) ).toSet(),
+			cryptedForeignKeys: (data["cryptedForeignKeys"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as List<dynamic>).map((x1) => Delegation.fromJSON(x1) ).toSet())),
+			delegations: (data["delegations"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as List<dynamic>).map((x1) => Delegation.fromJSON(x1) ).toSet())),
+			encryptionKeys: (data["encryptionKeys"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as List<dynamic>).map((x1) => Delegation.fromJSON(x1) ).toSet())),
+			encryptedSelf: (data["encryptedSelf"] as Base64String?),
+			securityMetadata: data["securityMetadata"] == null ? null : SecurityMetadata.fromJSON(data["securityMetadata"]),
+			notes: (data["notes"] as List<dynamic>).map((x0) => Annotation.fromJSON(x0) ).toList(),
+		);
 	}
 }

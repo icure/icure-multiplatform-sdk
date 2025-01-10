@@ -6,6 +6,7 @@ import com.icure.cardinal.sdk.model.DataOwnerType
 import com.icure.cardinal.sdk.model.DataOwnerWithType
 import com.icure.cardinal.sdk.model.specializations.KeypairFingerprintV1String
 import com.icure.cardinal.sdk.model.specializations.SpkiHexString
+import com.icure.cardinal.sdk.serialization.RsaEncryptionAlgorithmAsIdentifierSerializer
 import com.icure.kryptom.crypto.CryptoService
 import com.icure.kryptom.crypto.RsaAlgorithm.RsaEncryptionAlgorithm
 import com.icure.kryptom.crypto.RsaKeypair
@@ -52,6 +53,7 @@ interface CryptoStrategies {
 		/**
 		 * The algorithm of the keypair
 		 */
+		@Serializable(with = RsaEncryptionAlgorithmAsIdentifierSerializer::class)
 		val keyAlgorithm: RsaEncryptionAlgorithm
 	)
 

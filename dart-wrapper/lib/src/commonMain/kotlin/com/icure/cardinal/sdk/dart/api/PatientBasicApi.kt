@@ -1,7 +1,7 @@
 // auto-generated file
 package com.icure.cardinal.sdk.dart.api
 
-import com.icure.cardinal.sdk.CardinalBaseSdk
+import com.icure.cardinal.sdk.CardinalBaseApis
 import com.icure.cardinal.sdk.crypto.entities.EntityAccessInformation
 import com.icure.cardinal.sdk.dart.utils.ApiScope
 import com.icure.cardinal.sdk.dart.utils.NativeReferences
@@ -47,7 +47,7 @@ public object PatientBasicApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(String.serializer())) {
-      NativeReferences.get<CardinalBaseSdk>(sdkId).patient.matchPatientsBy(
+      NativeReferences.get<CardinalBaseApis>(sdkId).patient.matchPatientsBy(
         filter,
       )
     }
@@ -70,7 +70,7 @@ public object PatientBasicApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(String.serializer())) {
-      NativeReferences.get<CardinalBaseSdk>(sdkId).patient.matchPatientsBySorted(
+      NativeReferences.get<CardinalBaseApis>(sdkId).patient.matchPatientsBySorted(
         filter,
       )
     }
@@ -93,7 +93,7 @@ public object PatientBasicApi {
     ApiScope.execute(
       dartResultCallback,
       String.serializer()) {
-      val richResult = NativeReferences.get<CardinalBaseSdk>(sdkId).patient.filterPatientsBy(
+      val richResult = NativeReferences.get<CardinalBaseApis>(sdkId).patient.filterPatientsBy(
         filter,
       )
       NativeReferences.create(PaginatedListIteratorWithSerializer(
@@ -120,7 +120,7 @@ public object PatientBasicApi {
     ApiScope.execute(
       dartResultCallback,
       String.serializer()) {
-      val richResult = NativeReferences.get<CardinalBaseSdk>(sdkId).patient.filterPatientsBySorted(
+      val richResult = NativeReferences.get<CardinalBaseApis>(sdkId).patient.filterPatientsBySorted(
         filter,
       )
       NativeReferences.create(PaginatedListIteratorWithSerializer(
@@ -152,7 +152,7 @@ public object PatientBasicApi {
     ApiScope.execute(
       dartResultCallback,
       DocIdentifier.serializer()) {
-      NativeReferences.get<CardinalBaseSdk>(sdkId).patient.deletePatientById(
+      NativeReferences.get<CardinalBaseApis>(sdkId).patient.deletePatientById(
         entityId,
         rev,
       )
@@ -176,7 +176,7 @@ public object PatientBasicApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(DocIdentifier.serializer())) {
-      NativeReferences.get<CardinalBaseSdk>(sdkId).patient.deletePatientsByIds(
+      NativeReferences.get<CardinalBaseApis>(sdkId).patient.deletePatientsByIds(
         entityIds,
       )
     }
@@ -204,7 +204,7 @@ public object PatientBasicApi {
     ApiScope.execute(
       dartResultCallback,
       Unit.serializer()) {
-      NativeReferences.get<CardinalBaseSdk>(sdkId).patient.purgePatientById(
+      NativeReferences.get<CardinalBaseApis>(sdkId).patient.purgePatientById(
         id,
         rev,
       )
@@ -228,7 +228,7 @@ public object PatientBasicApi {
     ApiScope.execute(
       dartResultCallback,
       DocIdentifier.serializer()) {
-      NativeReferences.get<CardinalBaseSdk>(sdkId).patient.deletePatient(
+      NativeReferences.get<CardinalBaseApis>(sdkId).patient.deletePatient(
         patient,
       )
     }
@@ -251,7 +251,7 @@ public object PatientBasicApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(DocIdentifier.serializer())) {
-      NativeReferences.get<CardinalBaseSdk>(sdkId).patient.deletePatients(
+      NativeReferences.get<CardinalBaseApis>(sdkId).patient.deletePatients(
         patients,
       )
     }
@@ -274,7 +274,7 @@ public object PatientBasicApi {
     ApiScope.execute(
       dartResultCallback,
       Unit.serializer()) {
-      NativeReferences.get<CardinalBaseSdk>(sdkId).patient.purgePatient(
+      NativeReferences.get<CardinalBaseApis>(sdkId).patient.purgePatient(
         patient,
       )
     }
@@ -297,7 +297,7 @@ public object PatientBasicApi {
     ApiScope.execute(
       dartResultCallback,
       EntityAccessInformation.serializer()) {
-      NativeReferences.get<CardinalBaseSdk>(sdkId).patient.getDataOwnersWithAccessTo(
+      NativeReferences.get<CardinalBaseApis>(sdkId).patient.getDataOwnersWithAccessTo(
         patient,
       )
     }
@@ -320,7 +320,7 @@ public object PatientBasicApi {
     ApiScope.execute(
       dartResultCallback,
       PolymorphicSerializer(Patient::class)) {
-      NativeReferences.get<CardinalBaseSdk>(sdkId).patient.undeletePatient(
+      NativeReferences.get<CardinalBaseApis>(sdkId).patient.undeletePatient(
         patient,
       )
     }
@@ -343,7 +343,7 @@ public object PatientBasicApi {
     ApiScope.execute(
       dartResultCallback,
       EncryptedPatient.serializer()) {
-      NativeReferences.get<CardinalBaseSdk>(sdkId).patient.modifyPatient(
+      NativeReferences.get<CardinalBaseApis>(sdkId).patient.modifyPatient(
         entity,
       )
     }
@@ -371,7 +371,7 @@ public object PatientBasicApi {
     ApiScope.execute(
       dartResultCallback,
       EncryptedPatient.serializer()) {
-      NativeReferences.get<CardinalBaseSdk>(sdkId).patient.undeletePatientById(
+      NativeReferences.get<CardinalBaseApis>(sdkId).patient.undeletePatientById(
         id,
         rev,
       )
@@ -395,7 +395,7 @@ public object PatientBasicApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(EncryptedPatient.serializer())) {
-      NativeReferences.get<CardinalBaseSdk>(sdkId).patient.undeletePatients(
+      NativeReferences.get<CardinalBaseApis>(sdkId).patient.undeletePatients(
         ids,
       )
     }
@@ -418,7 +418,7 @@ public object PatientBasicApi {
     ApiScope.execute(
       dartResultCallback,
       EncryptedPatient.serializer()) {
-      NativeReferences.get<CardinalBaseSdk>(sdkId).patient.getPatient(
+      NativeReferences.get<CardinalBaseApis>(sdkId).patient.getPatient(
         entityId,
       )
     }
@@ -446,7 +446,7 @@ public object PatientBasicApi {
     ApiScope.execute(
       dartResultCallback,
       EncryptedPatient.serializer()) {
-      NativeReferences.get<CardinalBaseSdk>(sdkId).patient.getPatientResolvingMerges(
+      NativeReferences.get<CardinalBaseApis>(sdkId).patient.getPatientResolvingMerges(
         patientId,
         maxMergeDepth,
       )
@@ -470,7 +470,7 @@ public object PatientBasicApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(EncryptedPatient.serializer())) {
-      NativeReferences.get<CardinalBaseSdk>(sdkId).patient.getPatients(
+      NativeReferences.get<CardinalBaseApis>(sdkId).patient.getPatients(
         patientIds,
       )
     }
@@ -493,7 +493,7 @@ public object PatientBasicApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(IdWithRev.serializer())) {
-      NativeReferences.get<CardinalBaseSdk>(sdkId).patient.modifyPatients(
+      NativeReferences.get<CardinalBaseApis>(sdkId).patient.modifyPatients(
         patientDtos,
       )
     }
@@ -521,7 +521,7 @@ public object PatientBasicApi {
     ApiScope.execute(
       dartResultCallback,
       EncryptedPatient.serializer()) {
-      NativeReferences.get<CardinalBaseSdk>(sdkId).patient.mergePatients(
+      NativeReferences.get<CardinalBaseApis>(sdkId).patient.mergePatients(
         from,
         mergedInto,
       )
@@ -555,7 +555,7 @@ public object PatientBasicApi {
     ApiScope.execute(
       dartResultCallback,
       String.serializer()) {
-      val richResult = NativeReferences.get<CardinalBaseSdk>(sdkId).patient.subscribeToEvents(
+      val richResult = NativeReferences.get<CardinalBaseApis>(sdkId).patient.subscribeToEvents(
         events,
         filter,
         subscriptionConfig,

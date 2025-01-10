@@ -4,6 +4,7 @@ import com.icure.cardinal.sdk.api.CryptoApi
 import com.icure.cardinal.sdk.api.ShamirKeysManagerApi
 import com.icure.cardinal.sdk.crypto.InternalCryptoServices
 import com.icure.cardinal.sdk.model.specializations.KeypairFingerprintV1String
+import com.icure.cardinal.sdk.model.specializations.Pkcs8Bytes
 import com.icure.kryptom.crypto.defaultCryptoService
 import com.icure.utils.InternalIcureApi
 
@@ -18,7 +19,7 @@ internal class CryptoApiImpl(
 
 	override suspend fun currentDataOwnerKeys(
 		filterTrustedKeys: Boolean
-	): Map<String, Map<KeypairFingerprintV1String, ByteArray>> =
+	): Map<String, Map<KeypairFingerprintV1String, Pkcs8Bytes>> =
 		internal.userEncryptionKeysManager.getCurrentUserHierarchyAvailableKeypairs().run {
 			listOf(self) + parents
 		}.associate { keyInfo ->
@@ -27,7 +28,7 @@ internal class CryptoApiImpl(
 			}.associate { cachedKeypairDetails ->
 				Pair(
 					cachedKeypairDetails.keyPair.pubSpkiHexString.fingerprintV1(),
-					defaultCryptoService.rsa.exportPrivateKeyPkcs8(cachedKeypairDetails.keyPair.key.private)
+					Pkcs8Bytes(defaultCryptoService.rsa.exportPrivateKeyPkcs8(cachedKeypairDetails.keyPair.key.private))
 				)
 			}
 		}

@@ -17,18 +17,18 @@ class ShamirUpdateRequest {
 		int minShares
 		) : _minShares = minShares;
 
-	factory ShamirUpdateRequest.fromJSON(Map<String, dynamic> data) {
-		return ShamirUpdateRequest(
-			(data["notariesIds"] as List<dynamic>).map((x0) => (x0 as String) ).toSet(),
-			(data["minShares"] as int)
-		);
-	}
-
 	static Map<String, dynamic> encode(ShamirUpdateRequest value) {
 		Map<String, dynamic> entityAsMap = {
 			"notariesIds" : value.notariesIds.map((x0) => x0).toList(),
 			"minShares" : value.minShares
 		};
 		return entityAsMap;
+	}
+
+	static ShamirUpdateRequest fromJSON(Map<String, dynamic> data) {
+		return ShamirUpdateRequest(
+			(data["notariesIds"] as List<dynamic>).map((x0) => (x0 as String) ).toSet(),
+			(data["minShares"] as int)
+		);
 	}
 }

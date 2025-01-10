@@ -58,16 +58,6 @@ class EncryptedSchoolingInfo implements SchoolingInfo {
 		school = school ?? null,
 		typeOfEducation = typeOfEducation ?? null;
 
-	factory EncryptedSchoolingInfo.fromJSON(Map<String, dynamic> data) {
-		return EncryptedSchoolingInfo(
-			startDate: (data["startDate"] as int?),
-			endDate: (data["endDate"] as int?),
-			school: (data["school"] as String?),
-			typeOfEducation: data["typeOfEducation"] == null ? null : CodeStub.fromJSON(data["typeOfEducation"]),
-			encryptedSelf: (data["encryptedSelf"] as Base64String?)
-		);
-	}
-
 	static Map<String, dynamic> encode(EncryptedSchoolingInfo value) {
 		Map<String, dynamic> entityAsMap = {
 			"startDate" : value.startDate,
@@ -77,6 +67,16 @@ class EncryptedSchoolingInfo implements SchoolingInfo {
 			"encryptedSelf" : value.encryptedSelf
 		};
 		return entityAsMap;
+	}
+
+	static EncryptedSchoolingInfo fromJSON(Map<String, dynamic> data) {
+		return EncryptedSchoolingInfo(
+			startDate: (data["startDate"] as int?),
+			endDate: (data["endDate"] as int?),
+			school: (data["school"] as String?),
+			typeOfEducation: data["typeOfEducation"] == null ? null : CodeStub.fromJSON(data["typeOfEducation"]),
+			encryptedSelf: (data["encryptedSelf"] as Base64String?)
+		);
 	}
 }
 
@@ -97,16 +97,6 @@ class DecryptedSchoolingInfo implements SchoolingInfo {
 		school = school ?? null,
 		typeOfEducation = typeOfEducation ?? null;
 
-	factory DecryptedSchoolingInfo.fromJSON(Map<String, dynamic> data) {
-		return DecryptedSchoolingInfo(
-			startDate: (data["startDate"] as int?),
-			endDate: (data["endDate"] as int?),
-			school: (data["school"] as String?),
-			typeOfEducation: data["typeOfEducation"] == null ? null : CodeStub.fromJSON(data["typeOfEducation"]),
-			encryptedSelf: (data["encryptedSelf"] as Base64String?)
-		);
-	}
-
 	static Map<String, dynamic> encode(DecryptedSchoolingInfo value) {
 		Map<String, dynamic> entityAsMap = {
 			"startDate" : value.startDate,
@@ -116,5 +106,15 @@ class DecryptedSchoolingInfo implements SchoolingInfo {
 			"encryptedSelf" : value.encryptedSelf
 		};
 		return entityAsMap;
+	}
+
+	static DecryptedSchoolingInfo fromJSON(Map<String, dynamic> data) {
+		return DecryptedSchoolingInfo(
+			startDate: (data["startDate"] as int?),
+			endDate: (data["endDate"] as int?),
+			school: (data["school"] as String?),
+			typeOfEducation: data["typeOfEducation"] == null ? null : CodeStub.fromJSON(data["typeOfEducation"]),
+			encryptedSelf: (data["encryptedSelf"] as Base64String?)
+		);
 	}
 }

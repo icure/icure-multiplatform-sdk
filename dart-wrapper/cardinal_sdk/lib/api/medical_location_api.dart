@@ -9,7 +9,11 @@ import 'package:cardinal_sdk/utils/pagination/paginated_list_iterator.dart';
 
 class MedicalLocationApi {
 	final String _sdkId;
-	MedicalLocationApi(this._sdkId);
+	final Object _dartSdk;
+	MedicalLocationApi(
+		this._sdkId,
+		this._dartSdk
+		);
 
 	Future<MedicalLocation> createMedicalLocation(MedicalLocation medicalLocationDto) async {
 		return await CardinalSdkPlatformInterface.instance.apis.medicalLocation.createMedicalLocation(

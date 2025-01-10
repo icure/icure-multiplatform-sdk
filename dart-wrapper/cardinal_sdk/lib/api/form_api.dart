@@ -17,12 +17,14 @@ import 'package:cardinal_sdk/utils/pagination/paginated_list_iterator.dart';
 
 class FormApi {
 	final String _sdkId;
+	final Object _dartSdk;
 	final TryAndRecoverFormApi tryAndRecover;
 	final EncryptedFormApi encrypted;
 	FormApi(
-		this._sdkId
-		) : tryAndRecover = TryAndRecoverFormApi(_sdkId),
-		encrypted = EncryptedFormApi(_sdkId);
+		this._sdkId,
+		this._dartSdk
+		) : tryAndRecover = TryAndRecoverFormApi(_sdkId, _dartSdk),
+		encrypted = EncryptedFormApi(_sdkId, _dartSdk);
 
 	Future<DecryptedForm> createForm(DecryptedForm entity) async {
 		return await CardinalSdkPlatformInterface.instance.apis.form.createForm(
@@ -278,7 +280,11 @@ class FormApi {
 
 class TryAndRecoverFormApi {
 	final String _sdkId;
-	TryAndRecoverFormApi(this._sdkId);
+	final Object _dartSdk;
+	TryAndRecoverFormApi(
+		this._sdkId,
+		this._dartSdk
+		);
 
 	Future<Form> shareWith(String delegateId, Form form, { FormShareOptions? options }) async {
 		return await CardinalSdkPlatformInterface.instance.apis.form.tryAndRecover.shareWith(
@@ -371,7 +377,11 @@ class TryAndRecoverFormApi {
 
 class EncryptedFormApi {
 	final String _sdkId;
-	EncryptedFormApi(this._sdkId);
+	final Object _dartSdk;
+	EncryptedFormApi(
+		this._sdkId,
+		this._dartSdk
+		);
 
 	Future<EncryptedForm> shareWith(String delegateId, EncryptedForm form, { FormShareOptions? options }) async {
 		return await CardinalSdkPlatformInterface.instance.apis.form.encrypted.shareWith(

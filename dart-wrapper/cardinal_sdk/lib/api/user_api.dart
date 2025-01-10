@@ -16,7 +16,11 @@ import 'package:cardinal_sdk/subscription/entity_subscription.dart';
 
 class UserApi {
 	final String _sdkId;
-	UserApi(this._sdkId);
+	final Object _dartSdk;
+	UserApi(
+		this._sdkId,
+		this._dartSdk
+		);
 
 	Future<User> getCurrentUser() async {
 		return await CardinalSdkPlatformInterface.instance.apis.user.getCurrentUser(

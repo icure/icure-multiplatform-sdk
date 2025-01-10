@@ -8,7 +8,11 @@ import 'package:cardinal_sdk/model/couchdb/doc_identifier.dart';
 
 class ClassificationBasicApi {
 	final String _sdkId;
-	ClassificationBasicApi(this._sdkId);
+	final Object _dartSdk;
+	ClassificationBasicApi(
+		this._sdkId,
+		this._dartSdk
+		);
 
 	Future<List<String>> matchClassificationsBy(BaseFilterOptions<Classification> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.classificationBasic.matchClassificationsBy(

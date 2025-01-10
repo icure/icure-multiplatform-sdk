@@ -119,6 +119,7 @@ public object DocumentApiDispatcher {
       resultCallback,
       parameters.getValue("sdkId"),
       parameters.getValue("document"),
+      parameters.getValue("decryptedAttachmentValidator"),
     )
   }
 
@@ -132,6 +133,7 @@ public object DocumentApiDispatcher {
       resultCallback,
       parameters.getValue("sdkId"),
       parameters.getValue("document"),
+      parameters.getValue("decryptedAttachmentValidator"),
     )
   }
 
@@ -161,6 +163,7 @@ public object DocumentApiDispatcher {
       parameters.getValue("sdkId"),
       parameters.getValue("document"),
       parameters.getValue("key"),
+      parameters.getValue("decryptedAttachmentValidator"),
     )
   }
 
@@ -271,6 +274,7 @@ public object DocumentApiDispatcher {
       parameters.getValue("sdkId"),
       parameters.getValue("document"),
       parameters.getValue("encryptedAttachment"),
+      parameters.getValue("decryptedAttachmentValidator"),
     )
   }
 

@@ -16,12 +16,14 @@ import 'package:cardinal_sdk/subscription/entity_subscription.dart';
 
 class MaintenanceTaskApi {
 	final String _sdkId;
+	final Object _dartSdk;
 	final TryAndRecoverMaintenanceTaskApi tryAndRecover;
 	final EncryptedMaintenanceTaskApi encrypted;
 	MaintenanceTaskApi(
-		this._sdkId
-		) : tryAndRecover = TryAndRecoverMaintenanceTaskApi(_sdkId),
-		encrypted = EncryptedMaintenanceTaskApi(_sdkId);
+		this._sdkId,
+		this._dartSdk
+		) : tryAndRecover = TryAndRecoverMaintenanceTaskApi(_sdkId, _dartSdk),
+		encrypted = EncryptedMaintenanceTaskApi(_sdkId, _dartSdk);
 
 	Future<DecryptedMaintenanceTask> createMaintenanceTask(DecryptedMaintenanceTask entity) async {
 		return await CardinalSdkPlatformInterface.instance.apis.maintenanceTask.createMaintenanceTask(
@@ -219,7 +221,11 @@ class MaintenanceTaskApi {
 
 class TryAndRecoverMaintenanceTaskApi {
 	final String _sdkId;
-	TryAndRecoverMaintenanceTaskApi(this._sdkId);
+	final Object _dartSdk;
+	TryAndRecoverMaintenanceTaskApi(
+		this._sdkId,
+		this._dartSdk
+		);
 
 	Future<MaintenanceTask> shareWith(String delegateId, MaintenanceTask maintenanceTask, { MaintenanceTaskShareOptions? options }) async {
 		return await CardinalSdkPlatformInterface.instance.apis.maintenanceTask.tryAndRecover.shareWith(
@@ -291,7 +297,11 @@ class TryAndRecoverMaintenanceTaskApi {
 
 class EncryptedMaintenanceTaskApi {
 	final String _sdkId;
-	EncryptedMaintenanceTaskApi(this._sdkId);
+	final Object _dartSdk;
+	EncryptedMaintenanceTaskApi(
+		this._sdkId,
+		this._dartSdk
+		);
 
 	Future<EncryptedMaintenanceTask> shareWith(String delegateId, EncryptedMaintenanceTask maintenanceTask, { MaintenanceTaskShareOptions? options }) async {
 		return await CardinalSdkPlatformInterface.instance.apis.maintenanceTask.encrypted.shareWith(

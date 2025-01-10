@@ -59,16 +59,6 @@ class DecryptedCareTeamMembership implements CareTeamMembership {
 		membershipType = membershipType ?? null,
 		encryptedSelf = encryptedSelf ?? null;
 
-	factory DecryptedCareTeamMembership.fromJSON(Map<String, dynamic> data) {
-		return DecryptedCareTeamMembership(
-			startDate: (data["startDate"] as int?),
-			endDate: (data["endDate"] as int?),
-			careTeamMemberId: (data["careTeamMemberId"] as String?),
-			membershipType: data["membershipType"] == null ? null : MembershipType.fromJSON(data["membershipType"]),
-			encryptedSelf: (data["encryptedSelf"] as Base64String?)
-		);
-	}
-
 	static Map<String, dynamic> encode(DecryptedCareTeamMembership value) {
 		Map<String, dynamic> entityAsMap = {
 			"startDate" : value.startDate,
@@ -78,6 +68,16 @@ class DecryptedCareTeamMembership implements CareTeamMembership {
 			"encryptedSelf" : value.encryptedSelf
 		};
 		return entityAsMap;
+	}
+
+	static DecryptedCareTeamMembership fromJSON(Map<String, dynamic> data) {
+		return DecryptedCareTeamMembership(
+			startDate: (data["startDate"] as int?),
+			endDate: (data["endDate"] as int?),
+			careTeamMemberId: (data["careTeamMemberId"] as String?),
+			membershipType: data["membershipType"] == null ? null : MembershipType.fromJSON(data["membershipType"]),
+			encryptedSelf: (data["encryptedSelf"] as Base64String?)
+		);
 	}
 }
 
@@ -99,16 +99,6 @@ class EncryptedCareTeamMembership implements CareTeamMembership {
 		membershipType = membershipType ?? null,
 		encryptedSelf = encryptedSelf ?? null;
 
-	factory EncryptedCareTeamMembership.fromJSON(Map<String, dynamic> data) {
-		return EncryptedCareTeamMembership(
-			startDate: (data["startDate"] as int?),
-			endDate: (data["endDate"] as int?),
-			careTeamMemberId: (data["careTeamMemberId"] as String?),
-			membershipType: data["membershipType"] == null ? null : MembershipType.fromJSON(data["membershipType"]),
-			encryptedSelf: (data["encryptedSelf"] as Base64String?)
-		);
-	}
-
 	static Map<String, dynamic> encode(EncryptedCareTeamMembership value) {
 		Map<String, dynamic> entityAsMap = {
 			"startDate" : value.startDate,
@@ -118,5 +108,15 @@ class EncryptedCareTeamMembership implements CareTeamMembership {
 			"encryptedSelf" : value.encryptedSelf
 		};
 		return entityAsMap;
+	}
+
+	static EncryptedCareTeamMembership fromJSON(Map<String, dynamic> data) {
+		return EncryptedCareTeamMembership(
+			startDate: (data["startDate"] as int?),
+			endDate: (data["endDate"] as int?),
+			careTeamMemberId: (data["careTeamMemberId"] as String?),
+			membershipType: data["membershipType"] == null ? null : MembershipType.fromJSON(data["membershipType"]),
+			encryptedSelf: (data["encryptedSelf"] as Base64String?)
+		);
 	}
 }

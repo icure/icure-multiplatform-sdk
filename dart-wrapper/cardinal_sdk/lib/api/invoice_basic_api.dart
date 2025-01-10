@@ -10,7 +10,11 @@ import 'package:cardinal_sdk/model/embed/invoice_type.dart';
 
 class InvoiceBasicApi {
 	final String _sdkId;
-	InvoiceBasicApi(this._sdkId);
+	final Object _dartSdk;
+	InvoiceBasicApi(
+		this._sdkId,
+		this._dartSdk
+		);
 
 	Future<DocIdentifier> deleteInvoice(String entityId) async {
 		return await CardinalSdkPlatformInterface.instance.apis.invoiceBasic.deleteInvoice(

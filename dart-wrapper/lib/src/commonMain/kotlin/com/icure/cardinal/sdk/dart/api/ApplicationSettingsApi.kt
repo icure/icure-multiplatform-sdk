@@ -1,7 +1,7 @@
 // auto-generated file
 package com.icure.cardinal.sdk.dart.api
 
-import com.icure.cardinal.sdk.CardinalSdk
+import com.icure.cardinal.sdk.CardinalNonCryptoApis
 import com.icure.cardinal.sdk.dart.utils.ApiScope
 import com.icure.cardinal.sdk.dart.utils.NativeReferences
 import com.icure.cardinal.sdk.model.ApplicationSettings
@@ -23,7 +23,7 @@ public object ApplicationSettingsApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(ApplicationSettings.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).applicationSettings.getApplicationSettings()
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).applicationSettings.getApplicationSettings()
     }
   }
 
@@ -44,7 +44,7 @@ public object ApplicationSettingsApi {
     ApiScope.execute(
       dartResultCallback,
       ApplicationSettings.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).applicationSettings.createApplicationSettings(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).applicationSettings.createApplicationSettings(
         applicationSettings,
       )
     }
@@ -67,7 +67,7 @@ public object ApplicationSettingsApi {
     ApiScope.execute(
       dartResultCallback,
       ApplicationSettings.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).applicationSettings.updateApplicationSettings(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).applicationSettings.updateApplicationSettings(
         applicationSettings,
       )
     }
