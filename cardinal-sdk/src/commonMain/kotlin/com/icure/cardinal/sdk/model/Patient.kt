@@ -38,6 +38,7 @@ import com.icure.cardinal.sdk.model.embed.PersonalStatus
 import com.icure.cardinal.sdk.model.embed.SchoolingInfo
 import com.icure.cardinal.sdk.model.embed.SecurityMetadata
 import com.icure.cardinal.sdk.model.specializations.AesExchangeKeyEncryptionKeypairIdentifier
+import com.icure.cardinal.sdk.model.specializations.AesExchangeKeyEntryKeyString
 import com.icure.cardinal.sdk.model.specializations.Base64String
 import com.icure.cardinal.sdk.model.specializations.HexString
 import com.icure.cardinal.sdk.model.specializations.SpkiHexString
@@ -176,8 +177,7 @@ sealed interface Patient :
 
 	override val hcPartyKeys: Map<String, List<HexString>>
 
-	override val aesExchangeKeys:
-		Map<SpkiHexString, Map<String, Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>>>
+	override val aesExchangeKeys: Map<AesExchangeKeyEntryKeyString, Map<String, Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>>>
 
 	override val transferKeys:
 		Map<AesExchangeKeyEncryptionKeypairIdentifier, Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>>
@@ -314,7 +314,7 @@ data class DecryptedPatient(
 	@DefaultValue("emptyMap()")
 	override val hcPartyKeys: Map<String, List<HexString>> = emptyMap(),
 	@DefaultValue("emptyMap()")
-	override val aesExchangeKeys: Map<SpkiHexString, Map<String, Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>>> =
+	override val aesExchangeKeys: Map<AesExchangeKeyEntryKeyString, Map<String, Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>>> =
 		emptyMap(),
 	@DefaultValue("emptyMap()")
 	override val transferKeys: Map<AesExchangeKeyEncryptionKeypairIdentifier, Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>> =
@@ -441,7 +441,7 @@ data class EncryptedPatient(
 	@DefaultValue("emptyMap()")
 	override val hcPartyKeys: Map<String, List<HexString>> = emptyMap(),
 	@DefaultValue("emptyMap()")
-	override val aesExchangeKeys: Map<SpkiHexString, Map<String, Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>>> =
+	override val aesExchangeKeys: Map<AesExchangeKeyEntryKeyString, Map<String, Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>>> =
 		emptyMap(),
 	@DefaultValue("emptyMap()")
 	override val transferKeys: Map<AesExchangeKeyEncryptionKeypairIdentifier, Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>> =
