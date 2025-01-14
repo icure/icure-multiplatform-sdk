@@ -99,22 +99,18 @@ internal fun Iterable<AccessControlKeyHexString>.encodeAsAccessControlHeaders():
 value class SecureDelegationKeyString(val s: String)
 
 // We may want to disable the inits once the sdk is ready, but now they help to secure the development
-
 @JvmInline
 @Serializable
 value class SpkiHexString(
 	val s: String
 ) {
 	companion object {
-		private const val PREFIX_2048 = "30820122300d06092a864886f70d01010105000382010f003082010a0282010100"
-		private const val PREFIX_4096 = "30820222300d06092a864886f70d01010105000382020f003082020a0282020100"
-		private const val POSTFIX = "0203010001"
-		private val pattern2048 = Regex("^$PREFIX_2048[0-9a-f]{512}$POSTFIX\$")
-		private val pattern4096 = Regex("^$PREFIX_4096[0-9a-f]{1024}$POSTFIX\$")
+		internal const val TRAILING_CONSTANT = "0203010001"
+		internal val pattern = Regex("^(?:[0-9a-f][0-9a-f]){256,}$TRAILING_CONSTANT\$")
 	}
 
 	init {
-		require(pattern2048.matches(s) || pattern4096.matches(s)) { "Invalid spki hex string: $s" }
+		require(pattern.matches(s)) { "Invalid spki hex string: $s" }
 	}
 
 	fun fingerprintV1(): KeypairFingerprintV1String {
@@ -131,20 +127,35 @@ value class SpkiHexString(
 
 @JvmInline
 @Serializable
+value class AesExchangeKeyEntryKeyString(
+	val s: String
+) {
+	companion object {
+		private const val FAKE_PUB_KEY_PREFIX = "x"
+	}
+
+	init {
+		require(s.startsWith(FAKE_PUB_KEY_PREFIX) || SpkiHexString.pattern.matches(s)) { "Invalid aes exchange key entry: $s" }
+	}
+
+	fun asPublicKey(): SpkiHexString? = if (s.startsWith(FAKE_PUB_KEY_PREFIX)) null else SpkiHexString(s)
+}
+
+@JvmInline
+@Serializable
 value class KeypairFingerprintV1String(
 	val s: String
 ) {
 	companion object {
-		private const val TRAILING_CONSTANT = "0203010001"
 		const val LENGTH = 32
-		private val pattern = Regex("^[0-9a-f]{22}$TRAILING_CONSTANT\$")
+		private val pattern = Regex("^[0-9a-f]{22}${SpkiHexString.TRAILING_CONSTANT}\$")
 
 		fun fromPublicKeySpki(publicKeySpki: SpkiHexString): KeypairFingerprintV1String {
 			return KeypairFingerprintV1String(publicKeySpki.s.takeLast(32))
 		}
 
 		fun fromV2(v2: KeypairFingerprintV2String): KeypairFingerprintV1String {
-			return KeypairFingerprintV1String(v2.s + TRAILING_CONSTANT)
+			return KeypairFingerprintV1String(v2.s + SpkiHexString.TRAILING_CONSTANT)
 		}
 	}
 

@@ -1,18 +1,18 @@
 package com.icure.cardinal.sdk.model.extensions
 
-import com.icure.kryptom.crypto.RsaAlgorithm
 import com.icure.cardinal.sdk.model.CryptoActorStub
 import com.icure.cardinal.sdk.model.CryptoActorStubWithType
 import com.icure.cardinal.sdk.model.DataOwnerType
 import com.icure.cardinal.sdk.model.DataOwnerWithType
 import com.icure.cardinal.sdk.model.base.CryptoActor
 import com.icure.cardinal.sdk.model.specializations.SpkiHexString
+import com.icure.kryptom.crypto.RsaAlgorithm
 
 /**
  * All public keys of the crypto actor to be used for OAEP with SHA1
  */
 val CryptoActor.publicKeysWithSha1Spki: Set<SpkiHexString> get() =
-	(aesExchangeKeys.keys + listOfNotNull(publicKey)).toSet()
+	(aesExchangeKeys.keys.mapNotNull { it.asPublicKey() } + listOfNotNull(publicKey)).toSet()
 
 /**
  * All public keys of the crypto actor to be used for OAEP with SHA256
@@ -24,7 +24,7 @@ val CryptoActor.publicKeysWithSha256Spki: Set<SpkiHexString> get() =
  * All public keys of the crypto actor
  */
 val CryptoActor.publicKeysSpki: Set<SpkiHexString> get() =
-	(aesExchangeKeys.keys + publicKeysForOaepWithSha256 + listOfNotNull(publicKey)).toSet()
+	publicKeysWithSha1Spki + publicKeysWithSha256Spki
 
 fun CryptoActor.algorithmOfEncryptionKey(encryptionKey: SpkiHexString) =
 	when {
