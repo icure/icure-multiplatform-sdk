@@ -1,7 +1,7 @@
 package com.icure.cardinal.sdk.crypto
 
-import com.icure.kryptom.crypto.CryptoService
 import com.icure.cardinal.sdk.api.DataOwnerApi
+import com.icure.kryptom.crypto.CryptoService
 import com.icure.utils.InternalIcureApi
 
 @InternalIcureApi
@@ -18,6 +18,7 @@ interface InternalCryptoServices : BasicInternalCryptoApi{
 	val recoveryDataEncryption: RecoveryDataEncryption
 	val headersProvider: AccessControlKeysHeadersProvider
 	val strategies: CryptoStrategies
+	val overrideAnonymityHeader: Pair<String, String>?
 
 	override val validationService: EntityValidationService
 		get() = entity
