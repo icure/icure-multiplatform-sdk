@@ -662,10 +662,27 @@ class EntityEncryptionServiceImpl(
 	override suspend fun resolveSecretIdOption(entity: EntityWithTypeInfo<*>, secretIdUseOption: SecretIdUseOption): Set<String> =
 		when (secretIdUseOption) {
 			is SecretIdUseOption.Use -> secretIdUseOption.secretIds
-			SecretIdUseOption.UseAnyConfidential -> getConfidentialSecretIdsOf(entity, null)
-			SecretIdUseOption.UseAnySharedWithParent -> getSecretIdsSharedWithParentsOf(entity)
-		}.also {
-			require(it.isNotEmpty()) { "No valid secret id found for option $secretIdUseOption" }
+			SecretIdUseOption.UseAnyConfidential -> getConfidentialSecretIdsOf(entity, null).also {
+				require(it.isNotEmpty()) {
+					"No valid secret id found for option $secretIdUseOption"
+				}
+			}.let { setOf(it.first()) }
+			SecretIdUseOption.UseAllConfidential -> getConfidentialSecretIdsOf(entity, null).also {
+				require(it.isNotEmpty()) {
+					"No valid secret id found for option $secretIdUseOption"
+				}
+			}
+			SecretIdUseOption.UseAnySharedWithParent -> getSecretIdsSharedWithParentsOf(entity).also {
+				require(it.isNotEmpty()) {
+					"No valid secret id found for option $secretIdUseOption"
+				}
+			}.let { setOf(it.first()) }
+			SecretIdUseOption.UseAllSharedWithParent -> getSecretIdsSharedWithParentsOf(entity).also {
+				require(it.isNotEmpty()) {
+					"No valid secret id found for option $secretIdUseOption"
+				}
+			}
+			SecretIdUseOption.UseNone -> emptySet()
 		}
 
 	private suspend fun dataOwnersForDecryption(startingFrom: String?) =
