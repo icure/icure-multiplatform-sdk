@@ -199,6 +199,9 @@ data class EncryptedFieldsConfiguration(
 		"descr",
 		"note",
 		"notes[].markdown",
+		"careTeam[].*",
+		"episode[].name",
+		"episode[].comment"
 	),
 	val maintenanceTask: Set<String> = setOf(
 		"properties",
@@ -213,7 +216,6 @@ data class EncryptedFieldsConfiguration(
 		"civility",
 		"birthSex",
 		"personalStatus",
-		"administrativeNote",
 		"nationality",
 		"race",
 		"ethnicity",
@@ -246,9 +248,17 @@ data class EncryptedFieldsConfiguration(
 		"medicalLocationId",
 		"name"
 	),
-	val form: Set<String> = emptySet(),
-	val receipt: Set<String> = emptySet(),
-	val classification: Set<String> = emptySet(),
+	val form: Set<String> = setOf(
+		"descr"
+	),
+	val receipt: Set<String> = setOf(
+		"references"
+	),
+	val classification: Set<String> = setOf(
+		"label"
+	),
 	val timeTable: Set<String> = emptySet(),
-	val invoice: Set<String> = emptySet(),
+	val invoice: Set<String> = setOf(
+		"reason"
+	),
 )

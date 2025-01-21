@@ -36,7 +36,10 @@ class EncryptedFieldsConfiguration:
     health_element: List[str] = field(default_factory=lambda: [
         "descr",
         "note",
-        "notes[].markdown"
+        "notes[].markdown",
+        "careTeam[].*",
+        "episode[].name",
+        "episode[].comment"
     ])
     maintenance_task: List[str] = field(default_factory=lambda: [
         "properties"
@@ -51,7 +54,6 @@ class EncryptedFieldsConfiguration:
         "civility",
         "birthSex",
         "personalStatus",
-        "administrativeNote",
         "nationality",
         "race",
         "ethnicity",
@@ -84,11 +86,19 @@ class EncryptedFieldsConfiguration:
         "medicalLocationId",
         "name"
     ])
-    form: List[str] = field(default_factory=lambda: [])
-    receipt: List[str] = field(default_factory=lambda: [])
-    classification: List[str] = field(default_factory=lambda: [])
+    form: List[str] = field(default_factory=lambda: [
+        "descr"
+    ])
+    receipt: List[str] = field(default_factory=lambda: [
+        "references"
+    ])
+    classification: List[str] = field(default_factory=lambda: [
+        "label"
+    ])
     time_table: List[str] = field(default_factory=lambda: [])
-    invoice: List[str] = field(default_factory=lambda: [])
+    invoice: List[str] = field(default_factory=lambda: [
+        "reason"
+    ])
 
 
 @dataclass

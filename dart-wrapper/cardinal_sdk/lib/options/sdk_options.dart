@@ -157,7 +157,10 @@ class EncryptedFieldsConfiguration {
     this.healthElement = const {
       "descr",
       "note",
-      "notes[].markdown"
+      "notes[].markdown",
+      "careTeam[].*",
+      "episode[].name",
+      "episode[].comment"
     },
     this.maintenanceTask = const {
       "properties"
@@ -172,7 +175,6 @@ class EncryptedFieldsConfiguration {
       "civility",
       "birthSex",
       "personalStatus",
-      "administrativeNote",
       "nationality",
       "race",
       "ethnicity",
@@ -205,11 +207,19 @@ class EncryptedFieldsConfiguration {
       "medicalLocationId",
       "name"
     },
-    this.form = const {},
-    this.receipt = const {},
-    this.classification = const {},
+    this.form = const {
+      "descr"
+    },
+    this.receipt = const {
+      "references"
+    },
+    this.classification = const {
+      "label"
+    },
     this.timeTable = const {},
-    this.invoice = const {}
+    this.invoice = const {
+      "reason"
+    }
   });
 
   static Map<String, dynamic> encode(EncryptedFieldsConfiguration value) {
