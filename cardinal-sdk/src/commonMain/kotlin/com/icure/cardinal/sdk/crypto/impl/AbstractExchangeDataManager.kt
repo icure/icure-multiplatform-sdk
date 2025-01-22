@@ -51,7 +51,7 @@ abstract class AbstractExchangeDataManager(
 	protected suspend fun decryptData(
 		data: ExchangeData
 	): DecryptedExchangeDataContent? {
-		val decryptionKeys = userEncryptionKeys.getDecryptionKeys()
+		val decryptionKeys = userEncryptionKeys.getDecryptionKeys(true)
 
 		val decryptedExchangeKeyResult = base.tryDecryptExchangeKeys(listOf(data), decryptionKeys)
 		val decryptedExchangeKey = decryptedExchangeKeyResult.successfulDecryptions.firstOrNull()
@@ -131,7 +131,7 @@ abstract class AbstractExchangeDataManager(
 			other.stub.algorithmOfEncryptionKey(newDataOwnerPublicKey),
 			newDataOwnerPublicKey.bytes()
 		)
-		val decryptionKeys = userEncryptionKeys.getDecryptionKeys()
+		val decryptionKeys = userEncryptionKeys.getDecryptionKeys(true)
 		val allExchangeDataToUpdate = if (self == otherDataOwner) {
 			base.getExchangeDataByDelegatorDelegatePair(self, self)
 		} else {

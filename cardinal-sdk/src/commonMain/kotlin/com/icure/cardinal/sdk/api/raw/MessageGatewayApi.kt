@@ -2,7 +2,9 @@ package com.icure.cardinal.sdk.api.raw
 
 import com.icure.cardinal.sdk.auth.AuthenticationProcessTelecomType
 import com.icure.cardinal.sdk.auth.CaptchaOptions
-import com.icure.cardinal.sdk.auth.CaptchaOptions.*
+import com.icure.cardinal.sdk.auth.CaptchaOptions.FriendlyCaptcha
+import com.icure.cardinal.sdk.auth.CaptchaOptions.Kerberus
+import com.icure.cardinal.sdk.auth.CaptchaOptions.Recaptcha
 import com.icure.cardinal.sdk.utils.Serialization
 import com.icure.kerberus.Challenge
 import com.icure.kerberus.resolveChallenge
@@ -10,7 +12,10 @@ import com.icure.kryptom.crypto.CryptoService
 import com.icure.utils.InternalIcureApi
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
-import io.ktor.client.request.*
+import io.ktor.client.request.accept
+import io.ktor.client.request.get
+import io.ktor.client.request.post
+import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
 import io.ktor.utils.io.InternalAPI

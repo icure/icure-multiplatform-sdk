@@ -46,7 +46,7 @@ class CardinalMaintenanceTaskApiImpl(
 		baseExchangeKeysManager.giveAccessBackTo(
 			updateRequest.concernedDataOwnerId,
 			updateRequest.newPublicKey,
-			userKeysManager.getDecryptionKeys()
+			userKeysManager.getDecryptionKeys(true)
 		)
 	}
 

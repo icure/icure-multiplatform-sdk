@@ -47,7 +47,7 @@ class ShamirKeysManagerApiImpl(
 	): CryptoActorStubWithType {
 		val self = this.dataOwnerApi.getCurrentDataOwner().toStub()
 		val existingSplits = getExistingSplitsInfo(self.stub).keys
-		val allKeys = encryptionKeysManager.getDecryptionKeys()
+		val allKeys = encryptionKeysManager.getDecryptionKeys(true)
 		keySplitsToDelete.intersect(keySplitsToUpdate.keys).let {
 			require (it.isEmpty()) {
 				"Can't update and delete the same key at once. $it"

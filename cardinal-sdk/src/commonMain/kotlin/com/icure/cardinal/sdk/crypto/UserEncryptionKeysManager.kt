@@ -90,7 +90,9 @@ interface UserEncryptionKeysManager {
 	 * Get all key pairs for the current data owner and his parents. These keys should be used only for decryption as they may have not been verified.
 	 * @return all key pairs available for decryption.
 	 */
-	fun getDecryptionKeys(): RsaDecryptionKeysSet
+	fun getDecryptionKeys(
+		includeParent: Boolean
+	): RsaDecryptionKeysSet
 
 	/**
 	 * Forces to reload keys for the current data owner. This could be useful if the data owner has logged in from another device in order to
