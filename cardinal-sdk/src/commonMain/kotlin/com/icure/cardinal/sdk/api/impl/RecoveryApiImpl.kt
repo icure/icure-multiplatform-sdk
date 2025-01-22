@@ -76,7 +76,7 @@ internal class RecoveryApiImpl(
 			crypto.dataOwnerApi.getCurrentDataOwnerId(),
 			delegateId
 		)
-		val decryptionKeys = crypto.userEncryptionKeysManager.getDecryptionKeys()
+		val decryptionKeys = crypto.userEncryptionKeysManager.getDecryptionKeys(true)
 		val decryptedInformation = exchangeDataToDelegate.mapNotNull { exchangeData ->
 			crypto.exchangeDataManager.base.tryRawDecryptExchangeData(exchangeData, decryptionKeys)?.let { decryptedData ->
 				ExchangeDataRecoveryDetails(

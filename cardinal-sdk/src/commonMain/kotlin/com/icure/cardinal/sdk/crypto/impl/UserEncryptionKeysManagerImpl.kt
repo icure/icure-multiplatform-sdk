@@ -87,8 +87,14 @@ class UserEncryptionKeysManagerImpl private constructor (
 		} ?: throw IllegalArgumentException("Data owner is not part of the current data owner hierarchy")
 	}
 
-	override fun getDecryptionKeys() = with (cachedKeyData) {
-		RsaDecryptionKeysSet(keys.flatMap { (_, keyMap) -> keyMap.values.map { it.keyPair.toPrivateKeyInfo() } })
+	override fun getDecryptionKeys(includeParent: Boolean) = with (cachedKeyData) {
+		RsaDecryptionKeysSet((
+			if (includeParent) {
+				keys.map { it.second }
+			} else {
+				listOf(selfKeys)
+			}
+		).flatMap { keyMap -> keyMap.values.map { it.keyPair.toPrivateKeyInfo() } })
 	}
 
 	class Factory(

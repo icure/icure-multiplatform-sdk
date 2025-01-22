@@ -74,10 +74,10 @@ class TransferKeyRecoveryTest : StringSpec({
 			val originalToSecond = transferKeys[originalKeyIdentifier].shouldNotBeNull()
 			originalToSecond.keys shouldBe setOf(secondKeyIdentifier)
 		}
-		secondApi.crypto.internal.userEncryptionKeysManager.getDecryptionKeys().allKeys shouldHaveSize 1
+		secondApi.crypto.internal.userEncryptionKeysManager.getDecryptionKeys(true).allKeys shouldHaveSize 1
 		// Automatically creates the transfer key second->original
 		val originalApiWithRecoveredSecond = hcp.api(VerifyEverythingStrategy(false))
-		originalApiWithRecoveredSecond.crypto.internal.userEncryptionKeysManager.getDecryptionKeys().allKeys shouldHaveSize 2
+		originalApiWithRecoveredSecond.crypto.internal.userEncryptionKeysManager.getDecryptionKeys(true).allKeys shouldHaveSize 2
 		originalApiWithRecoveredSecond.dataOwner.getCurrentDataOwner().dataOwner.transferKeys.also { transferKeys ->
 			transferKeys shouldHaveSize 2
 			val originalToSecond = transferKeys[originalKeyIdentifier].shouldNotBeNull()
@@ -86,6 +86,6 @@ class TransferKeyRecoveryTest : StringSpec({
 			secondToOriginal.keys shouldBe setOf(originalKeyIdentifier)
 		}
 		val secondApiWithRecoveredOriginal = hcp.apiWithKeys(secondKey, cryptoStrategies = VerifyEverythingStrategy(false))
-		secondApiWithRecoveredOriginal.crypto.internal.userEncryptionKeysManager.getDecryptionKeys().allKeys shouldHaveSize 2
+		secondApiWithRecoveredOriginal.crypto.internal.userEncryptionKeysManager.getDecryptionKeys(true).allKeys shouldHaveSize 2
 	}
 })
