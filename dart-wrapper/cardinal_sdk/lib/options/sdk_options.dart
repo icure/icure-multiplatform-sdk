@@ -67,7 +67,7 @@ class SdkOptions implements CommonSdkOptions {
     this.saltPasswordWithApplicationId = true,
     this.groupSelector,
     this.useHierarchicalDataOwners = true,
-    this.createTransferKeys = true,
+    this.createTransferKeys = false,
     this.lenientJson = false,
     this.cryptoStrategies
   });

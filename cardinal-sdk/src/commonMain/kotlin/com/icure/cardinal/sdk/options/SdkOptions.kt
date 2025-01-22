@@ -89,7 +89,7 @@ data class SdkOptions(
 	 * If true (default) the sdk will automatically create the transfer keys for the current user if a new keypair is
 	 * created.
 	 */
-	val createTransferKeys: Boolean = true,
+	val createTransferKeys: Boolean = false,
 	override val cryptoService: CryptoService = defaultCryptoService,
 	override val groupSelector: GroupSelector? = null,
 	/**
