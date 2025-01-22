@@ -19,7 +19,7 @@ import com.icure.cardinal.sdk.serialization.DocumentAbstractFilterSerializer
 import com.icure.utils.InternalIcureApi
 import io.ktor.client.HttpClient
 import io.ktor.client.request.accept
-import io.ktor.client.request.`header`
+import io.ktor.client.request.header
 import io.ktor.client.request.parameter
 import io.ktor.client.request.setBody
 import io.ktor.http.ContentType.Application
@@ -29,14 +29,6 @@ import io.ktor.http.contentType
 import io.ktor.http.takeFrom
 import io.ktor.util.date.GMTDate
 import kotlinx.serialization.json.Json
-import kotlin.Boolean
-import kotlin.ByteArray
-import kotlin.Int
-import kotlin.Long
-import kotlin.Nothing
-import kotlin.String
-import kotlin.collections.List
-import kotlin.collections.Map
 import kotlin.time.Duration
 
 // WARNING: This class is auto-generated. If you change it manually, your changes will be lost.
@@ -173,7 +165,9 @@ class RawDocumentApiImpl(
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "document", documentId, "attachment")
 				parameter("rev", rev)
-				parameter("utis", utis)
+				utis?.forEach {
+					parameter("utis", it)
+				}
 				parameter("encrypted", encrypted)
 			}
 			accept(Application.Json)
@@ -290,7 +284,9 @@ class RawDocumentApiImpl(
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "document", documentId, "secondaryAttachments", key)
 				parameter("rev", rev)
-				parameter("utis", utis)
+				utis?.forEach {
+					parameter("utis", it)
+				}
 				parameter("encrypted", encrypted)
 			}
 			accept(Application.Json)
