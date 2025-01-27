@@ -38,22 +38,6 @@ class Insurance implements StoredDocument {
 		agreementNumber = agreementNumber ?? null,
 		parent = parent ?? null;
 
-	factory Insurance.fromJSON(Map<String, dynamic> data) {
-		return Insurance(
-			(data["id"] as String),
-			DecryptedAddress.fromJSON(data["address"]),
-			rev: (data["rev"] as String?),
-			deletionDate: (data["deletionDate"] as int?),
-			name: (data["name"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as String))),
-			privateInsurance: (data["privateInsurance"] as bool),
-			hospitalisationInsurance: (data["hospitalisationInsurance"] as bool),
-			ambulatoryInsurance: (data["ambulatoryInsurance"] as bool),
-			code: (data["code"] as String?),
-			agreementNumber: (data["agreementNumber"] as String?),
-			parent: (data["parent"] as String?),
-		);
-	}
-
 	static Map<String, dynamic> encode(Insurance value) {
 		Map<String, dynamic> entityAsMap = {
 			"id" : value.id,
@@ -69,5 +53,21 @@ class Insurance implements StoredDocument {
 			"address" : DecryptedAddress.encode(value.address)
 		};
 		return entityAsMap;
+	}
+
+	static Insurance fromJSON(Map<String, dynamic> data) {
+		return Insurance(
+			(data["id"] as String),
+			DecryptedAddress.fromJSON(data["address"]),
+			rev: (data["rev"] as String?),
+			deletionDate: (data["deletionDate"] as int?),
+			name: (data["name"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as String))),
+			privateInsurance: (data["privateInsurance"] as bool),
+			hospitalisationInsurance: (data["hospitalisationInsurance"] as bool),
+			ambulatoryInsurance: (data["ambulatoryInsurance"] as bool),
+			code: (data["code"] as String?),
+			agreementNumber: (data["agreementNumber"] as String?),
+			parent: (data["parent"] as String?),
+		);
 	}
 }

@@ -9,6 +9,7 @@ class MessageApiDispatcher {
     resultCallback: @escaping (
       String?,
       String?,
+      String?,
       String?
     ) -> Void
   ) -> Bool {
@@ -69,6 +70,7 @@ class MessageApiDispatcher {
   private static func createMessage(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     MessageApi.shared.createMessage(
@@ -81,6 +83,7 @@ class MessageApiDispatcher {
   private static func createMessageInTopic(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     MessageApi.shared.createMessageInTopic(
@@ -91,6 +94,7 @@ class MessageApiDispatcher {
   }
 
   private static func withEncryptionMetadata(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -109,6 +113,7 @@ class MessageApiDispatcher {
   private static func getEncryptionKeysOf(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     MessageApi.shared.getEncryptionKeysOf(
@@ -119,6 +124,7 @@ class MessageApiDispatcher {
   }
 
   private static func hasWriteAccess(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -133,6 +139,7 @@ class MessageApiDispatcher {
   private static func decryptPatientIdOf(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     MessageApi.shared.decryptPatientIdOf(
@@ -143,6 +150,7 @@ class MessageApiDispatcher {
   }
 
   private static func createDelegationDeAnonymizationMetadata(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -158,6 +166,7 @@ class MessageApiDispatcher {
   private static func decrypt(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     MessageApi.shared.decrypt(
@@ -168,6 +177,7 @@ class MessageApiDispatcher {
   }
 
   private static func tryDecrypt(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -182,6 +192,7 @@ class MessageApiDispatcher {
   private static func matchMessagesBy(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     MessageApi.shared.matchMessagesBy(
@@ -194,6 +205,7 @@ class MessageApiDispatcher {
   private static func matchMessagesBySorted(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     MessageApi.shared.matchMessagesBySorted(
@@ -204,6 +216,7 @@ class MessageApiDispatcher {
   }
 
   private static func deleteMessageById(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -219,6 +232,7 @@ class MessageApiDispatcher {
   private static func deleteMessagesByIds(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     MessageApi.shared.deleteMessagesByIds(
@@ -229,6 +243,7 @@ class MessageApiDispatcher {
   }
 
   private static func purgeMessageById(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -244,6 +259,7 @@ class MessageApiDispatcher {
   private static func deleteMessage(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     MessageApi.shared.deleteMessage(
@@ -254,6 +270,7 @@ class MessageApiDispatcher {
   }
 
   private static func deleteMessages(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -268,6 +285,7 @@ class MessageApiDispatcher {
   private static func purgeMessage(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     MessageApi.shared.purgeMessage(
@@ -278,6 +296,7 @@ class MessageApiDispatcher {
   }
 
   private static func shareWith(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -294,6 +313,7 @@ class MessageApiDispatcher {
   private static func shareWithMany(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     MessageApi.shared.shareWithMany(
@@ -305,6 +325,7 @@ class MessageApiDispatcher {
   }
 
   private static func filterMessagesBy(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -319,6 +340,7 @@ class MessageApiDispatcher {
   private static func filterMessagesBySorted(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     MessageApi.shared.filterMessagesBySorted(
@@ -329,6 +351,7 @@ class MessageApiDispatcher {
   }
 
   private static func undeleteMessage(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -343,6 +366,7 @@ class MessageApiDispatcher {
   private static func modifyMessage(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     MessageApi.shared.modifyMessage(
@@ -353,6 +377,7 @@ class MessageApiDispatcher {
   }
 
   private static func undeleteMessageById(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -368,6 +393,7 @@ class MessageApiDispatcher {
   private static func getMessage(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     MessageApi.shared.getMessage(
@@ -380,6 +406,7 @@ class MessageApiDispatcher {
   private static func getMessages(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     MessageApi.shared.getMessages(
@@ -390,6 +417,7 @@ class MessageApiDispatcher {
   }
 
   private static func setMessagesReadStatus(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -407,6 +435,7 @@ class MessageApiDispatcher {
   private static func subscribeToEvents(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     MessageApi.shared.subscribeToEvents(
@@ -419,6 +448,7 @@ class MessageApiDispatcher {
   }
 
   private static func encrypted_shareWith(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -435,6 +465,7 @@ class MessageApiDispatcher {
   private static func encrypted_shareWithMany(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     MessageApi.encrypted.shared.shareWithMany(
@@ -446,6 +477,7 @@ class MessageApiDispatcher {
   }
 
   private static func encrypted_filterMessagesBy(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -460,6 +492,7 @@ class MessageApiDispatcher {
   private static func encrypted_filterMessagesBySorted(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     MessageApi.encrypted.shared.filterMessagesBySorted(
@@ -470,6 +503,7 @@ class MessageApiDispatcher {
   }
 
   private static func encrypted_undeleteMessage(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -484,6 +518,7 @@ class MessageApiDispatcher {
   private static func encrypted_modifyMessage(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     MessageApi.encrypted.shared.modifyMessage(
@@ -494,6 +529,7 @@ class MessageApiDispatcher {
   }
 
   private static func encrypted_undeleteMessageById(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -509,6 +545,7 @@ class MessageApiDispatcher {
   private static func encrypted_getMessage(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     MessageApi.encrypted.shared.getMessage(
@@ -521,6 +558,7 @@ class MessageApiDispatcher {
   private static func encrypted_getMessages(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     MessageApi.encrypted.shared.getMessages(
@@ -531,6 +569,7 @@ class MessageApiDispatcher {
   }
 
   private static func encrypted_setMessagesReadStatus(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -548,6 +587,7 @@ class MessageApiDispatcher {
   private static func tryAndRecover_shareWith(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     MessageApi.tryAndRecover.shared.shareWith(
@@ -560,6 +600,7 @@ class MessageApiDispatcher {
   }
 
   private static func tryAndRecover_shareWithMany(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -575,6 +616,7 @@ class MessageApiDispatcher {
   private static func tryAndRecover_filterMessagesBy(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     MessageApi.tryAndRecover.shared.filterMessagesBy(
@@ -585,6 +627,7 @@ class MessageApiDispatcher {
   }
 
   private static func tryAndRecover_filterMessagesBySorted(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -599,6 +642,7 @@ class MessageApiDispatcher {
   private static func tryAndRecover_undeleteMessage(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     MessageApi.tryAndRecover.shared.undeleteMessage(
@@ -611,6 +655,7 @@ class MessageApiDispatcher {
   private static func tryAndRecover_modifyMessage(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     MessageApi.tryAndRecover.shared.modifyMessage(
@@ -621,6 +666,7 @@ class MessageApiDispatcher {
   }
 
   private static func tryAndRecover_undeleteMessageById(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -636,6 +682,7 @@ class MessageApiDispatcher {
   private static func tryAndRecover_getMessage(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     MessageApi.tryAndRecover.shared.getMessage(
@@ -648,6 +695,7 @@ class MessageApiDispatcher {
   private static func tryAndRecover_getMessages(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     MessageApi.tryAndRecover.shared.getMessages(
@@ -658,6 +706,7 @@ class MessageApiDispatcher {
   }
 
   private static func tryAndRecover_setMessagesReadStatus(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?

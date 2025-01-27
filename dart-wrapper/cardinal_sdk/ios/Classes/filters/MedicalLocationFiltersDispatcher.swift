@@ -9,6 +9,7 @@ class MedicalLocationFiltersDispatcher {
     resultCallback: @escaping (
       String?,
       String?,
+      String?,
       String?
     ) -> Void
   ) -> Bool {
@@ -23,6 +24,7 @@ class MedicalLocationFiltersDispatcher {
   private static func all(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     MedicalLocationFilters.shared.all(
@@ -31,6 +33,7 @@ class MedicalLocationFiltersDispatcher {
   }
 
   private static func byPostCode(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?

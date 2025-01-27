@@ -64,17 +64,6 @@ class DecryptedEpisode implements Episode {
 		endDate = endDate ?? null,
 		encryptedSelf = encryptedSelf ?? null;
 
-	factory DecryptedEpisode.fromJSON(Map<String, dynamic> data) {
-		return DecryptedEpisode(
-			(data["id"] as String),
-			name: (data["name"] as String?),
-			comment: (data["comment"] as String?),
-			startDate: (data["startDate"] as int?),
-			endDate: (data["endDate"] as int?),
-			encryptedSelf: (data["encryptedSelf"] as Base64String?),
-		);
-	}
-
 	static Map<String, dynamic> encode(DecryptedEpisode value) {
 		Map<String, dynamic> entityAsMap = {
 			"id" : value.id,
@@ -85,6 +74,17 @@ class DecryptedEpisode implements Episode {
 			"encryptedSelf" : value.encryptedSelf
 		};
 		return entityAsMap;
+	}
+
+	static DecryptedEpisode fromJSON(Map<String, dynamic> data) {
+		return DecryptedEpisode(
+			(data["id"] as String),
+			name: (data["name"] as String?),
+			comment: (data["comment"] as String?),
+			startDate: (data["startDate"] as int?),
+			endDate: (data["endDate"] as int?),
+			encryptedSelf: (data["encryptedSelf"] as Base64String?),
+		);
 	}
 }
 
@@ -109,17 +109,6 @@ class EncryptedEpisode implements Episode {
 		endDate = endDate ?? null,
 		encryptedSelf = encryptedSelf ?? null;
 
-	factory EncryptedEpisode.fromJSON(Map<String, dynamic> data) {
-		return EncryptedEpisode(
-			(data["id"] as String),
-			name: (data["name"] as String?),
-			comment: (data["comment"] as String?),
-			startDate: (data["startDate"] as int?),
-			endDate: (data["endDate"] as int?),
-			encryptedSelf: (data["encryptedSelf"] as Base64String?),
-		);
-	}
-
 	static Map<String, dynamic> encode(EncryptedEpisode value) {
 		Map<String, dynamic> entityAsMap = {
 			"id" : value.id,
@@ -130,5 +119,16 @@ class EncryptedEpisode implements Episode {
 			"encryptedSelf" : value.encryptedSelf
 		};
 		return entityAsMap;
+	}
+
+	static EncryptedEpisode fromJSON(Map<String, dynamic> data) {
+		return EncryptedEpisode(
+			(data["id"] as String),
+			name: (data["name"] as String?),
+			comment: (data["comment"] as String?),
+			startDate: (data["startDate"] as int?),
+			endDate: (data["endDate"] as int?),
+			encryptedSelf: (data["encryptedSelf"] as Base64String?),
+		);
 	}
 }

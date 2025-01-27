@@ -2,6 +2,7 @@
 import 'package:flutter/services.dart';
 import 'package:cardinal_sdk/filters/filter_options.dart';
 import 'dart:convert';
+import 'package:cardinal_sdk/utils/internal/platform_exception_convertion.dart';
 import 'package:cardinal_sdk/model/maintenance_task.dart';
 import 'package:cardinal_sdk/model/base/identifier.dart';
 
@@ -16,7 +17,7 @@ class MaintenanceTaskPlatformFilters {
 			{
 				"ids": jsonEncode(ids.map((x0) => x0).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method byIds");
 		final parsedResJson = jsonDecode(res);
 		return BaseSortableFilterOptions.fromJSON(parsedResJson);
@@ -29,7 +30,7 @@ class MaintenanceTaskPlatformFilters {
 				"dataOwnerId": jsonEncode(dataOwnerId),
 				"identifiers": jsonEncode(identifiers.map((x0) => Identifier.encode(x0)).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method byIdentifiersForDataOwner");
 		final parsedResJson = jsonDecode(res);
 		return BaseSortableFilterOptions.fromJSON(parsedResJson);
@@ -41,7 +42,7 @@ class MaintenanceTaskPlatformFilters {
 			{
 				"identifiers": jsonEncode(identifiers.map((x0) => Identifier.encode(x0)).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method byIdentifiersForSelf");
 		final parsedResJson = jsonDecode(res);
 		return SortableFilterOptions.fromJSON(parsedResJson);
@@ -54,7 +55,7 @@ class MaintenanceTaskPlatformFilters {
 				"dataOwnerId": jsonEncode(dataOwnerId),
 				"type": jsonEncode(type),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method byTypeForDataOwner");
 		final parsedResJson = jsonDecode(res);
 		return BaseFilterOptions.fromJSON(parsedResJson);
@@ -66,7 +67,7 @@ class MaintenanceTaskPlatformFilters {
 			{
 				"type": jsonEncode(type),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method byTypeForSelf");
 		final parsedResJson = jsonDecode(res);
 		return FilterOptions.fromJSON(parsedResJson);
@@ -79,7 +80,7 @@ class MaintenanceTaskPlatformFilters {
 				"dataOwnerId": jsonEncode(dataOwnerId),
 				"date": jsonEncode(date),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method afterDateForDataOwner");
 		final parsedResJson = jsonDecode(res);
 		return BaseSortableFilterOptions.fromJSON(parsedResJson);
@@ -91,7 +92,7 @@ class MaintenanceTaskPlatformFilters {
 			{
 				"date": jsonEncode(date),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method afterDateForSelf");
 		final parsedResJson = jsonDecode(res);
 		return SortableFilterOptions.fromJSON(parsedResJson);

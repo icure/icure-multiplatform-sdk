@@ -1,7 +1,7 @@
 // auto-generated file
 package com.icure.cardinal.sdk.dart.api
 
-import com.icure.cardinal.sdk.CardinalBaseSdk
+import com.icure.cardinal.sdk.CardinalBaseApis
 import com.icure.cardinal.sdk.dart.utils.ApiScope
 import com.icure.cardinal.sdk.dart.utils.NativeReferences
 import com.icure.cardinal.sdk.filters.BaseFilterOptions
@@ -27,6 +27,7 @@ public object AccessLogBasicApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     filterString: String,
@@ -38,7 +39,7 @@ public object AccessLogBasicApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(String.serializer())) {
-      NativeReferences.get<CardinalBaseSdk>(sdkId).accessLog.matchAccessLogsBy(
+      NativeReferences.get<CardinalBaseApis>(sdkId).accessLog.matchAccessLogsBy(
         filter,
       )
     }
@@ -46,6 +47,7 @@ public object AccessLogBasicApi {
 
   public fun matchAccessLogsBySorted(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -60,7 +62,7 @@ public object AccessLogBasicApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(String.serializer())) {
-      NativeReferences.get<CardinalBaseSdk>(sdkId).accessLog.matchAccessLogsBySorted(
+      NativeReferences.get<CardinalBaseApis>(sdkId).accessLog.matchAccessLogsBySorted(
         filter,
       )
     }
@@ -68,6 +70,7 @@ public object AccessLogBasicApi {
 
   public fun filterAccessLogsBy(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -82,7 +85,7 @@ public object AccessLogBasicApi {
     ApiScope.execute(
       dartResultCallback,
       String.serializer()) {
-      val richResult = NativeReferences.get<CardinalBaseSdk>(sdkId).accessLog.filterAccessLogsBy(
+      val richResult = NativeReferences.get<CardinalBaseApis>(sdkId).accessLog.filterAccessLogsBy(
         filter,
       )
       NativeReferences.create(PaginatedListIteratorWithSerializer(
@@ -94,6 +97,7 @@ public object AccessLogBasicApi {
 
   public fun filterAccessLogsBySorted(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -109,7 +113,7 @@ public object AccessLogBasicApi {
       dartResultCallback,
       String.serializer()) {
       val richResult =
-          NativeReferences.get<CardinalBaseSdk>(sdkId).accessLog.filterAccessLogsBySorted(
+          NativeReferences.get<CardinalBaseApis>(sdkId).accessLog.filterAccessLogsBySorted(
         filter,
       )
       NativeReferences.create(PaginatedListIteratorWithSerializer(
@@ -124,6 +128,7 @@ public object AccessLogBasicApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     entityIdString: String,
@@ -140,7 +145,7 @@ public object AccessLogBasicApi {
     ApiScope.execute(
       dartResultCallback,
       DocIdentifier.serializer()) {
-      NativeReferences.get<CardinalBaseSdk>(sdkId).accessLog.deleteAccessLogById(
+      NativeReferences.get<CardinalBaseApis>(sdkId).accessLog.deleteAccessLogById(
         entityId,
         rev,
       )
@@ -149,6 +154,7 @@ public object AccessLogBasicApi {
 
   public fun deleteAccessLogsByIds(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -163,7 +169,7 @@ public object AccessLogBasicApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(DocIdentifier.serializer())) {
-      NativeReferences.get<CardinalBaseSdk>(sdkId).accessLog.deleteAccessLogsByIds(
+      NativeReferences.get<CardinalBaseApis>(sdkId).accessLog.deleteAccessLogsByIds(
         entityIds,
       )
     }
@@ -171,6 +177,7 @@ public object AccessLogBasicApi {
 
   public fun purgeAccessLogById(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -190,7 +197,7 @@ public object AccessLogBasicApi {
     ApiScope.execute(
       dartResultCallback,
       Unit.serializer()) {
-      NativeReferences.get<CardinalBaseSdk>(sdkId).accessLog.purgeAccessLogById(
+      NativeReferences.get<CardinalBaseApis>(sdkId).accessLog.purgeAccessLogById(
         id,
         rev,
       )
@@ -199,6 +206,7 @@ public object AccessLogBasicApi {
 
   public fun deleteAccessLog(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -213,7 +221,7 @@ public object AccessLogBasicApi {
     ApiScope.execute(
       dartResultCallback,
       DocIdentifier.serializer()) {
-      NativeReferences.get<CardinalBaseSdk>(sdkId).accessLog.deleteAccessLog(
+      NativeReferences.get<CardinalBaseApis>(sdkId).accessLog.deleteAccessLog(
         accessLog,
       )
     }
@@ -221,6 +229,7 @@ public object AccessLogBasicApi {
 
   public fun deleteAccessLogs(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -235,7 +244,7 @@ public object AccessLogBasicApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(DocIdentifier.serializer())) {
-      NativeReferences.get<CardinalBaseSdk>(sdkId).accessLog.deleteAccessLogs(
+      NativeReferences.get<CardinalBaseApis>(sdkId).accessLog.deleteAccessLogs(
         accessLogs,
       )
     }
@@ -243,6 +252,7 @@ public object AccessLogBasicApi {
 
   public fun purgeAccessLog(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -257,7 +267,7 @@ public object AccessLogBasicApi {
     ApiScope.execute(
       dartResultCallback,
       Unit.serializer()) {
-      NativeReferences.get<CardinalBaseSdk>(sdkId).accessLog.purgeAccessLog(
+      NativeReferences.get<CardinalBaseApis>(sdkId).accessLog.purgeAccessLog(
         accessLog,
       )
     }
@@ -265,6 +275,7 @@ public object AccessLogBasicApi {
 
   public fun undeleteAccessLogById(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -284,7 +295,7 @@ public object AccessLogBasicApi {
     ApiScope.execute(
       dartResultCallback,
       EncryptedAccessLog.serializer()) {
-      NativeReferences.get<CardinalBaseSdk>(sdkId).accessLog.undeleteAccessLogById(
+      NativeReferences.get<CardinalBaseApis>(sdkId).accessLog.undeleteAccessLogById(
         id,
         rev,
       )
@@ -293,6 +304,7 @@ public object AccessLogBasicApi {
 
   public fun undeleteAccessLog(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -307,7 +319,7 @@ public object AccessLogBasicApi {
     ApiScope.execute(
       dartResultCallback,
       EncryptedAccessLog.serializer()) {
-      NativeReferences.get<CardinalBaseSdk>(sdkId).accessLog.undeleteAccessLog(
+      NativeReferences.get<CardinalBaseApis>(sdkId).accessLog.undeleteAccessLog(
         accessLog,
       )
     }
@@ -315,6 +327,7 @@ public object AccessLogBasicApi {
 
   public fun modifyAccessLog(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -329,7 +342,7 @@ public object AccessLogBasicApi {
     ApiScope.execute(
       dartResultCallback,
       EncryptedAccessLog.serializer()) {
-      NativeReferences.get<CardinalBaseSdk>(sdkId).accessLog.modifyAccessLog(
+      NativeReferences.get<CardinalBaseApis>(sdkId).accessLog.modifyAccessLog(
         entity,
       )
     }
@@ -337,6 +350,7 @@ public object AccessLogBasicApi {
 
   public fun getAccessLog(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -351,7 +365,7 @@ public object AccessLogBasicApi {
     ApiScope.execute(
       dartResultCallback,
       EncryptedAccessLog.serializer()) {
-      NativeReferences.get<CardinalBaseSdk>(sdkId).accessLog.getAccessLog(
+      NativeReferences.get<CardinalBaseApis>(sdkId).accessLog.getAccessLog(
         entityId,
       )
     }
@@ -359,6 +373,7 @@ public object AccessLogBasicApi {
 
   public fun getAccessLogs(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -373,7 +388,7 @@ public object AccessLogBasicApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(EncryptedAccessLog.serializer())) {
-      NativeReferences.get<CardinalBaseSdk>(sdkId).accessLog.getAccessLogs(
+      NativeReferences.get<CardinalBaseApis>(sdkId).accessLog.getAccessLogs(
         entityIds,
       )
     }

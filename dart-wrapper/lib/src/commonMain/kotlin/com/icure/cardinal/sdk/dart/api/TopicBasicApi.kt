@@ -1,7 +1,7 @@
 // auto-generated file
 package com.icure.cardinal.sdk.dart.api
 
-import com.icure.cardinal.sdk.CardinalBaseSdk
+import com.icure.cardinal.sdk.CardinalBaseApis
 import com.icure.cardinal.sdk.dart.utils.ApiScope
 import com.icure.cardinal.sdk.dart.utils.NativeReferences
 import com.icure.cardinal.sdk.filters.BaseFilterOptions
@@ -33,6 +33,7 @@ public object TopicBasicApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     filterString: String,
@@ -44,7 +45,7 @@ public object TopicBasicApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(String.serializer())) {
-      NativeReferences.get<CardinalBaseSdk>(sdkId).topic.matchTopicsBy(
+      NativeReferences.get<CardinalBaseApis>(sdkId).topic.matchTopicsBy(
         filter,
       )
     }
@@ -52,6 +53,7 @@ public object TopicBasicApi {
 
   public fun matchTopicsBySorted(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -66,7 +68,7 @@ public object TopicBasicApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(String.serializer())) {
-      NativeReferences.get<CardinalBaseSdk>(sdkId).topic.matchTopicsBySorted(
+      NativeReferences.get<CardinalBaseApis>(sdkId).topic.matchTopicsBySorted(
         filter,
       )
     }
@@ -74,6 +76,7 @@ public object TopicBasicApi {
 
   public fun filterTopicsBy(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -88,7 +91,7 @@ public object TopicBasicApi {
     ApiScope.execute(
       dartResultCallback,
       String.serializer()) {
-      val richResult = NativeReferences.get<CardinalBaseSdk>(sdkId).topic.filterTopicsBy(
+      val richResult = NativeReferences.get<CardinalBaseApis>(sdkId).topic.filterTopicsBy(
         filter,
       )
       NativeReferences.create(PaginatedListIteratorWithSerializer(
@@ -103,6 +106,7 @@ public object TopicBasicApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     filterString: String,
@@ -114,7 +118,7 @@ public object TopicBasicApi {
     ApiScope.execute(
       dartResultCallback,
       String.serializer()) {
-      val richResult = NativeReferences.get<CardinalBaseSdk>(sdkId).topic.filterTopicsBySorted(
+      val richResult = NativeReferences.get<CardinalBaseApis>(sdkId).topic.filterTopicsBySorted(
         filter,
       )
       NativeReferences.create(PaginatedListIteratorWithSerializer(
@@ -129,6 +133,7 @@ public object TopicBasicApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     entityIdString: String,
@@ -145,7 +150,7 @@ public object TopicBasicApi {
     ApiScope.execute(
       dartResultCallback,
       DocIdentifier.serializer()) {
-      NativeReferences.get<CardinalBaseSdk>(sdkId).topic.deleteTopicById(
+      NativeReferences.get<CardinalBaseApis>(sdkId).topic.deleteTopicById(
         entityId,
         rev,
       )
@@ -154,6 +159,7 @@ public object TopicBasicApi {
 
   public fun deleteTopicsByIds(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -168,7 +174,7 @@ public object TopicBasicApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(DocIdentifier.serializer())) {
-      NativeReferences.get<CardinalBaseSdk>(sdkId).topic.deleteTopicsByIds(
+      NativeReferences.get<CardinalBaseApis>(sdkId).topic.deleteTopicsByIds(
         entityIds,
       )
     }
@@ -176,6 +182,7 @@ public object TopicBasicApi {
 
   public fun purgeTopicById(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -195,7 +202,7 @@ public object TopicBasicApi {
     ApiScope.execute(
       dartResultCallback,
       Unit.serializer()) {
-      NativeReferences.get<CardinalBaseSdk>(sdkId).topic.purgeTopicById(
+      NativeReferences.get<CardinalBaseApis>(sdkId).topic.purgeTopicById(
         id,
         rev,
       )
@@ -204,6 +211,7 @@ public object TopicBasicApi {
 
   public fun deleteTopic(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -218,7 +226,7 @@ public object TopicBasicApi {
     ApiScope.execute(
       dartResultCallback,
       DocIdentifier.serializer()) {
-      NativeReferences.get<CardinalBaseSdk>(sdkId).topic.deleteTopic(
+      NativeReferences.get<CardinalBaseApis>(sdkId).topic.deleteTopic(
         topic,
       )
     }
@@ -226,6 +234,7 @@ public object TopicBasicApi {
 
   public fun deleteTopics(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -240,7 +249,7 @@ public object TopicBasicApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(DocIdentifier.serializer())) {
-      NativeReferences.get<CardinalBaseSdk>(sdkId).topic.deleteTopics(
+      NativeReferences.get<CardinalBaseApis>(sdkId).topic.deleteTopics(
         topics,
       )
     }
@@ -248,6 +257,7 @@ public object TopicBasicApi {
 
   public fun purgeTopic(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -262,7 +272,7 @@ public object TopicBasicApi {
     ApiScope.execute(
       dartResultCallback,
       Unit.serializer()) {
-      NativeReferences.get<CardinalBaseSdk>(sdkId).topic.purgeTopic(
+      NativeReferences.get<CardinalBaseApis>(sdkId).topic.purgeTopic(
         topic,
       )
     }
@@ -270,6 +280,7 @@ public object TopicBasicApi {
 
   public fun undeleteTopic(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -284,7 +295,7 @@ public object TopicBasicApi {
     ApiScope.execute(
       dartResultCallback,
       PolymorphicSerializer(Topic::class)) {
-      NativeReferences.get<CardinalBaseSdk>(sdkId).topic.undeleteTopic(
+      NativeReferences.get<CardinalBaseApis>(sdkId).topic.undeleteTopic(
         topic,
       )
     }
@@ -292,6 +303,7 @@ public object TopicBasicApi {
 
   public fun modifyTopic(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -306,7 +318,7 @@ public object TopicBasicApi {
     ApiScope.execute(
       dartResultCallback,
       EncryptedTopic.serializer()) {
-      NativeReferences.get<CardinalBaseSdk>(sdkId).topic.modifyTopic(
+      NativeReferences.get<CardinalBaseApis>(sdkId).topic.modifyTopic(
         entity,
       )
     }
@@ -314,6 +326,7 @@ public object TopicBasicApi {
 
   public fun undeleteTopicById(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -333,7 +346,7 @@ public object TopicBasicApi {
     ApiScope.execute(
       dartResultCallback,
       EncryptedTopic.serializer()) {
-      NativeReferences.get<CardinalBaseSdk>(sdkId).topic.undeleteTopicById(
+      NativeReferences.get<CardinalBaseApis>(sdkId).topic.undeleteTopicById(
         id,
         rev,
       )
@@ -342,6 +355,7 @@ public object TopicBasicApi {
 
   public fun getTopic(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -356,7 +370,7 @@ public object TopicBasicApi {
     ApiScope.execute(
       dartResultCallback,
       EncryptedTopic.serializer()) {
-      NativeReferences.get<CardinalBaseSdk>(sdkId).topic.getTopic(
+      NativeReferences.get<CardinalBaseApis>(sdkId).topic.getTopic(
         entityId,
       )
     }
@@ -364,6 +378,7 @@ public object TopicBasicApi {
 
   public fun getTopics(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -378,7 +393,7 @@ public object TopicBasicApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(EncryptedTopic.serializer())) {
-      NativeReferences.get<CardinalBaseSdk>(sdkId).topic.getTopics(
+      NativeReferences.get<CardinalBaseApis>(sdkId).topic.getTopics(
         entityIds,
       )
     }
@@ -386,6 +401,7 @@ public object TopicBasicApi {
 
   public fun addParticipant(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -410,7 +426,7 @@ public object TopicBasicApi {
     ApiScope.execute(
       dartResultCallback,
       EncryptedTopic.serializer()) {
-      NativeReferences.get<CardinalBaseSdk>(sdkId).topic.addParticipant(
+      NativeReferences.get<CardinalBaseApis>(sdkId).topic.addParticipant(
         entityId,
         dataOwnerId,
         topicRole,
@@ -420,6 +436,7 @@ public object TopicBasicApi {
 
   public fun removeParticipant(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -439,7 +456,7 @@ public object TopicBasicApi {
     ApiScope.execute(
       dartResultCallback,
       EncryptedTopic.serializer()) {
-      NativeReferences.get<CardinalBaseSdk>(sdkId).topic.removeParticipant(
+      NativeReferences.get<CardinalBaseApis>(sdkId).topic.removeParticipant(
         entityId,
         dataOwnerId,
       )
@@ -448,6 +465,7 @@ public object TopicBasicApi {
 
   public fun subscribeToEvents(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -472,7 +490,7 @@ public object TopicBasicApi {
     ApiScope.execute(
       dartResultCallback,
       String.serializer()) {
-      val richResult = NativeReferences.get<CardinalBaseSdk>(sdkId).topic.subscribeToEvents(
+      val richResult = NativeReferences.get<CardinalBaseApis>(sdkId).topic.subscribeToEvents(
         events,
         filter,
         subscriptionConfig,

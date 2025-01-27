@@ -1,7 +1,7 @@
 // auto-generated file
 package com.icure.cardinal.sdk.dart.api
 
-import com.icure.cardinal.sdk.CardinalBaseSdk
+import com.icure.cardinal.sdk.CardinalBaseApis
 import com.icure.cardinal.sdk.dart.utils.ApiScope
 import com.icure.cardinal.sdk.dart.utils.NativeReferences
 import com.icure.cardinal.sdk.filters.BaseFilterOptions
@@ -34,6 +34,7 @@ public object MessageBasicApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     filterString: String,
@@ -45,7 +46,7 @@ public object MessageBasicApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(String.serializer())) {
-      NativeReferences.get<CardinalBaseSdk>(sdkId).message.matchMessagesBy(
+      NativeReferences.get<CardinalBaseApis>(sdkId).message.matchMessagesBy(
         filter,
       )
     }
@@ -53,6 +54,7 @@ public object MessageBasicApi {
 
   public fun matchMessagesBySorted(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -67,7 +69,7 @@ public object MessageBasicApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(String.serializer())) {
-      NativeReferences.get<CardinalBaseSdk>(sdkId).message.matchMessagesBySorted(
+      NativeReferences.get<CardinalBaseApis>(sdkId).message.matchMessagesBySorted(
         filter,
       )
     }
@@ -75,6 +77,7 @@ public object MessageBasicApi {
 
   public fun filterMessagesBy(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -89,7 +92,7 @@ public object MessageBasicApi {
     ApiScope.execute(
       dartResultCallback,
       String.serializer()) {
-      val richResult = NativeReferences.get<CardinalBaseSdk>(sdkId).message.filterMessagesBy(
+      val richResult = NativeReferences.get<CardinalBaseApis>(sdkId).message.filterMessagesBy(
         filter,
       )
       NativeReferences.create(PaginatedListIteratorWithSerializer(
@@ -104,6 +107,7 @@ public object MessageBasicApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     filterString: String,
@@ -115,7 +119,7 @@ public object MessageBasicApi {
     ApiScope.execute(
       dartResultCallback,
       String.serializer()) {
-      val richResult = NativeReferences.get<CardinalBaseSdk>(sdkId).message.filterMessagesBySorted(
+      val richResult = NativeReferences.get<CardinalBaseApis>(sdkId).message.filterMessagesBySorted(
         filter,
       )
       NativeReferences.create(PaginatedListIteratorWithSerializer(
@@ -130,6 +134,7 @@ public object MessageBasicApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     entityIdString: String,
@@ -146,7 +151,7 @@ public object MessageBasicApi {
     ApiScope.execute(
       dartResultCallback,
       DocIdentifier.serializer()) {
-      NativeReferences.get<CardinalBaseSdk>(sdkId).message.deleteMessageById(
+      NativeReferences.get<CardinalBaseApis>(sdkId).message.deleteMessageById(
         entityId,
         rev,
       )
@@ -155,6 +160,7 @@ public object MessageBasicApi {
 
   public fun deleteMessagesByIds(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -169,7 +175,7 @@ public object MessageBasicApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(DocIdentifier.serializer())) {
-      NativeReferences.get<CardinalBaseSdk>(sdkId).message.deleteMessagesByIds(
+      NativeReferences.get<CardinalBaseApis>(sdkId).message.deleteMessagesByIds(
         entityIds,
       )
     }
@@ -177,6 +183,7 @@ public object MessageBasicApi {
 
   public fun purgeMessageById(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -196,7 +203,7 @@ public object MessageBasicApi {
     ApiScope.execute(
       dartResultCallback,
       Unit.serializer()) {
-      NativeReferences.get<CardinalBaseSdk>(sdkId).message.purgeMessageById(
+      NativeReferences.get<CardinalBaseApis>(sdkId).message.purgeMessageById(
         id,
         rev,
       )
@@ -205,6 +212,7 @@ public object MessageBasicApi {
 
   public fun deleteMessage(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -219,7 +227,7 @@ public object MessageBasicApi {
     ApiScope.execute(
       dartResultCallback,
       DocIdentifier.serializer()) {
-      NativeReferences.get<CardinalBaseSdk>(sdkId).message.deleteMessage(
+      NativeReferences.get<CardinalBaseApis>(sdkId).message.deleteMessage(
         message,
       )
     }
@@ -227,6 +235,7 @@ public object MessageBasicApi {
 
   public fun deleteMessages(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -241,7 +250,7 @@ public object MessageBasicApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(DocIdentifier.serializer())) {
-      NativeReferences.get<CardinalBaseSdk>(sdkId).message.deleteMessages(
+      NativeReferences.get<CardinalBaseApis>(sdkId).message.deleteMessages(
         messages,
       )
     }
@@ -249,6 +258,7 @@ public object MessageBasicApi {
 
   public fun purgeMessage(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -263,7 +273,7 @@ public object MessageBasicApi {
     ApiScope.execute(
       dartResultCallback,
       Unit.serializer()) {
-      NativeReferences.get<CardinalBaseSdk>(sdkId).message.purgeMessage(
+      NativeReferences.get<CardinalBaseApis>(sdkId).message.purgeMessage(
         message,
       )
     }
@@ -271,6 +281,7 @@ public object MessageBasicApi {
 
   public fun undeleteMessage(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -285,7 +296,7 @@ public object MessageBasicApi {
     ApiScope.execute(
       dartResultCallback,
       PolymorphicSerializer(Message::class)) {
-      NativeReferences.get<CardinalBaseSdk>(sdkId).message.undeleteMessage(
+      NativeReferences.get<CardinalBaseApis>(sdkId).message.undeleteMessage(
         message,
       )
     }
@@ -293,6 +304,7 @@ public object MessageBasicApi {
 
   public fun modifyMessage(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -307,7 +319,7 @@ public object MessageBasicApi {
     ApiScope.execute(
       dartResultCallback,
       EncryptedMessage.serializer()) {
-      NativeReferences.get<CardinalBaseSdk>(sdkId).message.modifyMessage(
+      NativeReferences.get<CardinalBaseApis>(sdkId).message.modifyMessage(
         entity,
       )
     }
@@ -315,6 +327,7 @@ public object MessageBasicApi {
 
   public fun undeleteMessageById(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -334,7 +347,7 @@ public object MessageBasicApi {
     ApiScope.execute(
       dartResultCallback,
       EncryptedMessage.serializer()) {
-      NativeReferences.get<CardinalBaseSdk>(sdkId).message.undeleteMessageById(
+      NativeReferences.get<CardinalBaseApis>(sdkId).message.undeleteMessageById(
         id,
         rev,
       )
@@ -343,6 +356,7 @@ public object MessageBasicApi {
 
   public fun getMessage(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -357,7 +371,7 @@ public object MessageBasicApi {
     ApiScope.execute(
       dartResultCallback,
       EncryptedMessage.serializer()) {
-      NativeReferences.get<CardinalBaseSdk>(sdkId).message.getMessage(
+      NativeReferences.get<CardinalBaseApis>(sdkId).message.getMessage(
         entityId,
       )
     }
@@ -365,6 +379,7 @@ public object MessageBasicApi {
 
   public fun getMessages(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -379,7 +394,7 @@ public object MessageBasicApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(EncryptedMessage.serializer())) {
-      NativeReferences.get<CardinalBaseSdk>(sdkId).message.getMessages(
+      NativeReferences.get<CardinalBaseApis>(sdkId).message.getMessages(
         entityIds,
       )
     }
@@ -387,6 +402,7 @@ public object MessageBasicApi {
 
   public fun setMessagesReadStatus(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -416,7 +432,7 @@ public object MessageBasicApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(EncryptedMessage.serializer())) {
-      NativeReferences.get<CardinalBaseSdk>(sdkId).message.setMessagesReadStatus(
+      NativeReferences.get<CardinalBaseApis>(sdkId).message.setMessagesReadStatus(
         entityIds,
         time,
         readStatus,
@@ -427,6 +443,7 @@ public object MessageBasicApi {
 
   public fun subscribeToEvents(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -451,7 +468,7 @@ public object MessageBasicApi {
     ApiScope.execute(
       dartResultCallback,
       String.serializer()) {
-      val richResult = NativeReferences.get<CardinalBaseSdk>(sdkId).message.subscribeToEvents(
+      val richResult = NativeReferences.get<CardinalBaseApis>(sdkId).message.subscribeToEvents(
         events,
         filter,
         subscriptionConfig,

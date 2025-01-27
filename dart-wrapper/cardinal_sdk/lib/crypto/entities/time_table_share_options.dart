@@ -16,14 +16,6 @@ class TimeTableShareOptions {
 		shareEncryptionKey = shareEncryptionKey ?? ShareMetadataBehaviour.ifAvailable,
 		shareSecretIds = shareSecretIds ?? SecretIdShareOptionsAllAvailable(false);
 
-	factory TimeTableShareOptions.fromJSON(Map<String, dynamic> data) {
-		return TimeTableShareOptions(
-			requestedPermissions: RequestedPermission.fromJSON(data["requestedPermissions"]),
-			shareEncryptionKey: ShareMetadataBehaviour.fromJSON(data["shareEncryptionKey"]),
-			shareSecretIds: SecretIdShareOptions.fromJSON(data["shareSecretIds"])
-		);
-	}
-
 	static Map<String, dynamic> encode(TimeTableShareOptions value) {
 		Map<String, dynamic> entityAsMap = {
 			"requestedPermissions" : RequestedPermission.encode(value.requestedPermissions),
@@ -31,5 +23,13 @@ class TimeTableShareOptions {
 			"shareSecretIds" : SecretIdShareOptions.encode(value.shareSecretIds)
 		};
 		return entityAsMap;
+	}
+
+	static TimeTableShareOptions fromJSON(Map<String, dynamic> data) {
+		return TimeTableShareOptions(
+			requestedPermissions: RequestedPermission.fromJSON(data["requestedPermissions"]),
+			shareEncryptionKey: ShareMetadataBehaviour.fromJSON(data["shareEncryptionKey"]),
+			shareSecretIds: SecretIdShareOptions.fromJSON(data["shareSecretIds"])
+		);
 	}
 }

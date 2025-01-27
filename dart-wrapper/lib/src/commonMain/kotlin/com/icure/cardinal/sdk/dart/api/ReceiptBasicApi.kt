@@ -1,7 +1,7 @@
 // auto-generated file
 package com.icure.cardinal.sdk.dart.api
 
-import com.icure.cardinal.sdk.CardinalBaseSdk
+import com.icure.cardinal.sdk.CardinalBaseApis
 import com.icure.cardinal.sdk.dart.utils.ApiScope
 import com.icure.cardinal.sdk.dart.utils.NativeReferences
 import com.icure.cardinal.sdk.model.EncryptedReceipt
@@ -22,6 +22,7 @@ public object ReceiptBasicApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     entityIdString: String,
@@ -33,7 +34,7 @@ public object ReceiptBasicApi {
     ApiScope.execute(
       dartResultCallback,
       DocIdentifier.serializer()) {
-      NativeReferences.get<CardinalBaseSdk>(sdkId).receipt.deleteReceipt(
+      NativeReferences.get<CardinalBaseApis>(sdkId).receipt.deleteReceipt(
         entityId,
       )
     }
@@ -41,6 +42,7 @@ public object ReceiptBasicApi {
 
   public fun deleteReceipts(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -55,7 +57,7 @@ public object ReceiptBasicApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(DocIdentifier.serializer())) {
-      NativeReferences.get<CardinalBaseSdk>(sdkId).receipt.deleteReceipts(
+      NativeReferences.get<CardinalBaseApis>(sdkId).receipt.deleteReceipts(
         entityIds,
       )
     }
@@ -63,6 +65,7 @@ public object ReceiptBasicApi {
 
   public fun getRawReceiptAttachment(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -82,7 +85,7 @@ public object ReceiptBasicApi {
     ApiScope.execute(
       dartResultCallback,
       ByteArraySerializer) {
-      NativeReferences.get<CardinalBaseSdk>(sdkId).receipt.getRawReceiptAttachment(
+      NativeReferences.get<CardinalBaseApis>(sdkId).receipt.getRawReceiptAttachment(
         receiptId,
         attachmentId,
       )
@@ -91,6 +94,7 @@ public object ReceiptBasicApi {
 
   public fun setRawReceiptAttachment(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -120,7 +124,7 @@ public object ReceiptBasicApi {
     ApiScope.execute(
       dartResultCallback,
       EncryptedReceipt.serializer()) {
-      NativeReferences.get<CardinalBaseSdk>(sdkId).receipt.setRawReceiptAttachment(
+      NativeReferences.get<CardinalBaseApis>(sdkId).receipt.setRawReceiptAttachment(
         receiptId,
         rev,
         blobType,
@@ -131,6 +135,7 @@ public object ReceiptBasicApi {
 
   public fun modifyReceipt(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -145,7 +150,7 @@ public object ReceiptBasicApi {
     ApiScope.execute(
       dartResultCallback,
       EncryptedReceipt.serializer()) {
-      NativeReferences.get<CardinalBaseSdk>(sdkId).receipt.modifyReceipt(
+      NativeReferences.get<CardinalBaseApis>(sdkId).receipt.modifyReceipt(
         entity,
       )
     }
@@ -153,6 +158,7 @@ public object ReceiptBasicApi {
 
   public fun getReceipt(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -167,7 +173,7 @@ public object ReceiptBasicApi {
     ApiScope.execute(
       dartResultCallback,
       EncryptedReceipt.serializer()) {
-      NativeReferences.get<CardinalBaseSdk>(sdkId).receipt.getReceipt(
+      NativeReferences.get<CardinalBaseApis>(sdkId).receipt.getReceipt(
         entityId,
       )
     }
@@ -175,6 +181,7 @@ public object ReceiptBasicApi {
 
   public fun listByReference(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -189,7 +196,7 @@ public object ReceiptBasicApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(EncryptedReceipt.serializer())) {
-      NativeReferences.get<CardinalBaseSdk>(sdkId).receipt.listByReference(
+      NativeReferences.get<CardinalBaseApis>(sdkId).receipt.listByReference(
         reference,
       )
     }

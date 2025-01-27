@@ -304,8 +304,8 @@ internal object AgendaAbstractFilterSerializer :
 			"IntersectionFilter" -> IntersectionFilterSerializer(this)
 			"UnionFilter" -> UnionFilterSerializer(this)
 			"AllAgendasFilter" -> AllAgendasFilter.serializer()
-			"AgendaByUserIdFilter" -> AgendaByUserIdFilter.serializer()
 			"AgendaReadableByUserIdFilter" -> AgendaReadableByUserIdFilter.serializer()
+			"AgendaByUserIdFilter" -> AgendaByUserIdFilter.serializer()
 			else -> null
 		}
 
@@ -315,8 +315,8 @@ internal object AgendaAbstractFilterSerializer :
 			IntersectionFilter::class -> IntersectionFilterSerializer(this)
 			UnionFilter::class -> UnionFilterSerializer(this)
 			AllAgendasFilter::class -> AllAgendasFilter.serializer()
-			AgendaByUserIdFilter::class -> AgendaByUserIdFilter.serializer()
 			AgendaReadableByUserIdFilter::class -> AgendaReadableByUserIdFilter.serializer()
+			AgendaByUserIdFilter::class -> AgendaByUserIdFilter.serializer()
 			else -> null
 		}
 }
@@ -331,12 +331,12 @@ internal object CalendarItemAbstractFilterSerializer :
 			"ComplementFilter" -> ComplementFilterSerializer(this)
 			"IntersectionFilter" -> IntersectionFilterSerializer(this)
 			"UnionFilter" -> UnionFilterSerializer(this)
-			"CalendarItemByRecurrenceIdFilter" -> CalendarItemByRecurrenceIdFilter.serializer()
-			"CalendarItemByPeriodAndDataOwnerIdFilter" ->
-				CalendarItemByPeriodAndDataOwnerIdFilter.serializer()
 			"CalendarItemByPeriodAndAgendaIdFilter" -> CalendarItemByPeriodAndAgendaIdFilter.serializer()
+			"CalendarItemByRecurrenceIdFilter" -> CalendarItemByRecurrenceIdFilter.serializer()
 			"CalendarItemByDataOwnerPatientStartTimeFilter" ->
 				CalendarItemByDataOwnerPatientStartTimeFilter.serializer()
+			"CalendarItemByPeriodAndDataOwnerIdFilter" ->
+				CalendarItemByPeriodAndDataOwnerIdFilter.serializer()
 			else -> null
 		}
 
@@ -345,12 +345,12 @@ internal object CalendarItemAbstractFilterSerializer :
 			ComplementFilter::class -> ComplementFilterSerializer(this)
 			IntersectionFilter::class -> IntersectionFilterSerializer(this)
 			UnionFilter::class -> UnionFilterSerializer(this)
-			CalendarItemByRecurrenceIdFilter::class -> CalendarItemByRecurrenceIdFilter.serializer()
-			CalendarItemByPeriodAndDataOwnerIdFilter::class ->
-				CalendarItemByPeriodAndDataOwnerIdFilter.serializer()
 			CalendarItemByPeriodAndAgendaIdFilter::class -> CalendarItemByPeriodAndAgendaIdFilter.serializer()
+			CalendarItemByRecurrenceIdFilter::class -> CalendarItemByRecurrenceIdFilter.serializer()
 			CalendarItemByDataOwnerPatientStartTimeFilter::class ->
 				CalendarItemByDataOwnerPatientStartTimeFilter.serializer()
+			CalendarItemByPeriodAndDataOwnerIdFilter::class ->
+				CalendarItemByPeriodAndDataOwnerIdFilter.serializer()
 			else -> null
 		}
 }
@@ -389,13 +389,13 @@ internal object CodeAbstractFilterSerializer :
 			"IntersectionFilter" -> IntersectionFilterSerializer(this)
 			"UnionFilter" -> UnionFilterSerializer(this)
 			"CodeByQualifiedLinkFilter" -> CodeByQualifiedLinkFilter.serializer()
-			"AllCodesFilter" -> AllCodesFilter.serializer()
-			"CodeByIdsFilter" -> CodeByIdsFilter.serializer()
 			"CodeByRegionTypeLabelLanguageFilter" -> CodeByRegionTypeLabelLanguageFilter.serializer()
-			"CodeByRegionTypeCodeVersionFilters" -> CodeByRegionTypeCodeVersionFilters.serializer()
+			"CodeByIdsFilter" -> CodeByIdsFilter.serializer()
 			"CodeByRegionTypesLanguageLabelVersionFilters" ->
 				CodeByRegionTypesLanguageLabelVersionFilters.serializer()
 			"CodeIdsByTypeCodeVersionIntervalFilter" -> CodeIdsByTypeCodeVersionIntervalFilter.serializer()
+			"AllCodesFilter" -> AllCodesFilter.serializer()
+			"CodeByRegionTypeCodeVersionFilters" -> CodeByRegionTypeCodeVersionFilters.serializer()
 			else -> null
 		}
 
@@ -405,14 +405,14 @@ internal object CodeAbstractFilterSerializer :
 			IntersectionFilter::class -> IntersectionFilterSerializer(this)
 			UnionFilter::class -> UnionFilterSerializer(this)
 			CodeByQualifiedLinkFilter::class -> CodeByQualifiedLinkFilter.serializer()
-			AllCodesFilter::class -> AllCodesFilter.serializer()
-			CodeByIdsFilter::class -> CodeByIdsFilter.serializer()
 			CodeByRegionTypeLabelLanguageFilter::class -> CodeByRegionTypeLabelLanguageFilter.serializer()
-			CodeByRegionTypeCodeVersionFilters::class -> CodeByRegionTypeCodeVersionFilters.serializer()
+			CodeByIdsFilter::class -> CodeByIdsFilter.serializer()
 			CodeByRegionTypesLanguageLabelVersionFilters::class ->
 				CodeByRegionTypesLanguageLabelVersionFilters.serializer()
 			CodeIdsByTypeCodeVersionIntervalFilter::class ->
 				CodeIdsByTypeCodeVersionIntervalFilter.serializer()
+			AllCodesFilter::class -> AllCodesFilter.serializer()
+			CodeByRegionTypeCodeVersionFilters::class -> CodeByRegionTypeCodeVersionFilters.serializer()
 			else -> null
 		}
 }
@@ -424,19 +424,19 @@ internal object ContactAbstractFilterSerializer :
 			"ComplementFilter" -> ComplementFilterSerializer(this)
 			"IntersectionFilter" -> IntersectionFilterSerializer(this)
 			"UnionFilter" -> UnionFilterSerializer(this)
-			"ContactByDataOwnerFormIdsFilter" -> ContactByDataOwnerFormIdsFilter.serializer()
-			"ContactByHcPartyFilter" -> ContactByHcPartyFilter.serializer()
-			"ContactByExternalIdFilter" -> ContactByExternalIdFilter.serializer()
-			"ContactByServiceIdsFilter" -> ContactByServiceIdsFilter.serializer()
-			"ContactByHcPartyTagCodeDateFilter" -> ContactByHcPartyTagCodeDateFilter.serializer()
-			"ContactByDataOwnerServiceCodeFilter" -> ContactByDataOwnerServiceCodeFilter.serializer()
-			"ContactByDataOwnerPatientOpeningDateFilter" ->
-				ContactByDataOwnerPatientOpeningDateFilter.serializer()
-			"ContactByHcPartyIdentifiersFilter" -> ContactByHcPartyIdentifiersFilter.serializer()
-			"ContactByDataOwnerOpeningDateFilter" -> ContactByDataOwnerOpeningDateFilter.serializer()
-			"ContactByDataOwnerServiceTagFilter" -> ContactByDataOwnerServiceTagFilter.serializer()
 			"ContactByHcPartyPatientTagCodeDateFilter" ->
 				ContactByHcPartyPatientTagCodeDateFilter.serializer()
+			"ContactByDataOwnerFormIdsFilter" -> ContactByDataOwnerFormIdsFilter.serializer()
+			"ContactByServiceIdsFilter" -> ContactByServiceIdsFilter.serializer()
+			"ContactByDataOwnerServiceCodeFilter" -> ContactByDataOwnerServiceCodeFilter.serializer()
+			"ContactByExternalIdFilter" -> ContactByExternalIdFilter.serializer()
+			"ContactByHcPartyFilter" -> ContactByHcPartyFilter.serializer()
+			"ContactByHcPartyIdentifiersFilter" -> ContactByHcPartyIdentifiersFilter.serializer()
+			"ContactByHcPartyTagCodeDateFilter" -> ContactByHcPartyTagCodeDateFilter.serializer()
+			"ContactByDataOwnerPatientOpeningDateFilter" ->
+				ContactByDataOwnerPatientOpeningDateFilter.serializer()
+			"ContactByDataOwnerOpeningDateFilter" -> ContactByDataOwnerOpeningDateFilter.serializer()
+			"ContactByDataOwnerServiceTagFilter" -> ContactByDataOwnerServiceTagFilter.serializer()
 			else -> null
 		}
 
@@ -445,19 +445,19 @@ internal object ContactAbstractFilterSerializer :
 			ComplementFilter::class -> ComplementFilterSerializer(this)
 			IntersectionFilter::class -> IntersectionFilterSerializer(this)
 			UnionFilter::class -> UnionFilterSerializer(this)
-			ContactByDataOwnerFormIdsFilter::class -> ContactByDataOwnerFormIdsFilter.serializer()
-			ContactByHcPartyFilter::class -> ContactByHcPartyFilter.serializer()
-			ContactByExternalIdFilter::class -> ContactByExternalIdFilter.serializer()
-			ContactByServiceIdsFilter::class -> ContactByServiceIdsFilter.serializer()
-			ContactByHcPartyTagCodeDateFilter::class -> ContactByHcPartyTagCodeDateFilter.serializer()
-			ContactByDataOwnerServiceCodeFilter::class -> ContactByDataOwnerServiceCodeFilter.serializer()
-			ContactByDataOwnerPatientOpeningDateFilter::class ->
-				ContactByDataOwnerPatientOpeningDateFilter.serializer()
-			ContactByHcPartyIdentifiersFilter::class -> ContactByHcPartyIdentifiersFilter.serializer()
-			ContactByDataOwnerOpeningDateFilter::class -> ContactByDataOwnerOpeningDateFilter.serializer()
-			ContactByDataOwnerServiceTagFilter::class -> ContactByDataOwnerServiceTagFilter.serializer()
 			ContactByHcPartyPatientTagCodeDateFilter::class ->
 				ContactByHcPartyPatientTagCodeDateFilter.serializer()
+			ContactByDataOwnerFormIdsFilter::class -> ContactByDataOwnerFormIdsFilter.serializer()
+			ContactByServiceIdsFilter::class -> ContactByServiceIdsFilter.serializer()
+			ContactByDataOwnerServiceCodeFilter::class -> ContactByDataOwnerServiceCodeFilter.serializer()
+			ContactByExternalIdFilter::class -> ContactByExternalIdFilter.serializer()
+			ContactByHcPartyFilter::class -> ContactByHcPartyFilter.serializer()
+			ContactByHcPartyIdentifiersFilter::class -> ContactByHcPartyIdentifiersFilter.serializer()
+			ContactByHcPartyTagCodeDateFilter::class -> ContactByHcPartyTagCodeDateFilter.serializer()
+			ContactByDataOwnerPatientOpeningDateFilter::class ->
+				ContactByDataOwnerPatientOpeningDateFilter.serializer()
+			ContactByDataOwnerOpeningDateFilter::class -> ContactByDataOwnerOpeningDateFilter.serializer()
+			ContactByDataOwnerServiceTagFilter::class -> ContactByDataOwnerServiceTagFilter.serializer()
 			else -> null
 		}
 }
@@ -520,10 +520,10 @@ internal object FormAbstractFilterSerializer :
 			"ComplementFilter" -> ComplementFilterSerializer(this)
 			"IntersectionFilter" -> IntersectionFilterSerializer(this)
 			"UnionFilter" -> UnionFilterSerializer(this)
-			"FormByDataOwnerPatientOpeningDateFilter" -> FormByDataOwnerPatientOpeningDateFilter.serializer()
-			"FormByLogicalUuidFilter" -> FormByLogicalUuidFilter.serializer()
 			"FormByDataOwnerParentIdFilter" -> FormByDataOwnerParentIdFilter.serializer()
+			"FormByLogicalUuidFilter" -> FormByLogicalUuidFilter.serializer()
 			"FormByUniqueUuidFilter" -> FormByUniqueUuidFilter.serializer()
+			"FormByDataOwnerPatientOpeningDateFilter" -> FormByDataOwnerPatientOpeningDateFilter.serializer()
 			else -> null
 		}
 
@@ -532,11 +532,11 @@ internal object FormAbstractFilterSerializer :
 			ComplementFilter::class -> ComplementFilterSerializer(this)
 			IntersectionFilter::class -> IntersectionFilterSerializer(this)
 			UnionFilter::class -> UnionFilterSerializer(this)
+			FormByDataOwnerParentIdFilter::class -> FormByDataOwnerParentIdFilter.serializer()
+			FormByLogicalUuidFilter::class -> FormByLogicalUuidFilter.serializer()
+			FormByUniqueUuidFilter::class -> FormByUniqueUuidFilter.serializer()
 			FormByDataOwnerPatientOpeningDateFilter::class ->
 				FormByDataOwnerPatientOpeningDateFilter.serializer()
-			FormByLogicalUuidFilter::class -> FormByLogicalUuidFilter.serializer()
-			FormByDataOwnerParentIdFilter::class -> FormByDataOwnerParentIdFilter.serializer()
-			FormByUniqueUuidFilter::class -> FormByUniqueUuidFilter.serializer()
 			else -> null
 		}
 }
@@ -549,8 +549,8 @@ internal object GroupAbstractFilterSerializer :
 			"IntersectionFilter" -> IntersectionFilterSerializer(this)
 			"UnionFilter" -> UnionFilterSerializer(this)
 			"AllGroupsFilter" -> AllGroupsFilter.serializer()
-			"GroupBySuperGroupFilter" -> GroupBySuperGroupFilter.serializer()
 			"GroupWithContentFilter" -> GroupWithContentFilter.serializer()
+			"GroupBySuperGroupFilter" -> GroupBySuperGroupFilter.serializer()
 			else -> null
 		}
 
@@ -560,8 +560,8 @@ internal object GroupAbstractFilterSerializer :
 			IntersectionFilter::class -> IntersectionFilterSerializer(this)
 			UnionFilter::class -> UnionFilterSerializer(this)
 			AllGroupsFilter::class -> AllGroupsFilter.serializer()
-			GroupBySuperGroupFilter::class -> GroupBySuperGroupFilter.serializer()
 			GroupWithContentFilter::class -> GroupWithContentFilter.serializer()
+			GroupBySuperGroupFilter::class -> GroupBySuperGroupFilter.serializer()
 			else -> null
 		}
 }
@@ -576,13 +576,13 @@ internal object HealthElementAbstractFilterSerializer :
 			"ComplementFilter" -> ComplementFilterSerializer(this)
 			"IntersectionFilter" -> IntersectionFilterSerializer(this)
 			"UnionFilter" -> UnionFilterSerializer(this)
+			"HealthElementByHcPartyIdentifiersFilter" -> HealthElementByHcPartyIdentifiersFilter.serializer()
 			"HealthElementByIdsFilter" -> HealthElementByIdsFilter.serializer()
+			"HealthElementByHcPartyStatusFilter" -> HealthElementByHcPartyStatusFilter.serializer()
 			"HealthElementByHcPartyTagCodeFilter" -> HealthElementByHcPartyTagCodeFilter.serializer()
 			"HealthElementByDataOwnerPatientOpeningDate" ->
 				HealthElementByDataOwnerPatientOpeningDate.serializer()
-			"HealthElementByHcPartyStatusFilter" -> HealthElementByHcPartyStatusFilter.serializer()
 			"HealthElementByHcPartyFilter" -> HealthElementByHcPartyFilter.serializer()
-			"HealthElementByHcPartyIdentifiersFilter" -> HealthElementByHcPartyIdentifiersFilter.serializer()
 			else -> null
 		}
 
@@ -591,14 +591,14 @@ internal object HealthElementAbstractFilterSerializer :
 			ComplementFilter::class -> ComplementFilterSerializer(this)
 			IntersectionFilter::class -> IntersectionFilterSerializer(this)
 			UnionFilter::class -> UnionFilterSerializer(this)
+			HealthElementByHcPartyIdentifiersFilter::class ->
+				HealthElementByHcPartyIdentifiersFilter.serializer()
 			HealthElementByIdsFilter::class -> HealthElementByIdsFilter.serializer()
+			HealthElementByHcPartyStatusFilter::class -> HealthElementByHcPartyStatusFilter.serializer()
 			HealthElementByHcPartyTagCodeFilter::class -> HealthElementByHcPartyTagCodeFilter.serializer()
 			HealthElementByDataOwnerPatientOpeningDate::class ->
 				HealthElementByDataOwnerPatientOpeningDate.serializer()
-			HealthElementByHcPartyStatusFilter::class -> HealthElementByHcPartyStatusFilter.serializer()
 			HealthElementByHcPartyFilter::class -> HealthElementByHcPartyFilter.serializer()
-			HealthElementByHcPartyIdentifiersFilter::class ->
-				HealthElementByHcPartyIdentifiersFilter.serializer()
 			else -> null
 		}
 }
@@ -614,15 +614,15 @@ internal object HealthcarePartyAbstractFilterSerializer :
 			"IntersectionFilter" -> IntersectionFilterSerializer(this)
 			"UnionFilter" -> UnionFilterSerializer(this)
 			"HealthcarePartyByIdentifiersFilter" -> HealthcarePartyByIdentifiersFilter.serializer()
-			"HealthcarePartyByIdsFilter" -> HealthcarePartyByIdsFilter.serializer()
-			"AllHealthcarePartiesFilter" -> AllHealthcarePartiesFilter.serializer()
-			"HealthcarePartyByTagCodeFilter" -> HealthcarePartyByTagCodeFilter.serializer()
-			"HealthcarePartyByNameFilter" -> HealthcarePartyByNameFilter.serializer()
 			"HealthcarePartyByNationalIdentifierFilter" ->
 				HealthcarePartyByNationalIdentifierFilter.serializer()
+			"HealthcarePartyByNameFilter" -> HealthcarePartyByNameFilter.serializer()
 			"HealthcarePartyByTypeSpecialtyPostCodeFilter" ->
 				HealthcarePartyByTypeSpecialtyPostCodeFilter.serializer()
 			"HealthcarePartyByParentIdFilter" -> HealthcarePartyByParentIdFilter.serializer()
+			"HealthcarePartyByTagCodeFilter" -> HealthcarePartyByTagCodeFilter.serializer()
+			"AllHealthcarePartiesFilter" -> AllHealthcarePartiesFilter.serializer()
+			"HealthcarePartyByIdsFilter" -> HealthcarePartyByIdsFilter.serializer()
 			else -> null
 		}
 
@@ -634,15 +634,15 @@ internal object HealthcarePartyAbstractFilterSerializer :
 			IntersectionFilter::class -> IntersectionFilterSerializer(this)
 			UnionFilter::class -> UnionFilterSerializer(this)
 			HealthcarePartyByIdentifiersFilter::class -> HealthcarePartyByIdentifiersFilter.serializer()
-			HealthcarePartyByIdsFilter::class -> HealthcarePartyByIdsFilter.serializer()
-			AllHealthcarePartiesFilter::class -> AllHealthcarePartiesFilter.serializer()
-			HealthcarePartyByTagCodeFilter::class -> HealthcarePartyByTagCodeFilter.serializer()
-			HealthcarePartyByNameFilter::class -> HealthcarePartyByNameFilter.serializer()
 			HealthcarePartyByNationalIdentifierFilter::class ->
 				HealthcarePartyByNationalIdentifierFilter.serializer()
+			HealthcarePartyByNameFilter::class -> HealthcarePartyByNameFilter.serializer()
 			HealthcarePartyByTypeSpecialtyPostCodeFilter::class ->
 				HealthcarePartyByTypeSpecialtyPostCodeFilter.serializer()
 			HealthcarePartyByParentIdFilter::class -> HealthcarePartyByParentIdFilter.serializer()
+			HealthcarePartyByTagCodeFilter::class -> HealthcarePartyByTagCodeFilter.serializer()
+			AllHealthcarePartiesFilter::class -> AllHealthcarePartiesFilter.serializer()
+			HealthcarePartyByIdsFilter::class -> HealthcarePartyByIdsFilter.serializer()
 			else -> null
 		}
 }
@@ -678,11 +678,11 @@ internal object MaintenanceTaskAbstractFilterSerializer :
 			"ComplementFilter" -> ComplementFilterSerializer(this)
 			"IntersectionFilter" -> IntersectionFilterSerializer(this)
 			"UnionFilter" -> UnionFilterSerializer(this)
+			"MaintenanceTaskByIdsFilter" -> MaintenanceTaskByIdsFilter.serializer()
 			"MaintenanceTaskByHcPartyAndTypeFilter" -> MaintenanceTaskByHcPartyAndTypeFilter.serializer()
+			"MaintenanceTaskAfterDateFilter" -> MaintenanceTaskAfterDateFilter.serializer()
 			"MaintenanceTaskByHcPartyAndIdentifiersFilter" ->
 				MaintenanceTaskByHcPartyAndIdentifiersFilter.serializer()
-			"MaintenanceTaskAfterDateFilter" -> MaintenanceTaskAfterDateFilter.serializer()
-			"MaintenanceTaskByIdsFilter" -> MaintenanceTaskByIdsFilter.serializer()
 			else -> null
 		}
 
@@ -693,11 +693,11 @@ internal object MaintenanceTaskAbstractFilterSerializer :
 			ComplementFilter::class -> ComplementFilterSerializer(this)
 			IntersectionFilter::class -> IntersectionFilterSerializer(this)
 			UnionFilter::class -> UnionFilterSerializer(this)
+			MaintenanceTaskByIdsFilter::class -> MaintenanceTaskByIdsFilter.serializer()
 			MaintenanceTaskByHcPartyAndTypeFilter::class -> MaintenanceTaskByHcPartyAndTypeFilter.serializer()
+			MaintenanceTaskAfterDateFilter::class -> MaintenanceTaskAfterDateFilter.serializer()
 			MaintenanceTaskByHcPartyAndIdentifiersFilter::class ->
 				MaintenanceTaskByHcPartyAndIdentifiersFilter.serializer()
-			MaintenanceTaskAfterDateFilter::class -> MaintenanceTaskAfterDateFilter.serializer()
-			MaintenanceTaskByIdsFilter::class -> MaintenanceTaskByIdsFilter.serializer()
 			else -> null
 		}
 }
@@ -737,18 +737,18 @@ internal object MessageAbstractFilterSerializer :
 			"ComplementFilter" -> ComplementFilterSerializer(this)
 			"IntersectionFilter" -> IntersectionFilterSerializer(this)
 			"UnionFilter" -> UnionFilterSerializer(this)
-			"MessageByDataOwnerToAddressFilter" -> MessageByDataOwnerToAddressFilter.serializer()
-			"MessageByDataOwnerTransportGuidSentDateFilter" ->
-				MessageByDataOwnerTransportGuidSentDateFilter.serializer()
-			"LatestMessageByHcPartyTransportGuidFilter" ->
-				LatestMessageByHcPartyTransportGuidFilter.serializer()
 			"MessageByInvoiceIdsFilter" -> MessageByInvoiceIdsFilter.serializer()
-			"MessageByDataOwnerPatientSentDateFilter" -> MessageByDataOwnerPatientSentDateFilter.serializer()
-			"MessageByParentIdsFilter" -> MessageByParentIdsFilter.serializer()
 			"MessageByDataOwnerFromAddressFilter" -> MessageByDataOwnerFromAddressFilter.serializer()
+			"MessageByDataOwnerToAddressFilter" -> MessageByDataOwnerToAddressFilter.serializer()
 			"MessageByHcPartyFilter" -> MessageByHcPartyFilter.serializer()
+			"MessageByParentIdsFilter" -> MessageByParentIdsFilter.serializer()
 			"MessageByHcPartyTransportGuidReceivedFilter" ->
 				MessageByHcPartyTransportGuidReceivedFilter.serializer()
+			"MessageByDataOwnerPatientSentDateFilter" -> MessageByDataOwnerPatientSentDateFilter.serializer()
+			"LatestMessageByHcPartyTransportGuidFilter" ->
+				LatestMessageByHcPartyTransportGuidFilter.serializer()
+			"MessageByDataOwnerTransportGuidSentDateFilter" ->
+				MessageByDataOwnerTransportGuidSentDateFilter.serializer()
 			else -> null
 		}
 
@@ -757,19 +757,19 @@ internal object MessageAbstractFilterSerializer :
 			ComplementFilter::class -> ComplementFilterSerializer(this)
 			IntersectionFilter::class -> IntersectionFilterSerializer(this)
 			UnionFilter::class -> UnionFilterSerializer(this)
-			MessageByDataOwnerToAddressFilter::class -> MessageByDataOwnerToAddressFilter.serializer()
-			MessageByDataOwnerTransportGuidSentDateFilter::class ->
-				MessageByDataOwnerTransportGuidSentDateFilter.serializer()
-			LatestMessageByHcPartyTransportGuidFilter::class ->
-				LatestMessageByHcPartyTransportGuidFilter.serializer()
 			MessageByInvoiceIdsFilter::class -> MessageByInvoiceIdsFilter.serializer()
-			MessageByDataOwnerPatientSentDateFilter::class ->
-				MessageByDataOwnerPatientSentDateFilter.serializer()
-			MessageByParentIdsFilter::class -> MessageByParentIdsFilter.serializer()
 			MessageByDataOwnerFromAddressFilter::class -> MessageByDataOwnerFromAddressFilter.serializer()
+			MessageByDataOwnerToAddressFilter::class -> MessageByDataOwnerToAddressFilter.serializer()
 			MessageByHcPartyFilter::class -> MessageByHcPartyFilter.serializer()
+			MessageByParentIdsFilter::class -> MessageByParentIdsFilter.serializer()
 			MessageByHcPartyTransportGuidReceivedFilter::class ->
 				MessageByHcPartyTransportGuidReceivedFilter.serializer()
+			MessageByDataOwnerPatientSentDateFilter::class ->
+				MessageByDataOwnerPatientSentDateFilter.serializer()
+			LatestMessageByHcPartyTransportGuidFilter::class ->
+				LatestMessageByHcPartyTransportGuidFilter.serializer()
+			MessageByDataOwnerTransportGuidSentDateFilter::class ->
+				MessageByDataOwnerTransportGuidSentDateFilter.serializer()
 			else -> null
 		}
 }
@@ -783,20 +783,20 @@ internal object PatientAbstractFilterSerializer :
 			"UnionFilter" -> UnionFilterSerializer(this)
 			"PatientByHcPartyGenderEducationProfession" ->
 				PatientByHcPartyGenderEducationProfession.serializer()
-			"PatientByDataOwnerModifiedAfterFilter" -> PatientByDataOwnerModifiedAfterFilter.serializer()
-			"PatientByHcPartyAndSsinsFilter" -> PatientByHcPartyAndSsinsFilter.serializer()
-			"PatientByHcPartyAndExternalIdFilter" -> PatientByHcPartyAndExternalIdFilter.serializer()
 			"PatientByHcPartyAndSsinFilter" -> PatientByHcPartyAndSsinFilter.serializer()
-			"PatientByHcPartyFilter" -> PatientByHcPartyFilter.serializer()
+			"PatientByHcPartyAndSsinsFilter" -> PatientByHcPartyAndSsinsFilter.serializer()
 			"PatientByHcPartyDateOfBirthBetweenFilter" ->
 				PatientByHcPartyDateOfBirthBetweenFilter.serializer()
-			"PatientByHcPartyAndAddressFilter" -> PatientByHcPartyAndAddressFilter.serializer()
-			"PatientByHcPartyAndActiveFilter" -> PatientByHcPartyAndActiveFilter.serializer()
-			"PatientByHcPartyAndIdentifiersFilter" -> PatientByHcPartyAndIdentifiersFilter.serializer()
-			"PatientByIdsFilter" -> PatientByIdsFilter.serializer()
-			"PatientByHcPartyAndTelecomFilter" -> PatientByHcPartyAndTelecomFilter.serializer()
-			"PatientByHcPartyNameFilter" -> PatientByHcPartyNameFilter.serializer()
 			"PatientByHcPartyDateOfBirthFilter" -> PatientByHcPartyDateOfBirthFilter.serializer()
+			"PatientByHcPartyAndActiveFilter" -> PatientByHcPartyAndActiveFilter.serializer()
+			"PatientByHcPartyFilter" -> PatientByHcPartyFilter.serializer()
+			"PatientByHcPartyAndAddressFilter" -> PatientByHcPartyAndAddressFilter.serializer()
+			"PatientByIdsFilter" -> PatientByIdsFilter.serializer()
+			"PatientByHcPartyNameFilter" -> PatientByHcPartyNameFilter.serializer()
+			"PatientByHcPartyAndTelecomFilter" -> PatientByHcPartyAndTelecomFilter.serializer()
+			"PatientByHcPartyAndExternalIdFilter" -> PatientByHcPartyAndExternalIdFilter.serializer()
+			"PatientByHcPartyAndIdentifiersFilter" -> PatientByHcPartyAndIdentifiersFilter.serializer()
+			"PatientByDataOwnerModifiedAfterFilter" -> PatientByDataOwnerModifiedAfterFilter.serializer()
 			else -> null
 		}
 
@@ -807,20 +807,20 @@ internal object PatientAbstractFilterSerializer :
 			UnionFilter::class -> UnionFilterSerializer(this)
 			PatientByHcPartyGenderEducationProfession::class ->
 				PatientByHcPartyGenderEducationProfession.serializer()
-			PatientByDataOwnerModifiedAfterFilter::class -> PatientByDataOwnerModifiedAfterFilter.serializer()
-			PatientByHcPartyAndSsinsFilter::class -> PatientByHcPartyAndSsinsFilter.serializer()
-			PatientByHcPartyAndExternalIdFilter::class -> PatientByHcPartyAndExternalIdFilter.serializer()
 			PatientByHcPartyAndSsinFilter::class -> PatientByHcPartyAndSsinFilter.serializer()
-			PatientByHcPartyFilter::class -> PatientByHcPartyFilter.serializer()
+			PatientByHcPartyAndSsinsFilter::class -> PatientByHcPartyAndSsinsFilter.serializer()
 			PatientByHcPartyDateOfBirthBetweenFilter::class ->
 				PatientByHcPartyDateOfBirthBetweenFilter.serializer()
-			PatientByHcPartyAndAddressFilter::class -> PatientByHcPartyAndAddressFilter.serializer()
-			PatientByHcPartyAndActiveFilter::class -> PatientByHcPartyAndActiveFilter.serializer()
-			PatientByHcPartyAndIdentifiersFilter::class -> PatientByHcPartyAndIdentifiersFilter.serializer()
-			PatientByIdsFilter::class -> PatientByIdsFilter.serializer()
-			PatientByHcPartyAndTelecomFilter::class -> PatientByHcPartyAndTelecomFilter.serializer()
-			PatientByHcPartyNameFilter::class -> PatientByHcPartyNameFilter.serializer()
 			PatientByHcPartyDateOfBirthFilter::class -> PatientByHcPartyDateOfBirthFilter.serializer()
+			PatientByHcPartyAndActiveFilter::class -> PatientByHcPartyAndActiveFilter.serializer()
+			PatientByHcPartyFilter::class -> PatientByHcPartyFilter.serializer()
+			PatientByHcPartyAndAddressFilter::class -> PatientByHcPartyAndAddressFilter.serializer()
+			PatientByIdsFilter::class -> PatientByIdsFilter.serializer()
+			PatientByHcPartyNameFilter::class -> PatientByHcPartyNameFilter.serializer()
+			PatientByHcPartyAndTelecomFilter::class -> PatientByHcPartyAndTelecomFilter.serializer()
+			PatientByHcPartyAndExternalIdFilter::class -> PatientByHcPartyAndExternalIdFilter.serializer()
+			PatientByHcPartyAndIdentifiersFilter::class -> PatientByHcPartyAndIdentifiersFilter.serializer()
+			PatientByDataOwnerModifiedAfterFilter::class -> PatientByDataOwnerModifiedAfterFilter.serializer()
 			else -> null
 		}
 }
@@ -833,14 +833,14 @@ internal object ServiceAbstractFilterSerializer :
 			"IntersectionFilter" -> IntersectionFilterSerializer(this)
 			"UnionFilter" -> UnionFilterSerializer(this)
 			"ServiceByAssociationIdFilter" -> ServiceByAssociationIdFilter.serializer()
-			"ServiceByHcPartyHealthElementIdsFilter" -> ServiceByHcPartyHealthElementIdsFilter.serializer()
-			"ServiceByHcPartyFilter" -> ServiceByHcPartyFilter.serializer()
 			"ServiceByIdsFilter" -> ServiceByIdsFilter.serializer()
-			"ServiceByHcPartyTagCodeDateFilter" -> ServiceByHcPartyTagCodeDateFilter.serializer()
-			"ServiceBySecretForeignKeys" -> ServiceBySecretForeignKeys.serializer()
-			"ServiceByDataOwnerPatientDateFilter" -> ServiceByDataOwnerPatientDateFilter.serializer()
-			"ServiceByQualifiedLinkFilter" -> ServiceByQualifiedLinkFilter.serializer()
 			"ServiceByHcPartyIdentifiersFilter" -> ServiceByHcPartyIdentifiersFilter.serializer()
+			"ServiceBySecretForeignKeys" -> ServiceBySecretForeignKeys.serializer()
+			"ServiceByHcPartyFilter" -> ServiceByHcPartyFilter.serializer()
+			"ServiceByHcPartyTagCodeDateFilter" -> ServiceByHcPartyTagCodeDateFilter.serializer()
+			"ServiceByHcPartyHealthElementIdsFilter" -> ServiceByHcPartyHealthElementIdsFilter.serializer()
+			"ServiceByQualifiedLinkFilter" -> ServiceByQualifiedLinkFilter.serializer()
+			"ServiceByDataOwnerPatientDateFilter" -> ServiceByDataOwnerPatientDateFilter.serializer()
 			else -> null
 		}
 
@@ -850,15 +850,15 @@ internal object ServiceAbstractFilterSerializer :
 			IntersectionFilter::class -> IntersectionFilterSerializer(this)
 			UnionFilter::class -> UnionFilterSerializer(this)
 			ServiceByAssociationIdFilter::class -> ServiceByAssociationIdFilter.serializer()
+			ServiceByIdsFilter::class -> ServiceByIdsFilter.serializer()
+			ServiceByHcPartyIdentifiersFilter::class -> ServiceByHcPartyIdentifiersFilter.serializer()
+			ServiceBySecretForeignKeys::class -> ServiceBySecretForeignKeys.serializer()
+			ServiceByHcPartyFilter::class -> ServiceByHcPartyFilter.serializer()
+			ServiceByHcPartyTagCodeDateFilter::class -> ServiceByHcPartyTagCodeDateFilter.serializer()
 			ServiceByHcPartyHealthElementIdsFilter::class ->
 				ServiceByHcPartyHealthElementIdsFilter.serializer()
-			ServiceByHcPartyFilter::class -> ServiceByHcPartyFilter.serializer()
-			ServiceByIdsFilter::class -> ServiceByIdsFilter.serializer()
-			ServiceByHcPartyTagCodeDateFilter::class -> ServiceByHcPartyTagCodeDateFilter.serializer()
-			ServiceBySecretForeignKeys::class -> ServiceBySecretForeignKeys.serializer()
-			ServiceByDataOwnerPatientDateFilter::class -> ServiceByDataOwnerPatientDateFilter.serializer()
 			ServiceByQualifiedLinkFilter::class -> ServiceByQualifiedLinkFilter.serializer()
-			ServiceByHcPartyIdentifiersFilter::class -> ServiceByHcPartyIdentifiersFilter.serializer()
+			ServiceByDataOwnerPatientDateFilter::class -> ServiceByDataOwnerPatientDateFilter.serializer()
 			else -> null
 		}
 }
@@ -873,8 +873,8 @@ internal object TimeTableAbstractFilterSerializer :
 			"ComplementFilter" -> ComplementFilterSerializer(this)
 			"IntersectionFilter" -> IntersectionFilterSerializer(this)
 			"UnionFilter" -> UnionFilterSerializer(this)
-			"TimeTableByPeriodAndAgendaIdFilter" -> TimeTableByPeriodAndAgendaIdFilter.serializer()
 			"TimeTableByAgendaIdFilter" -> TimeTableByAgendaIdFilter.serializer()
+			"TimeTableByPeriodAndAgendaIdFilter" -> TimeTableByPeriodAndAgendaIdFilter.serializer()
 			else -> null
 		}
 
@@ -883,8 +883,8 @@ internal object TimeTableAbstractFilterSerializer :
 			ComplementFilter::class -> ComplementFilterSerializer(this)
 			IntersectionFilter::class -> IntersectionFilterSerializer(this)
 			UnionFilter::class -> UnionFilterSerializer(this)
-			TimeTableByPeriodAndAgendaIdFilter::class -> TimeTableByPeriodAndAgendaIdFilter.serializer()
 			TimeTableByAgendaIdFilter::class -> TimeTableByAgendaIdFilter.serializer()
+			TimeTableByPeriodAndAgendaIdFilter::class -> TimeTableByPeriodAndAgendaIdFilter.serializer()
 			else -> null
 		}
 }
@@ -896,8 +896,8 @@ internal object TopicAbstractFilterSerializer :
 			"ComplementFilter" -> ComplementFilterSerializer(this)
 			"IntersectionFilter" -> IntersectionFilterSerializer(this)
 			"UnionFilter" -> UnionFilterSerializer(this)
-			"TopicByHcPartyFilter" -> TopicByHcPartyFilter.serializer()
 			"TopicByParticipantFilter" -> TopicByParticipantFilter.serializer()
+			"TopicByHcPartyFilter" -> TopicByHcPartyFilter.serializer()
 			else -> null
 		}
 
@@ -906,8 +906,8 @@ internal object TopicAbstractFilterSerializer :
 			ComplementFilter::class -> ComplementFilterSerializer(this)
 			IntersectionFilter::class -> IntersectionFilterSerializer(this)
 			UnionFilter::class -> UnionFilterSerializer(this)
-			TopicByHcPartyFilter::class -> TopicByHcPartyFilter.serializer()
 			TopicByParticipantFilter::class -> TopicByParticipantFilter.serializer()
+			TopicByHcPartyFilter::class -> TopicByHcPartyFilter.serializer()
 			else -> null
 		}
 }
@@ -919,8 +919,8 @@ internal object UserAbstractFilterSerializer :
 			"ComplementFilter" -> ComplementFilterSerializer(this)
 			"IntersectionFilter" -> IntersectionFilterSerializer(this)
 			"UnionFilter" -> UnionFilterSerializer(this)
-			"UserByHealthcarePartyIdFilter" -> UserByHealthcarePartyIdFilter.serializer()
 			"UserByNameEmailPhoneFilter" -> UserByNameEmailPhoneFilter.serializer()
+			"UserByHealthcarePartyIdFilter" -> UserByHealthcarePartyIdFilter.serializer()
 			"AllUsersFilter" -> AllUsersFilter.serializer()
 			"UsersByPatientIdFilter" -> UsersByPatientIdFilter.serializer()
 			"UserByIdsFilter" -> UserByIdsFilter.serializer()
@@ -932,8 +932,8 @@ internal object UserAbstractFilterSerializer :
 			ComplementFilter::class -> ComplementFilterSerializer(this)
 			IntersectionFilter::class -> IntersectionFilterSerializer(this)
 			UnionFilter::class -> UnionFilterSerializer(this)
-			UserByHealthcarePartyIdFilter::class -> UserByHealthcarePartyIdFilter.serializer()
 			UserByNameEmailPhoneFilter::class -> UserByNameEmailPhoneFilter.serializer()
+			UserByHealthcarePartyIdFilter::class -> UserByHealthcarePartyIdFilter.serializer()
 			AllUsersFilter::class -> AllUsersFilter.serializer()
 			UsersByPatientIdFilter::class -> UsersByPatientIdFilter.serializer()
 			UserByIdsFilter::class -> UserByIdsFilter.serializer()

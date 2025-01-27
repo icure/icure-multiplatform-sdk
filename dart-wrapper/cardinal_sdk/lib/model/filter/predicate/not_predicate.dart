@@ -6,16 +6,16 @@ class NotPredicate implements Predicate {
 	Predicate predicate;
 	NotPredicate(this.predicate);
 
-	factory NotPredicate.fromJSON(Map<String, dynamic> data) {
-		return NotPredicate(
-			Predicate.fromJSON(data["predicate"])
-		);
-	}
-
 	static Map<String, dynamic> encode(NotPredicate value) {
 		Map<String, dynamic> entityAsMap = {
 			"predicate" : Predicate.encode(value.predicate)
 		};
 		return entityAsMap;
+	}
+
+	static NotPredicate fromJSON(Map<String, dynamic> data) {
+		return NotPredicate(
+			Predicate.fromJSON(data["predicate"])
+		);
 	}
 }

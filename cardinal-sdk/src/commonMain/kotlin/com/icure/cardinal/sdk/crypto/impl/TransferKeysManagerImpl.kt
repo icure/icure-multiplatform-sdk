@@ -1,11 +1,5 @@
 package com.icure.cardinal.sdk.crypto.impl
 
-import com.icure.kryptom.crypto.AesAlgorithm
-import com.icure.kryptom.crypto.AesKey
-import com.icure.kryptom.crypto.CryptoService
-import com.icure.kryptom.crypto.RsaAlgorithm
-import com.icure.kryptom.crypto.RsaKeypair
-import com.icure.kryptom.utils.toHexString
 import com.icure.cardinal.sdk.api.DataOwnerApi
 import com.icure.cardinal.sdk.crypto.ExchangeDataManager
 import com.icure.cardinal.sdk.crypto.TransferKeysManager
@@ -19,11 +13,17 @@ import com.icure.cardinal.sdk.model.extensions.publicKeysSpki
 import com.icure.cardinal.sdk.model.specializations.HexString
 import com.icure.cardinal.sdk.model.specializations.KeypairFingerprintV1String
 import com.icure.cardinal.sdk.storage.CardinalStorageFacade
-import com.icure.utils.InternalIcureApi
 import com.icure.cardinal.sdk.utils.collections.DirectedGraph
 import com.icure.cardinal.sdk.utils.collections.StronglyConnectedGraph
 import com.icure.cardinal.sdk.utils.ensure
 import com.icure.cardinal.sdk.utils.ensureNonNull
+import com.icure.kryptom.crypto.AesAlgorithm
+import com.icure.kryptom.crypto.AesKey
+import com.icure.kryptom.crypto.CryptoService
+import com.icure.kryptom.crypto.RsaAlgorithm
+import com.icure.kryptom.crypto.RsaKeypair
+import com.icure.kryptom.utils.toHexString
+import com.icure.utils.InternalIcureApi
 
 @InternalIcureApi
 internal class TransferKeysManagerImpl(
@@ -139,7 +139,7 @@ internal class TransferKeysManagerImpl(
 
 	private fun StronglyConnectedGraph<KeypairFingerprintV1String>.transferTargetKeys(): List<CardinalKeyInfo<RsaKeypair<RsaAlgorithm.RsaEncryptionAlgorithm>>> {
 		// The groups of all keys available on this device -> we have the ability to create transfer keys to them
-		val availableGroups = encryptionKeysManager.getDecryptionKeys().allKeys.map { key ->
+		val availableGroups = encryptionKeysManager.getDecryptionKeys(false).allKeys.map { key ->
 			key.pubSpkiHexString.fingerprintV1().let { fp -> originalLabelToAcyclicLabel[fp] ?: fp }
 		}.toSet()
 		// Drop candidates that are already reachable from another transfer keys group

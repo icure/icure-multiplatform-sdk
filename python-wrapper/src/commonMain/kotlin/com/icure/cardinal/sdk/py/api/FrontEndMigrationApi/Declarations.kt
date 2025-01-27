@@ -15,6 +15,7 @@ import kotlin.String
 import kotlin.Unit
 import kotlinx.cinterop.ByteVarOf
 import kotlinx.cinterop.CFunction
+import kotlinx.cinterop.COpaquePointer
 import kotlinx.cinterop.CPointer
 import kotlinx.cinterop.CValues
 import kotlinx.cinterop.ExperimentalForeignApi
@@ -49,7 +50,7 @@ public fun getFrontEndMigrationAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<GetFrontEndMigrationParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
@@ -85,7 +86,7 @@ public fun createFrontEndMigrationAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<CreateFrontEndMigrationParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
@@ -105,7 +106,7 @@ public fun getFrontEndMigrationsBlocking(sdk: CardinalNonCryptoApis): String = k
 @OptIn(ExperimentalForeignApi::class)
 public fun getFrontEndMigrationsAsync(sdk: CardinalNonCryptoApis,
 		resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
-		CValues<ByteVarOf<Byte>>?) -> Unit>>): Unit = kotlin.runCatching {
+		CValues<ByteVarOf<Byte>>?) -> Unit>>): COpaquePointer? = kotlin.runCatching {
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.frontEndMigration.getFrontEndMigrations()
@@ -138,7 +139,7 @@ public fun deleteFrontEndMigrationAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<DeleteFrontEndMigrationParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
@@ -175,7 +176,7 @@ public fun getFrontEndMigrationByNameAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams =
 			fullLanguageInteropJson.decodeFromString<GetFrontEndMigrationByNameParams>(params)
 	GlobalScope.launch {
@@ -212,7 +213,7 @@ public fun modifyFrontEndMigrationAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<ModifyFrontEndMigrationParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {

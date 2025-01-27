@@ -9,6 +9,7 @@ class PatientBasicApiDispatcher {
     resultCallback: @escaping (
       String?,
       String?,
+      String?,
       String?
     ) -> Void
   ) -> Bool {
@@ -42,6 +43,7 @@ class PatientBasicApiDispatcher {
   private static func matchPatientsBy(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     PatientBasicApi.shared.matchPatientsBy(
@@ -52,6 +54,7 @@ class PatientBasicApiDispatcher {
   }
 
   private static func matchPatientsBySorted(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -66,6 +69,7 @@ class PatientBasicApiDispatcher {
   private static func filterPatientsBy(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     PatientBasicApi.shared.filterPatientsBy(
@@ -78,6 +82,7 @@ class PatientBasicApiDispatcher {
   private static func filterPatientsBySorted(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     PatientBasicApi.shared.filterPatientsBySorted(
@@ -88,6 +93,7 @@ class PatientBasicApiDispatcher {
   }
 
   private static func deletePatientById(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -103,6 +109,7 @@ class PatientBasicApiDispatcher {
   private static func deletePatientsByIds(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     PatientBasicApi.shared.deletePatientsByIds(
@@ -113,6 +120,7 @@ class PatientBasicApiDispatcher {
   }
 
   private static func purgePatientById(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -128,6 +136,7 @@ class PatientBasicApiDispatcher {
   private static func deletePatient(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     PatientBasicApi.shared.deletePatient(
@@ -138,6 +147,7 @@ class PatientBasicApiDispatcher {
   }
 
   private static func deletePatients(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -152,6 +162,7 @@ class PatientBasicApiDispatcher {
   private static func purgePatient(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     PatientBasicApi.shared.purgePatient(
@@ -162,6 +173,7 @@ class PatientBasicApiDispatcher {
   }
 
   private static func getDataOwnersWithAccessTo(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -176,6 +188,7 @@ class PatientBasicApiDispatcher {
   private static func undeletePatient(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     PatientBasicApi.shared.undeletePatient(
@@ -188,6 +201,7 @@ class PatientBasicApiDispatcher {
   private static func modifyPatient(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     PatientBasicApi.shared.modifyPatient(
@@ -198,6 +212,7 @@ class PatientBasicApiDispatcher {
   }
 
   private static func undeletePatientById(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -213,6 +228,7 @@ class PatientBasicApiDispatcher {
   private static func undeletePatients(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     PatientBasicApi.shared.undeletePatients(
@@ -225,6 +241,7 @@ class PatientBasicApiDispatcher {
   private static func getPatient(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     PatientBasicApi.shared.getPatient(
@@ -235,6 +252,7 @@ class PatientBasicApiDispatcher {
   }
 
   private static func getPatientResolvingMerges(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -250,6 +268,7 @@ class PatientBasicApiDispatcher {
   private static func getPatients(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     PatientBasicApi.shared.getPatients(
@@ -260,6 +279,7 @@ class PatientBasicApiDispatcher {
   }
 
   private static func modifyPatients(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -274,6 +294,7 @@ class PatientBasicApiDispatcher {
   private static func mergePatients(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     PatientBasicApi.shared.mergePatients(
@@ -285,6 +306,7 @@ class PatientBasicApiDispatcher {
   }
 
   private static func subscribeToEvents(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?

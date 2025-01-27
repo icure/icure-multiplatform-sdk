@@ -27,6 +27,7 @@ public object DocumentFilters {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     dataOwnerIdString: String,
     patientsString: String,
@@ -73,6 +74,7 @@ public object DocumentFilters {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     patientsString: String,
     fromString: String,
@@ -110,6 +112,7 @@ public object DocumentFilters {
 
   public fun byPatientSecretIdsCreatedForDataOwner(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -159,6 +162,7 @@ public object DocumentFilters {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     secretIdsString: String,
     fromString: String,
@@ -199,6 +203,7 @@ public object DocumentFilters {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     dataOwnerIdString: String,
     documentTypeString: String,
@@ -233,6 +238,7 @@ public object DocumentFilters {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     documentTypeString: String,
     patientsString: String,
@@ -258,6 +264,7 @@ public object DocumentFilters {
 
   public fun byPatientSecretIdsAndTypeForDataOwner(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -292,6 +299,7 @@ public object DocumentFilters {
 
   public fun byPatientSecretIdsAndTypeForSelf(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,

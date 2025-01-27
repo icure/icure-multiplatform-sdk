@@ -15,6 +15,7 @@ public object HealthcarePartyApiDispatcher {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
   ): Boolean = when(methodName) {
     "getHealthcareParty" -> getHealthcareParty(parameters, resultCallback)
@@ -53,6 +54,7 @@ public object HealthcarePartyApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     HealthcarePartyApi.getHealthcareParty(
       resultCallback,
@@ -65,6 +67,7 @@ public object HealthcarePartyApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     HealthcarePartyApi.createHealthcareParty(
       resultCallback,
@@ -74,6 +77,7 @@ public object HealthcarePartyApiDispatcher {
   }
 
   private fun modifyHealthcarePartyInGroup(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -90,6 +94,7 @@ public object HealthcarePartyApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     HealthcarePartyApi.createHealthcarePartyInGroup(
       resultCallback,
@@ -103,6 +108,7 @@ public object HealthcarePartyApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     HealthcarePartyApi.getCurrentHealthcareParty(
       resultCallback,
@@ -111,6 +117,7 @@ public object HealthcarePartyApiDispatcher {
   }
 
   private fun listHealthcarePartiesByName(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -126,6 +133,7 @@ public object HealthcarePartyApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     HealthcarePartyApi.getHealthcareParties(
       resultCallback,
@@ -135,6 +143,7 @@ public object HealthcarePartyApiDispatcher {
   }
 
   private fun listHealthcarePartiesByParentId(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -150,6 +159,7 @@ public object HealthcarePartyApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     HealthcarePartyApi.getPublicKey(
       resultCallback,
@@ -159,6 +169,7 @@ public object HealthcarePartyApiDispatcher {
   }
 
   private fun modifyHealthcareParty(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -174,6 +185,7 @@ public object HealthcarePartyApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     HealthcarePartyApi.matchHealthcarePartiesBy(
       resultCallback,
@@ -183,6 +195,7 @@ public object HealthcarePartyApiDispatcher {
   }
 
   private fun filterHealthPartiesBy(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -198,6 +211,7 @@ public object HealthcarePartyApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     HealthcarePartyApi.matchHealthcarePartiesBySorted(
       resultCallback,
@@ -207,6 +221,7 @@ public object HealthcarePartyApiDispatcher {
   }
 
   private fun filterHealthPartiesBySorted(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -222,6 +237,7 @@ public object HealthcarePartyApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     HealthcarePartyApi.getHealthcarePartiesInGroup(
       resultCallback,
@@ -232,6 +248,7 @@ public object HealthcarePartyApiDispatcher {
   }
 
   private fun registerPatient(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -251,6 +268,7 @@ public object HealthcarePartyApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     HealthcarePartyApi.deleteHealthcarePartyById(
       resultCallback,
@@ -264,6 +282,7 @@ public object HealthcarePartyApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     HealthcarePartyApi.deleteHealthcarePartiesByIds(
       resultCallback,
@@ -273,6 +292,7 @@ public object HealthcarePartyApiDispatcher {
   }
 
   private fun deleteHealthcarePartyInGroupById(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -290,6 +310,7 @@ public object HealthcarePartyApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     HealthcarePartyApi.deleteHealthcarePartiesInGroupByIds(
       resultCallback,
@@ -300,6 +321,7 @@ public object HealthcarePartyApiDispatcher {
   }
 
   private fun purgeHealthcarePartyById(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -316,6 +338,7 @@ public object HealthcarePartyApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     HealthcarePartyApi.undeleteHealthcarePartyById(
       resultCallback,
@@ -326,6 +349,7 @@ public object HealthcarePartyApiDispatcher {
   }
 
   private fun deleteHealthcareParty(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -341,6 +365,7 @@ public object HealthcarePartyApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     HealthcarePartyApi.deleteHealthcareParties(
       resultCallback,
@@ -350,6 +375,7 @@ public object HealthcarePartyApiDispatcher {
   }
 
   private fun purgeHealthcareParty(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -365,6 +391,7 @@ public object HealthcarePartyApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     HealthcarePartyApi.undeleteHealthcareParty(
       resultCallback,
@@ -374,6 +401,7 @@ public object HealthcarePartyApiDispatcher {
   }
 
   private fun deleteHealthcarePartyInGroup(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -390,6 +418,7 @@ public object HealthcarePartyApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     HealthcarePartyApi.deleteHealthcarePartiesInGroup(
       resultCallback,
@@ -400,6 +429,7 @@ public object HealthcarePartyApiDispatcher {
   }
 
   private fun subscribeToEvents(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,

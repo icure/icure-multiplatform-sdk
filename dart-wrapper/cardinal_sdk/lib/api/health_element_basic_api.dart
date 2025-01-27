@@ -12,7 +12,11 @@ import 'package:cardinal_sdk/subscription/entity_subscription.dart';
 
 class HealthElementBasicApi {
 	final String _sdkId;
-	HealthElementBasicApi(this._sdkId);
+	final Object _dartSdk;
+	HealthElementBasicApi(
+		this._sdkId,
+		this._dartSdk
+		);
 
 	Future<List<String>> matchHealthElementsBy(BaseFilterOptions<HealthElement> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.healthElementBasic.matchHealthElementsBy(

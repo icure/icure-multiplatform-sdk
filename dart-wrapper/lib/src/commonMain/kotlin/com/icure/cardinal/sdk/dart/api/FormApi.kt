@@ -1,7 +1,7 @@
 // auto-generated file
 package com.icure.cardinal.sdk.dart.api
 
-import com.icure.cardinal.sdk.CardinalSdk
+import com.icure.cardinal.sdk.CardinalApis
 import com.icure.cardinal.sdk.crypto.entities.FormShareOptions
 import com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption
 import com.icure.cardinal.sdk.dart.utils.ApiScope
@@ -40,6 +40,7 @@ public object FormApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     entityString: String,
@@ -51,7 +52,7 @@ public object FormApi {
     ApiScope.execute(
       dartResultCallback,
       DecryptedForm.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).form.createForm(
+      NativeReferences.get<CardinalApis>(sdkId).form.createForm(
         entity,
       )
     }
@@ -59,6 +60,7 @@ public object FormApi {
 
   public fun createForms(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -73,7 +75,7 @@ public object FormApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(DecryptedForm.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).form.createForms(
+      NativeReferences.get<CardinalApis>(sdkId).form.createForms(
         entities,
       )
     }
@@ -81,6 +83,7 @@ public object FormApi {
 
   public fun withEncryptionMetadata(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -115,7 +118,7 @@ public object FormApi {
     ApiScope.execute(
       dartResultCallback,
       DecryptedForm.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).form.withEncryptionMetadata(
+      NativeReferences.get<CardinalApis>(sdkId).form.withEncryptionMetadata(
         base,
         patient,
         user,
@@ -130,6 +133,7 @@ public object FormApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     formString: String,
@@ -141,7 +145,7 @@ public object FormApi {
     ApiScope.execute(
       dartResultCallback,
       SetSerializer(HexString.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).form.getEncryptionKeysOf(
+      NativeReferences.get<CardinalApis>(sdkId).form.getEncryptionKeysOf(
         form,
       )
     }
@@ -149,6 +153,7 @@ public object FormApi {
 
   public fun hasWriteAccess(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -163,7 +168,7 @@ public object FormApi {
     ApiScope.execute(
       dartResultCallback,
       Boolean.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).form.hasWriteAccess(
+      NativeReferences.get<CardinalApis>(sdkId).form.hasWriteAccess(
         form,
       )
     }
@@ -171,6 +176,7 @@ public object FormApi {
 
   public fun decryptPatientIdOf(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -185,7 +191,7 @@ public object FormApi {
     ApiScope.execute(
       dartResultCallback,
       SetSerializer(String.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).form.decryptPatientIdOf(
+      NativeReferences.get<CardinalApis>(sdkId).form.decryptPatientIdOf(
         form,
       )
     }
@@ -193,6 +199,7 @@ public object FormApi {
 
   public fun createDelegationDeAnonymizationMetadata(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -212,7 +219,7 @@ public object FormApi {
     ApiScope.execute(
       dartResultCallback,
       Unit.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).form.createDelegationDeAnonymizationMetadata(
+      NativeReferences.get<CardinalApis>(sdkId).form.createDelegationDeAnonymizationMetadata(
         entity,
         delegates,
       )
@@ -221,6 +228,7 @@ public object FormApi {
 
   public fun decrypt(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -235,7 +243,7 @@ public object FormApi {
     ApiScope.execute(
       dartResultCallback,
       DecryptedForm.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).form.decrypt(
+      NativeReferences.get<CardinalApis>(sdkId).form.decrypt(
         form,
       )
     }
@@ -243,6 +251,7 @@ public object FormApi {
 
   public fun tryDecrypt(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -257,7 +266,7 @@ public object FormApi {
     ApiScope.execute(
       dartResultCallback,
       PolymorphicSerializer(Form::class)) {
-      NativeReferences.get<CardinalSdk>(sdkId).form.tryDecrypt(
+      NativeReferences.get<CardinalApis>(sdkId).form.tryDecrypt(
         form,
       )
     }
@@ -265,6 +274,7 @@ public object FormApi {
 
   public fun matchFormsBy(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -279,7 +289,7 @@ public object FormApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(String.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).form.matchFormsBy(
+      NativeReferences.get<CardinalApis>(sdkId).form.matchFormsBy(
         filter,
       )
     }
@@ -287,6 +297,7 @@ public object FormApi {
 
   public fun matchFormsBySorted(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -301,7 +312,7 @@ public object FormApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(String.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).form.matchFormsBySorted(
+      NativeReferences.get<CardinalApis>(sdkId).form.matchFormsBySorted(
         filter,
       )
     }
@@ -309,6 +320,7 @@ public object FormApi {
 
   public fun deleteFormById(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -328,7 +340,7 @@ public object FormApi {
     ApiScope.execute(
       dartResultCallback,
       DocIdentifier.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).form.deleteFormById(
+      NativeReferences.get<CardinalApis>(sdkId).form.deleteFormById(
         entityId,
         rev,
       )
@@ -337,6 +349,7 @@ public object FormApi {
 
   public fun deleteFormsByIds(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -351,7 +364,7 @@ public object FormApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(DocIdentifier.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).form.deleteFormsByIds(
+      NativeReferences.get<CardinalApis>(sdkId).form.deleteFormsByIds(
         entityIds,
       )
     }
@@ -359,6 +372,7 @@ public object FormApi {
 
   public fun purgeFormById(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -378,7 +392,7 @@ public object FormApi {
     ApiScope.execute(
       dartResultCallback,
       Unit.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).form.purgeFormById(
+      NativeReferences.get<CardinalApis>(sdkId).form.purgeFormById(
         id,
         rev,
       )
@@ -387,6 +401,7 @@ public object FormApi {
 
   public fun deleteForm(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -401,7 +416,7 @@ public object FormApi {
     ApiScope.execute(
       dartResultCallback,
       DocIdentifier.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).form.deleteForm(
+      NativeReferences.get<CardinalApis>(sdkId).form.deleteForm(
         form,
       )
     }
@@ -409,6 +424,7 @@ public object FormApi {
 
   public fun deleteForms(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -423,7 +439,7 @@ public object FormApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(DocIdentifier.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).form.deleteForms(
+      NativeReferences.get<CardinalApis>(sdkId).form.deleteForms(
         forms,
       )
     }
@@ -431,6 +447,7 @@ public object FormApi {
 
   public fun purgeForm(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -445,7 +462,7 @@ public object FormApi {
     ApiScope.execute(
       dartResultCallback,
       Unit.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).form.purgeForm(
+      NativeReferences.get<CardinalApis>(sdkId).form.purgeForm(
         form,
       )
     }
@@ -453,6 +470,7 @@ public object FormApi {
 
   public fun getFormTemplate(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -472,7 +490,7 @@ public object FormApi {
     ApiScope.execute(
       dartResultCallback,
       FormTemplate.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).form.getFormTemplate(
+      NativeReferences.get<CardinalApis>(sdkId).form.getFormTemplate(
         formTemplateId,
         raw,
       )
@@ -481,6 +499,7 @@ public object FormApi {
 
   public fun createFormTemplate(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -495,7 +514,7 @@ public object FormApi {
     ApiScope.execute(
       dartResultCallback,
       FormTemplate.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).form.createFormTemplate(
+      NativeReferences.get<CardinalApis>(sdkId).form.createFormTemplate(
         formTemplate,
       )
     }
@@ -503,6 +522,7 @@ public object FormApi {
 
   public fun deleteFormTemplate(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -517,7 +537,7 @@ public object FormApi {
     ApiScope.execute(
       dartResultCallback,
       DocIdentifier.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).form.deleteFormTemplate(
+      NativeReferences.get<CardinalApis>(sdkId).form.deleteFormTemplate(
         formTemplateId,
       )
     }
@@ -525,6 +545,7 @@ public object FormApi {
 
   public fun updateFormTemplate(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -539,7 +560,7 @@ public object FormApi {
     ApiScope.execute(
       dartResultCallback,
       FormTemplate.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).form.updateFormTemplate(
+      NativeReferences.get<CardinalApis>(sdkId).form.updateFormTemplate(
         formTemplate,
       )
     }
@@ -547,6 +568,7 @@ public object FormApi {
 
   public fun setTemplateAttachment(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -566,7 +588,7 @@ public object FormApi {
     ApiScope.execute(
       dartResultCallback,
       String.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).form.setTemplateAttachment(
+      NativeReferences.get<CardinalApis>(sdkId).form.setTemplateAttachment(
         formTemplateId,
         payload,
       )
@@ -575,6 +597,7 @@ public object FormApi {
 
   public fun shareWith(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -599,7 +622,7 @@ public object FormApi {
     ApiScope.execute(
       dartResultCallback,
       DecryptedForm.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).form.shareWith(
+      NativeReferences.get<CardinalApis>(sdkId).form.shareWith(
         delegateId,
         form,
         options,
@@ -609,6 +632,7 @@ public object FormApi {
 
   public fun shareWithMany(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -628,7 +652,7 @@ public object FormApi {
     ApiScope.execute(
       dartResultCallback,
       DecryptedForm.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).form.shareWithMany(
+      NativeReferences.get<CardinalApis>(sdkId).form.shareWithMany(
         form,
         delegates,
       )
@@ -637,6 +661,7 @@ public object FormApi {
 
   public fun filterFormsBy(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -651,7 +676,7 @@ public object FormApi {
     ApiScope.execute(
       dartResultCallback,
       String.serializer()) {
-      val richResult = NativeReferences.get<CardinalSdk>(sdkId).form.filterFormsBy(
+      val richResult = NativeReferences.get<CardinalApis>(sdkId).form.filterFormsBy(
         filter,
       )
       NativeReferences.create(PaginatedListIteratorWithSerializer(
@@ -666,6 +691,7 @@ public object FormApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     filterString: String,
@@ -677,7 +703,7 @@ public object FormApi {
     ApiScope.execute(
       dartResultCallback,
       String.serializer()) {
-      val richResult = NativeReferences.get<CardinalSdk>(sdkId).form.filterFormsBySorted(
+      val richResult = NativeReferences.get<CardinalApis>(sdkId).form.filterFormsBySorted(
         filter,
       )
       NativeReferences.create(PaginatedListIteratorWithSerializer(
@@ -692,6 +718,7 @@ public object FormApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     entityString: String,
@@ -703,7 +730,7 @@ public object FormApi {
     ApiScope.execute(
       dartResultCallback,
       DecryptedForm.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).form.modifyForm(
+      NativeReferences.get<CardinalApis>(sdkId).form.modifyForm(
         entity,
       )
     }
@@ -711,6 +738,7 @@ public object FormApi {
 
   public fun undeleteFormById(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -730,7 +758,7 @@ public object FormApi {
     ApiScope.execute(
       dartResultCallback,
       DecryptedForm.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).form.undeleteFormById(
+      NativeReferences.get<CardinalApis>(sdkId).form.undeleteFormById(
         id,
         rev,
       )
@@ -739,6 +767,7 @@ public object FormApi {
 
   public fun undeleteForm(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -753,7 +782,7 @@ public object FormApi {
     ApiScope.execute(
       dartResultCallback,
       DecryptedForm.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).form.undeleteForm(
+      NativeReferences.get<CardinalApis>(sdkId).form.undeleteForm(
         form,
       )
     }
@@ -761,6 +790,7 @@ public object FormApi {
 
   public fun modifyForms(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -775,7 +805,7 @@ public object FormApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(DecryptedForm.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).form.modifyForms(
+      NativeReferences.get<CardinalApis>(sdkId).form.modifyForms(
         entities,
       )
     }
@@ -783,6 +813,7 @@ public object FormApi {
 
   public fun getForm(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -797,7 +828,7 @@ public object FormApi {
     ApiScope.execute(
       dartResultCallback,
       DecryptedForm.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).form.getForm(
+      NativeReferences.get<CardinalApis>(sdkId).form.getForm(
         entityId,
       )
     }
@@ -805,6 +836,7 @@ public object FormApi {
 
   public fun getForms(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -819,7 +851,7 @@ public object FormApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(DecryptedForm.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).form.getForms(
+      NativeReferences.get<CardinalApis>(sdkId).form.getForms(
         entityIds,
       )
     }
@@ -827,6 +859,7 @@ public object FormApi {
 
   public fun getLatestFormByLogicalUuid(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -841,7 +874,7 @@ public object FormApi {
     ApiScope.execute(
       dartResultCallback,
       DecryptedForm.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).form.getLatestFormByLogicalUuid(
+      NativeReferences.get<CardinalApis>(sdkId).form.getLatestFormByLogicalUuid(
         logicalUuid,
       )
     }
@@ -849,6 +882,7 @@ public object FormApi {
 
   public fun getLatestFormByUniqueId(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -863,7 +897,7 @@ public object FormApi {
     ApiScope.execute(
       dartResultCallback,
       DecryptedForm.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).form.getLatestFormByUniqueId(
+      NativeReferences.get<CardinalApis>(sdkId).form.getLatestFormByUniqueId(
         uniqueId,
       )
     }
@@ -873,6 +907,7 @@ public object FormApi {
   public object encrypted {
     public fun shareWith(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -897,7 +932,7 @@ public object FormApi {
       ApiScope.execute(
         dartResultCallback,
         EncryptedForm.serializer()) {
-        NativeReferences.get<CardinalSdk>(sdkId).form.encrypted.shareWith(
+        NativeReferences.get<CardinalApis>(sdkId).form.encrypted.shareWith(
           delegateId,
           form,
           options,
@@ -907,6 +942,7 @@ public object FormApi {
 
     public fun shareWithMany(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -926,7 +962,7 @@ public object FormApi {
       ApiScope.execute(
         dartResultCallback,
         EncryptedForm.serializer()) {
-        NativeReferences.get<CardinalSdk>(sdkId).form.encrypted.shareWithMany(
+        NativeReferences.get<CardinalApis>(sdkId).form.encrypted.shareWithMany(
           form,
           delegates,
         )
@@ -935,6 +971,7 @@ public object FormApi {
 
     public fun filterFormsBy(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -949,7 +986,7 @@ public object FormApi {
       ApiScope.execute(
         dartResultCallback,
         String.serializer()) {
-        val richResult = NativeReferences.get<CardinalSdk>(sdkId).form.encrypted.filterFormsBy(
+        val richResult = NativeReferences.get<CardinalApis>(sdkId).form.encrypted.filterFormsBy(
           filter,
         )
         NativeReferences.create(PaginatedListIteratorWithSerializer(
@@ -961,6 +998,7 @@ public object FormApi {
 
     public fun filterFormsBySorted(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -976,7 +1014,7 @@ public object FormApi {
         dartResultCallback,
         String.serializer()) {
         val richResult =
-            NativeReferences.get<CardinalSdk>(sdkId).form.encrypted.filterFormsBySorted(
+            NativeReferences.get<CardinalApis>(sdkId).form.encrypted.filterFormsBySorted(
           filter,
         )
         NativeReferences.create(PaginatedListIteratorWithSerializer(
@@ -991,6 +1029,7 @@ public object FormApi {
         String?,
         String?,
         String?,
+        String?,
       ) -> Unit,
       sdkId: String,
       entityString: String,
@@ -1002,7 +1041,7 @@ public object FormApi {
       ApiScope.execute(
         dartResultCallback,
         EncryptedForm.serializer()) {
-        NativeReferences.get<CardinalSdk>(sdkId).form.encrypted.modifyForm(
+        NativeReferences.get<CardinalApis>(sdkId).form.encrypted.modifyForm(
           entity,
         )
       }
@@ -1010,6 +1049,7 @@ public object FormApi {
 
     public fun undeleteFormById(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -1029,7 +1069,7 @@ public object FormApi {
       ApiScope.execute(
         dartResultCallback,
         EncryptedForm.serializer()) {
-        NativeReferences.get<CardinalSdk>(sdkId).form.encrypted.undeleteFormById(
+        NativeReferences.get<CardinalApis>(sdkId).form.encrypted.undeleteFormById(
           id,
           rev,
         )
@@ -1038,6 +1078,7 @@ public object FormApi {
 
     public fun undeleteForm(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -1052,7 +1093,7 @@ public object FormApi {
       ApiScope.execute(
         dartResultCallback,
         EncryptedForm.serializer()) {
-        NativeReferences.get<CardinalSdk>(sdkId).form.encrypted.undeleteForm(
+        NativeReferences.get<CardinalApis>(sdkId).form.encrypted.undeleteForm(
           form,
         )
       }
@@ -1060,6 +1101,7 @@ public object FormApi {
 
     public fun modifyForms(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -1074,7 +1116,7 @@ public object FormApi {
       ApiScope.execute(
         dartResultCallback,
         ListSerializer(EncryptedForm.serializer())) {
-        NativeReferences.get<CardinalSdk>(sdkId).form.encrypted.modifyForms(
+        NativeReferences.get<CardinalApis>(sdkId).form.encrypted.modifyForms(
           entities,
         )
       }
@@ -1082,6 +1124,7 @@ public object FormApi {
 
     public fun getForm(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -1096,7 +1139,7 @@ public object FormApi {
       ApiScope.execute(
         dartResultCallback,
         EncryptedForm.serializer()) {
-        NativeReferences.get<CardinalSdk>(sdkId).form.encrypted.getForm(
+        NativeReferences.get<CardinalApis>(sdkId).form.encrypted.getForm(
           entityId,
         )
       }
@@ -1104,6 +1147,7 @@ public object FormApi {
 
     public fun getForms(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -1118,7 +1162,7 @@ public object FormApi {
       ApiScope.execute(
         dartResultCallback,
         ListSerializer(EncryptedForm.serializer())) {
-        NativeReferences.get<CardinalSdk>(sdkId).form.encrypted.getForms(
+        NativeReferences.get<CardinalApis>(sdkId).form.encrypted.getForms(
           entityIds,
         )
       }
@@ -1126,6 +1170,7 @@ public object FormApi {
 
     public fun getLatestFormByLogicalUuid(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -1140,7 +1185,7 @@ public object FormApi {
       ApiScope.execute(
         dartResultCallback,
         EncryptedForm.serializer()) {
-        NativeReferences.get<CardinalSdk>(sdkId).form.encrypted.getLatestFormByLogicalUuid(
+        NativeReferences.get<CardinalApis>(sdkId).form.encrypted.getLatestFormByLogicalUuid(
           logicalUuid,
         )
       }
@@ -1148,6 +1193,7 @@ public object FormApi {
 
     public fun getLatestFormByUniqueId(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -1162,7 +1208,7 @@ public object FormApi {
       ApiScope.execute(
         dartResultCallback,
         EncryptedForm.serializer()) {
-        NativeReferences.get<CardinalSdk>(sdkId).form.encrypted.getLatestFormByUniqueId(
+        NativeReferences.get<CardinalApis>(sdkId).form.encrypted.getLatestFormByUniqueId(
           uniqueId,
         )
       }
@@ -1173,6 +1219,7 @@ public object FormApi {
   public object tryAndRecover {
     public fun shareWith(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -1197,7 +1244,7 @@ public object FormApi {
       ApiScope.execute(
         dartResultCallback,
         PolymorphicSerializer(Form::class)) {
-        NativeReferences.get<CardinalSdk>(sdkId).form.tryAndRecover.shareWith(
+        NativeReferences.get<CardinalApis>(sdkId).form.tryAndRecover.shareWith(
           delegateId,
           form,
           options,
@@ -1207,6 +1254,7 @@ public object FormApi {
 
     public fun shareWithMany(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -1226,7 +1274,7 @@ public object FormApi {
       ApiScope.execute(
         dartResultCallback,
         PolymorphicSerializer(Form::class)) {
-        NativeReferences.get<CardinalSdk>(sdkId).form.tryAndRecover.shareWithMany(
+        NativeReferences.get<CardinalApis>(sdkId).form.tryAndRecover.shareWithMany(
           form,
           delegates,
         )
@@ -1235,6 +1283,7 @@ public object FormApi {
 
     public fun filterFormsBy(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -1249,7 +1298,7 @@ public object FormApi {
       ApiScope.execute(
         dartResultCallback,
         String.serializer()) {
-        val richResult = NativeReferences.get<CardinalSdk>(sdkId).form.tryAndRecover.filterFormsBy(
+        val richResult = NativeReferences.get<CardinalApis>(sdkId).form.tryAndRecover.filterFormsBy(
           filter,
         )
         NativeReferences.create(PaginatedListIteratorWithSerializer(
@@ -1261,6 +1310,7 @@ public object FormApi {
 
     public fun filterFormsBySorted(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -1276,7 +1326,7 @@ public object FormApi {
         dartResultCallback,
         String.serializer()) {
         val richResult =
-            NativeReferences.get<CardinalSdk>(sdkId).form.tryAndRecover.filterFormsBySorted(
+            NativeReferences.get<CardinalApis>(sdkId).form.tryAndRecover.filterFormsBySorted(
           filter,
         )
         NativeReferences.create(PaginatedListIteratorWithSerializer(
@@ -1291,6 +1341,7 @@ public object FormApi {
         String?,
         String?,
         String?,
+        String?,
       ) -> Unit,
       sdkId: String,
       entityString: String,
@@ -1302,7 +1353,7 @@ public object FormApi {
       ApiScope.execute(
         dartResultCallback,
         PolymorphicSerializer(Form::class)) {
-        NativeReferences.get<CardinalSdk>(sdkId).form.tryAndRecover.modifyForm(
+        NativeReferences.get<CardinalApis>(sdkId).form.tryAndRecover.modifyForm(
           entity,
         )
       }
@@ -1310,6 +1361,7 @@ public object FormApi {
 
     public fun undeleteFormById(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -1329,7 +1381,7 @@ public object FormApi {
       ApiScope.execute(
         dartResultCallback,
         PolymorphicSerializer(Form::class)) {
-        NativeReferences.get<CardinalSdk>(sdkId).form.tryAndRecover.undeleteFormById(
+        NativeReferences.get<CardinalApis>(sdkId).form.tryAndRecover.undeleteFormById(
           id,
           rev,
         )
@@ -1338,6 +1390,7 @@ public object FormApi {
 
     public fun undeleteForm(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -1352,7 +1405,7 @@ public object FormApi {
       ApiScope.execute(
         dartResultCallback,
         PolymorphicSerializer(Form::class)) {
-        NativeReferences.get<CardinalSdk>(sdkId).form.tryAndRecover.undeleteForm(
+        NativeReferences.get<CardinalApis>(sdkId).form.tryAndRecover.undeleteForm(
           form,
         )
       }
@@ -1360,6 +1413,7 @@ public object FormApi {
 
     public fun modifyForms(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -1374,7 +1428,7 @@ public object FormApi {
       ApiScope.execute(
         dartResultCallback,
         ListSerializer(PolymorphicSerializer(Form::class))) {
-        NativeReferences.get<CardinalSdk>(sdkId).form.tryAndRecover.modifyForms(
+        NativeReferences.get<CardinalApis>(sdkId).form.tryAndRecover.modifyForms(
           entities,
         )
       }
@@ -1382,6 +1436,7 @@ public object FormApi {
 
     public fun getForm(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -1396,7 +1451,7 @@ public object FormApi {
       ApiScope.execute(
         dartResultCallback,
         PolymorphicSerializer(Form::class)) {
-        NativeReferences.get<CardinalSdk>(sdkId).form.tryAndRecover.getForm(
+        NativeReferences.get<CardinalApis>(sdkId).form.tryAndRecover.getForm(
           entityId,
         )
       }
@@ -1404,6 +1459,7 @@ public object FormApi {
 
     public fun getForms(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -1418,7 +1474,7 @@ public object FormApi {
       ApiScope.execute(
         dartResultCallback,
         ListSerializer(PolymorphicSerializer(Form::class))) {
-        NativeReferences.get<CardinalSdk>(sdkId).form.tryAndRecover.getForms(
+        NativeReferences.get<CardinalApis>(sdkId).form.tryAndRecover.getForms(
           entityIds,
         )
       }
@@ -1426,6 +1482,7 @@ public object FormApi {
 
     public fun getLatestFormByLogicalUuid(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -1440,7 +1497,7 @@ public object FormApi {
       ApiScope.execute(
         dartResultCallback,
         PolymorphicSerializer(Form::class)) {
-        NativeReferences.get<CardinalSdk>(sdkId).form.tryAndRecover.getLatestFormByLogicalUuid(
+        NativeReferences.get<CardinalApis>(sdkId).form.tryAndRecover.getLatestFormByLogicalUuid(
           logicalUuid,
         )
       }
@@ -1448,6 +1505,7 @@ public object FormApi {
 
     public fun getLatestFormByUniqueId(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -1462,7 +1520,7 @@ public object FormApi {
       ApiScope.execute(
         dartResultCallback,
         PolymorphicSerializer(Form::class)) {
-        NativeReferences.get<CardinalSdk>(sdkId).form.tryAndRecover.getLatestFormByUniqueId(
+        NativeReferences.get<CardinalApis>(sdkId).form.tryAndRecover.getLatestFormByUniqueId(
           uniqueId,
         )
       }

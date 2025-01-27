@@ -19,6 +19,7 @@ public object TopicFilters {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit, dataOwnerIdString: String) {
     val dataOwnerId = fullLanguageInteropJson.decodeFromString(
       String.serializer(),
@@ -38,6 +39,7 @@ public object TopicFilters {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     DartResult.resolve(
       dartResultCallback,
@@ -49,6 +51,7 @@ public object TopicFilters {
   }
 
   public fun byParticipant(dartResultCallback: (
+    String?,
     String?,
     String?,
     String?,

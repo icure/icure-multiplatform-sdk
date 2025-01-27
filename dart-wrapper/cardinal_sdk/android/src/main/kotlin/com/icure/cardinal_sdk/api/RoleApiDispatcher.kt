@@ -15,6 +15,7 @@ public object RoleApiDispatcher {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
   ): Boolean = when(methodName) {
     "getAllRoles" -> getAllRoles(parameters, resultCallback)
@@ -22,6 +23,7 @@ public object RoleApiDispatcher {
   }?.let { true } ?: false
 
   private fun getAllRoles(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,

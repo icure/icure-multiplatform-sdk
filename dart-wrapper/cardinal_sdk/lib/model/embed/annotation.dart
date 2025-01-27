@@ -36,21 +36,6 @@ class Annotation implements Identifiable<String> {
 		tags = tags ?? {},
 		encryptedSelf = encryptedSelf ?? null;
 
-	factory Annotation.fromJSON(Map<String, dynamic> data) {
-		return Annotation(
-			(data["id"] as String),
-			author: (data["author"] as String?),
-			created: (data["created"] as int?),
-			modified: (data["modified"] as int?),
-			text: (data["text"] as String?),
-			markdown: (data["markdown"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as String))),
-			location: (data["location"] as String?),
-			confidential: (data["confidential"] as bool?),
-			tags: (data["tags"] as List<dynamic>).map((x0) => CodeStub.fromJSON(x0) ).toSet(),
-			encryptedSelf: (data["encryptedSelf"] as String?),
-		);
-	}
-
 	static Map<String, dynamic> encode(Annotation value) {
 		Map<String, dynamic> entityAsMap = {
 			"id" : value.id,
@@ -65,5 +50,20 @@ class Annotation implements Identifiable<String> {
 			"encryptedSelf" : value.encryptedSelf
 		};
 		return entityAsMap;
+	}
+
+	static Annotation fromJSON(Map<String, dynamic> data) {
+		return Annotation(
+			(data["id"] as String),
+			author: (data["author"] as String?),
+			created: (data["created"] as int?),
+			modified: (data["modified"] as int?),
+			text: (data["text"] as String?),
+			markdown: (data["markdown"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as String))),
+			location: (data["location"] as String?),
+			confidential: (data["confidential"] as bool?),
+			tags: (data["tags"] as List<dynamic>).map((x0) => CodeStub.fromJSON(x0) ).toSet(),
+			encryptedSelf: (data["encryptedSelf"] as String?),
+		);
 	}
 }

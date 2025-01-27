@@ -15,6 +15,7 @@ public object EntityReferenceApiDispatcher {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
   ): Boolean = when(methodName) {
     "getLatest" -> getLatest(parameters, resultCallback)
@@ -23,6 +24,7 @@ public object EntityReferenceApiDispatcher {
   }?.let { true } ?: false
 
   private fun getLatest(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -35,6 +37,7 @@ public object EntityReferenceApiDispatcher {
   }
 
   private fun createEntityReference(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,

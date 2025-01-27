@@ -25,18 +25,6 @@ class TimeSeries {
 		median = median ?? [],
 		variance = variance ?? [];
 
-	factory TimeSeries.fromJSON(Map<String, dynamic> data) {
-		return TimeSeries(
-			fields: (data["fields"] as List<dynamic>).map((x0) => (x0 as String) ).toList(),
-			samples: (data["samples"] as List<dynamic>).map((x0) => (x0 as List<dynamic>).map((x1) => (x1 as num).toDouble() ).toList() ).toList(),
-			min: (data["min"] as List<dynamic>).map((x0) => (x0 as num).toDouble() ).toList(),
-			max: (data["max"] as List<dynamic>).map((x0) => (x0 as num).toDouble() ).toList(),
-			mean: (data["mean"] as List<dynamic>).map((x0) => (x0 as num).toDouble() ).toList(),
-			median: (data["median"] as List<dynamic>).map((x0) => (x0 as num).toDouble() ).toList(),
-			variance: (data["variance"] as List<dynamic>).map((x0) => (x0 as num).toDouble() ).toList()
-		);
-	}
-
 	static Map<String, dynamic> encode(TimeSeries value) {
 		Map<String, dynamic> entityAsMap = {
 			"fields" : value.fields.map((x0) => x0).toList(),
@@ -48,5 +36,17 @@ class TimeSeries {
 			"variance" : value.variance.map((x0) => x0).toList()
 		};
 		return entityAsMap;
+	}
+
+	static TimeSeries fromJSON(Map<String, dynamic> data) {
+		return TimeSeries(
+			fields: (data["fields"] as List<dynamic>).map((x0) => (x0 as String) ).toList(),
+			samples: (data["samples"] as List<dynamic>).map((x0) => (x0 as List<dynamic>).map((x1) => (x1 as num).toDouble() ).toList() ).toList(),
+			min: (data["min"] as List<dynamic>).map((x0) => (x0 as num).toDouble() ).toList(),
+			max: (data["max"] as List<dynamic>).map((x0) => (x0 as num).toDouble() ).toList(),
+			mean: (data["mean"] as List<dynamic>).map((x0) => (x0 as num).toDouble() ).toList(),
+			median: (data["median"] as List<dynamic>).map((x0) => (x0 as num).toDouble() ).toList(),
+			variance: (data["variance"] as List<dynamic>).map((x0) => (x0 as num).toDouble() ).toList()
+		);
 	}
 }

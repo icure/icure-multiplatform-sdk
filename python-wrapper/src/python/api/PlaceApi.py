@@ -1,8 +1,8 @@
 # auto-generated file
-import asyncio
 import json
 from cardinal_sdk.model import Place, DocIdentifier
-from cardinal_sdk.kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols
+from cardinal_sdk.async_utils import execute_async_method_job
+from cardinal_sdk.kotlin_types import symbols
 from cardinal_sdk.model.CallResult import create_result_from_json, interpret_kt_error
 from ctypes import cast, c_char_p
 from typing import List
@@ -14,27 +14,19 @@ class PlaceApi:
 		self.cardinal_sdk = cardinal_sdk
 
 	async def get_place_async(self, place_id: str) -> Place:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = Place._deserialize(json.loads(success.decode('utf-8')))
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return Place._deserialize(raw_result)
 		payload = {
 			"placeId": place_id,
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.PlaceApi.getPlaceAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def get_place_blocking(self, place_id: str) -> Place:
 		payload = {
@@ -53,27 +45,19 @@ class PlaceApi:
 			return return_value
 
 	async def create_place_async(self, place: Place) -> Place:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = Place._deserialize(json.loads(success.decode('utf-8')))
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return Place._deserialize(raw_result)
 		payload = {
 			"place": place.__serialize__(),
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.PlaceApi.createPlaceAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def create_place_blocking(self, place: Place) -> Place:
 		payload = {
@@ -92,27 +76,19 @@ class PlaceApi:
 			return return_value
 
 	async def modify_place_async(self, place: Place) -> Place:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = Place._deserialize(json.loads(success.decode('utf-8')))
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return Place._deserialize(raw_result)
 		payload = {
 			"place": place.__serialize__(),
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.PlaceApi.modifyPlaceAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def modify_place_blocking(self, place: Place) -> Place:
 		payload = {
@@ -131,27 +107,19 @@ class PlaceApi:
 			return return_value
 
 	async def delete_places_async(self, place_ids: List[str]) -> List[DocIdentifier]:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = [DocIdentifier._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return [DocIdentifier._deserialize(x1) for x1 in raw_result]
 		payload = {
 			"placeIds": [x0 for x0 in place_ids],
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.PlaceApi.deletePlacesAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def delete_places_blocking(self, place_ids: List[str]) -> List[DocIdentifier]:
 		payload = {

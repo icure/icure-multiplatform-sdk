@@ -62,25 +62,6 @@ class TimeTableItem {
 		_notBeforeInMinutes = notBeforeInMinutes ?? null,
 		_notAfterInMinutes = notAfterInMinutes ?? null;
 
-	factory TimeTableItem.fromJSON(Map<String, dynamic> data) {
-		return TimeTableItem(
-			notBeforeInMinutes: (data["notBeforeInMinutes"] as int?),
-			notAfterInMinutes: (data["notAfterInMinutes"] as int?),
-			rruleStartDate: (data["rruleStartDate"] as int?),
-			rrule: (data["rrule"] as String?),
-			zoneId: (data["zoneId"] as String?),
-			days: (data["days"] as List<dynamic>).map((x0) => (x0 as String) ).toList(),
-			recurrenceTypes: (data["recurrenceTypes"] as List<dynamic>).map((x0) => (x0 as String) ).toList(),
-			hours: (data["hours"] as List<dynamic>).map((x0) => TimeTableHour.fromJSON(x0) ).toList(),
-			calendarItemTypeId: (data["calendarItemTypeId"] as String?),
-			homeVisit: (data["homeVisit"] as bool),
-			placeId: (data["placeId"] as String?),
-			publicTimeTableItem: (data["publicTimeTableItem"] as bool),
-			acceptsNewPatient: (data["acceptsNewPatient"] as bool),
-			unavailable: (data["unavailable"] as bool)
-		);
-	}
-
 	static Map<String, dynamic> encode(TimeTableItem value) {
 		Map<String, dynamic> entityAsMap = {
 			"rruleStartDate" : value.rruleStartDate,
@@ -99,5 +80,24 @@ class TimeTableItem {
 			"unavailable" : value.unavailable
 		};
 		return entityAsMap;
+	}
+
+	static TimeTableItem fromJSON(Map<String, dynamic> data) {
+		return TimeTableItem(
+			notBeforeInMinutes: (data["notBeforeInMinutes"] as int?),
+			notAfterInMinutes: (data["notAfterInMinutes"] as int?),
+			rruleStartDate: (data["rruleStartDate"] as int?),
+			rrule: (data["rrule"] as String?),
+			zoneId: (data["zoneId"] as String?),
+			days: (data["days"] as List<dynamic>).map((x0) => (x0 as String) ).toList(),
+			recurrenceTypes: (data["recurrenceTypes"] as List<dynamic>).map((x0) => (x0 as String) ).toList(),
+			hours: (data["hours"] as List<dynamic>).map((x0) => TimeTableHour.fromJSON(x0) ).toList(),
+			calendarItemTypeId: (data["calendarItemTypeId"] as String?),
+			homeVisit: (data["homeVisit"] as bool),
+			placeId: (data["placeId"] as String?),
+			publicTimeTableItem: (data["publicTimeTableItem"] as bool),
+			acceptsNewPatient: (data["acceptsNewPatient"] as bool),
+			unavailable: (data["unavailable"] as bool)
+		);
 	}
 }

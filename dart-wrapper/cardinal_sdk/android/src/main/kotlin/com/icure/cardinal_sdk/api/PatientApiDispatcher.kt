@@ -15,6 +15,7 @@ public object PatientApiDispatcher {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
   ): Boolean = when(methodName) {
     "getSecretIdsOf" -> getSecretIdsOf(parameters, resultCallback)
@@ -89,6 +90,7 @@ public object PatientApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     PatientApi.getSecretIdsOf(
       resultCallback,
@@ -98,6 +100,7 @@ public object PatientApiDispatcher {
   }
 
   private fun getEncryptionKeysOf(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -113,6 +116,7 @@ public object PatientApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     PatientApi.createPatient(
       resultCallback,
@@ -122,6 +126,7 @@ public object PatientApiDispatcher {
   }
 
   private fun withEncryptionMetadata(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -139,6 +144,7 @@ public object PatientApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     PatientApi.hasWriteAccess(
       resultCallback,
@@ -149,6 +155,7 @@ public object PatientApiDispatcher {
 
   private fun createDelegationDeAnonymizationMetadata(parameters: Map<String, String>,
       resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -165,6 +172,7 @@ public object PatientApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     PatientApi.decrypt(
       resultCallback,
@@ -174,6 +182,7 @@ public object PatientApiDispatcher {
   }
 
   private fun tryDecrypt(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -189,6 +198,7 @@ public object PatientApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     PatientApi.createPatients(
       resultCallback,
@@ -198,6 +208,7 @@ public object PatientApiDispatcher {
   }
 
   private fun shareAllDataOfPatient(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -214,6 +225,7 @@ public object PatientApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     PatientApi.getConfidentialSecretIdsOf(
       resultCallback,
@@ -224,6 +236,7 @@ public object PatientApiDispatcher {
 
   private fun forceInitializeExchangeDataToNewlyInvitedPatient(parameters: Map<String, String>,
       resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -239,6 +252,7 @@ public object PatientApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     PatientApi.matchPatientsBy(
       resultCallback,
@@ -248,6 +262,7 @@ public object PatientApiDispatcher {
   }
 
   private fun matchPatientsBySorted(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -264,6 +279,7 @@ public object PatientApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     PatientApi.ensureEncryptionMetadataForSelfIsInitialized(
       resultCallback,
@@ -273,6 +289,7 @@ public object PatientApiDispatcher {
   }
 
   private fun deletePatientById(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -289,6 +306,7 @@ public object PatientApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     PatientApi.deletePatientsByIds(
       resultCallback,
@@ -298,6 +316,7 @@ public object PatientApiDispatcher {
   }
 
   private fun purgePatientById(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -314,6 +333,7 @@ public object PatientApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     PatientApi.deletePatient(
       resultCallback,
@@ -323,6 +343,7 @@ public object PatientApiDispatcher {
   }
 
   private fun deletePatients(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -338,6 +359,7 @@ public object PatientApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     PatientApi.purgePatient(
       resultCallback,
@@ -350,6 +372,7 @@ public object PatientApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     PatientApi.getDataOwnersWithAccessTo(
       resultCallback,
@@ -359,6 +382,7 @@ public object PatientApiDispatcher {
   }
 
   private fun shareWith(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -376,6 +400,7 @@ public object PatientApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     PatientApi.shareWithMany(
       resultCallback,
@@ -386,6 +411,7 @@ public object PatientApiDispatcher {
   }
 
   private fun initializeConfidentialSecretId(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -401,6 +427,7 @@ public object PatientApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     PatientApi.filterPatientsBy(
       resultCallback,
@@ -410,6 +437,7 @@ public object PatientApiDispatcher {
   }
 
   private fun filterPatientsBySorted(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -425,6 +453,7 @@ public object PatientApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     PatientApi.undeletePatient(
       resultCallback,
@@ -437,6 +466,7 @@ public object PatientApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     PatientApi.modifyPatient(
       resultCallback,
@@ -446,6 +476,7 @@ public object PatientApiDispatcher {
   }
 
   private fun undeletePatientById(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -462,6 +493,7 @@ public object PatientApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     PatientApi.undeletePatients(
       resultCallback,
@@ -474,6 +506,7 @@ public object PatientApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     PatientApi.getPatient(
       resultCallback,
@@ -483,6 +516,7 @@ public object PatientApiDispatcher {
   }
 
   private fun getPatientResolvingMerges(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -499,6 +533,7 @@ public object PatientApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     PatientApi.getPatients(
       resultCallback,
@@ -508,6 +543,7 @@ public object PatientApiDispatcher {
   }
 
   private fun modifyPatients(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -523,6 +559,7 @@ public object PatientApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     PatientApi.mergePatients(
       resultCallback,
@@ -533,6 +570,7 @@ public object PatientApiDispatcher {
   }
 
   private fun subscribeToEvents(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -550,6 +588,7 @@ public object PatientApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     PatientApi.encrypted.shareWith(
       resultCallback,
@@ -561,6 +600,7 @@ public object PatientApiDispatcher {
   }
 
   private fun encrypted_shareWithMany(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -578,6 +618,7 @@ public object PatientApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     PatientApi.encrypted.initializeConfidentialSecretId(
       resultCallback,
@@ -587,6 +628,7 @@ public object PatientApiDispatcher {
   }
 
   private fun encrypted_filterPatientsBy(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -602,6 +644,7 @@ public object PatientApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     PatientApi.encrypted.filterPatientsBySorted(
       resultCallback,
@@ -611,6 +654,7 @@ public object PatientApiDispatcher {
   }
 
   private fun encrypted_undeletePatient(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -626,6 +670,7 @@ public object PatientApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     PatientApi.encrypted.modifyPatient(
       resultCallback,
@@ -635,6 +680,7 @@ public object PatientApiDispatcher {
   }
 
   private fun encrypted_undeletePatientById(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -651,6 +697,7 @@ public object PatientApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     PatientApi.encrypted.undeletePatients(
       resultCallback,
@@ -663,6 +710,7 @@ public object PatientApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     PatientApi.encrypted.getPatient(
       resultCallback,
@@ -672,6 +720,7 @@ public object PatientApiDispatcher {
   }
 
   private fun encrypted_getPatientResolvingMerges(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -688,6 +737,7 @@ public object PatientApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     PatientApi.encrypted.getPatients(
       resultCallback,
@@ -697,6 +747,7 @@ public object PatientApiDispatcher {
   }
 
   private fun encrypted_modifyPatients(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -712,6 +763,7 @@ public object PatientApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     PatientApi.encrypted.mergePatients(
       resultCallback,
@@ -722,6 +774,7 @@ public object PatientApiDispatcher {
   }
 
   private fun tryAndRecover_shareWith(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -739,6 +792,7 @@ public object PatientApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     PatientApi.tryAndRecover.shareWithMany(
       resultCallback,
@@ -753,6 +807,7 @@ public object PatientApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     PatientApi.tryAndRecover.initializeConfidentialSecretId(
       resultCallback,
@@ -762,6 +817,7 @@ public object PatientApiDispatcher {
   }
 
   private fun tryAndRecover_filterPatientsBy(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -778,6 +834,7 @@ public object PatientApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     PatientApi.tryAndRecover.filterPatientsBySorted(
       resultCallback,
@@ -787,6 +844,7 @@ public object PatientApiDispatcher {
   }
 
   private fun tryAndRecover_undeletePatient(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -802,6 +860,7 @@ public object PatientApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     PatientApi.tryAndRecover.modifyPatient(
       resultCallback,
@@ -811,6 +870,7 @@ public object PatientApiDispatcher {
   }
 
   private fun tryAndRecover_undeletePatientById(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -827,6 +887,7 @@ public object PatientApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     PatientApi.tryAndRecover.undeletePatients(
       resultCallback,
@@ -836,6 +897,7 @@ public object PatientApiDispatcher {
   }
 
   private fun tryAndRecover_getPatient(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -852,6 +914,7 @@ public object PatientApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     PatientApi.tryAndRecover.getPatientResolvingMerges(
       resultCallback,
@@ -862,6 +925,7 @@ public object PatientApiDispatcher {
   }
 
   private fun tryAndRecover_getPatients(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -877,6 +941,7 @@ public object PatientApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     PatientApi.tryAndRecover.modifyPatients(
       resultCallback,
@@ -886,6 +951,7 @@ public object PatientApiDispatcher {
   }
 
   private fun tryAndRecover_mergePatients(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,

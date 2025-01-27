@@ -2,6 +2,7 @@
 import 'package:flutter/services.dart';
 import 'package:cardinal_sdk/model/code.dart';
 import 'dart:convert';
+import 'package:cardinal_sdk/utils/internal/platform_exception_convertion.dart';
 import 'package:cardinal_sdk/model/boolean_response.dart';
 import 'package:cardinal_sdk/filters/filter_options.dart';
 import 'package:cardinal_sdk/utils/pagination/paginated_list_iterator.dart';
@@ -21,7 +22,7 @@ class CodePlatformApi {
 				"code": jsonEncode(code),
 				"version": jsonEncode(version),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method listCodesByRegionTypeCodeVersion");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => Code.fromJSON(x1) ).toList();
@@ -35,7 +36,7 @@ class CodePlatformApi {
 				"region": jsonEncode(region),
 				"type": jsonEncode(type),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method listCodeTypesBy");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toList();
@@ -49,7 +50,7 @@ class CodePlatformApi {
 				"region": jsonEncode(region),
 				"type": jsonEncode(type),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method listTagTypesBy");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toList();
@@ -62,7 +63,7 @@ class CodePlatformApi {
 				"sdkId": sdkId,
 				"c": jsonEncode(Code.encode(c)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method createCode");
 		final parsedResJson = jsonDecode(res);
 		return Code.fromJSON(parsedResJson);
@@ -75,7 +76,7 @@ class CodePlatformApi {
 				"sdkId": sdkId,
 				"codeBatch": jsonEncode(codeBatch.map((x0) => Code.encode(x0)).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method createCodes");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => Code.fromJSON(x1) ).toList();
@@ -89,7 +90,7 @@ class CodePlatformApi {
 				"groupId": jsonEncode(groupId),
 				"codeBatch": jsonEncode(codeBatch.map((x0) => Code.encode(x0)).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method createCodes");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => Code.fromJSON(x1) ).toList();
@@ -104,7 +105,7 @@ class CodePlatformApi {
 				"code": jsonEncode(code),
 				"version": jsonEncode(version),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method isCodeValid");
 		final parsedResJson = jsonDecode(res);
 		return BooleanResponse.fromJSON(parsedResJson);
@@ -120,7 +121,7 @@ class CodePlatformApi {
 				"type": jsonEncode(type),
 				"languages": jsonEncode(languages),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getCodeByRegionLanguageTypeLabel");
 		final parsedResJson = jsonDecode(res);
 		return parsedResJson == null ? null : Code.fromJSON(parsedResJson);
@@ -133,7 +134,7 @@ class CodePlatformApi {
 				"sdkId": sdkId,
 				"codeIds": jsonEncode(codeIds.map((x0) => x0).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getCodes");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => Code.fromJSON(x1) ).toList();
@@ -147,7 +148,7 @@ class CodePlatformApi {
 				"groupId": jsonEncode(groupId),
 				"codeIds": jsonEncode(codeIds.map((x0) => x0).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getCodes");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => Code.fromJSON(x1) ).toList();
@@ -160,7 +161,7 @@ class CodePlatformApi {
 				"sdkId": sdkId,
 				"codeId": jsonEncode(codeId),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getCode");
 		final parsedResJson = jsonDecode(res);
 		return Code.fromJSON(parsedResJson);
@@ -175,7 +176,7 @@ class CodePlatformApi {
 				"code": jsonEncode(code),
 				"version": jsonEncode(version),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getCodeWithParts");
 		final parsedResJson = jsonDecode(res);
 		return Code.fromJSON(parsedResJson);
@@ -188,7 +189,7 @@ class CodePlatformApi {
 				"sdkId": sdkId,
 				"codeDto": jsonEncode(Code.encode(codeDto)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method modifyCode");
 		final parsedResJson = jsonDecode(res);
 		return Code.fromJSON(parsedResJson);
@@ -201,7 +202,7 @@ class CodePlatformApi {
 				"sdkId": sdkId,
 				"codeBatch": jsonEncode(codeBatch.map((x0) => Code.encode(x0)).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method modifyCodes");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => Code.fromJSON(x1) ).toList();
@@ -215,7 +216,7 @@ class CodePlatformApi {
 				"groupId": jsonEncode(groupId),
 				"codeBatch": jsonEncode(codeBatch.map((x0) => Code.encode(x0)).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method modifyCodes");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => Code.fromJSON(x1) ).toList();
@@ -228,7 +229,7 @@ class CodePlatformApi {
 				"sdkId": sdkId,
 				"filter": jsonEncode(BaseFilterOptions.encode(filter)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method filterCodesBy");
 		final parsedResJson = jsonDecode(res);
 		return PaginatedListIterator(parsedResJson, (x0) => Code.fromJSON(x0));
@@ -241,7 +242,7 @@ class CodePlatformApi {
 				"sdkId": sdkId,
 				"filter": jsonEncode(BaseSortableFilterOptions.encode(filter)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method filterCodesBySorted");
 		final parsedResJson = jsonDecode(res);
 		return PaginatedListIterator(parsedResJson, (x0) => Code.fromJSON(x0));
@@ -254,7 +255,7 @@ class CodePlatformApi {
 				"sdkId": sdkId,
 				"filter": jsonEncode(BaseFilterOptions.encode(filter)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method matchCodesBy");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toList();
@@ -267,7 +268,7 @@ class CodePlatformApi {
 				"sdkId": sdkId,
 				"filter": jsonEncode(BaseSortableFilterOptions.encode(filter)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method matchCodesBySorted");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toList();
@@ -280,6 +281,6 @@ class CodePlatformApi {
 				"sdkId": sdkId,
 				"codeType": jsonEncode(codeType),
 			}
-		);
+		).catchError(convertPlatformException);
 	}
 }

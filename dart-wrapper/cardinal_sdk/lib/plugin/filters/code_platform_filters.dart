@@ -1,6 +1,7 @@
 // auto-generated file
 import 'package:flutter/services.dart';
 import 'package:cardinal_sdk/filters/filter_options.dart';
+import 'package:cardinal_sdk/utils/internal/platform_exception_convertion.dart';
 import 'dart:convert';
 import 'package:cardinal_sdk/model/code.dart';
 
@@ -14,7 +15,7 @@ class CodePlatformFilters {
 			'CodeFilters.all',
 			{
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method all");
 		final parsedResJson = jsonDecode(res);
 		return BaseFilterOptions.fromJSON(parsedResJson);
@@ -26,7 +27,7 @@ class CodePlatformFilters {
 			{
 				"ids": jsonEncode(ids.map((x0) => x0).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method byIds");
 		final parsedResJson = jsonDecode(res);
 		return BaseSortableFilterOptions.fromJSON(parsedResJson);
@@ -39,7 +40,7 @@ class CodePlatformFilters {
 				"linkType": jsonEncode(linkType),
 				"linkedId": jsonEncode(linkedId),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method byQualifiedLink");
 		final parsedResJson = jsonDecode(res);
 		return BaseFilterOptions.fromJSON(parsedResJson);
@@ -54,7 +55,7 @@ class CodePlatformFilters {
 				"code": jsonEncode(code),
 				"version": jsonEncode(version),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method byRegionTypeCodeVersion");
 		final parsedResJson = jsonDecode(res);
 		return BaseFilterOptions.fromJSON(parsedResJson);
@@ -69,7 +70,7 @@ class CodePlatformFilters {
 				"label": jsonEncode(label),
 				"region": jsonEncode(region),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method byLanguageTypeLabelRegion");
 		final parsedResJson = jsonDecode(res);
 		return BaseFilterOptions.fromJSON(parsedResJson);
@@ -85,7 +86,7 @@ class CodePlatformFilters {
 				"region": jsonEncode(region),
 				"version": jsonEncode(version),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method byLanguageTypesLabelRegionVersion");
 		final parsedResJson = jsonDecode(res);
 		return BaseFilterOptions.fromJSON(parsedResJson);

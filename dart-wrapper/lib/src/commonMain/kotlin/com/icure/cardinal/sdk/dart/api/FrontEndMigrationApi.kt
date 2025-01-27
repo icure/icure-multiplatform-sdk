@@ -1,7 +1,7 @@
 // auto-generated file
 package com.icure.cardinal.sdk.dart.api
 
-import com.icure.cardinal.sdk.CardinalSdk
+import com.icure.cardinal.sdk.CardinalNonCryptoApis
 import com.icure.cardinal.sdk.dart.utils.ApiScope
 import com.icure.cardinal.sdk.dart.utils.NativeReferences
 import com.icure.cardinal.sdk.model.FrontEndMigration
@@ -21,6 +21,7 @@ public object FrontEndMigrationApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     frontEndMigrationIdString: String,
@@ -32,7 +33,7 @@ public object FrontEndMigrationApi {
     ApiScope.execute(
       dartResultCallback,
       FrontEndMigration.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).frontEndMigration.getFrontEndMigration(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).frontEndMigration.getFrontEndMigration(
         frontEndMigrationId,
       )
     }
@@ -40,6 +41,7 @@ public object FrontEndMigrationApi {
 
   public fun createFrontEndMigration(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -54,7 +56,7 @@ public object FrontEndMigrationApi {
     ApiScope.execute(
       dartResultCallback,
       FrontEndMigration.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).frontEndMigration.createFrontEndMigration(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).frontEndMigration.createFrontEndMigration(
         frontEndMigration,
       )
     }
@@ -64,16 +66,18 @@ public object FrontEndMigrationApi {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit, sdkId: String) {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(FrontEndMigration.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).frontEndMigration.getFrontEndMigrations()
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).frontEndMigration.getFrontEndMigrations()
     }
   }
 
   public fun deleteFrontEndMigration(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -88,7 +92,7 @@ public object FrontEndMigrationApi {
     ApiScope.execute(
       dartResultCallback,
       DocIdentifier.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).frontEndMigration.deleteFrontEndMigration(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).frontEndMigration.deleteFrontEndMigration(
         frontEndMigrationId,
       )
     }
@@ -96,6 +100,7 @@ public object FrontEndMigrationApi {
 
   public fun getFrontEndMigrationByName(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -110,7 +115,7 @@ public object FrontEndMigrationApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(FrontEndMigration.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).frontEndMigration.getFrontEndMigrationByName(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).frontEndMigration.getFrontEndMigrationByName(
         frontEndMigrationName,
       )
     }
@@ -118,6 +123,7 @@ public object FrontEndMigrationApi {
 
   public fun modifyFrontEndMigration(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -132,7 +138,7 @@ public object FrontEndMigrationApi {
     ApiScope.execute(
       dartResultCallback,
       FrontEndMigration.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).frontEndMigration.modifyFrontEndMigration(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).frontEndMigration.modifyFrontEndMigration(
         frontEndMigration,
       )
     }

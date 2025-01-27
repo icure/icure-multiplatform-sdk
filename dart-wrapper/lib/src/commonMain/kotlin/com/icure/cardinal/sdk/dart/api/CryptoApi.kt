@@ -1,11 +1,11 @@
 // auto-generated file
 package com.icure.cardinal.sdk.dart.api
 
-import com.icure.cardinal.sdk.CardinalSdk
+import com.icure.cardinal.sdk.CardinalApis
 import com.icure.cardinal.sdk.dart.utils.ApiScope
 import com.icure.cardinal.sdk.dart.utils.NativeReferences
 import com.icure.cardinal.sdk.model.specializations.KeypairFingerprintV1String
-import com.icure.cardinal.sdk.serialization.ByteArraySerializer
+import com.icure.cardinal.sdk.serialization.Pkcs8BytesAsBase64Serializer
 import com.icure.cardinal.sdk.utils.Serialization.fullLanguageInteropJson
 import com.icure.utils.InternalIcureApi
 import kotlin.Boolean
@@ -21,16 +21,18 @@ public object CryptoApi {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit, sdkId: String) {
     ApiScope.execute(
       dartResultCallback,
       Unit.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).crypto.forceReload()
+      NativeReferences.get<CardinalApis>(sdkId).crypto.forceReload()
     }
   }
 
   public fun currentDataOwnerKeys(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -45,8 +47,8 @@ public object CryptoApi {
     ApiScope.execute(
       dartResultCallback,
       MapSerializer(String.serializer(), MapSerializer(KeypairFingerprintV1String.serializer(),
-          ByteArraySerializer))) {
-      NativeReferences.get<CardinalSdk>(sdkId).crypto.currentDataOwnerKeys(
+          Pkcs8BytesAsBase64Serializer))) {
+      NativeReferences.get<CardinalApis>(sdkId).crypto.currentDataOwnerKeys(
         filterTrustedKeys,
       )
     }

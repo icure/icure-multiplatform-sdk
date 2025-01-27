@@ -13,7 +13,6 @@ import com.icure.cardinal.sdk.utils.Serialization.fullLanguageInteropJson
 import com.icure.utils.InternalIcureApi
 import kotlin.Boolean
 import kotlin.Int
-import kotlin.Long
 import kotlin.OptIn
 import kotlin.String
 import kotlin.Unit
@@ -25,6 +24,7 @@ import kotlinx.serialization.builtins.serializer
 @OptIn(InternalIcureApi::class)
 public object PatientFilters {
   public fun allPatientsForDataOwner(dartResultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -47,6 +47,7 @@ public object PatientFilters {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     DartResult.resolve(
       dartResultCallback,
@@ -58,6 +59,7 @@ public object PatientFilters {
   }
 
   public fun byIds(dartResultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -78,6 +80,7 @@ public object PatientFilters {
 
   public fun byIdentifiersForDataOwner(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -109,6 +112,7 @@ public object PatientFilters {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     dataOwnerIdString: String,
     ssinsString: String,
@@ -134,6 +138,7 @@ public object PatientFilters {
 
   public fun byDateOfBirthBetweenForDataOwner(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -171,6 +176,7 @@ public object PatientFilters {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     dataOwnerIdString: String,
     searchStringString: String,
@@ -196,6 +202,7 @@ public object PatientFilters {
 
   public fun byGenderEducationProfessionForDataOwner(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -239,6 +246,7 @@ public object PatientFilters {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     dataOwnerIdString: String,
     activeString: String,
@@ -267,6 +275,7 @@ public object PatientFilters {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     dataOwnerIdString: String,
     searchStringString: String,
@@ -292,6 +301,7 @@ public object PatientFilters {
 
   public fun byAddressPostalCodeHouseNumberForDataOwner(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -335,6 +345,7 @@ public object PatientFilters {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     dataOwnerIdString: String,
     searchStringString: String,
@@ -360,6 +371,7 @@ public object PatientFilters {
 
   public fun byExternalIdForDataOwner(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -390,6 +402,7 @@ public object PatientFilters {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit, identifiersString: String) {
     val identifiers = fullLanguageInteropJson.decodeFromString(
       ListSerializer(Identifier.serializer()),
@@ -406,6 +419,7 @@ public object PatientFilters {
   }
 
   public fun bySsinsForSelf(dartResultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -426,6 +440,7 @@ public object PatientFilters {
 
   public fun byDateOfBirthBetweenForSelf(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -456,6 +471,7 @@ public object PatientFilters {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit, searchStringString: String) {
     val searchString = fullLanguageInteropJson.decodeFromString(
       String.serializer(),
@@ -473,6 +489,7 @@ public object PatientFilters {
 
   public fun byGenderEducationProfessionForSelf(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -509,6 +526,7 @@ public object PatientFilters {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit, activeString: String) {
     val active = fullLanguageInteropJson.decodeFromString(
       Boolean.serializer(),
@@ -525,6 +543,7 @@ public object PatientFilters {
   }
 
   public fun byTelecomForSelf(dartResultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -545,6 +564,7 @@ public object PatientFilters {
 
   public fun byAddressPostalCodeHouseNumberForSelf(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -581,6 +601,7 @@ public object PatientFilters {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit, searchStringString: String) {
     val searchString = fullLanguageInteropJson.decodeFromString(
       String.serializer(),
@@ -600,6 +621,7 @@ public object PatientFilters {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit, externalIdPrefixString: String) {
     val externalIdPrefix = fullLanguageInteropJson.decodeFromString(
       String.serializer(),
@@ -611,80 +633,6 @@ public object PatientFilters {
     ) {
       com.icure.cardinal.sdk.filters.PatientFilters.byExternalIdForSelf(
         externalIdPrefix,
-      )
-    }
-  }
-
-  public fun byModificationDateForDataOwner(
-    dartResultCallback: (
-      String?,
-      String?,
-      String?,
-    ) -> Unit,
-    dataOwnerIdString: String,
-    fromString: String,
-    toString: String,
-    descendingString: String,
-  ) {
-    val dataOwnerId = fullLanguageInteropJson.decodeFromString(
-      String.serializer(),
-      dataOwnerIdString
-    )
-    val from = fullLanguageInteropJson.decodeFromString(
-      Long.serializer().nullable,
-      fromString
-    )
-    val to = fullLanguageInteropJson.decodeFromString(
-      Long.serializer().nullable,
-      toString
-    )
-    val descending = fullLanguageInteropJson.decodeFromString(
-      Boolean.serializer(),
-      descendingString
-    )
-    DartResult.resolve(
-      dartResultCallback,
-      BaseSortableFilterOptions.serializer(PolymorphicSerializer(Patient::class))
-    ) {
-      com.icure.cardinal.sdk.filters.PatientFilters.byModificationDateForDataOwner(
-        dataOwnerId,
-        from,
-        to,
-        descending,
-      )
-    }
-  }
-
-  public fun byModificationDateForSelf(
-    dartResultCallback: (
-      String?,
-      String?,
-      String?,
-    ) -> Unit,
-    fromString: String,
-    toString: String,
-    descendingString: String,
-  ) {
-    val from = fullLanguageInteropJson.decodeFromString(
-      Long.serializer().nullable,
-      fromString
-    )
-    val to = fullLanguageInteropJson.decodeFromString(
-      Long.serializer().nullable,
-      toString
-    )
-    val descending = fullLanguageInteropJson.decodeFromString(
-      Boolean.serializer(),
-      descendingString
-    )
-    DartResult.resolve(
-      dartResultCallback,
-      SortableFilterOptions.serializer(PolymorphicSerializer(Patient::class))
-    ) {
-      com.icure.cardinal.sdk.filters.PatientFilters.byModificationDateForSelf(
-        from,
-        to,
-        descending,
       )
     }
   }

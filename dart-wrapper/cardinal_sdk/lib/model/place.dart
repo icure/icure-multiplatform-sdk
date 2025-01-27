@@ -22,16 +22,6 @@ class Place implements StoredDocument, Named {
 		name = name ?? null,
 		address = address ?? null;
 
-	factory Place.fromJSON(Map<String, dynamic> data) {
-		return Place(
-			(data["id"] as String),
-			rev: (data["rev"] as String?),
-			deletionDate: (data["deletionDate"] as int?),
-			name: (data["name"] as String?),
-			address: data["address"] == null ? null : DecryptedAddress.fromJSON(data["address"]),
-		);
-	}
-
 	static Map<String, dynamic> encode(Place value) {
 		Map<String, dynamic> entityAsMap = {
 			"id" : value.id,
@@ -41,5 +31,15 @@ class Place implements StoredDocument, Named {
 			"address" : value.address == null ? null : DecryptedAddress.encode(value.address!)
 		};
 		return entityAsMap;
+	}
+
+	static Place fromJSON(Map<String, dynamic> data) {
+		return Place(
+			(data["id"] as String),
+			rev: (data["rev"] as String?),
+			deletionDate: (data["deletionDate"] as int?),
+			name: (data["name"] as String?),
+			address: data["address"] == null ? null : DecryptedAddress.fromJSON(data["address"]),
+		);
 	}
 }

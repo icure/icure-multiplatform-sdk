@@ -15,6 +15,7 @@ public object ContactFiltersDispatcher {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
   ): Boolean = when(methodName) {
     "allContactsForDataOwner" -> allContactsForDataOwner(parameters, resultCallback)
@@ -50,6 +51,7 @@ public object ContactFiltersDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     ContactFilters.allContactsForDataOwner(
       resultCallback,
@@ -61,6 +63,7 @@ public object ContactFiltersDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     ContactFilters.allContactsForSelf(
       resultCallback,
@@ -68,6 +71,7 @@ public object ContactFiltersDispatcher {
   }
 
   private fun byFormIdsForDataOwner(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -83,6 +87,7 @@ public object ContactFiltersDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     ContactFilters.byFormIdsForSelf(
       resultCallback,
@@ -91,6 +96,7 @@ public object ContactFiltersDispatcher {
   }
 
   private fun byPatientsOpeningDateForDataOwner(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -109,6 +115,7 @@ public object ContactFiltersDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     ContactFilters.byPatientsOpeningDateForSelf(
       resultCallback,
@@ -121,6 +128,7 @@ public object ContactFiltersDispatcher {
 
   private fun byPatientSecretIdsOpeningDateForDataOwner(parameters: Map<String, String>,
       resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -140,6 +148,7 @@ public object ContactFiltersDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     ContactFilters.byPatientSecretIdsOpeningDateForSelf(
       resultCallback,
@@ -154,6 +163,7 @@ public object ContactFiltersDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     ContactFilters.byExternalId(
       resultCallback,
@@ -162,6 +172,7 @@ public object ContactFiltersDispatcher {
   }
 
   private fun byIdentifiersForSelf(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -176,6 +187,7 @@ public object ContactFiltersDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     ContactFilters.byIdentifiersForDataOwner(
       resultCallback,
@@ -185,6 +197,7 @@ public object ContactFiltersDispatcher {
   }
 
   private fun byCodeAndOpeningDateForDataOwner(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -203,6 +216,7 @@ public object ContactFiltersDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     ContactFilters.byCodeAndOpeningDateForSelf(
       resultCallback,
@@ -214,6 +228,7 @@ public object ContactFiltersDispatcher {
   }
 
   private fun byTagAndOpeningDateForDataOwner(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -232,6 +247,7 @@ public object ContactFiltersDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     ContactFilters.byOpeningDateForDataOwner(
       resultCallback,
@@ -243,6 +259,7 @@ public object ContactFiltersDispatcher {
   }
 
   private fun byOpeningDateForSelf(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -259,6 +276,7 @@ public object ContactFiltersDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     ContactFilters.byServiceTagForSelf(
       resultCallback,
@@ -268,6 +286,7 @@ public object ContactFiltersDispatcher {
   }
 
   private fun byServiceTagForDataOwner(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -284,6 +303,7 @@ public object ContactFiltersDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     ContactFilters.byServiceCodeForSelf(
       resultCallback,
@@ -293,6 +313,7 @@ public object ContactFiltersDispatcher {
   }
 
   private fun byServiceCodeForDataOwner(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -306,6 +327,7 @@ public object ContactFiltersDispatcher {
   }
 
   private fun byTagAndOpeningDateForSelf(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -323,6 +345,7 @@ public object ContactFiltersDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     ContactFilters.byPatientsForDataOwner(
       resultCallback,
@@ -335,6 +358,7 @@ public object ContactFiltersDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     ContactFilters.byPatientsForSelf(
       resultCallback,
@@ -343,6 +367,7 @@ public object ContactFiltersDispatcher {
   }
 
   private fun byPatientsSecretIdsForDataOwner(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -358,6 +383,7 @@ public object ContactFiltersDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     ContactFilters.byPatientsSecretIdsForSelf(
       resultCallback,
@@ -366,6 +392,7 @@ public object ContactFiltersDispatcher {
   }
 
   private fun byServiceIds(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,

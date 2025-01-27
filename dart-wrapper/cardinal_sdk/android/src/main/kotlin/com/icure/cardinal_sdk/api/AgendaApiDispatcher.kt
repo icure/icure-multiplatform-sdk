@@ -15,6 +15,7 @@ public object AgendaApiDispatcher {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
   ): Boolean = when(methodName) {
     "createAgenda" -> createAgenda(parameters, resultCallback)
@@ -40,6 +41,7 @@ public object AgendaApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     AgendaApi.createAgenda(
       resultCallback,
@@ -49,6 +51,7 @@ public object AgendaApiDispatcher {
   }
 
   private fun deleteAgendaById(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -65,6 +68,7 @@ public object AgendaApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     AgendaApi.deleteAgendasByIds(
       resultCallback,
@@ -74,6 +78,7 @@ public object AgendaApiDispatcher {
   }
 
   private fun purgeAgendaById(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -90,6 +95,7 @@ public object AgendaApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     AgendaApi.undeleteAgendaById(
       resultCallback,
@@ -100,6 +106,7 @@ public object AgendaApiDispatcher {
   }
 
   private fun deleteAgenda(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -115,6 +122,7 @@ public object AgendaApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     AgendaApi.deleteAgendas(
       resultCallback,
@@ -124,6 +132,7 @@ public object AgendaApiDispatcher {
   }
 
   private fun purgeAgenda(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -139,6 +148,7 @@ public object AgendaApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     AgendaApi.undeleteAgenda(
       resultCallback,
@@ -148,6 +158,7 @@ public object AgendaApiDispatcher {
   }
 
   private fun getAgenda(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -163,6 +174,7 @@ public object AgendaApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     AgendaApi.getAgendas(
       resultCallback,
@@ -172,6 +184,7 @@ public object AgendaApiDispatcher {
   }
 
   private fun modifyAgenda(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -187,6 +200,7 @@ public object AgendaApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     AgendaApi.matchAgendasBy(
       resultCallback,
@@ -196,6 +210,7 @@ public object AgendaApiDispatcher {
   }
 
   private fun matchAgendasBySorted(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -211,6 +226,7 @@ public object AgendaApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     AgendaApi.filterAgendasBy(
       resultCallback,
@@ -220,6 +236,7 @@ public object AgendaApiDispatcher {
   }
 
   private fun filterAgendasBySorted(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,

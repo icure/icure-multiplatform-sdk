@@ -17,15 +17,6 @@ class EntityReference implements StoredDocument {
 		deletionDate = deletionDate ?? null,
 		docId = docId ?? null;
 
-	factory EntityReference.fromJSON(Map<String, dynamic> data) {
-		return EntityReference(
-			(data["id"] as String),
-			rev: (data["rev"] as String?),
-			deletionDate: (data["deletionDate"] as int?),
-			docId: (data["docId"] as String?),
-		);
-	}
-
 	static Map<String, dynamic> encode(EntityReference value) {
 		Map<String, dynamic> entityAsMap = {
 			"id" : value.id,
@@ -34,5 +25,14 @@ class EntityReference implements StoredDocument {
 			"docId" : value.docId
 		};
 		return entityAsMap;
+	}
+
+	static EntityReference fromJSON(Map<String, dynamic> data) {
+		return EntityReference(
+			(data["id"] as String),
+			rev: (data["rev"] as String?),
+			deletionDate: (data["deletionDate"] as int?),
+			docId: (data["docId"] as String?),
+		);
 	}
 }

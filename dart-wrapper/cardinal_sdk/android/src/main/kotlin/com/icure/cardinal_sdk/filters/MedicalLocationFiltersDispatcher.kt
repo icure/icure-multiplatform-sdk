@@ -15,6 +15,7 @@ public object MedicalLocationFiltersDispatcher {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
   ): Boolean = when(methodName) {
     "all" -> all(parameters, resultCallback)
@@ -26,6 +27,7 @@ public object MedicalLocationFiltersDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     MedicalLocationFilters.all(
       resultCallback,
@@ -33,6 +35,7 @@ public object MedicalLocationFiltersDispatcher {
   }
 
   private fun byPostCode(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,

@@ -71,28 +71,6 @@ class TimePicker implements Field {
 		_rows = rows ?? null,
 		_columns = columns ?? null;
 
-	factory TimePicker.fromJSON(Map<String, dynamic> data) {
-		return TimePicker(
-			(data["field"] as String),
-			rows: (data["rows"] as int?),
-			columns: (data["columns"] as int?),
-			shortLabel: (data["shortLabel"] as String?),
-			grows: (data["grows"] as bool?),
-			multiline: (data["multiline"] as bool?),
-			schema: (data["schema"] as String?),
-			tags: (data["tags"] as List<dynamic>?)?.map((x0) => (x0 as String) ).toList(),
-			codifications: (data["codifications"] as List<dynamic>?)?.map((x0) => (x0 as String) ).toList(),
-			options: (data["options"] as Map<String, dynamic>?)?.map((k0, v0) => MapEntry((k0 as String), (v0 as String))),
-			labels: (data["labels"] as Map<String, dynamic>?)?.map((k0, v0) => MapEntry((k0 as String), (v0 as String))),
-			value: (data["value"] as String?),
-			unit: (data["unit"] as String?),
-			required: (data["required"] as bool?),
-			hideCondition: (data["hideCondition"] as String?),
-			now: (data["now"] as bool?),
-			translate: (data["translate"] as bool?),
-		);
-	}
-
 	static Map<String, dynamic> encode(TimePicker value) {
 		Map<String, dynamic> entityAsMap = {
 			"field" : value.field,
@@ -114,5 +92,27 @@ class TimePicker implements Field {
 			"translate" : value.translate
 		};
 		return entityAsMap;
+	}
+
+	static TimePicker fromJSON(Map<String, dynamic> data) {
+		return TimePicker(
+			(data["field"] as String),
+			rows: (data["rows"] as int?),
+			columns: (data["columns"] as int?),
+			shortLabel: (data["shortLabel"] as String?),
+			grows: (data["grows"] as bool?),
+			multiline: (data["multiline"] as bool?),
+			schema: (data["schema"] as String?),
+			tags: (data["tags"] as List<dynamic>?)?.map((x0) => (x0 as String) ).toList(),
+			codifications: (data["codifications"] as List<dynamic>?)?.map((x0) => (x0 as String) ).toList(),
+			options: (data["options"] as Map<String, dynamic>?)?.map((k0, v0) => MapEntry((k0 as String), (v0 as String))),
+			labels: (data["labels"] as Map<String, dynamic>?)?.map((k0, v0) => MapEntry((k0 as String), (v0 as String))),
+			value: (data["value"] as String?),
+			unit: (data["unit"] as String?),
+			required: (data["required"] as bool?),
+			hideCondition: (data["hideCondition"] as String?),
+			now: (data["now"] as bool?),
+			translate: (data["translate"] as bool?),
+		);
 	}
 }

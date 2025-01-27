@@ -74,30 +74,6 @@ class Code implements StoredDocument, CodeIdentification<String> {
 		disabled = disabled ?? false,
 		_level = level ?? null;
 
-	factory Code.fromJSON(Map<String, dynamic> data) {
-		return Code(
-			(data["id"] as String),
-			level: (data["level"] as int?),
-			rev: (data["rev"] as String?),
-			deletionDate: (data["deletionDate"] as int?),
-			context: (data["context"] as String?),
-			type: (data["type"] as String?),
-			code: (data["code"] as String?),
-			version: (data["version"] as String?),
-			label: (data["label"] as Map<String, dynamic>?)?.map((k0, v0) => MapEntry((k0 as String), (v0 as String))),
-			author: (data["author"] as String?),
-			regions: (data["regions"] as List<dynamic>).map((x0) => (x0 as String) ).toSet(),
-			periodicity: (data["periodicity"] as List<dynamic>).map((x0) => Periodicity.fromJSON(x0) ).toSet(),
-			links: (data["links"] as List<dynamic>).map((x0) => (x0 as String) ).toSet(),
-			qualifiedLinks: (data["qualifiedLinks"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as List<dynamic>).map((x1) => (x1 as String) ).toList())),
-			flags: (data["flags"] as List<dynamic>).map((x0) => CodeFlag.fromJSON(x0) ).toSet(),
-			searchTerms: (data["searchTerms"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as List<dynamic>).map((x1) => (x1 as String) ).toSet())),
-			data: (data["data"] as String?),
-			appendices: (data["appendices"] as Map<String, dynamic>).map((k0, v0) => MapEntry(AppendixType.fromJSON(k0), (v0 as String))),
-			disabled: (data["disabled"] as bool),
-		);
-	}
-
 	static Map<String, dynamic> encode(Code value) {
 		Map<String, dynamic> entityAsMap = {
 			"id" : value.id,
@@ -121,5 +97,29 @@ class Code implements StoredDocument, CodeIdentification<String> {
 			"disabled" : value.disabled
 		};
 		return entityAsMap;
+	}
+
+	static Code fromJSON(Map<String, dynamic> data) {
+		return Code(
+			(data["id"] as String),
+			level: (data["level"] as int?),
+			rev: (data["rev"] as String?),
+			deletionDate: (data["deletionDate"] as int?),
+			context: (data["context"] as String?),
+			type: (data["type"] as String?),
+			code: (data["code"] as String?),
+			version: (data["version"] as String?),
+			label: (data["label"] as Map<String, dynamic>?)?.map((k0, v0) => MapEntry((k0 as String), (v0 as String))),
+			author: (data["author"] as String?),
+			regions: (data["regions"] as List<dynamic>).map((x0) => (x0 as String) ).toSet(),
+			periodicity: (data["periodicity"] as List<dynamic>).map((x0) => Periodicity.fromJSON(x0) ).toSet(),
+			links: (data["links"] as List<dynamic>).map((x0) => (x0 as String) ).toSet(),
+			qualifiedLinks: (data["qualifiedLinks"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as List<dynamic>).map((x1) => (x1 as String) ).toList())),
+			flags: (data["flags"] as List<dynamic>).map((x0) => CodeFlag.fromJSON(x0) ).toSet(),
+			searchTerms: (data["searchTerms"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as List<dynamic>).map((x1) => (x1 as String) ).toSet())),
+			data: (data["data"] as String?),
+			appendices: (data["appendices"] as Map<String, dynamic>).map((k0, v0) => MapEntry(AppendixType.fromJSON(k0), (v0 as String))),
+			disabled: (data["disabled"] as bool),
+		);
 	}
 }

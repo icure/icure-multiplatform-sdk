@@ -2,6 +2,7 @@
 import 'package:flutter/services.dart';
 import 'package:cardinal_sdk/model/keyword.dart';
 import 'dart:convert';
+import 'package:cardinal_sdk/utils/internal/platform_exception_convertion.dart';
 import 'package:cardinal_sdk/model/couchdb/doc_identifier.dart';
 
 
@@ -16,7 +17,7 @@ class KeywordPlatformApi {
 				"sdkId": sdkId,
 				"frontEndMigrationId": jsonEncode(frontEndMigrationId),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getKeyword");
 		final parsedResJson = jsonDecode(res);
 		return Keyword.fromJSON(parsedResJson);
@@ -29,7 +30,7 @@ class KeywordPlatformApi {
 				"sdkId": sdkId,
 				"frontEndMigration": jsonEncode(Keyword.encode(frontEndMigration)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method createKeyword");
 		final parsedResJson = jsonDecode(res);
 		return Keyword.fromJSON(parsedResJson);
@@ -42,7 +43,7 @@ class KeywordPlatformApi {
 				"sdkId": sdkId,
 				"keyword": jsonEncode(Keyword.encode(keyword)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method modifyKeyword");
 		final parsedResJson = jsonDecode(res);
 		return Keyword.fromJSON(parsedResJson);
@@ -55,7 +56,7 @@ class KeywordPlatformApi {
 				"sdkId": sdkId,
 				"userId": jsonEncode(userId),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getKeywordsByUser");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => Keyword.fromJSON(x1) ).toList();
@@ -68,7 +69,7 @@ class KeywordPlatformApi {
 				"sdkId": sdkId,
 				"keywordIds": jsonEncode(keywordIds.map((x0) => x0).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method deleteKeywords");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => DocIdentifier.fromJSON(x1) ).toList();

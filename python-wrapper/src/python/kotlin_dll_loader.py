@@ -10,7 +10,6 @@ dependencies = []
 package = None
 
 if system == 'linux' and arch == 'x86_64':
-    dependencies = ["libcurl.so.4.8.0"]
     package = 'cardinal_sdk.lib.linuxX64'
     extension = 'so'
 elif system == 'darwin' and arch == 'x86_64':

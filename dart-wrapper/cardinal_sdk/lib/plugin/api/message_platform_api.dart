@@ -2,6 +2,7 @@
 import 'package:flutter/services.dart';
 import 'package:cardinal_sdk/model/message.dart';
 import 'dart:convert';
+import 'package:cardinal_sdk/utils/internal/platform_exception_convertion.dart';
 import 'package:cardinal_sdk/model/patient.dart';
 import 'package:cardinal_sdk/model/user.dart';
 import 'package:cardinal_sdk/model/embed/access_level.dart';
@@ -33,7 +34,7 @@ class MessagePlatformApi {
 				"sdkId": sdkId,
 				"entity": jsonEncode(DecryptedMessage.encode(entity)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method createMessage");
 		final parsedResJson = jsonDecode(res);
 		return DecryptedMessage.fromJSON(parsedResJson);
@@ -46,7 +47,7 @@ class MessagePlatformApi {
 				"sdkId": sdkId,
 				"entity": jsonEncode(DecryptedMessage.encode(entity)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method createMessageInTopic");
 		final parsedResJson = jsonDecode(res);
 		return DecryptedMessage.fromJSON(parsedResJson);
@@ -63,7 +64,7 @@ class MessagePlatformApi {
 				"delegates": jsonEncode(delegates.map((k0, v0) => MapEntry(k0, AccessLevel.encode(v0)))),
 				"secretId": jsonEncode(SecretIdUseOption.encode(secretId)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method withEncryptionMetadata");
 		final parsedResJson = jsonDecode(res);
 		return DecryptedMessage.fromJSON(parsedResJson);
@@ -76,7 +77,7 @@ class MessagePlatformApi {
 				"sdkId": sdkId,
 				"message": jsonEncode(Message.encode(message)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getEncryptionKeysOf");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => (x1 as HexString) ).toSet();
@@ -89,7 +90,7 @@ class MessagePlatformApi {
 				"sdkId": sdkId,
 				"message": jsonEncode(Message.encode(message)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method hasWriteAccess");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as bool);
@@ -102,7 +103,7 @@ class MessagePlatformApi {
 				"sdkId": sdkId,
 				"message": jsonEncode(Message.encode(message)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method decryptPatientIdOf");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toSet();
@@ -116,7 +117,7 @@ class MessagePlatformApi {
 				"entity": jsonEncode(Message.encode(entity)),
 				"delegates": jsonEncode(delegates.map((x0) => x0).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 	}
 
 	Future<DecryptedMessage> decrypt(String sdkId, EncryptedMessage message) async {
@@ -126,7 +127,7 @@ class MessagePlatformApi {
 				"sdkId": sdkId,
 				"message": jsonEncode(EncryptedMessage.encode(message)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method decrypt");
 		final parsedResJson = jsonDecode(res);
 		return DecryptedMessage.fromJSON(parsedResJson);
@@ -139,7 +140,7 @@ class MessagePlatformApi {
 				"sdkId": sdkId,
 				"message": jsonEncode(EncryptedMessage.encode(message)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method tryDecrypt");
 		final parsedResJson = jsonDecode(res);
 		return Message.fromJSON(parsedResJson);
@@ -152,7 +153,7 @@ class MessagePlatformApi {
 				"sdkId": sdkId,
 				"filter": jsonEncode(FilterOptions.encode(filter)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method matchMessagesBy");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toList();
@@ -165,7 +166,7 @@ class MessagePlatformApi {
 				"sdkId": sdkId,
 				"filter": jsonEncode(SortableFilterOptions.encode(filter)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method matchMessagesBySorted");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toList();
@@ -179,7 +180,7 @@ class MessagePlatformApi {
 				"entityId": jsonEncode(entityId),
 				"rev": jsonEncode(rev),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method deleteMessageById");
 		final parsedResJson = jsonDecode(res);
 		return DocIdentifier.fromJSON(parsedResJson);
@@ -192,7 +193,7 @@ class MessagePlatformApi {
 				"sdkId": sdkId,
 				"entityIds": jsonEncode(entityIds.map((x0) => IdWithMandatoryRev.encode(x0)).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method deleteMessagesByIds");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => DocIdentifier.fromJSON(x1) ).toList();
@@ -206,7 +207,7 @@ class MessagePlatformApi {
 				"id": jsonEncode(id),
 				"rev": jsonEncode(rev),
 			}
-		);
+		).catchError(convertPlatformException);
 	}
 
 	Future<DocIdentifier> deleteMessage(String sdkId, Message message) async {
@@ -216,7 +217,7 @@ class MessagePlatformApi {
 				"sdkId": sdkId,
 				"message": jsonEncode(Message.encode(message)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method deleteMessage");
 		final parsedResJson = jsonDecode(res);
 		return DocIdentifier.fromJSON(parsedResJson);
@@ -229,7 +230,7 @@ class MessagePlatformApi {
 				"sdkId": sdkId,
 				"messages": jsonEncode(messages.map((x0) => Message.encode(x0)).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method deleteMessages");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => DocIdentifier.fromJSON(x1) ).toList();
@@ -242,7 +243,7 @@ class MessagePlatformApi {
 				"sdkId": sdkId,
 				"message": jsonEncode(Message.encode(message)),
 			}
-		);
+		).catchError(convertPlatformException);
 	}
 
 	Future<DecryptedMessage> shareWith(String sdkId, String delegateId, DecryptedMessage message, MessageShareOptions? options) async {
@@ -254,7 +255,7 @@ class MessagePlatformApi {
 				"message": jsonEncode(DecryptedMessage.encode(message)),
 				"options": jsonEncode(options == null ? null : MessageShareOptions.encode(options!)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method shareWith");
 		final parsedResJson = jsonDecode(res);
 		return DecryptedMessage.fromJSON(parsedResJson);
@@ -268,7 +269,7 @@ class MessagePlatformApi {
 				"message": jsonEncode(DecryptedMessage.encode(message)),
 				"delegates": jsonEncode(delegates.map((k0, v0) => MapEntry(k0, MessageShareOptions.encode(v0)))),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method shareWithMany");
 		final parsedResJson = jsonDecode(res);
 		return DecryptedMessage.fromJSON(parsedResJson);
@@ -281,7 +282,7 @@ class MessagePlatformApi {
 				"sdkId": sdkId,
 				"filter": jsonEncode(FilterOptions.encode(filter)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method filterMessagesBy");
 		final parsedResJson = jsonDecode(res);
 		return PaginatedListIterator(parsedResJson, (x0) => DecryptedMessage.fromJSON(x0));
@@ -294,7 +295,7 @@ class MessagePlatformApi {
 				"sdkId": sdkId,
 				"filter": jsonEncode(SortableFilterOptions.encode(filter)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method filterMessagesBySorted");
 		final parsedResJson = jsonDecode(res);
 		return PaginatedListIterator(parsedResJson, (x0) => DecryptedMessage.fromJSON(x0));
@@ -307,7 +308,7 @@ class MessagePlatformApi {
 				"sdkId": sdkId,
 				"message": jsonEncode(Message.encode(message)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method undeleteMessage");
 		final parsedResJson = jsonDecode(res);
 		return Message.fromJSON(parsedResJson);
@@ -320,7 +321,7 @@ class MessagePlatformApi {
 				"sdkId": sdkId,
 				"entity": jsonEncode(DecryptedMessage.encode(entity)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method modifyMessage");
 		final parsedResJson = jsonDecode(res);
 		return DecryptedMessage.fromJSON(parsedResJson);
@@ -334,7 +335,7 @@ class MessagePlatformApi {
 				"id": jsonEncode(id),
 				"rev": jsonEncode(rev),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method undeleteMessageById");
 		final parsedResJson = jsonDecode(res);
 		return DecryptedMessage.fromJSON(parsedResJson);
@@ -347,7 +348,7 @@ class MessagePlatformApi {
 				"sdkId": sdkId,
 				"entityId": jsonEncode(entityId),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getMessage");
 		final parsedResJson = jsonDecode(res);
 		return DecryptedMessage.fromJSON(parsedResJson);
@@ -360,7 +361,7 @@ class MessagePlatformApi {
 				"sdkId": sdkId,
 				"entityIds": jsonEncode(entityIds.map((x0) => x0).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getMessages");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => DecryptedMessage.fromJSON(x1) ).toList();
@@ -376,7 +377,7 @@ class MessagePlatformApi {
 				"readStatus": jsonEncode(readStatus),
 				"userId": jsonEncode(userId),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method setMessagesReadStatus");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => DecryptedMessage.fromJSON(x1) ).toList();
@@ -391,7 +392,7 @@ class MessagePlatformApi {
 				"filter": jsonEncode(FilterOptions.encode(filter)),
 				"subscriptionConfig": jsonEncode(subscriptionConfig == null ? null : EntitySubscriptionConfiguration.encode(subscriptionConfig!)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method subscribeToEvents");
 		final parsedResJson = jsonDecode(res);
 		return EntitySubscription(parsedResJson, (x0) => EncryptedMessage.fromJSON(x0));
@@ -411,7 +412,7 @@ class TryAndRecoverMessagePlatformApi {
 				"message": jsonEncode(Message.encode(message)),
 				"options": jsonEncode(options == null ? null : MessageShareOptions.encode(options!)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method shareWith");
 		final parsedResJson = jsonDecode(res);
 		return Message.fromJSON(parsedResJson);
@@ -425,7 +426,7 @@ class TryAndRecoverMessagePlatformApi {
 				"message": jsonEncode(Message.encode(message)),
 				"delegates": jsonEncode(delegates.map((k0, v0) => MapEntry(k0, MessageShareOptions.encode(v0)))),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method shareWithMany");
 		final parsedResJson = jsonDecode(res);
 		return Message.fromJSON(parsedResJson);
@@ -438,7 +439,7 @@ class TryAndRecoverMessagePlatformApi {
 				"sdkId": sdkId,
 				"filter": jsonEncode(FilterOptions.encode(filter)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method filterMessagesBy");
 		final parsedResJson = jsonDecode(res);
 		return PaginatedListIterator(parsedResJson, (x0) => Message.fromJSON(x0));
@@ -451,7 +452,7 @@ class TryAndRecoverMessagePlatformApi {
 				"sdkId": sdkId,
 				"filter": jsonEncode(SortableFilterOptions.encode(filter)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method filterMessagesBySorted");
 		final parsedResJson = jsonDecode(res);
 		return PaginatedListIterator(parsedResJson, (x0) => Message.fromJSON(x0));
@@ -464,7 +465,7 @@ class TryAndRecoverMessagePlatformApi {
 				"sdkId": sdkId,
 				"message": jsonEncode(Message.encode(message)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method undeleteMessage");
 		final parsedResJson = jsonDecode(res);
 		return Message.fromJSON(parsedResJson);
@@ -477,7 +478,7 @@ class TryAndRecoverMessagePlatformApi {
 				"sdkId": sdkId,
 				"entity": jsonEncode(Message.encode(entity)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method modifyMessage");
 		final parsedResJson = jsonDecode(res);
 		return Message.fromJSON(parsedResJson);
@@ -491,7 +492,7 @@ class TryAndRecoverMessagePlatformApi {
 				"id": jsonEncode(id),
 				"rev": jsonEncode(rev),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method undeleteMessageById");
 		final parsedResJson = jsonDecode(res);
 		return Message.fromJSON(parsedResJson);
@@ -504,7 +505,7 @@ class TryAndRecoverMessagePlatformApi {
 				"sdkId": sdkId,
 				"entityId": jsonEncode(entityId),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getMessage");
 		final parsedResJson = jsonDecode(res);
 		return Message.fromJSON(parsedResJson);
@@ -517,7 +518,7 @@ class TryAndRecoverMessagePlatformApi {
 				"sdkId": sdkId,
 				"entityIds": jsonEncode(entityIds.map((x0) => x0).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getMessages");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => Message.fromJSON(x1) ).toList();
@@ -533,7 +534,7 @@ class TryAndRecoverMessagePlatformApi {
 				"readStatus": jsonEncode(readStatus),
 				"userId": jsonEncode(userId),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method setMessagesReadStatus");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => Message.fromJSON(x1) ).toList();
@@ -553,7 +554,7 @@ class EncryptedMessagePlatformApi {
 				"message": jsonEncode(EncryptedMessage.encode(message)),
 				"options": jsonEncode(options == null ? null : MessageShareOptions.encode(options!)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method shareWith");
 		final parsedResJson = jsonDecode(res);
 		return EncryptedMessage.fromJSON(parsedResJson);
@@ -567,7 +568,7 @@ class EncryptedMessagePlatformApi {
 				"message": jsonEncode(EncryptedMessage.encode(message)),
 				"delegates": jsonEncode(delegates.map((k0, v0) => MapEntry(k0, MessageShareOptions.encode(v0)))),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method shareWithMany");
 		final parsedResJson = jsonDecode(res);
 		return EncryptedMessage.fromJSON(parsedResJson);
@@ -580,7 +581,7 @@ class EncryptedMessagePlatformApi {
 				"sdkId": sdkId,
 				"filter": jsonEncode(FilterOptions.encode(filter)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method filterMessagesBy");
 		final parsedResJson = jsonDecode(res);
 		return PaginatedListIterator(parsedResJson, (x0) => EncryptedMessage.fromJSON(x0));
@@ -593,7 +594,7 @@ class EncryptedMessagePlatformApi {
 				"sdkId": sdkId,
 				"filter": jsonEncode(SortableFilterOptions.encode(filter)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method filterMessagesBySorted");
 		final parsedResJson = jsonDecode(res);
 		return PaginatedListIterator(parsedResJson, (x0) => EncryptedMessage.fromJSON(x0));
@@ -606,7 +607,7 @@ class EncryptedMessagePlatformApi {
 				"sdkId": sdkId,
 				"message": jsonEncode(Message.encode(message)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method undeleteMessage");
 		final parsedResJson = jsonDecode(res);
 		return Message.fromJSON(parsedResJson);
@@ -619,7 +620,7 @@ class EncryptedMessagePlatformApi {
 				"sdkId": sdkId,
 				"entity": jsonEncode(EncryptedMessage.encode(entity)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method modifyMessage");
 		final parsedResJson = jsonDecode(res);
 		return EncryptedMessage.fromJSON(parsedResJson);
@@ -633,7 +634,7 @@ class EncryptedMessagePlatformApi {
 				"id": jsonEncode(id),
 				"rev": jsonEncode(rev),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method undeleteMessageById");
 		final parsedResJson = jsonDecode(res);
 		return EncryptedMessage.fromJSON(parsedResJson);
@@ -646,7 +647,7 @@ class EncryptedMessagePlatformApi {
 				"sdkId": sdkId,
 				"entityId": jsonEncode(entityId),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getMessage");
 		final parsedResJson = jsonDecode(res);
 		return EncryptedMessage.fromJSON(parsedResJson);
@@ -659,7 +660,7 @@ class EncryptedMessagePlatformApi {
 				"sdkId": sdkId,
 				"entityIds": jsonEncode(entityIds.map((x0) => x0).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getMessages");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => EncryptedMessage.fromJSON(x1) ).toList();
@@ -675,7 +676,7 @@ class EncryptedMessagePlatformApi {
 				"readStatus": jsonEncode(readStatus),
 				"userId": jsonEncode(userId),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method setMessagesReadStatus");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => EncryptedMessage.fromJSON(x1) ).toList();

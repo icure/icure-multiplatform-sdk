@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:cardinal_sdk/utils/internal/platform_exception_convertion.dart';
 import 'package:flutter/services.dart';
 import 'package:cardinal_sdk/annotations/actual_int32.dart';
 
@@ -18,9 +19,9 @@ class CardinalSdkMethodChannelPagination extends CardinalSdkPlatformPaginationPl
     final res = await _methodChannel.invokeMethod<String>(
         'hasNext',
         {
-          "paginatedListIteratorId": paginatedListIteratorId
+          "paginatedListIteratorId": paginatedListIteratorId,
         }
-    );
+    ).catchError(convertPlatformException);
     if (res == null) throw AssertionError("received null result from platform method hasNext");
     return jsonDecode(res);
   }
@@ -33,7 +34,7 @@ class CardinalSdkMethodChannelPagination extends CardinalSdkPlatformPaginationPl
           "paginatedListIteratorId": paginatedListIteratorId,
           "limit": jsonEncode(limit)
         }
-    );
+    ).catchError(convertPlatformException);
     if (res == null) throw AssertionError("received null result from platform method hasNext");
     return jsonDecode(res);
   }

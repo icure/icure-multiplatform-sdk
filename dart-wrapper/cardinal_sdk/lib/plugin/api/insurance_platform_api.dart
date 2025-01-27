@@ -2,6 +2,7 @@
 import 'package:flutter/services.dart';
 import 'package:cardinal_sdk/model/insurance.dart';
 import 'dart:convert';
+import 'package:cardinal_sdk/utils/internal/platform_exception_convertion.dart';
 import 'package:cardinal_sdk/model/couchdb/doc_identifier.dart';
 
 
@@ -16,7 +17,7 @@ class InsurancePlatformApi {
 				"sdkId": sdkId,
 				"insuranceId": jsonEncode(insuranceId),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getInsurance");
 		final parsedResJson = jsonDecode(res);
 		return Insurance.fromJSON(parsedResJson);
@@ -29,7 +30,7 @@ class InsurancePlatformApi {
 				"sdkId": sdkId,
 				"insuranceIds": jsonEncode(insuranceIds.map((x0) => x0).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getInsurances");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => Insurance.fromJSON(x1) ).toList();
@@ -42,7 +43,7 @@ class InsurancePlatformApi {
 				"sdkId": sdkId,
 				"insurance": jsonEncode(Insurance.encode(insurance)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method createInsurance");
 		final parsedResJson = jsonDecode(res);
 		return Insurance.fromJSON(parsedResJson);
@@ -55,7 +56,7 @@ class InsurancePlatformApi {
 				"sdkId": sdkId,
 				"insuranceId": jsonEncode(insuranceId),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method deleteInsurance");
 		final parsedResJson = jsonDecode(res);
 		return DocIdentifier.fromJSON(parsedResJson);
@@ -68,7 +69,7 @@ class InsurancePlatformApi {
 				"sdkId": sdkId,
 				"insuranceCode": jsonEncode(insuranceCode),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method listInsurancesByCode");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => Insurance.fromJSON(x1) ).toList();
@@ -81,7 +82,7 @@ class InsurancePlatformApi {
 				"sdkId": sdkId,
 				"insuranceName": jsonEncode(insuranceName),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method listInsurancesByName");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => Insurance.fromJSON(x1) ).toList();
@@ -94,7 +95,7 @@ class InsurancePlatformApi {
 				"sdkId": sdkId,
 				"insurance": jsonEncode(Insurance.encode(insurance)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method modifyInsurance");
 		final parsedResJson = jsonDecode(res);
 		return Insurance.fromJSON(parsedResJson);

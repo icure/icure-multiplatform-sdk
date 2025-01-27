@@ -14,6 +14,7 @@ public fun dispatchApi(
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit,
 ): Boolean = when (apiName) {
   "KeywordApi" -> KeywordApiDispatcher.dispatch(methodName, parameters, resultCallback)
@@ -29,6 +30,7 @@ public fun dispatchApi(
   "CalendarItemBasicApi" -> CalendarItemBasicApiDispatcher.dispatch(methodName, parameters, resultCallback)
   "MaintenanceTaskApi" -> MaintenanceTaskApiDispatcher.dispatch(methodName, parameters, resultCallback)
   "FormBasicApi" -> FormBasicApiDispatcher.dispatch(methodName, parameters, resultCallback)
+  "RecoveryApi" -> RecoveryApiDispatcher.dispatch(methodName, parameters, resultCallback)
   "PatientApi" -> PatientApiDispatcher.dispatch(methodName, parameters, resultCallback)
   "MaintenanceTaskBasicApi" -> MaintenanceTaskBasicApiDispatcher.dispatch(methodName, parameters, resultCallback)
   "TarificationApi" -> TarificationApiDispatcher.dispatch(methodName, parameters, resultCallback)

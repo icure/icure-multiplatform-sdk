@@ -9,6 +9,7 @@ class AccessLogFiltersDispatcher {
     resultCallback: @escaping (
       String?,
       String?,
+      String?,
       String?
     ) -> Void
   ) -> Bool {
@@ -27,6 +28,7 @@ class AccessLogFiltersDispatcher {
   private static func byPatientsDateForDataOwner(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     AccessLogFilters.shared.byPatientsDateForDataOwner(
@@ -42,6 +44,7 @@ class AccessLogFiltersDispatcher {
   private static func byPatientsDateForSelf(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     AccessLogFilters.shared.byPatientsDateForSelf(
@@ -54,6 +57,7 @@ class AccessLogFiltersDispatcher {
   }
 
   private static func byPatientSecretIdsDateForDataOwner(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -71,6 +75,7 @@ class AccessLogFiltersDispatcher {
   private static func byPatientSecretIdsDateForSelf(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     AccessLogFilters.shared.byPatientSecretIdsDateForSelf(
@@ -85,6 +90,7 @@ class AccessLogFiltersDispatcher {
   private static func byDate(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     AccessLogFilters.shared.byDate(
@@ -96,6 +102,7 @@ class AccessLogFiltersDispatcher {
   }
 
   private static func byUserTypeDate(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?

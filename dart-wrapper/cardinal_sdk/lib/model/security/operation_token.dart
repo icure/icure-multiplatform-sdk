@@ -17,16 +17,6 @@ class OperationToken {
 			String? description
 		}) : description = description ?? null;
 
-	factory OperationToken.fromJSON(Map<String, dynamic> data) {
-		return OperationToken(
-			(data["tokenHash"] as String),
-			(data["creationTime"] as int),
-			(data["validity"] as int),
-			Operation.fromJSON(data["operation"]),
-			description: (data["description"] as String?),
-		);
-	}
-
 	static Map<String, dynamic> encode(OperationToken value) {
 		Map<String, dynamic> entityAsMap = {
 			"tokenHash" : value.tokenHash,
@@ -36,5 +26,15 @@ class OperationToken {
 			"description" : value.description
 		};
 		return entityAsMap;
+	}
+
+	static OperationToken fromJSON(Map<String, dynamic> data) {
+		return OperationToken(
+			(data["tokenHash"] as String),
+			(data["creationTime"] as int),
+			(data["validity"] as int),
+			Operation.fromJSON(data["operation"]),
+			description: (data["description"] as String?),
+		);
 	}
 }

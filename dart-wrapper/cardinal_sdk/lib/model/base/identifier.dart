@@ -29,19 +29,6 @@ class Identifier {
 		use = use ?? null,
 		value = value ?? null;
 
-	factory Identifier.fromJSON(Map<String, dynamic> data) {
-		return Identifier(
-			id: (data["id"] as String?),
-			assigner: (data["assigner"] as String?),
-			start: (data["start"] as String?),
-			end: (data["end"] as String?),
-			system: (data["system"] as String?),
-			type: data["type"] == null ? null : CodeStub.fromJSON(data["type"]),
-			use: (data["use"] as String?),
-			value: (data["value"] as String?)
-		);
-	}
-
 	static Map<String, dynamic> encode(Identifier value) {
 		Map<String, dynamic> entityAsMap = {
 			"id" : value.id,
@@ -54,5 +41,18 @@ class Identifier {
 			"value" : value.value
 		};
 		return entityAsMap;
+	}
+
+	static Identifier fromJSON(Map<String, dynamic> data) {
+		return Identifier(
+			id: (data["id"] as String?),
+			assigner: (data["assigner"] as String?),
+			start: (data["start"] as String?),
+			end: (data["end"] as String?),
+			system: (data["system"] as String?),
+			type: data["type"] == null ? null : CodeStub.fromJSON(data["type"]),
+			use: (data["use"] as String?),
+			value: (data["value"] as String?)
+		);
 	}
 }

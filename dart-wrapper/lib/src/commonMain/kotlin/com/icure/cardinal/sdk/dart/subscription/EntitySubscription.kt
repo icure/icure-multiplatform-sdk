@@ -19,6 +19,7 @@ object EntitySubscription {
 			String?,
 			String?,
 			String?,
+			String?,
 		) -> Unit,
 		subscriptionId: String
 	) {
@@ -32,6 +33,7 @@ object EntitySubscription {
 
 	fun getCloseReason(
 		dartResultCallback: (
+			String?,
 			String?,
 			String?,
 			String?,
@@ -51,6 +53,7 @@ object EntitySubscription {
 			String?,
 			String?,
 			String?,
+			String?,
 		) -> Unit,
 		subscriptionId: String
 	) {
@@ -67,7 +70,9 @@ object EntitySubscription {
 			String?,
 			String?,
 			String?,
+			String?,
 		) -> Unit,
+		cancellationToken: Long,
 		subscriptionId: String,
 		timeoutString: String
 	) {
@@ -75,12 +80,12 @@ object EntitySubscription {
 			Int.serializer(),
 			timeoutString
 		)
-		ApiScope.execute(
+		ApiScope.executeCancellable(
 			dartResultCallback,
+			cancellationToken,
 			JsonElement.serializer().nullable
 		) {
 			NativeReferences.get<EntitySubscriptionWithSerializer<*>>(subscriptionId).waitForEvent(timeout)
 		}
 	}
-
 }

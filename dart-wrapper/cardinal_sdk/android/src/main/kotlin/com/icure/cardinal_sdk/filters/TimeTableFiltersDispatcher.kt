@@ -15,6 +15,7 @@ public object TimeTableFiltersDispatcher {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
   ): Boolean = when(methodName) {
     "byAgendaId" -> byAgendaId(parameters, resultCallback)
@@ -26,6 +27,7 @@ public object TimeTableFiltersDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     TimeTableFilters.byAgendaId(
       resultCallback,
@@ -34,6 +36,7 @@ public object TimeTableFiltersDispatcher {
   }
 
   private fun byPeriodAndAgendaId(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,

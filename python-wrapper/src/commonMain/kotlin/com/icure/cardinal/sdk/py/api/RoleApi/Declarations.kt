@@ -12,6 +12,7 @@ import kotlin.String
 import kotlin.Unit
 import kotlinx.cinterop.ByteVarOf
 import kotlinx.cinterop.CFunction
+import kotlinx.cinterop.COpaquePointer
 import kotlinx.cinterop.CPointer
 import kotlinx.cinterop.CValues
 import kotlinx.cinterop.ExperimentalForeignApi
@@ -29,7 +30,7 @@ public fun getAllRolesBlocking(sdk: CardinalNonCryptoApis): String = kotlin.runC
 @OptIn(ExperimentalForeignApi::class)
 public fun getAllRolesAsync(sdk: CardinalNonCryptoApis,
 		resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
-		CValues<ByteVarOf<Byte>>?) -> Unit>>): Unit = kotlin.runCatching {
+		CValues<ByteVarOf<Byte>>?) -> Unit>>): COpaquePointer? = kotlin.runCatching {
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.role.getAllRoles()

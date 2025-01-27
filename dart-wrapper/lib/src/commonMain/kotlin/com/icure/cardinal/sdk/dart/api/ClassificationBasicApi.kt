@@ -1,7 +1,7 @@
 // auto-generated file
 package com.icure.cardinal.sdk.dart.api
 
-import com.icure.cardinal.sdk.CardinalBaseSdk
+import com.icure.cardinal.sdk.CardinalBaseApis
 import com.icure.cardinal.sdk.dart.utils.ApiScope
 import com.icure.cardinal.sdk.dart.utils.NativeReferences
 import com.icure.cardinal.sdk.filters.BaseFilterOptions
@@ -26,6 +26,7 @@ public object ClassificationBasicApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     filterString: String,
@@ -37,7 +38,7 @@ public object ClassificationBasicApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(String.serializer())) {
-      NativeReferences.get<CardinalBaseSdk>(sdkId).classification.matchClassificationsBy(
+      NativeReferences.get<CardinalBaseApis>(sdkId).classification.matchClassificationsBy(
         filter,
       )
     }
@@ -45,6 +46,7 @@ public object ClassificationBasicApi {
 
   public fun matchClassificationsBySorted(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -59,7 +61,7 @@ public object ClassificationBasicApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(String.serializer())) {
-      NativeReferences.get<CardinalBaseSdk>(sdkId).classification.matchClassificationsBySorted(
+      NativeReferences.get<CardinalBaseApis>(sdkId).classification.matchClassificationsBySorted(
         filter,
       )
     }
@@ -67,6 +69,7 @@ public object ClassificationBasicApi {
 
   public fun filterClassificationsBy(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -82,7 +85,7 @@ public object ClassificationBasicApi {
       dartResultCallback,
       String.serializer()) {
       val richResult =
-          NativeReferences.get<CardinalBaseSdk>(sdkId).classification.filterClassificationsBy(
+          NativeReferences.get<CardinalBaseApis>(sdkId).classification.filterClassificationsBy(
         filter,
       )
       NativeReferences.create(PaginatedListIteratorWithSerializer(
@@ -97,6 +100,7 @@ public object ClassificationBasicApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     filterString: String,
@@ -109,7 +113,7 @@ public object ClassificationBasicApi {
       dartResultCallback,
       String.serializer()) {
       val richResult =
-          NativeReferences.get<CardinalBaseSdk>(sdkId).classification.filterClassificationsBySorted(
+          NativeReferences.get<CardinalBaseApis>(sdkId).classification.filterClassificationsBySorted(
         filter,
       )
       NativeReferences.create(PaginatedListIteratorWithSerializer(
@@ -124,6 +128,7 @@ public object ClassificationBasicApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     entityIdString: String,
@@ -135,7 +140,7 @@ public object ClassificationBasicApi {
     ApiScope.execute(
       dartResultCallback,
       DocIdentifier.serializer()) {
-      NativeReferences.get<CardinalBaseSdk>(sdkId).classification.deleteClassification(
+      NativeReferences.get<CardinalBaseApis>(sdkId).classification.deleteClassification(
         entityId,
       )
     }
@@ -143,6 +148,7 @@ public object ClassificationBasicApi {
 
   public fun deleteClassifications(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -157,7 +163,7 @@ public object ClassificationBasicApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(DocIdentifier.serializer())) {
-      NativeReferences.get<CardinalBaseSdk>(sdkId).classification.deleteClassifications(
+      NativeReferences.get<CardinalBaseApis>(sdkId).classification.deleteClassifications(
         entityIds,
       )
     }
@@ -165,6 +171,7 @@ public object ClassificationBasicApi {
 
   public fun modifyClassification(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -179,7 +186,7 @@ public object ClassificationBasicApi {
     ApiScope.execute(
       dartResultCallback,
       EncryptedClassification.serializer()) {
-      NativeReferences.get<CardinalBaseSdk>(sdkId).classification.modifyClassification(
+      NativeReferences.get<CardinalBaseApis>(sdkId).classification.modifyClassification(
         entity,
       )
     }
@@ -187,6 +194,7 @@ public object ClassificationBasicApi {
 
   public fun getClassification(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -201,7 +209,7 @@ public object ClassificationBasicApi {
     ApiScope.execute(
       dartResultCallback,
       EncryptedClassification.serializer()) {
-      NativeReferences.get<CardinalBaseSdk>(sdkId).classification.getClassification(
+      NativeReferences.get<CardinalBaseApis>(sdkId).classification.getClassification(
         entityId,
       )
     }
@@ -209,6 +217,7 @@ public object ClassificationBasicApi {
 
   public fun getClassifications(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -223,7 +232,7 @@ public object ClassificationBasicApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(EncryptedClassification.serializer())) {
-      NativeReferences.get<CardinalBaseSdk>(sdkId).classification.getClassifications(
+      NativeReferences.get<CardinalBaseApis>(sdkId).classification.getClassifications(
         entityIds,
       )
     }

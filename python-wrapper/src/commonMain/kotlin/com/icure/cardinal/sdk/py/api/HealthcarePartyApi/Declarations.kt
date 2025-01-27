@@ -71,7 +71,7 @@ public fun deleteHealthcarePartyUnsafeAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams =
 			fullLanguageInteropJson.decodeFromString<DeleteHealthcarePartyUnsafeParams>(params)
 	GlobalScope.launch {
@@ -109,7 +109,7 @@ public fun deleteHealthcarePartiesUnsafeAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams =
 			fullLanguageInteropJson.decodeFromString<DeleteHealthcarePartiesUnsafeParams>(params)
 	GlobalScope.launch {
@@ -146,7 +146,7 @@ public fun getHealthcarePartyAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<GetHealthcarePartyParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
@@ -182,7 +182,7 @@ public fun createHealthcarePartyAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<CreateHealthcarePartyParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
@@ -221,7 +221,7 @@ public fun modifyHealthcarePartyInGroupAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams =
 			fullLanguageInteropJson.decodeFromString<ModifyHealthcarePartyInGroupParams>(params)
 	GlobalScope.launch {
@@ -262,7 +262,7 @@ public fun createHealthcarePartyInGroupAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams =
 			fullLanguageInteropJson.decodeFromString<CreateHealthcarePartyInGroupParams>(params)
 	GlobalScope.launch {
@@ -285,7 +285,7 @@ public fun getCurrentHealthcarePartyBlocking(sdk: CardinalNonCryptoApis): String
 @OptIn(ExperimentalForeignApi::class)
 public fun getCurrentHealthcarePartyAsync(sdk: CardinalNonCryptoApis,
 		resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
-		CValues<ByteVarOf<Byte>>?) -> Unit>>): Unit = kotlin.runCatching {
+		CValues<ByteVarOf<Byte>>?) -> Unit>>): COpaquePointer? = kotlin.runCatching {
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.healthcareParty.getCurrentHealthcareParty()
@@ -324,7 +324,7 @@ public fun findHealthcarePartiesByAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<FindHealthcarePartiesByParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
@@ -372,7 +372,7 @@ public fun findHealthcarePartiesByNameAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams =
 			fullLanguageInteropJson.decodeFromString<FindHealthcarePartiesByNameParams>(params)
 	GlobalScope.launch {
@@ -422,7 +422,7 @@ public fun findHealthcarePartiesBySsinOrNihiiAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams =
 			fullLanguageInteropJson.decodeFromString<FindHealthcarePartiesBySsinOrNihiiParams>(params)
 	GlobalScope.launch {
@@ -464,7 +464,7 @@ public fun listHealthcarePartiesByNameAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams =
 			fullLanguageInteropJson.decodeFromString<ListHealthcarePartiesByNameParams>(params)
 	GlobalScope.launch {
@@ -514,7 +514,7 @@ public fun findHealthcarePartiesBySpecialityAndPostCodeAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams =
 			fullLanguageInteropJson.decodeFromString<FindHealthcarePartiesBySpecialityAndPostCodeParams>(params)
 	GlobalScope.launch {
@@ -557,7 +557,7 @@ public fun getHealthcarePartiesAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<GetHealthcarePartiesParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
@@ -594,7 +594,7 @@ public fun listHealthcarePartiesByParentIdAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams =
 			fullLanguageInteropJson.decodeFromString<ListHealthcarePartiesByParentIdParams>(params)
 	GlobalScope.launch {
@@ -631,7 +631,7 @@ public fun getPublicKeyAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<GetPublicKeyParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
@@ -667,7 +667,7 @@ public fun modifyHealthcarePartyAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<ModifyHealthcarePartyParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
@@ -704,7 +704,7 @@ public fun matchHealthcarePartiesByAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams =
 			fullLanguageInteropJson.decodeFromString<MatchHealthcarePartiesByParams>(params)
 	GlobalScope.launch {
@@ -741,7 +741,7 @@ public fun filterHealthPartiesByAsync(
 	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(COpaquePointer?, CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<FilterHealthPartiesByParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
@@ -779,7 +779,7 @@ public fun matchHealthcarePartiesBySortedAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams =
 			fullLanguageInteropJson.decodeFromString<MatchHealthcarePartiesBySortedParams>(params)
 	GlobalScope.launch {
@@ -817,7 +817,7 @@ public fun filterHealthPartiesBySortedAsync(
 	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(COpaquePointer?, CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams =
 			fullLanguageInteropJson.decodeFromString<FilterHealthPartiesBySortedParams>(params)
 	GlobalScope.launch {
@@ -858,7 +858,7 @@ public fun getHealthcarePartiesInGroupAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams =
 			fullLanguageInteropJson.decodeFromString<GetHealthcarePartiesInGroupParams>(params)
 	GlobalScope.launch {
@@ -904,7 +904,7 @@ public fun registerPatientAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<RegisterPatientParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
@@ -947,7 +947,7 @@ public fun deleteHealthcarePartyByIdAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams =
 			fullLanguageInteropJson.decodeFromString<DeleteHealthcarePartyByIdParams>(params)
 	GlobalScope.launch {
@@ -986,7 +986,7 @@ public fun deleteHealthcarePartiesByIdsAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams =
 			fullLanguageInteropJson.decodeFromString<DeleteHealthcarePartiesByIdsParams>(params)
 	GlobalScope.launch {
@@ -1028,7 +1028,7 @@ public fun deleteHealthcarePartyInGroupByIdAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams =
 			fullLanguageInteropJson.decodeFromString<DeleteHealthcarePartyInGroupByIdParams>(params)
 	GlobalScope.launch {
@@ -1070,7 +1070,7 @@ public fun deleteHealthcarePartiesInGroupByIdsAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams =
 			fullLanguageInteropJson.decodeFromString<DeleteHealthcarePartiesInGroupByIdsParams>(params)
 	GlobalScope.launch {
@@ -1111,7 +1111,7 @@ public fun purgeHealthcarePartyByIdAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams =
 			fullLanguageInteropJson.decodeFromString<PurgeHealthcarePartyByIdParams>(params)
 	GlobalScope.launch {
@@ -1152,7 +1152,7 @@ public fun undeleteHealthcarePartyByIdAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams =
 			fullLanguageInteropJson.decodeFromString<UndeleteHealthcarePartyByIdParams>(params)
 	GlobalScope.launch {
@@ -1190,7 +1190,7 @@ public fun deleteHealthcarePartyAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<DeleteHealthcarePartyParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
@@ -1226,7 +1226,7 @@ public fun deleteHealthcarePartiesAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<DeleteHealthcarePartiesParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
@@ -1262,7 +1262,7 @@ public fun purgeHealthcarePartyAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<PurgeHealthcarePartyParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
@@ -1298,7 +1298,7 @@ public fun undeleteHealthcarePartyAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<UndeleteHealthcarePartyParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
@@ -1337,7 +1337,7 @@ public fun deleteHealthcarePartyInGroupAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams =
 			fullLanguageInteropJson.decodeFromString<DeleteHealthcarePartyInGroupParams>(params)
 	GlobalScope.launch {
@@ -1378,7 +1378,7 @@ public fun deleteHealthcarePartiesInGroupAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams =
 			fullLanguageInteropJson.decodeFromString<DeleteHealthcarePartiesInGroupParams>(params)
 	GlobalScope.launch {
@@ -1420,7 +1420,7 @@ public fun subscribeToEventsAsync(
 	sdk: CardinalNonCryptoApis,
 	params: String,
 	resultCallback: CPointer<CFunction<(COpaquePointer?, CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<SubscribeToEventsParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {

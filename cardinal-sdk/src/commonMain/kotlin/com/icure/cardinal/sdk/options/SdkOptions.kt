@@ -169,19 +169,96 @@ data class BasicSdkOptions(
 
 @Serializable
 data class EncryptedFieldsConfiguration(
-	val accessLog: Set<String> = setOf("detail", "objectId"),
-	val calendarItem: Set<String> = setOf("details", "title", "patientId"),
-	val contact: Set<String> = setOf("descr", "notes[].markdown"),
-	val service: Set<String> = setOf("notes[].markdown"),
-	val healthElement: Set<String> = setOf("descr", "note", "notes[].markdown"),
-	val maintenanceTask: Set<String> = setOf("properties"),
-	val patient: Set<String> = setOf("note", "notes[].markdown"),
-	val message: Set<String> = setOf("subject"),
-	val topic: Set<String> = setOf("description", "linkedServices", "linkedHealthElements"),
-	val document: Set<String> = emptySet(),
-	val form: Set<String> = emptySet(),
-	val receipt: Set<String> = emptySet(),
-	val classification: Set<String> = emptySet(),
+	val accessLog: Set<String> = setOf(
+		"detail",
+		"objectId",
+		"patientId"
+	),
+	val calendarItem: Set<String> = setOf(
+		"details",
+		"title",
+		"patientId",
+		"phoneNumber",
+		"address",
+		"addressText",
+		"meetingTags[].*",
+		"flowItem"
+	),
+	val contact: Set<String> = setOf(
+		"descr",
+		"notes[].markdown",
+		"location",
+		"encounterLocation",
+		"participants",
+	),
+	val service: Set<String> = setOf(
+		"notes[].markdown",
+		"comment",
+	),
+	val healthElement: Set<String> = setOf(
+		"descr",
+		"note",
+		"notes[].markdown",
+		"careTeam[].*",
+		"episode[].name",
+		"episode[].comment"
+	),
+	val maintenanceTask: Set<String> = setOf(
+		"properties",
+	),
+	val patient: Set<String> = setOf(
+		"note",
+		"notes[].markdown",
+		"created",
+		"modified",
+		"companyName",
+		"languages",
+		"civility",
+		"birthSex",
+		"personalStatus",
+		"nationality",
+		"race",
+		"ethnicity",
+		"picture",
+		"insurabilities[].*",
+		"partnerships[].*",
+		"patientHealthCareParties[].*",
+		"financialInstitutionInformation[].*",
+		"medicalHouseContracts[].*",
+		"patientProfessions",
+		"comment",
+		"warning",
+		"fatherBirthCountry",
+		"birthCountry",
+		"nativeCountry",
+		"socialStatus",
+		"mainSourceOfIncome",
+		"schoolingInfos[].*",
+		"employementInfos[].*",
+	),
+	val message: Set<String> = setOf(
+		"subject"
+	),
+	val topic: Set<String> = setOf(
+		"description",
+		"linkedServices",
+		"linkedHealthElements"
+	),
+	val document: Set<String> = setOf(
+		"medicalLocationId",
+		"name"
+	),
+	val form: Set<String> = setOf(
+		"descr"
+	),
+	val receipt: Set<String> = setOf(
+		"references"
+	),
+	val classification: Set<String> = setOf(
+		"label"
+	),
 	val timeTable: Set<String> = emptySet(),
-	val invoice: Set<String> = emptySet(),
+	val invoice: Set<String> = setOf(
+		"reason"
+	),
 )

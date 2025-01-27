@@ -31,6 +31,7 @@ import kotlin.String
 import kotlin.collections.List
 import kotlin.collections.Map
 import kotlin.collections.Set
+import com.icure.cardinal.sdk.model.specializations.AesExchangeKeyEntryKeyString
 
 // WARNING: This file is auto-generated. If you change it manually, your changes will be lost.
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
@@ -65,7 +66,7 @@ data class HealthcareParty(
 	public val cbe: String? = null,
 	public val ehp: String? = null,
 	public val userId: String? = null,
-	public val parentId: String? = null,
+	override val parentId: String? = null,
 	public val convention: Int? = null,
 	public val nihii: String? = null,
 	public val nihiiSpecCode: String? = null,
@@ -107,7 +108,7 @@ data class HealthcareParty(
 	@DefaultValue("emptyMap()")
 	override val hcPartyKeys: Map<String, List<HexString>> = emptyMap(),
 	@DefaultValue("emptyMap()")
-	override val aesExchangeKeys: Map<SpkiHexString, Map<String, Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>>> =
+	override val aesExchangeKeys: Map<AesExchangeKeyEntryKeyString, Map<String, Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>>> =
 		emptyMap(),
 	@DefaultValue("emptyMap()")
 	override val transferKeys: Map<AesExchangeKeyEncryptionKeypairIdentifier, Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>> =

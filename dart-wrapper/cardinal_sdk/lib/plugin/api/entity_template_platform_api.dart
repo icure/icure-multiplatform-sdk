@@ -2,6 +2,7 @@
 import 'package:flutter/services.dart';
 import 'package:cardinal_sdk/model/entity_template.dart';
 import 'dart:convert';
+import 'package:cardinal_sdk/utils/internal/platform_exception_convertion.dart';
 import 'package:cardinal_sdk/model/id_with_mandatory_rev.dart';
 import 'package:cardinal_sdk/model/couchdb/doc_identifier.dart';
 
@@ -17,7 +18,7 @@ class EntityTemplatePlatformApi {
 				"sdkId": sdkId,
 				"documentTemplateId": jsonEncode(documentTemplateId),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getEntityTemplate");
 		final parsedResJson = jsonDecode(res);
 		return EntityTemplate.fromJSON(parsedResJson);
@@ -30,7 +31,7 @@ class EntityTemplatePlatformApi {
 				"sdkId": sdkId,
 				"applicationSettings": jsonEncode(EntityTemplate.encode(applicationSettings)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method createEntityTemplate");
 		final parsedResJson = jsonDecode(res);
 		return EntityTemplate.fromJSON(parsedResJson);
@@ -43,7 +44,7 @@ class EntityTemplatePlatformApi {
 				"sdkId": sdkId,
 				"documentTemplate": jsonEncode(EntityTemplate.encode(documentTemplate)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method modifyEntityTemplate");
 		final parsedResJson = jsonDecode(res);
 		return EntityTemplate.fromJSON(parsedResJson);
@@ -59,7 +60,7 @@ class EntityTemplatePlatformApi {
 				"searchString": jsonEncode(searchString),
 				"includeEntities": jsonEncode(includeEntities),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method listEntityTemplatesBy");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => EntityTemplate.fromJSON(x1) ).toList();
@@ -74,7 +75,7 @@ class EntityTemplatePlatformApi {
 				"searchString": jsonEncode(searchString),
 				"includeEntities": jsonEncode(includeEntities),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method listAllEntityTemplatesBy");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => EntityTemplate.fromJSON(x1) ).toList();
@@ -90,7 +91,7 @@ class EntityTemplatePlatformApi {
 				"keyword": jsonEncode(keyword),
 				"includeEntities": jsonEncode(includeEntities),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method listEntityTemplatesByKeyword");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => EntityTemplate.fromJSON(x1) ).toList();
@@ -105,7 +106,7 @@ class EntityTemplatePlatformApi {
 				"keyword": jsonEncode(keyword),
 				"includeEntities": jsonEncode(includeEntities),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method findAllEntityTemplatesByKeyword");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => EntityTemplate.fromJSON(x1) ).toList();
@@ -118,7 +119,7 @@ class EntityTemplatePlatformApi {
 				"sdkId": sdkId,
 				"entityTemplateIds": jsonEncode(entityTemplateIds.map((x0) => x0).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getEntityTemplates");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => EntityTemplate.fromJSON(x1) ).toList();
@@ -131,7 +132,7 @@ class EntityTemplatePlatformApi {
 				"sdkId": sdkId,
 				"entityTemplates": jsonEncode(entityTemplates.map((x0) => EntityTemplate.encode(x0)).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method modifyEntityTemplates");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => EntityTemplate.fromJSON(x1) ).toList();
@@ -144,7 +145,7 @@ class EntityTemplatePlatformApi {
 				"sdkId": sdkId,
 				"entityTemplates": jsonEncode(entityTemplates.map((x0) => EntityTemplate.encode(x0)).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method createEntityTemplates");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => EntityTemplate.fromJSON(x1) ).toList();
@@ -157,7 +158,7 @@ class EntityTemplatePlatformApi {
 				"sdkId": sdkId,
 				"entityTemplateIds": jsonEncode(entityTemplateIds.map((x0) => IdWithMandatoryRev.encode(x0)).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method deleteEntityTemplates");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => DocIdentifier.fromJSON(x1) ).toList();

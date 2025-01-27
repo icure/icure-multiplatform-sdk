@@ -1,7 +1,7 @@
 // auto-generated file
 package com.icure.cardinal.sdk.dart.api
 
-import com.icure.cardinal.sdk.CardinalBaseSdk
+import com.icure.cardinal.sdk.CardinalBaseApis
 import com.icure.cardinal.sdk.dart.utils.ApiScope
 import com.icure.cardinal.sdk.dart.utils.NativeReferences
 import com.icure.cardinal.sdk.model.EncryptedInvoice
@@ -29,6 +29,7 @@ public object InvoiceBasicApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     entityIdString: String,
@@ -40,7 +41,7 @@ public object InvoiceBasicApi {
     ApiScope.execute(
       dartResultCallback,
       DocIdentifier.serializer()) {
-      NativeReferences.get<CardinalBaseSdk>(sdkId).invoice.deleteInvoice(
+      NativeReferences.get<CardinalBaseApis>(sdkId).invoice.deleteInvoice(
         entityId,
       )
     }
@@ -48,6 +49,7 @@ public object InvoiceBasicApi {
 
   public fun getTarificationsCodesOccurrences(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -62,7 +64,7 @@ public object InvoiceBasicApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(LabelledOccurence.serializer())) {
-      NativeReferences.get<CardinalBaseSdk>(sdkId).invoice.getTarificationsCodesOccurrences(
+      NativeReferences.get<CardinalBaseApis>(sdkId).invoice.getTarificationsCodesOccurrences(
         minOccurrence,
       )
     }
@@ -70,6 +72,7 @@ public object InvoiceBasicApi {
 
   public fun modifyInvoice(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -84,7 +87,7 @@ public object InvoiceBasicApi {
     ApiScope.execute(
       dartResultCallback,
       EncryptedInvoice.serializer()) {
-      NativeReferences.get<CardinalBaseSdk>(sdkId).invoice.modifyInvoice(
+      NativeReferences.get<CardinalBaseApis>(sdkId).invoice.modifyInvoice(
         entity,
       )
     }
@@ -92,6 +95,7 @@ public object InvoiceBasicApi {
 
   public fun modifyInvoices(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -106,7 +110,7 @@ public object InvoiceBasicApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(EncryptedInvoice.serializer())) {
-      NativeReferences.get<CardinalBaseSdk>(sdkId).invoice.modifyInvoices(
+      NativeReferences.get<CardinalBaseApis>(sdkId).invoice.modifyInvoices(
         entities,
       )
     }
@@ -114,6 +118,7 @@ public object InvoiceBasicApi {
 
   public fun getInvoice(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -128,7 +133,7 @@ public object InvoiceBasicApi {
     ApiScope.execute(
       dartResultCallback,
       EncryptedInvoice.serializer()) {
-      NativeReferences.get<CardinalBaseSdk>(sdkId).invoice.getInvoice(
+      NativeReferences.get<CardinalBaseApis>(sdkId).invoice.getInvoice(
         entityId,
       )
     }
@@ -136,6 +141,7 @@ public object InvoiceBasicApi {
 
   public fun getInvoices(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -150,7 +156,7 @@ public object InvoiceBasicApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(EncryptedInvoice.serializer())) {
-      NativeReferences.get<CardinalBaseSdk>(sdkId).invoice.getInvoices(
+      NativeReferences.get<CardinalBaseApis>(sdkId).invoice.getInvoices(
         entityIds,
       )
     }
@@ -158,6 +164,7 @@ public object InvoiceBasicApi {
 
   public fun reassignInvoice(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -172,7 +179,7 @@ public object InvoiceBasicApi {
     ApiScope.execute(
       dartResultCallback,
       EncryptedInvoice.serializer()) {
-      NativeReferences.get<CardinalBaseSdk>(sdkId).invoice.reassignInvoice(
+      NativeReferences.get<CardinalBaseApis>(sdkId).invoice.reassignInvoice(
         invoice,
       )
     }
@@ -180,6 +187,7 @@ public object InvoiceBasicApi {
 
   public fun mergeTo(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -199,7 +207,7 @@ public object InvoiceBasicApi {
     ApiScope.execute(
       dartResultCallback,
       EncryptedInvoice.serializer()) {
-      NativeReferences.get<CardinalBaseSdk>(sdkId).invoice.mergeTo(
+      NativeReferences.get<CardinalBaseApis>(sdkId).invoice.mergeTo(
         invoiceId,
         ids,
       )
@@ -208,6 +216,7 @@ public object InvoiceBasicApi {
 
   public fun validate(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -232,7 +241,7 @@ public object InvoiceBasicApi {
     ApiScope.execute(
       dartResultCallback,
       EncryptedInvoice.serializer()) {
-      NativeReferences.get<CardinalBaseSdk>(sdkId).invoice.validate(
+      NativeReferences.get<CardinalBaseApis>(sdkId).invoice.validate(
         invoiceId,
         scheme,
         forcedValue,
@@ -242,6 +251,7 @@ public object InvoiceBasicApi {
 
   public fun appendCodes(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -291,7 +301,7 @@ public object InvoiceBasicApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(EncryptedInvoice.serializer())) {
-      NativeReferences.get<CardinalBaseSdk>(sdkId).invoice.appendCodes(
+      NativeReferences.get<CardinalBaseApis>(sdkId).invoice.appendCodes(
         userId,
         type,
         sentMediumType,
@@ -306,6 +316,7 @@ public object InvoiceBasicApi {
 
   public fun removeCodes(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -335,7 +346,7 @@ public object InvoiceBasicApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(EncryptedInvoice.serializer())) {
-      NativeReferences.get<CardinalBaseSdk>(sdkId).invoice.removeCodes(
+      NativeReferences.get<CardinalBaseApis>(sdkId).invoice.removeCodes(
         userId,
         serviceId,
         secretFKeys,
@@ -346,6 +357,7 @@ public object InvoiceBasicApi {
 
   public fun listInvoicesByHcPartyAndGroupId(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -365,7 +377,7 @@ public object InvoiceBasicApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(EncryptedInvoice.serializer())) {
-      NativeReferences.get<CardinalBaseSdk>(sdkId).invoice.listInvoicesByHcPartyAndGroupId(
+      NativeReferences.get<CardinalBaseApis>(sdkId).invoice.listInvoicesByHcPartyAndGroupId(
         hcPartyId,
         groupId,
       )
@@ -374,6 +386,7 @@ public object InvoiceBasicApi {
 
   public fun listInvoicesByHcPartySentMediumTypeInvoiceTypeSentDate(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -413,7 +426,7 @@ public object InvoiceBasicApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(EncryptedInvoice.serializer())) {
-      NativeReferences.get<CardinalBaseSdk>(sdkId).invoice.listInvoicesByHcPartySentMediumTypeInvoiceTypeSentDate(
+      NativeReferences.get<CardinalBaseApis>(sdkId).invoice.listInvoicesByHcPartySentMediumTypeInvoiceTypeSentDate(
         hcPartyId,
         sentMediumType,
         invoiceType,
@@ -429,6 +442,7 @@ public object InvoiceBasicApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     contactIdsString: String,
@@ -440,7 +454,7 @@ public object InvoiceBasicApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(EncryptedInvoice.serializer())) {
-      NativeReferences.get<CardinalBaseSdk>(sdkId).invoice.listInvoicesByContactIds(
+      NativeReferences.get<CardinalBaseApis>(sdkId).invoice.listInvoicesByContactIds(
         contactIds,
       )
     }
@@ -448,6 +462,7 @@ public object InvoiceBasicApi {
 
   public fun listInvoicesByRecipientsIds(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -462,7 +477,7 @@ public object InvoiceBasicApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(EncryptedInvoice.serializer())) {
-      NativeReferences.get<CardinalBaseSdk>(sdkId).invoice.listInvoicesByRecipientsIds(
+      NativeReferences.get<CardinalBaseApis>(sdkId).invoice.listInvoicesByRecipientsIds(
         recipientsIds,
       )
     }
@@ -473,6 +488,7 @@ public object InvoiceBasicApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     userIdsString: String,
@@ -484,7 +500,7 @@ public object InvoiceBasicApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(EncryptedInvoice.serializer())) {
-      NativeReferences.get<CardinalBaseSdk>(sdkId).invoice.listToInsurances(
+      NativeReferences.get<CardinalBaseApis>(sdkId).invoice.listToInsurances(
         userIds,
       )
     }
@@ -495,6 +511,7 @@ public object InvoiceBasicApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     userIdsString: String,
@@ -506,7 +523,7 @@ public object InvoiceBasicApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(EncryptedInvoice.serializer())) {
-      NativeReferences.get<CardinalBaseSdk>(sdkId).invoice.listToInsurancesUnsent(
+      NativeReferences.get<CardinalBaseApis>(sdkId).invoice.listToInsurancesUnsent(
         userIds,
       )
     }
@@ -514,6 +531,7 @@ public object InvoiceBasicApi {
 
   public fun listToPatients(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -528,7 +546,7 @@ public object InvoiceBasicApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(EncryptedInvoice.serializer())) {
-      NativeReferences.get<CardinalBaseSdk>(sdkId).invoice.listToPatients(
+      NativeReferences.get<CardinalBaseApis>(sdkId).invoice.listToPatients(
         hcPartyId,
       )
     }
@@ -536,6 +554,7 @@ public object InvoiceBasicApi {
 
   public fun listToPatientsUnsent(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -550,7 +569,7 @@ public object InvoiceBasicApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(EncryptedInvoice.serializer())) {
-      NativeReferences.get<CardinalBaseSdk>(sdkId).invoice.listToPatientsUnsent(
+      NativeReferences.get<CardinalBaseApis>(sdkId).invoice.listToPatientsUnsent(
         hcPartyId,
       )
     }
@@ -558,6 +577,7 @@ public object InvoiceBasicApi {
 
   public fun listInvoicesByIds(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -572,7 +592,7 @@ public object InvoiceBasicApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(EncryptedInvoice.serializer())) {
-      NativeReferences.get<CardinalBaseSdk>(sdkId).invoice.listInvoicesByIds(
+      NativeReferences.get<CardinalBaseApis>(sdkId).invoice.listInvoicesByIds(
         ids,
       )
     }
@@ -580,6 +600,7 @@ public object InvoiceBasicApi {
 
   public fun listInvoicesByHcpartySendingModeStatusDate(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -614,7 +635,7 @@ public object InvoiceBasicApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(EncryptedInvoice.serializer())) {
-      NativeReferences.get<CardinalBaseSdk>(sdkId).invoice.listInvoicesByHcpartySendingModeStatusDate(
+      NativeReferences.get<CardinalBaseApis>(sdkId).invoice.listInvoicesByHcpartySendingModeStatusDate(
         hcPartyId,
         sendingMode,
         status,

@@ -9,6 +9,7 @@ class DeviceApiDispatcher {
     resultCallback: @escaping (
       String?,
       String?,
+      String?,
       String?
     ) -> Void
   ) -> Bool {
@@ -44,6 +45,7 @@ class DeviceApiDispatcher {
   private static func getDevice(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     DeviceApi.shared.getDevice(
@@ -54,6 +56,7 @@ class DeviceApiDispatcher {
   }
 
   private static func getDevices(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -68,6 +71,7 @@ class DeviceApiDispatcher {
   private static func createDevice(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     DeviceApi.shared.createDevice(
@@ -78,6 +82,7 @@ class DeviceApiDispatcher {
   }
 
   private static func modifyDevice(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -92,6 +97,7 @@ class DeviceApiDispatcher {
   private static func createDevices(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     DeviceApi.shared.createDevices(
@@ -102,6 +108,7 @@ class DeviceApiDispatcher {
   }
 
   private static func modifyDevices(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -116,6 +123,7 @@ class DeviceApiDispatcher {
   private static func filterDevicesBy(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     DeviceApi.shared.filterDevicesBy(
@@ -126,6 +134,7 @@ class DeviceApiDispatcher {
   }
 
   private static func filterDevicesBySorted(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -140,6 +149,7 @@ class DeviceApiDispatcher {
   private static func matchDevicesBy(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     DeviceApi.shared.matchDevicesBy(
@@ -152,6 +162,7 @@ class DeviceApiDispatcher {
   private static func matchDevicesBySorted(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     DeviceApi.shared.matchDevicesBySorted(
@@ -162,6 +173,7 @@ class DeviceApiDispatcher {
   }
 
   private static func deleteDeviceById(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -177,6 +189,7 @@ class DeviceApiDispatcher {
   private static func deleteDevicesByIds(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     DeviceApi.shared.deleteDevicesByIds(
@@ -187,6 +200,7 @@ class DeviceApiDispatcher {
   }
 
   private static func purgeDeviceById(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -202,6 +216,7 @@ class DeviceApiDispatcher {
   private static func undeleteDeviceById(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     DeviceApi.shared.undeleteDeviceById(
@@ -213,6 +228,7 @@ class DeviceApiDispatcher {
   }
 
   private static func deleteDevice(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -227,6 +243,7 @@ class DeviceApiDispatcher {
   private static func deleteDevices(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     DeviceApi.shared.deleteDevices(
@@ -237,6 +254,7 @@ class DeviceApiDispatcher {
   }
 
   private static func purgeDevice(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -251,6 +269,7 @@ class DeviceApiDispatcher {
   private static func undeleteDevice(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     DeviceApi.shared.undeleteDevice(
@@ -261,6 +280,7 @@ class DeviceApiDispatcher {
   }
 
   private static func getDevicesInGroup(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -276,6 +296,7 @@ class DeviceApiDispatcher {
   private static func modifyDeviceInGroup(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     DeviceApi.shared.modifyDeviceInGroup(
@@ -287,6 +308,7 @@ class DeviceApiDispatcher {
   }
 
   private static func createDeviceInGroup(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -302,6 +324,7 @@ class DeviceApiDispatcher {
   private static func deleteDevicesInGroup(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     DeviceApi.shared.deleteDevicesInGroup(
@@ -313,6 +336,7 @@ class DeviceApiDispatcher {
   }
 
   private static func subscribeToEvents(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?

@@ -9,6 +9,7 @@ class EntityReferenceApiDispatcher {
     resultCallback: @escaping (
       String?,
       String?,
+      String?,
       String?
     ) -> Void
   ) -> Bool {
@@ -23,6 +24,7 @@ class EntityReferenceApiDispatcher {
   private static func getLatest(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     EntityReferenceApi.shared.getLatest(
@@ -33,6 +35,7 @@ class EntityReferenceApiDispatcher {
   }
 
   private static func createEntityReference(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?

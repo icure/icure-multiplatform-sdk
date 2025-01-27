@@ -2,6 +2,7 @@
 import 'package:flutter/services.dart';
 import 'package:cardinal_sdk/model/classification.dart';
 import 'dart:convert';
+import 'package:cardinal_sdk/utils/internal/platform_exception_convertion.dart';
 import 'package:cardinal_sdk/model/patient.dart';
 import 'package:cardinal_sdk/model/user.dart';
 import 'package:cardinal_sdk/model/embed/access_level.dart';
@@ -29,7 +30,7 @@ class ClassificationPlatformApi {
 				"sdkId": sdkId,
 				"entity": jsonEncode(DecryptedClassification.encode(entity)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method createClassification");
 		final parsedResJson = jsonDecode(res);
 		return DecryptedClassification.fromJSON(parsedResJson);
@@ -46,7 +47,7 @@ class ClassificationPlatformApi {
 				"delegates": jsonEncode(delegates.map((k0, v0) => MapEntry(k0, AccessLevel.encode(v0)))),
 				"secretId": jsonEncode(SecretIdUseOption.encode(secretId)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method withEncryptionMetadata");
 		final parsedResJson = jsonDecode(res);
 		return DecryptedClassification.fromJSON(parsedResJson);
@@ -59,7 +60,7 @@ class ClassificationPlatformApi {
 				"sdkId": sdkId,
 				"classification": jsonEncode(Classification.encode(classification)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getEncryptionKeysOf");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => (x1 as HexString) ).toSet();
@@ -72,7 +73,7 @@ class ClassificationPlatformApi {
 				"sdkId": sdkId,
 				"classification": jsonEncode(Classification.encode(classification)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method hasWriteAccess");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as bool);
@@ -85,7 +86,7 @@ class ClassificationPlatformApi {
 				"sdkId": sdkId,
 				"classification": jsonEncode(Classification.encode(classification)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method decryptPatientIdOf");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toSet();
@@ -99,7 +100,7 @@ class ClassificationPlatformApi {
 				"entity": jsonEncode(Classification.encode(entity)),
 				"delegates": jsonEncode(delegates.map((x0) => x0).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 	}
 
 	Future<DecryptedClassification> decrypt(String sdkId, EncryptedClassification classification) async {
@@ -109,7 +110,7 @@ class ClassificationPlatformApi {
 				"sdkId": sdkId,
 				"classification": jsonEncode(EncryptedClassification.encode(classification)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method decrypt");
 		final parsedResJson = jsonDecode(res);
 		return DecryptedClassification.fromJSON(parsedResJson);
@@ -122,7 +123,7 @@ class ClassificationPlatformApi {
 				"sdkId": sdkId,
 				"classification": jsonEncode(EncryptedClassification.encode(classification)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method tryDecrypt");
 		final parsedResJson = jsonDecode(res);
 		return Classification.fromJSON(parsedResJson);
@@ -135,7 +136,7 @@ class ClassificationPlatformApi {
 				"sdkId": sdkId,
 				"filter": jsonEncode(FilterOptions.encode(filter)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method matchClassificationsBy");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toList();
@@ -148,7 +149,7 @@ class ClassificationPlatformApi {
 				"sdkId": sdkId,
 				"filter": jsonEncode(SortableFilterOptions.encode(filter)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method matchClassificationsBySorted");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toList();
@@ -161,7 +162,7 @@ class ClassificationPlatformApi {
 				"sdkId": sdkId,
 				"entityId": jsonEncode(entityId),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method deleteClassification");
 		final parsedResJson = jsonDecode(res);
 		return DocIdentifier.fromJSON(parsedResJson);
@@ -174,7 +175,7 @@ class ClassificationPlatformApi {
 				"sdkId": sdkId,
 				"entityIds": jsonEncode(entityIds.map((x0) => x0).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method deleteClassifications");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => DocIdentifier.fromJSON(x1) ).toList();
@@ -189,7 +190,7 @@ class ClassificationPlatformApi {
 				"classification": jsonEncode(DecryptedClassification.encode(classification)),
 				"options": jsonEncode(options == null ? null : ClassificationShareOptions.encode(options!)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method shareWith");
 		final parsedResJson = jsonDecode(res);
 		return DecryptedClassification.fromJSON(parsedResJson);
@@ -203,7 +204,7 @@ class ClassificationPlatformApi {
 				"classification": jsonEncode(DecryptedClassification.encode(classification)),
 				"delegates": jsonEncode(delegates.map((k0, v0) => MapEntry(k0, ClassificationShareOptions.encode(v0)))),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method shareWithMany");
 		final parsedResJson = jsonDecode(res);
 		return DecryptedClassification.fromJSON(parsedResJson);
@@ -216,7 +217,7 @@ class ClassificationPlatformApi {
 				"sdkId": sdkId,
 				"filter": jsonEncode(FilterOptions.encode(filter)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method filterClassificationsBy");
 		final parsedResJson = jsonDecode(res);
 		return PaginatedListIterator(parsedResJson, (x0) => DecryptedClassification.fromJSON(x0));
@@ -229,7 +230,7 @@ class ClassificationPlatformApi {
 				"sdkId": sdkId,
 				"filter": jsonEncode(SortableFilterOptions.encode(filter)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method filterClassificationsBySorted");
 		final parsedResJson = jsonDecode(res);
 		return PaginatedListIterator(parsedResJson, (x0) => DecryptedClassification.fromJSON(x0));
@@ -242,7 +243,7 @@ class ClassificationPlatformApi {
 				"sdkId": sdkId,
 				"entity": jsonEncode(DecryptedClassification.encode(entity)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method modifyClassification");
 		final parsedResJson = jsonDecode(res);
 		return DecryptedClassification.fromJSON(parsedResJson);
@@ -255,7 +256,7 @@ class ClassificationPlatformApi {
 				"sdkId": sdkId,
 				"entityId": jsonEncode(entityId),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getClassification");
 		final parsedResJson = jsonDecode(res);
 		return DecryptedClassification.fromJSON(parsedResJson);
@@ -268,7 +269,7 @@ class ClassificationPlatformApi {
 				"sdkId": sdkId,
 				"entityIds": jsonEncode(entityIds.map((x0) => x0).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getClassifications");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => DecryptedClassification.fromJSON(x1) ).toList();
@@ -288,7 +289,7 @@ class TryAndRecoverClassificationPlatformApi {
 				"classification": jsonEncode(Classification.encode(classification)),
 				"options": jsonEncode(options == null ? null : ClassificationShareOptions.encode(options!)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method shareWith");
 		final parsedResJson = jsonDecode(res);
 		return Classification.fromJSON(parsedResJson);
@@ -302,7 +303,7 @@ class TryAndRecoverClassificationPlatformApi {
 				"classification": jsonEncode(Classification.encode(classification)),
 				"delegates": jsonEncode(delegates.map((k0, v0) => MapEntry(k0, ClassificationShareOptions.encode(v0)))),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method shareWithMany");
 		final parsedResJson = jsonDecode(res);
 		return Classification.fromJSON(parsedResJson);
@@ -315,7 +316,7 @@ class TryAndRecoverClassificationPlatformApi {
 				"sdkId": sdkId,
 				"filter": jsonEncode(FilterOptions.encode(filter)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method filterClassificationsBy");
 		final parsedResJson = jsonDecode(res);
 		return PaginatedListIterator(parsedResJson, (x0) => Classification.fromJSON(x0));
@@ -328,7 +329,7 @@ class TryAndRecoverClassificationPlatformApi {
 				"sdkId": sdkId,
 				"filter": jsonEncode(SortableFilterOptions.encode(filter)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method filterClassificationsBySorted");
 		final parsedResJson = jsonDecode(res);
 		return PaginatedListIterator(parsedResJson, (x0) => Classification.fromJSON(x0));
@@ -341,7 +342,7 @@ class TryAndRecoverClassificationPlatformApi {
 				"sdkId": sdkId,
 				"entity": jsonEncode(Classification.encode(entity)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method modifyClassification");
 		final parsedResJson = jsonDecode(res);
 		return Classification.fromJSON(parsedResJson);
@@ -354,7 +355,7 @@ class TryAndRecoverClassificationPlatformApi {
 				"sdkId": sdkId,
 				"entityId": jsonEncode(entityId),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getClassification");
 		final parsedResJson = jsonDecode(res);
 		return Classification.fromJSON(parsedResJson);
@@ -367,7 +368,7 @@ class TryAndRecoverClassificationPlatformApi {
 				"sdkId": sdkId,
 				"entityIds": jsonEncode(entityIds.map((x0) => x0).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getClassifications");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => Classification.fromJSON(x1) ).toList();
@@ -387,7 +388,7 @@ class EncryptedClassificationPlatformApi {
 				"classification": jsonEncode(EncryptedClassification.encode(classification)),
 				"options": jsonEncode(options == null ? null : ClassificationShareOptions.encode(options!)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method shareWith");
 		final parsedResJson = jsonDecode(res);
 		return EncryptedClassification.fromJSON(parsedResJson);
@@ -401,7 +402,7 @@ class EncryptedClassificationPlatformApi {
 				"classification": jsonEncode(EncryptedClassification.encode(classification)),
 				"delegates": jsonEncode(delegates.map((k0, v0) => MapEntry(k0, ClassificationShareOptions.encode(v0)))),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method shareWithMany");
 		final parsedResJson = jsonDecode(res);
 		return EncryptedClassification.fromJSON(parsedResJson);
@@ -414,7 +415,7 @@ class EncryptedClassificationPlatformApi {
 				"sdkId": sdkId,
 				"filter": jsonEncode(FilterOptions.encode(filter)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method filterClassificationsBy");
 		final parsedResJson = jsonDecode(res);
 		return PaginatedListIterator(parsedResJson, (x0) => EncryptedClassification.fromJSON(x0));
@@ -427,7 +428,7 @@ class EncryptedClassificationPlatformApi {
 				"sdkId": sdkId,
 				"filter": jsonEncode(SortableFilterOptions.encode(filter)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method filterClassificationsBySorted");
 		final parsedResJson = jsonDecode(res);
 		return PaginatedListIterator(parsedResJson, (x0) => EncryptedClassification.fromJSON(x0));
@@ -440,7 +441,7 @@ class EncryptedClassificationPlatformApi {
 				"sdkId": sdkId,
 				"entity": jsonEncode(EncryptedClassification.encode(entity)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method modifyClassification");
 		final parsedResJson = jsonDecode(res);
 		return EncryptedClassification.fromJSON(parsedResJson);
@@ -453,7 +454,7 @@ class EncryptedClassificationPlatformApi {
 				"sdkId": sdkId,
 				"entityId": jsonEncode(entityId),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getClassification");
 		final parsedResJson = jsonDecode(res);
 		return EncryptedClassification.fromJSON(parsedResJson);
@@ -466,7 +467,7 @@ class EncryptedClassificationPlatformApi {
 				"sdkId": sdkId,
 				"entityIds": jsonEncode(entityIds.map((x0) => x0).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getClassifications");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => EncryptedClassification.fromJSON(x1) ).toList();

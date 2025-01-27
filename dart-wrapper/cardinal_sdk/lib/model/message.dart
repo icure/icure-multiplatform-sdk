@@ -210,50 +210,6 @@ class DecryptedMessage implements Message {
 		securityMetadata = securityMetadata ?? null,
 		_status = status ?? null;
 
-	factory DecryptedMessage.fromJSON(Map<String, dynamic> data) {
-		return DecryptedMessage(
-			(data["id"] as String),
-			status: (data["status"] as int?),
-			rev: (data["rev"] as String?),
-			created: (data["created"] as int?),
-			modified: (data["modified"] as int?),
-			author: (data["author"] as String?),
-			responsible: (data["responsible"] as String?),
-			medicalLocationId: (data["medicalLocationId"] as String?),
-			tags: (data["tags"] as List<dynamic>).map((x0) => CodeStub.fromJSON(x0) ).toSet(),
-			codes: (data["codes"] as List<dynamic>).map((x0) => CodeStub.fromJSON(x0) ).toSet(),
-			endOfLife: (data["endOfLife"] as int?),
-			deletionDate: (data["deletionDate"] as int?),
-			fromAddress: (data["fromAddress"] as String?),
-			fromHealthcarePartyId: (data["fromHealthcarePartyId"] as String?),
-			formId: (data["formId"] as String?),
-			recipientsType: (data["recipientsType"] as String?),
-			recipients: (data["recipients"] as List<dynamic>).map((x0) => (x0 as String) ).toSet(),
-			toAddresses: (data["toAddresses"] as List<dynamic>).map((x0) => (x0 as String) ).toSet(),
-			received: (data["received"] as int?),
-			sent: (data["sent"] as int?),
-			metas: (data["metas"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as String))),
-			readStatus: (data["readStatus"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), MessageReadStatus.fromJSON(v0))),
-			messageAttachments: (data["messageAttachments"] as List<dynamic>).map((x0) => MessageAttachment.fromJSON(x0) ).toList(),
-			transportGuid: (data["transportGuid"] as String?),
-			remark: (data["remark"] as String?),
-			conversationGuid: (data["conversationGuid"] as String?),
-			subject: (data["subject"] as String?),
-			invoiceIds: (data["invoiceIds"] as List<dynamic>).map((x0) => (x0 as String) ).toSet(),
-			parentId: (data["parentId"] as String?),
-			externalRef: (data["externalRef"] as String?),
-			unassignedResults: (data["unassignedResults"] as List<dynamic>).map((x0) => (x0 as String) ).toSet(),
-			assignedResults: (data["assignedResults"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as String))),
-			senderReferences: (data["senderReferences"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as String))),
-			secretForeignKeys: (data["secretForeignKeys"] as List<dynamic>).map((x0) => (x0 as String) ).toSet(),
-			cryptedForeignKeys: (data["cryptedForeignKeys"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as List<dynamic>).map((x1) => Delegation.fromJSON(x1) ).toSet())),
-			delegations: (data["delegations"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as List<dynamic>).map((x1) => Delegation.fromJSON(x1) ).toSet())),
-			encryptionKeys: (data["encryptionKeys"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as List<dynamic>).map((x1) => Delegation.fromJSON(x1) ).toSet())),
-			encryptedSelf: (data["encryptedSelf"] as Base64String?),
-			securityMetadata: data["securityMetadata"] == null ? null : SecurityMetadata.fromJSON(data["securityMetadata"]),
-		);
-	}
-
 	static Map<String, dynamic> encode(DecryptedMessage value) {
 		Map<String, dynamic> entityAsMap = {
 			"id" : value.id,
@@ -297,6 +253,50 @@ class DecryptedMessage implements Message {
 			"securityMetadata" : value.securityMetadata == null ? null : SecurityMetadata.encode(value.securityMetadata!)
 		};
 		return entityAsMap;
+	}
+
+	static DecryptedMessage fromJSON(Map<String, dynamic> data) {
+		return DecryptedMessage(
+			(data["id"] as String),
+			status: (data["status"] as int?),
+			rev: (data["rev"] as String?),
+			created: (data["created"] as int?),
+			modified: (data["modified"] as int?),
+			author: (data["author"] as String?),
+			responsible: (data["responsible"] as String?),
+			medicalLocationId: (data["medicalLocationId"] as String?),
+			tags: (data["tags"] as List<dynamic>).map((x0) => CodeStub.fromJSON(x0) ).toSet(),
+			codes: (data["codes"] as List<dynamic>).map((x0) => CodeStub.fromJSON(x0) ).toSet(),
+			endOfLife: (data["endOfLife"] as int?),
+			deletionDate: (data["deletionDate"] as int?),
+			fromAddress: (data["fromAddress"] as String?),
+			fromHealthcarePartyId: (data["fromHealthcarePartyId"] as String?),
+			formId: (data["formId"] as String?),
+			recipientsType: (data["recipientsType"] as String?),
+			recipients: (data["recipients"] as List<dynamic>).map((x0) => (x0 as String) ).toSet(),
+			toAddresses: (data["toAddresses"] as List<dynamic>).map((x0) => (x0 as String) ).toSet(),
+			received: (data["received"] as int?),
+			sent: (data["sent"] as int?),
+			metas: (data["metas"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as String))),
+			readStatus: (data["readStatus"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), MessageReadStatus.fromJSON(v0))),
+			messageAttachments: (data["messageAttachments"] as List<dynamic>).map((x0) => MessageAttachment.fromJSON(x0) ).toList(),
+			transportGuid: (data["transportGuid"] as String?),
+			remark: (data["remark"] as String?),
+			conversationGuid: (data["conversationGuid"] as String?),
+			subject: (data["subject"] as String?),
+			invoiceIds: (data["invoiceIds"] as List<dynamic>).map((x0) => (x0 as String) ).toSet(),
+			parentId: (data["parentId"] as String?),
+			externalRef: (data["externalRef"] as String?),
+			unassignedResults: (data["unassignedResults"] as List<dynamic>).map((x0) => (x0 as String) ).toSet(),
+			assignedResults: (data["assignedResults"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as String))),
+			senderReferences: (data["senderReferences"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as String))),
+			secretForeignKeys: (data["secretForeignKeys"] as List<dynamic>).map((x0) => (x0 as String) ).toSet(),
+			cryptedForeignKeys: (data["cryptedForeignKeys"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as List<dynamic>).map((x1) => Delegation.fromJSON(x1) ).toSet())),
+			delegations: (data["delegations"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as List<dynamic>).map((x1) => Delegation.fromJSON(x1) ).toSet())),
+			encryptionKeys: (data["encryptionKeys"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as List<dynamic>).map((x1) => Delegation.fromJSON(x1) ).toSet())),
+			encryptedSelf: (data["encryptedSelf"] as Base64String?),
+			securityMetadata: data["securityMetadata"] == null ? null : SecurityMetadata.fromJSON(data["securityMetadata"]),
+		);
 	}
 }
 
@@ -427,50 +427,6 @@ class EncryptedMessage implements Message {
 		securityMetadata = securityMetadata ?? null,
 		_status = status ?? null;
 
-	factory EncryptedMessage.fromJSON(Map<String, dynamic> data) {
-		return EncryptedMessage(
-			(data["id"] as String),
-			status: (data["status"] as int?),
-			rev: (data["rev"] as String?),
-			created: (data["created"] as int?),
-			modified: (data["modified"] as int?),
-			author: (data["author"] as String?),
-			responsible: (data["responsible"] as String?),
-			medicalLocationId: (data["medicalLocationId"] as String?),
-			tags: (data["tags"] as List<dynamic>).map((x0) => CodeStub.fromJSON(x0) ).toSet(),
-			codes: (data["codes"] as List<dynamic>).map((x0) => CodeStub.fromJSON(x0) ).toSet(),
-			endOfLife: (data["endOfLife"] as int?),
-			deletionDate: (data["deletionDate"] as int?),
-			fromAddress: (data["fromAddress"] as String?),
-			fromHealthcarePartyId: (data["fromHealthcarePartyId"] as String?),
-			formId: (data["formId"] as String?),
-			recipientsType: (data["recipientsType"] as String?),
-			recipients: (data["recipients"] as List<dynamic>).map((x0) => (x0 as String) ).toSet(),
-			toAddresses: (data["toAddresses"] as List<dynamic>).map((x0) => (x0 as String) ).toSet(),
-			received: (data["received"] as int?),
-			sent: (data["sent"] as int?),
-			metas: (data["metas"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as String))),
-			readStatus: (data["readStatus"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), MessageReadStatus.fromJSON(v0))),
-			messageAttachments: (data["messageAttachments"] as List<dynamic>).map((x0) => MessageAttachment.fromJSON(x0) ).toList(),
-			transportGuid: (data["transportGuid"] as String?),
-			remark: (data["remark"] as String?),
-			conversationGuid: (data["conversationGuid"] as String?),
-			subject: (data["subject"] as String?),
-			invoiceIds: (data["invoiceIds"] as List<dynamic>).map((x0) => (x0 as String) ).toSet(),
-			parentId: (data["parentId"] as String?),
-			externalRef: (data["externalRef"] as String?),
-			unassignedResults: (data["unassignedResults"] as List<dynamic>).map((x0) => (x0 as String) ).toSet(),
-			assignedResults: (data["assignedResults"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as String))),
-			senderReferences: (data["senderReferences"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as String))),
-			secretForeignKeys: (data["secretForeignKeys"] as List<dynamic>).map((x0) => (x0 as String) ).toSet(),
-			cryptedForeignKeys: (data["cryptedForeignKeys"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as List<dynamic>).map((x1) => Delegation.fromJSON(x1) ).toSet())),
-			delegations: (data["delegations"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as List<dynamic>).map((x1) => Delegation.fromJSON(x1) ).toSet())),
-			encryptionKeys: (data["encryptionKeys"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as List<dynamic>).map((x1) => Delegation.fromJSON(x1) ).toSet())),
-			encryptedSelf: (data["encryptedSelf"] as Base64String?),
-			securityMetadata: data["securityMetadata"] == null ? null : SecurityMetadata.fromJSON(data["securityMetadata"]),
-		);
-	}
-
 	static Map<String, dynamic> encode(EncryptedMessage value) {
 		Map<String, dynamic> entityAsMap = {
 			"id" : value.id,
@@ -514,5 +470,49 @@ class EncryptedMessage implements Message {
 			"securityMetadata" : value.securityMetadata == null ? null : SecurityMetadata.encode(value.securityMetadata!)
 		};
 		return entityAsMap;
+	}
+
+	static EncryptedMessage fromJSON(Map<String, dynamic> data) {
+		return EncryptedMessage(
+			(data["id"] as String),
+			status: (data["status"] as int?),
+			rev: (data["rev"] as String?),
+			created: (data["created"] as int?),
+			modified: (data["modified"] as int?),
+			author: (data["author"] as String?),
+			responsible: (data["responsible"] as String?),
+			medicalLocationId: (data["medicalLocationId"] as String?),
+			tags: (data["tags"] as List<dynamic>).map((x0) => CodeStub.fromJSON(x0) ).toSet(),
+			codes: (data["codes"] as List<dynamic>).map((x0) => CodeStub.fromJSON(x0) ).toSet(),
+			endOfLife: (data["endOfLife"] as int?),
+			deletionDate: (data["deletionDate"] as int?),
+			fromAddress: (data["fromAddress"] as String?),
+			fromHealthcarePartyId: (data["fromHealthcarePartyId"] as String?),
+			formId: (data["formId"] as String?),
+			recipientsType: (data["recipientsType"] as String?),
+			recipients: (data["recipients"] as List<dynamic>).map((x0) => (x0 as String) ).toSet(),
+			toAddresses: (data["toAddresses"] as List<dynamic>).map((x0) => (x0 as String) ).toSet(),
+			received: (data["received"] as int?),
+			sent: (data["sent"] as int?),
+			metas: (data["metas"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as String))),
+			readStatus: (data["readStatus"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), MessageReadStatus.fromJSON(v0))),
+			messageAttachments: (data["messageAttachments"] as List<dynamic>).map((x0) => MessageAttachment.fromJSON(x0) ).toList(),
+			transportGuid: (data["transportGuid"] as String?),
+			remark: (data["remark"] as String?),
+			conversationGuid: (data["conversationGuid"] as String?),
+			subject: (data["subject"] as String?),
+			invoiceIds: (data["invoiceIds"] as List<dynamic>).map((x0) => (x0 as String) ).toSet(),
+			parentId: (data["parentId"] as String?),
+			externalRef: (data["externalRef"] as String?),
+			unassignedResults: (data["unassignedResults"] as List<dynamic>).map((x0) => (x0 as String) ).toSet(),
+			assignedResults: (data["assignedResults"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as String))),
+			senderReferences: (data["senderReferences"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as String))),
+			secretForeignKeys: (data["secretForeignKeys"] as List<dynamic>).map((x0) => (x0 as String) ).toSet(),
+			cryptedForeignKeys: (data["cryptedForeignKeys"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as List<dynamic>).map((x1) => Delegation.fromJSON(x1) ).toSet())),
+			delegations: (data["delegations"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as List<dynamic>).map((x1) => Delegation.fromJSON(x1) ).toSet())),
+			encryptionKeys: (data["encryptionKeys"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as List<dynamic>).map((x1) => Delegation.fromJSON(x1) ).toSet())),
+			encryptedSelf: (data["encryptedSelf"] as Base64String?),
+			securityMetadata: data["securityMetadata"] == null ? null : SecurityMetadata.fromJSON(data["securityMetadata"]),
+		);
 	}
 }

@@ -60,16 +60,6 @@ class EncryptedPropertyStub implements PropertyStub {
 		deletionDate = deletionDate ?? null,
 		encryptedSelf = encryptedSelf ?? null;
 
-	factory EncryptedPropertyStub.fromJSON(Map<String, dynamic> data) {
-		return EncryptedPropertyStub(
-			id: (data["id"] as String?),
-			type: data["type"] == null ? null : PropertyTypeStub.fromJSON(data["type"]),
-			typedValue: data["typedValue"] == null ? null : EncryptedTypedValue.fromJSON(data["typedValue"]),
-			deletionDate: (data["deletionDate"] as int?),
-			encryptedSelf: (data["encryptedSelf"] as Base64String?)
-		);
-	}
-
 	static Map<String, dynamic> encode(EncryptedPropertyStub value) {
 		Map<String, dynamic> entityAsMap = {
 			"id" : value.id,
@@ -79,6 +69,16 @@ class EncryptedPropertyStub implements PropertyStub {
 			"encryptedSelf" : value.encryptedSelf
 		};
 		return entityAsMap;
+	}
+
+	static EncryptedPropertyStub fromJSON(Map<String, dynamic> data) {
+		return EncryptedPropertyStub(
+			id: (data["id"] as String?),
+			type: data["type"] == null ? null : PropertyTypeStub.fromJSON(data["type"]),
+			typedValue: data["typedValue"] == null ? null : EncryptedTypedValue.fromJSON(data["typedValue"]),
+			deletionDate: (data["deletionDate"] as int?),
+			encryptedSelf: (data["encryptedSelf"] as Base64String?)
+		);
 	}
 }
 
@@ -100,16 +100,6 @@ class DecryptedPropertyStub implements PropertyStub {
 		deletionDate = deletionDate ?? null,
 		encryptedSelf = encryptedSelf ?? null;
 
-	factory DecryptedPropertyStub.fromJSON(Map<String, dynamic> data) {
-		return DecryptedPropertyStub(
-			id: (data["id"] as String?),
-			type: data["type"] == null ? null : PropertyTypeStub.fromJSON(data["type"]),
-			typedValue: data["typedValue"] == null ? null : DecryptedTypedValue.fromJSON(data["typedValue"]),
-			deletionDate: (data["deletionDate"] as int?),
-			encryptedSelf: (data["encryptedSelf"] as Base64String?)
-		);
-	}
-
 	static Map<String, dynamic> encode(DecryptedPropertyStub value) {
 		Map<String, dynamic> entityAsMap = {
 			"id" : value.id,
@@ -119,5 +109,15 @@ class DecryptedPropertyStub implements PropertyStub {
 			"encryptedSelf" : value.encryptedSelf
 		};
 		return entityAsMap;
+	}
+
+	static DecryptedPropertyStub fromJSON(Map<String, dynamic> data) {
+		return DecryptedPropertyStub(
+			id: (data["id"] as String?),
+			type: data["type"] == null ? null : PropertyTypeStub.fromJSON(data["type"]),
+			typedValue: data["typedValue"] == null ? null : DecryptedTypedValue.fromJSON(data["typedValue"]),
+			deletionDate: (data["deletionDate"] as int?),
+			encryptedSelf: (data["encryptedSelf"] as Base64String?)
+		);
 	}
 }

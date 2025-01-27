@@ -16,14 +16,6 @@ class ReceiptShareOptions {
 		shareEncryptionKey = shareEncryptionKey ?? ShareMetadataBehaviour.ifAvailable,
 		shareSecretIds = shareSecretIds ?? SecretIdShareOptionsAllAvailable(false);
 
-	factory ReceiptShareOptions.fromJSON(Map<String, dynamic> data) {
-		return ReceiptShareOptions(
-			requestedPermissions: RequestedPermission.fromJSON(data["requestedPermissions"]),
-			shareEncryptionKey: ShareMetadataBehaviour.fromJSON(data["shareEncryptionKey"]),
-			shareSecretIds: SecretIdShareOptions.fromJSON(data["shareSecretIds"])
-		);
-	}
-
 	static Map<String, dynamic> encode(ReceiptShareOptions value) {
 		Map<String, dynamic> entityAsMap = {
 			"requestedPermissions" : RequestedPermission.encode(value.requestedPermissions),
@@ -31,5 +23,13 @@ class ReceiptShareOptions {
 			"shareSecretIds" : SecretIdShareOptions.encode(value.shareSecretIds)
 		};
 		return entityAsMap;
+	}
+
+	static ReceiptShareOptions fromJSON(Map<String, dynamic> data) {
+		return ReceiptShareOptions(
+			requestedPermissions: RequestedPermission.fromJSON(data["requestedPermissions"]),
+			shareEncryptionKey: ShareMetadataBehaviour.fromJSON(data["shareEncryptionKey"]),
+			shareSecretIds: SecretIdShareOptions.fromJSON(data["shareSecretIds"])
+		);
 	}
 }

@@ -16,14 +16,6 @@ class KeyValuePredicate implements Predicate {
 		operator = operator ?? null,
 		value = value ?? null;
 
-	factory KeyValuePredicate.fromJSON(Map<String, dynamic> data) {
-		return KeyValuePredicate(
-			key: (data["key"] as String?),
-			operator: data["operator"] == null ? null : Operator.fromJSON(data["operator"]),
-			value: (data["value"] as AnyPrimitive?)
-		);
-	}
-
 	static Map<String, dynamic> encode(KeyValuePredicate value) {
 		Map<String, dynamic> entityAsMap = {
 			"key" : value.key,
@@ -31,5 +23,13 @@ class KeyValuePredicate implements Predicate {
 			"value" : value.value
 		};
 		return entityAsMap;
+	}
+
+	static KeyValuePredicate fromJSON(Map<String, dynamic> data) {
+		return KeyValuePredicate(
+			key: (data["key"] as String?),
+			operator: data["operator"] == null ? null : Operator.fromJSON(data["operator"]),
+			value: (data["value"] as AnyPrimitive?)
+		);
 	}
 }

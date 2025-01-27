@@ -7,7 +7,11 @@ import 'package:cardinal_sdk/model/data_owner_type.dart';
 
 class DataOwnerApi {
 	final String _sdkId;
-	DataOwnerApi(this._sdkId);
+	final Object _dartSdk;
+	DataOwnerApi(
+		this._sdkId,
+		this._dartSdk
+		);
 
 	Future<DataOwnerWithType> getCurrentDataOwner() async {
 		return await CardinalSdkPlatformInterface.instance.apis.dataOwner.getCurrentDataOwner(

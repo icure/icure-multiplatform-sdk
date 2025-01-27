@@ -9,6 +9,7 @@ class ClassificationBasicApiDispatcher {
     resultCallback: @escaping (
       String?,
       String?,
+      String?,
       String?
     ) -> Void
   ) -> Bool {
@@ -30,6 +31,7 @@ class ClassificationBasicApiDispatcher {
   private static func matchClassificationsBy(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     ClassificationBasicApi.shared.matchClassificationsBy(
@@ -40,6 +42,7 @@ class ClassificationBasicApiDispatcher {
   }
 
   private static func matchClassificationsBySorted(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -54,6 +57,7 @@ class ClassificationBasicApiDispatcher {
   private static func filterClassificationsBy(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     ClassificationBasicApi.shared.filterClassificationsBy(
@@ -64,6 +68,7 @@ class ClassificationBasicApiDispatcher {
   }
 
   private static func filterClassificationsBySorted(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -78,6 +83,7 @@ class ClassificationBasicApiDispatcher {
   private static func deleteClassification(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     ClassificationBasicApi.shared.deleteClassification(
@@ -88,6 +94,7 @@ class ClassificationBasicApiDispatcher {
   }
 
   private static func deleteClassifications(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -102,6 +109,7 @@ class ClassificationBasicApiDispatcher {
   private static func modifyClassification(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     ClassificationBasicApi.shared.modifyClassification(
@@ -114,6 +122,7 @@ class ClassificationBasicApiDispatcher {
   private static func getClassification(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     ClassificationBasicApi.shared.getClassification(
@@ -124,6 +133,7 @@ class ClassificationBasicApiDispatcher {
   }
 
   private static func getClassifications(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?

@@ -1,7 +1,7 @@
 // auto-generated file
 package com.icure.cardinal.sdk.dart.api
 
-import com.icure.cardinal.sdk.CardinalSdk
+import com.icure.cardinal.sdk.CardinalApis
 import com.icure.cardinal.sdk.crypto.entities.ReceiptShareOptions
 import com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption
 import com.icure.cardinal.sdk.dart.utils.ApiScope
@@ -35,6 +35,7 @@ public object ReceiptApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     entityString: String,
@@ -46,7 +47,7 @@ public object ReceiptApi {
     ApiScope.execute(
       dartResultCallback,
       DecryptedReceipt.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).receipt.createReceipt(
+      NativeReferences.get<CardinalApis>(sdkId).receipt.createReceipt(
         entity,
       )
     }
@@ -54,6 +55,7 @@ public object ReceiptApi {
 
   public fun withEncryptionMetadata(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -88,7 +90,7 @@ public object ReceiptApi {
     ApiScope.execute(
       dartResultCallback,
       DecryptedReceipt.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).receipt.withEncryptionMetadata(
+      NativeReferences.get<CardinalApis>(sdkId).receipt.withEncryptionMetadata(
         base,
         patient,
         user,
@@ -100,6 +102,7 @@ public object ReceiptApi {
 
   public fun getAndDecryptReceiptAttachment(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -119,7 +122,7 @@ public object ReceiptApi {
     ApiScope.execute(
       dartResultCallback,
       ByteArraySerializer) {
-      NativeReferences.get<CardinalSdk>(sdkId).receipt.getAndDecryptReceiptAttachment(
+      NativeReferences.get<CardinalApis>(sdkId).receipt.getAndDecryptReceiptAttachment(
         receipt,
         attachmentId,
       )
@@ -128,6 +131,7 @@ public object ReceiptApi {
 
   public fun encryptAndSetReceiptAttachment(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -152,7 +156,7 @@ public object ReceiptApi {
     ApiScope.execute(
       dartResultCallback,
       EncryptedReceipt.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).receipt.encryptAndSetReceiptAttachment(
+      NativeReferences.get<CardinalApis>(sdkId).receipt.encryptAndSetReceiptAttachment(
         receipt,
         blobType,
         attachment,
@@ -162,6 +166,7 @@ public object ReceiptApi {
 
   public fun getEncryptionKeysOf(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -176,7 +181,7 @@ public object ReceiptApi {
     ApiScope.execute(
       dartResultCallback,
       SetSerializer(HexString.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).receipt.getEncryptionKeysOf(
+      NativeReferences.get<CardinalApis>(sdkId).receipt.getEncryptionKeysOf(
         receipt,
       )
     }
@@ -184,6 +189,7 @@ public object ReceiptApi {
 
   public fun hasWriteAccess(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -198,7 +204,7 @@ public object ReceiptApi {
     ApiScope.execute(
       dartResultCallback,
       Boolean.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).receipt.hasWriteAccess(
+      NativeReferences.get<CardinalApis>(sdkId).receipt.hasWriteAccess(
         receipt,
       )
     }
@@ -206,6 +212,7 @@ public object ReceiptApi {
 
   public fun decryptPatientIdOf(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -220,7 +227,7 @@ public object ReceiptApi {
     ApiScope.execute(
       dartResultCallback,
       SetSerializer(String.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).receipt.decryptPatientIdOf(
+      NativeReferences.get<CardinalApis>(sdkId).receipt.decryptPatientIdOf(
         receipt,
       )
     }
@@ -228,6 +235,7 @@ public object ReceiptApi {
 
   public fun createDelegationDeAnonymizationMetadata(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -247,7 +255,7 @@ public object ReceiptApi {
     ApiScope.execute(
       dartResultCallback,
       Unit.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).receipt.createDelegationDeAnonymizationMetadata(
+      NativeReferences.get<CardinalApis>(sdkId).receipt.createDelegationDeAnonymizationMetadata(
         entity,
         delegates,
       )
@@ -256,6 +264,7 @@ public object ReceiptApi {
 
   public fun logReceipt(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -290,7 +299,7 @@ public object ReceiptApi {
     ApiScope.execute(
       dartResultCallback,
       PolymorphicSerializer(Receipt::class)) {
-      NativeReferences.get<CardinalSdk>(sdkId).receipt.logReceipt(
+      NativeReferences.get<CardinalApis>(sdkId).receipt.logReceipt(
         user,
         docId,
         refs,
@@ -305,6 +314,7 @@ public object ReceiptApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     receiptString: String,
@@ -316,7 +326,7 @@ public object ReceiptApi {
     ApiScope.execute(
       dartResultCallback,
       DecryptedReceipt.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).receipt.decrypt(
+      NativeReferences.get<CardinalApis>(sdkId).receipt.decrypt(
         receipt,
       )
     }
@@ -324,6 +334,7 @@ public object ReceiptApi {
 
   public fun tryDecrypt(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -338,7 +349,7 @@ public object ReceiptApi {
     ApiScope.execute(
       dartResultCallback,
       PolymorphicSerializer(Receipt::class)) {
-      NativeReferences.get<CardinalSdk>(sdkId).receipt.tryDecrypt(
+      NativeReferences.get<CardinalApis>(sdkId).receipt.tryDecrypt(
         receipt,
       )
     }
@@ -346,6 +357,7 @@ public object ReceiptApi {
 
   public fun deleteReceipt(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -360,7 +372,7 @@ public object ReceiptApi {
     ApiScope.execute(
       dartResultCallback,
       DocIdentifier.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).receipt.deleteReceipt(
+      NativeReferences.get<CardinalApis>(sdkId).receipt.deleteReceipt(
         entityId,
       )
     }
@@ -368,6 +380,7 @@ public object ReceiptApi {
 
   public fun deleteReceipts(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -382,7 +395,7 @@ public object ReceiptApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(DocIdentifier.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).receipt.deleteReceipts(
+      NativeReferences.get<CardinalApis>(sdkId).receipt.deleteReceipts(
         entityIds,
       )
     }
@@ -390,6 +403,7 @@ public object ReceiptApi {
 
   public fun getRawReceiptAttachment(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -409,7 +423,7 @@ public object ReceiptApi {
     ApiScope.execute(
       dartResultCallback,
       ByteArraySerializer) {
-      NativeReferences.get<CardinalSdk>(sdkId).receipt.getRawReceiptAttachment(
+      NativeReferences.get<CardinalApis>(sdkId).receipt.getRawReceiptAttachment(
         receiptId,
         attachmentId,
       )
@@ -418,6 +432,7 @@ public object ReceiptApi {
 
   public fun setRawReceiptAttachment(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -447,7 +462,7 @@ public object ReceiptApi {
     ApiScope.execute(
       dartResultCallback,
       EncryptedReceipt.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).receipt.setRawReceiptAttachment(
+      NativeReferences.get<CardinalApis>(sdkId).receipt.setRawReceiptAttachment(
         receiptId,
         rev,
         blobType,
@@ -458,6 +473,7 @@ public object ReceiptApi {
 
   public fun shareWith(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -482,7 +498,7 @@ public object ReceiptApi {
     ApiScope.execute(
       dartResultCallback,
       DecryptedReceipt.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).receipt.shareWith(
+      NativeReferences.get<CardinalApis>(sdkId).receipt.shareWith(
         delegateId,
         receipt,
         options,
@@ -492,6 +508,7 @@ public object ReceiptApi {
 
   public fun shareWithMany(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -511,7 +528,7 @@ public object ReceiptApi {
     ApiScope.execute(
       dartResultCallback,
       DecryptedReceipt.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).receipt.shareWithMany(
+      NativeReferences.get<CardinalApis>(sdkId).receipt.shareWithMany(
         receipt,
         delegates,
       )
@@ -520,6 +537,7 @@ public object ReceiptApi {
 
   public fun modifyReceipt(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -534,7 +552,7 @@ public object ReceiptApi {
     ApiScope.execute(
       dartResultCallback,
       DecryptedReceipt.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).receipt.modifyReceipt(
+      NativeReferences.get<CardinalApis>(sdkId).receipt.modifyReceipt(
         entity,
       )
     }
@@ -542,6 +560,7 @@ public object ReceiptApi {
 
   public fun getReceipt(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -556,7 +575,7 @@ public object ReceiptApi {
     ApiScope.execute(
       dartResultCallback,
       DecryptedReceipt.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).receipt.getReceipt(
+      NativeReferences.get<CardinalApis>(sdkId).receipt.getReceipt(
         entityId,
       )
     }
@@ -564,6 +583,7 @@ public object ReceiptApi {
 
   public fun listByReference(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -578,7 +598,7 @@ public object ReceiptApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(DecryptedReceipt.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).receipt.listByReference(
+      NativeReferences.get<CardinalApis>(sdkId).receipt.listByReference(
         reference,
       )
     }
@@ -588,6 +608,7 @@ public object ReceiptApi {
   public object encrypted {
     public fun shareWith(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -612,7 +633,7 @@ public object ReceiptApi {
       ApiScope.execute(
         dartResultCallback,
         EncryptedReceipt.serializer()) {
-        NativeReferences.get<CardinalSdk>(sdkId).receipt.encrypted.shareWith(
+        NativeReferences.get<CardinalApis>(sdkId).receipt.encrypted.shareWith(
           delegateId,
           receipt,
           options,
@@ -622,6 +643,7 @@ public object ReceiptApi {
 
     public fun shareWithMany(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -641,7 +663,7 @@ public object ReceiptApi {
       ApiScope.execute(
         dartResultCallback,
         EncryptedReceipt.serializer()) {
-        NativeReferences.get<CardinalSdk>(sdkId).receipt.encrypted.shareWithMany(
+        NativeReferences.get<CardinalApis>(sdkId).receipt.encrypted.shareWithMany(
           receipt,
           delegates,
         )
@@ -650,6 +672,7 @@ public object ReceiptApi {
 
     public fun modifyReceipt(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -664,7 +687,7 @@ public object ReceiptApi {
       ApiScope.execute(
         dartResultCallback,
         EncryptedReceipt.serializer()) {
-        NativeReferences.get<CardinalSdk>(sdkId).receipt.encrypted.modifyReceipt(
+        NativeReferences.get<CardinalApis>(sdkId).receipt.encrypted.modifyReceipt(
           entity,
         )
       }
@@ -672,6 +695,7 @@ public object ReceiptApi {
 
     public fun getReceipt(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -686,7 +710,7 @@ public object ReceiptApi {
       ApiScope.execute(
         dartResultCallback,
         EncryptedReceipt.serializer()) {
-        NativeReferences.get<CardinalSdk>(sdkId).receipt.encrypted.getReceipt(
+        NativeReferences.get<CardinalApis>(sdkId).receipt.encrypted.getReceipt(
           entityId,
         )
       }
@@ -694,6 +718,7 @@ public object ReceiptApi {
 
     public fun listByReference(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -708,7 +733,7 @@ public object ReceiptApi {
       ApiScope.execute(
         dartResultCallback,
         ListSerializer(EncryptedReceipt.serializer())) {
-        NativeReferences.get<CardinalSdk>(sdkId).receipt.encrypted.listByReference(
+        NativeReferences.get<CardinalApis>(sdkId).receipt.encrypted.listByReference(
           reference,
         )
       }
@@ -719,6 +744,7 @@ public object ReceiptApi {
   public object tryAndRecover {
     public fun shareWith(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -743,7 +769,7 @@ public object ReceiptApi {
       ApiScope.execute(
         dartResultCallback,
         PolymorphicSerializer(Receipt::class)) {
-        NativeReferences.get<CardinalSdk>(sdkId).receipt.tryAndRecover.shareWith(
+        NativeReferences.get<CardinalApis>(sdkId).receipt.tryAndRecover.shareWith(
           delegateId,
           receipt,
           options,
@@ -753,6 +779,7 @@ public object ReceiptApi {
 
     public fun shareWithMany(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -772,7 +799,7 @@ public object ReceiptApi {
       ApiScope.execute(
         dartResultCallback,
         PolymorphicSerializer(Receipt::class)) {
-        NativeReferences.get<CardinalSdk>(sdkId).receipt.tryAndRecover.shareWithMany(
+        NativeReferences.get<CardinalApis>(sdkId).receipt.tryAndRecover.shareWithMany(
           receipt,
           delegates,
         )
@@ -781,6 +808,7 @@ public object ReceiptApi {
 
     public fun modifyReceipt(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -795,7 +823,7 @@ public object ReceiptApi {
       ApiScope.execute(
         dartResultCallback,
         PolymorphicSerializer(Receipt::class)) {
-        NativeReferences.get<CardinalSdk>(sdkId).receipt.tryAndRecover.modifyReceipt(
+        NativeReferences.get<CardinalApis>(sdkId).receipt.tryAndRecover.modifyReceipt(
           entity,
         )
       }
@@ -803,6 +831,7 @@ public object ReceiptApi {
 
     public fun getReceipt(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -817,7 +846,7 @@ public object ReceiptApi {
       ApiScope.execute(
         dartResultCallback,
         PolymorphicSerializer(Receipt::class)) {
-        NativeReferences.get<CardinalSdk>(sdkId).receipt.tryAndRecover.getReceipt(
+        NativeReferences.get<CardinalApis>(sdkId).receipt.tryAndRecover.getReceipt(
           entityId,
         )
       }
@@ -825,6 +854,7 @@ public object ReceiptApi {
 
     public fun listByReference(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -839,7 +869,7 @@ public object ReceiptApi {
       ApiScope.execute(
         dartResultCallback,
         ListSerializer(PolymorphicSerializer(Receipt::class))) {
-        NativeReferences.get<CardinalSdk>(sdkId).receipt.tryAndRecover.listByReference(
+        NativeReferences.get<CardinalApis>(sdkId).receipt.tryAndRecover.listByReference(
           reference,
         )
       }

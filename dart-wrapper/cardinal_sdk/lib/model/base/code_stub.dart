@@ -26,18 +26,6 @@ class CodeStub implements CodeIdentification<String?> {
 		contextLabel = contextLabel ?? null,
 		label = label ?? null;
 
-	factory CodeStub.fromJSON(Map<String, dynamic> data) {
-		return CodeStub(
-			id: (data["id"] as String?),
-			context: (data["context"] as String?),
-			type: (data["type"] as String?),
-			code: (data["code"] as String?),
-			version: (data["version"] as String?),
-			contextLabel: (data["contextLabel"] as String?),
-			label: (data["label"] as Map<String, dynamic>?)?.map((k0, v0) => MapEntry((k0 as String), (v0 as String)))
-		);
-	}
-
 	static Map<String, dynamic> encode(CodeStub value) {
 		Map<String, dynamic> entityAsMap = {
 			"id" : value.id,
@@ -49,5 +37,17 @@ class CodeStub implements CodeIdentification<String?> {
 			"label" : value.label?.map((k0, v0) => MapEntry(k0, v0))
 		};
 		return entityAsMap;
+	}
+
+	static CodeStub fromJSON(Map<String, dynamic> data) {
+		return CodeStub(
+			id: (data["id"] as String?),
+			context: (data["context"] as String?),
+			type: (data["type"] as String?),
+			code: (data["code"] as String?),
+			version: (data["version"] as String?),
+			contextLabel: (data["contextLabel"] as String?),
+			label: (data["label"] as Map<String, dynamic>?)?.map((k0, v0) => MapEntry((k0 as String), (v0 as String)))
+		);
 	}
 }

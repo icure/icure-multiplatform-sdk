@@ -1,11 +1,9 @@
 package com.icure.cardinal.sdk.crypto.impl
 
-import com.icure.kryptom.crypto.CryptoService
 import com.icure.cardinal.sdk.api.DataOwnerApi
 import com.icure.cardinal.sdk.crypto.BaseExchangeDataManager
 import com.icure.cardinal.sdk.crypto.CryptoStrategies
 import com.icure.cardinal.sdk.crypto.UserEncryptionKeysManager
-import com.icure.cardinal.sdk.crypto.UserSignatureKeysManager
 import com.icure.cardinal.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
 import com.icure.cardinal.sdk.crypto.entities.ExchangeDataWithPotentiallyDecryptedContent
 import com.icure.cardinal.sdk.crypto.entities.ExchangeDataWithUnencryptedContent
@@ -14,17 +12,17 @@ import com.icure.cardinal.sdk.model.specializations.AccessControlSecret
 import com.icure.cardinal.sdk.model.specializations.Base64String
 import com.icure.cardinal.sdk.model.specializations.SecureDelegationKeyString
 import com.icure.cardinal.sdk.model.specializations.encodeAsAccessControlHeaders
-import com.icure.utils.InternalIcureApi
 import com.icure.cardinal.sdk.utils.InternalCardinalException
 import com.icure.cardinal.sdk.utils.SingleValueAsyncCache
 import com.icure.cardinal.sdk.utils.ensure
 import com.icure.cardinal.sdk.utils.ensureNonNull
+import com.icure.kryptom.crypto.CryptoService
+import com.icure.utils.InternalIcureApi
 
 @InternalIcureApi
 class FullyCachedExchangeDataManager(
 	base: BaseExchangeDataManager,
 	userEncryptionKeys: UserEncryptionKeysManager,
-	signatureKeys: UserSignatureKeysManager,
 	cryptoStrategies: CryptoStrategies,
 	dataOwnerApi: DataOwnerApi,
 	cryptoService: CryptoService,
@@ -32,7 +30,6 @@ class FullyCachedExchangeDataManager(
 ) : AbstractExchangeDataManager(
 	base,
 	userEncryptionKeys,
-	signatureKeys,
 	cryptoStrategies,
 	dataOwnerApi,
 	cryptoService,

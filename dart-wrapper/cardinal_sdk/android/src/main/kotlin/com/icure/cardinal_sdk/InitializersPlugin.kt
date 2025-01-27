@@ -15,9 +15,9 @@ class InitializersPlugin(
             !dispatch(
                 methodName = call.method,
                 parameters = (call.arguments as Map<String, String>?).orEmpty()
-            ) { success, errorCode, errorMessage ->
+            ) { success, errorCode, errorMessage, errorDetail ->
                 if (errorCode != null)
-                    result.error(errorCode, errorMessage, null)
+                    result.error(errorCode, errorMessage, errorDetail)
                 else
                     result.success(success)
             }
@@ -31,9 +31,13 @@ class InitializersPlugin(
             String?,
             String?,
             String?,
+            String?,
         ) -> Unit,
     ): Boolean = when (methodName) {
         "initialize" -> initialize(parameters, resultCallback)
+        "initializeBase" -> initializeBase(parameters, resultCallback)
+        "switchGroup" -> switchGroup(parameters, resultCallback)
+        "baseSwitchGroup" -> baseSwitchGroup(parameters, resultCallback)
         "initializeWithAuthProcess" -> initializeWithAuthProcess(parameters, resultCallback)
         "completeAuthentication" -> completeAuthentication(parameters, resultCallback)
         else -> null
@@ -42,6 +46,7 @@ class InitializersPlugin(
     private fun initialize(
         parameters: Map<String, String>,
         resultCallback: (
+            String?,
             String?,
             String?,
             String?,
@@ -60,9 +65,60 @@ class InitializersPlugin(
         )
     }
 
+    private fun initializeBase(
+        parameters: Map<String, String>,
+        resultCallback: (
+            String?,
+            String?,
+            String?,
+            String?,
+        ) -> Unit,
+    ) {
+        Initializers.initializeBaseSdk(
+            resultCallback,
+            applicationIdString = parameters.getValue("applicationId"),
+            baseUrlString = parameters.getValue("baseUrl"),
+            authenticationMethodString = parameters.getValue("authenticationMethod"),
+            optionsString = parameters.getValue("options")
+        )
+    }
+
+    private fun switchGroup(
+        parameters: Map<String, String>,
+        resultCallback: (
+            String?,
+            String?,
+            String?,
+            String?,
+        ) -> Unit,
+    ) {
+        Initializers.switchGroup(
+            resultCallback,
+            sdkId = parameters.getValue("sdkId"),
+            groupId = parameters.getValue("groupId"),
+        )
+    }
+
+    private fun baseSwitchGroup(
+        parameters: Map<String, String>,
+        resultCallback: (
+            String?,
+            String?,
+            String?,
+            String?,
+        ) -> Unit,
+    ) {
+        Initializers.baseSwitchGroup(
+            resultCallback,
+            sdkId = parameters.getValue("sdkId"),
+            groupId = parameters.getValue("groupId"),
+        )
+    }
+
     private fun initializeWithAuthProcess(
         parameters: Map<String, String>,
         resultCallback: (
+            String?,
             String?,
             String?,
             String?,
@@ -90,6 +146,7 @@ class InitializersPlugin(
     private fun completeAuthentication(
         parameters: Map<String, String>,
         resultCallback: (
+            String?,
             String?,
             String?,
             String?,

@@ -41,23 +41,6 @@ class UserGroup {
 		deviceId = deviceId ?? null,
 		nameOfParentOfTopmostGroupInHierarchy = nameOfParentOfTopmostGroupInHierarchy ?? null;
 
-	factory UserGroup.fromJSON(Map<String, dynamic> data) {
-		return UserGroup(
-			groupId: (data["groupId"] as String?),
-			groupName: (data["groupName"] as String?),
-			groupsHierarchy: (data["groupsHierarchy"] as List<dynamic>).map((x0) => Group.fromJSON(x0) ).toList(),
-			userId: (data["userId"] as String?),
-			login: (data["login"] as String?),
-			name: (data["name"] as String?),
-			email: (data["email"] as String?),
-			phone: (data["phone"] as String?),
-			patientId: (data["patientId"] as String?),
-			healthcarePartyId: (data["healthcarePartyId"] as String?),
-			deviceId: (data["deviceId"] as String?),
-			nameOfParentOfTopmostGroupInHierarchy: (data["nameOfParentOfTopmostGroupInHierarchy"] as String?)
-		);
-	}
-
 	static Map<String, dynamic> encode(UserGroup value) {
 		Map<String, dynamic> entityAsMap = {
 			"groupId" : value.groupId,
@@ -74,5 +57,22 @@ class UserGroup {
 			"nameOfParentOfTopmostGroupInHierarchy" : value.nameOfParentOfTopmostGroupInHierarchy
 		};
 		return entityAsMap;
+	}
+
+	static UserGroup fromJSON(Map<String, dynamic> data) {
+		return UserGroup(
+			groupId: (data["groupId"] as String?),
+			groupName: (data["groupName"] as String?),
+			groupsHierarchy: (data["groupsHierarchy"] as List<dynamic>).map((x0) => Group.fromJSON(x0) ).toList(),
+			userId: (data["userId"] as String?),
+			login: (data["login"] as String?),
+			name: (data["name"] as String?),
+			email: (data["email"] as String?),
+			phone: (data["phone"] as String?),
+			patientId: (data["patientId"] as String?),
+			healthcarePartyId: (data["healthcarePartyId"] as String?),
+			deviceId: (data["deviceId"] as String?),
+			nameOfParentOfTopmostGroupInHierarchy: (data["nameOfParentOfTopmostGroupInHierarchy"] as String?)
+		);
 	}
 }

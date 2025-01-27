@@ -13,12 +13,14 @@ import 'package:cardinal_sdk/crypto/entities/receipt_share_options.dart';
 
 class ReceiptApi {
 	final String _sdkId;
+	final Object _dartSdk;
 	final TryAndRecoverReceiptApi tryAndRecover;
 	final EncryptedReceiptApi encrypted;
 	ReceiptApi(
-		this._sdkId
-		) : tryAndRecover = TryAndRecoverReceiptApi(_sdkId),
-		encrypted = EncryptedReceiptApi(_sdkId);
+		this._sdkId,
+		this._dartSdk
+		) : tryAndRecover = TryAndRecoverReceiptApi(_sdkId, _dartSdk),
+		encrypted = EncryptedReceiptApi(_sdkId, _dartSdk);
 
 	Future<DecryptedReceipt> createReceipt(DecryptedReceipt entity) async {
 		return await CardinalSdkPlatformInterface.instance.apis.receipt.createReceipt(
@@ -182,7 +184,11 @@ class ReceiptApi {
 
 class TryAndRecoverReceiptApi {
 	final String _sdkId;
-	TryAndRecoverReceiptApi(this._sdkId);
+	final Object _dartSdk;
+	TryAndRecoverReceiptApi(
+		this._sdkId,
+		this._dartSdk
+		);
 
 	Future<Receipt> shareWith(String delegateId, Receipt receipt, { ReceiptShareOptions? options }) async {
 		return await CardinalSdkPlatformInterface.instance.apis.receipt.tryAndRecover.shareWith(
@@ -225,7 +231,11 @@ class TryAndRecoverReceiptApi {
 
 class EncryptedReceiptApi {
 	final String _sdkId;
-	EncryptedReceiptApi(this._sdkId);
+	final Object _dartSdk;
+	EncryptedReceiptApi(
+		this._sdkId,
+		this._dartSdk
+		);
 
 	Future<EncryptedReceipt> shareWith(String delegateId, EncryptedReceipt receipt, { ReceiptShareOptions? options }) async {
 		return await CardinalSdkPlatformInterface.instance.apis.receipt.encrypted.shareWith(

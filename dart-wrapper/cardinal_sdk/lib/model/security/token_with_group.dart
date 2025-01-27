@@ -12,14 +12,6 @@ class TokenWithGroup {
 			String? groupName
 		}) : groupName = groupName ?? null;
 
-	factory TokenWithGroup.fromJSON(Map<String, dynamic> data) {
-		return TokenWithGroup(
-			(data["token"] as String),
-			(data["groupId"] as String),
-			groupName: (data["groupName"] as String?),
-		);
-	}
-
 	static Map<String, dynamic> encode(TokenWithGroup value) {
 		Map<String, dynamic> entityAsMap = {
 			"token" : value.token,
@@ -27,5 +19,13 @@ class TokenWithGroup {
 			"groupName" : value.groupName
 		};
 		return entityAsMap;
+	}
+
+	static TokenWithGroup fromJSON(Map<String, dynamic> data) {
+		return TokenWithGroup(
+			(data["token"] as String),
+			(data["groupId"] as String),
+			groupName: (data["groupName"] as String?),
+		);
 	}
 }

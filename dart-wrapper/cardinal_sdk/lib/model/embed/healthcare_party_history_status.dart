@@ -14,15 +14,6 @@ class HealthcarePartyHistoryStatus {
 		this.active
 		);
 
-	factory HealthcarePartyHistoryStatus.fromJSON(Map<String, dynamic> data) {
-		return HealthcarePartyHistoryStatus(
-			HealthcarePartyStatus.fromJSON(data["status"]),
-			(data["specialisationCode"] as String),
-			(data["startDate"] as int),
-			(data["active"] as bool)
-		);
-	}
-
 	static Map<String, dynamic> encode(HealthcarePartyHistoryStatus value) {
 		Map<String, dynamic> entityAsMap = {
 			"status" : HealthcarePartyStatus.encode(value.status),
@@ -31,5 +22,14 @@ class HealthcarePartyHistoryStatus {
 			"active" : value.active
 		};
 		return entityAsMap;
+	}
+
+	static HealthcarePartyHistoryStatus fromJSON(Map<String, dynamic> data) {
+		return HealthcarePartyHistoryStatus(
+			HealthcarePartyStatus.fromJSON(data["status"]),
+			(data["specialisationCode"] as String),
+			(data["startDate"] as int),
+			(data["active"] as bool)
+		);
 	}
 }

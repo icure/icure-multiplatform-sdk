@@ -1,7 +1,7 @@
 // auto-generated file
 package com.icure.cardinal.sdk.dart.api
 
-import com.icure.cardinal.sdk.CardinalSdk
+import com.icure.cardinal.sdk.CardinalNonCryptoApis
 import com.icure.cardinal.sdk.dart.utils.ApiScope
 import com.icure.cardinal.sdk.dart.utils.NativeReferences
 import com.icure.cardinal.sdk.model.DatabaseInitialisation
@@ -39,16 +39,18 @@ public object GroupApi {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit, sdkId: String) {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(Group.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).group.listGroups()
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).group.listGroups()
     }
   }
 
   public fun getGroup(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -63,7 +65,7 @@ public object GroupApi {
     ApiScope.execute(
       dartResultCallback,
       Group.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).group.getGroup(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).group.getGroup(
         id,
       )
     }
@@ -71,6 +73,7 @@ public object GroupApi {
 
   public fun createGroup(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -130,7 +133,7 @@ public object GroupApi {
     ApiScope.execute(
       dartResultCallback,
       Group.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).group.createGroup(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).group.createGroup(
         id,
         name,
         type,
@@ -147,6 +150,7 @@ public object GroupApi {
 
   public fun registerNewGroupAdministrator(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -171,7 +175,7 @@ public object GroupApi {
     ApiScope.execute(
       dartResultCallback,
       RegistrationSuccess.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).group.registerNewGroupAdministrator(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).group.registerNewGroupAdministrator(
         type,
         role,
         registrationInformation,
@@ -183,16 +187,18 @@ public object GroupApi {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit, sdkId: String) {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(Group.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).group.listApps()
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).group.listApps()
     }
   }
 
   public fun getNameOfGroupParent(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -207,7 +213,7 @@ public object GroupApi {
     ApiScope.execute(
       dartResultCallback,
       String.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).group.getNameOfGroupParent(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).group.getNameOfGroupParent(
         id,
       )
     }
@@ -215,6 +221,7 @@ public object GroupApi {
 
   public fun modifyGroupName(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -234,7 +241,7 @@ public object GroupApi {
     ApiScope.execute(
       dartResultCallback,
       Group.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).group.modifyGroupName(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).group.modifyGroupName(
         id,
         name,
       )
@@ -243,6 +250,7 @@ public object GroupApi {
 
   public fun getOperationToken(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -267,7 +275,7 @@ public object GroupApi {
     ApiScope.execute(
       dartResultCallback,
       String.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).group.getOperationToken(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).group.getOperationToken(
         operation,
         duration,
         description,
@@ -277,6 +285,7 @@ public object GroupApi {
 
   public fun deleteOperationToken(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -291,7 +300,7 @@ public object GroupApi {
     ApiScope.execute(
       dartResultCallback,
       Unit.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).group.deleteOperationToken(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).group.deleteOperationToken(
         tokenId,
       )
     }
@@ -299,6 +308,7 @@ public object GroupApi {
 
   public fun setDefaultRoles(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -323,7 +333,7 @@ public object GroupApi {
     ApiScope.execute(
       dartResultCallback,
       Group.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).group.setDefaultRoles(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).group.setDefaultRoles(
         groupId,
         userType,
         roleIds,
@@ -333,6 +343,7 @@ public object GroupApi {
 
   public fun getDefaultRoles(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -347,7 +358,7 @@ public object GroupApi {
     ApiScope.execute(
       dartResultCallback,
       MapSerializer(UserType.serializer(), ListSerializer(RoleConfiguration.serializer()))) {
-      NativeReferences.get<CardinalSdk>(sdkId).group.getDefaultRoles(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).group.getDefaultRoles(
         groupId,
       )
     }
@@ -355,6 +366,7 @@ public object GroupApi {
 
   public fun deleteGroup(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -369,7 +381,7 @@ public object GroupApi {
     ApiScope.execute(
       dartResultCallback,
       Group.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).group.deleteGroup(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).group.deleteGroup(
         id,
       )
     }
@@ -377,6 +389,7 @@ public object GroupApi {
 
   public fun changeSuperGroup(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -396,7 +409,7 @@ public object GroupApi {
     ApiScope.execute(
       dartResultCallback,
       Group.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).group.changeSuperGroup(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).group.changeSuperGroup(
         childGroupId,
         operationToken,
       )
@@ -405,6 +418,7 @@ public object GroupApi {
 
   public fun hardDeleteGroup(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -419,7 +433,7 @@ public object GroupApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(GroupDeletionReport.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).group.hardDeleteGroup(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).group.hardDeleteGroup(
         id,
       )
     }
@@ -427,6 +441,7 @@ public object GroupApi {
 
   public fun modifyGroupProperties(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -446,7 +461,7 @@ public object GroupApi {
     ApiScope.execute(
       dartResultCallback,
       Group.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).group.modifyGroupProperties(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).group.modifyGroupProperties(
         id,
         properties,
       )
@@ -455,6 +470,7 @@ public object GroupApi {
 
   public fun setGroupPassword(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -474,7 +490,7 @@ public object GroupApi {
     ApiScope.execute(
       dartResultCallback,
       Group.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).group.setGroupPassword(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).group.setGroupPassword(
         id,
         password,
       )
@@ -483,6 +499,7 @@ public object GroupApi {
 
   public fun initDesignDocs(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -512,7 +529,7 @@ public object GroupApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(DesignDocument.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).group.initDesignDocs(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).group.initDesignDocs(
         id,
         clazz,
         warmup,
@@ -523,6 +540,7 @@ public object GroupApi {
 
   public fun solveConflicts(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -547,7 +565,7 @@ public object GroupApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(IdWithRev.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).group.solveConflicts(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).group.solveConflicts(
         id,
         limit,
         warmup,
@@ -557,6 +575,7 @@ public object GroupApi {
 
   public fun resetStorage(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -586,7 +605,7 @@ public object GroupApi {
     ApiScope.execute(
       dartResultCallback,
       Unit.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).group.resetStorage(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).group.resetStorage(
         id,
         q,
         n,
@@ -597,6 +616,7 @@ public object GroupApi {
 
   public fun getGroupsStorageInfos(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -611,7 +631,7 @@ public object GroupApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(GroupDatabasesInfo.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).group.getGroupsStorageInfos(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).group.getGroupsStorageInfos(
         groups,
       )
     }
@@ -619,6 +639,7 @@ public object GroupApi {
 
   public fun getReplicationInfo(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -633,7 +654,7 @@ public object GroupApi {
     ApiScope.execute(
       dartResultCallback,
       ReplicationInfo.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).group.getReplicationInfo(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).group.getReplicationInfo(
         id,
       )
     }
@@ -641,6 +662,7 @@ public object GroupApi {
 
   public fun getHierarchy(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -655,7 +677,7 @@ public object GroupApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(String.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).group.getHierarchy(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).group.getHierarchy(
         id,
       )
     }
@@ -665,11 +687,12 @@ public object GroupApi {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit, sdkId: String) {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(DocIdentifier.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).group.listAllGroupsIds()
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).group.listAllGroupsIds()
     }
   }
 }

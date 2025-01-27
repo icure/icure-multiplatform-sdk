@@ -19,15 +19,6 @@ class MessageShareOptions {
 		sharePatientId = sharePatientId ?? ShareMetadataBehaviour.ifAvailable,
 		shareSecretIds = shareSecretIds ?? SecretIdShareOptionsAllAvailable(false);
 
-	factory MessageShareOptions.fromJSON(Map<String, dynamic> data) {
-		return MessageShareOptions(
-			requestedPermissions: RequestedPermission.fromJSON(data["requestedPermissions"]),
-			shareEncryptionKey: ShareMetadataBehaviour.fromJSON(data["shareEncryptionKey"]),
-			sharePatientId: ShareMetadataBehaviour.fromJSON(data["sharePatientId"]),
-			shareSecretIds: SecretIdShareOptions.fromJSON(data["shareSecretIds"])
-		);
-	}
-
 	static Map<String, dynamic> encode(MessageShareOptions value) {
 		Map<String, dynamic> entityAsMap = {
 			"requestedPermissions" : RequestedPermission.encode(value.requestedPermissions),
@@ -36,5 +27,14 @@ class MessageShareOptions {
 			"shareSecretIds" : SecretIdShareOptions.encode(value.shareSecretIds)
 		};
 		return entityAsMap;
+	}
+
+	static MessageShareOptions fromJSON(Map<String, dynamic> data) {
+		return MessageShareOptions(
+			requestedPermissions: RequestedPermission.fromJSON(data["requestedPermissions"]),
+			shareEncryptionKey: ShareMetadataBehaviour.fromJSON(data["shareEncryptionKey"]),
+			sharePatientId: ShareMetadataBehaviour.fromJSON(data["sharePatientId"]),
+			shareSecretIds: SecretIdShareOptions.fromJSON(data["shareSecretIds"])
+		);
 	}
 }

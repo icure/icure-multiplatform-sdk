@@ -14,14 +14,6 @@ class AdministrationQuantity {
 		administrationUnit = administrationUnit ?? null,
 		unit = unit ?? null;
 
-	factory AdministrationQuantity.fromJSON(Map<String, dynamic> data) {
-		return AdministrationQuantity(
-			quantity: (data["quantity"] as num?)?.toDouble(),
-			administrationUnit: data["administrationUnit"] == null ? null : CodeStub.fromJSON(data["administrationUnit"]),
-			unit: (data["unit"] as String?)
-		);
-	}
-
 	static Map<String, dynamic> encode(AdministrationQuantity value) {
 		Map<String, dynamic> entityAsMap = {
 			"quantity" : value.quantity,
@@ -29,5 +21,13 @@ class AdministrationQuantity {
 			"unit" : value.unit
 		};
 		return entityAsMap;
+	}
+
+	static AdministrationQuantity fromJSON(Map<String, dynamic> data) {
+		return AdministrationQuantity(
+			quantity: (data["quantity"] as num?)?.toDouble(),
+			administrationUnit: data["administrationUnit"] == null ? null : CodeStub.fromJSON(data["administrationUnit"]),
+			unit: (data["unit"] as String?)
+		);
 	}
 }

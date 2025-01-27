@@ -27,6 +27,7 @@ public object FormFilters {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     dataOwnerIdString: String,
     parentIdString: String,
@@ -54,6 +55,7 @@ public object FormFilters {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit, parentIdString: String) {
     val parentId = fullLanguageInteropJson.decodeFromString(
       String.serializer(),
@@ -71,6 +73,7 @@ public object FormFilters {
 
   public fun byPatientsOpeningDateForDataOwner(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -120,6 +123,7 @@ public object FormFilters {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     patientsString: String,
     fromString: String,
@@ -157,6 +161,7 @@ public object FormFilters {
 
   public fun byPatientSecretIdsOpeningDateForDataOwner(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -206,6 +211,7 @@ public object FormFilters {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     secretIdsString: String,
     fromString: String,
@@ -246,6 +252,7 @@ public object FormFilters {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     logicalUuidString: String,
     descendingString: String,
@@ -271,6 +278,7 @@ public object FormFilters {
 
   public fun byUniqueId(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,

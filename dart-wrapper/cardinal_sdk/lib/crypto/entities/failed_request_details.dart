@@ -29,18 +29,6 @@ class FailedRequestDetails {
 			this.request
 		}) : _code = code;
 
-	factory FailedRequestDetails.fromJSON(Map<String, dynamic> data) {
-		return FailedRequestDetails(
-			(data["entityId"] as String),
-			(data["delegateId"] as String),
-			(data["updatedForMigration"] as bool),
-			(data["shouldRetry"] as bool),
-			code: (data["code"] as int?),
-			reason: (data["reason"] as String?),
-			request: data["request"] == null ? null : DelegateShareOptions.fromJSON(data["request"]),
-		);
-	}
-
 	static Map<String, dynamic> encode(FailedRequestDetails value) {
 		Map<String, dynamic> entityAsMap = {
 			"entityId" : value.entityId,
@@ -52,5 +40,17 @@ class FailedRequestDetails {
 			"shouldRetry" : value.shouldRetry
 		};
 		return entityAsMap;
+	}
+
+	static FailedRequestDetails fromJSON(Map<String, dynamic> data) {
+		return FailedRequestDetails(
+			(data["entityId"] as String),
+			(data["delegateId"] as String),
+			(data["updatedForMigration"] as bool),
+			(data["shouldRetry"] as bool),
+			code: (data["code"] as int?),
+			reason: (data["reason"] as String?),
+			request: data["request"] == null ? null : DelegateShareOptions.fromJSON(data["request"]),
+		);
 	}
 }

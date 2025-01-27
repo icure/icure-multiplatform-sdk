@@ -22,6 +22,7 @@ public object TimeTableFilters {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit, agendaIdString: String) {
     val agendaId = fullLanguageInteropJson.decodeFromString(
       String.serializer(),
@@ -39,6 +40,7 @@ public object TimeTableFilters {
 
   public fun byPeriodAndAgendaId(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,

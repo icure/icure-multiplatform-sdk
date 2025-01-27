@@ -34,16 +34,6 @@ class EntitySubscriptionConfiguration {
 		_channelBufferCapacity = channelBufferCapacity ?? 100,
 		_connectionMaxRetries = connectionMaxRetries ?? 5;
 
-	factory EntitySubscriptionConfiguration.fromJSON(Map<String, dynamic> data) {
-		return EntitySubscriptionConfiguration(
-			channelBufferCapacity: (data["channelBufferCapacity"] as int),
-			connectionMaxRetries: (data["connectionMaxRetries"] as int),
-			onBufferFull: EntitySubscriptionConfigurationFullBufferBehaviour.fromJSON(data["onBufferFull"]),
-			reconnectionDelay: Duration(milliseconds: data["reconnectionDelay"]),
-			retryDelayExponentFactor: (data["retryDelayExponentFactor"] as num).toDouble()
-		);
-	}
-
 	static Map<String, dynamic> encode(EntitySubscriptionConfiguration value) {
 		Map<String, dynamic> entityAsMap = {
 			"channelBufferCapacity" : value.channelBufferCapacity,
@@ -53,6 +43,16 @@ class EntitySubscriptionConfiguration {
 			"connectionMaxRetries" : value.connectionMaxRetries
 		};
 		return entityAsMap;
+	}
+
+	static EntitySubscriptionConfiguration fromJSON(Map<String, dynamic> data) {
+		return EntitySubscriptionConfiguration(
+			channelBufferCapacity: (data["channelBufferCapacity"] as int),
+			connectionMaxRetries: (data["connectionMaxRetries"] as int),
+			onBufferFull: EntitySubscriptionConfigurationFullBufferBehaviour.fromJSON(data["onBufferFull"]),
+			reconnectionDelay: Duration(milliseconds: data["reconnectionDelay"]),
+			retryDelayExponentFactor: (data["retryDelayExponentFactor"] as num).toDouble()
+		);
 	}
 }
 

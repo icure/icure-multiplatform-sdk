@@ -15,6 +15,7 @@ public object TopicFiltersDispatcher {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
   ): Boolean = when(methodName) {
     "allTopicsForDataOwner" -> allTopicsForDataOwner(parameters, resultCallback)
@@ -24,6 +25,7 @@ public object TopicFiltersDispatcher {
   }?.let { true } ?: false
 
   private fun allTopicsForDataOwner(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -38,6 +40,7 @@ public object TopicFiltersDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     TopicFilters.allTopicsForSelf(
       resultCallback,
@@ -45,6 +48,7 @@ public object TopicFiltersDispatcher {
   }
 
   private fun byParticipant(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,

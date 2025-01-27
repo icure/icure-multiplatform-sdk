@@ -1,4 +1,3 @@
-// auto-generated file
 package com.icure.cardinal_sdk.filters
 
 import com.icure.cardinal.sdk.dart.filters.MetaFilters
@@ -12,6 +11,7 @@ public object MetaFiltersDispatcher {
     methodName: String,
     parameters: Map<String, String>,
     resultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -34,6 +34,7 @@ public object MetaFiltersDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     MetaFilters.intersection(
       resultCallback,
@@ -43,6 +44,7 @@ public object MetaFiltersDispatcher {
   }
 
   private fun sortableIntersection(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -58,6 +60,7 @@ public object MetaFiltersDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     MetaFilters.baseIntersection(
       resultCallback,
@@ -67,6 +70,7 @@ public object MetaFiltersDispatcher {
   }
 
   private fun baseSortableIntersection(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -82,6 +86,7 @@ public object MetaFiltersDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     MetaFilters.difference(
       resultCallback,
@@ -91,6 +96,7 @@ public object MetaFiltersDispatcher {
   }
 
   private fun sortableDifference(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -106,6 +112,7 @@ public object MetaFiltersDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     MetaFilters.baseDifference(
       resultCallback,
@@ -115,6 +122,7 @@ public object MetaFiltersDispatcher {
   }
 
   private fun baseSortableDifference(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -130,6 +138,7 @@ public object MetaFiltersDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     MetaFilters.union(
       resultCallback,
@@ -139,6 +148,7 @@ public object MetaFiltersDispatcher {
   }
 
   private fun baseUnion(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,

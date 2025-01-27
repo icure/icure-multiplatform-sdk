@@ -1,9 +1,9 @@
 # auto-generated file
-import asyncio
 import json
 import base64
 from cardinal_sdk.model import DocumentTemplate, DocIdentifier
-from cardinal_sdk.kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols
+from cardinal_sdk.async_utils import execute_async_method_job
+from cardinal_sdk.kotlin_types import symbols
 from cardinal_sdk.model.CallResult import create_result_from_json, interpret_kt_error
 from ctypes import cast, c_char_p
 from typing import List
@@ -15,27 +15,19 @@ class DocumentTemplateApi:
 		self.cardinal_sdk = cardinal_sdk
 
 	async def get_document_template_async(self, document_template_id: str) -> DocumentTemplate:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = DocumentTemplate._deserialize(json.loads(success.decode('utf-8')))
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return DocumentTemplate._deserialize(raw_result)
 		payload = {
 			"documentTemplateId": document_template_id,
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentTemplateApi.getDocumentTemplateAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def get_document_template_blocking(self, document_template_id: str) -> DocumentTemplate:
 		payload = {
@@ -54,27 +46,19 @@ class DocumentTemplateApi:
 			return return_value
 
 	async def create_document_template_async(self, document_template: DocumentTemplate) -> DocumentTemplate:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = DocumentTemplate._deserialize(json.loads(success.decode('utf-8')))
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return DocumentTemplate._deserialize(raw_result)
 		payload = {
 			"documentTemplate": document_template.__serialize__(),
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentTemplateApi.createDocumentTemplateAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def create_document_template_blocking(self, document_template: DocumentTemplate) -> DocumentTemplate:
 		payload = {
@@ -93,27 +77,19 @@ class DocumentTemplateApi:
 			return return_value
 
 	async def modify_document_template_async(self, document_template: DocumentTemplate) -> DocumentTemplate:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = DocumentTemplate._deserialize(json.loads(success.decode('utf-8')))
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return DocumentTemplate._deserialize(raw_result)
 		payload = {
 			"documentTemplate": document_template.__serialize__(),
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentTemplateApi.modifyDocumentTemplateAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def modify_document_template_blocking(self, document_template: DocumentTemplate) -> DocumentTemplate:
 		payload = {
@@ -132,27 +108,19 @@ class DocumentTemplateApi:
 			return return_value
 
 	async def delete_document_templates_async(self, document_template_ids: List[str]) -> List[DocIdentifier]:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = [DocIdentifier._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return [DocIdentifier._deserialize(x1) for x1 in raw_result]
 		payload = {
 			"documentTemplateIds": [x0 for x0 in document_template_ids],
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentTemplateApi.deleteDocumentTemplatesAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def delete_document_templates_blocking(self, document_template_ids: List[str]) -> List[DocIdentifier]:
 		payload = {
@@ -171,27 +139,19 @@ class DocumentTemplateApi:
 			return return_value
 
 	async def list_document_templates_by_speciality_async(self, speciality_code: str) -> List[DocumentTemplate]:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = [DocumentTemplate._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return [DocumentTemplate._deserialize(x1) for x1 in raw_result]
 		payload = {
 			"specialityCode": speciality_code,
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentTemplateApi.listDocumentTemplatesBySpecialityAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def list_document_templates_by_speciality_blocking(self, speciality_code: str) -> List[DocumentTemplate]:
 		payload = {
@@ -210,27 +170,19 @@ class DocumentTemplateApi:
 			return return_value
 
 	async def list_document_templates_by_document_type_async(self, document_type_code: str) -> List[DocumentTemplate]:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = [DocumentTemplate._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return [DocumentTemplate._deserialize(x1) for x1 in raw_result]
 		payload = {
 			"documentTypeCode": document_type_code,
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentTemplateApi.listDocumentTemplatesByDocumentTypeAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def list_document_templates_by_document_type_blocking(self, document_type_code: str) -> List[DocumentTemplate]:
 		payload = {
@@ -249,27 +201,19 @@ class DocumentTemplateApi:
 			return return_value
 
 	async def list_document_templates_by_document_type_for_current_user_async(self, document_type_code: str) -> List[DocumentTemplate]:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = [DocumentTemplate._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return [DocumentTemplate._deserialize(x1) for x1 in raw_result]
 		payload = {
 			"documentTypeCode": document_type_code,
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentTemplateApi.listDocumentTemplatesByDocumentTypeForCurrentUserAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def list_document_templates_by_document_type_for_current_user_blocking(self, document_type_code: str) -> List[DocumentTemplate]:
 		payload = {
@@ -288,23 +232,15 @@ class DocumentTemplateApi:
 			return return_value
 
 	async def list_document_templates_async(self) -> List[DocumentTemplate]:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = [DocumentTemplate._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		def do_decode(raw_result):
+			return [DocumentTemplate._deserialize(x1) for x1 in raw_result]
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentTemplateApi.listDocumentTemplatesAsync,
 			self.cardinal_sdk._native,
-			callback
 		)
-		return await future
 
 	def list_document_templates_blocking(self) -> List[DocumentTemplate]:
 		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentTemplateApi.listDocumentTemplatesBlocking(
@@ -319,28 +255,20 @@ class DocumentTemplateApi:
 			return return_value
 
 	async def get_document_template_attachment_async(self, document_template_id: str, attachment_id: str) -> bytearray:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = bytearray(base64.b64decode(json.loads(success.decode('utf-8'))))
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return bytearray(base64.b64decode(raw_result))
 		payload = {
 			"documentTemplateId": document_template_id,
 			"attachmentId": attachment_id,
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentTemplateApi.getDocumentTemplateAttachmentAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def get_document_template_attachment_blocking(self, document_template_id: str, attachment_id: str) -> bytearray:
 		payload = {
@@ -360,28 +288,20 @@ class DocumentTemplateApi:
 			return return_value
 
 	async def get_attachment_text_async(self, document_template_id: str, attachment_id: str) -> bytearray:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = bytearray(base64.b64decode(json.loads(success.decode('utf-8'))))
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return bytearray(base64.b64decode(raw_result))
 		payload = {
 			"documentTemplateId": document_template_id,
 			"attachmentId": attachment_id,
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentTemplateApi.getAttachmentTextAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def get_attachment_text_blocking(self, document_template_id: str, attachment_id: str) -> bytearray:
 		payload = {
@@ -401,28 +321,20 @@ class DocumentTemplateApi:
 			return return_value
 
 	async def set_document_template_attachment_async(self, document_template_id: str, payload: bytearray) -> DocumentTemplate:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = DocumentTemplate._deserialize(json.loads(success.decode('utf-8')))
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return DocumentTemplate._deserialize(raw_result)
 		payload = {
 			"documentTemplateId": document_template_id,
 			"payload": base64.b64encode(payload).decode('utf-8'),
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentTemplateApi.setDocumentTemplateAttachmentAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def set_document_template_attachment_blocking(self, document_template_id: str, payload: bytearray) -> DocumentTemplate:
 		payload = {

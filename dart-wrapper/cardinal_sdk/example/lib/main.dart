@@ -8,11 +8,15 @@ import 'package:cardinal_sdk/auth/authentication_method.dart';
 import 'package:cardinal_sdk/auth/authentication_process_telecom_type.dart';
 import 'package:cardinal_sdk/auth/captcha_options.dart';
 import 'package:cardinal_sdk/auth/credentials.dart';
+import 'package:cardinal_sdk/errors/cancellation_exception.dart';
+import 'package:cardinal_sdk/errors/cardinal_argument_error.dart';
+import 'package:cardinal_sdk/errors/dart_callback_exception.dart';
 import 'package:cardinal_sdk/filters/filter_options.dart';
 import 'package:cardinal_sdk/filters/meta_filters.dart';
 import 'package:cardinal_sdk/filters/patient_filters.dart';
 import 'package:cardinal_sdk/model/patient.dart';
 import 'package:cardinal_sdk/options/storage_options.dart';
+import 'package:cardinal_sdk/plugin/cardinal_sdk_platform_interface.dart';
 import 'package:cardinal_sdk/subscription/subscription_event_type.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
@@ -170,11 +174,46 @@ class _AuthFormState extends State<AuthForm> {
         print("GetEvent returned ${await subscription.getEvent()}");
       }
     }
+    print("Cancel wait for event");
+    final waitToCancel = subscription.waitForEvent(const Duration(seconds:60));
+    await Future.delayed(const Duration(seconds: 2));
+    print("Cancelling");
+    await waitToCancel.cancel();
+    try {
+      print("Waiting on cancelled");
+      await waitToCancel;
+      print("Did not fail???");
+    } catch (e) {
+      if (e is CancellationException) {
+        print("Future cancelled");
+      } else {
+        print("Unexpected error??? ${e.toString()}");
+      }
+    }
     print("Closing");
     await subscription.close();
     print("Close reason ${await subscription.getCloseReason()}");
     print("Done iterating");
     await doFilterExample();
+    try {
+      await sdk.patient.createPatient(DecryptedPatient(
+          generateUuid(),
+          firstName: "Gino",
+          lastName: "Bros-${generateUuid()}",
+          note: "Should not work"
+      ));
+      print("Did not fail???");
+    } catch (e) {
+      if (e is ArgumentError) {
+        if (e is CardinalArgumentError) {
+          print("Got CardinalArgumentError as expected");
+        } else {
+          print("Argument error is not CardinalArgumentError???");
+        }
+      } else {
+        print("Unexpected error???");
+      }
+    }
   }
 
   @override
@@ -229,5 +268,16 @@ Future<void> forceGC({
     }
     await Future<void>.delayed(Duration.zero);
     allocateMemory();
+  }
+}
+
+class CustomException implements Exception {
+  final String message;
+
+  CustomException(this.message);
+
+  @override
+  String toString() {
+    return "CustomException($message)";
   }
 }

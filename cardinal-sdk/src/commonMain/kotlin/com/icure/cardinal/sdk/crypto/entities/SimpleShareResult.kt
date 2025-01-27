@@ -55,7 +55,7 @@ internal class SimpleShareResultSerializer<T : HasEncryptionMetadata>(private va
 	}
 	private val errorsDetailsSerializer = ListSerializer(FailedRequestDetails.serializer())
 	override val descriptor: SerialDescriptor = buildClassSerialDescriptor("RecoveryResult<${valueSerializer.descriptor.serialName}>") {
-		element<String>("type")
+		element<String>("kotlinType")
 		element("updatedEntity", valueSerializer.descriptor, isOptional = true)
 		element("errorsDetails", errorsDetailsSerializer.descriptor, isOptional = true)
 	}

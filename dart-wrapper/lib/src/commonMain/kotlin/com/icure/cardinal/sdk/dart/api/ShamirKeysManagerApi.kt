@@ -1,7 +1,7 @@
 // auto-generated file
 package com.icure.cardinal.sdk.dart.api
 
-import com.icure.cardinal.sdk.CardinalSdk
+import com.icure.cardinal.sdk.CardinalApis
 import com.icure.cardinal.sdk.crypto.entities.ShamirUpdateRequest
 import com.icure.cardinal.sdk.dart.utils.ApiScope
 import com.icure.cardinal.sdk.dart.utils.NativeReferences
@@ -24,6 +24,7 @@ public object ShamirKeysManagerApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     dataOwnerString: String,
@@ -35,7 +36,7 @@ public object ShamirKeysManagerApi {
     ApiScope.execute(
       dartResultCallback,
       MapSerializer(KeypairFingerprintV1String.serializer(), SetSerializer(String.serializer()))) {
-      NativeReferences.get<CardinalSdk>(sdkId).crypto.shamirKeysManager.getExistingSplitsInfo(
+      NativeReferences.get<CardinalApis>(sdkId).crypto.shamirKeysManager.getExistingSplitsInfo(
         dataOwner,
       )
     }
@@ -43,6 +44,7 @@ public object ShamirKeysManagerApi {
 
   public fun updateSelfSplits(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -62,7 +64,7 @@ public object ShamirKeysManagerApi {
     ApiScope.execute(
       dartResultCallback,
       CryptoActorStubWithType.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).crypto.shamirKeysManager.updateSelfSplits(
+      NativeReferences.get<CardinalApis>(sdkId).crypto.shamirKeysManager.updateSelfSplits(
         keySplitsToUpdate,
         keySplitsToDelete,
       )

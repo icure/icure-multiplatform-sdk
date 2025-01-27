@@ -1,19 +1,13 @@
 package com.icure.cardinal.sdk.crypto.impl
 
-import com.icure.kryptom.crypto.AesAlgorithm
-import com.icure.kryptom.crypto.AesKey
-import com.icure.kryptom.crypto.CryptoService
-import com.icure.kryptom.crypto.HmacAlgorithm
-import com.icure.kryptom.crypto.HmacKey
 import com.icure.cardinal.sdk.api.DataOwnerApi
 import com.icure.cardinal.sdk.crypto.BaseExchangeDataManager
 import com.icure.cardinal.sdk.crypto.CryptoStrategies
 import com.icure.cardinal.sdk.crypto.ExchangeDataManager
 import com.icure.cardinal.sdk.crypto.UserEncryptionKeysManager
-import com.icure.cardinal.sdk.crypto.UserSignatureKeysManager
-import com.icure.cardinal.sdk.crypto.entities.ExchangeDataWithUnencryptedContent
 import com.icure.cardinal.sdk.crypto.entities.CardinalKeyInfo
-import com.icure.cardinal.sdk.crypto.entities.RsaSignatureKeysSet
+import com.icure.cardinal.sdk.crypto.entities.ExchangeDataWithUnencryptedContent
+import com.icure.cardinal.sdk.crypto.entities.SelfVerifiedKeysSet
 import com.icure.cardinal.sdk.crypto.entities.UnencryptedExchangeDataContent
 import com.icure.cardinal.sdk.crypto.entities.VerifiedRsaEncryptionKeysSet
 import com.icure.cardinal.sdk.crypto.entities.toPrivateKeyInfo
@@ -22,13 +16,17 @@ import com.icure.cardinal.sdk.model.ExchangeData
 import com.icure.cardinal.sdk.model.extensions.algorithmOfEncryptionKey
 import com.icure.cardinal.sdk.model.specializations.AccessControlSecret
 import com.icure.cardinal.sdk.model.specializations.SpkiHexString
+import com.icure.kryptom.crypto.AesAlgorithm
+import com.icure.kryptom.crypto.AesKey
+import com.icure.kryptom.crypto.CryptoService
+import com.icure.kryptom.crypto.HmacAlgorithm
+import com.icure.kryptom.crypto.HmacKey
 import com.icure.utils.InternalIcureApi
 
 @InternalIcureApi
 abstract class AbstractExchangeDataManager(
 	override val base: BaseExchangeDataManager,
 	private val userEncryptionKeys: UserEncryptionKeysManager,
-	private val signatureKeys: UserSignatureKeysManager,
 	private val cryptoStrategies: CryptoStrategies,
 	protected val dataOwnerApi: DataOwnerApi,
 	protected val cryptoService: CryptoService,
@@ -53,7 +51,7 @@ abstract class AbstractExchangeDataManager(
 	protected suspend fun decryptData(
 		data: ExchangeData
 	): DecryptedExchangeDataContent? {
-		val decryptionKeys = userEncryptionKeys.getDecryptionKeys()
+		val decryptionKeys = userEncryptionKeys.getDecryptionKeys(true)
 
 		val decryptedExchangeKeyResult = base.tryDecryptExchangeKeys(listOf(data), decryptionKeys)
 		val decryptedExchangeKey = decryptedExchangeKeyResult.successfulDecryptions.firstOrNull()
@@ -76,7 +74,7 @@ abstract class AbstractExchangeDataManager(
 					sharedSignatureKey = decryptedSharedSignatureKey
 				)
 			),
-			{ fp -> signatureKeys.getSignatureVerificationKey(fp) },
+			SelfVerifiedKeysSet(userEncryptionKeys.getSelfVerifiedKeys().map { it.toPrivateKeyInfo() }),
 			true
 		)
 
@@ -117,11 +115,10 @@ abstract class AbstractExchangeDataManager(
 				}
 			}
 		} else emptyList()
-		val signatureKey = signatureKeys.getOrCreateSignatureKeyPair()
 		val allEncryptionKeys = VerifiedRsaEncryptionKeysSet(selfEncryptionKeys + verifiedDelegateKeys)
 		return base.createExchangeData(
 			delegateId,
-			RsaSignatureKeysSet(listOf(signatureKey.toPrivateKeyInfo())),
+			SelfVerifiedKeysSet(userEncryptionKeys.getSelfVerifiedKeys().map { it.toPrivateKeyInfo() }),
 			allEncryptionKeys,
 			newDataId
 		)
@@ -134,7 +131,7 @@ abstract class AbstractExchangeDataManager(
 			other.stub.algorithmOfEncryptionKey(newDataOwnerPublicKey),
 			newDataOwnerPublicKey.bytes()
 		)
-		val decryptionKeys = userEncryptionKeys.getDecryptionKeys()
+		val decryptionKeys = userEncryptionKeys.getDecryptionKeys(true)
 		val allExchangeDataToUpdate = if (self == otherDataOwner) {
 			base.getExchangeDataByDelegatorDelegatePair(self, self)
 		} else {

@@ -15,6 +15,7 @@ public object CalendarItemBasicApiDispatcher {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
   ): Boolean = when(methodName) {
     "matchCalendarItemsBy" -> matchCalendarItemsBy(parameters, resultCallback)
@@ -40,6 +41,7 @@ public object CalendarItemBasicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     CalendarItemBasicApi.matchCalendarItemsBy(
       resultCallback,
@@ -49,6 +51,7 @@ public object CalendarItemBasicApiDispatcher {
   }
 
   private fun matchCalendarItemsBySorted(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -64,6 +67,7 @@ public object CalendarItemBasicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     CalendarItemBasicApi.filterCalendarItemsBy(
       resultCallback,
@@ -76,6 +80,7 @@ public object CalendarItemBasicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     CalendarItemBasicApi.filterCalendarItemsBySorted(
       resultCallback,
@@ -85,6 +90,7 @@ public object CalendarItemBasicApiDispatcher {
   }
 
   private fun deleteCalendarItemById(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -101,6 +107,7 @@ public object CalendarItemBasicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     CalendarItemBasicApi.deleteCalendarItemsByIds(
       resultCallback,
@@ -110,6 +117,7 @@ public object CalendarItemBasicApiDispatcher {
   }
 
   private fun purgeCalendarItemById(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -126,6 +134,7 @@ public object CalendarItemBasicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     CalendarItemBasicApi.deleteCalendarItem(
       resultCallback,
@@ -135,6 +144,7 @@ public object CalendarItemBasicApiDispatcher {
   }
 
   private fun deleteCalendarItems(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -150,6 +160,7 @@ public object CalendarItemBasicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     CalendarItemBasicApi.purgeCalendarItem(
       resultCallback,
@@ -159,6 +170,7 @@ public object CalendarItemBasicApiDispatcher {
   }
 
   private fun undeleteCalendarItemById(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -175,6 +187,7 @@ public object CalendarItemBasicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     CalendarItemBasicApi.undeleteCalendarItem(
       resultCallback,
@@ -184,6 +197,7 @@ public object CalendarItemBasicApiDispatcher {
   }
 
   private fun modifyCalendarItem(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -199,6 +213,7 @@ public object CalendarItemBasicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     CalendarItemBasicApi.getCalendarItem(
       resultCallback,
@@ -211,6 +226,7 @@ public object CalendarItemBasicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     CalendarItemBasicApi.getCalendarItems(
       resultCallback,
@@ -220,6 +236,7 @@ public object CalendarItemBasicApiDispatcher {
   }
 
   private fun subscribeToEvents(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,

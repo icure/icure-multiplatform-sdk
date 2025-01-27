@@ -9,6 +9,7 @@ class ClassificationApiDispatcher {
     resultCallback: @escaping (
       String?,
       String?,
+      String?,
       String?
     ) -> Void
   ) -> Bool {
@@ -54,6 +55,7 @@ class ClassificationApiDispatcher {
   private static func createClassification(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     ClassificationApi.shared.createClassification(
@@ -64,6 +66,7 @@ class ClassificationApiDispatcher {
   }
 
   private static func withEncryptionMetadata(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -82,6 +85,7 @@ class ClassificationApiDispatcher {
   private static func getEncryptionKeysOf(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     ClassificationApi.shared.getEncryptionKeysOf(
@@ -92,6 +96,7 @@ class ClassificationApiDispatcher {
   }
 
   private static func hasWriteAccess(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -106,6 +111,7 @@ class ClassificationApiDispatcher {
   private static func decryptPatientIdOf(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     ClassificationApi.shared.decryptPatientIdOf(
@@ -116,6 +122,7 @@ class ClassificationApiDispatcher {
   }
 
   private static func createDelegationDeAnonymizationMetadata(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -131,6 +138,7 @@ class ClassificationApiDispatcher {
   private static func decrypt(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     ClassificationApi.shared.decrypt(
@@ -141,6 +149,7 @@ class ClassificationApiDispatcher {
   }
 
   private static func tryDecrypt(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -155,6 +164,7 @@ class ClassificationApiDispatcher {
   private static func matchClassificationsBy(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     ClassificationApi.shared.matchClassificationsBy(
@@ -165,6 +175,7 @@ class ClassificationApiDispatcher {
   }
 
   private static func matchClassificationsBySorted(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -179,6 +190,7 @@ class ClassificationApiDispatcher {
   private static func deleteClassification(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     ClassificationApi.shared.deleteClassification(
@@ -191,6 +203,7 @@ class ClassificationApiDispatcher {
   private static func deleteClassifications(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     ClassificationApi.shared.deleteClassifications(
@@ -201,6 +214,7 @@ class ClassificationApiDispatcher {
   }
 
   private static func shareWith(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -217,6 +231,7 @@ class ClassificationApiDispatcher {
   private static func shareWithMany(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     ClassificationApi.shared.shareWithMany(
@@ -228,6 +243,7 @@ class ClassificationApiDispatcher {
   }
 
   private static func filterClassificationsBy(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -242,6 +258,7 @@ class ClassificationApiDispatcher {
   private static func filterClassificationsBySorted(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     ClassificationApi.shared.filterClassificationsBySorted(
@@ -252,6 +269,7 @@ class ClassificationApiDispatcher {
   }
 
   private static func modifyClassification(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -266,6 +284,7 @@ class ClassificationApiDispatcher {
   private static func getClassification(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     ClassificationApi.shared.getClassification(
@@ -278,6 +297,7 @@ class ClassificationApiDispatcher {
   private static func getClassifications(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     ClassificationApi.shared.getClassifications(
@@ -288,6 +308,7 @@ class ClassificationApiDispatcher {
   }
 
   private static func encrypted_shareWith(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -304,6 +325,7 @@ class ClassificationApiDispatcher {
   private static func encrypted_shareWithMany(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     ClassificationApi.encrypted.shared.shareWithMany(
@@ -315,6 +337,7 @@ class ClassificationApiDispatcher {
   }
 
   private static func encrypted_filterClassificationsBy(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -329,6 +352,7 @@ class ClassificationApiDispatcher {
   private static func encrypted_filterClassificationsBySorted(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     ClassificationApi.encrypted.shared.filterClassificationsBySorted(
@@ -339,6 +363,7 @@ class ClassificationApiDispatcher {
   }
 
   private static func encrypted_modifyClassification(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -353,6 +378,7 @@ class ClassificationApiDispatcher {
   private static func encrypted_getClassification(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     ClassificationApi.encrypted.shared.getClassification(
@@ -365,6 +391,7 @@ class ClassificationApiDispatcher {
   private static func encrypted_getClassifications(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     ClassificationApi.encrypted.shared.getClassifications(
@@ -375,6 +402,7 @@ class ClassificationApiDispatcher {
   }
 
   private static func tryAndRecover_shareWith(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -391,6 +419,7 @@ class ClassificationApiDispatcher {
   private static func tryAndRecover_shareWithMany(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     ClassificationApi.tryAndRecover.shared.shareWithMany(
@@ -402,6 +431,7 @@ class ClassificationApiDispatcher {
   }
 
   private static func tryAndRecover_filterClassificationsBy(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -416,6 +446,7 @@ class ClassificationApiDispatcher {
   private static func tryAndRecover_filterClassificationsBySorted(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     ClassificationApi.tryAndRecover.shared.filterClassificationsBySorted(
@@ -426,6 +457,7 @@ class ClassificationApiDispatcher {
   }
 
   private static func tryAndRecover_modifyClassification(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -440,6 +472,7 @@ class ClassificationApiDispatcher {
   private static func tryAndRecover_getClassification(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     ClassificationApi.tryAndRecover.shared.getClassification(
@@ -450,6 +483,7 @@ class ClassificationApiDispatcher {
   }
 
   private static func tryAndRecover_getClassifications(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?

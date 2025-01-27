@@ -1,7 +1,7 @@
 // auto-generated file
 package com.icure.cardinal.sdk.dart.api
 
-import com.icure.cardinal.sdk.CardinalBaseSdk
+import com.icure.cardinal.sdk.CardinalBaseApis
 import com.icure.cardinal.sdk.dart.utils.ApiScope
 import com.icure.cardinal.sdk.dart.utils.NativeReferences
 import com.icure.cardinal.sdk.filters.BaseFilterOptions
@@ -36,6 +36,7 @@ public object ContactBasicApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     filterString: String,
@@ -47,7 +48,7 @@ public object ContactBasicApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(String.serializer())) {
-      NativeReferences.get<CardinalBaseSdk>(sdkId).contact.matchContactsBy(
+      NativeReferences.get<CardinalBaseApis>(sdkId).contact.matchContactsBy(
         filter,
       )
     }
@@ -55,6 +56,7 @@ public object ContactBasicApi {
 
   public fun matchServicesBy(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -69,7 +71,7 @@ public object ContactBasicApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(String.serializer())) {
-      NativeReferences.get<CardinalBaseSdk>(sdkId).contact.matchServicesBy(
+      NativeReferences.get<CardinalBaseApis>(sdkId).contact.matchServicesBy(
         filter,
       )
     }
@@ -77,6 +79,7 @@ public object ContactBasicApi {
 
   public fun matchContactsBySorted(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -91,7 +94,7 @@ public object ContactBasicApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(String.serializer())) {
-      NativeReferences.get<CardinalBaseSdk>(sdkId).contact.matchContactsBySorted(
+      NativeReferences.get<CardinalBaseApis>(sdkId).contact.matchContactsBySorted(
         filter,
       )
     }
@@ -99,6 +102,7 @@ public object ContactBasicApi {
 
   public fun matchServicesBySorted(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -113,7 +117,7 @@ public object ContactBasicApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(String.serializer())) {
-      NativeReferences.get<CardinalBaseSdk>(sdkId).contact.matchServicesBySorted(
+      NativeReferences.get<CardinalBaseApis>(sdkId).contact.matchServicesBySorted(
         filter,
       )
     }
@@ -121,6 +125,7 @@ public object ContactBasicApi {
 
   public fun filterContactsBy(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -135,7 +140,7 @@ public object ContactBasicApi {
     ApiScope.execute(
       dartResultCallback,
       String.serializer()) {
-      val richResult = NativeReferences.get<CardinalBaseSdk>(sdkId).contact.filterContactsBy(
+      val richResult = NativeReferences.get<CardinalBaseApis>(sdkId).contact.filterContactsBy(
         filter,
       )
       NativeReferences.create(PaginatedListIteratorWithSerializer(
@@ -150,6 +155,7 @@ public object ContactBasicApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     filterString: String,
@@ -161,7 +167,7 @@ public object ContactBasicApi {
     ApiScope.execute(
       dartResultCallback,
       String.serializer()) {
-      val richResult = NativeReferences.get<CardinalBaseSdk>(sdkId).contact.filterServicesBy(
+      val richResult = NativeReferences.get<CardinalBaseApis>(sdkId).contact.filterServicesBy(
         filter,
       )
       NativeReferences.create(PaginatedListIteratorWithSerializer(
@@ -176,6 +182,7 @@ public object ContactBasicApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     filterString: String,
@@ -187,7 +194,7 @@ public object ContactBasicApi {
     ApiScope.execute(
       dartResultCallback,
       String.serializer()) {
-      val richResult = NativeReferences.get<CardinalBaseSdk>(sdkId).contact.filterContactsBySorted(
+      val richResult = NativeReferences.get<CardinalBaseApis>(sdkId).contact.filterContactsBySorted(
         filter,
       )
       NativeReferences.create(PaginatedListIteratorWithSerializer(
@@ -202,6 +209,7 @@ public object ContactBasicApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     filterString: String,
@@ -213,7 +221,7 @@ public object ContactBasicApi {
     ApiScope.execute(
       dartResultCallback,
       String.serializer()) {
-      val richResult = NativeReferences.get<CardinalBaseSdk>(sdkId).contact.filterServicesBySorted(
+      val richResult = NativeReferences.get<CardinalBaseApis>(sdkId).contact.filterServicesBySorted(
         filter,
       )
       NativeReferences.create(PaginatedListIteratorWithSerializer(
@@ -225,6 +233,7 @@ public object ContactBasicApi {
 
   public fun subscribeToServiceCreateOrUpdateEvents(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -245,7 +254,7 @@ public object ContactBasicApi {
       dartResultCallback,
       String.serializer()) {
       val richResult =
-          NativeReferences.get<CardinalBaseSdk>(sdkId).contact.subscribeToServiceCreateOrUpdateEvents(
+          NativeReferences.get<CardinalBaseApis>(sdkId).contact.subscribeToServiceCreateOrUpdateEvents(
         filter,
         subscriptionConfig,
       )
@@ -258,6 +267,7 @@ public object ContactBasicApi {
 
   public fun deleteContactById(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -277,7 +287,7 @@ public object ContactBasicApi {
     ApiScope.execute(
       dartResultCallback,
       DocIdentifier.serializer()) {
-      NativeReferences.get<CardinalBaseSdk>(sdkId).contact.deleteContactById(
+      NativeReferences.get<CardinalBaseApis>(sdkId).contact.deleteContactById(
         entityId,
         rev,
       )
@@ -286,6 +296,7 @@ public object ContactBasicApi {
 
   public fun deleteContactsByIds(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -300,7 +311,7 @@ public object ContactBasicApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(DocIdentifier.serializer())) {
-      NativeReferences.get<CardinalBaseSdk>(sdkId).contact.deleteContactsByIds(
+      NativeReferences.get<CardinalBaseApis>(sdkId).contact.deleteContactsByIds(
         entityIds,
       )
     }
@@ -308,6 +319,7 @@ public object ContactBasicApi {
 
   public fun purgeContactById(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -327,7 +339,7 @@ public object ContactBasicApi {
     ApiScope.execute(
       dartResultCallback,
       Unit.serializer()) {
-      NativeReferences.get<CardinalBaseSdk>(sdkId).contact.purgeContactById(
+      NativeReferences.get<CardinalBaseApis>(sdkId).contact.purgeContactById(
         id,
         rev,
       )
@@ -336,6 +348,7 @@ public object ContactBasicApi {
 
   public fun deleteContact(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -350,7 +363,7 @@ public object ContactBasicApi {
     ApiScope.execute(
       dartResultCallback,
       DocIdentifier.serializer()) {
-      NativeReferences.get<CardinalBaseSdk>(sdkId).contact.deleteContact(
+      NativeReferences.get<CardinalBaseApis>(sdkId).contact.deleteContact(
         contact,
       )
     }
@@ -358,6 +371,7 @@ public object ContactBasicApi {
 
   public fun deleteContacts(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -372,7 +386,7 @@ public object ContactBasicApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(DocIdentifier.serializer())) {
-      NativeReferences.get<CardinalBaseSdk>(sdkId).contact.deleteContacts(
+      NativeReferences.get<CardinalBaseApis>(sdkId).contact.deleteContacts(
         contacts,
       )
     }
@@ -380,6 +394,7 @@ public object ContactBasicApi {
 
   public fun purgeContact(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -394,7 +409,7 @@ public object ContactBasicApi {
     ApiScope.execute(
       dartResultCallback,
       Unit.serializer()) {
-      NativeReferences.get<CardinalBaseSdk>(sdkId).contact.purgeContact(
+      NativeReferences.get<CardinalBaseApis>(sdkId).contact.purgeContact(
         contact,
       )
     }
@@ -402,6 +417,7 @@ public object ContactBasicApi {
 
   public fun getServiceCodesOccurrences(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -421,7 +437,7 @@ public object ContactBasicApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(LabelledOccurence.serializer())) {
-      NativeReferences.get<CardinalBaseSdk>(sdkId).contact.getServiceCodesOccurrences(
+      NativeReferences.get<CardinalBaseApis>(sdkId).contact.getServiceCodesOccurrences(
         codeType,
         minOccurrences,
       )
@@ -430,6 +446,7 @@ public object ContactBasicApi {
 
   public fun undeleteContactById(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -449,7 +466,7 @@ public object ContactBasicApi {
     ApiScope.execute(
       dartResultCallback,
       EncryptedContact.serializer()) {
-      NativeReferences.get<CardinalBaseSdk>(sdkId).contact.undeleteContactById(
+      NativeReferences.get<CardinalBaseApis>(sdkId).contact.undeleteContactById(
         id,
         rev,
       )
@@ -458,6 +475,7 @@ public object ContactBasicApi {
 
   public fun undeleteContact(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -472,7 +490,7 @@ public object ContactBasicApi {
     ApiScope.execute(
       dartResultCallback,
       EncryptedContact.serializer()) {
-      NativeReferences.get<CardinalBaseSdk>(sdkId).contact.undeleteContact(
+      NativeReferences.get<CardinalBaseApis>(sdkId).contact.undeleteContact(
         contact,
       )
     }
@@ -480,6 +498,7 @@ public object ContactBasicApi {
 
   public fun modifyContact(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -494,7 +513,7 @@ public object ContactBasicApi {
     ApiScope.execute(
       dartResultCallback,
       EncryptedContact.serializer()) {
-      NativeReferences.get<CardinalBaseSdk>(sdkId).contact.modifyContact(
+      NativeReferences.get<CardinalBaseApis>(sdkId).contact.modifyContact(
         entity,
       )
     }
@@ -502,6 +521,7 @@ public object ContactBasicApi {
 
   public fun modifyContacts(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -516,7 +536,7 @@ public object ContactBasicApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(EncryptedContact.serializer())) {
-      NativeReferences.get<CardinalBaseSdk>(sdkId).contact.modifyContacts(
+      NativeReferences.get<CardinalBaseApis>(sdkId).contact.modifyContacts(
         entities,
       )
     }
@@ -524,6 +544,7 @@ public object ContactBasicApi {
 
   public fun getContact(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -538,7 +559,7 @@ public object ContactBasicApi {
     ApiScope.execute(
       dartResultCallback,
       EncryptedContact.serializer()) {
-      NativeReferences.get<CardinalBaseSdk>(sdkId).contact.getContact(
+      NativeReferences.get<CardinalBaseApis>(sdkId).contact.getContact(
         entityId,
       )
     }
@@ -546,6 +567,7 @@ public object ContactBasicApi {
 
   public fun getContacts(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -560,7 +582,7 @@ public object ContactBasicApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(EncryptedContact.serializer())) {
-      NativeReferences.get<CardinalBaseSdk>(sdkId).contact.getContacts(
+      NativeReferences.get<CardinalBaseApis>(sdkId).contact.getContacts(
         entityIds,
       )
     }
@@ -568,6 +590,7 @@ public object ContactBasicApi {
 
   public fun getService(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -582,7 +605,7 @@ public object ContactBasicApi {
     ApiScope.execute(
       dartResultCallback,
       EncryptedService.serializer()) {
-      NativeReferences.get<CardinalBaseSdk>(sdkId).contact.getService(
+      NativeReferences.get<CardinalBaseApis>(sdkId).contact.getService(
         serviceId,
       )
     }
@@ -590,6 +613,7 @@ public object ContactBasicApi {
 
   public fun getServices(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -604,7 +628,7 @@ public object ContactBasicApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(EncryptedService.serializer())) {
-      NativeReferences.get<CardinalBaseSdk>(sdkId).contact.getServices(
+      NativeReferences.get<CardinalBaseApis>(sdkId).contact.getServices(
         entityIds,
       )
     }
@@ -612,6 +636,7 @@ public object ContactBasicApi {
 
   public fun subscribeToEvents(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -636,7 +661,7 @@ public object ContactBasicApi {
     ApiScope.execute(
       dartResultCallback,
       String.serializer()) {
-      val richResult = NativeReferences.get<CardinalBaseSdk>(sdkId).contact.subscribeToEvents(
+      val richResult = NativeReferences.get<CardinalBaseApis>(sdkId).contact.subscribeToEvents(
         events,
         filter,
         subscriptionConfig,

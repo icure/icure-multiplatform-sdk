@@ -9,6 +9,7 @@ class InvoiceApiDispatcher {
     resultCallback: @escaping (
       String?,
       String?,
+      String?,
       String?
     ) -> Void
   ) -> Bool {
@@ -95,6 +96,7 @@ class InvoiceApiDispatcher {
   private static func createInvoice(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     InvoiceApi.shared.createInvoice(
@@ -108,6 +110,7 @@ class InvoiceApiDispatcher {
   private static func createInvoices(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     InvoiceApi.shared.createInvoices(
@@ -118,6 +121,7 @@ class InvoiceApiDispatcher {
   }
 
   private static func withEncryptionMetadata(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -136,6 +140,7 @@ class InvoiceApiDispatcher {
   private static func getEncryptionKeysOf(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     InvoiceApi.shared.getEncryptionKeysOf(
@@ -146,6 +151,7 @@ class InvoiceApiDispatcher {
   }
 
   private static func hasWriteAccess(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -160,6 +166,7 @@ class InvoiceApiDispatcher {
   private static func decryptPatientIdOf(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     InvoiceApi.shared.decryptPatientIdOf(
@@ -170,6 +177,7 @@ class InvoiceApiDispatcher {
   }
 
   private static func createDelegationDeAnonymizationMetadata(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -185,6 +193,7 @@ class InvoiceApiDispatcher {
   private static func decrypt(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     InvoiceApi.shared.decrypt(
@@ -195,6 +204,7 @@ class InvoiceApiDispatcher {
   }
 
   private static func tryDecrypt(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -209,6 +219,7 @@ class InvoiceApiDispatcher {
   private static func deleteInvoice(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     InvoiceApi.shared.deleteInvoice(
@@ -221,6 +232,7 @@ class InvoiceApiDispatcher {
   private static func getTarificationsCodesOccurrences(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     InvoiceApi.shared.getTarificationsCodesOccurrences(
@@ -231,6 +243,7 @@ class InvoiceApiDispatcher {
   }
 
   private static func shareWith(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -247,6 +260,7 @@ class InvoiceApiDispatcher {
   private static func shareWithMany(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     InvoiceApi.shared.shareWithMany(
@@ -258,6 +272,7 @@ class InvoiceApiDispatcher {
   }
 
   private static func modifyInvoice(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -272,6 +287,7 @@ class InvoiceApiDispatcher {
   private static func modifyInvoices(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     InvoiceApi.shared.modifyInvoices(
@@ -282,6 +298,7 @@ class InvoiceApiDispatcher {
   }
 
   private static func getInvoice(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -296,6 +313,7 @@ class InvoiceApiDispatcher {
   private static func getInvoices(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     InvoiceApi.shared.getInvoices(
@@ -308,6 +326,7 @@ class InvoiceApiDispatcher {
   private static func reassignInvoice(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     InvoiceApi.shared.reassignInvoice(
@@ -318,6 +337,7 @@ class InvoiceApiDispatcher {
   }
 
   private static func mergeTo(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -333,6 +353,7 @@ class InvoiceApiDispatcher {
   private static func validate(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     InvoiceApi.shared.validate(
@@ -345,6 +366,7 @@ class InvoiceApiDispatcher {
   }
 
   private static func appendCodes(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -366,6 +388,7 @@ class InvoiceApiDispatcher {
   private static func removeCodes(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     InvoiceApi.shared.removeCodes(
@@ -381,6 +404,7 @@ class InvoiceApiDispatcher {
   private static func listInvoicesByHcPartyAndGroupId(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     InvoiceApi.shared.listInvoicesByHcPartyAndGroupId(
@@ -392,6 +416,7 @@ class InvoiceApiDispatcher {
   }
 
   private static func listInvoicesByHcPartySentMediumTypeInvoiceTypeSentDate(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -411,6 +436,7 @@ class InvoiceApiDispatcher {
   private static func listInvoicesByContactIds(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     InvoiceApi.shared.listInvoicesByContactIds(
@@ -421,6 +447,7 @@ class InvoiceApiDispatcher {
   }
 
   private static func listInvoicesByRecipientsIds(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -435,6 +462,7 @@ class InvoiceApiDispatcher {
   private static func listToInsurances(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     InvoiceApi.shared.listToInsurances(
@@ -445,6 +473,7 @@ class InvoiceApiDispatcher {
   }
 
   private static func listToInsurancesUnsent(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -459,6 +488,7 @@ class InvoiceApiDispatcher {
   private static func listToPatients(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     InvoiceApi.shared.listToPatients(
@@ -469,6 +499,7 @@ class InvoiceApiDispatcher {
   }
 
   private static func listToPatientsUnsent(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -483,6 +514,7 @@ class InvoiceApiDispatcher {
   private static func listInvoicesByIds(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     InvoiceApi.shared.listInvoicesByIds(
@@ -493,6 +525,7 @@ class InvoiceApiDispatcher {
   }
 
   private static func listInvoicesByHcpartySendingModeStatusDate(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -511,6 +544,7 @@ class InvoiceApiDispatcher {
   private static func encrypted_shareWith(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     InvoiceApi.encrypted.shared.shareWith(
@@ -523,6 +557,7 @@ class InvoiceApiDispatcher {
   }
 
   private static func encrypted_shareWithMany(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -538,6 +573,7 @@ class InvoiceApiDispatcher {
   private static func encrypted_modifyInvoice(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     InvoiceApi.encrypted.shared.modifyInvoice(
@@ -548,6 +584,7 @@ class InvoiceApiDispatcher {
   }
 
   private static func encrypted_modifyInvoices(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -562,6 +599,7 @@ class InvoiceApiDispatcher {
   private static func encrypted_getInvoice(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     InvoiceApi.encrypted.shared.getInvoice(
@@ -572,6 +610,7 @@ class InvoiceApiDispatcher {
   }
 
   private static func encrypted_getInvoices(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -586,6 +625,7 @@ class InvoiceApiDispatcher {
   private static func encrypted_reassignInvoice(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     InvoiceApi.encrypted.shared.reassignInvoice(
@@ -596,6 +636,7 @@ class InvoiceApiDispatcher {
   }
 
   private static func encrypted_mergeTo(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -611,6 +652,7 @@ class InvoiceApiDispatcher {
   private static func encrypted_validate(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     InvoiceApi.encrypted.shared.validate(
@@ -623,6 +665,7 @@ class InvoiceApiDispatcher {
   }
 
   private static func encrypted_appendCodes(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -644,6 +687,7 @@ class InvoiceApiDispatcher {
   private static func encrypted_removeCodes(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     InvoiceApi.encrypted.shared.removeCodes(
@@ -659,6 +703,7 @@ class InvoiceApiDispatcher {
   private static func encrypted_listInvoicesByHcPartyAndGroupId(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     InvoiceApi.encrypted.shared.listInvoicesByHcPartyAndGroupId(
@@ -670,6 +715,7 @@ class InvoiceApiDispatcher {
   }
 
   private static func encrypted_listInvoicesByHcPartySentMediumTypeInvoiceTypeSentDate(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -689,6 +735,7 @@ class InvoiceApiDispatcher {
   private static func encrypted_listInvoicesByContactIds(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     InvoiceApi.encrypted.shared.listInvoicesByContactIds(
@@ -699,6 +746,7 @@ class InvoiceApiDispatcher {
   }
 
   private static func encrypted_listInvoicesByRecipientsIds(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -713,6 +761,7 @@ class InvoiceApiDispatcher {
   private static func encrypted_listToInsurances(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     InvoiceApi.encrypted.shared.listToInsurances(
@@ -723,6 +772,7 @@ class InvoiceApiDispatcher {
   }
 
   private static func encrypted_listToInsurancesUnsent(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -737,6 +787,7 @@ class InvoiceApiDispatcher {
   private static func encrypted_listToPatients(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     InvoiceApi.encrypted.shared.listToPatients(
@@ -747,6 +798,7 @@ class InvoiceApiDispatcher {
   }
 
   private static func encrypted_listToPatientsUnsent(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -761,6 +813,7 @@ class InvoiceApiDispatcher {
   private static func encrypted_listInvoicesByIds(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     InvoiceApi.encrypted.shared.listInvoicesByIds(
@@ -771,6 +824,7 @@ class InvoiceApiDispatcher {
   }
 
   private static func encrypted_listInvoicesByHcpartySendingModeStatusDate(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -789,6 +843,7 @@ class InvoiceApiDispatcher {
   private static func tryAndRecover_shareWith(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     InvoiceApi.tryAndRecover.shared.shareWith(
@@ -801,6 +856,7 @@ class InvoiceApiDispatcher {
   }
 
   private static func tryAndRecover_shareWithMany(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -816,6 +872,7 @@ class InvoiceApiDispatcher {
   private static func tryAndRecover_modifyInvoice(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     InvoiceApi.tryAndRecover.shared.modifyInvoice(
@@ -826,6 +883,7 @@ class InvoiceApiDispatcher {
   }
 
   private static func tryAndRecover_modifyInvoices(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -840,6 +898,7 @@ class InvoiceApiDispatcher {
   private static func tryAndRecover_getInvoice(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     InvoiceApi.tryAndRecover.shared.getInvoice(
@@ -850,6 +909,7 @@ class InvoiceApiDispatcher {
   }
 
   private static func tryAndRecover_getInvoices(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -864,6 +924,7 @@ class InvoiceApiDispatcher {
   private static func tryAndRecover_reassignInvoice(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     InvoiceApi.tryAndRecover.shared.reassignInvoice(
@@ -874,6 +935,7 @@ class InvoiceApiDispatcher {
   }
 
   private static func tryAndRecover_mergeTo(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -889,6 +951,7 @@ class InvoiceApiDispatcher {
   private static func tryAndRecover_validate(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     InvoiceApi.tryAndRecover.shared.validate(
@@ -901,6 +964,7 @@ class InvoiceApiDispatcher {
   }
 
   private static func tryAndRecover_appendCodes(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -922,6 +986,7 @@ class InvoiceApiDispatcher {
   private static func tryAndRecover_removeCodes(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     InvoiceApi.tryAndRecover.shared.removeCodes(
@@ -937,6 +1002,7 @@ class InvoiceApiDispatcher {
   private static func tryAndRecover_listInvoicesByHcPartyAndGroupId(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     InvoiceApi.tryAndRecover.shared.listInvoicesByHcPartyAndGroupId(
@@ -948,6 +1014,7 @@ class InvoiceApiDispatcher {
   }
 
   private static func tryAndRecover_listInvoicesByHcPartySentMediumTypeInvoiceTypeSentDate(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -967,6 +1034,7 @@ class InvoiceApiDispatcher {
   private static func tryAndRecover_listInvoicesByContactIds(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     InvoiceApi.tryAndRecover.shared.listInvoicesByContactIds(
@@ -977,6 +1045,7 @@ class InvoiceApiDispatcher {
   }
 
   private static func tryAndRecover_listInvoicesByRecipientsIds(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -991,6 +1060,7 @@ class InvoiceApiDispatcher {
   private static func tryAndRecover_listToInsurances(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     InvoiceApi.tryAndRecover.shared.listToInsurances(
@@ -1001,6 +1071,7 @@ class InvoiceApiDispatcher {
   }
 
   private static func tryAndRecover_listToInsurancesUnsent(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -1015,6 +1086,7 @@ class InvoiceApiDispatcher {
   private static func tryAndRecover_listToPatients(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     InvoiceApi.tryAndRecover.shared.listToPatients(
@@ -1025,6 +1097,7 @@ class InvoiceApiDispatcher {
   }
 
   private static func tryAndRecover_listToPatientsUnsent(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -1039,6 +1112,7 @@ class InvoiceApiDispatcher {
   private static func tryAndRecover_listInvoicesByIds(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     InvoiceApi.tryAndRecover.shared.listInvoicesByIds(
@@ -1049,6 +1123,7 @@ class InvoiceApiDispatcher {
   }
 
   private static func tryAndRecover_listInvoicesByHcpartySendingModeStatusDate(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?

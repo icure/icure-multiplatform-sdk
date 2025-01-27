@@ -1,7 +1,7 @@
 // auto-generated file
 package com.icure.cardinal.sdk.dart.api
 
-import com.icure.cardinal.sdk.CardinalSdk
+import com.icure.cardinal.sdk.CardinalNonCryptoApis
 import com.icure.cardinal.sdk.dart.utils.ApiScope
 import com.icure.cardinal.sdk.dart.utils.NativeReferences
 import com.icure.cardinal.sdk.filters.BaseFilterOptions
@@ -22,6 +22,7 @@ import kotlinx.serialization.builtins.serializer
 public object CodeApi {
   public fun listCodesByRegionTypeCodeVersion(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -51,7 +52,7 @@ public object CodeApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(Code.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).code.listCodesByRegionTypeCodeVersion(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).code.listCodesByRegionTypeCodeVersion(
         region,
         type,
         code,
@@ -65,6 +66,7 @@ public object CodeApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     regionString: String,
@@ -81,7 +83,7 @@ public object CodeApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(String.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).code.listCodeTypesBy(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).code.listCodeTypesBy(
         region,
         type,
       )
@@ -93,6 +95,7 @@ public object CodeApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     regionString: String,
@@ -109,7 +112,7 @@ public object CodeApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(String.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).code.listTagTypesBy(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).code.listTagTypesBy(
         region,
         type,
       )
@@ -118,6 +121,7 @@ public object CodeApi {
 
   public fun createCode(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -132,7 +136,7 @@ public object CodeApi {
     ApiScope.execute(
       dartResultCallback,
       Code.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).code.createCode(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).code.createCode(
         c,
       )
     }
@@ -140,6 +144,7 @@ public object CodeApi {
 
   public fun createCodes(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -154,7 +159,7 @@ public object CodeApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(Code.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).code.createCodes(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).code.createCodes(
         codeBatch,
       )
     }
@@ -162,6 +167,7 @@ public object CodeApi {
 
   public fun createCodesInGroup(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -181,7 +187,7 @@ public object CodeApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(Code.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).code.createCodes(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).code.createCodes(
         groupId,
         codeBatch,
       )
@@ -190,6 +196,7 @@ public object CodeApi {
 
   public fun isCodeValid(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -214,7 +221,7 @@ public object CodeApi {
     ApiScope.execute(
       dartResultCallback,
       BooleanResponse.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).code.isCodeValid(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).code.isCodeValid(
         type,
         code,
         version,
@@ -224,6 +231,7 @@ public object CodeApi {
 
   public fun getCodeByRegionLanguageTypeLabel(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -253,7 +261,7 @@ public object CodeApi {
     ApiScope.execute(
       dartResultCallback,
       Code.serializer().nullable) {
-      NativeReferences.get<CardinalSdk>(sdkId).code.getCodeByRegionLanguageTypeLabel(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).code.getCodeByRegionLanguageTypeLabel(
         region,
         label,
         type,
@@ -264,6 +272,7 @@ public object CodeApi {
 
   public fun getCodes(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -278,7 +287,7 @@ public object CodeApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(Code.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).code.getCodes(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).code.getCodes(
         codeIds,
       )
     }
@@ -286,6 +295,7 @@ public object CodeApi {
 
   public fun getCodesInGroup(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -305,7 +315,7 @@ public object CodeApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(Code.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).code.getCodes(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).code.getCodes(
         groupId,
         codeIds,
       )
@@ -314,6 +324,7 @@ public object CodeApi {
 
   public fun getCode(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -328,7 +339,7 @@ public object CodeApi {
     ApiScope.execute(
       dartResultCallback,
       Code.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).code.getCode(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).code.getCode(
         codeId,
       )
     }
@@ -336,6 +347,7 @@ public object CodeApi {
 
   public fun getCodeWithParts(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -360,7 +372,7 @@ public object CodeApi {
     ApiScope.execute(
       dartResultCallback,
       Code.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).code.getCodeWithParts(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).code.getCodeWithParts(
         type,
         code,
         version,
@@ -370,6 +382,7 @@ public object CodeApi {
 
   public fun modifyCode(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -384,7 +397,7 @@ public object CodeApi {
     ApiScope.execute(
       dartResultCallback,
       Code.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).code.modifyCode(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).code.modifyCode(
         codeDto,
       )
     }
@@ -392,6 +405,7 @@ public object CodeApi {
 
   public fun modifyCodes(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -406,7 +420,7 @@ public object CodeApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(Code.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).code.modifyCodes(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).code.modifyCodes(
         codeBatch,
       )
     }
@@ -414,6 +428,7 @@ public object CodeApi {
 
   public fun modifyCodesInGroup(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -433,7 +448,7 @@ public object CodeApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(Code.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).code.modifyCodes(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).code.modifyCodes(
         groupId,
         codeBatch,
       )
@@ -442,6 +457,7 @@ public object CodeApi {
 
   public fun filterCodesBy(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -456,7 +472,7 @@ public object CodeApi {
     ApiScope.execute(
       dartResultCallback,
       String.serializer()) {
-      val richResult = NativeReferences.get<CardinalSdk>(sdkId).code.filterCodesBy(
+      val richResult = NativeReferences.get<CardinalNonCryptoApis>(sdkId).code.filterCodesBy(
         filter,
       )
       NativeReferences.create(PaginatedListIteratorWithSerializer(
@@ -471,6 +487,7 @@ public object CodeApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     filterString: String,
@@ -482,7 +499,7 @@ public object CodeApi {
     ApiScope.execute(
       dartResultCallback,
       String.serializer()) {
-      val richResult = NativeReferences.get<CardinalSdk>(sdkId).code.filterCodesBySorted(
+      val richResult = NativeReferences.get<CardinalNonCryptoApis>(sdkId).code.filterCodesBySorted(
         filter,
       )
       NativeReferences.create(PaginatedListIteratorWithSerializer(
@@ -497,6 +514,7 @@ public object CodeApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     filterString: String,
@@ -508,7 +526,7 @@ public object CodeApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(String.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).code.matchCodesBy(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).code.matchCodesBy(
         filter,
       )
     }
@@ -516,6 +534,7 @@ public object CodeApi {
 
   public fun matchCodesBySorted(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -530,7 +549,7 @@ public object CodeApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(String.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).code.matchCodesBySorted(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).code.matchCodesBySorted(
         filter,
       )
     }
@@ -538,6 +557,7 @@ public object CodeApi {
 
   public fun importCodes(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -552,7 +572,7 @@ public object CodeApi {
     ApiScope.execute(
       dartResultCallback,
       Unit.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).code.importCodes(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).code.importCodes(
         codeType,
       )
     }

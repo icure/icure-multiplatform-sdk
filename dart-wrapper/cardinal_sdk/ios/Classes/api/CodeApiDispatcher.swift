@@ -9,6 +9,7 @@ class CodeApiDispatcher {
     resultCallback: @escaping (
       String?,
       String?,
+      String?,
       String?
     ) -> Void
   ) -> Bool {
@@ -41,6 +42,7 @@ class CodeApiDispatcher {
   private static func listCodesByRegionTypeCodeVersion(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     CodeApi.shared.listCodesByRegionTypeCodeVersion(
@@ -56,6 +58,7 @@ class CodeApiDispatcher {
   private static func listCodeTypesBy(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     CodeApi.shared.listCodeTypesBy(
@@ -67,6 +70,7 @@ class CodeApiDispatcher {
   }
 
   private static func listTagTypesBy(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -82,6 +86,7 @@ class CodeApiDispatcher {
   private static func createCode(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     CodeApi.shared.createCode(
@@ -94,6 +99,7 @@ class CodeApiDispatcher {
   private static func createCodes(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     CodeApi.shared.createCodes(
@@ -104,6 +110,7 @@ class CodeApiDispatcher {
   }
 
   private static func createCodesInGroup(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -119,6 +126,7 @@ class CodeApiDispatcher {
   private static func isCodeValid(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     CodeApi.shared.isCodeValid(
@@ -131,6 +139,7 @@ class CodeApiDispatcher {
   }
 
   private static func getCodeByRegionLanguageTypeLabel(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -148,6 +157,7 @@ class CodeApiDispatcher {
   private static func getCodes(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     CodeApi.shared.getCodes(
@@ -158,6 +168,7 @@ class CodeApiDispatcher {
   }
 
   private static func getCodesInGroup(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -173,6 +184,7 @@ class CodeApiDispatcher {
   private static func getCode(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     CodeApi.shared.getCode(
@@ -183,6 +195,7 @@ class CodeApiDispatcher {
   }
 
   private static func getCodeWithParts(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -199,6 +212,7 @@ class CodeApiDispatcher {
   private static func modifyCode(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     CodeApi.shared.modifyCode(
@@ -211,6 +225,7 @@ class CodeApiDispatcher {
   private static func modifyCodes(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     CodeApi.shared.modifyCodes(
@@ -221,6 +236,7 @@ class CodeApiDispatcher {
   }
 
   private static func modifyCodesInGroup(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -236,6 +252,7 @@ class CodeApiDispatcher {
   private static func filterCodesBy(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     CodeApi.shared.filterCodesBy(
@@ -246,6 +263,7 @@ class CodeApiDispatcher {
   }
 
   private static func filterCodesBySorted(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -260,6 +278,7 @@ class CodeApiDispatcher {
   private static func matchCodesBy(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     CodeApi.shared.matchCodesBy(
@@ -272,6 +291,7 @@ class CodeApiDispatcher {
   private static func matchCodesBySorted(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     CodeApi.shared.matchCodesBySorted(
@@ -282,6 +302,7 @@ class CodeApiDispatcher {
   }
 
   private static func importCodes(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?

@@ -2,6 +2,7 @@
 import 'package:flutter/services.dart';
 import 'package:cardinal_sdk/model/front_end_migration.dart';
 import 'dart:convert';
+import 'package:cardinal_sdk/utils/internal/platform_exception_convertion.dart';
 import 'package:cardinal_sdk/model/couchdb/doc_identifier.dart';
 
 
@@ -16,7 +17,7 @@ class FrontEndMigrationPlatformApi {
 				"sdkId": sdkId,
 				"frontEndMigrationId": jsonEncode(frontEndMigrationId),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getFrontEndMigration");
 		final parsedResJson = jsonDecode(res);
 		return FrontEndMigration.fromJSON(parsedResJson);
@@ -29,7 +30,7 @@ class FrontEndMigrationPlatformApi {
 				"sdkId": sdkId,
 				"frontEndMigration": jsonEncode(FrontEndMigration.encode(frontEndMigration)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method createFrontEndMigration");
 		final parsedResJson = jsonDecode(res);
 		return FrontEndMigration.fromJSON(parsedResJson);
@@ -41,7 +42,7 @@ class FrontEndMigrationPlatformApi {
 			{
 				"sdkId": sdkId,
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getFrontEndMigrations");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => FrontEndMigration.fromJSON(x1) ).toList();
@@ -54,7 +55,7 @@ class FrontEndMigrationPlatformApi {
 				"sdkId": sdkId,
 				"frontEndMigrationId": jsonEncode(frontEndMigrationId),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method deleteFrontEndMigration");
 		final parsedResJson = jsonDecode(res);
 		return DocIdentifier.fromJSON(parsedResJson);
@@ -67,7 +68,7 @@ class FrontEndMigrationPlatformApi {
 				"sdkId": sdkId,
 				"frontEndMigrationName": jsonEncode(frontEndMigrationName),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getFrontEndMigrationByName");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => FrontEndMigration.fromJSON(x1) ).toList();
@@ -80,7 +81,7 @@ class FrontEndMigrationPlatformApi {
 				"sdkId": sdkId,
 				"frontEndMigration": jsonEncode(FrontEndMigration.encode(frontEndMigration)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method modifyFrontEndMigration");
 		final parsedResJson = jsonDecode(res);
 		return FrontEndMigration.fromJSON(parsedResJson);

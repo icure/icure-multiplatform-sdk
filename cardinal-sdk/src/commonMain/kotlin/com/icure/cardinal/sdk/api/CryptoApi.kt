@@ -1,6 +1,7 @@
 package com.icure.cardinal.sdk.api
 
 import com.icure.cardinal.sdk.model.specializations.KeypairFingerprintV1String
+import com.icure.cardinal.sdk.model.specializations.Pkcs8Bytes
 import com.icure.cardinal.sdk.utils.DefaultValue
 
 
@@ -29,6 +30,6 @@ interface CryptoApi {
 	suspend fun currentDataOwnerKeys(
 		@DefaultValue("true")
 		filterTrustedKeys: Boolean = true
-	): Map<String, Map<KeypairFingerprintV1String, ByteArray>>
+	): Map<String, Map<KeypairFingerprintV1String, Pkcs8Bytes>>
 }
 

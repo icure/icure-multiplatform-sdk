@@ -1,12 +1,5 @@
 package com.icure.cardinal.sdk.crypto.impl
 
-import com.icure.kryptom.crypto.AesAlgorithm
-import com.icure.kryptom.crypto.AesKey
-import com.icure.kryptom.crypto.CryptoService
-import com.icure.kryptom.crypto.PrivateRsaKey
-import com.icure.kryptom.crypto.PublicRsaKey
-import com.icure.kryptom.crypto.RsaAlgorithm
-import com.icure.kryptom.utils.toHexString
 import com.icure.cardinal.sdk.api.DataOwnerApi
 import com.icure.cardinal.sdk.api.raw.RawDeviceApi
 import com.icure.cardinal.sdk.api.raw.RawHealthcarePartyApi
@@ -19,11 +12,19 @@ import com.icure.cardinal.sdk.model.CryptoActorStubWithType
 import com.icure.cardinal.sdk.model.DataOwnerType
 import com.icure.cardinal.sdk.model.extensions.toStub
 import com.icure.cardinal.sdk.model.specializations.AesExchangeKeyEncryptionKeypairIdentifier
+import com.icure.cardinal.sdk.model.specializations.AesExchangeKeyEntryKeyString
 import com.icure.cardinal.sdk.model.specializations.HexString
 import com.icure.cardinal.sdk.model.specializations.KeypairFingerprintV1String
 import com.icure.cardinal.sdk.model.specializations.SpkiHexString
-import com.icure.utils.InternalIcureApi
 import com.icure.cardinal.sdk.utils.getLogger
+import com.icure.kryptom.crypto.AesAlgorithm
+import com.icure.kryptom.crypto.AesKey
+import com.icure.kryptom.crypto.CryptoService
+import com.icure.kryptom.crypto.PrivateRsaKey
+import com.icure.kryptom.crypto.PublicRsaKey
+import com.icure.kryptom.crypto.RsaAlgorithm
+import com.icure.kryptom.utils.toHexString
+import com.icure.utils.InternalIcureApi
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 
@@ -193,14 +194,14 @@ class BaseExchangeKeysManagerImpl(
 	private suspend fun combineDataOwnerAesExchangeKeysWithHcpartyKeys(
 		delegator: CryptoActorStubWithType,
 		availableDataOwners: Collection<CryptoActorStubWithType>,
-	): Map<SpkiHexString, Map<String, Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>>> =
+	): Map<AesExchangeKeyEntryKeyString, Map<String, Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>>> =
 		delegator.stub.publicKey?.let { legacyPubKey ->
 			/*
 			 * This condition would technically prevent new updates to the hcPartyKeys to be migrated to the aes exchange keys, but since I can only update
 			 * data for self data owner and parent entities this is not an issue, because I will always be using the new api from now on and I won't have
 			 * a situation where the legacy keys are updated but the aes exchange keys are not.
 			 */
-			if (delegator.stub.aesExchangeKeys.containsKey(legacyPubKey) || delegator.stub.hcPartyKeys.isEmpty()) {
+			if (delegator.stub.aesExchangeKeys.containsKey(AesExchangeKeyEntryKeyString(legacyPubKey.s)) || delegator.stub.hcPartyKeys.isEmpty()) {
 				delegator.stub.aesExchangeKeys
 			} else {
 				val hcPartyKeys = delegator.stub.hcPartyKeys
@@ -210,7 +211,7 @@ class BaseExchangeKeysManagerImpl(
 					delegates.associateWith { id -> availableDataOwnersById[id] ?: dataOwnerApi.getCryptoActorStub(id) }
 				} + (delegator.stub.id to delegator)
 				val aesExchangeKeys = delegator.stub.aesExchangeKeys.toMutableMap()
-				aesExchangeKeys + (legacyPubKey to hcPartyKeys.mapValues { (delegateId, encryptedKey) ->
+				aesExchangeKeys + (AesExchangeKeyEntryKeyString(legacyPubKey.s) to hcPartyKeys.mapValues { (delegateId, encryptedKey) ->
 					val delegateKey = AesExchangeKeyEncryptionKeypairIdentifier(delegatesById[delegateId]?.stub?.publicKey?.fingerprintV1()?.s ?: "")
 					mapOf(
 						delegatorLegacyPublicKeyFp to encryptedKey[0],

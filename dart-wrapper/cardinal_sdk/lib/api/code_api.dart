@@ -8,7 +8,11 @@ import 'package:cardinal_sdk/utils/pagination/paginated_list_iterator.dart';
 
 class CodeApi {
 	final String _sdkId;
-	CodeApi(this._sdkId);
+	final Object _dartSdk;
+	CodeApi(
+		this._sdkId,
+		this._dartSdk
+		);
 
 	Future<List<Code>> listCodesByRegionTypeCodeVersion(String region, { String? type, String? code, String? version }) async {
 		return await CardinalSdkPlatformInterface.instance.apis.code.listCodesByRegionTypeCodeVersion(

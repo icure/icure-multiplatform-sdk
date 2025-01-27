@@ -15,6 +15,7 @@ public object HealthcarePartyFiltersDispatcher {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
   ): Boolean = when(methodName) {
     "all" -> all(parameters, resultCallback)
@@ -33,6 +34,7 @@ public object HealthcarePartyFiltersDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     HealthcarePartyFilters.all(
       resultCallback,
@@ -40,6 +42,7 @@ public object HealthcarePartyFiltersDispatcher {
   }
 
   private fun byIdentifiers(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -51,6 +54,7 @@ public object HealthcarePartyFiltersDispatcher {
   }
 
   private fun byCode(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -66,6 +70,7 @@ public object HealthcarePartyFiltersDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     HealthcarePartyFilters.byTag(
       resultCallback,
@@ -78,6 +83,7 @@ public object HealthcarePartyFiltersDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     HealthcarePartyFilters.byIds(
       resultCallback,
@@ -86,6 +92,7 @@ public object HealthcarePartyFiltersDispatcher {
   }
 
   private fun byName(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -101,6 +108,7 @@ public object HealthcarePartyFiltersDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     HealthcarePartyFilters.byNationalIdentifier(
       resultCallback,
@@ -113,6 +121,7 @@ public object HealthcarePartyFiltersDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     HealthcarePartyFilters.byParentId(
       resultCallback,
@@ -121,6 +130,7 @@ public object HealthcarePartyFiltersDispatcher {
   }
 
   private fun byTypeSpecialtyPostCode(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,

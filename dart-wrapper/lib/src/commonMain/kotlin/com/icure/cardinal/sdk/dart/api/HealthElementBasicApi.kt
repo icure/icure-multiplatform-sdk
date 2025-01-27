@@ -1,7 +1,7 @@
 // auto-generated file
 package com.icure.cardinal.sdk.dart.api
 
-import com.icure.cardinal.sdk.CardinalBaseSdk
+import com.icure.cardinal.sdk.CardinalBaseApis
 import com.icure.cardinal.sdk.dart.utils.ApiScope
 import com.icure.cardinal.sdk.dart.utils.NativeReferences
 import com.icure.cardinal.sdk.filters.BaseFilterOptions
@@ -32,6 +32,7 @@ public object HealthElementBasicApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     filterString: String,
@@ -43,7 +44,7 @@ public object HealthElementBasicApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(String.serializer())) {
-      NativeReferences.get<CardinalBaseSdk>(sdkId).healthElement.matchHealthElementsBy(
+      NativeReferences.get<CardinalBaseApis>(sdkId).healthElement.matchHealthElementsBy(
         filter,
       )
     }
@@ -51,6 +52,7 @@ public object HealthElementBasicApi {
 
   public fun matchHealthElementsBySorted(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -65,7 +67,7 @@ public object HealthElementBasicApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(String.serializer())) {
-      NativeReferences.get<CardinalBaseSdk>(sdkId).healthElement.matchHealthElementsBySorted(
+      NativeReferences.get<CardinalBaseApis>(sdkId).healthElement.matchHealthElementsBySorted(
         filter,
       )
     }
@@ -73,6 +75,7 @@ public object HealthElementBasicApi {
 
   public fun filterHealthElementsBy(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -88,7 +91,7 @@ public object HealthElementBasicApi {
       dartResultCallback,
       String.serializer()) {
       val richResult =
-          NativeReferences.get<CardinalBaseSdk>(sdkId).healthElement.filterHealthElementsBy(
+          NativeReferences.get<CardinalBaseApis>(sdkId).healthElement.filterHealthElementsBy(
         filter,
       )
       NativeReferences.create(PaginatedListIteratorWithSerializer(
@@ -103,6 +106,7 @@ public object HealthElementBasicApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     filterString: String,
@@ -115,7 +119,7 @@ public object HealthElementBasicApi {
       dartResultCallback,
       String.serializer()) {
       val richResult =
-          NativeReferences.get<CardinalBaseSdk>(sdkId).healthElement.filterHealthElementsBySorted(
+          NativeReferences.get<CardinalBaseApis>(sdkId).healthElement.filterHealthElementsBySorted(
         filter,
       )
       NativeReferences.create(PaginatedListIteratorWithSerializer(
@@ -127,6 +131,7 @@ public object HealthElementBasicApi {
 
   public fun deleteHealthElementById(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -146,7 +151,7 @@ public object HealthElementBasicApi {
     ApiScope.execute(
       dartResultCallback,
       DocIdentifier.serializer()) {
-      NativeReferences.get<CardinalBaseSdk>(sdkId).healthElement.deleteHealthElementById(
+      NativeReferences.get<CardinalBaseApis>(sdkId).healthElement.deleteHealthElementById(
         entityId,
         rev,
       )
@@ -155,6 +160,7 @@ public object HealthElementBasicApi {
 
   public fun deleteHealthElementsByIds(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -169,7 +175,7 @@ public object HealthElementBasicApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(DocIdentifier.serializer())) {
-      NativeReferences.get<CardinalBaseSdk>(sdkId).healthElement.deleteHealthElementsByIds(
+      NativeReferences.get<CardinalBaseApis>(sdkId).healthElement.deleteHealthElementsByIds(
         entityIds,
       )
     }
@@ -177,6 +183,7 @@ public object HealthElementBasicApi {
 
   public fun purgeHealthElementById(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -196,7 +203,7 @@ public object HealthElementBasicApi {
     ApiScope.execute(
       dartResultCallback,
       Unit.serializer()) {
-      NativeReferences.get<CardinalBaseSdk>(sdkId).healthElement.purgeHealthElementById(
+      NativeReferences.get<CardinalBaseApis>(sdkId).healthElement.purgeHealthElementById(
         id,
         rev,
       )
@@ -205,6 +212,7 @@ public object HealthElementBasicApi {
 
   public fun deleteHealthElement(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -219,7 +227,7 @@ public object HealthElementBasicApi {
     ApiScope.execute(
       dartResultCallback,
       DocIdentifier.serializer()) {
-      NativeReferences.get<CardinalBaseSdk>(sdkId).healthElement.deleteHealthElement(
+      NativeReferences.get<CardinalBaseApis>(sdkId).healthElement.deleteHealthElement(
         healthElement,
       )
     }
@@ -227,6 +235,7 @@ public object HealthElementBasicApi {
 
   public fun deleteHealthElements(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -241,7 +250,7 @@ public object HealthElementBasicApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(DocIdentifier.serializer())) {
-      NativeReferences.get<CardinalBaseSdk>(sdkId).healthElement.deleteHealthElements(
+      NativeReferences.get<CardinalBaseApis>(sdkId).healthElement.deleteHealthElements(
         healthElements,
       )
     }
@@ -249,6 +258,7 @@ public object HealthElementBasicApi {
 
   public fun purgeHealthElement(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -263,7 +273,7 @@ public object HealthElementBasicApi {
     ApiScope.execute(
       dartResultCallback,
       Unit.serializer()) {
-      NativeReferences.get<CardinalBaseSdk>(sdkId).healthElement.purgeHealthElement(
+      NativeReferences.get<CardinalBaseApis>(sdkId).healthElement.purgeHealthElement(
         healthElement,
       )
     }
@@ -271,6 +281,7 @@ public object HealthElementBasicApi {
 
   public fun undeleteHealthElementById(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -290,7 +301,7 @@ public object HealthElementBasicApi {
     ApiScope.execute(
       dartResultCallback,
       EncryptedHealthElement.serializer()) {
-      NativeReferences.get<CardinalBaseSdk>(sdkId).healthElement.undeleteHealthElementById(
+      NativeReferences.get<CardinalBaseApis>(sdkId).healthElement.undeleteHealthElementById(
         id,
         rev,
       )
@@ -299,6 +310,7 @@ public object HealthElementBasicApi {
 
   public fun undeleteHealthElement(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -313,7 +325,7 @@ public object HealthElementBasicApi {
     ApiScope.execute(
       dartResultCallback,
       EncryptedHealthElement.serializer()) {
-      NativeReferences.get<CardinalBaseSdk>(sdkId).healthElement.undeleteHealthElement(
+      NativeReferences.get<CardinalBaseApis>(sdkId).healthElement.undeleteHealthElement(
         healthElement,
       )
     }
@@ -321,6 +333,7 @@ public object HealthElementBasicApi {
 
   public fun modifyHealthElement(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -335,7 +348,7 @@ public object HealthElementBasicApi {
     ApiScope.execute(
       dartResultCallback,
       EncryptedHealthElement.serializer()) {
-      NativeReferences.get<CardinalBaseSdk>(sdkId).healthElement.modifyHealthElement(
+      NativeReferences.get<CardinalBaseApis>(sdkId).healthElement.modifyHealthElement(
         entity,
       )
     }
@@ -343,6 +356,7 @@ public object HealthElementBasicApi {
 
   public fun modifyHealthElements(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -357,7 +371,7 @@ public object HealthElementBasicApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(EncryptedHealthElement.serializer())) {
-      NativeReferences.get<CardinalBaseSdk>(sdkId).healthElement.modifyHealthElements(
+      NativeReferences.get<CardinalBaseApis>(sdkId).healthElement.modifyHealthElements(
         entities,
       )
     }
@@ -365,6 +379,7 @@ public object HealthElementBasicApi {
 
   public fun getHealthElement(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -379,7 +394,7 @@ public object HealthElementBasicApi {
     ApiScope.execute(
       dartResultCallback,
       EncryptedHealthElement.serializer()) {
-      NativeReferences.get<CardinalBaseSdk>(sdkId).healthElement.getHealthElement(
+      NativeReferences.get<CardinalBaseApis>(sdkId).healthElement.getHealthElement(
         entityId,
       )
     }
@@ -387,6 +402,7 @@ public object HealthElementBasicApi {
 
   public fun getHealthElements(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -401,7 +417,7 @@ public object HealthElementBasicApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(EncryptedHealthElement.serializer())) {
-      NativeReferences.get<CardinalBaseSdk>(sdkId).healthElement.getHealthElements(
+      NativeReferences.get<CardinalBaseApis>(sdkId).healthElement.getHealthElements(
         entityIds,
       )
     }
@@ -409,6 +425,7 @@ public object HealthElementBasicApi {
 
   public fun subscribeToEvents(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -433,7 +450,8 @@ public object HealthElementBasicApi {
     ApiScope.execute(
       dartResultCallback,
       String.serializer()) {
-      val richResult = NativeReferences.get<CardinalBaseSdk>(sdkId).healthElement.subscribeToEvents(
+      val richResult =
+          NativeReferences.get<CardinalBaseApis>(sdkId).healthElement.subscribeToEvents(
         events,
         filter,
         subscriptionConfig,

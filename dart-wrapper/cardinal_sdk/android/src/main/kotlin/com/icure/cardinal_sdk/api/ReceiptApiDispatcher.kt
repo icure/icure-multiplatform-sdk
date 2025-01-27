@@ -15,6 +15,7 @@ public object ReceiptApiDispatcher {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
   ): Boolean = when(methodName) {
     "createReceipt" -> createReceipt(parameters, resultCallback)
@@ -54,6 +55,7 @@ public object ReceiptApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     ReceiptApi.createReceipt(
       resultCallback,
@@ -63,6 +65,7 @@ public object ReceiptApiDispatcher {
   }
 
   private fun withEncryptionMetadata(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -82,6 +85,7 @@ public object ReceiptApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     ReceiptApi.getAndDecryptReceiptAttachment(
       resultCallback,
@@ -92,6 +96,7 @@ public object ReceiptApiDispatcher {
   }
 
   private fun encryptAndSetReceiptAttachment(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -109,6 +114,7 @@ public object ReceiptApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     ReceiptApi.getEncryptionKeysOf(
       resultCallback,
@@ -121,6 +127,7 @@ public object ReceiptApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     ReceiptApi.hasWriteAccess(
       resultCallback,
@@ -130,6 +137,7 @@ public object ReceiptApiDispatcher {
   }
 
   private fun decryptPatientIdOf(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -146,6 +154,7 @@ public object ReceiptApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     ReceiptApi.createDelegationDeAnonymizationMetadata(
       resultCallback,
@@ -156,6 +165,7 @@ public object ReceiptApiDispatcher {
   }
 
   private fun logReceipt(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -175,6 +185,7 @@ public object ReceiptApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     ReceiptApi.decrypt(
       resultCallback,
@@ -184,6 +195,7 @@ public object ReceiptApiDispatcher {
   }
 
   private fun tryDecrypt(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -199,6 +211,7 @@ public object ReceiptApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     ReceiptApi.deleteReceipt(
       resultCallback,
@@ -208,6 +221,7 @@ public object ReceiptApiDispatcher {
   }
 
   private fun deleteReceipts(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -223,6 +237,7 @@ public object ReceiptApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     ReceiptApi.getRawReceiptAttachment(
       resultCallback,
@@ -233,6 +248,7 @@ public object ReceiptApiDispatcher {
   }
 
   private fun setRawReceiptAttachment(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -251,6 +267,7 @@ public object ReceiptApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     ReceiptApi.shareWith(
       resultCallback,
@@ -262,6 +279,7 @@ public object ReceiptApiDispatcher {
   }
 
   private fun shareWithMany(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -278,6 +296,7 @@ public object ReceiptApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     ReceiptApi.modifyReceipt(
       resultCallback,
@@ -287,6 +306,7 @@ public object ReceiptApiDispatcher {
   }
 
   private fun getReceipt(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -302,6 +322,7 @@ public object ReceiptApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     ReceiptApi.listByReference(
       resultCallback,
@@ -311,6 +332,7 @@ public object ReceiptApiDispatcher {
   }
 
   private fun encrypted_shareWith(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -328,6 +350,7 @@ public object ReceiptApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     ReceiptApi.encrypted.shareWithMany(
       resultCallback,
@@ -338,6 +361,7 @@ public object ReceiptApiDispatcher {
   }
 
   private fun encrypted_modifyReceipt(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -353,6 +377,7 @@ public object ReceiptApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     ReceiptApi.encrypted.getReceipt(
       resultCallback,
@@ -365,6 +390,7 @@ public object ReceiptApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     ReceiptApi.encrypted.listByReference(
       resultCallback,
@@ -374,6 +400,7 @@ public object ReceiptApiDispatcher {
   }
 
   private fun tryAndRecover_shareWith(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -391,6 +418,7 @@ public object ReceiptApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     ReceiptApi.tryAndRecover.shareWithMany(
       resultCallback,
@@ -401,6 +429,7 @@ public object ReceiptApiDispatcher {
   }
 
   private fun tryAndRecover_modifyReceipt(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -416,6 +445,7 @@ public object ReceiptApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     ReceiptApi.tryAndRecover.getReceipt(
       resultCallback,
@@ -425,6 +455,7 @@ public object ReceiptApiDispatcher {
   }
 
   private fun tryAndRecover_listByReference(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,

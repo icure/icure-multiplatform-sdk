@@ -1,7 +1,7 @@
 // auto-generated file
 package com.icure.cardinal.sdk.dart.api
 
-import com.icure.cardinal.sdk.CardinalSdk
+import com.icure.cardinal.sdk.CardinalNonCryptoApis
 import com.icure.cardinal.sdk.dart.utils.ApiScope
 import com.icure.cardinal.sdk.dart.utils.NativeReferences
 import com.icure.cardinal.sdk.model.security.Permission
@@ -17,6 +17,7 @@ import kotlinx.serialization.builtins.serializer
 public object PermissionApi {
   public fun modifyUserPermissions(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -36,7 +37,7 @@ public object PermissionApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(Permission.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).permission.modifyUserPermissions(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).permission.modifyUserPermissions(
         userId,
         permissions,
       )

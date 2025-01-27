@@ -10,7 +10,11 @@ import 'dart:typed_data';
 
 class DocumentBasicApi {
 	final String _sdkId;
-	DocumentBasicApi(this._sdkId);
+	final Object _dartSdk;
+	DocumentBasicApi(
+		this._sdkId,
+		this._dartSdk
+		);
 
 	Future<List<String>> matchDocumentsBy(BaseFilterOptions<Document> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.documentBasic.matchDocumentsBy(

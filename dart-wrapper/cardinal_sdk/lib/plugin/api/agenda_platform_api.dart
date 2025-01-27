@@ -2,6 +2,7 @@
 import 'package:flutter/services.dart';
 import 'package:cardinal_sdk/model/agenda.dart';
 import 'dart:convert';
+import 'package:cardinal_sdk/utils/internal/platform_exception_convertion.dart';
 import 'package:cardinal_sdk/model/couchdb/doc_identifier.dart';
 import 'package:cardinal_sdk/model/id_with_mandatory_rev.dart';
 import 'package:cardinal_sdk/filters/filter_options.dart';
@@ -19,7 +20,7 @@ class AgendaPlatformApi {
 				"sdkId": sdkId,
 				"agendaDto": jsonEncode(Agenda.encode(agendaDto)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method createAgenda");
 		final parsedResJson = jsonDecode(res);
 		return Agenda.fromJSON(parsedResJson);
@@ -33,7 +34,7 @@ class AgendaPlatformApi {
 				"entityId": jsonEncode(entityId),
 				"rev": jsonEncode(rev),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method deleteAgendaById");
 		final parsedResJson = jsonDecode(res);
 		return DocIdentifier.fromJSON(parsedResJson);
@@ -46,7 +47,7 @@ class AgendaPlatformApi {
 				"sdkId": sdkId,
 				"entityIds": jsonEncode(entityIds.map((x0) => IdWithMandatoryRev.encode(x0)).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method deleteAgendasByIds");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => DocIdentifier.fromJSON(x1) ).toList();
@@ -60,7 +61,7 @@ class AgendaPlatformApi {
 				"id": jsonEncode(id),
 				"rev": jsonEncode(rev),
 			}
-		);
+		).catchError(convertPlatformException);
 	}
 
 	Future<Agenda> undeleteAgendaById(String sdkId, String id, String rev) async {
@@ -71,7 +72,7 @@ class AgendaPlatformApi {
 				"id": jsonEncode(id),
 				"rev": jsonEncode(rev),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method undeleteAgendaById");
 		final parsedResJson = jsonDecode(res);
 		return Agenda.fromJSON(parsedResJson);
@@ -84,7 +85,7 @@ class AgendaPlatformApi {
 				"sdkId": sdkId,
 				"agenda": jsonEncode(Agenda.encode(agenda)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method deleteAgenda");
 		final parsedResJson = jsonDecode(res);
 		return DocIdentifier.fromJSON(parsedResJson);
@@ -97,7 +98,7 @@ class AgendaPlatformApi {
 				"sdkId": sdkId,
 				"agendas": jsonEncode(agendas.map((x0) => Agenda.encode(x0)).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method deleteAgendas");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => DocIdentifier.fromJSON(x1) ).toList();
@@ -110,7 +111,7 @@ class AgendaPlatformApi {
 				"sdkId": sdkId,
 				"agenda": jsonEncode(Agenda.encode(agenda)),
 			}
-		);
+		).catchError(convertPlatformException);
 	}
 
 	Future<Agenda> undeleteAgenda(String sdkId, Agenda agenda) async {
@@ -120,7 +121,7 @@ class AgendaPlatformApi {
 				"sdkId": sdkId,
 				"agenda": jsonEncode(Agenda.encode(agenda)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method undeleteAgenda");
 		final parsedResJson = jsonDecode(res);
 		return Agenda.fromJSON(parsedResJson);
@@ -133,7 +134,7 @@ class AgendaPlatformApi {
 				"sdkId": sdkId,
 				"agendaId": jsonEncode(agendaId),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getAgenda");
 		final parsedResJson = jsonDecode(res);
 		return Agenda.fromJSON(parsedResJson);
@@ -146,7 +147,7 @@ class AgendaPlatformApi {
 				"sdkId": sdkId,
 				"agendaIds": jsonEncode(agendaIds.map((x0) => x0).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getAgendas");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => Agenda.fromJSON(x1) ).toList();
@@ -159,7 +160,7 @@ class AgendaPlatformApi {
 				"sdkId": sdkId,
 				"agendaDto": jsonEncode(Agenda.encode(agendaDto)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method modifyAgenda");
 		final parsedResJson = jsonDecode(res);
 		return Agenda.fromJSON(parsedResJson);
@@ -172,7 +173,7 @@ class AgendaPlatformApi {
 				"sdkId": sdkId,
 				"filter": jsonEncode(BaseFilterOptions.encode(filter)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method matchAgendasBy");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toList();
@@ -185,7 +186,7 @@ class AgendaPlatformApi {
 				"sdkId": sdkId,
 				"filter": jsonEncode(BaseSortableFilterOptions.encode(filter)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method matchAgendasBySorted");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toList();
@@ -198,7 +199,7 @@ class AgendaPlatformApi {
 				"sdkId": sdkId,
 				"filter": jsonEncode(BaseFilterOptions.encode(filter)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method filterAgendasBy");
 		final parsedResJson = jsonDecode(res);
 		return PaginatedListIterator(parsedResJson, (x0) => Agenda.fromJSON(x0));
@@ -211,7 +212,7 @@ class AgendaPlatformApi {
 				"sdkId": sdkId,
 				"filter": jsonEncode(BaseSortableFilterOptions.encode(filter)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method filterAgendasBySorted");
 		final parsedResJson = jsonDecode(res);
 		return PaginatedListIterator(parsedResJson, (x0) => Agenda.fromJSON(x0));

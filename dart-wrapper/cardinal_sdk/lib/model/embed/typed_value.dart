@@ -67,18 +67,6 @@ class DecryptedTypedValue implements TypedValue {
 		dateValue = dateValue ?? null,
 		encryptedSelf = encryptedSelf ?? null;
 
-	factory DecryptedTypedValue.fromJSON(Map<String, dynamic> data) {
-		return DecryptedTypedValue(
-			type: data["type"] == null ? null : TypedValuesType.fromJSON(data["type"]),
-			booleanValue: (data["booleanValue"] as bool?),
-			integerValue: (data["integerValue"] as int?),
-			doubleValue: (data["doubleValue"] as num?)?.toDouble(),
-			stringValue: (data["stringValue"] as String?),
-			dateValue: data["dateValue"] == null ? null : DateTime.fromMillisecondsSinceEpoch(data["dateValue"] as int),
-			encryptedSelf: (data["encryptedSelf"] as Base64String?)
-		);
-	}
-
 	static Map<String, dynamic> encode(DecryptedTypedValue value) {
 		Map<String, dynamic> entityAsMap = {
 			"type" : value.type == null ? null : TypedValuesType.encode(value.type!),
@@ -90,6 +78,18 @@ class DecryptedTypedValue implements TypedValue {
 			"encryptedSelf" : value.encryptedSelf
 		};
 		return entityAsMap;
+	}
+
+	static DecryptedTypedValue fromJSON(Map<String, dynamic> data) {
+		return DecryptedTypedValue(
+			type: data["type"] == null ? null : TypedValuesType.fromJSON(data["type"]),
+			booleanValue: (data["booleanValue"] as bool?),
+			integerValue: (data["integerValue"] as int?),
+			doubleValue: (data["doubleValue"] as num?)?.toDouble(),
+			stringValue: (data["stringValue"] as String?),
+			dateValue: data["dateValue"] == null ? null : DateTime.fromMillisecondsSinceEpoch(data["dateValue"] as int),
+			encryptedSelf: (data["encryptedSelf"] as Base64String?)
+		);
 	}
 }
 
@@ -117,18 +117,6 @@ class EncryptedTypedValue implements TypedValue {
 		dateValue = dateValue ?? null,
 		encryptedSelf = encryptedSelf ?? null;
 
-	factory EncryptedTypedValue.fromJSON(Map<String, dynamic> data) {
-		return EncryptedTypedValue(
-			type: data["type"] == null ? null : TypedValuesType.fromJSON(data["type"]),
-			booleanValue: (data["booleanValue"] as bool?),
-			integerValue: (data["integerValue"] as int?),
-			doubleValue: (data["doubleValue"] as num?)?.toDouble(),
-			stringValue: (data["stringValue"] as String?),
-			dateValue: data["dateValue"] == null ? null : DateTime.fromMillisecondsSinceEpoch(data["dateValue"] as int),
-			encryptedSelf: (data["encryptedSelf"] as Base64String?)
-		);
-	}
-
 	static Map<String, dynamic> encode(EncryptedTypedValue value) {
 		Map<String, dynamic> entityAsMap = {
 			"type" : value.type == null ? null : TypedValuesType.encode(value.type!),
@@ -140,5 +128,17 @@ class EncryptedTypedValue implements TypedValue {
 			"encryptedSelf" : value.encryptedSelf
 		};
 		return entityAsMap;
+	}
+
+	static EncryptedTypedValue fromJSON(Map<String, dynamic> data) {
+		return EncryptedTypedValue(
+			type: data["type"] == null ? null : TypedValuesType.fromJSON(data["type"]),
+			booleanValue: (data["booleanValue"] as bool?),
+			integerValue: (data["integerValue"] as int?),
+			doubleValue: (data["doubleValue"] as num?)?.toDouble(),
+			stringValue: (data["stringValue"] as String?),
+			dateValue: data["dateValue"] == null ? null : DateTime.fromMillisecondsSinceEpoch(data["dateValue"] as int),
+			encryptedSelf: (data["encryptedSelf"] as Base64String?)
+		);
 	}
 }

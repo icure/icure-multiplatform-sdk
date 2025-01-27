@@ -1,7 +1,7 @@
 // auto-generated file
 package com.icure.cardinal.sdk.dart.api
 
-import com.icure.cardinal.sdk.CardinalSdk
+import com.icure.cardinal.sdk.CardinalApis
 import com.icure.cardinal.sdk.crypto.entities.CalendarItemShareOptions
 import com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption
 import com.icure.cardinal.sdk.dart.utils.ApiScope
@@ -41,6 +41,7 @@ public object CalendarItemApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     entityString: String,
@@ -52,7 +53,7 @@ public object CalendarItemApi {
     ApiScope.execute(
       dartResultCallback,
       DecryptedCalendarItem.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).calendarItem.createCalendarItem(
+      NativeReferences.get<CardinalApis>(sdkId).calendarItem.createCalendarItem(
         entity,
       )
     }
@@ -60,6 +61,7 @@ public object CalendarItemApi {
 
   public fun withEncryptionMetadata(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -94,7 +96,7 @@ public object CalendarItemApi {
     ApiScope.execute(
       dartResultCallback,
       DecryptedCalendarItem.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).calendarItem.withEncryptionMetadata(
+      NativeReferences.get<CardinalApis>(sdkId).calendarItem.withEncryptionMetadata(
         base,
         patient,
         user,
@@ -109,6 +111,7 @@ public object CalendarItemApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     calendarItemString: String,
@@ -120,7 +123,7 @@ public object CalendarItemApi {
     ApiScope.execute(
       dartResultCallback,
       SetSerializer(HexString.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).calendarItem.getEncryptionKeysOf(
+      NativeReferences.get<CardinalApis>(sdkId).calendarItem.getEncryptionKeysOf(
         calendarItem,
       )
     }
@@ -128,6 +131,7 @@ public object CalendarItemApi {
 
   public fun hasWriteAccess(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -142,7 +146,7 @@ public object CalendarItemApi {
     ApiScope.execute(
       dartResultCallback,
       Boolean.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).calendarItem.hasWriteAccess(
+      NativeReferences.get<CardinalApis>(sdkId).calendarItem.hasWriteAccess(
         calendarItem,
       )
     }
@@ -150,6 +154,7 @@ public object CalendarItemApi {
 
   public fun decryptPatientIdOf(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -164,7 +169,7 @@ public object CalendarItemApi {
     ApiScope.execute(
       dartResultCallback,
       SetSerializer(String.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).calendarItem.decryptPatientIdOf(
+      NativeReferences.get<CardinalApis>(sdkId).calendarItem.decryptPatientIdOf(
         calendarItem,
       )
     }
@@ -172,6 +177,7 @@ public object CalendarItemApi {
 
   public fun createDelegationDeAnonymizationMetadata(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -191,7 +197,7 @@ public object CalendarItemApi {
     ApiScope.execute(
       dartResultCallback,
       Unit.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).calendarItem.createDelegationDeAnonymizationMetadata(
+      NativeReferences.get<CardinalApis>(sdkId).calendarItem.createDelegationDeAnonymizationMetadata(
         entity,
         delegates,
       )
@@ -200,6 +206,7 @@ public object CalendarItemApi {
 
   public fun decrypt(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -214,7 +221,7 @@ public object CalendarItemApi {
     ApiScope.execute(
       dartResultCallback,
       DecryptedCalendarItem.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).calendarItem.decrypt(
+      NativeReferences.get<CardinalApis>(sdkId).calendarItem.decrypt(
         calendarItem,
       )
     }
@@ -222,6 +229,7 @@ public object CalendarItemApi {
 
   public fun tryDecrypt(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -236,7 +244,7 @@ public object CalendarItemApi {
     ApiScope.execute(
       dartResultCallback,
       PolymorphicSerializer(CalendarItem::class)) {
-      NativeReferences.get<CardinalSdk>(sdkId).calendarItem.tryDecrypt(
+      NativeReferences.get<CardinalApis>(sdkId).calendarItem.tryDecrypt(
         calendarItem,
       )
     }
@@ -244,6 +252,7 @@ public object CalendarItemApi {
 
   public fun matchCalendarItemsBy(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -258,7 +267,7 @@ public object CalendarItemApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(String.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).calendarItem.matchCalendarItemsBy(
+      NativeReferences.get<CardinalApis>(sdkId).calendarItem.matchCalendarItemsBy(
         filter,
       )
     }
@@ -266,6 +275,7 @@ public object CalendarItemApi {
 
   public fun matchCalendarItemsBySorted(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -280,7 +290,7 @@ public object CalendarItemApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(String.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).calendarItem.matchCalendarItemsBySorted(
+      NativeReferences.get<CardinalApis>(sdkId).calendarItem.matchCalendarItemsBySorted(
         filter,
       )
     }
@@ -288,6 +298,7 @@ public object CalendarItemApi {
 
   public fun deleteCalendarItemById(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -307,7 +318,7 @@ public object CalendarItemApi {
     ApiScope.execute(
       dartResultCallback,
       DocIdentifier.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).calendarItem.deleteCalendarItemById(
+      NativeReferences.get<CardinalApis>(sdkId).calendarItem.deleteCalendarItemById(
         entityId,
         rev,
       )
@@ -316,6 +327,7 @@ public object CalendarItemApi {
 
   public fun deleteCalendarItemsByIds(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -330,7 +342,7 @@ public object CalendarItemApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(DocIdentifier.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).calendarItem.deleteCalendarItemsByIds(
+      NativeReferences.get<CardinalApis>(sdkId).calendarItem.deleteCalendarItemsByIds(
         entityIds,
       )
     }
@@ -338,6 +350,7 @@ public object CalendarItemApi {
 
   public fun purgeCalendarItemById(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -357,7 +370,7 @@ public object CalendarItemApi {
     ApiScope.execute(
       dartResultCallback,
       Unit.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).calendarItem.purgeCalendarItemById(
+      NativeReferences.get<CardinalApis>(sdkId).calendarItem.purgeCalendarItemById(
         id,
         rev,
       )
@@ -366,6 +379,7 @@ public object CalendarItemApi {
 
   public fun deleteCalendarItem(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -380,7 +394,7 @@ public object CalendarItemApi {
     ApiScope.execute(
       dartResultCallback,
       DocIdentifier.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).calendarItem.deleteCalendarItem(
+      NativeReferences.get<CardinalApis>(sdkId).calendarItem.deleteCalendarItem(
         calendarItem,
       )
     }
@@ -388,6 +402,7 @@ public object CalendarItemApi {
 
   public fun deleteCalendarItems(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -402,7 +417,7 @@ public object CalendarItemApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(DocIdentifier.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).calendarItem.deleteCalendarItems(
+      NativeReferences.get<CardinalApis>(sdkId).calendarItem.deleteCalendarItems(
         calendarItems,
       )
     }
@@ -410,6 +425,7 @@ public object CalendarItemApi {
 
   public fun purgeCalendarItem(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -424,7 +440,7 @@ public object CalendarItemApi {
     ApiScope.execute(
       dartResultCallback,
       Unit.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).calendarItem.purgeCalendarItem(
+      NativeReferences.get<CardinalApis>(sdkId).calendarItem.purgeCalendarItem(
         calendarItem,
       )
     }
@@ -432,6 +448,7 @@ public object CalendarItemApi {
 
   public fun shareWith(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -456,7 +473,7 @@ public object CalendarItemApi {
     ApiScope.execute(
       dartResultCallback,
       DecryptedCalendarItem.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).calendarItem.shareWith(
+      NativeReferences.get<CardinalApis>(sdkId).calendarItem.shareWith(
         delegateId,
         calendarItem,
         options,
@@ -466,6 +483,7 @@ public object CalendarItemApi {
 
   public fun shareWithMany(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -485,7 +503,7 @@ public object CalendarItemApi {
     ApiScope.execute(
       dartResultCallback,
       DecryptedCalendarItem.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).calendarItem.shareWithMany(
+      NativeReferences.get<CardinalApis>(sdkId).calendarItem.shareWithMany(
         calendarItem,
         delegates,
       )
@@ -494,6 +512,7 @@ public object CalendarItemApi {
 
   public fun linkToPatient(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -518,7 +537,7 @@ public object CalendarItemApi {
     ApiScope.execute(
       dartResultCallback,
       DecryptedCalendarItem.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).calendarItem.linkToPatient(
+      NativeReferences.get<CardinalApis>(sdkId).calendarItem.linkToPatient(
         calendarItem,
         patient,
         shareLinkWithDelegates,
@@ -528,6 +547,7 @@ public object CalendarItemApi {
 
   public fun filterCalendarItemsBy(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -542,7 +562,7 @@ public object CalendarItemApi {
     ApiScope.execute(
       dartResultCallback,
       String.serializer()) {
-      val richResult = NativeReferences.get<CardinalSdk>(sdkId).calendarItem.filterCalendarItemsBy(
+      val richResult = NativeReferences.get<CardinalApis>(sdkId).calendarItem.filterCalendarItemsBy(
         filter,
       )
       NativeReferences.create(PaginatedListIteratorWithSerializer(
@@ -554,6 +574,7 @@ public object CalendarItemApi {
 
   public fun filterCalendarItemsBySorted(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -569,7 +590,7 @@ public object CalendarItemApi {
       dartResultCallback,
       String.serializer()) {
       val richResult =
-          NativeReferences.get<CardinalSdk>(sdkId).calendarItem.filterCalendarItemsBySorted(
+          NativeReferences.get<CardinalApis>(sdkId).calendarItem.filterCalendarItemsBySorted(
         filter,
       )
       NativeReferences.create(PaginatedListIteratorWithSerializer(
@@ -581,6 +602,7 @@ public object CalendarItemApi {
 
   public fun undeleteCalendarItemById(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -600,7 +622,7 @@ public object CalendarItemApi {
     ApiScope.execute(
       dartResultCallback,
       DecryptedCalendarItem.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).calendarItem.undeleteCalendarItemById(
+      NativeReferences.get<CardinalApis>(sdkId).calendarItem.undeleteCalendarItemById(
         id,
         rev,
       )
@@ -609,6 +631,7 @@ public object CalendarItemApi {
 
   public fun undeleteCalendarItem(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -623,7 +646,7 @@ public object CalendarItemApi {
     ApiScope.execute(
       dartResultCallback,
       DecryptedCalendarItem.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).calendarItem.undeleteCalendarItem(
+      NativeReferences.get<CardinalApis>(sdkId).calendarItem.undeleteCalendarItem(
         calendarItem,
       )
     }
@@ -631,6 +654,7 @@ public object CalendarItemApi {
 
   public fun modifyCalendarItem(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -645,7 +669,7 @@ public object CalendarItemApi {
     ApiScope.execute(
       dartResultCallback,
       DecryptedCalendarItem.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).calendarItem.modifyCalendarItem(
+      NativeReferences.get<CardinalApis>(sdkId).calendarItem.modifyCalendarItem(
         entity,
       )
     }
@@ -653,6 +677,7 @@ public object CalendarItemApi {
 
   public fun getCalendarItem(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -667,7 +692,7 @@ public object CalendarItemApi {
     ApiScope.execute(
       dartResultCallback,
       DecryptedCalendarItem.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).calendarItem.getCalendarItem(
+      NativeReferences.get<CardinalApis>(sdkId).calendarItem.getCalendarItem(
         entityId,
       )
     }
@@ -675,6 +700,7 @@ public object CalendarItemApi {
 
   public fun getCalendarItems(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -689,7 +715,7 @@ public object CalendarItemApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(DecryptedCalendarItem.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).calendarItem.getCalendarItems(
+      NativeReferences.get<CardinalApis>(sdkId).calendarItem.getCalendarItems(
         entityIds,
       )
     }
@@ -697,6 +723,7 @@ public object CalendarItemApi {
 
   public fun subscribeToEvents(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -721,7 +748,7 @@ public object CalendarItemApi {
     ApiScope.execute(
       dartResultCallback,
       String.serializer()) {
-      val richResult = NativeReferences.get<CardinalSdk>(sdkId).calendarItem.subscribeToEvents(
+      val richResult = NativeReferences.get<CardinalApis>(sdkId).calendarItem.subscribeToEvents(
         events,
         filter,
         subscriptionConfig,
@@ -740,6 +767,7 @@ public object CalendarItemApi {
         String?,
         String?,
         String?,
+        String?,
       ) -> Unit,
       sdkId: String,
       delegateIdString: String,
@@ -761,7 +789,7 @@ public object CalendarItemApi {
       ApiScope.execute(
         dartResultCallback,
         EncryptedCalendarItem.serializer()) {
-        NativeReferences.get<CardinalSdk>(sdkId).calendarItem.encrypted.shareWith(
+        NativeReferences.get<CardinalApis>(sdkId).calendarItem.encrypted.shareWith(
           delegateId,
           calendarItem,
           options,
@@ -771,6 +799,7 @@ public object CalendarItemApi {
 
     public fun shareWithMany(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -790,7 +819,7 @@ public object CalendarItemApi {
       ApiScope.execute(
         dartResultCallback,
         EncryptedCalendarItem.serializer()) {
-        NativeReferences.get<CardinalSdk>(sdkId).calendarItem.encrypted.shareWithMany(
+        NativeReferences.get<CardinalApis>(sdkId).calendarItem.encrypted.shareWithMany(
           calendarItem,
           delegates,
         )
@@ -799,6 +828,7 @@ public object CalendarItemApi {
 
     public fun linkToPatient(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -823,7 +853,7 @@ public object CalendarItemApi {
       ApiScope.execute(
         dartResultCallback,
         EncryptedCalendarItem.serializer()) {
-        NativeReferences.get<CardinalSdk>(sdkId).calendarItem.encrypted.linkToPatient(
+        NativeReferences.get<CardinalApis>(sdkId).calendarItem.encrypted.linkToPatient(
           calendarItem,
           patient,
           shareLinkWithDelegates,
@@ -833,6 +863,7 @@ public object CalendarItemApi {
 
     public fun filterCalendarItemsBy(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -848,7 +879,7 @@ public object CalendarItemApi {
         dartResultCallback,
         String.serializer()) {
         val richResult =
-            NativeReferences.get<CardinalSdk>(sdkId).calendarItem.encrypted.filterCalendarItemsBy(
+            NativeReferences.get<CardinalApis>(sdkId).calendarItem.encrypted.filterCalendarItemsBy(
           filter,
         )
         NativeReferences.create(PaginatedListIteratorWithSerializer(
@@ -860,6 +891,7 @@ public object CalendarItemApi {
 
     public fun filterCalendarItemsBySorted(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -875,7 +907,7 @@ public object CalendarItemApi {
         dartResultCallback,
         String.serializer()) {
         val richResult =
-            NativeReferences.get<CardinalSdk>(sdkId).calendarItem.encrypted.filterCalendarItemsBySorted(
+            NativeReferences.get<CardinalApis>(sdkId).calendarItem.encrypted.filterCalendarItemsBySorted(
           filter,
         )
         NativeReferences.create(PaginatedListIteratorWithSerializer(
@@ -887,6 +919,7 @@ public object CalendarItemApi {
 
     public fun undeleteCalendarItemById(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -906,7 +939,7 @@ public object CalendarItemApi {
       ApiScope.execute(
         dartResultCallback,
         EncryptedCalendarItem.serializer()) {
-        NativeReferences.get<CardinalSdk>(sdkId).calendarItem.encrypted.undeleteCalendarItemById(
+        NativeReferences.get<CardinalApis>(sdkId).calendarItem.encrypted.undeleteCalendarItemById(
           id,
           rev,
         )
@@ -915,6 +948,7 @@ public object CalendarItemApi {
 
     public fun undeleteCalendarItem(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -929,7 +963,7 @@ public object CalendarItemApi {
       ApiScope.execute(
         dartResultCallback,
         EncryptedCalendarItem.serializer()) {
-        NativeReferences.get<CardinalSdk>(sdkId).calendarItem.encrypted.undeleteCalendarItem(
+        NativeReferences.get<CardinalApis>(sdkId).calendarItem.encrypted.undeleteCalendarItem(
           calendarItem,
         )
       }
@@ -937,6 +971,7 @@ public object CalendarItemApi {
 
     public fun modifyCalendarItem(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -951,7 +986,7 @@ public object CalendarItemApi {
       ApiScope.execute(
         dartResultCallback,
         EncryptedCalendarItem.serializer()) {
-        NativeReferences.get<CardinalSdk>(sdkId).calendarItem.encrypted.modifyCalendarItem(
+        NativeReferences.get<CardinalApis>(sdkId).calendarItem.encrypted.modifyCalendarItem(
           entity,
         )
       }
@@ -959,6 +994,7 @@ public object CalendarItemApi {
 
     public fun getCalendarItem(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -973,7 +1009,7 @@ public object CalendarItemApi {
       ApiScope.execute(
         dartResultCallback,
         EncryptedCalendarItem.serializer()) {
-        NativeReferences.get<CardinalSdk>(sdkId).calendarItem.encrypted.getCalendarItem(
+        NativeReferences.get<CardinalApis>(sdkId).calendarItem.encrypted.getCalendarItem(
           entityId,
         )
       }
@@ -981,6 +1017,7 @@ public object CalendarItemApi {
 
     public fun getCalendarItems(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -995,7 +1032,7 @@ public object CalendarItemApi {
       ApiScope.execute(
         dartResultCallback,
         ListSerializer(EncryptedCalendarItem.serializer())) {
-        NativeReferences.get<CardinalSdk>(sdkId).calendarItem.encrypted.getCalendarItems(
+        NativeReferences.get<CardinalApis>(sdkId).calendarItem.encrypted.getCalendarItems(
           entityIds,
         )
       }
@@ -1006,6 +1043,7 @@ public object CalendarItemApi {
   public object tryAndRecover {
     public fun shareWith(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -1030,7 +1068,7 @@ public object CalendarItemApi {
       ApiScope.execute(
         dartResultCallback,
         PolymorphicSerializer(CalendarItem::class)) {
-        NativeReferences.get<CardinalSdk>(sdkId).calendarItem.tryAndRecover.shareWith(
+        NativeReferences.get<CardinalApis>(sdkId).calendarItem.tryAndRecover.shareWith(
           delegateId,
           calendarItem,
           options,
@@ -1040,6 +1078,7 @@ public object CalendarItemApi {
 
     public fun shareWithMany(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -1059,7 +1098,7 @@ public object CalendarItemApi {
       ApiScope.execute(
         dartResultCallback,
         PolymorphicSerializer(CalendarItem::class)) {
-        NativeReferences.get<CardinalSdk>(sdkId).calendarItem.tryAndRecover.shareWithMany(
+        NativeReferences.get<CardinalApis>(sdkId).calendarItem.tryAndRecover.shareWithMany(
           calendarItem,
           delegates,
         )
@@ -1068,6 +1107,7 @@ public object CalendarItemApi {
 
     public fun linkToPatient(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -1092,7 +1132,7 @@ public object CalendarItemApi {
       ApiScope.execute(
         dartResultCallback,
         PolymorphicSerializer(CalendarItem::class)) {
-        NativeReferences.get<CardinalSdk>(sdkId).calendarItem.tryAndRecover.linkToPatient(
+        NativeReferences.get<CardinalApis>(sdkId).calendarItem.tryAndRecover.linkToPatient(
           calendarItem,
           patient,
           shareLinkWithDelegates,
@@ -1102,6 +1142,7 @@ public object CalendarItemApi {
 
     public fun filterCalendarItemsBy(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -1117,7 +1158,7 @@ public object CalendarItemApi {
         dartResultCallback,
         String.serializer()) {
         val richResult =
-            NativeReferences.get<CardinalSdk>(sdkId).calendarItem.tryAndRecover.filterCalendarItemsBy(
+            NativeReferences.get<CardinalApis>(sdkId).calendarItem.tryAndRecover.filterCalendarItemsBy(
           filter,
         )
         NativeReferences.create(PaginatedListIteratorWithSerializer(
@@ -1129,6 +1170,7 @@ public object CalendarItemApi {
 
     public fun filterCalendarItemsBySorted(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -1144,7 +1186,7 @@ public object CalendarItemApi {
         dartResultCallback,
         String.serializer()) {
         val richResult =
-            NativeReferences.get<CardinalSdk>(sdkId).calendarItem.tryAndRecover.filterCalendarItemsBySorted(
+            NativeReferences.get<CardinalApis>(sdkId).calendarItem.tryAndRecover.filterCalendarItemsBySorted(
           filter,
         )
         NativeReferences.create(PaginatedListIteratorWithSerializer(
@@ -1156,6 +1198,7 @@ public object CalendarItemApi {
 
     public fun undeleteCalendarItemById(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -1175,7 +1218,7 @@ public object CalendarItemApi {
       ApiScope.execute(
         dartResultCallback,
         PolymorphicSerializer(CalendarItem::class)) {
-        NativeReferences.get<CardinalSdk>(sdkId).calendarItem.tryAndRecover.undeleteCalendarItemById(
+        NativeReferences.get<CardinalApis>(sdkId).calendarItem.tryAndRecover.undeleteCalendarItemById(
           id,
           rev,
         )
@@ -1184,6 +1227,7 @@ public object CalendarItemApi {
 
     public fun undeleteCalendarItem(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -1198,7 +1242,7 @@ public object CalendarItemApi {
       ApiScope.execute(
         dartResultCallback,
         PolymorphicSerializer(CalendarItem::class)) {
-        NativeReferences.get<CardinalSdk>(sdkId).calendarItem.tryAndRecover.undeleteCalendarItem(
+        NativeReferences.get<CardinalApis>(sdkId).calendarItem.tryAndRecover.undeleteCalendarItem(
           calendarItem,
         )
       }
@@ -1206,6 +1250,7 @@ public object CalendarItemApi {
 
     public fun modifyCalendarItem(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -1220,7 +1265,7 @@ public object CalendarItemApi {
       ApiScope.execute(
         dartResultCallback,
         PolymorphicSerializer(CalendarItem::class)) {
-        NativeReferences.get<CardinalSdk>(sdkId).calendarItem.tryAndRecover.modifyCalendarItem(
+        NativeReferences.get<CardinalApis>(sdkId).calendarItem.tryAndRecover.modifyCalendarItem(
           entity,
         )
       }
@@ -1228,6 +1273,7 @@ public object CalendarItemApi {
 
     public fun getCalendarItem(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -1242,7 +1288,7 @@ public object CalendarItemApi {
       ApiScope.execute(
         dartResultCallback,
         PolymorphicSerializer(CalendarItem::class)) {
-        NativeReferences.get<CardinalSdk>(sdkId).calendarItem.tryAndRecover.getCalendarItem(
+        NativeReferences.get<CardinalApis>(sdkId).calendarItem.tryAndRecover.getCalendarItem(
           entityId,
         )
       }
@@ -1250,6 +1296,7 @@ public object CalendarItemApi {
 
     public fun getCalendarItems(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -1264,7 +1311,7 @@ public object CalendarItemApi {
       ApiScope.execute(
         dartResultCallback,
         ListSerializer(PolymorphicSerializer(CalendarItem::class))) {
-        NativeReferences.get<CardinalSdk>(sdkId).calendarItem.tryAndRecover.getCalendarItems(
+        NativeReferences.get<CardinalApis>(sdkId).calendarItem.tryAndRecover.getCalendarItems(
           entityIds,
         )
       }

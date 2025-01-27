@@ -1,7 +1,7 @@
 // auto-generated file
 package com.icure.cardinal.sdk.dart.api
 
-import com.icure.cardinal.sdk.CardinalSdk
+import com.icure.cardinal.sdk.CardinalNonCryptoApis
 import com.icure.cardinal.sdk.dart.utils.ApiScope
 import com.icure.cardinal.sdk.dart.utils.NativeReferences
 import com.icure.cardinal.sdk.filters.BaseFilterOptions
@@ -25,6 +25,7 @@ public object MedicalLocationApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     medicalLocationDtoString: String,
@@ -36,7 +37,7 @@ public object MedicalLocationApi {
     ApiScope.execute(
       dartResultCallback,
       MedicalLocation.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).medicalLocation.createMedicalLocation(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).medicalLocation.createMedicalLocation(
         medicalLocationDto,
       )
     }
@@ -44,6 +45,7 @@ public object MedicalLocationApi {
 
   public fun deleteMedicalLocations(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -58,7 +60,7 @@ public object MedicalLocationApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(DocIdentifier.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).medicalLocation.deleteMedicalLocations(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).medicalLocation.deleteMedicalLocations(
         locationIds,
       )
     }
@@ -66,6 +68,7 @@ public object MedicalLocationApi {
 
   public fun getMedicalLocation(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -80,7 +83,7 @@ public object MedicalLocationApi {
     ApiScope.execute(
       dartResultCallback,
       MedicalLocation.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).medicalLocation.getMedicalLocation(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).medicalLocation.getMedicalLocation(
         locationId,
       )
     }
@@ -88,6 +91,7 @@ public object MedicalLocationApi {
 
   public fun modifyMedicalLocation(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -102,7 +106,7 @@ public object MedicalLocationApi {
     ApiScope.execute(
       dartResultCallback,
       MedicalLocation.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).medicalLocation.modifyMedicalLocation(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).medicalLocation.modifyMedicalLocation(
         medicalLocationDto,
       )
     }
@@ -110,6 +114,7 @@ public object MedicalLocationApi {
 
   public fun getMedicalLocations(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -124,7 +129,7 @@ public object MedicalLocationApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(MedicalLocation.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).medicalLocation.getMedicalLocations(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).medicalLocation.getMedicalLocations(
         medicalLocationIds,
       )
     }
@@ -132,6 +137,7 @@ public object MedicalLocationApi {
 
   public fun matchMedicalLocationsBy(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -146,7 +152,7 @@ public object MedicalLocationApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(String.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).medicalLocation.matchMedicalLocationsBy(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).medicalLocation.matchMedicalLocationsBy(
         filter,
       )
     }
@@ -154,6 +160,7 @@ public object MedicalLocationApi {
 
   public fun matchMedicalLocationsBySorted(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -168,7 +175,7 @@ public object MedicalLocationApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(String.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).medicalLocation.matchMedicalLocationsBySorted(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).medicalLocation.matchMedicalLocationsBySorted(
         filter,
       )
     }
@@ -176,6 +183,7 @@ public object MedicalLocationApi {
 
   public fun filterMedicalLocationsBy(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -191,7 +199,7 @@ public object MedicalLocationApi {
       dartResultCallback,
       String.serializer()) {
       val richResult =
-          NativeReferences.get<CardinalSdk>(sdkId).medicalLocation.filterMedicalLocationsBy(
+          NativeReferences.get<CardinalNonCryptoApis>(sdkId).medicalLocation.filterMedicalLocationsBy(
         filter,
       )
       NativeReferences.create(PaginatedListIteratorWithSerializer(
@@ -206,6 +214,7 @@ public object MedicalLocationApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     filterString: String,
@@ -218,7 +227,7 @@ public object MedicalLocationApi {
       dartResultCallback,
       String.serializer()) {
       val richResult =
-          NativeReferences.get<CardinalSdk>(sdkId).medicalLocation.filterMedicalLocationsBySorted(
+          NativeReferences.get<CardinalNonCryptoApis>(sdkId).medicalLocation.filterMedicalLocationsBySorted(
         filter,
       )
       NativeReferences.create(PaginatedListIteratorWithSerializer(

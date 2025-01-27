@@ -15,6 +15,7 @@ public object HealthElementFiltersDispatcher {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
   ): Boolean = when(methodName) {
     "allHealthElementsForDataOwner" -> allHealthElementsForDataOwner(parameters, resultCallback)
@@ -43,6 +44,7 @@ public object HealthElementFiltersDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     HealthElementFilters.allHealthElementsForDataOwner(
       resultCallback,
@@ -54,6 +56,7 @@ public object HealthElementFiltersDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     HealthElementFilters.allHealthElementsForSelf(
       resultCallback,
@@ -61,6 +64,7 @@ public object HealthElementFiltersDispatcher {
   }
 
   private fun byIdentifiersForDataOwner(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -76,6 +80,7 @@ public object HealthElementFiltersDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     HealthElementFilters.byIdentifiersForSelf(
       resultCallback,
@@ -84,6 +89,7 @@ public object HealthElementFiltersDispatcher {
   }
 
   private fun byCodeForDataOwner(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -100,6 +106,7 @@ public object HealthElementFiltersDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     HealthElementFilters.byCodeForSelf(
       resultCallback,
@@ -109,6 +116,7 @@ public object HealthElementFiltersDispatcher {
   }
 
   private fun byTagForDataOwner(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -125,6 +133,7 @@ public object HealthElementFiltersDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     HealthElementFilters.byTagForSelf(
       resultCallback,
@@ -134,6 +143,7 @@ public object HealthElementFiltersDispatcher {
   }
 
   private fun byPatientsForDataOwner(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -149,6 +159,7 @@ public object HealthElementFiltersDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     HealthElementFilters.byPatientsForSelf(
       resultCallback,
@@ -157,6 +168,7 @@ public object HealthElementFiltersDispatcher {
   }
 
   private fun byPatientsSecretIdsForDataOwner(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -172,6 +184,7 @@ public object HealthElementFiltersDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     HealthElementFilters.byPatientsSecretIdsForSelf(
       resultCallback,
@@ -183,6 +196,7 @@ public object HealthElementFiltersDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     HealthElementFilters.byIds(
       resultCallback,
@@ -191,6 +205,7 @@ public object HealthElementFiltersDispatcher {
   }
 
   private fun byPatientsOpeningDateForDataOwner(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -209,6 +224,7 @@ public object HealthElementFiltersDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     HealthElementFilters.byPatientsOpeningDateForSelf(
       resultCallback,
@@ -221,6 +237,7 @@ public object HealthElementFiltersDispatcher {
 
   private fun byPatientSecretIdsOpeningDateForDataOwner(parameters: Map<String, String>,
       resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -240,6 +257,7 @@ public object HealthElementFiltersDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     HealthElementFilters.byPatientSecretIdsOpeningDateForSelf(
       resultCallback,
@@ -254,6 +272,7 @@ public object HealthElementFiltersDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     HealthElementFilters.byStatusForDataOwner(
       resultCallback,
@@ -263,6 +282,7 @@ public object HealthElementFiltersDispatcher {
   }
 
   private fun byStatusForSelf(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,

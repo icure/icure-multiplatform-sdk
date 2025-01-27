@@ -13,7 +13,11 @@ import 'package:cardinal_sdk/subscription/entity_subscription.dart';
 
 class DeviceApi {
 	final String _sdkId;
-	DeviceApi(this._sdkId);
+	final Object _dartSdk;
+	DeviceApi(
+		this._sdkId,
+		this._dartSdk
+		);
 
 	Future<Device> getDevice(String deviceId) async {
 		return await CardinalSdkPlatformInterface.instance.apis.device.getDevice(

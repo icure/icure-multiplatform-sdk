@@ -29,19 +29,6 @@ class PersonName {
 		text = text ?? null,
 		use = use ?? null;
 
-	factory PersonName.fromJSON(Map<String, dynamic> data) {
-		return PersonName(
-			lastName: (data["lastName"] as String?),
-			firstNames: (data["firstNames"] as List<dynamic>).map((x0) => (x0 as String) ).toList(),
-			start: (data["start"] as int?),
-			end: (data["end"] as int?),
-			prefix: (data["prefix"] as List<dynamic>).map((x0) => (x0 as String) ).toList(),
-			suffix: (data["suffix"] as List<dynamic>).map((x0) => (x0 as String) ).toList(),
-			text: (data["text"] as String?),
-			use: data["use"] == null ? null : PersonNameUse.fromJSON(data["use"])
-		);
-	}
-
 	static Map<String, dynamic> encode(PersonName value) {
 		Map<String, dynamic> entityAsMap = {
 			"lastName" : value.lastName,
@@ -54,5 +41,18 @@ class PersonName {
 			"use" : value.use == null ? null : PersonNameUse.encode(value.use!)
 		};
 		return entityAsMap;
+	}
+
+	static PersonName fromJSON(Map<String, dynamic> data) {
+		return PersonName(
+			lastName: (data["lastName"] as String?),
+			firstNames: (data["firstNames"] as List<dynamic>).map((x0) => (x0 as String) ).toList(),
+			start: (data["start"] as int?),
+			end: (data["end"] as int?),
+			prefix: (data["prefix"] as List<dynamic>).map((x0) => (x0 as String) ).toList(),
+			suffix: (data["suffix"] as List<dynamic>).map((x0) => (x0 as String) ).toList(),
+			text: (data["text"] as String?),
+			use: data["use"] == null ? null : PersonNameUse.fromJSON(data["use"])
+		);
 	}
 }

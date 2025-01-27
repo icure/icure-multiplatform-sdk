@@ -36,17 +36,17 @@ class SecretIdShareOptionsAllAvailable implements SecretIdShareOptions {
 	bool requireAtLeastOne;
 	SecretIdShareOptionsAllAvailable(this.requireAtLeastOne);
 
-	factory SecretIdShareOptionsAllAvailable.fromJSON(Map<String, dynamic> data) {
-		return SecretIdShareOptionsAllAvailable(
-			(data["requireAtLeastOne"] as bool)
-		);
-	}
-
 	static Map<String, dynamic> encode(SecretIdShareOptionsAllAvailable value) {
 		Map<String, dynamic> entityAsMap = {
 			"requireAtLeastOne" : value.requireAtLeastOne
 		};
 		return entityAsMap;
+	}
+
+	static SecretIdShareOptionsAllAvailable fromJSON(Map<String, dynamic> data) {
+		return SecretIdShareOptionsAllAvailable(
+			(data["requireAtLeastOne"] as bool)
+		);
 	}
 }
 
@@ -58,18 +58,18 @@ class SecretIdShareOptionsUseExactly implements SecretIdShareOptions {
 		this.createUnknownSecretIds
 		);
 
-	factory SecretIdShareOptionsUseExactly.fromJSON(Map<String, dynamic> data) {
-		return SecretIdShareOptionsUseExactly(
-			(data["secretIds"] as List<dynamic>).map((x0) => (x0 as String) ).toSet(),
-			(data["createUnknownSecretIds"] as bool)
-		);
-	}
-
 	static Map<String, dynamic> encode(SecretIdShareOptionsUseExactly value) {
 		Map<String, dynamic> entityAsMap = {
 			"secretIds" : value.secretIds.map((x0) => x0).toList(),
 			"createUnknownSecretIds" : value.createUnknownSecretIds
 		};
 		return entityAsMap;
+	}
+
+	static SecretIdShareOptionsUseExactly fromJSON(Map<String, dynamic> data) {
+		return SecretIdShareOptionsUseExactly(
+			(data["secretIds"] as List<dynamic>).map((x0) => (x0 as String) ).toSet(),
+			(data["createUnknownSecretIds"] as bool)
+		);
 	}
 }

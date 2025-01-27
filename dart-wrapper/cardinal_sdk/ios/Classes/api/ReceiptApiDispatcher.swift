@@ -9,6 +9,7 @@ class ReceiptApiDispatcher {
     resultCallback: @escaping (
       String?,
       String?,
+      String?,
       String?
     ) -> Void
   ) -> Bool {
@@ -51,6 +52,7 @@ class ReceiptApiDispatcher {
   private static func createReceipt(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     ReceiptApi.shared.createReceipt(
@@ -61,6 +63,7 @@ class ReceiptApiDispatcher {
   }
 
   private static func withEncryptionMetadata(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -79,6 +82,7 @@ class ReceiptApiDispatcher {
   private static func getAndDecryptReceiptAttachment(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     ReceiptApi.shared.getAndDecryptReceiptAttachment(
@@ -90,6 +94,7 @@ class ReceiptApiDispatcher {
   }
 
   private static func encryptAndSetReceiptAttachment(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -106,6 +111,7 @@ class ReceiptApiDispatcher {
   private static func getEncryptionKeysOf(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     ReceiptApi.shared.getEncryptionKeysOf(
@@ -116,6 +122,7 @@ class ReceiptApiDispatcher {
   }
 
   private static func hasWriteAccess(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -130,6 +137,7 @@ class ReceiptApiDispatcher {
   private static func decryptPatientIdOf(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     ReceiptApi.shared.decryptPatientIdOf(
@@ -140,6 +148,7 @@ class ReceiptApiDispatcher {
   }
 
   private static func createDelegationDeAnonymizationMetadata(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -153,6 +162,7 @@ class ReceiptApiDispatcher {
   }
 
   private static func logReceipt(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -171,6 +181,7 @@ class ReceiptApiDispatcher {
   private static func decrypt(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     ReceiptApi.shared.decrypt(
@@ -181,6 +192,7 @@ class ReceiptApiDispatcher {
   }
 
   private static func tryDecrypt(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -195,6 +207,7 @@ class ReceiptApiDispatcher {
   private static func deleteReceipt(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     ReceiptApi.shared.deleteReceipt(
@@ -205,6 +218,7 @@ class ReceiptApiDispatcher {
   }
 
   private static func deleteReceipts(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -219,6 +233,7 @@ class ReceiptApiDispatcher {
   private static func getRawReceiptAttachment(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     ReceiptApi.shared.getRawReceiptAttachment(
@@ -230,6 +245,7 @@ class ReceiptApiDispatcher {
   }
 
   private static func setRawReceiptAttachment(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -247,6 +263,7 @@ class ReceiptApiDispatcher {
   private static func shareWith(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     ReceiptApi.shared.shareWith(
@@ -259,6 +276,7 @@ class ReceiptApiDispatcher {
   }
 
   private static func shareWithMany(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -274,6 +292,7 @@ class ReceiptApiDispatcher {
   private static func modifyReceipt(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     ReceiptApi.shared.modifyReceipt(
@@ -284,6 +303,7 @@ class ReceiptApiDispatcher {
   }
 
   private static func getReceipt(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -298,6 +318,7 @@ class ReceiptApiDispatcher {
   private static func listByReference(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     ReceiptApi.shared.listByReference(
@@ -308,6 +329,7 @@ class ReceiptApiDispatcher {
   }
 
   private static func encrypted_shareWith(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -324,6 +346,7 @@ class ReceiptApiDispatcher {
   private static func encrypted_shareWithMany(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     ReceiptApi.encrypted.shared.shareWithMany(
@@ -335,6 +358,7 @@ class ReceiptApiDispatcher {
   }
 
   private static func encrypted_modifyReceipt(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -349,6 +373,7 @@ class ReceiptApiDispatcher {
   private static func encrypted_getReceipt(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     ReceiptApi.encrypted.shared.getReceipt(
@@ -361,6 +386,7 @@ class ReceiptApiDispatcher {
   private static func encrypted_listByReference(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     ReceiptApi.encrypted.shared.listByReference(
@@ -371,6 +397,7 @@ class ReceiptApiDispatcher {
   }
 
   private static func tryAndRecover_shareWith(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -387,6 +414,7 @@ class ReceiptApiDispatcher {
   private static func tryAndRecover_shareWithMany(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     ReceiptApi.tryAndRecover.shared.shareWithMany(
@@ -398,6 +426,7 @@ class ReceiptApiDispatcher {
   }
 
   private static func tryAndRecover_modifyReceipt(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -412,6 +441,7 @@ class ReceiptApiDispatcher {
   private static func tryAndRecover_getReceipt(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     ReceiptApi.tryAndRecover.shared.getReceipt(
@@ -422,6 +452,7 @@ class ReceiptApiDispatcher {
   }
 
   private static func tryAndRecover_listByReference(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?

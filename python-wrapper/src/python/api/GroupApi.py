@@ -1,8 +1,8 @@
 # auto-generated file
-import asyncio
 import json
 from cardinal_sdk.model import Group, DatabaseInitialisation, GroupType, RegistrationInformation, PermissionType, RegistrationSuccess, Operation, UserType, RoleConfiguration, GroupDeletionReport, ListOfProperties, DesignDocument, IdWithRev, GroupDatabasesInfo, ReplicationInfo, DocIdentifier
-from cardinal_sdk.kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols
+from cardinal_sdk.async_utils import execute_async_method_job
+from cardinal_sdk.kotlin_types import symbols
 from typing import List, Optional, Dict
 from cardinal_sdk.model.CallResult import create_result_from_json, interpret_kt_error
 from ctypes import cast, c_char_p
@@ -14,23 +14,15 @@ class GroupApi:
 		self.cardinal_sdk = cardinal_sdk
 
 	async def list_groups_async(self) -> List[Group]:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = [Group._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		def do_decode(raw_result):
+			return [Group._deserialize(x1) for x1 in raw_result]
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.GroupApi.listGroupsAsync,
 			self.cardinal_sdk._native,
-			callback
 		)
-		return await future
 
 	def list_groups_blocking(self) -> List[Group]:
 		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.GroupApi.listGroupsBlocking(
@@ -45,27 +37,19 @@ class GroupApi:
 			return return_value
 
 	async def get_group_async(self, id: str) -> Group:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = Group._deserialize(json.loads(success.decode('utf-8')))
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return Group._deserialize(raw_result)
 		payload = {
 			"id": id,
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.GroupApi.getGroupAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def get_group_blocking(self, id: str) -> Group:
 		payload = {
@@ -84,15 +68,8 @@ class GroupApi:
 			return return_value
 
 	async def create_group_async(self, id: str, name: str, password: str, initialisation_data: DatabaseInitialisation, type: Optional[GroupType] = None, server: Optional[str] = None, q: Optional[int] = None, n: Optional[int] = None, super_group: Optional[str] = None, application_id: Optional[str] = None) -> Group:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = Group._deserialize(json.loads(success.decode('utf-8')))
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return Group._deserialize(raw_result)
 		payload = {
 			"id": id,
 			"name": name,
@@ -105,15 +82,14 @@ class GroupApi:
 			"applicationId": application_id,
 			"initialisationData": initialisation_data.__serialize__(),
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.GroupApi.createGroupAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def create_group_blocking(self, id: str, name: str, password: str, initialisation_data: DatabaseInitialisation, type: Optional[GroupType] = None, server: Optional[str] = None, q: Optional[int] = None, n: Optional[int] = None, super_group: Optional[str] = None, application_id: Optional[str] = None) -> Group:
 		payload = {
@@ -141,29 +117,21 @@ class GroupApi:
 			return return_value
 
 	async def register_new_group_administrator_async(self, registration_information: RegistrationInformation, type: Optional[GroupType] = None, role: Optional[PermissionType] = None) -> RegistrationSuccess:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = RegistrationSuccess._deserialize(json.loads(success.decode('utf-8')))
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return RegistrationSuccess._deserialize(raw_result)
 		payload = {
 			"type": type.__serialize__() if type is not None else None,
 			"role": role.__serialize__() if role is not None else None,
 			"registrationInformation": registration_information.__serialize__(),
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.GroupApi.registerNewGroupAdministratorAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def register_new_group_administrator_blocking(self, registration_information: RegistrationInformation, type: Optional[GroupType] = None, role: Optional[PermissionType] = None) -> RegistrationSuccess:
 		payload = {
@@ -184,23 +152,15 @@ class GroupApi:
 			return return_value
 
 	async def list_apps_async(self) -> List[Group]:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = [Group._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		def do_decode(raw_result):
+			return [Group._deserialize(x1) for x1 in raw_result]
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.GroupApi.listAppsAsync,
 			self.cardinal_sdk._native,
-			callback
 		)
-		return await future
 
 	def list_apps_blocking(self) -> List[Group]:
 		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.GroupApi.listAppsBlocking(
@@ -215,27 +175,19 @@ class GroupApi:
 			return return_value
 
 	async def get_name_of_group_parent_async(self, id: str) -> str:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = json.loads(success.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return raw_result
 		payload = {
 			"id": id,
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.GroupApi.getNameOfGroupParentAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def get_name_of_group_parent_blocking(self, id: str) -> str:
 		payload = {
@@ -254,28 +206,20 @@ class GroupApi:
 			return return_value
 
 	async def modify_group_name_async(self, id: str, name: str) -> Group:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = Group._deserialize(json.loads(success.decode('utf-8')))
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return Group._deserialize(raw_result)
 		payload = {
 			"id": id,
 			"name": name,
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.GroupApi.modifyGroupNameAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def modify_group_name_blocking(self, id: str, name: str) -> Group:
 		payload = {
@@ -295,29 +239,21 @@ class GroupApi:
 			return return_value
 
 	async def get_operation_token_async(self, operation: Operation, duration: Optional[int], description: Optional[str] = None) -> str:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = json.loads(success.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return raw_result
 		payload = {
 			"operation": operation.__serialize__(),
 			"duration": duration,
 			"description": description,
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.GroupApi.getOperationTokenAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def get_operation_token_blocking(self, operation: Operation, duration: Optional[int], description: Optional[str] = None) -> str:
 		payload = {
@@ -338,27 +274,19 @@ class GroupApi:
 			return return_value
 
 	async def delete_operation_token_async(self, token_id: str) -> None:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = json.loads(success.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return raw_result
 		payload = {
 			"tokenId": token_id,
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.GroupApi.deleteOperationTokenAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def delete_operation_token_blocking(self, token_id: str) -> None:
 		payload = {
@@ -374,29 +302,21 @@ class GroupApi:
 			raise interpret_kt_error(result_info.failure)
 
 	async def set_default_roles_async(self, group_id: str, user_type: str, role_ids: List[str]) -> Group:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = Group._deserialize(json.loads(success.decode('utf-8')))
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return Group._deserialize(raw_result)
 		payload = {
 			"groupId": group_id,
 			"userType": user_type,
 			"roleIds": [x0 for x0 in role_ids],
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.GroupApi.setDefaultRolesAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def set_default_roles_blocking(self, group_id: str, user_type: str, role_ids: List[str]) -> Group:
 		payload = {
@@ -417,27 +337,19 @@ class GroupApi:
 			return return_value
 
 	async def get_default_roles_async(self, group_id: str) -> Dict[UserType, List[RoleConfiguration]]:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = dict(map(lambda kv1: (UserType._deserialize(kv1[0]), [RoleConfiguration._deserialize(x2) for x2 in kv1[1]]), json.loads(success.decode('utf-8')).items()))
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return dict(map(lambda kv1: (UserType._deserialize(kv1[0]), [RoleConfiguration._deserialize(x2) for x2 in kv1[1]]), raw_result.items()))
 		payload = {
 			"groupId": group_id,
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.GroupApi.getDefaultRolesAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def get_default_roles_blocking(self, group_id: str) -> Dict[UserType, List[RoleConfiguration]]:
 		payload = {
@@ -456,27 +368,19 @@ class GroupApi:
 			return return_value
 
 	async def delete_group_async(self, id: str) -> Group:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = Group._deserialize(json.loads(success.decode('utf-8')))
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return Group._deserialize(raw_result)
 		payload = {
 			"id": id,
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.GroupApi.deleteGroupAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def delete_group_blocking(self, id: str) -> Group:
 		payload = {
@@ -495,28 +399,20 @@ class GroupApi:
 			return return_value
 
 	async def change_super_group_async(self, child_group_id: str, operation_token: str) -> Group:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = Group._deserialize(json.loads(success.decode('utf-8')))
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return Group._deserialize(raw_result)
 		payload = {
 			"childGroupId": child_group_id,
 			"operationToken": operation_token,
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.GroupApi.changeSuperGroupAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def change_super_group_blocking(self, child_group_id: str, operation_token: str) -> Group:
 		payload = {
@@ -536,27 +432,19 @@ class GroupApi:
 			return return_value
 
 	async def hard_delete_group_async(self, id: str) -> List[GroupDeletionReport]:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = [GroupDeletionReport._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return [GroupDeletionReport._deserialize(x1) for x1 in raw_result]
 		payload = {
 			"id": id,
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.GroupApi.hardDeleteGroupAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def hard_delete_group_blocking(self, id: str) -> List[GroupDeletionReport]:
 		payload = {
@@ -575,28 +463,20 @@ class GroupApi:
 			return return_value
 
 	async def modify_group_properties_async(self, id: str, properties: ListOfProperties) -> Group:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = Group._deserialize(json.loads(success.decode('utf-8')))
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return Group._deserialize(raw_result)
 		payload = {
 			"id": id,
 			"properties": properties.__serialize__(),
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.GroupApi.modifyGroupPropertiesAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def modify_group_properties_blocking(self, id: str, properties: ListOfProperties) -> Group:
 		payload = {
@@ -616,28 +496,20 @@ class GroupApi:
 			return return_value
 
 	async def set_group_password_async(self, id: str, password: str) -> Group:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = Group._deserialize(json.loads(success.decode('utf-8')))
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return Group._deserialize(raw_result)
 		payload = {
 			"id": id,
 			"password": password,
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.GroupApi.setGroupPasswordAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def set_group_password_blocking(self, id: str, password: str) -> Group:
 		payload = {
@@ -657,30 +529,22 @@ class GroupApi:
 			return return_value
 
 	async def init_design_docs_async(self, id: str, warmup: Optional[bool], dry_run: Optional[bool], clazz: Optional[str] = None) -> List[DesignDocument]:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = [DesignDocument._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return [DesignDocument._deserialize(x1) for x1 in raw_result]
 		payload = {
 			"id": id,
 			"clazz": clazz,
 			"warmup": warmup,
 			"dryRun": dry_run,
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.GroupApi.initDesignDocsAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def init_design_docs_blocking(self, id: str, warmup: Optional[bool], dry_run: Optional[bool], clazz: Optional[str] = None) -> List[DesignDocument]:
 		payload = {
@@ -702,29 +566,21 @@ class GroupApi:
 			return return_value
 
 	async def solve_conflicts_async(self, id: str, limit: Optional[int], warmup: Optional[bool]) -> List[IdWithRev]:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = [IdWithRev._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return [IdWithRev._deserialize(x1) for x1 in raw_result]
 		payload = {
 			"id": id,
 			"limit": limit,
 			"warmup": warmup,
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.GroupApi.solveConflictsAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def solve_conflicts_blocking(self, id: str, limit: Optional[int], warmup: Optional[bool]) -> List[IdWithRev]:
 		payload = {
@@ -745,30 +601,22 @@ class GroupApi:
 			return return_value
 
 	async def reset_storage_async(self, id: str, databases: List[str], q: Optional[int] = None, n: Optional[int] = None) -> None:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = json.loads(success.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return raw_result
 		payload = {
 			"id": id,
 			"q": q,
 			"n": n,
 			"databases": [x0 for x0 in databases],
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.GroupApi.resetStorageAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def reset_storage_blocking(self, id: str, databases: List[str], q: Optional[int] = None, n: Optional[int] = None) -> None:
 		payload = {
@@ -787,27 +635,19 @@ class GroupApi:
 			raise interpret_kt_error(result_info.failure)
 
 	async def get_groups_storage_infos_async(self, groups: List[str]) -> List[GroupDatabasesInfo]:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = [GroupDatabasesInfo._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return [GroupDatabasesInfo._deserialize(x1) for x1 in raw_result]
 		payload = {
 			"groups": [x0 for x0 in groups],
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.GroupApi.getGroupsStorageInfosAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def get_groups_storage_infos_blocking(self, groups: List[str]) -> List[GroupDatabasesInfo]:
 		payload = {
@@ -826,27 +666,19 @@ class GroupApi:
 			return return_value
 
 	async def get_replication_info_async(self, id: str) -> ReplicationInfo:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = ReplicationInfo._deserialize(json.loads(success.decode('utf-8')))
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return ReplicationInfo._deserialize(raw_result)
 		payload = {
 			"id": id,
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.GroupApi.getReplicationInfoAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def get_replication_info_blocking(self, id: str) -> ReplicationInfo:
 		payload = {
@@ -865,27 +697,19 @@ class GroupApi:
 			return return_value
 
 	async def get_hierarchy_async(self, id: str) -> List[str]:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = [x1 for x1 in json.loads(success.decode('utf-8'))]
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return [x1 for x1 in raw_result]
 		payload = {
 			"id": id,
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.GroupApi.getHierarchyAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def get_hierarchy_blocking(self, id: str) -> List[str]:
 		payload = {
@@ -904,23 +728,15 @@ class GroupApi:
 			return return_value
 
 	async def list_all_groups_ids_async(self) -> List[DocIdentifier]:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = [DocIdentifier._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		def do_decode(raw_result):
+			return [DocIdentifier._deserialize(x1) for x1 in raw_result]
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.GroupApi.listAllGroupsIdsAsync,
 			self.cardinal_sdk._native,
-			callback
 		)
-		return await future
 
 	def list_all_groups_ids_blocking(self) -> List[DocIdentifier]:
 		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.GroupApi.listAllGroupsIdsBlocking(

@@ -20,7 +20,11 @@ import 'package:cardinal_sdk/model/couchdb/doc_identifier.dart';
 
 class GroupApi {
 	final String _sdkId;
-	GroupApi(this._sdkId);
+	final Object _dartSdk;
+	GroupApi(
+		this._sdkId,
+		this._dartSdk
+		);
 
 	Future<List<Group>> listGroups() async {
 		return await CardinalSdkPlatformInterface.instance.apis.group.listGroups(

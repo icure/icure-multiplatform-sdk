@@ -1,7 +1,7 @@
 // auto-generated file
 package com.icure.cardinal.sdk.dart.api
 
-import com.icure.cardinal.sdk.CardinalSdk
+import com.icure.cardinal.sdk.CardinalNonCryptoApis
 import com.icure.cardinal.sdk.dart.utils.ApiScope
 import com.icure.cardinal.sdk.dart.utils.NativeReferences
 import com.icure.cardinal.sdk.model.Role
@@ -17,11 +17,12 @@ public object RoleApi {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit, sdkId: String) {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(Role.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).role.getAllRoles()
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).role.getAllRoles()
     }
   }
 }

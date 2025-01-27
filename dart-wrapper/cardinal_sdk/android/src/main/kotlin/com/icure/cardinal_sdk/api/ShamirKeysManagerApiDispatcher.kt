@@ -15,6 +15,7 @@ public object ShamirKeysManagerApiDispatcher {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
   ): Boolean = when(methodName) {
     "getExistingSplitsInfo" -> getExistingSplitsInfo(parameters, resultCallback)
@@ -23,6 +24,7 @@ public object ShamirKeysManagerApiDispatcher {
   }?.let { true } ?: false
 
   private fun getExistingSplitsInfo(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -35,6 +37,7 @@ public object ShamirKeysManagerApiDispatcher {
   }
 
   private fun updateSelfSplits(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,

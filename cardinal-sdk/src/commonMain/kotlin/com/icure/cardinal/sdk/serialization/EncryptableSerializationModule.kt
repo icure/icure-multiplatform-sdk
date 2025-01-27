@@ -56,13 +56,16 @@ import com.icure.cardinal.sdk.model.SecureDelegationKeyMap
 import com.icure.cardinal.sdk.model.TimeTable
 import com.icure.cardinal.sdk.model.Topic
 import com.icure.cardinal.sdk.model.embed.Address
+import com.icure.cardinal.sdk.model.embed.CalendarItemTag
 import com.icure.cardinal.sdk.model.embed.CareTeamMember
 import com.icure.cardinal.sdk.model.embed.CareTeamMembership
 import com.icure.cardinal.sdk.model.embed.Content
 import com.icure.cardinal.sdk.model.embed.DecryptedAddress
+import com.icure.cardinal.sdk.model.embed.DecryptedCalendarItemTag
 import com.icure.cardinal.sdk.model.embed.DecryptedCareTeamMember
 import com.icure.cardinal.sdk.model.embed.DecryptedCareTeamMembership
 import com.icure.cardinal.sdk.model.embed.DecryptedContent
+import com.icure.cardinal.sdk.model.embed.DecryptedEmploymentInfo
 import com.icure.cardinal.sdk.model.embed.DecryptedEpisode
 import com.icure.cardinal.sdk.model.embed.DecryptedFinancialInstitutionInformation
 import com.icure.cardinal.sdk.model.embed.DecryptedFlatRateTarification
@@ -71,15 +74,19 @@ import com.icure.cardinal.sdk.model.embed.DecryptedInvoicingCode
 import com.icure.cardinal.sdk.model.embed.DecryptedMedicalHouseContract
 import com.icure.cardinal.sdk.model.embed.DecryptedPatientHealthCareParty
 import com.icure.cardinal.sdk.model.embed.DecryptedPlanOfAction
+import com.icure.cardinal.sdk.model.embed.DecryptedSchoolingInfo
 import com.icure.cardinal.sdk.model.embed.DecryptedService
 import com.icure.cardinal.sdk.model.embed.DecryptedSubContact
 import com.icure.cardinal.sdk.model.embed.DecryptedTelecom
 import com.icure.cardinal.sdk.model.embed.DecryptedTypedValue
 import com.icure.cardinal.sdk.model.embed.DecryptedValorisation
+import com.icure.cardinal.sdk.model.embed.EmploymentInfo
 import com.icure.cardinal.sdk.model.embed.EncryptedAddress
+import com.icure.cardinal.sdk.model.embed.EncryptedCalendarItemTag
 import com.icure.cardinal.sdk.model.embed.EncryptedCareTeamMember
 import com.icure.cardinal.sdk.model.embed.EncryptedCareTeamMembership
 import com.icure.cardinal.sdk.model.embed.EncryptedContent
+import com.icure.cardinal.sdk.model.embed.EncryptedEmploymentInfo
 import com.icure.cardinal.sdk.model.embed.EncryptedEpisode
 import com.icure.cardinal.sdk.model.embed.EncryptedFinancialInstitutionInformation
 import com.icure.cardinal.sdk.model.embed.EncryptedFlatRateTarification
@@ -88,6 +95,7 @@ import com.icure.cardinal.sdk.model.embed.EncryptedInvoicingCode
 import com.icure.cardinal.sdk.model.embed.EncryptedMedicalHouseContract
 import com.icure.cardinal.sdk.model.embed.EncryptedPatientHealthCareParty
 import com.icure.cardinal.sdk.model.embed.EncryptedPlanOfAction
+import com.icure.cardinal.sdk.model.embed.EncryptedSchoolingInfo
 import com.icure.cardinal.sdk.model.embed.EncryptedService
 import com.icure.cardinal.sdk.model.embed.EncryptedSubContact
 import com.icure.cardinal.sdk.model.embed.EncryptedTelecom
@@ -101,6 +109,7 @@ import com.icure.cardinal.sdk.model.embed.InvoicingCode
 import com.icure.cardinal.sdk.model.embed.MedicalHouseContract
 import com.icure.cardinal.sdk.model.embed.PatientHealthCareParty
 import com.icure.cardinal.sdk.model.embed.PlanOfAction
+import com.icure.cardinal.sdk.model.embed.SchoolingInfo
 import com.icure.cardinal.sdk.model.embed.Service
 import com.icure.cardinal.sdk.model.embed.SubContact
 import com.icure.cardinal.sdk.model.embed.Telecom
@@ -129,6 +138,10 @@ internal object EncryptableSerializationModule {
 				subclass(DecryptedCalendarItem::class)
 				subclass(EncryptedCalendarItem::class)
 			}
+			polymorphic(CalendarItemTag::class) {
+				subclass(DecryptedCalendarItemTag::class)
+				subclass(EncryptedCalendarItemTag::class)
+			}
 			polymorphic(CareTeamMember::class) {
 				subclass(DecryptedCareTeamMember::class)
 				subclass(EncryptedCareTeamMember::class)
@@ -152,6 +165,10 @@ internal object EncryptableSerializationModule {
 			polymorphic(Document::class) {
 				subclass(DecryptedDocument::class)
 				subclass(EncryptedDocument::class)
+			}
+			polymorphic(EmploymentInfo::class) {
+				subclass(DecryptedEmploymentInfo::class)
+				subclass(EncryptedEmploymentInfo::class)
 			}
 			polymorphic(Episode::class) {
 				subclass(DecryptedEpisode::class)
@@ -220,6 +237,10 @@ internal object EncryptableSerializationModule {
 			polymorphic(Receipt::class) {
 				subclass(DecryptedReceipt::class)
 				subclass(EncryptedReceipt::class)
+			}
+			polymorphic(SchoolingInfo::class) {
+				subclass(DecryptedSchoolingInfo::class)
+				subclass(EncryptedSchoolingInfo::class)
 			}
 			polymorphic(SecureDelegationKeyMap::class) {
 				subclass(DecryptedSecureDelegationKeyMap::class)

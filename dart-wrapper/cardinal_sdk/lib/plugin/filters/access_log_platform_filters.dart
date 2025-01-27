@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:cardinal_sdk/model/patient.dart';
 import 'package:cardinal_sdk/filters/filter_options.dart';
 import 'dart:convert';
+import 'package:cardinal_sdk/utils/internal/platform_exception_convertion.dart';
 import 'package:cardinal_sdk/model/access_log.dart';
 
 
@@ -20,7 +21,7 @@ class AccessLogPlatformFilters {
 				"to": jsonEncode(to?.millisecondsSinceEpoch),
 				"descending": jsonEncode(descending),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method byPatientsDateForDataOwner");
 		final parsedResJson = jsonDecode(res);
 		return SortableFilterOptions.fromJSON(parsedResJson);
@@ -35,7 +36,7 @@ class AccessLogPlatformFilters {
 				"to": jsonEncode(to?.millisecondsSinceEpoch),
 				"descending": jsonEncode(descending),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method byPatientsDateForSelf");
 		final parsedResJson = jsonDecode(res);
 		return SortableFilterOptions.fromJSON(parsedResJson);
@@ -51,7 +52,7 @@ class AccessLogPlatformFilters {
 				"to": jsonEncode(to?.millisecondsSinceEpoch),
 				"descending": jsonEncode(descending),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method byPatientSecretIdsDateForDataOwner");
 		final parsedResJson = jsonDecode(res);
 		return BaseSortableFilterOptions.fromJSON(parsedResJson);
@@ -66,7 +67,7 @@ class AccessLogPlatformFilters {
 				"to": jsonEncode(to?.millisecondsSinceEpoch),
 				"descending": jsonEncode(descending),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method byPatientSecretIdsDateForSelf");
 		final parsedResJson = jsonDecode(res);
 		return SortableFilterOptions.fromJSON(parsedResJson);
@@ -80,7 +81,7 @@ class AccessLogPlatformFilters {
 				"to": jsonEncode(to?.millisecondsSinceEpoch),
 				"descending": jsonEncode(descending),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method byDate");
 		final parsedResJson = jsonDecode(res);
 		return BaseSortableFilterOptions.fromJSON(parsedResJson);
@@ -95,7 +96,7 @@ class AccessLogPlatformFilters {
 				"from": jsonEncode(from?.millisecondsSinceEpoch),
 				"descending": jsonEncode(descending),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method byUserTypeDate");
 		final parsedResJson = jsonDecode(res);
 		return BaseSortableFilterOptions.fromJSON(parsedResJson);

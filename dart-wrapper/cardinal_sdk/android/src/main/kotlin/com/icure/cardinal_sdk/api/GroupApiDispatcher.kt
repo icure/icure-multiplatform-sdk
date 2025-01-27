@@ -15,6 +15,7 @@ public object GroupApiDispatcher {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
   ): Boolean = when(methodName) {
     "listGroups" -> listGroups(parameters, resultCallback)
@@ -47,6 +48,7 @@ public object GroupApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     GroupApi.listGroups(
       resultCallback,
@@ -55,6 +57,7 @@ public object GroupApiDispatcher {
   }
 
   private fun getGroup(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -67,6 +70,7 @@ public object GroupApiDispatcher {
   }
 
   private fun createGroup(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -91,6 +95,7 @@ public object GroupApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     GroupApi.registerNewGroupAdministrator(
       resultCallback,
@@ -105,6 +110,7 @@ public object GroupApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     GroupApi.listApps(
       resultCallback,
@@ -113,6 +119,7 @@ public object GroupApiDispatcher {
   }
 
   private fun getNameOfGroupParent(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -128,6 +135,7 @@ public object GroupApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     GroupApi.modifyGroupName(
       resultCallback,
@@ -138,6 +146,7 @@ public object GroupApiDispatcher {
   }
 
   private fun getOperationToken(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -155,6 +164,7 @@ public object GroupApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     GroupApi.deleteOperationToken(
       resultCallback,
@@ -164,6 +174,7 @@ public object GroupApiDispatcher {
   }
 
   private fun setDefaultRoles(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -181,6 +192,7 @@ public object GroupApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     GroupApi.getDefaultRoles(
       resultCallback,
@@ -193,6 +205,7 @@ public object GroupApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     GroupApi.deleteGroup(
       resultCallback,
@@ -202,6 +215,7 @@ public object GroupApiDispatcher {
   }
 
   private fun changeSuperGroup(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -218,6 +232,7 @@ public object GroupApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     GroupApi.hardDeleteGroup(
       resultCallback,
@@ -227,6 +242,7 @@ public object GroupApiDispatcher {
   }
 
   private fun modifyGroupProperties(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -243,6 +259,7 @@ public object GroupApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     GroupApi.setGroupPassword(
       resultCallback,
@@ -253,6 +270,7 @@ public object GroupApiDispatcher {
   }
 
   private fun initDesignDocs(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -271,6 +289,7 @@ public object GroupApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     GroupApi.solveConflicts(
       resultCallback,
@@ -282,6 +301,7 @@ public object GroupApiDispatcher {
   }
 
   private fun resetStorage(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -300,6 +320,7 @@ public object GroupApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     GroupApi.getGroupsStorageInfos(
       resultCallback,
@@ -309,6 +330,7 @@ public object GroupApiDispatcher {
   }
 
   private fun getReplicationInfo(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -324,6 +346,7 @@ public object GroupApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     GroupApi.getHierarchy(
       resultCallback,
@@ -333,6 +356,7 @@ public object GroupApiDispatcher {
   }
 
   private fun listAllGroupsIds(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,

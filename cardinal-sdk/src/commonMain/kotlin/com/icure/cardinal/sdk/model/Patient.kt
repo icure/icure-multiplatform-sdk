@@ -11,18 +11,22 @@ import com.icure.cardinal.sdk.model.embed.Address
 import com.icure.cardinal.sdk.model.embed.Annotation
 import com.icure.cardinal.sdk.model.embed.DeactivationReason
 import com.icure.cardinal.sdk.model.embed.DecryptedAddress
+import com.icure.cardinal.sdk.model.embed.DecryptedEmploymentInfo
 import com.icure.cardinal.sdk.model.embed.DecryptedFinancialInstitutionInformation
 import com.icure.cardinal.sdk.model.embed.DecryptedInsurability
 import com.icure.cardinal.sdk.model.embed.DecryptedMedicalHouseContract
 import com.icure.cardinal.sdk.model.embed.DecryptedPatientHealthCareParty
+import com.icure.cardinal.sdk.model.embed.DecryptedSchoolingInfo
 import com.icure.cardinal.sdk.model.embed.Delegation
 import com.icure.cardinal.sdk.model.embed.EmploymentInfo
 import com.icure.cardinal.sdk.model.embed.Encryptable
 import com.icure.cardinal.sdk.model.embed.EncryptedAddress
+import com.icure.cardinal.sdk.model.embed.EncryptedEmploymentInfo
 import com.icure.cardinal.sdk.model.embed.EncryptedFinancialInstitutionInformation
 import com.icure.cardinal.sdk.model.embed.EncryptedInsurability
 import com.icure.cardinal.sdk.model.embed.EncryptedMedicalHouseContract
 import com.icure.cardinal.sdk.model.embed.EncryptedPatientHealthCareParty
+import com.icure.cardinal.sdk.model.embed.EncryptedSchoolingInfo
 import com.icure.cardinal.sdk.model.embed.FinancialInstitutionInformation
 import com.icure.cardinal.sdk.model.embed.Gender
 import com.icure.cardinal.sdk.model.embed.Insurability
@@ -44,10 +48,12 @@ import kotlin.Boolean
 import kotlin.ByteArray
 import kotlin.Int
 import kotlin.Long
+import kotlin.Nothing
 import kotlin.String
 import kotlin.collections.List
 import kotlin.collections.Map
 import kotlin.collections.Set
+import com.icure.cardinal.sdk.model.specializations.AesExchangeKeyEntryKeyString
 
 // WARNING: This file is auto-generated. If you change it manually, your changes will be lost.
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
@@ -172,8 +178,7 @@ sealed interface Patient :
 
 	override val hcPartyKeys: Map<String, List<HexString>>
 
-	override val aesExchangeKeys:
-		Map<SpkiHexString, Map<String, Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>>>
+	override val aesExchangeKeys: Map<AesExchangeKeyEntryKeyString, Map<String, Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>>>
 
 	override val transferKeys:
 		Map<AesExchangeKeyEncryptionKeypairIdentifier, Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>>
@@ -219,6 +224,8 @@ sealed interface Patient :
 	public val schoolingInfos: List<SchoolingInfo>
 
 	public val employementInfos: List<EmploymentInfo>
+
+	override val parentId: Nothing?
 	// region Patient-Patient
 	companion object {
 		const val KRAKEN_QUALIFIED_NAME = "org.taktik.icure.entities.Patient"
@@ -310,7 +317,7 @@ data class DecryptedPatient(
 	@DefaultValue("emptyMap()")
 	override val hcPartyKeys: Map<String, List<HexString>> = emptyMap(),
 	@DefaultValue("emptyMap()")
-	override val aesExchangeKeys: Map<SpkiHexString, Map<String, Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>>> =
+	override val aesExchangeKeys: Map<AesExchangeKeyEntryKeyString, Map<String, Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>>> =
 		emptyMap(),
 	@DefaultValue("emptyMap()")
 	override val transferKeys: Map<AesExchangeKeyEncryptionKeypairIdentifier, Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>> =
@@ -343,9 +350,10 @@ data class DecryptedPatient(
 	override val socialStatus: CodeStub? = null,
 	override val mainSourceOfIncome: CodeStub? = null,
 	@DefaultValue("emptyList()")
-	override val schoolingInfos: List<SchoolingInfo> = emptyList(),
+	override val schoolingInfos: List<DecryptedSchoolingInfo> = emptyList(),
 	@DefaultValue("emptyList()")
-	override val employementInfos: List<EmploymentInfo> = emptyList(),
+	override val employementInfos: List<DecryptedEmploymentInfo> = emptyList(),
+	override val parentId: Nothing? = null,
 ) : Patient {
 	// region Patient-DecryptedPatient
 override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): DecryptedPatient =
@@ -437,7 +445,7 @@ data class EncryptedPatient(
 	@DefaultValue("emptyMap()")
 	override val hcPartyKeys: Map<String, List<HexString>> = emptyMap(),
 	@DefaultValue("emptyMap()")
-	override val aesExchangeKeys: Map<SpkiHexString, Map<String, Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>>> =
+	override val aesExchangeKeys: Map<AesExchangeKeyEntryKeyString, Map<String, Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>>> =
 		emptyMap(),
 	@DefaultValue("emptyMap()")
 	override val transferKeys: Map<AesExchangeKeyEncryptionKeypairIdentifier, Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>> =
@@ -470,9 +478,10 @@ data class EncryptedPatient(
 	override val socialStatus: CodeStub? = null,
 	override val mainSourceOfIncome: CodeStub? = null,
 	@DefaultValue("emptyList()")
-	override val schoolingInfos: List<SchoolingInfo> = emptyList(),
+	override val schoolingInfos: List<EncryptedSchoolingInfo> = emptyList(),
 	@DefaultValue("emptyList()")
-	override val employementInfos: List<EmploymentInfo> = emptyList(),
+	override val employementInfos: List<EncryptedEmploymentInfo> = emptyList(),
+	override val parentId: Nothing? = null,
 ) : Patient {
 	// region Patient-EncryptedPatient
 override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): EncryptedPatient =

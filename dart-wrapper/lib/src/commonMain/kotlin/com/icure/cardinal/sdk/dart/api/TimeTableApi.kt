@@ -1,7 +1,7 @@
 // auto-generated file
 package com.icure.cardinal.sdk.dart.api
 
-import com.icure.cardinal.sdk.CardinalSdk
+import com.icure.cardinal.sdk.CardinalApis
 import com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption
 import com.icure.cardinal.sdk.crypto.entities.TimeTableShareOptions
 import com.icure.cardinal.sdk.dart.utils.ApiScope
@@ -38,6 +38,7 @@ public object TimeTableApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     entityString: String,
@@ -49,7 +50,7 @@ public object TimeTableApi {
     ApiScope.execute(
       dartResultCallback,
       DecryptedTimeTable.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).timeTable.createTimeTable(
+      NativeReferences.get<CardinalApis>(sdkId).timeTable.createTimeTable(
         entity,
       )
     }
@@ -57,6 +58,7 @@ public object TimeTableApi {
 
   public fun withEncryptionMetadata(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -91,7 +93,7 @@ public object TimeTableApi {
     ApiScope.execute(
       dartResultCallback,
       DecryptedTimeTable.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).timeTable.withEncryptionMetadata(
+      NativeReferences.get<CardinalApis>(sdkId).timeTable.withEncryptionMetadata(
         base,
         patient,
         user,
@@ -106,6 +108,7 @@ public object TimeTableApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     timeTableString: String,
@@ -117,7 +120,7 @@ public object TimeTableApi {
     ApiScope.execute(
       dartResultCallback,
       SetSerializer(HexString.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).timeTable.getEncryptionKeysOf(
+      NativeReferences.get<CardinalApis>(sdkId).timeTable.getEncryptionKeysOf(
         timeTable,
       )
     }
@@ -125,6 +128,7 @@ public object TimeTableApi {
 
   public fun hasWriteAccess(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -139,7 +143,7 @@ public object TimeTableApi {
     ApiScope.execute(
       dartResultCallback,
       Boolean.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).timeTable.hasWriteAccess(
+      NativeReferences.get<CardinalApis>(sdkId).timeTable.hasWriteAccess(
         timeTable,
       )
     }
@@ -147,6 +151,7 @@ public object TimeTableApi {
 
   public fun decryptPatientIdOf(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -161,7 +166,7 @@ public object TimeTableApi {
     ApiScope.execute(
       dartResultCallback,
       SetSerializer(String.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).timeTable.decryptPatientIdOf(
+      NativeReferences.get<CardinalApis>(sdkId).timeTable.decryptPatientIdOf(
         timeTable,
       )
     }
@@ -169,6 +174,7 @@ public object TimeTableApi {
 
   public fun createDelegationDeAnonymizationMetadata(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -188,7 +194,7 @@ public object TimeTableApi {
     ApiScope.execute(
       dartResultCallback,
       Unit.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).timeTable.createDelegationDeAnonymizationMetadata(
+      NativeReferences.get<CardinalApis>(sdkId).timeTable.createDelegationDeAnonymizationMetadata(
         entity,
         delegates,
       )
@@ -197,6 +203,7 @@ public object TimeTableApi {
 
   public fun decrypt(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -211,7 +218,7 @@ public object TimeTableApi {
     ApiScope.execute(
       dartResultCallback,
       DecryptedTimeTable.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).timeTable.decrypt(
+      NativeReferences.get<CardinalApis>(sdkId).timeTable.decrypt(
         timeTable,
       )
     }
@@ -219,6 +226,7 @@ public object TimeTableApi {
 
   public fun tryDecrypt(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -233,7 +241,7 @@ public object TimeTableApi {
     ApiScope.execute(
       dartResultCallback,
       PolymorphicSerializer(TimeTable::class)) {
-      NativeReferences.get<CardinalSdk>(sdkId).timeTable.tryDecrypt(
+      NativeReferences.get<CardinalApis>(sdkId).timeTable.tryDecrypt(
         timeTable,
       )
     }
@@ -241,6 +249,7 @@ public object TimeTableApi {
 
   public fun matchTimeTablesBy(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -255,7 +264,7 @@ public object TimeTableApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(String.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).timeTable.matchTimeTablesBy(
+      NativeReferences.get<CardinalApis>(sdkId).timeTable.matchTimeTablesBy(
         filter,
       )
     }
@@ -263,6 +272,7 @@ public object TimeTableApi {
 
   public fun matchTimeTablesBySorted(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -277,7 +287,7 @@ public object TimeTableApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(String.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).timeTable.matchTimeTablesBySorted(
+      NativeReferences.get<CardinalApis>(sdkId).timeTable.matchTimeTablesBySorted(
         filter,
       )
     }
@@ -285,6 +295,7 @@ public object TimeTableApi {
 
   public fun deleteTimeTableById(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -304,7 +315,7 @@ public object TimeTableApi {
     ApiScope.execute(
       dartResultCallback,
       DocIdentifier.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).timeTable.deleteTimeTableById(
+      NativeReferences.get<CardinalApis>(sdkId).timeTable.deleteTimeTableById(
         entityId,
         rev,
       )
@@ -313,6 +324,7 @@ public object TimeTableApi {
 
   public fun deleteTimeTablesByIds(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -327,7 +339,7 @@ public object TimeTableApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(DocIdentifier.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).timeTable.deleteTimeTablesByIds(
+      NativeReferences.get<CardinalApis>(sdkId).timeTable.deleteTimeTablesByIds(
         entityIds,
       )
     }
@@ -335,6 +347,7 @@ public object TimeTableApi {
 
   public fun purgeTimeTableById(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -354,7 +367,7 @@ public object TimeTableApi {
     ApiScope.execute(
       dartResultCallback,
       Unit.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).timeTable.purgeTimeTableById(
+      NativeReferences.get<CardinalApis>(sdkId).timeTable.purgeTimeTableById(
         id,
         rev,
       )
@@ -363,6 +376,7 @@ public object TimeTableApi {
 
   public fun deleteTimeTable(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -377,7 +391,7 @@ public object TimeTableApi {
     ApiScope.execute(
       dartResultCallback,
       DocIdentifier.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).timeTable.deleteTimeTable(
+      NativeReferences.get<CardinalApis>(sdkId).timeTable.deleteTimeTable(
         timeTable,
       )
     }
@@ -385,6 +399,7 @@ public object TimeTableApi {
 
   public fun deleteTimeTables(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -399,7 +414,7 @@ public object TimeTableApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(DocIdentifier.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).timeTable.deleteTimeTables(
+      NativeReferences.get<CardinalApis>(sdkId).timeTable.deleteTimeTables(
         timeTables,
       )
     }
@@ -407,6 +422,7 @@ public object TimeTableApi {
 
   public fun purgeTimeTable(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -421,7 +437,7 @@ public object TimeTableApi {
     ApiScope.execute(
       dartResultCallback,
       Unit.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).timeTable.purgeTimeTable(
+      NativeReferences.get<CardinalApis>(sdkId).timeTable.purgeTimeTable(
         timeTable,
       )
     }
@@ -429,6 +445,7 @@ public object TimeTableApi {
 
   public fun shareWith(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -453,7 +470,7 @@ public object TimeTableApi {
     ApiScope.execute(
       dartResultCallback,
       DecryptedTimeTable.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).timeTable.shareWith(
+      NativeReferences.get<CardinalApis>(sdkId).timeTable.shareWith(
         delegateId,
         timeTable,
         options,
@@ -463,6 +480,7 @@ public object TimeTableApi {
 
   public fun shareWithMany(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -482,7 +500,7 @@ public object TimeTableApi {
     ApiScope.execute(
       dartResultCallback,
       DecryptedTimeTable.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).timeTable.shareWithMany(
+      NativeReferences.get<CardinalApis>(sdkId).timeTable.shareWithMany(
         timeTable,
         delegates,
       )
@@ -491,6 +509,7 @@ public object TimeTableApi {
 
   public fun filterTimeTablesBy(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -505,7 +524,7 @@ public object TimeTableApi {
     ApiScope.execute(
       dartResultCallback,
       String.serializer()) {
-      val richResult = NativeReferences.get<CardinalSdk>(sdkId).timeTable.filterTimeTablesBy(
+      val richResult = NativeReferences.get<CardinalApis>(sdkId).timeTable.filterTimeTablesBy(
         filter,
       )
       NativeReferences.create(PaginatedListIteratorWithSerializer(
@@ -520,6 +539,7 @@ public object TimeTableApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     filterString: String,
@@ -531,7 +551,7 @@ public object TimeTableApi {
     ApiScope.execute(
       dartResultCallback,
       String.serializer()) {
-      val richResult = NativeReferences.get<CardinalSdk>(sdkId).timeTable.filterTimeTablesBySorted(
+      val richResult = NativeReferences.get<CardinalApis>(sdkId).timeTable.filterTimeTablesBySorted(
         filter,
       )
       NativeReferences.create(PaginatedListIteratorWithSerializer(
@@ -546,6 +566,7 @@ public object TimeTableApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     timeTableString: String,
@@ -557,7 +578,7 @@ public object TimeTableApi {
     ApiScope.execute(
       dartResultCallback,
       PolymorphicSerializer(TimeTable::class)) {
-      NativeReferences.get<CardinalSdk>(sdkId).timeTable.undeleteTimeTable(
+      NativeReferences.get<CardinalApis>(sdkId).timeTable.undeleteTimeTable(
         timeTable,
       )
     }
@@ -565,6 +586,7 @@ public object TimeTableApi {
 
   public fun modifyTimeTable(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -579,7 +601,7 @@ public object TimeTableApi {
     ApiScope.execute(
       dartResultCallback,
       DecryptedTimeTable.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).timeTable.modifyTimeTable(
+      NativeReferences.get<CardinalApis>(sdkId).timeTable.modifyTimeTable(
         entity,
       )
     }
@@ -587,6 +609,7 @@ public object TimeTableApi {
 
   public fun undeleteTimeTableById(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -606,7 +629,7 @@ public object TimeTableApi {
     ApiScope.execute(
       dartResultCallback,
       DecryptedTimeTable.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).timeTable.undeleteTimeTableById(
+      NativeReferences.get<CardinalApis>(sdkId).timeTable.undeleteTimeTableById(
         id,
         rev,
       )
@@ -615,6 +638,7 @@ public object TimeTableApi {
 
   public fun getTimeTable(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -629,7 +653,7 @@ public object TimeTableApi {
     ApiScope.execute(
       dartResultCallback,
       DecryptedTimeTable.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).timeTable.getTimeTable(
+      NativeReferences.get<CardinalApis>(sdkId).timeTable.getTimeTable(
         entityId,
       )
     }
@@ -637,6 +661,7 @@ public object TimeTableApi {
 
   public fun getTimeTables(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -651,7 +676,7 @@ public object TimeTableApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(DecryptedTimeTable.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).timeTable.getTimeTables(
+      NativeReferences.get<CardinalApis>(sdkId).timeTable.getTimeTables(
         timeTableIds,
       )
     }
@@ -661,6 +686,7 @@ public object TimeTableApi {
   public object encrypted {
     public fun shareWith(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -685,7 +711,7 @@ public object TimeTableApi {
       ApiScope.execute(
         dartResultCallback,
         EncryptedTimeTable.serializer()) {
-        NativeReferences.get<CardinalSdk>(sdkId).timeTable.encrypted.shareWith(
+        NativeReferences.get<CardinalApis>(sdkId).timeTable.encrypted.shareWith(
           delegateId,
           timeTable,
           options,
@@ -695,6 +721,7 @@ public object TimeTableApi {
 
     public fun shareWithMany(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -714,7 +741,7 @@ public object TimeTableApi {
       ApiScope.execute(
         dartResultCallback,
         EncryptedTimeTable.serializer()) {
-        NativeReferences.get<CardinalSdk>(sdkId).timeTable.encrypted.shareWithMany(
+        NativeReferences.get<CardinalApis>(sdkId).timeTable.encrypted.shareWithMany(
           timeTable,
           delegates,
         )
@@ -723,6 +750,7 @@ public object TimeTableApi {
 
     public fun filterTimeTablesBy(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -738,7 +766,7 @@ public object TimeTableApi {
         dartResultCallback,
         String.serializer()) {
         val richResult =
-            NativeReferences.get<CardinalSdk>(sdkId).timeTable.encrypted.filterTimeTablesBy(
+            NativeReferences.get<CardinalApis>(sdkId).timeTable.encrypted.filterTimeTablesBy(
           filter,
         )
         NativeReferences.create(PaginatedListIteratorWithSerializer(
@@ -750,6 +778,7 @@ public object TimeTableApi {
 
     public fun filterTimeTablesBySorted(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -765,7 +794,7 @@ public object TimeTableApi {
         dartResultCallback,
         String.serializer()) {
         val richResult =
-            NativeReferences.get<CardinalSdk>(sdkId).timeTable.encrypted.filterTimeTablesBySorted(
+            NativeReferences.get<CardinalApis>(sdkId).timeTable.encrypted.filterTimeTablesBySorted(
           filter,
         )
         NativeReferences.create(PaginatedListIteratorWithSerializer(
@@ -780,6 +809,7 @@ public object TimeTableApi {
         String?,
         String?,
         String?,
+        String?,
       ) -> Unit,
       sdkId: String,
       timeTableString: String,
@@ -791,7 +821,7 @@ public object TimeTableApi {
       ApiScope.execute(
         dartResultCallback,
         PolymorphicSerializer(TimeTable::class)) {
-        NativeReferences.get<CardinalSdk>(sdkId).timeTable.encrypted.undeleteTimeTable(
+        NativeReferences.get<CardinalApis>(sdkId).timeTable.encrypted.undeleteTimeTable(
           timeTable,
         )
       }
@@ -799,6 +829,7 @@ public object TimeTableApi {
 
     public fun modifyTimeTable(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -813,7 +844,7 @@ public object TimeTableApi {
       ApiScope.execute(
         dartResultCallback,
         EncryptedTimeTable.serializer()) {
-        NativeReferences.get<CardinalSdk>(sdkId).timeTable.encrypted.modifyTimeTable(
+        NativeReferences.get<CardinalApis>(sdkId).timeTable.encrypted.modifyTimeTable(
           entity,
         )
       }
@@ -821,6 +852,7 @@ public object TimeTableApi {
 
     public fun undeleteTimeTableById(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -840,7 +872,7 @@ public object TimeTableApi {
       ApiScope.execute(
         dartResultCallback,
         EncryptedTimeTable.serializer()) {
-        NativeReferences.get<CardinalSdk>(sdkId).timeTable.encrypted.undeleteTimeTableById(
+        NativeReferences.get<CardinalApis>(sdkId).timeTable.encrypted.undeleteTimeTableById(
           id,
           rev,
         )
@@ -849,6 +881,7 @@ public object TimeTableApi {
 
     public fun getTimeTable(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -863,7 +896,7 @@ public object TimeTableApi {
       ApiScope.execute(
         dartResultCallback,
         EncryptedTimeTable.serializer()) {
-        NativeReferences.get<CardinalSdk>(sdkId).timeTable.encrypted.getTimeTable(
+        NativeReferences.get<CardinalApis>(sdkId).timeTable.encrypted.getTimeTable(
           entityId,
         )
       }
@@ -871,6 +904,7 @@ public object TimeTableApi {
 
     public fun getTimeTables(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -885,7 +919,7 @@ public object TimeTableApi {
       ApiScope.execute(
         dartResultCallback,
         ListSerializer(EncryptedTimeTable.serializer())) {
-        NativeReferences.get<CardinalSdk>(sdkId).timeTable.encrypted.getTimeTables(
+        NativeReferences.get<CardinalApis>(sdkId).timeTable.encrypted.getTimeTables(
           timeTableIds,
         )
       }
@@ -896,6 +930,7 @@ public object TimeTableApi {
   public object tryAndRecover {
     public fun shareWith(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -920,7 +955,7 @@ public object TimeTableApi {
       ApiScope.execute(
         dartResultCallback,
         PolymorphicSerializer(TimeTable::class)) {
-        NativeReferences.get<CardinalSdk>(sdkId).timeTable.tryAndRecover.shareWith(
+        NativeReferences.get<CardinalApis>(sdkId).timeTable.tryAndRecover.shareWith(
           delegateId,
           timeTable,
           options,
@@ -930,6 +965,7 @@ public object TimeTableApi {
 
     public fun shareWithMany(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -949,7 +985,7 @@ public object TimeTableApi {
       ApiScope.execute(
         dartResultCallback,
         PolymorphicSerializer(TimeTable::class)) {
-        NativeReferences.get<CardinalSdk>(sdkId).timeTable.tryAndRecover.shareWithMany(
+        NativeReferences.get<CardinalApis>(sdkId).timeTable.tryAndRecover.shareWithMany(
           timeTable,
           delegates,
         )
@@ -958,6 +994,7 @@ public object TimeTableApi {
 
     public fun filterTimeTablesBy(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -973,7 +1010,7 @@ public object TimeTableApi {
         dartResultCallback,
         String.serializer()) {
         val richResult =
-            NativeReferences.get<CardinalSdk>(sdkId).timeTable.tryAndRecover.filterTimeTablesBy(
+            NativeReferences.get<CardinalApis>(sdkId).timeTable.tryAndRecover.filterTimeTablesBy(
           filter,
         )
         NativeReferences.create(PaginatedListIteratorWithSerializer(
@@ -985,6 +1022,7 @@ public object TimeTableApi {
 
     public fun filterTimeTablesBySorted(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -1000,7 +1038,7 @@ public object TimeTableApi {
         dartResultCallback,
         String.serializer()) {
         val richResult =
-            NativeReferences.get<CardinalSdk>(sdkId).timeTable.tryAndRecover.filterTimeTablesBySorted(
+            NativeReferences.get<CardinalApis>(sdkId).timeTable.tryAndRecover.filterTimeTablesBySorted(
           filter,
         )
         NativeReferences.create(PaginatedListIteratorWithSerializer(
@@ -1015,6 +1053,7 @@ public object TimeTableApi {
         String?,
         String?,
         String?,
+        String?,
       ) -> Unit,
       sdkId: String,
       timeTableString: String,
@@ -1026,7 +1065,7 @@ public object TimeTableApi {
       ApiScope.execute(
         dartResultCallback,
         PolymorphicSerializer(TimeTable::class)) {
-        NativeReferences.get<CardinalSdk>(sdkId).timeTable.tryAndRecover.undeleteTimeTable(
+        NativeReferences.get<CardinalApis>(sdkId).timeTable.tryAndRecover.undeleteTimeTable(
           timeTable,
         )
       }
@@ -1034,6 +1073,7 @@ public object TimeTableApi {
 
     public fun modifyTimeTable(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -1048,7 +1088,7 @@ public object TimeTableApi {
       ApiScope.execute(
         dartResultCallback,
         PolymorphicSerializer(TimeTable::class)) {
-        NativeReferences.get<CardinalSdk>(sdkId).timeTable.tryAndRecover.modifyTimeTable(
+        NativeReferences.get<CardinalApis>(sdkId).timeTable.tryAndRecover.modifyTimeTable(
           entity,
         )
       }
@@ -1056,6 +1096,7 @@ public object TimeTableApi {
 
     public fun undeleteTimeTableById(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -1075,7 +1116,7 @@ public object TimeTableApi {
       ApiScope.execute(
         dartResultCallback,
         PolymorphicSerializer(TimeTable::class)) {
-        NativeReferences.get<CardinalSdk>(sdkId).timeTable.tryAndRecover.undeleteTimeTableById(
+        NativeReferences.get<CardinalApis>(sdkId).timeTable.tryAndRecover.undeleteTimeTableById(
           id,
           rev,
         )
@@ -1084,6 +1125,7 @@ public object TimeTableApi {
 
     public fun getTimeTable(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -1098,7 +1140,7 @@ public object TimeTableApi {
       ApiScope.execute(
         dartResultCallback,
         PolymorphicSerializer(TimeTable::class)) {
-        NativeReferences.get<CardinalSdk>(sdkId).timeTable.tryAndRecover.getTimeTable(
+        NativeReferences.get<CardinalApis>(sdkId).timeTable.tryAndRecover.getTimeTable(
           entityId,
         )
       }
@@ -1106,6 +1148,7 @@ public object TimeTableApi {
 
     public fun getTimeTables(
       dartResultCallback: (
+        String?,
         String?,
         String?,
         String?,
@@ -1120,7 +1163,7 @@ public object TimeTableApi {
       ApiScope.execute(
         dartResultCallback,
         ListSerializer(PolymorphicSerializer(TimeTable::class))) {
-        NativeReferences.get<CardinalSdk>(sdkId).timeTable.tryAndRecover.getTimeTables(
+        NativeReferences.get<CardinalApis>(sdkId).timeTable.tryAndRecover.getTimeTables(
           timeTableIds,
         )
       }

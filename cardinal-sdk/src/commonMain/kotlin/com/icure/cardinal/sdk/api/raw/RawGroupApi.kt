@@ -10,6 +10,7 @@ import com.icure.cardinal.sdk.model.PaginatedList
 import com.icure.cardinal.sdk.model.RegistrationInformation
 import com.icure.cardinal.sdk.model.RegistrationSuccess
 import com.icure.cardinal.sdk.model.ReplicationInfo
+import com.icure.cardinal.sdk.model.base.CodeStub
 import com.icure.cardinal.sdk.model.couchdb.DesignDocument
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.model.couchdb.GroupDatabasesInfo
@@ -115,6 +116,18 @@ public interface RawGroupApi {
 	suspend fun modifyGroupProperties(
 		id: String,
 		properties: ListOfProperties,
+	): HttpResponse<Group>
+
+	suspend fun addTagToGroup(
+		id: String,
+		rev: String,
+		tag: CodeStub,
+	): HttpResponse<Group>
+
+	suspend fun removeTagFromGroup(
+		id: String,
+		rev: String,
+		tagId: String,
 	): HttpResponse<Group>
 
 	suspend fun setGroupPassword(

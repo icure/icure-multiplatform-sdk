@@ -13,6 +13,7 @@ import 'package:cardinal_sdk/plugin/api/classification_platform_api.dart';
 import 'package:cardinal_sdk/plugin/api/calendar_item_basic_platform_api.dart';
 import 'package:cardinal_sdk/plugin/api/maintenance_task_platform_api.dart';
 import 'package:cardinal_sdk/plugin/api/form_basic_platform_api.dart';
+import 'package:cardinal_sdk/plugin/api/recovery_platform_api.dart';
 import 'package:cardinal_sdk/plugin/api/patient_platform_api.dart';
 import 'package:cardinal_sdk/plugin/api/maintenance_task_basic_platform_api.dart';
 import 'package:cardinal_sdk/plugin/api/tarification_platform_api.dart';
@@ -82,6 +83,8 @@ class CardinalSdkMethodChannelApis extends CardinalSdkPlatformApisPlugin {
 	@override MaintenanceTaskPlatformApi get maintenanceTask => _maintenanceTask;
 	FormBasicPlatformApi _formBasic = FormBasicPlatformApi(_methodChannel);
 	@override FormBasicPlatformApi get formBasic => _formBasic;
+	RecoveryPlatformApi _recovery = RecoveryPlatformApi(_methodChannel);
+	@override RecoveryPlatformApi get recovery => _recovery;
 	PatientPlatformApi _patient = PatientPlatformApi(_methodChannel);
 	@override PatientPlatformApi get patient => _patient;
 	MaintenanceTaskBasicPlatformApi _maintenanceTaskBasic = MaintenanceTaskBasicPlatformApi(_methodChannel);

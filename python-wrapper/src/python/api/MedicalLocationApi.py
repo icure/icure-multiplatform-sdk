@@ -1,8 +1,8 @@
 # auto-generated file
-import asyncio
 import json
 from cardinal_sdk.model import MedicalLocation, ListOfIds, DocIdentifier
-from cardinal_sdk.kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols, PTR_RESULT_CALLBACK_FUNC
+from cardinal_sdk.async_utils import execute_async_method_job
+from cardinal_sdk.kotlin_types import symbols
 from cardinal_sdk.model.CallResult import create_result_from_json, interpret_kt_error
 from ctypes import cast, c_char_p
 from typing import List
@@ -16,27 +16,19 @@ class MedicalLocationApi:
 		self.cardinal_sdk = cardinal_sdk
 
 	async def create_medical_location_async(self, medical_location_dto: MedicalLocation) -> MedicalLocation:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = MedicalLocation._deserialize(json.loads(success.decode('utf-8')))
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return MedicalLocation._deserialize(raw_result)
 		payload = {
 			"medicalLocationDto": medical_location_dto.__serialize__(),
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.MedicalLocationApi.createMedicalLocationAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def create_medical_location_blocking(self, medical_location_dto: MedicalLocation) -> MedicalLocation:
 		payload = {
@@ -55,27 +47,19 @@ class MedicalLocationApi:
 			return return_value
 
 	async def delete_medical_locations_async(self, location_ids: ListOfIds) -> List[DocIdentifier]:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = [DocIdentifier._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return [DocIdentifier._deserialize(x1) for x1 in raw_result]
 		payload = {
 			"locationIds": location_ids.__serialize__(),
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.MedicalLocationApi.deleteMedicalLocationsAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def delete_medical_locations_blocking(self, location_ids: ListOfIds) -> List[DocIdentifier]:
 		payload = {
@@ -94,27 +78,19 @@ class MedicalLocationApi:
 			return return_value
 
 	async def get_medical_location_async(self, location_id: str) -> MedicalLocation:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = MedicalLocation._deserialize(json.loads(success.decode('utf-8')))
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return MedicalLocation._deserialize(raw_result)
 		payload = {
 			"locationId": location_id,
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.MedicalLocationApi.getMedicalLocationAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def get_medical_location_blocking(self, location_id: str) -> MedicalLocation:
 		payload = {
@@ -133,27 +109,19 @@ class MedicalLocationApi:
 			return return_value
 
 	async def modify_medical_location_async(self, medical_location_dto: MedicalLocation) -> MedicalLocation:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = MedicalLocation._deserialize(json.loads(success.decode('utf-8')))
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return MedicalLocation._deserialize(raw_result)
 		payload = {
 			"medicalLocationDto": medical_location_dto.__serialize__(),
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.MedicalLocationApi.modifyMedicalLocationAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def modify_medical_location_blocking(self, medical_location_dto: MedicalLocation) -> MedicalLocation:
 		payload = {
@@ -172,27 +140,19 @@ class MedicalLocationApi:
 			return return_value
 
 	async def get_medical_locations_async(self, medical_location_ids: List[str]) -> List[MedicalLocation]:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = [MedicalLocation._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return [MedicalLocation._deserialize(x1) for x1 in raw_result]
 		payload = {
 			"medicalLocationIds": [x0 for x0 in medical_location_ids],
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.MedicalLocationApi.getMedicalLocationsAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def get_medical_locations_blocking(self, medical_location_ids: List[str]) -> List[MedicalLocation]:
 		payload = {
@@ -211,27 +171,19 @@ class MedicalLocationApi:
 			return return_value
 
 	async def match_medical_locations_by_async(self, filter: BaseFilterOptions[MedicalLocation]) -> List[str]:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = [x1 for x1 in json.loads(success.decode('utf-8'))]
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return [x1 for x1 in raw_result]
 		payload = {
 			"filter": filter.__serialize__(),
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.MedicalLocationApi.matchMedicalLocationsByAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def match_medical_locations_by_blocking(self, filter: BaseFilterOptions[MedicalLocation]) -> List[str]:
 		payload = {
@@ -250,27 +202,19 @@ class MedicalLocationApi:
 			return return_value
 
 	async def match_medical_locations_by_sorted_async(self, filter: BaseSortableFilterOptions[MedicalLocation]) -> List[str]:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = [x1 for x1 in json.loads(success.decode('utf-8'))]
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return [x1 for x1 in raw_result]
 		payload = {
 			"filter": filter.__serialize__(),
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.MedicalLocationApi.matchMedicalLocationsBySortedAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def match_medical_locations_by_sorted_blocking(self, filter: BaseSortableFilterOptions[MedicalLocation]) -> List[str]:
 		payload = {
@@ -289,31 +233,23 @@ class MedicalLocationApi:
 			return return_value
 
 	async def filter_medical_locations_by_async(self, filter: BaseFilterOptions[MedicalLocation]) -> PaginatedListIterator[MedicalLocation]:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = PaginatedListIterator[MedicalLocation](
-					producer = success,
-					deserializer = lambda x: MedicalLocation._deserialize(x),
-					executor = self.cardinal_sdk._executor
-				)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return PaginatedListIterator[MedicalLocation](
+				producer = raw_result,
+				deserializer = lambda x: MedicalLocation._deserialize(x),
+				executor = self.cardinal_sdk._executor
+			)
 		payload = {
 			"filter": filter.__serialize__(),
 		}
-		callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			False,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.MedicalLocationApi.filterMedicalLocationsByAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def filter_medical_locations_by_blocking(self, filter: BaseFilterOptions[MedicalLocation]) -> PaginatedListIterator[MedicalLocation]:
 		payload = {
@@ -339,31 +275,23 @@ class MedicalLocationApi:
 			)
 
 	async def filter_medical_locations_by_sorted_async(self, filter: BaseSortableFilterOptions[MedicalLocation]) -> PaginatedListIterator[MedicalLocation]:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = PaginatedListIterator[MedicalLocation](
-					producer = success,
-					deserializer = lambda x: MedicalLocation._deserialize(x),
-					executor = self.cardinal_sdk._executor
-				)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return PaginatedListIterator[MedicalLocation](
+				producer = raw_result,
+				deserializer = lambda x: MedicalLocation._deserialize(x),
+				executor = self.cardinal_sdk._executor
+			)
 		payload = {
 			"filter": filter.__serialize__(),
 		}
-		callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			False,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.MedicalLocationApi.filterMedicalLocationsBySortedAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def filter_medical_locations_by_sorted_blocking(self, filter: BaseSortableFilterOptions[MedicalLocation]) -> PaginatedListIterator[MedicalLocation]:
 		payload = {

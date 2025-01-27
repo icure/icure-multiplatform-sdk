@@ -34,6 +34,7 @@ import kotlin.Unit
 import kotlin.collections.List
 import kotlinx.cinterop.ByteVarOf
 import kotlinx.cinterop.CFunction
+import kotlinx.cinterop.COpaquePointer
 import kotlinx.cinterop.CPointer
 import kotlinx.cinterop.CValues
 import kotlinx.cinterop.ExperimentalForeignApi
@@ -55,7 +56,7 @@ public fun listGroupsBlocking(sdk: CardinalNonCryptoApis): String = kotlin.runCa
 @OptIn(ExperimentalForeignApi::class)
 public fun listGroupsAsync(sdk: CardinalNonCryptoApis,
 		resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
-		CValues<ByteVarOf<Byte>>?) -> Unit>>): Unit = kotlin.runCatching {
+		CValues<ByteVarOf<Byte>>?) -> Unit>>): COpaquePointer? = kotlin.runCatching {
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.group.listGroups()
@@ -88,7 +89,7 @@ public fun getGroupAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<GetGroupParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
@@ -142,7 +143,7 @@ public fun createGroupAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<CreateGroupParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
@@ -192,7 +193,7 @@ public fun registerNewGroupAdministratorAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams =
 			fullLanguageInteropJson.decodeFromString<RegisterNewGroupAdministratorParams>(params)
 	GlobalScope.launch {
@@ -215,7 +216,7 @@ public fun listAppsBlocking(sdk: CardinalNonCryptoApis): String = kotlin.runCatc
 @OptIn(ExperimentalForeignApi::class)
 public fun listAppsAsync(sdk: CardinalNonCryptoApis,
 		resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
-		CValues<ByteVarOf<Byte>>?) -> Unit>>): Unit = kotlin.runCatching {
+		CValues<ByteVarOf<Byte>>?) -> Unit>>): COpaquePointer? = kotlin.runCatching {
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.group.listApps()
@@ -252,7 +253,7 @@ public fun findGroupsAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<FindGroupsParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
@@ -298,7 +299,7 @@ public fun findGroupsWithContentAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<FindGroupsWithContentParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
@@ -338,7 +339,7 @@ public fun getNameOfGroupParentAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<GetNameOfGroupParentParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
@@ -376,7 +377,7 @@ public fun modifyGroupNameAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<ModifyGroupNameParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
@@ -417,7 +418,7 @@ public fun getOperationTokenAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<GetOperationTokenParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
@@ -455,7 +456,7 @@ public fun deleteOperationTokenAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<DeleteOperationTokenParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
@@ -495,7 +496,7 @@ public fun setDefaultRolesAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<SetDefaultRolesParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
@@ -533,7 +534,7 @@ public fun getDefaultRolesAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<GetDefaultRolesParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
@@ -570,7 +571,7 @@ public fun deleteGroupAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<DeleteGroupParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
@@ -608,7 +609,7 @@ public fun changeSuperGroupAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<ChangeSuperGroupParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
@@ -645,7 +646,7 @@ public fun hardDeleteGroupAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<HardDeleteGroupParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
@@ -683,7 +684,7 @@ public fun modifyGroupPropertiesAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<ModifyGroupPropertiesParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
@@ -722,7 +723,7 @@ public fun setGroupPasswordAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<SetGroupPasswordParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
@@ -765,7 +766,7 @@ public fun initDesignDocsAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<InitDesignDocsParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
@@ -808,7 +809,7 @@ public fun solveConflictsAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<SolveConflictsParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
@@ -852,7 +853,7 @@ public fun resetStorageAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<ResetStorageParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
@@ -891,7 +892,7 @@ public fun getGroupsStorageInfosAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<GetGroupsStorageInfosParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
@@ -927,7 +928,7 @@ public fun getReplicationInfoAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<GetReplicationInfoParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
@@ -963,7 +964,7 @@ public fun getHierarchyAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<GetHierarchyParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
@@ -983,7 +984,7 @@ public fun listAllGroupsIdsBlocking(sdk: CardinalNonCryptoApis): String = kotlin
 @OptIn(ExperimentalForeignApi::class)
 public fun listAllGroupsIdsAsync(sdk: CardinalNonCryptoApis,
 		resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
-		CValues<ByteVarOf<Byte>>?) -> Unit>>): Unit = kotlin.runCatching {
+		CValues<ByteVarOf<Byte>>?) -> Unit>>): COpaquePointer? = kotlin.runCatching {
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.group.listAllGroupsIds()

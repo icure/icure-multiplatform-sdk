@@ -1,7 +1,7 @@
 // auto-generated file
 package com.icure.cardinal.sdk.dart.api
 
-import com.icure.cardinal.sdk.CardinalSdk
+import com.icure.cardinal.sdk.CardinalNonCryptoApis
 import com.icure.cardinal.sdk.dart.utils.ApiScope
 import com.icure.cardinal.sdk.dart.utils.NativeReferences
 import com.icure.cardinal.sdk.model.Place
@@ -21,6 +21,7 @@ public object PlaceApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     placeIdString: String,
@@ -32,7 +33,7 @@ public object PlaceApi {
     ApiScope.execute(
       dartResultCallback,
       Place.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).place.getPlace(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).place.getPlace(
         placeId,
       )
     }
@@ -43,6 +44,7 @@ public object PlaceApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     placeString: String,
@@ -54,7 +56,7 @@ public object PlaceApi {
     ApiScope.execute(
       dartResultCallback,
       Place.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).place.createPlace(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).place.createPlace(
         place,
       )
     }
@@ -65,6 +67,7 @@ public object PlaceApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     placeString: String,
@@ -76,7 +79,7 @@ public object PlaceApi {
     ApiScope.execute(
       dartResultCallback,
       Place.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).place.modifyPlace(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).place.modifyPlace(
         place,
       )
     }
@@ -84,6 +87,7 @@ public object PlaceApi {
 
   public fun deletePlaces(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -98,7 +102,7 @@ public object PlaceApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(DocIdentifier.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).place.deletePlaces(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).place.deletePlaces(
         placeIds,
       )
     }

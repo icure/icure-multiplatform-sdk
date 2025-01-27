@@ -1,7 +1,7 @@
 // auto-generated file
 package com.icure.cardinal.sdk.dart.api
 
-import com.icure.cardinal.sdk.CardinalSdk
+import com.icure.cardinal.sdk.CardinalApis
 import com.icure.cardinal.sdk.dart.utils.ApiScope
 import com.icure.cardinal.sdk.dart.utils.NativeReferences
 import com.icure.cardinal.sdk.model.CryptoActorStubWithType
@@ -21,11 +21,12 @@ public object DataOwnerApi {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit, sdkId: String) {
     ApiScope.execute(
       dartResultCallback,
       DataOwnerWithType.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).dataOwner.getCurrentDataOwner()
+      NativeReferences.get<CardinalApis>(sdkId).dataOwner.getCurrentDataOwner()
     }
   }
 
@@ -33,11 +34,12 @@ public object DataOwnerApi {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit, sdkId: String) {
     ApiScope.execute(
       dartResultCallback,
       CryptoActorStubWithType.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).dataOwner.getCurrentDataOwnerStub()
+      NativeReferences.get<CardinalApis>(sdkId).dataOwner.getCurrentDataOwnerStub()
     }
   }
 
@@ -45,11 +47,12 @@ public object DataOwnerApi {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit, sdkId: String) {
     ApiScope.execute(
       dartResultCallback,
       String.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).dataOwner.getCurrentDataOwnerId()
+      NativeReferences.get<CardinalApis>(sdkId).dataOwner.getCurrentDataOwnerId()
     }
   }
 
@@ -57,16 +60,18 @@ public object DataOwnerApi {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit, sdkId: String) {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(String.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).dataOwner.getCurrentDataOwnerHierarchyIds()
+      NativeReferences.get<CardinalApis>(sdkId).dataOwner.getCurrentDataOwnerHierarchyIds()
     }
   }
 
   public fun getDataOwner(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -81,7 +86,7 @@ public object DataOwnerApi {
     ApiScope.execute(
       dartResultCallback,
       DataOwnerWithType.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).dataOwner.getDataOwner(
+      NativeReferences.get<CardinalApis>(sdkId).dataOwner.getDataOwner(
         ownerId,
       )
     }
@@ -92,6 +97,7 @@ public object DataOwnerApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     ownerIdString: String,
@@ -103,7 +109,7 @@ public object DataOwnerApi {
     ApiScope.execute(
       dartResultCallback,
       CryptoActorStubWithType.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).dataOwner.getCryptoActorStub(
+      NativeReferences.get<CardinalApis>(sdkId).dataOwner.getCryptoActorStub(
         ownerId,
       )
     }
@@ -111,6 +117,7 @@ public object DataOwnerApi {
 
   public fun getCurrentDataOwnerHierarchyIdsFrom(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -125,7 +132,7 @@ public object DataOwnerApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(String.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).dataOwner.getCurrentDataOwnerHierarchyIdsFrom(
+      NativeReferences.get<CardinalApis>(sdkId).dataOwner.getCurrentDataOwnerHierarchyIdsFrom(
         parentId,
       )
     }
@@ -135,16 +142,18 @@ public object DataOwnerApi {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit, sdkId: String) {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(DataOwnerWithType.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).dataOwner.getCurrentDataOwnerHierarchy()
+      NativeReferences.get<CardinalApis>(sdkId).dataOwner.getCurrentDataOwnerHierarchy()
     }
   }
 
   public fun modifyDataOwnerStub(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -159,7 +168,7 @@ public object DataOwnerApi {
     ApiScope.execute(
       dartResultCallback,
       CryptoActorStubWithType.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).dataOwner.modifyDataOwnerStub(
+      NativeReferences.get<CardinalApis>(sdkId).dataOwner.modifyDataOwnerStub(
         cryptoActorStubWithTypeDto,
       )
     }
@@ -169,11 +178,12 @@ public object DataOwnerApi {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit, sdkId: String) {
     ApiScope.execute(
       dartResultCallback,
       DataOwnerType.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).dataOwner.getCurrentDataOwnerType()
+      NativeReferences.get<CardinalApis>(sdkId).dataOwner.getCurrentDataOwnerType()
     }
   }
 
@@ -181,11 +191,12 @@ public object DataOwnerApi {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit, sdkId: String) {
     ApiScope.execute(
       dartResultCallback,
       Unit.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).dataOwner.clearCurrentDataOwnerIdsCache()
+      NativeReferences.get<CardinalApis>(sdkId).dataOwner.clearCurrentDataOwnerIdsCache()
     }
   }
 }

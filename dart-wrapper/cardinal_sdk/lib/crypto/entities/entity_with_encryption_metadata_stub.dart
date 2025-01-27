@@ -23,18 +23,6 @@ class EntityWithEncryptionMetadataStub implements HasEncryptionMetadata {
 			this.securityMetadata
 		});
 
-	factory EntityWithEncryptionMetadataStub.fromJSON(Map<String, dynamic> data) {
-		return EntityWithEncryptionMetadataStub(
-			(data["id"] as String),
-			(data["secretForeignKeys"] as List<dynamic>).map((x0) => (x0 as String) ).toSet(),
-			(data["cryptedForeignKeys"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as List<dynamic>).map((x1) => Delegation.fromJSON(x1) ).toSet())),
-			(data["delegations"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as List<dynamic>).map((x1) => Delegation.fromJSON(x1) ).toSet())),
-			(data["encryptionKeys"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as List<dynamic>).map((x1) => Delegation.fromJSON(x1) ).toSet())),
-			rev: (data["rev"] as String?),
-			securityMetadata: data["securityMetadata"] == null ? null : SecurityMetadata.fromJSON(data["securityMetadata"]),
-		);
-	}
-
 	static Map<String, dynamic> encode(EntityWithEncryptionMetadataStub value) {
 		Map<String, dynamic> entityAsMap = {
 			"id" : value.id,
@@ -46,5 +34,17 @@ class EntityWithEncryptionMetadataStub implements HasEncryptionMetadata {
 			"securityMetadata" : value.securityMetadata == null ? null : SecurityMetadata.encode(value.securityMetadata!)
 		};
 		return entityAsMap;
+	}
+
+	static EntityWithEncryptionMetadataStub fromJSON(Map<String, dynamic> data) {
+		return EntityWithEncryptionMetadataStub(
+			(data["id"] as String),
+			(data["secretForeignKeys"] as List<dynamic>).map((x0) => (x0 as String) ).toSet(),
+			(data["cryptedForeignKeys"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as List<dynamic>).map((x1) => Delegation.fromJSON(x1) ).toSet())),
+			(data["delegations"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as List<dynamic>).map((x1) => Delegation.fromJSON(x1) ).toSet())),
+			(data["encryptionKeys"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as List<dynamic>).map((x1) => Delegation.fromJSON(x1) ).toSet())),
+			rev: (data["rev"] as String?),
+			securityMetadata: data["securityMetadata"] == null ? null : SecurityMetadata.fromJSON(data["securityMetadata"]),
+		);
 	}
 }

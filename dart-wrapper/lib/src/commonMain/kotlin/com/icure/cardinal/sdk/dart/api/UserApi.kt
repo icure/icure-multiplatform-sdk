@@ -1,7 +1,7 @@
 // auto-generated file
 package com.icure.cardinal.sdk.dart.api
 
-import com.icure.cardinal.sdk.CardinalSdk
+import com.icure.cardinal.sdk.CardinalNonCryptoApis
 import com.icure.cardinal.sdk.dart.utils.ApiScope
 import com.icure.cardinal.sdk.dart.utils.NativeReferences
 import com.icure.cardinal.sdk.filters.BaseFilterOptions
@@ -35,16 +35,18 @@ public object UserApi {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit, sdkId: String) {
     ApiScope.execute(
       dartResultCallback,
       User.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).user.getCurrentUser()
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).user.getCurrentUser()
     }
   }
 
   public fun createUser(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -59,7 +61,7 @@ public object UserApi {
     ApiScope.execute(
       dartResultCallback,
       User.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).user.createUser(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).user.createUser(
         user,
       )
     }
@@ -67,6 +69,7 @@ public object UserApi {
 
   public fun getUser(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -81,7 +84,7 @@ public object UserApi {
     ApiScope.execute(
       dartResultCallback,
       User.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).user.getUser(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).user.getUser(
         userId,
       )
     }
@@ -89,6 +92,7 @@ public object UserApi {
 
   public fun getUsers(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -103,7 +107,7 @@ public object UserApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(User.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).user.getUsers(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).user.getUsers(
         userIds,
       )
     }
@@ -111,6 +115,7 @@ public object UserApi {
 
   public fun getUserByEmail(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -125,7 +130,7 @@ public object UserApi {
     ApiScope.execute(
       dartResultCallback,
       User.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).user.getUserByEmail(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).user.getUserByEmail(
         email,
       )
     }
@@ -133,6 +138,7 @@ public object UserApi {
 
   public fun getUserByPhoneNumber(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -147,7 +153,7 @@ public object UserApi {
     ApiScope.execute(
       dartResultCallback,
       User.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).user.getUserByPhoneNumber(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).user.getUserByPhoneNumber(
         phoneNumber,
       )
     }
@@ -158,6 +164,7 @@ public object UserApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     idString: String,
@@ -169,7 +176,7 @@ public object UserApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(String.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).user.findByHcpartyId(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).user.findByHcpartyId(
         id,
       )
     }
@@ -180,6 +187,7 @@ public object UserApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     idString: String,
@@ -191,7 +199,7 @@ public object UserApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(String.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).user.findByPatientId(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).user.findByPatientId(
         id,
       )
     }
@@ -199,6 +207,7 @@ public object UserApi {
 
   public fun modifyUser(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -213,7 +222,7 @@ public object UserApi {
     ApiScope.execute(
       dartResultCallback,
       User.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).user.modifyUser(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).user.modifyUser(
         user,
       )
     }
@@ -221,6 +230,7 @@ public object UserApi {
 
   public fun assignHealthcareParty(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -235,7 +245,7 @@ public object UserApi {
     ApiScope.execute(
       dartResultCallback,
       User.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).user.assignHealthcareParty(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).user.assignHealthcareParty(
         healthcarePartyId,
       )
     }
@@ -243,6 +253,7 @@ public object UserApi {
 
   public fun modifyProperties(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -262,7 +273,7 @@ public object UserApi {
     ApiScope.execute(
       dartResultCallback,
       User.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).user.modifyProperties(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).user.modifyProperties(
         userId,
         properties,
       )
@@ -271,6 +282,7 @@ public object UserApi {
 
   public fun getToken(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -300,7 +312,7 @@ public object UserApi {
     ApiScope.execute(
       dartResultCallback,
       String.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).user.getToken(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).user.getToken(
         userId,
         key,
         tokenValidity,
@@ -311,6 +323,7 @@ public object UserApi {
 
   public fun filterUsersBy(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -325,7 +338,7 @@ public object UserApi {
     ApiScope.execute(
       dartResultCallback,
       String.serializer()) {
-      val richResult = NativeReferences.get<CardinalSdk>(sdkId).user.filterUsersBy(
+      val richResult = NativeReferences.get<CardinalNonCryptoApis>(sdkId).user.filterUsersBy(
         filter,
       )
       NativeReferences.create(PaginatedListIteratorWithSerializer(
@@ -340,6 +353,7 @@ public object UserApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     filterString: String,
@@ -351,7 +365,7 @@ public object UserApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(String.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).user.matchUsersBy(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).user.matchUsersBy(
         filter,
       )
     }
@@ -359,6 +373,7 @@ public object UserApi {
 
   public fun filterUsersBySorted(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -373,7 +388,7 @@ public object UserApi {
     ApiScope.execute(
       dartResultCallback,
       String.serializer()) {
-      val richResult = NativeReferences.get<CardinalSdk>(sdkId).user.filterUsersBySorted(
+      val richResult = NativeReferences.get<CardinalNonCryptoApis>(sdkId).user.filterUsersBySorted(
         filter,
       )
       NativeReferences.create(PaginatedListIteratorWithSerializer(
@@ -388,6 +403,7 @@ public object UserApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     filterString: String,
@@ -399,7 +415,7 @@ public object UserApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(String.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).user.matchUsersBySorted(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).user.matchUsersBySorted(
         filter,
       )
     }
@@ -409,16 +425,18 @@ public object UserApi {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit, sdkId: String) {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(UserGroup.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).user.getMatchingUsers()
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).user.getMatchingUsers()
     }
   }
 
   public fun getUsersInGroup(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -438,7 +456,7 @@ public object UserApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(User.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).user.getUsersInGroup(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).user.getUsersInGroup(
         groupId,
         userIds,
       )
@@ -450,6 +468,7 @@ public object UserApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     groupIdString: String,
@@ -466,7 +485,7 @@ public object UserApi {
     ApiScope.execute(
       dartResultCallback,
       User.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).user.createUserInGroup(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).user.createUserInGroup(
         groupId,
         user,
       )
@@ -478,6 +497,7 @@ public object UserApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     groupIdString: String,
@@ -494,7 +514,7 @@ public object UserApi {
     ApiScope.execute(
       dartResultCallback,
       User.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).user.modifyUserInGroup(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).user.modifyUserInGroup(
         groupId,
         user,
       )
@@ -503,6 +523,7 @@ public object UserApi {
 
   public fun setUserRoles(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -522,7 +543,7 @@ public object UserApi {
     ApiScope.execute(
       dartResultCallback,
       User.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).user.setUserRoles(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).user.setUserRoles(
         userId,
         rolesId,
       )
@@ -531,6 +552,7 @@ public object UserApi {
 
   public fun setUserRolesInGroup(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -555,7 +577,7 @@ public object UserApi {
     ApiScope.execute(
       dartResultCallback,
       User.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).user.setUserRolesInGroup(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).user.setUserRolesInGroup(
         userId,
         groupId,
         rolesId,
@@ -568,6 +590,7 @@ public object UserApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     userIdString: String,
@@ -579,7 +602,7 @@ public object UserApi {
     ApiScope.execute(
       dartResultCallback,
       User.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).user.resetUserRoles(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).user.resetUserRoles(
         userId,
       )
     }
@@ -587,6 +610,7 @@ public object UserApi {
 
   public fun resetUserRolesInGroup(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -606,7 +630,7 @@ public object UserApi {
     ApiScope.execute(
       dartResultCallback,
       User.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).user.resetUserRolesInGroup(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).user.resetUserRolesInGroup(
         userId,
         groupId,
       )
@@ -615,6 +639,7 @@ public object UserApi {
 
   public fun getTokenInGroup(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -649,7 +674,7 @@ public object UserApi {
     ApiScope.execute(
       dartResultCallback,
       String.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).user.getTokenInGroup(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).user.getTokenInGroup(
         groupId,
         userId,
         key,
@@ -661,6 +686,7 @@ public object UserApi {
 
   public fun getTokenInAllGroups(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -690,7 +716,7 @@ public object UserApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(TokenWithGroup.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).user.getTokenInAllGroups(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).user.getTokenInAllGroups(
         userIdentifier,
         key,
         token,
@@ -701,6 +727,7 @@ public object UserApi {
 
   public fun filterUsersInGroupBy(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -720,7 +747,7 @@ public object UserApi {
     ApiScope.execute(
       dartResultCallback,
       String.serializer()) {
-      val richResult = NativeReferences.get<CardinalSdk>(sdkId).user.filterUsersInGroupBy(
+      val richResult = NativeReferences.get<CardinalNonCryptoApis>(sdkId).user.filterUsersInGroupBy(
         groupId,
         filter,
       )
@@ -736,6 +763,7 @@ public object UserApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     groupIdString: String,
@@ -752,7 +780,7 @@ public object UserApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(String.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).user.matchUsersInGroupBy(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).user.matchUsersInGroupBy(
         groupId,
         filter,
       )
@@ -761,6 +789,7 @@ public object UserApi {
 
   public fun filterUsersInGroupBySorted(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -780,7 +809,8 @@ public object UserApi {
     ApiScope.execute(
       dartResultCallback,
       String.serializer()) {
-      val richResult = NativeReferences.get<CardinalSdk>(sdkId).user.filterUsersInGroupBySorted(
+      val richResult =
+          NativeReferences.get<CardinalNonCryptoApis>(sdkId).user.filterUsersInGroupBySorted(
         groupId,
         filter,
       )
@@ -793,6 +823,7 @@ public object UserApi {
 
   public fun matchUsersInGroupBySorted(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -812,7 +843,7 @@ public object UserApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(String.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).user.matchUsersInGroupBySorted(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).user.matchUsersInGroupBySorted(
         groupId,
         filter,
       )
@@ -821,6 +852,7 @@ public object UserApi {
 
   public fun enable2faForUserWithGroup(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -845,7 +877,7 @@ public object UserApi {
     ApiScope.execute(
       dartResultCallback,
       Unit.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).user.enable2faForUser(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).user.enable2faForUser(
         userId,
         groupId,
         request,
@@ -858,6 +890,7 @@ public object UserApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     userIdString: String,
@@ -874,7 +907,7 @@ public object UserApi {
     ApiScope.execute(
       dartResultCallback,
       Unit.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).user.enable2faForUser(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).user.enable2faForUser(
         userId,
         request,
       )
@@ -886,6 +919,7 @@ public object UserApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     userIdString: String,
@@ -902,7 +936,7 @@ public object UserApi {
     ApiScope.execute(
       dartResultCallback,
       Unit.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).user.disable2faForUser(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).user.disable2faForUser(
         userId,
         groupId,
       )
@@ -914,6 +948,7 @@ public object UserApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     userIdString: String,
@@ -925,7 +960,7 @@ public object UserApi {
     ApiScope.execute(
       dartResultCallback,
       Unit.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).user.disable2faForUser(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).user.disable2faForUser(
         userId,
       )
     }
@@ -933,6 +968,7 @@ public object UserApi {
 
   public fun createAdminUser(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -947,7 +983,7 @@ public object UserApi {
     ApiScope.execute(
       dartResultCallback,
       User.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).user.createAdminUser(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).user.createAdminUser(
         user,
       )
     }
@@ -955,6 +991,7 @@ public object UserApi {
 
   public fun createAdminUserInGroup(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -974,7 +1011,7 @@ public object UserApi {
     ApiScope.execute(
       dartResultCallback,
       User.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).user.createAdminUserInGroup(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).user.createAdminUserInGroup(
         groupId,
         user,
       )
@@ -986,6 +1023,7 @@ public object UserApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     entityIdString: String,
@@ -1002,7 +1040,7 @@ public object UserApi {
     ApiScope.execute(
       dartResultCallback,
       DocIdentifier.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).user.deleteUserById(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).user.deleteUserById(
         entityId,
         rev,
       )
@@ -1011,6 +1049,7 @@ public object UserApi {
 
   public fun deleteUserInGroupById(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -1035,7 +1074,7 @@ public object UserApi {
     ApiScope.execute(
       dartResultCallback,
       DocIdentifier.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).user.deleteUserInGroupById(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).user.deleteUserInGroupById(
         groupId,
         entityId,
         rev,
@@ -1048,6 +1087,7 @@ public object UserApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     idString: String,
@@ -1064,7 +1104,7 @@ public object UserApi {
     ApiScope.execute(
       dartResultCallback,
       Unit.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).user.purgeUserById(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).user.purgeUserById(
         id,
         rev,
       )
@@ -1073,6 +1113,7 @@ public object UserApi {
 
   public fun undeleteUserById(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -1092,7 +1133,7 @@ public object UserApi {
     ApiScope.execute(
       dartResultCallback,
       User.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).user.undeleteUserById(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).user.undeleteUserById(
         id,
         rev,
       )
@@ -1101,6 +1142,7 @@ public object UserApi {
 
   public fun deleteUser(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -1115,7 +1157,7 @@ public object UserApi {
     ApiScope.execute(
       dartResultCallback,
       DocIdentifier.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).user.deleteUser(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).user.deleteUser(
         user,
       )
     }
@@ -1123,6 +1165,7 @@ public object UserApi {
 
   public fun deleteUserInGroup(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -1142,7 +1185,7 @@ public object UserApi {
     ApiScope.execute(
       dartResultCallback,
       DocIdentifier.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).user.deleteUserInGroup(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).user.deleteUserInGroup(
         groupId,
         user,
       )
@@ -1151,6 +1194,7 @@ public object UserApi {
 
   public fun purgeUser(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -1165,7 +1209,7 @@ public object UserApi {
     ApiScope.execute(
       dartResultCallback,
       Unit.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).user.purgeUser(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).user.purgeUser(
         user,
       )
     }
@@ -1173,6 +1217,7 @@ public object UserApi {
 
   public fun undeleteUser(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -1187,7 +1232,7 @@ public object UserApi {
     ApiScope.execute(
       dartResultCallback,
       User.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).user.undeleteUser(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).user.undeleteUser(
         user,
       )
     }
@@ -1195,6 +1240,7 @@ public object UserApi {
 
   public fun subscribeToEvents(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -1219,7 +1265,7 @@ public object UserApi {
     ApiScope.execute(
       dartResultCallback,
       String.serializer()) {
-      val richResult = NativeReferences.get<CardinalSdk>(sdkId).user.subscribeToEvents(
+      val richResult = NativeReferences.get<CardinalNonCryptoApis>(sdkId).user.subscribeToEvents(
         events,
         filter,
         subscriptionConfig,

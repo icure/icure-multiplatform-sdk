@@ -6,6 +6,7 @@ func dispatchFilters(
   resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void
 ) -> Bool {

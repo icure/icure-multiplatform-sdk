@@ -6,11 +6,6 @@ import 'package:cardinal_sdk/crypto/entities/failed_request_details.dart';
 
 class ShareAllPatientDataOptions {
 	static final ShareAllPatientDataOptions _singleton = ShareAllPatientDataOptions._internal();
-	factory ShareAllPatientDataOptions.fromJSON(Map<String, dynamic> data) {
-		return ShareAllPatientDataOptions(
-		);
-	}
-
 	ShareAllPatientDataOptions._internal();
 
 	factory ShareAllPatientDataOptions() {
@@ -21,6 +16,11 @@ class ShareAllPatientDataOptions {
 		Map<String, dynamic> entityAsMap = {
 		};
 		return entityAsMap;
+	}
+
+	static ShareAllPatientDataOptions fromJSON(Map<String, dynamic> data) {
+		return ShareAllPatientDataOptions(
+		);
 	}
 }
 
@@ -133,14 +133,6 @@ class ShareAllPatientDataOptionsEntityResult {
 		error = error ?? null,
 		_modified = modified;
 
-	factory ShareAllPatientDataOptionsEntityResult.fromJSON(Map<String, dynamic> data) {
-		return ShareAllPatientDataOptionsEntityResult(
-			(data["modified"] as int),
-			success: (data["success"] as bool?),
-			error: data["error"] == null ? null : ShareAllPatientDataOptionsSharePatientDataError.fromJSON(data["error"]),
-		);
-	}
-
 	static Map<String, dynamic> encode(ShareAllPatientDataOptionsEntityResult value) {
 		Map<String, dynamic> entityAsMap = {
 			"success" : value.success,
@@ -148,6 +140,14 @@ class ShareAllPatientDataOptionsEntityResult {
 			"modified" : value.modified
 		};
 		return entityAsMap;
+	}
+
+	static ShareAllPatientDataOptionsEntityResult fromJSON(Map<String, dynamic> data) {
+		return ShareAllPatientDataOptionsEntityResult(
+			(data["modified"] as int),
+			success: (data["success"] as bool?),
+			error: data["error"] == null ? null : ShareAllPatientDataOptionsSharePatientDataError.fromJSON(data["error"]),
+		);
 	}
 }
 
@@ -159,19 +159,19 @@ class ShareAllPatientDataOptionsResult {
 		this.statuses
 		);
 
-	factory ShareAllPatientDataOptionsResult.fromJSON(Map<String, dynamic> data) {
-		return ShareAllPatientDataOptionsResult(
-			EncryptedPatient.fromJSON(data["patient"]),
-			(data["statuses"] as Map<String, dynamic>).map((k0, v0) => MapEntry(ShareAllPatientDataOptionsShareableEntity.fromJSON(k0), ShareAllPatientDataOptionsEntityResult.fromJSON(v0)))
-		);
-	}
-
 	static Map<String, dynamic> encode(ShareAllPatientDataOptionsResult value) {
 		Map<String, dynamic> entityAsMap = {
 			"patient" : EncryptedPatient.encode(value.patient),
 			"statuses" : value.statuses.map((k0, v0) => MapEntry(ShareAllPatientDataOptionsShareableEntity.encode(k0), ShareAllPatientDataOptionsEntityResult.encode(v0)))
 		};
 		return entityAsMap;
+	}
+
+	static ShareAllPatientDataOptionsResult fromJSON(Map<String, dynamic> data) {
+		return ShareAllPatientDataOptionsResult(
+			EncryptedPatient.fromJSON(data["patient"]),
+			(data["statuses"] as Map<String, dynamic>).map((k0, v0) => MapEntry(ShareAllPatientDataOptionsShareableEntity.fromJSON(k0), ShareAllPatientDataOptionsEntityResult.fromJSON(v0)))
+		);
 	}
 }
 
@@ -214,13 +214,6 @@ class ShareAllPatientDataOptionsBulkShareFailure implements ShareAllPatientDataO
 		this.message
 		);
 
-	factory ShareAllPatientDataOptionsBulkShareFailure.fromJSON(Map<String, dynamic> data) {
-		return ShareAllPatientDataOptionsBulkShareFailure(
-			(data["errors"] as List<dynamic>).map((x0) => FailedRequestDetails.fromJSON(x0) ).toList(),
-			(data["message"] as String)
-		);
-	}
-
 	static Map<String, dynamic> encode(ShareAllPatientDataOptionsBulkShareFailure value) {
 		Map<String, dynamic> entityAsMap = {
 			"errors" : value.errors.map((x0) => FailedRequestDetails.encode(x0)).toList(),
@@ -228,22 +221,29 @@ class ShareAllPatientDataOptionsBulkShareFailure implements ShareAllPatientDataO
 		};
 		return entityAsMap;
 	}
+
+	static ShareAllPatientDataOptionsBulkShareFailure fromJSON(Map<String, dynamic> data) {
+		return ShareAllPatientDataOptionsBulkShareFailure(
+			(data["errors"] as List<dynamic>).map((x0) => FailedRequestDetails.fromJSON(x0) ).toList(),
+			(data["message"] as String)
+		);
+	}
 }
 
 class ShareAllPatientDataOptionsFailedRequest implements ShareAllPatientDataOptionsSharePatientDataError {
 	String description;
 	ShareAllPatientDataOptionsFailedRequest(this.description);
 
-	factory ShareAllPatientDataOptionsFailedRequest.fromJSON(Map<String, dynamic> data) {
-		return ShareAllPatientDataOptionsFailedRequest(
-			(data["description"] as String)
-		);
-	}
-
 	static Map<String, dynamic> encode(ShareAllPatientDataOptionsFailedRequest value) {
 		Map<String, dynamic> entityAsMap = {
 			"description" : value.description
 		};
 		return entityAsMap;
+	}
+
+	static ShareAllPatientDataOptionsFailedRequest fromJSON(Map<String, dynamic> data) {
+		return ShareAllPatientDataOptionsFailedRequest(
+			(data["description"] as String)
+		);
 	}
 }

@@ -14,14 +14,6 @@ class Payment {
 		paymentType = paymentType ?? null,
 		paid = paid ?? null;
 
-	factory Payment.fromJSON(Map<String, dynamic> data) {
-		return Payment(
-			paymentDate: (data["paymentDate"] as int),
-			paymentType: data["paymentType"] == null ? null : PaymentType.fromJSON(data["paymentType"]),
-			paid: (data["paid"] as num?)?.toDouble()
-		);
-	}
-
 	static Map<String, dynamic> encode(Payment value) {
 		Map<String, dynamic> entityAsMap = {
 			"paymentDate" : value.paymentDate,
@@ -29,5 +21,13 @@ class Payment {
 			"paid" : value.paid
 		};
 		return entityAsMap;
+	}
+
+	static Payment fromJSON(Map<String, dynamic> data) {
+		return Payment(
+			paymentDate: (data["paymentDate"] as int),
+			paymentType: data["paymentType"] == null ? null : PaymentType.fromJSON(data["paymentType"]),
+			paid: (data["paid"] as num?)?.toDouble()
+		);
 	}
 }

@@ -23,11 +23,15 @@ object NativeReferences {
 		id
 	}
 
-	suspend fun delete(referenceId: String): Unit = writeMutex.withLock {
-		require (references.containsKey(referenceId)) {
-			"Native object for reference id $referenceId not found"
+	suspend fun delete(referenceId: String) {
+		val reference = writeMutex.withLock {
+			getAsAny(referenceId).also {
+				references -= referenceId
+			}
 		}
-		references -= referenceId
+		if (reference is DisposableNativeReference) {
+			reference.dispose()
+		}
 	}
 
 	fun getAsAny(referenceId: String): Any =
@@ -44,4 +48,7 @@ object NativeReferences {
 		}
 }
 
+interface DisposableNativeReference {
+	suspend fun dispose()
+}
 

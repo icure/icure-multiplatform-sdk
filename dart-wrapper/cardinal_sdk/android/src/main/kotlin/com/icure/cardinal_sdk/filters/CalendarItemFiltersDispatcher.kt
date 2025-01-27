@@ -15,6 +15,7 @@ public object CalendarItemFiltersDispatcher {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
   ): Boolean = when(methodName) {
     "byPatientsStartTimeForDataOwner" -> byPatientsStartTimeForDataOwner(parameters, resultCallback)
@@ -29,6 +30,7 @@ public object CalendarItemFiltersDispatcher {
   }?.let { true } ?: false
 
   private fun byPatientsStartTimeForDataOwner(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -47,6 +49,7 @@ public object CalendarItemFiltersDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     CalendarItemFilters.byPatientsStartTimeForSelf(
       resultCallback,
@@ -59,6 +62,7 @@ public object CalendarItemFiltersDispatcher {
 
   private fun byPatientSecretIdsStartTimeForDataOwner(parameters: Map<String, String>,
       resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -77,6 +81,7 @@ public object CalendarItemFiltersDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     CalendarItemFilters.byPatientSecretIdsStartTimeForSelf(
       resultCallback,
@@ -88,6 +93,7 @@ public object CalendarItemFiltersDispatcher {
   }
 
   private fun byPeriodAndAgenda(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -105,6 +111,7 @@ public object CalendarItemFiltersDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     CalendarItemFilters.byPeriodForDataOwner(
       resultCallback,
@@ -118,6 +125,7 @@ public object CalendarItemFiltersDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     CalendarItemFilters.byPeriodForSelf(
       resultCallback,
@@ -127,6 +135,7 @@ public object CalendarItemFiltersDispatcher {
   }
 
   private fun byRecurrenceId(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,

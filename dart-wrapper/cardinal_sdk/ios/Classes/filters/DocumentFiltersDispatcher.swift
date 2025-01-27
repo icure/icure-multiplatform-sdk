@@ -9,6 +9,7 @@ class DocumentFiltersDispatcher {
     resultCallback: @escaping (
       String?,
       String?,
+      String?,
       String?
     ) -> Void
   ) -> Bool {
@@ -29,6 +30,7 @@ class DocumentFiltersDispatcher {
   private static func byPatientsCreatedForDataOwner(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     DocumentFilters.shared.byPatientsCreatedForDataOwner(
@@ -44,6 +46,7 @@ class DocumentFiltersDispatcher {
   private static func byPatientsCreatedForSelf(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     DocumentFilters.shared.byPatientsCreatedForSelf(
@@ -56,6 +59,7 @@ class DocumentFiltersDispatcher {
   }
 
   private static func byPatientSecretIdsCreatedForDataOwner(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -73,6 +77,7 @@ class DocumentFiltersDispatcher {
   private static func byPatientSecretIdsCreatedForSelf(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     DocumentFilters.shared.byPatientSecretIdsCreatedForSelf(
@@ -85,6 +90,7 @@ class DocumentFiltersDispatcher {
   }
 
   private static func byPatientsAndTypeForDataOwner(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -100,6 +106,7 @@ class DocumentFiltersDispatcher {
   private static func byPatientsAndTypeForSelf(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     DocumentFilters.shared.byPatientsAndTypeForSelf(
@@ -110,6 +117,7 @@ class DocumentFiltersDispatcher {
   }
 
   private static func byPatientSecretIdsAndTypeForDataOwner(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -123,6 +131,7 @@ class DocumentFiltersDispatcher {
   }
 
   private static func byPatientSecretIdsAndTypeForSelf(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?

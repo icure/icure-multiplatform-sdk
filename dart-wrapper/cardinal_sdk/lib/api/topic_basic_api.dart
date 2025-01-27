@@ -13,7 +13,11 @@ import 'package:cardinal_sdk/subscription/entity_subscription.dart';
 
 class TopicBasicApi {
 	final String _sdkId;
-	TopicBasicApi(this._sdkId);
+	final Object _dartSdk;
+	TopicBasicApi(
+		this._sdkId,
+		this._dartSdk
+		);
 
 	Future<List<String>> matchTopicsBy(BaseFilterOptions<Topic> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.topicBasic.matchTopicsBy(

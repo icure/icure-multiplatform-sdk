@@ -50,25 +50,6 @@ class Keyword implements StoredDocument, ICureDocument<String> {
 		subWords = subWords ?? {},
 		userId = userId ?? null;
 
-	factory Keyword.fromJSON(Map<String, dynamic> data) {
-		return Keyword(
-			(data["id"] as String),
-			rev: (data["rev"] as String?),
-			created: (data["created"] as int?),
-			modified: (data["modified"] as int?),
-			author: (data["author"] as String?),
-			responsible: (data["responsible"] as String?),
-			medicalLocationId: (data["medicalLocationId"] as String?),
-			tags: (data["tags"] as List<dynamic>).map((x0) => CodeStub.fromJSON(x0) ).toSet(),
-			codes: (data["codes"] as List<dynamic>).map((x0) => CodeStub.fromJSON(x0) ).toSet(),
-			endOfLife: (data["endOfLife"] as int?),
-			deletionDate: (data["deletionDate"] as int?),
-			value: (data["value"] as String?),
-			subWords: (data["subWords"] as List<dynamic>).map((x0) => KeywordSubword.fromJSON(x0) ).toSet(),
-			userId: (data["userId"] as String?),
-		);
-	}
-
 	static Map<String, dynamic> encode(Keyword value) {
 		Map<String, dynamic> entityAsMap = {
 			"id" : value.id,
@@ -87,5 +68,24 @@ class Keyword implements StoredDocument, ICureDocument<String> {
 			"userId" : value.userId
 		};
 		return entityAsMap;
+	}
+
+	static Keyword fromJSON(Map<String, dynamic> data) {
+		return Keyword(
+			(data["id"] as String),
+			rev: (data["rev"] as String?),
+			created: (data["created"] as int?),
+			modified: (data["modified"] as int?),
+			author: (data["author"] as String?),
+			responsible: (data["responsible"] as String?),
+			medicalLocationId: (data["medicalLocationId"] as String?),
+			tags: (data["tags"] as List<dynamic>).map((x0) => CodeStub.fromJSON(x0) ).toSet(),
+			codes: (data["codes"] as List<dynamic>).map((x0) => CodeStub.fromJSON(x0) ).toSet(),
+			endOfLife: (data["endOfLife"] as int?),
+			deletionDate: (data["deletionDate"] as int?),
+			value: (data["value"] as String?),
+			subWords: (data["subWords"] as List<dynamic>).map((x0) => KeywordSubword.fromJSON(x0) ).toSet(),
+			userId: (data["userId"] as String?),
+		);
 	}
 }

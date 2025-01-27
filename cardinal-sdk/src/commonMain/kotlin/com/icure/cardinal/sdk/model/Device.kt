@@ -19,6 +19,7 @@ import kotlin.String
 import kotlin.collections.List
 import kotlin.collections.Map
 import kotlin.collections.Set
+import com.icure.cardinal.sdk.model.specializations.AesExchangeKeyEntryKeyString
 
 // WARNING: This file is auto-generated. If you change it manually, your changes will be lost.
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
@@ -46,7 +47,7 @@ data class Device(
 	public val brand: String? = null,
 	public val model: String? = null,
 	public val serialNumber: String? = null,
-	public val parentId: String? = null,
+	override val parentId: String? = null,
 	@Serializable(with = ByteArraySerializer::class)
 	public val picture: ByteArray? = null,
 	@DefaultValue("emptySet()")
@@ -54,7 +55,7 @@ data class Device(
 	@DefaultValue("emptyMap()")
 	override val hcPartyKeys: Map<String, List<HexString>> = emptyMap(),
 	@DefaultValue("emptyMap()")
-	override val aesExchangeKeys: Map<SpkiHexString, Map<String, Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>>> =
+	override val aesExchangeKeys: Map<AesExchangeKeyEntryKeyString, Map<String, Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>>> =
 		emptyMap(),
 	@DefaultValue("emptyMap()")
 	override val transferKeys: Map<AesExchangeKeyEncryptionKeypairIdentifier, Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>> =

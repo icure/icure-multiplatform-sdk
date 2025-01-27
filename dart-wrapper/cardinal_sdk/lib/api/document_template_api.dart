@@ -7,7 +7,11 @@ import 'dart:typed_data';
 
 class DocumentTemplateApi {
 	final String _sdkId;
-	DocumentTemplateApi(this._sdkId);
+	final Object _dartSdk;
+	DocumentTemplateApi(
+		this._sdkId,
+		this._dartSdk
+		);
 
 	Future<DocumentTemplate> getDocumentTemplate(String documentTemplateId) async {
 		return await CardinalSdkPlatformInterface.instance.apis.documentTemplate.getDocumentTemplate(

@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:cardinal_sdk/filters/filter_options.dart';
 import 'package:cardinal_sdk/model/calendar_item.dart';
 import 'dart:convert';
+import 'package:cardinal_sdk/utils/internal/platform_exception_convertion.dart';
 import 'package:cardinal_sdk/utils/pagination/paginated_list_iterator.dart';
 import 'package:cardinal_sdk/model/couchdb/doc_identifier.dart';
 import 'package:cardinal_sdk/model/id_with_mandatory_rev.dart';
@@ -22,7 +23,7 @@ class CalendarItemBasicPlatformApi {
 				"sdkId": sdkId,
 				"filter": jsonEncode(BaseFilterOptions.encode(filter)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method matchCalendarItemsBy");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toList();
@@ -35,7 +36,7 @@ class CalendarItemBasicPlatformApi {
 				"sdkId": sdkId,
 				"filter": jsonEncode(BaseSortableFilterOptions.encode(filter)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method matchCalendarItemsBySorted");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toList();
@@ -48,7 +49,7 @@ class CalendarItemBasicPlatformApi {
 				"sdkId": sdkId,
 				"filter": jsonEncode(BaseFilterOptions.encode(filter)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method filterCalendarItemsBy");
 		final parsedResJson = jsonDecode(res);
 		return PaginatedListIterator(parsedResJson, (x0) => EncryptedCalendarItem.fromJSON(x0));
@@ -61,7 +62,7 @@ class CalendarItemBasicPlatformApi {
 				"sdkId": sdkId,
 				"filter": jsonEncode(BaseSortableFilterOptions.encode(filter)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method filterCalendarItemsBySorted");
 		final parsedResJson = jsonDecode(res);
 		return PaginatedListIterator(parsedResJson, (x0) => EncryptedCalendarItem.fromJSON(x0));
@@ -75,7 +76,7 @@ class CalendarItemBasicPlatformApi {
 				"entityId": jsonEncode(entityId),
 				"rev": jsonEncode(rev),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method deleteCalendarItemById");
 		final parsedResJson = jsonDecode(res);
 		return DocIdentifier.fromJSON(parsedResJson);
@@ -88,7 +89,7 @@ class CalendarItemBasicPlatformApi {
 				"sdkId": sdkId,
 				"entityIds": jsonEncode(entityIds.map((x0) => IdWithMandatoryRev.encode(x0)).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method deleteCalendarItemsByIds");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => DocIdentifier.fromJSON(x1) ).toList();
@@ -102,7 +103,7 @@ class CalendarItemBasicPlatformApi {
 				"id": jsonEncode(id),
 				"rev": jsonEncode(rev),
 			}
-		);
+		).catchError(convertPlatformException);
 	}
 
 	Future<DocIdentifier> deleteCalendarItem(String sdkId, CalendarItem calendarItem) async {
@@ -112,7 +113,7 @@ class CalendarItemBasicPlatformApi {
 				"sdkId": sdkId,
 				"calendarItem": jsonEncode(CalendarItem.encode(calendarItem)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method deleteCalendarItem");
 		final parsedResJson = jsonDecode(res);
 		return DocIdentifier.fromJSON(parsedResJson);
@@ -125,7 +126,7 @@ class CalendarItemBasicPlatformApi {
 				"sdkId": sdkId,
 				"calendarItems": jsonEncode(calendarItems.map((x0) => CalendarItem.encode(x0)).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method deleteCalendarItems");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => DocIdentifier.fromJSON(x1) ).toList();
@@ -138,7 +139,7 @@ class CalendarItemBasicPlatformApi {
 				"sdkId": sdkId,
 				"calendarItem": jsonEncode(CalendarItem.encode(calendarItem)),
 			}
-		);
+		).catchError(convertPlatformException);
 	}
 
 	Future<EncryptedCalendarItem> undeleteCalendarItemById(String sdkId, String id, String rev) async {
@@ -149,7 +150,7 @@ class CalendarItemBasicPlatformApi {
 				"id": jsonEncode(id),
 				"rev": jsonEncode(rev),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method undeleteCalendarItemById");
 		final parsedResJson = jsonDecode(res);
 		return EncryptedCalendarItem.fromJSON(parsedResJson);
@@ -162,7 +163,7 @@ class CalendarItemBasicPlatformApi {
 				"sdkId": sdkId,
 				"calendarItem": jsonEncode(CalendarItem.encode(calendarItem)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method undeleteCalendarItem");
 		final parsedResJson = jsonDecode(res);
 		return EncryptedCalendarItem.fromJSON(parsedResJson);
@@ -175,7 +176,7 @@ class CalendarItemBasicPlatformApi {
 				"sdkId": sdkId,
 				"entity": jsonEncode(EncryptedCalendarItem.encode(entity)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method modifyCalendarItem");
 		final parsedResJson = jsonDecode(res);
 		return EncryptedCalendarItem.fromJSON(parsedResJson);
@@ -188,7 +189,7 @@ class CalendarItemBasicPlatformApi {
 				"sdkId": sdkId,
 				"entityId": jsonEncode(entityId),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getCalendarItem");
 		final parsedResJson = jsonDecode(res);
 		return EncryptedCalendarItem.fromJSON(parsedResJson);
@@ -201,7 +202,7 @@ class CalendarItemBasicPlatformApi {
 				"sdkId": sdkId,
 				"entityIds": jsonEncode(entityIds.map((x0) => x0).toList()),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getCalendarItems");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => EncryptedCalendarItem.fromJSON(x1) ).toList();
@@ -216,7 +217,7 @@ class CalendarItemBasicPlatformApi {
 				"filter": jsonEncode(FilterOptions.encode(filter)),
 				"subscriptionConfig": jsonEncode(subscriptionConfig == null ? null : EntitySubscriptionConfiguration.encode(subscriptionConfig!)),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method subscribeToEvents");
 		final parsedResJson = jsonDecode(res);
 		return EntitySubscription(parsedResJson, (x0) => EncryptedCalendarItem.fromJSON(x0));

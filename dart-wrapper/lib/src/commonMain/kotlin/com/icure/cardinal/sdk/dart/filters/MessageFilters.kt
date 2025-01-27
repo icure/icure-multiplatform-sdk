@@ -27,6 +27,7 @@ public object MessageFilters {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit, dataOwnerIdString: String) {
     val dataOwnerId = fullLanguageInteropJson.decodeFromString(
       String.serializer(),
@@ -46,6 +47,7 @@ public object MessageFilters {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     DartResult.resolve(
       dartResultCallback,
@@ -58,6 +60,7 @@ public object MessageFilters {
 
   public fun byTransportGuidForDataOwner(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -88,6 +91,7 @@ public object MessageFilters {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit, transportGuidString: String) {
     val transportGuid = fullLanguageInteropJson.decodeFromString(
       String.serializer(),
@@ -105,6 +109,7 @@ public object MessageFilters {
 
   public fun fromAddressForDataOwner(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -135,6 +140,7 @@ public object MessageFilters {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit, addressString: String) {
     val address = fullLanguageInteropJson.decodeFromString(
       String.serializer(),
@@ -152,6 +158,7 @@ public object MessageFilters {
 
   public fun byPatientsSentDateForDataOwner(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -201,6 +208,7 @@ public object MessageFilters {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     patientsString: String,
     fromString: String,
@@ -238,6 +246,7 @@ public object MessageFilters {
 
   public fun byPatientSecretIdsSentDateForDataOwner(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -287,6 +296,7 @@ public object MessageFilters {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     secretIdsString: String,
     fromString: String,
@@ -327,6 +337,7 @@ public object MessageFilters {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     dataOwnerIdString: String,
     addressString: String,
@@ -354,6 +365,7 @@ public object MessageFilters {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit, addressString: String) {
     val address = fullLanguageInteropJson.decodeFromString(
       String.serializer(),
@@ -371,6 +383,7 @@ public object MessageFilters {
 
   public fun byTransportGuidSentDateForDataOwner(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -420,6 +433,7 @@ public object MessageFilters {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     transportGuidString: String,
     fromString: String,
@@ -460,6 +474,7 @@ public object MessageFilters {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     dataOwnerIdString: String,
     transportGuidString: String,
@@ -487,6 +502,7 @@ public object MessageFilters {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit, transportGuidString: String) {
     val transportGuid = fullLanguageInteropJson.decodeFromString(
       String.serializer(),
@@ -506,6 +522,7 @@ public object MessageFilters {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit, invoiceIdsString: String) {
     val invoiceIds = fullLanguageInteropJson.decodeFromString(
       SetSerializer(String.serializer()),
@@ -522,6 +539,7 @@ public object MessageFilters {
   }
 
   public fun byParentIds(dartResultCallback: (
+    String?,
     String?,
     String?,
     String?,

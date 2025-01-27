@@ -9,6 +9,7 @@ class MaintenanceTaskBasicApiDispatcher {
     resultCallback: @escaping (
       String?,
       String?,
+      String?,
       String?
     ) -> Void
   ) -> Bool {
@@ -37,6 +38,7 @@ class MaintenanceTaskBasicApiDispatcher {
   private static func matchMaintenanceTasksBy(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     MaintenanceTaskBasicApi.shared.matchMaintenanceTasksBy(
@@ -47,6 +49,7 @@ class MaintenanceTaskBasicApiDispatcher {
   }
 
   private static func matchMaintenanceTasksBySorted(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -61,6 +64,7 @@ class MaintenanceTaskBasicApiDispatcher {
   private static func filterMaintenanceTasksBy(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     MaintenanceTaskBasicApi.shared.filterMaintenanceTasksBy(
@@ -73,6 +77,7 @@ class MaintenanceTaskBasicApiDispatcher {
   private static func filterMaintenanceTasksBySorted(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     MaintenanceTaskBasicApi.shared.filterMaintenanceTasksBySorted(
@@ -83,6 +88,7 @@ class MaintenanceTaskBasicApiDispatcher {
   }
 
   private static func deleteMaintenanceTaskById(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -98,6 +104,7 @@ class MaintenanceTaskBasicApiDispatcher {
   private static func deleteMaintenanceTasksByIds(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     MaintenanceTaskBasicApi.shared.deleteMaintenanceTasksByIds(
@@ -108,6 +115,7 @@ class MaintenanceTaskBasicApiDispatcher {
   }
 
   private static func purgeMaintenanceTaskById(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -123,6 +131,7 @@ class MaintenanceTaskBasicApiDispatcher {
   private static func deleteMaintenanceTask(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     MaintenanceTaskBasicApi.shared.deleteMaintenanceTask(
@@ -133,6 +142,7 @@ class MaintenanceTaskBasicApiDispatcher {
   }
 
   private static func deleteMaintenanceTasks(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -147,6 +157,7 @@ class MaintenanceTaskBasicApiDispatcher {
   private static func purgeMaintenanceTask(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     MaintenanceTaskBasicApi.shared.purgeMaintenanceTask(
@@ -159,6 +170,7 @@ class MaintenanceTaskBasicApiDispatcher {
   private static func undeleteMaintenanceTask(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     MaintenanceTaskBasicApi.shared.undeleteMaintenanceTask(
@@ -169,6 +181,7 @@ class MaintenanceTaskBasicApiDispatcher {
   }
 
   private static func undeleteMaintenanceTaskById(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -184,6 +197,7 @@ class MaintenanceTaskBasicApiDispatcher {
   private static func modifyMaintenanceTask(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     MaintenanceTaskBasicApi.shared.modifyMaintenanceTask(
@@ -194,6 +208,7 @@ class MaintenanceTaskBasicApiDispatcher {
   }
 
   private static func getMaintenanceTask(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -208,6 +223,7 @@ class MaintenanceTaskBasicApiDispatcher {
   private static func getMaintenanceTasks(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     MaintenanceTaskBasicApi.shared.getMaintenanceTasks(
@@ -218,6 +234,7 @@ class MaintenanceTaskBasicApiDispatcher {
   }
 
   private static func subscribeToEvents(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?

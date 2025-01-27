@@ -1,7 +1,7 @@
 // auto-generated file
 package com.icure.cardinal.sdk.dart.api
 
-import com.icure.cardinal.sdk.CardinalSdk
+import com.icure.cardinal.sdk.CardinalNonCryptoApis
 import com.icure.cardinal.sdk.dart.utils.ApiScope
 import com.icure.cardinal.sdk.dart.utils.NativeReferences
 import com.icure.cardinal.sdk.model.Keyword
@@ -21,6 +21,7 @@ public object KeywordApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     frontEndMigrationIdString: String,
@@ -32,7 +33,7 @@ public object KeywordApi {
     ApiScope.execute(
       dartResultCallback,
       Keyword.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).keyword.getKeyword(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).keyword.getKeyword(
         frontEndMigrationId,
       )
     }
@@ -40,6 +41,7 @@ public object KeywordApi {
 
   public fun createKeyword(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -54,7 +56,7 @@ public object KeywordApi {
     ApiScope.execute(
       dartResultCallback,
       Keyword.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).keyword.createKeyword(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).keyword.createKeyword(
         frontEndMigration,
       )
     }
@@ -62,6 +64,7 @@ public object KeywordApi {
 
   public fun modifyKeyword(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -76,7 +79,7 @@ public object KeywordApi {
     ApiScope.execute(
       dartResultCallback,
       Keyword.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).keyword.modifyKeyword(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).keyword.modifyKeyword(
         keyword,
       )
     }
@@ -84,6 +87,7 @@ public object KeywordApi {
 
   public fun getKeywordsByUser(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -98,7 +102,7 @@ public object KeywordApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(Keyword.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).keyword.getKeywordsByUser(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).keyword.getKeywordsByUser(
         userId,
       )
     }
@@ -106,6 +110,7 @@ public object KeywordApi {
 
   public fun deleteKeywords(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -120,7 +125,7 @@ public object KeywordApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(DocIdentifier.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).keyword.deleteKeywords(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).keyword.deleteKeywords(
         keywordIds,
       )
     }

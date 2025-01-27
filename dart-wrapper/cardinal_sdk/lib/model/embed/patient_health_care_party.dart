@@ -65,17 +65,6 @@ class EncryptedPatientHealthCareParty implements PatientHealthCareParty {
 		referral = referral ?? false,
 		encryptedSelf = encryptedSelf ?? null;
 
-	factory EncryptedPatientHealthCareParty.fromJSON(Map<String, dynamic> data) {
-		return EncryptedPatientHealthCareParty(
-			type: data["type"] == null ? null : PatientHealthCarePartyType.fromJSON(data["type"]),
-			healthcarePartyId: (data["healthcarePartyId"] as String?),
-			sendFormats: (data["sendFormats"] as Map<String, dynamic>).map((k0, v0) => MapEntry(TelecomType.fromJSON(k0), (v0 as String))),
-			referralPeriods: (data["referralPeriods"] as List<dynamic>).map((x0) => ReferralPeriod.fromJSON(x0) ).toList(),
-			referral: (data["referral"] as bool),
-			encryptedSelf: (data["encryptedSelf"] as Base64String?)
-		);
-	}
-
 	static Map<String, dynamic> encode(EncryptedPatientHealthCareParty value) {
 		Map<String, dynamic> entityAsMap = {
 			"type" : value.type == null ? null : PatientHealthCarePartyType.encode(value.type!),
@@ -86,6 +75,17 @@ class EncryptedPatientHealthCareParty implements PatientHealthCareParty {
 			"encryptedSelf" : value.encryptedSelf
 		};
 		return entityAsMap;
+	}
+
+	static EncryptedPatientHealthCareParty fromJSON(Map<String, dynamic> data) {
+		return EncryptedPatientHealthCareParty(
+			type: data["type"] == null ? null : PatientHealthCarePartyType.fromJSON(data["type"]),
+			healthcarePartyId: (data["healthcarePartyId"] as String?),
+			sendFormats: (data["sendFormats"] as Map<String, dynamic>).map((k0, v0) => MapEntry(TelecomType.fromJSON(k0), (v0 as String))),
+			referralPeriods: (data["referralPeriods"] as List<dynamic>).map((x0) => ReferralPeriod.fromJSON(x0) ).toList(),
+			referral: (data["referral"] as bool),
+			encryptedSelf: (data["encryptedSelf"] as Base64String?)
+		);
 	}
 }
 
@@ -110,17 +110,6 @@ class DecryptedPatientHealthCareParty implements PatientHealthCareParty {
 		referral = referral ?? false,
 		encryptedSelf = encryptedSelf ?? null;
 
-	factory DecryptedPatientHealthCareParty.fromJSON(Map<String, dynamic> data) {
-		return DecryptedPatientHealthCareParty(
-			type: data["type"] == null ? null : PatientHealthCarePartyType.fromJSON(data["type"]),
-			healthcarePartyId: (data["healthcarePartyId"] as String?),
-			sendFormats: (data["sendFormats"] as Map<String, dynamic>).map((k0, v0) => MapEntry(TelecomType.fromJSON(k0), (v0 as String))),
-			referralPeriods: (data["referralPeriods"] as List<dynamic>).map((x0) => ReferralPeriod.fromJSON(x0) ).toList(),
-			referral: (data["referral"] as bool),
-			encryptedSelf: (data["encryptedSelf"] as Base64String?)
-		);
-	}
-
 	static Map<String, dynamic> encode(DecryptedPatientHealthCareParty value) {
 		Map<String, dynamic> entityAsMap = {
 			"type" : value.type == null ? null : PatientHealthCarePartyType.encode(value.type!),
@@ -131,5 +120,16 @@ class DecryptedPatientHealthCareParty implements PatientHealthCareParty {
 			"encryptedSelf" : value.encryptedSelf
 		};
 		return entityAsMap;
+	}
+
+	static DecryptedPatientHealthCareParty fromJSON(Map<String, dynamic> data) {
+		return DecryptedPatientHealthCareParty(
+			type: data["type"] == null ? null : PatientHealthCarePartyType.fromJSON(data["type"]),
+			healthcarePartyId: (data["healthcarePartyId"] as String?),
+			sendFormats: (data["sendFormats"] as Map<String, dynamic>).map((k0, v0) => MapEntry(TelecomType.fromJSON(k0), (v0 as String))),
+			referralPeriods: (data["referralPeriods"] as List<dynamic>).map((x0) => ReferralPeriod.fromJSON(x0) ).toList(),
+			referral: (data["referral"] as bool),
+			encryptedSelf: (data["encryptedSelf"] as Base64String?)
+		);
 	}
 }

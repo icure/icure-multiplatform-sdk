@@ -4,6 +4,7 @@ import com.icure.cardinal.sdk.model.RecoveryData
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.model.embed.EncryptedContent
 import com.icure.utils.InternalIcureApi
+import kotlin.Int
 import kotlin.String
 
 // WARNING: This class is auto-generated. If you change it manually, your changes will be lost.
@@ -24,5 +25,10 @@ public interface RawRecoveryDataApi {
 		type: RecoveryData.Type,
 		recipientId: String,
 	): HttpResponse<EncryptedContent>
+
+	suspend fun getRecoveryDataWaiting(
+		id: String,
+		timeoutSeconds: Int? = null,
+	): HttpResponse<RecoveryData>
 	// endregion
 }

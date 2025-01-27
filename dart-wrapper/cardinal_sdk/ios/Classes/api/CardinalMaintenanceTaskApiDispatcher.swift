@@ -9,6 +9,7 @@ class CardinalMaintenanceTaskApiDispatcher {
     resultCallback: @escaping (
       String?,
       String?,
+      String?,
       String?
     ) -> Void
   ) -> Bool {
@@ -24,6 +25,7 @@ class CardinalMaintenanceTaskApiDispatcher {
   private static func applyKeyPairUpdate(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     CardinalMaintenanceTaskApi.shared.applyKeyPairUpdate(
@@ -34,6 +36,7 @@ class CardinalMaintenanceTaskApiDispatcher {
   }
 
   private static func createKeyPairUpdateNotificationsToAllDelegationCounterparts(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -47,6 +50,7 @@ class CardinalMaintenanceTaskApiDispatcher {
   }
 
   private static func createKeyPairUpdateNotificationTo(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?

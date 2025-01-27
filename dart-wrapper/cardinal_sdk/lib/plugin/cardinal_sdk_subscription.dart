@@ -1,4 +1,5 @@
 import 'package:cardinal_sdk/subscription/entity_subscription_close_reason.dart';
+import 'package:cardinal_sdk/utils/internal/platform_exception_convertion.dart';
 import 'dart:convert';
 import 'package:flutter/services.dart';
 
@@ -6,7 +7,7 @@ abstract class CardinalSdkPlatformSubscriptionPlugin {
   Future<void> close(String sdkId);
   Future<EntitySubscriptionCloseReason?> getCloseReason(String sdkId);
   Future<Map<String, dynamic>?> getEvent(String sdkId);
-  Future<Map<String, dynamic>?> waitForEvent(String sdkId, Duration timeout);
+  Future<Map<String, dynamic>?> waitForEvent(String sdkId, Duration timeout, int cancellationToken);
 }
 
 class CardinalSdkMethodChannelSubscription extends CardinalSdkPlatformSubscriptionPlugin {
@@ -21,7 +22,7 @@ class CardinalSdkMethodChannelSubscription extends CardinalSdkPlatformSubscripti
         {
           "subscriptionId": subscriptionId
         }
-    );
+    ).catchError(convertPlatformException);
     return;
   }
 
@@ -32,7 +33,7 @@ class CardinalSdkMethodChannelSubscription extends CardinalSdkPlatformSubscripti
         {
           "subscriptionId": subscriptionId
         }
-    );
+    ).catchError(convertPlatformException);
     if (res == null) throw AssertionError("received null result from platform method getEvent");
     final decodedRes = jsonDecode(res);
     return decodedRes == null ? null : EntitySubscriptionCloseReason.fromJSON(decodedRes);
@@ -45,20 +46,21 @@ class CardinalSdkMethodChannelSubscription extends CardinalSdkPlatformSubscripti
         {
           "subscriptionId": subscriptionId
         }
-    );
+    ).catchError(convertPlatformException);
     if (res == null) throw AssertionError("received null result from platform method getEvent");
     return jsonDecode(res);
   }
 
   @override
-  Future<Map<String, dynamic>?> waitForEvent(String subscriptionId, Duration timeout) async {
+  Future<Map<String, dynamic>?> waitForEvent(String subscriptionId, Duration timeout, int cancellationToken) async {
     final res = await _methodChannel.invokeMethod<String>(
         'waitForEvent',
         {
           "subscriptionId": subscriptionId,
-          "timeout": jsonEncode(timeout.inMilliseconds)
+          "timeout": jsonEncode(timeout.inMilliseconds),
+          "cancellationToken": cancellationToken.toString()
         }
-    );
+    ).catchError(convertPlatformException);
     if (res == null) throw AssertionError("received null result from platform method waitForEvent");
     return jsonDecode(res);
   }

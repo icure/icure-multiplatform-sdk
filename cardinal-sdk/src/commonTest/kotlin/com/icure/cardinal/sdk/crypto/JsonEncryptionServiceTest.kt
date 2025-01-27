@@ -1,9 +1,9 @@
 package com.icure.cardinal.sdk.crypto
 
-import com.icure.kryptom.crypto.AesAlgorithm
-import com.icure.kryptom.crypto.defaultCryptoService
 import com.icure.cardinal.sdk.crypto.entities.EncryptedFieldsManifest
 import com.icure.cardinal.sdk.crypto.impl.JsonEncryptionServiceImpl
+import com.icure.kryptom.crypto.AesAlgorithm
+import com.icure.kryptom.crypto.defaultCryptoService
 import com.icure.utils.InternalIcureApi
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.StringSpec
@@ -20,6 +20,8 @@ import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonNull
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
+import kotlinx.serialization.json.jsonArray
+import kotlinx.serialization.json.jsonObject
 
 @OptIn(InternalIcureApi::class)
 class JsonEncryptionServiceTest : StringSpec({
@@ -483,5 +485,91 @@ class JsonEncryptionServiceTest : StringSpec({
 		)
 		reEncryptedObjWithDifferentEncryptedData["encryptedSelf"].shouldNotBeNull() shouldNotBe encryptedObj["encryptedSelf"]
 		reEncryptedObjWithDifferentEncryptedData["leaveThis"].shouldNotBeNull() shouldBe decryptedObj["leaveThis"]
+	}
+
+	"Wildcard encryption: should encrypt all fields of the entity" {
+		val key = defaultCryptoService.aes.generateKey(AesAlgorithm.CbcWithPkcs7Padding)
+		val manifest = JsonEncryptionService.parseEncryptedFields(
+			setOf(
+				"encryptPartially[].a",
+				"encryptFully[].*"
+			),
+			"Test."
+		)
+		val obj = JsonObject(mapOf(
+			"encryptPartially" to JsonArray(listOf(
+				JsonObject(mapOf(
+					"a" to JsonPrimitive(1),
+					"b" to JsonPrimitive(2),
+				)),
+				JsonObject(mapOf(
+					"a" to JsonPrimitive(1),
+					"c" to JsonPrimitive(3),
+				))
+			)),
+			"encryptFully" to JsonArray(listOf(
+				JsonObject(mapOf(
+					"a" to JsonPrimitive(1),
+					"b" to JsonPrimitive(2),
+				)),
+				JsonObject(mapOf(
+					"a" to JsonPrimitive(1),
+					"c" to JsonPrimitive(3),
+				))
+			))
+		))
+		val encrypted = jsonEncryptionService.encrypt(key, obj, manifest)
+		encrypted.keys shouldBe setOf("encryptPartially", "encryptFully", "encryptedSelf")
+		encrypted.getValue("encryptPartially").jsonArray.let { array ->
+			array[0].jsonObject.keys shouldBe setOf("b", "encryptedSelf")
+			array[1].jsonObject.keys shouldBe setOf("c", "encryptedSelf")
+		}
+		encrypted.getValue("encryptFully").jsonArray.let { array ->
+			array.forEach { it.jsonObject.keys shouldBe setOf("encryptedSelf") }
+		}
+	}
+
+	"Wildcard encryption: should reuse encrypted self when same" {
+		val key = defaultCryptoService.aes.generateKey(AesAlgorithm.CbcWithPkcs7Padding)
+		val manifest = JsonEncryptionService.parseEncryptedFields(
+			setOf(
+				"encryptFully[].*"
+			),
+			"Test."
+		)
+		val obj1 = JsonObject(mapOf(
+			"encryptFully" to JsonArray(listOf(
+				JsonObject(mapOf(
+					"a" to JsonPrimitive(1),
+					"b" to JsonPrimitive(2),
+				)),
+				JsonObject(mapOf(
+					"a" to JsonPrimitive(1),
+					"c" to JsonPrimitive(3),
+				))
+			))
+		))
+		val encrypted1 = jsonEncryptionService.encrypt(key, obj1, manifest)
+		val obj2 = JsonObject(mapOf(
+			"encryptFully" to JsonArray(listOf(
+				JsonObject(mapOf(
+					"a" to JsonPrimitive(1),
+					"b" to JsonPrimitive(2),
+					"encryptedSelf" to encrypted1.getValue("encryptFully").jsonArray[0].jsonObject.getValue("encryptedSelf")
+				)),
+				JsonObject(mapOf(
+					"a" to JsonPrimitive(1),
+					"c" to JsonPrimitive(4), // changed
+					"encryptedSelf" to encrypted1.getValue("encryptFully").jsonArray[1].jsonObject.getValue("encryptedSelf")
+				))
+			))
+		))
+		val encrypted2 = jsonEncryptionService.encrypt(key, obj2, manifest)
+		val array1 = encrypted1.getValue("encryptFully").jsonArray
+		val array2 = encrypted2.getValue("encryptFully").jsonArray
+		array1[0] shouldBe array2[0]
+		array1[1].jsonObject.keys shouldBe setOf("encryptedSelf")
+		array2[1].jsonObject.keys shouldBe setOf("encryptedSelf")
+		array1[1] shouldNotBe array2[1]
 	}
 })

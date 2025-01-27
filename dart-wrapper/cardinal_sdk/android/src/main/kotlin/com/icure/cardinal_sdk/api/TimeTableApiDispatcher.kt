@@ -15,6 +15,7 @@ public object TimeTableApiDispatcher {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
   ): Boolean = when(methodName) {
     "createTimeTable" -> createTimeTable(parameters, resultCallback)
@@ -67,6 +68,7 @@ public object TimeTableApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     TimeTableApi.createTimeTable(
       resultCallback,
@@ -76,6 +78,7 @@ public object TimeTableApiDispatcher {
   }
 
   private fun withEncryptionMetadata(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -95,6 +98,7 @@ public object TimeTableApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     TimeTableApi.getEncryptionKeysOf(
       resultCallback,
@@ -107,6 +111,7 @@ public object TimeTableApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     TimeTableApi.hasWriteAccess(
       resultCallback,
@@ -116,6 +121,7 @@ public object TimeTableApiDispatcher {
   }
 
   private fun decryptPatientIdOf(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -132,6 +138,7 @@ public object TimeTableApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     TimeTableApi.createDelegationDeAnonymizationMetadata(
       resultCallback,
@@ -142,6 +149,7 @@ public object TimeTableApiDispatcher {
   }
 
   private fun decrypt(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -157,6 +165,7 @@ public object TimeTableApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     TimeTableApi.tryDecrypt(
       resultCallback,
@@ -166,6 +175,7 @@ public object TimeTableApiDispatcher {
   }
 
   private fun matchTimeTablesBy(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -181,6 +191,7 @@ public object TimeTableApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     TimeTableApi.matchTimeTablesBySorted(
       resultCallback,
@@ -190,6 +201,7 @@ public object TimeTableApiDispatcher {
   }
 
   private fun deleteTimeTableById(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -206,6 +218,7 @@ public object TimeTableApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     TimeTableApi.deleteTimeTablesByIds(
       resultCallback,
@@ -215,6 +228,7 @@ public object TimeTableApiDispatcher {
   }
 
   private fun purgeTimeTableById(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -231,6 +245,7 @@ public object TimeTableApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     TimeTableApi.deleteTimeTable(
       resultCallback,
@@ -240,6 +255,7 @@ public object TimeTableApiDispatcher {
   }
 
   private fun deleteTimeTables(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -255,6 +271,7 @@ public object TimeTableApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     TimeTableApi.purgeTimeTable(
       resultCallback,
@@ -264,6 +281,7 @@ public object TimeTableApiDispatcher {
   }
 
   private fun shareWith(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -281,6 +299,7 @@ public object TimeTableApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     TimeTableApi.shareWithMany(
       resultCallback,
@@ -291,6 +310,7 @@ public object TimeTableApiDispatcher {
   }
 
   private fun filterTimeTablesBy(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -306,6 +326,7 @@ public object TimeTableApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     TimeTableApi.filterTimeTablesBySorted(
       resultCallback,
@@ -315,6 +336,7 @@ public object TimeTableApiDispatcher {
   }
 
   private fun undeleteTimeTable(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -330,6 +352,7 @@ public object TimeTableApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     TimeTableApi.modifyTimeTable(
       resultCallback,
@@ -339,6 +362,7 @@ public object TimeTableApiDispatcher {
   }
 
   private fun undeleteTimeTableById(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -355,6 +379,7 @@ public object TimeTableApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     TimeTableApi.getTimeTable(
       resultCallback,
@@ -367,6 +392,7 @@ public object TimeTableApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     TimeTableApi.getTimeTables(
       resultCallback,
@@ -376,6 +402,7 @@ public object TimeTableApiDispatcher {
   }
 
   private fun encrypted_shareWith(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -393,6 +420,7 @@ public object TimeTableApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     TimeTableApi.encrypted.shareWithMany(
       resultCallback,
@@ -403,6 +431,7 @@ public object TimeTableApiDispatcher {
   }
 
   private fun encrypted_filterTimeTablesBy(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -418,6 +447,7 @@ public object TimeTableApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     TimeTableApi.encrypted.filterTimeTablesBySorted(
       resultCallback,
@@ -427,6 +457,7 @@ public object TimeTableApiDispatcher {
   }
 
   private fun encrypted_undeleteTimeTable(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -442,6 +473,7 @@ public object TimeTableApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     TimeTableApi.encrypted.modifyTimeTable(
       resultCallback,
@@ -451,6 +483,7 @@ public object TimeTableApiDispatcher {
   }
 
   private fun encrypted_undeleteTimeTableById(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -467,6 +500,7 @@ public object TimeTableApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     TimeTableApi.encrypted.getTimeTable(
       resultCallback,
@@ -479,6 +513,7 @@ public object TimeTableApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     TimeTableApi.encrypted.getTimeTables(
       resultCallback,
@@ -488,6 +523,7 @@ public object TimeTableApiDispatcher {
   }
 
   private fun tryAndRecover_shareWith(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -505,6 +541,7 @@ public object TimeTableApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     TimeTableApi.tryAndRecover.shareWithMany(
       resultCallback,
@@ -515,6 +552,7 @@ public object TimeTableApiDispatcher {
   }
 
   private fun tryAndRecover_filterTimeTablesBy(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -531,6 +569,7 @@ public object TimeTableApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     TimeTableApi.tryAndRecover.filterTimeTablesBySorted(
       resultCallback,
@@ -540,6 +579,7 @@ public object TimeTableApiDispatcher {
   }
 
   private fun tryAndRecover_undeleteTimeTable(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -555,6 +595,7 @@ public object TimeTableApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     TimeTableApi.tryAndRecover.modifyTimeTable(
       resultCallback,
@@ -564,6 +605,7 @@ public object TimeTableApiDispatcher {
   }
 
   private fun tryAndRecover_undeleteTimeTableById(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -580,6 +622,7 @@ public object TimeTableApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     TimeTableApi.tryAndRecover.getTimeTable(
       resultCallback,
@@ -589,6 +632,7 @@ public object TimeTableApiDispatcher {
   }
 
   private fun tryAndRecover_getTimeTables(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,

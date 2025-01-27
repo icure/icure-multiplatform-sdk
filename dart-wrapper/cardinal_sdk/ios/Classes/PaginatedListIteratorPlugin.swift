@@ -3,44 +3,50 @@ import CardinalDartSdkSupportLib
 
 class PaginatedListIteratorPlugin {
 
-    public static func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
-        let args = call.arguments as! [String: String]
-        let methodName = call.method
+	public static func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
+		let args = call.arguments as! [String: String]
+		let methodName = call.method
 
-        let completed = PaginatedListIteratorPlugin.dispatch(methodName: methodName, parameters: args) { success, errorCode, errorMessage in
-            if (errorCode != nil){
-                result(FlutterError(code: errorCode!, message: errorMessage, details: nil))
-            }
-            else {
-                result(success)
-            }
-        }
+		let completed = PaginatedListIteratorPlugin.dispatch(methodName: methodName, parameters: args) { success, errorCode, errorMessage, errorDetails in
+			if (errorCode != nil){
+				result(FlutterError(code: errorCode!, message: errorMessage, details: errorDetails))
+			}
+			else {
+				result(success)
+			}
+		}
 
-        if !completed {
-            result(FlutterMethodNotImplemented)
-        }
-    }
+		if !completed {
+			result(FlutterMethodNotImplemented)
+		}
+	}
 
-  static func dispatch(
-    methodName: String,
-    parameters: [String : String],
-    resultCallback: @escaping (
-      String?,
-      String?,
-      String?
-    ) -> Void
-  ) -> Bool {
-    switch methodName {
-		case "hasNext": hasNext(parameters: parameters, resultCallback: resultCallback)
-		case "next": next(parameters: parameters, resultCallback: resultCallback)
-    	default: return false
-    }
-    return true
-  }
+	static func dispatch(
+		methodName: String,
+		parameters: [String : String],
+		resultCallback: @escaping (
+			String?,
+			String?,
+			String?,
+			String?
+		) -> Void
+	) -> Bool {
+		switch methodName {
+			case "hasNext": hasNext(parameters: parameters, resultCallback: resultCallback)
+			case "next": next(parameters: parameters, resultCallback: resultCallback)
+			default: return false
+		}
+		return true
+	}
 
 	private static func hasNext(
 		parameters: [String : String],
-		resultCallback: @escaping (String?,String?, String?) -> Void
+		resultCallback: @escaping (
+			String?,
+			String?,
+			String?,
+			String?
+		) -> Void
 	) {
 		PaginatedListIterator.shared.hasNext(
 			dartResultCallback: resultCallback,
@@ -50,7 +56,12 @@ class PaginatedListIteratorPlugin {
 
 	private static func next(
 		parameters: [String : String],
-		resultCallback: @escaping (String?,String?, String?) -> Void
+		resultCallback: @escaping (
+			String?,
+			String?,
+			String?,
+			String?
+		) -> Void
 	) {
 		PaginatedListIterator.shared.next(
 			dartResultCallback: resultCallback,

@@ -12,6 +12,7 @@ import 'package:cardinal_sdk/plugin/api/classification_platform_api.dart';
 import 'package:cardinal_sdk/plugin/api/calendar_item_basic_platform_api.dart';
 import 'package:cardinal_sdk/plugin/api/maintenance_task_platform_api.dart';
 import 'package:cardinal_sdk/plugin/api/form_basic_platform_api.dart';
+import 'package:cardinal_sdk/plugin/api/recovery_platform_api.dart';
 import 'package:cardinal_sdk/plugin/api/patient_platform_api.dart';
 import 'package:cardinal_sdk/plugin/api/maintenance_task_basic_platform_api.dart';
 import 'package:cardinal_sdk/plugin/api/tarification_platform_api.dart';
@@ -79,6 +80,8 @@ abstract class CardinalSdkPlatformApisPlugin {
 	MaintenanceTaskPlatformApi get maintenanceTask;
 
 	FormBasicPlatformApi get formBasic;
+
+	RecoveryPlatformApi get recovery;
 
 	PatientPlatformApi get patient;
 

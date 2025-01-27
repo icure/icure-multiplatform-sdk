@@ -9,6 +9,7 @@ class AgendaFiltersDispatcher {
     resultCallback: @escaping (
       String?,
       String?,
+      String?,
       String?
     ) -> Void
   ) -> Bool {
@@ -24,6 +25,7 @@ class AgendaFiltersDispatcher {
   private static func all(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     AgendaFilters.shared.all(
@@ -32,6 +34,7 @@ class AgendaFiltersDispatcher {
   }
 
   private static func byUser(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -43,6 +46,7 @@ class AgendaFiltersDispatcher {
   }
 
   private static func readableByUser(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?

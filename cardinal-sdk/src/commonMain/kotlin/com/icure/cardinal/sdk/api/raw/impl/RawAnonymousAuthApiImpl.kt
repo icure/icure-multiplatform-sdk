@@ -115,6 +115,20 @@ class RawAnonymousAuthApiImpl(
 			`header`("token", token)
 		}.wrap()
 
+	override suspend fun loginWithExternalJwt(
+		token: String,
+		applicationId: String,
+	): HttpResponse<JwtResponse> =
+		post {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "auth", "login", "external", applicationId)
+			}
+			contentType(Application.Json)
+			accept(Application.Json)
+			`header`("token", token)
+		}.wrap()
+
 	override suspend fun loginFas(
 		token: String,
 		groupId: String?,

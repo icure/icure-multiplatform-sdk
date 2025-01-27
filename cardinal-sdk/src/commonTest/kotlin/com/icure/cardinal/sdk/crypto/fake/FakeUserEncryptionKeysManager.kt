@@ -44,7 +44,7 @@ class FakeUserEncryptionKeysManager : UserEncryptionKeysManager {
 		TODO("Not yet implemented")
 	}
 
-	override fun getDecryptionKeys(): RsaDecryptionKeysSet =
+	override fun getDecryptionKeys(includeParent: Boolean): RsaDecryptionKeysSet =
 		RsaDecryptionKeysSet(selfKeys.values.map { it.keyPair.toPrivateKeyInfo() })
 
 	override suspend fun reloadKeys() {

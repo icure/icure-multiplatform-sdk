@@ -15,12 +15,14 @@ import 'package:cardinal_sdk/utils/pagination/paginated_list_iterator.dart';
 
 class TimeTableApi {
 	final String _sdkId;
+	final Object _dartSdk;
 	final TryAndRecoverTimeTableApi tryAndRecover;
 	final EncryptedTimeTableApi encrypted;
 	TimeTableApi(
-		this._sdkId
-		) : tryAndRecover = TryAndRecoverTimeTableApi(_sdkId),
-		encrypted = EncryptedTimeTableApi(_sdkId);
+		this._sdkId,
+		this._dartSdk
+		) : tryAndRecover = TryAndRecoverTimeTableApi(_sdkId, _dartSdk),
+		encrypted = EncryptedTimeTableApi(_sdkId, _dartSdk);
 
 	Future<DecryptedTimeTable> createTimeTable(DecryptedTimeTable entity) async {
 		return await CardinalSdkPlatformInterface.instance.apis.timeTable.createTimeTable(
@@ -211,7 +213,11 @@ class TimeTableApi {
 
 class TryAndRecoverTimeTableApi {
 	final String _sdkId;
-	TryAndRecoverTimeTableApi(this._sdkId);
+	final Object _dartSdk;
+	TryAndRecoverTimeTableApi(
+		this._sdkId,
+		this._dartSdk
+		);
 
 	Future<TimeTable> shareWith(String delegateId, TimeTable timeTable, { TimeTableShareOptions? options }) async {
 		return await CardinalSdkPlatformInterface.instance.apis.timeTable.tryAndRecover.shareWith(
@@ -283,7 +289,11 @@ class TryAndRecoverTimeTableApi {
 
 class EncryptedTimeTableApi {
 	final String _sdkId;
-	EncryptedTimeTableApi(this._sdkId);
+	final Object _dartSdk;
+	EncryptedTimeTableApi(
+		this._sdkId,
+		this._dartSdk
+		);
 
 	Future<EncryptedTimeTable> shareWith(String delegateId, EncryptedTimeTable timeTable, { TimeTableShareOptions? options }) async {
 		return await CardinalSdkPlatformInterface.instance.apis.timeTable.encrypted.shareWith(

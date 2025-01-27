@@ -1,5 +1,6 @@
 package com.icure.cardinal.sdk.py.subscription.EntitySubscription
 
+import com.icure.cardinal.sdk.py.utils.failureToPyStringAsyncCallback
 import com.icure.cardinal.sdk.py.utils.toPyJson
 import com.icure.cardinal.sdk.py.utils.toPyJsonAsyncCallback
 import com.icure.cardinal.sdk.serialization.EntitySubscriptionWithSerializer
@@ -45,13 +46,13 @@ fun waitForEventAsync(
 	subscriptionPtr: COpaquePointer,
 	timeoutMs: Int,
 	resultCallback: CPointer<CFunction<(result: CValues<ByteVarOf<Byte>>?, error: CValues<ByteVarOf<Byte>>?) -> Unit>>
-) {
+): COpaquePointer? = kotlin.runCatching {
 	GlobalScope.launch {
 		kotlin.runCatching {
 			subscriptionPtr.get().waitForEvent(timeoutMs)
 		}.toPyJsonAsyncCallback(resultCallback)
 	}
-}
+}.failureToPyStringAsyncCallback(resultCallback)
 
 @OptIn(ExperimentalForeignApi::class, InternalIcureApi::class)
 private fun COpaquePointer.get(): EntitySubscriptionWithSerializer<*> =

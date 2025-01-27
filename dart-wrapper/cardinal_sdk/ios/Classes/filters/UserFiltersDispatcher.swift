@@ -9,6 +9,7 @@ class UserFiltersDispatcher {
     resultCallback: @escaping (
       String?,
       String?,
+      String?,
       String?
     ) -> Void
   ) -> Bool {
@@ -26,6 +27,7 @@ class UserFiltersDispatcher {
   private static func all(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     UserFilters.shared.all(
@@ -34,6 +36,7 @@ class UserFiltersDispatcher {
   }
 
   private static func byIds(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?
@@ -47,6 +50,7 @@ class UserFiltersDispatcher {
   private static func byPatientId(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     UserFilters.shared.byPatientId(
@@ -58,6 +62,7 @@ class UserFiltersDispatcher {
   private static func byHealthcarePartyId(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
+    String?,
     String?
   ) -> Void) {
     UserFilters.shared.byHealthcarePartyId(
@@ -67,6 +72,7 @@ class UserFiltersDispatcher {
   }
 
   private static func byNameEmailOrPhone(parameters: [String : String], resultCallback: @escaping (
+    String?,
     String?,
     String?,
     String?

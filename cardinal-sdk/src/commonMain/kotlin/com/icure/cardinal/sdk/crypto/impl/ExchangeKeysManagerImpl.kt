@@ -27,7 +27,7 @@ class ExchangeKeysManagerImpl(
 		if (delegatorId == dataOwnerApi.getCurrentDataOwnerId() || delegateId in dataOwnerApi.getCurrentDataOwnerHierarchyIds()) {
 			return cache.getCachedOrRetrieve(delegatorId to delegateId) {
 				val encryptedKeys = base.getEncryptedExchangeKeysFor(delegatorId, delegateId)
-				base.tryDecryptExchangeKeys(encryptedKeys, userKeysManager.getDecryptionKeys()).successfulDecryptions
+				base.tryDecryptExchangeKeys(encryptedKeys, userKeysManager.getDecryptionKeys(true)).successfulDecryptions
 			}
 		} else throw InternalCardinalException(
 			"Delegator $delegatorId is not the current data owner and delegate $delegateId is not part of the current data owner hierarchy: can't get exchange key"

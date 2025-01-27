@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:cardinal_sdk/model/patient.dart';
 import 'package:cardinal_sdk/filters/filter_options.dart';
 import 'dart:convert';
+import 'package:cardinal_sdk/utils/internal/platform_exception_convertion.dart';
 import 'package:cardinal_sdk/model/calendar_item.dart';
 
 
@@ -20,7 +21,7 @@ class CalendarItemPlatformFilters {
 				"to": jsonEncode(to),
 				"descending": jsonEncode(descending),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method byPatientsStartTimeForDataOwner");
 		final parsedResJson = jsonDecode(res);
 		return SortableFilterOptions.fromJSON(parsedResJson);
@@ -35,7 +36,7 @@ class CalendarItemPlatformFilters {
 				"to": jsonEncode(to),
 				"descending": jsonEncode(descending),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method byPatientsStartTimeForSelf");
 		final parsedResJson = jsonDecode(res);
 		return SortableFilterOptions.fromJSON(parsedResJson);
@@ -51,7 +52,7 @@ class CalendarItemPlatformFilters {
 				"to": jsonEncode(to),
 				"descending": jsonEncode(descending),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method byPatientSecretIdsStartTimeForDataOwner");
 		final parsedResJson = jsonDecode(res);
 		return BaseSortableFilterOptions.fromJSON(parsedResJson);
@@ -66,7 +67,7 @@ class CalendarItemPlatformFilters {
 				"to": jsonEncode(to),
 				"descending": jsonEncode(descending),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method byPatientSecretIdsStartTimeForSelf");
 		final parsedResJson = jsonDecode(res);
 		return SortableFilterOptions.fromJSON(parsedResJson);
@@ -81,7 +82,7 @@ class CalendarItemPlatformFilters {
 				"to": jsonEncode(to),
 				"descending": jsonEncode(descending),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method byPeriodAndAgenda");
 		final parsedResJson = jsonDecode(res);
 		return BaseSortableFilterOptions.fromJSON(parsedResJson);
@@ -95,7 +96,7 @@ class CalendarItemPlatformFilters {
 				"from": jsonEncode(from),
 				"to": jsonEncode(to),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method byPeriodForDataOwner");
 		final parsedResJson = jsonDecode(res);
 		return BaseFilterOptions.fromJSON(parsedResJson);
@@ -108,7 +109,7 @@ class CalendarItemPlatformFilters {
 				"from": jsonEncode(from),
 				"to": jsonEncode(to),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method byPeriodForSelf");
 		final parsedResJson = jsonDecode(res);
 		return FilterOptions.fromJSON(parsedResJson);
@@ -120,7 +121,7 @@ class CalendarItemPlatformFilters {
 			{
 				"recurrenceId": jsonEncode(recurrenceId),
 			}
-		);
+		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method byRecurrenceId");
 		final parsedResJson = jsonDecode(res);
 		return FilterOptions.fromJSON(parsedResJson);

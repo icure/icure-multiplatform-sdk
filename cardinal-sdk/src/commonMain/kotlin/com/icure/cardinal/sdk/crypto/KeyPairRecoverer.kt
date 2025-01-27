@@ -1,10 +1,11 @@
 package com.icure.cardinal.sdk.crypto
 
-import com.icure.kryptom.crypto.RsaAlgorithm
-import com.icure.kryptom.crypto.RsaKeypair
 import com.icure.cardinal.sdk.crypto.entities.RecoveryDataKey
+import com.icure.cardinal.sdk.crypto.entities.RecoveryDataUseFailureReason
 import com.icure.cardinal.sdk.crypto.entities.RecoveryResult
 import com.icure.cardinal.sdk.model.specializations.SpkiHexString
+import com.icure.kryptom.crypto.RsaAlgorithm
+import com.icure.kryptom.crypto.RsaKeypair
 
 /**
  * Allows to recover user keypairs using builtin recovery mechanisms.
@@ -26,6 +27,23 @@ interface KeyPairRecoverer {
 	 */
 	suspend fun recoverWithRecoveryKey(
 		recoveryKey: RecoveryDataKey,
-		autoDelete: Boolean
+		autoDelete: Boolean,
+	): RecoveryResult<Map<String, Map<SpkiHexString, RsaKeypair<RsaAlgorithm.RsaEncryptionAlgorithm>>>>
+
+	/*TODO
+	 * cancellable api for other languages: the user interface could provide a way for the end user to cancel the
+	 * recovery request before the end of the wait time. In those cases it would be best if the app also cancels the
+	 * corresponding call.
+	 */
+	/**
+	 * Equivalent to [recoverWithRecoveryKey] except that if there is no recovery data for the provided key it waits for
+	 * up to [waitSeconds] seconds for it to be created.
+	 * If the data wasn't created within the provided time frame this method will return a [RecoveryResult.Failure]
+	 * result with [RecoveryDataUseFailureReason.Missing] at the end of the waiting period.
+	 */
+	suspend fun waitForRecoveryKey(
+		recoveryKey: RecoveryDataKey,
+		autoDelete: Boolean,
+		waitSeconds: Int
 	): RecoveryResult<Map<String, Map<SpkiHexString, RsaKeypair<RsaAlgorithm.RsaEncryptionAlgorithm>>>>
 }

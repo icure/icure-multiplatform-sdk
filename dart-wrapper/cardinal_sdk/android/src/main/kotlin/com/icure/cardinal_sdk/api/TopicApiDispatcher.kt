@@ -15,6 +15,7 @@ public object TopicApiDispatcher {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
   ): Boolean = when(methodName) {
     "createTopic" -> createTopic(parameters, resultCallback)
@@ -74,6 +75,7 @@ public object TopicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     TopicApi.createTopic(
       resultCallback,
@@ -83,6 +85,7 @@ public object TopicApiDispatcher {
   }
 
   private fun withEncryptionMetadata(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -102,6 +105,7 @@ public object TopicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     TopicApi.getEncryptionKeysOf(
       resultCallback,
@@ -114,6 +118,7 @@ public object TopicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     TopicApi.hasWriteAccess(
       resultCallback,
@@ -123,6 +128,7 @@ public object TopicApiDispatcher {
   }
 
   private fun decryptPatientIdOf(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -139,6 +145,7 @@ public object TopicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     TopicApi.createDelegationDeAnonymizationMetadata(
       resultCallback,
@@ -149,6 +156,7 @@ public object TopicApiDispatcher {
   }
 
   private fun decrypt(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -164,6 +172,7 @@ public object TopicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     TopicApi.tryDecrypt(
       resultCallback,
@@ -173,6 +182,7 @@ public object TopicApiDispatcher {
   }
 
   private fun matchTopicsBy(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -188,6 +198,7 @@ public object TopicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     TopicApi.matchTopicsBySorted(
       resultCallback,
@@ -197,6 +208,7 @@ public object TopicApiDispatcher {
   }
 
   private fun deleteTopicById(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -213,6 +225,7 @@ public object TopicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     TopicApi.deleteTopicsByIds(
       resultCallback,
@@ -222,6 +235,7 @@ public object TopicApiDispatcher {
   }
 
   private fun purgeTopicById(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -238,6 +252,7 @@ public object TopicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     TopicApi.deleteTopic(
       resultCallback,
@@ -247,6 +262,7 @@ public object TopicApiDispatcher {
   }
 
   private fun deleteTopics(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -262,6 +278,7 @@ public object TopicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     TopicApi.purgeTopic(
       resultCallback,
@@ -271,6 +288,7 @@ public object TopicApiDispatcher {
   }
 
   private fun shareWith(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -288,6 +306,7 @@ public object TopicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     TopicApi.shareWithMany(
       resultCallback,
@@ -298,6 +317,7 @@ public object TopicApiDispatcher {
   }
 
   private fun filterTopicsBy(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -313,6 +333,7 @@ public object TopicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     TopicApi.filterTopicsBySorted(
       resultCallback,
@@ -322,6 +343,7 @@ public object TopicApiDispatcher {
   }
 
   private fun undeleteTopic(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -337,6 +359,7 @@ public object TopicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     TopicApi.modifyTopic(
       resultCallback,
@@ -346,6 +369,7 @@ public object TopicApiDispatcher {
   }
 
   private fun undeleteTopicById(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -362,6 +386,7 @@ public object TopicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     TopicApi.getTopic(
       resultCallback,
@@ -374,6 +399,7 @@ public object TopicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     TopicApi.getTopics(
       resultCallback,
@@ -383,6 +409,7 @@ public object TopicApiDispatcher {
   }
 
   private fun addParticipant(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -400,6 +427,7 @@ public object TopicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     TopicApi.removeParticipant(
       resultCallback,
@@ -410,6 +438,7 @@ public object TopicApiDispatcher {
   }
 
   private fun subscribeToEvents(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -427,6 +456,7 @@ public object TopicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     TopicApi.encrypted.shareWith(
       resultCallback,
@@ -438,6 +468,7 @@ public object TopicApiDispatcher {
   }
 
   private fun encrypted_shareWithMany(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -454,6 +485,7 @@ public object TopicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     TopicApi.encrypted.filterTopicsBy(
       resultCallback,
@@ -463,6 +495,7 @@ public object TopicApiDispatcher {
   }
 
   private fun encrypted_filterTopicsBySorted(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -478,6 +511,7 @@ public object TopicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     TopicApi.encrypted.undeleteTopic(
       resultCallback,
@@ -490,6 +524,7 @@ public object TopicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     TopicApi.encrypted.modifyTopic(
       resultCallback,
@@ -499,6 +534,7 @@ public object TopicApiDispatcher {
   }
 
   private fun encrypted_undeleteTopicById(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -515,6 +551,7 @@ public object TopicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     TopicApi.encrypted.getTopic(
       resultCallback,
@@ -527,6 +564,7 @@ public object TopicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     TopicApi.encrypted.getTopics(
       resultCallback,
@@ -536,6 +574,7 @@ public object TopicApiDispatcher {
   }
 
   private fun encrypted_addParticipant(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -553,6 +592,7 @@ public object TopicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     TopicApi.encrypted.removeParticipant(
       resultCallback,
@@ -563,6 +603,7 @@ public object TopicApiDispatcher {
   }
 
   private fun tryAndRecover_shareWith(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -580,6 +621,7 @@ public object TopicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     TopicApi.tryAndRecover.shareWithMany(
       resultCallback,
@@ -590,6 +632,7 @@ public object TopicApiDispatcher {
   }
 
   private fun tryAndRecover_filterTopicsBy(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -605,6 +648,7 @@ public object TopicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     TopicApi.tryAndRecover.filterTopicsBySorted(
       resultCallback,
@@ -614,6 +658,7 @@ public object TopicApiDispatcher {
   }
 
   private fun tryAndRecover_undeleteTopic(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -629,6 +674,7 @@ public object TopicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     TopicApi.tryAndRecover.modifyTopic(
       resultCallback,
@@ -638,6 +684,7 @@ public object TopicApiDispatcher {
   }
 
   private fun tryAndRecover_undeleteTopicById(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -654,6 +701,7 @@ public object TopicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     TopicApi.tryAndRecover.getTopic(
       resultCallback,
@@ -663,6 +711,7 @@ public object TopicApiDispatcher {
   }
 
   private fun tryAndRecover_getTopics(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -678,6 +727,7 @@ public object TopicApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     TopicApi.tryAndRecover.addParticipant(
       resultCallback,
@@ -689,6 +739,7 @@ public object TopicApiDispatcher {
   }
 
   private fun tryAndRecover_removeParticipant(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,

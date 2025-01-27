@@ -73,32 +73,6 @@ class FormTemplate implements StoredDocument {
 		layoutAttachmentId = layoutAttachmentId ?? null,
 		templateLayoutAttachmentId = templateLayoutAttachmentId ?? null;
 
-	factory FormTemplate.fromJSON(Map<String, dynamic> data) {
-		return FormTemplate(
-			(data["id"] as String),
-			rev: (data["rev"] as String?),
-			deletionDate: (data["deletionDate"] as int?),
-			templateLayout: data["templateLayout"] == null ? null : FormTemplateLayout.fromJSON(data["templateLayout"]),
-			rawTemplateLayout: data["rawTemplateLayout"] == null ? null : base64Decode(data["rawTemplateLayout"] as String),
-			name: (data["name"] as String?),
-			guid: (data["guid"] as String?),
-			group: data["group"] == null ? null : DocumentGroup.fromJSON(data["group"]),
-			descr: (data["descr"] as String?),
-			disabled: (data["disabled"] as String?),
-			specialty: data["specialty"] == null ? null : CodeStub.fromJSON(data["specialty"]),
-			author: (data["author"] as String?),
-			formInstancePreferredLocation: (data["formInstancePreferredLocation"] as String?),
-			keyboardShortcut: (data["keyboardShortcut"] as String?),
-			shortReport: (data["shortReport"] as String?),
-			mediumReport: (data["mediumReport"] as String?),
-			longReport: (data["longReport"] as String?),
-			reports: (data["reports"] as List<dynamic>).map((x0) => (x0 as String) ).toSet(),
-			tags: (data["tags"] as List<dynamic>).map((x0) => CodeStub.fromJSON(x0) ).toSet(),
-			layoutAttachmentId: (data["layoutAttachmentId"] as String?),
-			templateLayoutAttachmentId: (data["templateLayoutAttachmentId"] as String?),
-		);
-	}
-
 	static Map<String, dynamic> encode(FormTemplate value) {
 		Map<String, dynamic> entityAsMap = {
 			"id" : value.id,
@@ -124,5 +98,31 @@ class FormTemplate implements StoredDocument {
 			"templateLayoutAttachmentId" : value.templateLayoutAttachmentId
 		};
 		return entityAsMap;
+	}
+
+	static FormTemplate fromJSON(Map<String, dynamic> data) {
+		return FormTemplate(
+			(data["id"] as String),
+			rev: (data["rev"] as String?),
+			deletionDate: (data["deletionDate"] as int?),
+			templateLayout: data["templateLayout"] == null ? null : FormTemplateLayout.fromJSON(data["templateLayout"]),
+			rawTemplateLayout: data["rawTemplateLayout"] == null ? null : base64Decode(data["rawTemplateLayout"] as String),
+			name: (data["name"] as String?),
+			guid: (data["guid"] as String?),
+			group: data["group"] == null ? null : DocumentGroup.fromJSON(data["group"]),
+			descr: (data["descr"] as String?),
+			disabled: (data["disabled"] as String?),
+			specialty: data["specialty"] == null ? null : CodeStub.fromJSON(data["specialty"]),
+			author: (data["author"] as String?),
+			formInstancePreferredLocation: (data["formInstancePreferredLocation"] as String?),
+			keyboardShortcut: (data["keyboardShortcut"] as String?),
+			shortReport: (data["shortReport"] as String?),
+			mediumReport: (data["mediumReport"] as String?),
+			longReport: (data["longReport"] as String?),
+			reports: (data["reports"] as List<dynamic>).map((x0) => (x0 as String) ).toSet(),
+			tags: (data["tags"] as List<dynamic>).map((x0) => CodeStub.fromJSON(x0) ).toSet(),
+			layoutAttachmentId: (data["layoutAttachmentId"] as String?),
+			templateLayoutAttachmentId: (data["templateLayoutAttachmentId"] as String?),
+		);
 	}
 }

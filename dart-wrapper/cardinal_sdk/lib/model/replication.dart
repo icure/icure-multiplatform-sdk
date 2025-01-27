@@ -26,17 +26,6 @@ class Replication implements StoredDocument, Identifiable<String>, Named {
 		context = context ?? null,
 		databaseSynchronizations = databaseSynchronizations ?? [];
 
-	factory Replication.fromJSON(Map<String, dynamic> data) {
-		return Replication(
-			(data["id"] as String),
-			rev: (data["rev"] as String?),
-			deletionDate: (data["deletionDate"] as int?),
-			name: (data["name"] as String?),
-			context: (data["context"] as String?),
-			databaseSynchronizations: (data["databaseSynchronizations"] as List<dynamic>).map((x0) => DatabaseSynchronization.fromJSON(x0) ).toList(),
-		);
-	}
-
 	static Map<String, dynamic> encode(Replication value) {
 		Map<String, dynamic> entityAsMap = {
 			"id" : value.id,
@@ -47,5 +36,16 @@ class Replication implements StoredDocument, Identifiable<String>, Named {
 			"databaseSynchronizations" : value.databaseSynchronizations.map((x0) => DatabaseSynchronization.encode(x0)).toList()
 		};
 		return entityAsMap;
+	}
+
+	static Replication fromJSON(Map<String, dynamic> data) {
+		return Replication(
+			(data["id"] as String),
+			rev: (data["rev"] as String?),
+			deletionDate: (data["deletionDate"] as int?),
+			name: (data["name"] as String?),
+			context: (data["context"] as String?),
+			databaseSynchronizations: (data["databaseSynchronizations"] as List<dynamic>).map((x0) => DatabaseSynchronization.fromJSON(x0) ).toList(),
+		);
 	}
 }

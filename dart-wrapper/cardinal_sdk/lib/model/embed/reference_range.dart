@@ -28,18 +28,6 @@ class ReferenceRange {
 		notes = notes ?? [],
 		age = age ?? null;
 
-	factory ReferenceRange.fromJSON(Map<String, dynamic> data) {
-		return ReferenceRange(
-			low: (data["low"] as num?)?.toDouble(),
-			high: (data["high"] as num?)?.toDouble(),
-			stringValue: (data["stringValue"] as String?),
-			tags: (data["tags"] as List<dynamic>).map((x0) => CodeStub.fromJSON(x0) ).toList(),
-			codes: (data["codes"] as List<dynamic>).map((x0) => CodeStub.fromJSON(x0) ).toList(),
-			notes: (data["notes"] as List<dynamic>).map((x0) => Annotation.fromJSON(x0) ).toList(),
-			age: data["age"] == null ? null : Range.fromJSON(data["age"])
-		);
-	}
-
 	static Map<String, dynamic> encode(ReferenceRange value) {
 		Map<String, dynamic> entityAsMap = {
 			"low" : value.low,
@@ -51,5 +39,17 @@ class ReferenceRange {
 			"age" : value.age == null ? null : Range.encode(value.age!)
 		};
 		return entityAsMap;
+	}
+
+	static ReferenceRange fromJSON(Map<String, dynamic> data) {
+		return ReferenceRange(
+			low: (data["low"] as num?)?.toDouble(),
+			high: (data["high"] as num?)?.toDouble(),
+			stringValue: (data["stringValue"] as String?),
+			tags: (data["tags"] as List<dynamic>).map((x0) => CodeStub.fromJSON(x0) ).toList(),
+			codes: (data["codes"] as List<dynamic>).map((x0) => CodeStub.fromJSON(x0) ).toList(),
+			notes: (data["notes"] as List<dynamic>).map((x0) => Annotation.fromJSON(x0) ).toList(),
+			age: data["age"] == null ? null : Range.fromJSON(data["age"])
+		);
 	}
 }

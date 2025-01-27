@@ -18,7 +18,7 @@ val mavenReleasesRepository: String by project
 
 group = "com.icure"
 
-val version = "1.0.0-RC.4"
+val version = "1.0.0-RC.5"
 project.version = version
 
 kotlin {
@@ -72,7 +72,7 @@ kotlin {
 		val androidMain by getting {
 			dependencies {
 				implementation(libs.ktorClientEngineOkhttp)
-				implementation(libs.androidx.datastore)
+				compileOnly(libs.androidx.datastore)
 			}
 		}
 		val androidUnitTest by getting {
@@ -106,7 +106,7 @@ android {
 configureJvmTest()
 
 dependencies {
-	add("kspJvm", project(":sdk-codegen:ksp-json-processor"))
+	add("kspJvm", "com.icure:ksp-json-processor")
 }
 
 publishing {

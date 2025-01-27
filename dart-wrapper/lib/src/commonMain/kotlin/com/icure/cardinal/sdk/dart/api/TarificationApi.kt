@@ -1,7 +1,7 @@
 // auto-generated file
 package com.icure.cardinal.sdk.dart.api
 
-import com.icure.cardinal.sdk.CardinalSdk
+import com.icure.cardinal.sdk.CardinalNonCryptoApis
 import com.icure.cardinal.sdk.dart.utils.ApiScope
 import com.icure.cardinal.sdk.dart.utils.NativeReferences
 import com.icure.cardinal.sdk.model.Tarification
@@ -20,6 +20,7 @@ public object TarificationApi {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
     sdkId: String,
     tarificationIdString: String,
@@ -31,7 +32,7 @@ public object TarificationApi {
     ApiScope.execute(
       dartResultCallback,
       Tarification.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).tarification.getTarification(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).tarification.getTarification(
         tarificationId,
       )
     }
@@ -39,6 +40,7 @@ public object TarificationApi {
 
   public fun createTarification(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -53,7 +55,7 @@ public object TarificationApi {
     ApiScope.execute(
       dartResultCallback,
       Tarification.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).tarification.createTarification(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).tarification.createTarification(
         tarification,
       )
     }
@@ -61,6 +63,7 @@ public object TarificationApi {
 
   public fun getTarifications(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -75,7 +78,7 @@ public object TarificationApi {
     ApiScope.execute(
       dartResultCallback,
       ListSerializer(Tarification.serializer())) {
-      NativeReferences.get<CardinalSdk>(sdkId).tarification.getTarifications(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).tarification.getTarifications(
         tarificationIds,
       )
     }
@@ -83,6 +86,7 @@ public object TarificationApi {
 
   public fun modifyTarification(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -97,7 +101,7 @@ public object TarificationApi {
     ApiScope.execute(
       dartResultCallback,
       Tarification.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).tarification.modifyTarification(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).tarification.modifyTarification(
         tarification,
       )
     }
@@ -105,6 +109,7 @@ public object TarificationApi {
 
   public fun getTarificationWithParts(
     dartResultCallback: (
+      String?,
       String?,
       String?,
       String?,
@@ -129,7 +134,7 @@ public object TarificationApi {
     ApiScope.execute(
       dartResultCallback,
       Tarification.serializer()) {
-      NativeReferences.get<CardinalSdk>(sdkId).tarification.getTarificationWithParts(
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).tarification.getTarificationWithParts(
         type,
         tarification,
         version,

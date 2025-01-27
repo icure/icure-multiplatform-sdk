@@ -15,6 +15,7 @@ public object MaintenanceTaskApiDispatcher {
       String?,
       String?,
       String?,
+      String?,
     ) -> Unit,
   ): Boolean = when(methodName) {
     "createMaintenanceTask" -> createMaintenanceTask(parameters, resultCallback)
@@ -68,6 +69,7 @@ public object MaintenanceTaskApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     MaintenanceTaskApi.createMaintenanceTask(
       resultCallback,
@@ -77,6 +79,7 @@ public object MaintenanceTaskApiDispatcher {
   }
 
   private fun withEncryptionMetadata(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -94,6 +97,7 @@ public object MaintenanceTaskApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     MaintenanceTaskApi.getEncryptionKeysOf(
       resultCallback,
@@ -106,6 +110,7 @@ public object MaintenanceTaskApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     MaintenanceTaskApi.hasWriteAccess(
       resultCallback,
@@ -115,6 +120,7 @@ public object MaintenanceTaskApiDispatcher {
   }
 
   private fun decryptPatientIdOf(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -131,6 +137,7 @@ public object MaintenanceTaskApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     MaintenanceTaskApi.createDelegationDeAnonymizationMetadata(
       resultCallback,
@@ -141,6 +148,7 @@ public object MaintenanceTaskApiDispatcher {
   }
 
   private fun decrypt(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -156,6 +164,7 @@ public object MaintenanceTaskApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     MaintenanceTaskApi.tryDecrypt(
       resultCallback,
@@ -165,6 +174,7 @@ public object MaintenanceTaskApiDispatcher {
   }
 
   private fun matchMaintenanceTasksBy(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -180,6 +190,7 @@ public object MaintenanceTaskApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     MaintenanceTaskApi.matchMaintenanceTasksBySorted(
       resultCallback,
@@ -189,6 +200,7 @@ public object MaintenanceTaskApiDispatcher {
   }
 
   private fun deleteMaintenanceTaskById(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -205,6 +217,7 @@ public object MaintenanceTaskApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     MaintenanceTaskApi.deleteMaintenanceTasksByIds(
       resultCallback,
@@ -214,6 +227,7 @@ public object MaintenanceTaskApiDispatcher {
   }
 
   private fun purgeMaintenanceTaskById(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -230,6 +244,7 @@ public object MaintenanceTaskApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     MaintenanceTaskApi.deleteMaintenanceTask(
       resultCallback,
@@ -239,6 +254,7 @@ public object MaintenanceTaskApiDispatcher {
   }
 
   private fun deleteMaintenanceTasks(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -254,6 +270,7 @@ public object MaintenanceTaskApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     MaintenanceTaskApi.purgeMaintenanceTask(
       resultCallback,
@@ -263,6 +280,7 @@ public object MaintenanceTaskApiDispatcher {
   }
 
   private fun shareWith(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -280,6 +298,7 @@ public object MaintenanceTaskApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     MaintenanceTaskApi.shareWithMany(
       resultCallback,
@@ -290,6 +309,7 @@ public object MaintenanceTaskApiDispatcher {
   }
 
   private fun filterMaintenanceTasksBy(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -305,6 +325,7 @@ public object MaintenanceTaskApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     MaintenanceTaskApi.filterMaintenanceTasksBySorted(
       resultCallback,
@@ -317,6 +338,7 @@ public object MaintenanceTaskApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     MaintenanceTaskApi.undeleteMaintenanceTask(
       resultCallback,
@@ -326,6 +348,7 @@ public object MaintenanceTaskApiDispatcher {
   }
 
   private fun undeleteMaintenanceTaskById(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -342,6 +365,7 @@ public object MaintenanceTaskApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     MaintenanceTaskApi.modifyMaintenanceTask(
       resultCallback,
@@ -351,6 +375,7 @@ public object MaintenanceTaskApiDispatcher {
   }
 
   private fun getMaintenanceTask(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -366,6 +391,7 @@ public object MaintenanceTaskApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     MaintenanceTaskApi.getMaintenanceTasks(
       resultCallback,
@@ -375,6 +401,7 @@ public object MaintenanceTaskApiDispatcher {
   }
 
   private fun subscribeToEvents(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -392,6 +419,7 @@ public object MaintenanceTaskApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     MaintenanceTaskApi.encrypted.shareWith(
       resultCallback,
@@ -403,6 +431,7 @@ public object MaintenanceTaskApiDispatcher {
   }
 
   private fun encrypted_shareWithMany(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -419,6 +448,7 @@ public object MaintenanceTaskApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     MaintenanceTaskApi.encrypted.filterMaintenanceTasksBy(
       resultCallback,
@@ -432,6 +462,7 @@ public object MaintenanceTaskApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     MaintenanceTaskApi.encrypted.filterMaintenanceTasksBySorted(
       resultCallback,
@@ -441,6 +472,7 @@ public object MaintenanceTaskApiDispatcher {
   }
 
   private fun encrypted_undeleteMaintenanceTask(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -457,6 +489,7 @@ public object MaintenanceTaskApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     MaintenanceTaskApi.encrypted.undeleteMaintenanceTaskById(
       resultCallback,
@@ -467,6 +500,7 @@ public object MaintenanceTaskApiDispatcher {
   }
 
   private fun encrypted_modifyMaintenanceTask(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -482,6 +516,7 @@ public object MaintenanceTaskApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     MaintenanceTaskApi.encrypted.getMaintenanceTask(
       resultCallback,
@@ -494,6 +529,7 @@ public object MaintenanceTaskApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     MaintenanceTaskApi.encrypted.getMaintenanceTasks(
       resultCallback,
@@ -503,6 +539,7 @@ public object MaintenanceTaskApiDispatcher {
   }
 
   private fun tryAndRecover_shareWith(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -520,6 +557,7 @@ public object MaintenanceTaskApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     MaintenanceTaskApi.tryAndRecover.shareWithMany(
       resultCallback,
@@ -531,6 +569,7 @@ public object MaintenanceTaskApiDispatcher {
 
   private fun tryAndRecover_filterMaintenanceTasksBy(parameters: Map<String, String>,
       resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -547,6 +586,7 @@ public object MaintenanceTaskApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     MaintenanceTaskApi.tryAndRecover.filterMaintenanceTasksBySorted(
       resultCallback,
@@ -557,6 +597,7 @@ public object MaintenanceTaskApiDispatcher {
 
   private fun tryAndRecover_undeleteMaintenanceTask(parameters: Map<String, String>,
       resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -573,6 +614,7 @@ public object MaintenanceTaskApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     MaintenanceTaskApi.tryAndRecover.undeleteMaintenanceTaskById(
       resultCallback,
@@ -583,6 +625,7 @@ public object MaintenanceTaskApiDispatcher {
   }
 
   private fun tryAndRecover_modifyMaintenanceTask(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,
@@ -598,6 +641,7 @@ public object MaintenanceTaskApiDispatcher {
     String?,
     String?,
     String?,
+    String?,
   ) -> Unit) {
     MaintenanceTaskApi.tryAndRecover.getMaintenanceTask(
       resultCallback,
@@ -607,6 +651,7 @@ public object MaintenanceTaskApiDispatcher {
   }
 
   private fun tryAndRecover_getMaintenanceTasks(parameters: Map<String, String>, resultCallback: (
+    String?,
     String?,
     String?,
     String?,

@@ -16,15 +16,6 @@ class LetterValue {
 		coefficient = coefficient ?? null,
 		value = value ?? null;
 
-	factory LetterValue.fromJSON(Map<String, dynamic> data) {
-		return LetterValue(
-			letter: (data["letter"] as String?),
-			index: (data["index"] as String?),
-			coefficient: (data["coefficient"] as num?)?.toDouble(),
-			value: (data["value"] as num?)?.toDouble()
-		);
-	}
-
 	static Map<String, dynamic> encode(LetterValue value) {
 		Map<String, dynamic> entityAsMap = {
 			"letter" : value.letter,
@@ -33,5 +24,14 @@ class LetterValue {
 			"value" : value.value
 		};
 		return entityAsMap;
+	}
+
+	static LetterValue fromJSON(Map<String, dynamic> data) {
+		return LetterValue(
+			letter: (data["letter"] as String?),
+			index: (data["index"] as String?),
+			coefficient: (data["coefficient"] as num?)?.toDouble(),
+			value: (data["value"] as num?)?.toDouble()
+		);
 	}
 }

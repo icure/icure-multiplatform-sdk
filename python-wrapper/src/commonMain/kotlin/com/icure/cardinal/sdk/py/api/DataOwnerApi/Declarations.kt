@@ -16,6 +16,7 @@ import kotlin.String
 import kotlin.Unit
 import kotlinx.cinterop.ByteVarOf
 import kotlinx.cinterop.CFunction
+import kotlinx.cinterop.COpaquePointer
 import kotlinx.cinterop.CPointer
 import kotlinx.cinterop.CValues
 import kotlinx.cinterop.ExperimentalForeignApi
@@ -35,7 +36,7 @@ public fun getCurrentDataOwnerBlocking(sdk: CardinalApis): String = kotlin.runCa
 @OptIn(ExperimentalForeignApi::class)
 public fun getCurrentDataOwnerAsync(sdk: CardinalApis,
 		resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
-		CValues<ByteVarOf<Byte>>?) -> Unit>>): Unit = kotlin.runCatching {
+		CValues<ByteVarOf<Byte>>?) -> Unit>>): COpaquePointer? = kotlin.runCatching {
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.dataOwner.getCurrentDataOwner()
@@ -52,7 +53,7 @@ public fun getCurrentDataOwnerStubBlocking(sdk: CardinalApis): String = kotlin.r
 @OptIn(ExperimentalForeignApi::class)
 public fun getCurrentDataOwnerStubAsync(sdk: CardinalApis,
 		resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
-		CValues<ByteVarOf<Byte>>?) -> Unit>>): Unit = kotlin.runCatching {
+		CValues<ByteVarOf<Byte>>?) -> Unit>>): COpaquePointer? = kotlin.runCatching {
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.dataOwner.getCurrentDataOwnerStub()
@@ -69,7 +70,7 @@ public fun getCurrentDataOwnerIdBlocking(sdk: CardinalApis): String = kotlin.run
 @OptIn(ExperimentalForeignApi::class)
 public fun getCurrentDataOwnerIdAsync(sdk: CardinalApis,
 		resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
-		CValues<ByteVarOf<Byte>>?) -> Unit>>): Unit = kotlin.runCatching {
+		CValues<ByteVarOf<Byte>>?) -> Unit>>): COpaquePointer? = kotlin.runCatching {
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.dataOwner.getCurrentDataOwnerId()
@@ -86,7 +87,7 @@ public fun getCurrentDataOwnerHierarchyIdsBlocking(sdk: CardinalApis): String = 
 @OptIn(ExperimentalForeignApi::class)
 public fun getCurrentDataOwnerHierarchyIdsAsync(sdk: CardinalApis,
 		resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
-		CValues<ByteVarOf<Byte>>?) -> Unit>>): Unit = kotlin.runCatching {
+		CValues<ByteVarOf<Byte>>?) -> Unit>>): COpaquePointer? = kotlin.runCatching {
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.dataOwner.getCurrentDataOwnerHierarchyIds()
@@ -118,7 +119,7 @@ public fun getDataOwnerAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<GetDataOwnerParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
@@ -154,7 +155,7 @@ public fun getCryptoActorStubAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<GetCryptoActorStubParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
@@ -191,7 +192,7 @@ public fun getCurrentDataOwnerHierarchyIdsFromAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams =
 			fullLanguageInteropJson.decodeFromString<GetCurrentDataOwnerHierarchyIdsFromParams>(params)
 	GlobalScope.launch {
@@ -212,7 +213,7 @@ public fun getCurrentDataOwnerHierarchyBlocking(sdk: CardinalApis): String = kot
 @OptIn(ExperimentalForeignApi::class)
 public fun getCurrentDataOwnerHierarchyAsync(sdk: CardinalApis,
 		resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
-		CValues<ByteVarOf<Byte>>?) -> Unit>>): Unit = kotlin.runCatching {
+		CValues<ByteVarOf<Byte>>?) -> Unit>>): COpaquePointer? = kotlin.runCatching {
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.dataOwner.getCurrentDataOwnerHierarchy()
@@ -245,7 +246,7 @@ public fun modifyDataOwnerStubAsync(
 	params: String,
 	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
 			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): Unit = kotlin.runCatching {
+): COpaquePointer? = kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<ModifyDataOwnerStubParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
@@ -265,7 +266,7 @@ public fun getCurrentDataOwnerTypeBlocking(sdk: CardinalApis): String = kotlin.r
 @OptIn(ExperimentalForeignApi::class)
 public fun getCurrentDataOwnerTypeAsync(sdk: CardinalApis,
 		resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
-		CValues<ByteVarOf<Byte>>?) -> Unit>>): Unit = kotlin.runCatching {
+		CValues<ByteVarOf<Byte>>?) -> Unit>>): COpaquePointer? = kotlin.runCatching {
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.dataOwner.getCurrentDataOwnerType()

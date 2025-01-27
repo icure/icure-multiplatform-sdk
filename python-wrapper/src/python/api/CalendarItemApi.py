@@ -1,8 +1,8 @@
 # auto-generated file
-import asyncio
 import json
 from cardinal_sdk.model import DecryptedCalendarItem, Patient, User, AccessLevel, SecretIdUseOption, SecretIdUseOptionUseAnySharedWithParent, serialize_patient, serialize_secret_id_use_option, CalendarItem, serialize_calendar_item, EncryptedCalendarItem, deserialize_calendar_item, DocIdentifier, IdWithMandatoryRev, CalendarItemShareOptions, SubscriptionEventType, EntitySubscriptionConfiguration
-from cardinal_sdk.kotlin_types import DATA_RESULT_CALLBACK_FUNC, symbols, PTR_RESULT_CALLBACK_FUNC
+from cardinal_sdk.async_utils import execute_async_method_job
+from cardinal_sdk.kotlin_types import symbols
 from cardinal_sdk.model.CallResult import create_result_from_json, interpret_kt_error
 from ctypes import cast, c_char_p
 from typing import Optional, Dict, List
@@ -20,29 +20,21 @@ class CalendarItemApi:
 			self.cardinal_sdk = cardinal_sdk
 
 		async def share_with_async(self, delegate_id: str, calendar_item: EncryptedCalendarItem, options: Optional[CalendarItemShareOptions] = None) -> EncryptedCalendarItem:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = EncryptedCalendarItem._deserialize(json.loads(success.decode('utf-8')))
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
+			def do_decode(raw_result):
+				return EncryptedCalendarItem._deserialize(raw_result)
 			payload = {
 				"delegateId": delegate_id,
 				"calendarItem": calendar_item.__serialize__(),
 				"options": options.__serialize__() if options is not None else None,
 			}
-			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
+			return await execute_async_method_job(
 				self.cardinal_sdk._executor,
+				True,
+				do_decode,
 				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.CalendarItemApi.encrypted.shareWithAsync,
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
-				callback
 			)
-			return await future
 
 		def share_with_blocking(self, delegate_id: str, calendar_item: EncryptedCalendarItem, options: Optional[CalendarItemShareOptions] = None) -> EncryptedCalendarItem:
 			payload = {
@@ -63,28 +55,20 @@ class CalendarItemApi:
 				return return_value
 
 		async def share_with_many_async(self, calendar_item: EncryptedCalendarItem, delegates: Dict[str, CalendarItemShareOptions]) -> EncryptedCalendarItem:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = EncryptedCalendarItem._deserialize(json.loads(success.decode('utf-8')))
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
+			def do_decode(raw_result):
+				return EncryptedCalendarItem._deserialize(raw_result)
 			payload = {
 				"calendarItem": calendar_item.__serialize__(),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 			}
-			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
+			return await execute_async_method_job(
 				self.cardinal_sdk._executor,
+				True,
+				do_decode,
 				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.CalendarItemApi.encrypted.shareWithManyAsync,
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
-				callback
 			)
-			return await future
 
 		def share_with_many_blocking(self, calendar_item: EncryptedCalendarItem, delegates: Dict[str, CalendarItemShareOptions]) -> EncryptedCalendarItem:
 			payload = {
@@ -104,29 +88,21 @@ class CalendarItemApi:
 				return return_value
 
 		async def link_to_patient_async(self, calendar_item: CalendarItem, patient: Patient, share_link_with_delegates: List[str]) -> EncryptedCalendarItem:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = EncryptedCalendarItem._deserialize(json.loads(success.decode('utf-8')))
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
+			def do_decode(raw_result):
+				return EncryptedCalendarItem._deserialize(raw_result)
 			payload = {
 				"calendarItem": serialize_calendar_item(calendar_item),
 				"patient": serialize_patient(patient),
 				"shareLinkWithDelegates": [x0 for x0 in share_link_with_delegates],
 			}
-			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
+			return await execute_async_method_job(
 				self.cardinal_sdk._executor,
+				True,
+				do_decode,
 				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.CalendarItemApi.encrypted.linkToPatientAsync,
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
-				callback
 			)
-			return await future
 
 		def link_to_patient_blocking(self, calendar_item: CalendarItem, patient: Patient, share_link_with_delegates: List[str]) -> EncryptedCalendarItem:
 			payload = {
@@ -147,31 +123,23 @@ class CalendarItemApi:
 				return return_value
 
 		async def filter_calendar_items_by_async(self, filter: FilterOptions[CalendarItem]) -> PaginatedListIterator[EncryptedCalendarItem]:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = PaginatedListIterator[EncryptedCalendarItem](
-						producer = success,
-						deserializer = lambda x: EncryptedCalendarItem._deserialize(x),
-						executor = self.cardinal_sdk._executor
-					)
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
+			def do_decode(raw_result):
+				return PaginatedListIterator[EncryptedCalendarItem](
+					producer = raw_result,
+					deserializer = lambda x: EncryptedCalendarItem._deserialize(x),
+					executor = self.cardinal_sdk._executor
+				)
 			payload = {
 				"filter": filter.__serialize__(),
 			}
-			callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
+			return await execute_async_method_job(
 				self.cardinal_sdk._executor,
+				False,
+				do_decode,
 				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.CalendarItemApi.encrypted.filterCalendarItemsByAsync,
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
-				callback
 			)
-			return await future
 
 		def filter_calendar_items_by_blocking(self, filter: FilterOptions[CalendarItem]) -> PaginatedListIterator[EncryptedCalendarItem]:
 			payload = {
@@ -197,31 +165,23 @@ class CalendarItemApi:
 				)
 
 		async def filter_calendar_items_by_sorted_async(self, filter: SortableFilterOptions[CalendarItem]) -> PaginatedListIterator[EncryptedCalendarItem]:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = PaginatedListIterator[EncryptedCalendarItem](
-						producer = success,
-						deserializer = lambda x: EncryptedCalendarItem._deserialize(x),
-						executor = self.cardinal_sdk._executor
-					)
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
+			def do_decode(raw_result):
+				return PaginatedListIterator[EncryptedCalendarItem](
+					producer = raw_result,
+					deserializer = lambda x: EncryptedCalendarItem._deserialize(x),
+					executor = self.cardinal_sdk._executor
+				)
 			payload = {
 				"filter": filter.__serialize__(),
 			}
-			callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
+			return await execute_async_method_job(
 				self.cardinal_sdk._executor,
+				False,
+				do_decode,
 				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.CalendarItemApi.encrypted.filterCalendarItemsBySortedAsync,
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
-				callback
 			)
-			return await future
 
 		def filter_calendar_items_by_sorted_blocking(self, filter: SortableFilterOptions[CalendarItem]) -> PaginatedListIterator[EncryptedCalendarItem]:
 			payload = {
@@ -247,28 +207,20 @@ class CalendarItemApi:
 				)
 
 		async def undelete_calendar_item_by_id_async(self, id: str, rev: str) -> EncryptedCalendarItem:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = EncryptedCalendarItem._deserialize(json.loads(success.decode('utf-8')))
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
+			def do_decode(raw_result):
+				return EncryptedCalendarItem._deserialize(raw_result)
 			payload = {
 				"id": id,
 				"rev": rev,
 			}
-			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
+			return await execute_async_method_job(
 				self.cardinal_sdk._executor,
+				True,
+				do_decode,
 				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.CalendarItemApi.encrypted.undeleteCalendarItemByIdAsync,
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
-				callback
 			)
-			return await future
 
 		def undelete_calendar_item_by_id_blocking(self, id: str, rev: str) -> EncryptedCalendarItem:
 			payload = {
@@ -288,27 +240,19 @@ class CalendarItemApi:
 				return return_value
 
 		async def undelete_calendar_item_async(self, calendar_item: CalendarItem) -> EncryptedCalendarItem:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = EncryptedCalendarItem._deserialize(json.loads(success.decode('utf-8')))
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
+			def do_decode(raw_result):
+				return EncryptedCalendarItem._deserialize(raw_result)
 			payload = {
 				"calendarItem": serialize_calendar_item(calendar_item),
 			}
-			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
+			return await execute_async_method_job(
 				self.cardinal_sdk._executor,
+				True,
+				do_decode,
 				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.CalendarItemApi.encrypted.undeleteCalendarItemAsync,
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
-				callback
 			)
-			return await future
 
 		def undelete_calendar_item_blocking(self, calendar_item: CalendarItem) -> EncryptedCalendarItem:
 			payload = {
@@ -327,27 +271,19 @@ class CalendarItemApi:
 				return return_value
 
 		async def modify_calendar_item_async(self, entity: EncryptedCalendarItem) -> EncryptedCalendarItem:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = EncryptedCalendarItem._deserialize(json.loads(success.decode('utf-8')))
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
+			def do_decode(raw_result):
+				return EncryptedCalendarItem._deserialize(raw_result)
 			payload = {
 				"entity": entity.__serialize__(),
 			}
-			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
+			return await execute_async_method_job(
 				self.cardinal_sdk._executor,
+				True,
+				do_decode,
 				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.CalendarItemApi.encrypted.modifyCalendarItemAsync,
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
-				callback
 			)
-			return await future
 
 		def modify_calendar_item_blocking(self, entity: EncryptedCalendarItem) -> EncryptedCalendarItem:
 			payload = {
@@ -366,27 +302,19 @@ class CalendarItemApi:
 				return return_value
 
 		async def get_calendar_item_async(self, entity_id: str) -> EncryptedCalendarItem:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = EncryptedCalendarItem._deserialize(json.loads(success.decode('utf-8')))
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
+			def do_decode(raw_result):
+				return EncryptedCalendarItem._deserialize(raw_result)
 			payload = {
 				"entityId": entity_id,
 			}
-			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
+			return await execute_async_method_job(
 				self.cardinal_sdk._executor,
+				True,
+				do_decode,
 				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.CalendarItemApi.encrypted.getCalendarItemAsync,
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
-				callback
 			)
-			return await future
 
 		def get_calendar_item_blocking(self, entity_id: str) -> EncryptedCalendarItem:
 			payload = {
@@ -405,27 +333,19 @@ class CalendarItemApi:
 				return return_value
 
 		async def get_calendar_items_async(self, entity_ids: List[str]) -> List[EncryptedCalendarItem]:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = [EncryptedCalendarItem._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
+			def do_decode(raw_result):
+				return [EncryptedCalendarItem._deserialize(x1) for x1 in raw_result]
 			payload = {
 				"entityIds": [x0 for x0 in entity_ids],
 			}
-			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
+			return await execute_async_method_job(
 				self.cardinal_sdk._executor,
+				True,
+				do_decode,
 				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.CalendarItemApi.encrypted.getCalendarItemsAsync,
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
-				callback
 			)
-			return await future
 
 		def get_calendar_items_blocking(self, entity_ids: List[str]) -> List[EncryptedCalendarItem]:
 			payload = {
@@ -449,29 +369,21 @@ class CalendarItemApi:
 			self.cardinal_sdk = cardinal_sdk
 
 		async def share_with_async(self, delegate_id: str, calendar_item: CalendarItem, options: Optional[CalendarItemShareOptions] = None) -> CalendarItem:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = deserialize_calendar_item(json.loads(success.decode('utf-8')))
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
+			def do_decode(raw_result):
+				return deserialize_calendar_item(raw_result)
 			payload = {
 				"delegateId": delegate_id,
 				"calendarItem": serialize_calendar_item(calendar_item),
 				"options": options.__serialize__() if options is not None else None,
 			}
-			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
+			return await execute_async_method_job(
 				self.cardinal_sdk._executor,
+				True,
+				do_decode,
 				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.CalendarItemApi.tryAndRecover.shareWithAsync,
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
-				callback
 			)
-			return await future
 
 		def share_with_blocking(self, delegate_id: str, calendar_item: CalendarItem, options: Optional[CalendarItemShareOptions] = None) -> CalendarItem:
 			payload = {
@@ -492,28 +404,20 @@ class CalendarItemApi:
 				return return_value
 
 		async def share_with_many_async(self, calendar_item: CalendarItem, delegates: Dict[str, CalendarItemShareOptions]) -> CalendarItem:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = deserialize_calendar_item(json.loads(success.decode('utf-8')))
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
+			def do_decode(raw_result):
+				return deserialize_calendar_item(raw_result)
 			payload = {
 				"calendarItem": serialize_calendar_item(calendar_item),
 				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 			}
-			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
+			return await execute_async_method_job(
 				self.cardinal_sdk._executor,
+				True,
+				do_decode,
 				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.CalendarItemApi.tryAndRecover.shareWithManyAsync,
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
-				callback
 			)
-			return await future
 
 		def share_with_many_blocking(self, calendar_item: CalendarItem, delegates: Dict[str, CalendarItemShareOptions]) -> CalendarItem:
 			payload = {
@@ -533,29 +437,21 @@ class CalendarItemApi:
 				return return_value
 
 		async def link_to_patient_async(self, calendar_item: CalendarItem, patient: Patient, share_link_with_delegates: List[str]) -> CalendarItem:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = deserialize_calendar_item(json.loads(success.decode('utf-8')))
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
+			def do_decode(raw_result):
+				return deserialize_calendar_item(raw_result)
 			payload = {
 				"calendarItem": serialize_calendar_item(calendar_item),
 				"patient": serialize_patient(patient),
 				"shareLinkWithDelegates": [x0 for x0 in share_link_with_delegates],
 			}
-			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
+			return await execute_async_method_job(
 				self.cardinal_sdk._executor,
+				True,
+				do_decode,
 				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.CalendarItemApi.tryAndRecover.linkToPatientAsync,
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
-				callback
 			)
-			return await future
 
 		def link_to_patient_blocking(self, calendar_item: CalendarItem, patient: Patient, share_link_with_delegates: List[str]) -> CalendarItem:
 			payload = {
@@ -576,31 +472,23 @@ class CalendarItemApi:
 				return return_value
 
 		async def filter_calendar_items_by_async(self, filter: FilterOptions[CalendarItem]) -> PaginatedListIterator[CalendarItem]:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = PaginatedListIterator[CalendarItem](
-						producer = success,
-						deserializer = lambda x: deserialize_calendar_item(x),
-						executor = self.cardinal_sdk._executor
-					)
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
+			def do_decode(raw_result):
+				return PaginatedListIterator[CalendarItem](
+					producer = raw_result,
+					deserializer = lambda x: deserialize_calendar_item(x),
+					executor = self.cardinal_sdk._executor
+				)
 			payload = {
 				"filter": filter.__serialize__(),
 			}
-			callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
+			return await execute_async_method_job(
 				self.cardinal_sdk._executor,
+				False,
+				do_decode,
 				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.CalendarItemApi.tryAndRecover.filterCalendarItemsByAsync,
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
-				callback
 			)
-			return await future
 
 		def filter_calendar_items_by_blocking(self, filter: FilterOptions[CalendarItem]) -> PaginatedListIterator[CalendarItem]:
 			payload = {
@@ -626,31 +514,23 @@ class CalendarItemApi:
 				)
 
 		async def filter_calendar_items_by_sorted_async(self, filter: SortableFilterOptions[CalendarItem]) -> PaginatedListIterator[CalendarItem]:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = PaginatedListIterator[CalendarItem](
-						producer = success,
-						deserializer = lambda x: deserialize_calendar_item(x),
-						executor = self.cardinal_sdk._executor
-					)
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
+			def do_decode(raw_result):
+				return PaginatedListIterator[CalendarItem](
+					producer = raw_result,
+					deserializer = lambda x: deserialize_calendar_item(x),
+					executor = self.cardinal_sdk._executor
+				)
 			payload = {
 				"filter": filter.__serialize__(),
 			}
-			callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
+			return await execute_async_method_job(
 				self.cardinal_sdk._executor,
+				False,
+				do_decode,
 				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.CalendarItemApi.tryAndRecover.filterCalendarItemsBySortedAsync,
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
-				callback
 			)
-			return await future
 
 		def filter_calendar_items_by_sorted_blocking(self, filter: SortableFilterOptions[CalendarItem]) -> PaginatedListIterator[CalendarItem]:
 			payload = {
@@ -676,28 +556,20 @@ class CalendarItemApi:
 				)
 
 		async def undelete_calendar_item_by_id_async(self, id: str, rev: str) -> CalendarItem:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = deserialize_calendar_item(json.loads(success.decode('utf-8')))
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
+			def do_decode(raw_result):
+				return deserialize_calendar_item(raw_result)
 			payload = {
 				"id": id,
 				"rev": rev,
 			}
-			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
+			return await execute_async_method_job(
 				self.cardinal_sdk._executor,
+				True,
+				do_decode,
 				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.CalendarItemApi.tryAndRecover.undeleteCalendarItemByIdAsync,
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
-				callback
 			)
-			return await future
 
 		def undelete_calendar_item_by_id_blocking(self, id: str, rev: str) -> CalendarItem:
 			payload = {
@@ -717,27 +589,19 @@ class CalendarItemApi:
 				return return_value
 
 		async def undelete_calendar_item_async(self, calendar_item: CalendarItem) -> CalendarItem:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = deserialize_calendar_item(json.loads(success.decode('utf-8')))
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
+			def do_decode(raw_result):
+				return deserialize_calendar_item(raw_result)
 			payload = {
 				"calendarItem": serialize_calendar_item(calendar_item),
 			}
-			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
+			return await execute_async_method_job(
 				self.cardinal_sdk._executor,
+				True,
+				do_decode,
 				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.CalendarItemApi.tryAndRecover.undeleteCalendarItemAsync,
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
-				callback
 			)
-			return await future
 
 		def undelete_calendar_item_blocking(self, calendar_item: CalendarItem) -> CalendarItem:
 			payload = {
@@ -756,27 +620,19 @@ class CalendarItemApi:
 				return return_value
 
 		async def modify_calendar_item_async(self, entity: CalendarItem) -> CalendarItem:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = deserialize_calendar_item(json.loads(success.decode('utf-8')))
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
+			def do_decode(raw_result):
+				return deserialize_calendar_item(raw_result)
 			payload = {
 				"entity": serialize_calendar_item(entity),
 			}
-			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
+			return await execute_async_method_job(
 				self.cardinal_sdk._executor,
+				True,
+				do_decode,
 				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.CalendarItemApi.tryAndRecover.modifyCalendarItemAsync,
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
-				callback
 			)
-			return await future
 
 		def modify_calendar_item_blocking(self, entity: CalendarItem) -> CalendarItem:
 			payload = {
@@ -795,27 +651,19 @@ class CalendarItemApi:
 				return return_value
 
 		async def get_calendar_item_async(self, entity_id: str) -> CalendarItem:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = deserialize_calendar_item(json.loads(success.decode('utf-8')))
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
+			def do_decode(raw_result):
+				return deserialize_calendar_item(raw_result)
 			payload = {
 				"entityId": entity_id,
 			}
-			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
+			return await execute_async_method_job(
 				self.cardinal_sdk._executor,
+				True,
+				do_decode,
 				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.CalendarItemApi.tryAndRecover.getCalendarItemAsync,
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
-				callback
 			)
-			return await future
 
 		def get_calendar_item_blocking(self, entity_id: str) -> CalendarItem:
 			payload = {
@@ -834,27 +682,19 @@ class CalendarItemApi:
 				return return_value
 
 		async def get_calendar_items_async(self, entity_ids: List[str]) -> List[CalendarItem]:
-			loop = asyncio.get_running_loop()
-			future = loop.create_future()
-			def make_result_and_complete(success, failure):
-				if failure is not None:
-					result = Exception(failure.decode('utf-8'))
-					loop.call_soon_threadsafe(lambda: future.set_exception(result))
-				else:
-					result = [deserialize_calendar_item(x1) for x1 in json.loads(success.decode('utf-8'))]
-					loop.call_soon_threadsafe(lambda: future.set_result(result))
+			def do_decode(raw_result):
+				return [deserialize_calendar_item(x1) for x1 in raw_result]
 			payload = {
 				"entityIds": [x0 for x0 in entity_ids],
 			}
-			callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-			loop.run_in_executor(
+			return await execute_async_method_job(
 				self.cardinal_sdk._executor,
+				True,
+				do_decode,
 				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.CalendarItemApi.tryAndRecover.getCalendarItemsAsync,
 				self.cardinal_sdk._native,
 				json.dumps(payload).encode('utf-8'),
-				callback
 			)
-			return await future
 
 		def get_calendar_items_blocking(self, entity_ids: List[str]) -> List[CalendarItem]:
 			payload = {
@@ -878,27 +718,19 @@ class CalendarItemApi:
 		self.try_and_recover = CalendarItemApi.CalendarItemFlavouredApi(self.cardinal_sdk)
 
 	async def create_calendar_item_async(self, entity: DecryptedCalendarItem) -> DecryptedCalendarItem:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = DecryptedCalendarItem._deserialize(json.loads(success.decode('utf-8')))
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return DecryptedCalendarItem._deserialize(raw_result)
 		payload = {
 			"entity": entity.__serialize__(),
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.CalendarItemApi.createCalendarItemAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def create_calendar_item_blocking(self, entity: DecryptedCalendarItem) -> DecryptedCalendarItem:
 		payload = {
@@ -917,15 +749,8 @@ class CalendarItemApi:
 			return return_value
 
 	async def with_encryption_metadata_async(self, base: Optional[DecryptedCalendarItem], patient: Patient, user: Optional[User] = None, delegates: Dict[str, AccessLevel] = {}, secret_id: SecretIdUseOption = SecretIdUseOptionUseAnySharedWithParent()) -> DecryptedCalendarItem:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = DecryptedCalendarItem._deserialize(json.loads(success.decode('utf-8')))
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return DecryptedCalendarItem._deserialize(raw_result)
 		payload = {
 			"base": base.__serialize__() if base is not None else None,
 			"patient": serialize_patient(patient),
@@ -933,15 +758,14 @@ class CalendarItemApi:
 			"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 			"secretId": serialize_secret_id_use_option(secret_id),
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.CalendarItemApi.withEncryptionMetadataAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def with_encryption_metadata_blocking(self, base: Optional[DecryptedCalendarItem], patient: Patient, user: Optional[User] = None, delegates: Dict[str, AccessLevel] = {}, secret_id: SecretIdUseOption = SecretIdUseOptionUseAnySharedWithParent()) -> DecryptedCalendarItem:
 		payload = {
@@ -964,27 +788,19 @@ class CalendarItemApi:
 			return return_value
 
 	async def get_encryption_keys_of_async(self, calendar_item: CalendarItem) -> List[HexString]:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = [x1 for x1 in json.loads(success.decode('utf-8'))]
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return [x1 for x1 in raw_result]
 		payload = {
 			"calendarItem": serialize_calendar_item(calendar_item),
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.CalendarItemApi.getEncryptionKeysOfAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def get_encryption_keys_of_blocking(self, calendar_item: CalendarItem) -> List[HexString]:
 		payload = {
@@ -1003,27 +819,19 @@ class CalendarItemApi:
 			return return_value
 
 	async def has_write_access_async(self, calendar_item: CalendarItem) -> bool:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = json.loads(success.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return raw_result
 		payload = {
 			"calendarItem": serialize_calendar_item(calendar_item),
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.CalendarItemApi.hasWriteAccessAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def has_write_access_blocking(self, calendar_item: CalendarItem) -> bool:
 		payload = {
@@ -1042,27 +850,19 @@ class CalendarItemApi:
 			return return_value
 
 	async def decrypt_patient_id_of_async(self, calendar_item: CalendarItem) -> List[str]:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = [x1 for x1 in json.loads(success.decode('utf-8'))]
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return [x1 for x1 in raw_result]
 		payload = {
 			"calendarItem": serialize_calendar_item(calendar_item),
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.CalendarItemApi.decryptPatientIdOfAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def decrypt_patient_id_of_blocking(self, calendar_item: CalendarItem) -> List[str]:
 		payload = {
@@ -1081,28 +881,20 @@ class CalendarItemApi:
 			return return_value
 
 	async def create_delegation_de_anonymization_metadata_async(self, entity: CalendarItem, delegates: List[str]) -> None:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = json.loads(success.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return raw_result
 		payload = {
 			"entity": serialize_calendar_item(entity),
 			"delegates": [x0 for x0 in delegates],
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.CalendarItemApi.createDelegationDeAnonymizationMetadataAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def create_delegation_de_anonymization_metadata_blocking(self, entity: CalendarItem, delegates: List[str]) -> None:
 		payload = {
@@ -1119,27 +911,19 @@ class CalendarItemApi:
 			raise interpret_kt_error(result_info.failure)
 
 	async def decrypt_async(self, calendar_item: EncryptedCalendarItem) -> DecryptedCalendarItem:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = DecryptedCalendarItem._deserialize(json.loads(success.decode('utf-8')))
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return DecryptedCalendarItem._deserialize(raw_result)
 		payload = {
 			"calendarItem": calendar_item.__serialize__(),
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.CalendarItemApi.decryptAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def decrypt_blocking(self, calendar_item: EncryptedCalendarItem) -> DecryptedCalendarItem:
 		payload = {
@@ -1158,27 +942,19 @@ class CalendarItemApi:
 			return return_value
 
 	async def try_decrypt_async(self, calendar_item: EncryptedCalendarItem) -> CalendarItem:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = deserialize_calendar_item(json.loads(success.decode('utf-8')))
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return deserialize_calendar_item(raw_result)
 		payload = {
 			"calendarItem": calendar_item.__serialize__(),
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.CalendarItemApi.tryDecryptAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def try_decrypt_blocking(self, calendar_item: EncryptedCalendarItem) -> CalendarItem:
 		payload = {
@@ -1197,27 +973,19 @@ class CalendarItemApi:
 			return return_value
 
 	async def match_calendar_items_by_async(self, filter: FilterOptions[CalendarItem]) -> List[str]:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = [x1 for x1 in json.loads(success.decode('utf-8'))]
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return [x1 for x1 in raw_result]
 		payload = {
 			"filter": filter.__serialize__(),
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.CalendarItemApi.matchCalendarItemsByAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def match_calendar_items_by_blocking(self, filter: FilterOptions[CalendarItem]) -> List[str]:
 		payload = {
@@ -1236,27 +1004,19 @@ class CalendarItemApi:
 			return return_value
 
 	async def match_calendar_items_by_sorted_async(self, filter: SortableFilterOptions[CalendarItem]) -> List[str]:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = [x1 for x1 in json.loads(success.decode('utf-8'))]
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return [x1 for x1 in raw_result]
 		payload = {
 			"filter": filter.__serialize__(),
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.CalendarItemApi.matchCalendarItemsBySortedAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def match_calendar_items_by_sorted_blocking(self, filter: SortableFilterOptions[CalendarItem]) -> List[str]:
 		payload = {
@@ -1275,28 +1035,20 @@ class CalendarItemApi:
 			return return_value
 
 	async def delete_calendar_item_by_id_async(self, entity_id: str, rev: str) -> DocIdentifier:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = DocIdentifier._deserialize(json.loads(success.decode('utf-8')))
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return DocIdentifier._deserialize(raw_result)
 		payload = {
 			"entityId": entity_id,
 			"rev": rev,
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.CalendarItemApi.deleteCalendarItemByIdAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def delete_calendar_item_by_id_blocking(self, entity_id: str, rev: str) -> DocIdentifier:
 		payload = {
@@ -1316,27 +1068,19 @@ class CalendarItemApi:
 			return return_value
 
 	async def delete_calendar_items_by_ids_async(self, entity_ids: List[IdWithMandatoryRev]) -> List[DocIdentifier]:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = [DocIdentifier._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return [DocIdentifier._deserialize(x1) for x1 in raw_result]
 		payload = {
 			"entityIds": [x0.__serialize__() for x0 in entity_ids],
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.CalendarItemApi.deleteCalendarItemsByIdsAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def delete_calendar_items_by_ids_blocking(self, entity_ids: List[IdWithMandatoryRev]) -> List[DocIdentifier]:
 		payload = {
@@ -1355,28 +1099,20 @@ class CalendarItemApi:
 			return return_value
 
 	async def purge_calendar_item_by_id_async(self, id: str, rev: str) -> None:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = json.loads(success.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return raw_result
 		payload = {
 			"id": id,
 			"rev": rev,
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.CalendarItemApi.purgeCalendarItemByIdAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def purge_calendar_item_by_id_blocking(self, id: str, rev: str) -> None:
 		payload = {
@@ -1393,27 +1129,19 @@ class CalendarItemApi:
 			raise interpret_kt_error(result_info.failure)
 
 	async def delete_calendar_item_async(self, calendar_item: CalendarItem) -> DocIdentifier:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = DocIdentifier._deserialize(json.loads(success.decode('utf-8')))
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return DocIdentifier._deserialize(raw_result)
 		payload = {
 			"calendarItem": serialize_calendar_item(calendar_item),
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.CalendarItemApi.deleteCalendarItemAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def delete_calendar_item_blocking(self, calendar_item: CalendarItem) -> DocIdentifier:
 		payload = {
@@ -1432,27 +1160,19 @@ class CalendarItemApi:
 			return return_value
 
 	async def delete_calendar_items_async(self, calendar_items: List[CalendarItem]) -> List[DocIdentifier]:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = [DocIdentifier._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return [DocIdentifier._deserialize(x1) for x1 in raw_result]
 		payload = {
 			"calendarItems": [serialize_calendar_item(x0) for x0 in calendar_items],
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.CalendarItemApi.deleteCalendarItemsAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def delete_calendar_items_blocking(self, calendar_items: List[CalendarItem]) -> List[DocIdentifier]:
 		payload = {
@@ -1471,27 +1191,19 @@ class CalendarItemApi:
 			return return_value
 
 	async def purge_calendar_item_async(self, calendar_item: CalendarItem) -> None:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = json.loads(success.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return raw_result
 		payload = {
 			"calendarItem": serialize_calendar_item(calendar_item),
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.CalendarItemApi.purgeCalendarItemAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def purge_calendar_item_blocking(self, calendar_item: CalendarItem) -> None:
 		payload = {
@@ -1507,29 +1219,21 @@ class CalendarItemApi:
 			raise interpret_kt_error(result_info.failure)
 
 	async def share_with_async(self, delegate_id: str, calendar_item: DecryptedCalendarItem, options: Optional[CalendarItemShareOptions] = None) -> DecryptedCalendarItem:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = DecryptedCalendarItem._deserialize(json.loads(success.decode('utf-8')))
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return DecryptedCalendarItem._deserialize(raw_result)
 		payload = {
 			"delegateId": delegate_id,
 			"calendarItem": calendar_item.__serialize__(),
 			"options": options.__serialize__() if options is not None else None,
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.CalendarItemApi.shareWithAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def share_with_blocking(self, delegate_id: str, calendar_item: DecryptedCalendarItem, options: Optional[CalendarItemShareOptions] = None) -> DecryptedCalendarItem:
 		payload = {
@@ -1550,28 +1254,20 @@ class CalendarItemApi:
 			return return_value
 
 	async def share_with_many_async(self, calendar_item: DecryptedCalendarItem, delegates: Dict[str, CalendarItemShareOptions]) -> DecryptedCalendarItem:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = DecryptedCalendarItem._deserialize(json.loads(success.decode('utf-8')))
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return DecryptedCalendarItem._deserialize(raw_result)
 		payload = {
 			"calendarItem": calendar_item.__serialize__(),
 			"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.CalendarItemApi.shareWithManyAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def share_with_many_blocking(self, calendar_item: DecryptedCalendarItem, delegates: Dict[str, CalendarItemShareOptions]) -> DecryptedCalendarItem:
 		payload = {
@@ -1591,29 +1287,21 @@ class CalendarItemApi:
 			return return_value
 
 	async def link_to_patient_async(self, calendar_item: CalendarItem, patient: Patient, share_link_with_delegates: List[str]) -> DecryptedCalendarItem:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = DecryptedCalendarItem._deserialize(json.loads(success.decode('utf-8')))
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return DecryptedCalendarItem._deserialize(raw_result)
 		payload = {
 			"calendarItem": serialize_calendar_item(calendar_item),
 			"patient": serialize_patient(patient),
 			"shareLinkWithDelegates": [x0 for x0 in share_link_with_delegates],
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.CalendarItemApi.linkToPatientAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def link_to_patient_blocking(self, calendar_item: CalendarItem, patient: Patient, share_link_with_delegates: List[str]) -> DecryptedCalendarItem:
 		payload = {
@@ -1634,31 +1322,23 @@ class CalendarItemApi:
 			return return_value
 
 	async def filter_calendar_items_by_async(self, filter: FilterOptions[CalendarItem]) -> PaginatedListIterator[DecryptedCalendarItem]:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = PaginatedListIterator[DecryptedCalendarItem](
-					producer = success,
-					deserializer = lambda x: DecryptedCalendarItem._deserialize(x),
-					executor = self.cardinal_sdk._executor
-				)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return PaginatedListIterator[DecryptedCalendarItem](
+				producer = raw_result,
+				deserializer = lambda x: DecryptedCalendarItem._deserialize(x),
+				executor = self.cardinal_sdk._executor
+			)
 		payload = {
 			"filter": filter.__serialize__(),
 		}
-		callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			False,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.CalendarItemApi.filterCalendarItemsByAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def filter_calendar_items_by_blocking(self, filter: FilterOptions[CalendarItem]) -> PaginatedListIterator[DecryptedCalendarItem]:
 		payload = {
@@ -1684,31 +1364,23 @@ class CalendarItemApi:
 			)
 
 	async def filter_calendar_items_by_sorted_async(self, filter: SortableFilterOptions[CalendarItem]) -> PaginatedListIterator[DecryptedCalendarItem]:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = PaginatedListIterator[DecryptedCalendarItem](
-					producer = success,
-					deserializer = lambda x: DecryptedCalendarItem._deserialize(x),
-					executor = self.cardinal_sdk._executor
-				)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return PaginatedListIterator[DecryptedCalendarItem](
+				producer = raw_result,
+				deserializer = lambda x: DecryptedCalendarItem._deserialize(x),
+				executor = self.cardinal_sdk._executor
+			)
 		payload = {
 			"filter": filter.__serialize__(),
 		}
-		callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			False,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.CalendarItemApi.filterCalendarItemsBySortedAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def filter_calendar_items_by_sorted_blocking(self, filter: SortableFilterOptions[CalendarItem]) -> PaginatedListIterator[DecryptedCalendarItem]:
 		payload = {
@@ -1734,28 +1406,20 @@ class CalendarItemApi:
 			)
 
 	async def undelete_calendar_item_by_id_async(self, id: str, rev: str) -> DecryptedCalendarItem:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = DecryptedCalendarItem._deserialize(json.loads(success.decode('utf-8')))
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return DecryptedCalendarItem._deserialize(raw_result)
 		payload = {
 			"id": id,
 			"rev": rev,
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.CalendarItemApi.undeleteCalendarItemByIdAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def undelete_calendar_item_by_id_blocking(self, id: str, rev: str) -> DecryptedCalendarItem:
 		payload = {
@@ -1775,27 +1439,19 @@ class CalendarItemApi:
 			return return_value
 
 	async def undelete_calendar_item_async(self, calendar_item: CalendarItem) -> DecryptedCalendarItem:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = DecryptedCalendarItem._deserialize(json.loads(success.decode('utf-8')))
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return DecryptedCalendarItem._deserialize(raw_result)
 		payload = {
 			"calendarItem": serialize_calendar_item(calendar_item),
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.CalendarItemApi.undeleteCalendarItemAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def undelete_calendar_item_blocking(self, calendar_item: CalendarItem) -> DecryptedCalendarItem:
 		payload = {
@@ -1814,27 +1470,19 @@ class CalendarItemApi:
 			return return_value
 
 	async def modify_calendar_item_async(self, entity: DecryptedCalendarItem) -> DecryptedCalendarItem:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = DecryptedCalendarItem._deserialize(json.loads(success.decode('utf-8')))
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return DecryptedCalendarItem._deserialize(raw_result)
 		payload = {
 			"entity": entity.__serialize__(),
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.CalendarItemApi.modifyCalendarItemAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def modify_calendar_item_blocking(self, entity: DecryptedCalendarItem) -> DecryptedCalendarItem:
 		payload = {
@@ -1853,27 +1501,19 @@ class CalendarItemApi:
 			return return_value
 
 	async def get_calendar_item_async(self, entity_id: str) -> DecryptedCalendarItem:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = DecryptedCalendarItem._deserialize(json.loads(success.decode('utf-8')))
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return DecryptedCalendarItem._deserialize(raw_result)
 		payload = {
 			"entityId": entity_id,
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.CalendarItemApi.getCalendarItemAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def get_calendar_item_blocking(self, entity_id: str) -> DecryptedCalendarItem:
 		payload = {
@@ -1892,27 +1532,19 @@ class CalendarItemApi:
 			return return_value
 
 	async def get_calendar_items_async(self, entity_ids: List[str]) -> List[DecryptedCalendarItem]:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = [DecryptedCalendarItem._deserialize(x1) for x1 in json.loads(success.decode('utf-8'))]
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return [DecryptedCalendarItem._deserialize(x1) for x1 in raw_result]
 		payload = {
 			"entityIds": [x0 for x0 in entity_ids],
 		}
-		callback = DATA_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			True,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.CalendarItemApi.getCalendarItemsAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def get_calendar_items_blocking(self, entity_ids: List[str]) -> List[DecryptedCalendarItem]:
 		payload = {
@@ -1931,33 +1563,25 @@ class CalendarItemApi:
 			return return_value
 
 	async def subscribe_to_events_async(self, events: List[SubscriptionEventType], filter: FilterOptions[CalendarItem], subscription_config: Optional[EntitySubscriptionConfiguration] = None) -> EntitySubscription[EncryptedCalendarItem]:
-		loop = asyncio.get_running_loop()
-		future = loop.create_future()
-		def make_result_and_complete(success, failure):
-			if failure is not None:
-				result = Exception(failure.decode('utf-8'))
-				loop.call_soon_threadsafe(lambda: future.set_exception(result))
-			else:
-				result = EntitySubscription[EncryptedCalendarItem](
-					producer = success,
-					deserializer = lambda x: EncryptedCalendarItem._deserialize(x),
-					executor = self.cardinal_sdk._executor
-				)
-				loop.call_soon_threadsafe(lambda: future.set_result(result))
+		def do_decode(raw_result):
+			return EntitySubscription[EncryptedCalendarItem](
+				producer = raw_result,
+				deserializer = lambda x: EncryptedCalendarItem._deserialize(x),
+				executor = self.cardinal_sdk._executor
+			)
 		payload = {
 			"events": [x0.__serialize__() for x0 in events],
 			"filter": filter.__serialize__(),
 			"subscriptionConfig": subscription_config.__serialize__() if subscription_config is not None else None,
 		}
-		callback = PTR_RESULT_CALLBACK_FUNC(make_result_and_complete)
-		loop.run_in_executor(
+		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
+			False,
+			do_decode,
 			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.CalendarItemApi.subscribeToEventsAsync,
 			self.cardinal_sdk._native,
 			json.dumps(payload).encode('utf-8'),
-			callback
 		)
-		return await future
 
 	def subscribe_to_events_blocking(self, events: List[SubscriptionEventType], filter: FilterOptions[CalendarItem], subscription_config: Optional[EntitySubscriptionConfiguration] = None) -> EntitySubscription[EncryptedCalendarItem]:
 		payload = {

@@ -12,6 +12,7 @@ import kotlinx.cinterop.StableRef
 import kotlinx.cinterop.asStableRef
 import kotlinx.cinterop.cstr
 import kotlinx.cinterop.invoke
+import kotlinx.coroutines.Job
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonNull
@@ -21,6 +22,7 @@ import kotlinx.serialization.json.JsonPrimitive
 private fun Throwable.toPyJson() =
 	JsonObject(mapOf(
 		"type" to JsonPrimitive(this::class.qualifiedName),
+		"message" to JsonPrimitive(message),
 		"stack" to JsonPrimitive(stackTraceToString())
 	))
 
@@ -89,14 +91,18 @@ internal fun Result<JsonElement>.toPyJsonAsyncCallback(
  * kotlin after the callback completes (it should be copied or decoded before the callback returns).
  */
 @OptIn(ExperimentalForeignApi::class)
-internal fun Result<*>.failureToPyStringAsyncCallback(
+internal fun Result<Job>.failureToPyStringAsyncCallback(
 	callback: CPointer<CFunction<(result: CValues<ByteVarOf<Byte>>?, error: CValues<ByteVarOf<Byte>>?) -> Unit>>,
-) {
-	onFailure { e ->
-		callback.invoke(null, e.toPyJson().toString().cstr)
-	}
-}
-
+): COpaquePointer? =
+	fold(
+		onSuccess = {
+			StableRef.create(it).asCPointer()
+		},
+		onFailure = { e ->
+			callback.invoke(null, e.toPyJson().toString().cstr)
+			null
+		}
+	)
 
 @OptIn(ExperimentalForeignApi::class)
 class PyResult internal constructor(
@@ -155,13 +161,18 @@ internal fun <M : Any, P : Any> Result<M?>.toPyResultAsyncCallback(
  * kotlin after the callback completes (it should be copied or decoded before the callback returns).
  */
 @OptIn(ExperimentalForeignApi::class)
-internal fun Result<*>.failureToPyResultAsyncCallback(
+internal fun Result<Job>.failureToPyResultAsyncCallback(
 	callback: CPointer<CFunction<(result: COpaquePointer?, error: CValues<ByteVarOf<Byte>>?) -> Unit>>,
-) {
-	onFailure { e ->
-		callback.invoke(null, e.toPyJson().toString().cstr)
-	}
-}
+): COpaquePointer? =
+	fold(
+		onSuccess = {
+			StableRef.create(it).asCPointer()
+		},
+		onFailure = { e ->
+			callback.invoke(null, e.toPyJson().toString().cstr)
+			null
+		}
+	)
 
 @OptIn(ExperimentalForeignApi::class)
 fun setCallbackResult(
