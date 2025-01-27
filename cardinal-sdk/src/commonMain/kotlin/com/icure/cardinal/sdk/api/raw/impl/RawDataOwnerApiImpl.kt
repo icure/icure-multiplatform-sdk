@@ -7,6 +7,7 @@ import com.icure.cardinal.sdk.api.raw.wrap
 import com.icure.cardinal.sdk.auth.services.AuthProvider
 import com.icure.cardinal.sdk.model.CryptoActorStubWithType
 import com.icure.cardinal.sdk.model.DataOwnerWithType
+import com.icure.cardinal.sdk.model.ListOfIds
 import com.icure.utils.InternalIcureApi
 import io.ktor.client.HttpClient
 import io.ktor.client.request.accept
@@ -19,6 +20,7 @@ import io.ktor.http.takeFrom
 import io.ktor.util.date.GMTDate
 import kotlinx.serialization.json.Json
 import kotlin.String
+import kotlin.collections.List
 import kotlin.collections.Map
 import kotlin.time.Duration
 
@@ -45,6 +47,17 @@ class RawDataOwnerApiImpl(
 			accept(Application.Json)
 		}.wrap()
 
+	override suspend fun getDataOwners(dataOwnerIds: ListOfIds): HttpResponse<List<DataOwnerWithType>> =
+		post(authProvider) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "dataowner", "byIds")
+			}
+			contentType(Application.Json)
+			accept(Application.Json)
+			setBody(dataOwnerIds)
+		}.wrap()
+
 	override suspend fun getDataOwnerStub(dataOwnerId: String): HttpResponse<CryptoActorStubWithType> =
 		get(authProvider) {
 			url {
@@ -53,6 +66,17 @@ class RawDataOwnerApiImpl(
 				parameter("ts", GMTDate().timestamp)
 			}
 			accept(Application.Json)
+		}.wrap()
+
+	override suspend fun getDataOwnerStubs(dataOwnerIds: ListOfIds): HttpResponse<List<CryptoActorStubWithType>> =
+		post(authProvider) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "dataowner", "stub", "byIds")
+			}
+			contentType(Application.Json)
+			accept(Application.Json)
+			setBody(dataOwnerIds)
 		}.wrap()
 
 	override suspend fun modifyDataOwnerStub(updated: CryptoActorStubWithType): HttpResponse<CryptoActorStubWithType> =
@@ -71,6 +95,36 @@ class RawDataOwnerApiImpl(
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "dataowner", "current")
+				parameter("ts", GMTDate().timestamp)
+			}
+			accept(Application.Json)
+		}.wrap()
+
+	override suspend fun getCurrentDataOwnerStub(): HttpResponse<CryptoActorStubWithType> =
+		get(authProvider) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "dataowner", "current", "stub")
+				parameter("ts", GMTDate().timestamp)
+			}
+			accept(Application.Json)
+		}.wrap()
+
+	override suspend fun getCurrentDataOwnerHierarchy(): HttpResponse<List<DataOwnerWithType>> =
+		get(authProvider) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "dataowner", "current", "hierarchy")
+				parameter("ts", GMTDate().timestamp)
+			}
+			accept(Application.Json)
+		}.wrap()
+
+	override suspend fun getCurrentDataOwnerHierarchyStub(): HttpResponse<List<CryptoActorStubWithType>> =
+		get(authProvider) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "dataowner", "current", "hierarchy", "stub")
 				parameter("ts", GMTDate().timestamp)
 			}
 			accept(Application.Json)

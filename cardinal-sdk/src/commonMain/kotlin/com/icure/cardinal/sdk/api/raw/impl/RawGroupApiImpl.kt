@@ -15,6 +15,7 @@ import com.icure.cardinal.sdk.model.PaginatedList
 import com.icure.cardinal.sdk.model.RegistrationInformation
 import com.icure.cardinal.sdk.model.RegistrationSuccess
 import com.icure.cardinal.sdk.model.ReplicationInfo
+import com.icure.cardinal.sdk.model.base.CodeStub
 import com.icure.cardinal.sdk.model.couchdb.DesignDocument
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.model.couchdb.GroupDatabasesInfo
@@ -315,6 +316,36 @@ class RawGroupApiImpl(
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(properties)
+		}.wrap()
+
+	override suspend fun addTagToGroup(
+		id: String,
+		rev: String,
+		tag: CodeStub,
+	): HttpResponse<Group> =
+		put(authProvider) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "group", id, "tag")
+				parameter("rev", rev)
+			}
+			contentType(Application.Json)
+			accept(Application.Json)
+			setBody(tag)
+		}.wrap()
+
+	override suspend fun removeTagFromGroup(
+		id: String,
+		rev: String,
+		tagId: String,
+	): HttpResponse<Group> =
+		delete(authProvider) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "group", id, "tag", tagId)
+				parameter("rev", rev)
+			}
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun setGroupPassword(
