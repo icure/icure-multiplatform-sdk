@@ -142,6 +142,11 @@ public interface RawInvoiceApi {
 		to: Long? = null,
 	): HttpResponse<List<EncryptedInvoice>>
 
+	suspend fun listInvoiceIdsByDecisionReference(
+		dataOwnerId: String,
+		decisionReference: String,
+	): HttpResponse<List<String>>
+
 	suspend fun listInvoicesByServiceIds(serviceIds: String): HttpResponse<List<EncryptedInvoice>>
 
 	suspend fun listAllHcpsByStatus(

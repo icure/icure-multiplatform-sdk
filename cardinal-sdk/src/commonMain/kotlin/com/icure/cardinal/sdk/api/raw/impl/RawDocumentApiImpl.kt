@@ -19,7 +19,7 @@ import com.icure.cardinal.sdk.serialization.DocumentAbstractFilterSerializer
 import com.icure.utils.InternalIcureApi
 import io.ktor.client.HttpClient
 import io.ktor.client.request.accept
-import io.ktor.client.request.header
+import io.ktor.client.request.`header`
 import io.ktor.client.request.parameter
 import io.ktor.client.request.setBody
 import io.ktor.http.ContentType.Application
@@ -173,13 +173,11 @@ class RawDocumentApiImpl(
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "document", documentId, "attachment")
 				parameter("rev", rev)
-				utis?.forEach {
-					parameter("utis", it)
-				}
+				parameter("utis", utis)
 				parameter("encrypted", encrypted)
 			}
 			accept(Application.Json)
-			header("Content-Length", lengthHeader)
+			`header`("Content-Length", lengthHeader)
 			setBody(ByteArrayContent(payload, Application.OctetStream))
 		}.wrap()
 
@@ -292,13 +290,11 @@ class RawDocumentApiImpl(
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "document", documentId, "secondaryAttachments", key)
 				parameter("rev", rev)
-				utis?.forEach {
-					parameter("utis", it)
-				}
+				parameter("utis", utis)
 				parameter("encrypted", encrypted)
 			}
 			accept(Application.Json)
-			header("Content-Length", lengthHeader)
+			`header`("Content-Length", lengthHeader)
 			setBody(ByteArrayContent(payload, Application.OctetStream))
 		}.wrap()
 
