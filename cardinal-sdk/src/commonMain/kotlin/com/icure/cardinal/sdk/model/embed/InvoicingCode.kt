@@ -69,6 +69,8 @@ sealed interface InvoicingCode : Encryptable {
 
 	public val prescriberNorm: Int?
 
+	public val productLabel: String?
+
 	public val percentNorm: Int?
 
 	public val prescriberNihii: String?
@@ -150,6 +152,7 @@ data class DecryptedInvoicingCode(
 	override val override3rdPayerReason: String? = null,
 	override val transplantationCode: Int? = null,
 	override val prescriberNorm: Int? = null,
+	override val productLabel: String? = null,
 	override val percentNorm: Int? = null,
 	override val prescriberNihii: String? = null,
 	override val relatedCode: String? = null,
@@ -210,6 +213,7 @@ data class EncryptedInvoicingCode(
 	override val override3rdPayerReason: String? = null,
 	override val transplantationCode: Int? = null,
 	override val prescriberNorm: Int? = null,
+	override val productLabel: String? = null,
 	override val percentNorm: Int? = null,
 	override val prescriberNihii: String? = null,
 	override val relatedCode: String? = null,
