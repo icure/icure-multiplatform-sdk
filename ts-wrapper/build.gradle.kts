@@ -131,7 +131,9 @@ fun copyJsPatching(
 			fw.write(it.entry + "\n")
 		}
 		replacing.fold(from.readText()) { acc, replacement ->
-			acc.replace(replacement.of, replacement.with)
+			val fixed = acc.replace(replacement.of, replacement.with)
+			check (fixed != acc) { "Couldn't apply replacement $replacement" }
+			fixed
 		}.also {
 			fw.write(it)
 			if (!it.endsWith('\n')) fw.write("\n")
@@ -220,7 +222,6 @@ tasks.register("prepareDistributionPackage") {
 	val filesNeedingPatch = setOf(
 		"$moduleName.mjs",
 		"$moduleName.d.ts",
-		"ktor-ktor-utils.mjs",
 		"ktor-ktor-client-ktor-client-core.mjs",
 		"package.json",
 	)
@@ -267,26 +268,22 @@ tasks.register("prepareDistributionPackage") {
 			replacing = listOf(
 				Replacement("$moduleName.d.ts", with = "$moduleName.d.mts"),
 				Replacement("\"name\": \"$moduleName\"", with = "\"name\": \"@icure/cardinal-sdk\""),
-				Replacement("\"ws\": \"8.5.0\"", with = "\"ws\": \"8.17.1\"") // Version 8.5.0 has some issues with bun
 			)
 		)
 		copyJsPatching(
 			from = ktJsCompiledPackage.resolve("ktor-ktor-client-ktor-client-core.mjs"),
 			into = tsPackage.resolve("ktor-ktor-client-ktor-client-core.mjs"),
-			importing = listOf(
-				Import.Default("nodeWs_imported", from = "ws"),
-			),
 			replacing = listOf(
-				Replacement("eval('require')('ws')", with = "nodeWs_imported"),
-			)
-		)
-		copyJsPatching(
-			from = ktJsCompiledPackage.resolve("ktor-ktor-utils.mjs"),
-			into = tsPackage.resolve("ktor-ktor-utils.mjs"),
-			replacing = listOf(
-				Replacement("eval('require')('crypto')", with = "crypto"),
-				// The global crypto from node19+ is actually the same as webcrypto -> no randomFillSync, only getRandomValues
-				Replacement(".randomFillSync(", with = ".getRandomValues(")
+				Replacement("  // Inline function 'kotlin.check' call\n" +
+					"  // Inline function 'kotlin.contracts.contract' call\n" +
+					"  if (!(contentLength == null || equals(contentLength, bytes))) {\n" +
+					"    // Inline function 'io.ktor.client.plugins.checkContentLength.<anonymous>' call\n" +
+					"    var message = 'Content-Length mismatch: expected ' + toString_0(contentLength) + ' bytes, but received ' + bytes.toString() + ' bytes';\n" +
+					"    throw IllegalStateException_init_\$Create\$(toString(message));\n" +
+					"  }", "\n"),
+				Replacement("  if (!equals(contentLength, bodySize)) {\n" +
+					"    throw IllegalStateException_init_\$Create\$('Content-Length mismatch: expected ' + toString_0(contentLength) + ' bytes, but received ' + bodySize.toString() + ' bytes');\n" +
+					"  }", "\n")
 			)
 		)
 	}
