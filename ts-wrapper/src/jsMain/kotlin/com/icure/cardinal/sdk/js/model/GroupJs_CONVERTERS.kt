@@ -14,7 +14,10 @@ import com.icure.cardinal.sdk.js.model.CheckedConverters.undefinedToNull
 import com.icure.cardinal.sdk.js.model.base.CodeStubJs
 import com.icure.cardinal.sdk.js.model.base.codeStub_fromJs
 import com.icure.cardinal.sdk.js.model.base.codeStub_toJs
+import com.icure.cardinal.sdk.js.model.security.ExternalJwtSelectorJs
 import com.icure.cardinal.sdk.js.model.security.OperationTokenJs
+import com.icure.cardinal.sdk.js.model.security.externalJwtSelector_fromJs
+import com.icure.cardinal.sdk.js.model.security.externalJwtSelector_toJs
 import com.icure.cardinal.sdk.js.model.security.operationToken_fromJs
 import com.icure.cardinal.sdk.js.model.security.operationToken_toJs
 import com.icure.cardinal.sdk.model.DecryptedPropertyStub
@@ -22,6 +25,7 @@ import com.icure.cardinal.sdk.model.Group
 import com.icure.cardinal.sdk.model.base.CodeStub
 import com.icure.cardinal.sdk.model.embed.AuthenticationClass
 import com.icure.cardinal.sdk.model.embed.UserType
+import com.icure.cardinal.sdk.model.security.ExternalJwtSelector
 import com.icure.cardinal.sdk.model.security.OperationToken
 import kotlin.Array
 import kotlin.String
@@ -99,6 +103,15 @@ public fun group_toJs(obj: Group): GroupJs {
 	val minimumKrakenVersion = nullToUndefined(
 		obj.minimumKrakenVersion
 	)
+	val externalJwtPublicKeys = mapToObject(
+		obj.externalJwtPublicKeys,
+		{ x1: String ->
+			x1
+		},
+		{ x1: ExternalJwtSelector ->
+			externalJwtSelector_toJs(x1)
+		},
+	)
 	val minimumAuthenticationClassForElevatedPrivileges =
 			obj.minimumAuthenticationClassForElevatedPrivileges.name
 	val superGroup = nullToUndefined(
@@ -121,6 +134,7 @@ public fun group_toJs(obj: Group): GroupJs {
 		"operationTokens:operationTokens," +
 		"sharedEntities:sharedEntities," +
 		"minimumKrakenVersion:minimumKrakenVersion," +
+		"externalJwtPublicKeys:externalJwtPublicKeys," +
 		"minimumAuthenticationClassForElevatedPrivileges:minimumAuthenticationClassForElevatedPrivileges," +
 		"superGroup:superGroup," +
 		"applicationId:applicationId" +
@@ -192,6 +206,16 @@ public fun group_fromJs(obj: GroupJs): Group {
 		},
 	)
 	val minimumKrakenVersion = undefinedToNull(obj.minimumKrakenVersion)
+	val externalJwtPublicKeys = objectToMap(
+		obj.externalJwtPublicKeys,
+		"obj.externalJwtPublicKeys",
+		{ x1: String ->
+			x1
+		},
+		{ x1: ExternalJwtSelectorJs ->
+			externalJwtSelector_fromJs(x1)
+		},
+	)
 	val minimumAuthenticationClassForElevatedPrivileges =
 			AuthenticationClass.valueOf(obj.minimumAuthenticationClassForElevatedPrivileges)
 	val superGroup = undefinedToNull(obj.superGroup)
@@ -210,6 +234,7 @@ public fun group_fromJs(obj: GroupJs): Group {
 		operationTokens = operationTokens,
 		sharedEntities = sharedEntities,
 		minimumKrakenVersion = minimumKrakenVersion,
+		externalJwtPublicKeys = externalJwtPublicKeys,
 		minimumAuthenticationClassForElevatedPrivileges = minimumAuthenticationClassForElevatedPrivileges,
 		superGroup = superGroup,
 		applicationId = applicationId,

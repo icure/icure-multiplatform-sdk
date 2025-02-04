@@ -28,6 +28,8 @@ export class CryptoActorStub implements Versionable<string>, CryptoActor, HasTag
 
 	tags: Array<CodeStub> = [];
 
+	parentId: string | undefined = undefined;
+
 	readonly $ktClass: 'com.icure.cardinal.sdk.model.CryptoActorStub' = 'com.icure.cardinal.sdk.model.CryptoActorStub';
 
 	constructor(partial: Partial<CryptoActorStub> & Pick<CryptoActorStub, "rev" | "publicKeysForOaepWithSha256">) {
@@ -40,6 +42,7 @@ export class CryptoActorStub implements Versionable<string>, CryptoActor, HasTag
 		if ('publicKey' in partial) this.publicKey = partial.publicKey;
 		this.publicKeysForOaepWithSha256 = partial.publicKeysForOaepWithSha256;
 		if ('tags' in partial && partial.tags !== undefined) this.tags = partial.tags;
+		if ('parentId' in partial) this.parentId = partial.parentId;
 	}
 
 }

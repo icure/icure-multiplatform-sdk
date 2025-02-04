@@ -35,5 +35,7 @@ public external class CryptoActorStubJs(
 
 	override val tags: Array<CodeStubJs>
 
+	override val parentId: String?
+
 	override val ktClass: String
 }

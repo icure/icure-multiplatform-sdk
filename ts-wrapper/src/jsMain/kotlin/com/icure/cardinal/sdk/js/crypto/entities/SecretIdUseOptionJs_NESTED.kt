@@ -13,8 +13,18 @@ public external object SecretIdUseOptionJs_UseAnyConfidentialJs : SecretIdUseOpt
 	override val ktClass: String
 }
 
+@JsName("UseAllConfidential")
+public external object SecretIdUseOptionJs_UseAllConfidentialJs : SecretIdUseOptionJs {
+	override val ktClass: String
+}
+
 @JsName("UseAnySharedWithParent")
 public external object SecretIdUseOptionJs_UseAnySharedWithParentJs : SecretIdUseOptionJs {
+	override val ktClass: String
+}
+
+@JsName("UseAllSharedWithParent")
+public external object SecretIdUseOptionJs_UseAllSharedWithParentJs : SecretIdUseOptionJs {
 	override val ktClass: String
 }
 
@@ -24,5 +34,10 @@ public external class SecretIdUseOptionJs_UseJs(
 ) : SecretIdUseOptionJs {
 	public val secretIds: Array<String>
 
+	override val ktClass: String
+}
+
+@JsName("UseNone")
+public external object SecretIdUseOptionJs_UseNoneJs : SecretIdUseOptionJs {
 	override val ktClass: String
 }
