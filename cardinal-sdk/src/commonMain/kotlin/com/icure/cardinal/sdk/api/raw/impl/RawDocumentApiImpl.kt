@@ -173,7 +173,9 @@ class RawDocumentApiImpl(
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "document", documentId, "attachment")
 				parameter("rev", rev)
-				parameter("utis", utis)
+				utis?.forEach {
+					parameter("utis", it)
+				}
 				parameter("encrypted", encrypted)
 			}
 			accept(Application.Json)
@@ -290,7 +292,9 @@ class RawDocumentApiImpl(
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "document", documentId, "secondaryAttachments", key)
 				parameter("rev", rev)
-				parameter("utis", utis)
+				utis?.forEach {
+					parameter("utis", it)
+				}
 				parameter("encrypted", encrypted)
 			}
 			accept(Application.Json)
