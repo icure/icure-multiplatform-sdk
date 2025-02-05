@@ -15,7 +15,7 @@ interface CryptoActor : Versionable<String>, HasTags {
 	public val hcPartyKeys: Map<String, List<HexString>>
 
 	public val aesExchangeKeys:
-		Map<AesExchangeKeyEntryKeyString, Map<String, Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>>>
+		Map<SpkiHexString, Map<String, Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>>>
 
 	public val transferKeys:
 		Map<AesExchangeKeyEncryptionKeypairIdentifier, Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>>
