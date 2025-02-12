@@ -63,6 +63,8 @@ import com.icure.cardinal.sdk.js.model.embed.securityMetadata_fromJs
 import com.icure.cardinal.sdk.js.model.embed.securityMetadata_toJs
 import com.icure.cardinal.sdk.js.model.specializations.aesExchangeKeyEncryptionKeypairIdentifier_fromJs
 import com.icure.cardinal.sdk.js.model.specializations.aesExchangeKeyEncryptionKeypairIdentifier_toJs
+import com.icure.cardinal.sdk.js.model.specializations.aesExchangeKeyEntryKeyString_fromJs
+import com.icure.cardinal.sdk.js.model.specializations.aesExchangeKeyEntryKeyString_toJs
 import com.icure.cardinal.sdk.js.model.specializations.base64String_fromJs
 import com.icure.cardinal.sdk.js.model.specializations.base64String_toJs
 import com.icure.cardinal.sdk.js.model.specializations.hexString_fromJs
@@ -99,6 +101,7 @@ import com.icure.cardinal.sdk.model.embed.Partnership
 import com.icure.cardinal.sdk.model.embed.PersonName
 import com.icure.cardinal.sdk.model.embed.PersonalStatus
 import com.icure.cardinal.sdk.model.specializations.AesExchangeKeyEncryptionKeypairIdentifier
+import com.icure.cardinal.sdk.model.specializations.AesExchangeKeyEntryKeyString
 import com.icure.cardinal.sdk.model.specializations.HexString
 import com.icure.cardinal.sdk.model.specializations.SpkiHexString
 import kotlin.Array
@@ -350,8 +353,8 @@ public fun patient_toJs(obj: DecryptedPatient): DecryptedPatientJs {
 	)
 	val aesExchangeKeys = mapToObject(
 		obj.aesExchangeKeys,
-		{ x1: SpkiHexString ->
-			spkiHexString_toJs(x1)
+		{ x1: AesExchangeKeyEntryKeyString ->
+			aesExchangeKeyEntryKeyString_toJs(x1)
 		},
 		{ x1: Map<String, Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>> ->
 			mapToObject(
@@ -526,6 +529,9 @@ public fun patient_toJs(obj: DecryptedPatient): DecryptedPatientJs {
 			employmentInfo_toJs(x1)
 		},
 	)
+	val parentId = nullToUndefined(
+		obj.parentId
+	)
 	return DecryptedPatientJs(js("{" +
 		"id:id," +
 		"identifier:identifier," +
@@ -606,7 +612,8 @@ public fun patient_toJs(obj: DecryptedPatient): DecryptedPatientJs {
 		"socialStatus:socialStatus," +
 		"mainSourceOfIncome:mainSourceOfIncome," +
 		"schoolingInfos:schoolingInfos," +
-		"employementInfos:employementInfos" +
+		"employementInfos:employementInfos," +
+		"parentId:parentId" +
 	"}"))
 }
 
@@ -799,7 +806,7 @@ public fun patient_fromJs(obj: DecryptedPatientJs): DecryptedPatient {
 		obj.aesExchangeKeys,
 		"obj.aesExchangeKeys",
 		{ x1: String ->
-			spkiHexString_fromJs(x1)
+			aesExchangeKeyEntryKeyString_fromJs(x1)
 		},
 		{ x1: Record<String, Record<String, String>> ->
 			objectToMap(
@@ -969,6 +976,7 @@ public fun patient_fromJs(obj: DecryptedPatientJs): DecryptedPatient {
 			employmentInfo_fromJs(x1)
 		},
 	)
+	val parentId = obj.parentId
 	return DecryptedPatient(
 		id = id,
 		identifier = identifier,
@@ -1050,6 +1058,7 @@ public fun patient_fromJs(obj: DecryptedPatientJs): DecryptedPatient {
 		mainSourceOfIncome = mainSourceOfIncome,
 		schoolingInfos = schoolingInfos,
 		employementInfos = employementInfos,
+		parentId = parentId,
 	)
 }
 
@@ -1295,8 +1304,8 @@ public fun patient_toJs(obj: EncryptedPatient): EncryptedPatientJs {
 	)
 	val aesExchangeKeys = mapToObject(
 		obj.aesExchangeKeys,
-		{ x1: SpkiHexString ->
-			spkiHexString_toJs(x1)
+		{ x1: AesExchangeKeyEntryKeyString ->
+			aesExchangeKeyEntryKeyString_toJs(x1)
 		},
 		{ x1: Map<String, Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>> ->
 			mapToObject(
@@ -1471,6 +1480,9 @@ public fun patient_toJs(obj: EncryptedPatient): EncryptedPatientJs {
 			employmentInfo_toJs(x1)
 		},
 	)
+	val parentId = nullToUndefined(
+		obj.parentId
+	)
 	return EncryptedPatientJs(js("{" +
 		"id:id," +
 		"identifier:identifier," +
@@ -1551,7 +1563,8 @@ public fun patient_toJs(obj: EncryptedPatient): EncryptedPatientJs {
 		"socialStatus:socialStatus," +
 		"mainSourceOfIncome:mainSourceOfIncome," +
 		"schoolingInfos:schoolingInfos," +
-		"employementInfos:employementInfos" +
+		"employementInfos:employementInfos," +
+		"parentId:parentId" +
 	"}"))
 }
 
@@ -1744,7 +1757,7 @@ public fun patient_fromJs(obj: EncryptedPatientJs): EncryptedPatient {
 		obj.aesExchangeKeys,
 		"obj.aesExchangeKeys",
 		{ x1: String ->
-			spkiHexString_fromJs(x1)
+			aesExchangeKeyEntryKeyString_fromJs(x1)
 		},
 		{ x1: Record<String, Record<String, String>> ->
 			objectToMap(
@@ -1914,6 +1927,7 @@ public fun patient_fromJs(obj: EncryptedPatientJs): EncryptedPatient {
 			employmentInfo_fromJs(x1)
 		},
 	)
+	val parentId = obj.parentId
 	return EncryptedPatient(
 		id = id,
 		identifier = identifier,
@@ -1995,6 +2009,7 @@ public fun patient_fromJs(obj: EncryptedPatientJs): EncryptedPatient {
 		mainSourceOfIncome = mainSourceOfIncome,
 		schoolingInfos = schoolingInfos,
 		employementInfos = employementInfos,
+		parentId = parentId,
 	)
 }
 

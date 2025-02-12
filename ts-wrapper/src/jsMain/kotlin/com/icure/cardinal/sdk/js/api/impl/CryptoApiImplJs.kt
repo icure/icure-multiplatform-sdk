@@ -18,9 +18,11 @@ import com.icure.cardinal.sdk.js.model.base.cryptoActor_fromJs
 import com.icure.cardinal.sdk.js.model.cryptoActorStubWithType_toJs
 import com.icure.cardinal.sdk.js.model.specializations.keypairFingerprintV1String_fromJs
 import com.icure.cardinal.sdk.js.model.specializations.keypairFingerprintV1String_toJs
+import com.icure.cardinal.sdk.js.model.specializations.pkcs8Bytes_toJs
 import com.icure.cardinal.sdk.js.utils.Record
 import com.icure.cardinal.sdk.model.base.CryptoActor
 import com.icure.cardinal.sdk.model.specializations.KeypairFingerprintV1String
+import com.icure.cardinal.sdk.model.specializations.Pkcs8Bytes
 import kotlin.Array
 import kotlin.Boolean
 import kotlin.ByteArray
@@ -113,14 +115,14 @@ internal class CryptoApiImplJs(
 				{ x1: String ->
 					x1
 				},
-				{ x1: Map<KeypairFingerprintV1String, ByteArray> ->
+				{ x1: Map<KeypairFingerprintV1String, Pkcs8Bytes> ->
 					mapToObject(
 						x1,
 						{ x2: KeypairFingerprintV1String ->
 							keypairFingerprintV1String_toJs(x2)
 						},
-						{ x2: ByteArray ->
-							x2
+						{ x2: Pkcs8Bytes ->
+							pkcs8Bytes_toJs(x2)
 						},
 					)
 				},

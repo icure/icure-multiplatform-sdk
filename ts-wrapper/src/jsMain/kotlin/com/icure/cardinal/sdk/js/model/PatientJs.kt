@@ -41,6 +41,7 @@ import kotlin.Array
 import kotlin.Boolean
 import kotlin.ByteArray
 import kotlin.Double
+import kotlin.Nothing
 import kotlin.String
 import kotlin.js.JsName
 import kotlin.js.JsQualifier
@@ -313,6 +314,8 @@ public external class DecryptedPatientJs(
 
 	override val employementInfos: Array<DecryptedEmploymentInfoJs>
 
+	override val parentId: Nothing?
+
 	override val isEncrypted: Boolean
 
 	override val ktClass: String
@@ -481,6 +484,8 @@ public external class EncryptedPatientJs(
 	override val schoolingInfos: Array<EncryptedSchoolingInfoJs>
 
 	override val employementInfos: Array<EncryptedEmploymentInfoJs>
+
+	override val parentId: Nothing?
 
 	override val isEncrypted: Boolean
 

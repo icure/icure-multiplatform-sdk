@@ -58,7 +58,7 @@ public external class DeviceJs(
 
 	public val serialNumber: String?
 
-	public val parentId: String?
+	override val parentId: String?
 
 	public val picture: ByteArray?
 

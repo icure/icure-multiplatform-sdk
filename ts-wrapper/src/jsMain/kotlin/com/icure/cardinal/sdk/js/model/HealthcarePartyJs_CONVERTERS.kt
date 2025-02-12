@@ -37,6 +37,8 @@ import com.icure.cardinal.sdk.js.model.embed.personName_fromJs
 import com.icure.cardinal.sdk.js.model.embed.personName_toJs
 import com.icure.cardinal.sdk.js.model.specializations.aesExchangeKeyEncryptionKeypairIdentifier_fromJs
 import com.icure.cardinal.sdk.js.model.specializations.aesExchangeKeyEncryptionKeypairIdentifier_toJs
+import com.icure.cardinal.sdk.js.model.specializations.aesExchangeKeyEntryKeyString_fromJs
+import com.icure.cardinal.sdk.js.model.specializations.aesExchangeKeyEntryKeyString_toJs
 import com.icure.cardinal.sdk.js.model.specializations.hexString_fromJs
 import com.icure.cardinal.sdk.js.model.specializations.hexString_toJs
 import com.icure.cardinal.sdk.js.model.specializations.spkiHexString_fromJs
@@ -55,6 +57,7 @@ import com.icure.cardinal.sdk.model.embed.HealthcarePartyStatus
 import com.icure.cardinal.sdk.model.embed.PersonName
 import com.icure.cardinal.sdk.model.embed.TelecomType
 import com.icure.cardinal.sdk.model.specializations.AesExchangeKeyEncryptionKeypairIdentifier
+import com.icure.cardinal.sdk.model.specializations.AesExchangeKeyEntryKeyString
 import com.icure.cardinal.sdk.model.specializations.HexString
 import com.icure.cardinal.sdk.model.specializations.SpkiHexString
 import kotlin.Array
@@ -287,8 +290,8 @@ public fun healthcareParty_toJs(obj: HealthcareParty): HealthcarePartyJs {
 	)
 	val aesExchangeKeys = mapToObject(
 		obj.aesExchangeKeys,
-		{ x1: SpkiHexString ->
-			spkiHexString_toJs(x1)
+		{ x1: AesExchangeKeyEntryKeyString ->
+			aesExchangeKeyEntryKeyString_toJs(x1)
 		},
 		{ x1: Map<String, Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>> ->
 			mapToObject(
@@ -584,7 +587,7 @@ public fun healthcareParty_fromJs(obj: HealthcarePartyJs): HealthcareParty {
 		obj.aesExchangeKeys,
 		"obj.aesExchangeKeys",
 		{ x1: String ->
-			spkiHexString_fromJs(x1)
+			aesExchangeKeyEntryKeyString_fromJs(x1)
 		},
 		{ x1: Record<String, Record<String, String>> ->
 			objectToMap(

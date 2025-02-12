@@ -19,6 +19,8 @@ import com.icure.cardinal.sdk.js.model.base.identifier_fromJs
 import com.icure.cardinal.sdk.js.model.base.identifier_toJs
 import com.icure.cardinal.sdk.js.model.specializations.aesExchangeKeyEncryptionKeypairIdentifier_fromJs
 import com.icure.cardinal.sdk.js.model.specializations.aesExchangeKeyEncryptionKeypairIdentifier_toJs
+import com.icure.cardinal.sdk.js.model.specializations.aesExchangeKeyEntryKeyString_fromJs
+import com.icure.cardinal.sdk.js.model.specializations.aesExchangeKeyEntryKeyString_toJs
 import com.icure.cardinal.sdk.js.model.specializations.hexString_fromJs
 import com.icure.cardinal.sdk.js.model.specializations.hexString_toJs
 import com.icure.cardinal.sdk.js.model.specializations.spkiHexString_fromJs
@@ -29,6 +31,7 @@ import com.icure.cardinal.sdk.model.Device
 import com.icure.cardinal.sdk.model.base.CodeStub
 import com.icure.cardinal.sdk.model.base.Identifier
 import com.icure.cardinal.sdk.model.specializations.AesExchangeKeyEncryptionKeypairIdentifier
+import com.icure.cardinal.sdk.model.specializations.AesExchangeKeyEntryKeyString
 import com.icure.cardinal.sdk.model.specializations.HexString
 import com.icure.cardinal.sdk.model.specializations.SpkiHexString
 import kotlin.Array
@@ -128,8 +131,8 @@ public fun device_toJs(obj: Device): DeviceJs {
 	)
 	val aesExchangeKeys = mapToObject(
 		obj.aesExchangeKeys,
-		{ x1: SpkiHexString ->
-			spkiHexString_toJs(x1)
+		{ x1: AesExchangeKeyEntryKeyString ->
+			aesExchangeKeyEntryKeyString_toJs(x1)
 		},
 		{ x1: Map<String, Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>> ->
 			mapToObject(
@@ -285,7 +288,7 @@ public fun device_fromJs(obj: DeviceJs): Device {
 		obj.aesExchangeKeys,
 		"obj.aesExchangeKeys",
 		{ x1: String ->
-			spkiHexString_fromJs(x1)
+			aesExchangeKeyEntryKeyString_fromJs(x1)
 		},
 		{ x1: Record<String, Record<String, String>> ->
 			objectToMap(

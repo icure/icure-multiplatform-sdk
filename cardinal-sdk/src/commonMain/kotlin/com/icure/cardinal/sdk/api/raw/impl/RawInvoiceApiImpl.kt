@@ -441,6 +441,21 @@ class RawInvoiceApiImpl(
 			accept(Application.Json)
 		}.wrap()
 
+	override suspend fun listInvoiceIdsByDecisionReference(
+		dataOwnerId: String,
+		decisionReference: String,
+	): HttpResponse<List<String>> =
+		get(authProvider) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "invoice", "byDecisionReference")
+				parameter("dataOwnerId", dataOwnerId)
+				parameter("decisionReference", decisionReference)
+				parameter("ts", GMTDate().timestamp)
+			}
+			accept(Application.Json)
+		}.wrap()
+
 	override suspend fun listInvoicesByServiceIds(serviceIds: String): HttpResponse<List<EncryptedInvoice>> =
 		get(authProvider) {
 			url {

@@ -295,6 +295,8 @@ export class DecryptedPatient {
 
 	employementInfos: Array<DecryptedEmploymentInfo> = [];
 
+	parentId: never | undefined = undefined;
+
 	readonly isEncrypted: false = false;
 
 	readonly $ktClass: 'com.icure.cardinal.sdk.model.DecryptedPatient' = 'com.icure.cardinal.sdk.model.DecryptedPatient';
@@ -381,6 +383,7 @@ export class DecryptedPatient {
 		if ('mainSourceOfIncome' in partial) this.mainSourceOfIncome = partial.mainSourceOfIncome;
 		if ('schoolingInfos' in partial && partial.schoolingInfos !== undefined) this.schoolingInfos = partial.schoolingInfos;
 		if ('employementInfos' in partial && partial.employementInfos !== undefined) this.employementInfos = partial.employementInfos;
+		if ('parentId' in partial) this.parentId = partial.parentId;
 	}
 
 }
@@ -547,6 +550,8 @@ export class EncryptedPatient {
 
 	employementInfos: Array<EncryptedEmploymentInfo> = [];
 
+	parentId: never | undefined = undefined;
+
 	readonly isEncrypted: true = true;
 
 	readonly $ktClass: 'com.icure.cardinal.sdk.model.EncryptedPatient' = 'com.icure.cardinal.sdk.model.EncryptedPatient';
@@ -633,6 +638,7 @@ export class EncryptedPatient {
 		if ('mainSourceOfIncome' in partial) this.mainSourceOfIncome = partial.mainSourceOfIncome;
 		if ('schoolingInfos' in partial && partial.schoolingInfos !== undefined) this.schoolingInfos = partial.schoolingInfos;
 		if ('employementInfos' in partial && partial.employementInfos !== undefined) this.employementInfos = partial.employementInfos;
+		if ('parentId' in partial) this.parentId = partial.parentId;
 	}
 
 }

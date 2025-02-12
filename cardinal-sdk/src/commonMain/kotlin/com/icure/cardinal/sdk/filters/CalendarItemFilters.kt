@@ -10,6 +10,7 @@ import com.icure.cardinal.sdk.model.CalendarItem
 import com.icure.cardinal.sdk.model.Patient
 import com.icure.cardinal.sdk.model.filter.AbstractFilter
 import com.icure.cardinal.sdk.model.filter.calendarItem.CalendarItemByDataOwnerPatientStartTimeFilter
+import com.icure.cardinal.sdk.model.filter.calendarItem.CalendarItemByDataOwnerUpdatedAfter
 import com.icure.cardinal.sdk.model.filter.calendarItem.CalendarItemByPeriodAndAgendaIdFilter
 import com.icure.cardinal.sdk.model.filter.calendarItem.CalendarItemByPeriodAndDataOwnerIdFilter
 import com.icure.cardinal.sdk.model.filter.calendarItem.CalendarItemByRecurrenceIdFilter
@@ -214,6 +215,30 @@ object CalendarItemFilters {
 		recurrenceId: String,
 	): FilterOptions<CalendarItem> = ByRecurrenceId(recurrenceId)
 
+	/**
+	 * Options for calendar item filtering which match all calendar items shared directly (i.e. ignoring hierarchies) with a specific data owner
+	 * and where the max among [CalendarItem.created], [CalendarItem.modified], and [CalendarItem.deletionDate] is greater or equal than
+	 * [updatedAfter].
+	 *
+	 * @param dataOwnerId a data owner id.
+	 * @param updatedAfter the reference timestamp
+	 */
+	fun updatedAfterForDataOwner(
+		dataOwnerId: String,
+		updatedAfter: Long
+	): BaseFilterOptions<CalendarItem> = UpdatedAfterForDataOwner(dataOwnerId, updatedAfter)
+
+	/**
+	 * Options for calendar item filtering which match all calendar items shared directly (i.e. ignoring hierarchies) with the current data owner
+	 * and where the max among [CalendarItem.created], [CalendarItem.modified], and [CalendarItem.deletionDate] is greater or equal than
+	 * [updatedAfter].
+	 *
+	 * @param updatedAfter the reference timestamp
+	 */
+	fun updatedAfterForSelf(
+		updatedAfter: Long
+	): FilterOptions<CalendarItem> = UpdatedAfterForSelf(updatedAfter)
+
 	@Serializable
 	@InternalIcureApi
 	internal class ByPatientsStartTimeForDataOwner(
@@ -269,6 +294,17 @@ object CalendarItemFilters {
 	internal class ByPeriodForSelf(
 		val from: Long,
 		val to: Long
+	): FilterOptions<CalendarItem>
+
+	@Serializable
+	internal class UpdatedAfterForDataOwner(
+		val dataOwnerId: String,
+		val updatedAfter: Long
+	): BaseFilterOptions<CalendarItem>
+
+	@Serializable
+	internal class UpdatedAfterForSelf(
+		val updatedAfter: Long
 	): FilterOptions<CalendarItem>
 
 	@Serializable
@@ -343,6 +379,17 @@ internal suspend fun mapCalendarItemFilterOptions(
 			dataOwnerId = selfDataOwnerId,
 			startTime = filterOptions.from,
 			endTime = filterOptions.to
+		)
+	}
+	is CalendarItemFilters.UpdatedAfterForDataOwner -> CalendarItemByDataOwnerUpdatedAfter(
+		dataOwnerId = filterOptions.dataOwnerId,
+		updatedAfter = filterOptions.updatedAfter
+	)
+	is CalendarItemFilters.UpdatedAfterForSelf -> {
+		filterOptions.ensureNonBaseEnvironment(selfDataOwnerId, entityEncryptionService)
+		CalendarItemByDataOwnerUpdatedAfter(
+			dataOwnerId = selfDataOwnerId,
+			updatedAfter = filterOptions.updatedAfter
 		)
 	}
 	is CalendarItemFilters.ByRecurrenceId -> CalendarItemByRecurrenceIdFilter(recurrenceId = filterOptions.recurrenceId)

@@ -19,6 +19,8 @@ export interface CryptoActor extends Versionable<string>, HasTags {
 
 	publicKeysForOaepWithSha256: Array<SpkiHexString>;
 
+	parentId: string | undefined;
+
 	readonly $ktClass: string;
 
 }

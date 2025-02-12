@@ -1,6 +1,6 @@
 // auto-generated file
 
-export type SecretIdUseOption = typeof SecretIdUseOption.UseAnyConfidential | typeof SecretIdUseOption.UseAnySharedWithParent | SecretIdUseOption.Use;
+export type SecretIdUseOption = typeof SecretIdUseOption.UseAnyConfidential | typeof SecretIdUseOption.UseAllConfidential | typeof SecretIdUseOption.UseAnySharedWithParent | typeof SecretIdUseOption.UseAllSharedWithParent | SecretIdUseOption.Use | typeof SecretIdUseOption.UseNone;
 
 export namespace SecretIdUseOption {
 
@@ -10,10 +10,22 @@ export namespace SecretIdUseOption {
 		$ktClass: 'com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption.UseAnyConfidential'
 	}
 
+	export const UseAllConfidential: {
+		readonly $ktClass: 'com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption.UseAllConfidential'
+	} = {
+		$ktClass: 'com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption.UseAllConfidential'
+	}
+
 	export const UseAnySharedWithParent: {
 		readonly $ktClass: 'com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption.UseAnySharedWithParent'
 	} = {
 		$ktClass: 'com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption.UseAnySharedWithParent'
+	}
+
+	export const UseAllSharedWithParent: {
+		readonly $ktClass: 'com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption.UseAllSharedWithParent'
+	} = {
+		$ktClass: 'com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption.UseAllSharedWithParent'
 	}
 
 	export class Use {
@@ -26,6 +38,12 @@ export namespace SecretIdUseOption {
 			this.secretIds = partial.secretIds;
 		}
 
+	}
+
+	export const UseNone: {
+		readonly $ktClass: 'com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption.UseNone'
+	} = {
+		$ktClass: 'com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption.UseNone'
 	}
 
 }

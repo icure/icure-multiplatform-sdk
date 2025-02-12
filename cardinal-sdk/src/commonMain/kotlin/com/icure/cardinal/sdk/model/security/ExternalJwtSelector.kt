@@ -14,5 +14,6 @@ data class ExternalJwtSelector(
 	public val mobilePhoneField: String? = null,
 ) {
 	// region ExternalJwtSelector-ExternalJwtSelector
+
 	// endregion
 }

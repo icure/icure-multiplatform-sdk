@@ -23,6 +23,8 @@ public external interface CryptoActorJs : VersionableJs<String>, HasTagsJs {
 
 	public val publicKeysForOaepWithSha256: Array<out String>
 
+	public val parentId: String?
+
 	@JsName("${'$'}ktClass")
 	public val ktClass: String
 }

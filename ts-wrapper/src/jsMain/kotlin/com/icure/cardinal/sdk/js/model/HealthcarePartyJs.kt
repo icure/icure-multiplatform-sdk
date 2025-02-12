@@ -77,7 +77,7 @@ public external class HealthcarePartyJs(
 
 	public val userId: String?
 
-	public val parentId: String?
+	override val parentId: String?
 
 	public val convention: Double?
 

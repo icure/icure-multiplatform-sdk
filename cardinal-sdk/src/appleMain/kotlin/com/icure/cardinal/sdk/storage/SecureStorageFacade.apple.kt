@@ -31,6 +31,7 @@ import platform.Security.errSecItemNotFound
 import platform.Security.errSecSuccess
 import platform.Security.kSecAccessControlBiometryAny
 import platform.Security.kSecAccessControlDevicePasscode
+import platform.Security.kSecAccessControlOr
 import platform.Security.kSecAttrAccessControl
 import platform.Security.kSecAttrAccessibleWhenUnlockedThisDeviceOnly
 import platform.Security.kSecAttrApplicationTag
@@ -103,7 +104,10 @@ private suspend fun createSecretKey(accessLevel: Set<SecureKeyAccessLevel>, key:
 	val bytes = defaultCryptoService.aes.exportKey(aesKey)
 
 	val accessControlFlags: SecAccessControlCreateFlags =
-		accessLevel.fold(0.toULong()) { acc, level -> acc or level.toSecAccessControlCreateFlags() }
+		accessLevel.fold(0.toULong()) { acc, level -> acc or level.toSecAccessControlCreateFlags() }.let {
+			if (accessLevel.size > 1) it or kSecAccessControlOr
+			else it
+		}
 
 	val accessControl = SecAccessControlCreateWithFlags(
 		allocator = kCFAllocatorDefault,

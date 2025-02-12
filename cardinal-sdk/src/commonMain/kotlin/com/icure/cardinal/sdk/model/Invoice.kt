@@ -73,6 +73,8 @@ sealed interface Invoice :
 
 	public val invoiceReference: String?
 
+	public val decisionReference: String?
+
 	public val thirdPartyReference: String?
 
 	public val thirdPartyPaymentJustification: String?
@@ -206,6 +208,7 @@ data class DecryptedInvoice(
 	override val recipientType: String? = null,
 	override val recipientId: String? = null,
 	override val invoiceReference: String? = null,
+	override val decisionReference: String? = null,
 	override val thirdPartyReference: String? = null,
 	override val thirdPartyPaymentJustification: String? = null,
 	override val thirdPartyPaymentReason: String? = null,
@@ -295,6 +298,7 @@ data class EncryptedInvoice(
 	override val recipientType: String? = null,
 	override val recipientId: String? = null,
 	override val invoiceReference: String? = null,
+	override val decisionReference: String? = null,
 	override val thirdPartyReference: String? = null,
 	override val thirdPartyPaymentJustification: String? = null,
 	override val thirdPartyPaymentReason: String? = null,
