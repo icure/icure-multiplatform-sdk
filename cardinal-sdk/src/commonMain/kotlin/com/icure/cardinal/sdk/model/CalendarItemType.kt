@@ -3,6 +3,7 @@ package com.icure.cardinal.sdk.model
 import com.icure.cardinal.sdk.model.base.StoredDocument
 import com.icure.cardinal.sdk.utils.DefaultValue
 import kotlinx.serialization.Serializable
+import kotlin.Boolean
 import kotlin.Int
 import kotlin.Long
 import kotlin.String
@@ -17,6 +18,10 @@ data class CalendarItemType(
 	override val id: String,
 	override val rev: String? = null,
 	override val deletionDate: Long? = null,
+	public val healthcarePartyId: String? = null,
+	public val agendaId: String? = null,
+	@DefaultValue("false")
+	public val defaultCalendarItemType: Boolean = false,
 	public val name: String? = null,
 	public val color: String? = null,
 	@DefaultValue("0")
