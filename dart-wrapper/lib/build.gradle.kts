@@ -36,7 +36,7 @@ kotlin {
 	sourceSets {
 		val commonMain by getting {
 			dependencies {
-				api("com.icure:cardinal-sdk:1.0.0-RC.5")
+				api("com.icure:cardinal-sdk:1.0.0")
 				implementation(libs.coroutinesCore)
 				implementation(libs.kotlinSerialization)
 			}
