@@ -33,8 +33,8 @@ import com.icure.cardinal.sdk.model.filter.accesslog.AccessLogByUserIdUserTypeDa
 import com.icure.cardinal.sdk.model.filter.agenda.AgendaByUserIdFilter
 import com.icure.cardinal.sdk.model.filter.agenda.AgendaReadableByUserIdFilter
 import com.icure.cardinal.sdk.model.filter.agenda.AllAgendasFilter
+import com.icure.cardinal.sdk.model.filter.calendarItem.CalendarItemByDataOwnerLifecycleBetween
 import com.icure.cardinal.sdk.model.filter.calendarItem.CalendarItemByDataOwnerPatientStartTimeFilter
-import com.icure.cardinal.sdk.model.filter.calendarItem.CalendarItemByDataOwnerUpdatedAfter
 import com.icure.cardinal.sdk.model.filter.calendarItem.CalendarItemByPeriodAndAgendaIdFilter
 import com.icure.cardinal.sdk.model.filter.calendarItem.CalendarItemByPeriodAndDataOwnerIdFilter
 import com.icure.cardinal.sdk.model.filter.calendarItem.CalendarItemByRecurrenceIdFilter
@@ -332,11 +332,11 @@ internal object CalendarItemAbstractFilterSerializer :
 			"UnionFilter" -> UnionFilterSerializer(this)
 			"ComplementFilter" -> ComplementFilterSerializer(this)
 			"IntersectionFilter" -> IntersectionFilterSerializer(this)
+			"CalendarItemByDataOwnerLifecycleBetween" -> CalendarItemByDataOwnerLifecycleBetween.serializer()
 			"CalendarItemByPeriodAndDataOwnerIdFilter" ->
 				CalendarItemByPeriodAndDataOwnerIdFilter.serializer()
 			"CalendarItemByPeriodAndAgendaIdFilter" -> CalendarItemByPeriodAndAgendaIdFilter.serializer()
 			"CalendarItemByRecurrenceIdFilter" -> CalendarItemByRecurrenceIdFilter.serializer()
-			"CalendarItemByDataOwnerUpdatedAfter" -> CalendarItemByDataOwnerUpdatedAfter.serializer()
 			"CalendarItemByDataOwnerPatientStartTimeFilter" ->
 				CalendarItemByDataOwnerPatientStartTimeFilter.serializer()
 			else -> null
@@ -347,11 +347,12 @@ internal object CalendarItemAbstractFilterSerializer :
 			UnionFilter::class -> UnionFilterSerializer(this)
 			ComplementFilter::class -> ComplementFilterSerializer(this)
 			IntersectionFilter::class -> IntersectionFilterSerializer(this)
+			CalendarItemByDataOwnerLifecycleBetween::class ->
+				CalendarItemByDataOwnerLifecycleBetween.serializer()
 			CalendarItemByPeriodAndDataOwnerIdFilter::class ->
 				CalendarItemByPeriodAndDataOwnerIdFilter.serializer()
 			CalendarItemByPeriodAndAgendaIdFilter::class -> CalendarItemByPeriodAndAgendaIdFilter.serializer()
 			CalendarItemByRecurrenceIdFilter::class -> CalendarItemByRecurrenceIdFilter.serializer()
-			CalendarItemByDataOwnerUpdatedAfter::class -> CalendarItemByDataOwnerUpdatedAfter.serializer()
 			CalendarItemByDataOwnerPatientStartTimeFilter::class ->
 				CalendarItemByDataOwnerPatientStartTimeFilter.serializer()
 			else -> null

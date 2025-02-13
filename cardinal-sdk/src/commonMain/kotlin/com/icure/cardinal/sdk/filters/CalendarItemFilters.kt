@@ -9,6 +9,7 @@ import com.icure.cardinal.sdk.crypto.entities.toEncryptionMetadataStub
 import com.icure.cardinal.sdk.model.CalendarItem
 import com.icure.cardinal.sdk.model.Patient
 import com.icure.cardinal.sdk.model.filter.AbstractFilter
+import com.icure.cardinal.sdk.model.filter.calendarItem.CalendarItemByDataOwnerLifecycleBetween
 import com.icure.cardinal.sdk.model.filter.calendarItem.CalendarItemByDataOwnerPatientStartTimeFilter
 import com.icure.cardinal.sdk.model.filter.calendarItem.CalendarItemByDataOwnerUpdatedAfter
 import com.icure.cardinal.sdk.model.filter.calendarItem.CalendarItemByPeriodAndAgendaIdFilter
@@ -218,26 +219,34 @@ object CalendarItemFilters {
 	/**
 	 * Options for calendar item filtering which match all calendar items shared directly (i.e. ignoring hierarchies) with a specific data owner
 	 * and where the max among [CalendarItem.created], [CalendarItem.modified], and [CalendarItem.deletionDate] is greater or equal than
-	 * [updatedAfter].
+	 * [startTimestamp] (if provided) and less than or equal to [endTimestamp] (if provided).
 	 *
 	 * @param dataOwnerId a data owner id.
-	 * @param updatedAfter the reference timestamp
+	 * @param startTimestamp the smallest lifecycle update that the filter will return.
+	 * @param endTimestamp the biggest lifecycle update that the filter will return.
+	 * @param descending whether to return the results sorted in ascending or descending order by last lifecycle update.
 	 */
-	fun updatedAfterForDataOwner(
+	fun lifecycleBetweenForDataOwner(
 		dataOwnerId: String,
-		updatedAfter: Long
-	): BaseFilterOptions<CalendarItem> = UpdatedAfterForDataOwner(dataOwnerId, updatedAfter)
+		startTimestamp: Long?,
+		endTimestamp: Long?,
+		descending: Boolean = false
+	): BaseFilterOptions<CalendarItem> = LifecycleBetweenForDataOwner(dataOwnerId, startTimestamp, endTimestamp, descending)
 
 	/**
 	 * Options for calendar item filtering which match all calendar items shared directly (i.e. ignoring hierarchies) with the current data owner
 	 * and where the max among [CalendarItem.created], [CalendarItem.modified], and [CalendarItem.deletionDate] is greater or equal than
-	 * [updatedAfter].
+	 * [startTimestamp] (if provided) and less than or equal to [endTimestamp] (if provided).
 	 *
-	 * @param updatedAfter the reference timestamp
+	 * @param startTimestamp the smallest lifecycle update that the filter will return.
+	 * @param endTimestamp the biggest lifecycle update that the filter will return.
+	 * @param descending whether to return the results sorted in ascending or descending order by last lifecycle update.
 	 */
-	fun updatedAfterForSelf(
-		updatedAfter: Long
-	): FilterOptions<CalendarItem> = UpdatedAfterForSelf(updatedAfter)
+	fun lifecycleBetweenForSelf(
+		startTimestamp: Long?,
+		endTimestamp: Long?,
+		descending: Boolean = false
+	): FilterOptions<CalendarItem> = LifecycleBetweenForSelf(startTimestamp, endTimestamp, descending)
 
 	@Serializable
 	@InternalIcureApi
@@ -297,14 +306,18 @@ object CalendarItemFilters {
 	): FilterOptions<CalendarItem>
 
 	@Serializable
-	internal class UpdatedAfterForDataOwner(
+	internal class LifecycleBetweenForDataOwner(
 		val dataOwnerId: String,
-		val updatedAfter: Long
+		val startTimestamp: Long?,
+		val endTimestamp: Long?,
+		val descending: Boolean
 	): BaseFilterOptions<CalendarItem>
 
 	@Serializable
-	internal class UpdatedAfterForSelf(
-		val updatedAfter: Long
+	internal class LifecycleBetweenForSelf(
+		val startTimestamp: Long?,
+		val endTimestamp: Long?,
+		val descending: Boolean
 	): FilterOptions<CalendarItem>
 
 	@Serializable
@@ -381,15 +394,19 @@ internal suspend fun mapCalendarItemFilterOptions(
 			endTime = filterOptions.to
 		)
 	}
-	is CalendarItemFilters.UpdatedAfterForDataOwner -> CalendarItemByDataOwnerUpdatedAfter(
+	is CalendarItemFilters.LifecycleBetweenForDataOwner -> CalendarItemByDataOwnerLifecycleBetween(
 		dataOwnerId = filterOptions.dataOwnerId,
-		updatedAfter = filterOptions.updatedAfter
+		startTimestamp = filterOptions.startTimestamp,
+		endTimestamp = filterOptions.endTimestamp,
+		descending = filterOptions.descending
 	)
-	is CalendarItemFilters.UpdatedAfterForSelf -> {
+	is CalendarItemFilters.LifecycleBetweenForSelf -> {
 		filterOptions.ensureNonBaseEnvironment(selfDataOwnerId, entityEncryptionService)
-		CalendarItemByDataOwnerUpdatedAfter(
+		CalendarItemByDataOwnerLifecycleBetween(
 			dataOwnerId = selfDataOwnerId,
-			updatedAfter = filterOptions.updatedAfter
+			startTimestamp = filterOptions.startTimestamp,
+			endTimestamp = filterOptions.endTimestamp,
+			descending = filterOptions.descending
 		)
 	}
 	is CalendarItemFilters.ByRecurrenceId -> CalendarItemByRecurrenceIdFilter(recurrenceId = filterOptions.recurrenceId)
