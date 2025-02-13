@@ -79,8 +79,14 @@ private suspend fun createSecretKey(
 	val keyGenParameterSpec = KeyGenParameterSpec.Builder(key, KeyProperties.PURPOSE_ENCRYPT or KeyProperties.PURPOSE_DECRYPT)
 		.setBlockModes(KeyProperties.BLOCK_MODE_CBC)
 		.setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_PKCS7)
-		.setUserAuthenticationRequired(true)
-		.setUserAuthenticationParameters(authorizationTimeoutSeconds, accessLevel.fold(0) { acc, level -> acc or level.toKeyProperties() })
+		.apply {
+			if (accessLevel.isNotEmpty()) {
+				setUserAuthenticationRequired(true)
+				setUserAuthenticationParameters(authorizationTimeoutSeconds, accessLevel.fold(0) { acc, level -> acc or level.toKeyProperties() })
+			} else {
+				setUserAuthenticationRequired(false)
+			}
+		}
 		.build()
 	keyGenerator.init(keyGenParameterSpec)
 	val keyStoreKey = keyGenerator.generateKey()

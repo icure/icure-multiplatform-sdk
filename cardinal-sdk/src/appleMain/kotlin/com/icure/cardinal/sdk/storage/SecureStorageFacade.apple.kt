@@ -33,7 +33,7 @@ import platform.Security.kSecAccessControlBiometryAny
 import platform.Security.kSecAccessControlDevicePasscode
 import platform.Security.kSecAccessControlOr
 import platform.Security.kSecAttrAccessControl
-import platform.Security.kSecAttrAccessibleWhenUnlockedThisDeviceOnly
+import platform.Security.kSecAttrAccessibleWhenUnlocked
 import platform.Security.kSecAttrApplicationTag
 import platform.Security.kSecClass
 import platform.Security.kSecClassKey
@@ -111,7 +111,7 @@ private suspend fun createSecretKey(accessLevel: Set<SecureKeyAccessLevel>, key:
 
 	val accessControl = SecAccessControlCreateWithFlags(
 		allocator = kCFAllocatorDefault,
-		protection = kSecAttrAccessibleWhenUnlockedThisDeviceOnly,
+		protection = kSecAttrAccessibleWhenUnlocked,
 		flags = accessControlFlags,
 		error = null,
 	) ?: throw IllegalStateException("Failed to create access control")
