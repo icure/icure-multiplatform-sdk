@@ -1,13 +1,10 @@
 package com.icure.cardinal.sdk.api.raw
 
-import com.icure.cardinal.sdk.model.EncryptedTimeTable
 import com.icure.cardinal.sdk.model.ListOfIds
 import com.icure.cardinal.sdk.model.ListOfIdsAndRev
 import com.icure.cardinal.sdk.model.TimeTable
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.model.filter.AbstractFilter
-import com.icure.cardinal.sdk.model.requests.BulkShareOrUpdateMetadataParams
-import com.icure.cardinal.sdk.model.requests.EntityBulkShareResult
 import com.icure.utils.InternalIcureApi
 import kotlin.Long
 import kotlin.String
@@ -19,7 +16,7 @@ import kotlin.collections.List
 public interface RawTimeTableApi {
 	// region common endpoints
 
-	suspend fun createTimeTable(timeTableDto: EncryptedTimeTable): HttpResponse<EncryptedTimeTable>
+	suspend fun createTimeTable(timeTableDto: TimeTable): HttpResponse<TimeTable>
 
 	suspend fun deleteTimeTables(timeTableIds: ListOfIds): HttpResponse<List<DocIdentifier>>
 
@@ -33,29 +30,27 @@ public interface RawTimeTableApi {
 	suspend fun undeleteTimeTable(
 		timeTableId: String,
 		rev: String,
-	): HttpResponse<EncryptedTimeTable>
+	): HttpResponse<TimeTable>
 
 	suspend fun purgeTimeTable(
 		timeTableId: String,
 		rev: String,
 	): HttpResponse<DocIdentifier>
 
-	suspend fun getTimeTable(timeTableId: String): HttpResponse<EncryptedTimeTable>
+	suspend fun getTimeTable(timeTableId: String): HttpResponse<TimeTable>
 
-	suspend fun getTimeTables(timeTableIds: ListOfIds): HttpResponse<List<EncryptedTimeTable>>
+	suspend fun getTimeTables(timeTableIds: ListOfIds): HttpResponse<List<TimeTable>>
 
-	suspend fun modifyTimeTable(timeTableDto: EncryptedTimeTable): HttpResponse<EncryptedTimeTable>
+	suspend fun modifyTimeTable(timeTableDto: TimeTable): HttpResponse<TimeTable>
 
 	suspend fun getTimeTablesByPeriodAndAgendaId(
 		startDate: Long,
 		endDate: Long,
 		agendaId: String,
-	): HttpResponse<List<EncryptedTimeTable>>
+	): HttpResponse<List<TimeTable>>
 
-	suspend fun getTimeTablesByAgendaId(agendaId: String): HttpResponse<List<EncryptedTimeTable>>
+	suspend fun getTimeTablesByAgendaId(agendaId: String): HttpResponse<List<TimeTable>>
 
 	suspend fun matchTimeTablesBy(filter: AbstractFilter<TimeTable>): HttpResponse<List<String>>
-
-	suspend fun bulkShare(request: BulkShareOrUpdateMetadataParams): HttpResponse<List<EntityBulkShareResult<EncryptedTimeTable>>>
 	// endregion
 }

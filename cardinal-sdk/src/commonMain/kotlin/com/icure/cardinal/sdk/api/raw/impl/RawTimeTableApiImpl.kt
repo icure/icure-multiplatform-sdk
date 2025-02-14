@@ -7,14 +7,11 @@ import com.icure.cardinal.sdk.api.raw.wrap
 import com.icure.cardinal.sdk.auth.services.AuthProvider
 import com.icure.cardinal.sdk.crypto.AccessControlKeysHeadersProvider
 import com.icure.cardinal.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
-import com.icure.cardinal.sdk.model.EncryptedTimeTable
 import com.icure.cardinal.sdk.model.ListOfIds
 import com.icure.cardinal.sdk.model.ListOfIdsAndRev
 import com.icure.cardinal.sdk.model.TimeTable
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.model.filter.AbstractFilter
-import com.icure.cardinal.sdk.model.requests.BulkShareOrUpdateMetadataParams
-import com.icure.cardinal.sdk.model.requests.EntityBulkShareResult
 import com.icure.cardinal.sdk.serialization.TimeTableAbstractFilterSerializer
 import com.icure.utils.InternalIcureApi
 import io.ktor.client.HttpClient
@@ -50,7 +47,7 @@ class RawTimeTableApiImpl(
 
 	// region common endpoints
 
-	override suspend fun createTimeTable(timeTableDto: EncryptedTimeTable): HttpResponse<EncryptedTimeTable> =
+	override suspend fun createTimeTable(timeTableDto: TimeTable): HttpResponse<TimeTable> =
 		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
@@ -99,7 +96,7 @@ class RawTimeTableApiImpl(
 	override suspend fun undeleteTimeTable(
 		timeTableId: String,
 		rev: String,
-	): HttpResponse<EncryptedTimeTable> =
+	): HttpResponse<TimeTable> =
 		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
@@ -123,7 +120,7 @@ class RawTimeTableApiImpl(
 			accept(Application.Json)
 		}.wrap()
 
-	override suspend fun getTimeTable(timeTableId: String): HttpResponse<EncryptedTimeTable> =
+	override suspend fun getTimeTable(timeTableId: String): HttpResponse<TimeTable> =
 		get(authProvider) {
 			url {
 				takeFrom(apiUrl)
@@ -133,7 +130,7 @@ class RawTimeTableApiImpl(
 			accept(Application.Json)
 		}.wrap()
 
-	override suspend fun getTimeTables(timeTableIds: ListOfIds): HttpResponse<List<EncryptedTimeTable>> =
+	override suspend fun getTimeTables(timeTableIds: ListOfIds): HttpResponse<List<TimeTable>> =
 		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
@@ -144,7 +141,7 @@ class RawTimeTableApiImpl(
 			setBody(timeTableIds)
 		}.wrap()
 
-	override suspend fun modifyTimeTable(timeTableDto: EncryptedTimeTable): HttpResponse<EncryptedTimeTable> =
+	override suspend fun modifyTimeTable(timeTableDto: TimeTable): HttpResponse<TimeTable> =
 		put(authProvider) {
 			url {
 				takeFrom(apiUrl)
@@ -159,7 +156,7 @@ class RawTimeTableApiImpl(
 		startDate: Long,
 		endDate: Long,
 		agendaId: String,
-	): HttpResponse<List<EncryptedTimeTable>> =
+	): HttpResponse<List<TimeTable>> =
 		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
@@ -172,7 +169,7 @@ class RawTimeTableApiImpl(
 			accept(Application.Json)
 		}.wrap()
 
-	override suspend fun getTimeTablesByAgendaId(agendaId: String): HttpResponse<List<EncryptedTimeTable>> =
+	override suspend fun getTimeTablesByAgendaId(agendaId: String): HttpResponse<List<TimeTable>> =
 		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
@@ -192,17 +189,6 @@ class RawTimeTableApiImpl(
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBodyWithSerializer(TimeTableAbstractFilterSerializer, filter)
-		}.wrap()
-
-	override suspend fun bulkShare(request: BulkShareOrUpdateMetadataParams): HttpResponse<List<EntityBulkShareResult<EncryptedTimeTable>>> =
-		put(authProvider) {
-			url {
-				takeFrom(apiUrl)
-				appendPathSegments("rest", "v2", "timeTable", "bulkSharedMetadataUpdate")
-			}
-			contentType(Application.Json)
-			accept(Application.Json)
-			setBody(request)
 		}.wrap()
 
 	// endregion
