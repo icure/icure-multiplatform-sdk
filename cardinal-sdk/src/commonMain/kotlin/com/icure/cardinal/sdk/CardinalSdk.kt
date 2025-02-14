@@ -836,7 +836,6 @@ private class CardinalApiImpl(
 		RawTimeTableApiImpl(
 			apiUrl,
 			authProvider,
-			config.crypto.headersProvider,
 			client,
 			json = httpClientJson,
 			additionalHeaders = additionalHeaders
@@ -844,10 +843,7 @@ private class CardinalApiImpl(
 	}
 
 	override val timeTable: TimeTableApi by lazy {
-		TimeTableApiImpl(
-			rawTimeTableApi,
-			config
-		)
+		TimeTableApiImpl(rawTimeTableApi)
 	}
 
 	private val rawClassificationApi by lazy {

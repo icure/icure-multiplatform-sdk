@@ -47,7 +47,6 @@ import com.icure.cardinal.sdk.api.RoleApi
 import com.icure.cardinal.sdk.api.SystemApi
 import com.icure.cardinal.sdk.api.TarificationApi
 import com.icure.cardinal.sdk.api.TimeTableApi
-import com.icure.cardinal.sdk.api.TimeTableBasicApi
 import com.icure.cardinal.sdk.api.TopicApi
 import com.icure.cardinal.sdk.api.TopicBasicApi
 import com.icure.cardinal.sdk.api.UserApi
@@ -129,6 +128,6 @@ interface CardinalBaseApis : CardinalNonCryptoApis {
 	val patient: PatientBasicApi
 	@Deprecated("The receipt API and model are highly specialised for the belgian market. They will be provided as a separate package in future")
 	val receipt: ReceiptBasicApi
-	val timeTable: TimeTableBasicApi
+	val timeTable: TimeTableApi
 	val topic: TopicBasicApi
 }

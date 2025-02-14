@@ -36,15 +36,11 @@ import kotlin.time.Duration
 class RawTimeTableApiImpl(
 	internal val apiUrl: String,
 	private val authProvider: AuthProvider,
-	private val accessControlKeysHeadersProvider: AccessControlKeysHeadersProvider?,
 	httpClient: HttpClient,
 	additionalHeaders: Map<String, String> = emptyMap(),
 	timeout: Duration? = null,
 	json: Json,
 ) : BaseRawApi(httpClient, additionalHeaders, timeout, json), RawTimeTableApi {
-	override suspend fun getAccessControlKeysHeaderValues(): List<String>? =
-		accessControlKeysHeadersProvider?.getAccessControlKeysHeadersFor(EntityWithEncryptionMetadataTypeName.TimeTable)
-
 	// region common endpoints
 
 	override suspend fun createTimeTable(timeTableDto: TimeTable): HttpResponse<TimeTable> =
