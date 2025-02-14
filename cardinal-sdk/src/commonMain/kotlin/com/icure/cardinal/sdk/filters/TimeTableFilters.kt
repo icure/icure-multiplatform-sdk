@@ -59,12 +59,8 @@ object TimeTableFilters {
 
 @InternalIcureApi
 internal suspend fun mapTimeTableFilterOptions(
-	filterOptions: FilterOptions<TimeTable>,
-	selfDataOwnerId: String?,
-	entityEncryptionService: EntityEncryptionService?
-): AbstractFilter<TimeTable> = mapIfMetaFilterOptions(filterOptions) {
-	mapTimeTableFilterOptions(it, selfDataOwnerId, entityEncryptionService)
-} ?: when (filterOptions) {
+	filterOptions: FilterOptions<TimeTable>
+): AbstractFilter<TimeTable> = mapIfMetaFilterOptions(filterOptions, ::mapTimeTableFilterOptions) ?: when (filterOptions) {
 	is TimeTableFilters.ByAgendaId -> TimeTableByAgendaIdFilter(agendaId = filterOptions.agendaId)
 	is TimeTableFilters.ByPeriodAndAgendaId -> TimeTableByPeriodAndAgendaIdFilter(
 		agendaId = filterOptions.agendaId,

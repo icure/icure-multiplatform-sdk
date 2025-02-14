@@ -32,6 +32,5 @@ enum class EntityWithEncryptionMetadataTypeName(
 	Message("Message"),
 	Patient("Patient"),
 	Receipt("Receipt"),
-	TimeTable("TimeTable"),
 	Topic("Topic")
 }
