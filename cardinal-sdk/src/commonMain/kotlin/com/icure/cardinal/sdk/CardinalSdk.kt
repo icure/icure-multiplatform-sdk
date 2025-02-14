@@ -4,6 +4,7 @@ import com.icure.cardinal.sdk.api.AccessLogApi
 import com.icure.cardinal.sdk.api.AgendaApi
 import com.icure.cardinal.sdk.api.ApplicationSettingsApi
 import com.icure.cardinal.sdk.api.CalendarItemApi
+import com.icure.cardinal.sdk.api.CalendarItemTypeApi
 import com.icure.cardinal.sdk.api.CardinalMaintenanceTaskApi
 import com.icure.cardinal.sdk.api.ClassificationApi
 import com.icure.cardinal.sdk.api.CodeApi
@@ -41,6 +42,7 @@ import com.icure.cardinal.sdk.api.impl.AccessLogApiImpl
 import com.icure.cardinal.sdk.api.impl.AgendaApiImpl
 import com.icure.cardinal.sdk.api.impl.ApplicationSettingsApiImpl
 import com.icure.cardinal.sdk.api.impl.CalendarItemApiImpl
+import com.icure.cardinal.sdk.api.impl.CalendarItemTypeApiImpl
 import com.icure.cardinal.sdk.api.impl.CardinalMaintenanceTaskApiImpl
 import com.icure.cardinal.sdk.api.impl.ClassificationApiImpl
 import com.icure.cardinal.sdk.api.impl.CodeApiImpl
@@ -82,6 +84,7 @@ import com.icure.cardinal.sdk.api.raw.impl.RawAgendaApiImpl
 import com.icure.cardinal.sdk.api.raw.impl.RawAnonymousAuthApiImpl
 import com.icure.cardinal.sdk.api.raw.impl.RawApplicationSettingsApiImpl
 import com.icure.cardinal.sdk.api.raw.impl.RawCalendarItemApiImpl
+import com.icure.cardinal.sdk.api.raw.impl.RawCalendarItemTypeApiImpl
 import com.icure.cardinal.sdk.api.raw.impl.RawClassificationApiImpl
 import com.icure.cardinal.sdk.api.raw.impl.RawCodeApiImpl
 import com.icure.cardinal.sdk.api.raw.impl.RawContactApiImpl
@@ -948,6 +951,9 @@ private class CardinalApiImpl(
 	}
 	override val code: CodeApi by lazy {
 		CodeApiImpl(RawCodeApiImpl(apiUrl, authProvider, client, json = httpClientJson, additionalHeaders = additionalHeaders))
+	}
+	override val calendarItemTypeApi: CalendarItemTypeApi by lazy {
+		CalendarItemTypeApiImpl(RawCalendarItemTypeApiImpl(apiUrl, authProvider, client, json = httpClientJson, additionalHeaders = additionalHeaders))
 	}
 	override val documentTemplate: DocumentTemplateApi by lazy {
 		DocumentTemplateApiImpl(apiUrl, RawDocumentTemplateApiImpl(apiUrl, authProvider, client, json = httpClientJson, additionalHeaders = additionalHeaders))
