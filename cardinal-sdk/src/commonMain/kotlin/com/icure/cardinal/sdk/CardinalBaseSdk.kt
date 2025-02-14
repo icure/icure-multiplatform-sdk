@@ -45,7 +45,7 @@ import com.icure.cardinal.sdk.api.impl.ReceiptBasicApiImpl
 import com.icure.cardinal.sdk.api.impl.RoleApiImpl
 import com.icure.cardinal.sdk.api.impl.SystemApiImpl
 import com.icure.cardinal.sdk.api.impl.TarificationApiImpl
-import com.icure.cardinal.sdk.api.impl.TimeTableBasicApiImpl
+import com.icure.cardinal.sdk.api.impl.TimeTableApiImpl
 import com.icure.cardinal.sdk.api.impl.TopicBasicApiImpl
 import com.icure.cardinal.sdk.api.impl.UserApiImpl
 import com.icure.cardinal.sdk.api.raw.RawMessageGatewayApi
@@ -334,6 +334,8 @@ private class CardinalBaseApisImpl(
 			config
 		)
 	}
+
+	@Deprecated("The invoice API and model are highly specialised for the belgian market. They will be provided as a separate package in future")
 	override val invoice by lazy {
 		InvoiceBasicApiImpl(
 			RawInvoiceApiImpl(
@@ -388,6 +390,8 @@ private class CardinalBaseApisImpl(
 			)
 		)
 	}
+
+	@Deprecated("The receipt API and model are highly specialised for the belgian market. They will be provided as a separate package in future")
 	override val receipt by lazy {
 		ReceiptBasicApiImpl(
 			RawReceiptApiImpl(
@@ -400,14 +404,13 @@ private class CardinalBaseApisImpl(
 		)
 	}
 	override val timeTable by lazy {
-		TimeTableBasicApiImpl(
+		TimeTableApiImpl(
 			RawTimeTableApiImpl(
 				apiUrl,
 				authProvider,
-				NoAccessControlKeysHeadersProvider,
 				client,
 				json = httpClientJson
-			), config
+			)
 		)
 	}
 	override val topic by lazy {

@@ -22,7 +22,6 @@ import com.icure.cardinal.sdk.model.DecryptedProperty
 import com.icure.cardinal.sdk.model.DecryptedPropertyStub
 import com.icure.cardinal.sdk.model.DecryptedReceipt
 import com.icure.cardinal.sdk.model.DecryptedSecureDelegationKeyMap
-import com.icure.cardinal.sdk.model.DecryptedTimeTable
 import com.icure.cardinal.sdk.model.DecryptedTopic
 import com.icure.cardinal.sdk.model.Document
 import com.icure.cardinal.sdk.model.EncryptedAccessLog
@@ -41,7 +40,6 @@ import com.icure.cardinal.sdk.model.EncryptedProperty
 import com.icure.cardinal.sdk.model.EncryptedPropertyStub
 import com.icure.cardinal.sdk.model.EncryptedReceipt
 import com.icure.cardinal.sdk.model.EncryptedSecureDelegationKeyMap
-import com.icure.cardinal.sdk.model.EncryptedTimeTable
 import com.icure.cardinal.sdk.model.EncryptedTopic
 import com.icure.cardinal.sdk.model.Form
 import com.icure.cardinal.sdk.model.HealthElement
@@ -53,7 +51,6 @@ import com.icure.cardinal.sdk.model.Property
 import com.icure.cardinal.sdk.model.PropertyStub
 import com.icure.cardinal.sdk.model.Receipt
 import com.icure.cardinal.sdk.model.SecureDelegationKeyMap
-import com.icure.cardinal.sdk.model.TimeTable
 import com.icure.cardinal.sdk.model.Topic
 import com.icure.cardinal.sdk.model.embed.Address
 import com.icure.cardinal.sdk.model.embed.CalendarItemTag
@@ -257,10 +254,6 @@ internal object EncryptableSerializationModule {
 			polymorphic(Telecom::class) {
 				subclass(DecryptedTelecom::class)
 				subclass(EncryptedTelecom::class)
-			}
-			polymorphic(TimeTable::class) {
-				subclass(DecryptedTimeTable::class)
-				subclass(EncryptedTimeTable::class)
 			}
 			polymorphic(Topic::class) {
 				subclass(DecryptedTopic::class)
