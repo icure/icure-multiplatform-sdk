@@ -43,7 +43,8 @@ fun CryptoActor.toStub() =
 		privateKeyShamirPartitions = privateKeyShamirPartitions,
 		publicKey = publicKey,
 		publicKeysForOaepWithSha256 = publicKeysForOaepWithSha256,
-		tags = tags
+		tags = tags,
+		parentId = parentId
 	)
 
 val DataOwnerWithType.type: DataOwnerType get() = when(this) {
