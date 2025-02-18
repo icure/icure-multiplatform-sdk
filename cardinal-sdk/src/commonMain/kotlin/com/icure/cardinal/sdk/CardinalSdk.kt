@@ -952,7 +952,7 @@ private class CardinalApiImpl(
 	override val code: CodeApi by lazy {
 		CodeApiImpl(RawCodeApiImpl(apiUrl, authProvider, client, json = httpClientJson, additionalHeaders = additionalHeaders))
 	}
-	override val calendarItemTypeApi: CalendarItemTypeApi by lazy {
+	override val calendarItemType: CalendarItemTypeApi by lazy {
 		CalendarItemTypeApiImpl(RawCalendarItemTypeApiImpl(apiUrl, authProvider, client, json = httpClientJson, additionalHeaders = additionalHeaders))
 	}
 	override val documentTemplate: DocumentTemplateApi by lazy {
