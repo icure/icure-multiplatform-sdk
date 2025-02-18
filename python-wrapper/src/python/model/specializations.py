@@ -7,10 +7,16 @@ HexString = str
 KeypairFingerprintV1String = str
 
 
-SpkiHexString = str
+Pkcs8Bytes = bytearray
+
+
+AesExchangeKeyEntryKeyString = str
 
 
 AesExchangeKeyEncryptionKeypairIdentifier = str
+
+
+SpkiHexString = str
 
 
 Base64String = str

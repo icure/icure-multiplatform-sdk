@@ -8,8 +8,9 @@ from typing import Union
 from typing import Dict
 from dataclasses import dataclass
 from cardinal_sdk.model.specializations import HexString
-from cardinal_sdk.model.specializations import SpkiHexString
+from cardinal_sdk.model.specializations import AesExchangeKeyEntryKeyString
 from cardinal_sdk.model.specializations import AesExchangeKeyEncryptionKeypairIdentifier
+from cardinal_sdk.model.specializations import SpkiHexString
 from enum import Enum
 from datetime import timedelta
 from cardinal_sdk.model.serialization import serialize_timedelta
@@ -148,7 +149,7 @@ class Device:
 	picture: Optional[bytearray] = None
 	properties: List['DecryptedPropertyStub'] = field(default_factory=list)
 	hc_party_keys: Dict[str, List['HexString']] = field(default_factory=dict)
-	aes_exchange_keys: Dict['SpkiHexString', Dict[str, Dict['AesExchangeKeyEncryptionKeypairIdentifier', 'HexString']]] = field(default_factory=dict)
+	aes_exchange_keys: Dict['AesExchangeKeyEntryKeyString', Dict[str, Dict['AesExchangeKeyEncryptionKeypairIdentifier', 'HexString']]] = field(default_factory=dict)
 	transfer_keys: Dict['AesExchangeKeyEncryptionKeypairIdentifier', Dict['AesExchangeKeyEncryptionKeypairIdentifier', 'HexString']] = field(default_factory=dict)
 	private_key_shamir_partitions: Dict[str, 'HexString'] = field(default_factory=dict)
 	public_key: Optional['SpkiHexString'] = None
@@ -655,7 +656,7 @@ class ListOfIds:
 		)
 
 @dataclass
-class EncryptedTimeTable:
+class TimeTable:
 	id: str
 	rev: Optional[str] = None
 	created: Optional[int] = None
@@ -672,12 +673,6 @@ class EncryptedTimeTable:
 	start_time: Optional[int] = None
 	end_time: Optional[int] = None
 	items: List['TimeTableItem'] = field(default_factory=list)
-	secret_foreign_keys: List[str] = field(default_factory=list)
-	crypted_foreign_keys: Dict[str, List['Delegation']] = field(default_factory=dict)
-	delegations: Dict[str, List['Delegation']] = field(default_factory=dict)
-	encryption_keys: Dict[str, List['Delegation']] = field(default_factory=dict)
-	encrypted_self: Optional['Base64String'] = None
-	security_metadata: Optional['SecurityMetadata'] = None
 
 	def __serialize__(self) -> object:
 		return {
@@ -697,16 +692,10 @@ class EncryptedTimeTable:
 			"startTime": self.start_time,
 			"endTime": self.end_time,
 			"items": [x0.__serialize__() for x0 in self.items],
-			"secretForeignKeys": [x0 for x0 in self.secret_foreign_keys],
-			"cryptedForeignKeys": {k0: [x1.__serialize__() for x1 in v0] for k0, v0 in self.crypted_foreign_keys.items()},
-			"delegations": {k0: [x1.__serialize__() for x1 in v0] for k0, v0 in self.delegations.items()},
-			"encryptionKeys": {k0: [x1.__serialize__() for x1 in v0] for k0, v0 in self.encryption_keys.items()},
-			"encryptedSelf": self.encrypted_self,
-			"securityMetadata": self.security_metadata.__serialize__() if self.security_metadata is not None else None,
 		}
 
 	@classmethod
-	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'EncryptedTimeTable':
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'TimeTable':
 		deserialized_dict: dict[str, object]
 		if isinstance(data, str):
 			deserialized_dict = json.loads(data)
@@ -729,903 +718,6 @@ class EncryptedTimeTable:
 			start_time=deserialized_dict.get("startTime"),
 			end_time=deserialized_dict.get("endTime"),
 			items=[TimeTableItem._deserialize(x0) for x0 in deserialized_dict["items"]],
-			secret_foreign_keys=[x0 for x0 in deserialized_dict["secretForeignKeys"]],
-			crypted_foreign_keys=dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["cryptedForeignKeys"].items())),
-			delegations=dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["delegations"].items())),
-			encryption_keys=dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["encryptionKeys"].items())),
-			encrypted_self=deserialized_dict.get("encryptedSelf"),
-			security_metadata=SecurityMetadata._deserialize(deserialized_dict.get("securityMetadata")) if deserialized_dict.get("securityMetadata") is not None else None,
-		)
-
-@dataclass
-class DecryptedTimeTable:
-	id: str
-	rev: Optional[str] = None
-	created: Optional[int] = None
-	modified: Optional[int] = None
-	author: Optional[str] = None
-	responsible: Optional[str] = None
-	medical_location_id: Optional[str] = None
-	tags: List['CodeStub'] = field(default_factory=list)
-	codes: List['CodeStub'] = field(default_factory=list)
-	end_of_life: Optional[int] = None
-	deletion_date: Optional[int] = None
-	name: Optional[str] = None
-	agenda_id: Optional[str] = None
-	start_time: Optional[int] = None
-	end_time: Optional[int] = None
-	items: List['TimeTableItem'] = field(default_factory=list)
-	secret_foreign_keys: List[str] = field(default_factory=list)
-	crypted_foreign_keys: Dict[str, List['Delegation']] = field(default_factory=dict)
-	delegations: Dict[str, List['Delegation']] = field(default_factory=dict)
-	encryption_keys: Dict[str, List['Delegation']] = field(default_factory=dict)
-	encrypted_self: Optional['Base64String'] = None
-	security_metadata: Optional['SecurityMetadata'] = None
-
-	def __serialize__(self) -> object:
-		return {
-			"id": self.id,
-			"rev": self.rev,
-			"created": self.created,
-			"modified": self.modified,
-			"author": self.author,
-			"responsible": self.responsible,
-			"medicalLocationId": self.medical_location_id,
-			"tags": [x0.__serialize__() for x0 in self.tags],
-			"codes": [x0.__serialize__() for x0 in self.codes],
-			"endOfLife": self.end_of_life,
-			"deletionDate": self.deletion_date,
-			"name": self.name,
-			"agendaId": self.agenda_id,
-			"startTime": self.start_time,
-			"endTime": self.end_time,
-			"items": [x0.__serialize__() for x0 in self.items],
-			"secretForeignKeys": [x0 for x0 in self.secret_foreign_keys],
-			"cryptedForeignKeys": {k0: [x1.__serialize__() for x1 in v0] for k0, v0 in self.crypted_foreign_keys.items()},
-			"delegations": {k0: [x1.__serialize__() for x1 in v0] for k0, v0 in self.delegations.items()},
-			"encryptionKeys": {k0: [x1.__serialize__() for x1 in v0] for k0, v0 in self.encryption_keys.items()},
-			"encryptedSelf": self.encrypted_self,
-			"securityMetadata": self.security_metadata.__serialize__() if self.security_metadata is not None else None,
-		}
-
-	@classmethod
-	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'DecryptedTimeTable':
-		deserialized_dict: dict[str, object]
-		if isinstance(data, str):
-			deserialized_dict = json.loads(data)
-		else:
-			deserialized_dict = data
-		return cls(
-			id=deserialized_dict["id"],
-			rev=deserialized_dict.get("rev"),
-			created=deserialized_dict.get("created"),
-			modified=deserialized_dict.get("modified"),
-			author=deserialized_dict.get("author"),
-			responsible=deserialized_dict.get("responsible"),
-			medical_location_id=deserialized_dict.get("medicalLocationId"),
-			tags=[CodeStub._deserialize(x0) for x0 in deserialized_dict["tags"]],
-			codes=[CodeStub._deserialize(x0) for x0 in deserialized_dict["codes"]],
-			end_of_life=deserialized_dict.get("endOfLife"),
-			deletion_date=deserialized_dict.get("deletionDate"),
-			name=deserialized_dict.get("name"),
-			agenda_id=deserialized_dict.get("agendaId"),
-			start_time=deserialized_dict.get("startTime"),
-			end_time=deserialized_dict.get("endTime"),
-			items=[TimeTableItem._deserialize(x0) for x0 in deserialized_dict["items"]],
-			secret_foreign_keys=[x0 for x0 in deserialized_dict["secretForeignKeys"]],
-			crypted_foreign_keys=dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["cryptedForeignKeys"].items())),
-			delegations=dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["delegations"].items())),
-			encryption_keys=dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["encryptionKeys"].items())),
-			encrypted_self=deserialized_dict.get("encryptedSelf"),
-			security_metadata=SecurityMetadata._deserialize(deserialized_dict.get("securityMetadata")) if deserialized_dict.get("securityMetadata") is not None else None,
-		)
-
-TimeTable = Union['EncryptedTimeTable', 'DecryptedTimeTable']
-
-def serialize_time_table(time_table: TimeTable) -> object:
-	if isinstance(time_table, EncryptedTimeTable):
-		serialized_entity = time_table.__serialize__()
-		serialized_entity.update({"kotlinType": "com.icure.cardinal.sdk.model.EncryptedTimeTable"})
-		return serialized_entity
-	elif isinstance(time_table, DecryptedTimeTable):
-		serialized_entity = time_table.__serialize__()
-		serialized_entity.update({"kotlinType": "com.icure.cardinal.sdk.model.DecryptedTimeTable"})
-		return serialized_entity
-	else:
-		raise Exception(f"{type(time_table)} is not a known subclass of TimeTable")
-
-def deserialize_time_table(data: Union[str, Dict[str, object]]) -> 'TimeTable':
-	deserialized_dict: dict[str, object]
-	if isinstance(data, str):
-		deserialized_dict = json.loads(data)
-	else:
-		deserialized_dict = data
-	qualifier = deserialized_dict.get("kotlinType")
-	if qualifier is None:
-		raise Exception("Missing qualifier: kotlinType")
-	if qualifier == "com.icure.cardinal.sdk.model.EncryptedTimeTable":
-		return EncryptedTimeTable._deserialize(deserialized_dict)
-	elif qualifier == "com.icure.cardinal.sdk.model.DecryptedTimeTable":
-		return DecryptedTimeTable._deserialize(deserialized_dict)
-	else:
-		raise Exception(f"{qualifier} is not a known subclass of TimeTable")
-
-@dataclass
-class EncryptedPatient:
-	id: str
-	identifier: List['Identifier'] = field(default_factory=list)
-	rev: Optional[str] = None
-	created: Optional[int] = None
-	modified: Optional[int] = None
-	author: Optional[str] = None
-	responsible: Optional[str] = None
-	tags: List['CodeStub'] = field(default_factory=list)
-	codes: List['CodeStub'] = field(default_factory=list)
-	end_of_life: Optional[int] = None
-	deletion_date: Optional[int] = None
-	first_name: Optional[str] = None
-	last_name: Optional[str] = None
-	names: List['PersonName'] = field(default_factory=list)
-	company_name: Optional[str] = None
-	languages: List[str] = field(default_factory=list)
-	addresses: List['EncryptedAddress'] = field(default_factory=list)
-	civility: Optional[str] = None
-	gender: Optional['Gender'] = field(default_factory=lambda: Gender.Unknown)
-	birth_sex: Optional['Gender'] = field(default_factory=lambda: Gender.Unknown)
-	merge_to_patient_id: Optional[str] = None
-	merged_ids: List[str] = field(default_factory=list)
-	alias: Optional[str] = None
-	active: bool = True
-	deactivation_reason: 'DeactivationReason' = field(default_factory=lambda: DeactivationReason.Nothing)
-	deactivation_date: Optional[int] = None
-	ssin: Optional[str] = None
-	maiden_name: Optional[str] = None
-	spouse_name: Optional[str] = None
-	partner_name: Optional[str] = None
-	personal_status: Optional['PersonalStatus'] = field(default_factory=lambda: PersonalStatus.Unknown)
-	date_of_birth: Optional[int] = None
-	date_of_death: Optional[int] = None
-	timestamp_of_latest_eid_reading: Optional[int] = None
-	place_of_birth: Optional[str] = None
-	place_of_death: Optional[str] = None
-	deceased: Optional[bool] = None
-	education: Optional[str] = None
-	profession: Optional[str] = None
-	notes: List['Annotation'] = field(default_factory=list)
-	note: Optional[str] = None
-	administrative_note: Optional[str] = None
-	nationality: Optional[str] = None
-	race: Optional[str] = None
-	ethnicity: Optional[str] = None
-	preferred_user_id: Optional[str] = None
-	picture: Optional[bytearray] = None
-	external_id: Optional[str] = None
-	insurabilities: List['EncryptedInsurability'] = field(default_factory=list)
-	partnerships: List['Partnership'] = field(default_factory=list)
-	patient_health_care_parties: List['EncryptedPatientHealthCareParty'] = field(default_factory=list)
-	financial_institution_information: List['EncryptedFinancialInstitutionInformation'] = field(default_factory=list)
-	medical_house_contracts: List['EncryptedMedicalHouseContract'] = field(default_factory=list)
-	patient_professions: List['CodeStub'] = field(default_factory=list)
-	parameters: Dict[str, List[str]] = field(default_factory=dict)
-	properties: List['EncryptedPropertyStub'] = field(default_factory=list)
-	hc_party_keys: Dict[str, List['HexString']] = field(default_factory=dict)
-	aes_exchange_keys: Dict['SpkiHexString', Dict[str, Dict['AesExchangeKeyEncryptionKeypairIdentifier', 'HexString']]] = field(default_factory=dict)
-	transfer_keys: Dict['AesExchangeKeyEncryptionKeypairIdentifier', Dict['AesExchangeKeyEncryptionKeypairIdentifier', 'HexString']] = field(default_factory=dict)
-	private_key_shamir_partitions: Dict[str, 'HexString'] = field(default_factory=dict)
-	public_key: Optional['SpkiHexString'] = None
-	public_keys_for_oaep_with_sha256: List['SpkiHexString'] = field(default_factory=list)
-	secret_foreign_keys: List[str] = field(default_factory=list)
-	crypted_foreign_keys: Dict[str, List['Delegation']] = field(default_factory=dict)
-	delegations: Dict[str, List['Delegation']] = field(default_factory=dict)
-	encryption_keys: Dict[str, List['Delegation']] = field(default_factory=dict)
-	encrypted_self: Optional['Base64String'] = None
-	security_metadata: Optional['SecurityMetadata'] = None
-	medical_location_id: Optional[str] = None
-	non_duplicate_ids: List[str] = field(default_factory=list)
-	encrypted_administratives_documents: List[str] = field(default_factory=list)
-	comment: Optional[str] = None
-	warning: Optional[str] = None
-	father_birth_country: Optional['CodeStub'] = None
-	birth_country: Optional['CodeStub'] = None
-	native_country: Optional['CodeStub'] = None
-	social_status: Optional['CodeStub'] = None
-	main_source_of_income: Optional['CodeStub'] = None
-	schooling_infos: List['EncryptedSchoolingInfo'] = field(default_factory=list)
-	employement_infos: List['EncryptedEmploymentInfo'] = field(default_factory=list)
-
-	def __serialize__(self) -> object:
-		return {
-			"id": self.id,
-			"identifier": [x0.__serialize__() for x0 in self.identifier],
-			"rev": self.rev,
-			"created": self.created,
-			"modified": self.modified,
-			"author": self.author,
-			"responsible": self.responsible,
-			"tags": [x0.__serialize__() for x0 in self.tags],
-			"codes": [x0.__serialize__() for x0 in self.codes],
-			"endOfLife": self.end_of_life,
-			"deletionDate": self.deletion_date,
-			"firstName": self.first_name,
-			"lastName": self.last_name,
-			"names": [x0.__serialize__() for x0 in self.names],
-			"companyName": self.company_name,
-			"languages": [x0 for x0 in self.languages],
-			"addresses": [x0.__serialize__() for x0 in self.addresses],
-			"civility": self.civility,
-			"gender": self.gender.__serialize__() if self.gender is not None else None,
-			"birthSex": self.birth_sex.__serialize__() if self.birth_sex is not None else None,
-			"mergeToPatientId": self.merge_to_patient_id,
-			"mergedIds": [x0 for x0 in self.merged_ids],
-			"alias": self.alias,
-			"active": self.active,
-			"deactivationReason": self.deactivation_reason.__serialize__(),
-			"deactivationDate": self.deactivation_date,
-			"ssin": self.ssin,
-			"maidenName": self.maiden_name,
-			"spouseName": self.spouse_name,
-			"partnerName": self.partner_name,
-			"personalStatus": self.personal_status.__serialize__() if self.personal_status is not None else None,
-			"dateOfBirth": self.date_of_birth,
-			"dateOfDeath": self.date_of_death,
-			"timestampOfLatestEidReading": self.timestamp_of_latest_eid_reading,
-			"placeOfBirth": self.place_of_birth,
-			"placeOfDeath": self.place_of_death,
-			"deceased": self.deceased,
-			"education": self.education,
-			"profession": self.profession,
-			"notes": [x0.__serialize__() for x0 in self.notes],
-			"note": self.note,
-			"administrativeNote": self.administrative_note,
-			"nationality": self.nationality,
-			"race": self.race,
-			"ethnicity": self.ethnicity,
-			"preferredUserId": self.preferred_user_id,
-			"picture": base64.b64encode(self.picture).decode('utf-8') if self.picture is not None else None,
-			"externalId": self.external_id,
-			"insurabilities": [x0.__serialize__() for x0 in self.insurabilities],
-			"partnerships": [x0.__serialize__() for x0 in self.partnerships],
-			"patientHealthCareParties": [x0.__serialize__() for x0 in self.patient_health_care_parties],
-			"financialInstitutionInformation": [x0.__serialize__() for x0 in self.financial_institution_information],
-			"medicalHouseContracts": [x0.__serialize__() for x0 in self.medical_house_contracts],
-			"patientProfessions": [x0.__serialize__() for x0 in self.patient_professions],
-			"parameters": {k0: [x1 for x1 in v0] for k0, v0 in self.parameters.items()},
-			"properties": [x0.__serialize__() for x0 in self.properties],
-			"hcPartyKeys": {k0: [x1 for x1 in v0] for k0, v0 in self.hc_party_keys.items()},
-			"aesExchangeKeys": {k0: {k1: {k2: v2 for k2, v2 in v1.items()} for k1, v1 in v0.items()} for k0, v0 in self.aes_exchange_keys.items()},
-			"transferKeys": {k0: {k1: v1 for k1, v1 in v0.items()} for k0, v0 in self.transfer_keys.items()},
-			"privateKeyShamirPartitions": {k0: v0 for k0, v0 in self.private_key_shamir_partitions.items()},
-			"publicKey": self.public_key,
-			"publicKeysForOaepWithSha256": [x0 for x0 in self.public_keys_for_oaep_with_sha256],
-			"secretForeignKeys": [x0 for x0 in self.secret_foreign_keys],
-			"cryptedForeignKeys": {k0: [x1.__serialize__() for x1 in v0] for k0, v0 in self.crypted_foreign_keys.items()},
-			"delegations": {k0: [x1.__serialize__() for x1 in v0] for k0, v0 in self.delegations.items()},
-			"encryptionKeys": {k0: [x1.__serialize__() for x1 in v0] for k0, v0 in self.encryption_keys.items()},
-			"encryptedSelf": self.encrypted_self,
-			"securityMetadata": self.security_metadata.__serialize__() if self.security_metadata is not None else None,
-			"medicalLocationId": self.medical_location_id,
-			"nonDuplicateIds": [x0 for x0 in self.non_duplicate_ids],
-			"encryptedAdministrativesDocuments": [x0 for x0 in self.encrypted_administratives_documents],
-			"comment": self.comment,
-			"warning": self.warning,
-			"fatherBirthCountry": self.father_birth_country.__serialize__() if self.father_birth_country is not None else None,
-			"birthCountry": self.birth_country.__serialize__() if self.birth_country is not None else None,
-			"nativeCountry": self.native_country.__serialize__() if self.native_country is not None else None,
-			"socialStatus": self.social_status.__serialize__() if self.social_status is not None else None,
-			"mainSourceOfIncome": self.main_source_of_income.__serialize__() if self.main_source_of_income is not None else None,
-			"schoolingInfos": [x0.__serialize__() for x0 in self.schooling_infos],
-			"employementInfos": [x0.__serialize__() for x0 in self.employement_infos],
-		}
-
-	@classmethod
-	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'EncryptedPatient':
-		deserialized_dict: dict[str, object]
-		if isinstance(data, str):
-			deserialized_dict = json.loads(data)
-		else:
-			deserialized_dict = data
-		return cls(
-			id=deserialized_dict["id"],
-			identifier=[Identifier._deserialize(x0) for x0 in deserialized_dict["identifier"]],
-			rev=deserialized_dict.get("rev"),
-			created=deserialized_dict.get("created"),
-			modified=deserialized_dict.get("modified"),
-			author=deserialized_dict.get("author"),
-			responsible=deserialized_dict.get("responsible"),
-			tags=[CodeStub._deserialize(x0) for x0 in deserialized_dict["tags"]],
-			codes=[CodeStub._deserialize(x0) for x0 in deserialized_dict["codes"]],
-			end_of_life=deserialized_dict.get("endOfLife"),
-			deletion_date=deserialized_dict.get("deletionDate"),
-			first_name=deserialized_dict.get("firstName"),
-			last_name=deserialized_dict.get("lastName"),
-			names=[PersonName._deserialize(x0) for x0 in deserialized_dict["names"]],
-			company_name=deserialized_dict.get("companyName"),
-			languages=[x0 for x0 in deserialized_dict["languages"]],
-			addresses=[EncryptedAddress._deserialize(x0) for x0 in deserialized_dict["addresses"]],
-			civility=deserialized_dict.get("civility"),
-			gender=Gender._deserialize(deserialized_dict.get("gender")) if deserialized_dict.get("gender") is not None else None,
-			birth_sex=Gender._deserialize(deserialized_dict.get("birthSex")) if deserialized_dict.get("birthSex") is not None else None,
-			merge_to_patient_id=deserialized_dict.get("mergeToPatientId"),
-			merged_ids=[x0 for x0 in deserialized_dict["mergedIds"]],
-			alias=deserialized_dict.get("alias"),
-			active=deserialized_dict["active"],
-			deactivation_reason=DeactivationReason._deserialize(deserialized_dict["deactivationReason"]),
-			deactivation_date=deserialized_dict.get("deactivationDate"),
-			ssin=deserialized_dict.get("ssin"),
-			maiden_name=deserialized_dict.get("maidenName"),
-			spouse_name=deserialized_dict.get("spouseName"),
-			partner_name=deserialized_dict.get("partnerName"),
-			personal_status=PersonalStatus._deserialize(deserialized_dict.get("personalStatus")) if deserialized_dict.get("personalStatus") is not None else None,
-			date_of_birth=deserialized_dict.get("dateOfBirth"),
-			date_of_death=deserialized_dict.get("dateOfDeath"),
-			timestamp_of_latest_eid_reading=deserialized_dict.get("timestampOfLatestEidReading"),
-			place_of_birth=deserialized_dict.get("placeOfBirth"),
-			place_of_death=deserialized_dict.get("placeOfDeath"),
-			deceased=deserialized_dict.get("deceased"),
-			education=deserialized_dict.get("education"),
-			profession=deserialized_dict.get("profession"),
-			notes=[Annotation._deserialize(x0) for x0 in deserialized_dict["notes"]],
-			note=deserialized_dict.get("note"),
-			administrative_note=deserialized_dict.get("administrativeNote"),
-			nationality=deserialized_dict.get("nationality"),
-			race=deserialized_dict.get("race"),
-			ethnicity=deserialized_dict.get("ethnicity"),
-			preferred_user_id=deserialized_dict.get("preferredUserId"),
-			picture=bytearray(base64.b64decode(deserialized_dict.get("picture"))) if deserialized_dict.get("picture") is not None else None,
-			external_id=deserialized_dict.get("externalId"),
-			insurabilities=[EncryptedInsurability._deserialize(x0) for x0 in deserialized_dict["insurabilities"]],
-			partnerships=[Partnership._deserialize(x0) for x0 in deserialized_dict["partnerships"]],
-			patient_health_care_parties=[EncryptedPatientHealthCareParty._deserialize(x0) for x0 in deserialized_dict["patientHealthCareParties"]],
-			financial_institution_information=[EncryptedFinancialInstitutionInformation._deserialize(x0) for x0 in deserialized_dict["financialInstitutionInformation"]],
-			medical_house_contracts=[EncryptedMedicalHouseContract._deserialize(x0) for x0 in deserialized_dict["medicalHouseContracts"]],
-			patient_professions=[CodeStub._deserialize(x0) for x0 in deserialized_dict["patientProfessions"]],
-			parameters=dict(map(lambda kv0: (kv0[0], [x1 for x1 in kv0[1]]), deserialized_dict["parameters"].items())),
-			properties=[EncryptedPropertyStub._deserialize(x0) for x0 in deserialized_dict["properties"]],
-			hc_party_keys=dict(map(lambda kv0: (kv0[0], [x1 for x1 in kv0[1]]), deserialized_dict["hcPartyKeys"].items())),
-			aes_exchange_keys=dict(map(lambda kv0: (kv0[0], dict(map(lambda kv1: (kv1[0], dict(map(lambda kv2: (kv2[0], kv2[1]), kv1[1].items()))), kv0[1].items()))), deserialized_dict["aesExchangeKeys"].items())),
-			transfer_keys=dict(map(lambda kv0: (kv0[0], dict(map(lambda kv1: (kv1[0], kv1[1]), kv0[1].items()))), deserialized_dict["transferKeys"].items())),
-			private_key_shamir_partitions=dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict["privateKeyShamirPartitions"].items())),
-			public_key=deserialized_dict.get("publicKey"),
-			public_keys_for_oaep_with_sha256=[x0 for x0 in deserialized_dict["publicKeysForOaepWithSha256"]],
-			secret_foreign_keys=[x0 for x0 in deserialized_dict["secretForeignKeys"]],
-			crypted_foreign_keys=dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["cryptedForeignKeys"].items())),
-			delegations=dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["delegations"].items())),
-			encryption_keys=dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["encryptionKeys"].items())),
-			encrypted_self=deserialized_dict.get("encryptedSelf"),
-			security_metadata=SecurityMetadata._deserialize(deserialized_dict.get("securityMetadata")) if deserialized_dict.get("securityMetadata") is not None else None,
-			medical_location_id=deserialized_dict.get("medicalLocationId"),
-			non_duplicate_ids=[x0 for x0 in deserialized_dict["nonDuplicateIds"]],
-			encrypted_administratives_documents=[x0 for x0 in deserialized_dict["encryptedAdministrativesDocuments"]],
-			comment=deserialized_dict.get("comment"),
-			warning=deserialized_dict.get("warning"),
-			father_birth_country=CodeStub._deserialize(deserialized_dict.get("fatherBirthCountry")) if deserialized_dict.get("fatherBirthCountry") is not None else None,
-			birth_country=CodeStub._deserialize(deserialized_dict.get("birthCountry")) if deserialized_dict.get("birthCountry") is not None else None,
-			native_country=CodeStub._deserialize(deserialized_dict.get("nativeCountry")) if deserialized_dict.get("nativeCountry") is not None else None,
-			social_status=CodeStub._deserialize(deserialized_dict.get("socialStatus")) if deserialized_dict.get("socialStatus") is not None else None,
-			main_source_of_income=CodeStub._deserialize(deserialized_dict.get("mainSourceOfIncome")) if deserialized_dict.get("mainSourceOfIncome") is not None else None,
-			schooling_infos=[EncryptedSchoolingInfo._deserialize(x0) for x0 in deserialized_dict["schoolingInfos"]],
-			employement_infos=[EncryptedEmploymentInfo._deserialize(x0) for x0 in deserialized_dict["employementInfos"]],
-		)
-
-@dataclass
-class DecryptedPatient:
-	id: str
-	identifier: List['Identifier'] = field(default_factory=list)
-	rev: Optional[str] = None
-	created: Optional[int] = None
-	modified: Optional[int] = None
-	author: Optional[str] = None
-	responsible: Optional[str] = None
-	tags: List['CodeStub'] = field(default_factory=list)
-	codes: List['CodeStub'] = field(default_factory=list)
-	end_of_life: Optional[int] = None
-	deletion_date: Optional[int] = None
-	first_name: Optional[str] = None
-	last_name: Optional[str] = None
-	names: List['PersonName'] = field(default_factory=list)
-	company_name: Optional[str] = None
-	languages: List[str] = field(default_factory=list)
-	addresses: List['DecryptedAddress'] = field(default_factory=list)
-	civility: Optional[str] = None
-	gender: Optional['Gender'] = field(default_factory=lambda: Gender.Unknown)
-	birth_sex: Optional['Gender'] = field(default_factory=lambda: Gender.Unknown)
-	merge_to_patient_id: Optional[str] = None
-	merged_ids: List[str] = field(default_factory=list)
-	alias: Optional[str] = None
-	active: bool = True
-	deactivation_reason: 'DeactivationReason' = field(default_factory=lambda: DeactivationReason.Nothing)
-	deactivation_date: Optional[int] = None
-	ssin: Optional[str] = None
-	maiden_name: Optional[str] = None
-	spouse_name: Optional[str] = None
-	partner_name: Optional[str] = None
-	personal_status: Optional['PersonalStatus'] = field(default_factory=lambda: PersonalStatus.Unknown)
-	date_of_birth: Optional[int] = None
-	date_of_death: Optional[int] = None
-	timestamp_of_latest_eid_reading: Optional[int] = None
-	place_of_birth: Optional[str] = None
-	place_of_death: Optional[str] = None
-	deceased: Optional[bool] = None
-	education: Optional[str] = None
-	profession: Optional[str] = None
-	notes: List['Annotation'] = field(default_factory=list)
-	note: Optional[str] = None
-	administrative_note: Optional[str] = None
-	nationality: Optional[str] = None
-	race: Optional[str] = None
-	ethnicity: Optional[str] = None
-	preferred_user_id: Optional[str] = None
-	picture: Optional[bytearray] = None
-	external_id: Optional[str] = None
-	insurabilities: List['DecryptedInsurability'] = field(default_factory=list)
-	partnerships: List['Partnership'] = field(default_factory=list)
-	patient_health_care_parties: List['DecryptedPatientHealthCareParty'] = field(default_factory=list)
-	financial_institution_information: List['DecryptedFinancialInstitutionInformation'] = field(default_factory=list)
-	medical_house_contracts: List['DecryptedMedicalHouseContract'] = field(default_factory=list)
-	patient_professions: List['CodeStub'] = field(default_factory=list)
-	parameters: Dict[str, List[str]] = field(default_factory=dict)
-	properties: List['DecryptedPropertyStub'] = field(default_factory=list)
-	hc_party_keys: Dict[str, List['HexString']] = field(default_factory=dict)
-	aes_exchange_keys: Dict['SpkiHexString', Dict[str, Dict['AesExchangeKeyEncryptionKeypairIdentifier', 'HexString']]] = field(default_factory=dict)
-	transfer_keys: Dict['AesExchangeKeyEncryptionKeypairIdentifier', Dict['AesExchangeKeyEncryptionKeypairIdentifier', 'HexString']] = field(default_factory=dict)
-	private_key_shamir_partitions: Dict[str, 'HexString'] = field(default_factory=dict)
-	public_key: Optional['SpkiHexString'] = None
-	public_keys_for_oaep_with_sha256: List['SpkiHexString'] = field(default_factory=list)
-	secret_foreign_keys: List[str] = field(default_factory=list)
-	crypted_foreign_keys: Dict[str, List['Delegation']] = field(default_factory=dict)
-	delegations: Dict[str, List['Delegation']] = field(default_factory=dict)
-	encryption_keys: Dict[str, List['Delegation']] = field(default_factory=dict)
-	encrypted_self: Optional['Base64String'] = None
-	security_metadata: Optional['SecurityMetadata'] = None
-	medical_location_id: Optional[str] = None
-	non_duplicate_ids: List[str] = field(default_factory=list)
-	encrypted_administratives_documents: List[str] = field(default_factory=list)
-	comment: Optional[str] = None
-	warning: Optional[str] = None
-	father_birth_country: Optional['CodeStub'] = None
-	birth_country: Optional['CodeStub'] = None
-	native_country: Optional['CodeStub'] = None
-	social_status: Optional['CodeStub'] = None
-	main_source_of_income: Optional['CodeStub'] = None
-	schooling_infos: List['DecryptedSchoolingInfo'] = field(default_factory=list)
-	employement_infos: List['DecryptedEmploymentInfo'] = field(default_factory=list)
-
-	def __serialize__(self) -> object:
-		return {
-			"id": self.id,
-			"identifier": [x0.__serialize__() for x0 in self.identifier],
-			"rev": self.rev,
-			"created": self.created,
-			"modified": self.modified,
-			"author": self.author,
-			"responsible": self.responsible,
-			"tags": [x0.__serialize__() for x0 in self.tags],
-			"codes": [x0.__serialize__() for x0 in self.codes],
-			"endOfLife": self.end_of_life,
-			"deletionDate": self.deletion_date,
-			"firstName": self.first_name,
-			"lastName": self.last_name,
-			"names": [x0.__serialize__() for x0 in self.names],
-			"companyName": self.company_name,
-			"languages": [x0 for x0 in self.languages],
-			"addresses": [x0.__serialize__() for x0 in self.addresses],
-			"civility": self.civility,
-			"gender": self.gender.__serialize__() if self.gender is not None else None,
-			"birthSex": self.birth_sex.__serialize__() if self.birth_sex is not None else None,
-			"mergeToPatientId": self.merge_to_patient_id,
-			"mergedIds": [x0 for x0 in self.merged_ids],
-			"alias": self.alias,
-			"active": self.active,
-			"deactivationReason": self.deactivation_reason.__serialize__(),
-			"deactivationDate": self.deactivation_date,
-			"ssin": self.ssin,
-			"maidenName": self.maiden_name,
-			"spouseName": self.spouse_name,
-			"partnerName": self.partner_name,
-			"personalStatus": self.personal_status.__serialize__() if self.personal_status is not None else None,
-			"dateOfBirth": self.date_of_birth,
-			"dateOfDeath": self.date_of_death,
-			"timestampOfLatestEidReading": self.timestamp_of_latest_eid_reading,
-			"placeOfBirth": self.place_of_birth,
-			"placeOfDeath": self.place_of_death,
-			"deceased": self.deceased,
-			"education": self.education,
-			"profession": self.profession,
-			"notes": [x0.__serialize__() for x0 in self.notes],
-			"note": self.note,
-			"administrativeNote": self.administrative_note,
-			"nationality": self.nationality,
-			"race": self.race,
-			"ethnicity": self.ethnicity,
-			"preferredUserId": self.preferred_user_id,
-			"picture": base64.b64encode(self.picture).decode('utf-8') if self.picture is not None else None,
-			"externalId": self.external_id,
-			"insurabilities": [x0.__serialize__() for x0 in self.insurabilities],
-			"partnerships": [x0.__serialize__() for x0 in self.partnerships],
-			"patientHealthCareParties": [x0.__serialize__() for x0 in self.patient_health_care_parties],
-			"financialInstitutionInformation": [x0.__serialize__() for x0 in self.financial_institution_information],
-			"medicalHouseContracts": [x0.__serialize__() for x0 in self.medical_house_contracts],
-			"patientProfessions": [x0.__serialize__() for x0 in self.patient_professions],
-			"parameters": {k0: [x1 for x1 in v0] for k0, v0 in self.parameters.items()},
-			"properties": [x0.__serialize__() for x0 in self.properties],
-			"hcPartyKeys": {k0: [x1 for x1 in v0] for k0, v0 in self.hc_party_keys.items()},
-			"aesExchangeKeys": {k0: {k1: {k2: v2 for k2, v2 in v1.items()} for k1, v1 in v0.items()} for k0, v0 in self.aes_exchange_keys.items()},
-			"transferKeys": {k0: {k1: v1 for k1, v1 in v0.items()} for k0, v0 in self.transfer_keys.items()},
-			"privateKeyShamirPartitions": {k0: v0 for k0, v0 in self.private_key_shamir_partitions.items()},
-			"publicKey": self.public_key,
-			"publicKeysForOaepWithSha256": [x0 for x0 in self.public_keys_for_oaep_with_sha256],
-			"secretForeignKeys": [x0 for x0 in self.secret_foreign_keys],
-			"cryptedForeignKeys": {k0: [x1.__serialize__() for x1 in v0] for k0, v0 in self.crypted_foreign_keys.items()},
-			"delegations": {k0: [x1.__serialize__() for x1 in v0] for k0, v0 in self.delegations.items()},
-			"encryptionKeys": {k0: [x1.__serialize__() for x1 in v0] for k0, v0 in self.encryption_keys.items()},
-			"encryptedSelf": self.encrypted_self,
-			"securityMetadata": self.security_metadata.__serialize__() if self.security_metadata is not None else None,
-			"medicalLocationId": self.medical_location_id,
-			"nonDuplicateIds": [x0 for x0 in self.non_duplicate_ids],
-			"encryptedAdministrativesDocuments": [x0 for x0 in self.encrypted_administratives_documents],
-			"comment": self.comment,
-			"warning": self.warning,
-			"fatherBirthCountry": self.father_birth_country.__serialize__() if self.father_birth_country is not None else None,
-			"birthCountry": self.birth_country.__serialize__() if self.birth_country is not None else None,
-			"nativeCountry": self.native_country.__serialize__() if self.native_country is not None else None,
-			"socialStatus": self.social_status.__serialize__() if self.social_status is not None else None,
-			"mainSourceOfIncome": self.main_source_of_income.__serialize__() if self.main_source_of_income is not None else None,
-			"schoolingInfos": [x0.__serialize__() for x0 in self.schooling_infos],
-			"employementInfos": [x0.__serialize__() for x0 in self.employement_infos],
-		}
-
-	@classmethod
-	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'DecryptedPatient':
-		deserialized_dict: dict[str, object]
-		if isinstance(data, str):
-			deserialized_dict = json.loads(data)
-		else:
-			deserialized_dict = data
-		return cls(
-			id=deserialized_dict["id"],
-			identifier=[Identifier._deserialize(x0) for x0 in deserialized_dict["identifier"]],
-			rev=deserialized_dict.get("rev"),
-			created=deserialized_dict.get("created"),
-			modified=deserialized_dict.get("modified"),
-			author=deserialized_dict.get("author"),
-			responsible=deserialized_dict.get("responsible"),
-			tags=[CodeStub._deserialize(x0) for x0 in deserialized_dict["tags"]],
-			codes=[CodeStub._deserialize(x0) for x0 in deserialized_dict["codes"]],
-			end_of_life=deserialized_dict.get("endOfLife"),
-			deletion_date=deserialized_dict.get("deletionDate"),
-			first_name=deserialized_dict.get("firstName"),
-			last_name=deserialized_dict.get("lastName"),
-			names=[PersonName._deserialize(x0) for x0 in deserialized_dict["names"]],
-			company_name=deserialized_dict.get("companyName"),
-			languages=[x0 for x0 in deserialized_dict["languages"]],
-			addresses=[DecryptedAddress._deserialize(x0) for x0 in deserialized_dict["addresses"]],
-			civility=deserialized_dict.get("civility"),
-			gender=Gender._deserialize(deserialized_dict.get("gender")) if deserialized_dict.get("gender") is not None else None,
-			birth_sex=Gender._deserialize(deserialized_dict.get("birthSex")) if deserialized_dict.get("birthSex") is not None else None,
-			merge_to_patient_id=deserialized_dict.get("mergeToPatientId"),
-			merged_ids=[x0 for x0 in deserialized_dict["mergedIds"]],
-			alias=deserialized_dict.get("alias"),
-			active=deserialized_dict["active"],
-			deactivation_reason=DeactivationReason._deserialize(deserialized_dict["deactivationReason"]),
-			deactivation_date=deserialized_dict.get("deactivationDate"),
-			ssin=deserialized_dict.get("ssin"),
-			maiden_name=deserialized_dict.get("maidenName"),
-			spouse_name=deserialized_dict.get("spouseName"),
-			partner_name=deserialized_dict.get("partnerName"),
-			personal_status=PersonalStatus._deserialize(deserialized_dict.get("personalStatus")) if deserialized_dict.get("personalStatus") is not None else None,
-			date_of_birth=deserialized_dict.get("dateOfBirth"),
-			date_of_death=deserialized_dict.get("dateOfDeath"),
-			timestamp_of_latest_eid_reading=deserialized_dict.get("timestampOfLatestEidReading"),
-			place_of_birth=deserialized_dict.get("placeOfBirth"),
-			place_of_death=deserialized_dict.get("placeOfDeath"),
-			deceased=deserialized_dict.get("deceased"),
-			education=deserialized_dict.get("education"),
-			profession=deserialized_dict.get("profession"),
-			notes=[Annotation._deserialize(x0) for x0 in deserialized_dict["notes"]],
-			note=deserialized_dict.get("note"),
-			administrative_note=deserialized_dict.get("administrativeNote"),
-			nationality=deserialized_dict.get("nationality"),
-			race=deserialized_dict.get("race"),
-			ethnicity=deserialized_dict.get("ethnicity"),
-			preferred_user_id=deserialized_dict.get("preferredUserId"),
-			picture=bytearray(base64.b64decode(deserialized_dict.get("picture"))) if deserialized_dict.get("picture") is not None else None,
-			external_id=deserialized_dict.get("externalId"),
-			insurabilities=[DecryptedInsurability._deserialize(x0) for x0 in deserialized_dict["insurabilities"]],
-			partnerships=[Partnership._deserialize(x0) for x0 in deserialized_dict["partnerships"]],
-			patient_health_care_parties=[DecryptedPatientHealthCareParty._deserialize(x0) for x0 in deserialized_dict["patientHealthCareParties"]],
-			financial_institution_information=[DecryptedFinancialInstitutionInformation._deserialize(x0) for x0 in deserialized_dict["financialInstitutionInformation"]],
-			medical_house_contracts=[DecryptedMedicalHouseContract._deserialize(x0) for x0 in deserialized_dict["medicalHouseContracts"]],
-			patient_professions=[CodeStub._deserialize(x0) for x0 in deserialized_dict["patientProfessions"]],
-			parameters=dict(map(lambda kv0: (kv0[0], [x1 for x1 in kv0[1]]), deserialized_dict["parameters"].items())),
-			properties=[DecryptedPropertyStub._deserialize(x0) for x0 in deserialized_dict["properties"]],
-			hc_party_keys=dict(map(lambda kv0: (kv0[0], [x1 for x1 in kv0[1]]), deserialized_dict["hcPartyKeys"].items())),
-			aes_exchange_keys=dict(map(lambda kv0: (kv0[0], dict(map(lambda kv1: (kv1[0], dict(map(lambda kv2: (kv2[0], kv2[1]), kv1[1].items()))), kv0[1].items()))), deserialized_dict["aesExchangeKeys"].items())),
-			transfer_keys=dict(map(lambda kv0: (kv0[0], dict(map(lambda kv1: (kv1[0], kv1[1]), kv0[1].items()))), deserialized_dict["transferKeys"].items())),
-			private_key_shamir_partitions=dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict["privateKeyShamirPartitions"].items())),
-			public_key=deserialized_dict.get("publicKey"),
-			public_keys_for_oaep_with_sha256=[x0 for x0 in deserialized_dict["publicKeysForOaepWithSha256"]],
-			secret_foreign_keys=[x0 for x0 in deserialized_dict["secretForeignKeys"]],
-			crypted_foreign_keys=dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["cryptedForeignKeys"].items())),
-			delegations=dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["delegations"].items())),
-			encryption_keys=dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["encryptionKeys"].items())),
-			encrypted_self=deserialized_dict.get("encryptedSelf"),
-			security_metadata=SecurityMetadata._deserialize(deserialized_dict.get("securityMetadata")) if deserialized_dict.get("securityMetadata") is not None else None,
-			medical_location_id=deserialized_dict.get("medicalLocationId"),
-			non_duplicate_ids=[x0 for x0 in deserialized_dict["nonDuplicateIds"]],
-			encrypted_administratives_documents=[x0 for x0 in deserialized_dict["encryptedAdministrativesDocuments"]],
-			comment=deserialized_dict.get("comment"),
-			warning=deserialized_dict.get("warning"),
-			father_birth_country=CodeStub._deserialize(deserialized_dict.get("fatherBirthCountry")) if deserialized_dict.get("fatherBirthCountry") is not None else None,
-			birth_country=CodeStub._deserialize(deserialized_dict.get("birthCountry")) if deserialized_dict.get("birthCountry") is not None else None,
-			native_country=CodeStub._deserialize(deserialized_dict.get("nativeCountry")) if deserialized_dict.get("nativeCountry") is not None else None,
-			social_status=CodeStub._deserialize(deserialized_dict.get("socialStatus")) if deserialized_dict.get("socialStatus") is not None else None,
-			main_source_of_income=CodeStub._deserialize(deserialized_dict.get("mainSourceOfIncome")) if deserialized_dict.get("mainSourceOfIncome") is not None else None,
-			schooling_infos=[DecryptedSchoolingInfo._deserialize(x0) for x0 in deserialized_dict["schoolingInfos"]],
-			employement_infos=[DecryptedEmploymentInfo._deserialize(x0) for x0 in deserialized_dict["employementInfos"]],
-		)
-
-Patient = Union['EncryptedPatient', 'DecryptedPatient']
-
-def serialize_patient(patient: Patient) -> object:
-	if isinstance(patient, EncryptedPatient):
-		serialized_entity = patient.__serialize__()
-		serialized_entity.update({"kotlinType": "com.icure.cardinal.sdk.model.EncryptedPatient"})
-		return serialized_entity
-	elif isinstance(patient, DecryptedPatient):
-		serialized_entity = patient.__serialize__()
-		serialized_entity.update({"kotlinType": "com.icure.cardinal.sdk.model.DecryptedPatient"})
-		return serialized_entity
-	else:
-		raise Exception(f"{type(patient)} is not a known subclass of Patient")
-
-def deserialize_patient(data: Union[str, Dict[str, object]]) -> 'Patient':
-	deserialized_dict: dict[str, object]
-	if isinstance(data, str):
-		deserialized_dict = json.loads(data)
-	else:
-		deserialized_dict = data
-	qualifier = deserialized_dict.get("kotlinType")
-	if qualifier is None:
-		raise Exception("Missing qualifier: kotlinType")
-	if qualifier == "com.icure.cardinal.sdk.model.EncryptedPatient":
-		return EncryptedPatient._deserialize(deserialized_dict)
-	elif qualifier == "com.icure.cardinal.sdk.model.DecryptedPatient":
-		return DecryptedPatient._deserialize(deserialized_dict)
-	else:
-		raise Exception(f"{qualifier} is not a known subclass of Patient")
-
-@dataclass
-class User:
-	id: str
-	rev: Optional[str] = None
-	deletion_date: Optional[int] = None
-	created: Optional[int] = None
-	identifier: List['Identifier'] = field(default_factory=list)
-	name: Optional[str] = None
-	properties: List['DecryptedPropertyStub'] = field(default_factory=list)
-	permissions: List['Permission'] = field(default_factory=list)
-	roles: List[str] = field(default_factory=list)
-	type: Optional['UsersType'] = None
-	status: Optional['UsersStatus'] = None
-	login: Optional[str] = None
-	password_hash: Optional[str] = None
-	group_id: Optional[str] = None
-	healthcare_party_id: Optional[str] = None
-	patient_id: Optional[str] = None
-	device_id: Optional[str] = None
-	auto_delegations: Dict['DelegationTag', List[str]] = field(default_factory=dict)
-	created_date: Optional[int] = None
-	terms_of_use_date: Optional[int] = None
-	email: Optional[str] = None
-	mobile_phone: Optional[str] = None
-	application_tokens: Dict[str, str] = field(default_factory=dict)
-	authentication_tokens: Dict[str, 'AuthenticationToken'] = field(default_factory=dict)
-	system_metadata: Optional['User.SystemMetadata'] = None
-
-	@dataclass
-	class SystemMetadata:
-		roles: List[str]
-		is_admin: bool
-		inherits_roles: bool
-
-		def __serialize__(self) -> object:
-			return {
-				"roles": [x0 for x0 in self.roles],
-				"isAdmin": self.is_admin,
-				"inheritsRoles": self.inherits_roles,
-			}
-
-		@classmethod
-		def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'User.SystemMetadata':
-			deserialized_dict: dict[str, object]
-			if isinstance(data, str):
-				deserialized_dict = json.loads(data)
-			else:
-				deserialized_dict = data
-			return cls(
-				roles=[x0 for x0 in deserialized_dict["roles"]],
-				is_admin=deserialized_dict["isAdmin"],
-				inherits_roles=deserialized_dict["inheritsRoles"],
-			)
-
-	def __serialize__(self) -> object:
-		return {
-			"id": self.id,
-			"rev": self.rev,
-			"deletionDate": self.deletion_date,
-			"created": self.created,
-			"identifier": [x0.__serialize__() for x0 in self.identifier],
-			"name": self.name,
-			"properties": [x0.__serialize__() for x0 in self.properties],
-			"permissions": [x0.__serialize__() for x0 in self.permissions],
-			"roles": [x0 for x0 in self.roles],
-			"type": self.type.__serialize__() if self.type is not None else None,
-			"status": self.status.__serialize__() if self.status is not None else None,
-			"login": self.login,
-			"passwordHash": self.password_hash,
-			"groupId": self.group_id,
-			"healthcarePartyId": self.healthcare_party_id,
-			"patientId": self.patient_id,
-			"deviceId": self.device_id,
-			"autoDelegations": {k0.__serialize__(): [x1 for x1 in v0] for k0, v0 in self.auto_delegations.items()},
-			"createdDate": self.created_date,
-			"termsOfUseDate": self.terms_of_use_date,
-			"email": self.email,
-			"mobilePhone": self.mobile_phone,
-			"applicationTokens": {k0: v0 for k0, v0 in self.application_tokens.items()},
-			"authenticationTokens": {k0: v0.__serialize__() for k0, v0 in self.authentication_tokens.items()},
-			"systemMetadata": self.system_metadata.__serialize__() if self.system_metadata is not None else None,
-		}
-
-	@classmethod
-	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'User':
-		deserialized_dict: dict[str, object]
-		if isinstance(data, str):
-			deserialized_dict = json.loads(data)
-		else:
-			deserialized_dict = data
-		return cls(
-			id=deserialized_dict["id"],
-			rev=deserialized_dict.get("rev"),
-			deletion_date=deserialized_dict.get("deletionDate"),
-			created=deserialized_dict.get("created"),
-			identifier=[Identifier._deserialize(x0) for x0 in deserialized_dict["identifier"]],
-			name=deserialized_dict.get("name"),
-			properties=[DecryptedPropertyStub._deserialize(x0) for x0 in deserialized_dict["properties"]],
-			permissions=[Permission._deserialize(x0) for x0 in deserialized_dict["permissions"]],
-			roles=[x0 for x0 in deserialized_dict["roles"]],
-			type=UsersType._deserialize(deserialized_dict.get("type")) if deserialized_dict.get("type") is not None else None,
-			status=UsersStatus._deserialize(deserialized_dict.get("status")) if deserialized_dict.get("status") is not None else None,
-			login=deserialized_dict.get("login"),
-			password_hash=deserialized_dict.get("passwordHash"),
-			group_id=deserialized_dict.get("groupId"),
-			healthcare_party_id=deserialized_dict.get("healthcarePartyId"),
-			patient_id=deserialized_dict.get("patientId"),
-			device_id=deserialized_dict.get("deviceId"),
-			auto_delegations=dict(map(lambda kv0: (DelegationTag._deserialize(kv0[0]), [x1 for x1 in kv0[1]]), deserialized_dict["autoDelegations"].items())),
-			created_date=deserialized_dict.get("createdDate"),
-			terms_of_use_date=deserialized_dict.get("termsOfUseDate"),
-			email=deserialized_dict.get("email"),
-			mobile_phone=deserialized_dict.get("mobilePhone"),
-			application_tokens=dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict["applicationTokens"].items())),
-			authentication_tokens=dict(map(lambda kv0: (kv0[0], AuthenticationToken._deserialize(kv0[1])), deserialized_dict["authenticationTokens"].items())),
-			system_metadata=User.SystemMetadata._deserialize(deserialized_dict.get("systemMetadata")) if deserialized_dict.get("systemMetadata") is not None else None,
-		)
-
-class AccessLevel(Enum):
-	Read = "READ"
-	Write = "WRITE"
-
-	def __serialize__(self) -> object:
-		return self.value
-
-	@classmethod
-	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'AccessLevel':
-		if data == "READ":
-			return AccessLevel.Read
-		elif data == "WRITE":
-			return AccessLevel.Write
-		else:
-			raise Exception(f"{data} is not a valid value for AccessLevel enum.")
-
-class SecretIdUseOptionUseAnyConfidential(metaclass=SingletonMeta):
-
-	def __serialize__(self) -> object:
-		return {}
-
-	@classmethod
-	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'UseAnyConfidential':
-		return cls()
-
-class SecretIdUseOptionUseAnySharedWithParent(metaclass=SingletonMeta):
-
-	def __serialize__(self) -> object:
-		return {}
-
-	@classmethod
-	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'UseAnySharedWithParent':
-		return cls()
-
-@dataclass
-class SecretIdUseOptionUse:
-	secret_ids: List[str]
-
-	def __serialize__(self) -> object:
-		return {
-			"secretIds": [x0 for x0 in self.secret_ids],
-		}
-
-	@classmethod
-	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'SecretIdUseOptionUse':
-		deserialized_dict: dict[str, object]
-		if isinstance(data, str):
-			deserialized_dict = json.loads(data)
-		else:
-			deserialized_dict = data
-		return cls(
-			secret_ids=[x0 for x0 in deserialized_dict["secretIds"]],
-		)
-
-SecretIdUseOption = Union['SecretIdUseOptionUseAnyConfidential', 'SecretIdUseOptionUseAnySharedWithParent', 'SecretIdUseOptionUse']
-
-def serialize_secret_id_use_option(secret_id_use_option: SecretIdUseOption) -> object:
-	if isinstance(secret_id_use_option, SecretIdUseOptionUseAnyConfidential):
-		serialized_entity = secret_id_use_option.__serialize__()
-		serialized_entity.update({"kotlinType": "com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption.UseAnyConfidential"})
-		return serialized_entity
-	elif isinstance(secret_id_use_option, SecretIdUseOptionUseAnySharedWithParent):
-		serialized_entity = secret_id_use_option.__serialize__()
-		serialized_entity.update({"kotlinType": "com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption.UseAnySharedWithParent"})
-		return serialized_entity
-	elif isinstance(secret_id_use_option, SecretIdUseOptionUse):
-		serialized_entity = secret_id_use_option.__serialize__()
-		serialized_entity.update({"kotlinType": "com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption.Use"})
-		return serialized_entity
-	else:
-		raise Exception(f"{type(secret_id_use_option)} is not a known subclass of SecretIdUseOption")
-
-def deserialize_secret_id_use_option(data: Union[str, Dict[str, object]]) -> 'SecretIdUseOption':
-	deserialized_dict: dict[str, object]
-	if isinstance(data, str):
-		deserialized_dict = json.loads(data)
-	else:
-		deserialized_dict = data
-	qualifier = deserialized_dict.get("kotlinType")
-	if qualifier is None:
-		raise Exception("Missing qualifier: kotlinType")
-	if qualifier == "com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption.UseAnyConfidential":
-		return SecretIdUseOptionUseAnyConfidential._deserialize(deserialized_dict)
-	elif qualifier == "com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption.UseAnySharedWithParent":
-		return SecretIdUseOptionUseAnySharedWithParent._deserialize(deserialized_dict)
-	elif qualifier == "com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption.Use":
-		return SecretIdUseOptionUse._deserialize(deserialized_dict)
-	else:
-		raise Exception(f"{qualifier} is not a known subclass of SecretIdUseOption")
-
-@dataclass
-class TimeTableShareOptions:
-	requested_permissions: 'RequestedPermission' = field(default_factory=lambda: RequestedPermission.MaxWrite)
-	share_encryption_key: 'ShareMetadataBehaviour' = field(default_factory=lambda: ShareMetadataBehaviour.IfAvailable)
-	share_secret_ids: 'SecretIdShareOptions' = field(default_factory=lambda: SecretIdShareOptionsAllAvailable(require_at_least_one=False))
-
-	def __serialize__(self) -> object:
-		return {
-			"requestedPermissions": self.requested_permissions.__serialize__(),
-			"shareEncryptionKey": self.share_encryption_key.__serialize__(),
-			"shareSecretIds": serialize_secret_id_share_options(self.share_secret_ids),
-		}
-
-	@classmethod
-	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'TimeTableShareOptions':
-		deserialized_dict: dict[str, object]
-		if isinstance(data, str):
-			deserialized_dict = json.loads(data)
-		else:
-			deserialized_dict = data
-		return cls(
-			requested_permissions=RequestedPermission._deserialize(deserialized_dict["requestedPermissions"]),
-			share_encryption_key=ShareMetadataBehaviour._deserialize(deserialized_dict["shareEncryptionKey"]),
-			share_secret_ids=deserialize_secret_id_share_options(deserialized_dict["shareSecretIds"]),
 		)
 
 @dataclass
@@ -1909,6 +1001,556 @@ def deserialize_document(data: Union[str, Dict[str, object]]) -> 'Document':
 		raise Exception(f"{qualifier} is not a known subclass of Document")
 
 @dataclass
+class EncryptedPatient:
+	id: str
+	identifier: List['Identifier'] = field(default_factory=list)
+	rev: Optional[str] = None
+	created: Optional[int] = None
+	modified: Optional[int] = None
+	author: Optional[str] = None
+	responsible: Optional[str] = None
+	tags: List['CodeStub'] = field(default_factory=list)
+	codes: List['CodeStub'] = field(default_factory=list)
+	end_of_life: Optional[int] = None
+	deletion_date: Optional[int] = None
+	first_name: Optional[str] = None
+	last_name: Optional[str] = None
+	names: List['PersonName'] = field(default_factory=list)
+	company_name: Optional[str] = None
+	languages: List[str] = field(default_factory=list)
+	addresses: List['EncryptedAddress'] = field(default_factory=list)
+	civility: Optional[str] = None
+	gender: Optional['Gender'] = field(default_factory=lambda: Gender.Unknown)
+	birth_sex: Optional['Gender'] = field(default_factory=lambda: Gender.Unknown)
+	merge_to_patient_id: Optional[str] = None
+	merged_ids: List[str] = field(default_factory=list)
+	alias: Optional[str] = None
+	active: bool = True
+	deactivation_reason: 'DeactivationReason' = field(default_factory=lambda: DeactivationReason.Nothing)
+	deactivation_date: Optional[int] = None
+	ssin: Optional[str] = None
+	maiden_name: Optional[str] = None
+	spouse_name: Optional[str] = None
+	partner_name: Optional[str] = None
+	personal_status: Optional['PersonalStatus'] = field(default_factory=lambda: PersonalStatus.Unknown)
+	date_of_birth: Optional[int] = None
+	date_of_death: Optional[int] = None
+	timestamp_of_latest_eid_reading: Optional[int] = None
+	place_of_birth: Optional[str] = None
+	place_of_death: Optional[str] = None
+	deceased: Optional[bool] = None
+	education: Optional[str] = None
+	profession: Optional[str] = None
+	notes: List['Annotation'] = field(default_factory=list)
+	note: Optional[str] = None
+	administrative_note: Optional[str] = None
+	nationality: Optional[str] = None
+	race: Optional[str] = None
+	ethnicity: Optional[str] = None
+	preferred_user_id: Optional[str] = None
+	picture: Optional[bytearray] = None
+	external_id: Optional[str] = None
+	insurabilities: List['EncryptedInsurability'] = field(default_factory=list)
+	partnerships: List['Partnership'] = field(default_factory=list)
+	patient_health_care_parties: List['EncryptedPatientHealthCareParty'] = field(default_factory=list)
+	financial_institution_information: List['EncryptedFinancialInstitutionInformation'] = field(default_factory=list)
+	medical_house_contracts: List['EncryptedMedicalHouseContract'] = field(default_factory=list)
+	patient_professions: List['CodeStub'] = field(default_factory=list)
+	parameters: Dict[str, List[str]] = field(default_factory=dict)
+	properties: List['EncryptedPropertyStub'] = field(default_factory=list)
+	hc_party_keys: Dict[str, List['HexString']] = field(default_factory=dict)
+	aes_exchange_keys: Dict['AesExchangeKeyEntryKeyString', Dict[str, Dict['AesExchangeKeyEncryptionKeypairIdentifier', 'HexString']]] = field(default_factory=dict)
+	transfer_keys: Dict['AesExchangeKeyEncryptionKeypairIdentifier', Dict['AesExchangeKeyEncryptionKeypairIdentifier', 'HexString']] = field(default_factory=dict)
+	private_key_shamir_partitions: Dict[str, 'HexString'] = field(default_factory=dict)
+	public_key: Optional['SpkiHexString'] = None
+	public_keys_for_oaep_with_sha256: List['SpkiHexString'] = field(default_factory=list)
+	secret_foreign_keys: List[str] = field(default_factory=list)
+	crypted_foreign_keys: Dict[str, List['Delegation']] = field(default_factory=dict)
+	delegations: Dict[str, List['Delegation']] = field(default_factory=dict)
+	encryption_keys: Dict[str, List['Delegation']] = field(default_factory=dict)
+	encrypted_self: Optional['Base64String'] = None
+	security_metadata: Optional['SecurityMetadata'] = None
+	medical_location_id: Optional[str] = None
+	non_duplicate_ids: List[str] = field(default_factory=list)
+	encrypted_administratives_documents: List[str] = field(default_factory=list)
+	comment: Optional[str] = None
+	warning: Optional[str] = None
+	father_birth_country: Optional['CodeStub'] = None
+	birth_country: Optional['CodeStub'] = None
+	native_country: Optional['CodeStub'] = None
+	social_status: Optional['CodeStub'] = None
+	main_source_of_income: Optional['CodeStub'] = None
+	schooling_infos: List['EncryptedSchoolingInfo'] = field(default_factory=list)
+	employement_infos: List['EncryptedEmploymentInfo'] = field(default_factory=list)
+	parent_id: Optional[None] = None
+
+	def __serialize__(self) -> object:
+		return {
+			"id": self.id,
+			"identifier": [x0.__serialize__() for x0 in self.identifier],
+			"rev": self.rev,
+			"created": self.created,
+			"modified": self.modified,
+			"author": self.author,
+			"responsible": self.responsible,
+			"tags": [x0.__serialize__() for x0 in self.tags],
+			"codes": [x0.__serialize__() for x0 in self.codes],
+			"endOfLife": self.end_of_life,
+			"deletionDate": self.deletion_date,
+			"firstName": self.first_name,
+			"lastName": self.last_name,
+			"names": [x0.__serialize__() for x0 in self.names],
+			"companyName": self.company_name,
+			"languages": [x0 for x0 in self.languages],
+			"addresses": [x0.__serialize__() for x0 in self.addresses],
+			"civility": self.civility,
+			"gender": self.gender.__serialize__() if self.gender is not None else None,
+			"birthSex": self.birth_sex.__serialize__() if self.birth_sex is not None else None,
+			"mergeToPatientId": self.merge_to_patient_id,
+			"mergedIds": [x0 for x0 in self.merged_ids],
+			"alias": self.alias,
+			"active": self.active,
+			"deactivationReason": self.deactivation_reason.__serialize__(),
+			"deactivationDate": self.deactivation_date,
+			"ssin": self.ssin,
+			"maidenName": self.maiden_name,
+			"spouseName": self.spouse_name,
+			"partnerName": self.partner_name,
+			"personalStatus": self.personal_status.__serialize__() if self.personal_status is not None else None,
+			"dateOfBirth": self.date_of_birth,
+			"dateOfDeath": self.date_of_death,
+			"timestampOfLatestEidReading": self.timestamp_of_latest_eid_reading,
+			"placeOfBirth": self.place_of_birth,
+			"placeOfDeath": self.place_of_death,
+			"deceased": self.deceased,
+			"education": self.education,
+			"profession": self.profession,
+			"notes": [x0.__serialize__() for x0 in self.notes],
+			"note": self.note,
+			"administrativeNote": self.administrative_note,
+			"nationality": self.nationality,
+			"race": self.race,
+			"ethnicity": self.ethnicity,
+			"preferredUserId": self.preferred_user_id,
+			"picture": base64.b64encode(self.picture).decode('utf-8') if self.picture is not None else None,
+			"externalId": self.external_id,
+			"insurabilities": [x0.__serialize__() for x0 in self.insurabilities],
+			"partnerships": [x0.__serialize__() for x0 in self.partnerships],
+			"patientHealthCareParties": [x0.__serialize__() for x0 in self.patient_health_care_parties],
+			"financialInstitutionInformation": [x0.__serialize__() for x0 in self.financial_institution_information],
+			"medicalHouseContracts": [x0.__serialize__() for x0 in self.medical_house_contracts],
+			"patientProfessions": [x0.__serialize__() for x0 in self.patient_professions],
+			"parameters": {k0: [x1 for x1 in v0] for k0, v0 in self.parameters.items()},
+			"properties": [x0.__serialize__() for x0 in self.properties],
+			"hcPartyKeys": {k0: [x1 for x1 in v0] for k0, v0 in self.hc_party_keys.items()},
+			"aesExchangeKeys": {k0: {k1: {k2: v2 for k2, v2 in v1.items()} for k1, v1 in v0.items()} for k0, v0 in self.aes_exchange_keys.items()},
+			"transferKeys": {k0: {k1: v1 for k1, v1 in v0.items()} for k0, v0 in self.transfer_keys.items()},
+			"privateKeyShamirPartitions": {k0: v0 for k0, v0 in self.private_key_shamir_partitions.items()},
+			"publicKey": self.public_key,
+			"publicKeysForOaepWithSha256": [x0 for x0 in self.public_keys_for_oaep_with_sha256],
+			"secretForeignKeys": [x0 for x0 in self.secret_foreign_keys],
+			"cryptedForeignKeys": {k0: [x1.__serialize__() for x1 in v0] for k0, v0 in self.crypted_foreign_keys.items()},
+			"delegations": {k0: [x1.__serialize__() for x1 in v0] for k0, v0 in self.delegations.items()},
+			"encryptionKeys": {k0: [x1.__serialize__() for x1 in v0] for k0, v0 in self.encryption_keys.items()},
+			"encryptedSelf": self.encrypted_self,
+			"securityMetadata": self.security_metadata.__serialize__() if self.security_metadata is not None else None,
+			"medicalLocationId": self.medical_location_id,
+			"nonDuplicateIds": [x0 for x0 in self.non_duplicate_ids],
+			"encryptedAdministrativesDocuments": [x0 for x0 in self.encrypted_administratives_documents],
+			"comment": self.comment,
+			"warning": self.warning,
+			"fatherBirthCountry": self.father_birth_country.__serialize__() if self.father_birth_country is not None else None,
+			"birthCountry": self.birth_country.__serialize__() if self.birth_country is not None else None,
+			"nativeCountry": self.native_country.__serialize__() if self.native_country is not None else None,
+			"socialStatus": self.social_status.__serialize__() if self.social_status is not None else None,
+			"mainSourceOfIncome": self.main_source_of_income.__serialize__() if self.main_source_of_income is not None else None,
+			"schoolingInfos": [x0.__serialize__() for x0 in self.schooling_infos],
+			"employementInfos": [x0.__serialize__() for x0 in self.employement_infos],
+			"parentId": self.parent_id,
+		}
+
+	@classmethod
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'EncryptedPatient':
+		deserialized_dict: dict[str, object]
+		if isinstance(data, str):
+			deserialized_dict = json.loads(data)
+		else:
+			deserialized_dict = data
+		return cls(
+			id=deserialized_dict["id"],
+			identifier=[Identifier._deserialize(x0) for x0 in deserialized_dict["identifier"]],
+			rev=deserialized_dict.get("rev"),
+			created=deserialized_dict.get("created"),
+			modified=deserialized_dict.get("modified"),
+			author=deserialized_dict.get("author"),
+			responsible=deserialized_dict.get("responsible"),
+			tags=[CodeStub._deserialize(x0) for x0 in deserialized_dict["tags"]],
+			codes=[CodeStub._deserialize(x0) for x0 in deserialized_dict["codes"]],
+			end_of_life=deserialized_dict.get("endOfLife"),
+			deletion_date=deserialized_dict.get("deletionDate"),
+			first_name=deserialized_dict.get("firstName"),
+			last_name=deserialized_dict.get("lastName"),
+			names=[PersonName._deserialize(x0) for x0 in deserialized_dict["names"]],
+			company_name=deserialized_dict.get("companyName"),
+			languages=[x0 for x0 in deserialized_dict["languages"]],
+			addresses=[EncryptedAddress._deserialize(x0) for x0 in deserialized_dict["addresses"]],
+			civility=deserialized_dict.get("civility"),
+			gender=Gender._deserialize(deserialized_dict.get("gender")) if deserialized_dict.get("gender") is not None else None,
+			birth_sex=Gender._deserialize(deserialized_dict.get("birthSex")) if deserialized_dict.get("birthSex") is not None else None,
+			merge_to_patient_id=deserialized_dict.get("mergeToPatientId"),
+			merged_ids=[x0 for x0 in deserialized_dict["mergedIds"]],
+			alias=deserialized_dict.get("alias"),
+			active=deserialized_dict["active"],
+			deactivation_reason=DeactivationReason._deserialize(deserialized_dict["deactivationReason"]),
+			deactivation_date=deserialized_dict.get("deactivationDate"),
+			ssin=deserialized_dict.get("ssin"),
+			maiden_name=deserialized_dict.get("maidenName"),
+			spouse_name=deserialized_dict.get("spouseName"),
+			partner_name=deserialized_dict.get("partnerName"),
+			personal_status=PersonalStatus._deserialize(deserialized_dict.get("personalStatus")) if deserialized_dict.get("personalStatus") is not None else None,
+			date_of_birth=deserialized_dict.get("dateOfBirth"),
+			date_of_death=deserialized_dict.get("dateOfDeath"),
+			timestamp_of_latest_eid_reading=deserialized_dict.get("timestampOfLatestEidReading"),
+			place_of_birth=deserialized_dict.get("placeOfBirth"),
+			place_of_death=deserialized_dict.get("placeOfDeath"),
+			deceased=deserialized_dict.get("deceased"),
+			education=deserialized_dict.get("education"),
+			profession=deserialized_dict.get("profession"),
+			notes=[Annotation._deserialize(x0) for x0 in deserialized_dict["notes"]],
+			note=deserialized_dict.get("note"),
+			administrative_note=deserialized_dict.get("administrativeNote"),
+			nationality=deserialized_dict.get("nationality"),
+			race=deserialized_dict.get("race"),
+			ethnicity=deserialized_dict.get("ethnicity"),
+			preferred_user_id=deserialized_dict.get("preferredUserId"),
+			picture=bytearray(base64.b64decode(deserialized_dict.get("picture"))) if deserialized_dict.get("picture") is not None else None,
+			external_id=deserialized_dict.get("externalId"),
+			insurabilities=[EncryptedInsurability._deserialize(x0) for x0 in deserialized_dict["insurabilities"]],
+			partnerships=[Partnership._deserialize(x0) for x0 in deserialized_dict["partnerships"]],
+			patient_health_care_parties=[EncryptedPatientHealthCareParty._deserialize(x0) for x0 in deserialized_dict["patientHealthCareParties"]],
+			financial_institution_information=[EncryptedFinancialInstitutionInformation._deserialize(x0) for x0 in deserialized_dict["financialInstitutionInformation"]],
+			medical_house_contracts=[EncryptedMedicalHouseContract._deserialize(x0) for x0 in deserialized_dict["medicalHouseContracts"]],
+			patient_professions=[CodeStub._deserialize(x0) for x0 in deserialized_dict["patientProfessions"]],
+			parameters=dict(map(lambda kv0: (kv0[0], [x1 for x1 in kv0[1]]), deserialized_dict["parameters"].items())),
+			properties=[EncryptedPropertyStub._deserialize(x0) for x0 in deserialized_dict["properties"]],
+			hc_party_keys=dict(map(lambda kv0: (kv0[0], [x1 for x1 in kv0[1]]), deserialized_dict["hcPartyKeys"].items())),
+			aes_exchange_keys=dict(map(lambda kv0: (kv0[0], dict(map(lambda kv1: (kv1[0], dict(map(lambda kv2: (kv2[0], kv2[1]), kv1[1].items()))), kv0[1].items()))), deserialized_dict["aesExchangeKeys"].items())),
+			transfer_keys=dict(map(lambda kv0: (kv0[0], dict(map(lambda kv1: (kv1[0], kv1[1]), kv0[1].items()))), deserialized_dict["transferKeys"].items())),
+			private_key_shamir_partitions=dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict["privateKeyShamirPartitions"].items())),
+			public_key=deserialized_dict.get("publicKey"),
+			public_keys_for_oaep_with_sha256=[x0 for x0 in deserialized_dict["publicKeysForOaepWithSha256"]],
+			secret_foreign_keys=[x0 for x0 in deserialized_dict["secretForeignKeys"]],
+			crypted_foreign_keys=dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["cryptedForeignKeys"].items())),
+			delegations=dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["delegations"].items())),
+			encryption_keys=dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["encryptionKeys"].items())),
+			encrypted_self=deserialized_dict.get("encryptedSelf"),
+			security_metadata=SecurityMetadata._deserialize(deserialized_dict.get("securityMetadata")) if deserialized_dict.get("securityMetadata") is not None else None,
+			medical_location_id=deserialized_dict.get("medicalLocationId"),
+			non_duplicate_ids=[x0 for x0 in deserialized_dict["nonDuplicateIds"]],
+			encrypted_administratives_documents=[x0 for x0 in deserialized_dict["encryptedAdministrativesDocuments"]],
+			comment=deserialized_dict.get("comment"),
+			warning=deserialized_dict.get("warning"),
+			father_birth_country=CodeStub._deserialize(deserialized_dict.get("fatherBirthCountry")) if deserialized_dict.get("fatherBirthCountry") is not None else None,
+			birth_country=CodeStub._deserialize(deserialized_dict.get("birthCountry")) if deserialized_dict.get("birthCountry") is not None else None,
+			native_country=CodeStub._deserialize(deserialized_dict.get("nativeCountry")) if deserialized_dict.get("nativeCountry") is not None else None,
+			social_status=CodeStub._deserialize(deserialized_dict.get("socialStatus")) if deserialized_dict.get("socialStatus") is not None else None,
+			main_source_of_income=CodeStub._deserialize(deserialized_dict.get("mainSourceOfIncome")) if deserialized_dict.get("mainSourceOfIncome") is not None else None,
+			schooling_infos=[EncryptedSchoolingInfo._deserialize(x0) for x0 in deserialized_dict["schoolingInfos"]],
+			employement_infos=[EncryptedEmploymentInfo._deserialize(x0) for x0 in deserialized_dict["employementInfos"]],
+			parent_id=deserialized_dict.get("parentId"),
+		)
+
+@dataclass
+class DecryptedPatient:
+	id: str
+	identifier: List['Identifier'] = field(default_factory=list)
+	rev: Optional[str] = None
+	created: Optional[int] = None
+	modified: Optional[int] = None
+	author: Optional[str] = None
+	responsible: Optional[str] = None
+	tags: List['CodeStub'] = field(default_factory=list)
+	codes: List['CodeStub'] = field(default_factory=list)
+	end_of_life: Optional[int] = None
+	deletion_date: Optional[int] = None
+	first_name: Optional[str] = None
+	last_name: Optional[str] = None
+	names: List['PersonName'] = field(default_factory=list)
+	company_name: Optional[str] = None
+	languages: List[str] = field(default_factory=list)
+	addresses: List['DecryptedAddress'] = field(default_factory=list)
+	civility: Optional[str] = None
+	gender: Optional['Gender'] = field(default_factory=lambda: Gender.Unknown)
+	birth_sex: Optional['Gender'] = field(default_factory=lambda: Gender.Unknown)
+	merge_to_patient_id: Optional[str] = None
+	merged_ids: List[str] = field(default_factory=list)
+	alias: Optional[str] = None
+	active: bool = True
+	deactivation_reason: 'DeactivationReason' = field(default_factory=lambda: DeactivationReason.Nothing)
+	deactivation_date: Optional[int] = None
+	ssin: Optional[str] = None
+	maiden_name: Optional[str] = None
+	spouse_name: Optional[str] = None
+	partner_name: Optional[str] = None
+	personal_status: Optional['PersonalStatus'] = field(default_factory=lambda: PersonalStatus.Unknown)
+	date_of_birth: Optional[int] = None
+	date_of_death: Optional[int] = None
+	timestamp_of_latest_eid_reading: Optional[int] = None
+	place_of_birth: Optional[str] = None
+	place_of_death: Optional[str] = None
+	deceased: Optional[bool] = None
+	education: Optional[str] = None
+	profession: Optional[str] = None
+	notes: List['Annotation'] = field(default_factory=list)
+	note: Optional[str] = None
+	administrative_note: Optional[str] = None
+	nationality: Optional[str] = None
+	race: Optional[str] = None
+	ethnicity: Optional[str] = None
+	preferred_user_id: Optional[str] = None
+	picture: Optional[bytearray] = None
+	external_id: Optional[str] = None
+	insurabilities: List['DecryptedInsurability'] = field(default_factory=list)
+	partnerships: List['Partnership'] = field(default_factory=list)
+	patient_health_care_parties: List['DecryptedPatientHealthCareParty'] = field(default_factory=list)
+	financial_institution_information: List['DecryptedFinancialInstitutionInformation'] = field(default_factory=list)
+	medical_house_contracts: List['DecryptedMedicalHouseContract'] = field(default_factory=list)
+	patient_professions: List['CodeStub'] = field(default_factory=list)
+	parameters: Dict[str, List[str]] = field(default_factory=dict)
+	properties: List['DecryptedPropertyStub'] = field(default_factory=list)
+	hc_party_keys: Dict[str, List['HexString']] = field(default_factory=dict)
+	aes_exchange_keys: Dict['AesExchangeKeyEntryKeyString', Dict[str, Dict['AesExchangeKeyEncryptionKeypairIdentifier', 'HexString']]] = field(default_factory=dict)
+	transfer_keys: Dict['AesExchangeKeyEncryptionKeypairIdentifier', Dict['AesExchangeKeyEncryptionKeypairIdentifier', 'HexString']] = field(default_factory=dict)
+	private_key_shamir_partitions: Dict[str, 'HexString'] = field(default_factory=dict)
+	public_key: Optional['SpkiHexString'] = None
+	public_keys_for_oaep_with_sha256: List['SpkiHexString'] = field(default_factory=list)
+	secret_foreign_keys: List[str] = field(default_factory=list)
+	crypted_foreign_keys: Dict[str, List['Delegation']] = field(default_factory=dict)
+	delegations: Dict[str, List['Delegation']] = field(default_factory=dict)
+	encryption_keys: Dict[str, List['Delegation']] = field(default_factory=dict)
+	encrypted_self: Optional['Base64String'] = None
+	security_metadata: Optional['SecurityMetadata'] = None
+	medical_location_id: Optional[str] = None
+	non_duplicate_ids: List[str] = field(default_factory=list)
+	encrypted_administratives_documents: List[str] = field(default_factory=list)
+	comment: Optional[str] = None
+	warning: Optional[str] = None
+	father_birth_country: Optional['CodeStub'] = None
+	birth_country: Optional['CodeStub'] = None
+	native_country: Optional['CodeStub'] = None
+	social_status: Optional['CodeStub'] = None
+	main_source_of_income: Optional['CodeStub'] = None
+	schooling_infos: List['DecryptedSchoolingInfo'] = field(default_factory=list)
+	employement_infos: List['DecryptedEmploymentInfo'] = field(default_factory=list)
+	parent_id: Optional[None] = None
+
+	def __serialize__(self) -> object:
+		return {
+			"id": self.id,
+			"identifier": [x0.__serialize__() for x0 in self.identifier],
+			"rev": self.rev,
+			"created": self.created,
+			"modified": self.modified,
+			"author": self.author,
+			"responsible": self.responsible,
+			"tags": [x0.__serialize__() for x0 in self.tags],
+			"codes": [x0.__serialize__() for x0 in self.codes],
+			"endOfLife": self.end_of_life,
+			"deletionDate": self.deletion_date,
+			"firstName": self.first_name,
+			"lastName": self.last_name,
+			"names": [x0.__serialize__() for x0 in self.names],
+			"companyName": self.company_name,
+			"languages": [x0 for x0 in self.languages],
+			"addresses": [x0.__serialize__() for x0 in self.addresses],
+			"civility": self.civility,
+			"gender": self.gender.__serialize__() if self.gender is not None else None,
+			"birthSex": self.birth_sex.__serialize__() if self.birth_sex is not None else None,
+			"mergeToPatientId": self.merge_to_patient_id,
+			"mergedIds": [x0 for x0 in self.merged_ids],
+			"alias": self.alias,
+			"active": self.active,
+			"deactivationReason": self.deactivation_reason.__serialize__(),
+			"deactivationDate": self.deactivation_date,
+			"ssin": self.ssin,
+			"maidenName": self.maiden_name,
+			"spouseName": self.spouse_name,
+			"partnerName": self.partner_name,
+			"personalStatus": self.personal_status.__serialize__() if self.personal_status is not None else None,
+			"dateOfBirth": self.date_of_birth,
+			"dateOfDeath": self.date_of_death,
+			"timestampOfLatestEidReading": self.timestamp_of_latest_eid_reading,
+			"placeOfBirth": self.place_of_birth,
+			"placeOfDeath": self.place_of_death,
+			"deceased": self.deceased,
+			"education": self.education,
+			"profession": self.profession,
+			"notes": [x0.__serialize__() for x0 in self.notes],
+			"note": self.note,
+			"administrativeNote": self.administrative_note,
+			"nationality": self.nationality,
+			"race": self.race,
+			"ethnicity": self.ethnicity,
+			"preferredUserId": self.preferred_user_id,
+			"picture": base64.b64encode(self.picture).decode('utf-8') if self.picture is not None else None,
+			"externalId": self.external_id,
+			"insurabilities": [x0.__serialize__() for x0 in self.insurabilities],
+			"partnerships": [x0.__serialize__() for x0 in self.partnerships],
+			"patientHealthCareParties": [x0.__serialize__() for x0 in self.patient_health_care_parties],
+			"financialInstitutionInformation": [x0.__serialize__() for x0 in self.financial_institution_information],
+			"medicalHouseContracts": [x0.__serialize__() for x0 in self.medical_house_contracts],
+			"patientProfessions": [x0.__serialize__() for x0 in self.patient_professions],
+			"parameters": {k0: [x1 for x1 in v0] for k0, v0 in self.parameters.items()},
+			"properties": [x0.__serialize__() for x0 in self.properties],
+			"hcPartyKeys": {k0: [x1 for x1 in v0] for k0, v0 in self.hc_party_keys.items()},
+			"aesExchangeKeys": {k0: {k1: {k2: v2 for k2, v2 in v1.items()} for k1, v1 in v0.items()} for k0, v0 in self.aes_exchange_keys.items()},
+			"transferKeys": {k0: {k1: v1 for k1, v1 in v0.items()} for k0, v0 in self.transfer_keys.items()},
+			"privateKeyShamirPartitions": {k0: v0 for k0, v0 in self.private_key_shamir_partitions.items()},
+			"publicKey": self.public_key,
+			"publicKeysForOaepWithSha256": [x0 for x0 in self.public_keys_for_oaep_with_sha256],
+			"secretForeignKeys": [x0 for x0 in self.secret_foreign_keys],
+			"cryptedForeignKeys": {k0: [x1.__serialize__() for x1 in v0] for k0, v0 in self.crypted_foreign_keys.items()},
+			"delegations": {k0: [x1.__serialize__() for x1 in v0] for k0, v0 in self.delegations.items()},
+			"encryptionKeys": {k0: [x1.__serialize__() for x1 in v0] for k0, v0 in self.encryption_keys.items()},
+			"encryptedSelf": self.encrypted_self,
+			"securityMetadata": self.security_metadata.__serialize__() if self.security_metadata is not None else None,
+			"medicalLocationId": self.medical_location_id,
+			"nonDuplicateIds": [x0 for x0 in self.non_duplicate_ids],
+			"encryptedAdministrativesDocuments": [x0 for x0 in self.encrypted_administratives_documents],
+			"comment": self.comment,
+			"warning": self.warning,
+			"fatherBirthCountry": self.father_birth_country.__serialize__() if self.father_birth_country is not None else None,
+			"birthCountry": self.birth_country.__serialize__() if self.birth_country is not None else None,
+			"nativeCountry": self.native_country.__serialize__() if self.native_country is not None else None,
+			"socialStatus": self.social_status.__serialize__() if self.social_status is not None else None,
+			"mainSourceOfIncome": self.main_source_of_income.__serialize__() if self.main_source_of_income is not None else None,
+			"schoolingInfos": [x0.__serialize__() for x0 in self.schooling_infos],
+			"employementInfos": [x0.__serialize__() for x0 in self.employement_infos],
+			"parentId": self.parent_id,
+		}
+
+	@classmethod
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'DecryptedPatient':
+		deserialized_dict: dict[str, object]
+		if isinstance(data, str):
+			deserialized_dict = json.loads(data)
+		else:
+			deserialized_dict = data
+		return cls(
+			id=deserialized_dict["id"],
+			identifier=[Identifier._deserialize(x0) for x0 in deserialized_dict["identifier"]],
+			rev=deserialized_dict.get("rev"),
+			created=deserialized_dict.get("created"),
+			modified=deserialized_dict.get("modified"),
+			author=deserialized_dict.get("author"),
+			responsible=deserialized_dict.get("responsible"),
+			tags=[CodeStub._deserialize(x0) for x0 in deserialized_dict["tags"]],
+			codes=[CodeStub._deserialize(x0) for x0 in deserialized_dict["codes"]],
+			end_of_life=deserialized_dict.get("endOfLife"),
+			deletion_date=deserialized_dict.get("deletionDate"),
+			first_name=deserialized_dict.get("firstName"),
+			last_name=deserialized_dict.get("lastName"),
+			names=[PersonName._deserialize(x0) for x0 in deserialized_dict["names"]],
+			company_name=deserialized_dict.get("companyName"),
+			languages=[x0 for x0 in deserialized_dict["languages"]],
+			addresses=[DecryptedAddress._deserialize(x0) for x0 in deserialized_dict["addresses"]],
+			civility=deserialized_dict.get("civility"),
+			gender=Gender._deserialize(deserialized_dict.get("gender")) if deserialized_dict.get("gender") is not None else None,
+			birth_sex=Gender._deserialize(deserialized_dict.get("birthSex")) if deserialized_dict.get("birthSex") is not None else None,
+			merge_to_patient_id=deserialized_dict.get("mergeToPatientId"),
+			merged_ids=[x0 for x0 in deserialized_dict["mergedIds"]],
+			alias=deserialized_dict.get("alias"),
+			active=deserialized_dict["active"],
+			deactivation_reason=DeactivationReason._deserialize(deserialized_dict["deactivationReason"]),
+			deactivation_date=deserialized_dict.get("deactivationDate"),
+			ssin=deserialized_dict.get("ssin"),
+			maiden_name=deserialized_dict.get("maidenName"),
+			spouse_name=deserialized_dict.get("spouseName"),
+			partner_name=deserialized_dict.get("partnerName"),
+			personal_status=PersonalStatus._deserialize(deserialized_dict.get("personalStatus")) if deserialized_dict.get("personalStatus") is not None else None,
+			date_of_birth=deserialized_dict.get("dateOfBirth"),
+			date_of_death=deserialized_dict.get("dateOfDeath"),
+			timestamp_of_latest_eid_reading=deserialized_dict.get("timestampOfLatestEidReading"),
+			place_of_birth=deserialized_dict.get("placeOfBirth"),
+			place_of_death=deserialized_dict.get("placeOfDeath"),
+			deceased=deserialized_dict.get("deceased"),
+			education=deserialized_dict.get("education"),
+			profession=deserialized_dict.get("profession"),
+			notes=[Annotation._deserialize(x0) for x0 in deserialized_dict["notes"]],
+			note=deserialized_dict.get("note"),
+			administrative_note=deserialized_dict.get("administrativeNote"),
+			nationality=deserialized_dict.get("nationality"),
+			race=deserialized_dict.get("race"),
+			ethnicity=deserialized_dict.get("ethnicity"),
+			preferred_user_id=deserialized_dict.get("preferredUserId"),
+			picture=bytearray(base64.b64decode(deserialized_dict.get("picture"))) if deserialized_dict.get("picture") is not None else None,
+			external_id=deserialized_dict.get("externalId"),
+			insurabilities=[DecryptedInsurability._deserialize(x0) for x0 in deserialized_dict["insurabilities"]],
+			partnerships=[Partnership._deserialize(x0) for x0 in deserialized_dict["partnerships"]],
+			patient_health_care_parties=[DecryptedPatientHealthCareParty._deserialize(x0) for x0 in deserialized_dict["patientHealthCareParties"]],
+			financial_institution_information=[DecryptedFinancialInstitutionInformation._deserialize(x0) for x0 in deserialized_dict["financialInstitutionInformation"]],
+			medical_house_contracts=[DecryptedMedicalHouseContract._deserialize(x0) for x0 in deserialized_dict["medicalHouseContracts"]],
+			patient_professions=[CodeStub._deserialize(x0) for x0 in deserialized_dict["patientProfessions"]],
+			parameters=dict(map(lambda kv0: (kv0[0], [x1 for x1 in kv0[1]]), deserialized_dict["parameters"].items())),
+			properties=[DecryptedPropertyStub._deserialize(x0) for x0 in deserialized_dict["properties"]],
+			hc_party_keys=dict(map(lambda kv0: (kv0[0], [x1 for x1 in kv0[1]]), deserialized_dict["hcPartyKeys"].items())),
+			aes_exchange_keys=dict(map(lambda kv0: (kv0[0], dict(map(lambda kv1: (kv1[0], dict(map(lambda kv2: (kv2[0], kv2[1]), kv1[1].items()))), kv0[1].items()))), deserialized_dict["aesExchangeKeys"].items())),
+			transfer_keys=dict(map(lambda kv0: (kv0[0], dict(map(lambda kv1: (kv1[0], kv1[1]), kv0[1].items()))), deserialized_dict["transferKeys"].items())),
+			private_key_shamir_partitions=dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict["privateKeyShamirPartitions"].items())),
+			public_key=deserialized_dict.get("publicKey"),
+			public_keys_for_oaep_with_sha256=[x0 for x0 in deserialized_dict["publicKeysForOaepWithSha256"]],
+			secret_foreign_keys=[x0 for x0 in deserialized_dict["secretForeignKeys"]],
+			crypted_foreign_keys=dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["cryptedForeignKeys"].items())),
+			delegations=dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["delegations"].items())),
+			encryption_keys=dict(map(lambda kv0: (kv0[0], [Delegation._deserialize(x1) for x1 in kv0[1]]), deserialized_dict["encryptionKeys"].items())),
+			encrypted_self=deserialized_dict.get("encryptedSelf"),
+			security_metadata=SecurityMetadata._deserialize(deserialized_dict.get("securityMetadata")) if deserialized_dict.get("securityMetadata") is not None else None,
+			medical_location_id=deserialized_dict.get("medicalLocationId"),
+			non_duplicate_ids=[x0 for x0 in deserialized_dict["nonDuplicateIds"]],
+			encrypted_administratives_documents=[x0 for x0 in deserialized_dict["encryptedAdministrativesDocuments"]],
+			comment=deserialized_dict.get("comment"),
+			warning=deserialized_dict.get("warning"),
+			father_birth_country=CodeStub._deserialize(deserialized_dict.get("fatherBirthCountry")) if deserialized_dict.get("fatherBirthCountry") is not None else None,
+			birth_country=CodeStub._deserialize(deserialized_dict.get("birthCountry")) if deserialized_dict.get("birthCountry") is not None else None,
+			native_country=CodeStub._deserialize(deserialized_dict.get("nativeCountry")) if deserialized_dict.get("nativeCountry") is not None else None,
+			social_status=CodeStub._deserialize(deserialized_dict.get("socialStatus")) if deserialized_dict.get("socialStatus") is not None else None,
+			main_source_of_income=CodeStub._deserialize(deserialized_dict.get("mainSourceOfIncome")) if deserialized_dict.get("mainSourceOfIncome") is not None else None,
+			schooling_infos=[DecryptedSchoolingInfo._deserialize(x0) for x0 in deserialized_dict["schoolingInfos"]],
+			employement_infos=[DecryptedEmploymentInfo._deserialize(x0) for x0 in deserialized_dict["employementInfos"]],
+			parent_id=deserialized_dict.get("parentId"),
+		)
+
+Patient = Union['EncryptedPatient', 'DecryptedPatient']
+
+def serialize_patient(patient: Patient) -> object:
+	if isinstance(patient, EncryptedPatient):
+		serialized_entity = patient.__serialize__()
+		serialized_entity.update({"kotlinType": "com.icure.cardinal.sdk.model.EncryptedPatient"})
+		return serialized_entity
+	elif isinstance(patient, DecryptedPatient):
+		serialized_entity = patient.__serialize__()
+		serialized_entity.update({"kotlinType": "com.icure.cardinal.sdk.model.DecryptedPatient"})
+		return serialized_entity
+	else:
+		raise Exception(f"{type(patient)} is not a known subclass of Patient")
+
+def deserialize_patient(data: Union[str, Dict[str, object]]) -> 'Patient':
+	deserialized_dict: dict[str, object]
+	if isinstance(data, str):
+		deserialized_dict = json.loads(data)
+	else:
+		deserialized_dict = data
+	qualifier = deserialized_dict.get("kotlinType")
+	if qualifier is None:
+		raise Exception("Missing qualifier: kotlinType")
+	if qualifier == "com.icure.cardinal.sdk.model.EncryptedPatient":
+		return EncryptedPatient._deserialize(deserialized_dict)
+	elif qualifier == "com.icure.cardinal.sdk.model.DecryptedPatient":
+		return DecryptedPatient._deserialize(deserialized_dict)
+	else:
+		raise Exception(f"{qualifier} is not a known subclass of Patient")
+
+@dataclass
 class EntityAccessInformation:
 	permissions_by_data_owner_id: Dict[str, 'AccessLevel']
 	has_unknown_anonymous_data_owners: bool
@@ -2130,6 +1772,259 @@ def deserialize_classification(data: Union[str, Dict[str, object]]) -> 'Classifi
 		return DecryptedClassification._deserialize(deserialized_dict)
 	else:
 		raise Exception(f"{qualifier} is not a known subclass of Classification")
+
+@dataclass
+class User:
+	id: str
+	rev: Optional[str] = None
+	deletion_date: Optional[int] = None
+	created: Optional[int] = None
+	identifier: List['Identifier'] = field(default_factory=list)
+	name: Optional[str] = None
+	properties: List['DecryptedPropertyStub'] = field(default_factory=list)
+	permissions: List['Permission'] = field(default_factory=list)
+	roles: List[str] = field(default_factory=list)
+	type: Optional['UsersType'] = None
+	status: Optional['UsersStatus'] = None
+	login: Optional[str] = None
+	password_hash: Optional[str] = None
+	group_id: Optional[str] = None
+	healthcare_party_id: Optional[str] = None
+	patient_id: Optional[str] = None
+	device_id: Optional[str] = None
+	auto_delegations: Dict['DelegationTag', List[str]] = field(default_factory=dict)
+	created_date: Optional[int] = None
+	terms_of_use_date: Optional[int] = None
+	email: Optional[str] = None
+	mobile_phone: Optional[str] = None
+	application_tokens: Dict[str, str] = field(default_factory=dict)
+	authentication_tokens: Dict[str, 'AuthenticationToken'] = field(default_factory=dict)
+	system_metadata: Optional['User.SystemMetadata'] = None
+
+	@dataclass
+	class SystemMetadata:
+		roles: List[str]
+		is_admin: bool
+		inherits_roles: bool
+
+		def __serialize__(self) -> object:
+			return {
+				"roles": [x0 for x0 in self.roles],
+				"isAdmin": self.is_admin,
+				"inheritsRoles": self.inherits_roles,
+			}
+
+		@classmethod
+		def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'User.SystemMetadata':
+			deserialized_dict: dict[str, object]
+			if isinstance(data, str):
+				deserialized_dict = json.loads(data)
+			else:
+				deserialized_dict = data
+			return cls(
+				roles=[x0 for x0 in deserialized_dict["roles"]],
+				is_admin=deserialized_dict["isAdmin"],
+				inherits_roles=deserialized_dict["inheritsRoles"],
+			)
+
+	def __serialize__(self) -> object:
+		return {
+			"id": self.id,
+			"rev": self.rev,
+			"deletionDate": self.deletion_date,
+			"created": self.created,
+			"identifier": [x0.__serialize__() for x0 in self.identifier],
+			"name": self.name,
+			"properties": [x0.__serialize__() for x0 in self.properties],
+			"permissions": [x0.__serialize__() for x0 in self.permissions],
+			"roles": [x0 for x0 in self.roles],
+			"type": self.type.__serialize__() if self.type is not None else None,
+			"status": self.status.__serialize__() if self.status is not None else None,
+			"login": self.login,
+			"passwordHash": self.password_hash,
+			"groupId": self.group_id,
+			"healthcarePartyId": self.healthcare_party_id,
+			"patientId": self.patient_id,
+			"deviceId": self.device_id,
+			"autoDelegations": {k0.__serialize__(): [x1 for x1 in v0] for k0, v0 in self.auto_delegations.items()},
+			"createdDate": self.created_date,
+			"termsOfUseDate": self.terms_of_use_date,
+			"email": self.email,
+			"mobilePhone": self.mobile_phone,
+			"applicationTokens": {k0: v0 for k0, v0 in self.application_tokens.items()},
+			"authenticationTokens": {k0: v0.__serialize__() for k0, v0 in self.authentication_tokens.items()},
+			"systemMetadata": self.system_metadata.__serialize__() if self.system_metadata is not None else None,
+		}
+
+	@classmethod
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'User':
+		deserialized_dict: dict[str, object]
+		if isinstance(data, str):
+			deserialized_dict = json.loads(data)
+		else:
+			deserialized_dict = data
+		return cls(
+			id=deserialized_dict["id"],
+			rev=deserialized_dict.get("rev"),
+			deletion_date=deserialized_dict.get("deletionDate"),
+			created=deserialized_dict.get("created"),
+			identifier=[Identifier._deserialize(x0) for x0 in deserialized_dict["identifier"]],
+			name=deserialized_dict.get("name"),
+			properties=[DecryptedPropertyStub._deserialize(x0) for x0 in deserialized_dict["properties"]],
+			permissions=[Permission._deserialize(x0) for x0 in deserialized_dict["permissions"]],
+			roles=[x0 for x0 in deserialized_dict["roles"]],
+			type=UsersType._deserialize(deserialized_dict.get("type")) if deserialized_dict.get("type") is not None else None,
+			status=UsersStatus._deserialize(deserialized_dict.get("status")) if deserialized_dict.get("status") is not None else None,
+			login=deserialized_dict.get("login"),
+			password_hash=deserialized_dict.get("passwordHash"),
+			group_id=deserialized_dict.get("groupId"),
+			healthcare_party_id=deserialized_dict.get("healthcarePartyId"),
+			patient_id=deserialized_dict.get("patientId"),
+			device_id=deserialized_dict.get("deviceId"),
+			auto_delegations=dict(map(lambda kv0: (DelegationTag._deserialize(kv0[0]), [x1 for x1 in kv0[1]]), deserialized_dict["autoDelegations"].items())),
+			created_date=deserialized_dict.get("createdDate"),
+			terms_of_use_date=deserialized_dict.get("termsOfUseDate"),
+			email=deserialized_dict.get("email"),
+			mobile_phone=deserialized_dict.get("mobilePhone"),
+			application_tokens=dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict["applicationTokens"].items())),
+			authentication_tokens=dict(map(lambda kv0: (kv0[0], AuthenticationToken._deserialize(kv0[1])), deserialized_dict["authenticationTokens"].items())),
+			system_metadata=User.SystemMetadata._deserialize(deserialized_dict.get("systemMetadata")) if deserialized_dict.get("systemMetadata") is not None else None,
+		)
+
+class AccessLevel(Enum):
+	Read = "READ"
+	Write = "WRITE"
+
+	def __serialize__(self) -> object:
+		return self.value
+
+	@classmethod
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'AccessLevel':
+		if data == "READ":
+			return AccessLevel.Read
+		elif data == "WRITE":
+			return AccessLevel.Write
+		else:
+			raise Exception(f"{data} is not a valid value for AccessLevel enum.")
+
+class SecretIdUseOptionUseAnyConfidential(metaclass=SingletonMeta):
+
+	def __serialize__(self) -> object:
+		return {}
+
+	@classmethod
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'UseAnyConfidential':
+		return cls()
+
+class SecretIdUseOptionUseAllConfidential(metaclass=SingletonMeta):
+
+	def __serialize__(self) -> object:
+		return {}
+
+	@classmethod
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'UseAllConfidential':
+		return cls()
+
+class SecretIdUseOptionUseAnySharedWithParent(metaclass=SingletonMeta):
+
+	def __serialize__(self) -> object:
+		return {}
+
+	@classmethod
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'UseAnySharedWithParent':
+		return cls()
+
+class SecretIdUseOptionUseAllSharedWithParent(metaclass=SingletonMeta):
+
+	def __serialize__(self) -> object:
+		return {}
+
+	@classmethod
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'UseAllSharedWithParent':
+		return cls()
+
+@dataclass
+class SecretIdUseOptionUse:
+	secret_ids: List[str]
+
+	def __serialize__(self) -> object:
+		return {
+			"secretIds": [x0 for x0 in self.secret_ids],
+		}
+
+	@classmethod
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'SecretIdUseOptionUse':
+		deserialized_dict: dict[str, object]
+		if isinstance(data, str):
+			deserialized_dict = json.loads(data)
+		else:
+			deserialized_dict = data
+		return cls(
+			secret_ids=[x0 for x0 in deserialized_dict["secretIds"]],
+		)
+
+class SecretIdUseOptionUseNone(metaclass=SingletonMeta):
+
+	def __serialize__(self) -> object:
+		return {}
+
+	@classmethod
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'UseNone':
+		return cls()
+
+SecretIdUseOption = Union['SecretIdUseOptionUseAnyConfidential', 'SecretIdUseOptionUseAllConfidential', 'SecretIdUseOptionUseAnySharedWithParent', 'SecretIdUseOptionUseAllSharedWithParent', 'SecretIdUseOptionUse', 'SecretIdUseOptionUseNone']
+
+def serialize_secret_id_use_option(secret_id_use_option: SecretIdUseOption) -> object:
+	if isinstance(secret_id_use_option, SecretIdUseOptionUseAnyConfidential):
+		serialized_entity = secret_id_use_option.__serialize__()
+		serialized_entity.update({"kotlinType": "com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption.UseAnyConfidential"})
+		return serialized_entity
+	elif isinstance(secret_id_use_option, SecretIdUseOptionUseAllConfidential):
+		serialized_entity = secret_id_use_option.__serialize__()
+		serialized_entity.update({"kotlinType": "com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption.UseAllConfidential"})
+		return serialized_entity
+	elif isinstance(secret_id_use_option, SecretIdUseOptionUseAnySharedWithParent):
+		serialized_entity = secret_id_use_option.__serialize__()
+		serialized_entity.update({"kotlinType": "com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption.UseAnySharedWithParent"})
+		return serialized_entity
+	elif isinstance(secret_id_use_option, SecretIdUseOptionUseAllSharedWithParent):
+		serialized_entity = secret_id_use_option.__serialize__()
+		serialized_entity.update({"kotlinType": "com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption.UseAllSharedWithParent"})
+		return serialized_entity
+	elif isinstance(secret_id_use_option, SecretIdUseOptionUse):
+		serialized_entity = secret_id_use_option.__serialize__()
+		serialized_entity.update({"kotlinType": "com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption.Use"})
+		return serialized_entity
+	elif isinstance(secret_id_use_option, SecretIdUseOptionUseNone):
+		serialized_entity = secret_id_use_option.__serialize__()
+		serialized_entity.update({"kotlinType": "com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption.UseNone"})
+		return serialized_entity
+	else:
+		raise Exception(f"{type(secret_id_use_option)} is not a known subclass of SecretIdUseOption")
+
+def deserialize_secret_id_use_option(data: Union[str, Dict[str, object]]) -> 'SecretIdUseOption':
+	deserialized_dict: dict[str, object]
+	if isinstance(data, str):
+		deserialized_dict = json.loads(data)
+	else:
+		deserialized_dict = data
+	qualifier = deserialized_dict.get("kotlinType")
+	if qualifier is None:
+		raise Exception("Missing qualifier: kotlinType")
+	if qualifier == "com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption.UseAnyConfidential":
+		return SecretIdUseOptionUseAnyConfidential._deserialize(deserialized_dict)
+	elif qualifier == "com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption.UseAllConfidential":
+		return SecretIdUseOptionUseAllConfidential._deserialize(deserialized_dict)
+	elif qualifier == "com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption.UseAnySharedWithParent":
+		return SecretIdUseOptionUseAnySharedWithParent._deserialize(deserialized_dict)
+	elif qualifier == "com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption.UseAllSharedWithParent":
+		return SecretIdUseOptionUseAllSharedWithParent._deserialize(deserialized_dict)
+	elif qualifier == "com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption.Use":
+		return SecretIdUseOptionUse._deserialize(deserialized_dict)
+	elif qualifier == "com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption.UseNone":
+		return SecretIdUseOptionUseNone._deserialize(deserialized_dict)
+	else:
+		raise Exception(f"{qualifier} is not a known subclass of SecretIdUseOption")
 
 @dataclass
 class ClassificationShareOptions:
@@ -4200,7 +4095,7 @@ class HealthcareParty:
 	options: Dict[str, str] = field(default_factory=dict)
 	properties: List['DecryptedPropertyStub'] = field(default_factory=list)
 	hc_party_keys: Dict[str, List['HexString']] = field(default_factory=dict)
-	aes_exchange_keys: Dict['SpkiHexString', Dict[str, Dict['AesExchangeKeyEncryptionKeypairIdentifier', 'HexString']]] = field(default_factory=dict)
+	aes_exchange_keys: Dict['AesExchangeKeyEntryKeyString', Dict[str, Dict['AesExchangeKeyEncryptionKeypairIdentifier', 'HexString']]] = field(default_factory=dict)
 	transfer_keys: Dict['AesExchangeKeyEncryptionKeypairIdentifier', Dict['AesExchangeKeyEncryptionKeypairIdentifier', 'HexString']] = field(default_factory=dict)
 	private_key_shamir_partitions: Dict[str, 'HexString'] = field(default_factory=dict)
 	public_key: Optional['SpkiHexString'] = None
@@ -5411,11 +5306,12 @@ class CryptoActorStub:
 	rev: str
 	public_keys_for_oaep_with_sha256: List['SpkiHexString']
 	hc_party_keys: Dict[str, List['HexString']] = field(default_factory=dict)
-	aes_exchange_keys: Dict['SpkiHexString', Dict[str, Dict['AesExchangeKeyEncryptionKeypairIdentifier', 'HexString']]] = field(default_factory=dict)
+	aes_exchange_keys: Dict['AesExchangeKeyEntryKeyString', Dict[str, Dict['AesExchangeKeyEncryptionKeypairIdentifier', 'HexString']]] = field(default_factory=dict)
 	transfer_keys: Dict['AesExchangeKeyEncryptionKeypairIdentifier', Dict['AesExchangeKeyEncryptionKeypairIdentifier', 'HexString']] = field(default_factory=dict)
 	private_key_shamir_partitions: Dict[str, 'HexString'] = field(default_factory=dict)
 	public_key: Optional['SpkiHexString'] = None
 	tags: List['CodeStub'] = field(default_factory=list)
+	parent_id: Optional[str] = None
 
 	def __serialize__(self) -> object:
 		return {
@@ -5428,6 +5324,7 @@ class CryptoActorStub:
 			"publicKey": self.public_key,
 			"publicKeysForOaepWithSha256": [x0 for x0 in self.public_keys_for_oaep_with_sha256],
 			"tags": [x0.__serialize__() for x0 in self.tags],
+			"parentId": self.parent_id,
 		}
 
 	@classmethod
@@ -5447,6 +5344,7 @@ class CryptoActorStub:
 			public_key=deserialized_dict.get("publicKey"),
 			public_keys_for_oaep_with_sha256=[x0 for x0 in deserialized_dict["publicKeysForOaepWithSha256"]],
 			tags=[CodeStub._deserialize(x0) for x0 in deserialized_dict["tags"]],
+			parent_id=deserialized_dict.get("parentId"),
 		)
 
 CryptoActor = Union['CryptoActorStub', 'EncryptedPatient', 'DecryptedPatient', 'Device', 'HealthcareParty']
@@ -6310,6 +6208,7 @@ class DecryptedInvoice:
 	recipient_type: Optional[str] = None
 	recipient_id: Optional[str] = None
 	invoice_reference: Optional[str] = None
+	decision_reference: Optional[str] = None
 	third_party_reference: Optional[str] = None
 	third_party_payment_justification: Optional[str] = None
 	third_party_payment_reason: Optional[str] = None
@@ -6384,6 +6283,7 @@ class DecryptedInvoice:
 			"recipientType": self.recipient_type,
 			"recipientId": self.recipient_id,
 			"invoiceReference": self.invoice_reference,
+			"decisionReference": self.decision_reference,
 			"thirdPartyReference": self.third_party_reference,
 			"thirdPartyPaymentJustification": self.third_party_payment_justification,
 			"thirdPartyPaymentReason": self.third_party_payment_reason,
@@ -6465,6 +6365,7 @@ class DecryptedInvoice:
 			recipient_type=deserialized_dict.get("recipientType"),
 			recipient_id=deserialized_dict.get("recipientId"),
 			invoice_reference=deserialized_dict.get("invoiceReference"),
+			decision_reference=deserialized_dict.get("decisionReference"),
 			third_party_reference=deserialized_dict.get("thirdPartyReference"),
 			third_party_payment_justification=deserialized_dict.get("thirdPartyPaymentJustification"),
 			third_party_payment_reason=deserialized_dict.get("thirdPartyPaymentReason"),
@@ -6540,6 +6441,7 @@ class EncryptedInvoice:
 	recipient_type: Optional[str] = None
 	recipient_id: Optional[str] = None
 	invoice_reference: Optional[str] = None
+	decision_reference: Optional[str] = None
 	third_party_reference: Optional[str] = None
 	third_party_payment_justification: Optional[str] = None
 	third_party_payment_reason: Optional[str] = None
@@ -6614,6 +6516,7 @@ class EncryptedInvoice:
 			"recipientType": self.recipient_type,
 			"recipientId": self.recipient_id,
 			"invoiceReference": self.invoice_reference,
+			"decisionReference": self.decision_reference,
 			"thirdPartyReference": self.third_party_reference,
 			"thirdPartyPaymentJustification": self.third_party_payment_justification,
 			"thirdPartyPaymentReason": self.third_party_payment_reason,
@@ -6695,6 +6598,7 @@ class EncryptedInvoice:
 			recipient_type=deserialized_dict.get("recipientType"),
 			recipient_id=deserialized_dict.get("recipientId"),
 			invoice_reference=deserialized_dict.get("invoiceReference"),
+			decision_reference=deserialized_dict.get("decisionReference"),
 			third_party_reference=deserialized_dict.get("thirdPartyReference"),
 			third_party_payment_justification=deserialized_dict.get("thirdPartyPaymentJustification"),
 			third_party_payment_reason=deserialized_dict.get("thirdPartyPaymentReason"),
@@ -6839,6 +6743,7 @@ class DecryptedInvoicingCode:
 	override3rd_payer_reason: Optional[str] = None
 	transplantation_code: Optional[int] = None
 	prescriber_norm: Optional[int] = None
+	product_label: Optional[str] = None
 	percent_norm: Optional[int] = None
 	prescriber_nihii: Optional[str] = None
 	related_code: Optional[str] = None
@@ -6894,6 +6799,7 @@ class DecryptedInvoicingCode:
 			"override3rdPayerReason": self.override3rd_payer_reason,
 			"transplantationCode": self.transplantation_code,
 			"prescriberNorm": self.prescriber_norm,
+			"productLabel": self.product_label,
 			"percentNorm": self.percent_norm,
 			"prescriberNihii": self.prescriber_nihii,
 			"relatedCode": self.related_code,
@@ -6956,6 +6862,7 @@ class DecryptedInvoicingCode:
 			override3rd_payer_reason=deserialized_dict.get("override3rdPayerReason"),
 			transplantation_code=deserialized_dict.get("transplantationCode"),
 			prescriber_norm=deserialized_dict.get("prescriberNorm"),
+			product_label=deserialized_dict.get("productLabel"),
 			percent_norm=deserialized_dict.get("percentNorm"),
 			prescriber_nihii=deserialized_dict.get("prescriberNihii"),
 			related_code=deserialized_dict.get("relatedCode"),
@@ -7012,6 +6919,7 @@ class EncryptedInvoicingCode:
 	override3rd_payer_reason: Optional[str] = None
 	transplantation_code: Optional[int] = None
 	prescriber_norm: Optional[int] = None
+	product_label: Optional[str] = None
 	percent_norm: Optional[int] = None
 	prescriber_nihii: Optional[str] = None
 	related_code: Optional[str] = None
@@ -7067,6 +6975,7 @@ class EncryptedInvoicingCode:
 			"override3rdPayerReason": self.override3rd_payer_reason,
 			"transplantationCode": self.transplantation_code,
 			"prescriberNorm": self.prescriber_norm,
+			"productLabel": self.product_label,
 			"percentNorm": self.percent_norm,
 			"prescriberNihii": self.prescriber_nihii,
 			"relatedCode": self.related_code,
@@ -7129,6 +7038,7 @@ class EncryptedInvoicingCode:
 			override3rd_payer_reason=deserialized_dict.get("override3rdPayerReason"),
 			transplantation_code=deserialized_dict.get("transplantationCode"),
 			prescriber_norm=deserialized_dict.get("prescriberNorm"),
+			product_label=deserialized_dict.get("productLabel"),
 			percent_norm=deserialized_dict.get("percentNorm"),
 			prescriber_nihii=deserialized_dict.get("prescriberNihii"),
 			related_code=deserialized_dict.get("relatedCode"),
@@ -7302,6 +7212,65 @@ class HealthElementShareOptions:
 		)
 
 @dataclass
+class CalendarItemType:
+	id: str
+	rev: Optional[str] = None
+	deletion_date: Optional[int] = None
+	healthcare_party_id: Optional[str] = None
+	agenda_id: Optional[str] = None
+	default_calendar_item_type: bool = False
+	name: Optional[str] = None
+	color: Optional[str] = None
+	duration: int = 0
+	external_ref: Optional[str] = None
+	mikrono_id: Optional[str] = None
+	doc_ids: List[str] = field(default_factory=list)
+	other_infos: Dict[str, str] = field(default_factory=dict)
+	subject_by_language: Dict[str, str] = field(default_factory=dict)
+
+	def __serialize__(self) -> object:
+		return {
+			"id": self.id,
+			"rev": self.rev,
+			"deletionDate": self.deletion_date,
+			"healthcarePartyId": self.healthcare_party_id,
+			"agendaId": self.agenda_id,
+			"defaultCalendarItemType": self.default_calendar_item_type,
+			"name": self.name,
+			"color": self.color,
+			"duration": self.duration,
+			"externalRef": self.external_ref,
+			"mikronoId": self.mikrono_id,
+			"docIds": [x0 for x0 in self.doc_ids],
+			"otherInfos": {k0: v0 for k0, v0 in self.other_infos.items()},
+			"subjectByLanguage": {k0: v0 for k0, v0 in self.subject_by_language.items()},
+		}
+
+	@classmethod
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'CalendarItemType':
+		deserialized_dict: dict[str, object]
+		if isinstance(data, str):
+			deserialized_dict = json.loads(data)
+		else:
+			deserialized_dict = data
+		return cls(
+			id=deserialized_dict["id"],
+			rev=deserialized_dict.get("rev"),
+			deletion_date=deserialized_dict.get("deletionDate"),
+			healthcare_party_id=deserialized_dict.get("healthcarePartyId"),
+			agenda_id=deserialized_dict.get("agendaId"),
+			default_calendar_item_type=deserialized_dict["defaultCalendarItemType"],
+			name=deserialized_dict.get("name"),
+			color=deserialized_dict.get("color"),
+			duration=deserialized_dict["duration"],
+			external_ref=deserialized_dict.get("externalRef"),
+			mikrono_id=deserialized_dict.get("mikronoId"),
+			doc_ids=[x0 for x0 in deserialized_dict["docIds"]],
+			other_infos=dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict["otherInfos"].items())),
+			subject_by_language=dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict["subjectByLanguage"].items())),
+		)
+
+@dataclass
 class Insurance:
 	id: str
 	address: 'DecryptedAddress'
@@ -7426,6 +7395,7 @@ class Group:
 	operation_tokens: Dict[str, 'OperationToken'] = field(default_factory=dict)
 	shared_entities: Dict[str, str] = field(default_factory=dict)
 	minimum_kraken_version: Optional[str] = None
+	external_jwt_public_keys: Dict[str, 'ExternalJwtSelector'] = field(default_factory=dict)
 	super_group: Optional[str] = None
 	application_id: Optional[str] = None
 
@@ -7444,6 +7414,7 @@ class Group:
 			"operationTokens": {k0: v0.__serialize__() for k0, v0 in self.operation_tokens.items()},
 			"sharedEntities": {k0: v0 for k0, v0 in self.shared_entities.items()},
 			"minimumKrakenVersion": self.minimum_kraken_version,
+			"externalJwtPublicKeys": {k0: v0.__serialize__() for k0, v0 in self.external_jwt_public_keys.items()},
 			"minimumAuthenticationClassForElevatedPrivileges": self.minimum_authentication_class_for_elevated_privileges.__serialize__(),
 			"superGroup": self.super_group,
 			"applicationId": self.application_id,
@@ -7470,6 +7441,7 @@ class Group:
 			operation_tokens=dict(map(lambda kv0: (kv0[0], OperationToken._deserialize(kv0[1])), deserialized_dict["operationTokens"].items())),
 			shared_entities=dict(map(lambda kv0: (kv0[0], kv0[1]), deserialized_dict["sharedEntities"].items())),
 			minimum_kraken_version=deserialized_dict.get("minimumKrakenVersion"),
+			external_jwt_public_keys=dict(map(lambda kv0: (kv0[0], ExternalJwtSelector._deserialize(kv0[1])), deserialized_dict["externalJwtPublicKeys"].items())),
 			minimum_authentication_class_for_elevated_privileges=AuthenticationClass._deserialize(deserialized_dict["minimumAuthenticationClassForElevatedPrivileges"]),
 			super_group=deserialized_dict.get("superGroup"),
 			application_id=deserialized_dict.get("applicationId"),
@@ -8242,6 +8214,241 @@ class TimeTableItem:
 			public_time_table_item=deserialized_dict["publicTimeTableItem"],
 			accepts_new_patient=deserialized_dict["acceptsNewPatient"],
 			unavailable=deserialized_dict["unavailable"],
+		)
+
+class DocumentLocation(Enum):
+	Annex = "annex"
+	Body = "body"
+
+	def __serialize__(self) -> object:
+		return self.value
+
+	@classmethod
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'DocumentLocation':
+		if data == "annex":
+			return DocumentLocation.Annex
+		elif data == "body":
+			return DocumentLocation.Body
+		else:
+			raise Exception(f"{data} is not a valid value for DocumentLocation enum.")
+
+class DocumentType(Enum):
+	Admission = "admission"
+	Alert = "alert"
+	BvtSample = "bvt_sample"
+	Clinicalpath = "clinicalpath"
+	Clinicalsummary = "clinicalsummary"
+	Contactreport = "contactreport"
+	Quote = "quote"
+	Invoice = "invoice"
+	Death = "death"
+	Discharge = "discharge"
+	Dischargereport = "dischargereport"
+	EbirthBabyMedicalform = "ebirth_baby_medicalform"
+	EbirthBabyNotification = "ebirth_baby_notification"
+	EbirthMotherMedicalform = "ebirth_mother_medicalform"
+	EbirthMotherNotification = "ebirth_mother_notification"
+	EcareSafeConsultation = "ecare_safe_consultation"
+	Epidemiology = "epidemiology"
+	Intervention = "intervention"
+	Labrequest = "labrequest"
+	Labresult = "labresult"
+	Medicaladvisoragreement = "medicaladvisoragreement"
+	Medicationschemeelement = "medicationschemeelement"
+	Note = "note"
+	Notification = "notification"
+	Pharmaceuticalprescription = "pharmaceuticalprescription"
+	Prescription = "prescription"
+	Productdelivery = "productdelivery"
+	Quickdischargereport = "quickdischargereport"
+	Radiationexposuremonitoring = "radiationexposuremonitoring"
+	Referral = "referral"
+	Report = "report"
+	Request = "request"
+	Result = "result"
+	Sumehr = "sumehr"
+	Telemonitoring = "telemonitoring"
+	Template = "template"
+	TemplateAdmin = "template_admin"
+	Treatmentsuspension = "treatmentsuspension"
+	Vaccination = "vaccination"
+
+	def __serialize__(self) -> object:
+		return self.value
+
+	@classmethod
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'DocumentType':
+		if data == "admission":
+			return DocumentType.Admission
+		elif data == "alert":
+			return DocumentType.Alert
+		elif data == "bvt_sample":
+			return DocumentType.BvtSample
+		elif data == "clinicalpath":
+			return DocumentType.Clinicalpath
+		elif data == "clinicalsummary":
+			return DocumentType.Clinicalsummary
+		elif data == "contactreport":
+			return DocumentType.Contactreport
+		elif data == "quote":
+			return DocumentType.Quote
+		elif data == "invoice":
+			return DocumentType.Invoice
+		elif data == "death":
+			return DocumentType.Death
+		elif data == "discharge":
+			return DocumentType.Discharge
+		elif data == "dischargereport":
+			return DocumentType.Dischargereport
+		elif data == "ebirth_baby_medicalform":
+			return DocumentType.EbirthBabyMedicalform
+		elif data == "ebirth_baby_notification":
+			return DocumentType.EbirthBabyNotification
+		elif data == "ebirth_mother_medicalform":
+			return DocumentType.EbirthMotherMedicalform
+		elif data == "ebirth_mother_notification":
+			return DocumentType.EbirthMotherNotification
+		elif data == "ecare_safe_consultation":
+			return DocumentType.EcareSafeConsultation
+		elif data == "epidemiology":
+			return DocumentType.Epidemiology
+		elif data == "intervention":
+			return DocumentType.Intervention
+		elif data == "labrequest":
+			return DocumentType.Labrequest
+		elif data == "labresult":
+			return DocumentType.Labresult
+		elif data == "medicaladvisoragreement":
+			return DocumentType.Medicaladvisoragreement
+		elif data == "medicationschemeelement":
+			return DocumentType.Medicationschemeelement
+		elif data == "note":
+			return DocumentType.Note
+		elif data == "notification":
+			return DocumentType.Notification
+		elif data == "pharmaceuticalprescription":
+			return DocumentType.Pharmaceuticalprescription
+		elif data == "prescription":
+			return DocumentType.Prescription
+		elif data == "productdelivery":
+			return DocumentType.Productdelivery
+		elif data == "quickdischargereport":
+			return DocumentType.Quickdischargereport
+		elif data == "radiationexposuremonitoring":
+			return DocumentType.Radiationexposuremonitoring
+		elif data == "referral":
+			return DocumentType.Referral
+		elif data == "report":
+			return DocumentType.Report
+		elif data == "request":
+			return DocumentType.Request
+		elif data == "result":
+			return DocumentType.Result
+		elif data == "sumehr":
+			return DocumentType.Sumehr
+		elif data == "telemonitoring":
+			return DocumentType.Telemonitoring
+		elif data == "template":
+			return DocumentType.Template
+		elif data == "template_admin":
+			return DocumentType.TemplateAdmin
+		elif data == "treatmentsuspension":
+			return DocumentType.Treatmentsuspension
+		elif data == "vaccination":
+			return DocumentType.Vaccination
+		else:
+			raise Exception(f"{data} is not a valid value for DocumentType enum.")
+
+class DocumentStatus(Enum):
+	Draft = "draft"
+	Finalized = "finalized"
+	PendingReview = "pending_review"
+	Reviewed = "reviewed"
+	PendingSignature = "pending_signature"
+	Signed = "signed"
+	Canceled = "canceled"
+	Sent = "sent"
+	Delivered = "delivered"
+
+	def __serialize__(self) -> object:
+		return self.value
+
+	@classmethod
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'DocumentStatus':
+		if data == "draft":
+			return DocumentStatus.Draft
+		elif data == "finalized":
+			return DocumentStatus.Finalized
+		elif data == "pending_review":
+			return DocumentStatus.PendingReview
+		elif data == "reviewed":
+			return DocumentStatus.Reviewed
+		elif data == "pending_signature":
+			return DocumentStatus.PendingSignature
+		elif data == "signed":
+			return DocumentStatus.Signed
+		elif data == "canceled":
+			return DocumentStatus.Canceled
+		elif data == "sent":
+			return DocumentStatus.Sent
+		elif data == "delivered":
+			return DocumentStatus.Delivered
+		else:
+			raise Exception(f"{data} is not a valid value for DocumentStatus enum.")
+
+@dataclass
+class DataAttachment:
+	couch_db_attachment_id: Optional[str] = None
+	object_store_attachment_id: Optional[str] = None
+	utis: List[str] = field(default_factory=list)
+
+	def __serialize__(self) -> object:
+		return {
+			"couchDbAttachmentId": self.couch_db_attachment_id,
+			"objectStoreAttachmentId": self.object_store_attachment_id,
+			"utis": [x0 for x0 in self.utis],
+		}
+
+	@classmethod
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'DataAttachment':
+		deserialized_dict: dict[str, object]
+		if isinstance(data, str):
+			deserialized_dict = json.loads(data)
+		else:
+			deserialized_dict = data
+		return cls(
+			couch_db_attachment_id=deserialized_dict.get("couchDbAttachmentId"),
+			object_store_attachment_id=deserialized_dict.get("objectStoreAttachmentId"),
+			utis=[x0 for x0 in deserialized_dict["utis"]],
+		)
+
+@dataclass
+class DeletedAttachment:
+	couch_db_attachment_id: Optional[str] = None
+	object_store_attachment_id: Optional[str] = None
+	key: Optional[str] = None
+	deletion_time: Optional[int] = None
+
+	def __serialize__(self) -> object:
+		return {
+			"couchDbAttachmentId": self.couch_db_attachment_id,
+			"objectStoreAttachmentId": self.object_store_attachment_id,
+			"key": self.key,
+			"deletionTime": self.deletion_time,
+		}
+
+	@classmethod
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'DeletedAttachment':
+		deserialized_dict: dict[str, object]
+		if isinstance(data, str):
+			deserialized_dict = json.loads(data)
+		else:
+			deserialized_dict = data
+		return cls(
+			couch_db_attachment_id=deserialized_dict.get("couchDbAttachmentId"),
+			object_store_attachment_id=deserialized_dict.get("objectStoreAttachmentId"),
+			key=deserialized_dict.get("key"),
+			deletion_time=deserialized_dict.get("deletionTime"),
 		)
 
 @dataclass
@@ -9518,241 +9725,6 @@ def deserialize_secret_id_share_options(data: Union[str, Dict[str, object]]) -> 
 	else:
 		raise Exception(f"{qualifier} is not a known subclass of SecretIdShareOptions")
 
-class DocumentLocation(Enum):
-	Annex = "annex"
-	Body = "body"
-
-	def __serialize__(self) -> object:
-		return self.value
-
-	@classmethod
-	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'DocumentLocation':
-		if data == "annex":
-			return DocumentLocation.Annex
-		elif data == "body":
-			return DocumentLocation.Body
-		else:
-			raise Exception(f"{data} is not a valid value for DocumentLocation enum.")
-
-class DocumentType(Enum):
-	Admission = "admission"
-	Alert = "alert"
-	BvtSample = "bvt_sample"
-	Clinicalpath = "clinicalpath"
-	Clinicalsummary = "clinicalsummary"
-	Contactreport = "contactreport"
-	Quote = "quote"
-	Invoice = "invoice"
-	Death = "death"
-	Discharge = "discharge"
-	Dischargereport = "dischargereport"
-	EbirthBabyMedicalform = "ebirth_baby_medicalform"
-	EbirthBabyNotification = "ebirth_baby_notification"
-	EbirthMotherMedicalform = "ebirth_mother_medicalform"
-	EbirthMotherNotification = "ebirth_mother_notification"
-	EcareSafeConsultation = "ecare_safe_consultation"
-	Epidemiology = "epidemiology"
-	Intervention = "intervention"
-	Labrequest = "labrequest"
-	Labresult = "labresult"
-	Medicaladvisoragreement = "medicaladvisoragreement"
-	Medicationschemeelement = "medicationschemeelement"
-	Note = "note"
-	Notification = "notification"
-	Pharmaceuticalprescription = "pharmaceuticalprescription"
-	Prescription = "prescription"
-	Productdelivery = "productdelivery"
-	Quickdischargereport = "quickdischargereport"
-	Radiationexposuremonitoring = "radiationexposuremonitoring"
-	Referral = "referral"
-	Report = "report"
-	Request = "request"
-	Result = "result"
-	Sumehr = "sumehr"
-	Telemonitoring = "telemonitoring"
-	Template = "template"
-	TemplateAdmin = "template_admin"
-	Treatmentsuspension = "treatmentsuspension"
-	Vaccination = "vaccination"
-
-	def __serialize__(self) -> object:
-		return self.value
-
-	@classmethod
-	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'DocumentType':
-		if data == "admission":
-			return DocumentType.Admission
-		elif data == "alert":
-			return DocumentType.Alert
-		elif data == "bvt_sample":
-			return DocumentType.BvtSample
-		elif data == "clinicalpath":
-			return DocumentType.Clinicalpath
-		elif data == "clinicalsummary":
-			return DocumentType.Clinicalsummary
-		elif data == "contactreport":
-			return DocumentType.Contactreport
-		elif data == "quote":
-			return DocumentType.Quote
-		elif data == "invoice":
-			return DocumentType.Invoice
-		elif data == "death":
-			return DocumentType.Death
-		elif data == "discharge":
-			return DocumentType.Discharge
-		elif data == "dischargereport":
-			return DocumentType.Dischargereport
-		elif data == "ebirth_baby_medicalform":
-			return DocumentType.EbirthBabyMedicalform
-		elif data == "ebirth_baby_notification":
-			return DocumentType.EbirthBabyNotification
-		elif data == "ebirth_mother_medicalform":
-			return DocumentType.EbirthMotherMedicalform
-		elif data == "ebirth_mother_notification":
-			return DocumentType.EbirthMotherNotification
-		elif data == "ecare_safe_consultation":
-			return DocumentType.EcareSafeConsultation
-		elif data == "epidemiology":
-			return DocumentType.Epidemiology
-		elif data == "intervention":
-			return DocumentType.Intervention
-		elif data == "labrequest":
-			return DocumentType.Labrequest
-		elif data == "labresult":
-			return DocumentType.Labresult
-		elif data == "medicaladvisoragreement":
-			return DocumentType.Medicaladvisoragreement
-		elif data == "medicationschemeelement":
-			return DocumentType.Medicationschemeelement
-		elif data == "note":
-			return DocumentType.Note
-		elif data == "notification":
-			return DocumentType.Notification
-		elif data == "pharmaceuticalprescription":
-			return DocumentType.Pharmaceuticalprescription
-		elif data == "prescription":
-			return DocumentType.Prescription
-		elif data == "productdelivery":
-			return DocumentType.Productdelivery
-		elif data == "quickdischargereport":
-			return DocumentType.Quickdischargereport
-		elif data == "radiationexposuremonitoring":
-			return DocumentType.Radiationexposuremonitoring
-		elif data == "referral":
-			return DocumentType.Referral
-		elif data == "report":
-			return DocumentType.Report
-		elif data == "request":
-			return DocumentType.Request
-		elif data == "result":
-			return DocumentType.Result
-		elif data == "sumehr":
-			return DocumentType.Sumehr
-		elif data == "telemonitoring":
-			return DocumentType.Telemonitoring
-		elif data == "template":
-			return DocumentType.Template
-		elif data == "template_admin":
-			return DocumentType.TemplateAdmin
-		elif data == "treatmentsuspension":
-			return DocumentType.Treatmentsuspension
-		elif data == "vaccination":
-			return DocumentType.Vaccination
-		else:
-			raise Exception(f"{data} is not a valid value for DocumentType enum.")
-
-class DocumentStatus(Enum):
-	Draft = "draft"
-	Finalized = "finalized"
-	PendingReview = "pending_review"
-	Reviewed = "reviewed"
-	PendingSignature = "pending_signature"
-	Signed = "signed"
-	Canceled = "canceled"
-	Sent = "sent"
-	Delivered = "delivered"
-
-	def __serialize__(self) -> object:
-		return self.value
-
-	@classmethod
-	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'DocumentStatus':
-		if data == "draft":
-			return DocumentStatus.Draft
-		elif data == "finalized":
-			return DocumentStatus.Finalized
-		elif data == "pending_review":
-			return DocumentStatus.PendingReview
-		elif data == "reviewed":
-			return DocumentStatus.Reviewed
-		elif data == "pending_signature":
-			return DocumentStatus.PendingSignature
-		elif data == "signed":
-			return DocumentStatus.Signed
-		elif data == "canceled":
-			return DocumentStatus.Canceled
-		elif data == "sent":
-			return DocumentStatus.Sent
-		elif data == "delivered":
-			return DocumentStatus.Delivered
-		else:
-			raise Exception(f"{data} is not a valid value for DocumentStatus enum.")
-
-@dataclass
-class DataAttachment:
-	couch_db_attachment_id: Optional[str] = None
-	object_store_attachment_id: Optional[str] = None
-	utis: List[str] = field(default_factory=list)
-
-	def __serialize__(self) -> object:
-		return {
-			"couchDbAttachmentId": self.couch_db_attachment_id,
-			"objectStoreAttachmentId": self.object_store_attachment_id,
-			"utis": [x0 for x0 in self.utis],
-		}
-
-	@classmethod
-	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'DataAttachment':
-		deserialized_dict: dict[str, object]
-		if isinstance(data, str):
-			deserialized_dict = json.loads(data)
-		else:
-			deserialized_dict = data
-		return cls(
-			couch_db_attachment_id=deserialized_dict.get("couchDbAttachmentId"),
-			object_store_attachment_id=deserialized_dict.get("objectStoreAttachmentId"),
-			utis=[x0 for x0 in deserialized_dict["utis"]],
-		)
-
-@dataclass
-class DeletedAttachment:
-	couch_db_attachment_id: Optional[str] = None
-	object_store_attachment_id: Optional[str] = None
-	key: Optional[str] = None
-	deletion_time: Optional[int] = None
-
-	def __serialize__(self) -> object:
-		return {
-			"couchDbAttachmentId": self.couch_db_attachment_id,
-			"objectStoreAttachmentId": self.object_store_attachment_id,
-			"key": self.key,
-			"deletionTime": self.deletion_time,
-		}
-
-	@classmethod
-	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'DeletedAttachment':
-		deserialized_dict: dict[str, object]
-		if isinstance(data, str):
-			deserialized_dict = json.loads(data)
-		else:
-			deserialized_dict = data
-		return cls(
-			couch_db_attachment_id=deserialized_dict.get("couchDbAttachmentId"),
-			object_store_attachment_id=deserialized_dict.get("objectStoreAttachmentId"),
-			key=deserialized_dict.get("key"),
-			deletion_time=deserialized_dict.get("deletionTime"),
-		)
-
 @dataclass
 class EncryptedCalendarItemTag:
 	encrypted_self: Optional['Base64String']
@@ -10094,7 +10066,6 @@ class EntityWithEncryptionMetadataTypeName(Enum):
 	Message = "Message"
 	Patient = "Patient"
 	Receipt = "Receipt"
-	TimeTable = "TimeTable"
 	Topic = "Topic"
 
 	def __serialize__(self) -> object:
@@ -10132,8 +10103,6 @@ class EntityWithEncryptionMetadataTypeName(Enum):
 			return EntityWithEncryptionMetadataTypeName.Patient
 		elif data == "Receipt":
 			return EntityWithEncryptionMetadataTypeName.Receipt
-		elif data == "TimeTable":
-			return EntityWithEncryptionMetadataTypeName.TimeTable
 		elif data == "Topic":
 			return EntityWithEncryptionMetadataTypeName.Topic
 		else:
@@ -12169,6 +12138,35 @@ class OperationToken:
 			validity=deserialized_dict["validity"],
 			operation=Operation._deserialize(deserialized_dict["operation"]),
 			description=deserialized_dict.get("description"),
+		)
+
+@dataclass
+class ExternalJwtSelector:
+	id: Optional[str] = None
+	email_field: Optional[str] = None
+	login_field: Optional[str] = None
+	mobile_phone_field: Optional[str] = None
+
+	def __serialize__(self) -> object:
+		return {
+			"id": self.id,
+			"emailField": self.email_field,
+			"loginField": self.login_field,
+			"mobilePhoneField": self.mobile_phone_field,
+		}
+
+	@classmethod
+	def _deserialize(cls, data: Union[str, Dict[str, object]]) -> 'ExternalJwtSelector':
+		deserialized_dict: dict[str, object]
+		if isinstance(data, str):
+			deserialized_dict = json.loads(data)
+		else:
+			deserialized_dict = data
+		return cls(
+			id=deserialized_dict.get("id"),
+			email_field=deserialized_dict.get("emailField"),
+			login_field=deserialized_dict.get("loginField"),
+			mobile_phone_field=deserialized_dict.get("mobilePhoneField"),
 		)
 
 class AuthenticationClass(Enum):

@@ -166,3 +166,40 @@ public fun byRecurrenceId(params: String): String = kotlin.runCatching {
 		decodedParams.recurrenceId,
 	)
 }.toPyString(FilterOptions.serializer(PolymorphicSerializer(CalendarItem::class)))
+
+@Serializable
+private class LifecycleBetweenForDataOwnerParams(
+	public val dataOwnerId: String,
+	public val startTimestamp: Long?,
+	public val endTimestamp: Long?,
+	public val descending: Boolean,
+)
+
+@OptIn(InternalIcureApi::class)
+public fun lifecycleBetweenForDataOwner(params: String): String = kotlin.runCatching {
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<LifecycleBetweenForDataOwnerParams>(params)
+	CalendarItemFilters.lifecycleBetweenForDataOwner(
+		decodedParams.dataOwnerId,
+		decodedParams.startTimestamp,
+		decodedParams.endTimestamp,
+		decodedParams.descending,
+	)
+}.toPyString(BaseFilterOptions.serializer(PolymorphicSerializer(CalendarItem::class)))
+
+@Serializable
+private class LifecycleBetweenForSelfParams(
+	public val startTimestamp: Long?,
+	public val endTimestamp: Long?,
+	public val descending: Boolean,
+)
+
+@OptIn(InternalIcureApi::class)
+public fun lifecycleBetweenForSelf(params: String): String = kotlin.runCatching {
+	val decodedParams = fullLanguageInteropJson.decodeFromString<LifecycleBetweenForSelfParams>(params)
+	CalendarItemFilters.lifecycleBetweenForSelf(
+		decodedParams.startTimestamp,
+		decodedParams.endTimestamp,
+		decodedParams.descending,
+	)
+}.toPyString(FilterOptions.serializer(PolymorphicSerializer(CalendarItem::class)))

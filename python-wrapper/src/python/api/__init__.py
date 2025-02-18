@@ -6,7 +6,6 @@ from cardinal_sdk.api.MedicalLocationApi import MedicalLocationApi
 from cardinal_sdk.api.TimeTableApi import TimeTableApi
 from cardinal_sdk.api.DocumentBasicApi import DocumentBasicApi
 from cardinal_sdk.api.PatientBasicApi import PatientBasicApi
-from cardinal_sdk.api.TimeTableBasicApi import TimeTableBasicApi
 from cardinal_sdk.api.ClassificationApi import ClassificationApi
 from cardinal_sdk.api.CalendarItemBasicApi import CalendarItemBasicApi
 from cardinal_sdk.api.MaintenanceTaskApi import MaintenanceTaskApi
@@ -45,6 +44,7 @@ from cardinal_sdk.api.InvoiceApi import InvoiceApi
 from cardinal_sdk.api.MessageApi import MessageApi
 from cardinal_sdk.api.HealthElementApi import HealthElementApi
 from cardinal_sdk.api.InvoiceBasicApi import InvoiceBasicApi
+from cardinal_sdk.api.CalendarItemTypeApi import CalendarItemTypeApi
 from cardinal_sdk.api.TopicBasicApi import TopicBasicApi
 from cardinal_sdk.api.InsuranceApi import InsuranceApi
 from cardinal_sdk.api.AgendaApi import AgendaApi
