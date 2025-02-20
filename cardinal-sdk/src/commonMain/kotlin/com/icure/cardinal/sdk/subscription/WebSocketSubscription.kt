@@ -25,8 +25,11 @@ import io.ktor.websocket.send
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.async
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.channels.Channel
@@ -66,6 +69,7 @@ internal class WebSocketSubscription<E : Identifiable<String>> private construct
 	companion object {
 		// Should be same as on backend
 		private val DURATION_BETWEEN_PINGS = 20.seconds
+		private val CLOSE_REASON_GRACE_PERIOD = 3.seconds
 		private val NO_PING_FROM_SERVER = CloseReason(
 			code = CloseReason.Codes.NORMAL.code,
 			message = "Server ping timeout",
@@ -115,6 +119,7 @@ internal class WebSocketSubscription<E : Identifiable<String>> private construct
 	}
 
 	private val wrapperScope = CoroutineScope(Dispatchers.Default)
+	private val waitCloseReasonScope = CoroutineScope(Dispatchers.Default + SupervisorJob())
 	private val _eventChannel = Channel<EntitySubscriptionEvent<E>>(
 		capacity = config.channelBufferCapacity,
 		onBufferOverflow = when (config.onBufferFull) {
@@ -126,6 +131,7 @@ internal class WebSocketSubscription<E : Identifiable<String>> private construct
 
 	private lateinit var session: DefaultWebSocketSession
 	private var _closeReason: EntitySubscriptionCloseReason? = null
+
 	private var retriesAttempt = 0
 	private var lastPingJob: Job? = null
 
@@ -145,10 +151,16 @@ internal class WebSocketSubscription<E : Identifiable<String>> private construct
 
 	private suspend fun closeDefinitely(closeReason: EntitySubscriptionCloseReason) {
 		_closeReason = closeReason
+		when (closeReason) {
+			EntitySubscriptionCloseReason.ChannelFull -> {}
+			EntitySubscriptionCloseReason.ConnectionLost -> sendEvent(EntitySubscriptionEvent.ConnectionError.ConnectionLost)
+			EntitySubscriptionCloseReason.IntentionallyClosed -> sendEvent(EntitySubscriptionEvent.ClosedByClient)
+		}
 		session.close(CloseReason(CloseReason.Codes.NORMAL, "Closed by the client"))
 		session.incoming.cancel()
 		session.cancel()
 		wrapperScope.cancel()
+		waitCloseReasonScope.cancel()
 		_eventChannel.close(null)
 	}
 
@@ -159,12 +171,20 @@ internal class WebSocketSubscription<E : Identifiable<String>> private construct
 	 *
 	 * @return The job that has been launched
 	 */
-	private suspend fun DefaultWebSocketSession.launchPingTimeoutChecker(): Job = launch {
+	private fun DefaultWebSocketSession.launchPingTimeoutChecker(
+		closeReasonDeferred: Deferred<CloseReason?>
+	): Job = launch {
 		delay(DURATION_BETWEEN_PINGS)
 		if (isActive) {
 			sendEvent(EntitySubscriptionEvent.ConnectionError.MissedPing)
 			session.close(NO_PING_FROM_SERVER)
 			session.incoming.cancel()
+			wrapperScope.launch {
+				delay(CLOSE_REASON_GRACE_PERIOD)
+				if (!closeReasonDeferred.isCompleted) {
+					closeReasonDeferred.cancel(UncompletedCloseReasonException())
+				}
+			}
 		}
 	}
 
@@ -175,7 +195,9 @@ internal class WebSocketSubscription<E : Identifiable<String>> private construct
 	 *
 	 * Note: Control frames are not supported in this loop, they should not be emitted by Ktor's ReceiveChannel
 	 */
-	private suspend fun incomingMessagesLoop() = kotlin.runCatching {
+	private suspend fun incomingMessagesLoop(
+		closeReasonDeferred: Deferred<CloseReason?>
+	) = kotlin.runCatching {
 		for (frame in session.incoming) {
 			retriesAttempt = 0
 			when (frame) {
@@ -184,7 +206,7 @@ internal class WebSocketSubscription<E : Identifiable<String>> private construct
 					if (content == "ping") {
 						lastPingJob?.cancel()
 						send("pong")
-						lastPingJob = session.launchPingTimeoutChecker()
+						lastPingJob = session.launchPingTimeoutChecker(closeReasonDeferred)
 					} else {
 						sendEvent(try {
 							EntitySubscriptionEvent.EntityNotification(clientJson.decodeFromString(entitySerializer, content))
@@ -204,11 +226,19 @@ internal class WebSocketSubscription<E : Identifiable<String>> private construct
 		if (it !is CancellationException) sendEvent(EntitySubscriptionEvent.UnexpectedError("${it::class.simpleName} - ${it.message}"))
 	}
 
+	private fun waitForCloseReasonDeferred(): Deferred<CloseReason?> = waitCloseReasonScope.async {
+		session.closeReason.await()
+	}
+
 	/**
 	 * Suspends until the connection is closed and emits the close event
 	 */
-	private suspend fun waitForClose() {
-		val wsCloseReason = session.closeReason.await()
+	private suspend fun waitForClose(closeReasonDeferred: Deferred<CloseReason?>) {
+		val wsCloseReason = try {
+			closeReasonDeferred.await()
+		} catch (_: UncompletedCloseReasonException) {
+			NO_PING_FROM_SERVER
+		}
 	 	if (_closeReason == null && wsCloseReason != NO_PING_FROM_SERVER) _eventChannel.send(EntitySubscriptionEvent.ConnectionError.ClosedByServer)
 	}
 
@@ -276,12 +306,14 @@ internal class WebSocketSubscription<E : Identifiable<String>> private construct
 		send(subscriptionRequest)
 		sendEvent(EntitySubscriptionEvent.Connected)
 
+		val closeReasonDeferred = waitForCloseReasonDeferred()
+
 		session.launch {
-			incomingMessagesLoop()
+			incomingMessagesLoop(closeReasonDeferred)
 		}
 
 		wrapperScope.launch {
-			waitForClose()
+			waitForClose(closeReasonDeferred)
 			reconnect()
 		}
 	}
@@ -311,15 +343,25 @@ internal class WebSocketSubscription<E : Identifiable<String>> private construct
 					factor = config.retryDelayExponentFactor,
 				).milliseconds,
 			)
-			session = startSession()
-
-			sendEvent(EntitySubscriptionEvent.Reconnected)
-
-			session.launch {
-				incomingMessagesLoop()
+			val sessionOrNull = try {
+				startSession()
+			} catch (_: Exception) {
+				null
 			}
 
-			waitForClose()
+			if(sessionOrNull != null) {
+				session = sessionOrNull
+
+				send(subscriptionRequest)
+				sendEvent(EntitySubscriptionEvent.Reconnected)
+				val closeReasonDeferred = waitForCloseReasonDeferred()
+
+				session.launch {
+					incomingMessagesLoop(closeReasonDeferred)
+				}
+
+				waitForClose(closeReasonDeferred)
+			}
 			reconnect()
 		}
 	}
@@ -336,4 +378,6 @@ internal class WebSocketSubscription<E : Identifiable<String>> private construct
 			closeDefinitely(EntitySubscriptionCloseReason.ChannelFull)
 		}
 	}
+
+	private class UncompletedCloseReasonException : CancellationException("Close reason did not complete within a reasonable time")
 }

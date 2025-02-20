@@ -20,6 +20,12 @@ sealed interface EntitySubscriptionEvent<out E : Identifiable<String>> {
 	data object Reconnected : EntitySubscriptionEvent<Nothing>
 
 	/**
+	 * The subscription was closed by the client.
+	 */
+	@Serializable
+	data object ClosedByClient : EntitySubscriptionEvent<Nothing>
+
+	/**
 	 * A general unexpected error.
 	 */
 	@Serializable
@@ -50,6 +56,13 @@ sealed interface EntitySubscriptionEvent<out E : Identifiable<String>> {
 		 */
 		@Serializable
 		data object ClosedByServer : ConnectionError
+
+		/**
+		 * The client could not re-establish the connection to the server after the number of retries specified in the configuration,
+		 * and so the subscription is closed.
+		 */
+		@Serializable
+		data object ConnectionLost : ConnectionError
 	}
 
 	/**
