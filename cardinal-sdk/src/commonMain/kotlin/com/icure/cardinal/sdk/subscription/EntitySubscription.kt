@@ -27,11 +27,6 @@ interface EntitySubscription<E : Identifiable<String>> {
 	val closeReason: EntitySubscriptionCloseReason?
 
 	/**
-	 * Same as [closeReason] but as a [Deferred].
-	 */
-	val deferredCloseReason: Deferred<EntitySubscriptionCloseReason?>
-
-	/**
 	 * The events observed by this subscription.
 	 */
 	val eventChannel: ReceiveChannel<EntitySubscriptionEvent<E>>

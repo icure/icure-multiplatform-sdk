@@ -130,12 +130,8 @@ internal class WebSocketSubscription<E : Identifiable<String>> private construct
 	)
 
 	private lateinit var session: DefaultWebSocketSession
-	private val _closeReasonDeferred = CompletableDeferred<EntitySubscriptionCloseReason?>()
 	private var _closeReason: EntitySubscriptionCloseReason? = null
-		set(value) {
-			_closeReasonDeferred.complete(value)
-			field = value
-		}
+
 	private var retriesAttempt = 0
 	private var lastPingJob: Job? = null
 
@@ -153,9 +149,6 @@ internal class WebSocketSubscription<E : Identifiable<String>> private construct
 	override val closeReason: EntitySubscriptionCloseReason?
 		get() = _closeReason
 
-	override val deferredCloseReason: Deferred<EntitySubscriptionCloseReason?>
-		get() = _closeReasonDeferred
-
 	private suspend fun closeDefinitely(closeReason: EntitySubscriptionCloseReason) {
 		_closeReason = closeReason
 		when (closeReason) {
@@ -167,6 +160,7 @@ internal class WebSocketSubscription<E : Identifiable<String>> private construct
 		session.incoming.cancel()
 		session.cancel()
 		wrapperScope.cancel()
+		waitCloseReasonScope.cancel()
 		_eventChannel.close(null)
 	}
 
