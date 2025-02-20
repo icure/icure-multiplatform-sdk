@@ -336,16 +336,23 @@ internal class WebSocketSubscription<E : Identifiable<String>> private construct
 					factor = config.retryDelayExponentFactor,
 				).milliseconds,
 			)
-			session = startSession()
-
-			sendEvent(EntitySubscriptionEvent.Reconnected)
-			val closeReasonDeferred = waitForCloseReasonDeferred()
-
-			session.launch {
-				incomingMessagesLoop(closeReasonDeferred)
+			val sessionOrNull = try {
+				startSession()
+			} catch (_: Exception) {
+				null
 			}
 
-			waitForClose(closeReasonDeferred)
+			if(sessionOrNull != null) {
+				session = sessionOrNull
+				sendEvent(EntitySubscriptionEvent.Reconnected)
+				val closeReasonDeferred = waitForCloseReasonDeferred()
+
+				session.launch {
+					incomingMessagesLoop(closeReasonDeferred)
+				}
+
+				waitForClose(closeReasonDeferred)
+			}
 			reconnect()
 		}
 	}
