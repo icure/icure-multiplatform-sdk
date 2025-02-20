@@ -130,7 +130,12 @@ internal class WebSocketSubscription<E : Identifiable<String>> private construct
 	)
 
 	private lateinit var session: DefaultWebSocketSession
+	private val _closeReasonDeferred = CompletableDeferred<EntitySubscriptionCloseReason?>()
 	private var _closeReason: EntitySubscriptionCloseReason? = null
+		set(value) {
+			_closeReasonDeferred.complete(value)
+			field = value
+		}
 	private var retriesAttempt = 0
 	private var lastPingJob: Job? = null
 
@@ -148,8 +153,16 @@ internal class WebSocketSubscription<E : Identifiable<String>> private construct
 	override val closeReason: EntitySubscriptionCloseReason?
 		get() = _closeReason
 
+	override val deferredCloseReason: Deferred<EntitySubscriptionCloseReason?>
+		get() = _closeReasonDeferred
+
 	private suspend fun closeDefinitely(closeReason: EntitySubscriptionCloseReason) {
 		_closeReason = closeReason
+		when (closeReason) {
+			EntitySubscriptionCloseReason.ChannelFull -> {}
+			EntitySubscriptionCloseReason.ConnectionLost -> sendEvent(EntitySubscriptionEvent.ConnectionError.ConnectionLost)
+			EntitySubscriptionCloseReason.IntentionallyClosed -> sendEvent(EntitySubscriptionEvent.ClosedByClient)
+		}
 		session.close(CloseReason(CloseReason.Codes.NORMAL, "Closed by the client"))
 		session.incoming.cancel()
 		session.cancel()
@@ -164,7 +177,7 @@ internal class WebSocketSubscription<E : Identifiable<String>> private construct
 	 *
 	 * @return The job that has been launched
 	 */
-	private suspend fun DefaultWebSocketSession.launchPingTimeoutChecker(
+	private fun DefaultWebSocketSession.launchPingTimeoutChecker(
 		closeReasonDeferred: Deferred<CloseReason?>
 	): Job = launch {
 		delay(DURATION_BETWEEN_PINGS)
@@ -344,6 +357,8 @@ internal class WebSocketSubscription<E : Identifiable<String>> private construct
 
 			if(sessionOrNull != null) {
 				session = sessionOrNull
+
+				send(subscriptionRequest)
 				sendEvent(EntitySubscriptionEvent.Reconnected)
 				val closeReasonDeferred = waitForCloseReasonDeferred()
 
