@@ -3,6 +3,8 @@ package com.icure.cardinal.sdk.model.embed
 import com.icure.cardinal.sdk.model.base.CodeStub
 import com.icure.cardinal.sdk.model.specializations.Base64String
 import kotlinx.serialization.Serializable
+import org.taktik.icure.services.`external`.rest.v2.dto.base.CodeStubDto
+import org.taktik.icure.services.`external`.rest.v2.dto.specializations.Base64StringDto
 import kotlin.Long
 import kotlin.String
 
@@ -15,9 +17,9 @@ sealed interface SchoolingInfo : Encryptable {
 
 	public val school: String?
 
-	public val typeOfEducation: CodeStub?
+	public val typeOfEducation: CodeStubDto?
 
-	override val encryptedSelf: Base64String?
+	override val encryptedSelf: Base64StringDto?
 	// region SchoolingInfo-SchoolingInfo
 
 	// endregion

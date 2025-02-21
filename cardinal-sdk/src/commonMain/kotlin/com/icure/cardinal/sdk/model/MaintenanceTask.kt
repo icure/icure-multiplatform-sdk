@@ -12,6 +12,13 @@ import com.icure.cardinal.sdk.model.embed.TaskStatus
 import com.icure.cardinal.sdk.model.specializations.Base64String
 import com.icure.cardinal.sdk.utils.DefaultValue
 import kotlinx.serialization.Serializable
+import org.taktik.icure.services.`external`.rest.v2.dto.PropertyStubDto
+import org.taktik.icure.services.`external`.rest.v2.dto.base.CodeStubDto
+import org.taktik.icure.services.`external`.rest.v2.dto.base.IdentifierDto
+import org.taktik.icure.services.`external`.rest.v2.dto.embed.DelegationDto
+import org.taktik.icure.services.`external`.rest.v2.dto.embed.SecurityMetadataDto
+import org.taktik.icure.services.`external`.rest.v2.dto.embed.TaskStatusDto
+import org.taktik.icure.services.`external`.rest.v2.dto.specializations.Base64StringDto
 import kotlin.Long
 import kotlin.String
 import kotlin.collections.List
@@ -29,7 +36,7 @@ sealed interface MaintenanceTask :
 
 	override val rev: String?
 
-	public val identifier: List<Identifier>
+	public val identifier: List<IdentifierDto>
 
 	override val created: Long?
 
@@ -41,9 +48,9 @@ sealed interface MaintenanceTask :
 
 	override val medicalLocationId: String?
 
-	override val tags: Set<CodeStub>
+	override val tags: Set<CodeStubDto>
 
-	override val codes: Set<CodeStub>
+	override val codes: Set<CodeStubDto>
 
 	override val endOfLife: Long?
 
@@ -51,21 +58,21 @@ sealed interface MaintenanceTask :
 
 	public val taskType: String?
 
-	public val properties: Set<PropertyStub>
+	public val properties: Set<PropertyStubDto>
 
-	public val status: TaskStatus
+	public val status: TaskStatusDto
 
 	override val secretForeignKeys: Set<String>
 
-	override val cryptedForeignKeys: Map<String, Set<Delegation>>
+	override val cryptedForeignKeys: Map<String, Set<DelegationDto>>
 
-	override val delegations: Map<String, Set<Delegation>>
+	override val delegations: Map<String, Set<DelegationDto>>
 
-	override val encryptionKeys: Map<String, Set<Delegation>>
+	override val encryptionKeys: Map<String, Set<DelegationDto>>
 
-	override val encryptedSelf: Base64String?
+	override val encryptedSelf: Base64StringDto?
 
-	override val securityMetadata: SecurityMetadata?
+	override val securityMetadata: SecurityMetadataDto?
 	// region MaintenanceTask-MaintenanceTask
 	companion object {
 		const val KRAKEN_QUALIFIED_NAME = "org.taktik.icure.entities.MaintenanceTask"

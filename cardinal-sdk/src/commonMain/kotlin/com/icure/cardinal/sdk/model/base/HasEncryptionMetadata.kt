@@ -1,7 +1,14 @@
 package com.icure.cardinal.sdk.model.base
 
+import org.taktik.icure.services.`external`.rest.v2.dto.embed.DelegationDto
+import org.taktik.icure.services.`external`.rest.v2.dto.embed.SecurityMetadataDto
+import kotlin.String
+import kotlin.collections.Map
+import kotlin.collections.Set
 import com.icure.cardinal.sdk.model.embed.Delegation
 import com.icure.cardinal.sdk.model.embed.SecurityMetadata
+import org.taktik.icure.services.`external`.rest.v2.dto.embed.DelegationDto
+import org.taktik.icure.services.`external`.rest.v2.dto.embed.SecurityMetadataDto
 import kotlin.String
 import kotlin.collections.Map
 import kotlin.collections.Set
@@ -11,13 +18,13 @@ import kotlin.collections.Set
 interface HasEncryptionMetadata : Versionable<String> {
 	public val secretForeignKeys: Set<String>
 
-	public val cryptedForeignKeys: Map<String, Set<Delegation>>
+	public val cryptedForeignKeys: Map<String, Set<DelegationDto>>
 
-	public val delegations: Map<String, Set<Delegation>>
+	public val delegations: Map<String, Set<DelegationDto>>
 
-	public val encryptionKeys: Map<String, Set<Delegation>>
+	public val encryptionKeys: Map<String, Set<DelegationDto>>
 
-	public val securityMetadata: SecurityMetadata?
+	public val securityMetadata: SecurityMetadataDto?
 	// region HasEncryptionMetadata-HasEncryptionMetadata
 fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): HasEncryptionMetadata
 	// endregion

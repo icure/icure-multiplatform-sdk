@@ -6,7 +6,6 @@ import com.icure.cardinal.sdk.model.base.ICureDocument
 import com.icure.cardinal.sdk.model.base.Identifier
 import com.icure.cardinal.sdk.model.base.ParticipantType
 import com.icure.cardinal.sdk.model.base.StoredDocument
-import com.icure.cardinal.sdk.model.embed.Address
 import com.icure.cardinal.sdk.model.embed.Annotation
 import com.icure.cardinal.sdk.model.embed.DecryptedAddress
 import com.icure.cardinal.sdk.model.embed.DecryptedService
@@ -17,11 +16,37 @@ import com.icure.cardinal.sdk.model.embed.EncryptedAddress
 import com.icure.cardinal.sdk.model.embed.EncryptedService
 import com.icure.cardinal.sdk.model.embed.EncryptedSubContact
 import com.icure.cardinal.sdk.model.embed.SecurityMetadata
-import com.icure.cardinal.sdk.model.embed.Service
-import com.icure.cardinal.sdk.model.embed.SubContact
 import com.icure.cardinal.sdk.model.specializations.Base64String
 import com.icure.cardinal.sdk.utils.DefaultValue
 import kotlinx.serialization.Serializable
+import org.taktik.icure.services.`external`.rest.v2.dto.base.CodeStubDto
+import org.taktik.icure.services.`external`.rest.v2.dto.base.IdentifierDto
+import org.taktik.icure.services.`external`.rest.v2.dto.base.ParticipantTypeDto
+import org.taktik.icure.services.`external`.rest.v2.dto.embed.AddressDto
+import org.taktik.icure.services.`external`.rest.v2.dto.embed.AnnotationDto
+import org.taktik.icure.services.`external`.rest.v2.dto.embed.DelegationDto
+import org.taktik.icure.services.`external`.rest.v2.dto.embed.SecurityMetadataDto
+import org.taktik.icure.services.`external`.rest.v2.dto.embed.ServiceDto
+import org.taktik.icure.services.`external`.rest.v2.dto.embed.SubContactDto
+import org.taktik.icure.services.`external`.rest.v2.dto.specializations.Base64StringDto
+import kotlin.Long
+import kotlin.String
+import kotlin.collections.List
+import kotlin.collections.Map
+import kotlin.collections.Set
+import com.icure.cardinal.sdk.model.embed.Address
+import com.icure.cardinal.sdk.model.embed.Service
+import com.icure.cardinal.sdk.model.embed.SubContact
+import org.taktik.icure.services.`external`.rest.v2.dto.base.CodeStubDto
+import org.taktik.icure.services.`external`.rest.v2.dto.base.IdentifierDto
+import org.taktik.icure.services.`external`.rest.v2.dto.base.ParticipantTypeDto
+import org.taktik.icure.services.`external`.rest.v2.dto.embed.AddressDto
+import org.taktik.icure.services.`external`.rest.v2.dto.embed.AnnotationDto
+import org.taktik.icure.services.`external`.rest.v2.dto.embed.DelegationDto
+import org.taktik.icure.services.`external`.rest.v2.dto.embed.SecurityMetadataDto
+import org.taktik.icure.services.`external`.rest.v2.dto.embed.ServiceDto
+import org.taktik.icure.services.`external`.rest.v2.dto.embed.SubContactDto
+import org.taktik.icure.services.`external`.rest.v2.dto.specializations.Base64StringDto
 import kotlin.Long
 import kotlin.String
 import kotlin.collections.List
@@ -49,11 +74,11 @@ sealed interface Contact :
 
 	override val medicalLocationId: String?
 
-	override val tags: Set<CodeStub>
+	override val tags: Set<CodeStubDto>
 
-	override val codes: Set<CodeStub>
+	override val codes: Set<CodeStubDto>
 
-	public val identifier: List<Identifier>
+	public val identifier: List<IdentifierDto>
 
 	override val endOfLife: Long?
 
@@ -71,15 +96,15 @@ sealed interface Contact :
 
 	public val externalId: String?
 
-	public val encounterType: CodeStub?
+	public val encounterType: CodeStubDto?
 
-	public val encounterLocation: Address?
+	public val encounterLocation: AddressDto?
 
-	public val subContacts: Set<SubContact>
+	public val subContacts: Set<SubContactDto>
 
-	public val services: Set<Service>
+	public val services: Set<ServiceDto>
 
-	public val participants: Map<ParticipantType, String>
+	public val participants: Map<ParticipantTypeDto, String>
 
 	public val healthcarePartyId: String?
 
@@ -87,17 +112,17 @@ sealed interface Contact :
 
 	override val secretForeignKeys: Set<String>
 
-	override val cryptedForeignKeys: Map<String, Set<Delegation>>
+	override val cryptedForeignKeys: Map<String, Set<DelegationDto>>
 
-	override val delegations: Map<String, Set<Delegation>>
+	override val delegations: Map<String, Set<DelegationDto>>
 
-	override val encryptionKeys: Map<String, Set<Delegation>>
+	override val encryptionKeys: Map<String, Set<DelegationDto>>
 
-	override val encryptedSelf: Base64String?
+	override val encryptedSelf: Base64StringDto?
 
-	override val securityMetadata: SecurityMetadata?
+	override val securityMetadata: SecurityMetadataDto?
 
-	public val notes: List<Annotation>
+	public val notes: List<AnnotationDto>
 	// region Contact-Contact
 	companion object {
 		const val KRAKEN_QUALIFIED_NAME = "org.taktik.icure.entities.Contact"

@@ -2,6 +2,8 @@ package com.icure.cardinal.sdk.model.embed
 
 import com.icure.cardinal.sdk.model.specializations.Base64String
 import kotlinx.serialization.Serializable
+import org.taktik.icure.services.`external`.rest.v2.dto.embed.MembershipTypeDto
+import org.taktik.icure.services.`external`.rest.v2.dto.specializations.Base64StringDto
 import kotlin.Long
 import kotlin.String
 
@@ -14,9 +16,9 @@ sealed interface CareTeamMembership : Encryptable {
 
 	public val careTeamMemberId: String?
 
-	public val membershipType: MembershipType?
+	public val membershipType: MembershipTypeDto?
 
-	override val encryptedSelf: Base64String?
+	override val encryptedSelf: Base64StringDto?
 	// region CareTeamMembership-CareTeamMembership
 
 	// endregion

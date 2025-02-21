@@ -4,6 +4,9 @@ import com.icure.cardinal.sdk.model.base.CodeStub
 import com.icure.cardinal.sdk.model.base.Identifiable
 import com.icure.cardinal.sdk.model.specializations.Base64String
 import kotlinx.serialization.Serializable
+import org.taktik.icure.services.`external`.rest.v2.dto.base.CodeStubDto
+import org.taktik.icure.services.`external`.rest.v2.dto.embed.CareTeamMemberTypeDto
+import org.taktik.icure.services.`external`.rest.v2.dto.specializations.Base64StringDto
 import kotlin.String
 
 // WARNING: This file is auto-generated. If you change it manually, your changes will be lost.
@@ -11,13 +14,13 @@ import kotlin.String
 sealed interface CareTeamMember : Encryptable, Identifiable<String> {
 	override val id: String
 
-	public val careTeamMemberType: CareTeamMemberType?
+	public val careTeamMemberType: CareTeamMemberTypeDto?
 
 	public val healthcarePartyId: String?
 
-	public val quality: CodeStub?
+	public val quality: CodeStubDto?
 
-	override val encryptedSelf: Base64String?
+	override val encryptedSelf: Base64StringDto?
 	// region CareTeamMember-CareTeamMember
 
 	// endregion

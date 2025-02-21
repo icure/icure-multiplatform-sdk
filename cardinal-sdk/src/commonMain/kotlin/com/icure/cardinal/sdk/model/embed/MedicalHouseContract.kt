@@ -3,6 +3,10 @@ package com.icure.cardinal.sdk.model.embed
 import com.icure.cardinal.sdk.model.specializations.Base64String
 import com.icure.cardinal.sdk.utils.DefaultValue
 import kotlinx.serialization.Serializable
+import org.taktik.icure.services.`external`.rest.v2.dto.embed.ContractChangeTypeDto
+import org.taktik.icure.services.`external`.rest.v2.dto.embed.MhcSignatureTypeDto
+import org.taktik.icure.services.`external`.rest.v2.dto.embed.SuspensionReasonDto
+import org.taktik.icure.services.`external`.rest.v2.dto.specializations.Base64StringDto
 import kotlin.Boolean
 import kotlin.Int
 import kotlin.Long
@@ -22,7 +26,7 @@ sealed interface MedicalHouseContract : Encryptable {
 
 	public val hcpId: String?
 
-	public val changeType: ContractChangeType?
+	public val changeType: ContractChangeTypeDto?
 
 	public val parentContractId: String?
 
@@ -62,13 +66,13 @@ sealed interface MedicalHouseContract : Encryptable {
 
 	public val endOfSuspension: Long?
 
-	public val suspensionReason: SuspensionReason?
+	public val suspensionReason: SuspensionReasonDto?
 
 	public val suspensionSource: String?
 
 	public val forcedSuspension: Boolean
 
-	public val signatureType: MhcSignatureType?
+	public val signatureType: MhcSignatureTypeDto?
 
 	public val status: Int?
 
@@ -76,7 +80,7 @@ sealed interface MedicalHouseContract : Encryptable {
 
 	public val receipts: Map<String, String>
 
-	override val encryptedSelf: Base64String?
+	override val encryptedSelf: Base64StringDto?
 	// region MedicalHouseContract-MedicalHouseContract
 
 	// endregion

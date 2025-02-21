@@ -4,6 +4,8 @@ import com.icure.cardinal.sdk.model.specializations.Base64String
 import com.icure.cardinal.sdk.serialization.InstantSerializer
 import kotlinx.datetime.Instant
 import kotlinx.serialization.Serializable
+import org.taktik.icure.services.`external`.rest.v2.dto.embed.TypedValuesTypeDto
+import org.taktik.icure.services.`external`.rest.v2.dto.specializations.Base64StringDto
 import kotlin.Boolean
 import kotlin.Double
 import kotlin.Long
@@ -12,7 +14,7 @@ import kotlin.String
 // WARNING: This file is auto-generated. If you change it manually, your changes will be lost.
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
 sealed interface TypedValue : Encryptable {
-	public val type: TypedValuesType?
+	public val type: TypedValuesTypeDto?
 
 	public val booleanValue: Boolean?
 
@@ -24,7 +26,7 @@ sealed interface TypedValue : Encryptable {
 
 	public val dateValue: Instant?
 
-	override val encryptedSelf: Base64String?
+	override val encryptedSelf: Base64StringDto?
 	// region TypedValue-TypedValue
 
 	// endregion

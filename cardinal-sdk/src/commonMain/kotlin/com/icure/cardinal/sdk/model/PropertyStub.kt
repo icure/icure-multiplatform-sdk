@@ -3,9 +3,18 @@ package com.icure.cardinal.sdk.model
 import com.icure.cardinal.sdk.model.embed.DecryptedTypedValue
 import com.icure.cardinal.sdk.model.embed.Encryptable
 import com.icure.cardinal.sdk.model.embed.EncryptedTypedValue
-import com.icure.cardinal.sdk.model.embed.TypedValue
 import com.icure.cardinal.sdk.model.specializations.Base64String
 import kotlinx.serialization.Serializable
+import org.taktik.icure.services.`external`.rest.v2.dto.PropertyTypeStubDto
+import org.taktik.icure.services.`external`.rest.v2.dto.embed.TypedValueDto
+import org.taktik.icure.services.`external`.rest.v2.dto.specializations.Base64StringDto
+import kotlin.Deprecated
+import kotlin.Long
+import kotlin.String
+import com.icure.cardinal.sdk.model.embed.TypedValue
+import org.taktik.icure.services.`external`.rest.v2.dto.PropertyTypeStubDto
+import org.taktik.icure.services.`external`.rest.v2.dto.embed.TypedValueDto
+import org.taktik.icure.services.`external`.rest.v2.dto.specializations.Base64StringDto
 import kotlin.Deprecated
 import kotlin.Long
 import kotlin.String
@@ -15,14 +24,14 @@ import kotlin.String
 sealed interface PropertyStub : Encryptable {
 	public val id: String?
 
-	public val type: PropertyTypeStub?
+	public val type: PropertyTypeStubDto?
 
-	public val typedValue: TypedValue?
+	public val typedValue: TypedValueDto?
 
 	@Deprecated("Remove from list instead")
 	public val deletionDate: Long?
 
-	override val encryptedSelf: Base64String?
+	override val encryptedSelf: Base64StringDto?
 	// region PropertyStub-PropertyStub
 
 	// endregion

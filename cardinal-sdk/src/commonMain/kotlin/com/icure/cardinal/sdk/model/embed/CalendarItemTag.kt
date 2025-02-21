@@ -2,6 +2,7 @@ package com.icure.cardinal.sdk.model.embed
 
 import com.icure.cardinal.sdk.model.specializations.Base64String
 import kotlinx.serialization.Serializable
+import org.taktik.icure.services.`external`.rest.v2.dto.specializations.Base64StringDto
 import kotlin.Long
 import kotlin.String
 
@@ -16,7 +17,7 @@ sealed interface CalendarItemTag : Encryptable {
 
 	public val userName: String?
 
-	override val encryptedSelf: Base64String?
+	override val encryptedSelf: Base64StringDto?
 	// region CalendarItemTag-CalendarItemTag
 
 	// endregion

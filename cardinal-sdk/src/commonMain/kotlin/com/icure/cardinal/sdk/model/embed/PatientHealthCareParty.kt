@@ -3,6 +3,10 @@ package com.icure.cardinal.sdk.model.embed
 import com.icure.cardinal.sdk.model.specializations.Base64String
 import com.icure.cardinal.sdk.utils.DefaultValue
 import kotlinx.serialization.Serializable
+import org.taktik.icure.services.`external`.rest.v2.dto.embed.PatientHealthCarePartyTypeDto
+import org.taktik.icure.services.`external`.rest.v2.dto.embed.ReferralPeriodDto
+import org.taktik.icure.services.`external`.rest.v2.dto.embed.TelecomTypeDto
+import org.taktik.icure.services.`external`.rest.v2.dto.specializations.Base64StringDto
 import kotlin.Boolean
 import kotlin.String
 import kotlin.collections.List
@@ -11,17 +15,17 @@ import kotlin.collections.Map
 // WARNING: This file is auto-generated. If you change it manually, your changes will be lost.
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
 sealed interface PatientHealthCareParty : Encryptable {
-	public val type: PatientHealthCarePartyType?
+	public val type: PatientHealthCarePartyTypeDto?
 
 	public val healthcarePartyId: String?
 
-	public val sendFormats: Map<TelecomType, String>
+	public val sendFormats: Map<TelecomTypeDto, String>
 
-	public val referralPeriods: List<ReferralPeriod>
+	public val referralPeriods: List<ReferralPeriodDto>
 
 	public val referral: Boolean
 
-	override val encryptedSelf: Base64String?
+	override val encryptedSelf: Base64StringDto?
 	// region PatientHealthCareParty-PatientHealthCareParty
 
 	// endregion

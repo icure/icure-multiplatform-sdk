@@ -2,6 +2,8 @@ package com.icure.cardinal.sdk.model.embed
 
 import com.icure.cardinal.sdk.model.specializations.Base64String
 import kotlinx.serialization.Serializable
+import org.taktik.icure.services.`external`.rest.v2.dto.embed.PaymentTypeDto
+import org.taktik.icure.services.`external`.rest.v2.dto.specializations.Base64StringDto
 import kotlin.Boolean
 import kotlin.Double
 import kotlin.Int
@@ -29,7 +31,7 @@ sealed interface InvoicingCode : Encryptable {
 
 	public val code: String?
 
-	public val paymentType: PaymentType?
+	public val paymentType: PaymentTypeDto?
 
 	public val paid: Double?
 
@@ -115,7 +117,7 @@ sealed interface InvoicingCode : Encryptable {
 
 	public val status: Long?
 
-	override val encryptedSelf: Base64String?
+	override val encryptedSelf: Base64StringDto?
 	// region InvoicingCode-InvoicingCode
 
 	// endregion

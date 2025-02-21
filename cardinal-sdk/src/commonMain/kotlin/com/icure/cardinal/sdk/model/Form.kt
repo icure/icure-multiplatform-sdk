@@ -10,6 +10,10 @@ import com.icure.cardinal.sdk.model.embed.SecurityMetadata
 import com.icure.cardinal.sdk.model.specializations.Base64String
 import com.icure.cardinal.sdk.utils.DefaultValue
 import kotlinx.serialization.Serializable
+import org.taktik.icure.services.`external`.rest.v2.dto.base.CodeStubDto
+import org.taktik.icure.services.`external`.rest.v2.dto.embed.DelegationDto
+import org.taktik.icure.services.`external`.rest.v2.dto.embed.SecurityMetadataDto
+import org.taktik.icure.services.`external`.rest.v2.dto.specializations.Base64StringDto
 import kotlin.Int
 import kotlin.Long
 import kotlin.String
@@ -37,9 +41,9 @@ sealed interface Form :
 
 	override val medicalLocationId: String?
 
-	override val tags: Set<CodeStub>
+	override val tags: Set<CodeStubDto>
 
-	override val codes: Set<CodeStub>
+	override val codes: Set<CodeStubDto>
 
 	override val endOfLife: Long?
 
@@ -69,15 +73,15 @@ sealed interface Form :
 
 	override val secretForeignKeys: Set<String>
 
-	override val cryptedForeignKeys: Map<String, Set<Delegation>>
+	override val cryptedForeignKeys: Map<String, Set<DelegationDto>>
 
-	override val delegations: Map<String, Set<Delegation>>
+	override val delegations: Map<String, Set<DelegationDto>>
 
-	override val encryptionKeys: Map<String, Set<Delegation>>
+	override val encryptionKeys: Map<String, Set<DelegationDto>>
 
-	override val encryptedSelf: Base64String?
+	override val encryptedSelf: Base64StringDto?
 
-	override val securityMetadata: SecurityMetadata?
+	override val securityMetadata: SecurityMetadataDto?
 	// region Form-Form
 
 	// endregion

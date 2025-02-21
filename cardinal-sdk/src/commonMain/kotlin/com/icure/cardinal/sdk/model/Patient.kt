@@ -7,7 +7,6 @@ import com.icure.cardinal.sdk.model.base.ICureDocument
 import com.icure.cardinal.sdk.model.base.Identifier
 import com.icure.cardinal.sdk.model.base.Person
 import com.icure.cardinal.sdk.model.base.StoredDocument
-import com.icure.cardinal.sdk.model.embed.Address
 import com.icure.cardinal.sdk.model.embed.Annotation
 import com.icure.cardinal.sdk.model.embed.DeactivationReason
 import com.icure.cardinal.sdk.model.embed.DecryptedAddress
@@ -18,7 +17,6 @@ import com.icure.cardinal.sdk.model.embed.DecryptedMedicalHouseContract
 import com.icure.cardinal.sdk.model.embed.DecryptedPatientHealthCareParty
 import com.icure.cardinal.sdk.model.embed.DecryptedSchoolingInfo
 import com.icure.cardinal.sdk.model.embed.Delegation
-import com.icure.cardinal.sdk.model.embed.EmploymentInfo
 import com.icure.cardinal.sdk.model.embed.Encryptable
 import com.icure.cardinal.sdk.model.embed.EncryptedAddress
 import com.icure.cardinal.sdk.model.embed.EncryptedEmploymentInfo
@@ -27,15 +25,10 @@ import com.icure.cardinal.sdk.model.embed.EncryptedInsurability
 import com.icure.cardinal.sdk.model.embed.EncryptedMedicalHouseContract
 import com.icure.cardinal.sdk.model.embed.EncryptedPatientHealthCareParty
 import com.icure.cardinal.sdk.model.embed.EncryptedSchoolingInfo
-import com.icure.cardinal.sdk.model.embed.FinancialInstitutionInformation
 import com.icure.cardinal.sdk.model.embed.Gender
-import com.icure.cardinal.sdk.model.embed.Insurability
-import com.icure.cardinal.sdk.model.embed.MedicalHouseContract
 import com.icure.cardinal.sdk.model.embed.Partnership
-import com.icure.cardinal.sdk.model.embed.PatientHealthCareParty
 import com.icure.cardinal.sdk.model.embed.PersonName
 import com.icure.cardinal.sdk.model.embed.PersonalStatus
-import com.icure.cardinal.sdk.model.embed.SchoolingInfo
 import com.icure.cardinal.sdk.model.embed.SecurityMetadata
 import com.icure.cardinal.sdk.model.specializations.AesExchangeKeyEncryptionKeypairIdentifier
 import com.icure.cardinal.sdk.model.specializations.AesExchangeKeyEntryKeyString
@@ -45,12 +38,78 @@ import com.icure.cardinal.sdk.model.specializations.SpkiHexString
 import com.icure.cardinal.sdk.serialization.ByteArraySerializer
 import com.icure.cardinal.sdk.utils.DefaultValue
 import kotlinx.serialization.Serializable
+import org.taktik.icure.services.`external`.rest.v2.dto.DecryptedPropertyStubDto
+import org.taktik.icure.services.`external`.rest.v2.dto.PropertyStubDto
+import org.taktik.icure.services.`external`.rest.v2.dto.base.CodeStubDto
+import org.taktik.icure.services.`external`.rest.v2.dto.base.IdentifierDto
+import org.taktik.icure.services.`external`.rest.v2.dto.embed.AddressDto
+import org.taktik.icure.services.`external`.rest.v2.dto.embed.AnnotationDto
+import org.taktik.icure.services.`external`.rest.v2.dto.embed.DeactivationReasonDto
+import org.taktik.icure.services.`external`.rest.v2.dto.embed.DelegationDto
+import org.taktik.icure.services.`external`.rest.v2.dto.embed.EmploymentInfoDto
+import org.taktik.icure.services.`external`.rest.v2.dto.embed.FinancialInstitutionInformationDto
+import org.taktik.icure.services.`external`.rest.v2.dto.embed.GenderDto
+import org.taktik.icure.services.`external`.rest.v2.dto.embed.InsurabilityDto
+import org.taktik.icure.services.`external`.rest.v2.dto.embed.MedicalHouseContractDto
+import org.taktik.icure.services.`external`.rest.v2.dto.embed.PartnershipDto
+import org.taktik.icure.services.`external`.rest.v2.dto.embed.PatientHealthCarePartyDto
+import org.taktik.icure.services.`external`.rest.v2.dto.embed.PersonNameDto
+import org.taktik.icure.services.`external`.rest.v2.dto.embed.PersonalStatusDto
+import org.taktik.icure.services.`external`.rest.v2.dto.embed.SchoolingInfoDto
+import org.taktik.icure.services.`external`.rest.v2.dto.embed.SecurityMetadataDto
+import org.taktik.icure.services.`external`.rest.v2.dto.specializations.AesExchangeKeyEncryptionKeypairIdentifierDto
+import org.taktik.icure.services.`external`.rest.v2.dto.specializations.AesExchangeKeyEntryKeyStringDto
+import org.taktik.icure.services.`external`.rest.v2.dto.specializations.Base64StringDto
+import org.taktik.icure.services.`external`.rest.v2.dto.specializations.HexStringDto
+import org.taktik.icure.services.`external`.rest.v2.dto.specializations.SpkiHexStringDto
 import kotlin.Boolean
 import kotlin.ByteArray
 import kotlin.Int
 import kotlin.Long
 import kotlin.Nothing
 import kotlin.String
+import kotlin.collections.DecryptedSet
+import kotlin.collections.List
+import kotlin.collections.Map
+import kotlin.collections.Set
+import com.icure.cardinal.sdk.model.embed.Address
+import com.icure.cardinal.sdk.model.embed.EmploymentInfo
+import com.icure.cardinal.sdk.model.embed.FinancialInstitutionInformation
+import com.icure.cardinal.sdk.model.embed.Insurability
+import com.icure.cardinal.sdk.model.embed.MedicalHouseContract
+import com.icure.cardinal.sdk.model.embed.PatientHealthCareParty
+import com.icure.cardinal.sdk.model.embed.SchoolingInfo
+import org.taktik.icure.services.`external`.rest.v2.dto.DecryptedPropertyStubDto
+import org.taktik.icure.services.`external`.rest.v2.dto.PropertyStubDto
+import org.taktik.icure.services.`external`.rest.v2.dto.base.CodeStubDto
+import org.taktik.icure.services.`external`.rest.v2.dto.base.IdentifierDto
+import org.taktik.icure.services.`external`.rest.v2.dto.embed.AddressDto
+import org.taktik.icure.services.`external`.rest.v2.dto.embed.AnnotationDto
+import org.taktik.icure.services.`external`.rest.v2.dto.embed.DeactivationReasonDto
+import org.taktik.icure.services.`external`.rest.v2.dto.embed.DelegationDto
+import org.taktik.icure.services.`external`.rest.v2.dto.embed.EmploymentInfoDto
+import org.taktik.icure.services.`external`.rest.v2.dto.embed.FinancialInstitutionInformationDto
+import org.taktik.icure.services.`external`.rest.v2.dto.embed.GenderDto
+import org.taktik.icure.services.`external`.rest.v2.dto.embed.InsurabilityDto
+import org.taktik.icure.services.`external`.rest.v2.dto.embed.MedicalHouseContractDto
+import org.taktik.icure.services.`external`.rest.v2.dto.embed.PartnershipDto
+import org.taktik.icure.services.`external`.rest.v2.dto.embed.PatientHealthCarePartyDto
+import org.taktik.icure.services.`external`.rest.v2.dto.embed.PersonNameDto
+import org.taktik.icure.services.`external`.rest.v2.dto.embed.PersonalStatusDto
+import org.taktik.icure.services.`external`.rest.v2.dto.embed.SchoolingInfoDto
+import org.taktik.icure.services.`external`.rest.v2.dto.embed.SecurityMetadataDto
+import org.taktik.icure.services.`external`.rest.v2.dto.specializations.AesExchangeKeyEncryptionKeypairIdentifierDto
+import org.taktik.icure.services.`external`.rest.v2.dto.specializations.AesExchangeKeyEntryKeyStringDto
+import org.taktik.icure.services.`external`.rest.v2.dto.specializations.Base64StringDto
+import org.taktik.icure.services.`external`.rest.v2.dto.specializations.HexStringDto
+import org.taktik.icure.services.`external`.rest.v2.dto.specializations.SpkiHexStringDto
+import kotlin.Boolean
+import kotlin.ByteArray
+import kotlin.Int
+import kotlin.Long
+import kotlin.Nothing
+import kotlin.String
+import kotlin.collections.DecryptedSet
 import kotlin.collections.List
 import kotlin.collections.Map
 import kotlin.collections.Set
@@ -66,7 +125,7 @@ sealed interface Patient :
 	CryptoActor {
 	override val id: String
 
-	public val identifier: List<Identifier>
+	public val identifier: List<IdentifierDto>
 
 	override val rev: String?
 
@@ -78,9 +137,9 @@ sealed interface Patient :
 
 	override val responsible: String?
 
-	override val tags: Set<CodeStub>
+	override val tags: Set<CodeStubDto>
 
-	override val codes: Set<CodeStub>
+	override val codes: Set<CodeStubDto>
 
 	override val endOfLife: Long?
 
@@ -90,19 +149,19 @@ sealed interface Patient :
 
 	override val lastName: String?
 
-	override val names: List<PersonName>
+	override val names: List<PersonNameDto>
 
 	override val companyName: String?
 
 	override val languages: List<String>
 
-	override val addresses: List<Address>
+	override val addresses: List<AddressDto>
 
 	override val civility: String?
 
-	override val gender: Gender?
+	override val gender: GenderDto?
 
-	public val birthSex: Gender?
+	public val birthSex: GenderDto?
 
 	public val mergeToPatientId: String?
 
@@ -112,7 +171,7 @@ sealed interface Patient :
 
 	public val active: Boolean
 
-	public val deactivationReason: DeactivationReason
+	public val deactivationReason: DeactivationReasonDto
 
 	public val deactivationDate: Int?
 
@@ -124,7 +183,7 @@ sealed interface Patient :
 
 	public val partnerName: String?
 
-	public val personalStatus: PersonalStatus?
+	public val personalStatus: PersonalStatusDto?
 
 	public val dateOfBirth: Int?
 
@@ -142,7 +201,7 @@ sealed interface Patient :
 
 	public val profession: String?
 
-	public val notes: List<Annotation>
+	public val notes: List<AnnotationDto>
 
 	public val note: String?
 
@@ -160,47 +219,49 @@ sealed interface Patient :
 
 	public val externalId: String?
 
-	public val insurabilities: List<Insurability>
+	public val insurabilities: List<InsurabilityDto>
 
-	public val partnerships: List<Partnership>
+	public val partnerships: List<PartnershipDto>
 
-	public val patientHealthCareParties: List<PatientHealthCareParty>
+	public val patientHealthCareParties: List<PatientHealthCarePartyDto>
 
-	public val financialInstitutionInformation: List<FinancialInstitutionInformation>
+	public val financialInstitutionInformation: List<FinancialInstitutionInformationDto>
 
-	public val medicalHouseContracts: List<MedicalHouseContract>
+	public val medicalHouseContracts: List<MedicalHouseContractDto>
 
-	public val patientProfessions: List<CodeStub>
+	public val patientProfessions: List<CodeStubDto>
 
 	public val parameters: Map<String, List<String>>
 
-	public val properties: Set<PropertyStub>
+	public val properties: Set<PropertyStubDto>
 
-	override val hcPartyKeys: Map<String, List<HexString>>
+	override val hcPartyKeys: Map<String, List<HexStringDto>>
 
 	override val aesExchangeKeys:
-		Map<AesExchangeKeyEntryKeyString, Map<String, Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>>>
+		Map<AesExchangeKeyEntryKeyStringDto, Map<String, Map<AesExchangeKeyEncryptionKeypairIdentifierDto, HexStringDto>>>
 
 	override val transferKeys:
-		Map<AesExchangeKeyEncryptionKeypairIdentifier, Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>>
+		Map<AesExchangeKeyEncryptionKeypairIdentifierDto, Map<AesExchangeKeyEncryptionKeypairIdentifierDto, HexStringDto>>
 
-	override val privateKeyShamirPartitions: Map<String, HexString>
+	override val privateKeyShamirPartitions: Map<String, HexStringDto>
 
-	override val publicKey: SpkiHexString?
+	override val publicKey: SpkiHexStringDto?
 
-	override val publicKeysForOaepWithSha256: Set<SpkiHexString>
+	override val publicKeysForOaepWithSha256: Set<SpkiHexStringDto>
 
 	override val secretForeignKeys: Set<String>
 
-	override val cryptedForeignKeys: Map<String, Set<Delegation>>
+	override val cryptedForeignKeys: Map<String, Set<DelegationDto>>
 
-	override val delegations: Map<String, Set<Delegation>>
+	override val delegations: Map<String, Set<DelegationDto>>
 
-	override val encryptionKeys: Map<String, Set<Delegation>>
+	override val encryptionKeys: Map<String, Set<DelegationDto>>
 
-	override val encryptedSelf: Base64String?
+	override val encryptedSelf: Base64StringDto?
 
-	override val securityMetadata: SecurityMetadata?
+	override val securityMetadata: SecurityMetadataDto?
+
+	override val cryptoActorProperties: DecryptedSet<DecryptedPropertyStubDto>?
 
 	override val medicalLocationId: String?
 
@@ -212,19 +273,19 @@ sealed interface Patient :
 
 	public val warning: String?
 
-	public val fatherBirthCountry: CodeStub?
+	public val fatherBirthCountry: CodeStubDto?
 
-	public val birthCountry: CodeStub?
+	public val birthCountry: CodeStubDto?
 
-	public val nativeCountry: CodeStub?
+	public val nativeCountry: CodeStubDto?
 
-	public val socialStatus: CodeStub?
+	public val socialStatus: CodeStubDto?
 
-	public val mainSourceOfIncome: CodeStub?
+	public val mainSourceOfIncome: CodeStubDto?
 
-	public val schoolingInfos: List<SchoolingInfo>
+	public val schoolingInfos: List<SchoolingInfoDto>
 
-	public val employementInfos: List<EmploymentInfo>
+	public val employementInfos: List<EmploymentInfoDto>
 
 	override val parentId: Nothing?
 	// region Patient-Patient
@@ -338,6 +399,7 @@ data class DecryptedPatient(
 	override val encryptionKeys: Map<String, Set<Delegation>> = emptyMap(),
 	override val encryptedSelf: Base64String? = null,
 	override val securityMetadata: SecurityMetadata? = null,
+	override val cryptoActorProperties: Set<DecryptedPropertyStub>? = null,
 	override val medicalLocationId: String? = null,
 	@DefaultValue("emptySet()")
 	override val nonDuplicateIds: Set<String> = emptySet(),
@@ -466,6 +528,7 @@ data class EncryptedPatient(
 	override val encryptionKeys: Map<String, Set<Delegation>> = emptyMap(),
 	override val encryptedSelf: Base64String? = null,
 	override val securityMetadata: SecurityMetadata? = null,
+	override val cryptoActorProperties: Set<DecryptedPropertyStub>? = null,
 	override val medicalLocationId: String? = null,
 	@DefaultValue("emptySet()")
 	override val nonDuplicateIds: Set<String> = emptySet(),

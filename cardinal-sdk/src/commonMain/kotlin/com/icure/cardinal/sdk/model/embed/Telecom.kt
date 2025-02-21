@@ -2,18 +2,20 @@ package com.icure.cardinal.sdk.model.embed
 
 import com.icure.cardinal.sdk.model.specializations.Base64String
 import kotlinx.serialization.Serializable
+import org.taktik.icure.services.`external`.rest.v2.dto.embed.TelecomTypeDto
+import org.taktik.icure.services.`external`.rest.v2.dto.specializations.Base64StringDto
 import kotlin.String
 
 // WARNING: This file is auto-generated. If you change it manually, your changes will be lost.
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
 sealed interface Telecom : Encryptable {
-	public val telecomType: TelecomType?
+	public val telecomType: TelecomTypeDto?
 
 	public val telecomNumber: String?
 
 	public val telecomDescription: String?
 
-	override val encryptedSelf: Base64String?
+	override val encryptedSelf: Base64StringDto?
 	// region Telecom-Telecom
 
 	// endregion

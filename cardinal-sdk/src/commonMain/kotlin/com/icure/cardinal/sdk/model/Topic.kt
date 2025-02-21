@@ -10,6 +10,11 @@ import com.icure.cardinal.sdk.model.embed.SecurityMetadata
 import com.icure.cardinal.sdk.model.specializations.Base64String
 import com.icure.cardinal.sdk.utils.DefaultValue
 import kotlinx.serialization.Serializable
+import org.taktik.icure.services.`external`.rest.v2.dto.TopicRoleDto
+import org.taktik.icure.services.`external`.rest.v2.dto.base.CodeStubDto
+import org.taktik.icure.services.`external`.rest.v2.dto.embed.DelegationDto
+import org.taktik.icure.services.`external`.rest.v2.dto.embed.SecurityMetadataDto
+import org.taktik.icure.services.`external`.rest.v2.dto.specializations.Base64StringDto
 import kotlin.Long
 import kotlin.String
 import kotlin.collections.Map
@@ -36,9 +41,9 @@ sealed interface Topic :
 
 	public val description: String?
 
-	override val codes: Set<CodeStub>
+	override val codes: Set<CodeStubDto>
 
-	override val tags: Set<CodeStub>
+	override val tags: Set<CodeStubDto>
 
 	override val author: String?
 
@@ -50,19 +55,19 @@ sealed interface Topic :
 
 	override val deletionDate: Long?
 
-	public val activeParticipants: Map<String, TopicRole>
+	public val activeParticipants: Map<String, TopicRoleDto>
 
-	override val securityMetadata: SecurityMetadata?
+	override val securityMetadata: SecurityMetadataDto?
 
 	override val secretForeignKeys: Set<String>
 
-	override val cryptedForeignKeys: Map<String, Set<Delegation>>
+	override val cryptedForeignKeys: Map<String, Set<DelegationDto>>
 
-	override val delegations: Map<String, Set<Delegation>>
+	override val delegations: Map<String, Set<DelegationDto>>
 
-	override val encryptionKeys: Map<String, Set<Delegation>>
+	override val encryptionKeys: Map<String, Set<DelegationDto>>
 
-	override val encryptedSelf: Base64String?
+	override val encryptedSelf: Base64StringDto?
 
 	public val linkedHealthElements: Set<String>
 

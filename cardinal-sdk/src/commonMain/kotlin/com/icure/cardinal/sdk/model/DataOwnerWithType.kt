@@ -1,15 +1,17 @@
 package com.icure.cardinal.sdk.model
 
-import com.icure.cardinal.sdk.model.base.CryptoActor
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import org.taktik.icure.services.`external`.rest.v2.dto.base.CryptoActorDto
+import com.icure.cardinal.sdk.model.base.CryptoActor
+import org.taktik.icure.services.`external`.rest.v2.dto.base.CryptoActorDto
 
 // WARNING: This file is auto-generated. If you change it manually, your changes will be lost.
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
 
 @Serializable
 sealed interface DataOwnerWithType {
-	public val dataOwner: CryptoActor
+	public val dataOwner: CryptoActorDto
 
 	@Serializable
 	@SerialName("hcp")

@@ -7,6 +7,14 @@ import com.icure.cardinal.sdk.model.base.LinkQualification
 import com.icure.cardinal.sdk.model.specializations.Base64String
 import com.icure.cardinal.sdk.utils.DefaultValue
 import kotlinx.serialization.Serializable
+import org.taktik.icure.services.`external`.rest.v2.dto.base.CodeStubDto
+import org.taktik.icure.services.`external`.rest.v2.dto.base.IdentifierDto
+import org.taktik.icure.services.`external`.rest.v2.dto.base.LinkQualificationDto
+import org.taktik.icure.services.`external`.rest.v2.dto.embed.AnnotationDto
+import org.taktik.icure.services.`external`.rest.v2.dto.embed.ContentDto
+import org.taktik.icure.services.`external`.rest.v2.dto.embed.DelegationDto
+import org.taktik.icure.services.`external`.rest.v2.dto.embed.SecurityMetadataDto
+import org.taktik.icure.services.`external`.rest.v2.dto.specializations.Base64StringDto
 import kotlin.Int
 import kotlin.Long
 import kotlin.String
@@ -21,7 +29,7 @@ sealed interface Service : Encryptable, ICureDocument<String> {
 
 	public val transactionId: String?
 
-	public val identifier: List<Identifier>
+	public val identifier: List<IdentifierDto>
 
 	public val contactId: String?
 
@@ -35,17 +43,17 @@ sealed interface Service : Encryptable, ICureDocument<String> {
 
 	public val secretForeignKeys: Set<String>?
 
-	public val cryptedForeignKeys: Map<String, Set<Delegation>>
+	public val cryptedForeignKeys: Map<String, Set<DelegationDto>>
 
-	public val delegations: Map<String, Set<Delegation>>
+	public val delegations: Map<String, Set<DelegationDto>>
 
-	public val encryptionKeys: Map<String, Set<Delegation>>
+	public val encryptionKeys: Map<String, Set<DelegationDto>>
 
 	public val label: String?
 
 	public val index: Long?
 
-	public val content: Map<String, Content>
+	public val content: Map<String, ContentDto>
 
 	public val encryptedContent: String?
 
@@ -77,17 +85,17 @@ sealed interface Service : Encryptable, ICureDocument<String> {
 
 	public val invoicingCodes: Set<String>
 
-	public val notes: List<Annotation>
+	public val notes: List<AnnotationDto>
 
-	public val qualifiedLinks: Map<LinkQualification, Map<String, String>>
+	public val qualifiedLinks: Map<LinkQualificationDto, Map<String, String>>
 
-	override val codes: Set<CodeStub>
+	override val codes: Set<CodeStubDto>
 
-	override val tags: Set<CodeStub>
+	override val tags: Set<CodeStubDto>
 
-	override val encryptedSelf: Base64String?
+	override val encryptedSelf: Base64StringDto?
 
-	public val securityMetadata: SecurityMetadata?
+	public val securityMetadata: SecurityMetadataDto?
 	// region Service-Service
 	companion object {
 		const val KRAKEN_QUALIFIED_NAME = "org.taktik.icure.entities.embed.Service"

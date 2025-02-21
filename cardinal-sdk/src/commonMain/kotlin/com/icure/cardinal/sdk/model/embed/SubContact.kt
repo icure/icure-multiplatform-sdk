@@ -5,6 +5,9 @@ import com.icure.cardinal.sdk.model.base.ICureDocument
 import com.icure.cardinal.sdk.model.specializations.Base64String
 import com.icure.cardinal.sdk.utils.DefaultValue
 import kotlinx.serialization.Serializable
+import org.taktik.icure.services.`external`.rest.v2.dto.base.CodeStubDto
+import org.taktik.icure.services.`external`.rest.v2.dto.embed.ServiceLinkDto
+import org.taktik.icure.services.`external`.rest.v2.dto.specializations.Base64StringDto
 import kotlin.Int
 import kotlin.Long
 import kotlin.String
@@ -26,9 +29,9 @@ sealed interface SubContact : Encryptable, ICureDocument<String?> {
 
 	override val medicalLocationId: String?
 
-	override val tags: Set<CodeStub>
+	override val tags: Set<CodeStubDto>
 
-	override val codes: Set<CodeStub>
+	override val codes: Set<CodeStubDto>
 
 	override val endOfLife: Long?
 
@@ -46,9 +49,9 @@ sealed interface SubContact : Encryptable, ICureDocument<String?> {
 
 	public val classificationId: String?
 
-	public val services: List<ServiceLink>
+	public val services: List<ServiceLinkDto>
 
-	override val encryptedSelf: Base64String?
+	override val encryptedSelf: Base64StringDto?
 	// region SubContact-SubContact
 
 	// endregion

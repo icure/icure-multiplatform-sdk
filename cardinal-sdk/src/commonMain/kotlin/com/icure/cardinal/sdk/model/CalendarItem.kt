@@ -4,8 +4,6 @@ import com.icure.cardinal.sdk.model.base.CodeStub
 import com.icure.cardinal.sdk.model.base.HasEncryptionMetadata
 import com.icure.cardinal.sdk.model.base.ICureDocument
 import com.icure.cardinal.sdk.model.base.StoredDocument
-import com.icure.cardinal.sdk.model.embed.Address
-import com.icure.cardinal.sdk.model.embed.CalendarItemTag
 import com.icure.cardinal.sdk.model.embed.DecryptedAddress
 import com.icure.cardinal.sdk.model.embed.DecryptedCalendarItemTag
 import com.icure.cardinal.sdk.model.embed.Delegation
@@ -17,6 +15,27 @@ import com.icure.cardinal.sdk.model.embed.SecurityMetadata
 import com.icure.cardinal.sdk.model.specializations.Base64String
 import com.icure.cardinal.sdk.utils.DefaultValue
 import kotlinx.serialization.Serializable
+import org.taktik.icure.services.`external`.rest.v2.dto.base.CodeStubDto
+import org.taktik.icure.services.`external`.rest.v2.dto.embed.AddressDto
+import org.taktik.icure.services.`external`.rest.v2.dto.embed.CalendarItemTagDto
+import org.taktik.icure.services.`external`.rest.v2.dto.embed.DelegationDto
+import org.taktik.icure.services.`external`.rest.v2.dto.embed.FlowItemDto
+import org.taktik.icure.services.`external`.rest.v2.dto.embed.SecurityMetadataDto
+import org.taktik.icure.services.`external`.rest.v2.dto.specializations.Base64StringDto
+import kotlin.Boolean
+import kotlin.Long
+import kotlin.String
+import kotlin.collections.Map
+import kotlin.collections.Set
+import com.icure.cardinal.sdk.model.embed.Address
+import com.icure.cardinal.sdk.model.embed.CalendarItemTag
+import org.taktik.icure.services.`external`.rest.v2.dto.base.CodeStubDto
+import org.taktik.icure.services.`external`.rest.v2.dto.embed.AddressDto
+import org.taktik.icure.services.`external`.rest.v2.dto.embed.CalendarItemTagDto
+import org.taktik.icure.services.`external`.rest.v2.dto.embed.DelegationDto
+import org.taktik.icure.services.`external`.rest.v2.dto.embed.FlowItemDto
+import org.taktik.icure.services.`external`.rest.v2.dto.embed.SecurityMetadataDto
+import org.taktik.icure.services.`external`.rest.v2.dto.specializations.Base64StringDto
 import kotlin.Boolean
 import kotlin.Long
 import kotlin.String
@@ -44,9 +63,9 @@ sealed interface CalendarItem :
 
 	override val medicalLocationId: String?
 
-	override val tags: Set<CodeStub>
+	override val tags: Set<CodeStubDto>
 
-	override val codes: Set<CodeStub>
+	override val codes: Set<CodeStubDto>
 
 	override val endOfLife: Long?
 
@@ -68,7 +87,7 @@ sealed interface CalendarItem :
 
 	public val placeId: String?
 
-	public val address: Address?
+	public val address: AddressDto?
 
 	public val addressText: String?
 
@@ -96,21 +115,21 @@ sealed interface CalendarItem :
 
 	public val recurrenceId: String?
 
-	public val meetingTags: Set<CalendarItemTag>
+	public val meetingTags: Set<CalendarItemTagDto>
 
-	public val flowItem: FlowItem?
+	public val flowItem: FlowItemDto?
 
 	override val secretForeignKeys: Set<String>
 
-	override val cryptedForeignKeys: Map<String, Set<Delegation>>
+	override val cryptedForeignKeys: Map<String, Set<DelegationDto>>
 
-	override val delegations: Map<String, Set<Delegation>>
+	override val delegations: Map<String, Set<DelegationDto>>
 
-	override val encryptionKeys: Map<String, Set<Delegation>>
+	override val encryptionKeys: Map<String, Set<DelegationDto>>
 
-	override val encryptedSelf: Base64String?
+	override val encryptedSelf: Base64StringDto?
 
-	override val securityMetadata: SecurityMetadata?
+	override val securityMetadata: SecurityMetadataDto?
 	// region CalendarItem-CalendarItem
 
 	companion object {

@@ -11,7 +11,6 @@ import com.icure.cardinal.sdk.model.embed.EncryptedInvoicingCode
 import com.icure.cardinal.sdk.model.embed.IdentityDocumentReader
 import com.icure.cardinal.sdk.model.embed.InvoiceInterventionType
 import com.icure.cardinal.sdk.model.embed.InvoiceType
-import com.icure.cardinal.sdk.model.embed.InvoicingCode
 import com.icure.cardinal.sdk.model.embed.MediumType
 import com.icure.cardinal.sdk.model.embed.Payment
 import com.icure.cardinal.sdk.model.embed.PaymentType
@@ -19,6 +18,37 @@ import com.icure.cardinal.sdk.model.embed.SecurityMetadata
 import com.icure.cardinal.sdk.model.specializations.Base64String
 import com.icure.cardinal.sdk.utils.DefaultValue
 import kotlinx.serialization.Serializable
+import org.taktik.icure.services.`external`.rest.v2.dto.base.CodeStubDto
+import org.taktik.icure.services.`external`.rest.v2.dto.embed.DelegationDto
+import org.taktik.icure.services.`external`.rest.v2.dto.embed.IdentityDocumentReaderDto
+import org.taktik.icure.services.`external`.rest.v2.dto.embed.InvoiceInterventionTypeDto
+import org.taktik.icure.services.`external`.rest.v2.dto.embed.InvoiceTypeDto
+import org.taktik.icure.services.`external`.rest.v2.dto.embed.InvoicingCodeDto
+import org.taktik.icure.services.`external`.rest.v2.dto.embed.MediumTypeDto
+import org.taktik.icure.services.`external`.rest.v2.dto.embed.PaymentDto
+import org.taktik.icure.services.`external`.rest.v2.dto.embed.PaymentTypeDto
+import org.taktik.icure.services.`external`.rest.v2.dto.embed.SecurityMetadataDto
+import org.taktik.icure.services.`external`.rest.v2.dto.specializations.Base64StringDto
+import kotlin.Boolean
+import kotlin.Double
+import kotlin.Int
+import kotlin.Long
+import kotlin.String
+import kotlin.collections.List
+import kotlin.collections.Map
+import kotlin.collections.Set
+import com.icure.cardinal.sdk.model.embed.InvoicingCode
+import org.taktik.icure.services.`external`.rest.v2.dto.base.CodeStubDto
+import org.taktik.icure.services.`external`.rest.v2.dto.embed.DelegationDto
+import org.taktik.icure.services.`external`.rest.v2.dto.embed.IdentityDocumentReaderDto
+import org.taktik.icure.services.`external`.rest.v2.dto.embed.InvoiceInterventionTypeDto
+import org.taktik.icure.services.`external`.rest.v2.dto.embed.InvoiceTypeDto
+import org.taktik.icure.services.`external`.rest.v2.dto.embed.InvoicingCodeDto
+import org.taktik.icure.services.`external`.rest.v2.dto.embed.MediumTypeDto
+import org.taktik.icure.services.`external`.rest.v2.dto.embed.PaymentDto
+import org.taktik.icure.services.`external`.rest.v2.dto.embed.PaymentTypeDto
+import org.taktik.icure.services.`external`.rest.v2.dto.embed.SecurityMetadataDto
+import org.taktik.icure.services.`external`.rest.v2.dto.specializations.Base64StringDto
 import kotlin.Boolean
 import kotlin.Double
 import kotlin.Int
@@ -49,9 +79,9 @@ sealed interface Invoice :
 
 	override val medicalLocationId: String?
 
-	override val tags: Set<CodeStub>
+	override val tags: Set<CodeStubDto>
 
-	override val codes: Set<CodeStub>
+	override val codes: Set<CodeStubDto>
 
 	override val endOfLife: Long?
 
@@ -63,7 +93,7 @@ sealed interface Invoice :
 
 	public val printedDate: Long?
 
-	public val invoicingCodes: List<InvoicingCode>
+	public val invoicingCodes: List<InvoicingCodeDto>
 
 	public val receipts: Map<String, String>
 
@@ -83,19 +113,19 @@ sealed interface Invoice :
 
 	public val reason: String?
 
-	public val invoiceType: InvoiceType?
+	public val invoiceType: InvoiceTypeDto?
 
-	public val sentMediumType: MediumType?
+	public val sentMediumType: MediumTypeDto?
 
-	public val interventionType: InvoiceInterventionType?
+	public val interventionType: InvoiceInterventionTypeDto?
 
 	public val groupId: String?
 
-	public val paymentType: PaymentType?
+	public val paymentType: PaymentTypeDto?
 
 	public val paid: Double?
 
-	public val payments: List<Payment>?
+	public val payments: List<PaymentDto>?
 
 	public val gnotionNihii: String?
 
@@ -153,7 +183,7 @@ sealed interface Invoice :
 
 	public val creditNoteRelatedInvoiceId: String?
 
-	public val idDocument: IdentityDocumentReader?
+	public val idDocument: IdentityDocumentReaderDto?
 
 	public val admissionDate: Long?
 
@@ -169,15 +199,15 @@ sealed interface Invoice :
 
 	override val secretForeignKeys: Set<String>
 
-	override val cryptedForeignKeys: Map<String, Set<Delegation>>
+	override val cryptedForeignKeys: Map<String, Set<DelegationDto>>
 
-	override val delegations: Map<String, Set<Delegation>>
+	override val delegations: Map<String, Set<DelegationDto>>
 
-	override val encryptionKeys: Map<String, Set<Delegation>>
+	override val encryptionKeys: Map<String, Set<DelegationDto>>
 
-	override val encryptedSelf: Base64String?
+	override val encryptedSelf: Base64StringDto?
 
-	override val securityMetadata: SecurityMetadata?
+	override val securityMetadata: SecurityMetadataDto?
 	// region Invoice-Invoice
 
 	// endregion

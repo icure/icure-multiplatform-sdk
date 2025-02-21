@@ -105,6 +105,7 @@ data class HealthcareParty(
 	public val options: Map<String, String> = emptyMap(),
 	@DefaultValue("emptySet()")
 	override val properties: Set<DecryptedPropertyStub> = emptySet(),
+	override val cryptoActorProperties: Set<DecryptedPropertyStub>? = null,
 	@DefaultValue("emptyMap()")
 	override val hcPartyKeys: Map<String, List<HexString>> = emptyMap(),
 	@DefaultValue("emptyMap()")

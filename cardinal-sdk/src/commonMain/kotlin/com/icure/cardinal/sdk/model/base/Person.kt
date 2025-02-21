@@ -1,8 +1,16 @@
 package com.icure.cardinal.sdk.model.base
 
+import org.taktik.icure.services.`external`.rest.v2.dto.embed.AddressDto
+import org.taktik.icure.services.`external`.rest.v2.dto.embed.GenderDto
+import org.taktik.icure.services.`external`.rest.v2.dto.embed.PersonNameDto
+import kotlin.String
+import kotlin.collections.List
 import com.icure.cardinal.sdk.model.embed.Address
 import com.icure.cardinal.sdk.model.embed.Gender
 import com.icure.cardinal.sdk.model.embed.PersonName
+import org.taktik.icure.services.`external`.rest.v2.dto.embed.AddressDto
+import org.taktik.icure.services.`external`.rest.v2.dto.embed.GenderDto
+import org.taktik.icure.services.`external`.rest.v2.dto.embed.PersonNameDto
 import kotlin.String
 import kotlin.collections.List
 
@@ -11,7 +19,7 @@ import kotlin.collections.List
 interface Person : Identifiable<String> {
 	public val civility: String?
 
-	public val gender: Gender?
+	public val gender: GenderDto?
 
 	public val firstName: String?
 
@@ -19,9 +27,9 @@ interface Person : Identifiable<String> {
 
 	public val companyName: String?
 
-	public val names: List<PersonName>
+	public val names: List<PersonNameDto>
 
-	public val addresses: List<Address>
+	public val addresses: List<AddressDto>
 
 	public val languages: List<String>
 	// region Person-Person

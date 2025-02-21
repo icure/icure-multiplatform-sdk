@@ -1,9 +1,14 @@
 package com.icure.cardinal.sdk.model.security
 
-import com.icure.cardinal.sdk.model.filter.predicate.Predicate
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonClassDiscriminator
+import org.taktik.icure.services.`external`.rest.v2.dto.filter.predicate.Predicate
+import org.taktik.icure.services.`external`.rest.v2.dto.security.PermissionTypeDto
+import kotlin.OptIn
+import com.icure.cardinal.sdk.model.filter.predicate.Predicate
+import org.taktik.icure.services.`external`.rest.v2.dto.filter.predicate.Predicate
+import org.taktik.icure.services.`external`.rest.v2.dto.security.PermissionTypeDto
 import kotlin.OptIn
 
 // WARNING: This file is auto-generated. If you change it manually, your changes will be lost.
@@ -13,7 +18,7 @@ import kotlin.OptIn
 @JsonClassDiscriminator("itemType")
 @Serializable
 sealed interface PermissionItem {
-	public val type: PermissionType
+	public val type: PermissionTypeDto
 
 	public val predicate: Predicate
 	// region PermissionItem-PermissionItem

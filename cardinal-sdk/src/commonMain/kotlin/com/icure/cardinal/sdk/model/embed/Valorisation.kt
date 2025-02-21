@@ -3,6 +3,7 @@ package com.icure.cardinal.sdk.model.embed
 import com.icure.cardinal.sdk.model.specializations.Base64String
 import com.icure.cardinal.sdk.utils.DefaultValue
 import kotlinx.serialization.Serializable
+import org.taktik.icure.services.`external`.rest.v2.dto.specializations.Base64StringDto
 import kotlin.Double
 import kotlin.Int
 import kotlin.Long
@@ -33,7 +34,7 @@ sealed interface Valorisation : Encryptable {
 
 	public val label: Map<String, String>?
 
-	override val encryptedSelf: Base64String?
+	override val encryptedSelf: Base64StringDto?
 	// region Valorisation-Valorisation
 
 	// endregion

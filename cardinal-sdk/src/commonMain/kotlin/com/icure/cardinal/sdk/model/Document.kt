@@ -16,6 +16,15 @@ import com.icure.cardinal.sdk.model.specializations.Base64String
 import com.icure.cardinal.sdk.serialization.ByteArraySerializer
 import com.icure.cardinal.sdk.utils.DefaultValue
 import kotlinx.serialization.Serializable
+import org.taktik.icure.services.`external`.rest.v2.dto.base.CodeStubDto
+import org.taktik.icure.services.`external`.rest.v2.dto.embed.DataAttachmentDto
+import org.taktik.icure.services.`external`.rest.v2.dto.embed.DelegationDto
+import org.taktik.icure.services.`external`.rest.v2.dto.embed.DeletedAttachmentDto
+import org.taktik.icure.services.`external`.rest.v2.dto.embed.DocumentLocationDto
+import org.taktik.icure.services.`external`.rest.v2.dto.embed.DocumentStatusDto
+import org.taktik.icure.services.`external`.rest.v2.dto.embed.DocumentTypeDto
+import org.taktik.icure.services.`external`.rest.v2.dto.embed.SecurityMetadataDto
+import org.taktik.icure.services.`external`.rest.v2.dto.specializations.Base64StringDto
 import kotlin.ByteArray
 import kotlin.Long
 import kotlin.String
@@ -44,19 +53,19 @@ sealed interface Document :
 
 	override val medicalLocationId: String?
 
-	override val tags: Set<CodeStub>
+	override val tags: Set<CodeStubDto>
 
-	override val codes: Set<CodeStub>
+	override val codes: Set<CodeStubDto>
 
 	override val endOfLife: Long?
 
 	override val deletionDate: Long?
 
-	public val documentLocation: DocumentLocation?
+	public val documentLocation: DocumentLocationDto?
 
-	public val documentType: DocumentType?
+	public val documentType: DocumentTypeDto?
 
-	public val documentStatus: DocumentStatus?
+	public val documentStatus: DocumentStatusDto?
 
 	public val externalUri: String?
 
@@ -82,9 +91,9 @@ sealed interface Document :
 
 	public val otherUtis: Set<String>
 
-	public val secondaryAttachments: Map<String, DataAttachment>
+	public val secondaryAttachments: Map<String, DataAttachmentDto>
 
-	public val deletedAttachments: List<DeletedAttachment>
+	public val deletedAttachments: List<DeletedAttachmentDto>
 
 	public val encryptedAttachment: ByteArray?
 
@@ -92,15 +101,15 @@ sealed interface Document :
 
 	override val secretForeignKeys: Set<String>
 
-	override val cryptedForeignKeys: Map<String, Set<Delegation>>
+	override val cryptedForeignKeys: Map<String, Set<DelegationDto>>
 
-	override val delegations: Map<String, Set<Delegation>>
+	override val delegations: Map<String, Set<DelegationDto>>
 
-	override val encryptionKeys: Map<String, Set<Delegation>>
+	override val encryptionKeys: Map<String, Set<DelegationDto>>
 
-	override val encryptedSelf: Base64String?
+	override val encryptedSelf: Base64StringDto?
 
-	override val securityMetadata: SecurityMetadata?
+	override val securityMetadata: SecurityMetadataDto?
 	// region Document-Document
 
 	// endregion

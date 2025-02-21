@@ -4,9 +4,17 @@ import com.icure.cardinal.sdk.model.base.StoredDocument
 import com.icure.cardinal.sdk.model.embed.DecryptedTypedValue
 import com.icure.cardinal.sdk.model.embed.Encryptable
 import com.icure.cardinal.sdk.model.embed.EncryptedTypedValue
-import com.icure.cardinal.sdk.model.embed.TypedValue
 import com.icure.cardinal.sdk.model.specializations.Base64String
 import kotlinx.serialization.Serializable
+import org.taktik.icure.services.`external`.rest.v2.dto.PropertyTypeDto
+import org.taktik.icure.services.`external`.rest.v2.dto.embed.TypedValueDto
+import org.taktik.icure.services.`external`.rest.v2.dto.specializations.Base64StringDto
+import kotlin.Long
+import kotlin.String
+import com.icure.cardinal.sdk.model.embed.TypedValue
+import org.taktik.icure.services.`external`.rest.v2.dto.PropertyTypeDto
+import org.taktik.icure.services.`external`.rest.v2.dto.embed.TypedValueDto
+import org.taktik.icure.services.`external`.rest.v2.dto.specializations.Base64StringDto
 import kotlin.Long
 import kotlin.String
 
@@ -19,11 +27,11 @@ sealed interface Property : StoredDocument, Encryptable {
 
 	override val deletionDate: Long?
 
-	public val type: PropertyType?
+	public val type: PropertyTypeDto?
 
-	public val typedValue: TypedValue?
+	public val typedValue: TypedValueDto?
 
-	override val encryptedSelf: Base64String?
+	override val encryptedSelf: Base64StringDto?
 	// region Property-Property
 
 	// endregion

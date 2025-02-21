@@ -4,6 +4,7 @@ import com.icure.cardinal.sdk.model.base.Identifiable
 import com.icure.cardinal.sdk.model.base.Named
 import com.icure.cardinal.sdk.model.specializations.Base64String
 import kotlinx.serialization.Serializable
+import org.taktik.icure.services.`external`.rest.v2.dto.specializations.Base64StringDto
 import kotlin.Long
 import kotlin.String
 
@@ -20,7 +21,7 @@ sealed interface Episode : Encryptable, Identifiable<String>, Named {
 
 	public val endDate: Long?
 
-	override val encryptedSelf: Base64String?
+	override val encryptedSelf: Base64StringDto?
 	// region Episode-Episode
 
 	// endregion

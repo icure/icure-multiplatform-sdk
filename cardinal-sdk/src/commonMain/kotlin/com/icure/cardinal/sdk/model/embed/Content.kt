@@ -4,6 +4,10 @@ import com.icure.cardinal.sdk.serialization.ByteArraySerializer
 import com.icure.cardinal.sdk.serialization.InstantSerializer
 import kotlinx.datetime.Instant
 import kotlinx.serialization.Serializable
+import org.taktik.icure.services.`external`.rest.v2.dto.embed.MeasureDto
+import org.taktik.icure.services.`external`.rest.v2.dto.embed.MedicationDto
+import org.taktik.icure.services.`external`.rest.v2.dto.embed.ServiceDto
+import org.taktik.icure.services.`external`.rest.v2.dto.embed.TimeSeriesDto
 import kotlin.Boolean
 import kotlin.ByteArray
 import kotlin.Double
@@ -28,17 +32,17 @@ sealed interface Content {
 
 	public val documentId: String?
 
-	public val measureValue: Measure?
+	public val measureValue: MeasureDto?
 
-	public val medicationValue: Medication?
+	public val medicationValue: MedicationDto?
 
-	public val timeSeries: TimeSeries?
+	public val timeSeries: TimeSeriesDto?
 
-	public val compoundValue: List<Service>?
+	public val compoundValue: List<ServiceDto>?
 
-	public val ratio: List<Measure>?
+	public val ratio: List<MeasureDto>?
 
-	public val range: List<Measure>?
+	public val range: List<MeasureDto>?
 	// region Content-Content
 	// Update when new fields are added
 	fun isCompound() =

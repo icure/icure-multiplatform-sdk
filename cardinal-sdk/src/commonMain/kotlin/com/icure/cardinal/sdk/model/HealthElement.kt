@@ -6,7 +6,6 @@ import com.icure.cardinal.sdk.model.base.ICureDocument
 import com.icure.cardinal.sdk.model.base.Identifier
 import com.icure.cardinal.sdk.model.base.StoredDocument
 import com.icure.cardinal.sdk.model.embed.Annotation
-import com.icure.cardinal.sdk.model.embed.CareTeamMember
 import com.icure.cardinal.sdk.model.embed.DecryptedCareTeamMember
 import com.icure.cardinal.sdk.model.embed.DecryptedEpisode
 import com.icure.cardinal.sdk.model.embed.DecryptedPlanOfAction
@@ -15,13 +14,41 @@ import com.icure.cardinal.sdk.model.embed.Encryptable
 import com.icure.cardinal.sdk.model.embed.EncryptedCareTeamMember
 import com.icure.cardinal.sdk.model.embed.EncryptedEpisode
 import com.icure.cardinal.sdk.model.embed.EncryptedPlanOfAction
-import com.icure.cardinal.sdk.model.embed.Episode
 import com.icure.cardinal.sdk.model.embed.Laterality
-import com.icure.cardinal.sdk.model.embed.PlanOfAction
 import com.icure.cardinal.sdk.model.embed.SecurityMetadata
 import com.icure.cardinal.sdk.model.specializations.Base64String
 import com.icure.cardinal.sdk.utils.DefaultValue
 import kotlinx.serialization.Serializable
+import org.taktik.icure.services.`external`.rest.v2.dto.base.CodeStubDto
+import org.taktik.icure.services.`external`.rest.v2.dto.base.IdentifierDto
+import org.taktik.icure.services.`external`.rest.v2.dto.embed.AnnotationDto
+import org.taktik.icure.services.`external`.rest.v2.dto.embed.CareTeamMemberDto
+import org.taktik.icure.services.`external`.rest.v2.dto.embed.DelegationDto
+import org.taktik.icure.services.`external`.rest.v2.dto.embed.EpisodeDto
+import org.taktik.icure.services.`external`.rest.v2.dto.embed.LateralityDto
+import org.taktik.icure.services.`external`.rest.v2.dto.embed.PlanOfActionDto
+import org.taktik.icure.services.`external`.rest.v2.dto.embed.SecurityMetadataDto
+import org.taktik.icure.services.`external`.rest.v2.dto.specializations.Base64StringDto
+import kotlin.Boolean
+import kotlin.Int
+import kotlin.Long
+import kotlin.String
+import kotlin.collections.List
+import kotlin.collections.Map
+import kotlin.collections.Set
+import com.icure.cardinal.sdk.model.embed.CareTeamMember
+import com.icure.cardinal.sdk.model.embed.Episode
+import com.icure.cardinal.sdk.model.embed.PlanOfAction
+import org.taktik.icure.services.`external`.rest.v2.dto.base.CodeStubDto
+import org.taktik.icure.services.`external`.rest.v2.dto.base.IdentifierDto
+import org.taktik.icure.services.`external`.rest.v2.dto.embed.AnnotationDto
+import org.taktik.icure.services.`external`.rest.v2.dto.embed.CareTeamMemberDto
+import org.taktik.icure.services.`external`.rest.v2.dto.embed.DelegationDto
+import org.taktik.icure.services.`external`.rest.v2.dto.embed.EpisodeDto
+import org.taktik.icure.services.`external`.rest.v2.dto.embed.LateralityDto
+import org.taktik.icure.services.`external`.rest.v2.dto.embed.PlanOfActionDto
+import org.taktik.icure.services.`external`.rest.v2.dto.embed.SecurityMetadataDto
+import org.taktik.icure.services.`external`.rest.v2.dto.specializations.Base64StringDto
 import kotlin.Boolean
 import kotlin.Int
 import kotlin.Long
@@ -39,7 +66,7 @@ sealed interface HealthElement :
 	Encryptable {
 	override val id: String
 
-	public val identifiers: List<Identifier>
+	public val identifiers: List<IdentifierDto>
 
 	override val rev: String?
 
@@ -53,9 +80,9 @@ sealed interface HealthElement :
 
 	override val medicalLocationId: String?
 
-	override val tags: Set<CodeStub>
+	override val tags: Set<CodeStubDto>
 
-	override val codes: Set<CodeStub>
+	override val codes: Set<CodeStubDto>
 
 	override val endOfLife: Long?
 
@@ -73,7 +100,7 @@ sealed interface HealthElement :
 
 	public val note: String?
 
-	public val notes: List<Annotation>
+	public val notes: List<AnnotationDto>
 
 	public val relevant: Boolean
 
@@ -85,25 +112,25 @@ sealed interface HealthElement :
 
 	public val status: Int
 
-	public val laterality: Laterality?
+	public val laterality: LateralityDto?
 
-	public val plansOfAction: List<PlanOfAction>
+	public val plansOfAction: List<PlanOfActionDto>
 
-	public val episodes: List<Episode>
+	public val episodes: List<EpisodeDto>
 
-	public val careTeam: List<CareTeamMember>
+	public val careTeam: List<CareTeamMemberDto>
 
 	override val secretForeignKeys: Set<String>
 
-	override val cryptedForeignKeys: Map<String, Set<Delegation>>
+	override val cryptedForeignKeys: Map<String, Set<DelegationDto>>
 
-	override val delegations: Map<String, Set<Delegation>>
+	override val delegations: Map<String, Set<DelegationDto>>
 
-	override val encryptionKeys: Map<String, Set<Delegation>>
+	override val encryptionKeys: Map<String, Set<DelegationDto>>
 
-	override val encryptedSelf: Base64String?
+	override val encryptedSelf: Base64StringDto?
 
-	override val securityMetadata: SecurityMetadata?
+	override val securityMetadata: SecurityMetadataDto?
 	// region HealthElement-HealthElement
 
 	companion object {

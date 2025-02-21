@@ -6,6 +6,9 @@ import com.icure.cardinal.sdk.model.base.Named
 import com.icure.cardinal.sdk.model.specializations.Base64String
 import com.icure.cardinal.sdk.utils.DefaultValue
 import kotlinx.serialization.Serializable
+import org.taktik.icure.services.`external`.rest.v2.dto.base.CodeStubDto
+import org.taktik.icure.services.`external`.rest.v2.dto.embed.CareTeamMembershipDto
+import org.taktik.icure.services.`external`.rest.v2.dto.specializations.Base64StringDto
 import kotlin.Boolean
 import kotlin.Int
 import kotlin.Long
@@ -28,9 +31,9 @@ sealed interface PlanOfAction : Encryptable, ICureDocument<String>, Named {
 
 	override val medicalLocationId: String?
 
-	override val tags: Set<CodeStub>
+	override val tags: Set<CodeStubDto>
 
-	override val codes: Set<CodeStub>
+	override val codes: Set<CodeStubDto>
 
 	override val endOfLife: Long?
 
@@ -60,11 +63,11 @@ sealed interface PlanOfAction : Encryptable, ICureDocument<String>, Named {
 
 	public val numberOfCares: Int?
 
-	public val careTeamMemberships: List<CareTeamMembership?>
+	public val careTeamMemberships: List<CareTeamMembershipDto?>
 
 	public val relevant: Boolean
 
-	override val encryptedSelf: Base64String?
+	override val encryptedSelf: Base64StringDto?
 	// region PlanOfAction-PlanOfAction
 
 	// endregion
