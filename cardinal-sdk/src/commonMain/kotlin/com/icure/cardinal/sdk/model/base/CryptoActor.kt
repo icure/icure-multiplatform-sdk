@@ -1,5 +1,6 @@
 package com.icure.cardinal.sdk.model.base
 
+import com.icure.cardinal.sdk.model.PropertyStub
 import com.icure.cardinal.sdk.model.specializations.AesExchangeKeyEncryptionKeypairIdentifier
 import com.icure.cardinal.sdk.model.specializations.AesExchangeKeyEntryKeyString
 import com.icure.cardinal.sdk.model.specializations.HexString
@@ -27,6 +28,8 @@ interface CryptoActor : Versionable<String>, HasTags {
 	public val publicKeysForOaepWithSha256: Set<SpkiHexString>
 
 	public val parentId: String?
+
+	public val cryptoActorProperties: Set<PropertyStub>?
 	// region CryptoActor-CryptoActor
 
 	// endregion

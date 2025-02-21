@@ -37,6 +37,7 @@ data class CryptoActorStub(
 	@DefaultValue("emptySet()")
 	override val tags: Set<CodeStub> = emptySet(),
 	override val parentId: String? = null,
+	override val cryptoActorProperties: Set<DecryptedPropertyStub>? = null,
 ) : Versionable<String>, CryptoActor, HasTags {
 	// region CryptoActorStub-CryptoActorStub
 

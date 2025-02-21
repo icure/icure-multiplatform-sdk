@@ -202,6 +202,8 @@ sealed interface Patient :
 
 	override val securityMetadata: SecurityMetadata?
 
+	override val cryptoActorProperties: Set<PropertyStub>?
+
 	override val medicalLocationId: String?
 
 	public val nonDuplicateIds: Set<String>
@@ -338,6 +340,7 @@ data class DecryptedPatient(
 	override val encryptionKeys: Map<String, Set<Delegation>> = emptyMap(),
 	override val encryptedSelf: Base64String? = null,
 	override val securityMetadata: SecurityMetadata? = null,
+	override val cryptoActorProperties: Set<DecryptedPropertyStub>? = null,
 	override val medicalLocationId: String? = null,
 	@DefaultValue("emptySet()")
 	override val nonDuplicateIds: Set<String> = emptySet(),
@@ -466,6 +469,7 @@ data class EncryptedPatient(
 	override val encryptionKeys: Map<String, Set<Delegation>> = emptyMap(),
 	override val encryptedSelf: Base64String? = null,
 	override val securityMetadata: SecurityMetadata? = null,
+	override val cryptoActorProperties: Set<EncryptedPropertyStub>? = null,
 	override val medicalLocationId: String? = null,
 	@DefaultValue("emptySet()")
 	override val nonDuplicateIds: Set<String> = emptySet(),
