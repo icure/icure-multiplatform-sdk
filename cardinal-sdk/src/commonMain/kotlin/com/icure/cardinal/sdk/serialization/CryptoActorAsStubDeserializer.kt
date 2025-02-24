@@ -66,6 +66,9 @@ object CryptoActorAsStubDeserializer : KSerializer<CryptoActor> {
 			tags = jsonObject["tags"]?.let {
 				decoder.json.decodeFromJsonElement(it)
 			} ?: emptySet(),
+			cryptoActorProperties = jsonObject["cryptoActorProperties"]?.let {
+				decoder.json.decodeFromJsonElement(it)
+			},
 		)
 	}
 
