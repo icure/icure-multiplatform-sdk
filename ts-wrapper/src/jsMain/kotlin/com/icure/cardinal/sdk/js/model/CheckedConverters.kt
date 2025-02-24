@@ -202,7 +202,7 @@ object CheckedConverters {
 	fun zonedDateTimeToString(
 		zonedDateTime: ZonedDateTime,
 	): String {
-		return zonedDateTime.toIso8601String()
+		return zonedDateTime.toIso8601AndZoneString()
 	}
 
 	fun zonedDateTimeToString(
@@ -214,7 +214,7 @@ object CheckedConverters {
 		description: String
 	): ZonedDateTime {
 		return try {
-			ZonedDateTime.fromIso8601String(string)
+			ZonedDateTime.fromIso8601AndZoneString(string)
 		} catch (e: Exception) {
 			throw IllegalArgumentException("Invalid zoned date time $string @ $description", e)
 		}
