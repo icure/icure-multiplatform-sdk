@@ -16,7 +16,7 @@ import com.icure.cardinal.sdk.crypto.entities.ShamirUpdateRequest
 import com.icure.cardinal.sdk.crypto.impl.ShamirSecretSharingService
 import com.icure.cardinal.sdk.model.CryptoActorStubWithType
 import com.icure.cardinal.sdk.model.base.CryptoActor
-import com.icure.cardinal.sdk.model.extensions.toStub
+import com.icure.cardinal.sdk.model.extensions.asStub
 import com.icure.cardinal.sdk.model.specializations.HexString
 import com.icure.cardinal.sdk.model.specializations.KeypairFingerprintV1String
 import com.icure.utils.InternalIcureApi
@@ -45,7 +45,7 @@ class ShamirKeysManagerApiImpl(
 		keySplitsToUpdate: Map<KeypairFingerprintV1String, ShamirUpdateRequest>,
 		keySplitsToDelete: Set<KeypairFingerprintV1String>,
 	): CryptoActorStubWithType {
-		val self = this.dataOwnerApi.getCurrentDataOwner().toStub()
+		val self = this.dataOwnerApi.getCurrentDataOwner().asStub()
 		val existingSplits = getExistingSplitsInfo(self.stub).keys
 		val allKeys = encryptionKeysManager.getDecryptionKeys(true)
 		keySplitsToDelete.intersect(keySplitsToUpdate.keys).let {
