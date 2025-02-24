@@ -5,8 +5,6 @@ import com.icure.cardinal.sdk.api.raw.HttpResponse
 import com.icure.cardinal.sdk.api.raw.RawTimeTableApi
 import com.icure.cardinal.sdk.api.raw.wrap
 import com.icure.cardinal.sdk.auth.services.AuthProvider
-import com.icure.cardinal.sdk.crypto.AccessControlKeysHeadersProvider
-import com.icure.cardinal.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
 import com.icure.cardinal.sdk.model.ListOfIds
 import com.icure.cardinal.sdk.model.ListOfIdsAndRev
 import com.icure.cardinal.sdk.model.TimeTable

@@ -33,19 +33,23 @@ fun CryptoActor.algorithmOfEncryptionKey(encryptionKey: SpkiHexString) =
 		else -> throw IllegalArgumentException("Key $encryptionKey is not a valid encryption key of crypto actor $id")
 	}
 
-fun CryptoActor.toStub() =
-	CryptoActorStub(
-		id = id,
-		rev = requireNotNull(rev) { "You can only convert to a stub crypto actors that are already persisted." },
-		hcPartyKeys = hcPartyKeys,
-		aesExchangeKeys = aesExchangeKeys,
-		transferKeys = transferKeys,
-		privateKeyShamirPartitions = privateKeyShamirPartitions,
-		publicKey = publicKey,
-		publicKeysForOaepWithSha256 = publicKeysForOaepWithSha256,
-		tags = tags,
-		parentId = parentId
-	)
+fun CryptoActor.asStub() =
+	if (this is CryptoActorStub)
+		this
+	else
+		CryptoActorStub(
+			id = id,
+			rev = requireNotNull(rev) { "You can only convert to a stub crypto actors that are already persisted." },
+			hcPartyKeys = hcPartyKeys,
+			aesExchangeKeys = aesExchangeKeys,
+			transferKeys = transferKeys,
+			privateKeyShamirPartitions = privateKeyShamirPartitions,
+			publicKey = publicKey,
+			publicKeysForOaepWithSha256 = publicKeysForOaepWithSha256,
+			cryptoActorProperties = cryptoActorProperties,
+			tags = tags,
+			parentId = parentId
+		)
 
 val DataOwnerWithType.type: DataOwnerType get() = when(this) {
 	is DataOwnerWithType.DeviceDataOwner -> DataOwnerType.Device
@@ -53,5 +57,5 @@ val DataOwnerWithType.type: DataOwnerType get() = when(this) {
 	is DataOwnerWithType.PatientDataOwner -> DataOwnerType.Patient
 }
 
-fun DataOwnerWithType.toStub(): CryptoActorStubWithType =
-	CryptoActorStubWithType(type = type, stub = dataOwner.toStub())
+fun DataOwnerWithType.asStub(): CryptoActorStubWithType =
+	CryptoActorStubWithType(type = type, stub = dataOwner.asStub())
