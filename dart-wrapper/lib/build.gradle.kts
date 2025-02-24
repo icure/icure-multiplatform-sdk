@@ -7,8 +7,8 @@ plugins {
 	androidLibrary()
 	id("maven-publish")
 	signing
-	id("com.vanniktech.maven.publish") version "0.28.0"
-	id("com.google.devtools.ksp") version "2.0.21-1.0.25"
+	id("com.vanniktech.maven.publish") version "0.29.0"
+	id("com.google.devtools.ksp") version "2.1.20-RC-1.0.30"
 }
 
 val repoUsername: String by project
