@@ -3,6 +3,7 @@ package com.icure.cardinal.sdk.model.specializations
 import com.icure.cardinal.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
 import com.icure.cardinal.sdk.utils.base64Encode
 import com.icure.cardinal.sdk.utils.concat
+import com.icure.cardinal.sdk.utils.isValidHex
 import com.icure.kryptom.crypto.CryptoService
 import com.icure.kryptom.utils.hexToByteArray
 import com.icure.kryptom.utils.toHexString
@@ -106,11 +107,12 @@ value class SpkiHexString(
 ) {
 	companion object {
 		internal const val TRAILING_CONSTANT = "0203010001"
-		internal val pattern = Regex("^(?:[0-9a-f][0-9a-f]){256,}$TRAILING_CONSTANT\$")
+		internal fun validSpkiHex(s: String) =
+			s.length >= 522 && s.endsWith(TRAILING_CONSTANT) && s.isValidHex()
 	}
 
 	init {
-		require(pattern.matches(s)) { "Invalid spki hex string: $s" }
+		require(validSpkiHex(s)) { "Invalid spki hex string: $s" }
 	}
 
 	fun fingerprintV1(): KeypairFingerprintV1String {
@@ -135,7 +137,9 @@ value class AesExchangeKeyEntryKeyString(
 	}
 
 	init {
-		require(s.startsWith(FAKE_PUB_KEY_PREFIX) || SpkiHexString.pattern.matches(s)) { "Invalid aes exchange key entry: $s" }
+		require(s.startsWith(FAKE_PUB_KEY_PREFIX) || SpkiHexString.validSpkiHex(s)) {
+			"Invalid aes exchange key entry: $s"
+		}
 	}
 
 	fun asPublicKey(): SpkiHexString? = if (s.startsWith(FAKE_PUB_KEY_PREFIX)) null else SpkiHexString(s)
@@ -148,7 +152,6 @@ value class KeypairFingerprintV1String(
 ) {
 	companion object {
 		const val LENGTH = 32
-		private val pattern = Regex("^[0-9a-f]{22}${SpkiHexString.TRAILING_CONSTANT}\$")
 
 		fun fromPublicKeySpki(publicKeySpki: SpkiHexString): KeypairFingerprintV1String {
 			return KeypairFingerprintV1String(publicKeySpki.s.takeLast(32))
@@ -160,7 +163,9 @@ value class KeypairFingerprintV1String(
 	}
 
 	init {
-		require(pattern.matches(s)) { "Invalid fingerprint v1 string: $s" }
+		require(s.length == LENGTH && s.isValidHex() && s.endsWith(SpkiHexString.TRAILING_CONSTANT)) {
+			"Invalid fingerprint v1 string: $s"
+		}
 	}
 
 	fun toV2(): KeypairFingerprintV2String {
@@ -178,7 +183,7 @@ value class KeypairFingerprintV2String(
 	val s: String
 ) {
 	companion object {
-		private val pattern = Regex("^[0-9a-f]{22}\$")
+		private const val LENGTH = 22
 
 		fun fromV1(v1: KeypairFingerprintV1String): KeypairFingerprintV2String {
 			return KeypairFingerprintV2String(v1.s.dropLast(10))
@@ -190,6 +195,6 @@ value class KeypairFingerprintV2String(
 	}
 
 	init {
-		require(pattern.matches(s)) { "Invalid fingerprint v2 string: $s" }
+		require(s.length == LENGTH && s.isValidHex()) { "Invalid fingerprint v2 string: $s" }
 	}
 }
