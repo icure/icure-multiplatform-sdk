@@ -20,7 +20,7 @@ import kotlin.js.JsName
 interface UserApi: Subscribable<User, User, FilterOptions<User>> {
 	@Deprecated("Deletion without rev is unsafe")
 	suspend fun deleteUserUnsafe(entityId: String): DocIdentifier
-	suspend fun getCurrentUser(): User
+	suspend fun getCurrentUser(includeMetadataFromGlobalUser: Boolean = false): User
 
 	@Deprecated(
 		"List methods are deprecated",
@@ -41,7 +41,7 @@ interface UserApi: Subscribable<User, User, FilterOptions<User>> {
 	): PaginatedList<User>
 
 	suspend fun createUser(user: User): User
-	suspend fun getUser(userId: String): User
+	suspend fun getUser(userId: String, includeMetadataFromGlobalUser: Boolean = false): User
 	suspend fun getUsers(userIds: List<String>): List<User>
 	suspend fun getUserByEmail(email: String): User
 	suspend fun getUserByPhoneNumber(phoneNumber: String): User
