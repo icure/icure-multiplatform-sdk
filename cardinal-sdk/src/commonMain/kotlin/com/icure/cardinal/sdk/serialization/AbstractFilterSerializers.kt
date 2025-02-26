@@ -100,6 +100,7 @@ import com.icure.cardinal.sdk.model.filter.message.MessageByHcPartyTransportGuid
 import com.icure.cardinal.sdk.model.filter.message.MessageByInvoiceIdsFilter
 import com.icure.cardinal.sdk.model.filter.message.MessageByParentIdsFilter
 import com.icure.cardinal.sdk.model.filter.patient.PatientByDataOwnerModifiedAfterFilter
+import com.icure.cardinal.sdk.model.filter.patient.PatientByDataOwnerTagFilter
 import com.icure.cardinal.sdk.model.filter.patient.PatientByHcPartyAndActiveFilter
 import com.icure.cardinal.sdk.model.filter.patient.PatientByHcPartyAndAddressFilter
 import com.icure.cardinal.sdk.model.filter.patient.PatientByHcPartyAndExternalIdFilter
@@ -142,7 +143,6 @@ internal object AnyAbstractFilterSerializer :
 	@Suppress("UNCHECKED_CAST")
 	override fun getSerializerBySerialName(serialName: String): KSerializer<out AbstractFilter<*>>? =
 		when (serialName) {
-			"UnionFilter" -> UnionFilterSerializer(this as KSerializer<AbstractFilter<Identifiable<String>>>)
 			"ComplementFilter" ->
 				ComplementFilterSerializer(
 					this as
@@ -153,6 +153,7 @@ internal object AnyAbstractFilterSerializer :
 					this as
 						KSerializer<AbstractFilter<Identifiable<String>>>,
 				)
+			"UnionFilter" -> UnionFilterSerializer(this as KSerializer<AbstractFilter<Identifiable<String>>>)
 			else ->
 				AgendaAbstractFilterSerializer.getSerializerBySerialName(serialName)
 					?: CalendarItemAbstractFilterSerializer.getSerializerBySerialName(serialName)
@@ -179,11 +180,6 @@ internal object AnyAbstractFilterSerializer :
 	@Suppress("UNCHECKED_CAST")
 	override fun getSerializerByClass(kclass: KClass<out AbstractFilter<*>>): KSerializer<out AbstractFilter<*>>? =
 		when (kclass) {
-			UnionFilter::class ->
-				UnionFilterSerializer(
-					this as
-						KSerializer<AbstractFilter<Identifiable<String>>>,
-				)
 			ComplementFilter::class ->
 				ComplementFilterSerializer(
 					this as
@@ -191,6 +187,11 @@ internal object AnyAbstractFilterSerializer :
 				)
 			IntersectionFilter::class ->
 				IntersectionFilterSerializer(
+					this as
+						KSerializer<AbstractFilter<Identifiable<String>>>,
+				)
+			UnionFilter::class ->
+				UnionFilterSerializer(
 					this as
 						KSerializer<AbstractFilter<Identifiable<String>>>,
 				)
@@ -786,6 +787,7 @@ internal object PatientAbstractFilterSerializer :
 			"IntersectionFilter" -> IntersectionFilterSerializer(this)
 			"UnionFilter" -> UnionFilterSerializer(this)
 			"PatientByDataOwnerModifiedAfterFilter" -> PatientByDataOwnerModifiedAfterFilter.serializer()
+			"PatientByDataOwnerTagFilter" -> PatientByDataOwnerTagFilter.serializer()
 			"PatientByHcPartyAndActiveFilter" -> PatientByHcPartyAndActiveFilter.serializer()
 			"PatientByHcPartyAndAddressFilter" -> PatientByHcPartyAndAddressFilter.serializer()
 			"PatientByHcPartyAndExternalIdFilter" -> PatientByHcPartyAndExternalIdFilter.serializer()
@@ -810,6 +812,7 @@ internal object PatientAbstractFilterSerializer :
 			IntersectionFilter::class -> IntersectionFilterSerializer(this)
 			UnionFilter::class -> UnionFilterSerializer(this)
 			PatientByDataOwnerModifiedAfterFilter::class -> PatientByDataOwnerModifiedAfterFilter.serializer()
+			PatientByDataOwnerTagFilter::class -> PatientByDataOwnerTagFilter.serializer()
 			PatientByHcPartyAndActiveFilter::class -> PatientByHcPartyAndActiveFilter.serializer()
 			PatientByHcPartyAndAddressFilter::class -> PatientByHcPartyAndAddressFilter.serializer()
 			PatientByHcPartyAndExternalIdFilter::class -> PatientByHcPartyAndExternalIdFilter.serializer()

@@ -22,6 +22,7 @@ import com.icure.cardinal.sdk.js.model.specializations.spkiHexString_fromJs
 import com.icure.cardinal.sdk.js.model.specializations.spkiHexString_toJs
 import com.icure.cardinal.sdk.js.utils.Record
 import com.icure.cardinal.sdk.model.CryptoActorStub
+import com.icure.cardinal.sdk.model.DecryptedPropertyStub
 import com.icure.cardinal.sdk.model.base.CodeStub
 import com.icure.cardinal.sdk.model.specializations.AesExchangeKeyEncryptionKeypairIdentifier
 import com.icure.cardinal.sdk.model.specializations.AesExchangeKeyEntryKeyString
@@ -122,6 +123,14 @@ public fun cryptoActorStub_toJs(obj: CryptoActorStub): CryptoActorStubJs {
 	val parentId = nullToUndefined(
 		obj.parentId
 	)
+	val cryptoActorProperties = nullToUndefined(
+		setToArray(
+			obj.cryptoActorProperties,
+			{ x1: DecryptedPropertyStub ->
+				propertyStub_toJs(x1)
+			},
+		)
+	)
 	return CryptoActorStubJs(js("{" +
 		"id:id," +
 		"rev:rev," +
@@ -132,7 +141,8 @@ public fun cryptoActorStub_toJs(obj: CryptoActorStub): CryptoActorStubJs {
 		"publicKey:publicKey," +
 		"publicKeysForOaepWithSha256:publicKeysForOaepWithSha256," +
 		"tags:tags," +
-		"parentId:parentId" +
+		"parentId:parentId," +
+		"cryptoActorProperties:cryptoActorProperties" +
 	"}"))
 }
 
@@ -230,6 +240,13 @@ public fun cryptoActorStub_fromJs(obj: CryptoActorStubJs): CryptoActorStub {
 		},
 	)
 	val parentId = undefinedToNull(obj.parentId)
+	val cryptoActorProperties = arrayToSet(
+		obj.cryptoActorProperties,
+		"obj.cryptoActorProperties",
+		{ x1: DecryptedPropertyStubJs ->
+			propertyStub_fromJs(x1)
+		},
+	)
 	return CryptoActorStub(
 		id = id,
 		rev = rev,
@@ -241,5 +258,6 @@ public fun cryptoActorStub_fromJs(obj: CryptoActorStubJs): CryptoActorStub {
 		publicKeysForOaepWithSha256 = publicKeysForOaepWithSha256,
 		tags = tags,
 		parentId = parentId,
+		cryptoActorProperties = cryptoActorProperties,
 	)
 }

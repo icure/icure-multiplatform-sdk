@@ -69,6 +69,8 @@ public sealed external interface InvoicingCodeJs : EncryptableJs {
 
 	public val prescriberNorm: Double?
 
+	public val productLabel: String?
+
 	public val percentNorm: Double?
 
 	public val prescriberNihii: String?
@@ -177,6 +179,8 @@ public external class DecryptedInvoicingCodeJs(
 	override val transplantationCode: Double?
 
 	override val prescriberNorm: Double?
+
+	override val productLabel: String?
 
 	override val percentNorm: Double?
 
@@ -288,6 +292,8 @@ public external class EncryptedInvoicingCodeJs(
 	override val transplantationCode: Double?
 
 	override val prescriberNorm: Double?
+
+	override val productLabel: String?
 
 	override val percentNorm: Double?
 

@@ -76,5 +76,7 @@ public external class DeviceJs(
 
 	override val publicKeysForOaepWithSha256: Array<String>
 
+	override val cryptoActorProperties: Array<DecryptedPropertyStubJs>?
+
 	override val ktClass: String
 }

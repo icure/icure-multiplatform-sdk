@@ -1,5 +1,6 @@
 // auto-generated file
 import {randomUuid} from '../utils/Id.mjs';
+import {DecryptedPropertyStub} from './PropertyStub.mjs';
 import {CodeStub} from './base/CodeStub.mjs';
 import {CryptoActor} from './base/CryptoActor.mjs';
 import {HasTags} from './base/HasTags.mjs';
@@ -30,6 +31,8 @@ export class CryptoActorStub implements Versionable<string>, CryptoActor, HasTag
 
 	parentId: string | undefined = undefined;
 
+	cryptoActorProperties: Array<DecryptedPropertyStub> | undefined = undefined;
+
 	readonly $ktClass: 'com.icure.cardinal.sdk.model.CryptoActorStub' = 'com.icure.cardinal.sdk.model.CryptoActorStub';
 
 	constructor(partial: Partial<CryptoActorStub> & Pick<CryptoActorStub, "rev" | "publicKeysForOaepWithSha256">) {
@@ -43,6 +46,7 @@ export class CryptoActorStub implements Versionable<string>, CryptoActor, HasTag
 		this.publicKeysForOaepWithSha256 = partial.publicKeysForOaepWithSha256;
 		if ('tags' in partial && partial.tags !== undefined) this.tags = partial.tags;
 		if ('parentId' in partial) this.parentId = partial.parentId;
+		if ('cryptoActorProperties' in partial) this.cryptoActorProperties = partial.cryptoActorProperties;
 	}
 
 }
