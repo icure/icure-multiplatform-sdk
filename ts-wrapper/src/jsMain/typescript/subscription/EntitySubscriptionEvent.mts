@@ -2,7 +2,7 @@
 import {Identifiable} from '../model/base/Identifiable.mjs';
 
 
-export type EntitySubscriptionEvent<E extends Identifiable<string>> = typeof EntitySubscriptionEvent.Connected | typeof EntitySubscriptionEvent.Reconnected | EntitySubscriptionEvent.UnexpectedError | EntitySubscriptionEvent.ConnectionError | EntitySubscriptionEvent.EntityNotification<E> | EntitySubscriptionEvent.EntityError;
+export type EntitySubscriptionEvent<E extends Identifiable<string>> = typeof EntitySubscriptionEvent.Connected | typeof EntitySubscriptionEvent.Reconnected | typeof EntitySubscriptionEvent.ClosedByClient | EntitySubscriptionEvent.UnexpectedError | EntitySubscriptionEvent.ConnectionError | EntitySubscriptionEvent.EntityNotification<E> | EntitySubscriptionEvent.EntityError;
 
 export namespace EntitySubscriptionEvent {
 
@@ -16,6 +16,12 @@ export namespace EntitySubscriptionEvent {
 		readonly $ktClass: 'com.icure.cardinal.sdk.subscription.EntitySubscriptionEvent.Reconnected'
 	} = {
 		$ktClass: 'com.icure.cardinal.sdk.subscription.EntitySubscriptionEvent.Reconnected'
+	}
+
+	export const ClosedByClient: {
+		readonly $ktClass: 'com.icure.cardinal.sdk.subscription.EntitySubscriptionEvent.ClosedByClient'
+	} = {
+		$ktClass: 'com.icure.cardinal.sdk.subscription.EntitySubscriptionEvent.ClosedByClient'
 	}
 
 	export class UnexpectedError {
@@ -44,9 +50,15 @@ export namespace EntitySubscriptionEvent {
 			$ktClass: 'com.icure.cardinal.sdk.subscription.EntitySubscriptionEvent.ConnectionError.ClosedByServer'
 		}
 
+		export const ConnectionLost: {
+			readonly $ktClass: 'com.icure.cardinal.sdk.subscription.EntitySubscriptionEvent.ConnectionError.ConnectionLost'
+		} = {
+			$ktClass: 'com.icure.cardinal.sdk.subscription.EntitySubscriptionEvent.ConnectionError.ConnectionLost'
+		}
+
 	}
 
-	export type ConnectionError = typeof ConnectionError.MissedPing | typeof ConnectionError.ClosedByServer;
+	export type ConnectionError = typeof ConnectionError.MissedPing | typeof ConnectionError.ClosedByServer | typeof ConnectionError.ConnectionLost;
 
 	export class EntityNotification<E extends Identifiable<string>> {
 

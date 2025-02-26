@@ -158,15 +158,7 @@ interface JsonEncryptionService {
 				}
 			}
 			encryptedFields.forEach { currEncryptedField ->
-				val (currFieldName, currFieldSeparator) = requireNotNull(
-					ENCRYPTED_FIELD_MANIFEST_REGEX.find(
-						currEncryptedField
-					)
-				) {
-					"Invalid encrypted field $path$currEncryptedField"
-				}.groupValues.let { groups ->
-					groups[1] to groups[2].takeIf { it.isNotEmpty() }
-				}
+				val (currFieldName, currFieldSeparator) = parseCurrentFieldAndSeparator(path, currEncryptedField)
 				when (currFieldSeparator) {
 					null -> {
 						if (currFieldName in topLevelFields) throw IllegalArgumentException("Duplicate encrypted field $path$currFieldName")
@@ -215,8 +207,37 @@ interface JsonEncryptionService {
 			)
 		}
 
-		@Suppress("RegExpRedundantEscape") // Suppressed because in node is not redundant
-		private val ENCRYPTED_FIELD_MANIFEST_REGEX =
-			Regex("^([_a-zA-Z][_a-zA-Z0-9]*|\\*)(?:(\\.\\*\\.|\\[\\]\\.|\\.)(?:[_a-zA-Z].*|\\*|\\[.*\\]))?$")
+		private val LOWER_RANGE = 'a' .. 'z'
+		private val UPPER_RANGE = 'A' .. 'Z'
+		private val DIGIT_RANGE = '0' .. '9'
+		private fun parseCurrentFieldAndSeparator(
+			path: String,
+			currEncryptedField: String
+		): Pair<String, String?> {
+			val fieldName = if (currEncryptedField.first() == '*') {
+				"*"
+			} else {
+				require(currEncryptedField.first().let { it in LOWER_RANGE || it in UPPER_RANGE || it == '_'}) {
+					"Invalid encrypted field $path$currEncryptedField - $currEncryptedField must start with a valid identifier"
+				}
+				currEncryptedField.takeWhile { it in LOWER_RANGE || it in UPPER_RANGE || it == '_' || it in DIGIT_RANGE }
+			}
+			if (fieldName.length == currEncryptedField.length) return Pair(currEncryptedField, null)
+			val currWithoutFieldName = currEncryptedField.substring(fieldName.length)
+			val separator = when {
+				currWithoutFieldName.startsWith(".*.") -> ".*."
+				currWithoutFieldName.startsWith("[].") -> "[]."
+				currWithoutFieldName.startsWith(".") -> "."
+				else -> throw IllegalArgumentException("Invalid encrypted field $path$currEncryptedField - $currWithoutFieldName contains an invalid separator")
+			}
+			require(
+				(currWithoutFieldName.length > separator.length && currWithoutFieldName[separator.length].let {
+					it in LOWER_RANGE || it in UPPER_RANGE || it == '_' || it == '['
+				}) || (currWithoutFieldName.length == separator.length + 1 && currWithoutFieldName.last() == '*')
+			) {
+				"Invalid encrypted field $path$currEncryptedField - Invalid followup to separator ${currWithoutFieldName.substring(separator.length)}"
+			}
+			return Pair(fieldName, separator)
+		}
 	}
 }

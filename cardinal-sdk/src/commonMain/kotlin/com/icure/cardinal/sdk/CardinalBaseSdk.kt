@@ -2,6 +2,7 @@ package com.icure.cardinal.sdk
 
 import com.icure.cardinal.sdk.api.AgendaApi
 import com.icure.cardinal.sdk.api.ApplicationSettingsApi
+import com.icure.cardinal.sdk.api.CalendarItemTypeApi
 import com.icure.cardinal.sdk.api.DocumentTemplateApi
 import com.icure.cardinal.sdk.api.EntityReferenceApi
 import com.icure.cardinal.sdk.api.EntityTemplateApi
@@ -19,6 +20,7 @@ import com.icure.cardinal.sdk.api.impl.AccessLogBasicApiImpl
 import com.icure.cardinal.sdk.api.impl.AgendaApiImpl
 import com.icure.cardinal.sdk.api.impl.ApplicationSettingsApiImpl
 import com.icure.cardinal.sdk.api.impl.CalendarItemBasicApiImpl
+import com.icure.cardinal.sdk.api.impl.CalendarItemTypeApiImpl
 import com.icure.cardinal.sdk.api.impl.ClassificationBasicApiImpl
 import com.icure.cardinal.sdk.api.impl.CodeApiImpl
 import com.icure.cardinal.sdk.api.impl.ContactBasicApiImpl
@@ -54,6 +56,7 @@ import com.icure.cardinal.sdk.api.raw.impl.RawAgendaApiImpl
 import com.icure.cardinal.sdk.api.raw.impl.RawAnonymousAuthApiImpl
 import com.icure.cardinal.sdk.api.raw.impl.RawApplicationSettingsApiImpl
 import com.icure.cardinal.sdk.api.raw.impl.RawCalendarItemApiImpl
+import com.icure.cardinal.sdk.api.raw.impl.RawCalendarItemTypeApiImpl
 import com.icure.cardinal.sdk.api.raw.impl.RawClassificationApiImpl
 import com.icure.cardinal.sdk.api.raw.impl.RawCodeApiImpl
 import com.icure.cardinal.sdk.api.raw.impl.RawContactApiImpl
@@ -268,6 +271,9 @@ private class CardinalBaseApisImpl(
 		)
 	}
 	override val code by lazy { CodeApiImpl(RawCodeApiImpl(apiUrl, authProvider, client, json = httpClientJson)) }
+	override val calendarItemType: CalendarItemTypeApi by lazy {
+		CalendarItemTypeApiImpl(RawCalendarItemTypeApiImpl(apiUrl, authProvider, client, json = httpClientJson))
+	}
 	override val contact by lazy {
 		ContactBasicApiImpl(
 			RawContactApiImpl(

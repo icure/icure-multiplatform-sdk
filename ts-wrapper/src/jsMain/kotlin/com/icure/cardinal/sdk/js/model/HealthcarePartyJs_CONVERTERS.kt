@@ -274,6 +274,14 @@ public fun healthcareParty_toJs(obj: HealthcareParty): HealthcarePartyJs {
 			propertyStub_toJs(x1)
 		},
 	)
+	val cryptoActorProperties = nullToUndefined(
+		setToArray(
+			obj.cryptoActorProperties,
+			{ x1: DecryptedPropertyStub ->
+				propertyStub_toJs(x1)
+			},
+		)
+	)
 	val hcPartyKeys = mapToObject(
 		obj.hcPartyKeys,
 		{ x1: String ->
@@ -399,6 +407,7 @@ public fun healthcareParty_toJs(obj: HealthcareParty): HealthcarePartyJs {
 		"importedData:importedData," +
 		"options:options," +
 		"properties:properties," +
+		"cryptoActorProperties:cryptoActorProperties," +
 		"hcPartyKeys:hcPartyKeys," +
 		"aesExchangeKeys:aesExchangeKeys," +
 		"transferKeys:transferKeys," +
@@ -567,6 +576,13 @@ public fun healthcareParty_fromJs(obj: HealthcarePartyJs): HealthcareParty {
 			propertyStub_fromJs(x1)
 		},
 	)
+	val cryptoActorProperties = arrayToSet(
+		obj.cryptoActorProperties,
+		"obj.cryptoActorProperties",
+		{ x1: DecryptedPropertyStubJs ->
+			propertyStub_fromJs(x1)
+		},
+	)
 	val hcPartyKeys = objectToMap(
 		obj.hcPartyKeys,
 		"obj.hcPartyKeys",
@@ -699,6 +715,7 @@ public fun healthcareParty_fromJs(obj: HealthcarePartyJs): HealthcareParty {
 		importedData = importedData,
 		options = options,
 		properties = properties,
+		cryptoActorProperties = cryptoActorProperties,
 		hcPartyKeys = hcPartyKeys,
 		aesExchangeKeys = aesExchangeKeys,
 		transferKeys = transferKeys,

@@ -468,6 +468,23 @@ class CalendarItemBasicApi(Structure):
 	]
 
 
+class CalendarItemTypeApi(Structure):
+	_fields_ = [
+		("createCalendarItemTypeAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
+		("createCalendarItemTypeBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
+		("deleteCalendarItemTypesAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
+		("deleteCalendarItemTypesBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
+		("getCalendarItemTypeAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
+		("getCalendarItemTypeBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
+		("getCalendarItemTypesAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
+		("getCalendarItemTypesBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
+		("getCalendarItemTypesIncludingDeletedAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
+		("getCalendarItemTypesIncludingDeletedBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
+		("modifyCalendarItemTypeAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
+		("modifyCalendarItemTypeBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
+	]
+
+
 class ClassificationApi_encrypted(Structure):
 	_fields_ = [
 		("filterClassificationsByAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, PTR_RESULT_CALLBACK_FUNC)),
@@ -3074,127 +3091,10 @@ class TarificationApi(Structure):
 	]
 
 
-class TimeTableApi_encrypted(Structure):
-	_fields_ = [
-		("filterTimeTablesByAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, PTR_RESULT_CALLBACK_FUNC)),
-		("filterTimeTablesByBlocking", CFUNCTYPE(AnyKtRef, AnyKtRef, c_char_p)),
-		("filterTimeTablesBySortedAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, PTR_RESULT_CALLBACK_FUNC)),
-		("filterTimeTablesBySortedBlocking", CFUNCTYPE(AnyKtRef, AnyKtRef, c_char_p)),
-		("getTimeTableAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("getTimeTableBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-		("getTimeTablesAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("getTimeTablesBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-		("getTimeTablesByAgendaIdAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("getTimeTablesByAgendaIdBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-		("getTimeTablesByPeriodAndAgendaIdAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("getTimeTablesByPeriodAndAgendaIdBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-		("modifyTimeTableAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("modifyTimeTableBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-		("shareWithAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("shareWithBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-		("shareWithManyAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("shareWithManyBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-		("undeleteTimeTableAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("undeleteTimeTableBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-		("undeleteTimeTableByIdAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("undeleteTimeTableByIdBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-	]
-
-
-class TimeTableApi_tryAndRecover(Structure):
-	_fields_ = [
-		("filterTimeTablesByAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, PTR_RESULT_CALLBACK_FUNC)),
-		("filterTimeTablesByBlocking", CFUNCTYPE(AnyKtRef, AnyKtRef, c_char_p)),
-		("filterTimeTablesBySortedAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, PTR_RESULT_CALLBACK_FUNC)),
-		("filterTimeTablesBySortedBlocking", CFUNCTYPE(AnyKtRef, AnyKtRef, c_char_p)),
-		("getTimeTableAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("getTimeTableBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-		("getTimeTablesAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("getTimeTablesBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-		("getTimeTablesByAgendaIdAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("getTimeTablesByAgendaIdBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-		("getTimeTablesByPeriodAndAgendaIdAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("getTimeTablesByPeriodAndAgendaIdBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-		("modifyTimeTableAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("modifyTimeTableBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-		("shareWithAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("shareWithBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-		("shareWithManyAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("shareWithManyBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-		("undeleteTimeTableAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("undeleteTimeTableBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-		("undeleteTimeTableByIdAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("undeleteTimeTableByIdBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-	]
-
-
 class TimeTableApi(Structure):
 	_fields_ = [
-		("encrypted", TimeTableApi_encrypted),
-		("tryAndRecover", TimeTableApi_tryAndRecover),
-		("createDelegationDeAnonymizationMetadataAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("createDelegationDeAnonymizationMetadataBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("createTimeTableAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("createTimeTableBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-		("decryptAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("decryptBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-		("decryptPatientIdOfAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("decryptPatientIdOfBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-		("deleteTimeTableAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("deleteTimeTableBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-		("deleteTimeTableByIdAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("deleteTimeTableByIdBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-		("deleteTimeTableUnsafeAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("deleteTimeTableUnsafeBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-		("deleteTimeTablesAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("deleteTimeTablesBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-		("deleteTimeTablesByIdsAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("deleteTimeTablesByIdsBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-		("deleteTimeTablesUnsafeAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("deleteTimeTablesUnsafeBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-		("filterTimeTablesByAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, PTR_RESULT_CALLBACK_FUNC)),
-		("filterTimeTablesByBlocking", CFUNCTYPE(AnyKtRef, AnyKtRef, c_char_p)),
-		("filterTimeTablesBySortedAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, PTR_RESULT_CALLBACK_FUNC)),
-		("filterTimeTablesBySortedBlocking", CFUNCTYPE(AnyKtRef, AnyKtRef, c_char_p)),
-		("getEncryptionKeysOfAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("getEncryptionKeysOfBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-		("getTimeTableAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("getTimeTableBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-		("getTimeTablesAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("getTimeTablesBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-		("getTimeTablesByAgendaIdAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("getTimeTablesByAgendaIdBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-		("getTimeTablesByPeriodAndAgendaIdAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("getTimeTablesByPeriodAndAgendaIdBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-		("hasWriteAccessAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("hasWriteAccessBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-		("matchTimeTablesByAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("matchTimeTablesByBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-		("matchTimeTablesBySortedAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("matchTimeTablesBySortedBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-		("modifyTimeTableAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("modifyTimeTableBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-		("purgeTimeTableAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("purgeTimeTableBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-		("purgeTimeTableByIdAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("purgeTimeTableByIdBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-		("shareWithAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("shareWithBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-		("shareWithManyAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("shareWithManyBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-		("tryDecryptAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("tryDecryptBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-		("undeleteTimeTableAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("undeleteTimeTableBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-		("undeleteTimeTableByIdAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("undeleteTimeTableByIdBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-		("withEncryptionMetadataAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
-		("withEncryptionMetadataBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
-	]
-
-
-class TimeTableBasicApi(Structure):
-	_fields_ = [
 		("deleteTimeTableAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
 		("deleteTimeTableBlocking", CFUNCTYPE(c_void_p, AnyKtRef, c_char_p)),
 		("deleteTimeTableByIdAsync", CFUNCTYPE(None, AnyKtRef, c_char_p, DATA_RESULT_CALLBACK_FUNC)),
@@ -3511,6 +3411,7 @@ class api(Structure):
 		("ApplicationSettingsApi", ApplicationSettingsApi),
 		("CalendarItemApi", CalendarItemApi),
 		("CalendarItemBasicApi", CalendarItemBasicApi),
+		("CalendarItemTypeApi", CalendarItemTypeApi),
 		("ClassificationApi", ClassificationApi),
 		("ClassificationBasicApi", ClassificationBasicApi),
 		("CodeApi", CodeApi),
@@ -3551,7 +3452,6 @@ class api(Structure):
 		("SystemApi", SystemApi),
 		("TarificationApi", TarificationApi),
 		("TimeTableApi", TimeTableApi),
-		("TimeTableBasicApi", TimeTableBasicApi),
 		("TopicApi", TopicApi),
 		("TopicBasicApi", TopicBasicApi),
 		("UserApi", UserApi),
@@ -3587,6 +3487,8 @@ class CalendarItemFilters(Structure):
 		("byPeriodForDataOwner", CFUNCTYPE(c_void_p, c_char_p)),
 		("byPeriodForSelf", CFUNCTYPE(c_void_p, c_char_p)),
 		("byRecurrenceId", CFUNCTYPE(c_void_p, c_char_p)),
+		("lifecycleBetweenForDataOwner", CFUNCTYPE(c_void_p, c_char_p)),
+		("lifecycleBetweenForSelf", CFUNCTYPE(c_void_p, c_char_p)),
 	]
 
 

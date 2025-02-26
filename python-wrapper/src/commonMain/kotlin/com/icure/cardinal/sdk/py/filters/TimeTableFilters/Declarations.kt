@@ -12,7 +12,6 @@ import kotlin.Boolean
 import kotlin.Long
 import kotlin.OptIn
 import kotlin.String
-import kotlinx.serialization.PolymorphicSerializer
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -26,7 +25,7 @@ public fun byAgendaId(params: String): String = kotlin.runCatching {
 	TimeTableFilters.byAgendaId(
 		decodedParams.agendaId,
 	)
-}.toPyString(BaseFilterOptions.serializer(PolymorphicSerializer(TimeTable::class)))
+}.toPyString(BaseFilterOptions.serializer(TimeTable.serializer()))
 
 @Serializable
 private class ByPeriodAndAgendaIdParams(
@@ -45,4 +44,4 @@ public fun byPeriodAndAgendaId(params: String): String = kotlin.runCatching {
 		decodedParams.to,
 		decodedParams.descending,
 	)
-}.toPyString(BaseSortableFilterOptions.serializer(PolymorphicSerializer(TimeTable::class)))
+}.toPyString(BaseSortableFilterOptions.serializer(TimeTable.serializer()))

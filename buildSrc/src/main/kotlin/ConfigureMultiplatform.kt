@@ -1,5 +1,6 @@
 
 import org.gradle.api.Project
+import org.gradle.jvm.toolchain.JavaLanguageVersion
 import org.gradle.kotlin.dsl.get
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 import org.jetbrains.kotlin.gradle.plugin.mpp.apple.XCFramework
@@ -66,7 +67,11 @@ fun Project.configureMultiplatform(
 	val localProperties = getLocalProperties()
 	val frameworkName = xcFrameworkName ?: project.name.replaceFirstChar { it.uppercase() }
 	val xcf = XCFramework(frameworkName)
+
 	if (jvm) {
+		jvmToolchain {
+			languageVersion.set(JavaLanguageVersion.of(8))
+		}
 		jvm {
 			compilations.all {
 				kotlinOptions.jvmTarget = "1.8"

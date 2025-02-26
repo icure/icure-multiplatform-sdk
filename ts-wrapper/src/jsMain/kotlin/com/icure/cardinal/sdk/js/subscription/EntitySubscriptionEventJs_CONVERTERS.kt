@@ -15,12 +15,16 @@ public fun <E : Identifiable<String>, E_JS : IdentifiableJs<String>>
 			entitySubscriptionEvent_Connected_toJs(obj) as EntitySubscriptionEventJs<E_JS>
 	is EntitySubscriptionEvent.Reconnected ->
 			entitySubscriptionEvent_Reconnected_toJs(obj) as EntitySubscriptionEventJs<E_JS>
+	is EntitySubscriptionEvent.ClosedByClient ->
+			entitySubscriptionEvent_ClosedByClient_toJs(obj) as EntitySubscriptionEventJs<E_JS>
 	is EntitySubscriptionEvent.UnexpectedError ->
 			entitySubscriptionEvent_UnexpectedError_toJs(obj) as EntitySubscriptionEventJs<E_JS>
 	is EntitySubscriptionEvent.ConnectionError.MissedPing ->
 			entitySubscriptionEvent_ConnectionError_MissedPing_toJs(obj) as EntitySubscriptionEventJs<E_JS>
 	is EntitySubscriptionEvent.ConnectionError.ClosedByServer ->
 			entitySubscriptionEvent_ConnectionError_ClosedByServer_toJs(obj) as EntitySubscriptionEventJs<E_JS>
+	is EntitySubscriptionEvent.ConnectionError.ConnectionLost ->
+			entitySubscriptionEvent_ConnectionError_ConnectionLost_toJs(obj) as EntitySubscriptionEventJs<E_JS>
 	is EntitySubscriptionEvent.EntityNotification<E> ->
 			entitySubscriptionEvent_EntityNotification_toJs(
 		obj,
@@ -43,6 +47,10 @@ public fun <E : IdentifiableJs<String>, E_KT : Identifiable<String>>
 			"com.icure.cardinal.sdk.subscription.EntitySubscriptionEvent.Reconnected" ->entitySubscriptionEvent_Reconnected_fromJs(obj
 			as com.icure.cardinal.sdk.js.subscription.EntitySubscriptionEventJs_ReconnectedJs) as
 			EntitySubscriptionEvent<E_KT>
+	obj is EntitySubscriptionEventJs_ClosedByClientJs || obj.ktClass ==
+			"com.icure.cardinal.sdk.subscription.EntitySubscriptionEvent.ClosedByClient" ->entitySubscriptionEvent_ClosedByClient_fromJs(obj
+			as com.icure.cardinal.sdk.js.subscription.EntitySubscriptionEventJs_ClosedByClientJs) as
+			EntitySubscriptionEvent<E_KT>
 	obj is EntitySubscriptionEventJs_UnexpectedErrorJs || obj.ktClass ==
 			"com.icure.cardinal.sdk.subscription.EntitySubscriptionEvent.UnexpectedError" ->entitySubscriptionEvent_UnexpectedError_fromJs(obj
 			as com.icure.cardinal.sdk.js.subscription.EntitySubscriptionEventJs_UnexpectedErrorJs) as
@@ -56,6 +64,11 @@ public fun <E : IdentifiableJs<String>, E_KT : Identifiable<String>>
 			"com.icure.cardinal.sdk.subscription.EntitySubscriptionEvent.ConnectionError.ClosedByServer" ->entitySubscriptionEvent_ConnectionError_ClosedByServer_fromJs(obj
 			as
 			com.icure.cardinal.sdk.js.subscription.EntitySubscriptionEventJs_ConnectionErrorJs_ClosedByServerJs)
+			as EntitySubscriptionEvent<E_KT>
+	obj is EntitySubscriptionEventJs_ConnectionErrorJs_ConnectionLostJs || obj.ktClass ==
+			"com.icure.cardinal.sdk.subscription.EntitySubscriptionEvent.ConnectionError.ConnectionLost" ->entitySubscriptionEvent_ConnectionError_ConnectionLost_fromJs(obj
+			as
+			com.icure.cardinal.sdk.js.subscription.EntitySubscriptionEventJs_ConnectionErrorJs_ConnectionLostJs)
 			as EntitySubscriptionEvent<E_KT>
 	obj is EntitySubscriptionEventJs_EntityNotificationJs<E> || obj.ktClass ==
 			"com.icure.cardinal.sdk.subscription.EntitySubscriptionEvent.EntityNotification" ->entitySubscriptionEvent_EntityNotification_fromJs(
@@ -86,6 +99,14 @@ public fun entitySubscriptionEvent_Reconnected_toJs(obj: EntitySubscriptionEvent
 
 public fun entitySubscriptionEvent_Reconnected_fromJs(obj: EntitySubscriptionEventJs_ReconnectedJs):
 		EntitySubscriptionEvent.Reconnected = EntitySubscriptionEvent.Reconnected
+
+@Suppress("UNUSED_VARIABLE")
+public fun entitySubscriptionEvent_ClosedByClient_toJs(obj: EntitySubscriptionEvent.ClosedByClient):
+		EntitySubscriptionEventJs_ClosedByClientJs = EntitySubscriptionEventJs_ClosedByClientJs
+
+public
+		fun entitySubscriptionEvent_ClosedByClient_fromJs(obj: EntitySubscriptionEventJs_ClosedByClientJs):
+		EntitySubscriptionEvent.ClosedByClient = EntitySubscriptionEvent.ClosedByClient
 
 @Suppress("UNUSED_VARIABLE")
 public
@@ -127,6 +148,17 @@ public
 		fun entitySubscriptionEvent_ConnectionError_ClosedByServer_fromJs(obj: EntitySubscriptionEventJs_ConnectionErrorJs_ClosedByServerJs):
 		EntitySubscriptionEvent.ConnectionError.ClosedByServer =
 		EntitySubscriptionEvent.ConnectionError.ClosedByServer
+
+@Suppress("UNUSED_VARIABLE")
+public
+		fun entitySubscriptionEvent_ConnectionError_ConnectionLost_toJs(obj: EntitySubscriptionEvent.ConnectionError.ConnectionLost):
+		EntitySubscriptionEventJs_ConnectionErrorJs_ConnectionLostJs =
+		EntitySubscriptionEventJs_ConnectionErrorJs_ConnectionLostJs
+
+public
+		fun entitySubscriptionEvent_ConnectionError_ConnectionLost_fromJs(obj: EntitySubscriptionEventJs_ConnectionErrorJs_ConnectionLostJs):
+		EntitySubscriptionEvent.ConnectionError.ConnectionLost =
+		EntitySubscriptionEvent.ConnectionError.ConnectionLost
 
 @Suppress("UNUSED_VARIABLE")
 public fun <E : Identifiable<String>, E_JS : IdentifiableJs<String>>

@@ -249,4 +249,39 @@ public object InternalCalendarItemFiltersObj {
 		)
 		return FilterOptionsJsImpl(result)
 	}
+
+	public fun lifecycleBetweenForDataOwner(
+		dataOwnerId: String,
+		startTimestamp: Double?,
+		endTimestamp: Double?,
+		descending: Boolean,
+	): BaseFilterOptionsJs<CalendarItemJs> {
+		val dataOwnerIdConverted: String = dataOwnerId
+		val startTimestampConverted: Long? = numberToLong(startTimestamp, "startTimestamp")
+		val endTimestampConverted: Long? = numberToLong(endTimestamp, "endTimestamp")
+		val descendingConverted: Boolean = descending
+		val result = CalendarItemFilters.lifecycleBetweenForDataOwner(
+			dataOwnerIdConverted,
+			startTimestampConverted,
+			endTimestampConverted,
+			descendingConverted,
+		)
+		return BaseFilterOptionsJsImpl(result)
+	}
+
+	public fun lifecycleBetweenForSelf(
+		startTimestamp: Double?,
+		endTimestamp: Double?,
+		descending: Boolean,
+	): FilterOptionsJs<CalendarItemJs> {
+		val startTimestampConverted: Long? = numberToLong(startTimestamp, "startTimestamp")
+		val endTimestampConverted: Long? = numberToLong(endTimestamp, "endTimestamp")
+		val descendingConverted: Boolean = descending
+		val result = CalendarItemFilters.lifecycleBetweenForSelf(
+			startTimestampConverted,
+			endTimestampConverted,
+			descendingConverted,
+		)
+		return FilterOptionsJsImpl(result)
+	}
 }

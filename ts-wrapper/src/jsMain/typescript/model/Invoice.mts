@@ -35,6 +35,8 @@ export interface Invoice extends StoredDocument, ICureDocument<string>, HasEncry
 
 	invoiceReference: string | undefined;
 
+	decisionReference: string | undefined;
+
 	thirdPartyReference: string | undefined;
 
 	thirdPartyPaymentJustification: string | undefined;
@@ -171,6 +173,8 @@ export class DecryptedInvoice {
 
 	invoiceReference: string | undefined = undefined;
 
+	decisionReference: string | undefined = undefined;
+
 	thirdPartyReference: string | undefined = undefined;
 
 	thirdPartyPaymentJustification: string | undefined = undefined;
@@ -298,6 +302,7 @@ export class DecryptedInvoice {
 		if ('recipientType' in partial) this.recipientType = partial.recipientType;
 		if ('recipientId' in partial) this.recipientId = partial.recipientId;
 		if ('invoiceReference' in partial) this.invoiceReference = partial.invoiceReference;
+		if ('decisionReference' in partial) this.decisionReference = partial.decisionReference;
 		if ('thirdPartyReference' in partial) this.thirdPartyReference = partial.thirdPartyReference;
 		if ('thirdPartyPaymentJustification' in partial) this.thirdPartyPaymentJustification = partial.thirdPartyPaymentJustification;
 		if ('thirdPartyPaymentReason' in partial) this.thirdPartyPaymentReason = partial.thirdPartyPaymentReason;
@@ -393,6 +398,8 @@ export class EncryptedInvoice {
 	recipientId: string | undefined = undefined;
 
 	invoiceReference: string | undefined = undefined;
+
+	decisionReference: string | undefined = undefined;
 
 	thirdPartyReference: string | undefined = undefined;
 
@@ -521,6 +528,7 @@ export class EncryptedInvoice {
 		if ('recipientType' in partial) this.recipientType = partial.recipientType;
 		if ('recipientId' in partial) this.recipientId = partial.recipientId;
 		if ('invoiceReference' in partial) this.invoiceReference = partial.invoiceReference;
+		if ('decisionReference' in partial) this.decisionReference = partial.decisionReference;
 		if ('thirdPartyReference' in partial) this.thirdPartyReference = partial.thirdPartyReference;
 		if ('thirdPartyPaymentJustification' in partial) this.thirdPartyPaymentJustification = partial.thirdPartyPaymentJustification;
 		if ('thirdPartyPaymentReason' in partial) this.thirdPartyPaymentReason = partial.thirdPartyPaymentReason;

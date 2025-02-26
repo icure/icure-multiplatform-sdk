@@ -6,6 +6,7 @@ import com.icure.cardinal.sdk.api.AgendaApi
 import com.icure.cardinal.sdk.api.ApplicationSettingsApi
 import com.icure.cardinal.sdk.api.CalendarItemApi
 import com.icure.cardinal.sdk.api.CalendarItemBasicApi
+import com.icure.cardinal.sdk.api.CalendarItemTypeApi
 import com.icure.cardinal.sdk.api.CardinalMaintenanceTaskApi
 import com.icure.cardinal.sdk.api.ClassificationApi
 import com.icure.cardinal.sdk.api.ClassificationBasicApi
@@ -58,6 +59,7 @@ interface CardinalNonCryptoApis {
 	// api root
 	val applicationSettings: ApplicationSettingsApi
 	val code: CodeApi
+	val calendarItemType: CalendarItemTypeApi
 	val device: DeviceApi
 	val documentTemplate: DocumentTemplateApi
 	val entityReference: EntityReferenceApi

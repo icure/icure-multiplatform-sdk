@@ -471,6 +471,14 @@ public fun patient_toJs(obj: DecryptedPatient): DecryptedPatientJs {
 			securityMetadata_toJs(nonNull1)
 		}
 	)
+	val cryptoActorProperties = nullToUndefined(
+		setToArray(
+			obj.cryptoActorProperties,
+			{ x1: DecryptedPropertyStub ->
+				propertyStub_toJs(x1)
+			},
+		)
+	)
 	val medicalLocationId = nullToUndefined(
 		obj.medicalLocationId
 	)
@@ -601,6 +609,7 @@ public fun patient_toJs(obj: DecryptedPatient): DecryptedPatientJs {
 		"encryptionKeys:encryptionKeys," +
 		"encryptedSelf:encryptedSelf," +
 		"securityMetadata:securityMetadata," +
+		"cryptoActorProperties:cryptoActorProperties," +
 		"medicalLocationId:medicalLocationId," +
 		"nonDuplicateIds:nonDuplicateIds," +
 		"encryptedAdministrativesDocuments:encryptedAdministrativesDocuments," +
@@ -930,6 +939,13 @@ public fun patient_fromJs(obj: DecryptedPatientJs): DecryptedPatient {
 	val securityMetadata = obj.securityMetadata?.let { nonNull1 ->
 		securityMetadata_fromJs(nonNull1)
 	}
+	val cryptoActorProperties = arrayToSet(
+		obj.cryptoActorProperties,
+		"obj.cryptoActorProperties",
+		{ x1: DecryptedPropertyStubJs ->
+			propertyStub_fromJs(x1)
+		},
+	)
 	val medicalLocationId = undefinedToNull(obj.medicalLocationId)
 	val nonDuplicateIds = arrayToSet(
 		obj.nonDuplicateIds,
@@ -1046,6 +1062,7 @@ public fun patient_fromJs(obj: DecryptedPatientJs): DecryptedPatient {
 		encryptionKeys = encryptionKeys,
 		encryptedSelf = encryptedSelf,
 		securityMetadata = securityMetadata,
+		cryptoActorProperties = cryptoActorProperties,
 		medicalLocationId = medicalLocationId,
 		nonDuplicateIds = nonDuplicateIds,
 		encryptedAdministrativesDocuments = encryptedAdministrativesDocuments,
@@ -1422,6 +1439,14 @@ public fun patient_toJs(obj: EncryptedPatient): EncryptedPatientJs {
 			securityMetadata_toJs(nonNull1)
 		}
 	)
+	val cryptoActorProperties = nullToUndefined(
+		setToArray(
+			obj.cryptoActorProperties,
+			{ x1: DecryptedPropertyStub ->
+				propertyStub_toJs(x1)
+			},
+		)
+	)
 	val medicalLocationId = nullToUndefined(
 		obj.medicalLocationId
 	)
@@ -1552,6 +1577,7 @@ public fun patient_toJs(obj: EncryptedPatient): EncryptedPatientJs {
 		"encryptionKeys:encryptionKeys," +
 		"encryptedSelf:encryptedSelf," +
 		"securityMetadata:securityMetadata," +
+		"cryptoActorProperties:cryptoActorProperties," +
 		"medicalLocationId:medicalLocationId," +
 		"nonDuplicateIds:nonDuplicateIds," +
 		"encryptedAdministrativesDocuments:encryptedAdministrativesDocuments," +
@@ -1881,6 +1907,13 @@ public fun patient_fromJs(obj: EncryptedPatientJs): EncryptedPatient {
 	val securityMetadata = obj.securityMetadata?.let { nonNull1 ->
 		securityMetadata_fromJs(nonNull1)
 	}
+	val cryptoActorProperties = arrayToSet(
+		obj.cryptoActorProperties,
+		"obj.cryptoActorProperties",
+		{ x1: DecryptedPropertyStubJs ->
+			propertyStub_fromJs(x1)
+		},
+	)
 	val medicalLocationId = undefinedToNull(obj.medicalLocationId)
 	val nonDuplicateIds = arrayToSet(
 		obj.nonDuplicateIds,
@@ -1997,6 +2030,7 @@ public fun patient_fromJs(obj: EncryptedPatientJs): EncryptedPatient {
 		encryptionKeys = encryptionKeys,
 		encryptedSelf = encryptedSelf,
 		securityMetadata = securityMetadata,
+		cryptoActorProperties = cryptoActorProperties,
 		medicalLocationId = medicalLocationId,
 		nonDuplicateIds = nonDuplicateIds,
 		encryptedAdministrativesDocuments = encryptedAdministrativesDocuments,

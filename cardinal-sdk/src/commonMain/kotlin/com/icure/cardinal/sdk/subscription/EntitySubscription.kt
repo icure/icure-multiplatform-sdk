@@ -1,6 +1,7 @@
 package com.icure.cardinal.sdk.subscription
 
 import com.icure.cardinal.sdk.model.base.Identifiable
+import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.channels.ReceiveChannel
 
 /**
