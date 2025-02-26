@@ -143,6 +143,7 @@ internal object AnyAbstractFilterSerializer :
 	@Suppress("UNCHECKED_CAST")
 	override fun getSerializerBySerialName(serialName: String): KSerializer<out AbstractFilter<*>>? =
 		when (serialName) {
+			"UnionFilter" -> UnionFilterSerializer(this as KSerializer<AbstractFilter<Identifiable<String>>>)
 			"ComplementFilter" ->
 				ComplementFilterSerializer(
 					this as
@@ -153,7 +154,6 @@ internal object AnyAbstractFilterSerializer :
 					this as
 						KSerializer<AbstractFilter<Identifiable<String>>>,
 				)
-			"UnionFilter" -> UnionFilterSerializer(this as KSerializer<AbstractFilter<Identifiable<String>>>)
 			else ->
 				AgendaAbstractFilterSerializer.getSerializerBySerialName(serialName)
 					?: CalendarItemAbstractFilterSerializer.getSerializerBySerialName(serialName)
@@ -180,6 +180,11 @@ internal object AnyAbstractFilterSerializer :
 	@Suppress("UNCHECKED_CAST")
 	override fun getSerializerByClass(kclass: KClass<out AbstractFilter<*>>): KSerializer<out AbstractFilter<*>>? =
 		when (kclass) {
+			UnionFilter::class ->
+				UnionFilterSerializer(
+					this as
+						KSerializer<AbstractFilter<Identifiable<String>>>,
+				)
 			ComplementFilter::class ->
 				ComplementFilterSerializer(
 					this as
@@ -187,11 +192,6 @@ internal object AnyAbstractFilterSerializer :
 				)
 			IntersectionFilter::class ->
 				IntersectionFilterSerializer(
-					this as
-						KSerializer<AbstractFilter<Identifiable<String>>>,
-				)
-			UnionFilter::class ->
-				UnionFilterSerializer(
 					this as
 						KSerializer<AbstractFilter<Identifiable<String>>>,
 				)
