@@ -100,6 +100,7 @@ import com.icure.cardinal.sdk.model.filter.message.MessageByHcPartyTransportGuid
 import com.icure.cardinal.sdk.model.filter.message.MessageByInvoiceIdsFilter
 import com.icure.cardinal.sdk.model.filter.message.MessageByParentIdsFilter
 import com.icure.cardinal.sdk.model.filter.patient.PatientByDataOwnerModifiedAfterFilter
+import com.icure.cardinal.sdk.model.filter.patient.PatientByDataOwnerTagFilter
 import com.icure.cardinal.sdk.model.filter.patient.PatientByHcPartyAndActiveFilter
 import com.icure.cardinal.sdk.model.filter.patient.PatientByHcPartyAndAddressFilter
 import com.icure.cardinal.sdk.model.filter.patient.PatientByHcPartyAndExternalIdFilter
@@ -133,6 +134,7 @@ import com.icure.cardinal.sdk.model.filter.user.UserByNameEmailPhoneFilter
 import com.icure.cardinal.sdk.model.filter.user.UsersByPatientIdFilter
 import com.icure.cardinal.sdk.utils.CustomJsonPolymorphicSerializer
 import kotlinx.serialization.KSerializer
+import org.taktik.icure.services.`external`.rest.v1.dto.PatientDto
 import kotlin.String
 import kotlin.Suppress
 import kotlin.reflect.KClass
@@ -142,7 +144,6 @@ internal object AnyAbstractFilterSerializer :
 	@Suppress("UNCHECKED_CAST")
 	override fun getSerializerBySerialName(serialName: String): KSerializer<out AbstractFilter<*>>? =
 		when (serialName) {
-			"UnionFilter" -> UnionFilterSerializer(this as KSerializer<AbstractFilter<Identifiable<String>>>)
 			"ComplementFilter" ->
 				ComplementFilterSerializer(
 					this as
@@ -153,6 +154,7 @@ internal object AnyAbstractFilterSerializer :
 					this as
 						KSerializer<AbstractFilter<Identifiable<String>>>,
 				)
+			"UnionFilter" -> UnionFilterSerializer(this as KSerializer<AbstractFilter<Identifiable<String>>>)
 			else ->
 				AgendaAbstractFilterSerializer.getSerializerBySerialName(serialName)
 					?: CalendarItemAbstractFilterSerializer.getSerializerBySerialName(serialName)
@@ -170,6 +172,7 @@ internal object AnyAbstractFilterSerializer :
 					?: MedicalLocationAbstractFilterSerializer.getSerializerBySerialName(serialName)
 					?: MessageAbstractFilterSerializer.getSerializerBySerialName(serialName)
 					?: PatientAbstractFilterSerializer.getSerializerBySerialName(serialName)
+					?: PatientDtoAbstractFilterSerializer.getSerializerBySerialName(serialName)
 					?: ServiceAbstractFilterSerializer.getSerializerBySerialName(serialName)
 					?: TimeTableAbstractFilterSerializer.getSerializerBySerialName(serialName)
 					?: TopicAbstractFilterSerializer.getSerializerBySerialName(serialName)
@@ -179,11 +182,6 @@ internal object AnyAbstractFilterSerializer :
 	@Suppress("UNCHECKED_CAST")
 	override fun getSerializerByClass(kclass: KClass<out AbstractFilter<*>>): KSerializer<out AbstractFilter<*>>? =
 		when (kclass) {
-			UnionFilter::class ->
-				UnionFilterSerializer(
-					this as
-						KSerializer<AbstractFilter<Identifiable<String>>>,
-				)
 			ComplementFilter::class ->
 				ComplementFilterSerializer(
 					this as
@@ -191,6 +189,11 @@ internal object AnyAbstractFilterSerializer :
 				)
 			IntersectionFilter::class ->
 				IntersectionFilterSerializer(
+					this as
+						KSerializer<AbstractFilter<Identifiable<String>>>,
+				)
+			UnionFilter::class ->
+				UnionFilterSerializer(
 					this as
 						KSerializer<AbstractFilter<Identifiable<String>>>,
 				)
@@ -252,6 +255,10 @@ internal object AnyAbstractFilterSerializer :
 					?: PatientAbstractFilterSerializer.getSerializerByClass(
 						kclass as
 							KClass<out AbstractFilter<Patient>>,
+					)
+					?: PatientDtoAbstractFilterSerializer.getSerializerByClass(
+						kclass as
+							KClass<out AbstractFilter<PatientDto>>,
 					)
 					?: ServiceAbstractFilterSerializer.getSerializerByClass(
 						kclass as
@@ -825,6 +832,30 @@ internal object PatientAbstractFilterSerializer :
 				PatientByHcPartyGenderEducationProfession.serializer()
 			PatientByHcPartyNameFilter::class -> PatientByHcPartyNameFilter.serializer()
 			PatientByIdsFilter::class -> PatientByIdsFilter.serializer()
+			else -> null
+		}
+}
+
+internal object PatientDtoAbstractFilterSerializer :
+	CustomJsonPolymorphicSerializer<AbstractFilter<PatientDto>>(
+		"${'$'}type",
+		"AbstractFilter<PatientDto>",
+	) {
+	override fun getSerializerBySerialName(serialName: String): KSerializer<out AbstractFilter<PatientDto>>? =
+		when (serialName) {
+			"ComplementFilter" -> ComplementFilterSerializer(this)
+			"IntersectionFilter" -> IntersectionFilterSerializer(this)
+			"UnionFilter" -> UnionFilterSerializer(this)
+			"PatientByDataOwnerTagFilter" -> PatientByDataOwnerTagFilter.serializer()
+			else -> null
+		}
+
+	override fun getSerializerByClass(kclass: KClass<out AbstractFilter<PatientDto>>): KSerializer<out AbstractFilter<PatientDto>>? =
+		when (kclass) {
+			ComplementFilter::class -> ComplementFilterSerializer(this)
+			IntersectionFilter::class -> IntersectionFilterSerializer(this)
+			UnionFilter::class -> UnionFilterSerializer(this)
+			PatientByDataOwnerTagFilter::class -> PatientByDataOwnerTagFilter.serializer()
 			else -> null
 		}
 }
