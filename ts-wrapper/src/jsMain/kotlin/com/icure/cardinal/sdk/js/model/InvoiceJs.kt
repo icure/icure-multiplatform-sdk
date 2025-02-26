@@ -42,6 +42,8 @@ public sealed external interface InvoiceJs : StoredDocumentJs, ICureDocumentJs<S
 
 	public val invoiceReference: String?
 
+	public val decisionReference: String?
+
 	public val thirdPartyReference: String?
 
 	public val thirdPartyPaymentJustification: String?
@@ -178,6 +180,8 @@ public external class DecryptedInvoiceJs(
 	override val recipientId: String?
 
 	override val invoiceReference: String?
+
+	override val decisionReference: String?
 
 	override val thirdPartyReference: String?
 
@@ -327,6 +331,8 @@ public external class EncryptedInvoiceJs(
 	override val recipientId: String?
 
 	override val invoiceReference: String?
+
+	override val decisionReference: String?
 
 	override val thirdPartyReference: String?
 

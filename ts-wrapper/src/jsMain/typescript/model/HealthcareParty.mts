@@ -120,6 +120,8 @@ export class HealthcareParty implements StoredDocument, Named, Person, CryptoAct
 
 	properties: Array<DecryptedPropertyStub> = [];
 
+	cryptoActorProperties: Array<DecryptedPropertyStub> | undefined = undefined;
+
 	hcPartyKeys: { [ key: string ]: Array<HexString> } = {};
 
 	aesExchangeKeys: { [ key: string ]: { [ key: string ]: { [ key: string ]: HexString } } } = {};
@@ -183,6 +185,7 @@ export class HealthcareParty implements StoredDocument, Named, Person, CryptoAct
 		if ('importedData' in partial && partial.importedData !== undefined) this.importedData = partial.importedData;
 		if ('options' in partial && partial.options !== undefined) this.options = partial.options;
 		if ('properties' in partial && partial.properties !== undefined) this.properties = partial.properties;
+		if ('cryptoActorProperties' in partial) this.cryptoActorProperties = partial.cryptoActorProperties;
 		if ('hcPartyKeys' in partial && partial.hcPartyKeys !== undefined) this.hcPartyKeys = partial.hcPartyKeys;
 		if ('aesExchangeKeys' in partial && partial.aesExchangeKeys !== undefined) this.aesExchangeKeys = partial.aesExchangeKeys;
 		if ('transferKeys' in partial && partial.transferKeys !== undefined) this.transferKeys = partial.transferKeys;

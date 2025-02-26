@@ -106,6 +106,9 @@ public fun invoicingCode_toJs(obj: DecryptedInvoicingCode): DecryptedInvoicingCo
 	val prescriberNorm = nullToUndefined(
 		intToNumber(obj.prescriberNorm)
 	)
+	val productLabel = nullToUndefined(
+		obj.productLabel
+	)
 	val percentNorm = nullToUndefined(
 		intToNumber(obj.percentNorm)
 	)
@@ -207,6 +210,7 @@ public fun invoicingCode_toJs(obj: DecryptedInvoicingCode): DecryptedInvoicingCo
 		"override3rdPayerReason:override3rdPayerReason," +
 		"transplantationCode:transplantationCode," +
 		"prescriberNorm:prescriberNorm," +
+		"productLabel:productLabel," +
 		"percentNorm:percentNorm," +
 		"prescriberNihii:prescriberNihii," +
 		"relatedCode:relatedCode," +
@@ -265,6 +269,7 @@ public fun invoicingCode_fromJs(obj: DecryptedInvoicingCodeJs): DecryptedInvoici
 	val override3rdPayerReason = undefinedToNull(obj.override3rdPayerReason)
 	val transplantationCode = numberToInt(obj.transplantationCode, "obj.transplantationCode")
 	val prescriberNorm = numberToInt(obj.prescriberNorm, "obj.prescriberNorm")
+	val productLabel = undefinedToNull(obj.productLabel)
 	val percentNorm = numberToInt(obj.percentNorm, "obj.percentNorm")
 	val prescriberNihii = undefinedToNull(obj.prescriberNihii)
 	val relatedCode = undefinedToNull(obj.relatedCode)
@@ -321,6 +326,7 @@ public fun invoicingCode_fromJs(obj: DecryptedInvoicingCodeJs): DecryptedInvoici
 		override3rdPayerReason = override3rdPayerReason,
 		transplantationCode = transplantationCode,
 		prescriberNorm = prescriberNorm,
+		productLabel = productLabel,
 		percentNorm = percentNorm,
 		prescriberNihii = prescriberNihii,
 		relatedCode = relatedCode,
@@ -438,6 +444,9 @@ public fun invoicingCode_toJs(obj: EncryptedInvoicingCode): EncryptedInvoicingCo
 	val prescriberNorm = nullToUndefined(
 		intToNumber(obj.prescriberNorm)
 	)
+	val productLabel = nullToUndefined(
+		obj.productLabel
+	)
 	val percentNorm = nullToUndefined(
 		intToNumber(obj.percentNorm)
 	)
@@ -539,6 +548,7 @@ public fun invoicingCode_toJs(obj: EncryptedInvoicingCode): EncryptedInvoicingCo
 		"override3rdPayerReason:override3rdPayerReason," +
 		"transplantationCode:transplantationCode," +
 		"prescriberNorm:prescriberNorm," +
+		"productLabel:productLabel," +
 		"percentNorm:percentNorm," +
 		"prescriberNihii:prescriberNihii," +
 		"relatedCode:relatedCode," +
@@ -597,6 +607,7 @@ public fun invoicingCode_fromJs(obj: EncryptedInvoicingCodeJs): EncryptedInvoici
 	val override3rdPayerReason = undefinedToNull(obj.override3rdPayerReason)
 	val transplantationCode = numberToInt(obj.transplantationCode, "obj.transplantationCode")
 	val prescriberNorm = numberToInt(obj.prescriberNorm, "obj.prescriberNorm")
+	val productLabel = undefinedToNull(obj.productLabel)
 	val percentNorm = numberToInt(obj.percentNorm, "obj.percentNorm")
 	val prescriberNihii = undefinedToNull(obj.prescriberNihii)
 	val relatedCode = undefinedToNull(obj.relatedCode)
@@ -653,6 +664,7 @@ public fun invoicingCode_fromJs(obj: EncryptedInvoicingCodeJs): EncryptedInvoici
 		override3rdPayerReason = override3rdPayerReason,
 		transplantationCode = transplantationCode,
 		prescriberNorm = prescriberNorm,
+		productLabel = productLabel,
 		percentNorm = percentNorm,
 		prescriberNihii = prescriberNihii,
 		relatedCode = relatedCode,

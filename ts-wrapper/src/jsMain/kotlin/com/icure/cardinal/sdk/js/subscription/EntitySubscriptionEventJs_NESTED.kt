@@ -20,6 +20,12 @@ public external object EntitySubscriptionEventJs_ReconnectedJs : EntitySubscript
 	override val ktClass: String
 }
 
+@JsName("ClosedByClient")
+public external object EntitySubscriptionEventJs_ClosedByClientJs :
+		EntitySubscriptionEventJs<Nothing> {
+	override val ktClass: String
+}
+
 @JsName("UnexpectedError")
 public external class EntitySubscriptionEventJs_UnexpectedErrorJs(
 	partial: dynamic,

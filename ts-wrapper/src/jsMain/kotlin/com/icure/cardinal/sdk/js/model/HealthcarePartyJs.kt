@@ -125,6 +125,8 @@ public external class HealthcarePartyJs(
 
 	override val properties: Array<DecryptedPropertyStubJs>
 
+	override val cryptoActorProperties: Array<DecryptedPropertyStubJs>?
+
 	override val hcPartyKeys: Record<String, Array<String>>
 
 	override val aesExchangeKeys: Record<String, Record<String, Record<String, String>>>

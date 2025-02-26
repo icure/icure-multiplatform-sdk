@@ -191,6 +191,14 @@ public fun device_toJs(obj: Device): DeviceJs {
 			spkiHexString_toJs(x1)
 		},
 	)
+	val cryptoActorProperties = nullToUndefined(
+		setToArray(
+			obj.cryptoActorProperties,
+			{ x1: DecryptedPropertyStub ->
+				propertyStub_toJs(x1)
+			},
+		)
+	)
 	return DeviceJs(js("{" +
 		"id:id," +
 		"rev:rev," +
@@ -218,7 +226,8 @@ public fun device_toJs(obj: Device): DeviceJs {
 		"transferKeys:transferKeys," +
 		"privateKeyShamirPartitions:privateKeyShamirPartitions," +
 		"publicKey:publicKey," +
-		"publicKeysForOaepWithSha256:publicKeysForOaepWithSha256" +
+		"publicKeysForOaepWithSha256:publicKeysForOaepWithSha256," +
+		"cryptoActorProperties:cryptoActorProperties" +
 	"}"))
 }
 
@@ -351,6 +360,13 @@ public fun device_fromJs(obj: DeviceJs): Device {
 			spkiHexString_fromJs(x1)
 		},
 	)
+	val cryptoActorProperties = arrayToSet(
+		obj.cryptoActorProperties,
+		"obj.cryptoActorProperties",
+		{ x1: DecryptedPropertyStubJs ->
+			propertyStub_fromJs(x1)
+		},
+	)
 	return Device(
 		id = id,
 		rev = rev,
@@ -379,5 +395,6 @@ public fun device_fromJs(obj: DeviceJs): Device {
 		privateKeyShamirPartitions = privateKeyShamirPartitions,
 		publicKey = publicKey,
 		publicKeysForOaepWithSha256 = publicKeysForOaepWithSha256,
+		cryptoActorProperties = cryptoActorProperties,
 	)
 }

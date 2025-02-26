@@ -64,6 +64,8 @@ export interface InvoicingCode extends Encryptable {
 
 	prescriberNorm: number | undefined;
 
+	productLabel: string | undefined;
+
 	percentNorm: number | undefined;
 
 	prescriberNihii: string | undefined;
@@ -172,6 +174,8 @@ export class DecryptedInvoicingCode {
 
 	prescriberNorm: number | undefined = undefined;
 
+	productLabel: string | undefined = undefined;
+
 	percentNorm: number | undefined = undefined;
 
 	prescriberNihii: string | undefined = undefined;
@@ -251,6 +255,7 @@ export class DecryptedInvoicingCode {
 		if ('override3rdPayerReason' in partial) this.override3rdPayerReason = partial.override3rdPayerReason;
 		if ('transplantationCode' in partial) this.transplantationCode = partial.transplantationCode;
 		if ('prescriberNorm' in partial) this.prescriberNorm = partial.prescriberNorm;
+		if ('productLabel' in partial) this.productLabel = partial.productLabel;
 		if ('percentNorm' in partial) this.percentNorm = partial.percentNorm;
 		if ('prescriberNihii' in partial) this.prescriberNihii = partial.prescriberNihii;
 		if ('relatedCode' in partial) this.relatedCode = partial.relatedCode;
@@ -338,6 +343,8 @@ export class EncryptedInvoicingCode {
 
 	prescriberNorm: number | undefined = undefined;
 
+	productLabel: string | undefined = undefined;
+
 	percentNorm: number | undefined = undefined;
 
 	prescriberNihii: string | undefined = undefined;
@@ -417,6 +424,7 @@ export class EncryptedInvoicingCode {
 		if ('override3rdPayerReason' in partial) this.override3rdPayerReason = partial.override3rdPayerReason;
 		if ('transplantationCode' in partial) this.transplantationCode = partial.transplantationCode;
 		if ('prescriberNorm' in partial) this.prescriberNorm = partial.prescriberNorm;
+		if ('productLabel' in partial) this.productLabel = partial.productLabel;
 		if ('percentNorm' in partial) this.percentNorm = partial.percentNorm;
 		if ('prescriberNihii' in partial) this.prescriberNihii = partial.prescriberNihii;
 		if ('relatedCode' in partial) this.relatedCode = partial.relatedCode;

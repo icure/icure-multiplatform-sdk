@@ -271,6 +271,8 @@ export class DecryptedPatient {
 
 	securityMetadata: SecurityMetadata | undefined = undefined;
 
+	cryptoActorProperties: Array<DecryptedPropertyStub> | undefined = undefined;
+
 	medicalLocationId: string | undefined = undefined;
 
 	nonDuplicateIds: Array<string> = [];
@@ -371,6 +373,7 @@ export class DecryptedPatient {
 		if ('encryptionKeys' in partial && partial.encryptionKeys !== undefined) this.encryptionKeys = partial.encryptionKeys;
 		if ('encryptedSelf' in partial) this.encryptedSelf = partial.encryptedSelf;
 		if ('securityMetadata' in partial) this.securityMetadata = partial.securityMetadata;
+		if ('cryptoActorProperties' in partial) this.cryptoActorProperties = partial.cryptoActorProperties;
 		if ('medicalLocationId' in partial) this.medicalLocationId = partial.medicalLocationId;
 		if ('nonDuplicateIds' in partial && partial.nonDuplicateIds !== undefined) this.nonDuplicateIds = partial.nonDuplicateIds;
 		if ('encryptedAdministrativesDocuments' in partial && partial.encryptedAdministrativesDocuments !== undefined) this.encryptedAdministrativesDocuments = partial.encryptedAdministrativesDocuments;
@@ -526,6 +529,8 @@ export class EncryptedPatient {
 
 	securityMetadata: SecurityMetadata | undefined = undefined;
 
+	cryptoActorProperties: Array<DecryptedPropertyStub> | undefined = undefined;
+
 	medicalLocationId: string | undefined = undefined;
 
 	nonDuplicateIds: Array<string> = [];
@@ -626,6 +631,7 @@ export class EncryptedPatient {
 		if ('encryptionKeys' in partial && partial.encryptionKeys !== undefined) this.encryptionKeys = partial.encryptionKeys;
 		if ('encryptedSelf' in partial) this.encryptedSelf = partial.encryptedSelf;
 		if ('securityMetadata' in partial) this.securityMetadata = partial.securityMetadata;
+		if ('cryptoActorProperties' in partial) this.cryptoActorProperties = partial.cryptoActorProperties;
 		if ('medicalLocationId' in partial) this.medicalLocationId = partial.medicalLocationId;
 		if ('nonDuplicateIds' in partial && partial.nonDuplicateIds !== undefined) this.nonDuplicateIds = partial.nonDuplicateIds;
 		if ('encryptedAdministrativesDocuments' in partial && partial.encryptedAdministrativesDocuments !== undefined) this.encryptedAdministrativesDocuments = partial.encryptedAdministrativesDocuments;
