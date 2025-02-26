@@ -282,20 +282,20 @@ internal class CalendarItemApiImpl(
 
 	override suspend fun withEncryptionMetadata(
 		base: DecryptedCalendarItem?,
-		patient: Patient,
+		patient: Patient?,
 		user: User?,
 		delegates: Map<String, AccessLevel>,
 		secretId: SecretIdUseOption,
 	) =
 		crypto.entity.entityWithInitializedEncryptedMetadata(
-			(base ?: DecryptedCalendarItem(crypto.primitives.strongRandom.randomUUID())).copy(
+			entity = (base ?: DecryptedCalendarItem(crypto.primitives.strongRandom.randomUUID())).copy(
 				created = base?.created ?: currentEpochMs(),
 				modified = base?.modified ?: currentEpochMs(),
 				responsible = base?.responsible ?: user?.takeIf { config.autofillAuthor }?.dataOwnerId,
 				author = base?.author ?: user?.id?.takeIf { config.autofillAuthor },
 			).withTypeInfo(),
-			patient.id,
-			crypto.entity.resolveSecretIdOption(patient.withTypeInfo(), secretId),
+			owningEntityId = patient?.id,
+			owningEntitySecretId = patient?.let { crypto.entity.resolveSecretIdOption(it.withTypeInfo(), secretId) },
 			initializeEncryptionKey = true,
 			autoDelegations = delegates + user?.autoDelegationsFor(DelegationTag.MedicalInformation).orEmpty(),
 		).updatedEntity
