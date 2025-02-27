@@ -30,7 +30,10 @@ jobs:
                   ORG_GRADLE_PROJECT_repoUsername: ${{ secrets.REPO_USERNAME }}
                   ORG_GRADLE_PROJECT_repoPassword: ${{ secrets.REPO_PASSWORD }}
                   ORG_GRADLE_PROJECT_mavenReleasesRepository: ""
-              run: ./gradlew generateLicenseReport -x build
+              run: |
+                echo githubUsername= > local.properties
+                echo githubPassword= >> local.properties
+                ./gradlew generateLicenseReport -x build
 
             - name: Copy, rename, and remove header
               run: tail -n +2 ./build/reports/dependency-license/licenses.csv > ./${{ github.event.repository.name }}.csv
