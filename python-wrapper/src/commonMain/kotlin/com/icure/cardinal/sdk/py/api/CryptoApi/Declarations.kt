@@ -6,7 +6,7 @@ import com.icure.cardinal.sdk.model.specializations.KeypairFingerprintV1String
 import com.icure.cardinal.sdk.py.utils.failureToPyStringAsyncCallback
 import com.icure.cardinal.sdk.py.utils.toPyString
 import com.icure.cardinal.sdk.py.utils.toPyStringAsyncCallback
-import com.icure.cardinal.sdk.serialization.ByteArraySerializer
+import com.icure.cardinal.sdk.serialization.Pkcs8BytesAsBase64Serializer
 import com.icure.cardinal.sdk.utils.Serialization.fullLanguageInteropJson
 import com.icure.utils.InternalIcureApi
 import kotlin.Boolean
@@ -59,7 +59,7 @@ public fun currentDataOwnerKeysBlocking(sdk: CardinalApis, params: String): Stri
 		)
 	}
 }.toPyString(MapSerializer(String.serializer(),
-		MapSerializer(KeypairFingerprintV1String.serializer(), ByteArraySerializer)))
+		MapSerializer(KeypairFingerprintV1String.serializer(), Pkcs8BytesAsBase64Serializer)))
 
 @OptIn(
 	ExperimentalForeignApi::class,
@@ -78,6 +78,7 @@ public fun currentDataOwnerKeysAsync(
 				decodedParams.filterTrustedKeys,
 			)
 		}.toPyStringAsyncCallback(MapSerializer(String.serializer(),
-				MapSerializer(KeypairFingerprintV1String.serializer(), ByteArraySerializer)), resultCallback)
+				MapSerializer(KeypairFingerprintV1String.serializer(), Pkcs8BytesAsBase64Serializer)),
+				resultCallback)
 	}
 }.failureToPyStringAsyncCallback(resultCallback)

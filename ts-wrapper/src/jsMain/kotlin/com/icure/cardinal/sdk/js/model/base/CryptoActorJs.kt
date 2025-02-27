@@ -3,6 +3,7 @@
 
 package com.icure.cardinal.sdk.js.model.base
 
+import com.icure.cardinal.sdk.js.model.DecryptedPropertyStubJs
 import com.icure.cardinal.sdk.js.utils.Record
 import kotlin.Array
 import kotlin.String
@@ -24,6 +25,8 @@ public external interface CryptoActorJs : VersionableJs<String>, HasTagsJs {
 	public val publicKeysForOaepWithSha256: Array<out String>
 
 	public val parentId: String?
+
+	public val cryptoActorProperties: Array<out DecryptedPropertyStubJs>?
 
 	@JsName("${'$'}ktClass")
 	public val ktClass: String

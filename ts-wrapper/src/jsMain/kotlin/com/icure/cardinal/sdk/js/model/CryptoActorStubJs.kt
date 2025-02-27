@@ -37,5 +37,7 @@ public external class CryptoActorStubJs(
 
 	override val parentId: String?
 
+	override val cryptoActorProperties: Array<DecryptedPropertyStubJs>?
+
 	override val ktClass: String
 }

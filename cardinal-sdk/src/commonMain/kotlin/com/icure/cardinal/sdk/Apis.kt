@@ -59,7 +59,7 @@ interface CardinalNonCryptoApis {
 	// api root
 	val applicationSettings: ApplicationSettingsApi
 	val code: CodeApi
-	val calendarItemTypeApi: CalendarItemTypeApi
+	val calendarItemType: CalendarItemTypeApi
 	val device: DeviceApi
 	val documentTemplate: DocumentTemplateApi
 	val entityReference: EntityReferenceApi

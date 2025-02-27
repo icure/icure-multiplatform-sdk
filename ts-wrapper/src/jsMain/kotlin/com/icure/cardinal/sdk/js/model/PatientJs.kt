@@ -290,6 +290,8 @@ public external class DecryptedPatientJs(
 
 	override val securityMetadata: SecurityMetadataJs?
 
+	override val cryptoActorProperties: Array<DecryptedPropertyStubJs>?
+
 	override val medicalLocationId: String?
 
 	override val nonDuplicateIds: Array<String>
@@ -460,6 +462,8 @@ public external class EncryptedPatientJs(
 	override val encryptedSelf: String?
 
 	override val securityMetadata: SecurityMetadataJs?
+
+	override val cryptoActorProperties: Array<DecryptedPropertyStubJs>?
 
 	override val medicalLocationId: String?
 

@@ -18,3 +18,9 @@ public external object EntitySubscriptionEventJs_ConnectionErrorJs_ClosedByServe
 		EntitySubscriptionEventJs_ConnectionErrorJs {
 	override val ktClass: String
 }
+
+@JsName("ConnectionLost")
+public external object EntitySubscriptionEventJs_ConnectionErrorJs_ConnectionLostJs :
+		EntitySubscriptionEventJs_ConnectionErrorJs {
+	override val ktClass: String
+}

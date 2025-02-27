@@ -10,7 +10,7 @@ import com.icure.cardinal.sdk.crypto.entities.DecryptionResult
 import com.icure.cardinal.sdk.crypto.entities.RsaDecryptionKeysSet
 import com.icure.cardinal.sdk.model.CryptoActorStubWithType
 import com.icure.cardinal.sdk.model.DataOwnerType
-import com.icure.cardinal.sdk.model.extensions.toStub
+import com.icure.cardinal.sdk.model.extensions.asStub
 import com.icure.cardinal.sdk.model.specializations.AesExchangeKeyEncryptionKeypairIdentifier
 import com.icure.cardinal.sdk.model.specializations.AesExchangeKeyEntryKeyString
 import com.icure.cardinal.sdk.model.specializations.HexString
@@ -47,7 +47,7 @@ class BaseExchangeKeysManagerImpl(
 		newDataOwnerPublicKey: SpkiHexString,
 		keyPairsByFingerprint: RsaDecryptionKeysSet
 	) {
-		val self = dataOwnerApi.getCurrentDataOwner().toStub()
+		val self = dataOwnerApi.getCurrentDataOwner().asStub()
 		val other = dataOwnerApi.getCryptoActorStub(otherDataOwner)
 		val importedKey = cryptoService.loadEncryptionKeyForDataOwner(other.stub, newDataOwnerPublicKey)
 		extendForGiveAccessBack(self, other, newDataOwnerPublicKey.fingerprintV1(), importedKey, keyPairsByFingerprint)

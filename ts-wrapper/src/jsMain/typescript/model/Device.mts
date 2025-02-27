@@ -68,6 +68,8 @@ export class Device implements StoredDocument, ICureDocument<string>, Named, Cry
 
 	publicKeysForOaepWithSha256: Array<SpkiHexString> = [];
 
+	cryptoActorProperties: Array<DecryptedPropertyStub> | undefined = undefined;
+
 	readonly $ktClass: 'com.icure.cardinal.sdk.model.Device' = 'com.icure.cardinal.sdk.model.Device';
 
 	constructor(partial: Partial<Device>) {
@@ -98,6 +100,7 @@ export class Device implements StoredDocument, ICureDocument<string>, Named, Cry
 		if ('privateKeyShamirPartitions' in partial && partial.privateKeyShamirPartitions !== undefined) this.privateKeyShamirPartitions = partial.privateKeyShamirPartitions;
 		if ('publicKey' in partial) this.publicKey = partial.publicKey;
 		if ('publicKeysForOaepWithSha256' in partial && partial.publicKeysForOaepWithSha256 !== undefined) this.publicKeysForOaepWithSha256 = partial.publicKeysForOaepWithSha256;
+		if ('cryptoActorProperties' in partial) this.cryptoActorProperties = partial.cryptoActorProperties;
 	}
 
 }

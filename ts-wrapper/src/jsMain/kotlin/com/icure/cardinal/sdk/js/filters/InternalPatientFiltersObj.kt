@@ -339,4 +339,30 @@ public object InternalPatientFiltersObj {
 		)
 		return SortableFilterOptionsJsImpl(result)
 	}
+
+	public fun byTagCodeForSelf(tagType: String, tagCode: String?): FilterOptionsJs<PatientJs> {
+		val tagTypeConverted: String = tagType
+		val tagCodeConverted: String? = undefinedToNull(tagCode)
+		val result = PatientFilters.byTagCodeForSelf(
+			tagTypeConverted,
+			tagCodeConverted,
+		)
+		return FilterOptionsJsImpl(result)
+	}
+
+	public fun byTagCodeForDataOwner(
+		dataOwnerId: String,
+		tagType: String,
+		tagCode: String?,
+	): BaseFilterOptionsJs<PatientJs> {
+		val dataOwnerIdConverted: String = dataOwnerId
+		val tagTypeConverted: String = tagType
+		val tagCodeConverted: String? = undefinedToNull(tagCode)
+		val result = PatientFilters.byTagCodeForDataOwner(
+			dataOwnerIdConverted,
+			tagTypeConverted,
+			tagCodeConverted,
+		)
+		return BaseFilterOptionsJsImpl(result)
+	}
 }

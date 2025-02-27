@@ -8,8 +8,8 @@ plugins {
 	androidLibrary()
 	id("maven-publish")
 	signing
-	id("com.vanniktech.maven.publish") version "0.28.0"
-	id("com.google.devtools.ksp") version "2.0.21-1.0.25"
+	id("com.vanniktech.maven.publish") version "0.29.0"
+	id("com.google.devtools.ksp") version "2.1.20-RC-1.0.30"
 }
 
 val repoUsername: String by project
@@ -18,7 +18,7 @@ val mavenReleasesRepository: String by project
 
 group = "com.icure"
 
-val version = "1.2.0"
+val version = "1.2.1-SNAPSHOT-4"
 project.version = version
 
 kotlin {
@@ -148,8 +148,8 @@ tasks.named("jvmTest") {
 }
 
 
-tasks.named("jsNodeDevelopmentRun") { dependsOn("jsProductionExecutableCompileSync") }
-tasks.named("jsNodeProductionRun") { dependsOn("jsProductionExecutableCompileSync") }
+//tasks.named("jsNodeDevelopmentRun") { dependsOn("jsProductionExecutableCompileSync") }
+//tasks.named("jsNodeProductionRun") { dependsOn("jsProductionExecutableCompileSync") }
 
 fun projectHasSignatureProperties() =
 	project.hasProperty("signing.keyId") && project.hasProperty("signing.secretKeyRingFile") && project.hasProperty("signing.password")

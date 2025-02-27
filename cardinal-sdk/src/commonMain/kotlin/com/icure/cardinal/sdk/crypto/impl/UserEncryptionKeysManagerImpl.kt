@@ -15,7 +15,7 @@ import com.icure.cardinal.sdk.model.CryptoActorStub
 import com.icure.cardinal.sdk.model.DataOwnerWithType
 import com.icure.cardinal.sdk.model.extensions.publicKeysWithSha1Spki
 import com.icure.cardinal.sdk.model.extensions.publicKeysWithSha256Spki
-import com.icure.cardinal.sdk.model.extensions.toStub
+import com.icure.cardinal.sdk.model.extensions.asStub
 import com.icure.cardinal.sdk.model.specializations.KeypairFingerprintV2String
 import com.icure.cardinal.sdk.model.specializations.SpkiHexString
 import com.icure.cardinal.sdk.storage.CardinalStorageFacade
@@ -263,7 +263,7 @@ private class KeyLoader(
 					throw IllegalStateException("No verified key available for the current data owner and crypto strategies do not allow for the creation of a new key. Aborting api initialisation")
 			}
 			val newKeySpki = cryptoService.rsa.exportSpkiHex(newKey.public)
-			val selfWithNewKey = selfInfo.toStub().let {
+			val selfWithNewKey = selfInfo.asStub().let {
 				it.copy(stub = it.stub.copy(publicKeysForOaepWithSha256 = it.stub.publicKeysForOaepWithSha256 + newKeySpki))
 			}
 			dataOwnerApi.modifyDataOwnerStub(selfWithNewKey)

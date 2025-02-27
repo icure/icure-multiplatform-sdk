@@ -121,6 +121,9 @@ public fun invoice_toJs(obj: DecryptedInvoice): DecryptedInvoiceJs {
 	val invoiceReference = nullToUndefined(
 		obj.invoiceReference
 	)
+	val decisionReference = nullToUndefined(
+		obj.decisionReference
+	)
 	val thirdPartyReference = nullToUndefined(
 		obj.thirdPartyReference
 	)
@@ -358,6 +361,7 @@ public fun invoice_toJs(obj: DecryptedInvoice): DecryptedInvoiceJs {
 		"recipientType:recipientType," +
 		"recipientId:recipientId," +
 		"invoiceReference:invoiceReference," +
+		"decisionReference:decisionReference," +
 		"thirdPartyReference:thirdPartyReference," +
 		"thirdPartyPaymentJustification:thirdPartyPaymentJustification," +
 		"thirdPartyPaymentReason:thirdPartyPaymentReason," +
@@ -460,6 +464,7 @@ public fun invoice_fromJs(obj: DecryptedInvoiceJs): DecryptedInvoice {
 	val recipientType = undefinedToNull(obj.recipientType)
 	val recipientId = undefinedToNull(obj.recipientId)
 	val invoiceReference = undefinedToNull(obj.invoiceReference)
+	val decisionReference = undefinedToNull(obj.decisionReference)
 	val thirdPartyReference = undefinedToNull(obj.thirdPartyReference)
 	val thirdPartyPaymentJustification = undefinedToNull(obj.thirdPartyPaymentJustification)
 	val thirdPartyPaymentReason = undefinedToNull(obj.thirdPartyPaymentReason)
@@ -612,6 +617,7 @@ public fun invoice_fromJs(obj: DecryptedInvoiceJs): DecryptedInvoice {
 		recipientType = recipientType,
 		recipientId = recipientId,
 		invoiceReference = invoiceReference,
+		decisionReference = decisionReference,
 		thirdPartyReference = thirdPartyReference,
 		thirdPartyPaymentJustification = thirdPartyPaymentJustification,
 		thirdPartyPaymentReason = thirdPartyPaymentReason,
@@ -738,6 +744,9 @@ public fun invoice_toJs(obj: EncryptedInvoice): EncryptedInvoiceJs {
 	)
 	val invoiceReference = nullToUndefined(
 		obj.invoiceReference
+	)
+	val decisionReference = nullToUndefined(
+		obj.decisionReference
 	)
 	val thirdPartyReference = nullToUndefined(
 		obj.thirdPartyReference
@@ -976,6 +985,7 @@ public fun invoice_toJs(obj: EncryptedInvoice): EncryptedInvoiceJs {
 		"recipientType:recipientType," +
 		"recipientId:recipientId," +
 		"invoiceReference:invoiceReference," +
+		"decisionReference:decisionReference," +
 		"thirdPartyReference:thirdPartyReference," +
 		"thirdPartyPaymentJustification:thirdPartyPaymentJustification," +
 		"thirdPartyPaymentReason:thirdPartyPaymentReason," +
@@ -1078,6 +1088,7 @@ public fun invoice_fromJs(obj: EncryptedInvoiceJs): EncryptedInvoice {
 	val recipientType = undefinedToNull(obj.recipientType)
 	val recipientId = undefinedToNull(obj.recipientId)
 	val invoiceReference = undefinedToNull(obj.invoiceReference)
+	val decisionReference = undefinedToNull(obj.decisionReference)
 	val thirdPartyReference = undefinedToNull(obj.thirdPartyReference)
 	val thirdPartyPaymentJustification = undefinedToNull(obj.thirdPartyPaymentJustification)
 	val thirdPartyPaymentReason = undefinedToNull(obj.thirdPartyPaymentReason)
@@ -1230,6 +1241,7 @@ public fun invoice_fromJs(obj: EncryptedInvoiceJs): EncryptedInvoice {
 		recipientType = recipientType,
 		recipientId = recipientId,
 		invoiceReference = invoiceReference,
+		decisionReference = decisionReference,
 		thirdPartyReference = thirdPartyReference,
 		thirdPartyPaymentJustification = thirdPartyPaymentJustification,
 		thirdPartyPaymentReason = thirdPartyPaymentReason,

@@ -157,3 +157,40 @@ class CalendarItemFilters:
 		else:
 			return_value = FilterOptions(result_info.success)
 			return return_value
+
+	@classmethod
+	def lifecycle_between_for_data_owner(cls, data_owner_id: str, start_timestamp: Optional[int], end_timestamp: Optional[int], descending: bool) -> BaseFilterOptions[CalendarItem]:
+		payload = {
+			"dataOwnerId": data_owner_id,
+			"startTimestamp": start_timestamp,
+			"endTimestamp": end_timestamp,
+			"descending": descending,
+		}
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.CalendarItemFilters.lifecycleBetweenForDataOwner(
+			json.dumps(payload).encode('utf-8')
+		)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
+		if result_info.failure is not None:
+			raise interpret_kt_error(result_info.failure)
+		else:
+			return_value = BaseFilterOptions(result_info.success)
+			return return_value
+
+	@classmethod
+	def lifecycle_between_for_self(cls, start_timestamp: Optional[int], end_timestamp: Optional[int], descending: bool) -> FilterOptions[CalendarItem]:
+		payload = {
+			"startTimestamp": start_timestamp,
+			"endTimestamp": end_timestamp,
+			"descending": descending,
+		}
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.filters.CalendarItemFilters.lifecycleBetweenForSelf(
+			json.dumps(payload).encode('utf-8')
+		)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
+		if result_info.failure is not None:
+			raise interpret_kt_error(result_info.failure)
+		else:
+			return_value = FilterOptions(result_info.success)
+			return return_value

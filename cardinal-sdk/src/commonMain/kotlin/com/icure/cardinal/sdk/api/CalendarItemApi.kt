@@ -262,7 +262,7 @@ interface CalendarItemApi : CalendarItemBasicFlavourlessApi, CalendarItemFlavour
 	 */
 	suspend fun withEncryptionMetadata(
 		base: DecryptedCalendarItem?,
-		patient: Patient,
+		patient: Patient?,
 		@DefaultValue("null")
 		user: User? = null,
 		@DefaultValue("emptyMap()")

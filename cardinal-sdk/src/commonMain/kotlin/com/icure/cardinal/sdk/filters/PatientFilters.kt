@@ -7,6 +7,7 @@ import com.icure.cardinal.sdk.model.embed.Address
 import com.icure.cardinal.sdk.model.embed.Gender
 import com.icure.cardinal.sdk.model.embed.Telecom
 import com.icure.cardinal.sdk.model.filter.AbstractFilter
+import com.icure.cardinal.sdk.model.filter.patient.PatientByDataOwnerTagFilter
 import com.icure.cardinal.sdk.model.filter.patient.PatientByHcPartyAndActiveFilter
 import com.icure.cardinal.sdk.model.filter.patient.PatientByHcPartyAndAddressFilter
 import com.icure.cardinal.sdk.model.filter.patient.PatientByHcPartyAndExternalIdFilter
@@ -409,7 +410,33 @@ object PatientFilters {
         externalIdPrefix: String
     ) : SortableFilterOptions<Patient> = ByExternalIdForSelf(externalIdPrefix = externalIdPrefix)
 
-    @Serializable
+	/**
+	 * Options for patient filtering which match all the patients shared directly (i.e. ignoring hierarchies) with the current data owner
+	 * where in [Patient.tags] there is at least one tag with type equal to [tagType] and code equal to [tagCode].
+	 *
+	 * @param tagType the tag type to search.
+	 * @param tagCode the code type.
+	 */
+	fun byTagCodeForSelf(
+		tagType: String,
+		tagCode: String? = null,
+	) : FilterOptions<Patient> = ByTagCodeForSelf(tagType = tagType, tagCode = tagCode)
+
+	/**
+	 * Options for patient filtering which match all the patients shared directly (i.e. ignoring hierarchies) with a specific data owner
+	 * where in [Patient.tags] there is at least one tag with type equal to [tagType] and code equal to [tagCode].
+	 *
+	 * @param dataOwnerId the id of the data owner.
+	 * @param tagType the tag type to search.
+	 * @param tagCode the code type.
+	 */
+	fun byTagCodeForDataOwner(
+		dataOwnerId: String,
+		tagType: String,
+		tagCode: String? = null,
+	) : BaseFilterOptions<Patient> = ByTagCodeForDataOwner(dataOwnerId = dataOwnerId, tagType = tagType, tagCode = tagCode)
+
+	@Serializable
     internal class ByIds(
         val ids: List<String>
     ) : SortableFilterOptions<Patient> {
@@ -557,6 +584,19 @@ object PatientFilters {
     internal class ByExternalIdForSelf(
         val externalIdPrefix: String
     ) : SortableFilterOptions<Patient>
+
+	@Serializable
+	internal class ByTagCodeForDataOwner(
+		val dataOwnerId: String,
+		val tagType: String,
+		val tagCode: String?
+	) : BaseFilterOptions<Patient>
+
+	@Serializable
+	internal class ByTagCodeForSelf(
+		val tagType: String,
+		val tagCode: String?
+	) : FilterOptions<Patient>
 }
 
 
@@ -753,5 +793,20 @@ internal suspend fun mapPatientFilterOptions(
             healthcarePartyId = selfDataOwnerId
         )
     }
+	is PatientFilters.ByTagCodeForSelf -> {
+		filterOptions.ensureNonBaseEnvironment(selfDataOwnerId, entityEncryptionService)
+		PatientByDataOwnerTagFilter(
+			dataOwnerId = selfDataOwnerId,
+			tagType = filterOptions.tagType,
+			tagCode = filterOptions.tagCode
+		)
+	}
+	is PatientFilters.ByTagCodeForDataOwner -> {
+		PatientByDataOwnerTagFilter(
+			dataOwnerId = filterOptions.dataOwnerId,
+			tagType = filterOptions.tagType,
+			tagCode = filterOptions.tagCode
+		)
+	}
 	else -> throw IllegalArgumentException("Filter options ${filterOptions::class.simpleName} are not valid for filtering Patients")
 }

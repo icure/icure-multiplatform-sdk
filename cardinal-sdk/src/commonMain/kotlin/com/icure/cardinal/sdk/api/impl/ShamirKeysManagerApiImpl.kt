@@ -1,12 +1,5 @@
 package com.icure.cardinal.sdk.api.impl
 
-import com.icure.kryptom.crypto.AesAlgorithm
-import com.icure.kryptom.crypto.AesKey
-import com.icure.kryptom.crypto.CryptoService
-import com.icure.kryptom.crypto.PrivateRsaKey
-import com.icure.kryptom.crypto.RsaAlgorithm
-import com.icure.kryptom.utils.hexToByteArray
-import com.icure.kryptom.utils.toHexString
 import com.icure.cardinal.sdk.api.DataOwnerApi
 import com.icure.cardinal.sdk.api.ShamirKeysManagerApi
 import com.icure.cardinal.sdk.crypto.ExchangeDataManager
@@ -16,11 +9,19 @@ import com.icure.cardinal.sdk.crypto.entities.ShamirUpdateRequest
 import com.icure.cardinal.sdk.crypto.impl.ShamirSecretSharingService
 import com.icure.cardinal.sdk.model.CryptoActorStubWithType
 import com.icure.cardinal.sdk.model.base.CryptoActor
-import com.icure.cardinal.sdk.model.extensions.toStub
+import com.icure.cardinal.sdk.model.extensions.asStub
 import com.icure.cardinal.sdk.model.specializations.HexString
 import com.icure.cardinal.sdk.model.specializations.KeypairFingerprintV1String
-import com.icure.utils.InternalIcureApi
 import com.icure.cardinal.sdk.utils.ensure
+import com.icure.cardinal.sdk.utils.isValidHex
+import com.icure.kryptom.crypto.AesAlgorithm
+import com.icure.kryptom.crypto.AesKey
+import com.icure.kryptom.crypto.CryptoService
+import com.icure.kryptom.crypto.PrivateRsaKey
+import com.icure.kryptom.crypto.RsaAlgorithm
+import com.icure.kryptom.utils.hexToByteArray
+import com.icure.kryptom.utils.toHexString
+import com.icure.utils.InternalIcureApi
 
 @InternalIcureApi
 class ShamirKeysManagerApiImpl(
@@ -45,7 +46,7 @@ class ShamirKeysManagerApiImpl(
 		keySplitsToUpdate: Map<KeypairFingerprintV1String, ShamirUpdateRequest>,
 		keySplitsToDelete: Set<KeypairFingerprintV1String>,
 	): CryptoActorStubWithType {
-		val self = this.dataOwnerApi.getCurrentDataOwner().toStub()
+		val self = this.dataOwnerApi.getCurrentDataOwner().asStub()
 		val existingSplits = getExistingSplitsInfo(self.stub).keys
 		val allKeys = encryptionKeysManager.getDecryptionKeys(true)
 		keySplitsToDelete.intersect(keySplitsToUpdate.keys).let {
@@ -105,7 +106,7 @@ class ShamirKeysManagerApiImpl(
 			val shares = shamir.share(keyPkcs8, request.notariesIds.size, request.minShares)
 			val paddedShares = shares.map { "f${it.v}" }
 			for (share in paddedShares) {
-				ensure(share.matches(Regex("^(?:[0-9a-f][0-9a-f])+$"))) {
+				ensure(share.isValidHex()) {
 					"Unexpected result of shamir split: padded shares should be a valid hex value"
 				}
 				ensure(share == hexToByteArray(share).toHexString()) {

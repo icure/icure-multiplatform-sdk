@@ -28,6 +28,12 @@ interface CalendarItemFiltersFactory {
 
 	byRecurrenceId(recurrenceId: string): FilterOptions<CalendarItem>;
 
+	lifecycleBetweenForDataOwner(dataOwnerId: string, startTimestamp: number | undefined,
+			endTimestamp: number | undefined, descending: boolean): BaseFilterOptions<CalendarItem>;
+
+	lifecycleBetweenForSelf(startTimestamp: number | undefined, endTimestamp: number | undefined,
+			descending: boolean): FilterOptions<CalendarItem>;
+
 }
 
 export const CalendarItemFilters: CalendarItemFiltersFactory = {
@@ -38,5 +44,7 @@ export const CalendarItemFilters: CalendarItemFiltersFactory = {
 			byPeriodAndAgenda: (agendaId, from, to, options) => InternalCalendarItemFiltersObj.getInstance().byPeriodAndAgenda(agendaId, from, to, options),
 			byPeriodForDataOwner: (dataOwnerId, from, to) => InternalCalendarItemFiltersObj.getInstance().byPeriodForDataOwner(dataOwnerId, from, to),
 			byPeriodForSelf: (from, to) => InternalCalendarItemFiltersObj.getInstance().byPeriodForSelf(from, to),
-			byRecurrenceId: (recurrenceId) => InternalCalendarItemFiltersObj.getInstance().byRecurrenceId(recurrenceId)
+			byRecurrenceId: (recurrenceId) => InternalCalendarItemFiltersObj.getInstance().byRecurrenceId(recurrenceId),
+			lifecycleBetweenForDataOwner: (dataOwnerId, startTimestamp, endTimestamp, descending) => InternalCalendarItemFiltersObj.getInstance().lifecycleBetweenForDataOwner(dataOwnerId, startTimestamp, endTimestamp, descending),
+			lifecycleBetweenForSelf: (startTimestamp, endTimestamp, descending) => InternalCalendarItemFiltersObj.getInstance().lifecycleBetweenForSelf(startTimestamp, endTimestamp, descending)
 		};

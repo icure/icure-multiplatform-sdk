@@ -9,7 +9,7 @@ import com.icure.cardinal.sdk.model.DataOwnerWithType
 import com.icure.cardinal.sdk.model.HealthcareParty
 import com.icure.cardinal.sdk.model.base.CryptoActor
 import com.icure.cardinal.sdk.model.extensions.publicKeysSpki
-import com.icure.cardinal.sdk.model.extensions.toStub
+import com.icure.cardinal.sdk.model.extensions.asStub
 import com.icure.cardinal.sdk.model.extensions.type
 import com.icure.cardinal.sdk.utils.IllegalEntityException
 import com.icure.cardinal.sdk.utils.SingleValueAsyncCache
@@ -30,7 +30,7 @@ class DataOwnerApiImpl(
 		rawApi.getCurrentDataOwner().successBody()
 
 	override suspend fun getCurrentDataOwnerStub(): CryptoActorStubWithType =
-		getCurrentDataOwner().toStub()
+		getCurrentDataOwner().asStub()
 
 	override suspend fun getCurrentDataOwnerId(): String =
 		getOrCacheInfo().first.hierarchy.last()
