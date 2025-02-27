@@ -222,7 +222,6 @@ tasks.register("prepareDistributionPackage") {
 	val filesNeedingPatch = setOf(
 		"$moduleName.mjs",
 		"$moduleName.d.ts",
-		"ktor-ktor-client-ktor-client-core.mjs",
 		"package.json",
 	)
 	doLast {
