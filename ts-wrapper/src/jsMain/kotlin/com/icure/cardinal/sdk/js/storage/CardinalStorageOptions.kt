@@ -41,6 +41,7 @@ internal suspend fun loadStorageOptions(
 ): StorageFacade = if (options is CardinalStorageOptions) when (options) {
 	BrowserLocalStorageOptions -> LocalStorageStorageFacade()
 	is FileSystemStorageOptions -> FileStorageFacade(options.directory)
+	else -> throw IllegalArgumentException("Invalid storage options")
 } else {
 	require(
 		jsTypeOf(options.getItem) == "function" &&
@@ -73,6 +74,7 @@ internal suspend fun loadKeyStorageOptions(
 ): KeyStorageFacade = if (options is CardinalKeyStorageOptions) when (options) {
 	is JsonAndBase64KeyStorageOptions -> JsonAndBase64KeyStorage(loadStorageOptions(options))
 	is JwkKeyStorageOptions -> JwkKeyStorage(loadStorageOptions(options))
+	else -> throw IllegalArgumentException("Invalid key storage options")
 } else {
 	require(
 		jsTypeOf(options.getPublicKeySpki) == "function" &&

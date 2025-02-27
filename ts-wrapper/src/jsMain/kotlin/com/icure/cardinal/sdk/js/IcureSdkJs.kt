@@ -53,7 +53,6 @@ import com.icure.cardinal.sdk.js.api.RoleApiJs
 import com.icure.cardinal.sdk.js.api.SystemApiJs
 import com.icure.cardinal.sdk.js.api.TarificationApiJs
 import com.icure.cardinal.sdk.js.api.TimeTableApiJs
-import com.icure.cardinal.sdk.js.api.TimeTableBasicApiJs
 import com.icure.cardinal.sdk.js.api.TopicApiJs
 import com.icure.cardinal.sdk.js.api.TopicBasicApiJs
 import com.icure.cardinal.sdk.js.api.UserApiJs
@@ -104,7 +103,6 @@ import com.icure.cardinal.sdk.js.api.impl.RoleApiImplJs
 import com.icure.cardinal.sdk.js.api.impl.SystemApiImplJs
 import com.icure.cardinal.sdk.js.api.impl.TarificationApiImplJs
 import com.icure.cardinal.sdk.js.api.impl.TimeTableApiImplJs
-import com.icure.cardinal.sdk.js.api.impl.TimeTableBasicApiImplJs
 import com.icure.cardinal.sdk.js.api.impl.TopicApiImplJs
 import com.icure.cardinal.sdk.js.api.impl.TopicBasicApiImplJs
 import com.icure.cardinal.sdk.js.api.impl.UserApiImplJs
@@ -280,7 +278,7 @@ internal class CardinalBaseApisJsImpl(
 	override val message: MessageBasicApiJs by lazy { MessageBasicApiImplJs(sdk.message) }
 	override val patient: PatientBasicApiJs by lazy { PatientBasicApiImplJs(sdk.patient) }
 	override val receipt: ReceiptBasicApiJs by lazy { ReceiptBasicApiImplJs(sdk.receipt) }
-	override val timeTable: TimeTableBasicApiJs by lazy { TimeTableBasicApiImplJs(sdk.timeTable) }
+	override val timeTable: TimeTableApiJs by lazy { TimeTableApiImplJs(sdk.timeTable) }
 	override val topic: TopicBasicApiJs by lazy { TopicBasicApiImplJs(sdk.topic) }
 }
 
