@@ -211,7 +211,7 @@ val compileTypescriptSources = tasks.register("compileTypescriptSources") {
 	doLast {
 		delete(tsCompiledSources)
 		exec {
-			commandLine("/Users/aduchate/.nvm/versions/node/v22.11.0/bin/tsc", "--project", projectDir.path)
+			commandLine("/Users/vincenzoclaudiopierro/.nvm/versions/node/v22.11.0/bin/tsc", "--project", projectDir.path)
 		}
 	}
 }
