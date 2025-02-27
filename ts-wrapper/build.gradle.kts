@@ -211,7 +211,7 @@ val compileTypescriptSources = tasks.register("compileTypescriptSources") {
 	doLast {
 		delete(tsCompiledSources)
 		exec {
-			commandLine("tsc", "--project", projectDir.path)
+			commandLine("/Users/aduchate/.nvm/versions/node/v22.11.0/bin/tsc", "--project", projectDir.path)
 		}
 	}
 }
@@ -268,22 +268,6 @@ tasks.register("prepareDistributionPackage") {
 			replacing = listOf(
 				Replacement("$moduleName.d.ts", with = "$moduleName.d.mts"),
 				Replacement("\"name\": \"$moduleName\"", with = "\"name\": \"@icure/cardinal-sdk\""),
-			)
-		)
-		copyJsPatching(
-			from = ktJsCompiledPackage.resolve("ktor-ktor-client-ktor-client-core.mjs"),
-			into = tsPackage.resolve("ktor-ktor-client-ktor-client-core.mjs"),
-			replacing = listOf(
-				Replacement("  // Inline function 'kotlin.check' call\n" +
-					"  // Inline function 'kotlin.contracts.contract' call\n" +
-					"  if (!(contentLength == null || equals(contentLength, bytes))) {\n" +
-					"    // Inline function 'io.ktor.client.plugins.checkContentLength.<anonymous>' call\n" +
-					"    var message = 'Content-Length mismatch: expected ' + toString_0(contentLength) + ' bytes, but received ' + bytes.toString() + ' bytes';\n" +
-					"    throw IllegalStateException_init_\$Create\$(toString(message));\n" +
-					"  }", "\n"),
-				Replacement("  if (!equals(contentLength, bodySize)) {\n" +
-					"    throw IllegalStateException_init_\$Create\$('Content-Length mismatch: expected ' + toString_0(contentLength) + ' bytes, but received ' + bodySize.toString() + ' bytes');\n" +
-					"  }", "\n")
 			)
 		)
 	}

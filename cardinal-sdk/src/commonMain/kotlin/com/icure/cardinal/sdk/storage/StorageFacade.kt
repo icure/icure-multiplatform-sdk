@@ -1,7 +1,12 @@
 package com.icure.cardinal.sdk.storage
 
 /**
- * Provides permanent storage capabilities to the SDK
+ * Provides permanent storage capabilities to the SDK. We propose platform specific implementation for all supported targets.
+ * For JavaScript in the browser, we provide the LocalStorageFacade. For Android and iOS, we provide the EncryptedStorageFacade that
+ * is easily instantiable using the utility functions AndroidSecureStorageFacade and AppleSecureStorageFacade.
+ *
+ * For more information check the [Storage Facade documentation](https://docs.icure.com/how-to/initialize-the-sdk/#storage-facade)
+ *
  */
 interface StorageFacade {
 	/**
