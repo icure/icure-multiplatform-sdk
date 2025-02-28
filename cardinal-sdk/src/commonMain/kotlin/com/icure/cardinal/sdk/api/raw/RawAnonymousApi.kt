@@ -25,11 +25,6 @@ public interface RawAnonymousApi {
 	): HttpResponse<PaginatedList<AnonymousMedicalLocation>>
 	// endregion
 
-	// region anonymous healthcareparty endpoints
-
-	suspend fun listHealthcarePartiesInGroup(groupId: String): HttpResponse<List<UserAndHealthcareParty>>
-	// endregion
-
 	// region anonymous calendaritem endpoints
 
 	suspend fun listAppointmentTypesForUser(
@@ -50,5 +45,10 @@ public interface RawAnonymousApi {
 		placeId: String? = null,
 		limit: Int? = null,
 	): HttpResponse<List<Long>>
+	// endregion
+
+	// region anonymous healthcareparty endpoints
+
+	suspend fun listHealthcarePartiesInGroup(groupId: String): HttpResponse<List<UserAndHealthcareParty>>
 	// endregion
 }
