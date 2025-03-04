@@ -52,7 +52,7 @@ internal fun decodeClaims(jwt: String): JwtPayload {
 /**
  * Checks if a base-64 encoded JWT has an invalid format or is expired.
  */
-internal fun isJwtExpiredOrInvalid(jwt: String, refreshPadding: Duration = 0L.seconds): Boolean = runCatching {
+fun isJwtExpiredOrInvalid(jwt: String, refreshPadding: Duration = 0L.seconds): Boolean = runCatching {
 		val payload = decodeClaims(jwt)
 		(payload.exp * 1000) < (GMTDate().timestamp - refreshPadding.inWholeMilliseconds)
 	}.getOrDefault(false)
