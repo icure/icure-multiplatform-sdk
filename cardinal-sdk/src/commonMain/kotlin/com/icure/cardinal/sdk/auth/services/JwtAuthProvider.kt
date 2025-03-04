@@ -5,16 +5,35 @@ import com.icure.cardinal.sdk.auth.JwtBearer
 import com.icure.cardinal.sdk.auth.JwtBearerAndRefresh
 import com.icure.cardinal.sdk.auth.JwtRefresh
 import com.icure.cardinal.sdk.model.embed.AuthenticationClass
+import com.icure.cardinal.sdk.utils.InternalCardinalException
 import com.icure.utils.InternalIcureApi
 import com.icure.cardinal.sdk.utils.RequestStatusException
 import com.icure.cardinal.sdk.utils.ensureNonNull
 import com.icure.cardinal.sdk.utils.isJwtExpiredOrInvalid
 import io.ktor.client.request.HttpRequestBuilder
 import io.ktor.client.request.bearerAuth
-import kotlinx.coroutines.sync.Mutex
-import kotlinx.coroutines.sync.withLock
+import kotlinx.atomicfu.atomic
+import kotlinx.coroutines.CompletableDeferred
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.CoroutineStart
+import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.async
+import kotlinx.datetime.Clock
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
+
+@InternalIcureApi
+abstract class AbstractJwtAuthProvider(
+	protected val refresher: TokenRefresher
+) : JwtBasedAuthProvider {
+
+	override fun getAuthService(): TokenBasedAuthService<JwtBearer> = JwtAuthService(refresher)
+
+	override suspend fun getBearerAndRefreshToken(): JwtBearerAndRefresh =
+		JwtBearerAndRefresh(refresher.getAuthenticationJwtOrRefresh(true), refresher.getRefreshJwt())
+}
 
 /**
  * Auth service using only the provided auth tokens.
@@ -32,13 +51,12 @@ internal class JwtAuthProvider(
 	initialBearer: JwtBearer?,
 	private val refreshToken: JwtRefresh,
 	private val refreshPadding: Duration = 30L.seconds
-) : JwtBasedAuthProvider {
-	private val refresher = TokenRefresher(refreshToken, initialBearer, refreshPadding, authApi)
-
-	override fun getAuthService(): TokenBasedAuthService<JwtBearer> = JwtAuthService(refresher)
-
-	override suspend fun getBearerAndRefreshToken(): JwtBearerAndRefresh =
-		JwtBearerAndRefresh(refresher.getOrRefreshToken(true), refreshToken)
+) : AbstractJwtAuthProvider(refresher = NoCredentialsTokenRefresher(
+	refreshToken = refreshToken,
+	initialBearer = initialBearer,
+	refreshPadding = refreshPadding,
+	authApi = authApi
+)) {
 
 	override suspend fun switchGroup(newGroupId: String): AuthProvider {
 		val switchedRefresh = authApi.switchGroup(refreshToken.token, newGroupId).successBody()
@@ -52,38 +70,105 @@ internal class JwtAuthProvider(
 }
 
 @InternalIcureApi
-private class TokenRefresher(
-	private val refreshToken: JwtRefresh,
+abstract class TokenRefresher(
 	initialBearer: JwtBearer?,
+	private var jwtRefresh: JwtRefresh,
 	private val refreshPadding: Duration,
-	private val authApi: RawAnonymousAuthApi,
+	protected val authApi: RawAnonymousAuthApi,
 ) {
-	private var jwt: JwtBearer? = initialBearer
-	private val jwtMutex = Mutex()
 
-	suspend fun getOrRefreshToken(acceptExpired: Boolean): JwtBearer =
-		jwtMutex.withLock {
-			if (jwt == null || (isJwtExpiredOrInvalid(jwt!!.token, refreshPadding) && !acceptExpired)) {
-				jwt = refreshBearer()
+	companion object {
+		private const val MILLISECONDS_BETWEEN_ERROR_RETRIES = 10_000
+	}
+
+	private val scope = CoroutineScope(Dispatchers.Default + SupervisorJob())
+	private val status = atomic<Deferred<Status>?>(initialBearer?.let { CompletableDeferred(Status.CurrentToken(it)) })
+
+	private fun needsRefresh(status: Status, acceptExpired: Boolean): Boolean = when(status) {
+		is Status.CurrentToken -> !acceptExpired && isJwtExpiredOrInvalid(status.jwt.token, refreshPadding)
+		is Status.Failure ->
+			if (Clock.System.now().toEpochMilliseconds() - status.timestamp < MILLISECONDS_BETWEEN_ERROR_RETRIES) {
+				true
+			} else {
+				throw status.error
 			}
-			jwt!!
-		}
+		is Status.Unauthorized -> throw status.error
+	}
 
-	private suspend fun refreshBearer(): JwtBearer =
-		if (!isJwtExpiredOrInvalid(refreshToken.token, refreshPadding))
-			JwtBearer(
-				ensureNonNull(
+	private fun Status.getToken() = if (this is Status.CurrentToken) jwt else throw IllegalStateException("Cannot get token from status")
+
+	private suspend fun regenerateAuthJwtUsingRefreshToken(refreshToken: JwtRefresh): Status = try {
+		authApi.refresh(refreshToken.token).successBody().token?.let {
+			Status.CurrentToken(JwtBearer(it))
+		} ?: Status.Failure(
+			error = InternalCardinalException("Token refresh was successful but token was null"),
+			timestamp = Clock.System.now().toEpochMilliseconds()
+		)
+	} catch (e: Exception) {
+		e.toStatus()
+	}
+
+	tailrec suspend fun getAuthenticationJwtOrRefresh(acceptExpired: Boolean): JwtBearer {
+		val deferredStatus = status.value
+		if (deferredStatus != null && !needsRefresh(deferredStatus.await(), acceptExpired)) {
+			return deferredStatus.await().getToken()
+		} else {
+			val newDeferred = scope.async(start = CoroutineStart.LAZY) {
+				if (!isJwtExpiredOrInvalid(jwtRefresh.token, refreshPadding)) {
+					regenerateAuthJwtUsingRefreshToken(jwtRefresh)
+				} else {
 					try {
-						authApi.refresh(refreshToken.token).successBody().token
+						val refreshResult = regenerateRefreshToken()
+						jwtRefresh = refreshResult.refresh
+						Status.CurrentToken(refreshResult.bearer)
 					} catch (e: Exception) {
-						throw IllegalStateException("Could not refresh token", e)
+						e.toStatus()
 					}
-				) {
-					"Token refresh was successful but bearer is null"
 				}
-			)
-		else
-			throw IllegalStateException("Cannot refresh bearer, refresh JWT expired.")
+			}
+			return if (status.compareAndSet(deferredStatus, newDeferred)) {
+				newDeferred.await().getToken()
+			} else {
+				newDeferred.cancel()
+				getAuthenticationJwtOrRefresh(acceptExpired)
+			}
+		}
+	}
+
+	fun getRefreshJwt(): JwtRefresh = jwtRefresh
+
+	abstract suspend fun regenerateRefreshToken(): JwtBearerAndRefresh
+
+	sealed interface Status {
+		data class CurrentToken(val jwt: JwtBearer): Status
+		data class Unauthorized(val error: Throwable): Status
+		data class Failure(val error: Throwable, val timestamp: Long): Status
+	}
+
+	private fun Throwable.toStatus() = if (this is RequestStatusException && statusCode == 401) {
+		Status.Unauthorized(error = this)
+	} else {
+		Status.Failure(error = this, timestamp = Clock.System.now().toEpochMilliseconds())
+	}
+
+}
+
+@InternalIcureApi
+private class NoCredentialsTokenRefresher(
+	refreshToken: JwtRefresh,
+	initialBearer: JwtBearer?,
+	refreshPadding: Duration,
+	authApi: RawAnonymousAuthApi,
+) : TokenRefresher(
+	initialBearer = initialBearer,
+	jwtRefresh = refreshToken,
+	refreshPadding = refreshPadding,
+	authApi = authApi
+) {
+
+	override suspend fun regenerateRefreshToken(): JwtBearerAndRefresh {
+		throw UnsupportedOperationException("Cannot regenerate the refresh JWT without credentials")
+	}
 }
 
 @InternalIcureApi
@@ -112,5 +197,5 @@ private class JwtAuthService(
 	}
 
 	override suspend fun getToken(): JwtBearer =
-		refresher.getOrRefreshToken(false)
+		refresher.getAuthenticationJwtOrRefresh(false)
 }

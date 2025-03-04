@@ -2,7 +2,7 @@ version: "3.8"
 
 services:
   couchdb:
-    image: couchdb:3.2.2
+    image: couchdb:3.4.2
     container_name: couchdb-test
     ports:
       - "${COUCHDB_PORT}:5984"
@@ -14,7 +14,7 @@ services:
       - ERL_MAX_PORT=16384
 
   kraken-1:
-    image: docker.taktik.be/icure/icure-kraken:5.0.303-g13170ab864
+    image: docker.taktik.be/icure/icure-kraken:5.0.396-gd50871fb2d
     container_name: kraken-1
     ports:
       - "5005:5005"

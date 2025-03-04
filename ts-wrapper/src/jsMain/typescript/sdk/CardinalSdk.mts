@@ -53,7 +53,6 @@ import {MaintenanceTaskBasicApi} from "../api/MaintenanceTaskBasicApi.mjs";
 import {MessageBasicApi} from "../api/MessageBasicApi.mjs";
 import {PatientBasicApi} from "../api/PatientBasicApi.mjs";
 import {ReceiptBasicApi} from "../api/ReceiptBasicApi.mjs";
-import {TimeTableBasicApi} from "../api/TimeTableBasicApi.mjs";
 import {TopicBasicApi} from "../api/TopicBasicApi.mjs";
 import {AgendaApi} from "../api/AgendaApi.mjs";
 import {MedicalLocationApi} from "../api/MedicalLocationApi.mjs";
@@ -147,7 +146,7 @@ export interface CardinalBaseApis {
   readonly message: MessageBasicApi
   readonly patient: PatientBasicApi
   readonly receipt: ReceiptBasicApi
-  readonly timeTable: TimeTableBasicApi
+  readonly timeTable: TimeTableApi
   readonly topic: TopicBasicApi
 
 }

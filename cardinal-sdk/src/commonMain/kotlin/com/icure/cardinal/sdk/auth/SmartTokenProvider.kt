@@ -260,6 +260,13 @@ internal class SmartTokenProvider(
 						groupId = groupId,
 						applicationId = applicationId
 					)
+					ThirdPartyProvider.OTHER -> authApi.loginWithExternalJwt(
+						secret.secret,
+						groupId = groupId,
+						applicationId = checkNotNull(applicationId) {
+							"An External JWT cannot be used without an application id"
+						}
+					)
 				}
 			}
 

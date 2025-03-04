@@ -63,9 +63,9 @@ interface PatientFiltersFactory {
 
 	byExternalIdForSelf(externalIdPrefix: string): SortableFilterOptions<Patient>;
 
-	byTagCodeForSelf(tagType: string, tagCode: string | undefined): FilterOptions<Patient>;
+	byTagForSelf(tagType: string, tagCode: string | undefined): FilterOptions<Patient>;
 
-	byTagCodeForDataOwner(dataOwnerId: string, tagType: string,
+	byTagForDataOwner(dataOwnerId: string, tagType: string,
 			tagCode: string | undefined): BaseFilterOptions<Patient>;
 
 }
@@ -94,6 +94,6 @@ export const PatientFilters: PatientFiltersFactory = {
 			byAddressPostalCodeHouseNumberForSelf: (searchString, postalCode, options) => InternalPatientFiltersObj.getInstance().byAddressPostalCodeHouseNumberForSelf(searchString, postalCode, options),
 			byAddressForSelf: (searchString) => InternalPatientFiltersObj.getInstance().byAddressForSelf(searchString),
 			byExternalIdForSelf: (externalIdPrefix) => InternalPatientFiltersObj.getInstance().byExternalIdForSelf(externalIdPrefix),
-			byTagCodeForSelf: (tagType, tagCode) => InternalPatientFiltersObj.getInstance().byTagCodeForSelf(tagType, tagCode),
-			byTagCodeForDataOwner: (dataOwnerId, tagType, tagCode) => InternalPatientFiltersObj.getInstance().byTagCodeForDataOwner(dataOwnerId, tagType, tagCode)
+			byTagForSelf: (tagType, tagCode) => InternalPatientFiltersObj.getInstance().byTagForSelf(tagType, tagCode),
+			byTagForDataOwner: (dataOwnerId, tagType, tagCode) => InternalPatientFiltersObj.getInstance().byTagForDataOwner(dataOwnerId, tagType, tagCode)
 		};

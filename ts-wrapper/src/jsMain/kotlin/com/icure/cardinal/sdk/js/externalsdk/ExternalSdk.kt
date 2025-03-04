@@ -48,7 +48,6 @@ import com.icure.cardinal.sdk.js.api.RoleApiJs
 import com.icure.cardinal.sdk.js.api.SystemApiJs
 import com.icure.cardinal.sdk.js.api.TarificationApiJs
 import com.icure.cardinal.sdk.js.api.TimeTableApiJs
-import com.icure.cardinal.sdk.js.api.TimeTableBasicApiJs
 import com.icure.cardinal.sdk.js.api.TopicApiJs
 import com.icure.cardinal.sdk.js.api.TopicBasicApiJs
 import com.icure.cardinal.sdk.js.api.UserApiJs
@@ -133,7 +132,7 @@ external interface CardinalBaseApisJs {
 	val message: MessageBasicApiJs
 	val patient: PatientBasicApiJs
 	val receipt: ReceiptBasicApiJs
-	val timeTable: TimeTableBasicApiJs
+	val timeTable: TimeTableApiJs
 	val topic: TopicBasicApiJs
 }
 

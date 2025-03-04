@@ -35,7 +35,7 @@ public external interface CalendarItemApiJs {
 
 	public fun withEncryptionMetadata(
 		base: DecryptedCalendarItemJs?,
-		patient: PatientJs,
+		patient: PatientJs?,
 		options: dynamic,
 	): Promise<DecryptedCalendarItemJs>
 

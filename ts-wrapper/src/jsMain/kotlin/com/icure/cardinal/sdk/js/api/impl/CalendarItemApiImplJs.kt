@@ -632,7 +632,7 @@ internal class CalendarItemApiImplJs(
 
 	override fun withEncryptionMetadata(
 		base: DecryptedCalendarItemJs?,
-		patient: PatientJs,
+		patient: PatientJs?,
 		options: dynamic,
 	): Promise<DecryptedCalendarItemJs> {
 		val _options = options ?: js("{}")
@@ -640,7 +640,9 @@ internal class CalendarItemApiImplJs(
 			val baseConverted: DecryptedCalendarItem? = base?.let { nonNull1 ->
 				calendarItem_fromJs(nonNull1)
 			}
-			val patientConverted: Patient = patient_fromJs(patient)
+			val patientConverted: Patient? = patient?.let { nonNull1 ->
+				patient_fromJs(nonNull1)
+			}
 			val userConverted: User? = convertingOptionOrDefaultNullable(
 				_options,
 				"user",

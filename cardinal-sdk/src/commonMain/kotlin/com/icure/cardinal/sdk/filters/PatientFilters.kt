@@ -417,10 +417,10 @@ object PatientFilters {
 	 * @param tagType the tag type to search.
 	 * @param tagCode the code type.
 	 */
-	fun byTagCodeForSelf(
+	fun byTagForSelf(
 		tagType: String,
 		tagCode: String? = null,
-	) : FilterOptions<Patient> = ByTagCodeForSelf(tagType = tagType, tagCode = tagCode)
+	) : FilterOptions<Patient> = ByTagForSelf(tagType = tagType, tagCode = tagCode)
 
 	/**
 	 * Options for patient filtering which match all the patients shared directly (i.e. ignoring hierarchies) with a specific data owner
@@ -430,11 +430,11 @@ object PatientFilters {
 	 * @param tagType the tag type to search.
 	 * @param tagCode the code type.
 	 */
-	fun byTagCodeForDataOwner(
+	fun byTagForDataOwner(
 		dataOwnerId: String,
 		tagType: String,
 		tagCode: String? = null,
-	) : BaseFilterOptions<Patient> = ByTagCodeForDataOwner(dataOwnerId = dataOwnerId, tagType = tagType, tagCode = tagCode)
+	) : BaseFilterOptions<Patient> = ByTagForDataOwner(dataOwnerId = dataOwnerId, tagType = tagType, tagCode = tagCode)
 
 	@Serializable
     internal class ByIds(
@@ -586,14 +586,14 @@ object PatientFilters {
     ) : SortableFilterOptions<Patient>
 
 	@Serializable
-	internal class ByTagCodeForDataOwner(
+	internal class ByTagForDataOwner(
 		val dataOwnerId: String,
 		val tagType: String,
 		val tagCode: String?
 	) : BaseFilterOptions<Patient>
 
 	@Serializable
-	internal class ByTagCodeForSelf(
+	internal class ByTagForSelf(
 		val tagType: String,
 		val tagCode: String?
 	) : FilterOptions<Patient>
@@ -793,7 +793,7 @@ internal suspend fun mapPatientFilterOptions(
             healthcarePartyId = selfDataOwnerId
         )
     }
-	is PatientFilters.ByTagCodeForSelf -> {
+	is PatientFilters.ByTagForSelf -> {
 		filterOptions.ensureNonBaseEnvironment(selfDataOwnerId, entityEncryptionService)
 		PatientByDataOwnerTagFilter(
 			dataOwnerId = selfDataOwnerId,
@@ -801,7 +801,7 @@ internal suspend fun mapPatientFilterOptions(
 			tagCode = filterOptions.tagCode
 		)
 	}
-	is PatientFilters.ByTagCodeForDataOwner -> {
+	is PatientFilters.ByTagForDataOwner -> {
 		PatientByDataOwnerTagFilter(
 			dataOwnerId = filterOptions.dataOwnerId,
 			tagType = filterOptions.tagType,
