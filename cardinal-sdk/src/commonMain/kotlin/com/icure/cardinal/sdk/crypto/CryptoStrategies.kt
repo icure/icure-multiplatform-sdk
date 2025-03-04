@@ -13,7 +13,7 @@ import com.icure.kryptom.crypto.RsaKeypair
 import kotlinx.serialization.Serializable
 
 /**
-Allows to customise the behaviour of the crypto api to set keys management, keys recovery,keys trusting in a way that better suits your needs.
+Allows to customise the behaviour of the crypto api to set keys management, keys recovery, keys trusting in a way that better suits your needs.
  */
 interface CryptoStrategies {
 	/**
