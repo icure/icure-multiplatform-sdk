@@ -3,6 +3,7 @@ package com.icure.cardinal.sdk
 import com.icure.cardinal.sdk.api.AccessLogApi
 import com.icure.cardinal.sdk.api.AgendaApi
 import com.icure.cardinal.sdk.api.ApplicationSettingsApi
+import com.icure.cardinal.sdk.api.AuthApi
 import com.icure.cardinal.sdk.api.CalendarItemApi
 import com.icure.cardinal.sdk.api.CalendarItemTypeApi
 import com.icure.cardinal.sdk.api.CardinalMaintenanceTaskApi
@@ -41,6 +42,7 @@ import com.icure.cardinal.sdk.api.UserApi
 import com.icure.cardinal.sdk.api.impl.AccessLogApiImpl
 import com.icure.cardinal.sdk.api.impl.AgendaApiImpl
 import com.icure.cardinal.sdk.api.impl.ApplicationSettingsApiImpl
+import com.icure.cardinal.sdk.api.impl.AuthApiImpl
 import com.icure.cardinal.sdk.api.impl.CalendarItemApiImpl
 import com.icure.cardinal.sdk.api.impl.CalendarItemTypeApiImpl
 import com.icure.cardinal.sdk.api.impl.CardinalMaintenanceTaskApiImpl
@@ -993,6 +995,9 @@ private class CardinalApiImpl(
 	}
 	override val medicalLocation: MedicalLocationApi by lazy {
 		MedicalLocationApiImpl(RawMedicalLocationApiImpl(apiUrl, authProvider, client, json = httpClientJson, additionalHeaders = additionalHeaders))
+	}
+	override val auth: AuthApi by lazy {
+		AuthApiImpl(authProvider)
 	}
 	override val agenda: AgendaApi by lazy {
 		AgendaApiImpl(RawAgendaApiImpl(apiUrl, authProvider, client, json = httpClientJson, additionalHeaders = additionalHeaders))

@@ -4,6 +4,7 @@ import com.icure.cardinal.sdk.api.AccessLogApi
 import com.icure.cardinal.sdk.api.AccessLogBasicApi
 import com.icure.cardinal.sdk.api.AgendaApi
 import com.icure.cardinal.sdk.api.ApplicationSettingsApi
+import com.icure.cardinal.sdk.api.AuthApi
 import com.icure.cardinal.sdk.api.CalendarItemApi
 import com.icure.cardinal.sdk.api.CalendarItemBasicApi
 import com.icure.cardinal.sdk.api.CalendarItemTypeApi
@@ -76,6 +77,7 @@ interface CardinalNonCryptoApis {
 	val tarification: TarificationApi
 	val user: UserApi
 	val medicalLocation: MedicalLocationApi
+	val auth: AuthApi
 	val agenda: AgendaApi
 }
 
