@@ -2,6 +2,7 @@ package com.icure.cardinal.sdk
 
 import com.icure.cardinal.sdk.api.AgendaApi
 import com.icure.cardinal.sdk.api.ApplicationSettingsApi
+import com.icure.cardinal.sdk.api.AuthApi
 import com.icure.cardinal.sdk.api.CalendarItemTypeApi
 import com.icure.cardinal.sdk.api.DocumentTemplateApi
 import com.icure.cardinal.sdk.api.EntityReferenceApi
@@ -19,6 +20,7 @@ import com.icure.cardinal.sdk.api.UserApi
 import com.icure.cardinal.sdk.api.impl.AccessLogBasicApiImpl
 import com.icure.cardinal.sdk.api.impl.AgendaApiImpl
 import com.icure.cardinal.sdk.api.impl.ApplicationSettingsApiImpl
+import com.icure.cardinal.sdk.api.impl.AuthApiImpl
 import com.icure.cardinal.sdk.api.impl.CalendarItemBasicApiImpl
 import com.icure.cardinal.sdk.api.impl.CalendarItemTypeApiImpl
 import com.icure.cardinal.sdk.api.impl.ClassificationBasicApiImpl
@@ -236,6 +238,12 @@ private class CardinalBaseApisImpl(
 ) : CardinalBaseApis {
 	private val apiUrl get() = config.apiUrl
 	private val client get() = config.httpClient
+
+	override val auth: AuthApi by lazy {
+		AuthApiImpl(
+			authProvider = authProvider,
+		)
+	}
 
 	override val accessLog by lazy {
 		AccessLogBasicApiImpl(
