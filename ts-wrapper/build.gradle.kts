@@ -1,3 +1,4 @@
+import org.jetbrains.kotlin.gradle.targets.js.ir.JsIrBinary
 import java.io.FileWriter
 
 plugins {
@@ -155,19 +156,6 @@ val prepareTypescriptSourceCompilation = tasks.register("prepareTypescriptSource
 	dependsOn("jsNodeProductionLibraryDistribution")
 	inputs.dir(tsSources)
 	outputs.dir(mergedTsProject)
-	fun generateIndexForDirAndSubdirs(currFile: File) {
-		val (directories, files) = currFile.listFiles()!!.partition { it.isDirectory }
-		FileWriter(currFile.resolve("index.ts")).use { fw ->
-			directories.forEach {
-				fw.write("export * from './${it.name}'\n")
-			}
-			files.forEach {
-				val nameWithoutSuffix = it.name.removeSuffix(".mts").removeSuffix(".d")
-				fw.write("export * from './$nameWithoutSuffix.mjs'\n")
-			}
-		}
-		directories.forEach { generateIndexForDirAndSubdirs(it) }
-	}
 	doLast {
 		delete(mergedTsProject)
 		copy {
@@ -211,7 +199,7 @@ val compileTypescriptSources = tasks.register("compileTypescriptSources") {
 	doLast {
 		delete(tsCompiledSources)
 		exec {
-			commandLine("/Users/vincenzoclaudiopierro/.nvm/versions/node/v22.11.0/bin/tsc", "--project", projectDir.path)
+			commandLine("tsc", "--project", projectDir.path)
 		}
 	}
 }
