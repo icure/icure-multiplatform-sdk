@@ -29,4 +29,25 @@ public interface RawSecureDelegationKeyMapApi {
 		accessControlKeysHeaderValues: List<String>,
 	): HttpResponse<List<EntityBulkShareResult<EncryptedSecureDelegationKeyMap>>>
 	// endregion
+
+	// region cloud endpoints
+
+	suspend fun createSecureDelegationKeyMap(
+		secureDelegationKeyMap: EncryptedSecureDelegationKeyMap,
+		groupId: String,
+		accessControlKeysHeaderValues: List<String>,
+	): HttpResponse<EncryptedSecureDelegationKeyMap>
+
+	suspend fun findByDelegationKeys(
+		delegationKeys: ListOfIds,
+		groupId: String,
+		accessControlKeysHeaderValues: List<String>,
+	): HttpResponse<List<EncryptedSecureDelegationKeyMap>>
+
+	suspend fun bulkShare(
+		request: BulkShareOrUpdateMetadataParams,
+		groupId: String,
+		accessControlKeysHeaderValues: List<String>,
+	): HttpResponse<List<EntityBulkShareResult<EncryptedSecureDelegationKeyMap>>>
+	// endregion
 }
