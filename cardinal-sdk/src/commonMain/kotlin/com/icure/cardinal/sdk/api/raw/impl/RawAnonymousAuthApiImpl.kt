@@ -118,13 +118,11 @@ class RawAnonymousAuthApiImpl(
 	override suspend fun loginWithExternalJwt(
 		token: String,
 		applicationId: String,
-		groupId: String?,
 	): HttpResponse<JwtResponse> =
 		post {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "auth", "login", "external", applicationId)
-				parameter("groupId", groupId)
 			}
 			contentType(Application.Json)
 			accept(Application.Json)
