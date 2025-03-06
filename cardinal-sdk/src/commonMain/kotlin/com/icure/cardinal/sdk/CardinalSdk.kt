@@ -164,7 +164,7 @@ import com.icure.cardinal.sdk.options.AuthenticationMethod
 import com.icure.cardinal.sdk.options.EntitiesEncryptedFieldsManifests
 import com.icure.cardinal.sdk.options.JsonPatcher
 import com.icure.cardinal.sdk.options.SdkOptions
-import com.icure.cardinal.sdk.options.getAuthProviderInGroup
+import com.icure.cardinal.sdk.options.getGroupAndAuthProvider
 import com.icure.cardinal.sdk.storage.CardinalStorageFacade
 import com.icure.cardinal.sdk.storage.StorageFacade
 import com.icure.cardinal.sdk.storage.impl.DefaultStorageEntryKeysFactory
@@ -187,6 +187,11 @@ import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.Duration.Companion.seconds
 
 interface CardinalSdk : CardinalApis {
+	/**
+	 * The id of the group this SDK is bound to. Always `null` when working with kraken-lite instances.
+	 */
+	val boundGroupId: String?
+
 	/**
 	 * Represents an intermediate stage in the initialization of an SDK through an authentication process
 	 * The initialization can complete only after the user provides the validation code received via email/sms.
@@ -289,7 +294,7 @@ interface CardinalSdk : CardinalApis {
 			val keysStorage = options.keyStorage ?: JsonAndBase64KeyStorage(baseStorage)
 			val iCureStorage =
 				CardinalStorageFacade(keysStorage, baseStorage, DefaultStorageEntryKeysFactory, cryptoService, false)
-			val authProvider = authenticationMethod.getAuthProviderInGroup(
+			val (chosenGroupId, authProvider) = authenticationMethod.getGroupAndAuthProvider(
 				apiUrl,
 				client,
 				cryptoService,
@@ -305,13 +310,15 @@ interface CardinalSdk : CardinalApis {
 				cryptoStrategies,
 				cryptoService,
 				iCureStorage,
+				chosenGroupId,
 				options,
 			)
 			return CardinalApiImpl(
 				authProvider,
 				json,
 				initializedCrypto,
-				options
+				options,
+				chosenGroupId
 			).also { initializedCrypto.notifyNewKeyIfAny(it, newKey) }
 		}
 
@@ -430,6 +437,7 @@ private suspend fun initializeApiCrypto(
 	cryptoStrategies: CryptoStrategies,
 	cryptoService: CryptoService,
 	iCureStorage: CardinalStorageFacade,
+	groupId: String?,
 	options: SdkOptions
 ): Pair<ApiConfiguration, RsaKeypair<RsaAlgorithm.RsaEncryptionAlgorithm.OaepWithSha256>?> {
 	val dataOwnerApi = DataOwnerApiImpl(RawDataOwnerApiImpl(apiUrl, authProvider, client, json = json))
@@ -596,7 +604,8 @@ private class CardinalApiImpl(
 	private val authProvider: AuthProvider,
 	private val httpClientJson: Json,
 	private val config: ApiConfiguration,
-	private val options: SdkOptions
+	private val options: SdkOptions,
+	override val boundGroupId: String?
 ): CardinalSdk {
 	private val apiUrl get() = config.apiUrl
 	private val client get() = config.httpClient
@@ -1013,13 +1022,15 @@ private class CardinalApiImpl(
 			config.crypto.strategies,
 			config.crypto.primitives,
 			config.storage,
+			groupId,
 			options
 		)
 		return CardinalApiImpl(
 			switchedProvider,
 			httpClientJson,
 			switchedCryptoConfigs,
-			options
+			options,
+			groupId
 		).also { switchedCryptoConfigs.notifyNewKeyIfAny(it, newKey) }
 	}
 }

@@ -194,30 +194,36 @@ fun AuthenticationMethod.getAuthProvider(
 }
 
 /**
- * Get an authentication provider and bind it to a group.
+ * Get an authentication provider, let the user pick a group if needed, then return the chosen group id and auth
+ * provider bound to that group.
  */
 @InternalIcureApi
-internal suspend fun AuthenticationMethod.getAuthProviderInGroup(
+internal suspend fun AuthenticationMethod.getGroupAndAuthProvider(
 	apiUrl: String,
 	httpClient: HttpClient,
 	cryptoService: CryptoService,
 	applicationId: String?,
 	options: CommonSdkOptions,
 	groupSelector: GroupSelector?
-): AuthProvider {
+): Pair<String?, AuthProvider> {
 	val rawAuthApi = RawAnonymousAuthApiImpl(apiUrl, httpClient, json = Serialization.json)
 	val messageGatewayApi = RawMessageGatewayApi(httpClient, cryptoService)
 	val authProvider = getAuthProvider(rawAuthApi, cryptoService, applicationId, options, messageGatewayApi)
 	val userApi = RawUserApiImpl(apiUrl, authProvider, httpClient, json = Serialization.json)
-	val matches = userApi.getMatchingUsers().successBody()
-	val chosenGroupId = if (matches.size > 1) {
-		 requireNotNull(groupSelector) {
-			"The provided credentials allow the user to login to multiple groups, but no group selector is provided"
-		}.invoke(matches)
+	// On local there is no groups, need to handle that possibility
+	val matches = userApi.getMatchingUsers().takeIf { it.status.value != 404 }?.successBody()
+	return if (matches != null) {
+		val chosenGroupId = if (matches.size > 1) {
+			requireNotNull(groupSelector) {
+				"The provided credentials allow the user to login to multiple groups, but no group selector is provided"
+			}.invoke(matches)
+		} else {
+			ensureNonNull(matches.first().groupId) { "Group id of single match is null" }
+		}
+		Pair(chosenGroupId, authProvider.switchGroup(chosenGroupId))
 	} else {
-		ensureNonNull(matches.first().groupId) { "Group id of single match is null" }
+		Pair(null, authProvider)
 	}
-	return authProvider.switchGroup(chosenGroupId)
 }
 
 @InternalIcureApi

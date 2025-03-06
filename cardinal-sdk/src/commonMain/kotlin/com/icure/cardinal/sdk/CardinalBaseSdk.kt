@@ -100,7 +100,7 @@ import com.icure.cardinal.sdk.options.BasicApiConfigurationImpl
 import com.icure.cardinal.sdk.options.BasicSdkOptions
 import com.icure.cardinal.sdk.options.EntitiesEncryptedFieldsManifests
 import com.icure.cardinal.sdk.options.getAuthProvider
-import com.icure.cardinal.sdk.options.getAuthProviderInGroup
+import com.icure.cardinal.sdk.options.getGroupAndAuthProvider
 import com.icure.utils.InternalIcureApi
 import kotlinx.serialization.json.Json
 
@@ -161,13 +161,19 @@ interface CardinalUnboundBaseSdk : CardinalBaseApis {
 			return object : CardinalUnboundBaseSdk, CardinalBaseApis by CardinalBaseSdkImpl(
 				authProvider,
 				json,
-				config
+				config,
+				null
 			) {}
 		}
 	}
 }
 
 interface CardinalBaseSdk : CardinalBaseApis {
+	/**
+	 * The id of the group this SDK is bound to. Always `null` when working with kraken-lite instances.
+	 */
+	val boundGroupId: String?
+
 	/**
 	 * Get a new sdk using the same configurations and user authentication methods but for a different group.
 	 * To use this method, the authentication method provided at initialization of this sdk must be valid also for the
@@ -201,7 +207,7 @@ interface CardinalBaseSdk : CardinalBaseApis {
 			val json = options.configuredJsonOrDefault()
 			val cryptoService = options.cryptoService
 			val apiUrl = baseUrl
-			val authProvider = authenticationMethod.getAuthProviderInGroup(
+			val (chosenGroup, authProvider) = authenticationMethod.getGroupAndAuthProvider(
 				apiUrl,
 				client,
 				cryptoService,
@@ -224,7 +230,8 @@ interface CardinalBaseSdk : CardinalBaseApis {
 			return CardinalBaseSdkImpl(
 				authProvider,
 				json,
-				config
+				config,
+				chosenGroup
 			)
 		}
 	}
@@ -491,11 +498,13 @@ private class CardinalBaseApisImpl(
 private class CardinalBaseSdkImpl(
 	private val authProvider: AuthProvider,
 	private val httpClientJson: Json,
-	private val config: BasicApiConfiguration
+	private val config: BasicApiConfiguration,
+	override val boundGroupId: String?
 ) : CardinalBaseSdk, CardinalBaseApis by CardinalBaseApisImpl(authProvider, httpClientJson, config) {
 	override suspend fun switchGroup(groupId: String): CardinalBaseSdk = CardinalBaseSdkImpl(
 		authProvider.switchGroup(groupId),
 		httpClientJson,
-		config
+		config,
+		groupId
 	)
 }
