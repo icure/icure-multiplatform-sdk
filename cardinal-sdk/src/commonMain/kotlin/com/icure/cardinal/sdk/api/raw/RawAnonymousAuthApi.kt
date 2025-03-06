@@ -3,6 +3,9 @@ package com.icure.cardinal.sdk.api.raw
 import com.icure.cardinal.sdk.model.LoginCredentials
 import com.icure.cardinal.sdk.model.security.jwt.JwtResponse
 import com.icure.utils.InternalIcureApi
+import kotlin.Long
+import kotlin.String
+import kotlin.Unit
 
 // WARNING: This class is auto-generated. If you change it manually, your changes will be lost.
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
