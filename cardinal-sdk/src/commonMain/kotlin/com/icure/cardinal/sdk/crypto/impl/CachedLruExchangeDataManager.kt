@@ -4,6 +4,7 @@ import com.icure.cardinal.sdk.api.DataOwnerApi
 import com.icure.cardinal.sdk.crypto.BaseExchangeDataManager
 import com.icure.cardinal.sdk.crypto.CryptoStrategies
 import com.icure.cardinal.sdk.crypto.UserEncryptionKeysManager
+import com.icure.cardinal.sdk.crypto.entities.DataOwnerReferenceInGroup
 import com.icure.cardinal.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
 import com.icure.cardinal.sdk.crypto.entities.ExchangeDataWithPotentiallyDecryptedContent
 import com.icure.cardinal.sdk.crypto.entities.ExchangeDataWithUnencryptedContent
@@ -11,11 +12,19 @@ import com.icure.cardinal.sdk.crypto.entities.UnencryptedExchangeDataContent
 import com.icure.cardinal.sdk.model.ExchangeData
 import com.icure.cardinal.sdk.model.specializations.Base64String
 import com.icure.cardinal.sdk.model.specializations.SecureDelegationKeyString
-import com.icure.cardinal.sdk.utils.LruCacheWithAsyncRetrieve
+import com.icure.cardinal.sdk.utils.Either
+import com.icure.cardinal.sdk.utils.LruCache
 import com.icure.cardinal.sdk.utils.ResourceNotFoundException
-import com.icure.cardinal.sdk.utils.SynchronisedLruCache
 import com.icure.kryptom.crypto.CryptoService
 import com.icure.utils.InternalIcureApi
+import io.ktor.client.request.request
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.async
+import kotlinx.coroutines.ensureActive
+import kotlinx.coroutines.isActive
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 
 @InternalIcureApi
 class CachedLruExchangeDataManager(
@@ -26,48 +35,103 @@ class CachedLruExchangeDataManager(
 	cryptoService: CryptoService,
 	useParentKeys: Boolean,
 	maxCacheSize: Int,
-) : AbstractExchangeDataManager(
+	sdkGroup: String?,
+	requestGroup: String?,
+	// TODO scope should be a subscope of main SDK scope, so it can be cancelled on reload of caches
+	private val coroutineScope: CoroutineScope
+) : AbstractExchangeDataManagerInGroup(
 	base,
 	userEncryptionKeys,
 	cryptoStrategies,
 	dataOwnerApi,
 	cryptoService,
-	useParentKeys
+	useParentKeys,
+	requestGroup,
+	sdkGroup
 ) {
-	private val exchangeDataByIdCache: LruCacheWithAsyncRetrieve<String, CachedExchangeDataDetails> =
-		LruCacheWithAsyncRetrieve(maxCacheSize)
-	private val delegateToVerifiedExchangeDataId: LruCacheWithAsyncRetrieve<String, String> =
-		LruCacheWithAsyncRetrieve(maxCacheSize)
-	private val secureDelegationKeysToExchangeDataId: SynchronisedLruCache<SecureDelegationKeyString, String> =
-		SynchronisedLruCache(maxCacheSize)
+	private val exchangeDataByIdCache: LruCache<String, Deferred<CachedExchangeDataDetails>> =
+		LruCache(maxCacheSize)
+	private val delegateToVerifiedExchangeDataId =
+		mutableMapOf<String, Deferred<String>>()
+	private val secureDelegationKeysToExchangeDataId =
+		mutableMapOf<SecureDelegationKeyString, String>()
+	private val cacheMutex = Mutex()
+	/*
+	 * If the cache mutex becomes a bottleneck we can try to instead have the cache read be free of lock, and the
+	 * updates to used time be added to a queue that will be processed by a separate thread. This thread is also the
+	 * only one that performs insertions.
+	 */
+
+	private fun doCacheDataMustHaveLock(
+		toCache: CachedExchangeDataDetails
+	) {
+
+	}
 
 	override suspend fun getOrCreateEncryptionDataTo(
-		delegateId: String,
+		delegateReference: DataOwnerReferenceInGroup,
 		allowCreationWithoutDelegateKey: Boolean
 	): ExchangeDataWithUnencryptedContent {
-		val verifiedExchangeDataId = delegateToVerifiedExchangeDataId.getCachedOrRetrieve(
-			delegateId,
-			validate = { getOrRetrieveExchangeDataWithId(it).decryptedContentAndVerificationStatus?.second == true },
-		) {
-			base.getExchangeDataByDelegatorDelegatePair(
-				dataOwnerApi.getCurrentDataOwnerId(),
-				delegateId
-			).firstOrNull {
-				getOrRetrieveExchangeDataWithId(it.id).decryptedContentAndVerificationStatus?.second == true
-			}?.id ?: createAndCacheNewExchangeData(delegateId, allowCreationWithoutDelegateKey).exchangeData.id
+		// Using reference string as normalization
+		val delegateReferenceString = delegateReference.asReferenceStringInGroup(requestGroup, sdkGroup)
+		val retrieved = cacheMutex.withLock {
+			val verifiedExchangeDataId = delegateToVerifiedExchangeDataId[delegateReferenceString]
+			if (verifiedExchangeDataId != null) {
+				Pair(verifiedExchangeDataId, null)
+			} else {
+				val job = coroutineScope.async<Pair<String, ExchangeDataWithUnencryptedContent>> {
+					val verifiedData = base.getExchangeDataByDelegatorDelegatePair(
+						requestGroup,
+						dataOwnerApi.getCurrentDataOwnerReference(),
+						delegateReference
+					).firstNotNullOfOrNull { exchangeData ->
+						this@async.ensureActive()
+						decryptData(exchangeData)?.takeIf {
+							it.second
+						}?.let {
+							Pair(exchangeData, it)
+						}
+					} ?: createNewExchangeData(
+						requestGroup,
+						delegateReference,
+						null,
+						allowCreationWithoutDelegateKey
+					).let {
+						Pair(it.exchangeData, Pair(it.unencryptedContent, true))
+					}
+					cacheMutex.withLock {
+						doCacheDataMustHaveLock(CachedExchangeDataDetails(verifiedData.first, verifiedData.second))
+					}
+					Pair(
+						verifiedData.first.id ,
+						ExchangeDataWithUnencryptedContent(
+							verifiedData.first,
+							verifiedData.second.first
+						)
+					)
+				}
+				delegateToVerifiedExchangeDataId[delegateReferenceString] = coroutineScope.async {
+					job.await().first
+				}
+				Pair(null, job)
+			}
 		}
-		val cachedDetails = getOrRetrieveExchangeDataWithId(verifiedExchangeDataId)
-		return cachedDetails.decryptedContentAndVerificationStatus?.takeIf { it.second }?.let {
-			ExchangeDataWithUnencryptedContent(
-				cachedDetails.exchangeData,
-				it.first
-			)
-		} ?: throw AssertionError("Exchange data with id $verifiedExchangeDataId should be decrypted and verified")
+		return if (retrieved.first != null) {
+			val id = retrieved.first!!.await()
+			val cachedDetails = getOrRetrieveExchangeDataWithIds(listOf(id)).getValue(id)
+			cachedDetails.decryptedContentAndVerificationStatus?.takeIf { it.second }?.let {
+				ExchangeDataWithUnencryptedContent(
+					cachedDetails.exchangeData,
+					it.first
+				)
+			} ?: throw AssertionError("Exchange data with id $id should be decrypted and verified")
+		} else {
+			retrieved.second!!.await().second
+		}
 	}
 
 	override suspend fun getCachedDecryptionDataKeyByAccessControlHash(
-		hashes: Collection<SecureDelegationKeyString>,
-		entityType: EntityWithEncryptionMetadataTypeName
+		hashes: Set<SecureDelegationKeyString>
 	): Map<SecureDelegationKeyString, ExchangeDataWithUnencryptedContent> {
 		val hashesToExchangeDataId = secureDelegationKeysToExchangeDataId.getMany(hashes)
 		val exchangeData = getOrRetrieveExchangeDataWithIds(hashesToExchangeDataId.values.toList())
@@ -82,8 +146,8 @@ class CachedLruExchangeDataManager(
 		}.toMap()
 	}
 
-	override suspend fun getDecryptionDataById(
-		id: String,
+	override suspend fun getDecryptionDataByIds(
+		ids: Set<String>,
 		retrieveIfNotCached: Boolean
 	): ExchangeDataWithPotentiallyDecryptedContent? = (
 		if (retrieveIfNotCached) {
@@ -96,12 +160,6 @@ class CachedLruExchangeDataManager(
 			it.exchangeData,
 			it.decryptedContentAndVerificationStatus?.first
 		)
-	}
-
-	override suspend fun clearOrRepopulateCache() {
-		exchangeDataByIdCache.clear()
-		delegateToVerifiedExchangeDataId.clear()
-		secureDelegationKeysToExchangeDataId.clear()
 	}
 
 	private suspend fun getOrRetrieveExchangeDataWithId(exchangeDataId: String): CachedExchangeDataDetails =
@@ -131,8 +189,16 @@ class CachedLruExchangeDataManager(
 		)
 	}
 
-	private suspend fun createAndCacheNewExchangeData(delegateId: String, allowCreationWithoutDelegateKey: Boolean): CachedExchangeDataDetails =
-		createNewExchangeData(delegateId, null, allowCreationWithoutDelegateKey).let {
+	private suspend fun createAndCacheNewExchangeData(
+		delegateReference: DataOwnerReferenceInGroup,
+		allowCreationWithoutDelegateKey: Boolean
+	): CachedExchangeDataDetails =
+		createNewExchangeData(
+			requestGroup,
+			delegateReference,
+			null,
+			allowCreationWithoutDelegateKey
+		).let {
 			CachedExchangeDataDetails(
 				it.exchangeData,
 				it.unencryptedContent to true,

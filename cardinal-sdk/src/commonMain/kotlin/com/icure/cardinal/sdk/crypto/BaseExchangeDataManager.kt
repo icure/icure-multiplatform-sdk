@@ -1,6 +1,7 @@
 package com.icure.cardinal.sdk.crypto
 
 import com.icure.cardinal.sdk.api.raw.RawExchangeDataApi
+import com.icure.cardinal.sdk.crypto.entities.DataOwnerReferenceInGroup
 import com.icure.cardinal.sdk.crypto.entities.DecryptionResult
 import com.icure.cardinal.sdk.crypto.entities.ExchangeDataWithUnencryptedContent
 import com.icure.cardinal.sdk.crypto.entities.RawDecryptedExchangeData
@@ -41,7 +42,11 @@ interface BaseExchangeDataManager {
 	 * @param delegateId id of a delegate data owner.
 	 * @return all exchange data for the provided delegator-delegate pair.
 	 */
-	suspend fun getExchangeDataByDelegatorDelegatePair(delegatorId: String, delegateId: String): List<ExchangeData>
+	suspend fun getExchangeDataByDelegatorDelegatePair(
+		inGroup: String?,
+		delegatorReference: DataOwnerReferenceInGroup,
+		delegateReference: DataOwnerReferenceInGroup,
+	): List<ExchangeData>
 
 	/**
 	 * Get the exchange data with the provided id.
@@ -120,7 +125,8 @@ interface BaseExchangeDataManager {
 	 * @return the newly created exchange data, and its decrypted exchange key and access control secret.
 	 */
 	suspend fun createExchangeData(
-		delegateId: String,
+		inGroup: String?,
+		delegateReference: DataOwnerReferenceInGroup,
 		signatureKeys: SelfVerifiedKeysSet,
 		encryptionKeys: VerifiedRsaEncryptionKeysSet,
 		exchangeDataId: String? = null

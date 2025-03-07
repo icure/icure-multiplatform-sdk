@@ -23,6 +23,11 @@ class LruCache<K : Any, V : Any>(
 	)
 
 	/**
+	 * Current size of the cache
+	 */
+	val size: Int get() = cache.size
+
+	/**
 	 * Get the value cached for [key] or null if there is no cached value.
 	 */
 	fun get(key: K): V? =
@@ -39,13 +44,15 @@ class LruCache<K : Any, V : Any>(
 		setUsed(node)
 	}
 
-	private fun evictOldest() {
+	/**
+	 * Evict the oldest entry in the cache, returns null if there is no entry to evict
+	 */
+	fun evictOldest(): V? =
 		firstNode?.also { oldest ->
 			cache.remove(oldest.key)
 			firstNode = oldest.next
 			firstNode?.prev = null
-		}
-	}
+		}?.value
 
 	private fun setUsed(node: CacheNode<K, V>) {
 		if (node !== lastNode) {

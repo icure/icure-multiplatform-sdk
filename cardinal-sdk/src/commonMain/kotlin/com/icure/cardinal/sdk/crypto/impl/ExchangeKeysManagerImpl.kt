@@ -9,12 +9,14 @@ import com.icure.cardinal.sdk.crypto.UserEncryptionKeysManager
 import com.icure.utils.InternalIcureApi
 import com.icure.cardinal.sdk.utils.InternalCardinalException
 import com.icure.cardinal.sdk.utils.LruCacheWithAsyncRetrieve
+import kotlinx.coroutines.CoroutineScope
 
 @InternalIcureApi
 class ExchangeKeysManagerImpl(
 	private val dataOwnerApi: DataOwnerApi,
 	override val base: BaseExchangeKeysManager,
-	private val userKeysManager: UserEncryptionKeysManager
+	private val userKeysManager: UserEncryptionKeysManager,
+	private val cacheLoaderScope: CoroutineScope
 ) : ExchangeKeysManager {
 	companion object {
 		private const val DEFAULT_CACHE_SIZE = 500
@@ -24,17 +26,18 @@ class ExchangeKeysManagerImpl(
 	private val cache = LruCacheWithAsyncRetrieve<Pair<String, String>, List<AesKey<AesAlgorithm.CbcWithPkcs7Padding>>>(DEFAULT_CACHE_SIZE)
 
 	override suspend fun getDecryptionExchangeKeysFor(delegatorId: String, delegateId: String): List<AesKey<AesAlgorithm.CbcWithPkcs7Padding>> {
-		if (delegatorId == dataOwnerApi.getCurrentDataOwnerId() || delegateId in dataOwnerApi.getCurrentDataOwnerHierarchyIds()) {
-			return cache.getCachedOrRetrieve(delegatorId to delegateId) {
-				val encryptedKeys = base.getEncryptedExchangeKeysFor(delegatorId, delegateId)
-				base.tryDecryptExchangeKeys(encryptedKeys, userKeysManager.getDecryptionKeys(true)).successfulDecryptions
-			}
-		} else throw InternalCardinalException(
-			"Delegator $delegatorId is not the current data owner and delegate $delegateId is not part of the current data owner hierarchy: can't get exchange key"
-		)
+		// TODO preload everything instead using coroutineScope
+//		if (delegatorId == dataOwnerApi.getCurrentDataOwnerId() || delegateId in dataOwnerApi.getCurrentDataOwnerHierarchyIds()) {
+//			return cache.getCachedOrRetrieve(delegatorId to delegateId) {
+//				val encryptedKeys = base.getEncryptedExchangeKeysFor(delegatorId, delegateId)
+//				base.tryDecryptExchangeKeys(encryptedKeys, userKeysManager.getDecryptionKeys(true)).successfulDecryptions
+//			}
+//		} else throw InternalCardinalException(
+//			"Delegator $delegatorId is not the current data owner and delegate $delegateId is not part of the current data owner hierarchy: can't get exchange key"
+//		)
 	}
 
-	override suspend fun clearCache(includeKeysFromCurrentDataOwner: Boolean) {
-		cache.clear()
+	override fun reloadCache(includeKeysFromCurrentDataOwner: Boolean) {
+		// TODO
 	}
 }

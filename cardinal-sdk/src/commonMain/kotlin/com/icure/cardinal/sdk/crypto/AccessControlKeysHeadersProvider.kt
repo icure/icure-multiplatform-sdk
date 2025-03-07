@@ -13,5 +13,5 @@ interface AccessControlKeysHeadersProvider {
 	 * @return the values for an header containing access control keys for the given entity type. Note that these values
 	 * should not be concatenated into a single header entry, and instead the header should be repeated for each entry.
 	 */
-	suspend fun getAccessControlKeysHeadersFor(entityType: EntityWithEncryptionMetadataTypeName): List<String>
+	suspend fun getAccessControlKeysHeadersFor(groupId: String?, entityType: EntityWithEncryptionMetadataTypeName): List<String>
 }

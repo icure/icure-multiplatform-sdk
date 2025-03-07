@@ -98,31 +98,5 @@ class LegacyDelegationsDecryptor(
 	private fun populateDelegatedTo(delegateId: String, delegations: Collection<Delegation>): Set<Delegation> =
 		delegations.mapTo(mutableSetOf()) { it.copy(delegatedTo = delegateId) }
 
-	private suspend fun <T : Any> tryDecryptDelegation(
-		delegation: Delegation,
-		tryImportDecrypted: suspend (String) -> T?
-	): DecryptedMetadataDetails<T>? {
-		if (delegation.key == null) {
-			log.w { "Can't decrypt delegation due to missing content" }
-			return null
-		}
-		if (delegation.owner == null || delegation.delegatedTo == null) {
-			log.w { "Can't decrypt delegation due to missing delegator and/or delegate id" }
-			return null
-		}
-		val exchangeKeys = exchangeKeysManager.getDecryptionExchangeKeysFor(
-			delegatorId = delegation.owner,
-			delegateId = delegation.delegatedTo,
-		)
-		return exchangeKeys.firstNotNullOfOrNull {
-			kotlin.runCatching {
-				cryptoService.aes.decrypt(delegation.key.decodedBytes(), it)
-					// Legacy delegation contain the string entityId:content, and entityId was supposed to be a checksum to ensure the decryption was successful
-					// Unfortunately since different entities may be merged into one and all the secret ids need to be preserved this is not possible anymore
-					.decodeToString().split(":").takeIf { it.size == 2 }?.last()
-					?.let { tryImportDecrypted(it) }
-					?.let { DecryptedMetadataDetails(it, setOf(delegation.owner, delegation.delegatedTo)) }
-			}.getOrNull()
-		}
-	}
+
 }

@@ -547,7 +547,8 @@ private suspend fun initializeApiCrypto(
 		cryptoService,
 		jsonEncryptionService,
 		options.useHierarchicalDataOwners,
-		options.autoCreateEncryptionKeyForExistingLegacyData
+		options.autoCreateEncryptionKeyForExistingLegacyData,
+		groupId
 	)
 	val headersProvider: AccessControlKeysHeadersProvider =
 		if (selfIsAnonymous)

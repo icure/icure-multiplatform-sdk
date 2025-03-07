@@ -4,6 +4,7 @@ import com.icure.cardinal.sdk.api.DataOwnerApi
 import com.icure.cardinal.sdk.api.raw.RawExchangeDataApi
 import com.icure.cardinal.sdk.api.raw.successBodyOrNull404
 import com.icure.cardinal.sdk.crypto.BaseExchangeDataManager
+import com.icure.cardinal.sdk.crypto.entities.DataOwnerReferenceInGroup
 import com.icure.cardinal.sdk.crypto.entities.DecryptionResult
 import com.icure.cardinal.sdk.crypto.entities.ExchangeDataWithUnencryptedContent
 import com.icure.cardinal.sdk.crypto.entities.RawDecryptedExchangeData
@@ -18,7 +19,6 @@ import com.icure.cardinal.sdk.model.specializations.KeypairFingerprintV2String
 import com.icure.cardinal.sdk.utils.base64Encode
 import com.icure.cardinal.sdk.utils.decode
 import com.icure.cardinal.sdk.utils.ensure
-import com.icure.cardinal.sdk.utils.getLogger
 import com.icure.cardinal.sdk.utils.pagination.exhaustPaginatedRequest
 import com.icure.cardinal.sdk.utils.validateResponseContent
 import com.icure.kryptom.crypto.AesAlgorithm
@@ -42,11 +42,9 @@ class BaseExchangeDataManagerImpl(
 	override val raw: RawExchangeDataApi,
 	private val dataOwnerApi: DataOwnerApi,
 	private val cryptoService: CryptoService,
-	private val selfIsAnonymousDataOwner: Boolean
+	private val selfIsAnonymousDataOwner: Boolean,
+	private val boundGroupId: String?
 ) : BaseExchangeDataManager {
-	companion object {
-		private val log = getLogger("BaseExchangeDataManager")
-	}
 
 	override suspend fun getAllExchangeDataForCurrentDataOwnerIfAllowed(): List<ExchangeData>? {
 		if (!selfIsAnonymousDataOwner) return null
@@ -131,7 +129,8 @@ class BaseExchangeDataManagerImpl(
 		)
 
 	override suspend fun createExchangeData(
-		delegateId: String,
+		inGroup: String?,
+		delegateReference: DataOwnerReferenceInGroup,
 		signatureKeys: SelfVerifiedKeysSet,
 		encryptionKeys: VerifiedRsaEncryptionKeysSet,
 		exchangeDataId: String?
@@ -145,11 +144,12 @@ class BaseExchangeDataManagerImpl(
 		val encryptedExchangeKey = cryptoService.encryptDataWithKeys(rawExchangeKey, encryptionKeys, KeyIdentifierFormat.FingerprintV2)
 		val encryptedSharedSignatureKey = cryptoService.encryptDataWithKeys(rawSharedSignatureKey, encryptionKeys, KeyIdentifierFormat.FingerprintV2)
 		val encryptedAccessControlSecret = cryptoService.encryptDataWithKeys(rawAccessControlSecret, encryptionKeys, KeyIdentifierFormat.FingerprintV2)
-		val delegator = dataOwnerApi.getCurrentDataOwnerId()
+		val delegatorReferenceString = dataOwnerApi.getCurrentDataOwnerReference().asReferenceStringInGroup(inGroup, boundGroupId)
+		val delegateReferenceString = delegateReference.asReferenceStringInGroup(inGroup, boundGroupId)
 		val sharedSignature = cryptoService.hmac.sign(
 			bytesToSignForSharedSignature(
-				delegator = delegator,
-				delegate = delegateId,
+				delegator = delegatorReferenceString,
+				delegate = delegateReferenceString,
 				decryptedAccessControlSecret = accessControlSecret,
 				decryptedExchangeKey = exchangeKey,
 				publicKeysFingerprints = encryptionKeys.allKeys.mapTo(mutableSetOf()) { it.pubSpkiHexString.fingerprintV2() }
@@ -165,8 +165,8 @@ class BaseExchangeDataManagerImpl(
 		}
 		val exchangeData = ExchangeData(
 			id = exchangeDataId ?: cryptoService.strongRandom.randomUUID(),
-			delegator = delegator,
-			delegate = delegateId,
+			delegator = delegatorReferenceString,
+			delegate = delegateReferenceString,
 			exchangeKey = encryptedExchangeKey,
 			accessControlSecret = encryptedAccessControlSecret,
 			sharedSignatureKey = encryptedSharedSignatureKey,
