@@ -53,7 +53,10 @@ interface BaseExchangeDataManager {
 	 * @param exchangeDataId id of the exchange data.
 	 * @return the exchange data with the provided id or undefined if no exchange data with such id could be found.
 	 */
-	suspend fun getExchangeDataById(exchangeDataId: String): ExchangeData?
+	suspend fun getExchangeDataByIds(
+		inGroup: String?,
+		exchangeDataIds: Collection<String>
+	): List<ExchangeData>
 
 	/**
 	 * Verifies the authenticity of the exchange data by checking the signature.

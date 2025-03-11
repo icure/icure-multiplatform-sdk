@@ -74,12 +74,13 @@ abstract class AbstractExchangeDataManagerInGroup(
 ) {
 	protected data class CachedExchangeDataDetails(
 		val exchangeData: ExchangeData,
-		/**
-		 * If it could be decrypted a pair with
-		 * 1. the decrypted content
-		 * 2. If the data was verified
-		 */
-		val decryptedContentAndVerificationStatus: Pair<UnencryptedExchangeDataContent, Boolean>?
+		val decryptedDetails: CachedDecryptedDetails?
+	)
+
+	protected data class CachedDecryptedDetails(
+		val decryptedContent: UnencryptedExchangeDataContent,
+		val verified: Boolean,
+		val secureDelegationKeys: Set<SecureDelegationKeyString>
 	)
 
 	protected suspend fun decryptData(
@@ -118,7 +119,6 @@ abstract class AbstractExchangeDataManagerInGroup(
 	}
 
 	protected suspend fun createNewExchangeData(
-		inGroup: String?,
 		delegateReference: DataOwnerReferenceInGroup,
 		newDataId: String?,
 		allowNoDelegateKeys: Boolean
@@ -150,7 +150,7 @@ abstract class AbstractExchangeDataManagerInGroup(
 		} else emptyList()
 		val allEncryptionKeys = VerifiedRsaEncryptionKeysSet(selfEncryptionKeys + verifiedDelegateKeys)
 		return base.createExchangeData(
-			inGroup,
+			requestGroup,
 			delegateReference,
 			SelfVerifiedKeysSet(userEncryptionKeys.getSelfVerifiedKeys().map { it.toPrivateKeyInfo() }),
 			allEncryptionKeys,
@@ -167,7 +167,7 @@ abstract class AbstractExchangeDataManagerInGroup(
 	): Map<SecureDelegationKeyString, ExchangeDataWithUnencryptedContent>
 	abstract suspend fun getDecryptionDataByIds(
 		ids: Set<String>,
-		retrieveIfNotCached: Boolean,
+		waitOrRetrieveUncached: Boolean,
 	): Map<String, ExchangeDataWithPotentiallyDecryptedContent>
 	abstract suspend fun getEncodedAccessControlKeysValue(
 		entityType: EntityWithEncryptionMetadataTypeName
@@ -175,4 +175,5 @@ abstract class AbstractExchangeDataManagerInGroup(
 	abstract suspend fun getAccessControlKeysValue(
 		entityType: EntityWithEncryptionMetadataTypeName
 	): List<SecureDelegationKeyString>?
+	abstract fun dispose()
 }

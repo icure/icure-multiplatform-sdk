@@ -56,8 +56,9 @@ interface ExchangeDataManager {
 	 * allowed by [retrieveIfNotCached]) and attempts to decrypt it, then caches the result.
 	 * @param groupId the id of the group where the exchange data is stored.
 	 * @param ids ids of the exchange datas to retrieve
-	 * @param retrieveIfNotCached if false only cached data will be returned, and the access control hases options will be
-	 * ignored
+	 * @param waitOrRetrieveUncached if false only data that has already been retrieved will be returned: it will not
+	 * try to get any uncached exchange data, and it will not wait for existing but incomplete retrieve jobs to
+	 * complete.
 	 * @return a map containing the exchange data id associated with:
 	 * - exchangeData: the exchange data with the provided id
 	 * - exchangeKey: the exchange key corresponding to the provided exchange data if it could be decrypted, else undefined
@@ -66,7 +67,7 @@ interface ExchangeDataManager {
 	suspend fun getDecryptionDataByIds(
 		groupId: String?,
 		ids: Set<String>,
-		retrieveIfNotCached: Boolean,
+		waitOrRetrieveUncached: Boolean,
 	): Map<String, ExchangeDataWithPotentiallyDecryptedContent>
 
 	/**
