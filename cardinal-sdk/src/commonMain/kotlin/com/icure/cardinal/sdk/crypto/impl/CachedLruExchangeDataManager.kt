@@ -37,10 +37,45 @@ class CachedLruExchangeDataManager(
 	dataOwnerApi: DataOwnerApi,
 	cryptoService: CryptoService,
 	useParentKeys: Boolean,
-	private val maxCacheSize: Int,
+	sdkScope: CoroutineScope,
+	sdkGroup: String?
+) : AbstractExchangeDataManager(
+	base,
+	userEncryptionKeys,
+	cryptoStrategies,
+	dataOwnerApi,
+	cryptoService,
+	useParentKeys,
+	sdkScope,
+	sdkGroup
+) {
+	override fun createManagerForGroup(groupId: String?): AbstractExchangeDataManagerInGroup =
+		CachedLruExchangeDataManagerInGroup(
+			base = base,
+			userEncryptionKeys = userEncryptionKeys,
+			cryptoStrategies = cryptoStrategies,
+			dataOwnerApi = dataOwnerApi,
+			cryptoService = cryptoService,
+			useParentKeys = useParentKeys,
+			sdkGroup = sdkGroup,
+			sdkScope = sdkScope,
+			requestGroup = groupId,
+			maxCacheSize = 500
+		)
+}
+
+@InternalIcureApi
+private class CachedLruExchangeDataManagerInGroup(
+	base: BaseExchangeDataManager,
+	userEncryptionKeys: UserEncryptionKeysManager,
+	cryptoStrategies: CryptoStrategies,
+	dataOwnerApi: DataOwnerApi,
+	cryptoService: CryptoService,
+	useParentKeys: Boolean,
 	sdkGroup: String?,
+	sdkScope: CoroutineScope,
 	requestGroup: String?,
-	baseScope: CoroutineScope
+	private val maxCacheSize: Int
 ) : AbstractExchangeDataManagerInGroup(
 	base,
 	userEncryptionKeys,
@@ -58,7 +93,7 @@ class CachedLruExchangeDataManager(
 	 * Limited parallelism 1 needed by implementation of cache to ensure consistency.
 	 */
 	private val cacheRequestsScope = CoroutineScope(
-		Dispatchers.Default.limitedParallelism(1) + SupervisorJob(baseScope.coroutineContext.job)
+		Dispatchers.Default.limitedParallelism(1) + SupervisorJob(sdkScope.coroutineContext.job)
 	)
 	private val exchangeDataByIdCache: LruCache<String, Deferred<CachedExchangeDataDetails>> =
 		LruCache(maxCacheSize.coerceAtLeast(1)) // If cache is not at least 1 stuff is going to behave weird

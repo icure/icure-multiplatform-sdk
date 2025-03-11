@@ -34,9 +34,43 @@ class FullyCachedExchangeDataManager(
 	dataOwnerApi: DataOwnerApi,
 	cryptoService: CryptoService,
 	useParentKeys: Boolean,
+	sdkScope: CoroutineScope,
+	sdkGroup: String?
+) : AbstractExchangeDataManager(
+	base,
+	userEncryptionKeys,
+	cryptoStrategies,
+	dataOwnerApi,
+	cryptoService,
+	useParentKeys,
+	sdkScope,
+	sdkGroup
+) {
+	override fun createManagerForGroup(groupId: String?): AbstractExchangeDataManagerInGroup =
+		FullyCachedExchangeDataManagerInGroup(
+			base = base,
+			userEncryptionKeys = userEncryptionKeys,
+			cryptoStrategies = cryptoStrategies,
+			dataOwnerApi = dataOwnerApi,
+			cryptoService = cryptoService,
+			useParentKeys = useParentKeys,
+			sdkGroup = sdkGroup,
+			sdkScope = sdkScope,
+			requestGroup = groupId
+		)
+}
+
+@InternalIcureApi
+private class FullyCachedExchangeDataManagerInGroup(
+	base: BaseExchangeDataManager,
+	userEncryptionKeys: UserEncryptionKeysManager,
+	cryptoStrategies: CryptoStrategies,
+	dataOwnerApi: DataOwnerApi,
+	cryptoService: CryptoService,
+	useParentKeys: Boolean,
 	sdkGroup: String?,
-	requestGroup: String?,
-	baseScope: CoroutineScope
+	sdkScope: CoroutineScope,
+	requestGroup: String?
 ) : AbstractExchangeDataManagerInGroup(
 	base,
 	userEncryptionKeys,
@@ -63,7 +97,7 @@ class FullyCachedExchangeDataManager(
 				)
 			}
 	}
-	private val cacheUpdateAndNewDataCreationScope = CoroutineScope(Dispatchers.Default + SupervisorJob(baseScope.coroutineContext.job))
+	private val cacheUpdateAndNewDataCreationScope = CoroutineScope(Dispatchers.Default + SupervisorJob(sdkScope.coroutineContext.job))
 	@Volatile
 	private var caches: Deferred<Caches> = cacheUpdateAndNewDataCreationScope.async { getAllKeysInfo() }
 	private val creationJobs = mutableMapOf<String, Deferred<ExchangeDataWithUnencryptedContent>>()

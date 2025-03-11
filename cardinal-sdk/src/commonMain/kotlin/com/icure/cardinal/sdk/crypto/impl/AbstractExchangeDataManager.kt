@@ -17,26 +17,32 @@ import com.icure.cardinal.sdk.crypto.entities.toPrivateKeyInfo
 import com.icure.cardinal.sdk.crypto.entities.toPublicKeyInfo
 import com.icure.cardinal.sdk.model.ExchangeData
 import com.icure.cardinal.sdk.model.extensions.algorithmOfEncryptionKey
-import com.icure.cardinal.sdk.model.specializations.AccessControlSecret
 import com.icure.cardinal.sdk.model.specializations.Base64String
 import com.icure.cardinal.sdk.model.specializations.SecureDelegationKeyString
 import com.icure.cardinal.sdk.model.specializations.SpkiHexString
-import com.icure.kryptom.crypto.AesAlgorithm
-import com.icure.kryptom.crypto.AesKey
 import com.icure.kryptom.crypto.CryptoService
-import com.icure.kryptom.crypto.HmacAlgorithm
-import com.icure.kryptom.crypto.HmacKey
 import com.icure.utils.InternalIcureApi
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
+import kotlin.concurrent.Volatile
 
 @InternalIcureApi
 abstract class AbstractExchangeDataManager(
 	override val base: BaseExchangeDataManager,
-	private val userEncryptionKeys: UserEncryptionKeysManager,
-	private val cryptoStrategies: CryptoStrategies,
+	protected val userEncryptionKeys: UserEncryptionKeysManager,
+	protected val cryptoStrategies: CryptoStrategies,
 	protected val dataOwnerApi: DataOwnerApi,
 	protected val cryptoService: CryptoService,
-	private val useParentKeys: Boolean
+	protected val useParentKeys: Boolean,
+	protected val sdkScope: CoroutineScope,
+	protected val sdkGroup: String?
 ) : ExchangeDataManager {
+	// TODO No limit to the amount of groupBoundManagers, currently should be fine for most applications
+	@Volatile
+	private var groupBoundManagers: Map<String?, AbstractExchangeDataManagerInGroup> = mapOf()
+	private val createMutex = Mutex()
+
 	override suspend fun giveAccessBackTo(otherDataOwner: String, newDataOwnerPublicKey: SpkiHexString) {
 		val self = dataOwnerApi.getCurrentDataOwnerId()
 		val other = dataOwnerApi.getCryptoActorStub(otherDataOwner)
@@ -46,9 +52,21 @@ abstract class AbstractExchangeDataManager(
 		)
 		val decryptionKeys = userEncryptionKeys.getDecryptionKeys(true)
 		val allExchangeDataToUpdate = if (self == otherDataOwner) {
-			base.getExchangeDataByDelegatorDelegatePair(self, self)
+			base.getExchangeDataByDelegatorDelegatePair(
+				null,
+				DataOwnerReferenceInGroup(self),
+				DataOwnerReferenceInGroup(self)
+			)
 		} else {
-			base.getExchangeDataByDelegatorDelegatePair(self, otherDataOwner) + base.getExchangeDataByDelegatorDelegatePair(otherDataOwner, self)
+			base.getExchangeDataByDelegatorDelegatePair(
+				null,
+				DataOwnerReferenceInGroup(self),
+				DataOwnerReferenceInGroup(otherDataOwner)
+			) + base.getExchangeDataByDelegatorDelegatePair(
+				null,
+				DataOwnerReferenceInGroup(otherDataOwner),
+				DataOwnerReferenceInGroup(self)
+			)
 		}
 		// Can improve with batch but there should not be many anyway and it is a rare operation
 		allExchangeDataToUpdate.forEach {
@@ -59,6 +77,59 @@ abstract class AbstractExchangeDataManager(
 			)
 		}
 	}
+
+	override suspend fun clearOrRepopulateCache() =
+		createMutex.withLock {
+			groupBoundManagers.also {
+				groupBoundManagers = emptyMap()
+			}
+		}.values.forEach { it.dispose() }
+
+	override suspend fun getOrCreateEncryptionDataTo(
+		groupId: String?,
+		delegateReference: DataOwnerReferenceInGroup,
+		allowCreationWithoutDelegateKey: Boolean
+	): ExchangeDataWithUnencryptedContent =
+		getOrCreateManagerInGroup(groupId).getOrCreateEncryptionDataTo(
+			delegateReference,
+			allowCreationWithoutDelegateKey
+		)
+
+	override suspend fun getCachedDecryptionDataKeyByAccessControlHash(
+		groupId: String?,
+		hashes: Set<SecureDelegationKeyString>
+	): Map<SecureDelegationKeyString, ExchangeDataWithUnencryptedContent> =
+		getOrCreateManagerInGroup(groupId).getCachedDecryptionDataKeyByAccessControlHash(hashes)
+
+	override suspend fun getDecryptionDataByIds(
+		groupId: String?,
+		ids: Set<String>,
+		waitOrRetrieveUncached: Boolean
+	): Map<String, ExchangeDataWithPotentiallyDecryptedContent> =
+		getOrCreateManagerInGroup(groupId).getDecryptionDataByIds(ids, waitOrRetrieveUncached)
+
+	override suspend fun getEncodedAccessControlKeysValue(
+		groupId: String?,
+		entityType: EntityWithEncryptionMetadataTypeName
+	): List<Base64String>? =
+		getOrCreateManagerInGroup(groupId).getEncodedAccessControlKeysValue(entityType)
+
+	override suspend fun getAccessControlKeysValue(
+		groupId: String?,
+		entityType: EntityWithEncryptionMetadataTypeName
+	): List<SecureDelegationKeyString>? =
+		getOrCreateManagerInGroup(groupId).getAccessControlKeysValue(entityType)
+
+	private suspend fun getOrCreateManagerInGroup(groupId: String?): AbstractExchangeDataManagerInGroup {
+		val normalizedGroupId = groupId?.takeIf { it != sdkGroup }
+		return groupBoundManagers[normalizedGroupId] ?: createMutex.withLock {
+			groupBoundManagers[normalizedGroupId] ?: createManagerForGroup(normalizedGroupId).also {
+				groupBoundManagers += normalizedGroupId to it
+			}
+		}
+	}
+
+	protected abstract fun createManagerForGroup(groupId: String?): AbstractExchangeDataManagerInGroup
 }
 
 @InternalIcureApi
