@@ -43,6 +43,7 @@ class InternalCryptoApiImpl(
 		dataOwnerApi.clearCurrentDataOwnerIdsCache()
 		userEncryptionKeysManager.reloadKeys()
 		exchangeDataManager.clearOrRepopulateCache()
+		exchangeKeysManager.requestCacheReload()
 	}
 }
 

@@ -25,6 +25,9 @@ import com.icure.kryptom.crypto.PublicRsaKey
 import com.icure.kryptom.crypto.RsaAlgorithm
 import com.icure.kryptom.utils.toHexString
 import com.icure.utils.InternalIcureApi
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 
@@ -57,17 +60,15 @@ class BaseExchangeKeysManagerImpl(
 	override suspend fun getEncryptedExchangeKeysFor(
 		delegatorId: String,
 		delegateId: String
-	): List<Map<KeypairFingerprintV1String?, HexString>> {
+	): List<Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>> {
 		val delegator = dataOwnerApi.getCryptoActorStub(delegatorId)
 		val legacyDelegation = delegator.stub.hcPartyKeys[delegateId]?.get(1)
-		val aesExchangeKeys: List<Map<KeypairFingerprintV1String?, HexString>> =
+		val aesExchangeKeys: List<Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>> =
 			delegator.stub.aesExchangeKeys.values.mapNotNull { delegateToExchangeKeyForDelegatorKeypair ->
-				delegateToExchangeKeyForDelegatorKeypair[delegateId]?.mapKeys {
-					it.key.toFingerprintV1OrNull()
-				}
+				delegateToExchangeKeyForDelegatorKeypair[delegateId]
 			}
 		return if (legacyDelegation != null)
-			aesExchangeKeys + mapOf(null to legacyDelegation)
+			aesExchangeKeys + mapOf(AesExchangeKeyEncryptionKeypairIdentifier("") to legacyDelegation)
 		else
 			aesExchangeKeys
 	}
@@ -86,13 +87,16 @@ class BaseExchangeKeysManagerImpl(
 	override suspend fun getAllExchangeKeysWith(
 		dataOwnerId: String,
 		otherOwnerTypes: Set<DataOwnerType>
-	): DataOwnerExchangeKeys {
-		val keysToOwner = otherOwnerTypes.fold(emptyMap<String, Map<String, Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>>>()) { acc, ownerType ->
-			acc + when (ownerType) {
-				DataOwnerType.Hcp -> aesExchangeKeysFromHcpsToDelegate(dataOwnerId)
-				DataOwnerType.Patient -> aesExchangeKeysFromPatientsToDelegate(dataOwnerId)
-				DataOwnerType.Device -> aesExchangeKeysFromDevicesToDelegate(dataOwnerId)
+	): DataOwnerExchangeKeys = coroutineScope {
+		val allValues = otherOwnerTypes.map {
+			when (it) {
+				DataOwnerType.Hcp -> async { aesExchangeKeysFromHcpsToDelegate(dataOwnerId) }
+				DataOwnerType.Patient -> async { aesExchangeKeysFromPatientsToDelegate(dataOwnerId) }
+				DataOwnerType.Device -> async { aesExchangeKeysFromDevicesToDelegate(dataOwnerId) }
 			}
+		}.awaitAll()
+		val keysToOwner = allValues.fold(emptyMap<String, Map<String, Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>>>()) { acc, retrievedData ->
+			acc + retrievedData
 		}
 		val dataOwner = dataOwnerApi.getCryptoActorStub(dataOwnerId)
 		val allDataOwnerKeys = combineDataOwnerAesExchangeKeysWithHcpartyKeys(dataOwner, emptyList())
@@ -102,7 +106,7 @@ class BaseExchangeKeysManagerImpl(
 		val filteredKeysFromOwner = allDataOwnerKeys.flatMap { (_, dataByDelegate) ->
 			dataByDelegate.toList().filter { it.first in acceptedDelegates }
 		}.groupBy { it.first }.mapValues { (_, v) -> v.map { it.second } }.filterValues { it.isNotEmpty() }
-		return DataOwnerExchangeKeys(
+		DataOwnerExchangeKeys(
 			dataOwnerId,
 			exchangeKeysByDataOwnerTo = filteredKeysFromOwner,
 			exchangeKeysToDataOwnerFrom = keysToOwner.flatMap { (delegator, keyInfo) ->
@@ -112,10 +116,10 @@ class BaseExchangeKeysManagerImpl(
 	}
 
 	override suspend fun tryDecryptExchangeKeys(
-		encryptedExchangeKeys: List<Map<KeypairFingerprintV1String?, HexString>>,
+		encryptedExchangeKeys: List<Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>>,
 		keyPairsByFingerprint: RsaDecryptionKeysSet
-	): DecryptionResult<Map<KeypairFingerprintV1String?, HexString>, AesKey<AesAlgorithm.CbcWithPkcs7Padding>> {
-		val failed = mutableListOf<Map<KeypairFingerprintV1String?, HexString>>()
+	): DecryptionResult<Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>, AesKey<AesAlgorithm.CbcWithPkcs7Padding>> {
+		val failed = mutableListOf<Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>>()
 		val successful = mutableListOf<AesKey<AesAlgorithm.CbcWithPkcs7Padding>>()
 		val foundRawKeysHex = mutableSetOf<String>()
 		encryptedExchangeKeys.forEach {
@@ -131,10 +135,11 @@ class BaseExchangeKeysManagerImpl(
 	}
 
 	private suspend fun tryDecryptExchangeKey(
-		encryptedExchangeKey: Map<KeypairFingerprintV1String?, HexString>,
+		encryptedExchangeKey: Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>,
 		keyPairsByFingerprint: RsaDecryptionKeysSet
 	): AesKey<AesAlgorithm.CbcWithPkcs7Padding>? =
-		encryptedExchangeKey.firstNotNullOfOrNull { (fp, encryptedKey) ->
+		encryptedExchangeKey.firstNotNullOfOrNull { (keypairIdentifier, encryptedKey) ->
+			val fp = keypairIdentifier.toFingerprintV1OrNull()
 			if (fp != null)
 				keyPairsByFingerprint.getByFingerprintV1(fp)?.let { privateKey ->
 					tryDecryptExchangeKeyWith(encryptedKey, privateKey, fp)
@@ -175,7 +180,7 @@ class BaseExchangeKeysManagerImpl(
 					if (!encryptedXKeyByFingerprint.containsKey(newPublicKeyFp)) {
 						encryptedXKey
 					} else {
-						tryDecryptExchangeKey(encryptedXKeyByFingerprint, decryptionKeyPairsByFingerprint)?.let { decrypted ->
+						tryDecryptExchangeKey(encryptedXKey, decryptionKeyPairsByFingerprint)?.let { decrypted ->
 							val encryptedXKeyWithNewPub = encryptExchangeKey(decrypted, newPublicKey)
 							didUpdateData = true
 							encryptedXKey + (AesExchangeKeyEncryptionKeypairIdentifier(newPublicKeyFp.s) to encryptedXKeyWithNewPub)

@@ -24,8 +24,6 @@ interface ExchangeKeysManager {
 
 	/**
 	 * Empties the exchange keys cache.
-	 * @param includeKeysFromCurrentDataOwner if true also clears the keys where the current data owner is the delegator,
-	 * else only clears the keys where the current data owner is the delegate.
 	 */
-	fun requestCacheReload(includeKeysFromCurrentDataOwner: Boolean)
+	fun requestCacheReload()
 }
