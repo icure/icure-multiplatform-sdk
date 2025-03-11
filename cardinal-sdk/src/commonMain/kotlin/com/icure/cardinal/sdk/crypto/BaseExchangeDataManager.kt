@@ -34,7 +34,7 @@ interface BaseExchangeDataManager {
 	 * @return all the exchange data for the current data owner or null if the crypto strategies don't allow to retrieve
 	 * all data for the current data owner.
 	 */
-	suspend fun getAllExchangeDataForCurrentDataOwnerIfAllowed(): List<ExchangeData>?
+	suspend fun getAllExchangeDataForCurrentDataOwnerIfAllowed(inGroup: String?): List<ExchangeData>?
 
 	/**
 	 * Get all exchange data for the provided delegator-delegate pair.

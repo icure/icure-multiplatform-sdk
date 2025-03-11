@@ -10,9 +10,11 @@ import com.icure.cardinal.sdk.crypto.entities.DataOwnerReferenceInGroup
 import com.icure.cardinal.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
 import com.icure.cardinal.sdk.crypto.entities.ExchangeDataWithPotentiallyDecryptedContent
 import com.icure.cardinal.sdk.crypto.entities.ExchangeDataWithUnencryptedContent
+import com.icure.cardinal.sdk.crypto.entities.SdkBoundGroup
 import com.icure.cardinal.sdk.crypto.entities.SelfVerifiedKeysSet
 import com.icure.cardinal.sdk.crypto.entities.UnencryptedExchangeDataContent
 import com.icure.cardinal.sdk.crypto.entities.VerifiedRsaEncryptionKeysSet
+import com.icure.cardinal.sdk.crypto.entities.resolve
 import com.icure.cardinal.sdk.crypto.entities.toPrivateKeyInfo
 import com.icure.cardinal.sdk.crypto.entities.toPublicKeyInfo
 import com.icure.cardinal.sdk.model.ExchangeData
@@ -36,7 +38,7 @@ abstract class AbstractExchangeDataManager(
 	protected val cryptoService: CryptoService,
 	protected val useParentKeys: Boolean,
 	protected val sdkScope: CoroutineScope,
-	protected val sdkGroup: String?
+	protected val sdkBoundGroup: SdkBoundGroup?
 ) : ExchangeDataManager {
 	// TODO No limit to the amount of groupBoundManagers, currently should be fine for most applications
 	@Volatile
@@ -121,7 +123,7 @@ abstract class AbstractExchangeDataManager(
 		getOrCreateManagerInGroup(groupId).getAccessControlKeysValue(entityType)
 
 	private suspend fun getOrCreateManagerInGroup(groupId: String?): AbstractExchangeDataManagerInGroup {
-		val normalizedGroupId = groupId?.takeIf { it != sdkGroup }
+		val normalizedGroupId = sdkBoundGroup.resolve(groupId)
 		return groupBoundManagers[normalizedGroupId] ?: createMutex.withLock {
 			groupBoundManagers[normalizedGroupId] ?: createManagerForGroup(normalizedGroupId).also {
 				groupBoundManagers += normalizedGroupId to it
@@ -140,7 +142,7 @@ abstract class AbstractExchangeDataManagerInGroup(
 	protected val dataOwnerApi: DataOwnerApi,
 	protected val cryptoService: CryptoService,
 	private val useParentKeys: Boolean,
-	protected val sdkGroup: String?,
+	protected val sdkBoundGroup: SdkBoundGroup?,
 	protected val requestGroup: String?
 ) {
 	protected data class CachedExchangeDataDetails(

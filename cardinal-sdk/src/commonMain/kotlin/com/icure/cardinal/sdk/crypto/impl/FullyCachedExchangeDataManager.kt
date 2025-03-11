@@ -8,6 +8,7 @@ import com.icure.cardinal.sdk.crypto.entities.DataOwnerReferenceInGroup
 import com.icure.cardinal.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
 import com.icure.cardinal.sdk.crypto.entities.ExchangeDataWithPotentiallyDecryptedContent
 import com.icure.cardinal.sdk.crypto.entities.ExchangeDataWithUnencryptedContent
+import com.icure.cardinal.sdk.crypto.entities.SdkBoundGroup
 import com.icure.cardinal.sdk.crypto.entities.UndecryptableExchangeData
 import com.icure.cardinal.sdk.model.specializations.Base64String
 import com.icure.cardinal.sdk.model.specializations.SecureDelegationKeyString
@@ -35,16 +36,16 @@ class FullyCachedExchangeDataManager(
 	cryptoService: CryptoService,
 	useParentKeys: Boolean,
 	sdkScope: CoroutineScope,
-	sdkGroup: String?
+	sdkBoundGroup: SdkBoundGroup?
 ) : AbstractExchangeDataManager(
-	base,
-	userEncryptionKeys,
-	cryptoStrategies,
-	dataOwnerApi,
-	cryptoService,
-	useParentKeys,
-	sdkScope,
-	sdkGroup
+	base = base,
+	userEncryptionKeys = userEncryptionKeys,
+	cryptoStrategies = cryptoStrategies,
+	dataOwnerApi = dataOwnerApi,
+	cryptoService = cryptoService,
+	useParentKeys = useParentKeys,
+	sdkScope = sdkScope,
+	sdkBoundGroup = sdkBoundGroup
 ) {
 	override fun createManagerForGroup(groupId: String?): AbstractExchangeDataManagerInGroup =
 		FullyCachedExchangeDataManagerInGroup(
@@ -54,7 +55,7 @@ class FullyCachedExchangeDataManager(
 			dataOwnerApi = dataOwnerApi,
 			cryptoService = cryptoService,
 			useParentKeys = useParentKeys,
-			sdkGroup = sdkGroup,
+			sdkBoundGroup = sdkBoundGroup,
 			sdkScope = sdkScope,
 			requestGroup = groupId
 		)
@@ -68,18 +69,18 @@ private class FullyCachedExchangeDataManagerInGroup(
 	dataOwnerApi: DataOwnerApi,
 	cryptoService: CryptoService,
 	useParentKeys: Boolean,
-	sdkGroup: String?,
+	sdkBoundGroup: SdkBoundGroup?,
 	sdkScope: CoroutineScope,
 	requestGroup: String?
 ) : AbstractExchangeDataManagerInGroup(
-	base,
-	userEncryptionKeys,
-	cryptoStrategies,
-	dataOwnerApi,
-	cryptoService,
-	useParentKeys,
-	requestGroup,
-	sdkGroup
+	base = base,
+	userEncryptionKeys = userEncryptionKeys,
+	cryptoStrategies = cryptoStrategies,
+	dataOwnerApi = dataOwnerApi,
+	cryptoService = cryptoService,
+	useParentKeys = useParentKeys,
+	sdkBoundGroup = sdkBoundGroup,
+	requestGroup = requestGroup
 ) {
 	private class Caches(
 		val dataById: Map<String, CachedExchangeDataDetails>,
@@ -107,7 +108,7 @@ private class FullyCachedExchangeDataManagerInGroup(
 		delegateReference: DataOwnerReferenceInGroup,
 		allowCreationWithoutDelegateKey: Boolean
 	): ExchangeDataWithUnencryptedContent {
-		val delegateReferenceString = delegateReference.asReferenceStringInGroup(requestGroup, sdkGroup)
+		val delegateReferenceString = delegateReference.asReferenceStringInGroup(requestGroup, sdkBoundGroup)
 		val triedCaches = caches
 		return triedCaches.await().getEncryptionDataTo(delegateReferenceString) ?: creationMutex.withLock {
 			creationJobs.getOrPut(delegateReferenceString) {
@@ -200,69 +201,11 @@ private class FullyCachedExchangeDataManagerInGroup(
 		cacheUpdateAndNewDataCreationScope.cancel()
 	}
 
-//	override suspend fun getOrCreateEncryptionDataTo(
-//		delegateId: String,
-//		allowCreationWithoutDelegateKey: Boolean
-//	): ExchangeDataWithUnencryptedContent =
-//		cache.update { existingCache ->
-//			ensureNonNull(existingCache) {
-//				"Cache for fully cached exchange data manager can't be null"
-//			}
-//			val updatedInfo = kotlin.runCatching {
-//				if (existingCache.verifiedDataByDelegateId[delegateId] != null) {
-//					existingCache
-//				} else {
-//					val createdData = super.createNewExchangeData(
-//						delegateId,
-//						null,
-//						allowCreationWithoutDelegateKey
-//					)
-//					val cachedDetails = CachedExchangeDataDetails(
-//						createdData.exchangeData,
-//						Pair(createdData.unencryptedContent, true)
-//					)
-//					val secureDelegationKeysToExchangeDataId =
-//						createdData.unencryptedContent.accessControlSecret.allAccessControlKeys(cryptoService)
-//							.map { it.toSecureDelegationKeyString(cryptoService) to cachedDetails }
-//					val allAccessControlSecrets = existingCache.dataById.values.mapNotNull { it.decryptedContentAndVerificationStatus?.first?.accessControlSecret } + createdData.unencryptedContent.accessControlSecret
-//					CachedKeys(
-//						dataById = existingCache.dataById + (createdData.exchangeData.id to cachedDetails),
-//						verifiedDataByDelegateId = existingCache.verifiedDataByDelegateId + (delegateId to cachedDetails),
-//						dataByDelegationKey = existingCache.dataByDelegationKey + secureDelegationKeysToExchangeDataId,
-//						entityTypeToAccessControlKeysValue = EntityWithEncryptionMetadataTypeName.entries.associateWith {
-//							allAccessControlSecrets.map { s -> s.toAccessControlKeyStringFor(it, cryptoService) }.encodeAsAccessControlHeaders() to
-//								allAccessControlSecrets.map { s -> s.toSecureDelegationKeyFor(it, cryptoService) }
-//						}
-//					)
-//				}
-//			}
-//			if (updatedInfo.isSuccess) {
-//				updatedInfo.getOrThrow() to CacheUpdateResult.Success
-//			} else {
-//				existingCache to CacheUpdateResult.Failure(updatedInfo.exceptionOrNull()!!)
-//			}
-//		}.let { (cached, result) ->
-//			if (result is CacheUpdateResult.Failure) {
-//				throw result.error
-//			} else {
-//				val cachedData = ensureNonNull(cached.verifiedDataByDelegateId[delegateId]) {
-//					"Data for delegate $delegateId should have been created and added to the cache"
-//				}
-//				val decryptedContent = ensureNonNull(cachedData.decryptedContentAndVerificationStatus) {
-//					"New data for delegate $delegateId should have been decrypted"
-//				}.also {
-//					ensure(it.second) { "New data for delegate $delegateId should have been verified" }
-//				}
-//				ExchangeDataWithUnencryptedContent(cachedData.exchangeData, decryptedContent.first)
-//			}
-//		}
-
-
 	private suspend fun getAllKeysInfo(): Caches {
 		val cacheById = mutableMapOf<String, CachedExchangeDataDetails>()
 		val cacheByHash = mutableMapOf<SecureDelegationKeyString, CachedExchangeDataDetails>()
 		val cacheByDelegateId = mutableMapOf<String, CachedExchangeDataDetails>()
-		ensureNonNull(base.getAllExchangeDataForCurrentDataOwnerIfAllowed()) {
+		ensureNonNull(base.getAllExchangeDataForCurrentDataOwnerIfAllowed(requestGroup)) {
 			"Could not get all exchange data of current data owner"
 		}.forEach { exchangeData ->
 			val decryptedInfo = decryptData(exchangeData)

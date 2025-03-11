@@ -17,7 +17,7 @@ data class DataOwnerReferenceInGroup(
 	 * @param inGroup the group where the reference is to be used
 	 * @param sdkGroupId the group id of the SDK using this reference, used as the default group if [groupId] is null
 	 */
-	internal fun asReferenceStringInGroup(inGroup: String?, sdkGroupId: String?): String {
+	internal fun asReferenceStringInGroup(inGroup: String?, sdkGroupId: SdkBoundGroup?): String {
 		if (sdkGroupId == null) require(inGroup == null) { "Can't use in-group methods on kraken-lite" }
 		val thisGroup = groupId ?: sdkGroupId
 		val forGroup = inGroup ?: sdkGroupId

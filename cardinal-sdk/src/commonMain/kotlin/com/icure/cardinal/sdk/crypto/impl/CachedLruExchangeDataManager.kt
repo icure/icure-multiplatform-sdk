@@ -8,6 +8,7 @@ import com.icure.cardinal.sdk.crypto.entities.DataOwnerReferenceInGroup
 import com.icure.cardinal.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
 import com.icure.cardinal.sdk.crypto.entities.ExchangeDataWithPotentiallyDecryptedContent
 import com.icure.cardinal.sdk.crypto.entities.ExchangeDataWithUnencryptedContent
+import com.icure.cardinal.sdk.crypto.entities.SdkBoundGroup
 import com.icure.cardinal.sdk.crypto.entities.UndecryptableExchangeData
 import com.icure.cardinal.sdk.crypto.entities.UnencryptedExchangeDataContent
 import com.icure.cardinal.sdk.model.ExchangeData
@@ -38,7 +39,7 @@ class CachedLruExchangeDataManager(
 	cryptoService: CryptoService,
 	useParentKeys: Boolean,
 	sdkScope: CoroutineScope,
-	sdkGroup: String?
+	sdkBoundGroup: SdkBoundGroup?
 ) : AbstractExchangeDataManager(
 	base,
 	userEncryptionKeys,
@@ -47,7 +48,7 @@ class CachedLruExchangeDataManager(
 	cryptoService,
 	useParentKeys,
 	sdkScope,
-	sdkGroup
+	sdkBoundGroup
 ) {
 	override fun createManagerForGroup(groupId: String?): AbstractExchangeDataManagerInGroup =
 		CachedLruExchangeDataManagerInGroup(
@@ -57,7 +58,7 @@ class CachedLruExchangeDataManager(
 			dataOwnerApi = dataOwnerApi,
 			cryptoService = cryptoService,
 			useParentKeys = useParentKeys,
-			sdkGroup = sdkGroup,
+			sdkBoundGroup = sdkBoundGroup,
 			sdkScope = sdkScope,
 			requestGroup = groupId,
 			maxCacheSize = 500
@@ -72,19 +73,19 @@ private class CachedLruExchangeDataManagerInGroup(
 	dataOwnerApi: DataOwnerApi,
 	cryptoService: CryptoService,
 	useParentKeys: Boolean,
-	sdkGroup: String?,
+	sdkBoundGroup: SdkBoundGroup?,
 	sdkScope: CoroutineScope,
 	requestGroup: String?,
 	private val maxCacheSize: Int
 ) : AbstractExchangeDataManagerInGroup(
-	base,
-	userEncryptionKeys,
-	cryptoStrategies,
-	dataOwnerApi,
-	cryptoService,
-	useParentKeys,
-	requestGroup,
-	sdkGroup
+	base = base,
+	userEncryptionKeys = userEncryptionKeys,
+	cryptoStrategies = cryptoStrategies,
+	dataOwnerApi = dataOwnerApi,
+	cryptoService = cryptoService,
+	useParentKeys = useParentKeys,
+	sdkBoundGroup = sdkBoundGroup,
+	requestGroup = requestGroup
 ) {
 	/*
 	 * If baseScope is canceled, this scope is also canceled, but this can be canceled independently of base scope (has
@@ -159,7 +160,7 @@ private class CachedLruExchangeDataManagerInGroup(
 		allowCreationWithoutDelegateKey: Boolean
 	): ExchangeDataWithUnencryptedContent {
 		// Using reference string as normalization
-		val delegateReferenceString = delegateReference.asReferenceStringInGroup(requestGroup, sdkGroup)
+		val delegateReferenceString = delegateReference.asReferenceStringInGroup(requestGroup, sdkBoundGroup)
 		val retrieved = cacheMutex.withLock {
 			val verifiedExchangeDataIdDeferred = delegateToVerifiedExchangeDataId[delegateReferenceString]
 			if (verifiedExchangeDataIdDeferred != null) {

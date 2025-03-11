@@ -2,6 +2,8 @@ package com.icure.cardinal.sdk.crypto.impl
 
 import com.icure.cardinal.sdk.api.raw.RawExchangeDataMapApi
 import com.icure.cardinal.sdk.crypto.ExchangeDataMapManager
+import com.icure.cardinal.sdk.crypto.entities.SdkBoundGroup
+import com.icure.cardinal.sdk.crypto.entities.resolve
 import com.icure.cardinal.sdk.model.ExchangeDataMap
 import com.icure.cardinal.sdk.model.ExchangeDataMapCreationBatch
 import com.icure.cardinal.sdk.model.ListOfIds
@@ -14,7 +16,7 @@ import com.icure.utils.InternalIcureApi
 class ExchangeDataMapManagerImpl(
 	private val rawApi: RawExchangeDataMapApi,
 	private val cryptoService: CryptoService,
-	private val boundGroupId: String?
+	private val sdkBoundGroup: SdkBoundGroup?
 ) : ExchangeDataMapManager {
 	// We don't cache the map value because it is used only once and then cached in the exchange data manager.
 	// We cache only the keys to prevent unnecessary create requests when we know they're available.
@@ -25,7 +27,7 @@ class ExchangeDataMapManagerImpl(
 		batch: ExchangeDataMapCreationBatch
 	) {
 		if (batch.batch.isEmpty()) return
-		val requestGroup = mapGroupIdWithBoundGroupId(groupId = groupId, boundGroupId = boundGroupId)
+		val requestGroup = sdkBoundGroup.resolve(groupId)
 		val accessKeyToDelegationKey = batch.batch.keys.associateWith {
 			Pair(requestGroup, it.toSecureDelegationKeyString(cryptoService))
 		}
@@ -49,7 +51,7 @@ class ExchangeDataMapManagerImpl(
 		groupId: String?,
 		accessControlKeyHashes: Set<SecureDelegationKeyString>
 	): List<ExchangeDataMap> {
-		val requestGroup = mapGroupIdWithBoundGroupId(groupId = groupId, boundGroupId = boundGroupId)
+		val requestGroup = sdkBoundGroup.resolve(groupId)
 		val toGet = ListOfIds(accessControlKeyHashes.map { it.s })
 		return (
 			if (requestGroup == null)
