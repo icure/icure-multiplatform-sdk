@@ -623,7 +623,7 @@ class RawPatientApiImpl(
 		createAutoDelegation: Boolean,
 		p: EncryptedPatient,
 	): HttpResponse<DataOwnerRegistrationSuccess> =
-		post(authProvider) {
+		post(authProvider, groupId) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "patient", "register", "forHcp", hcPartyId, "inGroup", groupId)
@@ -640,7 +640,7 @@ class RawPatientApiImpl(
 		groupId: String,
 		filter: AbstractFilter<Patient>,
 	): HttpResponse<List<String>> =
-		post(authProvider) {
+		post(authProvider, groupId) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "patient", "inGroup", groupId, "match")

@@ -67,6 +67,8 @@ sealed interface Form :
 
 	public val parent: String?
 
+	public val anchorId: String?
+
 	override val secretForeignKeys: Set<String>
 
 	override val cryptedForeignKeys: Map<String, Set<Delegation>>
@@ -109,6 +111,7 @@ data class DecryptedForm(
 	override val healthElementId: String? = null,
 	override val planOfActionId: String? = null,
 	override val parent: String? = null,
+	override val anchorId: String? = null,
 	@DefaultValue("emptySet()")
 	override val secretForeignKeys: Set<String> = emptySet(),
 	@DefaultValue("emptyMap()")
@@ -152,6 +155,7 @@ data class EncryptedForm(
 	override val healthElementId: String? = null,
 	override val planOfActionId: String? = null,
 	override val parent: String? = null,
+	override val anchorId: String? = null,
 	@DefaultValue("emptySet()")
 	override val secretForeignKeys: Set<String> = emptySet(),
 	@DefaultValue("emptyMap()")
