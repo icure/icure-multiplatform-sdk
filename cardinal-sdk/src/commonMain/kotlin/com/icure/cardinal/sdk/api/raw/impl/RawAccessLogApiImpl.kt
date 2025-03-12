@@ -261,7 +261,7 @@ class RawAccessLogApiImpl(
 		startDocumentId: String?,
 		limit: Int?,
 	): HttpResponse<PaginatedList<EncryptedAccessLog>> =
-		get(authProvider) {
+		get(authProvider, groupId) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "accesslog", "inGroup", groupId)
@@ -279,7 +279,7 @@ class RawAccessLogApiImpl(
 		filter: AbstractFilter<AccessLog>,
 		groupId: String,
 	): HttpResponse<List<String>> =
-		post(authProvider) {
+		post(authProvider, groupId) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "accesslog", "inGroup", groupId, "match")
