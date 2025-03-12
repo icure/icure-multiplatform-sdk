@@ -326,6 +326,7 @@ private class AbstractPatientBasicFlavourlessApi(val rawApi: RawPatientApi, val 
 
 	override suspend fun getDataOwnersWithAccessTo(patient: Patient): EntityAccessInformation =
 		config.crypto.entityAccessInformationProvider.getDataOwnersWithAccessTo(patient.withTypeInfo())
+
 	@Deprecated("This method gives inaccurate results outside of the simples scenarios, use match instead")
 	override suspend fun countOfPatients(hcPartyId: String) = ensureNonNull(rawApi.countOfPatients(hcPartyId).successBody().numberValue) {
 		"Count of patients has no number value"

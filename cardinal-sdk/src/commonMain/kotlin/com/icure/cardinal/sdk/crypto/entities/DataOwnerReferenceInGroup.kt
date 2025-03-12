@@ -1,6 +1,7 @@
 package com.icure.cardinal.sdk.crypto.entities
 
 import com.icure.cardinal.sdk.utils.DefaultValue
+import kotlinx.serialization.Serializable
 
 /**
  * A reference to a data owner in a group.
@@ -8,6 +9,7 @@ import com.icure.cardinal.sdk.utils.DefaultValue
  * @param groupId the id of the data owner's group. If left null it is implied to be the same group as the data owner
  * currently logged in to the SDK.
  */
+@Serializable
 data class DataOwnerReferenceInGroup(
 	val dataOwnerId: String,
 	@DefaultValue("null")
@@ -22,5 +24,16 @@ data class DataOwnerReferenceInGroup(
 		val thisGroup = groupId ?: sdkGroupId
 		val forGroup = inGroup ?: sdkGroupId
 		return if (thisGroup != forGroup) "$thisGroup/$dataOwnerId" else dataOwnerId
+	}
+
+	companion object {
+		fun parse(dataOwnerReference: String) = dataOwnerReference.split("/").let { splitReference ->
+			when (splitReference.size) {
+				1 -> DataOwnerReferenceInGroup(dataOwnerId = splitReference[0])
+				2 -> DataOwnerReferenceInGroup(dataOwnerId = splitReference[1], groupId =  splitReference[0])
+				else -> throw IllegalArgumentException("Invalid user reference $dataOwnerReference")
+			}
+
+		}
 	}
 }

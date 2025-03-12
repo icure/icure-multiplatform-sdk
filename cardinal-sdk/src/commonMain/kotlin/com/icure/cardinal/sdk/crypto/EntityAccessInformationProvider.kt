@@ -41,5 +41,8 @@ interface EntityAccessInformationProvider {
 	 * @param entityWithType an entity.
 	 * @return the access information that the user can interpret.
 	 */
-	suspend fun getDataOwnersWithAccessTo(entityWithType: EntityWithTypeInfo<*>): EntityAccessInformation
+	suspend fun getDataOwnersWithAccessTo(
+		entityGroupId: String?,
+		entityWithType: EntityWithTypeInfo<*>
+	): EntityAccessInformation
 }
