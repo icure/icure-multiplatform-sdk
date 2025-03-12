@@ -48,7 +48,7 @@ class SecureDelegationsManagerImpl (
 	private val selfNeedsAnonymousDelegations: Boolean,
 	private val boundGroup: SdkBoundGroup
 ) : SecureDelegationsManager {
-	// Data owner id -> (is anonymous, verified keys)
+	// Data owner id -> (is anonymous, verified keys if needed)
 	private val dataOwnerAnonymityCache = SynchronisedLruCache<
 		DataOwnerReferenceInGroup,
 		Pair<Boolean, List<CardinalKeyInfo<PublicRsaKey<RsaAlgorithm.RsaEncryptionAlgorithm>>>?>

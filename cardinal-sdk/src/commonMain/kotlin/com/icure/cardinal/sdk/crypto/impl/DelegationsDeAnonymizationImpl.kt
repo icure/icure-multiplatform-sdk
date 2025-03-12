@@ -116,8 +116,12 @@ class DelegationsDeAnonymizationImpl(
 			} + secureDelegationWithUnknownMembers.flatMap { (k, v) ->
 				val keyMap = secureDelegationKeyMapsByDelegationKey[k.s]
 				listOfNotNull(
-					keyMap?.delegate?.let { DataOwnerReferenceInGroup.parse(it) to v.accessLevel },
-					keyMap?.delegator?.let { DataOwnerReferenceInGroup.parse(it) to v.accessLevel }
+					keyMap?.delegate?.let {
+						DataOwnerReferenceInGroup.parse(it, entityGroupId, boundGroup) to v.accessLevel
+					},
+					keyMap?.delegator?.let {
+						DataOwnerReferenceInGroup.parse(it, entityGroupId, boundGroup) to v.accessLevel
+					}
 				)
 			}
 		)

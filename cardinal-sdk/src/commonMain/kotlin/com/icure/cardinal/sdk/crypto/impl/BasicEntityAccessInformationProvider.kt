@@ -4,13 +4,14 @@ import com.icure.cardinal.sdk.crypto.EntityAccessInformationProvider
 import com.icure.cardinal.sdk.crypto.entities.DataOwnerReferenceInGroup
 import com.icure.cardinal.sdk.crypto.entities.EntityAccessInformation
 import com.icure.cardinal.sdk.crypto.entities.EntityWithTypeInfo
+import com.icure.cardinal.sdk.crypto.entities.SdkBoundGroup
 import com.icure.cardinal.sdk.model.embed.AccessLevel
 
 /**
- * Implementation of [EntityAccessInformationProvider] that does not attempt to de-anonymize any delegation, can be used
+ * Implementation of [EntityAccessInformationProvider] that doesn't attempt to de-anonymize any delegation, can be used
  * even with the basic/non-data-owner sdk.
  */
-internal object BasicEntityAccessInformationProvider : EntityAccessInformationProvider {
+internal abstract class BasicEntityAccessInformationProvider : EntityAccessInformationProvider {
 	override suspend fun getDataOwnersWithAccessTo(
 		entityGroupId: String?,
 		entityWithType: EntityWithTypeInfo<*>
@@ -22,12 +23,17 @@ internal object BasicEntityAccessInformationProvider : EntityAccessInformationPr
 			},
 			false
 		)
+		val boundGroupId = currentBoundGroupId()
 		val infoFromSecureDelegations = EntityAccessInformation(
 			EntityAccessInformation.buildPermissionsMap(
 				entityWithType.entity.securityMetadata?.secureDelegations?.values?.flatMap { d->
 					listOfNotNull(
-						d.delegate?.let { DataOwnerReferenceInGroup.parse(it) to d.permissions },
-						d.delegator?.let { DataOwnerReferenceInGroup.parse(it) to d.permissions }
+						d.delegate?.let {
+							DataOwnerReferenceInGroup.parse(it, entityGroupId, boundGroupId) to d.permissions
+						},
+						d.delegator?.let {
+							DataOwnerReferenceInGroup.parse(it, entityGroupId, boundGroupId) to d.permissions
+						}
 					)
 				} ?: emptyList()
 			),
@@ -37,4 +43,10 @@ internal object BasicEntityAccessInformationProvider : EntityAccessInformationPr
 		)
 		return infoFromLegacyDelegations.merge(infoFromSecureDelegations)
 	}
+
+	/**
+	 * On basic SDK this should give the (constant) bound group id
+	 * On unbound SDK this should give the group id of the current request
+	 */
+	abstract suspend fun currentBoundGroupId(): SdkBoundGroup?
 }

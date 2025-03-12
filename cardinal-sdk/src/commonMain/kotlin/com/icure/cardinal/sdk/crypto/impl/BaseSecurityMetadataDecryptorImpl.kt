@@ -8,8 +8,10 @@ import com.icure.cardinal.sdk.crypto.SecureDelegationsEncryption
 import com.icure.cardinal.sdk.crypto.entities.DecryptedMetadataDetails
 import com.icure.cardinal.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
 import com.icure.cardinal.sdk.crypto.entities.EntityWithTypeInfo
+import com.icure.cardinal.sdk.crypto.entities.SdkBoundGroup
 import com.icure.cardinal.sdk.crypto.entities.SecureDelegationMembersDetails
 import com.icure.cardinal.sdk.crypto.entities.SecurityMetadataType
+import com.icure.cardinal.sdk.crypto.entities.resolve
 import com.icure.cardinal.sdk.model.base.HasEncryptionMetadata
 import com.icure.cardinal.sdk.model.embed.AccessLevel
 import com.icure.cardinal.sdk.model.embed.Delegation
@@ -19,7 +21,7 @@ import com.icure.utils.InternalIcureApi
 
 @InternalIcureApi
 internal class BaseSecurityMetadataDecryptorImpl(
-	private val boundGroupId: String?,
+	private val boundGroup: SdkBoundGroup?,
 	private val cryptoService: CryptoService,
 	private val exchangeKeysManager: ExchangeKeysManager,
 	private val exchangeDataManager: ExchangeDataManager,
@@ -32,31 +34,32 @@ internal class BaseSecurityMetadataDecryptorImpl(
 		entitiesType: EntityWithEncryptionMetadataTypeName,
 		dataOwnersHierarchySubset: Set<String>,
 		metadataType: SecurityMetadataType<T>
-	): Map<String, Set<T>> =
-		if (entitiesGroupId != null && entitiesGroupId != boundGroupId) {
-			// Legacy delegations don't support inter-group sharing
-			entities.associate { it.id to emptySet() }
-		} else {
-			require(dataOwnersHierarchySubset.isNotEmpty()) { "Data owners hierarchy subset can't be empty" }
-			// Legacy delegations use only cached data, no need to operate in bulk
-			entities.associate { e ->
-				e.id to extractFromLegacyDelegations(
-					e,
-					dataOwnersHierarchySubset,
-					metadataType
-				).map {
-					it.value
-				}.distinct().mapTo(mutableSetOf()) {
-					metadataType.mapLegacyDecrypted(it)
-				}
+	): Map<String, Set<T>> {
+		require(dataOwnersHierarchySubset.isNotEmpty()) { "Data owners hierarchy subset can't be empty" }
+		// Legacy delegations use only cached data, no need to operate in bulk
+		return entities.associate { e ->
+			e.id to extractFromLegacyDelegations(
+				entitiesGroupId,
+				e,
+				dataOwnersHierarchySubset,
+				metadataType
+			).map {
+				it.value
+			}.distinct().mapTo(mutableSetOf()) {
+				metadataType.mapLegacyDecrypted(it)
 			}
 		}
+	}
 
 	private suspend fun extractFromLegacyDelegations(
+		entitiesGroupId: String?,
 		entity: HasEncryptionMetadata,
 		dataOwnersHierarchySubset: Set<String>,
 		metadataType: SecurityMetadataType<*>
-	): List<DecryptedMetadataDetails<String>> =
+	): List<DecryptedMetadataDetails<String>> = if (boundGroup.resolve(entitiesGroupId) != null) {
+		// Legacy delegations don't support inter-group sharing
+		emptyList()
+	} else {
 		metadataType.extractLegacyDelegations(entity).flatMap { (delegateId, delegations) ->
 			populateLegacyDelegationDelegate(
 				delegateId,
@@ -67,8 +70,9 @@ internal class BaseSecurityMetadataDecryptorImpl(
 				}
 			)
 		}.mapNotNull {
-			tryDecryptDelegation(it, metadataType)
+			tryDecryptLegacyDelegation(it, metadataType)
 		}
+	}
 
 	private fun populateLegacyDelegationDelegate(delegateId: String, delegations: Set<Delegation>): Set<Delegation> {
 		return delegations.mapTo(mutableSetOf()) {
@@ -76,7 +80,7 @@ internal class BaseSecurityMetadataDecryptorImpl(
 		}
 	}
 
-	private suspend fun tryDecryptDelegation(
+	private suspend fun tryDecryptLegacyDelegation(
 		delegation: Delegation,
 		metadataType: SecurityMetadataType<*>
 	): DecryptedMetadataDetails<String>? {
@@ -115,7 +119,7 @@ internal class BaseSecurityMetadataDecryptorImpl(
 		dataOwnersHierarchySubset: Set<String>,
 		metadataType: SecurityMetadataType<T>
 	): Map<String, Set<T>> {
-		val dataOwnersHierarchyReferences = plainDataOwnerIdsToReferencesInGroup(
+		val dataOwnersHierarchyReferences = selfHierarchyIdsAsReferenceStrings(
 			dataOwnersHierarchySubset,
 			entitiesGroupId
 		)
@@ -173,7 +177,7 @@ internal class BaseSecurityMetadataDecryptorImpl(
 		dataOwnersHierarchySubset: Set<String>,
 		metadataType: SecurityMetadataType<T>
 	): Map<String, Set<T>> {
-		val dataOwnersHierarchyReferences = plainDataOwnerIdsToReferencesInGroup(
+		val dataOwnersHierarchyReferences = selfHierarchyIdsAsReferenceStrings(
 			dataOwnersHierarchySubset,
 			entitiesGroupId
 		)
@@ -216,7 +220,7 @@ internal class BaseSecurityMetadataDecryptorImpl(
 		dataOwnersHierarchySubset: Set<String>,
 		metadataType: SecurityMetadataType<T>
 	): Map<String, Set<T>> {
-		val dataOwnersHierarchyReferences = plainDataOwnerIdsToReferencesInGroup(
+		val dataOwnersHierarchyReferences = selfHierarchyIdsAsReferenceStrings(
 			dataOwnersHierarchySubset,
 			entitiesGroupId
 		)
@@ -271,7 +275,7 @@ internal class BaseSecurityMetadataDecryptorImpl(
 		entitiesType: EntityWithEncryptionMetadataTypeName,
 		dataOwnersHierarchySubset: Set<String>,
 		metadataType: SecurityMetadataType<T>
-	): Map<String, Set<T>> {
+	): Map<String, List<DecryptedMetadataDetails<T>>> {
 //		val fromLegacyDelegations = decryptLegacyDelegations(
 //			entitiesGroupId,
 //			entities,
@@ -341,14 +345,14 @@ internal class BaseSecurityMetadataDecryptorImpl(
 		TODO("Not yet implemented")
 	}
 
-	override fun hasAnyEncryptionKeys(entity: HasEncryptionMetadata): Boolean {
-		TODO("Not yet implemented")
-	}
+	override fun hasAnyEncryptionKeys(entity: HasEncryptionMetadata): Boolean =
+		entity.securityMetadata?.secureDelegations?.values?.any { it.encryptionKeys.isNotEmpty() } == true
+			|| entity.encryptionKeys.any { it.value.isNotEmpty() }
 
-	private fun plainDataOwnerIdsToReferencesInGroup(
-		dataOwnerIds: Set<String>,
+	private fun selfHierarchyIdsAsReferenceStrings(
+		dataOwnerHierarchyIds: Set<String>,
 		entityGroupId: String?
-	) = if (entityGroupId != null && entityGroupId != boundGroupId) {
-		dataOwnerIds.mapTo(mutableSetOf()) { "$entityGroupId/$it" }
-	} else dataOwnerIds
+	) = boundGroup.resolve(entityGroupId)?.let { g ->
+		dataOwnerHierarchyIds.mapTo(mutableSetOf()) { "$g/$it"}
+	} ?: dataOwnerHierarchyIds
 }

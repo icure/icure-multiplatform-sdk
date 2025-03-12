@@ -27,13 +27,28 @@ data class DataOwnerReferenceInGroup(
 	}
 
 	companion object {
-		fun parse(dataOwnerReference: String) = dataOwnerReference.split("/").let { splitReference ->
-			when (splitReference.size) {
-				1 -> DataOwnerReferenceInGroup(dataOwnerId = splitReference[0])
-				2 -> DataOwnerReferenceInGroup(dataOwnerId = splitReference[1], groupId =  splitReference[0])
-				else -> throw IllegalArgumentException("Invalid user reference $dataOwnerReference")
+		fun parse(
+			dataOwnerReference: String,
+			entityGroup: String?,
+			sdkGroupId: SdkBoundGroup?
+		): DataOwnerReferenceInGroup {
+			val splitReference = dataOwnerReference.split("/")
+			val resolvedEntityGroup = sdkGroupId.resolve(entityGroup)
+			require(splitReference.size == 1 || splitReference.size == 2) {
+				"Invalid user reference $dataOwnerReference"
 			}
-
+			return if (resolvedEntityGroup != null) {
+				when {
+					splitReference.size == 1 -> DataOwnerReferenceInGroup(dataOwnerId = splitReference[0], groupId = resolvedEntityGroup)
+					splitReference[0] == sdkGroupId?.groupId -> DataOwnerReferenceInGroup(dataOwnerId = splitReference[1], groupId = splitReference[0])
+					else -> DataOwnerReferenceInGroup(dataOwnerId = splitReference[1], groupId = splitReference[0])
+				}
+			} else {
+				if (splitReference.size == 1)
+					DataOwnerReferenceInGroup(dataOwnerId = splitReference[0])
+				else
+					DataOwnerReferenceInGroup(dataOwnerId = splitReference[1], groupId = splitReference[0])
+			}
 		}
 	}
 }

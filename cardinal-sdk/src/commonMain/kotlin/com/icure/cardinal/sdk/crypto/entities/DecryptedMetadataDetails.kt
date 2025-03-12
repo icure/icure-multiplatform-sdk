@@ -12,7 +12,7 @@ data class DecryptedMetadataDetails<T : Any>(
 	 */
 	val value: T,
 	/**
-	 * The ids of data owners know to have access to [value]
+	 * The reference strings of data owners know to have access to [value]
 	 */
 	val dataOwnersWithAccess: Set<String>
 )

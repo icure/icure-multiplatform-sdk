@@ -1,5 +1,6 @@
 package com.icure.cardinal.sdk.crypto
 
+import com.icure.cardinal.sdk.crypto.entities.DecryptedMetadataDetails
 import com.icure.cardinal.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
 import com.icure.cardinal.sdk.crypto.entities.EntityWithTypeInfo
 import com.icure.cardinal.sdk.crypto.entities.SecureDelegationMembersDetails
@@ -76,7 +77,7 @@ interface BaseSecurityMetadataDecryptor {
 		entitiesType: EntityWithEncryptionMetadataTypeName,
 		dataOwnersHierarchySubset: Set<String>,
 		metadataType: SecurityMetadataType<T>
-	): Map<String, Set<T>>
+	): Map<String, List<DecryptedMetadataDetails<T>>>
 
 	suspend fun <T : Any> decryptAllLegacyDelegations(
 		entitiesGroupId: String?,
