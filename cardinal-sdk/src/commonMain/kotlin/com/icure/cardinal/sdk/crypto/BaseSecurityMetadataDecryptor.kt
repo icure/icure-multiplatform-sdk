@@ -85,7 +85,7 @@ interface BaseSecurityMetadataDecryptor {
 		entitiesType: EntityWithEncryptionMetadataTypeName,
 		dataOwnersHierarchySubset: Set<String>,
 		metadataType: SecurityMetadataType<T>
-	): Map<String, Set<T>>
+	): Map<String, List<DecryptedMetadataDetails<T>>>
 
 	suspend fun <T : Any> decryptAllSecureDelegations(
 		entitiesGroupId: String?,
@@ -93,7 +93,7 @@ interface BaseSecurityMetadataDecryptor {
 		entitiesType: EntityWithEncryptionMetadataTypeName,
 		dataOwnersHierarchySubset: Set<String>,
 		metadataType: SecurityMetadataType<T>
-	): Map<String, Set<T>>
+	): Map<String, List<DecryptedMetadataDetails<T>>>
 
 	/**
 	 * Get information for members of secure delegations in the entity. Also provides information for delegations with
@@ -107,6 +107,24 @@ interface BaseSecurityMetadataDecryptor {
 	): Map<SecureDelegationKeyString, SecureDelegationMembersDetails>
 
 	/**
+	 * Get the maximum access level that any data owner in [dataOwnersHierarchySubset] has to [typedEntity], according
+	 * to the encryption metadata.
+	 * - If at least a data owner in [dataOwnersHierarchySubset] has write access the method returns [AccessLevel.Write]
+	 * - If at least a data owner in [dataOwnersHierarchySubset] has read access the method returns and no data owner
+	 * has write access the method returns [AccessLevel.Read]
+	 * - If a data owner has no access to the entity the method returns `null`.
+	 * @param typedEntity an entity
+	 * @param dataOwnersHierarchySubset only exchange data that is accessible to data owners in this array will be considered when calculating the
+	 * access level. This array should contain only data owners from the current data owner hierarchy.
+	 * @return the access level to the entity or `null` if none of the data owners has full access to the entity.
+	 */
+	suspend fun getEntityAccessLevel(
+		entityGroupId: String?,
+		typedEntity: EntityWithTypeInfo<*>,
+		dataOwnersHierarchySubset: Set<String>
+	): AccessLevel?
+
+	/**
 	 * Same as [getEntitySecureDelegationsAccessLevel] but using only legacy delegations
 	 */
 	suspend fun getEntityLegacyDelegationAccessLevel(
@@ -116,16 +134,7 @@ interface BaseSecurityMetadataDecryptor {
 	): AccessLevel?
 
 	/**
-	 * Get the maximum access level that any data owner in [dataOwnersHierarchySubset] has to [typedEntity], according
-	 * to secure delegations.
-	 * - If at least a data owner in [dataOwnersHierarchySubset] has write access the method returns [AccessLevel.Write]
-	 * - If at least a data owner in [dataOwnersHierarchySubset] has read access the method returns and no data owner
-	 * has write access the method returns [AccessLevel.Read]
-	 * - If a data owner has no access to the entity the method returns `null`.
-	 * @param typedEntity an entity
-	 * @param dataOwnersHierarchySubset only exchange data that is accessible to data owners in this array will be considered when calculating the
-	 * access level. This array should contain only data owners from the current data owner hierarchy.
-	 * @return the access level to the entity or `null` if none of the data owners has full access to the entity.
+	 * Same as [getEntitySecureDelegationsAccessLevel] but using only secure delegations
 	 */
 	suspend fun getEntitySecureDelegationsAccessLevel(
 		entityGroupId: String?,

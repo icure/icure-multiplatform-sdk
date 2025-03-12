@@ -1,13 +1,17 @@
 package com.icure.cardinal.sdk.crypto.impl
 
+import com.icure.cardinal.sdk.api.DataOwnerApi
 import com.icure.cardinal.sdk.crypto.BaseSecurityMetadataDecryptor
 import com.icure.cardinal.sdk.crypto.ExchangeDataManager
 import com.icure.cardinal.sdk.crypto.ExchangeDataMapManager
 import com.icure.cardinal.sdk.crypto.ExchangeKeysManager
 import com.icure.cardinal.sdk.crypto.SecureDelegationsEncryption
+import com.icure.cardinal.sdk.crypto.entities.DataOwnerReferenceInGroup
 import com.icure.cardinal.sdk.crypto.entities.DecryptedMetadataDetails
 import com.icure.cardinal.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
 import com.icure.cardinal.sdk.crypto.entities.EntityWithTypeInfo
+import com.icure.cardinal.sdk.crypto.entities.ExchangeDataWithPotentiallyDecryptedContent
+import com.icure.cardinal.sdk.crypto.entities.ExchangeDataWithUnencryptedContent
 import com.icure.cardinal.sdk.crypto.entities.SdkBoundGroup
 import com.icure.cardinal.sdk.crypto.entities.SecureDelegationMembersDetails
 import com.icure.cardinal.sdk.crypto.entities.SecurityMetadataType
@@ -15,6 +19,7 @@ import com.icure.cardinal.sdk.crypto.entities.resolve
 import com.icure.cardinal.sdk.model.base.HasEncryptionMetadata
 import com.icure.cardinal.sdk.model.embed.AccessLevel
 import com.icure.cardinal.sdk.model.embed.Delegation
+import com.icure.cardinal.sdk.model.embed.SecureDelegation
 import com.icure.cardinal.sdk.model.specializations.SecureDelegationKeyString
 import com.icure.kryptom.crypto.CryptoService
 import com.icure.utils.InternalIcureApi
@@ -26,7 +31,9 @@ internal class BaseSecurityMetadataDecryptorImpl(
 	private val exchangeKeysManager: ExchangeKeysManager,
 	private val exchangeDataManager: ExchangeDataManager,
 	private val secureDelegationsEncryption: SecureDelegationsEncryption,
-	private val exchangeDataMap: ExchangeDataMapManager
+	private val exchangeDataMap: ExchangeDataMapManager,
+	private val dataOwner: DataOwnerApi,
+	private val useParentKeys: Boolean,
 ) : BaseSecurityMetadataDecryptor {
 	override suspend fun <T : Any> decryptLegacyDelegations(
 		entitiesGroupId: String?,
@@ -45,18 +52,16 @@ internal class BaseSecurityMetadataDecryptorImpl(
 				metadataType
 			).map {
 				it.value
-			}.distinct().mapTo(mutableSetOf()) {
-				metadataType.mapLegacyDecrypted(it)
-			}
+			}.toSet()
 		}
 	}
 
-	private suspend fun extractFromLegacyDelegations(
+	private suspend fun <T : Any> extractFromLegacyDelegations(
 		entitiesGroupId: String?,
 		entity: HasEncryptionMetadata,
 		dataOwnersHierarchySubset: Set<String>,
-		metadataType: SecurityMetadataType<*>
-	): List<DecryptedMetadataDetails<String>> = if (boundGroup.resolve(entitiesGroupId) != null) {
+		metadataType: SecurityMetadataType<T>
+	): List<DecryptedMetadataDetails<T>> = if (boundGroup.resolve(entitiesGroupId) != null) {
 		// Legacy delegations don't support inter-group sharing
 		emptyList()
 	} else {
@@ -69,8 +74,16 @@ internal class BaseSecurityMetadataDecryptorImpl(
 					delegations.filterTo(mutableSetOf()) { it.owner in dataOwnersHierarchySubset }
 				}
 			)
-		}.mapNotNull {
-			tryDecryptLegacyDelegation(it, metadataType)
+		}.mapNotNull { delegation ->
+			tryDecryptLegacyDelegation(delegation, metadataType)?.let { decryptedValue ->
+				DecryptedMetadataDetails(
+					metadataType.mapLegacyDecrypted(decryptedValue),
+					setOfNotNull(
+						delegation.delegatedTo?.takeIf { it in dataOwnersHierarchySubset },
+						delegation.owner?.takeIf { it in dataOwnersHierarchySubset },
+					)
+				)
+			}
 		}
 	}
 
@@ -83,7 +96,7 @@ internal class BaseSecurityMetadataDecryptorImpl(
 	private suspend fun tryDecryptLegacyDelegation(
 		delegation: Delegation,
 		metadataType: SecurityMetadataType<*>
-	): DecryptedMetadataDetails<String>? {
+	): String? {
 		if (delegation.key == null) {
 			return null
 		}
@@ -102,12 +115,6 @@ internal class BaseSecurityMetadataDecryptorImpl(
 				cryptoService.aes.decrypt(delegation.key.decodedBytes(), it)
 					.decodeToString().split(":").takeIf { it.size == 2 }?.last()
 					?.takeIf { metadataType.validateLegacyDecrypted(it) }
-					?.let {
-						DecryptedMetadataDetails(
-							it,
-							setOf(delegation.owner, delegation.delegatedTo)
-						)
-					}
 			}.getOrNull()
 		}
 	}
@@ -242,16 +249,10 @@ internal class BaseSecurityMetadataDecryptorImpl(
 			entitiesGroupId,
 			toSearchByDelegationKey
 		)
-		val uncachedToGetMap = toSearchByDelegationKey.filterTo(mutableSetOf()) { it !in alreadyCached }
-		val exchangeDataMaps = if (uncachedToGetMap.isNotEmpty()) exchangeDataMap.getExchangeDataMapBatch(
+		val exchangeDataIdByDelegationKey = getExchangeDataMapsAndDecrypt(
 			entitiesGroupId,
-			uncachedToGetMap
-		) else emptyList()
-		val exchangeDataIdByDelegationKey = exchangeDataMaps.mapNotNull { exchangeDataMap ->
-			secureDelegationsEncryption.decryptExchangeDataId(exchangeDataMap.encryptedExchangeDataIds)?.let {
-				SecureDelegationKeyString(exchangeDataMap.id) to it
-			}
-		}.toMap()
+			toSearchByDelegationKey.filterTo(mutableSetOf()) { it !in alreadyCached }
+		)
 		val retrievedByExchangeDataId = if (exchangeDataIdByDelegationKey.isNotEmpty()) exchangeDataManager.getDecryptionDataByIds(
 			entitiesGroupId,
 			exchangeDataIdByDelegationKey.values.toSet(),
@@ -276,30 +277,25 @@ internal class BaseSecurityMetadataDecryptorImpl(
 		dataOwnersHierarchySubset: Set<String>,
 		metadataType: SecurityMetadataType<T>
 	): Map<String, List<DecryptedMetadataDetails<T>>> {
-//		val fromLegacyDelegations = decryptLegacyDelegations(
-//			entitiesGroupId,
-//			entities,
-//			entitiesType,
-//			dataOwnersHierarchySubset,
-//			metadataType
-//		)
-//		val fromSecureDelegations = decryptAllSecureDelegations(
-//			entitiesGroupId,
-//			entities,
-//			entitiesType,
-//			dataOwnersHierarchySubset,
-//			metadataType
-//		)
-		TODO("decide how to handle actually the key: plain data owner id or groupId/dataOwnerId")
-//		return dataOwnersHierarchySubset.map((dataOwner) => {
-//			const decryptedEntriesForDataOwner = allExtractedWithDataOwners
-//				.filter((x) => x.dataOwnersWithAccess.some((d) => dataOwner == d))
-//			.map((x) => x.decrypted)
-//			return {
-//				ownerId: dataOwner,
-//				extracted: [...new Set(decryptedEntriesForDataOwner)],
-//			}
-//		})
+		val fromLegacyDelegations = decryptAllLegacyDelegations(
+			entitiesGroupId,
+			entities,
+			entitiesType,
+			dataOwnersHierarchySubset,
+			metadataType
+		)
+		val fromSecureDelegations = decryptAllSecureDelegations(
+			entitiesGroupId,
+			entities,
+			entitiesType,
+			dataOwnersHierarchySubset,
+			metadataType
+		)
+		return (fromSecureDelegations.toList() + fromLegacyDelegations.toList()).groupingBy {
+			it.first
+		}.aggregate { _, accumulator, element, _ ->
+			if (accumulator == null) element.second else accumulator + element.second
+		}
 	}
 
 	override suspend fun <T : Any> decryptAllLegacyDelegations(
@@ -308,9 +304,15 @@ internal class BaseSecurityMetadataDecryptorImpl(
 		entitiesType: EntityWithEncryptionMetadataTypeName,
 		dataOwnersHierarchySubset: Set<String>,
 		metadataType: SecurityMetadataType<T>
-	): Map<String, Set<T>> {
-		TODO("Not yet implemented")
-	}
+	): Map<String, List<DecryptedMetadataDetails<T>>> =
+		entities.associate {
+			it.id to extractFromLegacyDelegations(
+				entitiesGroupId,
+				it,
+				dataOwnersHierarchySubset,
+				metadataType
+			)
+		}
 
 	override suspend fun <T : Any> decryptAllSecureDelegations(
 		entitiesGroupId: String?,
@@ -318,31 +320,135 @@ internal class BaseSecurityMetadataDecryptorImpl(
 		entitiesType: EntityWithEncryptionMetadataTypeName,
 		dataOwnersHierarchySubset: Set<String>,
 		metadataType: SecurityMetadataType<T>
-	): Map<String, Set<T>> {
-		TODO("Not yet implemented")
+	): Map<String, List<DecryptedMetadataDetails<T>>> {
+		val dataOwnersHierarchyReferences = selfHierarchyIdsAsReferenceStrings(
+			dataOwnersHierarchySubset,
+			entitiesGroupId
+		)
+		val loadedExchangeData = loadAllExchangeDataForEntitiesSecureDelegations(
+			entitiesGroupId,
+			entities,
+			dataOwnersHierarchySubset
+		) {
+			metadataType.hasValueIn(it)
+		}
+		return entities.associate { e ->
+			e.id to e.securityMetadata?.secureDelegations?.flatMap { (delegationKey, delegation) ->
+				val exchangeDataToUse = loadedExchangeData.getExchangeDataFor(delegationKey, delegation)
+				exchangeDataToUse?.unencryptedContent?.exchangeKey?.let {
+					metadataType.decryptSecureDelegation(delegation, it, secureDelegationsEncryption)
+				}?.let { decrypted ->
+					val plainMembers = setOfNotNull(
+						delegation.delegate?.takeIf { it in dataOwnersHierarchyReferences },
+						delegation.delegator?.takeIf { it in dataOwnersHierarchyReferences },
+					).map { dataOwnerReferenceString ->
+						dataOwnerReferenceString.split("/").let { splitReference ->
+							when (splitReference.size) {
+								1 -> splitReference[0]
+								2 -> splitReference[1]
+								else -> throw IllegalArgumentException(
+									"Entity with id ${e.id} has an invalid data owner reference \"${dataOwnerReferenceString}\" in security metadata"
+								)
+							}
+						}
+					}.toSet()
+					decrypted.map {
+						DecryptedMetadataDetails(it, plainMembers)
+					}
+				}.orEmpty()
+			}.orEmpty()
+		}
 	}
 
 	override suspend fun getSecureDelegationMemberDetails(
 		entityGroupId: String?,
 		typedEntity: EntityWithTypeInfo<*>
 	): Map<SecureDelegationKeyString, SecureDelegationMembersDetails> {
-		TODO("Not yet implemented")
+		val dataOwnersHierarchyReferences = (
+			if (useParentKeys)
+				dataOwner.getCurrentDataOwnerHierarchyIdsReference()
+			else
+				listOf(dataOwner.getCurrentDataOwnerReference())
+		).mapTo(mutableSetOf()) { it.asReferenceStringInGroup(entityGroupId, boundGroup) }
+		val loadedExchangeData = loadAllExchangeDataForEntitiesSecureDelegations(
+			entityGroupId,
+			listOf(typedEntity.entity),
+			dataOwnersHierarchyReferences
+		) {
+			it.delegate == null || it.delegator == null
+		}
+		return typedEntity.entity.securityMetadata?.secureDelegations?.mapValues { (delegationKey, delegation) ->
+			if (delegation.delegate != null && delegation.delegator != null) {
+				SecureDelegationMembersDetails(
+					delegator = DataOwnerReferenceInGroup.parse(delegation.delegator, entityGroupId, boundGroup),
+					delegate = DataOwnerReferenceInGroup.parse(delegation.delegate, entityGroupId, boundGroup),
+					fullyExplicit = true,
+					accessControlSecret = null,
+					accessLevel = delegation.permissions
+				)
+			} else {
+				val exchangeData = loadedExchangeData.getExchangeDataFor(delegationKey, delegation)
+				SecureDelegationMembersDetails(
+					delegator = (delegation.delegator ?: exchangeData?.exchangeData?.delegator)?.let {
+						DataOwnerReferenceInGroup.parse(it, entityGroupId, boundGroup)
+					},
+					delegate = (delegation.delegate ?: exchangeData?.exchangeData?.delegate)?.let {
+						DataOwnerReferenceInGroup.parse(it, entityGroupId, boundGroup)
+					},
+					fullyExplicit = false,
+					accessControlSecret = exchangeData?.unencryptedContent?.accessControlSecret,
+					accessLevel = delegation.permissions
+				)
+			}
+		}.orEmpty()
+	}
+
+	override suspend fun getEntityAccessLevel(
+		entityGroupId: String?,
+		typedEntity: EntityWithTypeInfo<*>,
+		dataOwnersHierarchySubset: Set<String>
+	): AccessLevel? {
+		val legacyAccess = getEntityLegacyDelegationAccessLevel(entityGroupId, typedEntity, dataOwnersHierarchySubset)
+		if (legacyAccess != null) return legacyAccess // Legacy access is always max access.
+		return getEntitySecureDelegationsAccessLevel(entityGroupId, typedEntity, dataOwnersHierarchySubset)
 	}
 
 	override suspend fun getEntityLegacyDelegationAccessLevel(
 		entityGroupId: String?,
 		typedEntity: EntityWithTypeInfo<*>,
 		dataOwnersHierarchySubset: Set<String>
-	): AccessLevel? {
-		TODO("Not yet implemented")
-	}
+	): AccessLevel? = if (
+		boundGroup.resolve(entityGroupId) == null
+		&& dataOwnersHierarchySubset.any { typedEntity.entity.delegations.containsKey(it) }
+	) AccessLevel.Write else null
 
 	override suspend fun getEntitySecureDelegationsAccessLevel(
 		entityGroupId: String?,
 		typedEntity: EntityWithTypeInfo<*>,
 		dataOwnersHierarchySubset: Set<String>
 	): AccessLevel? {
-		TODO("Not yet implemented")
+		require(dataOwnersHierarchySubset.isNotEmpty()) { "`dataOwnersHierarchySubset` can't be empty" }
+		val dataOwnersHierarchyReferences = selfHierarchyIdsAsReferenceStrings(
+			dataOwnersHierarchySubset,
+			entityGroupId
+		)
+		val securityMetadata = typedEntity.entity.securityMetadata
+		if (securityMetadata == null || securityMetadata.secureDelegations.isEmpty()) return null
+		// If the data owner is explicit all delegations he can access has his id. If the delegator is anonymous all delegations he can access are
+		// accessible by hash. No mixed scenario possible.
+		val accessibleDelegations = securityMetadata.secureDelegations.values.filter {
+			it.delegate in dataOwnersHierarchyReferences || it.delegator in dataOwnersHierarchyReferences
+		}.takeIf { it.isNotEmpty() } ?: exchangeDataManager.getCachedDecryptionDataKeyByAccessControlHash(
+			entityGroupId,
+			securityMetadata.secureDelegations.keys
+		).keys.let { accessibleDelegationKeys ->
+			securityMetadata.secureDelegations.mapNotNull { if (it.key in accessibleDelegationKeys) it.value else null }
+		}
+		return when {
+			accessibleDelegations.isEmpty() -> null
+			accessibleDelegations.any { it.permissions == AccessLevel.Write } -> AccessLevel.Write
+			else -> AccessLevel.Read
+		}
 	}
 
 	override fun hasAnyEncryptionKeys(entity: HasEncryptionMetadata): Boolean =
@@ -355,4 +461,80 @@ internal class BaseSecurityMetadataDecryptorImpl(
 	) = boundGroup.resolve(entityGroupId)?.let { g ->
 		dataOwnerHierarchyIds.mapTo(mutableSetOf()) { "$g/$it"}
 	} ?: dataOwnerHierarchyIds
+
+	private suspend fun getExchangeDataMapsAndDecrypt(
+		entitiesGroupId: String?,
+		delegationKeys: Set<SecureDelegationKeyString>
+	): Map<SecureDelegationKeyString, String> {
+		if (delegationKeys.isEmpty()) return emptyMap()
+		val exchangeDataMaps = exchangeDataMap.getExchangeDataMapBatch(
+			entitiesGroupId,
+			delegationKeys
+		)
+		return exchangeDataMaps.mapNotNull { exchangeDataMap ->
+			secureDelegationsEncryption.decryptExchangeDataId(exchangeDataMap.encryptedExchangeDataIds)?.let {
+				SecureDelegationKeyString(exchangeDataMap.id) to it
+			}
+		}.toMap()
+	}
+
+	private suspend fun loadAllExchangeDataForEntitiesSecureDelegations(
+		entitiesGroupId: String?,
+		entities: List<HasEncryptionMetadata>,
+		dataOwnersHierarchySubset: Set<String>,
+		secureDelegationFilter: (SecureDelegation) -> Boolean
+	): LoadedExchangeData {
+		val dataOwnersHierarchyReferences = selfHierarchyIdsAsReferenceStrings(
+			dataOwnersHierarchySubset,
+			entitiesGroupId
+		)
+		val toSearchByDelegationKey = entities.flatMapTo(mutableSetOf()) { e ->
+			e.securityMetadata?.secureDelegations?.mapNotNull {
+				if (it.value.exchangeDataId == null && secureDelegationFilter(it.value)) it.key else null
+			}.orEmpty()
+		}
+		val exchangeDataByDelegationKey = exchangeDataManager.getCachedDecryptionDataKeyByAccessControlHash(
+			entitiesGroupId,
+			toSearchByDelegationKey
+		)
+		val toSearchWithExchangeDataMap = entities.flatMapTo(mutableSetOf()) { e ->
+			e.securityMetadata?.secureDelegations?.mapNotNull { (delegationKey, delegation) ->
+				if (
+					delegation.exchangeDataId == null
+					&& (delegation.delegate in dataOwnersHierarchyReferences || delegation.delegator in dataOwnersHierarchyReferences)
+					&& !exchangeDataByDelegationKey.containsKey(delegationKey)
+					&& secureDelegationFilter(delegation)
+				) delegationKey else null
+			}.orEmpty()
+		}
+		val exchangeDataIdByDelegationKey = getExchangeDataMapsAndDecrypt(entitiesGroupId, toSearchWithExchangeDataMap)
+		val toSearchDirectlyById = entities.flatMapTo(mutableSetOf()) { e ->
+			e.securityMetadata?.secureDelegations?.mapNotNull { (delegationKey, delegation) ->
+				if (
+					delegation.exchangeDataId != null
+					&& (delegation.delegate in dataOwnersHierarchyReferences || delegation.delegator in dataOwnersHierarchyReferences)
+					&& !exchangeDataByDelegationKey.containsKey(delegationKey)
+					&& secureDelegationFilter(delegation)
+				) delegation.exchangeDataId else null
+			}.orEmpty()
+		}
+		val exchangeDataById = (toSearchDirectlyById + exchangeDataIdByDelegationKey.values).takeIf { it.isNotEmpty() }?.let {
+			exchangeDataManager.getDecryptionDataByIds(entitiesGroupId, it, true)
+		}.orEmpty()
+		return LoadedExchangeData(exchangeDataByDelegationKey, exchangeDataIdByDelegationKey, exchangeDataById)
+	}
+
+	private class LoadedExchangeData(
+		private val exchangeDataByDelegationKey: Map<SecureDelegationKeyString, ExchangeDataWithUnencryptedContent>,
+		private val exchangeDataIdByDelegationKey: Map<SecureDelegationKeyString, String>,
+		private val exchangeDataById: Map<String, ExchangeDataWithPotentiallyDecryptedContent>,
+	) {
+		fun getExchangeDataFor(
+			delegationKey: SecureDelegationKeyString,
+			delegation: SecureDelegation
+		): ExchangeDataWithPotentiallyDecryptedContent? =
+			exchangeDataByDelegationKey[delegationKey]
+				?: delegation.exchangeDataId?.let { exchangeDataById[it] }
+				?: exchangeDataIdByDelegationKey[delegationKey]?.let { exchangeDataById[it] }
+	}
 }

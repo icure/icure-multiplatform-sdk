@@ -87,6 +87,8 @@ private class CachedLruExchangeDataManagerInGroup(
 	sdkBoundGroup = sdkBoundGroup,
 	requestGroup = requestGroup
 ) {
+	// TODO test that even with small cache everything works fine.
+
 	/*
 	 * If baseScope is canceled, this scope is also canceled, but this can be canceled independently of base scope (has
 	 * baseScope job as parent, and baseScope has SupervisorJob)

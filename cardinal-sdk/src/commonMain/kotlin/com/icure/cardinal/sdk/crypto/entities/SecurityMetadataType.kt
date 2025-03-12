@@ -11,7 +11,8 @@ import com.icure.kryptom.crypto.AesService
 import com.icure.utils.InternalIcureApi
 
 /**
- * @param DecryptedType should properly implement hashCode / equal or some values may be duplicated
+ * @param DecryptedType the type of the decrypted security metadata. Must properly implement hashCode / equal, required
+ * for proper deduplication of values.
  */
 @InternalIcureApi
 sealed interface SecurityMetadataType<DecryptedType : Any> {
