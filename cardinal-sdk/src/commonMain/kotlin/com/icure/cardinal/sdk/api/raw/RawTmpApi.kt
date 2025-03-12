@@ -16,7 +16,6 @@ import com.icure.utils.InternalIcureApi
 import kotlin.ByteArray
 import kotlin.Int
 import kotlin.String
-import kotlin.Unit
 import kotlin.collections.List
 
 // WARNING: This class is auto-generated. If you change it manually, your changes will be lost.
@@ -25,9 +24,9 @@ import kotlin.collections.List
 public interface RawTmpApi {
 	// region cloud endpoints
 
-	suspend fun createTmpDatabase(): HttpResponse<Unit>
+	suspend fun createTmpDatabase(): HttpResponse<ByteArray>
 
-	suspend fun destroyTmpDatabase(): HttpResponse<Unit>
+	suspend fun destroyTmpDatabase(): HttpResponse<ByteArray>
 
 	suspend fun replicateToTmpDatabase(
 		from: String,

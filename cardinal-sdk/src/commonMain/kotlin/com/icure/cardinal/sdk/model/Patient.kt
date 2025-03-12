@@ -228,7 +228,7 @@ sealed interface Patient :
 
 	public val employementInfos: List<EmploymentInfo>
 
-	override val parentId: Nothing?
+	override val parentId: Nothing
 	// region Patient-Patient
 	companion object {
 		const val KRAKEN_QUALIFIED_NAME = "org.taktik.icure.entities.Patient"
@@ -357,7 +357,7 @@ data class DecryptedPatient(
 	override val schoolingInfos: List<DecryptedSchoolingInfo> = emptyList(),
 	@DefaultValue("emptyList()")
 	override val employementInfos: List<DecryptedEmploymentInfo> = emptyList(),
-	override val parentId: Nothing? = null,
+	override val parentId: Nothing = null,
 ) : Patient {
 	// region Patient-DecryptedPatient
 override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): DecryptedPatient =
@@ -486,7 +486,7 @@ data class EncryptedPatient(
 	override val schoolingInfos: List<EncryptedSchoolingInfo> = emptyList(),
 	@DefaultValue("emptyList()")
 	override val employementInfos: List<EncryptedEmploymentInfo> = emptyList(),
-	override val parentId: Nothing? = null,
+	override val parentId: Nothing = null,
 ) : Patient {
 	// region Patient-EncryptedPatient
 override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): EncryptedPatient =

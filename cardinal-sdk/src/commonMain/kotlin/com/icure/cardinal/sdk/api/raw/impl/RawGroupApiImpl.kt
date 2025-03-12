@@ -39,10 +39,10 @@ import io.ktor.http.takeFrom
 import io.ktor.util.date.GMTDate
 import kotlinx.serialization.json.Json
 import kotlin.Boolean
+import kotlin.ByteArray
 import kotlin.Int
 import kotlin.Long
 import kotlin.String
-import kotlin.Unit
 import kotlin.collections.List
 import kotlin.collections.Map
 import kotlin.time.Duration
@@ -237,7 +237,7 @@ class RawGroupApiImpl(
 			accept(Application.Json)
 		}.wrap()
 
-	override suspend fun deleteOperationToken(tokenId: String): HttpResponse<Unit> =
+	override suspend fun deleteOperationToken(tokenId: String): HttpResponse<ByteArray> =
 		delete(authProvider) {
 			url {
 				takeFrom(apiUrl)
@@ -401,7 +401,7 @@ class RawGroupApiImpl(
 		q: Int?,
 		n: Int?,
 		databases: ListOfIds,
-	): HttpResponse<Unit> =
+	): HttpResponse<ByteArray> =
 		post(authProvider) {
 			url {
 				takeFrom(apiUrl)

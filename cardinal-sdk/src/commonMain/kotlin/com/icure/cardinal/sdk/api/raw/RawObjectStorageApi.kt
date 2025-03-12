@@ -5,7 +5,6 @@ import com.icure.utils.InternalIcureApi
 import kotlin.ByteArray
 import kotlin.Long
 import kotlin.String
-import kotlin.Unit
 
 // WARNING: This class is auto-generated. If you change it manually, your changes will be lost.
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
@@ -21,7 +20,7 @@ public interface RawObjectStorageApi {
 		md5Hash: String,
 		startByte: Long? = null,
 		content: ByteArray,
-	): HttpResponse<Unit>
+	): HttpResponse<ByteArray>
 
 	suspend fun getAttachment(
 		entityGroup: String,

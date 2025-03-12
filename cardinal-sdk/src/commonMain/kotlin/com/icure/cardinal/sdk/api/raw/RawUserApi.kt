@@ -12,10 +12,10 @@ import com.icure.cardinal.sdk.model.security.Enable2faRequest
 import com.icure.cardinal.sdk.model.security.TokenWithGroup
 import com.icure.utils.InternalIcureApi
 import kotlin.Boolean
+import kotlin.ByteArray
 import kotlin.Int
 import kotlin.Long
 import kotlin.String
-import kotlin.Unit
 import kotlin.collections.List
 
 // WARNING: This class is auto-generated. If you change it manually, your changes will be lost.
@@ -173,6 +173,11 @@ public interface RawUserApi {
 		userIds: ListOfIds,
 	): HttpResponse<List<User>>
 
+	suspend fun getUserInGroup(
+		groupId: String,
+		userId: String,
+	): HttpResponse<User>
+
 	suspend fun matchUsersInGroupBy(
 		groupId: String,
 		filter: AbstractFilter<User>,
@@ -182,19 +187,19 @@ public interface RawUserApi {
 		userId: String,
 		groupId: String,
 		request: Enable2faRequest,
-	): HttpResponse<Unit>
+	): HttpResponse<ByteArray>
 
 	suspend fun disable2faForUser(
 		userId: String,
 		groupId: String,
-	): HttpResponse<Unit>
+	): HttpResponse<ByteArray>
 
 	suspend fun enable2faForUser(
 		userId: String,
 		request: Enable2faRequest,
-	): HttpResponse<Unit>
+	): HttpResponse<ByteArray>
 
-	suspend fun disable2faForUser(userId: String): HttpResponse<Unit>
+	suspend fun disable2faForUser(userId: String): HttpResponse<ByteArray>
 
 	suspend fun createAdminUser(userDto: User): HttpResponse<User>
 
@@ -207,5 +212,11 @@ public interface RawUserApi {
 		groupId: String,
 		filter: AbstractFilter<User>,
 	): HttpResponse<List<String>>
+
+	suspend fun setUserInheritsPermissions(
+		userId: String,
+		groupId: String,
+		`value`: Boolean,
+	): HttpResponse<String>
 	// endregion
 }

@@ -20,7 +20,6 @@ import kotlinx.serialization.json.Json
 import kotlin.ByteArray
 import kotlin.Long
 import kotlin.String
-import kotlin.Unit
 import kotlin.collections.Map
 import kotlin.time.Duration
 
@@ -45,7 +44,7 @@ class RawObjectStorageApiImpl(
 		md5Hash: String,
 		startByte: Long?,
 		content: ByteArray,
-	): HttpResponse<Unit> =
+	): HttpResponse<ByteArray> =
 		post(authProvider) {
 			url {
 				takeFrom(apiUrl)

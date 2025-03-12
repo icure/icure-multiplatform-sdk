@@ -17,9 +17,9 @@ import io.ktor.http.appendPathSegments
 import io.ktor.http.contentType
 import io.ktor.http.takeFrom
 import kotlinx.serialization.json.Json
+import kotlin.ByteArray
 import kotlin.Long
 import kotlin.String
-import kotlin.Unit
 import kotlin.collections.Map
 import kotlin.time.Duration
 
@@ -69,7 +69,7 @@ class RawAnonymousAuthApiImpl(
 			`header`("Refresh-Token", refreshToken)
 		}.wrap()
 
-	override suspend fun check(loginCredentials: LoginCredentials): HttpResponse<Unit> =
+	override suspend fun check(loginCredentials: LoginCredentials): HttpResponse<ByteArray> =
 		post {
 			url {
 				takeFrom(apiUrl)
@@ -148,7 +148,7 @@ class RawAnonymousAuthApiImpl(
 			`header`("token", token)
 		}.wrap()
 
-	override suspend fun invalidateRefreshJWT(refreshToken: String): HttpResponse<Unit> =
+	override suspend fun invalidateRefreshJWT(refreshToken: String): HttpResponse<ByteArray> =
 		post {
 			url {
 				takeFrom(apiUrl)

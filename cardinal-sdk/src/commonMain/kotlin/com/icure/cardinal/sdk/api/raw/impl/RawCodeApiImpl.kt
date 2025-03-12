@@ -25,9 +25,9 @@ import io.ktor.http.takeFrom
 import io.ktor.util.date.GMTDate
 import kotlinx.serialization.json.Json
 import kotlin.Boolean
+import kotlin.ByteArray
 import kotlin.Int
 import kotlin.String
-import kotlin.Unit
 import kotlin.collections.List
 import kotlin.collections.Map
 import kotlin.time.Duration
@@ -317,7 +317,7 @@ class RawCodeApiImpl(
 			setBodyWithSerializer(CodeAbstractFilterSerializer, filter)
 		}.wrap()
 
-	override suspend fun importCodes(codeType: String): HttpResponse<Unit> =
+	override suspend fun importCodes(codeType: String): HttpResponse<ByteArray> =
 		post(authProvider) {
 			url {
 				takeFrom(apiUrl)

@@ -8,9 +8,9 @@ import com.icure.cardinal.sdk.model.filter.AbstractFilter
 import com.icure.cardinal.sdk.model.filter.chain.FilterChain
 import com.icure.utils.InternalIcureApi
 import kotlin.Boolean
+import kotlin.ByteArray
 import kotlin.Int
 import kotlin.String
-import kotlin.Unit
 import kotlin.collections.List
 
 // WARNING: This class is auto-generated. If you change it manually, your changes will be lost.
@@ -108,7 +108,7 @@ public interface RawCodeApi {
 
 	suspend fun matchCodesBy(filter: AbstractFilter<Code>): HttpResponse<List<String>>
 
-	suspend fun importCodes(codeType: String): HttpResponse<Unit>
+	suspend fun importCodes(codeType: String): HttpResponse<ByteArray>
 	// endregion
 
 	// region cloud endpoints

@@ -22,10 +22,10 @@ import com.icure.cardinal.sdk.model.security.Operation
 import com.icure.cardinal.sdk.model.security.PermissionType
 import com.icure.utils.InternalIcureApi
 import kotlin.Boolean
+import kotlin.ByteArray
 import kotlin.Int
 import kotlin.Long
 import kotlin.String
-import kotlin.Unit
 import kotlin.collections.List
 import kotlin.collections.Map
 
@@ -94,7 +94,7 @@ public interface RawGroupApi {
 		description: String? = null,
 	): HttpResponse<String>
 
-	suspend fun deleteOperationToken(tokenId: String): HttpResponse<Unit>
+	suspend fun deleteOperationToken(tokenId: String): HttpResponse<ByteArray>
 
 	suspend fun setDefaultRoles(
 		groupId: String,
@@ -153,7 +153,7 @@ public interface RawGroupApi {
 		q: Int? = null,
 		n: Int? = null,
 		databases: ListOfIds,
-	): HttpResponse<Unit>
+	): HttpResponse<ByteArray>
 
 	suspend fun getGroupsStorageInfos(groups: ListOfIds): HttpResponse<List<GroupDatabasesInfo>>
 

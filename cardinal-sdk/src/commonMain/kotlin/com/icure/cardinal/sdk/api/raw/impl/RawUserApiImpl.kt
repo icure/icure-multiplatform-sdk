@@ -30,10 +30,10 @@ import io.ktor.http.takeFrom
 import io.ktor.util.date.GMTDate
 import kotlinx.serialization.json.Json
 import kotlin.Boolean
+import kotlin.ByteArray
 import kotlin.Int
 import kotlin.Long
 import kotlin.String
-import kotlin.Unit
 import kotlin.collections.List
 import kotlin.collections.Map
 import kotlin.time.Duration
@@ -495,6 +495,19 @@ class RawUserApiImpl(
 			setBody(userIds)
 		}.wrap()
 
+	override suspend fun getUserInGroup(
+		groupId: String,
+		userId: String,
+	): HttpResponse<User> =
+		get(authProvider) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "user", "inGroup", groupId, userId)
+				parameter("ts", GMTDate().timestamp)
+			}
+			accept(Application.Json)
+		}.wrap()
+
 	override suspend fun matchUsersInGroupBy(
 		groupId: String,
 		filter: AbstractFilter<User>,
@@ -513,7 +526,7 @@ class RawUserApiImpl(
 		userId: String,
 		groupId: String,
 		request: Enable2faRequest,
-	): HttpResponse<Unit> =
+	): HttpResponse<ByteArray> =
 		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
@@ -527,7 +540,7 @@ class RawUserApiImpl(
 	override suspend fun disable2faForUser(
 		userId: String,
 		groupId: String,
-	): HttpResponse<Unit> =
+	): HttpResponse<ByteArray> =
 		delete(authProvider) {
 			url {
 				takeFrom(apiUrl)
@@ -539,7 +552,7 @@ class RawUserApiImpl(
 	override suspend fun enable2faForUser(
 		userId: String,
 		request: Enable2faRequest,
-	): HttpResponse<Unit> =
+	): HttpResponse<ByteArray> =
 		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
@@ -550,7 +563,7 @@ class RawUserApiImpl(
 			setBody(request)
 		}.wrap()
 
-	override suspend fun disable2faForUser(userId: String): HttpResponse<Unit> =
+	override suspend fun disable2faForUser(userId: String): HttpResponse<ByteArray> =
 		delete(authProvider) {
 			url {
 				takeFrom(apiUrl)
@@ -596,6 +609,21 @@ class RawUserApiImpl(
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBodyWithSerializer(UserAbstractFilterSerializer, filter)
+		}.wrap()
+
+	override suspend fun setUserInheritsPermissions(
+		userId: String,
+		groupId: String,
+		`value`: Boolean,
+	): HttpResponse<String> =
+		put(authProvider) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "user", userId, "inGroup", groupId, "setInheritsPermissions")
+				parameter("value", value)
+			}
+			contentType(Application.Json)
+			accept(Application.Json)
 		}.wrap()
 
 	// endregion

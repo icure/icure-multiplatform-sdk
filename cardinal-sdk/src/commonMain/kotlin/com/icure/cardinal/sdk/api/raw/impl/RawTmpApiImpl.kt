@@ -32,7 +32,6 @@ import kotlinx.serialization.json.Json
 import kotlin.ByteArray
 import kotlin.Int
 import kotlin.String
-import kotlin.Unit
 import kotlin.collections.List
 import kotlin.collections.Map
 import kotlin.time.Duration
@@ -50,7 +49,7 @@ class RawTmpApiImpl(
 ) : BaseRawApi(httpClient, additionalHeaders, timeout, json), RawTmpApi {
 	// region cloud endpoints
 
-	override suspend fun createTmpDatabase(): HttpResponse<Unit> =
+	override suspend fun createTmpDatabase(): HttpResponse<ByteArray> =
 		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
@@ -60,7 +59,7 @@ class RawTmpApiImpl(
 			accept(Application.Json)
 		}.wrap()
 
-	override suspend fun destroyTmpDatabase(): HttpResponse<Unit> =
+	override suspend fun destroyTmpDatabase(): HttpResponse<ByteArray> =
 		delete(authProvider) {
 			url {
 				takeFrom(apiUrl)
