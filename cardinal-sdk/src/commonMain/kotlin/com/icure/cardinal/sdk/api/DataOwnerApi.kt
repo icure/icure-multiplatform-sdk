@@ -1,5 +1,6 @@
 package com.icure.cardinal.sdk.api
 
+import com.icure.cardinal.sdk.crypto.entities.DataOwnerReferenceInGroup
 import com.icure.cardinal.sdk.model.CryptoActorStubWithType
 import com.icure.cardinal.sdk.model.DataOwnerType
 import com.icure.cardinal.sdk.model.DataOwnerWithType
@@ -29,6 +30,7 @@ interface DataOwnerApi {
 	 * @return the current data owner id
 	 */
 	suspend fun getCurrentDataOwnerId(): String
+	suspend fun getCurrentDataOwnerReference(): DataOwnerReferenceInGroup
 
 	/**
 	 * If the logged user is a data owner get its parent hierarchy. This information is cached without expiration, and
@@ -39,6 +41,7 @@ interface DataOwnerApi {
 	 * @return a list containing the ids of the current data owner hierarchy, ending with the current data owner id.
 	 */
 	suspend fun getCurrentDataOwnerHierarchyIds(): List<String>
+	suspend fun getCurrentDataOwnerHierarchyIdsReference(): List<DataOwnerReferenceInGroup>
 
 	/**
 	 * Get a data owner regardless of its actual type. The logged user must have the permission to access the data
@@ -57,6 +60,13 @@ interface DataOwnerApi {
 	 * @return the full data owner associated to the provided id.
 	 */
 	suspend fun getCryptoActorStub(ownerId: String): CryptoActorStubWithType
+
+	/**
+	 * Get a data owner regardless of its actual type. Does not require any special permission.
+	 * @param ownerId the id of a data owner (patient, hcp or device)
+	 * @return the full data owner associated to the provided id.
+	 */
+	suspend fun getCryptoActorStubInGroup(dataOwnerReferenceInGroup: DataOwnerReferenceInGroup): CryptoActorStubWithType
 
 	/**
 	 * Get the hierarchy for the current data owner starting from the specified parent.

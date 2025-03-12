@@ -13,11 +13,11 @@ interface ExchangeDataMapManager {
 	 * @param batch a map where each key is the hex-encoded access control key to another map that associates the encoded id of an
 	 * Exchange Data entity to the fingerprint of the key used to encrypt it.
 	 */
-	suspend fun createExchangeDataMaps(batch: ExchangeDataMapCreationBatch): Unit
+	suspend fun createExchangeDataMaps(groupId: String?, batch: ExchangeDataMapCreationBatch): Unit
 
 	/**
 	 * Retrieves a batch of Exchange Data Maps.
 	 * @param accessControlKeyHashes the hex-encoded hashes of the Exchange Data Maps to retrieve.
 	 */
-	suspend fun getExchangeDataMapBatch(accessControlKeyHashes: List<SecureDelegationKeyString>): List<ExchangeDataMap>
+	suspend fun getExchangeDataMapBatch(groupId: String?, accessControlKeyHashes: Set<SecureDelegationKeyString>): List<ExchangeDataMap>
 }

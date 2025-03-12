@@ -61,7 +61,8 @@ class EntityEncryptionServiceImpl(
 	private val cryptoService: CryptoService,
 	private val jsonEncryptionService: JsonEncryptionService,
 	private val useParentKeys: Boolean,
-	private val autoCreateEncryptionKeyForExistingLegacyData: Boolean
+	private val autoCreateEncryptionKeyForExistingLegacyData: Boolean,
+	private val boundGroupId: String?
 ) : EntityEncryptionService, EntityValidationService by EntityValidationServiceImpl(jsonEncryptionService) {
 	companion object {
 		private val log = getLogger("EntityEncryptionService")

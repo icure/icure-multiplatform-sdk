@@ -1,9 +1,9 @@
 package com.icure.cardinal.sdk.crypto
 
-import com.icure.kryptom.crypto.RsaAlgorithm
-import com.icure.kryptom.crypto.RsaKeypair
 import com.icure.cardinal.sdk.crypto.entities.CardinalKeyInfo
 import com.icure.cardinal.sdk.model.DataOwnerWithType
+import com.icure.kryptom.crypto.RsaAlgorithm
+import com.icure.kryptom.crypto.RsaKeypair
 import com.icure.utils.InternalIcureApi
 
 /**

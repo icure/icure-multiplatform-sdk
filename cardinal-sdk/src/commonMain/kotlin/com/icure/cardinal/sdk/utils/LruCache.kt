@@ -7,7 +7,7 @@ import com.icure.utils.InternalIcureApi
  */
 @InternalIcureApi
 class LruCache<K : Any, V : Any>(
-	private val maxCacheSize: Int,
+	private val maxCacheSize: Int?,
 ) { // TODO test
 	// Most recently used
 	private var lastNode: CacheNode<K, V>? = null
@@ -23,6 +23,11 @@ class LruCache<K : Any, V : Any>(
 	)
 
 	/**
+	 * Current size of the cache
+	 */
+	val size: Int get() = cache.size
+
+	/**
 	 * Get the value cached for [key] or null if there is no cached value.
 	 */
 	fun get(key: K): V? =
@@ -33,19 +38,21 @@ class LruCache<K : Any, V : Any>(
 	 */
 	fun set(key: K, value: V) {
 		val node = cache[key] ?: CacheNode(key, value).also {
-			if (cache.size >= maxCacheSize) evictOldest()
+			if (maxCacheSize != null && cache.size >= maxCacheSize ) evictOldest()
 			cache[key] = it
 		}
 		setUsed(node)
 	}
 
-	private fun evictOldest() {
+	/**
+	 * Evict the oldest entry in the cache, returns null if there is no entry to evict
+	 */
+	fun evictOldest(): V? =
 		firstNode?.also { oldest ->
 			cache.remove(oldest.key)
 			firstNode = oldest.next
 			firstNode?.prev = null
-		}
-	}
+		}?.value
 
 	private fun setUsed(node: CacheNode<K, V>) {
 		if (node !== lastNode) {

@@ -6,6 +6,9 @@ import com.icure.utils.InternalIcureApi
 
 @InternalIcureApi
 object NoAccessControlKeysHeadersProvider : AccessControlKeysHeadersProvider {
-	override suspend fun getAccessControlKeysHeadersFor(entityType: EntityWithEncryptionMetadataTypeName): List<String> =
+	override suspend fun getAccessControlKeysHeadersFor(
+		groupId: String?,
+		entityType: EntityWithEncryptionMetadataTypeName
+	): List<String> =
 		emptyList()
 }

@@ -1,5 +1,6 @@
 package com.icure.cardinal.sdk.crypto
 
+import com.icure.cardinal.sdk.crypto.entities.DataOwnerReferenceInGroup
 import com.icure.cardinal.sdk.crypto.entities.EntityWithTypeInfo
 import com.icure.utils.InternalIcureApi
 
@@ -14,5 +15,9 @@ interface DelegationsDeAnonymization : EntityAccessInformationProvider {
 	 * delegations contained within [entity].
 	 * Note that the delegation de-anonymization information may be used also with other entities of the same type.
 	 */
-	suspend fun createOrUpdateDeAnonymizationInfo(entity: EntityWithTypeInfo<*>, shareWithDataOwners: Set<String>)
+	suspend fun createOrUpdateDeAnonymizationInfo(
+		entityGroupId: String?,
+		entity: EntityWithTypeInfo<*>,
+		shareWithDataOwners: Set<DataOwnerReferenceInGroup>
+	)
 }

@@ -1,6 +1,7 @@
 package com.icure.cardinal.sdk.api
 
 import com.icure.cardinal.sdk.crypto.entities.CalendarItemShareOptions
+import com.icure.cardinal.sdk.crypto.entities.DataOwnerReferenceInGroup
 import com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption
 import com.icure.cardinal.sdk.exceptions.RevisionConflictException
 import com.icure.cardinal.sdk.filters.BaseFilterOptions
@@ -20,8 +21,8 @@ import com.icure.cardinal.sdk.model.specializations.HexString
 import com.icure.cardinal.sdk.subscription.Subscribable
 import com.icure.cardinal.sdk.utils.DefaultValue
 import com.icure.cardinal.sdk.utils.EntityEncryptionException
+import com.icure.cardinal.sdk.utils.generation.JsMapAsObjectArray
 import com.icure.cardinal.sdk.utils.pagination.PaginatedListIterator
-import kotlin.js.JsName
 
 /* This interface includes the API calls that do not need encryption keys and do not return or consume encrypted/decrypted items, they are completely agnostic towards the presence of encrypted items */
 interface CalendarItemBasicFlavourlessApi {
@@ -118,11 +119,16 @@ interface CalendarItemBasicFlavouredApi<E : CalendarItem> {
 	 * Get a calendar item by its id. You must have read access to the entity. Fails if the id does not correspond to any
 	 * entity, corresponds to an entity that is not a calendar item, or corresponds to an entity for which you don't have
 	 * read access.
-	 * Flavoured method.
 	 * @param entityId a calendar item id.
+	 * @param groupId the id of the group containing the entity. If null it is considered as the same group of the
+	 * current user.
 	 * @return the calendar item with id [entityId].
 	 */
-	suspend fun getCalendarItem(entityId: String): E
+	suspend fun getCalendarItem(
+		entityId: String,
+		@DefaultValue("null")
+		groupId: String? = null
+	): E
 
 	/**
 	 * Get multiple calendar items by their ids. Ignores all ids that do not correspond to an entity, correspond to
@@ -181,6 +187,12 @@ interface CalendarItemFlavouredApi<E : CalendarItem> : CalendarItemBasicFlavoure
 	suspend fun shareWithMany(
 		calendarItem: E,
 		delegates: Map<String, CalendarItemShareOptions>
+	): E
+
+	suspend fun shareInGroup(
+		calendarItem: E,
+		entityGroupId: String,
+		delegates: @JsMapAsObjectArray(flattenKey = true, flattenValue = true) Map<DataOwnerReferenceInGroup, CalendarItemShareOptions>
 	): E
 
 	@Deprecated("Use filter instead")
@@ -243,13 +255,21 @@ interface CalendarItemApi : CalendarItemBasicFlavourlessApi, CalendarItemFlavour
 	/**
 	 * Create a new calendar item. The provided calendar item must have the encryption metadata initialized.
 	 * @param entity a calendar item with initialized encryption metadata
+	 * @param groupId the id of the group where the entity should be created. If left null it will be the same group
+	 * of the current user.
 	 * @return the created calendar item with updated revision.
 	 * @throws IllegalArgumentException if the encryption metadata of the input was not initialized.
 	 */
-	suspend fun createCalendarItem(entity: DecryptedCalendarItem): DecryptedCalendarItem
+	suspend fun createCalendarItem(
+		entity: DecryptedCalendarItem,
+		@DefaultValue("null")
+		groupId: String? = null
+	): DecryptedCalendarItem
 
 	/**
-	 * Creates a new calendar item with initialized encryption metadata
+	 * Creates a new calendar item entity with initialized encryption metadata.
+	 * NOTE: this method doesn't send the entity to the backend, to store it you will need to pass the entity to the
+	 * [createCalendarItem] method.
 	 * @param base a calendar item with initialized content and uninitialized encryption metadata. The result of this
 	 * method takes the content from [base] if provided.
 	 * @param patient the patient linked to the calendar item.
@@ -267,6 +287,22 @@ interface CalendarItemApi : CalendarItemBasicFlavourlessApi, CalendarItemFlavour
 		user: User? = null,
 		@DefaultValue("emptyMap()")
 		delegates: Map<String, AccessLevel> = emptyMap(),
+		@DefaultValue("com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption.UseAnySharedWithParent")
+		secretId: SecretIdUseOption = SecretIdUseOption.UseAnySharedWithParent,
+	): DecryptedCalendarItem
+
+	/**
+	 * Equivalent to [withEncryptionMetadata] but initializes the encryption metadata for storage in a group that
+	 * can be different from the current user's group.
+	 */
+	suspend fun withEncryptionMetadataForGroup(
+		entityGroupId: String,
+		base: DecryptedCalendarItem?,
+		patient: Patient?,
+		@DefaultValue("null")
+		user: User? = null,
+		@DefaultValue("emptyMap()")
+		delegates: @JsMapAsObjectArray(flattenKey = true, valueEntryName = "accessLevel") Map<DataOwnerReferenceInGroup, AccessLevel> = emptyMap(),
 		@DefaultValue("com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption.UseAnySharedWithParent")
 		secretId: SecretIdUseOption = SecretIdUseOption.UseAnySharedWithParent,
 	): DecryptedCalendarItem
@@ -334,17 +370,19 @@ interface CalendarItemApi : CalendarItemBasicFlavourlessApi, CalendarItemFlavour
 	/**
 	 * Decrypts a calendar item, throwing an exception if it is not possible.
 	 * @param calendarItem a calendar item
+	 * @param groupId the group of the calendar item
 	 * @return the decrypted calendar item
 	 * @throws EntityEncryptionException if the calendar item could not be decrypted
 	 */
-	suspend fun decrypt(calendarItem: EncryptedCalendarItem): DecryptedCalendarItem
+	suspend fun decrypt(calendarItem: EncryptedCalendarItem, groupId: String? = null): DecryptedCalendarItem
 
 	/**
 	 * Tries to decrypt a calendar item, returns the input if it is not possible.
 	 * @param calendarItem an encrypted calendar item
+	 * @param groupId the group of the calendar item
 	 * @return the decrypted calendar item if the decryption was successful or the input if it was not.
 	 */
-	suspend fun tryDecrypt(calendarItem: EncryptedCalendarItem): CalendarItem
+	suspend fun tryDecrypt(calendarItem: EncryptedCalendarItem, groupId: String? = null): CalendarItem
 
 	/**
 	 * Give access to the encrypted flavour of the api

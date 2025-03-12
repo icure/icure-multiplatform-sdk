@@ -2,8 +2,8 @@ package com.icure.cardinal.sdk.crypto
 
 import com.icure.cardinal.sdk.crypto.entities.DecryptedMetadataDetails
 import com.icure.cardinal.sdk.crypto.entities.EntityWithTypeInfo
-import com.icure.cardinal.sdk.model.embed.AccessLevel
 import com.icure.cardinal.sdk.model.base.HasEncryptionMetadata
+import com.icure.cardinal.sdk.model.embed.AccessLevel
 import com.icure.cardinal.sdk.model.specializations.HexString
 import com.icure.utils.InternalIcureApi
 import kotlinx.coroutines.flow.Flow

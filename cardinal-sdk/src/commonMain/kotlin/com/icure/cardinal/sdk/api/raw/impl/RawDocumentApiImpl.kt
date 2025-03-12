@@ -51,8 +51,8 @@ class RawDocumentApiImpl(
 	timeout: Duration? = null,
 	json: Json,
 ) : BaseRawApi(httpClient, additionalHeaders, timeout, json), RawDocumentApi {
-	override suspend fun getAccessControlKeysHeaderValues(): List<String>? =
-		accessControlKeysHeadersProvider?.getAccessControlKeysHeadersFor(EntityWithEncryptionMetadataTypeName.Document)
+	override suspend fun getAccessControlKeysHeaderValues(groupId: String?): List<String>? =
+		accessControlKeysHeadersProvider?.getAccessControlKeysHeadersFor(groupId, EntityWithEncryptionMetadataTypeName.Document)
 
 	// region common endpoints
 

@@ -48,8 +48,8 @@ class RawClassificationApiImpl(
 	timeout: Duration? = null,
 	json: Json,
 ) : BaseRawApi(httpClient, additionalHeaders, timeout, json), RawClassificationApi {
-	override suspend fun getAccessControlKeysHeaderValues(): List<String>? =
-		accessControlKeysHeadersProvider?.getAccessControlKeysHeadersFor(EntityWithEncryptionMetadataTypeName.Classification)
+	override suspend fun getAccessControlKeysHeaderValues(groupId: String?): List<String>? =
+		accessControlKeysHeadersProvider?.getAccessControlKeysHeadersFor(groupId, EntityWithEncryptionMetadataTypeName.Classification)
 
 	// region common endpoints
 

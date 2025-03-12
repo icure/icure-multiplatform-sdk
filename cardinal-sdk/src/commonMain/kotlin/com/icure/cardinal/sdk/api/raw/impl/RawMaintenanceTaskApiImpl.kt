@@ -48,8 +48,8 @@ class RawMaintenanceTaskApiImpl(
 	timeout: Duration? = null,
 	json: Json,
 ) : BaseRawApi(httpClient, additionalHeaders, timeout, json), RawMaintenanceTaskApi {
-	override suspend fun getAccessControlKeysHeaderValues(): List<String>? =
-		accessControlKeysHeadersProvider?.getAccessControlKeysHeadersFor(EntityWithEncryptionMetadataTypeName.MaintenanceTask)
+	override suspend fun getAccessControlKeysHeaderValues(groupId: String?): List<String>? =
+		accessControlKeysHeadersProvider?.getAccessControlKeysHeadersFor(groupId, EntityWithEncryptionMetadataTypeName.MaintenanceTask)
 
 	// region common endpoints
 
