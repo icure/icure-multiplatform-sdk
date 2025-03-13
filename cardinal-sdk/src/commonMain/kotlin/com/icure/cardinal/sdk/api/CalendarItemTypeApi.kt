@@ -17,4 +17,6 @@ interface CalendarItemTypeApi {
 	suspend fun getCalendarItemType(calendarItemTypeId: String): CalendarItemType
 
 	suspend fun modifyCalendarItemType(calendarItemTypeDto: CalendarItemType): CalendarItemType
+
+	suspend fun listCalendarItemTypesByAgendaId(agendaId: String): List<CalendarItemType>
 }
