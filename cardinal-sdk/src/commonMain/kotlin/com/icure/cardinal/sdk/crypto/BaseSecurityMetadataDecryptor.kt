@@ -2,7 +2,6 @@ package com.icure.cardinal.sdk.crypto
 
 import com.icure.cardinal.sdk.crypto.entities.DecryptedMetadataDetails
 import com.icure.cardinal.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
-import com.icure.cardinal.sdk.crypto.entities.EntityWithTypeInfo
 import com.icure.cardinal.sdk.crypto.entities.SecureDelegationMembersDetails
 import com.icure.cardinal.sdk.crypto.entities.SecurityMetadataType
 import com.icure.cardinal.sdk.model.base.HasEncryptionMetadata
@@ -103,7 +102,8 @@ interface BaseSecurityMetadataDecryptor {
 	 */
 	suspend fun getSecureDelegationMemberDetails(
 		entityGroupId: String?,
-		typedEntity: EntityWithTypeInfo<*>
+		entity: HasEncryptionMetadata,
+		entityType: EntityWithEncryptionMetadataTypeName,
 	): Map<SecureDelegationKeyString, SecureDelegationMembersDetails>
 
 	/**
@@ -120,7 +120,8 @@ interface BaseSecurityMetadataDecryptor {
 	 */
 	suspend fun getEntityAccessLevel(
 		entityGroupId: String?,
-		typedEntity: EntityWithTypeInfo<*>,
+		entity: HasEncryptionMetadata,
+		entityType: EntityWithEncryptionMetadataTypeName,
 		dataOwnersHierarchySubset: Set<String>
 	): AccessLevel?
 
@@ -129,7 +130,8 @@ interface BaseSecurityMetadataDecryptor {
 	 */
 	suspend fun getEntityLegacyDelegationAccessLevel(
 		entityGroupId: String?,
-		typedEntity: EntityWithTypeInfo<*>,
+		entity: HasEncryptionMetadata,
+		entityType: EntityWithEncryptionMetadataTypeName,
 		dataOwnersHierarchySubset: Set<String>
 	): AccessLevel?
 
@@ -138,7 +140,8 @@ interface BaseSecurityMetadataDecryptor {
 	 */
 	suspend fun getEntitySecureDelegationsAccessLevel(
 		entityGroupId: String?,
-		typedEntity: EntityWithTypeInfo<*>,
+		entity: HasEncryptionMetadata,
+		entityType: EntityWithEncryptionMetadataTypeName,
 		dataOwnersHierarchySubset: Set<String>
 	): AccessLevel?
 

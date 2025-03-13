@@ -9,20 +9,23 @@ import com.icure.cardinal.sdk.crypto.JsonEncryptionService
 import com.icure.cardinal.sdk.crypto.SecureDelegationsManager
 import com.icure.cardinal.sdk.crypto.entities.BulkShareResult
 import com.icure.cardinal.sdk.crypto.entities.DataOwnerReferenceInGroup
+import com.icure.cardinal.sdk.crypto.entities.DecryptedMetadataDetails
 import com.icure.cardinal.sdk.crypto.entities.DelegateShareOptions
 import com.icure.cardinal.sdk.crypto.entities.EncryptedFieldsManifest
 import com.icure.cardinal.sdk.crypto.entities.EntityDataEncryptionResult
 import com.icure.cardinal.sdk.crypto.entities.EntityEncryptionKeyDetails
 import com.icure.cardinal.sdk.crypto.entities.EntityEncryptionMetadataInitialisationResult
 import com.icure.cardinal.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
-import com.icure.cardinal.sdk.crypto.entities.EntityWithTypeInfo
+import com.icure.cardinal.sdk.crypto.entities.FailedRequestDetails
 import com.icure.cardinal.sdk.crypto.entities.HierarchicallyDecryptedMetadata
 import com.icure.cardinal.sdk.crypto.entities.MinimalBulkShareResult
 import com.icure.cardinal.sdk.crypto.entities.SdkBoundGroup
 import com.icure.cardinal.sdk.crypto.entities.SecretIdShareOptions
 import com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption
 import com.icure.cardinal.sdk.crypto.entities.SecurityMetadataType
+import com.icure.cardinal.sdk.crypto.entities.ShareMetadataBehaviour
 import com.icure.cardinal.sdk.crypto.entities.SimpleDelegateShareOptions
+import com.icure.cardinal.sdk.crypto.entities.SimpleDelegateShareOptionsImpl
 import com.icure.cardinal.sdk.crypto.entities.SimpleShareResult
 import com.icure.cardinal.sdk.crypto.entities.resolve
 import com.icure.cardinal.sdk.model.base.HasEncryptionMetadata
@@ -30,7 +33,10 @@ import com.icure.cardinal.sdk.model.embed.AccessLevel
 import com.icure.cardinal.sdk.model.embed.Encryptable
 import com.icure.cardinal.sdk.model.requests.BulkShareOrUpdateMetadataParams
 import com.icure.cardinal.sdk.model.requests.EntityBulkShareResult
+import com.icure.cardinal.sdk.model.requests.EntityShareOrMetadataUpdateRequest
+import com.icure.cardinal.sdk.model.requests.RequestedPermission
 import com.icure.cardinal.sdk.model.specializations.HexString
+import com.icure.cardinal.sdk.model.specializations.SecureDelegationKeyString
 import com.icure.cardinal.sdk.utils.EntityEncryptionException
 import com.icure.cardinal.sdk.utils.IllegalEntityException
 import com.icure.cardinal.sdk.utils.Serialization
@@ -56,56 +62,70 @@ class EntityEncryptionServiceImpl(
 	private val autoCreateEncryptionKeyForExistingLegacyData: Boolean,
 	private val boundGroup: SdkBoundGroup?
 ) : EntityEncryptionService, EntityValidationService by EntityValidationServiceImpl(jsonEncryptionService) {
+	/*
+	 * TODO should add bulk init encryption metadata?
+	 */
+	/*
+	 * TODO various bulk share methods don't use the bulk decrypt methods, should switch
+	 */
+
 	companion object {
 		private val log = getLogger("EntityEncryptionService")
 	}
 
 	override suspend fun encryptionKeysOf(
 		entityGroupId: String?,
-		entity: EntityWithTypeInfo<*>,
+		entity: HasEncryptionMetadata,
+		entityType: EntityWithEncryptionMetadataTypeName,
 		dataOwnerId: String?
 	): Set<HexString> =
 		decryptAllSecurityMetadata(
 			entityGroupId,
 			entity,
+			entityType,
 			dataOwnerId,
 			SecurityMetadataType.EncryptionKey
 		)
 
 	override suspend fun secretIdsOf(
 		entityGroupId: String?,
-		entity: EntityWithTypeInfo<*>,
+		entity: HasEncryptionMetadata,
+		entityType: EntityWithEncryptionMetadataTypeName,
 		dataOwnerId: String?
 	): Set<String> =
 		decryptAllSecurityMetadata(
 			entityGroupId,
 			entity,
+			entityType,
 			dataOwnerId,
 			SecurityMetadataType.SecretId
 		)
 
 	override suspend fun owningEntityIdsOf(
 		entityGroupId: String?,
-		entity: EntityWithTypeInfo<*>,
+		entity: HasEncryptionMetadata,
+		entityType: EntityWithEncryptionMetadataTypeName,
 		dataOwnerId: String?
 	): Set<String> =
 		decryptAllSecurityMetadata(
 			entityGroupId,
 			entity,
+			entityType,
 			dataOwnerId,
 			SecurityMetadataType.OwningEntityId
 		)
 
 	private suspend fun <T : Any> decryptAllSecurityMetadata(
 		entityGroupId: String?,
-		entity: EntityWithTypeInfo<*>,
+		entity: HasEncryptionMetadata,
+		entityType: EntityWithEncryptionMetadataTypeName,
 		dataOwnerId: String?,
 		securityMetadataType: SecurityMetadataType<T>
 	): Set<T> =
 		baseSecurityMetadataDecryptor.decryptAll(
 			entityGroupId,
-			listOf(entity.entity),
-			entity.type,
+			listOf(entity),
+			entityType,
 			dataOwnersForDecryption(dataOwnerId).toSet(),
 			securityMetadataType
 		).values.single().mapTo(mutableSetOf()) {
@@ -114,32 +134,36 @@ class EntityEncryptionServiceImpl(
 
 	override suspend fun encryptionKeysForHcpHierarchyOf(
 		entityGroupId: String?,
-		entity: EntityWithTypeInfo<*>
+		entity: HasEncryptionMetadata,
+		entityType: EntityWithEncryptionMetadataTypeName
 	): List<HierarchicallyDecryptedMetadata<HexString>> =
-		decryptSecurityMetadataForHierarchy(entityGroupId, entity, SecurityMetadataType.EncryptionKey)
+		decryptSecurityMetadataForHierarchy(entityGroupId, entity, entityType, SecurityMetadataType.EncryptionKey)
 
 	override suspend fun secretIdsForHcpHierarchyOf(
 		entityGroupId: String?,
-		entity: EntityWithTypeInfo<*>
+		entity: HasEncryptionMetadata,
+		entityType: EntityWithEncryptionMetadataTypeName
 	): List<HierarchicallyDecryptedMetadata<String>> =
-		decryptSecurityMetadataForHierarchy(entityGroupId, entity, SecurityMetadataType.SecretId)
+		decryptSecurityMetadataForHierarchy(entityGroupId, entity, entityType, SecurityMetadataType.SecretId)
 
 	override suspend fun owningEntityIdsForHcpHierarchyOf(
 		entityGroupId: String?,
-		entity: EntityWithTypeInfo<*>
+		entity: HasEncryptionMetadata,
+		entityType: EntityWithEncryptionMetadataTypeName
 	): List<HierarchicallyDecryptedMetadata<String>> =
-		decryptSecurityMetadataForHierarchy(entityGroupId, entity, SecurityMetadataType.OwningEntityId)
+		decryptSecurityMetadataForHierarchy(entityGroupId, entity, entityType, SecurityMetadataType.OwningEntityId)
 
 	private suspend fun <T : Any> decryptSecurityMetadataForHierarchy(
 		entityGroupId: String?,
-		entity: EntityWithTypeInfo<*>,
+		entity: HasEncryptionMetadata,
+		entityType: EntityWithEncryptionMetadataTypeName,
 		securityMetadataType: SecurityMetadataType<T>
 	): List<HierarchicallyDecryptedMetadata<T>> {
 		val hierarchyIds = dataOwnersForDecryption(null)
 		val allDecryptedData = baseSecurityMetadataDecryptor.decryptAll(
 			entityGroupId,
-			listOf(entity.entity),
-			entity.type,
+			listOf(entity),
+			entityType,
 			hierarchyIds.toSet(),
 			securityMetadataType
 		).values.single()
@@ -154,30 +178,41 @@ class EntityEncryptionServiceImpl(
 		}
 	}
 
-	override suspend fun hasWriteAccess(entityGroupId: String?, entity: EntityWithTypeInfo<*>): Boolean =
+	override suspend fun hasWriteAccess(
+		entityGroupId: String?,
+		entity: HasEncryptionMetadata,
+		entityType: EntityWithEncryptionMetadataTypeName
+	): Boolean =
 		baseSecurityMetadataDecryptor.getEntityAccessLevel(
 			entityGroupId,
 			entity,
+			entityType,
 			dataOwnersForDecryption(null).toSet()
 		) == AccessLevel.Write
 
-	override fun hasEmptyEncryptionMetadata(entity: EntityWithTypeInfo<*>): Boolean =
+	override fun hasEmptyEncryptionMetadata(
+		entity: HasEncryptionMetadata,
+		entityType: EntityWithEncryptionMetadataTypeName
+	): Boolean =
 		hasEmptyEncryptionMetadata(entity, throwIfNonEmpty = false)
 
-	private fun hasEmptyEncryptionMetadata(entity: EntityWithTypeInfo<*>, throwIfNonEmpty: Boolean): Boolean {
-		if (entity.entity.securityMetadata != null) {
+	private fun hasEmptyEncryptionMetadata(
+		entity: HasEncryptionMetadata,
+		throwIfNonEmpty: Boolean
+	): Boolean {
+		if (entity.securityMetadata != null) {
 			if (throwIfNonEmpty) {
 				throw IllegalArgumentException("Entity already has initialized security metadata")
 			}
 			return false
 		}
-		if (entity.entity.secretForeignKeys.isNotEmpty()) {
+		if (entity.secretForeignKeys.isNotEmpty()) {
 			if (throwIfNonEmpty) {
 				throw IllegalArgumentException("Entity already has initialized secret foreign keys")
 			}
 			return false
 		}
-		if (entity.entity.delegations.isNotEmpty() || entity.entity.cryptedForeignKeys.isNotEmpty() || entity.entity.encryptionKeys.isNotEmpty()) {
+		if (entity.delegations.isNotEmpty() || entity.cryptedForeignKeys.isNotEmpty() || entity.encryptionKeys.isNotEmpty()) {
 			if (throwIfNonEmpty) {
 				throw IllegalArgumentException("Entity already has initialized legacy security metadata")
 			}
@@ -197,7 +232,8 @@ class EntityEncryptionServiceImpl(
 		val updatedEntities = unencryptedEntities.map { e ->
 			ensureEncryptionKeysInitialized(
 				entityGroupId,
-				EntityWithTypeInfo(e, entityType)
+				e,
+				entityType
 			) ?: e
 		}
 		val keyInfo = tryDecryptAndImportAnyEncryptionKey(entityGroupId, updatedEntities, entityType)
@@ -260,62 +296,67 @@ class EntityEncryptionServiceImpl(
 
 	override suspend fun <T : HasEncryptionMetadata> encryptAttachmentOf(
 		entityGroupId: String?,
-		entity: EntityWithTypeInfo<T>,
+		entity: T,
+		entityType: EntityWithEncryptionMetadataTypeName,
 		content: ByteArray,
 		saveEntity: suspend (entity: T) -> T
 	): EntityDataEncryptionResult<T> {
 		val updatedEntity = ensureEncryptionKeysInitialized(
 			entityGroupId,
-			entity
+			entity,
+			entityType
 		)?.let { saveEntity(it) }
 		val encryptionKey = tryDecryptAndImportAnyEncryptionKey(
 			entityGroupId,
-			listOf(updatedEntity ?: entity.entity),
-			entity.type
-		)[entity.entity.id]?.key
-			?: throw IllegalArgumentException("Could not decrypt any encryption key for ${entity.type.id}(\"${entity.entity.id}\")")
+			listOf(updatedEntity ?: entity),
+			entityType
+		)[entity.id]?.key
+			?: throw IllegalArgumentException("Could not decrypt any encryption key for ${entityType.id}(\"${entity.id}\")")
 		return EntityDataEncryptionResult(
 			updatedEntity,
 			cryptoService.aes.encrypt(content, encryptionKey),
 		)
 	}
 
-	suspend fun doDecryptAttachmentOf(
+	private suspend fun doDecryptAttachmentOf(
 		entityGroupId: String?,
-		entity: EntityWithTypeInfo<*>,
+		entity: HasEncryptionMetadata,
+		entityType: EntityWithEncryptionMetadataTypeName,
 		content: ByteArray,
 		validator: (suspend (decryptedData: ByteArray) -> Boolean)?
 	) =
 		incrementalSecurityMetadataDecryptor.doIncrementallyDecryptingKeys(
 			entityGroupId,
-			entity.entity,
-			entity.type
+			entity,
+			entityType
 		) { _, _, keys ->
 			keys.firstNotNullOfOrNull { key ->
 				kotlin.runCatching {
 					cryptoService.aes.decrypt(content, key.key).takeIf { validator == null || validator(it) }
 				}.getOrNull()
 			}?.let { Result.success(it) } ?: Result.failure(EntityEncryptionException(
-				"No valid key found for the decryption of attachment of ${entity.type.id}(\"${entity.entity.id}\")"
+				"No valid key found for the decryption of attachment of ${entityType.id}(\"${entity.id}\")"
 			))
 		}
 
 	override suspend fun tryDecryptAttachmentOf(
 		entityGroupId: String?,
-		entity: EntityWithTypeInfo<*>,
+		entity: HasEncryptionMetadata,
+		entityType: EntityWithEncryptionMetadataTypeName,
 		content: ByteArray,
 		validator: (suspend (decryptedData: ByteArray) -> Boolean)?
 	): ByteArray? =
-		doDecryptAttachmentOf(entityGroupId, entity, content, validator)?.getOrNull()
+		doDecryptAttachmentOf(entityGroupId, entity, entityType, content, validator)?.getOrNull()
 
 	override suspend fun decryptAttachmentOf(
 		entityGroupId: String?,
-		entity: EntityWithTypeInfo<*>,
+		entity: HasEncryptionMetadata,
+		entityType: EntityWithEncryptionMetadataTypeName,
 		content: ByteArray,
 		validator: (suspend (decryptedData: ByteArray) -> Boolean)?
 	): ByteArray = (
-		doDecryptAttachmentOf(entityGroupId, entity, content, validator) ?: throw EntityEncryptionException(
-			"No encryption key found for ${entity.type.id}(\"${entity.entity.id}\")"
+		doDecryptAttachmentOf(entityGroupId, entity, entityType, content, validator) ?: throw EntityEncryptionException(
+			"No encryption key found for ${entityType.id}(\"${entity.id}\")"
 		)
 	).getOrThrow()
 
@@ -336,9 +377,10 @@ class EntityEncryptionServiceImpl(
 
 	override suspend fun decryptAndImportAllDecryptionKeys(
 		entityGroupId: String?,
-		entity: EntityWithTypeInfo<*>
+		entity: HasEncryptionMetadata,
+		entityType: EntityWithEncryptionMetadataTypeName,
 	): List<EntityEncryptionKeyDetails> =
-		encryptionKeysOf(entityGroupId = entityGroupId, entity = entity, dataOwnerId = null).mapNotNull {
+		encryptionKeysOf(entityGroupId = entityGroupId, entity = entity, entityType = entityType, dataOwnerId = null).mapNotNull {
 			kotlin.runCatching {
 				EntityEncryptionKeyDetails(cryptoService.aes.loadKey(AesAlgorithm.CbcWithPkcs7Padding, it.decodedBytes()), it)
 			}.getOrNull()
@@ -346,454 +388,467 @@ class EntityEncryptionServiceImpl(
 
 	override suspend fun <T : HasEncryptionMetadata> entityWithInitializedEncryptedMetadata(
 		entityGroupId: String?,
-		entity: EntityWithTypeInfo<T>,
+		entity: T,
+		entityType: EntityWithEncryptionMetadataTypeName,
 		owningEntityId: String?,
 		owningEntitySecretId: Set<String>?,
 		initializeEncryptionKey: Boolean,
 		autoDelegations: Map<DataOwnerReferenceInGroup, AccessLevel>
 	): EntityEncryptionMetadataInitialisationResult<T> {
-		TODO("Not yet implemented")
+		hasEmptyEncryptionMetadata(entity, throwIfNonEmpty = true)
+		val newRawKey = if (initializeEncryptionKey)
+			HexString(cryptoService.aes.exportKey(cryptoService.aes.generateKey(AesAlgorithm.CbcWithPkcs7Padding)).toHexString())
+		else
+			null
+		val newSecretId = cryptoService.strongRandom.randomUUID()
+		val entityWitSecurityMetadata = secureDelegationsManager.entityWithInitializedEncryptedMetadata(
+			entityGroupId = entityGroupId,
+			entity = entity,
+			entityType = entityType,
+			secretIds = setOf(newSecretId),
+			owningEntityIds = setOfNotNull(owningEntityId),
+			encryptionKeys = setOfNotNull(newRawKey),
+			owningEntitySecretIds = owningEntitySecretId ?: emptySet(),
+			autoDelegations = autoDelegations,
+		)
+		return EntityEncryptionMetadataInitialisationResult(
+			updatedEntity = entityWitSecurityMetadata,
+			secretId = newSecretId,
+			rawEncryptionKey = newRawKey
+		)
 	}
 
 	override suspend fun <T : HasEncryptionMetadata> bulkShareOrUpdateEncryptedEntityMetadata(
 		entityGroupId: String?,
-		entitiesUpdates: List<Pair<EntityWithTypeInfo<T>, Map<DataOwnerReferenceInGroup, DelegateShareOptions>>>,
+		entitiesUpdates: List<Pair<T, Map<DataOwnerReferenceInGroup, DelegateShareOptions>>>,
+		entitiesType: EntityWithEncryptionMetadataTypeName,
 		autoRetry: Boolean,
-		getUpdatedEntity: suspend (String) -> EntityWithTypeInfo<T>,
+		getUpdatedEntity: suspend (String) -> T,
 		doRequestBulkShareOrUpdate: suspend (request: BulkShareOrUpdateMetadataParams) -> List<EntityBulkShareResult<out T>>
 	): BulkShareResult<T> {
-		TODO("Not yet implemented")
+		val requestDetails = prepareBulkShareRequests(entityGroupId, entitiesUpdates, entitiesType)
+		val shareResult = doRequestBulkShareOrUpdate(
+			BulkShareOrUpdateMetadataParams(
+				requestDetails.requestsByEntityId.mapValues { (_, details) ->
+					BulkShareOrUpdateMetadataParams.EntityRequestInformation(
+						details.requests.mapValues { it.value.request },
+						details.potentialParentDelegations
+					)
+				}
+			)
+		)
+		val updatedEntities = shareResult.mapNotNull { it.updatedEntity }
+		val updateErrors = shareResult.flatMap { result ->
+			makeFailedRequestDetails(result.entityId, result.rejectedRequests, requestDetails)
+		}
+		if (autoRetry && updateErrors.isNotEmpty()) {
+			val updateErrorsByEntityId = updateErrors.groupBy { it.entityId }
+			val updatedEntitiesId = updatedEntities.map { it.id }.toSet()
+			val toRetryEntitiesId = updateErrorsByEntityId.filter { (k, v) ->
+				v.all { it.shouldRetry } && k !in requestDetails.unmodifiedEntityIds && k !in updatedEntitiesId
+			}.keys
+			if (toRetryEntitiesId.isNotEmpty()) {
+				val updatedRequests = entitiesUpdates.mapNotNull { (entity, request) ->
+					if (entity.id in toRetryEntitiesId) {
+						val updatedEntity = getUpdatedEntity(entity.id)
+						if (updatedEntity.rev != entity.rev) {
+							Pair(updatedEntity, request)
+						} else null
+					} else null
+				}
+				if (updatedRequests.isNotEmpty()) {
+					val newResults = bulkShareOrUpdateEncryptedEntityMetadata(
+						entityGroupId,
+						updatedRequests,
+						entitiesType,
+						autoRetry,
+						getUpdatedEntity,
+						doRequestBulkShareOrUpdate
+					)
+					return BulkShareResult(
+						updatedEntities = newResults.updatedEntities + updatedEntities.filter { it.id !in toRetryEntitiesId },
+						unmodifiedEntitiesIds = newResults.unmodifiedEntitiesIds + requestDetails.unmodifiedEntityIds,
+						updateErrors = newResults.updateErrors + updateErrors.filter { it.entityId !in toRetryEntitiesId }
+					)
+				}
+			}
+		}
+		return BulkShareResult(updatedEntities, requestDetails.unmodifiedEntityIds, updateErrors)
 	}
 
 	override suspend fun bulkShareOrUpdateEncryptedEntityMetadataNoEntities(
-		entitiesUpdates: List<Pair<EntityWithTypeInfo<*>, Map<String, DelegateShareOptions>>>,
+		entitiesUpdates: List<Pair<HasEncryptionMetadata, Map<String, DelegateShareOptions>>>,
+		entitiesType: EntityWithEncryptionMetadataTypeName,
 		autoRetry: Boolean,
-		getUpdatedEntity: suspend (String) -> EntityWithTypeInfo<*>,
+		getUpdatedEntity: suspend (String) -> HasEncryptionMetadata,
 		doRequestBulkShareOrUpdate: suspend (request: BulkShareOrUpdateMetadataParams) -> List<EntityBulkShareResult<Nothing>>
 	): MinimalBulkShareResult {
-		TODO("Not yet implemented")
+		val requestDetails = prepareBulkShareRequests(
+			null,
+			entitiesUpdates.map { (entity, updates) ->
+				Pair(entity, updates.mapKeys { DataOwnerReferenceInGroup(it.key, null) })
+			},
+			entitiesType
+		)
+		val shareResult = doRequestBulkShareOrUpdate(
+			BulkShareOrUpdateMetadataParams(
+				requestDetails.requestsByEntityId.mapValues { (_, details) ->
+					BulkShareOrUpdateMetadataParams.EntityRequestInformation(
+						details.requests.mapValues { it.value.request },
+						details.potentialParentDelegations
+					)
+				}
+			)
+		)
+		val updateErrors = shareResult.flatMap { result ->
+			makeFailedRequestDetails(result.entityId, result.rejectedRequests, requestDetails)
+		}
+		val failedRequestsMinimalDetails = updateErrors.mapTo(mutableSetOf()) {
+			MinimalBulkShareResult.MinimalRequestDetails(delegateId = it.delegateReference.dataOwnerId, entityId = it.entityId)
+		}
+		val successfulUpdates =  requestDetails.requestsByEntityId.flatMapTo(mutableSetOf()) { (entityId, request) ->
+			request.requests.values.mapNotNull { delegateRequest ->
+				MinimalBulkShareResult.MinimalRequestDetails(delegateId = delegateRequest.delegateReference.dataOwnerId, entityId = entityId).takeIf {
+					!failedRequestsMinimalDetails.contains(it)
+				}
+			}
+		}
+		if (autoRetry && updateErrors.isNotEmpty()) {
+			val updateErrorsByEntityId = updateErrors.groupBy { it.entityId }
+			val toRetryEntitiesId = updateErrorsByEntityId.filter { (k, v) ->
+				v.all { it.shouldRetry } && k !in requestDetails.unmodifiedEntityIds && successfulUpdates.none { it.entityId == k }
+			}.keys
+			if (toRetryEntitiesId.isNotEmpty()) {
+				val updatedRequests = entitiesUpdates.mapNotNull { (entity, request) ->
+					if (entity.id in toRetryEntitiesId) {
+						val updatedEntity = getUpdatedEntity(entity.id)
+						if (updatedEntity.rev != entity.rev) {
+							Pair(updatedEntity, request)
+						} else null
+					} else null
+				}
+				if (updatedRequests.isNotEmpty()) {
+					val newResults = bulkShareOrUpdateEncryptedEntityMetadataNoEntities(
+						updatedRequests,
+						entitiesType,
+						autoRetry,
+						getUpdatedEntity,
+						doRequestBulkShareOrUpdate
+					)
+					return MinimalBulkShareResult(
+						successfulUpdates = newResults.successfulUpdates + successfulUpdates.filter { it.entityId !in toRetryEntitiesId },
+						unmodifiedEntitiesIds = newResults.unmodifiedEntitiesIds + requestDetails.unmodifiedEntityIds,
+						updateErrors = newResults.updateErrors + updateErrors.filter { it.entityId !in toRetryEntitiesId }
+					)
+				}
+			}
+		}
+		return MinimalBulkShareResult(successfulUpdates, requestDetails.unmodifiedEntityIds, updateErrors)
 	}
 
-	override suspend fun <T : HasEncryptionMetadata> simpleShareOrUpdateEncryptedEntityMetadata(
+	override tailrec suspend fun <T : HasEncryptionMetadata> simpleShareOrUpdateEncryptedEntityMetadata(
 		entityGroupId: String?,
-		entity: EntityWithTypeInfo<T>,
+		entity: T,
+		entityType: EntityWithEncryptionMetadataTypeName,
 		delegates: Map<DataOwnerReferenceInGroup, SimpleDelegateShareOptions>,
 		autoRetry: Boolean,
-		getUpdatedEntity: suspend (String) -> EntityWithTypeInfo<T>,
+		getUpdatedEntity: suspend (String) -> T,
 		doRequestBulkShareOrUpdate: suspend (request: BulkShareOrUpdateMetadataParams) -> List<EntityBulkShareResult<out T>>
 	): SimpleShareResult<T> {
-		TODO("Not yet implemented")
+		val availableEncryptionKeys = encryptionKeysOf(entityGroupId, entity, entityType, null)
+		val availableOwningEntityIds = owningEntityIdsOf(entityGroupId, entity, entityType, null)
+		val availableSecretIds = secretIdsOf(entityGroupId, entity, entityType, null)
+		val extendedDelegateOptions = delegates.mapValues { (_, simpleShareOptions) ->
+			if (availableEncryptionKeys.isEmpty() && simpleShareOptions.shareEncryptionKey == ShareMetadataBehaviour.Required) {
+				throw IllegalArgumentException("The current data owner can't access any encryption key in ${entityType.id}(\"${entity.id}\"), but sharing is required.")
+			}
+			if (availableOwningEntityIds.isEmpty() && simpleShareOptions.shareOwningEntityIds == ShareMetadataBehaviour.Required) {
+				throw IllegalArgumentException("The current data owner can't access any owning entity id in ${entityType.id}(\"${entity.id}\"), but sharing is required.")
+			}
+			DelegateShareOptions(
+				shareSecretIds = simpleShareOptions.shareSecretIds.resolve(availableSecretIds, entity, entityType),
+				shareEncryptionKeys = if (simpleShareOptions.shareEncryptionKey == ShareMetadataBehaviour.Never) emptySet() else availableEncryptionKeys,
+				shareOwningEntityIds = if (simpleShareOptions.shareOwningEntityIds == ShareMetadataBehaviour.Never) emptySet() else availableOwningEntityIds,
+				requestedPermissions = simpleShareOptions.requestedPermissions
+			)
+		}
+		val shareResult = bulkShareOrUpdateEncryptedEntityMetadata(
+			entityGroupId,
+			listOf(entity to extendedDelegateOptions),
+			entityType,
+			false,
+			getUpdatedEntity,
+			doRequestBulkShareOrUpdate
+		)
+		if (shareResult.unmodifiedEntitiesIds.contains(entity.id)) {
+			return SimpleShareResult.Success(entity)
+		}
+		if (shareResult.updateErrors.isEmpty() && shareResult.updatedEntities.size == 1) {
+			return SimpleShareResult.Success(shareResult.updatedEntities.first())
+		}
+		val errorsOfRequestedDelegates = shareResult.updateErrors.filter { delegates.containsKey(it.delegateReference) }
+		if (errorsOfRequestedDelegates.isEmpty() && shareResult.updatedEntities.size == 1) {
+			log.w { "There was an internal error with the migration of encrypted metadata: ${shareResult.updateErrors}" }
+			return SimpleShareResult.Success(shareResult.updatedEntities.first())
+		}
+		if (autoRetry && shareResult.updateErrors.all { it.shouldRetry }) {
+			val updatedEntity = getUpdatedEntity(entity.id)
+			if (updatedEntity.rev != entity.rev) {
+				return simpleShareOrUpdateEncryptedEntityMetadata(
+					entityGroupId,
+					updatedEntity,
+					entityType,
+					delegates,
+					autoRetry,
+					getUpdatedEntity,
+					doRequestBulkShareOrUpdate
+				)
+			}
+		}
+		return SimpleShareResult.Failure(shareResult.updateErrors)
 	}
 
-	override suspend fun <T : HasEncryptionMetadata> initializeConfidentialSecretId(
+	private fun makeFailedRequestDetails(
+		entityId: String,
+		shareResultRejectedRequests: Map<String, EntityBulkShareResult.RejectedShareOrMetadataUpdateRequest>,
+		requestDetails: BulkShareRequestsDetails
+	) =
+		shareResultRejectedRequests.map { (rejectedRequestId, error) ->
+			val originalRequestDetails = requestDetails.requestsByEntityId.getValue(entityId).requests.getValue(rejectedRequestId)
+			FailedRequestDetails(
+				delegateReference = originalRequestDetails.delegateReference,
+				entityId = entityId,
+				request = originalRequestDetails.options,
+				updatedForMigration = originalRequestDetails.updatedForMigration,
+				code = error.code,
+				reason = error.reason,
+				shouldRetry = error.shouldRetry
+			)
+		}
+
+
+	private data class BulkShareRequestsDetails(
+		// Entities that haven't been modified because no request was made. Doesn't include entities not modified due to errors.
+		val unmodifiedEntityIds: Set<String>,
+		val requestsByEntityId: Map<String, EntityShareRequestDetails>
+	)
+	private data class EntityShareRequestDetails(
+		val requests: Map<String, DelegateShareRequestDetails>, // requestId (unique for the entity) -> request for a delegate
+		val potentialParentDelegations: Set<SecureDelegationKeyString>
+	)
+	private data class DelegateShareRequestDetails(
+		val delegateReference: DataOwnerReferenceInGroup,
+		val options: DelegateShareOptions?,
+		val updatedForMigration: Boolean,
+		val request: EntityShareOrMetadataUpdateRequest
+	)
+
+	private suspend fun prepareBulkShareRequests(
 		entityGroupId: String?,
-		entity: EntityWithTypeInfo<T>,
-		getUpdatedEntity: suspend (String) -> EntityWithTypeInfo<T>,
-		doRequestBulkShareOrUpdate: suspend (request: BulkShareOrUpdateMetadataParams) -> List<EntityBulkShareResult<out T>>
-	): T? {
-		TODO("Not yet implemented")
+		entitiesUpdates: List<Pair<HasEncryptionMetadata, Map<DataOwnerReferenceInGroup, DelegateShareOptions>>>,
+		entitiesType: EntityWithEncryptionMetadataTypeName
+	): BulkShareRequestsDetails {
+		require (entitiesUpdates.distinctBy { it.first.id }.size == entitiesUpdates.size) {
+			"Duplicate requests: the same entity id is present more than once in the input"
+		}
+		require (entitiesUpdates.all { it.first.rev != null }) {
+			"Only existing entities can be shared"
+		}
+		val hierarchySet = dataOwnersForDecryption(null).toSet()
+		val hierarchyReferenceSet = hierarchySet.map { DataOwnerReferenceInGroup(it, null) }.toSet()
+		val requestsByEntityId = mutableMapOf<String, EntityShareRequestDetails>()
+		val unmodifiedEntityIds = mutableSetOf<String>()
+		entitiesUpdates.forEach { (entity, optionsForDelegates) ->
+			val migrationRequests = prepareMigrationRequestsIfNeeded(
+				entityGroupId,
+				entity,
+				entitiesType,
+				optionsForDelegates,
+				hierarchySet
+			)
+			val otherRequests = optionsForDelegates.mapNotNull { (delegate, options) ->
+				(
+					if (!migrationRequests.containsKey(delegate)) {
+						secureDelegationsManager.makeShareOrUpdateRequestParams(
+							entityGroupId = entityGroupId,
+							entity = entity,
+							entityType = entitiesType,
+							delegate = delegate,
+							shareSecretIds = options.shareSecretIds,
+							shareEncryptionKeys = options.shareEncryptionKeys,
+							shareOwningEntityIds = options.shareOwningEntityIds,
+							newDelegationPermissions = options.requestedPermissions
+						)
+					} else null
+				)?.let { delegate to it }
+			}
+			val allRequests = migrationRequests.map {
+				DelegateShareRequestDetails(it.key, optionsForDelegates[it.key], true, it.value)
+			} + otherRequests.map {
+				DelegateShareRequestDetails(it.first, optionsForDelegates[it.first], false, it.second)
+			}
+			if (allRequests.isNotEmpty()) {
+				val potentialParentDelegations = baseSecurityMetadataDecryptor.getSecureDelegationMemberDetails(
+					entityGroupId,
+					entity,
+					entitiesType
+				).mapNotNullTo(
+					mutableSetOf()
+				) { (delegationKey, delegationInfo) ->
+					if (delegationInfo.delegate in hierarchyReferenceSet || delegationInfo.delegator in hierarchyReferenceSet)
+						delegationKey
+					else
+						null
+				}
+				requestsByEntityId[entity.id] = EntityShareRequestDetails(
+					allRequests.mapIndexed { index, it ->
+						// Even though the delegate id could be a valid request id it could leak some secret information if it is a patient id.
+						index.toString() to it
+					}.toMap(),
+					potentialParentDelegations
+				)
+			} else unmodifiedEntityIds.add(entity.id)
+		}
+		return BulkShareRequestsDetails(unmodifiedEntityIds, requestsByEntityId)
 	}
 
-	override suspend fun getConfidentialSecretIdsOf(
+	private suspend fun prepareMigrationRequestsIfNeeded(
 		entityGroupId: String?,
-		entity: EntityWithTypeInfo<*>,
-		dataOwnerId: String?
-	): Set<String> {
-		TODO("Not yet implemented")
+		entity: HasEncryptionMetadata,
+		entityType: EntityWithEncryptionMetadataTypeName,
+		optionsForDelegates: Map<DataOwnerReferenceInGroup, DelegateShareOptions>,
+		hierarchy: Set<String>
+	): Map<DataOwnerReferenceInGroup, EntityShareOrMetadataUpdateRequest> {
+		val legacySecretIds = baseSecurityMetadataDecryptor.decryptAllLegacyDelegations(
+			entityGroupId,
+			listOf(entity),
+			entityType,
+			hierarchy,
+			SecurityMetadataType.SecretId
+		).values.single()
+		val legacyOwningEntityIds = baseSecurityMetadataDecryptor.decryptAllLegacyDelegations(
+			entityGroupId,
+			listOf(entity),
+			entityType,
+			hierarchy,
+			SecurityMetadataType.OwningEntityId
+		).values.single()
+		val legacyEncryptionKeys = baseSecurityMetadataDecryptor.decryptAllLegacyDelegations(
+			entityGroupId,
+			listOf(entity),
+			entityType,
+			hierarchy,
+			SecurityMetadataType.EncryptionKey
+		).values.single()
+		return hierarchy.map { DataOwnerReferenceInGroup(it, null) }.mapNotNull { currMember ->
+			makeMigrationRequestForMemberOfHierarchy(
+				entityGroupId = entityGroupId,
+				entity = entity,
+				entityType = entityType,
+				currMember = currMember,
+				userRequest = optionsForDelegates[currMember],
+				legacySecretIds = legacySecretIds,
+				legacyOwningEntityIds = legacyOwningEntityIds,
+				legacyEncryptionKeys = legacyEncryptionKeys
+			)?.let { currMember to it }
+		}.toMap()
 	}
 
-	override suspend fun getSecretIdsSharedWithParentsOf(
+	private suspend fun makeMigrationRequestForMemberOfHierarchy(
 		entityGroupId: String?,
-		entity: EntityWithTypeInfo<*>
-	): Set<String> {
-		TODO("Not yet implemented")
+		entity: HasEncryptionMetadata,
+		entityType: EntityWithEncryptionMetadataTypeName,
+		currMember: DataOwnerReferenceInGroup,
+		userRequest: DelegateShareOptions?,
+		legacySecretIds: List<DecryptedMetadataDetails<String>>,
+		legacyOwningEntityIds: List<DecryptedMetadataDetails<String>>,
+		legacyEncryptionKeys: List<DecryptedMetadataDetails<HexString>>
+	): EntityShareOrMetadataUpdateRequest? {
+		val resolvedEntityGroup = boundGroup.resolve(entityGroupId)
+		val selfId = dataOwnerApi.getCurrentDataOwnerId()
+		val subHierarchy = dataOwnersForDecryption(currMember.dataOwnerId)
+		val subHierarchySet = subHierarchy.toSet()
+		val hasLegacyOrImplicitAccess = baseSecurityMetadataDecryptor.getEntityLegacyDelegationAccessLevel(
+				entityGroupId,
+				entity,
+				entityType,
+				subHierarchySet
+			) != null || (selfId == entity.id && currMember.dataOwnerId == selfId && resolvedEntityGroup == null)
+		if (!hasLegacyOrImplicitAccess) return null
+		val mustCreateRootDelegation =
+			currMember.dataOwnerId == selfId && baseSecurityMetadataDecryptor.getEntitySecureDelegationsAccessLevel(
+				entityGroupId,
+				entity,
+				entityType,
+				subHierarchySet
+			) != AccessLevel.Write
+		val delegateLegacySecretIds = legacySecretIds.valuesAvailableToDataOwners(subHierarchySet)
+		val delegateLegacyOwningEntityIds = legacyOwningEntityIds.valuesAvailableToDataOwners(subHierarchySet)
+		val delegateLegacyEncryptionKeys = legacyEncryptionKeys.valuesAvailableToDataOwners(subHierarchySet)
+		val missingLegacySecretIds =
+			if (delegateLegacySecretIds.isEmpty())
+				delegateLegacySecretIds
+			else
+				(delegateLegacySecretIds - baseSecurityMetadataDecryptor.decryptAllSecureDelegations(
+					entityGroupId,
+					listOf(entity),
+					entityType,
+					subHierarchySet,
+					SecurityMetadataType.SecretId
+				).getValue(entity.id).map { it.value }.toSet())
+		val missingLegacyOwningEntityIds =
+			if (delegateLegacyOwningEntityIds.isEmpty())
+				delegateLegacyOwningEntityIds
+			else
+				(delegateLegacyOwningEntityIds - baseSecurityMetadataDecryptor.decryptAllSecureDelegations(
+					entityGroupId,
+					listOf(entity),
+					entityType,
+					subHierarchySet,
+					SecurityMetadataType.OwningEntityId
+				).getValue(entity.id).map { it.value }.toSet())
+		val missingLegacyEncryptionKeys =
+			if (delegateLegacyEncryptionKeys.isEmpty())
+				delegateLegacyEncryptionKeys
+			else
+				(delegateLegacyEncryptionKeys - baseSecurityMetadataDecryptor.decryptAllSecureDelegations(
+					entityGroupId,
+					listOf(entity),
+					entityType,
+					subHierarchySet,
+					SecurityMetadataType.EncryptionKey
+				).getValue(entity.id).map { it.value }.toSet())
+		return if (missingLegacySecretIds.isNotEmpty() || missingLegacyOwningEntityIds.isNotEmpty() || missingLegacyEncryptionKeys.isNotEmpty() || mustCreateRootDelegation) {
+			secureDelegationsManager.makeShareOrUpdateRequestParams(
+				entityGroupId,
+				entity,
+				entityType,
+				currMember,
+				missingLegacySecretIds + (userRequest?.shareSecretIds ?: emptySet()),
+				missingLegacyEncryptionKeys + (userRequest?.shareEncryptionKeys ?: emptySet()),
+				missingLegacyOwningEntityIds + (userRequest?.shareOwningEntityIds ?: emptySet()),
+				if (mustCreateRootDelegation)
+					RequestedPermission.Root
+				else
+					RequestedPermission.FullWrite // Legacy permission if present is always write
+			)
+		} else null
 	}
-
-//	override suspend fun <T : HasEncryptionMetadata> entityWithInitializedEncryptedMetadata(
-//		entity: EntityWithTypeInfo<T>,
-//		owningEntityId: String?,
-//		owningEntitySecretId: Set<String>?,
-//		initializeEncryptionKey: Boolean,
-//		autoDelegations: Map<String, AccessLevel>
-//	): EntityEncryptionMetadataInitialisationResult<T> {
-//		hasEmptyEncryptionMetadata(entity, throwIfNonEmpty = true)
-//		val newRawKey = if (initializeEncryptionKey)
-//			HexString(cryptoService.aes.exportKey(cryptoService.aes.generateKey(AesAlgorithm.CbcWithPkcs7Padding)).toHexString())
-//		else
-//			null
-//		val newSecretId = cryptoService.strongRandom.randomUUID()
-//		val entityWitSecurityMetadata = secureDelegationsManager.entityWithInitializedEncryptedMetadata(
-//			entity = entity,
-//			secretIds = setOf(newSecretId),
-//			owningEntityIds = setOfNotNull(owningEntityId),
-//			encryptionKeys = setOfNotNull(newRawKey),
-//			owningEntitySecretIds = owningEntitySecretId ?: emptySet(),
-//			autoDelegations = autoDelegations,
-//		)
-//		return EntityEncryptionMetadataInitialisationResult(
-//			updatedEntity = entityWitSecurityMetadata,
-//			secretId = newSecretId,
-//			rawEncryptionKey = newRawKey
-//		)
-//	}
-//
-//	override suspend fun tryDecryptAndImportAnyEncryptionKey(entity: EntityWithTypeInfo<*>): EntityEncryptionKeyDetails? =
-//		decryptAndImportDecryptionKeysFlow(entity).firstOrNull()
-//
-//	override suspend fun decryptAndImportAllDecryptionKeys(entity: EntityWithTypeInfo<*>): List<EntityEncryptionKeyDetails> =
-//		decryptAndImportDecryptionKeysFlow(entity).toList()
-//
-//	private suspend fun decryptAndImportDecryptionKeysFlow(entity: EntityWithTypeInfo<*>): Flow<EntityEncryptionKeyDetails> =
-//		allDecryptors.decryptEncryptionKeysOf(entity, dataOwnersForDecryption(null).toSet()).mapNotNull {
-//			kotlin.runCatching {
-//				EntityEncryptionKeyDetails(cryptoService.aes.loadKey(AesAlgorithm.CbcWithPkcs7Padding, it.value.decodedBytes()), it.value)
-//			}.getOrNull()
-//		}
-//
-//
-//	override suspend fun <T : HasEncryptionMetadata> bulkShareOrUpdateEncryptedEntityMetadata(
-//		entitiesUpdates: List<Pair<EntityWithTypeInfo<T>, Map<String, DelegateShareOptions>>>,
-//		autoRetry: Boolean,
-//		getUpdatedEntity: suspend (String) -> EntityWithTypeInfo<T>,
-//		doRequestBulkShareOrUpdate: suspend (request: BulkShareOrUpdateMetadataParams) -> List<EntityBulkShareResult<out T>>
-//	): BulkShareResult<T> {
-//		val requestDetails = prepareBulkShareRequests(entitiesUpdates)
-//		val shareResult = doRequestBulkShareOrUpdate(
-//			BulkShareOrUpdateMetadataParams(
-//				requestDetails.requestsByEntityId.mapValues { (_, details) ->
-//					BulkShareOrUpdateMetadataParams.EntityRequestInformation(
-//						details.requests.mapValues { it.value.request },
-//						details.potentialParentDelegations
-//					)
-//				}
-//			)
-//		)
-//		val updatedEntities = shareResult.mapNotNull { it.updatedEntity }
-//		val updateErrors = shareResult.flatMap { result ->
-//			makeFailedRequestDetails(result.entityId, result.rejectedRequests, requestDetails)
-//		}
-//		if (autoRetry && updateErrors.isNotEmpty()) {
-//			val updateErrorsByEntityId = updateErrors.groupBy { it.entityId }
-//			val updatedEntitiesId = updatedEntities.map { it.id }.toSet()
-//			val toRetryEntitiesId = updateErrorsByEntityId.filter { (k, v) ->
-//				v.all { it.shouldRetry } && k !in requestDetails.unmodifiedEntityIds && k !in updatedEntitiesId
-//			}.keys
-//			if (toRetryEntitiesId.isNotEmpty()) {
-//				val updatedRequests = entitiesUpdates.mapNotNull { (entity, request) ->
-//					if (entity.entity.id in toRetryEntitiesId) {
-//						val updatedEntity = getUpdatedEntity(entity.entity.id)
-//						if (updatedEntity.entity.rev != entity.entity.rev) {
-//							Pair(updatedEntity, request)
-//						} else null
-//					} else null
-//				}
-//				if (updatedRequests.isNotEmpty()) {
-//					val newResults = bulkShareOrUpdateEncryptedEntityMetadata(
-//						updatedRequests,
-//						autoRetry,
-//						getUpdatedEntity,
-//						doRequestBulkShareOrUpdate
-//					)
-//					return BulkShareResult(
-//						updatedEntities = newResults.updatedEntities + updatedEntities.filter { it.id !in toRetryEntitiesId },
-//						unmodifiedEntitiesIds = newResults.unmodifiedEntitiesIds + requestDetails.unmodifiedEntityIds,
-//						updateErrors = newResults.updateErrors + updateErrors.filter { it.entityId !in toRetryEntitiesId }
-//					)
-//				}
-//			}
-//		}
-//		return BulkShareResult(updatedEntities, requestDetails.unmodifiedEntityIds, updateErrors)
-//	}
-//
-//	override suspend fun bulkShareOrUpdateEncryptedEntityMetadataNoEntities(
-//		entitiesUpdates: List<Pair<EntityWithTypeInfo<*>, Map<String, DelegateShareOptions>>>,
-//		autoRetry: Boolean,
-//		getUpdatedEntity: suspend (String) -> EntityWithTypeInfo<*>,
-//		doRequestBulkShareOrUpdate: suspend (request: BulkShareOrUpdateMetadataParams) -> List<EntityBulkShareResult<Nothing>>
-//	): MinimalBulkShareResult {
-//		val requestDetails = prepareBulkShareRequests(entitiesUpdates)
-//		val shareResult = doRequestBulkShareOrUpdate(
-//			BulkShareOrUpdateMetadataParams(
-//				requestDetails.requestsByEntityId.mapValues { (_, details) ->
-//					BulkShareOrUpdateMetadataParams.EntityRequestInformation(
-//						details.requests.mapValues { it.value.request },
-//						details.potentialParentDelegations
-//					)
-//				}
-//			)
-//		)
-//		val updateErrors = shareResult.flatMap { result ->
-//			makeFailedRequestDetails(result.entityId, result.rejectedRequests, requestDetails)
-//		}
-//		val failedRequestsMinimalDetails = updateErrors.mapTo(mutableSetOf()) {
-//			MinimalBulkShareResult.MinimalRequestDetails(delegateId = it.delegateId, entityId = it.entityId)
-//		}
-//		val successfulUpdates =  requestDetails.requestsByEntityId.flatMapTo(mutableSetOf()) { (entityId, request) ->
-//			request.requests.values.mapNotNull { delegateRequest ->
-//				MinimalBulkShareResult.MinimalRequestDetails(delegateId = delegateRequest.delegateId, entityId = entityId).takeIf {
-//					!failedRequestsMinimalDetails.contains(it)
-//				}
-//			}
-//		}
-//		if (autoRetry && updateErrors.isNotEmpty()) {
-//			val updateErrorsByEntityId = updateErrors.groupBy { it.entityId }
-//			val toRetryEntitiesId = updateErrorsByEntityId.filter { (k, v) ->
-//				v.all { it.shouldRetry } && k !in requestDetails.unmodifiedEntityIds && successfulUpdates.none { it.entityId == k }
-//			}.keys
-//			if (toRetryEntitiesId.isNotEmpty()) {
-//				val updatedRequests = entitiesUpdates.mapNotNull { (entity, request) ->
-//					if (entity.entity.id in toRetryEntitiesId) {
-//						val updatedEntity = getUpdatedEntity(entity.entity.id)
-//						if (updatedEntity.entity.rev != entity.entity.rev) {
-//							Pair(updatedEntity, request)
-//						} else null
-//					} else null
-//				}
-//				if (updatedRequests.isNotEmpty()) {
-//					val newResults = bulkShareOrUpdateEncryptedEntityMetadataNoEntities(
-//						updatedRequests,
-//						autoRetry,
-//						getUpdatedEntity,
-//						doRequestBulkShareOrUpdate
-//					)
-//					return MinimalBulkShareResult(
-//						successfulUpdates = newResults.successfulUpdates + successfulUpdates.filter { it.entityId !in toRetryEntitiesId },
-//						unmodifiedEntitiesIds = newResults.unmodifiedEntitiesIds + requestDetails.unmodifiedEntityIds,
-//						updateErrors = newResults.updateErrors + updateErrors.filter { it.entityId !in toRetryEntitiesId }
-//					)
-//				}
-//			}
-//		}
-//		return MinimalBulkShareResult(successfulUpdates, requestDetails.unmodifiedEntityIds, updateErrors)
-//	}
-//
-//	private fun makeFailedRequestDetails(
-//		entityId: String,
-//		shareResultRejectedRequests: Map<String, EntityBulkShareResult.RejectedShareOrMetadataUpdateRequest>,
-//		requestDetails: BulkShareRequestsDetails
-//	) =
-//		shareResultRejectedRequests.map { (rejectedRequestId, error) ->
-//			val originalRequestDetails = requestDetails.requestsByEntityId.getValue(entityId).requests.getValue(rejectedRequestId)
-//			FailedRequestDetails(
-//				delegateId = originalRequestDetails.delegateId,
-//				entityId = entityId,
-//				request = originalRequestDetails.options,
-//				updatedForMigration = originalRequestDetails.updatedForMigration,
-//				code = error.code,
-//				reason = error.reason,
-//				shouldRetry = error.shouldRetry
-//			)
-//		}
-//
-//
-//	private data class BulkShareRequestsDetails(
-//		// Entities that haven't been modified because no request was made. Doesn't include entities not modified due to errors.
-//		val unmodifiedEntityIds: Set<String>,
-//		val requestsByEntityId: Map<String, EntityShareRequestDetails>
-//	)
-//	private data class EntityShareRequestDetails(
-//		val requests: Map<String, DelegateShareRequestDetails>, // requestId (unique for the entity) -> request for a delegate
-//		val potentialParentDelegations: Set<SecureDelegationKeyString>
-//	)
-//	private data class DelegateShareRequestDetails(
-//		val delegateId: String,
-//		val options: DelegateShareOptions?,
-//		val updatedForMigration: Boolean,
-//		val request: EntityShareOrMetadataUpdateRequest
-//	)
-//
-//	private suspend fun prepareBulkShareRequests(
-//		entitiesUpdates: List<Pair<EntityWithTypeInfo<*>, Map<String, DelegateShareOptions>>>
-//	): BulkShareRequestsDetails {
-//		require (entitiesUpdates.distinctBy { it.first.entity.id }.size == entitiesUpdates.size) {
-//			"Duplicate requests: the same entity id is present more than once in the input"
-//		}
-//		require (entitiesUpdates.distinctBy { it.first.type }.size <= 1) {
-//			"Entities of different types are not allowed in the same bulk share request"
-//		}
-//		require (entitiesUpdates.all { it.first.entity.rev != null }) {
-//			"Only existing entities can be shared"
-//		}
-//		val hierarchySet = dataOwnersForDecryption(null).toSet()
-//		val requestsByEntityId = mutableMapOf<String, EntityShareRequestDetails>()
-//		val unmodifiedEntityIds = mutableSetOf<String>()
-//		entitiesUpdates.forEach { (entity, optionsForDelegates) ->
-//			val migrationRequests = prepareMigrationRequestsIfNeeded(entity, optionsForDelegates)
-//			val otherRequests = optionsForDelegates.mapNotNull { (delegate, options) ->
-//				(
-//					if (!migrationRequests.containsKey(delegate)) {
-//						secureDelegationsManager.makeShareOrUpdateRequestParams(
-//							entity,
-//							delegate,
-//							options.shareSecretIds,
-//							options.shareEncryptionKeys,
-//							options.shareOwningEntityIds,
-//							options.requestedPermissions
-//						)
-//					} else null
-//				)?.let { delegate to it }
-//			}
-//			val allRequests = migrationRequests.map {
-//				DelegateShareRequestDetails(it.key, optionsForDelegates[it.key], true, it.value)
-//			} + otherRequests.map {
-//				DelegateShareRequestDetails(it.first, optionsForDelegates[it.first], false, it.second)
-//			}
-//			if (allRequests.isNotEmpty()) {
-//				val potentialParentDelegations = secureDelegationsDecryptor.getDelegationMemberDetails(entity).mapNotNullTo(
-//					mutableSetOf()
-//				) { (delegationKey, delegationInfo) ->
-//					if (delegationInfo.delegate in hierarchySet || delegationInfo.delegator in hierarchySet)
-//						delegationKey
-//					else
-//						null
-//				}
-//				requestsByEntityId[entity.entity.id] = EntityShareRequestDetails(
-//					allRequests.mapIndexed { index, it ->
-//						// Even though the delegate id could be a valid request id it could leak some secret information if it is a patient id.
-//						index.toString() to it
-//					}.toMap(),
-//					potentialParentDelegations
-//				)
-//			} else unmodifiedEntityIds.add(entity.entity.id)
-//		}
-//		return BulkShareRequestsDetails(unmodifiedEntityIds, requestsByEntityId)
-//	}
-//
-//	private suspend fun prepareMigrationRequestsIfNeeded(
-//		entity: EntityWithTypeInfo<*>,
-//		optionsForDelegates: Map<String, DelegateShareOptions>
-//	): Map<String, EntityShareOrMetadataUpdateRequest> {
-//		val hierarchy = dataOwnersForDecryption(null)
-//		val legacySecretIds = legacyDelegationsDecryptor.decryptSecretIdsOf(entity, hierarchy.toSet()).toList()
-//		val legacyOwningEntityIds = legacyDelegationsDecryptor.decryptOwningEntityIdsOf(entity, hierarchy.toSet()).toList()
-//		val legacyEncryptionKeys = legacyDelegationsDecryptor.decryptEncryptionKeysOf(entity, hierarchy.toSet()).toList()
-//		return hierarchy.mapNotNull { currMember ->
-//			makeMigrationRequestForMemberOfHierarchy(
-//				entity,
-//				currMember,
-//				optionsForDelegates[currMember],
-//				legacySecretIds,
-//				legacyOwningEntityIds,
-//				legacyEncryptionKeys
-//			)?.let { currMember to it }
-//		}.toMap()
-//	}
-//
-//	private suspend fun makeMigrationRequestForMemberOfHierarchy(
-//		entity: EntityWithTypeInfo<*>,
-//		currMember: String,
-//		userRequest: DelegateShareOptions?,
-//		legacySecretIds: List<DecryptedMetadataDetails<String>>,
-//		legacyOwningEntityIds: List<DecryptedMetadataDetails<String>>,
-//		legacyEncryptionKeys: List<DecryptedMetadataDetails<HexString>>
-//	): EntityShareOrMetadataUpdateRequest? {
-//		val selfId = dataOwnerApi.getCurrentDataOwnerId()
-//		val subHierarchy = dataOwnersForDecryption(currMember)
-//		val subHierarchySet = subHierarchy.toSet()
-//		val legacyAccess =
-//			if (selfId == entity.entity.id && currMember == selfId)
-//				AccessLevel.Write
-//			else
-//				legacyDelegationsDecryptor.getEntityAccessLevel(entity, subHierarchySet)
-//		if (legacyAccess == null) return null
-//		val delegateLegacySecretIds = legacySecretIds.valuesAvailableToDataOwners(subHierarchySet)
-//		val delegateLegacyOwningEntityIds = legacyOwningEntityIds.valuesAvailableToDataOwners(subHierarchySet)
-//		val delegateLegacyEncryptionKeys = legacyEncryptionKeys.valuesAvailableToDataOwners(subHierarchySet)
-//		val missingLegacySecretIds =
-//			if (delegateLegacySecretIds.isEmpty())
-//				delegateLegacySecretIds
-//			else
-//				(delegateLegacySecretIds - secureDelegationsDecryptor.decryptSecretIdsOf(entity, setOf(currMember)).map { it.value }.toSet())
-//		val missingLegacyOwningEntityIds =
-//			if (delegateLegacyOwningEntityIds.isEmpty())
-//				delegateLegacyOwningEntityIds
-//			else
-//				(delegateLegacyOwningEntityIds - secureDelegationsDecryptor.decryptOwningEntityIdsOf(entity, setOf(currMember)).map { it.value }.toSet())
-//		val missingLegacyEncryptionKeys =
-//			if (delegateLegacyEncryptionKeys.isEmpty())
-//				delegateLegacyEncryptionKeys
-//			else
-//				(delegateLegacyEncryptionKeys - secureDelegationsDecryptor.decryptEncryptionKeysOf(entity, setOf(currMember)).map { it.value }.toSet())
-//		return if (missingLegacySecretIds.isNotEmpty() || missingLegacyOwningEntityIds.isNotEmpty() || missingLegacyEncryptionKeys.isNotEmpty()) {
-//			val requestedPermissions =
-//				if (currMember == selfId)
-//					RequestedPermission.Root
-//				else
-//					RequestedPermission.FullWrite // Legacy permission if present is always write
-//			secureDelegationsManager.makeShareOrUpdateRequestParams(
-//				entity,
-//				currMember,
-//				missingLegacySecretIds + (userRequest?.shareSecretIds ?: emptySet()),
-//				missingLegacyEncryptionKeys + (userRequest?.shareEncryptionKeys ?: emptySet()),
-//				missingLegacyOwningEntityIds + (userRequest?.shareOwningEntityIds ?: emptySet()),
-//				requestedPermissions
-//			)
-//		} else null
-//	}
-//
-//	override suspend fun <T : HasEncryptionMetadata> simpleShareOrUpdateEncryptedEntityMetadata(
-//		entity: EntityWithTypeInfo<T>,
-//		delegates: Map<String, SimpleDelegateShareOptions>,
-//		autoRetry: Boolean,
-//		getUpdatedEntity: suspend (String) -> EntityWithTypeInfo<T>,
-//		doRequestBulkShareOrUpdate: suspend (request: BulkShareOrUpdateMetadataParams) -> List<EntityBulkShareResult<out T>>
-//	): SimpleShareResult<T> {
-//		val availableEncryptionKeys = encryptionKeysOf(entity, null)
-//		val availableOwningEntityIds = owningEntityIdsOf(entity, null)
-//		val availableSecretIds = secretIdsOf(entity, null)
-//		val extendedDelegateOptions = delegates.mapValues { (_, simpleShareOptions) ->
-//			if (availableEncryptionKeys.isEmpty() && simpleShareOptions.shareEncryptionKey == ShareMetadataBehaviour.Required) {
-//				throw IllegalArgumentException("The current data owner can't access any encryption key in ${entity.type.id} ${entity.entity.id}, but sharing is required.")
-//			}
-//			if (availableOwningEntityIds.isEmpty() && simpleShareOptions.shareOwningEntityIds == ShareMetadataBehaviour.Required) {
-//				throw IllegalArgumentException("The current data owner can't access any owning entity id in ${entity.type.id} ${entity.entity.id}, but sharing is required.")
-//			}
-//			DelegateShareOptions(
-//				shareSecretIds = simpleShareOptions.shareSecretIds.resolve(availableSecretIds, entity),
-//				shareEncryptionKeys = if (simpleShareOptions.shareEncryptionKey == ShareMetadataBehaviour.Never) emptySet() else availableEncryptionKeys,
-//				shareOwningEntityIds = if (simpleShareOptions.shareOwningEntityIds == ShareMetadataBehaviour.Never) emptySet() else availableOwningEntityIds,
-//				requestedPermissions = simpleShareOptions.requestedPermissions
-//			)
-//		}
-//		val shareResult = bulkShareOrUpdateEncryptedEntityMetadata(
-//			listOf(entity to extendedDelegateOptions),
-//			false,
-//			getUpdatedEntity,
-//			doRequestBulkShareOrUpdate
-//		)
-//		if (shareResult.unmodifiedEntitiesIds.contains(entity.entity.id)) {
-//			return SimpleShareResult.Success(entity.entity)
-//		}
-//		if (shareResult.updateErrors.isEmpty() && shareResult.updatedEntities.size == 1) {
-//			return SimpleShareResult.Success(shareResult.updatedEntities.first())
-//		}
-//		val errorsOfRequestedDelegates = shareResult.updateErrors.filter { delegates.containsKey(it.delegateId) }
-//		if (errorsOfRequestedDelegates.isEmpty() && shareResult.updatedEntities.size == 1) {
-//			log.w { "There was an internal error with the migration of encrypted metadata: ${shareResult.updateErrors}" }
-//			return SimpleShareResult.Success(shareResult.updatedEntities.first())
-//		}
-//		if (autoRetry && shareResult.updateErrors.all { it.shouldRetry }) {
-//			val updatedEntity = getUpdatedEntity(entity.entity.id)
-//			if (updatedEntity.entity.rev != entity.entity.rev) {
-//				return simpleShareOrUpdateEncryptedEntityMetadata(updatedEntity, delegates, autoRetry, getUpdatedEntity, doRequestBulkShareOrUpdate)
-//			}
-//		}
-//		return SimpleShareResult.Failure(shareResult.updateErrors)
-//	}
 
 	override suspend fun <T : HasEncryptionMetadata> ensureEncryptionKeysInitialized(
 		entityGroupId: String?,
-		entity: EntityWithTypeInfo<T>
+		entity: T,
+		entityType: EntityWithEncryptionMetadataTypeName
 	): T? {
-		if (baseSecurityMetadataDecryptor.hasAnyEncryptionKeys(entity.entity)) {
+		if (baseSecurityMetadataDecryptor.hasAnyEncryptionKeys(entity)) {
 			return null
 		}
-		require(entity.entity.rev != null) {
-			"A new ${entity.type.id} does not have encryption keys initialized: make sure the entity was created using the `newInstance` method from the appropriate api before trying to save it."
+		require(entity.rev != null) {
+			"A new ${entityType.id} does not have encryption keys initialized: make sure the entity was created using the `newInstance` method from the appropriate api before trying to save it."
 		}
-		if (autoCreateEncryptionKeyForExistingLegacyData && entity.entity.delegations.isNotEmpty()) {
+		if (autoCreateEncryptionKeyForExistingLegacyData && entity.delegations.isNotEmpty()) {
 			require(boundGroup.resolve(entityGroupId) == null) {
-				"${entity.type.id} ${entity.entity.id} uses delegations as encryption keys, but SDK instance can't create required new key as the entity exist in a different group"
+				"${entityType.id}(\"${entity.id}\") uses delegations as encryption keys, but SDK instance can't create required new key as the entity exist in a different group"
 			}
 			/*
 			 * Handle rare pre-2018 cases where entities was using delegation key (-> secretId) as encryption key.
@@ -806,61 +861,78 @@ class EntityEncryptionServiceImpl(
 			return secureDelegationsManager.entityWithInitializedEncryptedMetadata(
 				entityGroupId = null,
 				entity = entity,
+				entityType = entityType,
 				secretIds = emptySet(), // Will still be available through legacy delegations
 				owningEntityIds = emptySet(), // Will still be available through legacy delegations
 				encryptionKeys = setOf(HexString(cryptoService.aes.exportKey(newKey).toHexString())),
-				owningEntitySecretIds = entity.entity.secretForeignKeys,
+				owningEntitySecretIds = entity.secretForeignKeys,
 				autoDelegations = emptyMap(),
 			)
 		} else throw IllegalEntityException(
-			"Existing ${entity.type.id} ${entity.entity.id} does not have any recognised encryption metadata available, but encryption keys are required to perform an operation."
+			"Existing ${entityType.id}(\"${entity.id}\") does not have any recognised encryption metadata available, but encryption keys are required to perform an operation."
 		)
 	}
 
-//	override suspend fun <T : HasEncryptionMetadata> initializeConfidentialSecretId(
-//		entity: EntityWithTypeInfo<T>,
-//		getUpdatedEntity: suspend (String) -> EntityWithTypeInfo<T>,
-//		doRequestBulkShareOrUpdate: suspend (request: BulkShareOrUpdateMetadataParams) -> List<EntityBulkShareResult<out T>>
-//	): T? {
-//		if (entity.entity.rev == null) {
-//			throw IllegalArgumentException("Entity must be an existing entity to initialize a confidential secret id")
-//		}
-//		if (getConfidentialSecretIdsOf(entity, null).isNotEmpty()) return null
-//		return simpleShareOrUpdateEncryptedEntityMetadata(
-//			entity,
-//			mapOf(dataOwnerApi.getCurrentDataOwnerId() to SimpleDelegateShareOptionsImpl(
-//				shareSecretIds = SecretIdShareOptions.UseExactly(
-//					secretIds = setOf(cryptoService.strongRandom.randomUUID()),
-//					createUnknownSecretIds = true
-//				),
-//				shareEncryptionKey = ShareMetadataBehaviour.Never,
-//				shareOwningEntityIds = ShareMetadataBehaviour.Never,
-//				requestedPermissions = RequestedPermission.MaxWrite
-//			)),
-//			true,
-//			getUpdatedEntity,
-//			doRequestBulkShareOrUpdate
-//		).updatedEntityOrThrow()
-//	}
-//
-//	override suspend fun getConfidentialSecretIdsOf(entity: EntityWithTypeInfo<*>, dataOwnerId: String?): Set<String> {
-//		val secretIdsInfo = secretIdsForHcpHierarchyOf(entity)
-//		val targetDataOwner = dataOwnerId ?: dataOwnerApi.getCurrentDataOwnerId()
-//		val parents = secretIdsInfo.takeWhile { it.ownerId != targetDataOwner }
-//		require(parents.size < secretIdsInfo.size) {
-//			"Target data owner $targetDataOwner is not in the hierarchy of the logged data owner"
-//		}
-//		val res = secretIdsInfo[parents.size].extracted.toMutableSet()
-//		parents.forEach { res -= it.extracted }
-//		return res
-//	}
-//
-//	override suspend fun getSecretIdsSharedWithParentsOf(entity: EntityWithTypeInfo<*>): Set<String> =
-//		secretIdsForHcpHierarchyOf(entity).first().extracted
-//
+	override suspend fun <T : HasEncryptionMetadata> initializeConfidentialSecretId(
+		entityGroupId: String?,
+		entity: T,
+		entityType: EntityWithEncryptionMetadataTypeName,
+		getUpdatedEntity: suspend (String) -> T,
+		doRequestBulkShareOrUpdate: suspend (request: BulkShareOrUpdateMetadataParams) -> List<EntityBulkShareResult<out T>>
+	): T? {
+		if (entity.rev == null) {
+			throw IllegalArgumentException("Entity must be an existing entity to initialize a confidential secret id")
+		}
+		if (getConfidentialSecretIdsOf(entityGroupId, entity, entityType, null).isNotEmpty()) return null
+		return simpleShareOrUpdateEncryptedEntityMetadata(
+			entityGroupId,
+			entity,
+			entityType,
+			mapOf(dataOwnerApi.getCurrentDataOwnerReference() to SimpleDelegateShareOptionsImpl(
+				shareSecretIds = SecretIdShareOptions.UseExactly(
+					secretIds = setOf(cryptoService.strongRandom.randomUUID()),
+					createUnknownSecretIds = true
+				),
+				shareEncryptionKey = ShareMetadataBehaviour.Never,
+				shareOwningEntityIds = ShareMetadataBehaviour.Never,
+				requestedPermissions = RequestedPermission.MaxWrite
+			)
+			),
+			true,
+			getUpdatedEntity,
+			doRequestBulkShareOrUpdate
+		).updatedEntityOrThrow()
+	}
+
+	override suspend fun getConfidentialSecretIdsOf(
+		entityGroupId: String?,
+		entity: HasEncryptionMetadata,
+		entityType: EntityWithEncryptionMetadataTypeName,
+		dataOwnerId: String?
+	): Set<String> {
+		val secretIdsInfo = secretIdsForHcpHierarchyOf(entityGroupId, entity, entityType)
+		val targetDataOwner = dataOwnerId ?: dataOwnerApi.getCurrentDataOwnerId()
+		val parents = secretIdsInfo.takeWhile { it.ownerId != targetDataOwner }
+		require(parents.size < secretIdsInfo.size) {
+			"Target data owner $targetDataOwner is not in the hierarchy of the logged data owner"
+		}
+		val res = secretIdsInfo[parents.size].extracted.toMutableSet()
+		parents.forEach { res -= it.extracted }
+		return res
+	}
+
+	override suspend fun getSecretIdsSharedWithParentsOf(
+		entityGroupId: String?,
+		entity: HasEncryptionMetadata,
+		entityType: EntityWithEncryptionMetadataTypeName,
+	): Set<String> =
+		secretIdsForHcpHierarchyOf(entityGroupId, entity, entityType).first().extracted
+
+
 	override suspend fun resolveSecretIdOption(
 		entityGroupId: String?,
-		entity: EntityWithTypeInfo<*>,
+		entity: HasEncryptionMetadata,
+		entityType: EntityWithEncryptionMetadataTypeName,
 		secretIdUseOption: SecretIdUseOption
 	): Set<String> =
 		when (secretIdUseOption) {
@@ -868,6 +940,7 @@ class EntityEncryptionServiceImpl(
 			SecretIdUseOption.UseAnyConfidential -> getConfidentialSecretIdsOf(
 				entityGroupId = entityGroupId,
 				entity = entity,
+				entityType = entityType,
 				dataOwnerId = null
 			).also {
 				require(it.isNotEmpty()) {
@@ -877,6 +950,7 @@ class EntityEncryptionServiceImpl(
 			SecretIdUseOption.UseAllConfidential -> getConfidentialSecretIdsOf(
 				entityGroupId = entityGroupId,
 				entity = entity,
+				entityType = entityType,
 				dataOwnerId = null
 			).also {
 				require(it.isNotEmpty()) {
@@ -885,6 +959,7 @@ class EntityEncryptionServiceImpl(
 			}
 			SecretIdUseOption.UseAnySharedWithParent -> getSecretIdsSharedWithParentsOf(
 				entityGroupId = entityGroupId,
+				entityType = entityType,
 				entity = entity
 			).also {
 				require(it.isNotEmpty()) {
@@ -893,6 +968,7 @@ class EntityEncryptionServiceImpl(
 			}.let { setOf(it.first()) }
 			SecretIdUseOption.UseAllSharedWithParent -> getSecretIdsSharedWithParentsOf(
 				entityGroupId = entityGroupId,
+				entityType = entityType,
 				entity = entity
 			).also {
 				require(it.isNotEmpty()) {
@@ -902,20 +978,24 @@ class EntityEncryptionServiceImpl(
 			SecretIdUseOption.UseNone -> emptySet()
 		}
 
-//	private fun <T : Any> Iterable<DecryptedMetadataDetails<T>>.valuesAvailableToDataOwners(dataOwners: Set<String>): Set<T> =
-//		mapNotNullTo(mutableSetOf()) { decryptedDataDetails -> if (dataOwners.any { it in decryptedDataDetails.dataOwnersWithAccess }) decryptedDataDetails.value else null }
-//
-	private suspend fun SecretIdShareOptions.resolve(entitySecretIds: Set<String>, entity: EntityWithTypeInfo<*>) = when (this) {
+	private fun <T : Any> Iterable<DecryptedMetadataDetails<T>>.valuesAvailableToDataOwners(dataOwners: Set<String>): Set<T> =
+		mapNotNullTo(mutableSetOf()) { decryptedDataDetails -> if (dataOwners.any { it in decryptedDataDetails.dataOwnersWithAccess }) decryptedDataDetails.value else null }
+
+	private suspend fun SecretIdShareOptions.resolve(
+		entitySecretIds: Set<String>,
+		entity: HasEncryptionMetadata,
+		entityType: EntityWithEncryptionMetadataTypeName
+	) = when (this) {
 		is SecretIdShareOptions.AllAvailable -> entitySecretIds.also {
 			require (!requireAtLeastOne || it.isNotEmpty()) {
-				"No secret id could be extracted by the current user for ${entity.type} ${entity.entity.id}"
+				"No secret id could be extracted by the current user for ${entityType.id}(\"${entity.id}\")"
 			}
 		}
 		is SecretIdShareOptions.UseExactly ->
 			secretIds.also {
 				if (!createUnknownSecretIds) {
 					require (entitySecretIds.containsAll(secretIds)) {
-						"Unknown secret ids for ${entity.type} ${entity.entity.id} and `createUnknownSecretIds` is false: ${
+						"Unknown secret ids for ${entityType.id}(\"${entity.id}\") and `createUnknownSecretIds` is false: ${
 							secretIds - entitySecretIds
 						}"
 					}

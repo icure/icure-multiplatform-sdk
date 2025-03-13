@@ -8,7 +8,6 @@ import com.icure.cardinal.sdk.crypto.entities.EntityDataEncryptionResult
 import com.icure.cardinal.sdk.crypto.entities.EntityEncryptionKeyDetails
 import com.icure.cardinal.sdk.crypto.entities.EntityEncryptionMetadataInitialisationResult
 import com.icure.cardinal.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
-import com.icure.cardinal.sdk.crypto.entities.EntityWithTypeInfo
 import com.icure.cardinal.sdk.crypto.entities.HierarchicallyDecryptedMetadata
 import com.icure.cardinal.sdk.crypto.entities.MinimalBulkShareResult
 import com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption
@@ -43,7 +42,8 @@ interface EntityEncryptionService : EntityValidationService {
 	 */
 	suspend fun encryptionKeysOf(
 		entityGroupId: String?,
-		entity: EntityWithTypeInfo<*>,
+		entity: HasEncryptionMetadata,
+		entityType: EntityWithEncryptionMetadataTypeName,
 		dataOwnerId: String?,
 	): Set<HexString>
 
@@ -58,7 +58,8 @@ interface EntityEncryptionService : EntityValidationService {
 	 */
 	suspend fun encryptionKeysForHcpHierarchyOf(
 		entityGroupId: String?,
-		entity: EntityWithTypeInfo<*>,
+		entity: HasEncryptionMetadata,
+		entityType: EntityWithEncryptionMetadataTypeName
 	): List<HierarchicallyDecryptedMetadata<HexString>>
 
 	/**
@@ -69,7 +70,8 @@ interface EntityEncryptionService : EntityValidationService {
 	 */
 	suspend fun secretIdsOf(
 		entityGroupId: String?,
-		entity: EntityWithTypeInfo<*>,
+		entity: HasEncryptionMetadata,
+		entityType: EntityWithEncryptionMetadataTypeName,
 		dataOwnerId: String?,
 	): Set<String>
 
@@ -83,7 +85,8 @@ interface EntityEncryptionService : EntityValidationService {
 	 */
 	suspend fun secretIdsForHcpHierarchyOf(
 		entityGroupId: String?,
-		entity: EntityWithTypeInfo<*>,
+		entity: HasEncryptionMetadata,
+		entityType: EntityWithEncryptionMetadataTypeName
 	): List<HierarchicallyDecryptedMetadata<String>>
 
 	/**
@@ -98,7 +101,8 @@ interface EntityEncryptionService : EntityValidationService {
 	 */
 	suspend fun owningEntityIdsOf(
 		entityGroupId: String?,
-		entity: EntityWithTypeInfo<*>,
+		entity: HasEncryptionMetadata,
+		entityType: EntityWithEncryptionMetadataTypeName,
 		dataOwnerId: String?,
 	): Set<String>
 
@@ -117,7 +121,8 @@ interface EntityEncryptionService : EntityValidationService {
 	 */
 	suspend fun owningEntityIdsForHcpHierarchyOf(
 		entityGroupId: String?,
-		entity: EntityWithTypeInfo<*>,
+		entity: HasEncryptionMetadata,
+		entityType: EntityWithEncryptionMetadataTypeName
 	): List<HierarchicallyDecryptedMetadata<String>>
 
 	/**
@@ -127,14 +132,18 @@ interface EntityEncryptionService : EntityValidationService {
 	 */
 	suspend fun hasWriteAccess(
 		entityGroupId: String?,
-		entity: EntityWithTypeInfo<*>,
+		entity: HasEncryptionMetadata,
+		entityType: EntityWithEncryptionMetadataTypeName
 	): Boolean
 
 	/**
 	 * @param entity an entity
 	 * @return if the entity has no encryption metadata and can be safely initialized.
 	 */
-	fun hasEmptyEncryptionMetadata(entity: EntityWithTypeInfo<*>): Boolean
+	fun hasEmptyEncryptionMetadata(
+		entity: HasEncryptionMetadata,
+		entityType: EntityWithEncryptionMetadataTypeName
+	): Boolean
 	// endregion
 
 	// region metadata initialisation and share
@@ -155,7 +164,8 @@ interface EntityEncryptionService : EntityValidationService {
 	 */
 	suspend fun <T : HasEncryptionMetadata> entityWithInitializedEncryptedMetadata(
 		entityGroupId: String?,
-		entity: EntityWithTypeInfo<T>,
+		entity: T,
+		entityType: EntityWithEncryptionMetadataTypeName,
 		owningEntityId: String?,
 		owningEntitySecretId: Set<String>?,
 		initializeEncryptionKey: Boolean,
@@ -187,16 +197,18 @@ interface EntityEncryptionService : EntityValidationService {
 	 */
 	suspend fun <T : HasEncryptionMetadata> bulkShareOrUpdateEncryptedEntityMetadata(
 		entityGroupId: String?,
-		entitiesUpdates: List<Pair<EntityWithTypeInfo<T>, Map<DataOwnerReferenceInGroup, DelegateShareOptions>>>,
+		entitiesUpdates: List<Pair<T, Map<DataOwnerReferenceInGroup, DelegateShareOptions>>>,
+		entitiesType: EntityWithEncryptionMetadataTypeName,
 		autoRetry: Boolean,
-		getUpdatedEntity: suspend (String) -> EntityWithTypeInfo<T>,
+		getUpdatedEntity: suspend (String) -> T,
 		doRequestBulkShareOrUpdate: suspend (request: BulkShareOrUpdateMetadataParams) -> List<EntityBulkShareResult<out T>>
 	): BulkShareResult<T>
 
 	suspend fun bulkShareOrUpdateEncryptedEntityMetadataNoEntities(
-		entitiesUpdates: List<Pair<EntityWithTypeInfo<*>, Map<String, DelegateShareOptions>>>,
+		entitiesUpdates: List<Pair<HasEncryptionMetadata, Map<String, DelegateShareOptions>>>,
+		entitiesType: EntityWithEncryptionMetadataTypeName,
 		autoRetry: Boolean,
-		getUpdatedEntity: suspend (String) -> EntityWithTypeInfo<*>,
+		getUpdatedEntity: suspend (String) -> HasEncryptionMetadata,
 		doRequestBulkShareOrUpdate: suspend (request: BulkShareOrUpdateMetadataParams) -> List<EntityBulkShareResult<Nothing>>
 	): MinimalBulkShareResult
 
@@ -222,10 +234,11 @@ interface EntityEncryptionService : EntityValidationService {
 	 */
 	suspend fun <T : HasEncryptionMetadata> simpleShareOrUpdateEncryptedEntityMetadata(
 		entityGroupId: String?,
-		entity: EntityWithTypeInfo<T>,
+		entity: T,
+		entityType: EntityWithEncryptionMetadataTypeName,
 		delegates: Map<DataOwnerReferenceInGroup, SimpleDelegateShareOptions>,
 		autoRetry: Boolean,
-		getUpdatedEntity: suspend (String) -> EntityWithTypeInfo<T>,
+		getUpdatedEntity: suspend (String) -> T,
 		doRequestBulkShareOrUpdate: suspend (request: BulkShareOrUpdateMetadataParams) -> List<EntityBulkShareResult<out T>>
 	): SimpleShareResult<T>
 	// endregion
@@ -245,7 +258,8 @@ interface EntityEncryptionService : EntityValidationService {
 	 */
 	suspend fun <T : HasEncryptionMetadata> encryptAttachmentOf(
 		entityGroupId: String?,
-		entity: EntityWithTypeInfo<T>,
+		entity: T,
+		entityType: EntityWithEncryptionMetadataTypeName,
 		content: ByteArray,
 		saveEntity: suspend (entity: T) -> T,
 	): EntityDataEncryptionResult<T>
@@ -265,7 +279,8 @@ interface EntityEncryptionService : EntityValidationService {
 	 */
 	suspend fun tryDecryptAttachmentOf(
 		entityGroupId: String?,
-		entity: EntityWithTypeInfo<*>,
+		entity: HasEncryptionMetadata,
+		entityType: EntityWithEncryptionMetadataTypeName,
 		content: ByteArray,
 		validator: (suspend (decryptedData: ByteArray) -> Boolean)?,
 	): ByteArray?
@@ -286,7 +301,8 @@ interface EntityEncryptionService : EntityValidationService {
 	 */
 	suspend fun decryptAttachmentOf(
 		entityGroupId: String?,
-		entity: EntityWithTypeInfo<*>,
+		entity: HasEncryptionMetadata,
+		entityType: EntityWithEncryptionMetadataTypeName,
 		content: ByteArray,
 		validator: (suspend (decryptedData: ByteArray) -> Boolean)?,
 	): ByteArray
@@ -347,7 +363,8 @@ interface EntityEncryptionService : EntityValidationService {
 	 */
 	suspend fun decryptAndImportAllDecryptionKeys(
 		entityGroupId: String?,
-		entity: EntityWithTypeInfo<*>,
+		entity: HasEncryptionMetadata,
+		entityType: EntityWithEncryptionMetadataTypeName,
 	): List<EntityEncryptionKeyDetails>
 
 	/**
@@ -358,7 +375,8 @@ interface EntityEncryptionService : EntityValidationService {
 	 */
 	suspend fun <T : HasEncryptionMetadata> ensureEncryptionKeysInitialized(
 		entityGroupId: String?,
-		entity: EntityWithTypeInfo<T>,
+		entity: T,
+		entityType: EntityWithEncryptionMetadataTypeName
 	): T?
 	// endregion
 
@@ -377,8 +395,9 @@ interface EntityEncryptionService : EntityValidationService {
 	 */
 	suspend fun <T : HasEncryptionMetadata> initializeConfidentialSecretId(
 		entityGroupId: String?,
-		entity: EntityWithTypeInfo<T>,
-		getUpdatedEntity: suspend (String) -> EntityWithTypeInfo<T>,
+		entity: T,
+		entityType: EntityWithEncryptionMetadataTypeName,
+		getUpdatedEntity: suspend (String) -> T,
 		doRequestBulkShareOrUpdate: suspend (request: BulkShareOrUpdateMetadataParams) -> List<EntityBulkShareResult<out T>>,
 	): T?
 
@@ -392,7 +411,8 @@ interface EntityEncryptionService : EntityValidationService {
 	 */
 	suspend fun getConfidentialSecretIdsOf(
 		entityGroupId: String?,
-		entity: EntityWithTypeInfo<*>,
+		entity: HasEncryptionMetadata,
+		entityType: EntityWithEncryptionMetadataTypeName,
 		dataOwnerId: String?,
 	): Set<String>
 
@@ -404,7 +424,8 @@ interface EntityEncryptionService : EntityValidationService {
 	 */
 	suspend fun getSecretIdsSharedWithParentsOf(
 		entityGroupId: String?,
-		entity: EntityWithTypeInfo<*>,
+		entity: HasEncryptionMetadata,
+		entityType: EntityWithEncryptionMetadataTypeName,
 	): Set<String>
 
 	/**
@@ -415,7 +436,8 @@ interface EntityEncryptionService : EntityValidationService {
 	 */
 	suspend fun resolveSecretIdOption(
 		entityGroupId: String?,
-		entity: EntityWithTypeInfo<*>,
+		entity: HasEncryptionMetadata,
+		entityType: EntityWithEncryptionMetadataTypeName,
 		secretIdUseOption: SecretIdUseOption,
 	): Set<String>
 	// endregion

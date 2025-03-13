@@ -9,7 +9,7 @@ import com.icure.cardinal.sdk.crypto.SecureDelegationsManager
 import com.icure.cardinal.sdk.crypto.UserEncryptionKeysManager
 import com.icure.cardinal.sdk.crypto.entities.CardinalKeyInfo
 import com.icure.cardinal.sdk.crypto.entities.DataOwnerReferenceInGroup
-import com.icure.cardinal.sdk.crypto.entities.EntityWithTypeInfo
+import com.icure.cardinal.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
 import com.icure.cardinal.sdk.crypto.entities.ExchangeDataWithUnencryptedContent
 import com.icure.cardinal.sdk.crypto.entities.SdkBoundGroup
 import com.icure.cardinal.sdk.crypto.entities.VerifiedRsaEncryptionKeysSet
@@ -56,7 +56,8 @@ class SecureDelegationsManagerImpl (
 
 	override suspend fun <T : HasEncryptionMetadata> entityWithInitializedEncryptedMetadata(
 		entityGroupId: String?,
-		entity: EntityWithTypeInfo<T>,
+		entity: HasEncryptionMetadata,
+		entityType: EntityWithEncryptionMetadataTypeName,
 		secretIds: Set<String>,
 		owningEntityIds: Set<String>,
 		owningEntitySecretIds: Set<String>,
@@ -66,7 +67,7 @@ class SecureDelegationsManagerImpl (
 		val selfReference = dataOwnerApi.getCurrentDataOwnerReference()
 		val rootDelegationInfo = makeSecureDelegationInfo(
 			entityGroupId = entityGroupId,
-			entity = entity,
+			entityType = entityType,
 			delegateReference = selfReference,
 			shareSecretIds = secretIds,
 			shareOwningEntityIds = owningEntityIds,
@@ -77,7 +78,7 @@ class SecureDelegationsManagerImpl (
 		val otherDelegationsInfo = autoDelegations.filterNot { it.key == selfReference }.map { (delegateId, permissions) ->
 			makeSecureDelegationInfo(
 				entityGroupId = entityGroupId,
-				entity = entity,
+				entityType = entityType,
 				delegateReference = delegateId,
 				shareSecretIds = secretIds,
 				shareOwningEntityIds = owningEntityIds,
@@ -93,7 +94,7 @@ class SecureDelegationsManagerImpl (
 			)
 		)
 		@Suppress("UNCHECKED_CAST")
-		return entity.entity.copyWithSecurityMetadata(
+		return entity.copyWithSecurityMetadata(
 			securityMetadata = SecurityMetadata(
 				secureDelegations = (listOf(rootDelegationInfo) + otherDelegationsInfo).associate { it.canonicalDelegationKey to it.delegation },
 			),
@@ -103,7 +104,8 @@ class SecureDelegationsManagerImpl (
 
 	override suspend fun makeShareOrUpdateRequestParams(
 		entityGroupId: String?,
-		entity: EntityWithTypeInfo<*>,
+		entity: HasEncryptionMetadata,
+		entityType: EntityWithEncryptionMetadataTypeName,
 		delegate: DataOwnerReferenceInGroup,
 		shareSecretIds: Set<String>,
 		shareEncryptionKeys: Set<HexString>,
@@ -116,11 +118,11 @@ class SecureDelegationsManagerImpl (
 			false
 		)
 		val accessControlKey = exchangeData.unencryptedContent.accessControlSecret.toAccessControlKeyStringFor(
-			entity.type,
+			entityType,
 			cryptoService
 		)
 		val secureDelegationKey = accessControlKey.toSecureDelegationKeyString(cryptoService)
-		val existingDelegation = entity.entity.securityMetadata?.secureDelegations?.get(secureDelegationKey)
+		val existingDelegation = entity.securityMetadata?.secureDelegations?.get(secureDelegationKey)
 		return if (existingDelegation != null) {
 			makeUpdateRequestParams(
 				canonicalKey = secureDelegationKey,
@@ -150,7 +152,7 @@ class SecureDelegationsManagerImpl (
 
 	private suspend fun makeSecureDelegationInfo(
 		entityGroupId: String?,
-		entity: EntityWithTypeInfo<*>,
+		entityType: EntityWithEncryptionMetadataTypeName,
 		delegateReference: DataOwnerReferenceInGroup,
 		shareSecretIds: Set<String>,
 		shareEncryptionKeys: Set<HexString>,
@@ -164,7 +166,7 @@ class SecureDelegationsManagerImpl (
 			selfNeedsAnonymousDelegations
 		)
 		val accessControlKey = exchangeDataInfo.unencryptedContent.accessControlSecret.toAccessControlKeyStringFor(
-			entity.type,
+			entityType,
 			cryptoService
 		)
 		val secureDelegationKey = accessControlKey.toSecureDelegationKeyString(cryptoService)

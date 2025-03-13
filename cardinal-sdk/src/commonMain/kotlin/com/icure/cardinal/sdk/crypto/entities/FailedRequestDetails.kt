@@ -5,7 +5,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class FailedRequestDetails(
 	val entityId: String,
-	val delegateId: String,
+	val delegateReference: DataOwnerReferenceInGroup,
 	val updatedForMigration: Boolean,
 	val code: Int?,
 	val reason: String?,

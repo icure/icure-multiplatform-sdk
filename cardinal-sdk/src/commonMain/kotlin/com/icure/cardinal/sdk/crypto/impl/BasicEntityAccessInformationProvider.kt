@@ -3,8 +3,9 @@ package com.icure.cardinal.sdk.crypto.impl
 import com.icure.cardinal.sdk.crypto.EntityAccessInformationProvider
 import com.icure.cardinal.sdk.crypto.entities.DataOwnerReferenceInGroup
 import com.icure.cardinal.sdk.crypto.entities.EntityAccessInformation
-import com.icure.cardinal.sdk.crypto.entities.EntityWithTypeInfo
+import com.icure.cardinal.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
 import com.icure.cardinal.sdk.crypto.entities.SdkBoundGroup
+import com.icure.cardinal.sdk.model.base.HasEncryptionMetadata
 import com.icure.cardinal.sdk.model.embed.AccessLevel
 
 /**
@@ -14,10 +15,11 @@ import com.icure.cardinal.sdk.model.embed.AccessLevel
 internal abstract class BasicEntityAccessInformationProvider : EntityAccessInformationProvider {
 	override suspend fun getDataOwnersWithAccessTo(
 		entityGroupId: String?,
-		entityWithType: EntityWithTypeInfo<*>
+		entity: HasEncryptionMetadata,
+		entityType: EntityWithEncryptionMetadataTypeName
 	): EntityAccessInformation {
 		val infoFromLegacyDelegations = EntityAccessInformation(
-			entityWithType.entity.delegations.keys.associate {
+			entity.delegations.keys.associate {
 				// Legacy delegations don't support inter-group sharing
 				Pair(DataOwnerReferenceInGroup(it, null), AccessLevel.Write)
 			},
@@ -26,7 +28,7 @@ internal abstract class BasicEntityAccessInformationProvider : EntityAccessInfor
 		val boundGroupId = currentBoundGroupId()
 		val infoFromSecureDelegations = EntityAccessInformation(
 			EntityAccessInformation.buildPermissionsMap(
-				entityWithType.entity.securityMetadata?.secureDelegations?.values?.flatMap { d->
+				entity.securityMetadata?.secureDelegations?.values?.flatMap { d->
 					listOfNotNull(
 						d.delegate?.let {
 							DataOwnerReferenceInGroup.parse(it, entityGroupId, boundGroupId) to d.permissions
@@ -37,7 +39,7 @@ internal abstract class BasicEntityAccessInformationProvider : EntityAccessInfor
 					)
 				} ?: emptyList()
 			),
-			entityWithType.entity.securityMetadata?.secureDelegations?.values?.any { v ->
+			entity.securityMetadata?.secureDelegations?.values?.any { v ->
 				v.delegate == null || v.delegator == null
 			} ?: false
 		)

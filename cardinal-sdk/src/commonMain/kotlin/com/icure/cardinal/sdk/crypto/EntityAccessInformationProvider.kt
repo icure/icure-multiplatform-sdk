@@ -1,7 +1,8 @@
 package com.icure.cardinal.sdk.crypto
 
 import com.icure.cardinal.sdk.crypto.entities.EntityAccessInformation
-import com.icure.cardinal.sdk.crypto.entities.EntityWithTypeInfo
+import com.icure.cardinal.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
+import com.icure.cardinal.sdk.model.base.HasEncryptionMetadata
 
 interface EntityAccessInformationProvider {
 	/**
@@ -43,6 +44,7 @@ interface EntityAccessInformationProvider {
 	 */
 	suspend fun getDataOwnersWithAccessTo(
 		entityGroupId: String?,
-		entityWithType: EntityWithTypeInfo<*>
+		entity: HasEncryptionMetadata,
+		entityType: EntityWithEncryptionMetadataTypeName
 	): EntityAccessInformation
 }

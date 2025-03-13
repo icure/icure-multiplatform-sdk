@@ -1,7 +1,8 @@
 package com.icure.cardinal.sdk.crypto
 
 import com.icure.cardinal.sdk.crypto.entities.DataOwnerReferenceInGroup
-import com.icure.cardinal.sdk.crypto.entities.EntityWithTypeInfo
+import com.icure.cardinal.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
+import com.icure.cardinal.sdk.model.base.HasEncryptionMetadata
 import com.icure.utils.InternalIcureApi
 
 /**
@@ -17,7 +18,8 @@ interface DelegationsDeAnonymization : EntityAccessInformationProvider {
 	 */
 	suspend fun createOrUpdateDeAnonymizationInfo(
 		entityGroupId: String?,
-		entity: EntityWithTypeInfo<*>,
+		entity: HasEncryptionMetadata,
+		entityType: EntityWithEncryptionMetadataTypeName,
 		shareWithDataOwners: Set<DataOwnerReferenceInGroup>
 	)
 }

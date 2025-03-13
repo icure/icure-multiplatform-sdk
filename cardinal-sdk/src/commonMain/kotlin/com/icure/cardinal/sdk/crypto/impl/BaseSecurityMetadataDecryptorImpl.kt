@@ -9,7 +9,6 @@ import com.icure.cardinal.sdk.crypto.SecureDelegationsEncryption
 import com.icure.cardinal.sdk.crypto.entities.DataOwnerReferenceInGroup
 import com.icure.cardinal.sdk.crypto.entities.DecryptedMetadataDetails
 import com.icure.cardinal.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
-import com.icure.cardinal.sdk.crypto.entities.EntityWithTypeInfo
 import com.icure.cardinal.sdk.crypto.entities.ExchangeDataWithPotentiallyDecryptedContent
 import com.icure.cardinal.sdk.crypto.entities.ExchangeDataWithUnencryptedContent
 import com.icure.cardinal.sdk.crypto.entities.SdkBoundGroup
@@ -362,7 +361,8 @@ internal class BaseSecurityMetadataDecryptorImpl(
 
 	override suspend fun getSecureDelegationMemberDetails(
 		entityGroupId: String?,
-		typedEntity: EntityWithTypeInfo<*>
+		entity: HasEncryptionMetadata,
+		entityType: EntityWithEncryptionMetadataTypeName,
 	): Map<SecureDelegationKeyString, SecureDelegationMembersDetails> {
 		val dataOwnersHierarchyReferences = (
 			if (useParentKeys)
@@ -372,12 +372,12 @@ internal class BaseSecurityMetadataDecryptorImpl(
 		).mapTo(mutableSetOf()) { it.asReferenceStringInGroup(entityGroupId, boundGroup) }
 		val loadedExchangeData = loadAllExchangeDataForEntitiesSecureDelegations(
 			entityGroupId,
-			listOf(typedEntity.entity),
+			listOf(entity),
 			dataOwnersHierarchyReferences
 		) {
 			it.delegate == null || it.delegator == null
 		}
-		return typedEntity.entity.securityMetadata?.secureDelegations?.mapValues { (delegationKey, delegation) ->
+		return entity.securityMetadata?.secureDelegations?.mapValues { (delegationKey, delegation) ->
 			if (delegation.delegate != null && delegation.delegator != null) {
 				SecureDelegationMembersDetails(
 					delegator = DataOwnerReferenceInGroup.parse(delegation.delegator, entityGroupId, boundGroup),
@@ -405,26 +405,29 @@ internal class BaseSecurityMetadataDecryptorImpl(
 
 	override suspend fun getEntityAccessLevel(
 		entityGroupId: String?,
-		typedEntity: EntityWithTypeInfo<*>,
+		entity: HasEncryptionMetadata,
+		entityType: EntityWithEncryptionMetadataTypeName,
 		dataOwnersHierarchySubset: Set<String>
 	): AccessLevel? {
-		val legacyAccess = getEntityLegacyDelegationAccessLevel(entityGroupId, typedEntity, dataOwnersHierarchySubset)
+		val legacyAccess = getEntityLegacyDelegationAccessLevel(entityGroupId, entity, entityType, dataOwnersHierarchySubset)
 		if (legacyAccess != null) return legacyAccess // Legacy access is always max access.
-		return getEntitySecureDelegationsAccessLevel(entityGroupId, typedEntity, dataOwnersHierarchySubset)
+		return getEntitySecureDelegationsAccessLevel(entityGroupId, entity, entityType, dataOwnersHierarchySubset)
 	}
 
 	override suspend fun getEntityLegacyDelegationAccessLevel(
 		entityGroupId: String?,
-		typedEntity: EntityWithTypeInfo<*>,
+		entity: HasEncryptionMetadata,
+		entityType: EntityWithEncryptionMetadataTypeName,
 		dataOwnersHierarchySubset: Set<String>
 	): AccessLevel? = if (
 		boundGroup.resolve(entityGroupId) == null
-		&& dataOwnersHierarchySubset.any { typedEntity.entity.delegations.containsKey(it) }
+		&& dataOwnersHierarchySubset.any { entity.delegations.containsKey(it) }
 	) AccessLevel.Write else null
 
 	override suspend fun getEntitySecureDelegationsAccessLevel(
 		entityGroupId: String?,
-		typedEntity: EntityWithTypeInfo<*>,
+		entity: HasEncryptionMetadata,
+		entityType: EntityWithEncryptionMetadataTypeName,
 		dataOwnersHierarchySubset: Set<String>
 	): AccessLevel? {
 		require(dataOwnersHierarchySubset.isNotEmpty()) { "`dataOwnersHierarchySubset` can't be empty" }
@@ -432,7 +435,7 @@ internal class BaseSecurityMetadataDecryptorImpl(
 			dataOwnersHierarchySubset,
 			entityGroupId
 		)
-		val securityMetadata = typedEntity.entity.securityMetadata
+		val securityMetadata = entity.securityMetadata
 		if (securityMetadata == null || securityMetadata.secureDelegations.isEmpty()) return null
 		// If the data owner is explicit all delegations he can access has his id. If the delegator is anonymous all delegations he can access are
 		// accessible by hash. No mixed scenario possible.

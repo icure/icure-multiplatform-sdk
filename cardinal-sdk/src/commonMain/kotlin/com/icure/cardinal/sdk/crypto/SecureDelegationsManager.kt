@@ -1,7 +1,7 @@
 package com.icure.cardinal.sdk.crypto
 
 import com.icure.cardinal.sdk.crypto.entities.DataOwnerReferenceInGroup
-import com.icure.cardinal.sdk.crypto.entities.EntityWithTypeInfo
+import com.icure.cardinal.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
 import com.icure.cardinal.sdk.model.base.HasEncryptionMetadata
 import com.icure.cardinal.sdk.model.embed.AccessLevel
 import com.icure.cardinal.sdk.model.requests.EntityShareOrMetadataUpdateRequest
@@ -24,7 +24,8 @@ interface SecureDelegationsManager {
 	 */
 	suspend fun <T : HasEncryptionMetadata> entityWithInitializedEncryptedMetadata(
 		entityGroupId: String?,
-		entity: EntityWithTypeInfo<T>,
+		entity: T,
+		entityType: EntityWithEncryptionMetadataTypeName,
 		secretIds: Set<String>,
 		owningEntityIds: Set<String>,
 		owningEntitySecretIds: Set<String>,
@@ -49,7 +50,8 @@ interface SecureDelegationsManager {
 	 */
 	suspend fun makeShareOrUpdateRequestParams(
 		entityGroupId: String?,
-		entity: EntityWithTypeInfo<*>,
+		entity: HasEncryptionMetadata,
+		entityType: EntityWithEncryptionMetadataTypeName,
 		delegate: DataOwnerReferenceInGroup,
 		shareSecretIds: Set<String>,
 		shareEncryptionKeys: Set<HexString>,

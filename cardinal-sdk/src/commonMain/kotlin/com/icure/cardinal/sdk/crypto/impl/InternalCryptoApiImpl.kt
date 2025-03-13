@@ -54,7 +54,5 @@ class InternalCryptoApiImpl(
 class BasicInternalCryptoApiImpl(
 	override val jsonEncryption: JsonEncryptionService,
 	override val validationService: EntityValidationService,
-) : BasicInternalCryptoApi {
-	override val entityAccessInformationProvider: EntityAccessInformationProvider get() =
-		BasicEntityAccessInformationProvider
-}
+	override val entityAccessInformationProvider: EntityAccessInformationProvider
+) : BasicInternalCryptoApi
