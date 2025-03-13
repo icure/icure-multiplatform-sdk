@@ -12,7 +12,13 @@ import com.icure.cardinal.sdk.model.embed.AccessLevel
  * Implementation of [EntityAccessInformationProvider] that doesn't attempt to de-anonymize any delegation, can be used
  * even with the basic/non-data-owner sdk.
  */
-internal abstract class BasicEntityAccessInformationProvider : EntityAccessInformationProvider {
+internal class BasicEntityAccessInformationProvider(
+	/**
+	 * On basic SDK this should give the (constant) bound group id
+	 * On unbound SDK this should give the group id of the current request
+	 */
+	private val currentBoundGroupId: suspend () -> SdkBoundGroup?
+) : EntityAccessInformationProvider {
 	override suspend fun getDataOwnersWithAccessTo(
 		entityGroupId: String?,
 		entity: HasEncryptionMetadata,
@@ -25,7 +31,8 @@ internal abstract class BasicEntityAccessInformationProvider : EntityAccessInfor
 			},
 			false
 		)
-		val boundGroupId = currentBoundGroupId()
+		// bound group id actually needed only if entity group id is not null.
+		val boundGroupId = if (entityGroupId == null) null else currentBoundGroupId()
 		val infoFromSecureDelegations = EntityAccessInformation(
 			EntityAccessInformation.buildPermissionsMap(
 				entity.securityMetadata?.secureDelegations?.values?.flatMap { d->
@@ -45,10 +52,4 @@ internal abstract class BasicEntityAccessInformationProvider : EntityAccessInfor
 		)
 		return infoFromLegacyDelegations.merge(infoFromSecureDelegations)
 	}
-
-	/**
-	 * On basic SDK this should give the (constant) bound group id
-	 * On unbound SDK this should give the group id of the current request
-	 */
-	abstract suspend fun currentBoundGroupId(): SdkBoundGroup?
 }

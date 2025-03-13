@@ -56,7 +56,7 @@ class SecureDelegationsManagerImpl (
 
 	override suspend fun <T : HasEncryptionMetadata> entityWithInitializedEncryptedMetadata(
 		entityGroupId: String?,
-		entity: HasEncryptionMetadata,
+		entity: T,
 		entityType: EntityWithEncryptionMetadataTypeName,
 		secretIds: Set<String>,
 		owningEntityIds: Set<String>,

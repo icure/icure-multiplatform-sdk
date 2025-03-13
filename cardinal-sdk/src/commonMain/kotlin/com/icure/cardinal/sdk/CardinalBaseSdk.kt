@@ -90,6 +90,8 @@ import com.icure.cardinal.sdk.api.raw.impl.RawTopicApiImpl
 import com.icure.cardinal.sdk.api.raw.impl.RawUserApiImpl
 import com.icure.cardinal.sdk.auth.services.AuthProvider
 import com.icure.cardinal.sdk.auth.services.JwtBasedAuthProvider
+import com.icure.cardinal.sdk.crypto.entities.SdkBoundGroup
+import com.icure.cardinal.sdk.crypto.impl.BasicEntityAccessInformationProvider
 import com.icure.cardinal.sdk.crypto.impl.BasicInternalCryptoApiImpl
 import com.icure.cardinal.sdk.crypto.impl.EntityValidationServiceImpl
 import com.icure.cardinal.sdk.crypto.impl.JsonEncryptionServiceImpl
@@ -99,6 +101,7 @@ import com.icure.cardinal.sdk.options.BasicApiConfiguration
 import com.icure.cardinal.sdk.options.BasicApiConfigurationImpl
 import com.icure.cardinal.sdk.options.BasicSdkOptions
 import com.icure.cardinal.sdk.options.EntitiesEncryptedFieldsManifests
+import com.icure.cardinal.sdk.options.UnboundBasicSdkOptions
 import com.icure.cardinal.sdk.options.getAuthProvider
 import com.icure.cardinal.sdk.options.getGroupAndAuthProvider
 import com.icure.utils.InternalIcureApi
@@ -126,10 +129,8 @@ interface CardinalUnboundBaseSdk : CardinalBaseApis {
 		fun initialize(
 			baseUrl: String,
 			authenticationMethod: AuthenticationMethod,
-			options: BasicSdkOptions = BasicSdkOptions()
+			options: UnboundBasicSdkOptions = UnboundBasicSdkOptions()
 		): CardinalUnboundBaseSdk {
-			require(options.groupSelector == null) { "Group selector should be null for unbound based sdk" }
-
 			val client = options.configuredClientOrDefault()
 			val json = options.configuredJsonOrDefault()
 			val cryptoService = options.cryptoService
@@ -146,16 +147,18 @@ interface CardinalUnboundBaseSdk : CardinalBaseApis {
 				options,
 				RawMessageGatewayApi(client, cryptoService)
 			)
-
 			val manifests = EntitiesEncryptedFieldsManifests.fromEncryptedFields(options.encryptedFields)
-
 			val jsonEncryptionService = JsonEncryptionServiceImpl(cryptoService)
 			val config = BasicApiConfigurationImpl(
 				apiUrl,
 				client,
 				json,
 				if (authProvider is JwtBasedAuthProvider) authProvider else null,
-				BasicInternalCryptoApiImpl(jsonEncryptionService, EntityValidationServiceImpl(jsonEncryptionService)),
+				BasicInternalCryptoApiImpl(
+					jsonEncryptionService,
+					EntityValidationServiceImpl(jsonEncryptionService),
+					BasicEntityAccessInformationProvider(options.getBoundGroupId)
+				),
 				manifests
 			)
 			return object : CardinalUnboundBaseSdk, CardinalBaseApis by CardinalBaseSdkImpl(
@@ -215,16 +218,20 @@ interface CardinalBaseSdk : CardinalBaseApis {
 				options,
 				options.groupSelector
 			)
-
 			val manifests = EntitiesEncryptedFieldsManifests.fromEncryptedFields(options.encryptedFields)
-
 			val jsonEncryptionService = JsonEncryptionServiceImpl(cryptoService)
 			val config = BasicApiConfigurationImpl(
 				apiUrl,
 				client,
 				json,
 				if (authProvider is JwtBasedAuthProvider) authProvider else null,
-				BasicInternalCryptoApiImpl(jsonEncryptionService, EntityValidationServiceImpl(jsonEncryptionService)),
+				BasicInternalCryptoApiImpl(
+					jsonEncryptionService,
+					EntityValidationServiceImpl(jsonEncryptionService),
+					BasicEntityAccessInformationProvider(
+						chosenGroup?.let(::SdkBoundGroup).let { { it } }
+					)
+				),
 				manifests
 			)
 			return CardinalBaseSdkImpl(

@@ -1,6 +1,7 @@
 package com.icure.cardinal.sdk.options
 
 import com.icure.cardinal.sdk.crypto.CryptoStrategies
+import com.icure.cardinal.sdk.crypto.entities.SdkBoundGroup
 import com.icure.cardinal.sdk.model.UserGroup
 import com.icure.cardinal.sdk.storage.KeyStorageFacade
 import com.icure.cardinal.sdk.storage.StorageFacade
@@ -43,6 +44,17 @@ interface CommonSdkOptions {
 	 */
 	val saltPasswordWithApplicationId: Boolean
 	/**
+	 * If true the SDK will use lenient deserialization of the entities coming from the backend.
+	 *
+	 * This could be helpful when developing using the nightly deployments of the backend, as the SDK will ignore minor changes to the data model.
+	 *
+	 * This option however could cause loss of data when connecting with incompatible versions of the backend, and should be disabled in production.
+	 */
+	val lenientJson: Boolean
+}
+
+interface BoundSdkOptions : CommonSdkOptions {
+	/**
 	 * An instance of iCure SDK is initialized for working as a specific user in a single group.
 	 * However, the user credentials may match multiple users in different groups (but at most one per group).
 	 * If that is the case, this function will be used to pick the actual user for which the sdk will be initialized.
@@ -52,14 +64,6 @@ interface CommonSdkOptions {
 	 * In single-group applications this parameter won't be used, so it can be left as null.
 	 */
 	val groupSelector: GroupSelector?
-	/**
-	 * If true the SDK will use lenient deserialization of the entities coming from the backend.
-	 *
-	 * This could be helpful when developing using the nightly deployments of the backend, as the SDK will ignore minor changes to the data model.
-	 *
-	 * This option however could cause loss of data when connecting with incompatible versions of the backend, and should be disabled in production.
-	 */
-	val lenientJson: Boolean
 }
 
 /**
@@ -127,7 +131,7 @@ data class SdkOptions(
 	 * This option however could cause loss of data when connecting with incompatible versions of the backend, and should be disabled in production.
 	 */
 	override val lenientJson: Boolean = false,
-): CommonSdkOptions {
+): BoundSdkOptions {
 	init {
 		if (httpClientJson != null) {
 			require(httpClient != null) {
@@ -151,6 +155,41 @@ data class BasicSdkOptions(
 	override val saltPasswordWithApplicationId: Boolean = true,
 	override val groupSelector: GroupSelector? = null,
 	override val lenientJson: Boolean = false,
+): BoundSdkOptions {
+	init {
+		if (httpClientJson != null) {
+			require(httpClient != null) {
+				"httpClient should be provided if httpClientJson is provided"
+			}
+		}
+
+		if (lenientJson) {
+			require(httpClient == null) {
+				"Cannot use lenientJson with a custom httpClient"
+			}
+		}
+	}
+}
+
+data class UnboundBasicSdkOptions(
+	override val encryptedFields: EncryptedFieldsConfiguration = EncryptedFieldsConfiguration(),
+	override val httpClient: HttpClient? = null,
+	override val httpClientJson: Json? = null,
+	override val cryptoService: CryptoService = defaultCryptoService,
+	override val saltPasswordWithApplicationId: Boolean = true,
+	override val lenientJson: Boolean = false,
+	/**
+	 * Some basic SDK methods require as context the group where the SDK is acting on.
+	 *
+	 * Since for unbound SDK the group could change at each request, by default, these methods aren't supported on
+	 * unbound SDK instances.
+	 *
+	 * However, if it is possible for you to extract the group id from the context of the coroutine that is executing
+	 * the method, you can provide the function here to allow using these methods also on unbound SDK.
+	 */
+	val getBoundGroupId: suspend () -> SdkBoundGroup? = {
+		throw UnsupportedOperationException("To use this method you need to configure `getBoundGroupId` in the UnboundBasicSdkOptions")
+	}
 ): CommonSdkOptions {
 	init {
 		if (httpClientJson != null) {
