@@ -131,9 +131,11 @@ import com.icure.cardinal.sdk.auth.services.AuthProvider
 import com.icure.cardinal.sdk.auth.services.JwtBasedAuthProvider
 import com.icure.cardinal.sdk.crypto.AccessControlKeysHeadersProvider
 import com.icure.cardinal.sdk.crypto.CryptoStrategies
+import com.icure.cardinal.sdk.crypto.entities.SdkBoundGroup
 import com.icure.cardinal.sdk.crypto.impl.AccessControlKeysHeadersProviderImpl
 import com.icure.cardinal.sdk.crypto.impl.BaseExchangeDataManagerImpl
 import com.icure.cardinal.sdk.crypto.impl.BaseExchangeKeysManagerImpl
+import com.icure.cardinal.sdk.crypto.impl.BaseSecurityMetadataDecryptorImpl
 import com.icure.cardinal.sdk.crypto.impl.BasicCryptoStrategies
 import com.icure.cardinal.sdk.crypto.impl.CachedLruExchangeDataManager
 import com.icure.cardinal.sdk.crypto.impl.CardinalKeyRecoveryImpl
@@ -142,13 +144,12 @@ import com.icure.cardinal.sdk.crypto.impl.EntityEncryptionServiceImpl
 import com.icure.cardinal.sdk.crypto.impl.ExchangeDataMapManagerImpl
 import com.icure.cardinal.sdk.crypto.impl.ExchangeKeysManagerImpl
 import com.icure.cardinal.sdk.crypto.impl.FullyCachedExchangeDataManager
+import com.icure.cardinal.sdk.crypto.impl.IncrementalSecurityMetadataDecryptorImpl
 import com.icure.cardinal.sdk.crypto.impl.InternalCryptoApiImpl
 import com.icure.cardinal.sdk.crypto.impl.JsonEncryptionServiceImpl
 import com.icure.cardinal.sdk.crypto.impl.KeyPairRecovererImpl
-import com.icure.cardinal.sdk.crypto.impl.LegacyDelegationsDecryptor
 import com.icure.cardinal.sdk.crypto.impl.NoAccessControlKeysHeadersProvider
 import com.icure.cardinal.sdk.crypto.impl.RecoveryDataEncryptionImpl
-import com.icure.cardinal.sdk.crypto.impl.SecureDelegationsDecryptorImpl
 import com.icure.cardinal.sdk.crypto.impl.SecureDelegationsEncryptionImpl
 import com.icure.cardinal.sdk.crypto.impl.SecureDelegationsManagerImpl
 import com.icure.cardinal.sdk.crypto.impl.ShamirSecretSharingService
@@ -182,6 +183,9 @@ import io.ktor.client.plugins.HttpTimeout
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.websocket.WebSockets
 import io.ktor.serialization.kotlinx.json.json
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.cancel
 import kotlinx.serialization.json.Json
 import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.Duration.Companion.seconds
@@ -217,6 +221,13 @@ interface CardinalSdk : CardinalApis {
 	 * @return a new sdk for executing requests in the provided group
 	 */
 	suspend fun switchGroup(groupId: String): CardinalSdk
+
+	/**
+	 * Dispose of the resources used by this instance of cardinal SDK.
+	 * After calling this method, you shouldn't use the SDK anymore.
+	 * If any SDK methods are still executing while calling dispose those methods may terminate with an error.
+	 */
+	fun dispose()
 
 	companion object {
 		private fun createHttpClient(json: Json): HttpClient {
@@ -440,6 +451,8 @@ private suspend fun initializeApiCrypto(
 	groupId: String?,
 	options: SdkOptions
 ): Pair<ApiConfiguration, RsaKeypair<RsaAlgorithm.RsaEncryptionAlgorithm.OaepWithSha256>?> {
+	val boundGroup = groupId?.let(::SdkBoundGroup)
+	val sdkScope = CoroutineScope(Dispatchers.Default)
 	val dataOwnerApi = DataOwnerApiImpl(RawDataOwnerApiImpl(apiUrl, authProvider, client, json = json))
 	val self = dataOwnerApi.getCurrentDataOwner()
 	val selfIsAnonymous = cryptoStrategies.dataOwnerRequiresAnonymousDelegation(self.asStub())
@@ -454,13 +467,15 @@ private suspend fun initializeApiCrypto(
 	val rawDeviceApi = RawDeviceApiImpl(apiUrl, authProvider, client, json = json, additionalHeaders = additionalHeaders)
 	val exchangeDataMapManager = ExchangeDataMapManagerImpl(
 		RawExchangeDataMapApiImpl(apiUrl, authProvider, client, json = json, additionalHeaders = additionalHeaders),
-		cryptoService
+		cryptoService,
+		boundGroup
 	)
 	val baseExchangeDataManager = BaseExchangeDataManagerImpl(
 		RawExchangeDataApiImpl(apiUrl, authProvider, client, json = json, additionalHeaders = additionalHeaders),
 		dataOwnerApi,
 		cryptoService,
-		selfIsAnonymous
+		selfIsAnonymous,
+		boundGroup
 	)
 	val baseExchangeKeysManager = BaseExchangeKeysManagerImpl(
 		cryptoService,
@@ -498,7 +513,11 @@ private suspend fun initializeApiCrypto(
 			dataOwnerApi,
 			cryptoService,
 			options.useHierarchicalDataOwners,
-		).also { it.initializeCache() }
+			sdkScope,
+			boundGroup
+		).also {
+			it.clearOrRepopulateCache()
+		}
 	else
 		CachedLruExchangeDataManager(
 			baseExchangeDataManager,
@@ -507,7 +526,8 @@ private suspend fun initializeApiCrypto(
 			dataOwnerApi,
 			cryptoService,
 			options.useHierarchicalDataOwners,
-			100
+			sdkScope,
+			boundGroup
 		)
 	val secureDelegationsEncryption = SecureDelegationsEncryptionImpl(
 		userEncryptionKeys,
@@ -521,34 +541,41 @@ private suspend fun initializeApiCrypto(
 		cryptoService,
 		dataOwnerApi,
 		cryptoStrategies,
-		selfIsAnonymous
-	)
-	val secureDelegationsDecryptor = SecureDelegationsDecryptorImpl(
-		exchangeDataManager,
-		exchangeDataMapManager,
-		secureDelegationsEncryption,
-		dataOwnerApi
+		selfIsAnonymous,
+		boundGroup
 	)
 	val exchangeKeysManager = ExchangeKeysManagerImpl(
 		dataOwnerApi,
 		baseExchangeKeysManager,
-		userEncryptionKeys
+		userEncryptionKeys,
+		sdkScope
 	)
-	val legacyDelegationsDecryptor = LegacyDelegationsDecryptor(
+	val baseSecurityMetadataDecryptor = BaseSecurityMetadataDecryptorImpl(
+		boundGroup,
 		cryptoService,
-		exchangeKeysManager
+		exchangeKeysManager,
+		exchangeDataManager,
+		secureDelegationsEncryption,
+		exchangeDataMapManager,
+		dataOwnerApi,
+		options.useHierarchicalDataOwners
+	)
+	val incrementalSecurityMetadataDecryptor = IncrementalSecurityMetadataDecryptorImpl(
+		baseSecurityMetadataDecryptor,
+		dataOwnerApi,
+		cryptoService
 	)
 	val jsonEncryptionService = JsonEncryptionServiceImpl(cryptoService)
 	val entityEncryptionService = EntityEncryptionServiceImpl(
 		secureDelegationsManager,
-		secureDelegationsDecryptor,
-		legacyDelegationsDecryptor,
+		baseSecurityMetadataDecryptor,
+		incrementalSecurityMetadataDecryptor,
 		dataOwnerApi,
 		cryptoService,
 		jsonEncryptionService,
 		options.useHierarchicalDataOwners,
 		options.autoCreateEncryptionKeyForExistingLegacyData,
-		groupId
+		boundGroup
 	)
 	val headersProvider: AccessControlKeysHeadersProvider =
 		if (selfIsAnonymous)
@@ -562,19 +589,21 @@ private suspend fun initializeApiCrypto(
 		exchangeKeysManager,
 		jsonEncryptionService,
 		DelegationsDeAnonymizationImpl(
-			secureDelegationsDecryptor,
+			baseSecurityMetadataDecryptor,
 			RawSecureDelegationKeyMapApiImpl(apiUrl, authProvider, client, json = json, additionalHeaders = additionalHeaders),
 			headersProvider,
 			entityEncryptionService,
 			dataOwnerApi,
-			cryptoService
+			cryptoService,
+			boundGroup
 		),
 		dataOwnerApi,
 		userEncryptionKeys,
 		recoveryDataEncryption,
 		headersProvider,
 		cryptoStrategies,
-		anonymityHeader
+		anonymityHeader,
+		secureDelegationsManager
 	)
 	if (options.createTransferKeys) {
 		TransferKeysManagerImpl(
@@ -596,7 +625,8 @@ private suspend fun initializeApiCrypto(
 		crypto,
 		manifests,
 		iCureStorage,
-		options.jsonPatcher ?: object : JsonPatcher {}
+		options.jsonPatcher ?: object : JsonPatcher {},
+		sdkScope
 	) to userEncryptionKeysInitInfo.newKey?.key
 }
 
@@ -1033,6 +1063,10 @@ private class CardinalApiImpl(
 			options,
 			groupId
 		).also { switchedCryptoConfigs.notifyNewKeyIfAny(it, newKey) }
+	}
+
+	override fun dispose() {
+		config.sdkScope.cancel()
 	}
 }
 

@@ -39,7 +39,7 @@ class DelegationsDeAnonymizationImpl(
 	private val entity: EntityEncryptionService,
 	private val dataOwnerApi: DataOwnerApi,
 	private val crypto: CryptoService,
-	private val boundGroup: SdkBoundGroup
+	private val boundGroup: SdkBoundGroup?
 ) : DelegationsDeAnonymization {
 	companion object {
 		private val log = getLogger("DelegationsDeAnonymization")

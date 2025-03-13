@@ -83,7 +83,8 @@ abstract class AbstractExchangeDataManager(
 	override suspend fun clearOrRepopulateCache() =
 		createMutex.withLock {
 			groupBoundManagers.also {
-				groupBoundManagers = emptyMap()
+				// Always pre-emptively start loading of keys for this group; they will always be used
+				groupBoundManagers = mapOf(null to createManagerForGroup(null))
 			}
 		}.values.forEach { it.dispose() }
 

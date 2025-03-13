@@ -46,7 +46,7 @@ class SecureDelegationsManagerImpl (
 	private val dataOwnerApi: DataOwnerApi,
 	private val cryptoStrategies: CryptoStrategies,
 	private val selfNeedsAnonymousDelegations: Boolean,
-	private val boundGroup: SdkBoundGroup
+	private val boundGroup: SdkBoundGroup?
 ) : SecureDelegationsManager {
 	// Data owner id -> (is anonymous, verified keys if needed)
 	private val dataOwnerAnonymityCache = SynchronisedLruCache<
