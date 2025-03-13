@@ -235,14 +235,14 @@ internal class InvoiceApiImpl(
 ) : InvoiceApi, InvoiceFlavouredApi<DecryptedInvoice> by object :
 	AbstractInvoiceFlavouredApi<DecryptedInvoice>(rawApi, config) {
 	override suspend fun validateAndMaybeEncrypt(entity: DecryptedInvoice): EncryptedInvoice =
-		crypto.entity.encryptEntity(
+		crypto.entity.encryptEntities(
 			entity.withTypeInfo(),
 			DecryptedInvoice.serializer(),
 			fieldsToEncrypt,
 		) { Serialization.json.decodeFromJsonElement<EncryptedInvoice>(it) }
 
 	override suspend fun maybeDecrypt(entity: EncryptedInvoice): DecryptedInvoice {
-		return crypto.entity.tryDecryptEntity(
+		return crypto.entity.tryDecryptEntities(
 			entity.withTypeInfo(),
 			EncryptedInvoice.serializer(),
 		) { Serialization.json.decodeFromJsonElement<DecryptedInvoice>(config.jsonPatcher.patchInvoice(it)) }
@@ -260,7 +260,7 @@ internal class InvoiceApiImpl(
 	override val tryAndRecover: InvoiceFlavouredApi<Invoice> =
 		object : AbstractInvoiceFlavouredApi<Invoice>(rawApi, config) {
 			override suspend fun maybeDecrypt(entity: EncryptedInvoice): Invoice =
-				crypto.entity.tryDecryptEntity(
+				crypto.entity.tryDecryptEntities(
 					entity.withTypeInfo(),
 					EncryptedInvoice.serializer(),
 				) { Serialization.json.decodeFromJsonElement<DecryptedInvoice>(config.jsonPatcher.patchInvoice(it)) }
@@ -273,7 +273,7 @@ internal class InvoiceApiImpl(
 					fieldsToEncrypt,
 				)
 
-				is DecryptedInvoice -> crypto.entity.encryptEntity(
+				is DecryptedInvoice -> crypto.entity.encryptEntities(
 					entity.withTypeInfo(),
 					DecryptedInvoice.serializer(),
 					fieldsToEncrypt,
@@ -367,13 +367,13 @@ internal class InvoiceApiImpl(
 			autoDelegations = delegates + user?.autoDelegationsFor(DelegationTag.AdministrativeData).orEmpty(),
 		).updatedEntity
 
-	private suspend fun encrypt(entity: DecryptedInvoice) = crypto.entity.encryptEntity(
+	private suspend fun encrypt(entity: DecryptedInvoice) = crypto.entity.encryptEntities(
 		entity.withTypeInfo(),
 		DecryptedInvoice.serializer(),
 		fieldsToEncrypt,
 	) { Serialization.json.decodeFromJsonElement<EncryptedInvoice>(it) }
 
-	private suspend fun decryptOrNull(entity: EncryptedInvoice): DecryptedInvoice? = crypto.entity.tryDecryptEntity(
+	private suspend fun decryptOrNull(entity: EncryptedInvoice): DecryptedInvoice? = crypto.entity.tryDecryptEntities(
 		entity.withTypeInfo(),
 		EncryptedInvoice.serializer(),
 	) { Serialization.json.decodeFromJsonElement<DecryptedInvoice>(config.jsonPatcher.patchInvoice(it)) }

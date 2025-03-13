@@ -182,14 +182,14 @@ internal class AccessLogApiImpl(
 ) : AccessLogApi, AccessLogFlavouredApi<DecryptedAccessLog> by object :
 	AbstractAccessLogFlavouredApi<DecryptedAccessLog>(rawApi, config) {
 	override suspend fun validateAndMaybeEncrypt(entity: DecryptedAccessLog): EncryptedAccessLog =
-		crypto.entity.encryptEntity(
+		crypto.entity.encryptEntities(
 			entity.withTypeInfo(),
 			DecryptedAccessLog.serializer(),
 			fieldsToEncrypt,
 		) { Serialization.json.decodeFromJsonElement<EncryptedAccessLog>(it) }
 
 	override suspend fun maybeDecrypt(entity: EncryptedAccessLog): DecryptedAccessLog {
-		return crypto.entity.tryDecryptEntity(
+		return crypto.entity.tryDecryptEntities(
 			entity.withTypeInfo(),
 			EncryptedAccessLog.serializer(),
 		) { Serialization.json.decodeFromJsonElement<DecryptedAccessLog>(config.jsonPatcher.patchAccessLog(it)) }
@@ -209,7 +209,7 @@ internal class AccessLogApiImpl(
 	override val tryAndRecover: AccessLogFlavouredApi<AccessLog> =
 		object : AbstractAccessLogFlavouredApi<AccessLog>(rawApi, config) {
 			override suspend fun maybeDecrypt(entity: EncryptedAccessLog): AccessLog =
-				crypto.entity.tryDecryptEntity(
+				crypto.entity.tryDecryptEntities(
 					entity.withTypeInfo(),
 					EncryptedAccessLog.serializer(),
 				) { Serialization.json.decodeFromJsonElement<DecryptedAccessLog>(config.jsonPatcher.patchAccessLog(it)) }
@@ -222,7 +222,7 @@ internal class AccessLogApiImpl(
 					fieldsToEncrypt,
 				)
 
-				is DecryptedAccessLog -> crypto.entity.encryptEntity(
+				is DecryptedAccessLog -> crypto.entity.encryptEntities(
 					entity.withTypeInfo(),
 					DecryptedAccessLog.serializer(),
 					fieldsToEncrypt,
@@ -272,13 +272,13 @@ internal class AccessLogApiImpl(
 			autoDelegations = delegates + user?.autoDelegationsFor(DelegationTag.AdministrativeData).orEmpty(),
 		).updatedEntity
 
-	private suspend fun encrypt(entity: DecryptedAccessLog) = crypto.entity.encryptEntity(
+	private suspend fun encrypt(entity: DecryptedAccessLog) = crypto.entity.encryptEntities(
 		entity.withTypeInfo(),
 		DecryptedAccessLog.serializer(),
 		config.encryption.accessLog,
 	) { Serialization.json.decodeFromJsonElement<EncryptedAccessLog>(it) }
 
-	private suspend fun decryptOrNull(entity: EncryptedAccessLog): DecryptedAccessLog? = crypto.entity.tryDecryptEntity(
+	private suspend fun decryptOrNull(entity: EncryptedAccessLog): DecryptedAccessLog? = crypto.entity.tryDecryptEntities(
 		entity.withTypeInfo(),
 		EncryptedAccessLog.serializer(),
 	) { Serialization.json.decodeFromJsonElement<DecryptedAccessLog>(config.jsonPatcher.patchAccessLog(it)) }

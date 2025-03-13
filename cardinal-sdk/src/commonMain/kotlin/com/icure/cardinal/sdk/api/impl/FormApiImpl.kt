@@ -203,14 +203,14 @@ internal class FormApiImpl(
 ) : FormApi, FormFlavouredApi<DecryptedForm> by object :
 	AbstractFormFlavouredApi<DecryptedForm>(rawApi, config) {
 	override suspend fun validateAndMaybeEncrypt(entity: DecryptedForm): EncryptedForm =
-		crypto.entity.encryptEntity(
+		crypto.entity.encryptEntities(
 			entity.withTypeInfo(),
 			DecryptedForm.serializer(),
 			fieldsToEncrypt,
 		) { Serialization.json.decodeFromJsonElement<EncryptedForm>(it) }
 
 	override suspend fun maybeDecrypt(entity: EncryptedForm): DecryptedForm {
-		return crypto.entity.tryDecryptEntity(
+		return crypto.entity.tryDecryptEntities(
 			entity.withTypeInfo(),
 			EncryptedForm.serializer(),
 		) { Serialization.json.decodeFromJsonElement<DecryptedForm>(config.jsonPatcher.patchForm(it)) }
@@ -228,7 +228,7 @@ internal class FormApiImpl(
 	override val tryAndRecover: FormFlavouredApi<Form> =
 		object : AbstractFormFlavouredApi<Form>(rawApi, config) {
 			override suspend fun maybeDecrypt(entity: EncryptedForm): Form =
-				crypto.entity.tryDecryptEntity(
+				crypto.entity.tryDecryptEntities(
 					entity.withTypeInfo(),
 					EncryptedForm.serializer(),
 				) { Serialization.json.decodeFromJsonElement<DecryptedForm>(config.jsonPatcher.patchForm(it)) }
@@ -241,7 +241,7 @@ internal class FormApiImpl(
 					fieldsToEncrypt,
 				)
 
-				is DecryptedForm -> crypto.entity.encryptEntity(
+				is DecryptedForm -> crypto.entity.encryptEntities(
 					entity.withTypeInfo(),
 					DecryptedForm.serializer(),
 					fieldsToEncrypt,
@@ -302,13 +302,13 @@ internal class FormApiImpl(
 		crypto.delegationsDeAnonymization.createOrUpdateDeAnonymizationInfo(entity.withTypeInfo(), delegates)
 	}
 
-	private suspend fun encrypt(entity: DecryptedForm) = crypto.entity.encryptEntity(
+	private suspend fun encrypt(entity: DecryptedForm) = crypto.entity.encryptEntities(
 		entity.withTypeInfo(),
 		DecryptedForm.serializer(),
 		fieldsToEncrypt,
 	) { Serialization.json.decodeFromJsonElement<EncryptedForm>(it) }
 
-	private suspend fun decryptOrNull(entity: EncryptedForm): DecryptedForm? = crypto.entity.tryDecryptEntity(
+	private suspend fun decryptOrNull(entity: EncryptedForm): DecryptedForm? = crypto.entity.tryDecryptEntities(
 		entity.withTypeInfo(),
 		EncryptedForm.serializer(),
 	) { Serialization.json.decodeFromJsonElement<DecryptedForm>(config.jsonPatcher.patchForm(it)) }

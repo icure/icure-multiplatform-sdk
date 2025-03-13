@@ -155,7 +155,7 @@ class DelegationsDeAnonymizationImpl(
 						accessControlKeysHeaderValues = accessControlKeys
 					)
 			).successBody().mapNotNull { encryptedMap ->
-				entity.tryDecryptEntity(
+				entity.tryDecryptEntities(
 					entityGroupId,
 					EntityWithTypeInfo(encryptedMap, entityType),
 					EncryptedSecureDelegationKeyMap.serializer(),
@@ -266,7 +266,7 @@ class DelegationsDeAnonymizationImpl(
 			autoDelegations = initialDelegates.associateWith { AccessLevel.Read },
 			entityGroupId = resolvedGroup
 		)
-		val encryptedKeyMap = entity.encryptEntity(
+		val encryptedKeyMap = entity.encryptEntities(
 			resolvedGroup,
 			EntityWithTypeInfo(
 				initialMapInfo.updatedEntity,

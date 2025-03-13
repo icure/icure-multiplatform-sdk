@@ -23,8 +23,8 @@ class IncrementalSecurityMetadataDecryptorImpl(
 		entityGroupId: String?,
 		entity: E,
 		entityType: EntityWithEncryptionMetadataTypeName,
-		action: suspend (entity: E, entityType: EntityWithEncryptionMetadataTypeName, keys: List<EntityEncryptionKeyDetails>) -> T?
-	): T? =
+		action: suspend (entity: E, entityType: EntityWithEncryptionMetadataTypeName, keys: List<EntityEncryptionKeyDetails>) -> Result<T>
+	): Result<T>? =
 		doManyIncrementallyDecryptingKeys(
 			entityGroupId,
 			listOf(entity),
@@ -36,8 +36,8 @@ class IncrementalSecurityMetadataDecryptorImpl(
 		entitiesGroupId: String?,
 		entities: List<E>,
 		entitiesType: EntityWithEncryptionMetadataTypeName,
-		action: suspend (entity: E, entityType: EntityWithEncryptionMetadataTypeName, keys: List<EntityEncryptionKeyDetails>) -> T?
-	): Map<String, T> {
+		action: suspend (entity: E, entityType: EntityWithEncryptionMetadataTypeName, keys: List<EntityEncryptionKeyDetails>) -> Result<T>
+	): Map<String, Result<T>> {
 		if (entities.isEmpty()) return emptyMap()
 		val remainingEntitiesById = entities.associateByTo(mutableMapOf()) { it.id }
 		require (remainingEntitiesById.size == entities.size) {
@@ -46,7 +46,7 @@ class IncrementalSecurityMetadataDecryptorImpl(
 		val hierarchy = dataOwnerApi.getCurrentDataOwnerHierarchyIds().toSet()
 		val allExtractedKeysForEntities = entities.associate { it.id to mutableSetOf<HexString>() }
 		val newlyExtractedKeysForEntities = entities.associate { it.id to mutableSetOf<HexString>() }
-		val results = mutableMapOf<String, T>()
+		val latestResults = mutableMapOf<String, Result<T>>()
 		val importedKeysByRaw = mutableMapOf<HexString, AesKey<AesAlgorithm.CbcWithPkcs7Padding>>()
 
 		suspend fun updateExtractedKeysAndDoActionIfNecessary(
@@ -85,9 +85,9 @@ class IncrementalSecurityMetadataDecryptorImpl(
 							entitiesType,
 							currAllExtracted.map { EntityEncryptionKeyDetails(importedKeysByRaw.getValue(it), it) }
 						)
-						if (actionResult != null) {
+						latestResults[currId] = actionResult
+						if (actionResult.isSuccess) {
 							remainingEntitiesById.remove(currId)
-							results[currId] = actionResult
 						}
 					}
 				}
@@ -105,7 +105,7 @@ class IncrementalSecurityMetadataDecryptorImpl(
 			),
 			forceUpdateOnEntitiesWithNewExtractedKeys = false,
 		)
-		if (remainingEntitiesById.isEmpty()) return results
+		if (remainingEntitiesById.isEmpty()) return latestResults
 		updateExtractedKeysAndDoActionIfNecessary(
 			newKeys = base.decryptSecureDelegationsUsingCache(
 				entitiesGroupId,
@@ -116,7 +116,7 @@ class IncrementalSecurityMetadataDecryptorImpl(
 			),
 			forceUpdateOnEntitiesWithNewExtractedKeys = false,
 		)
-		if (remainingEntitiesById.isEmpty()) return results
+		if (remainingEntitiesById.isEmpty()) return latestResults
 		updateExtractedKeysAndDoActionIfNecessary(
 			newKeys = base.decryptSecureDelegationsUsingKnownExchangeData(
 				entitiesGroupId,
@@ -127,7 +127,7 @@ class IncrementalSecurityMetadataDecryptorImpl(
 			),
 			forceUpdateOnEntitiesWithNewExtractedKeys = false,
 		)
-		if (remainingEntitiesById.isEmpty()) return results
+		if (remainingEntitiesById.isEmpty()) return latestResults
 		updateExtractedKeysAndDoActionIfNecessary(
 			newKeys = base.decryptSecureDelegationsUsingExchangeDataMap(
 				entitiesGroupId,
@@ -138,6 +138,6 @@ class IncrementalSecurityMetadataDecryptorImpl(
 			),
 			forceUpdateOnEntitiesWithNewExtractedKeys = true, // Force use all extracted at last step
 		)
-		return results
+		return latestResults
 	}
 }

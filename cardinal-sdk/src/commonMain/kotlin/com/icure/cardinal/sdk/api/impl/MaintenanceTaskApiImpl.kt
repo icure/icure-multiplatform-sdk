@@ -136,14 +136,14 @@ internal class MaintenanceTaskApiImpl(
 ) : MaintenanceTaskApi, MaintenanceTaskFlavouredApi<DecryptedMaintenanceTask> by object :
 	AbstractMaintenanceTaskFlavouredApi<DecryptedMaintenanceTask>(rawApi, config) {
 	override suspend fun validateAndMaybeEncrypt(entity: DecryptedMaintenanceTask): EncryptedMaintenanceTask =
-		crypto.entity.encryptEntity(
+		crypto.entity.encryptEntities(
 			entity.withTypeInfo(),
 			DecryptedMaintenanceTask.serializer(),
 			fieldsToEncrypt,
 		) { Serialization.json.decodeFromJsonElement<EncryptedMaintenanceTask>(it) }
 
 	override suspend fun maybeDecrypt(entity: EncryptedMaintenanceTask): DecryptedMaintenanceTask {
-		return crypto.entity.tryDecryptEntity(
+		return crypto.entity.tryDecryptEntities(
 			entity.withTypeInfo(),
 			EncryptedMaintenanceTask.serializer(),
 		) { Serialization.json.decodeFromJsonElement<DecryptedMaintenanceTask>(config.jsonPatcher.patchMaintenanceTask(it)) }
@@ -161,7 +161,7 @@ internal class MaintenanceTaskApiImpl(
 	override val tryAndRecover: MaintenanceTaskFlavouredApi<MaintenanceTask> =
 		object : AbstractMaintenanceTaskFlavouredApi<MaintenanceTask>(rawApi, config) {
 			override suspend fun maybeDecrypt(entity: EncryptedMaintenanceTask): MaintenanceTask =
-				crypto.entity.tryDecryptEntity(
+				crypto.entity.tryDecryptEntities(
 					entity.withTypeInfo(),
 					EncryptedMaintenanceTask.serializer(),
 				) { Serialization.json.decodeFromJsonElement<DecryptedMaintenanceTask>(config.jsonPatcher.patchMaintenanceTask(it)) }
@@ -174,7 +174,7 @@ internal class MaintenanceTaskApiImpl(
 					fieldsToEncrypt,
 				)
 
-				is DecryptedMaintenanceTask -> crypto.entity.encryptEntity(
+				is DecryptedMaintenanceTask -> crypto.entity.encryptEntities(
 					entity.withTypeInfo(),
 					DecryptedMaintenanceTask.serializer(),
 					fieldsToEncrypt,
@@ -223,13 +223,13 @@ internal class MaintenanceTaskApiImpl(
 			autoDelegations = delegates + (user?.autoDelegationsFor(DelegationTag.All) ?: emptyMap()),
 		).updatedEntity
 
-	private suspend fun encrypt(entity: DecryptedMaintenanceTask) = crypto.entity.encryptEntity(
+	private suspend fun encrypt(entity: DecryptedMaintenanceTask) = crypto.entity.encryptEntities(
 		entity.withTypeInfo(),
 		DecryptedMaintenanceTask.serializer(),
 		fieldsToEncrypt,
 	) { Serialization.json.decodeFromJsonElement<EncryptedMaintenanceTask>(it) }
 
-	private suspend fun decryptOrNull(entity: EncryptedMaintenanceTask): DecryptedMaintenanceTask? = crypto.entity.tryDecryptEntity(
+	private suspend fun decryptOrNull(entity: EncryptedMaintenanceTask): DecryptedMaintenanceTask? = crypto.entity.tryDecryptEntities(
 		entity.withTypeInfo(),
 		EncryptedMaintenanceTask.serializer(),
 	) { Serialization.json.decodeFromJsonElement<DecryptedMaintenanceTask>(config.jsonPatcher.patchMaintenanceTask(it)) }

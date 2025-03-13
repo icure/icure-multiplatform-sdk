@@ -159,14 +159,14 @@ internal class HealthElementApiImpl(
 ) : HealthElementApi, HealthElementFlavouredApi<DecryptedHealthElement> by object :
 	AbstractHealthElementFlavouredApi<DecryptedHealthElement>(rawApi, config) {
 	override suspend fun validateAndMaybeEncrypt(entity: DecryptedHealthElement): EncryptedHealthElement =
-		crypto.entity.encryptEntity(
+		crypto.entity.encryptEntities(
 			entity.withTypeInfo(),
 			DecryptedHealthElement.serializer(),
 			fieldsToEncrypt,
 		) { Serialization.json.decodeFromJsonElement<EncryptedHealthElement>(it) }
 
 	override suspend fun maybeDecrypt(entity: EncryptedHealthElement): DecryptedHealthElement {
-		return crypto.entity.tryDecryptEntity(
+		return crypto.entity.tryDecryptEntities(
 			entity.withTypeInfo(),
 			EncryptedHealthElement.serializer(),
 		) { Serialization.json.decodeFromJsonElement<DecryptedHealthElement>(config.jsonPatcher.patchHealthElement(it)) }
@@ -185,7 +185,7 @@ internal class HealthElementApiImpl(
 	override val tryAndRecover: HealthElementFlavouredApi<HealthElement> =
 		object : AbstractHealthElementFlavouredApi<HealthElement>(rawApi, config) {
 			override suspend fun maybeDecrypt(entity: EncryptedHealthElement): HealthElement =
-				crypto.entity.tryDecryptEntity(
+				crypto.entity.tryDecryptEntities(
 					entity.withTypeInfo(),
 					EncryptedHealthElement.serializer(),
 				) { Serialization.json.decodeFromJsonElement<DecryptedHealthElement>(config.jsonPatcher.patchHealthElement(it)) }
@@ -198,7 +198,7 @@ internal class HealthElementApiImpl(
 					fieldsToEncrypt,
 				)
 
-				is DecryptedHealthElement -> crypto.entity.encryptEntity(
+				is DecryptedHealthElement -> crypto.entity.encryptEntities(
 					entity.withTypeInfo(),
 					DecryptedHealthElement.serializer(),
 					fieldsToEncrypt,
@@ -260,14 +260,14 @@ internal class HealthElementApiImpl(
 		crypto.delegationsDeAnonymization.createOrUpdateDeAnonymizationInfo(entity.withTypeInfo(), delegates)
 	}
 
-	private suspend fun encrypt(entity: DecryptedHealthElement) = crypto.entity.encryptEntity(
+	private suspend fun encrypt(entity: DecryptedHealthElement) = crypto.entity.encryptEntities(
 		entity.withTypeInfo(),
 		DecryptedHealthElement.serializer(),
 		fieldsToEncrypt,
 	) { Serialization.json.decodeFromJsonElement<EncryptedHealthElement>(it) }
 
 	private suspend fun decryptOrNull(entity: EncryptedHealthElement): DecryptedHealthElement? =
-		crypto.entity.tryDecryptEntity(
+		crypto.entity.tryDecryptEntities(
 			entity.withTypeInfo(),
 			EncryptedHealthElement.serializer(),
 		) { Serialization.json.decodeFromJsonElement<DecryptedHealthElement>(config.jsonPatcher.patchHealthElement(it)) }

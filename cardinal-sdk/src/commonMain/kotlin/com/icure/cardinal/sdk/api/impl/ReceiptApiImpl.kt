@@ -87,14 +87,14 @@ internal class ReceiptApiImpl(
 	) : ReceiptApi, ReceiptFlavouredApi<DecryptedReceipt> by object :
 	AbstractReceiptFlavouredApi<DecryptedReceipt>(rawApi, config) {
 	override suspend fun validateAndMaybeEncrypt(entity: DecryptedReceipt): EncryptedReceipt =
-		crypto.entity.encryptEntity(
+		crypto.entity.encryptEntities(
 			entity.withTypeInfo(),
 			DecryptedReceipt.serializer(),
 			fieldsToEncrypt,
 		) { Serialization.json.decodeFromJsonElement<EncryptedReceipt>(it) }
 
 	override suspend fun maybeDecrypt(entity: EncryptedReceipt): DecryptedReceipt {
-		return crypto.entity.tryDecryptEntity(
+		return crypto.entity.tryDecryptEntities(
 			entity.withTypeInfo(),
 			EncryptedReceipt.serializer(),
 		) { Serialization.json.decodeFromJsonElement<DecryptedReceipt>(config.jsonPatcher.patchReceipt(it)) }
@@ -112,7 +112,7 @@ internal class ReceiptApiImpl(
 	override val tryAndRecover: ReceiptFlavouredApi<Receipt> =
 		object : AbstractReceiptFlavouredApi<Receipt>(rawApi, config) {
 			override suspend fun maybeDecrypt(entity: EncryptedReceipt): Receipt =
-				crypto.entity.tryDecryptEntity(
+				crypto.entity.tryDecryptEntities(
 					entity.withTypeInfo(),
 					EncryptedReceipt.serializer(),
 				) { Serialization.json.decodeFromJsonElement<DecryptedReceipt>(config.jsonPatcher.patchReceipt(it)) }
@@ -125,7 +125,7 @@ internal class ReceiptApiImpl(
 					fieldsToEncrypt,
 				)
 
-				is DecryptedReceipt -> crypto.entity.encryptEntity(
+				is DecryptedReceipt -> crypto.entity.encryptEntities(
 					entity.withTypeInfo(),
 					DecryptedReceipt.serializer(),
 					fieldsToEncrypt,
@@ -213,13 +213,13 @@ internal class ReceiptApiImpl(
 		).successBody()
 	}
 
-	private suspend fun encrypt(entity: DecryptedReceipt) = crypto.entity.encryptEntity(
+	private suspend fun encrypt(entity: DecryptedReceipt) = crypto.entity.encryptEntities(
 		entity.withTypeInfo(),
 		DecryptedReceipt.serializer(),
 		fieldsToEncrypt,
 	) { Serialization.json.decodeFromJsonElement<EncryptedReceipt>(it) }
 
-	private suspend fun decryptOrNull(entity: EncryptedReceipt): DecryptedReceipt? = crypto.entity.tryDecryptEntity(
+	private suspend fun decryptOrNull(entity: EncryptedReceipt): DecryptedReceipt? = crypto.entity.tryDecryptEntities(
 		entity.withTypeInfo(),
 		EncryptedReceipt.serializer(),
 	) { Serialization.json.decodeFromJsonElement<DecryptedReceipt>(config.jsonPatcher.patchReceipt(it)) }

@@ -222,14 +222,14 @@ internal class MessageApiImpl(
 ) : MessageApi, MessageFlavouredApi<DecryptedMessage> by object :
 	AbstractMessageFlavouredApi<DecryptedMessage>(rawApi, config) {
 	override suspend fun validateAndMaybeEncrypt(entity: DecryptedMessage): EncryptedMessage =
-		crypto.entity.encryptEntity(
+		crypto.entity.encryptEntities(
 			entity.withTypeInfo(),
 			DecryptedMessage.serializer(),
 			fieldsToEncrypt,
 		) { Serialization.json.decodeFromJsonElement<EncryptedMessage>(it) }
 
 	override suspend fun maybeDecrypt(entity: EncryptedMessage): DecryptedMessage {
-		return crypto.entity.tryDecryptEntity(
+		return crypto.entity.tryDecryptEntities(
 			entity.withTypeInfo(),
 			EncryptedMessage.serializer(),
 		) { Serialization.json.decodeFromJsonElement<DecryptedMessage>(config.jsonPatcher.patchMessage(it)) }
@@ -247,7 +247,7 @@ internal class MessageApiImpl(
 	override val tryAndRecover: MessageFlavouredApi<Message> =
 		object : AbstractMessageFlavouredApi<Message>(rawApi, config) {
 			override suspend fun maybeDecrypt(entity: EncryptedMessage): Message =
-				crypto.entity.tryDecryptEntity(
+				crypto.entity.tryDecryptEntities(
 					entity.withTypeInfo(),
 					EncryptedMessage.serializer(),
 				) { Serialization.json.decodeFromJsonElement<DecryptedMessage>(config.jsonPatcher.patchMessage(it)) }
@@ -260,7 +260,7 @@ internal class MessageApiImpl(
 					fieldsToEncrypt,
 				)
 
-				is DecryptedMessage -> crypto.entity.encryptEntity(
+				is DecryptedMessage -> crypto.entity.encryptEntities(
 					entity.withTypeInfo(),
 					DecryptedMessage.serializer(),
 					fieldsToEncrypt,
@@ -312,13 +312,13 @@ internal class MessageApiImpl(
 		crypto.delegationsDeAnonymization.createOrUpdateDeAnonymizationInfo(entity.withTypeInfo(), delegates)
 	}
 
-	private suspend fun encrypt(entity: DecryptedMessage) = crypto.entity.encryptEntity(
+	private suspend fun encrypt(entity: DecryptedMessage) = crypto.entity.encryptEntities(
 		entity.withTypeInfo(),
 		DecryptedMessage.serializer(),
 		fieldsToEncrypt,
 	) { Serialization.json.decodeFromJsonElement<EncryptedMessage>(it) }
 
-	private suspend fun decryptOrNull(entity: EncryptedMessage): DecryptedMessage? = crypto.entity.tryDecryptEntity(
+	private suspend fun decryptOrNull(entity: EncryptedMessage): DecryptedMessage? = crypto.entity.tryDecryptEntities(
 		entity.withTypeInfo(),
 		EncryptedMessage.serializer(),
 	) { Serialization.json.decodeFromJsonElement<DecryptedMessage>(config.jsonPatcher.patchMessage(it)) }

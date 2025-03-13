@@ -204,14 +204,14 @@ internal class DocumentApiImpl(
 ) : DocumentApi, DocumentFlavouredApi<DecryptedDocument> by object :
 	AbstractDocumentFlavouredApi<DecryptedDocument>(rawApi, config) {
 	override suspend fun validateAndMaybeEncrypt(entity: DecryptedDocument): EncryptedDocument =
-		crypto.entity.encryptEntity(
+		crypto.entity.encryptEntities(
 			entity.withTypeInfo(),
 			DecryptedDocument.serializer(),
 			fieldsToEncrypt,
 		) { Serialization.json.decodeFromJsonElement<EncryptedDocument>(it) }
 
 	override suspend fun maybeDecrypt(entity: EncryptedDocument): DecryptedDocument {
-		return crypto.entity.tryDecryptEntity(
+		return crypto.entity.tryDecryptEntities(
 			entity.withTypeInfo(),
 			EncryptedDocument.serializer(),
 		) { Serialization.json.decodeFromJsonElement<DecryptedDocument>(config.jsonPatcher.patchDocument(it)) }
@@ -229,7 +229,7 @@ internal class DocumentApiImpl(
 	override val tryAndRecover: DocumentFlavouredApi<Document> =
 		object : AbstractDocumentFlavouredApi<Document>(rawApi, config) {
 			override suspend fun maybeDecrypt(entity: EncryptedDocument): Document =
-				crypto.entity.tryDecryptEntity(
+				crypto.entity.tryDecryptEntities(
 					entity.withTypeInfo(),
 					EncryptedDocument.serializer(),
 				) { Serialization.json.decodeFromJsonElement<DecryptedDocument>(config.jsonPatcher.patchDocument(it)) }
@@ -242,7 +242,7 @@ internal class DocumentApiImpl(
 					fieldsToEncrypt,
 				)
 
-				is DecryptedDocument -> crypto.entity.encryptEntity(
+				is DecryptedDocument -> crypto.entity.encryptEntities(
 					entity.withTypeInfo(),
 					DecryptedDocument.serializer(),
 					fieldsToEncrypt,
@@ -366,13 +366,13 @@ internal class DocumentApiImpl(
 		crypto.delegationsDeAnonymization.createOrUpdateDeAnonymizationInfo(entity.withTypeInfo(), delegates)
 	}
 
-	private suspend fun encrypt(entity: DecryptedDocument) = crypto.entity.encryptEntity(
+	private suspend fun encrypt(entity: DecryptedDocument) = crypto.entity.encryptEntities(
 		entity.withTypeInfo(),
 		DecryptedDocument.serializer(),
 		fieldsToEncrypt,
 	) { Serialization.json.decodeFromJsonElement<EncryptedDocument>(it) }
 
-	private suspend fun decryptOrNull(entity: EncryptedDocument): DecryptedDocument? = crypto.entity.tryDecryptEntity(
+	private suspend fun decryptOrNull(entity: EncryptedDocument): DecryptedDocument? = crypto.entity.tryDecryptEntities(
 		entity.withTypeInfo(),
 		EncryptedDocument.serializer(),
 	) { Serialization.json.decodeFromJsonElement<DecryptedDocument>(config.jsonPatcher.patchDocument(it)) }

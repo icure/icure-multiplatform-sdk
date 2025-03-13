@@ -1,6 +1,8 @@
 package com.icure.cardinal.sdk.crypto
 
 import com.icure.cardinal.sdk.crypto.entities.EncryptedFieldsManifest
+import com.icure.cardinal.sdk.crypto.entities.EntityEncryptionKeyDetails
+import com.icure.cardinal.sdk.utils.EntityEncryptionException
 import com.icure.cardinal.sdk.utils.InternalCardinalException
 import com.icure.kryptom.crypto.AesAlgorithm
 import com.icure.kryptom.crypto.AesKey
@@ -27,13 +29,29 @@ interface JsonEncryptionService {
 	fun requiresEncryption(plainJson: JsonObject, manifest: EncryptedFieldsManifest): Boolean
 
 	/**
-	 * Decrypts the provided json using the given [encryptionKey] and returns the decrypted JSON. This method
-	 * explores all nested objects in the original encrypted object to check if they need to be decrypted.
-	 * If for some reason the encrypted content of the object is recursively encrypted only the first level of
-	 * encryption is done.
+	 * Decrypts the provided json using the given [encryptionKeys] and returns the decrypted JSON.
+	 * This method explores all nested objects in the original encrypted object to check if they need to be decrypted.
+	 * If the encrypted content of the object is recursively encrypted, meaning inside the decrypted object there is
+	 * more "encrypted self", only the first level of encryption is done.
+	 *
+	 * # Multiple keys
+	 * Normally each entity should be encrypted fully with only one key, but this method accepts multiple keys as input.
+	 * This is done to support potential edge cases where different part of an entity (different sub-objects, or even
+	 * different objects in an array) are encrypted with different keys.
+	 * This is not a normal scenario, but it could technically happen in applications that merge different entities
+	 * (with different encryption keys) into one from a context that has no access to encryption.
+	 *
+	 * @param encryptionKeys keys used for the decryption of the entity.
+	 * @param encryptedJson the entity to decrypt
+	 * @param debugName optional, used only to build a more meaningful message for EntityEncryptionException, for debug
+	 * purposes
+	 * @throws EntityEncryptionException if the entity can't be fully decrypted using the provided keys.
 	 */
-	suspend fun decrypt(encryptionKey: AesKey<AesAlgorithm.CbcWithPkcs7Padding>, encryptedJson: JsonObject): JsonObject
-	suspend fun decrypt(encryptedJson: JsonObject, doDecrypt: suspend (ByteArray) -> ByteArray): JsonObject
+	suspend fun decrypt(
+		encryptionKeys: Collection<EntityEncryptionKeyDetails>,
+		encryptedJson: JsonObject,
+		debugName: String? = null
+	): JsonObject
 
 	companion object {
 		/**

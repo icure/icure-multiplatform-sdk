@@ -279,7 +279,7 @@ private suspend fun DecryptedContact.encrypt(
 	contactEncryptedFieldsManifest: EncryptedFieldsManifest,
 	serviceEncryptedFieldsManifest: EncryptedFieldsManifest
 ): EncryptedContact =
-	config.crypto.entity.encryptEntity(
+	config.crypto.entity.encryptEntities(
 		this.withTypeInfo(),
 		DecryptedContact.serializer(),
 		contactEncryptedFieldsManifest,
@@ -389,7 +389,7 @@ internal class ContactApiImpl(
 		entity.encrypt(config, fieldsToEncrypt, serviceFieldsToEncrypt)
 
 	override suspend fun maybeDecrypt(entity: EncryptedContact): DecryptedContact {
-		return crypto.entity.tryDecryptEntity(
+		return crypto.entity.tryDecryptEntities(
 			entity.withTypeInfo(),
 			EncryptedContact.serializer(),
 		) { Serialization.json.decodeFromJsonElement<DecryptedContact>(config.jsonPatcher.patchContact(it)) }
@@ -415,7 +415,7 @@ internal class ContactApiImpl(
 	override val tryAndRecover: ContactFlavouredApi<Contact, Service> =
 		object : AbstractContactFlavouredApi<Contact, Service>(rawApi, config) {
 			override suspend fun maybeDecrypt(entity: EncryptedContact): Contact =
-				crypto.entity.tryDecryptEntity(
+				crypto.entity.tryDecryptEntities(
 					entity.withTypeInfo(),
 					EncryptedContact.serializer(),
 				) { Serialization.json.decodeFromJsonElement<DecryptedContact>(config.jsonPatcher.patchContact(it)) }
@@ -484,7 +484,7 @@ internal class ContactApiImpl(
 		crypto.delegationsDeAnonymization.createOrUpdateDeAnonymizationInfo(entity.withTypeInfo(), delegates)
 	}
 
-	private suspend fun encrypt(entity: DecryptedContact) = crypto.entity.encryptEntity(
+	private suspend fun encrypt(entity: DecryptedContact) = crypto.entity.encryptEntities(
 		entity.withTypeInfo(),
 		DecryptedContact.serializer(),
 		config.encryption.contact,
@@ -499,7 +499,7 @@ internal class ContactApiImpl(
 		}.toSet(),
 	)
 
-	private suspend fun decryptOrNull(entity: EncryptedContact): DecryptedContact? = crypto.entity.tryDecryptEntity(
+	private suspend fun decryptOrNull(entity: EncryptedContact): DecryptedContact? = crypto.entity.tryDecryptEntities(
 		entity.withTypeInfo(),
 		EncryptedContact.serializer(),
 	) { Serialization.json.decodeFromJsonElement<DecryptedContact>(config.jsonPatcher.patchContact(it)) }

@@ -139,14 +139,14 @@ internal class TopicApiImpl(
 	config
 ) {
 	override suspend fun validateAndMaybeEncrypt(entity: DecryptedTopic): EncryptedTopic =
-		crypto.entity.encryptEntity(
+		crypto.entity.encryptEntities(
 			entity.withTypeInfo(),
 			DecryptedTopic.serializer(),
 			fieldsToEncrypt,
 		) { Serialization.json.decodeFromJsonElement<EncryptedTopic>(it) }
 
 	override suspend fun maybeDecrypt(entity: EncryptedTopic): DecryptedTopic {
-		return crypto.entity.tryDecryptEntity(
+		return crypto.entity.tryDecryptEntities(
 			entity.withTypeInfo(),
 			EncryptedTopic.serializer(),
 		) { Serialization.json.decodeFromJsonElement<DecryptedTopic>(config.jsonPatcher.patchTopic(it)) }
@@ -164,7 +164,7 @@ internal class TopicApiImpl(
 	override val tryAndRecover: TopicFlavouredApi<Topic> =
 		object : AbstractTopicFlavouredApi<Topic>(rawApi, config) {
 			override suspend fun maybeDecrypt(entity: EncryptedTopic): Topic =
-				crypto.entity.tryDecryptEntity(
+				crypto.entity.tryDecryptEntities(
 					entity.withTypeInfo(),
 					EncryptedTopic.serializer(),
 				) { Serialization.json.decodeFromJsonElement<DecryptedTopic>(config.jsonPatcher.patchTopic(it)) }
@@ -177,7 +177,7 @@ internal class TopicApiImpl(
 					fieldsToEncrypt,
 				)
 
-				is DecryptedTopic -> crypto.entity.encryptEntity(
+				is DecryptedTopic -> crypto.entity.encryptEntities(
 					entity.withTypeInfo(),
 					DecryptedTopic.serializer(),
 					fieldsToEncrypt,
@@ -226,13 +226,13 @@ internal class TopicApiImpl(
 		crypto.delegationsDeAnonymization.createOrUpdateDeAnonymizationInfo(entity.withTypeInfo(), delegates)
 	}
 
-	private suspend fun encrypt(entity: DecryptedTopic) = crypto.entity.encryptEntity(
+	private suspend fun encrypt(entity: DecryptedTopic) = crypto.entity.encryptEntities(
 		entity.withTypeInfo(),
 		DecryptedTopic.serializer(),
 		fieldsToEncrypt,
 	) { Serialization.json.decodeFromJsonElement<EncryptedTopic>(it) }
 
-	private suspend fun decryptOrNull(entity: EncryptedTopic): DecryptedTopic? = crypto.entity.tryDecryptEntity(
+	private suspend fun decryptOrNull(entity: EncryptedTopic): DecryptedTopic? = crypto.entity.tryDecryptEntities(
 		entity.withTypeInfo(),
 		EncryptedTopic.serializer(),
 	) { Serialization.json.decodeFromJsonElement<DecryptedTopic>(config.jsonPatcher.patchTopic(it)) }

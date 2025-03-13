@@ -129,14 +129,14 @@ internal class ClassificationApiImpl(
 ) : ClassificationApi, ClassificationFlavouredApi<DecryptedClassification> by object :
 	AbstractClassificationFlavouredApi<DecryptedClassification>(rawApi, config) {
 	override suspend fun validateAndMaybeEncrypt(entity: DecryptedClassification): EncryptedClassification =
-		crypto.entity.encryptEntity(
+		crypto.entity.encryptEntities(
 			entity.withTypeInfo(),
 			DecryptedClassification.serializer(),
 			fieldsToEncrypt,
 		) { Serialization.json.decodeFromJsonElement<EncryptedClassification>(it) }
 
 	override suspend fun maybeDecrypt(entity: EncryptedClassification): DecryptedClassification {
-		return crypto.entity.tryDecryptEntity(
+		return crypto.entity.tryDecryptEntities(
 			entity.withTypeInfo(),
 			EncryptedClassification.serializer(),
 		) { Serialization.json.decodeFromJsonElement<DecryptedClassification>(config.jsonPatcher.patchClassification(it)) }
@@ -154,7 +154,7 @@ internal class ClassificationApiImpl(
 	override val tryAndRecover: ClassificationFlavouredApi<Classification> =
 		object : AbstractClassificationFlavouredApi<Classification>(rawApi, config) {
 			override suspend fun maybeDecrypt(entity: EncryptedClassification): Classification =
-				crypto.entity.tryDecryptEntity(
+				crypto.entity.tryDecryptEntities(
 					entity.withTypeInfo(),
 					EncryptedClassification.serializer(),
 				) { Serialization.json.decodeFromJsonElement<DecryptedClassification>(config.jsonPatcher.patchClassification(it)) }
@@ -167,7 +167,7 @@ internal class ClassificationApiImpl(
 					fieldsToEncrypt,
 				)
 
-				is DecryptedClassification -> crypto.entity.encryptEntity(
+				is DecryptedClassification -> crypto.entity.encryptEntities(
 					entity.withTypeInfo(),
 					DecryptedClassification.serializer(),
 					fieldsToEncrypt,
@@ -216,14 +216,14 @@ internal class ClassificationApiImpl(
 		crypto.delegationsDeAnonymization.createOrUpdateDeAnonymizationInfo(entity.withTypeInfo(), delegates)
 	}
 
-	private suspend fun encrypt(entity: DecryptedClassification) = crypto.entity.encryptEntity(
+	private suspend fun encrypt(entity: DecryptedClassification) = crypto.entity.encryptEntities(
 		entity.withTypeInfo(),
 		DecryptedClassification.serializer(),
 		config.encryption.classification
 	) { Serialization.json.decodeFromJsonElement<EncryptedClassification>(it) }
 
 	private suspend fun decryptOrNull(entity: EncryptedClassification): DecryptedClassification? =
-		crypto.entity.tryDecryptEntity(
+		crypto.entity.tryDecryptEntities(
 			entity.withTypeInfo(),
 			EncryptedClassification.serializer(),
 		) { Serialization.json.decodeFromJsonElement<DecryptedClassification>(config.jsonPatcher.patchClassification(it)) }

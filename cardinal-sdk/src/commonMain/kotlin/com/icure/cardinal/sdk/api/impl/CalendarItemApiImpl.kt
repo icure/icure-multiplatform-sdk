@@ -223,14 +223,14 @@ internal class CalendarItemApiImpl(
 ) : CalendarItemApi, CalendarItemFlavouredApi<DecryptedCalendarItem> by object :
 	AbstractCalendarItemFlavouredApi<DecryptedCalendarItem>(rawApi, rawDataOwnerApi, config) {
 	override suspend fun validateAndMaybeEncrypt(entity: DecryptedCalendarItem): EncryptedCalendarItem =
-		crypto.entity.encryptEntity(
+		crypto.entity.encryptEntities(
 			entity.withTypeInfo(),
 			DecryptedCalendarItem.serializer(),
 			config.encryption.calendarItem,
 		) { Serialization.json.decodeFromJsonElement<EncryptedCalendarItem>(it) }
 
 	override suspend fun maybeDecrypt(entity: EncryptedCalendarItem): DecryptedCalendarItem {
-		return crypto.entity.tryDecryptEntity(
+		return crypto.entity.tryDecryptEntities(
 			entity.withTypeInfo(),
 			EncryptedCalendarItem.serializer(),
 		) { Serialization.json.decodeFromJsonElement<DecryptedCalendarItem>(config.jsonPatcher.patchCalendarItem(it)) }
@@ -248,7 +248,7 @@ internal class CalendarItemApiImpl(
 	override val tryAndRecover: CalendarItemFlavouredApi<CalendarItem> =
 		object : AbstractCalendarItemFlavouredApi<CalendarItem>(rawApi, rawDataOwnerApi, config) {
 			override suspend fun maybeDecrypt(entity: EncryptedCalendarItem): CalendarItem =
-				crypto.entity.tryDecryptEntity(
+				crypto.entity.tryDecryptEntities(
 					entity.withTypeInfo(),
 					EncryptedCalendarItem.serializer(),
 				) { Serialization.json.decodeFromJsonElement<DecryptedCalendarItem>(config.jsonPatcher.patchCalendarItem(it)) }
@@ -261,7 +261,7 @@ internal class CalendarItemApiImpl(
 					config.encryption.calendarItem,
 				)
 
-				is DecryptedCalendarItem -> crypto.entity.encryptEntity(
+				is DecryptedCalendarItem -> crypto.entity.encryptEntities(
 					entity.withTypeInfo(),
 					DecryptedCalendarItem.serializer(),
 					config.encryption.calendarItem,
@@ -306,13 +306,13 @@ internal class CalendarItemApiImpl(
 
 	override suspend fun decryptPatientIdOf(calendarItem: CalendarItem): Set<String> = crypto.entity.owningEntityIdsOf(calendarItem.withTypeInfo(), null)
 
-	private suspend fun encrypt(entity: DecryptedCalendarItem) = crypto.entity.encryptEntity(
+	private suspend fun encrypt(entity: DecryptedCalendarItem) = crypto.entity.encryptEntities(
 		entity.withTypeInfo(),
 		DecryptedCalendarItem.serializer(),
 		config.encryption.calendarItem,
 	) { Serialization.json.decodeFromJsonElement<EncryptedCalendarItem>(it) }
 
-	private suspend fun decryptOrNull(entity: EncryptedCalendarItem): DecryptedCalendarItem? = crypto.entity.tryDecryptEntity(
+	private suspend fun decryptOrNull(entity: EncryptedCalendarItem): DecryptedCalendarItem? = crypto.entity.tryDecryptEntities(
 		entity.withTypeInfo(),
 		EncryptedCalendarItem.serializer(),
 	) { Serialization.json.decodeFromJsonElement<DecryptedCalendarItem>(config.jsonPatcher.patchCalendarItem(it)) }

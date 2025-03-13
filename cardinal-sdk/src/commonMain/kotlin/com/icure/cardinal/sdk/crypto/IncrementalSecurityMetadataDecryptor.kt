@@ -10,18 +10,27 @@ interface IncrementalSecurityMetadataDecryptor {
 	/**
 	 * Attempts to do the action providing "incrementally decrypted" keys as input; stops the first time the action
 	 * completes successfully.
+	 *
 	 * The method tries to decrypt encryption keys for the entity "incrementally", trying first to decrypt keys that
 	 * require less effort for decryption (e.g. using already cached exchange data or using exchange data for which the
-	 * id is known without going through the exchange data map). Each time one or more new keys are decrypted the action
-	 * is called providing ALL keys decrypted up to that point.
+	 * id is known without going through the exchange data map).
+	 *
+	 * When one or more new keys are decrypted this method calls [action] providing ALL keys decrypted up to that point.
+	 *
+	 * If the [action] returns a successful result this method returns the result of the action.
+	 *
+	 * If the [action] returns an unsuccessful result this method will try to decrypt more keys (using more expensive
+	 * decryption processes): if new keys are decrypted the method calls [action] providing also the new keys, else
+	 * the method returns the last (unsuccessful) result obtained.
+	 *
 	 * If no key can be decrypted at all the method returns null without ever attempting the action (the action always
 	 * receives at least a key in input or is not called).
+	 *
 	 * @param entity the entity from which to decrypt the encryption keys.
 	 * @param entityType the type of entity
-	 * @param action the action that consumes the encryption key. Note: if null is returned the action is considered
-	 * unsuccessful. If null would be a valid success value T needs to be a wrapper around the actual result.
-	 * @return the wrapped result of the first successful action invocation, or null if the action never succeeded or if
-	 * no key could be decrypted
+	 * @param action the action that consumes the encryption key.
+	 * @return the last result of action if at least a key could be decrypted (first successful result if action
+	 * succeeded, last unsuccessful result otherwise), null if no key could be decrypted.
 	 */
 	suspend fun <E : HasEncryptionMetadata, T : Any> doIncrementallyDecryptingKeys(
 		entityGroupId: String?,
@@ -31,8 +40,8 @@ interface IncrementalSecurityMetadataDecryptor {
 			entity: E,
 			entityType: EntityWithEncryptionMetadataTypeName,
 			keys: List<EntityEncryptionKeyDetails>
-		) -> T?
-	): T?
+		) -> Result<T>
+	): Result<T>?
 
 	/**
 	 * Bulk version of [doIncrementallyDecryptingKeys].
@@ -44,10 +53,8 @@ interface IncrementalSecurityMetadataDecryptor {
 	 *   Additionally, there will be a final attempt after attempting all decryption steps if at least a new key could be
 	 *   decrypted for an entity since the last attempt.
 	 *   In this case entities for which no new key could be decrypted are omitted from the input.
-	 * @param entities
-	 * @param entitiesType
-	 * @param action
-	 * @return all entities id for which the action completed successfully associated to the result.
+	 * @return a map with an entry for each entity that had at least a decryptable key. The entry associate entity.id ->
+	 * result of action. Entities for which no key could be decrypted are omitted from the result.
 	 */
 	suspend fun <E : HasEncryptionMetadata, T : Any> doManyIncrementallyDecryptingKeys(
 		entitiesGroupId: String?,
@@ -57,6 +64,6 @@ interface IncrementalSecurityMetadataDecryptor {
 			entity: E,
 			entityType: EntityWithEncryptionMetadataTypeName,
 			keys: List<EntityEncryptionKeyDetails>
-		) -> T?
-	): Map<String, T>
+		) -> Result<T>
+	): Map<String, Result<T>>
 }

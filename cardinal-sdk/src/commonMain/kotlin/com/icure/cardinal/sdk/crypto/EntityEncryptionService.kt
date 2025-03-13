@@ -7,6 +7,7 @@ import com.icure.cardinal.sdk.crypto.entities.EncryptedFieldsManifest
 import com.icure.cardinal.sdk.crypto.entities.EntityDataEncryptionResult
 import com.icure.cardinal.sdk.crypto.entities.EntityEncryptionKeyDetails
 import com.icure.cardinal.sdk.crypto.entities.EntityEncryptionMetadataInitialisationResult
+import com.icure.cardinal.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
 import com.icure.cardinal.sdk.crypto.entities.EntityWithTypeInfo
 import com.icure.cardinal.sdk.crypto.entities.HierarchicallyDecryptedMetadata
 import com.icure.cardinal.sdk.crypto.entities.MinimalBulkShareResult
@@ -291,36 +292,52 @@ interface EntityEncryptionService : EntityValidationService {
 	): ByteArray
 
 	/**
-	 * Decrypts an encrypted entity, returns null if the entity could not be decrypted.
+	 * Decrypts an encrypted entity, if any entity couldn't be decrypted it is excluded from the list.
 	 */
-	suspend fun <E, D> tryDecryptEntity(
+	suspend fun <E, D> tryDecryptEntities(
 		entityGroupId: String?,
-		encryptedEntity: EntityWithTypeInfo<E>,
+		encryptedEntities: List<E>,
+		entityType: EntityWithEncryptionMetadataTypeName,
 		encryptedEntitySerializer: SerializationStrategy<E>,
 		constructor: (json: JsonElement) -> D,
-	): D? where E : HasEncryptionMetadata, E : Encryptable, D : HasEncryptionMetadata, D : Encryptable
+	): List<D> where E : HasEncryptionMetadata, E : Encryptable, D : HasEncryptionMetadata, D : Encryptable
+
+
+	/**
+	 * Decrypts an encrypted entity, if any entity couldn't be decrypted this method throws [EntityEncryptionException].
+	 */
+	suspend fun <E, D> decryptEntities(
+		entityGroupId: String?,
+		encryptedEntities: List<E>,
+		entityType: EntityWithEncryptionMetadataTypeName,
+		encryptedEntitySerializer: SerializationStrategy<E>,
+		constructor: (json: JsonElement) -> D,
+	): List<D> where E : HasEncryptionMetadata, E : Encryptable, D : HasEncryptionMetadata, D : Encryptable
 
 	/**
 	 * Encrypts the content of an entity according to the provided manifest. The encryption key will be extracted from
 	 * the metadata of the unencrypted entity.
-	 * @throws EntityEncryptionException if no encryption key could be extracted from the unencrypted entity.
+	 * @throws EntityEncryptionException if no encryption key could be extracted from any of the unencrypted entity.
 	 */
-	suspend fun <E, D> encryptEntity(
+	suspend fun <E, D> encryptEntities(
 		entityGroupId: String?,
-		unencryptedEntity: EntityWithTypeInfo<D>,
+		unencryptedEntities: List<D>,
+		entityType: EntityWithEncryptionMetadataTypeName,
 		unencryptedEntitySerializer: SerializationStrategy<D>,
 		fieldsToEncrypt: EncryptedFieldsManifest,
 		constructor: (json: JsonElement) -> E,
-	): E where E : HasEncryptionMetadata, E : Encryptable, D : HasEncryptionMetadata, D : Encryptable
+	): List<E> where E : HasEncryptionMetadata, E : Encryptable, D : HasEncryptionMetadata, D : Encryptable
 
 	/**
-	 * Returns the first encryption key which could be properly decrypted from the entity using the current data owner,
-	 * or null if no key could be decrypted.
+	 * For each entity returns the first encryption key which could be properly decrypted from the entity using the
+	 * current data owner.
+	 * Entities for which no key could be decrypted are excluded from the resulting map.
 	 */
 	suspend fun tryDecryptAndImportAnyEncryptionKey(
 		entityGroupId: String?,
-		entity: EntityWithTypeInfo<*>,
-	): EntityEncryptionKeyDetails?
+		entities: List<HasEncryptionMetadata>,
+		entitiesType: EntityWithEncryptionMetadataTypeName
+	): Map<String, EntityEncryptionKeyDetails>
 
 	/**
 	 * Returns all encryption keys which could be properly decrypted from the entity using the current data owner. The keys returned by this method

@@ -347,14 +347,14 @@ internal class PatientApiImpl(
 ) : PatientApi, PatientFlavouredApi<DecryptedPatient> by object :
 	AbstractPatientFlavouredApi<DecryptedPatient>(rawApi, config) {
 	override suspend fun validateAndMaybeEncrypt(entity: DecryptedPatient): EncryptedPatient =
-		crypto.entity.encryptEntity(
+		crypto.entity.encryptEntities(
 			entity.withTypeInfo(),
 			DecryptedPatient.serializer(),
 			fieldsToEncrypt,
 		) { Serialization.json.decodeFromJsonElement<EncryptedPatient>(it) }
 
 	override suspend fun maybeDecrypt(entity: EncryptedPatient): DecryptedPatient =
-		crypto.entity.tryDecryptEntity(
+		crypto.entity.tryDecryptEntities(
 			entity.withTypeInfo(),
 			EncryptedPatient.serializer(),
 		) { Serialization.json.decodeFromJsonElement<DecryptedPatient>(config.jsonPatcher.patchPatient(it)) }
@@ -373,7 +373,7 @@ internal class PatientApiImpl(
 		object : AbstractPatientFlavouredApi<Patient>(rawApi, config) {
 
 			override suspend fun maybeDecrypt(entity: EncryptedPatient): Patient =
-				crypto.entity.tryDecryptEntity(
+				crypto.entity.tryDecryptEntities(
 					entity.withTypeInfo(),
 					EncryptedPatient.serializer(),
 				) { Serialization.json.decodeFromJsonElement<DecryptedPatient>(config.jsonPatcher.patchPatient(it)) }
@@ -386,7 +386,7 @@ internal class PatientApiImpl(
 					fieldsToEncrypt,
 				)
 
-				is DecryptedPatient -> crypto.entity.encryptEntity(
+				is DecryptedPatient -> crypto.entity.encryptEntities(
 					entity.withTypeInfo(),
 					DecryptedPatient.serializer(),
 					fieldsToEncrypt,
@@ -666,13 +666,13 @@ internal class PatientApiImpl(
 	override suspend fun getConfidentialSecretIdsOf(patient: Patient): Set<String> =
 		crypto.entity.getConfidentialSecretIdsOf(patient.withTypeInfo(), null)
 
-	private suspend fun encrypt(entity: DecryptedPatient) = crypto.entity.encryptEntity(
+	private suspend fun encrypt(entity: DecryptedPatient) = crypto.entity.encryptEntities(
 		entity.withTypeInfo(),
 		DecryptedPatient.serializer(),
 		fieldsToEncrypt,
 	) { Serialization.json.decodeFromJsonElement<EncryptedPatient>(it) }
 
-	private suspend fun decryptOrNull(entity: EncryptedPatient): DecryptedPatient? = crypto.entity.tryDecryptEntity(
+	private suspend fun decryptOrNull(entity: EncryptedPatient): DecryptedPatient? = crypto.entity.tryDecryptEntities(
 		entity.withTypeInfo(),
 		EncryptedPatient.serializer(),
 	) { Serialization.json.decodeFromJsonElement<DecryptedPatient>(config.jsonPatcher.patchPatient(it)) }

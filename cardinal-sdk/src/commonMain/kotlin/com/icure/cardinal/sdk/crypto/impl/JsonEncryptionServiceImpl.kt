@@ -2,7 +2,9 @@ package com.icure.cardinal.sdk.crypto.impl
 
 import com.icure.cardinal.sdk.crypto.JsonEncryptionService
 import com.icure.cardinal.sdk.crypto.entities.EncryptedFieldsManifest
+import com.icure.cardinal.sdk.crypto.entities.EntityEncryptionKeyDetails
 import com.icure.cardinal.sdk.model.embed.Encryptable
+import com.icure.cardinal.sdk.utils.EntityEncryptionException
 import com.icure.cardinal.sdk.utils.IllegalEntityException
 import com.icure.cardinal.sdk.utils.Serialization
 import com.icure.kryptom.crypto.AesAlgorithm
@@ -131,25 +133,43 @@ class JsonEncryptionServiceImpl(
 		}
 
 
-	override suspend fun decrypt(encryptionKey: AesKey<AesAlgorithm.CbcWithPkcs7Padding>, encryptedJson: JsonObject): JsonObject =
-		decrypt(encryptedJson) { cryptoService.aes.decrypt(it, encryptionKey) }
-	override suspend fun decrypt(encryptedJson: JsonObject, doDecrypt: suspend (ByteArray) -> ByteArray): JsonObject {
-		// First decrypt recursively, since values decrypted from encryptedSelf can't contain more encryptedSelf.
-		val recursivelyDecrypted = encryptedJson.mapValues { (_, value) ->
-			when (value) {
-				is JsonObject -> decrypt(value, doDecrypt)
-				is JsonArray -> if (value.all { it is JsonObject || it == JsonNull }) {
-					JsonArray(value.map { if (it == JsonNull) it else decrypt(it.jsonObject, doDecrypt) })
-				} else value
-				else -> value
+	override suspend fun decrypt(
+		encryptionKeys: Collection<EntityEncryptionKeyDetails>,
+		encryptedJson: JsonObject,
+		debugName: String?
+	): JsonObject {
+		suspend fun recursively(
+			partJson: JsonObject,
+			path: Sequence<Any>,
+		): JsonObject {
+			// First decrypt recursively, since values decrypted from encryptedSelf can't contain more encryptedSelf.
+			val recursivelyDecrypted = partJson.mapValues { (k, value) ->
+				when (value) {
+					is JsonObject -> recursively(value, path + sequenceOf(k, "."))
+					is JsonArray -> if (value.all { it is JsonObject || it == JsonNull }) {
+						JsonArray(value.mapIndexed { i, element ->
+							if (element == JsonNull)
+								element
+							else
+								recursively(element.jsonObject, path + sequenceOf(k, "[", i, "]"))
+						})
+					} else value
+					else -> value
+				}
 			}
+			val decryptedSelf = partJson[ENCRYPTED_SELF]?.jsonPrimitive?.also {
+				if (!it.isString) throw IllegalEntityException("Encrypted self must be a string")
+			}?.content?.let { base64Decode(it) }?.let {
+				encryptionKeys.firstNotNullOfOrNull { encryptionKey ->
+					kotlin.runCatching {
+						cryptoService.aes.decrypt(it, encryptionKey.key)
+					}.getOrNull()?.let {
+						Serialization.json.parseToJsonElement(it.decodeToString()) as? JsonObject
+					}
+				} ?: throw EntityEncryptionException("Can't decrypt ${path.joinToString("")} with provided keys")
+			}
+			return decryptedSelf?.let { JsonObject(recursivelyDecrypted + it) } ?: JsonObject(recursivelyDecrypted)
 		}
-		val decryptedSelf = encryptedJson[ENCRYPTED_SELF]?.jsonPrimitive?.also {
-			if (!it.isString) throw IllegalEntityException("Encrypted self must be a string")
-		}?.content?.let {
-			val decryptedBytes = doDecrypt(base64Decode(it))
-			Serialization.json.parseToJsonElement(decryptedBytes.decodeToString()).jsonObject
-		}
-		return decryptedSelf?.let { JsonObject(recursivelyDecrypted + it) } ?: JsonObject(recursivelyDecrypted)
+		return recursively(encryptedJson, if (debugName != null) sequenceOf(debugName, ".") else emptySequence())
 	}
 }
