@@ -1,7 +1,6 @@
 package com.icure.cardinal.sdk.options
 
 import com.icure.cardinal.sdk.crypto.CryptoStrategies
-import com.icure.cardinal.sdk.crypto.entities.SdkBoundGroup
 import com.icure.cardinal.sdk.model.UserGroup
 import com.icure.cardinal.sdk.storage.KeyStorageFacade
 import com.icure.cardinal.sdk.storage.StorageFacade
@@ -187,7 +186,7 @@ data class UnboundBasicSdkOptions(
 	 * However, if it is possible for you to extract the group id from the context of the coroutine that is executing
 	 * the method, you can provide the function here to allow using these methods also on unbound SDK.
 	 */
-	val getBoundGroupId: suspend () -> SdkBoundGroup? = {
+	val getBoundGroupId: suspend () -> String? = {
 		throw UnsupportedOperationException("To use this method you need to configure `getBoundGroupId` in the UnboundBasicSdkOptions")
 	}
 ): CommonSdkOptions {

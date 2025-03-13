@@ -396,6 +396,7 @@ class EntityEncryptionServiceImpl(
 		autoDelegations: Map<DataOwnerReferenceInGroup, AccessLevel>
 	): EntityEncryptionMetadataInitialisationResult<T> {
 		hasEmptyEncryptionMetadata(entity, throwIfNonEmpty = true)
+		val normalizedAutoDelegations = autoDelegations.mapKeys { it.key.normalized(boundGroup) }
 		val newRawKey = if (initializeEncryptionKey)
 			HexString(cryptoService.aes.exportKey(cryptoService.aes.generateKey(AesAlgorithm.CbcWithPkcs7Padding)).toHexString())
 		else
@@ -409,7 +410,7 @@ class EntityEncryptionServiceImpl(
 			owningEntityIds = setOfNotNull(owningEntityId),
 			encryptionKeys = setOfNotNull(newRawKey),
 			owningEntitySecretIds = owningEntitySecretId ?: emptySet(),
-			autoDelegations = autoDelegations,
+			autoDelegations = normalizedAutoDelegations,
 		)
 		return EntityEncryptionMetadataInitialisationResult(
 			updatedEntity = entityWitSecurityMetadata,
@@ -426,7 +427,8 @@ class EntityEncryptionServiceImpl(
 		getUpdatedEntity: suspend (String) -> T,
 		doRequestBulkShareOrUpdate: suspend (request: BulkShareOrUpdateMetadataParams) -> List<EntityBulkShareResult<out T>>
 	): BulkShareResult<T> {
-		val requestDetails = prepareBulkShareRequests(entityGroupId, entitiesUpdates, entitiesType)
+		val normalizedEntitiesUpdates = entitiesUpdates.map { (e, rs) -> e to rs.mapKeys { it.key.normalized(boundGroup) } }
+		val requestDetails = prepareBulkShareRequests(entityGroupId, normalizedEntitiesUpdates, entitiesType)
 		val shareResult = doRequestBulkShareOrUpdate(
 			BulkShareOrUpdateMetadataParams(
 				requestDetails.requestsByEntityId.mapValues { (_, details) ->
@@ -448,7 +450,7 @@ class EntityEncryptionServiceImpl(
 				v.all { it.shouldRetry } && k !in requestDetails.unmodifiedEntityIds && k !in updatedEntitiesId
 			}.keys
 			if (toRetryEntitiesId.isNotEmpty()) {
-				val updatedRequests = entitiesUpdates.mapNotNull { (entity, request) ->
+				val updatedRequests = normalizedEntitiesUpdates.mapNotNull { (entity, request) ->
 					if (entity.id in toRetryEntitiesId) {
 						val updatedEntity = getUpdatedEntity(entity.id)
 						if (updatedEntity.rev != entity.rev) {
@@ -555,10 +557,11 @@ class EntityEncryptionServiceImpl(
 		getUpdatedEntity: suspend (String) -> T,
 		doRequestBulkShareOrUpdate: suspend (request: BulkShareOrUpdateMetadataParams) -> List<EntityBulkShareResult<out T>>
 	): SimpleShareResult<T> {
+		val normalizedDelegates = delegates.mapKeys { it.key.normalized(boundGroup) }
 		val availableEncryptionKeys = encryptionKeysOf(entityGroupId, entity, entityType, null)
 		val availableOwningEntityIds = owningEntityIdsOf(entityGroupId, entity, entityType, null)
 		val availableSecretIds = secretIdsOf(entityGroupId, entity, entityType, null)
-		val extendedDelegateOptions = delegates.mapValues { (_, simpleShareOptions) ->
+		val extendedDelegateOptions = normalizedDelegates.mapValues { (_, simpleShareOptions) ->
 			if (availableEncryptionKeys.isEmpty() && simpleShareOptions.shareEncryptionKey == ShareMetadataBehaviour.Required) {
 				throw IllegalArgumentException("The current data owner can't access any encryption key in ${entityType.id}(\"${entity.id}\"), but sharing is required.")
 			}
@@ -586,7 +589,7 @@ class EntityEncryptionServiceImpl(
 		if (shareResult.updateErrors.isEmpty() && shareResult.updatedEntities.size == 1) {
 			return SimpleShareResult.Success(shareResult.updatedEntities.first())
 		}
-		val errorsOfRequestedDelegates = shareResult.updateErrors.filter { delegates.containsKey(it.delegateReference) }
+		val errorsOfRequestedDelegates = shareResult.updateErrors.filter { normalizedDelegates.containsKey(it.delegateReference) }
 		if (errorsOfRequestedDelegates.isEmpty() && shareResult.updatedEntities.size == 1) {
 			log.w { "There was an internal error with the migration of encrypted metadata: ${shareResult.updateErrors}" }
 			return SimpleShareResult.Success(shareResult.updatedEntities.first())
@@ -598,7 +601,7 @@ class EntityEncryptionServiceImpl(
 					entityGroupId,
 					updatedEntity,
 					entityType,
-					delegates,
+					normalizedDelegates,
 					autoRetry,
 					getUpdatedEntity,
 					doRequestBulkShareOrUpdate

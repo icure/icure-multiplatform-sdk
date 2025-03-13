@@ -1,14 +1,17 @@
 package com.icure.cardinal.sdk.crypto.entities
 
+import com.icure.utils.InternalIcureApi
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.contract
 import kotlin.jvm.JvmInline
 
 @JvmInline
+@InternalIcureApi
 value class SdkBoundGroup(
 	val groupId: String
 )
 
+@InternalIcureApi
 @OptIn(ExperimentalContracts::class)
 fun SdkBoundGroup?.resolve(groupId: String?): String? {
 	contract {

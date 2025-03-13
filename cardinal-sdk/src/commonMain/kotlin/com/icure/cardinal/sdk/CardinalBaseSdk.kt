@@ -90,7 +90,6 @@ import com.icure.cardinal.sdk.api.raw.impl.RawTopicApiImpl
 import com.icure.cardinal.sdk.api.raw.impl.RawUserApiImpl
 import com.icure.cardinal.sdk.auth.services.AuthProvider
 import com.icure.cardinal.sdk.auth.services.JwtBasedAuthProvider
-import com.icure.cardinal.sdk.crypto.entities.SdkBoundGroup
 import com.icure.cardinal.sdk.crypto.impl.BasicEntityAccessInformationProvider
 import com.icure.cardinal.sdk.crypto.impl.BasicInternalCryptoApiImpl
 import com.icure.cardinal.sdk.crypto.impl.EntityValidationServiceImpl
@@ -228,9 +227,7 @@ interface CardinalBaseSdk : CardinalBaseApis {
 				BasicInternalCryptoApiImpl(
 					jsonEncryptionService,
 					EntityValidationServiceImpl(jsonEncryptionService),
-					BasicEntityAccessInformationProvider(
-						chosenGroup?.let(::SdkBoundGroup).let { { it } }
-					)
+					BasicEntityAccessInformationProvider { chosenGroup }
 				),
 				manifests
 			)

@@ -1,6 +1,7 @@
 package com.icure.cardinal.sdk.crypto.entities
 
 import com.icure.cardinal.sdk.utils.DefaultValue
+import com.icure.utils.InternalIcureApi
 import kotlinx.serialization.Serializable
 
 /**
@@ -19,6 +20,7 @@ data class DataOwnerReferenceInGroup(
 	 * @param inGroup the group where the reference is to be used
 	 * @param sdkGroupId the group id of the SDK using this reference, used as the default group if [groupId] is null
 	 */
+	@InternalIcureApi
 	internal fun asReferenceStringInGroup(inGroup: String?, sdkGroupId: SdkBoundGroup?): String {
 		if (sdkGroupId == null) require(inGroup == null) { "Can't use in-group methods on kraken-lite" }
 		val thisGroup = groupId ?: sdkGroupId
@@ -26,8 +28,15 @@ data class DataOwnerReferenceInGroup(
 		return if (thisGroup != forGroup) "$thisGroup/$dataOwnerId" else dataOwnerId
 	}
 
+	@InternalIcureApi
+	internal fun normalized(sdkGroupId: SdkBoundGroup?): DataOwnerReferenceInGroup {
+		if (sdkGroupId == null) require(groupId == null) { "Can't use in-group references on kraken-lite" }
+		return if (groupId != null && groupId == sdkGroupId?.groupId) DataOwnerReferenceInGroup(dataOwnerId, null) else this
+	}
+
 	companion object {
-		fun parse(
+		@InternalIcureApi
+		internal fun parse(
 			dataOwnerReference: String,
 			entityGroup: String?,
 			sdkGroupId: SdkBoundGroup?
