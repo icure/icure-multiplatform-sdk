@@ -13,13 +13,7 @@ import com.icure.kryptom.crypto.RsaKeypair
 import kotlinx.serialization.Serializable
 
 /**
- * Allows to customise the behaviour of the crypto api to better suit your needs.
- *
- * An important task which should be done in these crypto strategies is public key verification: in general there is no guarantee that the public keys
- * stored in the iCure database are authentic, i.e. created by the data owner they are associated to. This is because the database admins or a
- * malicious attacker may have added his own public keys to the data owner's public keys.
- * Sharing any kind of data using unverified public keys could potentially cause a data leak: this is why when creating new exchange keys or when
- * creating recovery data only verified keys will be considered. For decrypting existing data instead unverified keys will be used without issues.
+Allows to customise the behaviour of the crypto api to set keys management, keys recovery, keys trusting in a way that better suits your needs.
  */
 interface CryptoStrategies {
 	/**
@@ -33,7 +27,7 @@ interface CryptoStrategies {
 		val dataOwnerDetails: DataOwnerWithType,
 		/**
 		 * All public keys (in hex-encoded spki format) of `dataOwner` for which the authenticity status (verified or unverified) is
-		 * unknown (no result was cached from a previous api instantiation and the key was not generated on the current device).
+		 * unknown (the key if missing from the storage or it has been recovered but its verification status cannot be asserted).
 		 * This could include keys that were recovered automatically by the sdk and may have overlap with `unavailableKeys`.
 		 */
 		val unknownKeys: List<SpkiHexString>,
@@ -96,12 +90,19 @@ interface CryptoStrategies {
 	}
 
 	/**
-	 * Method called during initialisation of the crypto API to validate keys recovered through iCure's recovery methods and/or to allow recovery of
-	 * missing keys using means external to iCure.
-	 * On startup the iCure sdk will try to load all keys for the current data owner and its parent hierarchy: if the sdk can't find some of the keys
-	 * for any of the data owners (according to the public keys for the data owner in the iCure server) and/or the sdk could recover some private keys
-	 * but can't verify the authenticity of the key pairs this method will be called.
-	 * The recovered and verified keys will automatically be cached using the current api {@link KeyStorageFacade} and {@link StorageFacade}
+	 * The Cardinal SDK has an internal mechanism to automatically store and load private keys using the [com.icure.cardinal.sdk.storage.StorageFacade] you have provided.
+	 *
+	 * Under certain circumstances, some keys of the users might be missing (for example when the user is trying to access the data from a new device or browser) or
+	 * might be forged (for example if it has been created by an attacker that gained temporary access to the database).
+	 *
+	 * In this case, the SDK will call recoverAndVerifySelfHierarchyKeys during the initialisation process.
+	 *
+	 * recoverAndVerifySelfHierarchyKeys provides you with the keys that are missing from the point of view of the SDK
+	 *
+	 * # Basic operation: Key recovery
+	 *
+	 *
+	 * The recovered keys will automatically be cached using the current SDK {@link KeyStorageFacade} and {@link StorageFacade}
 	 *
 	 * The input is a list containing an object for each data owner part of the current data owner hierarchy. The objects are ordered from the data
 	 * for the topmost parent of the current data owner hierarchy (first element) to the data for the current data owner (last element).

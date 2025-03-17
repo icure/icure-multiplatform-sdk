@@ -16,8 +16,7 @@
       "es5",
       "dom"
     ],
-    "sourceMap": true,
-    "inlineSources": true,
+    "sourceMap": false,
     "declaration": true,
     "outDir": "./build/tsCompiledSources",
     "baseUrl": "./"

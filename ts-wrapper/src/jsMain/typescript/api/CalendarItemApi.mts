@@ -24,7 +24,7 @@ export interface CalendarItemApi {
 
 	createCalendarItem(entity: DecryptedCalendarItem): Promise<DecryptedCalendarItem>;
 
-	withEncryptionMetadata(base: DecryptedCalendarItem | undefined, patient: Patient,
+	withEncryptionMetadata(base: DecryptedCalendarItem | undefined, patient: Patient | undefined,
 			options?: { user?: User | undefined, delegates?: { [ key: string ]: AccessLevel }, secretId?: SecretIdUseOption }): Promise<DecryptedCalendarItem>;
 
 	getEncryptionKeysOf(calendarItem: CalendarItem): Promise<Array<HexString>>;

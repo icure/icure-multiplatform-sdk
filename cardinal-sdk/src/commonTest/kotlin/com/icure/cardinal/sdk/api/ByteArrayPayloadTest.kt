@@ -9,7 +9,7 @@ import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
 
-class ByteArrayPayloadTest : StringSpec({
+class  ByteArrayPayloadTest : StringSpec({
 
 	beforeAny {
 		initializeTestEnvironment()
