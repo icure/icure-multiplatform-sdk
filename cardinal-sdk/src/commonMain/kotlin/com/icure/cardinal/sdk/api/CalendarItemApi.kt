@@ -191,7 +191,7 @@ interface CalendarItemFlavouredApi<E : CalendarItem> : CalendarItemBasicFlavoure
 
 	suspend fun shareInGroup(
 		calendarItem: E,
-		entityGroupId: String,
+		entityGroupId: String?,
 		delegates: @JsMapAsObjectArray(flattenKey = true, flattenValue = true) Map<DataOwnerReferenceInGroup, CalendarItemShareOptions>
 	): E
 
@@ -296,7 +296,7 @@ interface CalendarItemApi : CalendarItemBasicFlavourlessApi, CalendarItemFlavour
 	 * can be different from the current user's group.
 	 */
 	suspend fun withEncryptionMetadataForGroup(
-		entityGroupId: String,
+		entityGroupId: String?,
 		base: DecryptedCalendarItem?,
 		patient: Patient?,
 		@DefaultValue("null")
@@ -366,6 +366,11 @@ interface CalendarItemApi : CalendarItemBasicFlavourlessApi, CalendarItemFlavour
 	 * @param delegates a set of data owner ids
 	 */
 	suspend fun createDelegationDeAnonymizationMetadata(entity: CalendarItem, delegates: Set<String>)
+	suspend fun createDelegationDeAnonymizationMetadataInGroup(
+		entityGroupId: String?,
+		entity: CalendarItem,
+		delegates: Set<DataOwnerReferenceInGroup>
+	)
 
 	/**
 	 * Decrypts a calendar item, throwing an exception if it is not possible.

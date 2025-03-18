@@ -54,6 +54,10 @@ class DelegationsDeAnonymizationImpl(
 		entityType: EntityWithEncryptionMetadataTypeName,
 		shareWithDataOwners: Set<DataOwnerReferenceInGroup>
 	) {
+		val normalizedDataOwners = shareWithDataOwners.mapTo(mutableSetOf()) { it.normalized(boundGroup) }
+		require(normalizedDataOwners.size == shareWithDataOwners.size) {
+			"Duplicate delegate data owners for request in-group following normalization"
+		}
 		val delegationDetails = securityMetadataDecryptor.getSecureDelegationMemberDetails(entityGroupId, entity, entityType)
 		val delegationsForDeanonInfoSharing = delegationDetails.filter { (_, delegation) ->
 			// Drop fully explicit ones: they don't need de-anonymization info
@@ -70,11 +74,11 @@ class DelegationsDeAnonymizationImpl(
 			entityType
 		)
 		existingDelegationsMap.forEach { delMapToShare ->
-			ensureDelegationKeyMapSharedWith(entityGroupId, entityType, delMapToShare, shareWithDataOwners)
+			ensureDelegationKeyMapSharedWith(entityGroupId, entityType, delMapToShare, normalizedDataOwners)
 		}
 		val existingDelegationsMapKeys = existingDelegationsMap.mapTo(mutableSetOf()) { it.delegationKey }
 		delegationsForNewDeanonInfoCreation.filter { (k, _) -> k.s !in existingDelegationsMapKeys }.forEach { (k, v) ->
-			createSecureDelegationKeyMap(entityGroupId, entityType, k.s, v, shareWithDataOwners)
+			createSecureDelegationKeyMap(entityGroupId, entityType, k.s, v, normalizedDataOwners)
 		}
 	}
 
@@ -165,7 +169,7 @@ class DelegationsDeAnonymizationImpl(
 				EncryptedSecureDelegationKeyMap.serializer(),
 			) {
 				Serialization.json.decodeFromJsonElement<DecryptedSecureDelegationKeyMap>(it)
-			}
+			}.filterIsInstance<DecryptedSecureDelegationKeyMap>()
 		} else emptyList()
 
 	// Important: to avoid potentially leaking links between entities of different types the key map calculates the secure delegation keys using the

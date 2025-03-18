@@ -1,7 +1,7 @@
 package com.icure.cardinal.sdk.crypto
 
 import com.icure.cardinal.sdk.crypto.entities.EncryptedFieldsManifest
-import com.icure.cardinal.sdk.crypto.entities.EntityWithTypeInfo
+import com.icure.cardinal.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
 import com.icure.cardinal.sdk.model.base.HasEncryptionMetadata
 import com.icure.cardinal.sdk.model.embed.Encryptable
 import com.icure.cardinal.sdk.utils.EntityEncryptionException
@@ -19,11 +19,12 @@ interface EntityValidationService {
 	 * of the entity.
 	 * @throws EntityEncryptionException if any of the content of the entity should be encrypted but is still in clear
 	 * in the entity.
-	 * @return [encryptedEntity] unmodified if it is valid (throws exception if not).
+	 * @return [encryptedEntities] unmodified if it is valid (throws exception if not).
 	 */
-	suspend fun <E> validateEncryptedEntity(
-		encryptedEntity: EntityWithTypeInfo<E>,
+	suspend fun <E> validateEncryptedEntities(
+		encryptedEntities: List<E>,
+		entitiesType: EntityWithEncryptionMetadataTypeName,
 		encryptedEntitySerializer: SerializationStrategy<E>,
 		fieldsToEncrypt: EncryptedFieldsManifest
-	): E where E : Encryptable, E : HasEncryptionMetadata
+	): List<E> where E : Encryptable, E : HasEncryptionMetadata
 }

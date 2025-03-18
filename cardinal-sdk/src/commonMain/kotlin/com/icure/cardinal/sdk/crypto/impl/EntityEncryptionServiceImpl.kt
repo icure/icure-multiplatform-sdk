@@ -270,17 +270,16 @@ class EntityEncryptionServiceImpl(
 			}
 		}
 
-	override suspend fun <E, D> tryDecryptEntities(
+	override suspend fun <B, E : B, D : B> tryDecryptEntities(
 		entityGroupId: String?,
 		encryptedEntities: List<E>,
 		entityType: EntityWithEncryptionMetadataTypeName,
 		encryptedEntitySerializer: SerializationStrategy<E>,
 		constructor: (json: JsonElement) -> D
-	): List<D> where D : HasEncryptionMetadata, E : HasEncryptionMetadata, E : Encryptable, D : Encryptable {
+	): List<B> where B : HasEncryptionMetadata, B : Encryptable {
 		val decrypted = doDecryptEntities(entityGroupId, encryptedEntities, entityType, encryptedEntitySerializer, constructor)
-		return encryptedEntities.mapNotNull { decrypted[it.id]?.getOrNull() }
+		return encryptedEntities.map { decrypted[it.id]?.getOrNull() ?: it }
 	}
-
 	override suspend fun <E, D> decryptEntities(
 		entityGroupId: String?,
 		encryptedEntities: List<E>,

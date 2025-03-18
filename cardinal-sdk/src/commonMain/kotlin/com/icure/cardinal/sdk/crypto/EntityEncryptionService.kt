@@ -308,15 +308,15 @@ interface EntityEncryptionService : EntityValidationService {
 	): ByteArray
 
 	/**
-	 * Decrypts an encrypted entity, if any entity couldn't be decrypted it is excluded from the list.
+	 * Decrypts an encrypted entity, if any entity couldn't be decrypted it is returned as is.
 	 */
-	suspend fun <E, D> tryDecryptEntities(
+	suspend fun <B, E : B, D : B> tryDecryptEntities(
 		entityGroupId: String?,
 		encryptedEntities: List<E>,
 		entityType: EntityWithEncryptionMetadataTypeName,
 		encryptedEntitySerializer: SerializationStrategy<E>,
 		constructor: (json: JsonElement) -> D,
-	): List<D> where E : HasEncryptionMetadata, E : Encryptable, D : HasEncryptionMetadata, D : Encryptable
+	): List<B> where B : HasEncryptionMetadata, B : Encryptable
 
 
 	/**
