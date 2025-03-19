@@ -100,10 +100,8 @@ private abstract class AbstractCalendarItemBasicFlavouredApi<E : CalendarItem>(
 private abstract class AbstractCalendarItemFlavouredApi<E : CalendarItem>(
 	rawApi: RawCalendarItemApi,
 	private val dataOwnerApi: RawDataOwnerApi,
-	private val config: ApiConfiguration
+	protected val config: ApiConfiguration
 ) : AbstractCalendarItemBasicFlavouredApi<E>(rawApi), CalendarItemFlavouredApi<E> {
-	protected val crypto get() = config.crypto
-
 	override suspend fun shareWith(
 		delegateId: String,
 		calendarItem: E,
@@ -112,7 +110,7 @@ private abstract class AbstractCalendarItemFlavouredApi<E : CalendarItem>(
 		shareWithMany(calendarItem, mapOf(delegateId to (options ?: CalendarItemShareOptions())))
 
 	override suspend fun shareWithMany(calendarItem: E, delegates: Map<String, CalendarItemShareOptions>): E =
-		crypto.entity.simpleShareOrUpdateEncryptedEntityMetadata(
+		config.crypto.entity.simpleShareOrUpdateEncryptedEntityMetadata(
 			null,
 			calendarItem,
 			EntityWithEncryptionMetadataTypeName.CalendarItem,
@@ -127,7 +125,7 @@ private abstract class AbstractCalendarItemFlavouredApi<E : CalendarItem>(
 		entityGroupId: String?,
 		delegates: Map<DataOwnerReferenceInGroup, CalendarItemShareOptions>
 	): E =
-		crypto.entity.simpleShareOrUpdateEncryptedEntityMetadata(
+		config.crypto.entity.simpleShareOrUpdateEncryptedEntityMetadata(
 			entityGroupId,
 			calendarItem,
 			EntityWithEncryptionMetadataTypeName.CalendarItem,
@@ -150,7 +148,13 @@ private abstract class AbstractCalendarItemFlavouredApi<E : CalendarItem>(
 			startDate = startDate,
 			endDate = endDate,
 			descending = descending,
-			secretPatientKeys = ListOfIds(crypto.entity.secretIdsOf(null, patient, EntityWithEncryptionMetadataTypeName.Patient, null).toList())
+			secretPatientKeys = ListOfIds(
+				config.crypto.entity.secretIdsOf(
+					null,
+					patient,
+					EntityWithEncryptionMetadataTypeName.Patient,
+					null
+				).toList())
 		).successBody()
 	) { ids ->
 		maybeDecrypt(rawApi.getCalendarItemsWithIds(ListOfIds(ids)).successBody())
@@ -160,21 +164,28 @@ private abstract class AbstractCalendarItemFlavouredApi<E : CalendarItem>(
 		require(calendarItem.secretForeignKeys.isNotEmpty()) { "Calendar item ${calendarItem.id} is already linked to a patient" }
 		val currentDataOwnerId = dataOwnerApi.getCurrentDataOwner().successBody().dataOwner.id
 		val delegates = shareLinkWithDelegates + currentDataOwnerId
-		val secretForeignKeys = crypto.entity.getConfidentialSecretIdsOf(null, patient, EntityWithEncryptionMetadataTypeName.Patient, currentDataOwnerId)
-		require(secretForeignKeys.isNotEmpty()) { "Could not find any secret id for patient ${patient.id} which is shared with the topmost ancestor of the current data owner" }
-		val shareResult = crypto.entity.bulkShareOrUpdateEncryptedEntityMetadata(
+		val secretForeignKeys = config.crypto.entity.getConfidentialSecretIdsOf(
 			null,
-			listOf(Pair(
-				calendarItem,
-				delegates.associateWith {
-					DelegateShareOptions(
-						shareSecretIds = emptySet(),
-						shareEncryptionKeys = emptySet(),
-						shareOwningEntityIds = setOf(patient.id),
-						requestedPermissions = RequestedPermission.FullRead
-					)
-				}.keyAsLocalDataOwnerReferences()
-			)),
+			patient,
+			EntityWithEncryptionMetadataTypeName.Patient,
+			currentDataOwnerId
+		)
+		require(secretForeignKeys.isNotEmpty()) { "Could not find any secret id for patient ${patient.id} which is shared with the topmost ancestor of the current data owner" }
+		val shareResult = config.crypto.entity.bulkShareOrUpdateEncryptedEntityMetadata(
+			null,
+			listOf(
+				Pair(
+					calendarItem,
+					delegates.associateWith {
+						DelegateShareOptions(
+							shareSecretIds = emptySet(),
+							shareEncryptionKeys = emptySet(),
+							shareOwningEntityIds = setOf(patient.id),
+							requestedPermissions = RequestedPermission.FullRead
+						)
+					}.keyAsLocalDataOwnerReferences()
+				)
+			),
 			EntityWithEncryptionMetadataTypeName.CalendarItem,
 			true,
 			{ rawApi.getCalendarItem(it).successBody() },
@@ -247,7 +258,7 @@ internal class CalendarItemApiImpl(
 		entitiesGroupId: String?,
 		entities: List<DecryptedCalendarItem>
 	): List<EncryptedCalendarItem> =
-		crypto.entity.encryptEntities(
+		this.config.crypto.entity.encryptEntities(
 			entitiesGroupId,
 			entities,
 			EntityWithEncryptionMetadataTypeName.CalendarItem,
@@ -259,7 +270,7 @@ internal class CalendarItemApiImpl(
 		entitiesGroupId: String?,
 		entities: List<EncryptedCalendarItem>
 	): List<DecryptedCalendarItem> =
-		crypto.entity.decryptEntities(
+		this.config.crypto.entity.decryptEntities(
 			entitiesGroupId,
 			entities,
 			EntityWithEncryptionMetadataTypeName.CalendarItem,
@@ -273,7 +284,12 @@ internal class CalendarItemApiImpl(
 				entitiesGroupId: String?,
 				entities: List<EncryptedCalendarItem>
 			): List<EncryptedCalendarItem> =
-				crypto.entity.validateEncryptedEntities(entities, EntityWithEncryptionMetadataTypeName.CalendarItem, EncryptedCalendarItem.serializer(), config.encryption.calendarItem)
+				this.config.crypto.entity.validateEncryptedEntities(
+					entities,
+					EntityWithEncryptionMetadataTypeName.CalendarItem,
+					EncryptedCalendarItem.serializer(),
+					config.encryption.calendarItem
+				)
 
 			override suspend fun maybeDecrypt(
 				entitiesGroupId: String?,
@@ -287,7 +303,7 @@ internal class CalendarItemApiImpl(
 				entitiesGroupId: String?,
 				entities: List<CalendarItem>
 			): List<EncryptedCalendarItem> =
-				crypto.entity.validateOrEncryptEntities(
+				this.config.crypto.entity.validateOrEncryptEntities(
 					entitiesGroupId,
 					entities,
 					EntityWithEncryptionMetadataTypeName.CalendarItem,
@@ -300,12 +316,18 @@ internal class CalendarItemApiImpl(
 				entitiesGroupId: String?,
 				entities: List<EncryptedCalendarItem>
 			): List<CalendarItem> =
-				crypto.entity.tryDecryptEntities(
+				this.config.crypto.entity.tryDecryptEntities(
 					entitiesGroupId,
 					entities,
 					EntityWithEncryptionMetadataTypeName.CalendarItem,
 					EncryptedCalendarItem.serializer(),
-				) { Serialization.json.decodeFromJsonElement<DecryptedCalendarItem>(config.jsonPatcher.patchCalendarItem(it)) }
+				) {
+					Serialization.json.decodeFromJsonElement<DecryptedCalendarItem>(
+						config.jsonPatcher.patchCalendarItem(
+							it
+						)
+					)
+				}
 		}
 
 	override suspend fun createCalendarItem(entity: DecryptedCalendarItem, groupId: String?): DecryptedCalendarItem {

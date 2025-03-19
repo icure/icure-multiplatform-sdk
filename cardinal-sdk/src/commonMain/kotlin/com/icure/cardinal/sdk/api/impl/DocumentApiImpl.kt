@@ -77,10 +77,8 @@ private abstract class AbstractDocumentBasicFlavouredApi<E : Document>(
 @InternalIcureApi
 private abstract class AbstractDocumentFlavouredApi<E : Document>(
 	rawApi: RawDocumentApi,
-	private val config: ApiConfiguration
+	protected val config: ApiConfiguration
 ) : AbstractDocumentBasicFlavouredApi<E>(rawApi), DocumentFlavouredApi<E> {
-	protected val crypto get() = config.crypto
-	protected val fieldsToEncrypt get() = config.encryption.document
 
 	override suspend fun shareWith(
 		delegateId: String,
@@ -90,7 +88,7 @@ private abstract class AbstractDocumentFlavouredApi<E : Document>(
 		shareWithMany(document, mapOf(Pair(delegateId, options ?: DocumentShareOptions())))
 
 	override suspend fun shareWithMany(document: E, delegates: Map<String, DocumentShareOptions>): E =
-		crypto.entity.simpleShareOrUpdateEncryptedEntityMetadata(
+		config.crypto.entity.simpleShareOrUpdateEncryptedEntityMetadata(
 			null,
 			document,
 			EntityWithEncryptionMetadataTypeName.Document,
@@ -113,7 +111,13 @@ private abstract class AbstractDocumentFlavouredApi<E : Document>(
 			startDate = startDate,
 			endDate = endDate,
 			descending = descending,
-			secretPatientKeys = ListOfIds(crypto.entity.secretIdsOf(null, patient, EntityWithEncryptionMetadataTypeName.Patient,null).toList())
+			secretPatientKeys = ListOfIds(
+				config.crypto.entity.secretIdsOf(
+					null,
+					patient,
+					EntityWithEncryptionMetadataTypeName.Patient,
+					null
+				).toList())
 		).successBody()
 	) { ids ->
 		rawApi.getDocuments(ListOfIds(ids)).successBody().let { maybeDecrypt(null, it) }
@@ -207,19 +211,19 @@ internal class DocumentApiImpl(
 		entitiesGroupId: String?,
 		entities: List<DecryptedDocument>
 	): List<EncryptedDocument> =
-		crypto.entity.encryptEntities(
+		this.config.crypto.entity.encryptEntities(
 			entitiesGroupId,
 			entities,
 			EntityWithEncryptionMetadataTypeName.Document,
 			DecryptedDocument.serializer(),
-			fieldsToEncrypt,
+			this.config.encryption.document,
 		) { Serialization.json.decodeFromJsonElement<EncryptedDocument>(it) }
 
 	override suspend fun maybeDecrypt(
 		entitiesGroupId: String?,
 		entities: List<EncryptedDocument>
 	): List<DecryptedDocument> =
-		crypto.entity.decryptEntities(
+		this.config.crypto.entity.decryptEntities(
 			entitiesGroupId,
 			entities,
 			EntityWithEncryptionMetadataTypeName.Document,
@@ -233,7 +237,12 @@ internal class DocumentApiImpl(
 				entitiesGroupId: String?,
 				entities: List<EncryptedDocument>
 			): List<EncryptedDocument> =
-				crypto.entity.validateEncryptedEntities(entities, EntityWithEncryptionMetadataTypeName.Document, EncryptedDocument.serializer(), fieldsToEncrypt)
+				config.crypto.entity.validateEncryptedEntities(
+					entities,
+					EntityWithEncryptionMetadataTypeName.Document,
+					EncryptedDocument.serializer(),
+					config.encryption.document
+				)
 
 			override suspend fun maybeDecrypt(
 				entitiesGroupId: String?,
@@ -253,14 +262,14 @@ internal class DocumentApiImpl(
 					entitiesType = EntityWithEncryptionMetadataTypeName.Document,
 					encryptedSerializer = EncryptedDocument.serializer(),
 					decryptedSerializer = DecryptedDocument.serializer(),
-					fieldsToEncrypt = fieldsToEncrypt
+					fieldsToEncrypt = config.encryption.document
 				)
 
 			override suspend fun maybeDecrypt(
 				entitiesGroupId: String?,
 				entities: List<EncryptedDocument>
 			): List<Document> =
-				crypto.entity.tryDecryptEntities(
+				config.crypto.entity.tryDecryptEntities(
 					entitiesGroupId,
 					entities,
 					EntityWithEncryptionMetadataTypeName.Document,

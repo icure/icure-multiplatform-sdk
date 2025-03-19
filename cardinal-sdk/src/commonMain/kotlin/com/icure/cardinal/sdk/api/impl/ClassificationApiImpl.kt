@@ -51,11 +51,8 @@ private abstract class AbstractClassificationBasicFlavouredApi<E : Classificatio
 @InternalIcureApi
 private abstract class AbstractClassificationFlavouredApi<E : Classification>(
 	rawApi: RawClassificationApi,
-	private val config: ApiConfiguration,
+	protected val config: ApiConfiguration,
 ) : AbstractClassificationBasicFlavouredApi<E>(rawApi), ClassificationFlavouredApi<E> {
-	protected val crypto get() = config.crypto
-	protected val fieldsToEncrypt get() = config.encryption.classification
-
 	override suspend fun shareWith(
 		delegateId: String,
 		classification: E,
@@ -64,7 +61,7 @@ private abstract class AbstractClassificationFlavouredApi<E : Classification>(
 		shareWithMany(classification, mapOf(delegateId to (options ?: ClassificationShareOptions())))
 
 	override suspend fun shareWithMany(classification: E, delegates: Map<String, ClassificationShareOptions>): E =
-		crypto.entity.simpleShareOrUpdateEncryptedEntityMetadata(
+		config.crypto.entity.simpleShareOrUpdateEncryptedEntityMetadata(
 			null,
 			classification,
 			EntityWithEncryptionMetadataTypeName.Classification,
@@ -87,7 +84,13 @@ private abstract class AbstractClassificationFlavouredApi<E : Classification>(
 			startDate = startDate,
 			endDate = endDate,
 			descending = descending,
-			secretPatientKeys = ListOfIds(crypto.entity.secretIdsOf(null, patient, EntityWithEncryptionMetadataTypeName.Patient, null).toList())
+			secretPatientKeys = ListOfIds(
+				config.crypto.entity.secretIdsOf(
+					null,
+					patient,
+					EntityWithEncryptionMetadataTypeName.Patient,
+					null
+				).toList())
 		).successBody()
 	) { ids ->
 		maybeDecrypt(rawApi.getClassifications(ListOfIds(ids)).successBody())
@@ -130,19 +133,19 @@ internal class ClassificationApiImpl(
 		entitiesGroupId: String?,
 		entities: List<DecryptedClassification>
 	): List<EncryptedClassification> =
-		crypto.entity.encryptEntities(
+		this.config.crypto.entity.encryptEntities(
 			entitiesGroupId,
 			entities,
 			EntityWithEncryptionMetadataTypeName.Classification,
 			DecryptedClassification.serializer(),
-			fieldsToEncrypt,
+			this.config.encryption.classification,
 		) { Serialization.json.decodeFromJsonElement<EncryptedClassification>(it) }
 
 	override suspend fun maybeDecrypt(
 		entitiesGroupId: String?,
 		entities: List<EncryptedClassification>
 	): List<DecryptedClassification> =
-		crypto.entity.decryptEntities(
+		this.config.crypto.entity.decryptEntities(
 			entitiesGroupId,
 			entities,
 			EntityWithEncryptionMetadataTypeName.Classification,
@@ -155,7 +158,12 @@ internal class ClassificationApiImpl(
 				entitiesGroupId: String?,
 				entities: List<EncryptedClassification>
 			): List<EncryptedClassification> =
-				crypto.entity.validateEncryptedEntities(entities, EntityWithEncryptionMetadataTypeName.Classification, EncryptedClassification.serializer(), fieldsToEncrypt)
+				config.crypto.entity.validateEncryptedEntities(
+					entities,
+					EntityWithEncryptionMetadataTypeName.Classification,
+					EncryptedClassification.serializer(),
+					config.encryption.classification
+				)
 
 			override suspend fun maybeDecrypt(
 				entitiesGroupId: String?,
@@ -168,25 +176,31 @@ internal class ClassificationApiImpl(
 			override suspend fun validateAndMaybeEncrypt(
 				entitiesGroupId: String?,
 				entities: List<Classification>
-			): List<EncryptedClassification> = crypto.entity.validateOrEncryptEntities(
+			): List<EncryptedClassification> = config.crypto.entity.validateOrEncryptEntities(
 				entitiesGroupId,
 				entities,
 				EntityWithEncryptionMetadataTypeName.Classification,
 				EncryptedClassification.serializer(),
 				DecryptedClassification.serializer(),
-				fieldsToEncrypt
+				config.encryption.classification
 			)
 
 			override suspend fun maybeDecrypt(
 				entitiesGroupId: String?,
 				entities: List<EncryptedClassification>
 			): List<Classification> =
-				crypto.entity.tryDecryptEntities(
+				config.crypto.entity.tryDecryptEntities(
 					entitiesGroupId,
 					entities,
 					EntityWithEncryptionMetadataTypeName.Classification,
 					EncryptedClassification.serializer(),
-				) { Serialization.json.decodeFromJsonElement<DecryptedClassification>(config.jsonPatcher.patchClassification(it)) }
+				) {
+					Serialization.json.decodeFromJsonElement<DecryptedClassification>(
+						config.jsonPatcher.patchClassification(
+							it
+						)
+					)
+				}
 		}
 
 	override suspend fun createClassification(entity: DecryptedClassification): DecryptedClassification {

@@ -7,7 +7,6 @@ import com.icure.cardinal.sdk.api.AccessLogBasicFlavourlessApi
 import com.icure.cardinal.sdk.api.AccessLogFlavouredApi
 import com.icure.cardinal.sdk.api.raw.RawAccessLogApi
 import com.icure.cardinal.sdk.api.raw.successBodyOrThrowRevisionConflict
-import com.icure.cardinal.sdk.crypto.InternalCryptoServices
 import com.icure.cardinal.sdk.crypto.entities.AccessLogShareOptions
 import com.icure.cardinal.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
 import com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption
@@ -93,10 +92,8 @@ private abstract class AbstractAccessLogBasicFlavouredApi<E : AccessLog>(
 @InternalIcureApi
 private abstract class AbstractAccessLogFlavouredApi<E : AccessLog>(
 	rawApi: RawAccessLogApi,
-	private val config: ApiConfiguration
+	protected val config: ApiConfiguration
 ) : AbstractAccessLogBasicFlavouredApi<E>(rawApi), AccessLogFlavouredApi<E> {
-	protected val crypto: InternalCryptoServices get() = config.crypto
-	protected val fieldsToEncrypt get() = config.encryption.accessLog
 
 	override suspend fun shareWith(
 		delegateId: String,
@@ -106,7 +103,7 @@ private abstract class AbstractAccessLogFlavouredApi<E : AccessLog>(
 		shareWithMany(accessLog, mapOf(Pair(delegateId, options ?: AccessLogShareOptions())))
 
 	override suspend fun shareWithMany(accessLog: E, delegates: Map<String, AccessLogShareOptions>): E =
-		crypto.entity.simpleShareOrUpdateEncryptedEntityMetadata(
+		config.crypto.entity.simpleShareOrUpdateEncryptedEntityMetadata(
 			null,
 			accessLog,
 			EntityWithEncryptionMetadataTypeName.AccessLog,
@@ -130,7 +127,7 @@ private abstract class AbstractAccessLogFlavouredApi<E : AccessLog>(
 			endDate = endDate,
 			descending = descending,
 			secretPatientKeys = ListOfIds(
-				crypto.entity.secretIdsOf(
+				config.crypto.entity.secretIdsOf(
 					null,
 					patient,
 					EntityWithEncryptionMetadataTypeName.Patient,
@@ -183,24 +180,24 @@ internal class AccessLogApiImpl(
 		entitiesGroupId: String?,
 		entities: List<DecryptedAccessLog>
 	): List<EncryptedAccessLog> =
-		crypto.entity.encryptEntities(
+		this.config.crypto.entity.encryptEntities(
 			entitiesGroupId,
 			entities,
 			EntityWithEncryptionMetadataTypeName.AccessLog,
 			DecryptedAccessLog.serializer(),
-			fieldsToEncrypt
+			this.config.encryption.accessLog
 		) { Serialization.json.decodeFromJsonElement<EncryptedAccessLog>(it) }
 
 	override suspend fun maybeDecrypt(
 		entitiesGroupId: String?,
 		entities: List<EncryptedAccessLog>
 	): List<DecryptedAccessLog> =
-		crypto.entity.decryptEntities(
+		this.config.crypto.entity.decryptEntities(
 			entitiesGroupId,
 			entities,
 			EntityWithEncryptionMetadataTypeName.AccessLog,
 			EncryptedAccessLog.serializer(),
-		) { Serialization.json.decodeFromJsonElement<DecryptedAccessLog>(config.jsonPatcher.patchAccessLog(it)) }
+		) { Serialization.json.decodeFromJsonElement<DecryptedAccessLog>(this.config.jsonPatcher.patchAccessLog(it)) }
 
 }, AccessLogBasicFlavourlessApi by AbstractAccessLogBasicFlavourlessApi(rawApi) {
 
@@ -210,11 +207,11 @@ internal class AccessLogApiImpl(
 				entitiesGroupId: String?,
 				entities: List<EncryptedAccessLog>
 			): List<EncryptedAccessLog> =
-				crypto.entity.validateEncryptedEntities(
+				config.crypto.entity.validateEncryptedEntities(
 					entities,
 					EntityWithEncryptionMetadataTypeName.AccessLog,
 					EncryptedAccessLog.serializer(),
-					fieldsToEncrypt
+					config.encryption.accessLog
 				)
 
 
@@ -231,20 +228,20 @@ internal class AccessLogApiImpl(
 				entitiesGroupId: String?,
 				entities: List<AccessLog>
 			): List<EncryptedAccessLog> =
-				crypto.entity.validateOrEncryptEntities(
+				config.crypto.entity.validateOrEncryptEntities(
 					entitiesGroupId,
 					entities,
 					EntityWithEncryptionMetadataTypeName.AccessLog,
 					EncryptedAccessLog.serializer(),
 					DecryptedAccessLog.serializer(),
-					fieldsToEncrypt
+					config.encryption.accessLog
 				)
 
 			override suspend fun maybeDecrypt(
 				entitiesGroupId: String?,
 				entities: List<EncryptedAccessLog>
 			): List<AccessLog> =
-				crypto.entity.tryDecryptEntities(
+				config.crypto.entity.tryDecryptEntities(
 					entitiesGroupId,
 					entities,
 					EntityWithEncryptionMetadataTypeName.AccessLog,
@@ -267,7 +264,13 @@ internal class AccessLogApiImpl(
 	override suspend fun createAccessLog(entity: DecryptedAccessLog): DecryptedAccessLog {
 		require(entity.securityMetadata != null) { "Entity must have security metadata initialized. You can use the withEncryptionMetadata for that very purpose." }
 		return rawApi.createAccessLog(
-			encrypt(entity),
+			crypto.entity.encryptEntities(
+				null,
+				listOf(entity),
+				EntityWithEncryptionMetadataTypeName.AccessLog,
+				DecryptedAccessLog.serializer(),
+				config.encryption.accessLog,
+			) { Serialization.json.decodeFromJsonElement<EncryptedAccessLog>(it) }.single(),
 		).successBody().let {
 			decrypt(it)
 		}
@@ -300,14 +303,6 @@ internal class AccessLogApiImpl(
 			initializeEncryptionKey = true,
 			autoDelegations = (delegates + user?.autoDelegationsFor(DelegationTag.AdministrativeData).orEmpty()).keyAsLocalDataOwnerReferences(),
 		).updatedEntity
-
-	private suspend fun encrypt(entity: DecryptedAccessLog) = crypto.entity.encryptEntities(
-		null,
-		listOf(entity),
-		EntityWithEncryptionMetadataTypeName.AccessLog,
-		DecryptedAccessLog.serializer(),
-		config.encryption.accessLog,
-	) { Serialization.json.decodeFromJsonElement<EncryptedAccessLog>(it) }.single()
 
 	override suspend fun decrypt(accessLog: EncryptedAccessLog): DecryptedAccessLog =
 		crypto.entity.decryptEntities(

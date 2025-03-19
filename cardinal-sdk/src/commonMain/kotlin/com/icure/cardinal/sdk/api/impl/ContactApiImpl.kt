@@ -139,11 +139,8 @@ private abstract class AbstractContactBasicFlavouredApi<E : Contact, S : Service
 @InternalIcureApi
 private abstract class AbstractContactFlavouredApi<E : Contact, S : Service>(
 	rawApi: RawContactApi,
-	private val config: ApiConfiguration,
+	protected val config: ApiConfiguration,
 ) : AbstractContactBasicFlavouredApi<E, S>(rawApi, config), ContactFlavouredApi<E, S> {
-	protected val crypto get() = config.crypto
-	protected val fieldsToEncrypt get() = config.encryption.contact
-	protected val serviceFieldsToEncrypt get() = config.encryption.serviceBase
 
 	override suspend fun shareWith(
 		delegateId: String,
@@ -153,7 +150,7 @@ private abstract class AbstractContactFlavouredApi<E : Contact, S : Service>(
 		shareWithMany(contact, mapOf(delegateId to (options ?: ContactShareOptions())))
 
 	override suspend fun shareWithMany(contact: E, delegates: Map<String, ContactShareOptions>): E =
-		crypto.entity.simpleShareOrUpdateEncryptedEntityMetadata(
+		config.crypto.entity.simpleShareOrUpdateEncryptedEntityMetadata(
 			null,
 			contact,
 			EntityWithEncryptionMetadataTypeName.Contact,
@@ -176,7 +173,13 @@ private abstract class AbstractContactFlavouredApi<E : Contact, S : Service>(
 			startDate = startDate,
 			endDate = endDate,
 			descending = descending,
-			secretPatientKeys = ListOfIds(crypto.entity.secretIdsOf(null, patient, EntityWithEncryptionMetadataTypeName.Patient, null).toList())
+			secretPatientKeys = ListOfIds(
+				config.crypto.entity.secretIdsOf(
+					null,
+					patient,
+					EntityWithEncryptionMetadataTypeName.Patient,
+					null
+				).toList())
 		).successBody()
 	) { ids ->
 		maybeDecrypt(rawApi.getContacts(ListOfIds(ids)).successBody())
@@ -417,7 +420,7 @@ internal class ContactApiImpl(
 		entitiesGroupId: String?,
 		entities: List<EncryptedContact>
 	): List<DecryptedContact> =
-		crypto.entity.decryptEntities(
+		this.config.crypto.entity.decryptEntities(
 			entitiesGroupId,
 			entities,
 			EntityWithEncryptionMetadataTypeName.Contact,
@@ -485,7 +488,7 @@ internal class ContactApiImpl(
 				entitiesGroupId: String?,
 				entities: List<EncryptedContact>
 			): List<Contact> =
-				crypto.entity.tryDecryptEntities(
+				config.crypto.entity.tryDecryptEntities(
 					entitiesGroupId,
 					entities,
 					EntityWithEncryptionMetadataTypeName.Contact,
