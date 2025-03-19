@@ -10,6 +10,7 @@ import com.icure.cardinal.sdk.crypto.EntityEncryptionService
 import com.icure.cardinal.sdk.crypto.EntityValidationService
 import com.icure.cardinal.sdk.crypto.ExchangeDataManager
 import com.icure.cardinal.sdk.crypto.ExchangeKeysManager
+import com.icure.cardinal.sdk.crypto.IncrementalSecurityMetadataDecryptor
 import com.icure.cardinal.sdk.crypto.InternalCryptoServices
 import com.icure.cardinal.sdk.crypto.JsonEncryptionService
 import com.icure.cardinal.sdk.crypto.RecoveryDataEncryption
@@ -36,7 +37,8 @@ class InternalCryptoApiImpl(
 	override val headersProvider: AccessControlKeysHeadersProvider,
 	override val strategies: CryptoStrategies,
 	override val overrideAnonymityHeader: Pair<String, String>?,
-	private val secureDelegationsManager: SecureDelegationsManager
+	private val secureDelegationsManager: SecureDelegationsManager,
+	override val incrementalSecurityMetadataDecryptor: IncrementalSecurityMetadataDecryptor,
 ) : InternalCryptoServices {
 	/**
 	 * Deletes all cached data in crypto services and reloads as needed.
