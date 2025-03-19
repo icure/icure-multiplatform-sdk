@@ -54,16 +54,6 @@ class RawCalendarItemTypeApiImpl(
 			accept(Application.Json)
 		}.wrap()
 
-	override suspend fun listCalendarItemTypesByAgendaId(agendaId: String): HttpResponse<List<CalendarItemType>> =
-		get(authProvider) {
-			url {
-				takeFrom(apiUrl)
-				appendPathSegments("rest", "v2", "calendarItemType", "byAgenda", agendaId)
-				parameter("ts", GMTDate().timestamp)
-			}
-			accept(Application.Json)
-		}.wrap()
-
 	override suspend fun getCalendarItemTypesIncludingDeleted(
 		startKey: String?,
 		startDocumentId: String?,

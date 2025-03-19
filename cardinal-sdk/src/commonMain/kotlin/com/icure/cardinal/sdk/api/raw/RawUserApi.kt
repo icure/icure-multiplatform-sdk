@@ -173,6 +173,11 @@ public interface RawUserApi {
 		userIds: ListOfIds,
 	): HttpResponse<List<User>>
 
+	suspend fun getUserInGroup(
+		groupId: String,
+		userId: String,
+	): HttpResponse<User>
+
 	suspend fun matchUsersInGroupBy(
 		groupId: String,
 		filter: AbstractFilter<User>,
@@ -207,5 +212,11 @@ public interface RawUserApi {
 		groupId: String,
 		filter: AbstractFilter<User>,
 	): HttpResponse<List<String>>
+
+	suspend fun setUserInheritsPermissions(
+		userId: String,
+		groupId: String,
+		`value`: Boolean,
+	): HttpResponse<String>
 	// endregion
 }
