@@ -41,19 +41,37 @@ internal suspend inline fun <Base, reified EncryptedEntity : Base, reified Decry
 	encryptedSerializer: KSerializer<EncryptedEntity>,
 	decryptedSerializer: KSerializer<DecryptedEntity>,
 	fieldsToEncrypt: EncryptedFieldsManifest
-): List<EncryptedEntity> where Base : HasEncryptionMetadata, Base : Encryptable {
-	val encryptedById = encryptEntities(
-		entitiesGroupId,
-		entities.filterIsInstance<DecryptedEntity>(),
-		entitiesType,
-		decryptedSerializer,
-		fieldsToEncrypt
-	) { Serialization.json.decodeFromJsonElement(encryptedSerializer, it) }.associateBy { it.id }
-	validateEncryptedEntities(
-		entities.filterIsInstance<EncryptedEntity>(),
-		entitiesType,
-		encryptedSerializer,
-		fieldsToEncrypt
+): List<EncryptedEntity> where Base : HasEncryptionMetadata, Base : Encryptable =
+	validateOrEncryptEntities<Base, EncryptedEntity, DecryptedEntity>(
+		entities = entities,
+		doEncrypt = { decryptedEntities ->
+			encryptEntities(
+				entitiesGroupId,
+				decryptedEntities,
+				entitiesType,
+				decryptedSerializer,
+				fieldsToEncrypt
+			) { Serialization.json.decodeFromJsonElement(encryptedSerializer, it) }
+		},
+		doValidate = {
+			validateEncryptedEntities(
+				it,
+				entitiesType,
+				encryptedSerializer,
+				fieldsToEncrypt
+			)
+		}
 	)
+
+@InternalIcureApi
+internal inline fun <Base, reified EncryptedEntity : Base, reified DecryptedEntity : Base> validateOrEncryptEntities(
+	entities: List<Base>,
+	// Should fail if any can't be encrypted
+	doEncrypt: (List<DecryptedEntity>) -> List<EncryptedEntity>,
+	// Should fail if any is not properly encrypted
+	doValidate: (List<EncryptedEntity>) -> Unit
+): List<EncryptedEntity> where Base : HasEncryptionMetadata, Base : Encryptable {
+	val encryptedById = doEncrypt(entities.filterIsInstance<DecryptedEntity>()).associateBy { it.id }
+	doValidate(entities.filterIsInstance<EncryptedEntity>())
 	return entities.map { encryptedById[it.id] ?: it as EncryptedEntity }
 }

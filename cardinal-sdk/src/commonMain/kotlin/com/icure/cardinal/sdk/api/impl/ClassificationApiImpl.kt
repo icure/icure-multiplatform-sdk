@@ -8,8 +8,8 @@ import com.icure.cardinal.sdk.api.ClassificationFlavouredApi
 import com.icure.cardinal.sdk.api.raw.RawClassificationApi
 import com.icure.cardinal.sdk.api.raw.successBodyOrThrowRevisionConflict
 import com.icure.cardinal.sdk.crypto.entities.ClassificationShareOptions
+import com.icure.cardinal.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
 import com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption
-import com.icure.cardinal.sdk.crypto.entities.withTypeInfo
 import com.icure.cardinal.sdk.filters.BaseFilterOptions
 import com.icure.cardinal.sdk.filters.BaseSortableFilterOptions
 import com.icure.cardinal.sdk.filters.FilterOptions
@@ -28,7 +28,6 @@ import com.icure.cardinal.sdk.model.extensions.dataOwnerId
 import com.icure.cardinal.sdk.model.specializations.HexString
 import com.icure.cardinal.sdk.options.ApiConfiguration
 import com.icure.cardinal.sdk.options.BasicApiConfiguration
-import com.icure.cardinal.sdk.utils.EntityEncryptionException
 import com.icure.cardinal.sdk.utils.Serialization
 import com.icure.cardinal.sdk.utils.currentEpochMs
 import com.icure.cardinal.sdk.utils.pagination.IdsPageIterator
@@ -38,18 +37,15 @@ import kotlinx.serialization.json.decodeFromJsonElement
 
 @InternalIcureApi
 private abstract class AbstractClassificationBasicFlavouredApi<E : Classification>(protected val rawApi: RawClassificationApi) :
-	ClassificationBasicFlavouredApi<E> {
+	ClassificationBasicFlavouredApi<E>, FlavouredApi<EncryptedClassification, E> {
 	override suspend fun modifyClassification(entity: E): E =
-		rawApi.modifyClassification(validateAndMaybeEncrypt(entity)).successBodyOrThrowRevisionConflict().let { maybeDecrypt(it) }
+		rawApi.modifyClassification(validateAndMaybeEncrypt(null, entity)).successBodyOrThrowRevisionConflict().let { maybeDecrypt(null, it) }
 
 
-	override suspend fun getClassification(entityId: String): E = rawApi.getClassification(entityId).successBody().let { maybeDecrypt(it) }
+	override suspend fun getClassification(entityId: String): E = rawApi.getClassification(entityId).successBody().let { maybeDecrypt(null, it) }
 
 	override suspend fun getClassifications(entityIds: List<String>): List<E> =
-		rawApi.getClassifications(ListOfIds(entityIds)).successBody().map { maybeDecrypt(it) }
-
-	abstract suspend fun validateAndMaybeEncrypt(entity: E): EncryptedClassification
-	abstract suspend fun maybeDecrypt(entity: EncryptedClassification): E
+		maybeDecrypt(rawApi.getClassifications(ListOfIds(entityIds)).successBody())
 }
 
 @InternalIcureApi
@@ -69,11 +65,13 @@ private abstract class AbstractClassificationFlavouredApi<E : Classification>(
 
 	override suspend fun shareWithMany(classification: E, delegates: Map<String, ClassificationShareOptions>): E =
 		crypto.entity.simpleShareOrUpdateEncryptedEntityMetadata(
-			classification.withTypeInfo(),
-			delegates,
+			null,
+			classification,
+			EntityWithEncryptionMetadataTypeName.Classification,
+			delegates.keyAsLocalDataOwnerReferences(),
 			true,
-			{ getClassification(it).withTypeInfo() },
-			{ rawApi.bulkShare(it).successBody().map { r -> r.map { he -> maybeDecrypt(he) } } }
+			{ getClassification(it) },
+			{ maybeDecrypt(null, rawApi.bulkShare(it).successBody()) }
 		).updatedEntityOrThrow()
 
 	@Deprecated("Use filter instead")
@@ -89,10 +87,10 @@ private abstract class AbstractClassificationFlavouredApi<E : Classification>(
 			startDate = startDate,
 			endDate = endDate,
 			descending = descending,
-			secretPatientKeys = ListOfIds(crypto.entity.secretIdsOf(patient.withTypeInfo(), null).toList())
+			secretPatientKeys = ListOfIds(crypto.entity.secretIdsOf(null, patient, EntityWithEncryptionMetadataTypeName.Patient, null).toList())
 		).successBody()
 	) { ids ->
-		rawApi.getClassifications(ListOfIds(ids)).successBody().map { maybeDecrypt(it) }
+		maybeDecrypt(rawApi.getClassifications(ListOfIds(ids)).successBody())
 	}
 
 	override suspend fun filterClassificationsBySorted(filter: SortableFilterOptions<Classification>): PaginatedListIterator<E> =
@@ -128,51 +126,67 @@ internal class ClassificationApiImpl(
 	private val config: ApiConfiguration,
 ) : ClassificationApi, ClassificationFlavouredApi<DecryptedClassification> by object :
 	AbstractClassificationFlavouredApi<DecryptedClassification>(rawApi, config) {
-	override suspend fun validateAndMaybeEncrypt(entity: DecryptedClassification): EncryptedClassification =
+	override suspend fun validateAndMaybeEncrypt(
+		entitiesGroupId: String?,
+		entities: List<DecryptedClassification>
+	): List<EncryptedClassification> =
 		crypto.entity.encryptEntities(
-			entity.withTypeInfo(),
+			entitiesGroupId,
+			entities,
+			EntityWithEncryptionMetadataTypeName.Classification,
 			DecryptedClassification.serializer(),
 			fieldsToEncrypt,
 		) { Serialization.json.decodeFromJsonElement<EncryptedClassification>(it) }
 
-	override suspend fun maybeDecrypt(entity: EncryptedClassification): DecryptedClassification {
-		return crypto.entity.tryDecryptEntities(
-			entity.withTypeInfo(),
+	override suspend fun maybeDecrypt(
+		entitiesGroupId: String?,
+		entities: List<EncryptedClassification>
+	): List<DecryptedClassification> =
+		crypto.entity.decryptEntities(
+			entitiesGroupId,
+			entities,
+			EntityWithEncryptionMetadataTypeName.Classification,
 			EncryptedClassification.serializer(),
 		) { Serialization.json.decodeFromJsonElement<DecryptedClassification>(config.jsonPatcher.patchClassification(it)) }
-			?: throw EntityEncryptionException("Entity ${entity.id} cannot be created")
-	}
 }, ClassificationBasicFlavourlessApi by AbstractClassificationBasicFlavourlessApi(rawApi) {
 	override val encrypted: ClassificationFlavouredApi<EncryptedClassification> =
 		object : AbstractClassificationFlavouredApi<EncryptedClassification>(rawApi, config) {
-			override suspend fun validateAndMaybeEncrypt(entity: EncryptedClassification): EncryptedClassification =
-				crypto.entity.validateEncryptedEntity(entity.withTypeInfo(), EncryptedClassification.serializer(), fieldsToEncrypt)
+			override suspend fun validateAndMaybeEncrypt(
+				entitiesGroupId: String?,
+				entities: List<EncryptedClassification>
+			): List<EncryptedClassification> =
+				crypto.entity.validateEncryptedEntities(entities, EntityWithEncryptionMetadataTypeName.Classification, EncryptedClassification.serializer(), fieldsToEncrypt)
 
-			override suspend fun maybeDecrypt(entity: EncryptedClassification): EncryptedClassification = entity
+			override suspend fun maybeDecrypt(
+				entitiesGroupId: String?,
+				entities: List<EncryptedClassification>
+			): List<EncryptedClassification> = entities
 		}
 
 	override val tryAndRecover: ClassificationFlavouredApi<Classification> =
 		object : AbstractClassificationFlavouredApi<Classification>(rawApi, config) {
-			override suspend fun maybeDecrypt(entity: EncryptedClassification): Classification =
+			override suspend fun validateAndMaybeEncrypt(
+				entitiesGroupId: String?,
+				entities: List<Classification>
+			): List<EncryptedClassification> = crypto.entity.validateOrEncryptEntities(
+				entitiesGroupId,
+				entities,
+				EntityWithEncryptionMetadataTypeName.Classification,
+				EncryptedClassification.serializer(),
+				DecryptedClassification.serializer(),
+				fieldsToEncrypt
+			)
+
+			override suspend fun maybeDecrypt(
+				entitiesGroupId: String?,
+				entities: List<EncryptedClassification>
+			): List<Classification> =
 				crypto.entity.tryDecryptEntities(
-					entity.withTypeInfo(),
+					entitiesGroupId,
+					entities,
+					EntityWithEncryptionMetadataTypeName.Classification,
 					EncryptedClassification.serializer(),
 				) { Serialization.json.decodeFromJsonElement<DecryptedClassification>(config.jsonPatcher.patchClassification(it)) }
-					?: entity
-
-			override suspend fun validateAndMaybeEncrypt(entity: Classification): EncryptedClassification = when (entity) {
-				is EncryptedClassification -> crypto.entity.validateEncryptedEntity(
-					entity.withTypeInfo(),
-					EncryptedClassification.serializer(),
-					fieldsToEncrypt,
-				)
-
-				is DecryptedClassification -> crypto.entity.encryptEntities(
-					entity.withTypeInfo(),
-					DecryptedClassification.serializer(),
-					fieldsToEncrypt,
-				) { Serialization.json.decodeFromJsonElement<EncryptedClassification>(it) }
-			}
 		}
 
 	override suspend fun createClassification(entity: DecryptedClassification): DecryptedClassification {
@@ -194,45 +208,53 @@ internal class ClassificationApiImpl(
 		secretId: SecretIdUseOption,
 	): DecryptedClassification =
 		crypto.entity.entityWithInitializedEncryptedMetadata(
+			null,
 			(base ?: DecryptedClassification(crypto.primitives.strongRandom.randomUUID())).copy(
 				created = base?.created ?: currentEpochMs(),
 				modified = base?.modified ?: currentEpochMs(),
 				responsible = base?.responsible ?: user?.takeIf { config.autofillAuthor }?.dataOwnerId,
 				author = base?.author ?: user?.id?.takeIf { config.autofillAuthor },
-			).withTypeInfo(),
+			),
+			EntityWithEncryptionMetadataTypeName.Classification,
 			patient.id,
-			crypto.entity.resolveSecretIdOption(patient.withTypeInfo(), secretId),
+			crypto.entity.resolveSecretIdOption(null, patient, EntityWithEncryptionMetadataTypeName.Patient, secretId),
 			initializeEncryptionKey = true,
-			autoDelegations = delegates + user?.autoDelegationsFor(DelegationTag.MedicalInformation).orEmpty(),
+			autoDelegations = (delegates + user?.autoDelegationsFor(DelegationTag.MedicalInformation).orEmpty()).keyAsLocalDataOwnerReferences(),
 		).updatedEntity
 
-	override suspend fun getEncryptionKeysOf(classification: Classification): Set<HexString> = crypto.entity.encryptionKeysOf(classification.withTypeInfo(), null)
+	override suspend fun getEncryptionKeysOf(classification: Classification): Set<HexString> = crypto.entity.encryptionKeysOf(null, classification, EntityWithEncryptionMetadataTypeName.Classification, null)
 
-	override suspend fun hasWriteAccess(classification: Classification): Boolean = crypto.entity.hasWriteAccess(classification.withTypeInfo())
+	override suspend fun hasWriteAccess(classification: Classification): Boolean = crypto.entity.hasWriteAccess(null, classification, EntityWithEncryptionMetadataTypeName.Classification)
 
-	override suspend fun decryptPatientIdOf(classification: Classification): Set<String> = crypto.entity.owningEntityIdsOf(classification.withTypeInfo(), null)
+	override suspend fun decryptPatientIdOf(classification: Classification): Set<String> = crypto.entity.owningEntityIdsOf(null, classification, EntityWithEncryptionMetadataTypeName.Classification, null)
 
 	override suspend fun createDelegationDeAnonymizationMetadata(entity: Classification, delegates: Set<String>) {
-		crypto.delegationsDeAnonymization.createOrUpdateDeAnonymizationInfo(entity.withTypeInfo(), delegates)
+		crypto.delegationsDeAnonymization.createOrUpdateDeAnonymizationInfo(null, entity, EntityWithEncryptionMetadataTypeName.Classification, delegates.asLocalDataOwnerReferences())
 	}
 
 	private suspend fun encrypt(entity: DecryptedClassification) = crypto.entity.encryptEntities(
-		entity.withTypeInfo(),
+		null,
+		listOf(entity),
+		EntityWithEncryptionMetadataTypeName.Classification,
 		DecryptedClassification.serializer(),
 		config.encryption.classification
-	) { Serialization.json.decodeFromJsonElement<EncryptedClassification>(it) }
-
-	private suspend fun decryptOrNull(entity: EncryptedClassification): DecryptedClassification? =
-		crypto.entity.tryDecryptEntities(
-			entity.withTypeInfo(),
-			EncryptedClassification.serializer(),
-		) { Serialization.json.decodeFromJsonElement<DecryptedClassification>(config.jsonPatcher.patchClassification(it)) }
+	) { Serialization.json.decodeFromJsonElement<EncryptedClassification>(it) }.single()
 
 	override suspend fun decrypt(classification: EncryptedClassification): DecryptedClassification =
-		decryptOrNull(classification) ?: throw EntityEncryptionException("Classification cannot be decrypted")
+		crypto.entity.decryptEntities(
+			null,
+			listOf(classification),
+			EntityWithEncryptionMetadataTypeName.Classification,
+			EncryptedClassification.serializer(),
+		) { Serialization.json.decodeFromJsonElement<DecryptedClassification>(config.jsonPatcher.patchClassification(it)) }.single()
 
 	override suspend fun tryDecrypt(classification: EncryptedClassification): Classification =
-		decryptOrNull(classification) ?: classification
+		crypto.entity.tryDecryptEntities(
+			null,
+			listOf(classification),
+			EntityWithEncryptionMetadataTypeName.Classification,
+			EncryptedClassification.serializer(),
+		) { Serialization.json.decodeFromJsonElement<DecryptedClassification>(config.jsonPatcher.patchClassification(it)) }.single()
 
 	override suspend fun matchClassificationsBy(filter: FilterOptions<Classification>): List<String> =
 		rawApi.matchClassificationBy(
@@ -253,10 +275,16 @@ internal class ClassificationBasicApiImpl(
 	private val config: BasicApiConfiguration,
 ) : ClassificationBasicApi, ClassificationBasicFlavouredApi<EncryptedClassification> by object :
 	AbstractClassificationBasicFlavouredApi<EncryptedClassification>(rawApi) {
-	override suspend fun validateAndMaybeEncrypt(entity: EncryptedClassification): EncryptedClassification =
-		config.crypto.validationService.validateEncryptedEntity(entity.withTypeInfo(), EncryptedClassification.serializer(), config.encryption.classification)
+	override suspend fun validateAndMaybeEncrypt(
+		entitiesGroupId: String?,
+		entities: List<EncryptedClassification>
+	): List<EncryptedClassification> =
+		config.crypto.validationService.validateEncryptedEntities(entities, EntityWithEncryptionMetadataTypeName.Classification, EncryptedClassification.serializer(), config.encryption.classification)
 
-	override suspend fun maybeDecrypt(entity: EncryptedClassification): EncryptedClassification = entity
+	override suspend fun maybeDecrypt(
+		entitiesGroupId: String?,
+		entities: List<EncryptedClassification>
+	): List<EncryptedClassification> = entities
 }, ClassificationBasicFlavourlessApi by AbstractClassificationBasicFlavourlessApi(rawApi) {
 	override suspend fun matchClassificationsBy(filter: BaseFilterOptions<Classification>): List<String> =
 		rawApi.matchClassificationBy(
