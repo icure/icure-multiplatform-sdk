@@ -10,7 +10,6 @@ import com.icure.cardinal.sdk.api.raw.successBodyOrThrowRevisionConflict
 import com.icure.cardinal.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
 import com.icure.cardinal.sdk.crypto.entities.FormShareOptions
 import com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption
-import com.icure.cardinal.sdk.crypto.entities.withTypeInfo
 import com.icure.cardinal.sdk.filters.BaseFilterOptions
 import com.icure.cardinal.sdk.filters.BaseSortableFilterOptions
 import com.icure.cardinal.sdk.filters.FilterOptions
@@ -265,7 +264,13 @@ internal class FormApiImpl(
 	override suspend fun createForm(entity: DecryptedForm): DecryptedForm {
 		require(entity.securityMetadata != null) { "Entity must have security metadata initialized. You can use the withEncryptionMetadata for that very purpose." }
 		return rawApi.createForm(
-			encrypt(entity),
+			config.crypto.entity.encryptEntities(
+				null,
+				listOf(entity),
+				EntityWithEncryptionMetadataTypeName.Form,
+				DecryptedForm.serializer(),
+				config.encryption.form,
+			) { Serialization.json.decodeFromJsonElement<EncryptedForm>(it) }.single(),
 		).successBody().let {
 			decrypt(it)
 		}
@@ -274,16 +279,17 @@ internal class FormApiImpl(
 	override suspend fun createForms(entities: List<DecryptedForm>): List<DecryptedForm> {
 		require(entities.all { it.securityMetadata != null }) { "All entities must have security metadata initialized. You can use the withEncryptionMetadata for that very purpose." }
 		return rawApi.createForms(
-			entities.map {
-				encrypt(it)
-			},
+			config.crypto.entity.encryptEntities(
+				null,
+				entities,
+				EntityWithEncryptionMetadataTypeName.Form,
+				DecryptedForm.serializer(),
+				config.encryption.form,
+			) { Serialization.json.decodeFromJsonElement<EncryptedForm>(it) },
 		).successBody().map {
 			decrypt(it)
 		}
 	}
-
-	private val crypto get() = config.crypto
-	private val fieldsToEncrypt get() = config.encryption.form
 
 	override suspend fun withEncryptionMetadata(
 		base: DecryptedForm?,
@@ -292,37 +298,47 @@ internal class FormApiImpl(
 		delegates: Map<String, AccessLevel>,
 		secretId: SecretIdUseOption,
 	): DecryptedForm =
-		crypto.entity.entityWithInitializedEncryptedMetadata(
-			(base ?: DecryptedForm(crypto.primitives.strongRandom.randomUUID())).copy(
+		config.crypto.entity.entityWithInitializedEncryptedMetadata(
+			null,
+			(base ?: DecryptedForm(config.crypto.primitives.strongRandom.randomUUID())).copy(
 				created = base?.created ?: currentEpochMs(),
 				modified = base?.modified ?: currentEpochMs(),
 				responsible = base?.responsible ?: user?.takeIf { config.autofillAuthor }?.dataOwnerId,
 				author = base?.author ?: user?.id?.takeIf { config.autofillAuthor },
-			).withTypeInfo(),
+			),
+			EntityWithEncryptionMetadataTypeName.Form,
 			patient.id,
-			crypto.entity.resolveSecretIdOption(patient.withTypeInfo(), secretId),
+			config.crypto.entity.resolveSecretIdOption(
+				null,
+				patient,
+				EntityWithEncryptionMetadataTypeName.Patient,
+				secretId
+			),
 			initializeEncryptionKey = true,
-			autoDelegations = delegates  + user?.autoDelegationsFor(DelegationTag.MedicalInformation).orEmpty(),
+			autoDelegations = (delegates + user?.autoDelegationsFor(DelegationTag.MedicalInformation)
+				.orEmpty()).keyAsLocalDataOwnerReferences(),
 		).updatedEntity
 
-	override suspend fun getEncryptionKeysOf(form: Form): Set<HexString> = crypto.entity.encryptionKeysOf(form.withTypeInfo(), null)
+	override suspend fun getEncryptionKeysOf(form: Form): Set<HexString> =
+		config.crypto.entity.encryptionKeysOf(null, form, EntityWithEncryptionMetadataTypeName.Form, null)
 
-	override suspend fun hasWriteAccess(form: Form): Boolean = crypto.entity.hasWriteAccess(form.withTypeInfo())
+	override suspend fun hasWriteAccess(form: Form): Boolean =
+		config.crypto.entity.hasWriteAccess(null, form, EntityWithEncryptionMetadataTypeName.Form)
 
-	override suspend fun decryptPatientIdOf(form: Form): Set<String> = crypto.entity.owningEntityIdsOf(form.withTypeInfo(), null)
+	override suspend fun decryptPatientIdOf(form: Form): Set<String> =
+		config.crypto.entity.owningEntityIdsOf(null, form, EntityWithEncryptionMetadataTypeName.Form, null)
 
 	override suspend fun createDelegationDeAnonymizationMetadata(entity: Form, delegates: Set<String>) {
-		crypto.delegationsDeAnonymization.createOrUpdateDeAnonymizationInfo(entity.withTypeInfo(), delegates)
+		config.crypto.delegationsDeAnonymization.createOrUpdateDeAnonymizationInfo(
+			null,
+			entity,
+			EntityWithEncryptionMetadataTypeName.Form,
+			delegates.asLocalDataOwnerReferences()
+		)
 	}
 
-	private suspend fun encrypt(entity: DecryptedForm) = crypto.entity.encryptEntities(
-		entity.withTypeInfo(),
-		DecryptedForm.serializer(),
-		fieldsToEncrypt,
-	) { Serialization.json.decodeFromJsonElement<EncryptedForm>(it) }
-
 	override suspend fun decrypt(form: EncryptedForm): DecryptedForm =
-		crypto.entity.decryptEntities(
+		config.crypto.entity.decryptEntities(
 			null,
 			listOf(form),
 			EntityWithEncryptionMetadataTypeName.Form,
@@ -330,7 +346,7 @@ internal class FormApiImpl(
 		) { Serialization.json.decodeFromJsonElement<DecryptedForm>(config.jsonPatcher.patchForm(it)) }.single()
 
 	override suspend fun tryDecrypt(form: EncryptedForm): Form =
-		crypto.entity.tryDecryptEntities(
+		config.crypto.entity.tryDecryptEntities(
 			null,
 			listOf(form),
 			EntityWithEncryptionMetadataTypeName.Form,
