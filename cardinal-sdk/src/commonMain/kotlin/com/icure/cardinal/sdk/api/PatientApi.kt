@@ -24,7 +24,6 @@ import com.icure.cardinal.sdk.subscription.Subscribable
 import com.icure.cardinal.sdk.utils.DefaultValue
 import com.icure.cardinal.sdk.utils.EntityEncryptionException
 import com.icure.cardinal.sdk.utils.pagination.PaginatedListIterator
-import kotlin.js.JsName
 
 /* This interface includes the API calls that do not need encryption keys and do not return or consume encrypted/decrypted items, they are completely agnostic towards the presence of encrypted items */
 interface PatientBasicFlavourlessApi {
@@ -573,7 +572,7 @@ interface PatientApi : PatientBasicFlavourlessApi, PatientFlavouredApi<Decrypted
 	 * Gives access to the polymorphic flavour of the api
 	 */
 	val tryAndRecover: PatientFlavouredApi<Patient>
-	suspend fun createPatients(patientDtos: List<DecryptedPatient>): List<IdWithRev>
+	suspend fun createPatients(patients: List<DecryptedPatient>): List<IdWithRev>
 
 	/**
 	 * Share a patient and all data associated to that patient that the current user can access with other data owners.

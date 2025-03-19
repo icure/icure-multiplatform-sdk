@@ -73,24 +73,21 @@ fun <T:Patient> T.withTypeInfo() = EntityWithTypeInfo(this, EntityWithEncryption
 fun <T:Receipt> T.withTypeInfo() = EntityWithTypeInfo(this, EntityWithEncryptionMetadataTypeName.Receipt)
 fun <T:Topic> T.withTypeInfo() = EntityWithTypeInfo(this, EntityWithEncryptionMetadataTypeName.Topic)
 
-fun <T> EntityWithTypeInfo<T>.asIcureStub(): EntityWithTypeInfo<IcureStub> where T : HasEncryptionMetadata, T : ICureDocument<String> =
-	EntityWithTypeInfo(
-		IcureStub(
-			id = entity.id,
-			rev = entity.rev,
-			created = entity.created,
-			modified = entity.modified,
-			author = entity.author,
-			responsible = entity.responsible,
-			medicalLocationId = entity.medicalLocationId,
-			tags = entity.tags,
-			codes = entity.codes,
-			endOfLife = entity.endOfLife,
-			secretForeignKeys = entity.secretForeignKeys,
-			cryptedForeignKeys = entity.cryptedForeignKeys,
-			delegations = entity.delegations,
-			encryptionKeys = entity.encryptionKeys,
-			securityMetadata = entity.securityMetadata,
-		),
-		type
+fun <T> T.asIcureStub(): IcureStub where T : HasEncryptionMetadata, T : ICureDocument<String> =
+	IcureStub(
+		id = id,
+		rev = rev,
+		created = created,
+		modified = modified,
+		author = author,
+		responsible = responsible,
+		medicalLocationId = medicalLocationId,
+		tags = tags,
+		codes = codes,
+		endOfLife = endOfLife,
+		secretForeignKeys = secretForeignKeys,
+		cryptedForeignKeys = cryptedForeignKeys,
+		delegations = delegations,
+		encryptionKeys = encryptionKeys,
+		securityMetadata = securityMetadata,
 	)

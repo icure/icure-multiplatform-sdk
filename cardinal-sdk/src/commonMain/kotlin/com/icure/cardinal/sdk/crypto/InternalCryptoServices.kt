@@ -20,6 +20,7 @@ interface InternalCryptoServices : BasicInternalCryptoApi{
 	val strategies: CryptoStrategies
 	val overrideAnonymityHeader: Pair<String, String>?
 	val incrementalSecurityMetadataDecryptor: IncrementalSecurityMetadataDecryptor
+	val securityMetadataDecryptor: BaseSecurityMetadataDecryptor
 
 	override val validationService: EntityValidationService
 		get() = entity
