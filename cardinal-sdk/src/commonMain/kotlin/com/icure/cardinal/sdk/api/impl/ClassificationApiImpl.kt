@@ -206,7 +206,13 @@ internal class ClassificationApiImpl(
 	override suspend fun createClassification(entity: DecryptedClassification): DecryptedClassification {
 		require(entity.securityMetadata != null) { "Entity must have security metadata initialized. You can use the withEncryptionMetadata for that very purpose." }
 		return rawApi.createClassification(
-			encrypt(entity),
+			crypto.entity.encryptEntities(
+				null,
+				listOf(entity),
+				EntityWithEncryptionMetadataTypeName.Classification,
+				DecryptedClassification.serializer(),
+				config.encryption.classification
+			) { Serialization.json.decodeFromJsonElement<EncryptedClassification>(it) }.single(),
 		).successBody().let {
 			decrypt(it)
 		}
@@ -245,14 +251,6 @@ internal class ClassificationApiImpl(
 	override suspend fun createDelegationDeAnonymizationMetadata(entity: Classification, delegates: Set<String>) {
 		crypto.delegationsDeAnonymization.createOrUpdateDeAnonymizationInfo(null, entity, EntityWithEncryptionMetadataTypeName.Classification, delegates.asLocalDataOwnerReferences())
 	}
-
-	private suspend fun encrypt(entity: DecryptedClassification) = crypto.entity.encryptEntities(
-		null,
-		listOf(entity),
-		EntityWithEncryptionMetadataTypeName.Classification,
-		DecryptedClassification.serializer(),
-		config.encryption.classification
-	) { Serialization.json.decodeFromJsonElement<EncryptedClassification>(it) }.single()
 
 	override suspend fun decrypt(classification: EncryptedClassification): DecryptedClassification =
 		crypto.entity.decryptEntities(

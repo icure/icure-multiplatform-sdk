@@ -332,7 +332,13 @@ internal class CalendarItemApiImpl(
 
 	override suspend fun createCalendarItem(entity: DecryptedCalendarItem, groupId: String?): DecryptedCalendarItem {
 		require(entity.securityMetadata != null) { "Entity must have security metadata initialized. You can use the withEncryptionMetadata for that very purpose." }
-		val encrypted = encrypt(groupId, entity)
+		val encrypted = crypto.entity.encryptEntities(
+			groupId,
+			listOf(entity),
+			EntityWithEncryptionMetadataTypeName.CalendarItem,
+			DecryptedCalendarItem.serializer(),
+			config.encryption.calendarItem,
+		) { Serialization.json.decodeFromJsonElement<EncryptedCalendarItem>(it) }.single()
 		return (
 			if (groupId == null) {
 				rawApi.createCalendarItem(encrypted)
@@ -396,15 +402,6 @@ internal class CalendarItemApiImpl(
 	override suspend fun hasWriteAccess(calendarItem: CalendarItem): Boolean = crypto.entity.hasWriteAccess(null, calendarItem, EntityWithEncryptionMetadataTypeName.CalendarItem)
 
 	override suspend fun decryptPatientIdOf(calendarItem: CalendarItem): Set<String> = crypto.entity.owningEntityIdsOf(null, calendarItem, EntityWithEncryptionMetadataTypeName.CalendarItem, null)
-
-	private suspend fun encrypt(groupId: String?, entity: DecryptedCalendarItem) = crypto.entity.encryptEntities(
-		groupId,
-		listOf(entity),
-		EntityWithEncryptionMetadataTypeName.CalendarItem,
-		DecryptedCalendarItem.serializer(),
-		config.encryption.calendarItem,
-	) { Serialization.json.decodeFromJsonElement<EncryptedCalendarItem>(it) }.single()
-
 
 	override suspend fun createDelegationDeAnonymizationMetadata(entity: CalendarItem, delegates: Set<String>) {
 		crypto.delegationsDeAnonymization.createOrUpdateDeAnonymizationInfo(null, entity, EntityWithEncryptionMetadataTypeName.CalendarItem, delegates.asLocalDataOwnerReferences())

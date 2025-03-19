@@ -280,7 +280,13 @@ internal class DocumentApiImpl(
 	override suspend fun createDocument(entity: DecryptedDocument): DecryptedDocument {
 		require(entity.securityMetadata != null) { "Entity must have security metadata initialized. You can use the withEncryptionMetadata for that very purpose." }
 		return rawApi.createDocument(
-			encrypt(entity),
+			crypto.entity.encryptEntities(
+				null,
+				listOf(entity),
+				EntityWithEncryptionMetadataTypeName.Document,
+				DecryptedDocument.serializer(),
+				fieldsToEncrypt,
+			) { Serialization.json.decodeFromJsonElement<EncryptedDocument>(it) }.single(),
 		).successBody().let {
 			decrypt(it)
 		}
@@ -394,14 +400,6 @@ internal class DocumentApiImpl(
 	override suspend fun createDelegationDeAnonymizationMetadata(entity: Document, delegates: Set<String>) {
 		crypto.delegationsDeAnonymization.createOrUpdateDeAnonymizationInfo(null, entity, EntityWithEncryptionMetadataTypeName.Document, delegates.asLocalDataOwnerReferences())
 	}
-
-	private suspend fun encrypt(entity: DecryptedDocument) = crypto.entity.encryptEntities(
-		null,
-		listOf(entity),
-		EntityWithEncryptionMetadataTypeName.Document,
-		DecryptedDocument.serializer(),
-		fieldsToEncrypt,
-	) { Serialization.json.decodeFromJsonElement<EncryptedDocument>(it) }.single()
 
 	override suspend fun decrypt(document: EncryptedDocument): DecryptedDocument =
 		crypto.entity.decryptEntities(

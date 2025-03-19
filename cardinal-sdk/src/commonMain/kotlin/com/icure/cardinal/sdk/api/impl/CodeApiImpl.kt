@@ -20,81 +20,81 @@ import kotlinx.serialization.json.JsonElement
 internal class CodeApiImpl(
 	private val rawApi: RawCodeApi,
 ) : CodeApi {
-    @Deprecated("Find methods with are deprecated", replaceWith = ReplaceWith("filterCodesBy(filter)"))
-    override suspend fun findCodesByLabel(
-	    region: String?,
-	    types: String,
-	    language: String,
-	    label: String,
-	    version: String?,
-	    startKey: JsonElement?,
-	    startDocumentId: String?,
-	    limit: Int?,
-    ): PaginatedList<Code> = rawApi.findCodesByLabel(region, types, language, label, version, startKey.encodeStartKey(), startDocumentId, limit).successBody()
+	@Deprecated("Find methods with are deprecated", replaceWith = ReplaceWith("filterCodesBy(filter)"))
+	override suspend fun findCodesByLabel(
+		region: String?,
+		types: String,
+		language: String,
+		label: String,
+		version: String?,
+		startKey: JsonElement?,
+		startDocumentId: String?,
+		limit: Int?,
+	): PaginatedList<Code> = rawApi.findCodesByLabel(region, types, language, label, version, startKey.encodeStartKey(), startDocumentId, limit).successBody()
 
-    @Deprecated("Find methods with are deprecated", replaceWith = ReplaceWith("filterCodesBy(filter)"))
-    override suspend fun findCodesByType(
-	    region: String,
-	    type: String?,
-	    code: String?,
-	    version: String?,
-	    startKey: JsonElement?,
-	    startDocumentId: String?,
-	    limit: Int?,
-    ): PaginatedList<Code> = rawApi.findCodesByType(region, type, code, version, startKey.encodeStartKey(), startDocumentId, limit).successBody()
-
-    @Deprecated("Find methods with are deprecated", replaceWith = ReplaceWith("filterCodesBy(filter)"))
-    override suspend fun findCodesByLink(
-	    linkType: String,
-	    linkedId: String?,
-	    startKey: JsonElement?,
-	    startDocumentId: String?,
-	    limit: Int?,
-    ): PaginatedList<Code> = rawApi.findCodesByLink(linkType, linkedId, startKey.encodeStartKey(), startDocumentId, limit).successBody()
-
-    override suspend fun listCodesByRegionTypeCodeVersion(
+	@Deprecated("Find methods with are deprecated", replaceWith = ReplaceWith("filterCodesBy(filter)"))
+	override suspend fun findCodesByType(
 		region: String,
 		type: String?,
 		code: String?,
 		version: String?,
-    ): List<Code> = rawApi.listCodesByRegionTypeCodeVersion(region, type, code, version).successBody()
+		startKey: JsonElement?,
+		startDocumentId: String?,
+		limit: Int?,
+	): PaginatedList<Code> = rawApi.findCodesByType(region, type, code, version, startKey.encodeStartKey(), startDocumentId, limit).successBody()
 
-    override suspend fun listCodeTypesBy(region: String?, type: String?): List<String> = rawApi.listCodeTypesBy(region, type).successBody()
+	@Deprecated("Find methods with are deprecated", replaceWith = ReplaceWith("filterCodesBy(filter)"))
+	override suspend fun findCodesByLink(
+		linkType: String,
+		linkedId: String?,
+		startKey: JsonElement?,
+		startDocumentId: String?,
+		limit: Int?,
+	): PaginatedList<Code> = rawApi.findCodesByLink(linkType, linkedId, startKey.encodeStartKey(), startDocumentId, limit).successBody()
 
-    override suspend fun listTagTypesBy(region: String?, type: String?): List<String> = rawApi.listTagTypesBy(region, type).successBody()
+	override suspend fun listCodesByRegionTypeCodeVersion(
+		region: String,
+		type: String?,
+		code: String?,
+		version: String?,
+	): List<Code> = rawApi.listCodesByRegionTypeCodeVersion(region, type, code, version).successBody()
 
-    override suspend fun createCode(c: Code): Code = rawApi.createCode(c).successBody()
+	override suspend fun listCodeTypesBy(region: String?, type: String?): List<String> = rawApi.listCodeTypesBy(region, type).successBody()
 
-    override suspend fun createCodes(codeBatch: List<Code>): List<Code> = rawApi.createCodes(codeBatch).successBody()
+	override suspend fun listTagTypesBy(region: String?, type: String?): List<String> = rawApi.listTagTypesBy(region, type).successBody()
 
-    override suspend fun isCodeValid(
-        type: String,
-        code: String,
-        version: String?,
-    ): BooleanResponse = rawApi.isCodeValid(type, code, version).successBody()
+	override suspend fun createCode(c: Code): Code = rawApi.createCode(c).successBody()
 
-    override suspend fun getCodeByRegionLanguageTypeLabel(
-        region: String,
-        label: String,
-        type: String,
-        languages: String?,
-    ): Code? = rawApi.getCodeByRegionLanguageTypeLabel(region, label, type, languages).successBody()
+	override suspend fun createCodes(codeBatch: List<Code>): List<Code> = rawApi.createCodes(codeBatch).successBody()
 
-    override suspend fun getCodes(codeIds: List<String>): List<Code> = rawApi.getCodes(
-	    ListOfIds(codeIds)
-    ).successBody()
+	override suspend fun isCodeValid(
+		type: String,
+		code: String,
+		version: String?,
+	): BooleanResponse = rawApi.isCodeValid(type, code, version).successBody()
 
-    override suspend fun getCode(codeId: String): Code = rawApi.getCode(codeId).successBody()
+	override suspend fun getCodeByRegionLanguageTypeLabel(
+		region: String,
+		label: String,
+		type: String,
+		languages: String?,
+	): Code? = rawApi.getCodeByRegionLanguageTypeLabel(region, label, type, languages).successBody()
 
-    override suspend fun getCodeWithParts(
-        type: String,
-        code: String,
-        version: String,
-    ): Code = rawApi.getCodeWithParts(type, code, version).successBody()
+	override suspend fun getCodes(codeIds: List<String>): List<Code> = rawApi.getCodes(
+		ListOfIds(codeIds)
+	).successBody()
 
-    override suspend fun modifyCode(codeDto: Code): Code = rawApi.modifyCode(codeDto).successBodyOrThrowRevisionConflict()
+	override suspend fun getCode(codeId: String): Code = rawApi.getCode(codeId).successBody()
 
-    override suspend fun modifyCodes(codeBatch: List<Code>): List<Code> = rawApi.modifyCodes(codeBatch).successBody()
+	override suspend fun getCodeWithParts(
+		type: String,
+		code: String,
+		version: String,
+	): Code = rawApi.getCodeWithParts(type, code, version).successBody()
+
+	override suspend fun modifyCode(codeDto: Code): Code = rawApi.modifyCode(codeDto).successBodyOrThrowRevisionConflict()
+
+	override suspend fun modifyCodes(codeBatch: List<Code>): List<Code> = rawApi.modifyCodes(codeBatch).successBody()
 
 	override suspend fun filterCodesBy(filter: BaseFilterOptions<Code>): PaginatedListIterator<Code> =
 		IdsPageIterator(matchCodesBy(filter), this::getCodes)

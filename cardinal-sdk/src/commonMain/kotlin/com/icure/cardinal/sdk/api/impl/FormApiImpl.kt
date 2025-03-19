@@ -7,6 +7,7 @@ import com.icure.cardinal.sdk.api.FormBasicFlavourlessApi
 import com.icure.cardinal.sdk.api.FormFlavouredApi
 import com.icure.cardinal.sdk.api.raw.RawFormApi
 import com.icure.cardinal.sdk.api.raw.successBodyOrThrowRevisionConflict
+import com.icure.cardinal.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
 import com.icure.cardinal.sdk.crypto.entities.FormShareOptions
 import com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption
 import com.icure.cardinal.sdk.crypto.entities.withTypeInfo
@@ -32,7 +33,6 @@ import com.icure.cardinal.sdk.model.extensions.dataOwnerId
 import com.icure.cardinal.sdk.model.specializations.HexString
 import com.icure.cardinal.sdk.options.ApiConfiguration
 import com.icure.cardinal.sdk.options.BasicApiConfiguration
-import com.icure.cardinal.sdk.utils.EntityEncryptionException
 import com.icure.cardinal.sdk.utils.Serialization
 import com.icure.cardinal.sdk.utils.currentEpochMs
 import com.icure.cardinal.sdk.utils.pagination.IdsPageIterator
@@ -42,44 +42,39 @@ import kotlinx.serialization.json.decodeFromJsonElement
 
 @InternalIcureApi
 private abstract class AbstractFormBasicFlavouredApi<E : Form>(protected val rawApi: RawFormApi) :
-	FormBasicFlavouredApi<E> {
+	FormBasicFlavouredApi<E>, FlavouredApi<EncryptedForm, E> {
 	override suspend fun undeleteFormById(id: String, rev: String): E =
-		rawApi.undeleteForm(id, rev).successBodyOrThrowRevisionConflict().let { maybeDecrypt(it) }
+		rawApi.undeleteForm(id, rev).successBodyOrThrowRevisionConflict().let { maybeDecrypt(null, it) }
 
 	override suspend fun modifyForm(entity: E): E =
-		rawApi.modifyForm(validateAndMaybeEncrypt(entity)).successBodyOrThrowRevisionConflict().let { maybeDecrypt(it) }
+		rawApi.modifyForm(validateAndMaybeEncrypt(null, entity)).successBodyOrThrowRevisionConflict().let { maybeDecrypt(null, it) }
 
 	override suspend fun modifyForms(entities: List<E>): List<E> =
-		rawApi.modifyForms(entities.map { validateAndMaybeEncrypt(it) }).successBody().map { maybeDecrypt(it) }
+		rawApi.modifyForms(entities.let { validateAndMaybeEncrypt(it) }).successBody().let { maybeDecrypt(it) }
 
-	override suspend fun getForm(entityId: String): E = rawApi.getForm(entityId).successBody().let { maybeDecrypt(it) }
+	override suspend fun getForm(entityId: String): E = rawApi.getForm(entityId).successBody().let { maybeDecrypt(null, it) }
 	override suspend fun getForms(entityIds: List<String>): List<E> =
-		rawApi.getForms(ListOfIds(entityIds)).successBody().map { maybeDecrypt(it) }
+		rawApi.getForms(ListOfIds(entityIds)).successBody().let { maybeDecrypt(it) }
 
-	override suspend fun getLatestFormByLogicalUuid(logicalUuid: String) = rawApi.getFormByLogicalUuid(logicalUuid).successBody().let { maybeDecrypt(it) }
-
-	@Deprecated("Use filter instead")
-	override suspend fun getFormsByLogicalUuid(logicalUuid: String) = rawApi.getFormsByLogicalUuid(logicalUuid).successBody().map { maybeDecrypt(it) }
+	override suspend fun getLatestFormByLogicalUuid(logicalUuid: String) = rawApi.getFormByLogicalUuid(logicalUuid).successBody().let { maybeDecrypt(null, it) }
 
 	@Deprecated("Use filter instead")
-	override suspend fun getFormsByUniqueId(uniqueId: String) = rawApi.getFormsByUniqueId(uniqueId).successBody().map { maybeDecrypt(it) }
-
-	override suspend fun getLatestFormByUniqueId(uniqueId: String) = rawApi.getFormByUniqueId(uniqueId).successBody().let { maybeDecrypt(it) }
+	override suspend fun getFormsByLogicalUuid(logicalUuid: String) = rawApi.getFormsByLogicalUuid(logicalUuid).successBody().let { maybeDecrypt(it) }
 
 	@Deprecated("Use filter instead")
-	override suspend fun getChildrenForms(hcPartyId: String, parentId: String) = rawApi.getChildrenForms(parentId, hcPartyId).successBody().map { maybeDecrypt(it) }
+	override suspend fun getFormsByUniqueId(uniqueId: String) = rawApi.getFormsByUniqueId(uniqueId).successBody().let { maybeDecrypt(it) }
 
-	abstract suspend fun validateAndMaybeEncrypt(entity: E): EncryptedForm
-	abstract suspend fun maybeDecrypt(entity: EncryptedForm): E
+	override suspend fun getLatestFormByUniqueId(uniqueId: String) = rawApi.getFormByUniqueId(uniqueId).successBody().let { maybeDecrypt(null, it) }
+
+	@Deprecated("Use filter instead")
+	override suspend fun getChildrenForms(hcPartyId: String, parentId: String) = rawApi.getChildrenForms(parentId, hcPartyId).successBody().let { maybeDecrypt(it) }
 }
 
 @InternalIcureApi
 private abstract class AbstractFormFlavouredApi<E : Form>(
 	rawApi: RawFormApi,
-	private val config: ApiConfiguration,
+	protected val config: ApiConfiguration,
 ) : AbstractFormBasicFlavouredApi<E>(rawApi), FormFlavouredApi<E> {
-	protected val crypto get() = config.crypto
-	protected val fieldsToEncrypt get() = config.encryption.form
 
 	override suspend fun shareWith(
 		delegateId: String,
@@ -89,12 +84,14 @@ private abstract class AbstractFormFlavouredApi<E : Form>(
 		shareWithMany(form, mapOf(delegateId to (options ?: FormShareOptions())))
 
 	override suspend fun shareWithMany(form: E, delegates: Map<String, FormShareOptions>): E =
-		crypto.entity.simpleShareOrUpdateEncryptedEntityMetadata(
-			form.withTypeInfo(),
-			delegates,
+		config.crypto.entity.simpleShareOrUpdateEncryptedEntityMetadata(
+			null,
+			form,
+			EntityWithEncryptionMetadataTypeName.Form,
+			delegates.keyAsLocalDataOwnerReferences(),
 			true,
-			{ getForm(it).withTypeInfo() },
-			{ rawApi.bulkShare(it).successBody().map { r -> r.map { he -> maybeDecrypt(he) } } }
+			{ getForm(it) },
+			{ maybeDecrypt(null, rawApi.bulkShare(it).successBody()) }
 		).updatedEntityOrThrow()
 
 	@Deprecated("Use filter instead")
@@ -110,10 +107,10 @@ private abstract class AbstractFormFlavouredApi<E : Form>(
 			startDate = startDate,
 			endDate = endDate,
 			descending = descending,
-			secretPatientKeys = ListOfIds(crypto.entity.secretIdsOf(patient.withTypeInfo(), null).toList())
+			secretPatientKeys = ListOfIds(config.crypto.entity.secretIdsOf(null, patient, EntityWithEncryptionMetadataTypeName.Patient, null).toList())
 		).successBody()
 	) { ids ->
-		rawApi.getForms(ListOfIds(ids)).successBody().map { maybeDecrypt(it) }
+		rawApi.getForms(ListOfIds(ids)).successBody().let { maybeDecrypt(it) }
 	}
 
 	override suspend fun filterFormsBySorted(filter: SortableFilterOptions<Form>): PaginatedListIterator<E> =
@@ -202,51 +199,67 @@ internal class FormApiImpl(
 	private val config: ApiConfiguration,
 ) : FormApi, FormFlavouredApi<DecryptedForm> by object :
 	AbstractFormFlavouredApi<DecryptedForm>(rawApi, config) {
-	override suspend fun validateAndMaybeEncrypt(entity: DecryptedForm): EncryptedForm =
-		crypto.entity.encryptEntities(
-			entity.withTypeInfo(),
+	override suspend fun validateAndMaybeEncrypt(
+		entitiesGroupId: String?,
+		entities: List<DecryptedForm>
+	): List<EncryptedForm> =
+		this.config.crypto.entity.encryptEntities(
+			entitiesGroupId,
+			entities,
+			EntityWithEncryptionMetadataTypeName.Form,
 			DecryptedForm.serializer(),
-			fieldsToEncrypt,
+			this.config.encryption.form,
 		) { Serialization.json.decodeFromJsonElement<EncryptedForm>(it) }
 
-	override suspend fun maybeDecrypt(entity: EncryptedForm): DecryptedForm {
-		return crypto.entity.tryDecryptEntities(
-			entity.withTypeInfo(),
+	override suspend fun maybeDecrypt(entitiesGroupId: String?, entities: List<EncryptedForm>): List<DecryptedForm> =
+		this.config.crypto.entity.decryptEntities(
+			entitiesGroupId,
+			entities,
+			EntityWithEncryptionMetadataTypeName.Form,
 			EncryptedForm.serializer(),
 		) { Serialization.json.decodeFromJsonElement<DecryptedForm>(config.jsonPatcher.patchForm(it)) }
-			?: throw EntityEncryptionException("Entity ${entity.id} cannot be created")
-	}
 }, FormBasicFlavourlessApi by AbstractFormBasicFlavourlessApi(rawApi) {
 	override val encrypted: FormFlavouredApi<EncryptedForm> =
 		object : AbstractFormFlavouredApi<EncryptedForm>(rawApi, config) {
-			override suspend fun validateAndMaybeEncrypt(entity: EncryptedForm): EncryptedForm =
-				crypto.entity.validateEncryptedEntity(entity.withTypeInfo(), EncryptedForm.serializer(), fieldsToEncrypt)
+			override suspend fun validateAndMaybeEncrypt(
+				entitiesGroupId: String?,
+				entities: List<EncryptedForm>
+			): List<EncryptedForm> =
+				config.crypto.entity.validateEncryptedEntities(
+					entities,
+					EntityWithEncryptionMetadataTypeName.Form,
+					EncryptedForm.serializer(),
+					config.encryption.form
+				)
 
-			override suspend fun maybeDecrypt(entity: EncryptedForm): EncryptedForm = entity
+			override suspend fun maybeDecrypt(
+				entitiesGroupId: String?,
+				entities: List<EncryptedForm>
+			): List<EncryptedForm> = entities
 		}
 
 	override val tryAndRecover: FormFlavouredApi<Form> =
 		object : AbstractFormFlavouredApi<Form>(rawApi, config) {
-			override suspend fun maybeDecrypt(entity: EncryptedForm): Form =
-				crypto.entity.tryDecryptEntities(
-					entity.withTypeInfo(),
-					EncryptedForm.serializer(),
-				) { Serialization.json.decodeFromJsonElement<DecryptedForm>(config.jsonPatcher.patchForm(it)) }
-					?: entity
-
-			override suspend fun validateAndMaybeEncrypt(entity: Form): EncryptedForm = when (entity) {
-				is EncryptedForm -> crypto.entity.validateEncryptedEntity(
-					entity.withTypeInfo(),
-					EncryptedForm.serializer(),
-					fieldsToEncrypt,
+			override suspend fun validateAndMaybeEncrypt(
+				entitiesGroupId: String?,
+				entities: List<Form>
+			): List<EncryptedForm> =
+				config.crypto.entity.validateOrEncryptEntities(
+					entitiesGroupId = entitiesGroupId,
+					entities = entities,
+					entitiesType = EntityWithEncryptionMetadataTypeName.Form,
+					encryptedSerializer = EncryptedForm.serializer(),
+					decryptedSerializer = DecryptedForm.serializer(),
+					fieldsToEncrypt = config.encryption.form
 				)
 
-				is DecryptedForm -> crypto.entity.encryptEntities(
-					entity.withTypeInfo(),
-					DecryptedForm.serializer(),
-					fieldsToEncrypt,
-				) { Serialization.json.decodeFromJsonElement<EncryptedForm>(it) }
-			}
+			override suspend fun maybeDecrypt(entitiesGroupId: String?, entities: List<EncryptedForm>): List<Form> =
+				config.crypto.entity.tryDecryptEntities(
+					entitiesGroupId,
+					entities,
+					EntityWithEncryptionMetadataTypeName.Form,
+					EncryptedForm.serializer(),
+				) { Serialization.json.decodeFromJsonElement<DecryptedForm>(config.jsonPatcher.patchForm(it)) }
 		}
 
 	override suspend fun createForm(entity: DecryptedForm): DecryptedForm {
@@ -308,16 +321,21 @@ internal class FormApiImpl(
 		fieldsToEncrypt,
 	) { Serialization.json.decodeFromJsonElement<EncryptedForm>(it) }
 
-	private suspend fun decryptOrNull(entity: EncryptedForm): DecryptedForm? = crypto.entity.tryDecryptEntities(
-		entity.withTypeInfo(),
-		EncryptedForm.serializer(),
-	) { Serialization.json.decodeFromJsonElement<DecryptedForm>(config.jsonPatcher.patchForm(it)) }
-
 	override suspend fun decrypt(form: EncryptedForm): DecryptedForm =
-		decryptOrNull(form) ?: throw EntityEncryptionException("Form cannot be decrypted")
+		crypto.entity.decryptEntities(
+			null,
+			listOf(form),
+			EntityWithEncryptionMetadataTypeName.Form,
+			EncryptedForm.serializer(),
+		) { Serialization.json.decodeFromJsonElement<DecryptedForm>(config.jsonPatcher.patchForm(it)) }.single()
 
 	override suspend fun tryDecrypt(form: EncryptedForm): Form =
-		decryptOrNull(form) ?: form
+		crypto.entity.tryDecryptEntities(
+			null,
+			listOf(form),
+			EntityWithEncryptionMetadataTypeName.Form,
+			EncryptedForm.serializer(),
+		) { Serialization.json.decodeFromJsonElement<DecryptedForm>(config.jsonPatcher.patchForm(it)) }.single()
 
 	override suspend fun matchFormsBy(filter: FilterOptions<Form>): List<String> =
 		rawApi.matchFormsBy(
@@ -337,10 +355,16 @@ internal class FormBasicApiImpl(
 	private val rawApi: RawFormApi,
 	private val config: BasicApiConfiguration
 ) : FormBasicApi, FormBasicFlavouredApi<EncryptedForm> by object : AbstractFormBasicFlavouredApi<EncryptedForm>(rawApi) {
-	override suspend fun validateAndMaybeEncrypt(entity: EncryptedForm): EncryptedForm =
-		config.crypto.validationService.validateEncryptedEntity(entity.withTypeInfo(), EncryptedForm.serializer(), config.encryption.form)
+	override suspend fun validateAndMaybeEncrypt(
+		entitiesGroupId: String?,
+		entities: List<EncryptedForm>
+	): List<EncryptedForm> =
+		config.crypto.validationService.validateEncryptedEntities(entities, EntityWithEncryptionMetadataTypeName.Form, EncryptedForm.serializer(), config.encryption.form)
 
-	override suspend fun maybeDecrypt(entity: EncryptedForm): EncryptedForm = entity
+	override suspend fun maybeDecrypt(
+		entitiesGroupId: String?,
+		entities: List<EncryptedForm>
+	): List<EncryptedForm> = entities
 }, FormBasicFlavourlessApi by AbstractFormBasicFlavourlessApi(rawApi) {
 	override suspend fun matchFormsBy(filter: BaseFilterOptions<Form>): List<String> =
 		rawApi.matchFormsBy(
