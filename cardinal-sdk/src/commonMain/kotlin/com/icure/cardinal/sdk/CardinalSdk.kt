@@ -453,7 +453,7 @@ private suspend fun initializeApiCrypto(
 ): Pair<ApiConfiguration, RsaKeypair<RsaAlgorithm.RsaEncryptionAlgorithm.OaepWithSha256>?> {
 	val boundGroup = groupId?.let(::SdkBoundGroup)
 	val sdkScope = CoroutineScope(Dispatchers.Default)
-	val dataOwnerApi = DataOwnerApiImpl(RawDataOwnerApiImpl(apiUrl, authProvider, client, json = json))
+	val dataOwnerApi = DataOwnerApiImpl(RawDataOwnerApiImpl(apiUrl, authProvider, client, json = json), boundGroup)
 	val self = dataOwnerApi.getCurrentDataOwner()
 	val selfIsAnonymous = cryptoStrategies.dataOwnerRequiresAnonymousDelegation(self.asStub())
 	val anonymityHeader = when {
@@ -603,7 +603,9 @@ private suspend fun initializeApiCrypto(
 		headersProvider,
 		cryptoStrategies,
 		anonymityHeader,
-		secureDelegationsManager
+		secureDelegationsManager,
+		incrementalSecurityMetadataDecryptor,
+		baseSecurityMetadataDecryptor
 	)
 	if (options.createTransferKeys) {
 		TransferKeysManagerImpl(
