@@ -75,6 +75,13 @@ interface EntityEncryptionService : EntityValidationService {
 		dataOwnerId: String?,
 	): Set<String>
 
+	suspend fun secretIdsOf(
+		entityGroupId: String?,
+		entities: List<HasEncryptionMetadata>,
+		entitiesType: EntityWithEncryptionMetadataTypeName,
+		dataOwnerId: String?,
+	): Map<String, Set<String>>
+
 	/**
 	 * Get the secret ids (SFKs) of an entity that the current data owner and his parents can access. The resulting array contains the ids for each data
 	 * owner in the hierarchy which can be decrypted using only that data owner keys (excludes ids accessible through the parent keys). The order of

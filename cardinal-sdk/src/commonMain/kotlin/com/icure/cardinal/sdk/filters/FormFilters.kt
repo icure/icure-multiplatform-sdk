@@ -4,7 +4,6 @@ import com.icure.cardinal.sdk.CardinalBaseApis
 import com.icure.cardinal.sdk.crypto.EntityEncryptionService
 import com.icure.cardinal.sdk.crypto.entities.EntityWithEncryptionMetadataStub
 import com.icure.cardinal.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
-import com.icure.cardinal.sdk.crypto.entities.EntityWithTypeInfo
 import com.icure.cardinal.sdk.crypto.entities.toEncryptionMetadataStub
 import com.icure.cardinal.sdk.model.Form
 import com.icure.cardinal.sdk.model.Patient
@@ -76,7 +75,7 @@ object FormFilters {
 		descending: Boolean = false
 	) : SortableFilterOptions<Form> = ByPatientsOpeningDateForDataOwner(
 		dataOwnerId = dataOwnerId,
-		patients = patients.map { EntityWithTypeInfo(it.toEncryptionMetadataStub(), EntityWithEncryptionMetadataTypeName.Patient) },
+		patients = patients.map { it.toEncryptionMetadataStub() },
 		from = from,
 		to = to,
 		descending = descending
@@ -114,7 +113,7 @@ object FormFilters {
 		@DefaultValue("false")
 		descending: Boolean = false
 	) : SortableFilterOptions<Form> = ByPatientsOpeningDateForSelf(
-		patients = patients.map { EntityWithTypeInfo(it.toEncryptionMetadataStub(), EntityWithEncryptionMetadataTypeName.Patient) },
+		patients = patients.map { it.toEncryptionMetadataStub() },
 		from = from,
 		to = to,
 		descending = descending
@@ -224,7 +223,7 @@ object FormFilters {
 	@InternalIcureApi
 	internal class ByPatientsOpeningDateForDataOwner(
 		val dataOwnerId: String,
-		val patients: List<EntityWithTypeInfo<EntityWithEncryptionMetadataStub>>,
+		val patients: List<EntityWithEncryptionMetadataStub>,
 		val from: Long?,
 		val to: Long?,
 		val descending: Boolean
@@ -233,7 +232,7 @@ object FormFilters {
 	@Serializable
 	@InternalIcureApi
 	internal class ByPatientsOpeningDateForSelf(
-		val patients: List<EntityWithTypeInfo<EntityWithEncryptionMetadataStub>>,
+		val patients: List<EntityWithEncryptionMetadataStub>,
 		val from: Long?,
 		val to: Long?,
 		val descending: Boolean
@@ -286,9 +285,7 @@ internal suspend fun mapFormFilterOptions(
 		filterOptions.ensureNonBaseEnvironment(selfDataOwnerId, entityEncryptionService)
 		FormByDataOwnerPatientOpeningDateFilter(
 			dataOwnerId = filterOptions.dataOwnerId,
-			secretPatientKeys = filterOptions.patients.flatMap {
-				entityEncryptionService.secretIdsOf(it, null)
-			}.toSet(),
+			secretPatientKeys = entityEncryptionService.secretIdsOf(null, filterOptions.patients, EntityWithEncryptionMetadataTypeName.Patient, null).values.flatten().toSet(),
 			startDate = filterOptions.from,
 			endDate = filterOptions.to,
 			descending = filterOptions.descending
@@ -298,9 +295,7 @@ internal suspend fun mapFormFilterOptions(
 		filterOptions.ensureNonBaseEnvironment(selfDataOwnerId, entityEncryptionService)
 		FormByDataOwnerPatientOpeningDateFilter(
 			dataOwnerId = selfDataOwnerId,
-			secretPatientKeys = filterOptions.patients.flatMap {
-				entityEncryptionService.secretIdsOf(it, null)
-			}.toSet(),
+			secretPatientKeys = entityEncryptionService.secretIdsOf(null, filterOptions.patients, EntityWithEncryptionMetadataTypeName.Patient, null).values.flatten().toSet(),
 			startDate = filterOptions.from,
 			endDate = filterOptions.to,
 			descending = filterOptions.descending

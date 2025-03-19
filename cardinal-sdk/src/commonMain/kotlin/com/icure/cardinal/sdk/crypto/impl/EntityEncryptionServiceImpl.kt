@@ -132,6 +132,20 @@ class EntityEncryptionServiceImpl(
 			it.value
 		}
 
+	override suspend fun secretIdsOf(
+		entityGroupId: String?,
+		entities: List<HasEncryptionMetadata>,
+		entitiesType: EntityWithEncryptionMetadataTypeName,
+		dataOwnerId: String?
+	): Map<String, Set<String>> =
+		baseSecurityMetadataDecryptor.decryptAll(
+			entityGroupId,
+			entities,
+			entitiesType,
+			dataOwnersForDecryption(dataOwnerId).toSet(),
+			SecurityMetadataType.SecretId
+		).mapValues { (_, v) -> v.mapTo(mutableSetOf()) { it.value } }
+
 	override suspend fun encryptionKeysForHcpHierarchyOf(
 		entityGroupId: String?,
 		entity: HasEncryptionMetadata,
