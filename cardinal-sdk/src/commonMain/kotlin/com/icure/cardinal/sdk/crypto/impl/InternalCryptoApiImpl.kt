@@ -37,7 +37,6 @@ class InternalCryptoApiImpl(
 	override val recoveryDataEncryption: RecoveryDataEncryption,
 	override val headersProvider: AccessControlKeysHeadersProvider,
 	override val strategies: CryptoStrategies,
-	override val overrideAnonymityHeader: Pair<String, String>?,
 	private val secureDelegationsManager: SecureDelegationsManager,
 	override val incrementalSecurityMetadataDecryptor: IncrementalSecurityMetadataDecryptor,
 	override val securityMetadataDecryptor: BaseSecurityMetadataDecryptor,

@@ -167,10 +167,10 @@ internal class HealthcarePartyApiImpl(
 		subscriptionConfig: EntitySubscriptionConfiguration?,
 	): EntitySubscription<HealthcareParty> {
 		return WebSocketSubscription.initialize(
-			client = config.httpClient,
+			client = config.rawApiConfig.httpClient,
 			hostname = config.apiUrl,
 			path = "/ws/v2/notification/subscribe",
-			clientJson = config.clientJson,
+			clientJson = config.rawApiConfig.json,
 			entitySerializer = HealthcareParty.serializer(),
 			events = events,
 			filter = mapHealthcarePartyFilterOptions(filter),

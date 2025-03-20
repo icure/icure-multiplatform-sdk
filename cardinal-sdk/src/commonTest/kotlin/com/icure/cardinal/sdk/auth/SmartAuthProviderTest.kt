@@ -12,6 +12,7 @@ import com.icure.cardinal.sdk.model.security.Enable2faRequest
 import com.icure.cardinal.sdk.options.AuthenticationMethod
 import com.icure.cardinal.sdk.options.SdkOptions
 import com.icure.cardinal.sdk.options.getAuthProvider
+import com.icure.cardinal.sdk.test.DefaultRawApiConfig
 import com.icure.cardinal.sdk.test.MockMessageGatewayUtils
 import com.icure.cardinal.sdk.test.baseUrl
 import com.icure.cardinal.sdk.test.createHcpUser
@@ -24,7 +25,6 @@ import com.icure.cardinal.sdk.test.testGroupAdminAuth
 import com.icure.cardinal.sdk.test.testGroupId
 import com.icure.cardinal.sdk.test.uuid
 import com.icure.cardinal.sdk.utils.RequestStatusException
-import com.icure.cardinal.sdk.utils.Serialization
 import com.icure.kotp.ShaVersion
 import com.icure.kotp.Totp
 import com.icure.kryptom.crypto.HmacAlgorithm
@@ -47,15 +47,13 @@ class SmartAuthProviderTest : StringSpec({
 
 	val authApi = RawAnonymousAuthApiImpl(
 		apiUrl = baseUrl,
-		httpClient = CardinalSdk.sharedHttpClient,
-		json = Serialization.json
+		DefaultRawApiConfig
 	)
 
 	fun getUserApiWithProvider(authProvider: AuthProvider) = RawUserApiImpl(
 		apiUrl = baseUrl,
 		authProvider = authProvider,
-		httpClient = CardinalSdk.sharedHttpClient,
-		json = Serialization.json
+		DefaultRawApiConfig
 	)
 
 	beforeAny {
@@ -117,7 +115,7 @@ class SmartAuthProviderTest : StringSpec({
 		val hcpDetails = createHcpUser()
 		val api = hcpDetails.api(this)
 		val initialUser = api.user.getCurrentUser()
-		val adminUserApi = RawUserApiImpl(baseUrl, testGroupAdminAuth, CardinalSdk.sharedHttpClient, json = Serialization.json)
+		val adminUserApi = RawUserApiImpl(baseUrl, testGroupAdminAuth, DefaultRawApiConfig)
 		val userToken = uuid()
 		val userPwd = uuid()
 		val userWithLongTokenAndPwd = adminUserApi.modifyUser(
@@ -216,7 +214,7 @@ class SmartAuthProviderTest : StringSpec({
 		val api = hcpDetails.api(this)
 		val otpLength = 8
 		val initialUser = api.user.getCurrentUser()
-		val adminUserApi = RawUserApiImpl(baseUrl, testGroupAdminAuth, CardinalSdk.sharedHttpClient, json = Serialization.json)
+		val adminUserApi = RawUserApiImpl(baseUrl, testGroupAdminAuth, DefaultRawApiConfig)
 		val totpSecret = Totp.generateTOTPSecret(32, HmacAlgorithm.HmacSha256)
 		val totp = Totp(secret = totpSecret, shaVersion = ShaVersion.Sha256)
 		val userPwd = uuid()
@@ -285,7 +283,7 @@ class SmartAuthProviderTest : StringSpec({
 		val api = hcpDetails.api(this)
 		val otpLength = 8
 		val initialUser = api.user.getCurrentUser()
-		val adminUserApi = RawUserApiImpl(baseUrl, testGroupAdminAuth, CardinalSdk.sharedHttpClient, json = Serialization.json)
+		val adminUserApi = RawUserApiImpl(baseUrl, testGroupAdminAuth, DefaultRawApiConfig)
 		val totpSecret = Totp.generateTOTPSecret(32, HmacAlgorithm.HmacSha256)
 		val totp = Totp(secret = totpSecret, shaVersion = ShaVersion.Sha256)
 		val userPwd = uuid()

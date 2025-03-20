@@ -93,10 +93,10 @@ internal class DeviceApiImpl(
 		subscriptionConfig: EntitySubscriptionConfiguration?,
 	): EntitySubscription<Device> {
 		return WebSocketSubscription.initialize(
-			client = config.httpClient,
+			client = config.rawApiConfig.httpClient,
 			hostname = config.apiUrl,
 			path = "/ws/v2/notification/subscribe",
-			clientJson = config.clientJson,
+			clientJson = config.rawApiConfig.json,
 			entitySerializer = Device.serializer(),
 			events = events,
 			filter = mapDeviceFilterOptions(filter),

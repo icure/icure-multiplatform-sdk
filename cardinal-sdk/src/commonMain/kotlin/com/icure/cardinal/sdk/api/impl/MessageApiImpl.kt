@@ -386,10 +386,10 @@ internal class MessageApiImpl(
 		subscriptionConfig: EntitySubscriptionConfiguration?
 	): EntitySubscription<EncryptedMessage> {
 		return WebSocketSubscription.initialize(
-			client = config.httpClient,
+			client = config.rawApiConfig.httpClient,
 			hostname = config.apiUrl,
 			path = "/ws/v2/notification/subscribe",
-			clientJson = config.clientJson,
+			clientJson = config.rawApiConfig.json,
 			entitySerializer = EncryptedMessage.serializer(),
 			events = events,
 			filter = mapMessageFilterOptions(filter, config.crypto.dataOwnerApi.getCurrentDataOwnerId(), config.crypto.entity),
@@ -445,10 +445,10 @@ internal class MessageBasicApiImpl(
 		subscriptionConfig: EntitySubscriptionConfiguration?
 	): EntitySubscription<EncryptedMessage> {
 		return WebSocketSubscription.initialize(
-			client = config.httpClient,
+			client = config.rawApiConfig.httpClient,
 			hostname = config.apiUrl,
 			path = "/ws/v2/notification/subscribe",
-			clientJson = config.clientJson,
+			clientJson = config.rawApiConfig.json,
 			entitySerializer = EncryptedMessage.serializer(),
 			events = events,
 			filter = mapMessageFilterOptions(filter, null, null),

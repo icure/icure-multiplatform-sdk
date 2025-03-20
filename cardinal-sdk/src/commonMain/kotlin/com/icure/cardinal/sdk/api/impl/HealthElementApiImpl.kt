@@ -356,10 +356,10 @@ internal class HealthElementApiImpl(
 		subscriptionConfig: EntitySubscriptionConfiguration?
 	): EntitySubscription<EncryptedHealthElement> {
 		return WebSocketSubscription.initialize(
-			client = config.httpClient,
+			client = config.rawApiConfig.httpClient,
 			hostname = config.apiUrl,
 			path = "/ws/v2/notification/subscribe",
-			clientJson = config.clientJson,
+			clientJson = config.rawApiConfig.json,
 			entitySerializer = EncryptedHealthElement.serializer(),
 			events = events,
 			filter = mapHealthElementFilterOptions(
@@ -412,10 +412,10 @@ internal class HealthElementBasicApiImpl(
 		subscriptionConfig: EntitySubscriptionConfiguration?
 	): EntitySubscription<EncryptedHealthElement> {
 		return WebSocketSubscription.initialize(
-			client = config.httpClient,
+			client = config.rawApiConfig.httpClient,
 			hostname = config.apiUrl,
 			path = "/ws/v2/notification/subscribe",
-			clientJson = config.clientJson,
+			clientJson = config.rawApiConfig.json,
 			entitySerializer = EncryptedHealthElement.serializer(),
 			events = events,
 			filter = mapHealthElementFilterOptions(filter, null, null),

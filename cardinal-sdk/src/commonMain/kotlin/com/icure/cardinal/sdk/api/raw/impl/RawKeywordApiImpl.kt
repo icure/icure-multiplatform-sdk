@@ -2,6 +2,7 @@ package com.icure.cardinal.sdk.api.raw.`impl`
 
 import com.icure.cardinal.sdk.api.raw.BaseRawApi
 import com.icure.cardinal.sdk.api.raw.HttpResponse
+import com.icure.cardinal.sdk.api.raw.RawApiConfig
 import com.icure.cardinal.sdk.api.raw.RawKeywordApi
 import com.icure.cardinal.sdk.api.raw.wrap
 import com.icure.cardinal.sdk.auth.services.AuthProvider
@@ -32,11 +33,8 @@ import kotlin.time.Duration
 class RawKeywordApiImpl(
 	internal val apiUrl: String,
 	private val authProvider: AuthProvider,
-	httpClient: HttpClient,
-	additionalHeaders: Map<String, String> = emptyMap(),
-	timeout: Duration? = null,
-	json: Json,
-) : BaseRawApi(httpClient, additionalHeaders, timeout, json), RawKeywordApi {
+	rawApiConfig: RawApiConfig,
+) : BaseRawApi(rawApiConfig), RawKeywordApi {
 	// region common endpoints
 
 	override suspend fun createKeyword(c: Keyword): HttpResponse<Keyword> =

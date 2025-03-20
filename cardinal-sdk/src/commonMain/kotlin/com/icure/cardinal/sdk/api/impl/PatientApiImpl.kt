@@ -782,10 +782,10 @@ internal class PatientApiImpl(
 		subscriptionConfig: EntitySubscriptionConfiguration?
 	): EntitySubscription<EncryptedPatient> {
 		return WebSocketSubscription.initialize(
-			client = config.httpClient,
+			client = config.rawApiConfig.httpClient,
 			hostname = config.apiUrl,
 			path = "/ws/v2/notification/subscribe",
-			clientJson = config.clientJson,
+			clientJson = config.rawApiConfig.json,
 			entitySerializer = EncryptedPatient.serializer(),
 			events = events,
 			filter = mapPatientFilterOptions(filter, config.crypto.dataOwnerApi.getCurrentDataOwnerId(), config.crypto.entity),
@@ -896,10 +896,10 @@ internal class PatientBasicApiImpl(
 		subscriptionConfig: EntitySubscriptionConfiguration?
 	): EntitySubscription<EncryptedPatient> {
 		return WebSocketSubscription.initialize(
-			client = config.httpClient,
+			client = config.rawApiConfig.httpClient,
 			hostname = config.apiUrl,
 			path = "/ws/v2/notification/subscribe",
-			clientJson = config.clientJson,
+			clientJson = config.rawApiConfig.json,
 			entitySerializer = EncryptedPatient.serializer(),
 			events = events,
 			filter = mapPatientFilterOptions(filter, null, null),

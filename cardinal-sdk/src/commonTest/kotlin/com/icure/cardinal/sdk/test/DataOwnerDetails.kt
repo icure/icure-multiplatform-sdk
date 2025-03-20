@@ -15,7 +15,6 @@ import com.icure.cardinal.sdk.storage.CardinalStorageFacade
 import com.icure.cardinal.sdk.storage.impl.DefaultStorageEntryKeysFactory
 import com.icure.cardinal.sdk.storage.impl.JsonAndBase64KeyStorage
 import com.icure.cardinal.sdk.storage.impl.VolatileStorageFacade
-import com.icure.cardinal.sdk.utils.Serialization
 import com.icure.kryptom.crypto.CryptoService
 import com.icure.kryptom.crypto.RsaAlgorithm
 import com.icure.kryptom.crypto.RsaKeypair
@@ -129,7 +128,7 @@ data class DataOwnerDetails private constructor (
 		AuthenticationMethod.UsingCredentials(
 			UsernamePassword(username, password),
 		).getAuthProvider(
-			RawAnonymousAuthApiImpl(baseUrl, CardinalSdk.sharedHttpClient, json = Serialization.json),
+			RawAnonymousAuthApiImpl(baseUrl, DefaultRawApiConfig),
 			defaultCryptoService,
 			null,
 			SdkOptions(saltPasswordWithApplicationId = false),

@@ -223,10 +223,10 @@ internal class UserApiImpl(
 		subscriptionConfig: EntitySubscriptionConfiguration?,
 	): EntitySubscription<User> {
 		return WebSocketSubscription.initialize(
-			client = config.httpClient,
+			client = config.rawApiConfig.httpClient,
 			hostname = config.apiUrl,
 			path = "/ws/v2/notification/subscribe",
-			clientJson = config.clientJson,
+			clientJson = config.rawApiConfig.json,
 			entitySerializer = User.serializer(),
 			events = events,
 			filter = mapUserFilterOptions(filter),

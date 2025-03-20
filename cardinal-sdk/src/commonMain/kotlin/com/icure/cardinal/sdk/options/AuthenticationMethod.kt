@@ -1,6 +1,7 @@
 package com.icure.cardinal.sdk.options
 
 import com.icure.cardinal.sdk.api.raw.RawAnonymousAuthApi
+import com.icure.cardinal.sdk.api.raw.RawApiConfig
 import com.icure.cardinal.sdk.api.raw.RawMessageGatewayApi
 import com.icure.cardinal.sdk.api.raw.impl.RawAnonymousAuthApiImpl
 import com.icure.cardinal.sdk.api.raw.impl.RawUserApiImpl
@@ -19,11 +20,9 @@ import com.icure.cardinal.sdk.auth.services.SmartAuthProvider
 import com.icure.cardinal.sdk.model.Group
 import com.icure.cardinal.sdk.model.User
 import com.icure.cardinal.sdk.model.embed.AuthenticationClass
-import com.icure.cardinal.sdk.utils.Serialization
 import com.icure.cardinal.sdk.utils.ensureNonNull
 import com.icure.kryptom.crypto.CryptoService
 import com.icure.utils.InternalIcureApi
-import io.ktor.client.HttpClient
 import kotlinx.serialization.Serializable
 
 sealed interface AuthenticationMethod {
@@ -200,16 +199,16 @@ fun AuthenticationMethod.getAuthProvider(
 @InternalIcureApi
 internal suspend fun AuthenticationMethod.getGroupAndAuthProvider(
 	apiUrl: String,
-	httpClient: HttpClient,
 	cryptoService: CryptoService,
 	applicationId: String?,
 	options: CommonSdkOptions,
-	groupSelector: GroupSelector?
+	groupSelector: GroupSelector?,
+	rawApiConfig: RawApiConfig
 ): Pair<String?, AuthProvider> {
-	val rawAuthApi = RawAnonymousAuthApiImpl(apiUrl, httpClient, json = Serialization.json)
-	val messageGatewayApi = RawMessageGatewayApi(httpClient, cryptoService)
+	val rawAuthApi = RawAnonymousAuthApiImpl(apiUrl, rawApiConfig)
+	val messageGatewayApi = RawMessageGatewayApi(rawApiConfig.httpClient, cryptoService)
 	val authProvider = getAuthProvider(rawAuthApi, cryptoService, applicationId, options, messageGatewayApi)
-	val userApi = RawUserApiImpl(apiUrl, authProvider, httpClient, json = Serialization.json)
+	val userApi = RawUserApiImpl(apiUrl, authProvider, rawApiConfig)
 	// On local there is no groups, need to handle that possibility
 	val matches = userApi.getMatchingUsers().takeIf { it.status.value != 404 }?.successBody()
 	return if (matches != null) {

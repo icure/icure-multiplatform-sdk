@@ -14,6 +14,10 @@ import com.icure.utils.InternalIcureApi
 
 @InternalIcureApi
 interface RecoveryDataEncryption {
+	/**
+	 * IMPORTANT: don't use [RawRecoveryDataApi.getRecoveryDataWaiting] on this instance: if the user configured it
+	 * with a request timeout shorter than the timeout used in the input there will be issues.
+	 */
 	val raw: RawRecoveryDataApi
 
 	/**

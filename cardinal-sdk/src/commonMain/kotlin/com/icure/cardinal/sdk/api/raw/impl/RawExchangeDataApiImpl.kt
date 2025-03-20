@@ -2,6 +2,7 @@ package com.icure.cardinal.sdk.api.raw.`impl`
 
 import com.icure.cardinal.sdk.api.raw.BaseRawApi
 import com.icure.cardinal.sdk.api.raw.HttpResponse
+import com.icure.cardinal.sdk.api.raw.RawApiConfig
 import com.icure.cardinal.sdk.api.raw.RawExchangeDataApi
 import com.icure.cardinal.sdk.api.raw.wrap
 import com.icure.cardinal.sdk.auth.services.AuthProvider
@@ -31,11 +32,8 @@ import kotlin.time.Duration
 class RawExchangeDataApiImpl(
 	internal val apiUrl: String,
 	private val authProvider: AuthProvider,
-	httpClient: HttpClient,
-	additionalHeaders: Map<String, String> = emptyMap(),
-	timeout: Duration? = null,
-	json: Json,
-) : BaseRawApi(httpClient, additionalHeaders, timeout, json), RawExchangeDataApi {
+	rawApiConfig: RawApiConfig,
+) : BaseRawApi(rawApiConfig), RawExchangeDataApi {
 	// region common endpoints
 
 	override suspend fun createExchangeData(exchangeData: ExchangeData): HttpResponse<ExchangeData> =

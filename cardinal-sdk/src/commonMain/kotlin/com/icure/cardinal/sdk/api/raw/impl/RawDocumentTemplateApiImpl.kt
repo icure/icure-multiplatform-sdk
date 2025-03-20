@@ -2,6 +2,7 @@ package com.icure.cardinal.sdk.api.raw.`impl`
 
 import com.icure.cardinal.sdk.api.raw.BaseRawApi
 import com.icure.cardinal.sdk.api.raw.HttpResponse
+import com.icure.cardinal.sdk.api.raw.RawApiConfig
 import com.icure.cardinal.sdk.api.raw.RawDocumentTemplateApi
 import com.icure.cardinal.sdk.api.raw.wrap
 import com.icure.cardinal.sdk.auth.services.AuthProvider
@@ -35,11 +36,8 @@ import kotlin.time.Duration
 class RawDocumentTemplateApiImpl(
 	internal val apiUrl: String,
 	private val authProvider: AuthProvider,
-	httpClient: HttpClient,
-	additionalHeaders: Map<String, String> = emptyMap(),
-	timeout: Duration? = null,
-	json: Json,
-) : BaseRawApi(httpClient, additionalHeaders, timeout, json), RawDocumentTemplateApi {
+	rawApiConfig: RawApiConfig,
+) : BaseRawApi(rawApiConfig), RawDocumentTemplateApi {
 	// region common endpoints
 
 	override suspend fun getDocumentTemplate(documentTemplateId: String): HttpResponse<DocumentTemplate> =

@@ -23,14 +23,19 @@ import kotlinx.serialization.json.Json
 import kotlin.time.Duration
 
 @InternalIcureApi
+data class RawApiConfig(
+	val httpClient: HttpClient,
+	val additionalHeaders: Map<String, String>,
+	val requestTimeout : Duration?,
+	val json: Json
+)
+
+@InternalIcureApi
 abstract class BaseRawApi(
-	internal val httpClient: HttpClient,
-	private val additionalHeaders: Map<String, String>,
-	private val requestTimeout : Duration?,
-	private val json: Json
+	private val config: RawApiConfig
 ) {
 	init {
-		require (additionalHeaders.keys.none { it.lowercase() == "content-type" }) {
+		require(config.additionalHeaders.keys.none { it.lowercase() == "content-type" }) {
 			"You are not allowed to specify Content-Type header: it is automatically set on each request as needed."
 		}
 	}
@@ -104,9 +109,14 @@ abstract class BaseRawApi(
 	): HttpResponse {
 		val response = request(method, authService, authenticationClass, accessControlKeysGroupId, block)
 		return if (authService != null && response.status == HttpStatusCode.Unauthorized) {
-			val requiredAuthClass = response.headers["Icure-Minimum-Required-Auth-Level"]?.let { minAuthClassForLevel(it.toInt()) }
+			val requiredAuthClass =
+				response.headers["Icure-Minimum-Required-Auth-Level"]?.let { minAuthClassForLevel(it.toInt()) }
 			authService.invalidateCurrentAuthentication(
-				RequestStatusException(response.call.request.method, response.call.request.url.toString(), response.status.value),
+				RequestStatusException(
+					response.call.request.method,
+					response.call.request.url.toString(),
+					response.status.value
+				),
 				requiredAuthClass
 			)
 			return requestAndRetryOnUnauthorized(
@@ -128,14 +138,14 @@ abstract class BaseRawApi(
 		accessControlKeysGroupId: String?,
 		block: suspend HttpRequestBuilder.() -> Unit
 	) =
-		httpClient.request {
+		config.httpClient.request {
 			this.method = method
 			headers {
-				additionalHeaders.forEach { (header, headerValue) ->
+				config.additionalHeaders.forEach { (header, headerValue) ->
 					set(header, headerValue)
 				}
 			}
-			requestTimeout?.also {
+			config.requestTimeout?.also {
 				timeout {
 					requestTimeoutMillis = it.inWholeMilliseconds
 				}
@@ -147,9 +157,12 @@ abstract class BaseRawApi(
 			addAccessControlKeys(accessControlKeysGroupId)
 		}
 
-	protected fun <T> HttpRequestBuilder.setBodyWithSerializer(serializer: kotlinx.serialization.KSerializer<T>, body: T) = this.setBody(
+	protected fun <T> HttpRequestBuilder.setBodyWithSerializer(
+		serializer: kotlinx.serialization.KSerializer<T>,
+		body: T
+	) = this.setBody(
 		TextContent(
-			json.encodeToString(serializer, body),
+			config.json.encodeToString(serializer, body),
 			ContentType.Application.Json
 		)
 	)

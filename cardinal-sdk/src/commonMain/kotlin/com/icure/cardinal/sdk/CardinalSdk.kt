@@ -80,6 +80,7 @@ import com.icure.cardinal.sdk.api.impl.TimeTableApiImpl
 import com.icure.cardinal.sdk.api.impl.TopicApiImpl
 import com.icure.cardinal.sdk.api.impl.UserApiImpl
 import com.icure.cardinal.sdk.api.raw.RawAnonymousAuthApi
+import com.icure.cardinal.sdk.api.raw.RawApiConfig
 import com.icure.cardinal.sdk.api.raw.RawMessageGatewayApi
 import com.icure.cardinal.sdk.api.raw.impl.RawAccessLogApiImpl
 import com.icure.cardinal.sdk.api.raw.impl.RawAgendaApiImpl
@@ -165,6 +166,8 @@ import com.icure.cardinal.sdk.options.AuthenticationMethod
 import com.icure.cardinal.sdk.options.EntitiesEncryptedFieldsManifests
 import com.icure.cardinal.sdk.options.JsonPatcher
 import com.icure.cardinal.sdk.options.SdkOptions
+import com.icure.cardinal.sdk.options.configuredClientOrDefault
+import com.icure.cardinal.sdk.options.configuredJsonOrDefault
 import com.icure.cardinal.sdk.options.getGroupAndAuthProvider
 import com.icure.cardinal.sdk.storage.CardinalStorageFacade
 import com.icure.cardinal.sdk.storage.StorageFacade
@@ -306,11 +309,16 @@ interface CardinalSdk : CardinalApis {
 				CardinalStorageFacade(keysStorage, baseStorage, DefaultStorageEntryKeysFactory, cryptoService, false)
 			val (chosenGroupId, authProvider) = authenticationMethod.getGroupAndAuthProvider(
 				apiUrl,
-				client,
 				cryptoService,
 				applicationId,
 				options,
-				options.groupSelector
+				options.groupSelector,
+				RawApiConfig(
+					httpClient = client,
+					additionalHeaders = emptyMap(),
+					requestTimeout = options.requestTimeout,
+					json = json
+				)
 			)
 			val (initializedCrypto, newKey, scope) = initializeApiCrypto(
 				apiUrl,
@@ -414,8 +422,12 @@ private class AuthenticationWithProcessStepImpl(
 		)
 		val rawAuthApi: RawAnonymousAuthApi = RawAnonymousAuthApiImpl(
 			apiUrl = baseUrl,
-			httpClient = options.configuredClientOrDefault(),
-			json = options.configuredJsonOrDefault()
+			RawApiConfig(
+				httpClient = options.configuredClientOrDefault(),
+				json = options.configuredJsonOrDefault(),
+				additionalHeaders = emptyMap(),
+				requestTimeout = options.requestTimeout
+			)
 		)
 		val loginResult = retryWithDelays(
 			listOf(100.milliseconds, 500.milliseconds, 1.seconds)
@@ -454,25 +466,40 @@ private suspend fun initializeApiCrypto(
 	val boundGroup = groupId?.let(::SdkBoundGroup)
 	// Failure of any child doesn't cause the scope nor the parent to cancel
 	val sdkScope = CoroutineScope(Dispatchers.Default + SupervisorJob(options.parentJob))
-	val dataOwnerApi = DataOwnerApiImpl(RawDataOwnerApiImpl(apiUrl, authProvider, client, json = json), boundGroup)
+	val mutableAdditionalHeaders = mutableMapOf<String, String>() // Only mutated once to add anonymity header
+	val rawApiConfig = RawApiConfig(
+		httpClient = client,
+		json = json,
+		additionalHeaders = mutableAdditionalHeaders,
+		requestTimeout = options.requestTimeout
+	)
+	val dataOwnerApi = DataOwnerApiImpl(
+		RawDataOwnerApiImpl(
+			apiUrl,
+			authProvider,
+			rawApiConfig
+		),
+		boundGroup
+	)
 	val self = dataOwnerApi.getCurrentDataOwner()
 	val selfIsAnonymous = cryptoStrategies.dataOwnerRequiresAnonymousDelegation(self.asStub())
-	val anonymityHeader = when {
-		self.type != DataOwnerType.Hcp && !selfIsAnonymous -> ANONYMITY_HEADER to "false"
-		self.type == DataOwnerType.Hcp && selfIsAnonymous -> ANONYMITY_HEADER to "true"
+	when {
+		self.type != DataOwnerType.Hcp && !selfIsAnonymous -> "false"
+		self.type == DataOwnerType.Hcp && selfIsAnonymous -> "true"
 		else -> null
+	}?.let { anonymityHeaderValue ->
+		mutableAdditionalHeaders[ANONYMITY_HEADER] = anonymityHeaderValue
 	}
-	val additionalHeaders = anonymityHeader?.let { mapOf(it) }.orEmpty()
-	val rawPatientApiNoAccessKeys = RawPatientApiImpl(apiUrl, authProvider, null, client, json = json, additionalHeaders = additionalHeaders)
-	val rawHealthcarePartyApi = RawHealthcarePartyApiImpl(apiUrl, authProvider, client, json = json, additionalHeaders = additionalHeaders)
-	val rawDeviceApi = RawDeviceApiImpl(apiUrl, authProvider, client, json = json, additionalHeaders = additionalHeaders)
+	val rawPatientApiNoAccessKeys = RawPatientApiImpl(apiUrl, authProvider, null, rawApiConfig)
+	val rawHealthcarePartyApi = RawHealthcarePartyApiImpl(apiUrl, authProvider, rawApiConfig)
+	val rawDeviceApi = RawDeviceApiImpl(apiUrl, authProvider, rawApiConfig)
 	val exchangeDataMapManager = ExchangeDataMapManagerImpl(
-		RawExchangeDataMapApiImpl(apiUrl, authProvider, client, json = json, additionalHeaders = additionalHeaders),
+		RawExchangeDataMapApiImpl(apiUrl, authProvider, rawApiConfig),
 		cryptoService,
 		boundGroup
 	)
 	val baseExchangeDataManager = BaseExchangeDataManagerImpl(
-		RawExchangeDataApiImpl(apiUrl, authProvider, client, json = json, additionalHeaders = additionalHeaders),
+		RawExchangeDataApiImpl(apiUrl, authProvider, rawApiConfig),
 		dataOwnerApi,
 		cryptoService,
 		selfIsAnonymous,
@@ -494,8 +521,8 @@ private suspend fun initializeApiCrypto(
 	)
 	val recoveryDataEncryption = RecoveryDataEncryptionImpl(
 		cryptoService,
-		RawRecoveryDataApiImpl(apiUrl, authProvider, client, json = json, additionalHeaders = additionalHeaders)
-	)
+		rawApiConfig,
+	) { RawRecoveryDataApiImpl(apiUrl, authProvider, it) }
 	val userEncryptionKeysInitInfo = UserEncryptionKeysManagerImpl.Factory(
 		cryptoService,
 		cryptoStrategies,
@@ -591,7 +618,7 @@ private suspend fun initializeApiCrypto(
 		jsonEncryptionService,
 		DelegationsDeAnonymizationImpl(
 			baseSecurityMetadataDecryptor,
-			RawSecureDelegationKeyMapApiImpl(apiUrl, authProvider, client, json = json, additionalHeaders = additionalHeaders),
+			RawSecureDelegationKeyMapApiImpl(apiUrl, authProvider, rawApiConfig),
 			headersProvider,
 			entityEncryptionService,
 			dataOwnerApi,
@@ -603,7 +630,6 @@ private suspend fun initializeApiCrypto(
 		recoveryDataEncryption,
 		headersProvider,
 		cryptoStrategies,
-		anonymityHeader,
 		secureDelegationsManager,
 		incrementalSecurityMetadataDecryptor,
 		baseSecurityMetadataDecryptor
@@ -622,15 +648,14 @@ private suspend fun initializeApiCrypto(
 	return Triple(
 		ApiConfigurationImpl(
 			apiUrl,
-			client,
-			json,
 			if (authProvider is JwtBasedAuthProvider) authProvider else null,
 			!selfIsAnonymous,
 			crypto,
 			manifests,
 			iCureStorage,
 			options.jsonPatcher ?: object : JsonPatcher {},
-			options.parentJob
+			options.parentJob,
+			rawApiConfig
 		),
 		userEncryptionKeysInitInfo.newKey?.key,
 		sdkScope
@@ -647,16 +672,12 @@ private class CardinalApiImpl(
 	override val scope: CoroutineScope
 ): CardinalSdk {
 	private val apiUrl get() = config.apiUrl
-	private val client get() = config.httpClient
-	private val additionalHeaders = config.crypto.overrideAnonymityHeader?.let(::mapOf).orEmpty()
 
 	private val rawDataOwnerApi by lazy {
 		RawDataOwnerApiImpl(
 			apiUrl,
 			authProvider,
-			client,
-			json = httpClientJson,
-			additionalHeaders = additionalHeaders
+			config.rawApiConfig,
 		)
 	}
 
@@ -665,9 +686,7 @@ private class CardinalApiImpl(
 			apiUrl,
 			authProvider,
 			config.crypto.headersProvider,
-			client,
-			json = httpClientJson,
-			additionalHeaders = additionalHeaders
+			config.rawApiConfig,
 		)
 	}
 
@@ -684,9 +703,7 @@ private class CardinalApiImpl(
 			apiUrl,
 			authProvider,
 			config.crypto.headersProvider,
-			client,
-			json = httpClientJson,
-			additionalHeaders = additionalHeaders
+			config.rawApiConfig,
 		)
 	}
 
@@ -694,9 +711,7 @@ private class CardinalApiImpl(
 		RawHealthcarePartyApiImpl(
 			apiUrl,
 			authProvider,
-			client,
-			json = httpClientJson,
-			additionalHeaders = additionalHeaders
+			config.rawApiConfig,
 		)
 	}
 
@@ -712,9 +727,7 @@ private class CardinalApiImpl(
 			apiUrl,
 			authProvider,
 			config.crypto.headersProvider,
-			client,
-			json = httpClientJson,
-			additionalHeaders = additionalHeaders
+			config.rawApiConfig,
 		)
 	}
 
@@ -737,9 +750,7 @@ private class CardinalApiImpl(
 			apiUrl,
 			authProvider,
 			config.crypto.headersProvider,
-			client,
-			json = httpClientJson,
-			additionalHeaders = additionalHeaders
+			config.rawApiConfig,
 		)
 	}
 
@@ -757,16 +768,12 @@ private class CardinalApiImpl(
 			RawUserApiImpl(
 				apiUrl,
 				authProvider,
-				client,
-				json = httpClientJson,
-				additionalHeaders = additionalHeaders
+				config.rawApiConfig,
 			),
 			RawPermissionApiImpl(
 				apiUrl,
 				authProvider,
-				client,
-				json = httpClientJson,
-				additionalHeaders = additionalHeaders
+				config.rawApiConfig,
 			),
 			config
 		)
@@ -789,9 +796,7 @@ private class CardinalApiImpl(
 			apiUrl,
 			authProvider,
 			config.crypto.headersProvider,
-			client,
-			json = httpClientJson,
-			additionalHeaders = additionalHeaders
+			config.rawApiConfig,
 		)
 	}
 
@@ -818,9 +823,7 @@ private class CardinalApiImpl(
 			apiUrl,
 			authProvider,
 			config.crypto.headersProvider,
-			client,
-			json = httpClientJson,
-			additionalHeaders = additionalHeaders
+			config.rawApiConfig,
 		)
 	}
 
@@ -836,9 +839,7 @@ private class CardinalApiImpl(
 			apiUrl,
 			authProvider,
 			config.crypto.headersProvider,
-			client,
-			json = httpClientJson,
-			additionalHeaders = additionalHeaders
+			config.rawApiConfig,
 		)
 	}
 
@@ -854,9 +855,7 @@ private class CardinalApiImpl(
 			apiUrl,
 			authProvider,
 			config.crypto.headersProvider,
-			client,
-			json = httpClientJson,
-			additionalHeaders = additionalHeaders
+			config.rawApiConfig,
 		)
 	}
 
@@ -872,9 +871,7 @@ private class CardinalApiImpl(
 			apiUrl,
 			authProvider,
 			config.crypto.headersProvider,
-			client,
-			json = httpClientJson,
-			additionalHeaders = additionalHeaders
+			config.rawApiConfig,
 		)
 	}
 
@@ -889,9 +886,7 @@ private class CardinalApiImpl(
 		RawTimeTableApiImpl(
 			apiUrl,
 			authProvider,
-			client,
-			json = httpClientJson,
-			additionalHeaders = additionalHeaders
+			config.rawApiConfig,
 		)
 	}
 
@@ -904,9 +899,7 @@ private class CardinalApiImpl(
 			apiUrl,
 			authProvider,
 			config.crypto.headersProvider,
-			client,
-			json = httpClientJson,
-			additionalHeaders = additionalHeaders
+			config.rawApiConfig,
 		)
 	}
 
@@ -922,9 +915,7 @@ private class CardinalApiImpl(
 			apiUrl,
 			authProvider,
 			config.crypto.headersProvider,
-			client,
-			json = httpClientJson,
-			additionalHeaders = additionalHeaders
+			config.rawApiConfig,
 		)
 	}
 
@@ -940,9 +931,7 @@ private class CardinalApiImpl(
 			apiUrl,
 			authProvider,
 			config.crypto.headersProvider,
-			client,
-			json = httpClientJson,
-			additionalHeaders = additionalHeaders
+			config.rawApiConfig,
 		)
 	}
 
@@ -950,9 +939,7 @@ private class CardinalApiImpl(
 		RawEntityReferenceApiImpl(
 			apiUrl,
 			authProvider,
-			client,
-			json = httpClientJson,
-			additionalHeaders = additionalHeaders
+			config.rawApiConfig,
 		)
 	}
 
@@ -970,9 +957,7 @@ private class CardinalApiImpl(
 			apiUrl,
 			authProvider,
 			config.crypto.headersProvider,
-			client,
-			json = httpClientJson,
-			additionalHeaders = additionalHeaders
+			config.rawApiConfig,
 		)
 	}
 
@@ -989,66 +974,66 @@ private class CardinalApiImpl(
 	}
 
 	override val device: DeviceApi by lazy {
-		DeviceApiImpl(RawDeviceApiImpl(apiUrl, authProvider, client, json = httpClientJson, additionalHeaders = additionalHeaders), config)
+		DeviceApiImpl(RawDeviceApiImpl(apiUrl, authProvider, config.rawApiConfig), config)
 	}
 
 	override val permission: PermissionApi by lazy {
-		PermissionApiImpl(RawPermissionApiImpl(apiUrl, authProvider, client, json = httpClientJson, additionalHeaders = additionalHeaders))
+		PermissionApiImpl(RawPermissionApiImpl(apiUrl, authProvider, config.rawApiConfig))
 	}
 
 	override val applicationSettings: ApplicationSettingsApi by lazy {
-		ApplicationSettingsApiImpl(RawApplicationSettingsApiImpl(apiUrl, authProvider, client, json = httpClientJson, additionalHeaders = additionalHeaders))
+		ApplicationSettingsApiImpl(RawApplicationSettingsApiImpl(apiUrl, authProvider, config.rawApiConfig))
 	}
 	override val code: CodeApi by lazy {
-		CodeApiImpl(RawCodeApiImpl(apiUrl, authProvider, client, json = httpClientJson, additionalHeaders = additionalHeaders))
+		CodeApiImpl(RawCodeApiImpl(apiUrl, authProvider, config.rawApiConfig))
 	}
 	override val calendarItemType: CalendarItemTypeApi by lazy {
-		CalendarItemTypeApiImpl(RawCalendarItemTypeApiImpl(apiUrl, authProvider, client, json = httpClientJson, additionalHeaders = additionalHeaders))
+		CalendarItemTypeApiImpl(RawCalendarItemTypeApiImpl(apiUrl, authProvider, config.rawApiConfig))
 	}
 	override val documentTemplate: DocumentTemplateApi by lazy {
-		DocumentTemplateApiImpl(apiUrl, RawDocumentTemplateApiImpl(apiUrl, authProvider, client, json = httpClientJson, additionalHeaders = additionalHeaders))
+		DocumentTemplateApiImpl(apiUrl, RawDocumentTemplateApiImpl(apiUrl, authProvider, config.rawApiConfig))
 	}
 	override val entityReference: EntityReferenceApi by lazy {
-		EntityReferenceApiImpl(RawEntityReferenceApiImpl(apiUrl, authProvider, client, json = httpClientJson, additionalHeaders = additionalHeaders))
+		EntityReferenceApiImpl(RawEntityReferenceApiImpl(apiUrl, authProvider, config.rawApiConfig))
 	}
 	override val entityTemplate: EntityTemplateApi by lazy {
-		EntityTemplateApiImpl(RawEntityTemplateApiImpl(apiUrl, authProvider, client, json = httpClientJson, additionalHeaders = additionalHeaders))
+		EntityTemplateApiImpl(RawEntityTemplateApiImpl(apiUrl, authProvider, config.rawApiConfig))
 	}
 	override val frontEndMigration: FrontEndMigrationApi by lazy {
-		FrontEndMigrationApiImpl(RawFrontEndMigrationApiImpl(apiUrl, authProvider, client, json = httpClientJson, additionalHeaders = additionalHeaders))
+		FrontEndMigrationApiImpl(RawFrontEndMigrationApiImpl(apiUrl, authProvider, config.rawApiConfig))
 	}
 	override val group: GroupApi by lazy {
-		GroupApiImpl(RawGroupApiImpl(apiUrl, authProvider, client, json = httpClientJson, additionalHeaders = additionalHeaders))
+		GroupApiImpl(RawGroupApiImpl(apiUrl, authProvider, config.rawApiConfig))
 	}
 	override val healthcareParty: HealthcarePartyApi by lazy {
-		HealthcarePartyApiImpl(RawHealthcarePartyApiImpl(apiUrl, authProvider, client, json = httpClientJson, additionalHeaders = additionalHeaders), config)
+		HealthcarePartyApiImpl(RawHealthcarePartyApiImpl(apiUrl, authProvider, config.rawApiConfig), config)
 	}
 	override val system: SystemApi by lazy {
-		SystemApiImpl(RawICureApiImpl(apiUrl, authProvider, client, json = httpClientJson, additionalHeaders = additionalHeaders))
+		SystemApiImpl(RawICureApiImpl(apiUrl, authProvider, config.rawApiConfig))
 	}
 	override val insurance: InsuranceApi by lazy {
-		InsuranceApiImpl(RawInsuranceApiImpl(apiUrl, authProvider, client, json = httpClientJson, additionalHeaders = additionalHeaders))
+		InsuranceApiImpl(RawInsuranceApiImpl(apiUrl, authProvider, config.rawApiConfig))
 	}
 	override val keyword: KeywordApi by lazy {
-		KeywordApiImpl(RawKeywordApiImpl(apiUrl, authProvider, client, json = httpClientJson, additionalHeaders = additionalHeaders))
+		KeywordApiImpl(RawKeywordApiImpl(apiUrl, authProvider, config.rawApiConfig))
 	}
 	override val place: PlaceApi by lazy {
-		PlaceApiImpl(RawPlaceApiImpl(apiUrl, authProvider, client, json = httpClientJson, additionalHeaders = additionalHeaders))
+		PlaceApiImpl(RawPlaceApiImpl(apiUrl, authProvider, config.rawApiConfig))
 	}
 	override val role: RoleApi by lazy {
-		RoleApiImpl(RawRoleApiImpl(apiUrl, authProvider, client, json = httpClientJson, additionalHeaders = additionalHeaders))
+		RoleApiImpl(RawRoleApiImpl(apiUrl, authProvider, config.rawApiConfig))
 	}
 	override val tarification: TarificationApi by lazy {
-		TarificationApiImpl(RawTarificationApiImpl(apiUrl, authProvider, client, json = httpClientJson, additionalHeaders = additionalHeaders))
+		TarificationApiImpl(RawTarificationApiImpl(apiUrl, authProvider, config.rawApiConfig))
 	}
 	override val medicalLocation: MedicalLocationApi by lazy {
-		MedicalLocationApiImpl(RawMedicalLocationApiImpl(apiUrl, authProvider, client, json = httpClientJson, additionalHeaders = additionalHeaders))
+		MedicalLocationApiImpl(RawMedicalLocationApiImpl(apiUrl, authProvider, config.rawApiConfig))
 	}
 	override val auth: AuthApi by lazy {
 		AuthApiImpl(authProvider)
 	}
 	override val agenda: AgendaApi by lazy {
-		AgendaApiImpl(RawAgendaApiImpl(apiUrl, authProvider, client, json = httpClientJson, additionalHeaders = additionalHeaders))
+		AgendaApiImpl(RawAgendaApiImpl(apiUrl, authProvider, config.rawApiConfig))
 	}
 
 	override suspend fun switchGroup(groupId: String): CardinalSdk {
@@ -1056,8 +1041,8 @@ private class CardinalApiImpl(
 		val (switchedCryptoConfigs, newKey, scope) = initializeApiCrypto(
 			config.apiUrl,
 			switchedProvider,
-			config.httpClient,
-			config.clientJson,
+			config.rawApiConfig.httpClient,
+			config.rawApiConfig.json,
 			config.crypto.strategies,
 			config.crypto.primitives,
 			config.storage,

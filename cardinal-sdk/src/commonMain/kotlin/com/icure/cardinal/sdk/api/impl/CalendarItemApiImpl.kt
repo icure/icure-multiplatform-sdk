@@ -449,10 +449,10 @@ internal class CalendarItemApiImpl(
 		subscriptionConfig: EntitySubscriptionConfiguration?
 	): EntitySubscription<EncryptedCalendarItem> {
 		return WebSocketSubscription.initialize(
-			client = config.httpClient,
+			client = config.rawApiConfig.httpClient,
 			hostname = config.apiUrl,
 			path = "/ws/v2/notification/subscribe",
-			clientJson = config.clientJson,
+			clientJson = config.rawApiConfig.json,
 			entitySerializer = EncryptedCalendarItem.serializer(),
 			events = events,
 			filter = mapCalendarItemFilterOptions(
@@ -505,10 +505,10 @@ internal class CalendarItemBasicApiImpl(
 		subscriptionConfig: EntitySubscriptionConfiguration?
 	): EntitySubscription<EncryptedCalendarItem> {
 		return WebSocketSubscription.initialize(
-			client = config.httpClient,
+			client = config.rawApiConfig.httpClient,
 			hostname = config.apiUrl,
 			path = "/ws/v2/notification/subscribe",
-			clientJson = config.clientJson,
+			clientJson = config.rawApiConfig.json,
 			entitySerializer = EncryptedCalendarItem.serializer(),
 			events = events,
 			filter = mapCalendarItemFilterOptions(filter, null, null),

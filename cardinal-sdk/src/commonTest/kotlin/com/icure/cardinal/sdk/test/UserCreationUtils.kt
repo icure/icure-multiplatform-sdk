@@ -1,6 +1,5 @@
 package com.icure.cardinal.sdk.test
 
-import com.icure.cardinal.sdk.CardinalSdk
 import com.icure.cardinal.sdk.api.raw.impl.RawGroupApiImpl
 import com.icure.cardinal.sdk.api.raw.impl.RawHealthcarePartyApiImpl
 import com.icure.cardinal.sdk.api.raw.impl.RawPatientApiImpl
@@ -14,7 +13,6 @@ import com.icure.cardinal.sdk.model.Patient
 import com.icure.cardinal.sdk.model.User
 import com.icure.cardinal.sdk.model.embed.DelegationTag
 import com.icure.cardinal.sdk.model.specializations.SpkiHexString
-import com.icure.cardinal.sdk.utils.Serialization
 import com.icure.kryptom.crypto.RsaAlgorithm
 import com.icure.kryptom.crypto.defaultCryptoService
 import com.icure.kryptom.utils.toHexString
@@ -33,8 +31,8 @@ suspend fun createUserInMultipleGroups(): Map<String, DataOwnerDetails> {
 	val userId1 = uuid()
 	val userId2 = uuid()
 	val userId3 = uuid()
-	val groupRawApi = RawGroupApiImpl(baseUrl, superadminAuth, CardinalSdk.sharedHttpClient, json = Serialization.json)
-	val userRawApi = RawUserApiImpl(baseUrl, superadminAuth, CardinalSdk.sharedHttpClient, json = Serialization.json)
+	val groupRawApi = RawGroupApiImpl(baseUrl, superadminAuth, DefaultRawApiConfig)
+	val userRawApi = RawUserApiImpl(baseUrl, superadminAuth, DefaultRawApiConfig)
 	groupRawApi.createGroup(
 		id = groupId1,
 		name = "test-group-1-${groupId1}",
@@ -129,8 +127,8 @@ suspend fun createUserInMultipleGroups(): Map<String, DataOwnerDetails> {
  */
 @OptIn(InternalIcureApi::class)
 suspend fun createHcpUser(parent: DataOwnerDetails? = null, useLegacyKey: Boolean = false, roles: Set<String>? = null): DataOwnerDetails {
-	val hcpRawApi = RawHealthcarePartyApiImpl(baseUrl, testGroupAdminAuth, CardinalSdk.sharedHttpClient, json = Serialization.json)
-	val userRawApi = RawUserApiImpl(baseUrl, testGroupAdminAuth, CardinalSdk.sharedHttpClient, json = Serialization.json)
+	val hcpRawApi = RawHealthcarePartyApiImpl(baseUrl, testGroupAdminAuth, DefaultRawApiConfig)
+	val userRawApi = RawUserApiImpl(baseUrl, testGroupAdminAuth, DefaultRawApiConfig)
 	val hcpId = uuid()
 	val login = "hcp-${uuid()}"
 	val password = uuid()
@@ -169,8 +167,8 @@ suspend fun createHcpUser(parent: DataOwnerDetails? = null, useLegacyKey: Boolea
 
 @OptIn(InternalIcureApi::class)
 suspend fun createPatientUser(existingPatientId: String? = null): DataOwnerDetails {
-	val patientRawApi = RawPatientApiImpl(baseUrl, testGroupAdminAuth, null, CardinalSdk.sharedHttpClient, json = Serialization.json)
-	val userRawApi = RawUserApiImpl(baseUrl, testGroupAdminAuth, CardinalSdk.sharedHttpClient, json = Serialization.json)
+	val patientRawApi = RawPatientApiImpl(baseUrl, testGroupAdminAuth, null, DefaultRawApiConfig)
+	val userRawApi = RawUserApiImpl(baseUrl, testGroupAdminAuth, DefaultRawApiConfig)
 	val patientId = existingPatientId ?: uuid()
 	val login = "patient-${uuid()}"
 	val password = uuid()
@@ -201,8 +199,8 @@ suspend fun createPatientUser(existingPatientId: String? = null): DataOwnerDetai
 
 @OptIn(InternalIcureApi::class)
 suspend fun createUserFromExistingPatient(patient: Patient): DataOwnerDetails {
-	val patientRawApi = RawPatientApiImpl(baseUrl, testGroupAdminAuth, NoAccessControlKeysHeadersProvider, CardinalSdk.sharedHttpClient, json = Serialization.json)
-	val userRawApi = RawUserApiImpl(baseUrl, testGroupAdminAuth, CardinalSdk.sharedHttpClient, json = Serialization.json)
+	val patientRawApi = RawPatientApiImpl(baseUrl, testGroupAdminAuth, NoAccessControlKeysHeadersProvider, DefaultRawApiConfig)
+	val userRawApi = RawUserApiImpl(baseUrl, testGroupAdminAuth, DefaultRawApiConfig)
 	val login = "patient-${uuid()}"
 	val password = uuid()
 	val keypair = defaultCryptoService.rsa.generateKeyPair(RsaAlgorithm.RsaEncryptionAlgorithm.OaepWithSha256)
