@@ -140,7 +140,8 @@ interface CardinalUnboundBaseSdk : CardinalBaseApis {
 				httpClient = client,
 				json = json,
 				requestTimeout = options.requestTimeout,
-				additionalHeaders = emptyMap()
+				additionalHeaders = emptyMap(),
+				retryConfiguration = options.requestRetryConfiguration
 			)
 			val rawAuthApi = RawAnonymousAuthApiImpl(
 				apiUrl = apiUrl,
@@ -218,7 +219,8 @@ interface CardinalBaseSdk : CardinalBaseApis {
 				httpClient = client,
 				json = json,
 				requestTimeout = options.requestTimeout,
-				additionalHeaders = emptyMap()
+				additionalHeaders = emptyMap(),
+				retryConfiguration = options.requestRetryConfiguration
 			)
 			val (chosenGroup, authProvider) = authenticationMethod.getGroupAndAuthProvider(
 				apiUrl,

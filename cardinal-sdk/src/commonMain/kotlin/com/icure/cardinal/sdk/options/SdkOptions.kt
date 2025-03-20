@@ -13,6 +13,7 @@ import kotlinx.coroutines.Job
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import kotlin.time.Duration
+import kotlin.time.Duration.Companion.seconds
 
 interface CommonSdkOptions {
 	/**
@@ -59,6 +60,10 @@ interface CommonSdkOptions {
 	 * The default timeout on the default http client is 60s
 	 */
 	val requestTimeout: Duration?
+	/**
+	 * Configures how requests should be retried in case of server errors or connection errors.
+	 */
+	val requestRetryConfiguration: RequestRetryConfiguration?
 }
 
 interface BoundSdkOptions : CommonSdkOptions {
@@ -138,6 +143,7 @@ data class SdkOptions(
 	 */
 	val parentJob: Job? = null,
 	override val requestTimeout: Duration? = null,
+	override val requestRetryConfiguration: RequestRetryConfiguration = RequestRetryConfiguration(),
 ): BoundSdkOptions {
 	init {
 		if (httpClientJson != null) {
@@ -163,6 +169,7 @@ data class BasicSdkOptions(
 	override val groupSelector: GroupSelector? = null,
 	override val lenientJson: Boolean = false,
 	override val requestTimeout: Duration? = null,
+	override val requestRetryConfiguration: RequestRetryConfiguration = RequestRetryConfiguration(),
 ): BoundSdkOptions {
 	init {
 		if (httpClientJson != null) {
@@ -199,6 +206,7 @@ data class UnboundBasicSdkOptions(
 		throw UnsupportedOperationException("To use this method you need to configure `getBoundGroupId` in the UnboundBasicSdkOptions")
 	},
 	override val requestTimeout: Duration? = null,
+	override val requestRetryConfiguration: RequestRetryConfiguration = RequestRetryConfiguration(),
 ): CommonSdkOptions {
 	init {
 		if (httpClientJson != null) {
@@ -310,6 +318,50 @@ data class EncryptedFieldsConfiguration(
 		"reason"
 	),
 )
+
+/**
+ * Configures how requests should be retried.
+ */
+data class RequestRetryConfiguration(
+	/**
+	 * How many times the request will be retried in case of issues.
+	 * Must be >= 0 where 0 means the requests will never be retried.
+	 */
+	val maxRetries: Int = 3,
+	/**
+	 * Minimum delay between the first failed request and first retry.
+	 */
+	val initialDelay: Duration = 2.seconds,
+	/**
+	 * Factor applied to the milliseconds value of the [initialDelay] in case of multiple failed requests.
+	 * For example in a configuration with [initialDelay] 2 seconds and [exponentialBackoffFactor] 2.0 the time
+	 * between requests will be 2 s, 4 s, 8 s, and so on, until the request succeeds or [maxRetries] is reached.
+	 *
+	 * Note the backoff is applied on a per-request basis. Different requests calculate their delays independently of
+	 * any other failed or successful request.
+	 */
+	val exponentialBackoffFactor: Double = 2.0,
+	/**
+	 * Provides a hard limit to the exponential backoff delay.
+	 * For example in a configuration with [initialDelay] 2 seconds, [exponentialBackoffFactor] 2.0 and
+	 * [exponentialBackoffCeil] 10 seconds the time between requests will be 2 s, 4 s, 8 s, and 10 seconds for all
+	 * remaining requests.
+	 * Must be >= initialDelay or null
+	 */
+	val exponentialBackoffCeil: Duration? = null
+) {
+	init {
+		require(maxRetries >= 0) {
+			"`maxRetries` must be >= 0"
+		}
+		require(exponentialBackoffFactor > 0) {
+			"`exponentialBackoffFactor` must be positive"
+		}
+		require(exponentialBackoffCeil == null || exponentialBackoffCeil.inWholeMilliseconds >= initialDelay.inWholeMilliseconds) {
+			"`exponentialBackoffCeil` must be >= `exponentialBackoffFactor`"
+		}
+	}
+}
 
 internal fun CommonSdkOptions.configuredClientOrDefault() = this.httpClient ?: (if (this.lenientJson) CardinalSdk.sharedHttpClientUsingLenientJson else CardinalSdk.sharedHttpClient)
 internal fun CommonSdkOptions.configuredJsonOrDefault() = this.httpClientJson ?: (if (this.lenientJson) Serialization.lenientJson else Serialization.json)

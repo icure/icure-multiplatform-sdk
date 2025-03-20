@@ -165,6 +165,7 @@ import com.icure.cardinal.sdk.options.ApiConfigurationImpl
 import com.icure.cardinal.sdk.options.AuthenticationMethod
 import com.icure.cardinal.sdk.options.EntitiesEncryptedFieldsManifests
 import com.icure.cardinal.sdk.options.JsonPatcher
+import com.icure.cardinal.sdk.options.RequestRetryConfiguration
 import com.icure.cardinal.sdk.options.SdkOptions
 import com.icure.cardinal.sdk.options.configuredClientOrDefault
 import com.icure.cardinal.sdk.options.configuredJsonOrDefault
@@ -317,7 +318,8 @@ interface CardinalSdk : CardinalApis {
 					httpClient = client,
 					additionalHeaders = emptyMap(),
 					requestTimeout = options.requestTimeout,
-					json = json
+					json = json,
+					retryConfiguration = options.requestRetryConfiguration ?: RequestRetryConfiguration()
 				)
 			)
 			val (initializedCrypto, newKey, scope) = initializeApiCrypto(
@@ -426,7 +428,8 @@ private class AuthenticationWithProcessStepImpl(
 				httpClient = options.configuredClientOrDefault(),
 				json = options.configuredJsonOrDefault(),
 				additionalHeaders = emptyMap(),
-				requestTimeout = options.requestTimeout
+				requestTimeout = options.requestTimeout,
+				retryConfiguration = options.requestRetryConfiguration
 			)
 		)
 		val loginResult = retryWithDelays(
@@ -471,7 +474,8 @@ private suspend fun initializeApiCrypto(
 		httpClient = client,
 		json = json,
 		additionalHeaders = mutableAdditionalHeaders,
-		requestTimeout = options.requestTimeout
+		requestTimeout = options.requestTimeout,
+		retryConfiguration = options.requestRetryConfiguration
 	)
 	val dataOwnerApi = DataOwnerApiImpl(
 		RawDataOwnerApiImpl(

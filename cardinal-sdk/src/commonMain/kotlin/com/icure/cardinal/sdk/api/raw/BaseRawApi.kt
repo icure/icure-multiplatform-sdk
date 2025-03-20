@@ -5,6 +5,7 @@ import com.icure.cardinal.sdk.auth.services.AuthProvider
 import com.icure.cardinal.sdk.auth.services.AuthService
 import com.icure.cardinal.sdk.auth.services.setAuthorizationWith
 import com.icure.cardinal.sdk.model.embed.AuthenticationClass
+import com.icure.cardinal.sdk.options.RequestRetryConfiguration
 import com.icure.cardinal.sdk.utils.RequestStatusException
 import com.icure.utils.InternalIcureApi
 import io.ktor.client.HttpClient
@@ -19,6 +20,7 @@ import io.ktor.http.HttpMethod
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.content.TextContent
 import io.ktor.http.headers
+import kotlinx.coroutines.delay
 import kotlinx.serialization.json.Json
 import kotlin.time.Duration
 
@@ -27,7 +29,8 @@ data class RawApiConfig(
 	val httpClient: HttpClient,
 	val additionalHeaders: Map<String, String>,
 	val requestTimeout : Duration?,
-	val json: Json
+	val json: Json,
+	val retryConfiguration: RequestRetryConfiguration
 )
 
 @InternalIcureApi
@@ -56,7 +59,7 @@ abstract class BaseRawApi(
 		authProvider: AuthProvider? = null,
 		accessControlKeysGroupId: String? = null,
 		block: suspend HttpRequestBuilder.() -> Unit
-	) = requestAndRetryOnUnauthorized(
+	) = requestAndRetryOnServerOrConnectionError(
 		HttpMethod.Get,
 		authProvider?.getAuthService(),
 		null,
@@ -68,7 +71,7 @@ abstract class BaseRawApi(
 		authProvider: AuthProvider? = null,
 		accessControlKeysGroupId: String? = null,
 		block: suspend HttpRequestBuilder.() -> Unit
-	) = requestAndRetryOnUnauthorized(
+	) = requestAndRetryOnServerOrConnectionError(
 		HttpMethod.Post,
 		authProvider?.getAuthService(),
 		null,
@@ -80,7 +83,7 @@ abstract class BaseRawApi(
 		authProvider: AuthProvider? = null,
 		accessControlKeysGroupId: String? = null,
 		block: suspend HttpRequestBuilder.() -> Unit
-	) = requestAndRetryOnUnauthorized(
+	) = requestAndRetryOnServerOrConnectionError(
 		HttpMethod.Put,
 		authProvider?.getAuthService(),
 		null,
@@ -92,7 +95,7 @@ abstract class BaseRawApi(
 		authProvider: AuthProvider? = null,
 		accessControlKeysGroupId: String? = null,
 		block: suspend HttpRequestBuilder.() -> Unit
-	) = requestAndRetryOnUnauthorized(
+	) = requestAndRetryOnServerOrConnectionError(
 		HttpMethod.Delete,
 		authProvider?.getAuthService(),
 		null,
@@ -100,17 +103,54 @@ abstract class BaseRawApi(
 		block
 	)
 
-	private suspend fun requestAndRetryOnUnauthorized(
+	private tailrec suspend fun requestAndRetryOnServerOrConnectionError(
 		method: HttpMethod,
 		authService: AuthService?,
 		authenticationClass: AuthenticationClass?,
 		accessControlKeysGroupId: String?,
-		block: suspend HttpRequestBuilder.() -> Unit
+		block: suspend HttpRequestBuilder.() -> Unit,
+		remainingRetries: Int = config.retryConfiguration.maxRetries,
+		delayOnFailureMs: Long = config.retryConfiguration.initialDelay.inWholeMilliseconds
 	): HttpResponse {
-		val response = request(method, authService, authenticationClass, accessControlKeysGroupId, block)
-		return if (authService != null && response.status == HttpStatusCode.Unauthorized) {
-			val requiredAuthClass =
-				response.headers["Icure-Minimum-Required-Auth-Level"]?.let { minAuthClassForLevel(it.toInt()) }
+		val result = requestAndRetryOnUnauthorized(
+			method,
+			authService,
+			authenticationClass,
+			accessControlKeysGroupId,
+		) { block() }
+		return when {
+			remainingRetries <= 0 -> result.getOrThrow()
+			result.isFailure || result.getOrThrow().status.value in 500 .. 599 -> {
+				delay(delayOnFailureMs)
+				requestAndRetryOnServerOrConnectionError(
+					method,
+					authService,
+					authenticationClass,
+					accessControlKeysGroupId,
+					block,
+					remainingRetries - 1,
+					(delayOnFailureMs * config.retryConfiguration.exponentialBackoffFactor).toLong().let { newDelay ->
+						config.retryConfiguration.exponentialBackoffCeil?.inWholeMilliseconds?.let { max ->
+							newDelay.coerceAtMost(max)
+						} ?: newDelay
+					},
+				)
+			}
+			else -> result.getOrThrow()
+		}
+	}
+
+	private suspend inline fun requestAndRetryOnUnauthorized(
+		method: HttpMethod,
+		authService: AuthService?,
+		authenticationClass: AuthenticationClass?,
+		accessControlKeysGroupId: String?,
+		block: HttpRequestBuilder.() -> Unit
+	): Result<HttpResponse> {
+		val responseResult = request(method, authService, authenticationClass, accessControlKeysGroupId, block)
+		return if (authService != null && responseResult.getOrNull()?.status == HttpStatusCode.Unauthorized) {
+			val response = responseResult.getOrThrow()
+			val requiredAuthClass = response.headers["Icure-Minimum-Required-Auth-Level"]?.let { minAuthClassForLevel(it.toInt()) }
 			authService.invalidateCurrentAuthentication(
 				RequestStatusException(
 					response.call.request.method,
@@ -119,26 +159,21 @@ abstract class BaseRawApi(
 				),
 				requiredAuthClass
 			)
-			return requestAndRetryOnUnauthorized(
-				method = method,
-				authService = authService,
-				authenticationClass = requiredAuthClass,
-				accessControlKeysGroupId = accessControlKeysGroupId,
-				block = block
-			)
+			return request(method, authService, authenticationClass, accessControlKeysGroupId, block)
 		} else {
-			response
+			responseResult
 		}
 	}
 
-	private suspend fun request(
+	private suspend inline fun request(
 		method: HttpMethod,
 		authService: AuthService?,
 		authenticationClass: AuthenticationClass?,
 		accessControlKeysGroupId: String?,
-		block: suspend HttpRequestBuilder.() -> Unit
-	) =
-		config.httpClient.request {
+		block: HttpRequestBuilder.() -> Unit
+	): Result<HttpResponse> {
+		// If the builder fails we want to fail (could happen when getting the authorization, access control keys, ...)
+		val requestBuilder = HttpRequestBuilder().apply {
 			this.method = method
 			headers {
 				config.additionalHeaders.forEach { (header, headerValue) ->
@@ -156,6 +191,9 @@ abstract class BaseRawApi(
 			block()
 			addAccessControlKeys(accessControlKeysGroupId)
 		}
+		// We want to retry only for exceptions from actually executing the request
+		return kotlin.runCatching { config.httpClient.request(requestBuilder) }
+	}
 
 	protected fun <T> HttpRequestBuilder.setBodyWithSerializer(
 		serializer: kotlinx.serialization.KSerializer<T>,
