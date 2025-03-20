@@ -15,6 +15,7 @@ import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
+import kotlinx.coroutines.CoroutineScope
 
 class ExplicitAndAnonymousDelegatorsShareTests : StringSpec({
 	val patientNote = "This will be encrypted - patient"
@@ -24,8 +25,8 @@ class ExplicitAndAnonymousDelegatorsShareTests : StringSpec({
 		initializeTestEnvironment()
 	}
 
-	suspend fun testCreateSharedData(delegator: DataOwnerDetails, delegate: DataOwnerDetails) {
-		val delegatorApi: CardinalSdk = delegator.api()
+	suspend fun CoroutineScope.testCreateSharedData(delegator: DataOwnerDetails, delegate: DataOwnerDetails) {
+		val delegatorApi: CardinalSdk = delegator.api(this)
 		val patient = delegatorApi.patient.createPatient(
 			delegatorApi.patient.withEncryptionMetadata(
 				DecryptedPatient(
@@ -48,7 +49,7 @@ class ExplicitAndAnonymousDelegatorsShareTests : StringSpec({
 				delegates = mapOf(delegate.dataOwnerId to AccessLevel.Write)
 			)
 		).shouldNotBeNull()
-		val delegateApi: CardinalSdk = delegate.api()
+		val delegateApi: CardinalSdk = delegate.api(this)
 		delegateApi.patient.getPatient(patient.id).run {
 			note shouldBe patientNote
 		}
@@ -63,8 +64,8 @@ class ExplicitAndAnonymousDelegatorsShareTests : StringSpec({
 		}
 	}
 
-	suspend fun testShareExistingData(delegator: DataOwnerDetails, delegate: DataOwnerDetails) {
-		val delegatorApi: CardinalSdk =  delegator.api()
+	suspend fun CoroutineScope.testShareExistingData(delegator: DataOwnerDetails, delegate: DataOwnerDetails) {
+		val delegatorApi: CardinalSdk =  delegator.api(this)
 		val patient = delegatorApi.patient.createPatient(
 			delegatorApi.patient.withEncryptionMetadata(
 				DecryptedPatient(
@@ -95,7 +96,7 @@ class ExplicitAndAnonymousDelegatorsShareTests : StringSpec({
 			delegate.dataOwnerId,
 			he
 		).shouldNotBeNull()
-		val delegateApi: CardinalSdk = delegate.api()
+		val delegateApi: CardinalSdk = delegate.api(this)
 		delegateApi.patient.getPatient(patient.id).run {
 			note shouldBe patientNote
 		}

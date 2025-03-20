@@ -2,9 +2,6 @@
 
 package com.icure.cardinal.sdk.crypto
 
-import com.icure.kryptom.crypto.RsaAlgorithm
-import com.icure.kryptom.crypto.defaultCryptoService
-import com.icure.kryptom.utils.hexToByteArray
 import com.icure.cardinal.sdk.CardinalSdk
 import com.icure.cardinal.sdk.api.raw.impl.RawHealthcarePartyApiImpl
 import com.icure.cardinal.sdk.api.raw.impl.RawPatientApiImpl
@@ -15,8 +12,11 @@ import com.icure.cardinal.sdk.model.User
 import com.icure.cardinal.sdk.test.DataOwnerDetails
 import com.icure.cardinal.sdk.test.baseUrl
 import com.icure.cardinal.sdk.test.testGroupAdminAuth
-import com.icure.utils.InternalIcureApi
 import com.icure.cardinal.sdk.utils.Serialization
+import com.icure.kryptom.crypto.RsaAlgorithm
+import com.icure.kryptom.crypto.defaultCryptoService
+import com.icure.kryptom.utils.hexToByteArray
+import com.icure.utils.InternalIcureApi
 
 private data class TestData(
 	val p: DataOwnerDetails,
@@ -28,6 +28,7 @@ private data class TestData(
 )
 
 // The following data was created for test purposes only and does not contain any real key / secrets.
+@InternalIcureApi
 private suspend fun createTestDataAndApis(): TestData {
 	val pId = defaultCryptoService.strongRandom.randomUUID().toString()
 	val pLogin = "parent-${defaultCryptoService.strongRandom.randomUUID()}"

@@ -1,10 +1,10 @@
 package com.icure.cardinal.sdk.api
 
-import com.icure.kryptom.crypto.defaultCryptoService
 import com.icure.cardinal.sdk.model.DecryptedDocument
 import com.icure.cardinal.sdk.test.createHcpUser
 import com.icure.cardinal.sdk.test.initializeTestEnvironment
 import com.icure.cardinal.sdk.test.uuid
+import com.icure.kryptom.crypto.defaultCryptoService
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
@@ -17,7 +17,7 @@ class  ByteArrayPayloadTest : StringSpec({
 
 	"It is possible to send a ByteArray payload and retrieve it" {
 		val hcpDetails = createHcpUser()
-		val api = hcpDetails.api()
+		val api = hcpDetails.api(this)
 		val hcpUser = api.user.getCurrentUser()
 
 		val newDocument = api.document.withEncryptionMetadata(

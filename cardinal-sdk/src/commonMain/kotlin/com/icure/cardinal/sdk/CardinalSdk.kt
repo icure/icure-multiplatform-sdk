@@ -185,7 +185,7 @@ import io.ktor.client.plugins.websocket.WebSockets
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.cancel
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.serialization.json.Json
 import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.Duration.Companion.seconds
@@ -223,11 +223,10 @@ interface CardinalSdk : CardinalApis {
 	suspend fun switchGroup(groupId: String): CardinalSdk
 
 	/**
-	 * Dispose of the resources used by this instance of cardinal SDK.
-	 * After calling this method, you shouldn't use the SDK anymore.
-	 * If any SDK methods are still executing while calling dispose those methods may terminate with an error.
+	 * Exposes the scope used by the SDK to perform background tasks.
+	 * Should be canceled when the SDK is not needed anymore.
 	 */
-	fun dispose()
+	val scope: CoroutineScope
 
 	companion object {
 		private fun createHttpClient(json: Json): HttpClient {
@@ -313,7 +312,7 @@ interface CardinalSdk : CardinalApis {
 				options,
 				options.groupSelector
 			)
-			val (initializedCrypto, newKey) = initializeApiCrypto(
+			val (initializedCrypto, newKey, scope) = initializeApiCrypto(
 				apiUrl,
 				authProvider,
 				client,
@@ -329,7 +328,8 @@ interface CardinalSdk : CardinalApis {
 				json,
 				initializedCrypto,
 				options,
-				chosenGroupId
+				chosenGroupId,
+				scope
 			).also { initializedCrypto.notifyNewKeyIfAny(it, newKey) }
 		}
 
@@ -450,9 +450,10 @@ private suspend fun initializeApiCrypto(
 	iCureStorage: CardinalStorageFacade,
 	groupId: String?,
 	options: SdkOptions
-): Pair<ApiConfiguration, RsaKeypair<RsaAlgorithm.RsaEncryptionAlgorithm.OaepWithSha256>?> {
+): Triple<ApiConfiguration, RsaKeypair<RsaAlgorithm.RsaEncryptionAlgorithm.OaepWithSha256>?, CoroutineScope> {
 	val boundGroup = groupId?.let(::SdkBoundGroup)
-	val sdkScope = CoroutineScope(Dispatchers.Default)
+	// Failure of any child doesn't cause the scope nor the parent to cancel
+	val sdkScope = CoroutineScope(Dispatchers.Default + SupervisorJob(options.parentJob))
 	val dataOwnerApi = DataOwnerApiImpl(RawDataOwnerApiImpl(apiUrl, authProvider, client, json = json), boundGroup)
 	val self = dataOwnerApi.getCurrentDataOwner()
 	val selfIsAnonymous = cryptoStrategies.dataOwnerRequiresAnonymousDelegation(self.asStub())
@@ -618,18 +619,22 @@ private suspend fun initializeApiCrypto(
 	}
 
 	val manifests = EntitiesEncryptedFieldsManifests.fromEncryptedFields(options.encryptedFields)
-	return ApiConfigurationImpl(
-		apiUrl,
-		client,
-		json,
-		if (authProvider is JwtBasedAuthProvider) authProvider else null,
-		!selfIsAnonymous,
-		crypto,
-		manifests,
-		iCureStorage,
-		options.jsonPatcher ?: object : JsonPatcher {},
+	return Triple(
+		ApiConfigurationImpl(
+			apiUrl,
+			client,
+			json,
+			if (authProvider is JwtBasedAuthProvider) authProvider else null,
+			!selfIsAnonymous,
+			crypto,
+			manifests,
+			iCureStorage,
+			options.jsonPatcher ?: object : JsonPatcher {},
+			options.parentJob
+		),
+		userEncryptionKeysInitInfo.newKey?.key,
 		sdkScope
-	) to userEncryptionKeysInitInfo.newKey?.key
+	)
 }
 
 @OptIn(InternalIcureApi::class)
@@ -638,7 +643,8 @@ private class CardinalApiImpl(
 	private val httpClientJson: Json,
 	private val config: ApiConfiguration,
 	private val options: SdkOptions,
-	override val boundGroupId: String?
+	override val boundGroupId: String?,
+	override val scope: CoroutineScope
 ): CardinalSdk {
 	private val apiUrl get() = config.apiUrl
 	private val client get() = config.httpClient
@@ -1047,7 +1053,7 @@ private class CardinalApiImpl(
 
 	override suspend fun switchGroup(groupId: String): CardinalSdk {
 		val switchedProvider = authProvider.switchGroup(groupId)
-		val (switchedCryptoConfigs, newKey) = initializeApiCrypto(
+		val (switchedCryptoConfigs, newKey, scope) = initializeApiCrypto(
 			config.apiUrl,
 			switchedProvider,
 			config.httpClient,
@@ -1063,12 +1069,9 @@ private class CardinalApiImpl(
 			httpClientJson,
 			switchedCryptoConfigs,
 			options,
-			groupId
+			groupId,
+			scope
 		).also { switchedCryptoConfigs.notifyNewKeyIfAny(it, newKey) }
-	}
-
-	override fun dispose() {
-		config.sdkScope.cancel()
 	}
 }
 

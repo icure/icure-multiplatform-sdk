@@ -2,6 +2,7 @@ package com.icure.cardinal.sdk.crypto
 
 import com.icure.cardinal.sdk.crypto.entities.EncryptedFieldsManifest
 import com.icure.cardinal.sdk.crypto.impl.JsonEncryptionServiceImpl
+import com.icure.cardinal.sdk.utils.EntityEncryptionException
 import com.icure.kryptom.crypto.AesAlgorithm
 import com.icure.kryptom.crypto.defaultCryptoService
 import com.icure.utils.InternalIcureApi
@@ -401,7 +402,7 @@ class JsonEncryptionServiceTest : StringSpec({
 			sampleObj,
 			JsonEncryptionService.parseEncryptedFields(sampleObjEncryptionKeys, "Test."),
 		)
-		val decryptedObj = jsonEncryptionService.decrypt(key, encryptedObj)
+		val decryptedObj = jsonEncryptionService.decrypt(listOf(key), encryptedObj)
 		stripEncryptedSelf(decryptedObj) shouldBe sampleObj
 	}
 	
@@ -468,7 +469,7 @@ class JsonEncryptionServiceTest : StringSpec({
 			"leaveThis" to JsonPrimitive("leaveThisValue"),
 		))
 		val encryptedObj = jsonEncryptionService.encrypt(key, obj, manifest)
-		val decryptedObj = jsonEncryptionService.decrypt(key, encryptedObj)
+		val decryptedObj = jsonEncryptionService.decrypt(listOf(key), encryptedObj)
 		val reEncryptedObj = jsonEncryptionService.encrypt(key, decryptedObj, manifest)
 		val reEncryptedObjWithDifferentClearData = jsonEncryptionService.encrypt(
 			key,
@@ -570,5 +571,26 @@ class JsonEncryptionServiceTest : StringSpec({
 		array1[1].jsonObject.keys shouldBe setOf("encryptedSelf")
 		array2[1].jsonObject.keys shouldBe setOf("encryptedSelf")
 		array1[1] shouldNotBe array2[1]
+	}
+
+	"Decrypt should be able to decrypt pieces that were encrypted with different keys" {
+		val manifest = JsonEncryptionService.parseEncryptedFields(
+			setOf("a"),
+			"Test."
+		)
+		val key1 = defaultCryptoService.aes.generateKey(AesAlgorithm.CbcWithPkcs7Padding)
+		val key2 = defaultCryptoService.aes.generateKey(AesAlgorithm.CbcWithPkcs7Padding)
+		val obj1 = JsonObject(mapOf("a" to JsonPrimitive(1), "b" to JsonPrimitive(2)))
+		val obj2 = JsonObject(mapOf("a" to JsonPrimitive(3), "c" to JsonPrimitive(4)))
+		val encrypted = JsonObject(mapOf(
+			"obj1" to jsonEncryptionService.encrypt(key1, obj1, manifest),
+			"obj2" to jsonEncryptionService.encrypt(key2, obj2, manifest),
+		))
+		shouldThrow<EntityEncryptionException> { jsonEncryptionService.decrypt(listOf(key1), encrypted) }
+		shouldThrow<EntityEncryptionException> { jsonEncryptionService.decrypt(listOf(key2), encrypted) }
+		stripEncryptedSelf(jsonEncryptionService.decrypt(listOf(key1, key2), encrypted)) shouldBe JsonObject(mapOf(
+			"obj1" to obj1,
+			"obj2" to obj2
+		))
 	}
 })

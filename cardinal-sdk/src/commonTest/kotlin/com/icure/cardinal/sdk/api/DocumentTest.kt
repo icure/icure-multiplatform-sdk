@@ -16,7 +16,7 @@ class DocumentTest : StringSpec({
 	}
 
 	"Should be able to create document and set attachment with chosen uti" {
-		val api = createHcpUser().api()
+		val api = createHcpUser().api(this)
 		val doc = api.document.createDocument(
 			api.document.withEncryptionMetadata(
 				base = DecryptedDocument(

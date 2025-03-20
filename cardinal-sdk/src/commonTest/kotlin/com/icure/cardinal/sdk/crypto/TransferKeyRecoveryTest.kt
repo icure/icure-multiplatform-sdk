@@ -1,7 +1,5 @@
 package com.icure.cardinal.sdk.crypto
 
-import com.icure.kryptom.crypto.CryptoService
-import com.icure.kryptom.crypto.defaultCryptoService
 import com.icure.cardinal.sdk.crypto.impl.exportSpkiHex
 import com.icure.cardinal.sdk.model.CryptoActorStubWithType
 import com.icure.cardinal.sdk.model.DataOwnerType
@@ -10,6 +8,8 @@ import com.icure.cardinal.sdk.model.specializations.SpkiHexString
 import com.icure.cardinal.sdk.test.createHcpUser
 import com.icure.cardinal.sdk.test.initializeTestEnvironment
 import com.icure.cardinal.sdk.test.internal
+import com.icure.kryptom.crypto.CryptoService
+import com.icure.kryptom.crypto.defaultCryptoService
 import com.icure.utils.InternalIcureApi
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.collections.shouldBeEmpty
@@ -65,8 +65,8 @@ class TransferKeyRecoveryTest : StringSpec({
 	"Api should automatically create needed transfer keys and use them to recover missing keys" {
 		val hcp = createHcpUser()
 		val originalKeyIdentifier = hcp.publicKeySpki.fingerprintV1().asAmbiguousIdentifier()
-		val originalApi = hcp.api(VerifyEverythingStrategy(false))
-		val (secondApi, secondKey) = hcp.apiWithLostKeys(VerifyEverythingStrategy(true))
+		val originalApi = hcp.api(this, VerifyEverythingStrategy(false))
+		val (secondApi, secondKey) = hcp.apiWithLostKeys(this, VerifyEverythingStrategy(true))
 		// Automatically creates the transfer key original->second
 		val secondKeyIdentifier = defaultCryptoService.rsa.exportSpkiHex(secondKey.public).fingerprintV1().asAmbiguousIdentifier()
 		secondApi.dataOwner.getCurrentDataOwner().dataOwner.transferKeys.also { transferKeys ->
@@ -76,7 +76,7 @@ class TransferKeyRecoveryTest : StringSpec({
 		}
 		secondApi.crypto.internal.userEncryptionKeysManager.getDecryptionKeys(true).allKeys shouldHaveSize 1
 		// Automatically creates the transfer key second->original
-		val originalApiWithRecoveredSecond = hcp.api(VerifyEverythingStrategy(false))
+		val originalApiWithRecoveredSecond = hcp.api(this, VerifyEverythingStrategy(false))
 		originalApiWithRecoveredSecond.crypto.internal.userEncryptionKeysManager.getDecryptionKeys(true).allKeys shouldHaveSize 2
 		originalApiWithRecoveredSecond.dataOwner.getCurrentDataOwner().dataOwner.transferKeys.also { transferKeys ->
 			transferKeys shouldHaveSize 2
@@ -85,7 +85,11 @@ class TransferKeyRecoveryTest : StringSpec({
 			val secondToOriginal = transferKeys[secondKeyIdentifier].shouldNotBeNull()
 			secondToOriginal.keys shouldBe setOf(originalKeyIdentifier)
 		}
-		val secondApiWithRecoveredOriginal = hcp.apiWithKeys(secondKey, cryptoStrategies = VerifyEverythingStrategy(false))
+		val secondApiWithRecoveredOriginal = hcp.apiWithKeys(
+			this,
+			secondKey,
+			cryptoStrategies = VerifyEverythingStrategy(false)
+		)
 		secondApiWithRecoveredOriginal.crypto.internal.userEncryptionKeysManager.getDecryptionKeys(true).allKeys shouldHaveSize 2
 	}
 })

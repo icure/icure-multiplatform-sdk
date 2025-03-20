@@ -2,7 +2,6 @@ package com.icure.cardinal.sdk.crypto.impl
 
 import com.icure.cardinal.sdk.crypto.JsonEncryptionService
 import com.icure.cardinal.sdk.crypto.entities.EncryptedFieldsManifest
-import com.icure.cardinal.sdk.crypto.entities.EntityEncryptionKeyDetails
 import com.icure.cardinal.sdk.model.embed.Encryptable
 import com.icure.cardinal.sdk.utils.EntityEncryptionException
 import com.icure.cardinal.sdk.utils.IllegalEntityException
@@ -132,9 +131,8 @@ class JsonEncryptionServiceImpl(
 			} == true
 		}
 
-
 	override suspend fun decrypt(
-		encryptionKeys: Collection<EntityEncryptionKeyDetails>,
+		encryptionKeys: Collection<AesKey<AesAlgorithm.CbcWithPkcs7Padding>>,
 		encryptedJson: JsonObject,
 		debugName: String?
 	): JsonObject {
@@ -162,7 +160,7 @@ class JsonEncryptionServiceImpl(
 			}?.content?.let { base64Decode(it) }?.let {
 				encryptionKeys.firstNotNullOfOrNull { encryptionKey ->
 					kotlin.runCatching {
-						cryptoService.aes.decrypt(it, encryptionKey.key)
+						cryptoService.aes.decrypt(it, encryptionKey)
 					}.getOrNull()?.let {
 						Serialization.json.parseToJsonElement(it.decodeToString()) as? JsonObject
 					}

@@ -48,7 +48,7 @@ interface JsonEncryptionService {
 	 * @throws EntityEncryptionException if the entity can't be fully decrypted using the provided keys.
 	 */
 	suspend fun decrypt(
-		encryptionKeys: Collection<EntityEncryptionKeyDetails>,
+		encryptionKeys: Collection<AesKey<AesAlgorithm.CbcWithPkcs7Padding>>,
 		encryptedJson: JsonObject,
 		debugName: String? = null
 	): JsonObject
@@ -259,3 +259,11 @@ interface JsonEncryptionService {
 		}
 	}
 }
+
+@OptIn(InternalIcureApi::class)
+suspend inline fun JsonEncryptionService.decrypt(
+	encryptionKeys: Collection<EntityEncryptionKeyDetails>,
+	encryptedJson: JsonObject,
+	debugName: String? = null
+): JsonObject =
+	decrypt(encryptionKeys.map { it.key }, encryptedJson, debugName)

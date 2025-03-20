@@ -7,6 +7,7 @@ import com.icure.cardinal.sdk.api.ContactBasicFlavourlessApi
 import com.icure.cardinal.sdk.api.ContactFlavouredApi
 import com.icure.cardinal.sdk.api.raw.RawContactApi
 import com.icure.cardinal.sdk.api.raw.successBodyOrThrowRevisionConflict
+import com.icure.cardinal.sdk.crypto.decrypt
 import com.icure.cardinal.sdk.crypto.entities.ContactShareOptions
 import com.icure.cardinal.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
 import com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption

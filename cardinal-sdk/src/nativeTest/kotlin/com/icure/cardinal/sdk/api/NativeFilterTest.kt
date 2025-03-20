@@ -17,7 +17,7 @@ class NativeFilterTest : StringSpec({
 
 	"Can filter using a patient filter" {
 		val hcpDetails = createHcpUser()
-		val api = hcpDetails.api()
+		val api = hcpDetails.api(this)
 		val hcpUser = api.user.getCurrentUser()
 
 		val patient = api.patient.createPatient(

@@ -1,6 +1,5 @@
 package com.icure.cardinal.sdk.subscription
 
-import com.icure.kryptom.crypto.defaultCryptoService
 import com.icure.cardinal.sdk.CardinalSdk
 import com.icure.cardinal.sdk.filters.ContactFilters
 import com.icure.cardinal.sdk.filters.FilterOptions
@@ -32,12 +31,14 @@ import com.icure.cardinal.sdk.model.base.Identifier
 import com.icure.cardinal.sdk.test.DataOwnerDetails
 import com.icure.cardinal.sdk.test.createHcpUser
 import com.icure.cardinal.sdk.test.initializeTestEnvironment
+import com.icure.kryptom.crypto.defaultCryptoService
 import io.kotest.assertions.fail
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.core.spec.style.stringSpec
 import io.kotest.matchers.should
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.types.shouldBeInstanceOf
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.withTimeoutOrNull
 import kotlin.time.Duration.Companion.seconds
 
@@ -80,7 +81,7 @@ class SubscriptionsTests : StringSpec({
 	lateinit var hcpUser: DataOwnerDetails
 	lateinit var hcpUserApi: CardinalSdk
 
-	beforeAny {
+	beforeSpec {
 		initializeTestEnvironment()
 		hcpUser = createHcpUser(
 			roles = setOf(
@@ -92,9 +93,12 @@ class SubscriptionsTests : StringSpec({
 				"LEGACY_MESSAGE_MANAGER",
 			)
 		)
-		hcpUserApi = hcpUser.api()
+		hcpUserApi = hcpUser.api(null)
 	}
-			
+
+	afterSpec {
+		hcpUserApi.scope.cancel()
+	}
 
 	include(
 		subscribableTests(
@@ -105,8 +109,7 @@ class SubscriptionsTests : StringSpec({
 					get() = hcpUserApi.healthElement
 
 				override suspend fun createEntity(): Identifiable<String> {
-					val patient = hcpUser
-						.api()
+					val patient = hcpUserApi
 						.patient
 						.withEncryptionMetadata(
 							DecryptedPatient(id = defaultCryptoService.strongRandom.randomUUID())
@@ -116,16 +119,14 @@ class SubscriptionsTests : StringSpec({
 
 					val currentUser = hcpUserApi.user.getCurrentUser()
 
-					return hcpUser
-						.api()
+					return hcpUserApi
 						.healthElement
 						.withEncryptionMetadata(
 							DecryptedHealthElement(id = defaultCryptoService.strongRandom.randomUUID()),
 							patient,
 							currentUser
 						).let {
-							hcpUser
-								.api()
+							hcpUserApi
 								.healthElement
 								.createHealthElement(it)
 						}
@@ -144,8 +145,7 @@ class SubscriptionsTests : StringSpec({
 					get() = hcpUserApi.patient
 
 				override suspend fun createEntity(): Identifiable<String> {
-					return hcpUser
-						.api()
+					return hcpUserApi
 						.patient
 						.withEncryptionMetadata(
 							DecryptedPatient(id = defaultCryptoService.strongRandom.randomUUID())
@@ -167,8 +167,7 @@ class SubscriptionsTests : StringSpec({
 					get() = hcpUserApi.contact
 
 				override suspend fun createEntity(): Identifiable<String> {
-					val patient = hcpUser
-						.api()
+					val patient = hcpUserApi
 						.patient
 						.withEncryptionMetadata(
 							DecryptedPatient(id = defaultCryptoService.strongRandom.randomUUID())
@@ -178,8 +177,7 @@ class SubscriptionsTests : StringSpec({
 
 					val currentUser = hcpUserApi.user.getCurrentUser()
 
-					return hcpUser
-						.api()
+					return hcpUserApi
 						.contact
 						.withEncryptionMetadata(
 							DecryptedContact(id = defaultCryptoService.strongRandom.randomUUID()),
@@ -209,8 +207,7 @@ class SubscriptionsTests : StringSpec({
 				override suspend fun createEntity(): Identifiable<String> {
 					val currentUser = hcpUserApi.user.getCurrentUser()
 
-					return hcpUser
-						.api()
+					return hcpUserApi
 						.maintenanceTask
 						.withEncryptionMetadata(
 							DecryptedMaintenanceTask(id = defaultCryptoService.strongRandom.randomUUID(), identifier = listOf(identifier)),
@@ -234,8 +231,7 @@ class SubscriptionsTests : StringSpec({
 					get() = hcpUserApi.message
 
 				override suspend fun createEntity(): Identifiable<String> {
-					val patient = hcpUser
-						.api()
+					val patient = hcpUserApi
 						.patient
 						.withEncryptionMetadata(
 							DecryptedPatient(id = defaultCryptoService.strongRandom.randomUUID())
@@ -245,8 +241,7 @@ class SubscriptionsTests : StringSpec({
 
 					val currentUser = hcpUserApi.user.getCurrentUser()
 
-					return hcpUser
-						.api()
+					return hcpUserApi
 						.message
 						.withEncryptionMetadata(
 							DecryptedMessage(id = defaultCryptoService.strongRandom.randomUUID()),
@@ -272,8 +267,7 @@ class SubscriptionsTests : StringSpec({
 					get() = hcpUserApi.topic
 
 				override suspend fun createEntity(): Identifiable<String> {
-					val patient = hcpUser
-						.api()
+					val patient = hcpUserApi
 						.patient
 						.withEncryptionMetadata(
 							DecryptedPatient(id = defaultCryptoService.strongRandom.randomUUID())
@@ -283,8 +277,7 @@ class SubscriptionsTests : StringSpec({
 
 					val currentUser = hcpUserApi.user.getCurrentUser()
 
-					return hcpUser
-						.api()
+					return hcpUserApi
 						.topic
 						.withEncryptionMetadata(
 							DecryptedTopic(id = defaultCryptoService.strongRandom.randomUUID()),

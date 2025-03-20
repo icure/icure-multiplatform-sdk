@@ -115,7 +115,7 @@ class SmartAuthProviderTest : StringSpec({
 
 	"Should automatically ask for a more powerful secret to perform elevated-security operations if the available secret/token is not good enough" {
 		val hcpDetails = createHcpUser()
-		val api = hcpDetails.api()
+		val api = hcpDetails.api(this)
 		val initialUser = api.user.getCurrentUser()
 		val adminUserApi = RawUserApiImpl(baseUrl, testGroupAdminAuth, CardinalSdk.sharedHttpClient, json = Serialization.json)
 		val userToken = uuid()
@@ -213,7 +213,7 @@ class SmartAuthProviderTest : StringSpec({
 
 	"Should automatically ask for TOTP after password if user has 2fa enabled" {
 		val hcpDetails = createHcpUser()
-		val api = hcpDetails.api()
+		val api = hcpDetails.api(this)
 		val otpLength = 8
 		val initialUser = api.user.getCurrentUser()
 		val adminUserApi = RawUserApiImpl(baseUrl, testGroupAdminAuth, CardinalSdk.sharedHttpClient, json = Serialization.json)
@@ -282,7 +282,7 @@ class SmartAuthProviderTest : StringSpec({
 
 	"Should ask for TOTP directly if password is cached" {
 		val hcpDetails = createHcpUser()
-		val api = hcpDetails.api()
+		val api = hcpDetails.api(this)
 		val otpLength = 8
 		val initialUser = api.user.getCurrentUser()
 		val adminUserApi = RawUserApiImpl(baseUrl, testGroupAdminAuth, CardinalSdk.sharedHttpClient, json = Serialization.json)

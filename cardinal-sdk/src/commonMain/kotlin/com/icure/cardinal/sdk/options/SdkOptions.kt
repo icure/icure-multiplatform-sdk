@@ -7,6 +7,7 @@ import com.icure.cardinal.sdk.storage.StorageFacade
 import com.icure.kryptom.crypto.CryptoService
 import com.icure.kryptom.crypto.defaultCryptoService
 import io.ktor.client.HttpClient
+import kotlinx.coroutines.Job
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 
@@ -121,15 +122,13 @@ data class SdkOptions(
 	 * of the entity.
 	 */
 	val jsonPatcher: JsonPatcher? = null,
-
-	/**
-	 * If true the SDK will use lenient deserialization of the entities coming from the backend.
-	 *
-	 * This could be helpful when developing using the nightly deployments of the backend, as the SDK will ignore minor changes to the data model.
-	 *
-	 * This option however could cause loss of data when connecting with incompatible versions of the backend, and should be disabled in production.
-	 */
 	override val lenientJson: Boolean = false,
+	/**
+	 * Sets a parent job to use in the sdk scope.
+	 * When that job is canceled, the SDK scope which runs all background tasks will also be canceled.
+	 * The SDK shouldn't be used anymore after this job is canceled.
+	 */
+	val parentJob: Job? = null
 ): BoundSdkOptions {
 	init {
 		if (httpClientJson != null) {

@@ -22,6 +22,9 @@ import com.icure.kryptom.crypto.RsaKeypair
 import com.icure.kryptom.crypto.defaultCryptoService
 import com.icure.kryptom.utils.toHexString
 import com.icure.utils.InternalIcureApi
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.job
 
 @OptIn(InternalIcureApi::class)
 @ConsistentCopyVisibility
@@ -57,18 +60,22 @@ data class DataOwnerDetails private constructor (
 	/**
 	 * Creates a new api with access to the original key of the user and his parents.
 	 */
-	suspend fun api(cryptoStrategies: CryptoStrategies = BasicCryptoStrategies): CardinalSdk =
-		initApi(cryptoStrategies) { addInitialKeysToStorage(it) }
+	suspend fun api(scope: CoroutineScope?, cryptoStrategies: CryptoStrategies = BasicCryptoStrategies): CardinalSdk =
+		initApi(scope?.coroutineContext?.job, cryptoStrategies) { addInitialKeysToStorage(it) }
+
+	suspend fun api(parentJob: Job): CardinalSdk =
+		initApi(parentJob, BasicCryptoStrategies) { addInitialKeysToStorage(it) }
 
 	/**
 	 * Creates a new api with access to the provided keys.
 	 * All the keys must be keys of the data owner and not of parents.
 	 */
 	suspend fun apiWithKeys(
+		scope: CoroutineScope?,
 		vararg keys: RsaKeypair<RsaAlgorithm.RsaEncryptionAlgorithm>,
 		cryptoStrategies: CryptoStrategies = BasicCryptoStrategies
 	): CardinalSdk =
-		initApi(cryptoStrategies) { storage ->
+		initApi(scope?.coroutineContext?.job, cryptoStrategies) { storage ->
 			keys.forEach { key ->
 				storage.saveEncryptionKeypair(
 					dataOwnerId,
@@ -82,10 +89,13 @@ data class DataOwnerDetails private constructor (
 	 * Creates an api simulating the loss of all keys for the user, prompting the creation of a new key.
 	 * @return the api and the new key
 	 */
-	suspend fun apiWithLostKeys(cryptoStrategies: CryptoStrategies = BasicCryptoStrategies): Pair<CardinalSdk, RsaKeypair<RsaAlgorithm.RsaEncryptionAlgorithm>> {
+	suspend fun apiWithLostKeys(
+		scope: CoroutineScope?,
+		cryptoStrategies: CryptoStrategies = BasicCryptoStrategies): Pair<CardinalSdk, RsaKeypair<RsaAlgorithm.RsaEncryptionAlgorithm>> {
 		val newKey = defaultCryptoService.rsa.generateKeyPair(RsaAlgorithm.RsaEncryptionAlgorithm.OaepWithSha256)
 		return Pair(
 			initApi(
+				scope?.coroutineContext?.job,
 				object : CryptoStrategies by cryptoStrategies {
 					override suspend fun generateNewKeyForDataOwner(
 						self: DataOwnerWithType,
@@ -115,7 +125,7 @@ data class DataOwnerDetails private constructor (
 		)
 	}
 
-	internal fun authService() =
+	fun authService() =
 		AuthenticationMethod.UsingCredentials(
 			UsernamePassword(username, password),
 		).getAuthProvider(
@@ -129,6 +139,7 @@ data class DataOwnerDetails private constructor (
 
 	@OptIn(InternalIcureApi::class)
 	private suspend fun initApi(
+		parentJob: Job?,
 		cryptoStrategies: CryptoStrategies,
 		fillStorage: suspend (storage: CardinalStorageFacade) -> Unit
 	): CardinalSdk =
@@ -137,17 +148,18 @@ data class DataOwnerDetails private constructor (
 			baseUrl,
 			AuthenticationMethod.UsingCredentials(UsernamePassword(username, password)),
 			VolatileStorageFacade().also {
-				CardinalStorageFacade(
+				fillStorage(CardinalStorageFacade(
 					JsonAndBase64KeyStorage(it),
 					it,
 					DefaultStorageEntryKeysFactory,
 					defaultCryptoService,
 					false
-				).also { fillStorage(it) }
+				))
 			},
 			SdkOptions(
 				useHierarchicalDataOwners = false,
-				cryptoStrategies = cryptoStrategies
+				cryptoStrategies = cryptoStrategies,
+				parentJob = parentJob
 			)
 		)
 

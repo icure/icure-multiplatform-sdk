@@ -22,16 +22,22 @@ import io.kotest.matchers.maps.shouldBeEmpty
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
+import kotlinx.coroutines.cancel
 
 class ServiceEncryptionTest : StringSpec({
 	lateinit var hcp: DataOwnerDetails
 	lateinit var sdk: CardinalSdk
 	lateinit var patient: DecryptedPatient
-	beforeAny {
+
+	beforeSpec {
 		initializeTestEnvironment()
 		hcp = createHcpUser()
-		sdk = hcp.api()
+		sdk = hcp.api(null)
 		patient = sdk.patient.createPatient(sdk.patient.withEncryptionMetadata(DecryptedPatient(uuid())))
+	}
+
+	afterSpec {
+		sdk.scope.cancel()
 	}
 
 	fun checkDecryptedServicesContent(

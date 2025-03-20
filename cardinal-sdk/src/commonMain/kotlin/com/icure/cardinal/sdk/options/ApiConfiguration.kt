@@ -6,7 +6,7 @@ import com.icure.cardinal.sdk.crypto.InternalCryptoServices
 import com.icure.cardinal.sdk.storage.CardinalStorageFacade
 import com.icure.utils.InternalIcureApi
 import io.ktor.client.HttpClient
-import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
 import kotlinx.serialization.json.Json
 
 /**
@@ -31,7 +31,7 @@ internal interface ApiConfiguration : BasicApiConfiguration {
 	val storage: CardinalStorageFacade
 	override val crypto: InternalCryptoServices
 	val jsonPatcher: JsonPatcher
-	val sdkScope: CoroutineScope
+	val parentJob: Job?
 }
 
 @InternalIcureApi
@@ -45,7 +45,7 @@ internal data class ApiConfigurationImpl(
 	override val encryption: EntitiesEncryptedFieldsManifests,
 	override val storage: CardinalStorageFacade,
 	override val jsonPatcher: JsonPatcher,
-	override val sdkScope: CoroutineScope
+	override val parentJob: Job?
 ) : ApiConfiguration
 
 @InternalIcureApi

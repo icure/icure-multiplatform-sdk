@@ -14,7 +14,7 @@ class HttpResponseTest : StringSpec({
 
 	"Can receive a null response body" {
 		val hcpDetails = createHcpUser()
-		val api = hcpDetails.api()
+		val api = hcpDetails.api(this)
 
 		api.code.getCodeByRegionLanguageTypeLabel(uuid(), uuid(), uuid(), uuid()) shouldBe null
 	}
