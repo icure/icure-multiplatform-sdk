@@ -18,11 +18,8 @@ import kotlin.collections.List
 import kotlin.collections.Map
 import kotlin.collections.Set
 
-// WARNING: This file is auto-generated. If you change it manually, your changes will be lost.
-// If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
-
 @Serializable
-data class User(
+public data class User(
 	override val id: String,
 	override val rev: String? = null,
 	override val deletionDate: Long? = null,
@@ -64,10 +61,4 @@ data class User(
 		public val isAdmin: Boolean,
 		public val inheritsRoles: Boolean,
 	)
-	// region User-User
-
-	companion object {
-		const val KRAKEN_QUALIFIED_NAME = "org.taktik.icure.entities.User"
-	}
-	// endregion
 }
