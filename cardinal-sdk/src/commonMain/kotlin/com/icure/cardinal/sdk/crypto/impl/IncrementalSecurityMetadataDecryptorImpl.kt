@@ -73,7 +73,7 @@ class IncrementalSecurityMetadataDecryptorImpl(
 				forceUpdateOnEntitiesWithNewExtractedKeys ||
 				remainingEntitiesById.keys.all { newlyExtractedKeysForEntities.getValue(it).isNotEmpty() }
 			) {
-				remainingEntitiesById.forEach {  (currId, e) ->
+				val successes = remainingEntitiesById.mapNotNullTo(mutableSetOf()) { (currId, e) ->
 					val currNewlyExtracted = newlyExtractedKeysForEntities.getValue(currId)
 					if (currNewlyExtracted.isNotEmpty()) {
 						val currAllExtracted = allExtractedKeysForEntities.getValue(currId).also {
@@ -86,11 +86,10 @@ class IncrementalSecurityMetadataDecryptorImpl(
 							currAllExtracted.map { EntityEncryptionKeyDetails(importedKeysByRaw.getValue(it), it) }
 						)
 						latestResults[currId] = actionResult
-						if (actionResult.isSuccess) {
-							remainingEntitiesById.remove(currId)
-						}
-					}
+						if (actionResult.isSuccess) currId else null
+					} else null
 				}
+				remainingEntitiesById -= successes
 			}
 		}
 
