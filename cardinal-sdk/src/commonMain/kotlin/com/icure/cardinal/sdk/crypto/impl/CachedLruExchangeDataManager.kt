@@ -98,6 +98,9 @@ private class CachedLruExchangeDataManagerInGroup(
 	private val cacheRequestsScope = CoroutineScope(
 		Dispatchers.Default.limitedParallelism(1) + SupervisorJob(sdkScope.coroutineContext.job)
 	)
+	/*
+	 * Note: currently keeps in cache also failed jobs, in future should maybe evict failed jobs as soon as they fail.
+	 */
 	private val exchangeDataByIdCache: LruCache<String, Deferred<CachedExchangeDataDetails>> =
 		LruCache(maxCacheSize.coerceAtLeast(1)) // If cache is not at least 1 stuff is going to behave weird
 	private val delegateToVerifiedExchangeDataId =
@@ -157,6 +160,7 @@ private class CachedLruExchangeDataManagerInGroup(
 		}
 	}
 
+	@OptIn(ExperimentalCoroutinesApi::class)
 	override suspend fun getOrCreateEncryptionDataTo(
 		delegateReference: DataOwnerReferenceInGroup,
 		allowCreationWithoutDelegateKey: Boolean
@@ -165,7 +169,7 @@ private class CachedLruExchangeDataManagerInGroup(
 		val delegateReferenceString = delegateReference.asReferenceStringInGroup(requestGroup, sdkBoundGroup)
 		val retrieved = cacheMutex.withLock {
 			val verifiedExchangeDataIdDeferred = delegateToVerifiedExchangeDataId[delegateReferenceString]
-			if (verifiedExchangeDataIdDeferred != null) {
+			if (verifiedExchangeDataIdDeferred != null && (!verifiedExchangeDataIdDeferred.isCompleted || verifiedExchangeDataIdDeferred.getCompletionExceptionOrNull() == null)) {
 				Pair(verifiedExchangeDataIdDeferred, null)
 			} else {
 				val job = cacheRequestsScope.async {
@@ -258,11 +262,20 @@ private class CachedLruExchangeDataManagerInGroup(
 			}
 		}
 
+	@OptIn(ExperimentalCoroutinesApi::class)
 	private suspend fun doGetDecryptionDataByIds(
 		ids: Set<String>,
 		waitOrRetrieveUncached: Boolean
 	): Map<String, CachedExchangeDataDetails> = cacheMutex.withLock {
-		val cached = ids.mapNotNull { id -> exchangeDataByIdCache.get(id)?.let { id to it } }.toMap()
+		val cached = ids.mapNotNull { id ->
+			exchangeDataByIdCache.get(id)?.let { result ->
+				if (result.isCompleted && result.getCompletionExceptionOrNull() != null) {
+					// Ignore cached and already failed jobs, and remove them from cache.
+					exchangeDataByIdCache.remove(id)
+					null
+				} else Pair(id, result)
+			}
+		}.toMap()
 		if (waitOrRetrieveUncached) {
 			val idsToRetrieve = ids - cached.keys
 			val retrieved = if (idsToRetrieve.isNotEmpty()) {

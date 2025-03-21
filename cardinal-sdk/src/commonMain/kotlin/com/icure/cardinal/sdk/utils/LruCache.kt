@@ -45,6 +45,23 @@ class LruCache<K : Any, V : Any>(
 	}
 
 	/**
+	 * Remove [key] from the cache (if present)
+	 */
+	fun remove(key: K) {
+		val node = cache.remove(key)
+		if (node != null) {
+			if (node === firstNode) {
+				firstNode = node.next
+			}
+			if (node === lastNode) {
+				lastNode = node.prev
+			}
+			node.prev?.next = node.next
+			node.next?.prev = node.prev
+		}
+	}
+
+	/**
 	 * Evict the oldest entry in the cache, returns null if there is no entry to evict
 	 */
 	fun evictOldest(): V? =

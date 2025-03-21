@@ -19,6 +19,7 @@ import com.icure.utils.InternalIcureApi
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.async
 import kotlinx.coroutines.cancel
@@ -102,24 +103,88 @@ private class FullyCachedExchangeDataManagerInGroup(
 	@Volatile
 	private var caches: Deferred<Caches> = cacheUpdateAndNewDataCreationScope.async { getAllKeysInfo() }
 	private val creationJobs = mutableMapOf<String, Deferred<ExchangeDataWithUnencryptedContent>>()
-	private val creationMutex = Mutex()
+	// No need to keep two different mutexes for creation job and reload of caches in case of error.
+	// If caches is successful once then it can never become failed.
+	// If caches is failed or incomplete then we don't start any creation job until it completes successfully
+	private val creationAndCachesErrorReloadMutex = Mutex()
+
+	@OptIn(ExperimentalCoroutinesApi::class)
+	private suspend fun getCachesAndAwaited(): Pair<Deferred<Caches>, Caches> { // promise to contained value
+		val currCache = caches
+		return if (currCache.isCompleted) {
+			if (currCache.getCompletionExceptionOrNull() != null) {
+				// If cache failed with an exception we have to reload
+				creationAndCachesErrorReloadMutex.withLock {
+					if (caches === currCache) { // Only start job if no one else started it yet.
+						cacheUpdateAndNewDataCreationScope.async { getAllKeysInfo() }.also { caches = it }
+					} else caches// Else wait on the job the others have just started. Ok to fail if that fails.
+				}.let { Pair(it, it.await()) } // Important to await outside the lock
+			} else Pair(currCache, currCache.getCompleted())
+		} else Pair(currCache, currCache.await())
+	}
 
 	override suspend fun getOrCreateEncryptionDataTo(
 		delegateReference: DataOwnerReferenceInGroup,
 		allowCreationWithoutDelegateKey: Boolean
 	): ExchangeDataWithUnencryptedContent {
 		val delegateReferenceString = delegateReference.asReferenceStringInGroup(requestGroup, sdkBoundGroup)
-		val triedCaches = caches
-		return triedCaches.await().getEncryptionDataTo(delegateReferenceString) ?: creationMutex.withLock {
-			creationJobs.getOrPut(delegateReferenceString) {
-				cacheUpdateAndNewDataCreationScope.async {
-					// If unlucky, it could be possible that the caches have been updated between the time we tried and
-					// the time we got the lock. In case they changed we need to try again.
-					caches.takeIf { it !== triedCaches }?.await()?.getEncryptionDataTo(delegateReferenceString)
-						?: doCreateAndCacheEncryptionDataTo(delegateReference, delegateReferenceString)
-				}
+		val (currCachesDeferred, awaitedCaches) = getCachesAndAwaited()
+		return awaitedCaches.getEncryptionDataTo(delegateReferenceString)
+			?: awaitOrStartCreationJob(currCachesDeferred, delegateReference, delegateReferenceString)
+	}
+
+	private suspend fun awaitOrStartCreationJob(
+		checkedCachesDeferred: Deferred<Caches>,
+		delegateReference: DataOwnerReferenceInGroup,
+		delegateReferenceString: String
+	): ExchangeDataWithUnencryptedContent {
+		val (shouldRetryIfFailure, creationJob) = creationAndCachesErrorReloadMutex.withLock {
+			val existingJob = creationJobs[delegateReferenceString]
+			when {
+				existingJob == null -> Pair(
+					false,
+					startCreationJob(checkedCachesDeferred, delegateReference, delegateReferenceString).also {
+						creationJobs[delegateReferenceString] = it
+					}
+				)
+				existingJob.isCompleted -> Pair(true, existingJob)
+				else -> Pair(false, existingJob)
 			}
-		}.await()
+		}
+		return if (shouldRetryIfFailure) {
+			try {
+				creationJob.await()
+			} catch (_: Throwable) {
+				creationAndCachesErrorReloadMutex.withLock {
+					val updatedExistingJob = creationJobs[delegateReferenceString]
+					// If updated existing job became null it should mean someone will have updated the caches with the new encryption-to data
+					// We will start a very short-lived job that will just get the value from the updated caches without creating anything new
+					if (updatedExistingJob == null || updatedExistingJob === creationJob) { // only start job if no one else started it yet.
+						startCreationJob(checkedCachesDeferred, delegateReference, delegateReferenceString).also {
+							creationJobs[delegateReferenceString] = it
+						}
+					} else updatedExistingJob // Else wait on the job the others have just started. Ok to fail if that fails.
+				}.await()
+			}
+		} else {
+			creationJob.await()
+		}
+	}
+
+	private fun startCreationJob(
+		checkedCachesDeferred: Deferred<Caches>,
+		delegateReference: DataOwnerReferenceInGroup,
+		delegateReferenceString: String
+	) = cacheUpdateAndNewDataCreationScope.async {
+		// It could be possible that the caches have been updated between the last time we tried and the
+		// time we got the lock.
+		// In case they changed we need to check again.
+		caches.takeIf { it !== checkedCachesDeferred }?.await()?.getEncryptionDataTo(delegateReferenceString)?.also {
+			creationAndCachesErrorReloadMutex.withLock {
+				@Suppress("DeferredResultUnused")
+				creationJobs.remove(delegateReferenceString)
+			}
+		} ?: doCreateAndCacheEncryptionDataTo(delegateReference, delegateReferenceString)
 	}
 
 	private suspend fun doCreateAndCacheEncryptionDataTo(
@@ -130,7 +195,7 @@ private class FullyCachedExchangeDataManagerInGroup(
 		null,
 		false
 	).also { created ->
-		creationMutex.withLock {
+		creationAndCachesErrorReloadMutex.withLock {
 			val prevCaches = caches
 			caches = cacheUpdateAndNewDataCreationScope.async {
 				val awaitedPrevCaches = prevCaches.await()

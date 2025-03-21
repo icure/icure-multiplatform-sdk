@@ -13,9 +13,12 @@ import com.icure.utils.InternalIcureApi
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import kotlin.concurrent.Volatile
 
 @InternalIcureApi
@@ -25,15 +28,35 @@ class ExchangeKeysManagerImpl(
 	private val userKeysManager: UserEncryptionKeysManager,
 	private val sdkScope: CoroutineScope
 ) : ExchangeKeysManager {
+	// Could switch to atomic reference once not experimental
 	@Volatile // delegator -> delegate -> lazy key decryption job
 	private var cache: Deferred<Map<String, Map<String, Deferred<List<AesKey<AesAlgorithm.CbcWithPkcs7Padding>>>>>> = sdkScope.async {
 		doLoadCache()
 	}
+	private val errorReloadMutex = Mutex() // Used to prevent multiple reload triggered at the same time if the last cache deferred failed
+
 
 	override suspend fun getDecryptionExchangeKeysFor(delegatorId: String, delegateId: String): List<AesKey<AesAlgorithm.CbcWithPkcs7Padding>> =
-		cache.await()[delegatorId]?.get(delegateId)?.await().orEmpty()
+		getCachedValue()[delegatorId]?.get(delegateId)?.await().orEmpty()
+
+	@OptIn(ExperimentalCoroutinesApi::class)
+	private suspend fun getCachedValue(): Map<String, Map<String, Deferred<List<AesKey<AesAlgorithm.CbcWithPkcs7Padding>>>>> {
+		val currCache = cache
+		return if (currCache.isCompleted) {
+			if (currCache.getCompletionExceptionOrNull() != null) {
+				errorReloadMutex.withLock {
+					if (cache === currCache) { // only start job if no one else started it yet.
+						sdkScope.async { doLoadCache() }.also { cache = it }
+					} else cache // Else wait on the job the others have just started. Ok to fail if that fails.
+				}.await() // Important to await outside the lock
+			} else currCache.getCompleted()
+		} else currCache.await()
+	}
 
 	override fun requestCacheReload() {
+		// No need to do this in mutex
+		// The mutex is only used to prevent parallel request to trigger too many reloads, but in this case we're
+		// forcing reload
 		cache = sdkScope.async {
 			doLoadCache()
 		}
