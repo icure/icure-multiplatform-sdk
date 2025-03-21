@@ -338,8 +338,8 @@ internal class BaseSecurityMetadataDecryptorImpl(
 					metadataType.decryptSecureDelegation(delegation, it, secureDelegationsEncryption)
 				}?.let { decrypted ->
 					val plainMembers = setOfNotNull(
-						delegation.delegate?.takeIf { it in dataOwnersHierarchyReferences },
-						delegation.delegator?.takeIf { it in dataOwnersHierarchyReferences },
+						exchangeDataToUse.exchangeData.delegate.takeIf { it in dataOwnersHierarchyReferences },
+						exchangeDataToUse.exchangeData.delegator.takeIf { it in dataOwnersHierarchyReferences },
 					).map { dataOwnerReferenceString ->
 						dataOwnerReferenceString.split("/").let { splitReference ->
 							when (splitReference.size) {
