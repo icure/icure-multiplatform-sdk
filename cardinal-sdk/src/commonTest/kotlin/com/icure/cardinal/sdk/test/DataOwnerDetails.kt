@@ -151,7 +151,7 @@ data class DataOwnerDetails private constructor (
 				))
 			},
 			SdkOptions(
-				useHierarchicalDataOwners = false,
+				useHierarchicalDataOwners = true,
 				cryptoStrategies = cryptoStrategies,
 				parentJob = parentJob
 			)

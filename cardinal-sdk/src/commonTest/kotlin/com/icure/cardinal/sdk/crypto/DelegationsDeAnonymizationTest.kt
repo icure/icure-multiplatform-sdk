@@ -60,7 +60,7 @@ class DelegationsDeAnonymizationTest : StringSpec({
 		apiA.patient.getDataOwnersWithAccessTo(entity).apply {
 			permissionsByDataOwnerId shouldBe mapOf(
 				userInfoA.dataOwnerId to AccessLevel.Write
-			)
+			).keyAsLocalDataOwnerReferences()
 			hasUnknownAnonymousDataOwners shouldBe false
 		}
 		/*
@@ -75,14 +75,14 @@ class DelegationsDeAnonymizationTest : StringSpec({
 			permissionsByDataOwnerId shouldBe mapOf(
 				userInfoA.dataOwnerId to AccessLevel.Write,
 				userInfoB.dataOwnerId to AccessLevel.Write
-			)
+			).keyAsLocalDataOwnerReferences()
 			hasUnknownAnonymousDataOwners shouldBe false
 		}
 		apiB.patient.getDataOwnersWithAccessTo(entity).apply {
 			permissionsByDataOwnerId shouldBe mapOf(
 				userInfoA.dataOwnerId to AccessLevel.Write,
 				userInfoB.dataOwnerId to AccessLevel.Write
-			)
+			).keyAsLocalDataOwnerReferences()
 			hasUnknownAnonymousDataOwners shouldBe false
 		}
 		/*
@@ -100,14 +100,14 @@ class DelegationsDeAnonymizationTest : StringSpec({
 				userInfoA.dataOwnerId to AccessLevel.Write,
 				userInfoB.dataOwnerId to AccessLevel.Write,
 				userInfoP1.dataOwnerId to AccessLevel.Write
-			)
+			).keyAsLocalDataOwnerReferences()
 			hasUnknownAnonymousDataOwners shouldBe false
 		}
 		apiB.patient.getDataOwnersWithAccessTo(entity).apply {
 			permissionsByDataOwnerId shouldBe mapOf(
 				userInfoA.dataOwnerId to AccessLevel.Write,
 				userInfoB.dataOwnerId to AccessLevel.Write
-			)
+			).keyAsLocalDataOwnerReferences()
 			hasUnknownAnonymousDataOwners shouldBe true
 		}
 		apiP1.patient.getDataOwnersWithAccessTo(entity).apply {
@@ -115,7 +115,7 @@ class DelegationsDeAnonymizationTest : StringSpec({
 				userInfoA.dataOwnerId to AccessLevel.Write,
 				userInfoB.dataOwnerId to AccessLevel.Write,
 				userInfoP1.dataOwnerId to AccessLevel.Write
-			)
+			).keyAsLocalDataOwnerReferences()
 			hasUnknownAnonymousDataOwners shouldBe false
 		}
 		/*
@@ -133,7 +133,7 @@ class DelegationsDeAnonymizationTest : StringSpec({
 				userInfoA.dataOwnerId to AccessLevel.Write,
 				userInfoB.dataOwnerId to AccessLevel.Write,
 				userInfoP1.dataOwnerId to AccessLevel.Write
-			)
+			).keyAsLocalDataOwnerReferences()
 			hasUnknownAnonymousDataOwners shouldBe true
 		}
 		apiB.patient.getDataOwnersWithAccessTo(entity).apply {
@@ -141,7 +141,7 @@ class DelegationsDeAnonymizationTest : StringSpec({
 				userInfoA.dataOwnerId to AccessLevel.Write,
 				userInfoB.dataOwnerId to AccessLevel.Write,
 				userInfoP1.dataOwnerId to AccessLevel.Read
-			)
+			).keyAsLocalDataOwnerReferences()
 			hasUnknownAnonymousDataOwners shouldBe true
 		}
 		apiP1.patient.getDataOwnersWithAccessTo(entity).apply {
@@ -149,7 +149,7 @@ class DelegationsDeAnonymizationTest : StringSpec({
 				userInfoA.dataOwnerId to AccessLevel.Write,
 				userInfoB.dataOwnerId to AccessLevel.Write,
 				userInfoP1.dataOwnerId to AccessLevel.Write
-			)
+			).keyAsLocalDataOwnerReferences()
 			hasUnknownAnonymousDataOwners shouldBe false
 		}
 		/*
@@ -167,7 +167,7 @@ class DelegationsDeAnonymizationTest : StringSpec({
 				userInfoA.dataOwnerId to AccessLevel.Write,
 				userInfoB.dataOwnerId to AccessLevel.Write,
 				userInfoP1.dataOwnerId to AccessLevel.Write,
-			)
+			).keyAsLocalDataOwnerReferences()
 			hasUnknownAnonymousDataOwners shouldBe true
 		}
 		apiB.patient.getDataOwnersWithAccessTo(entity).apply {
@@ -175,7 +175,7 @@ class DelegationsDeAnonymizationTest : StringSpec({
 				userInfoA.dataOwnerId to AccessLevel.Write,
 				userInfoB.dataOwnerId to AccessLevel.Write,
 				userInfoP1.dataOwnerId to AccessLevel.Read
-			)
+			).keyAsLocalDataOwnerReferences()
 			hasUnknownAnonymousDataOwners shouldBe true
 		}
 		apiP1.patient.getDataOwnersWithAccessTo(entity).apply {
@@ -184,7 +184,7 @@ class DelegationsDeAnonymizationTest : StringSpec({
 				userInfoB.dataOwnerId to AccessLevel.Write,
 				userInfoP1.dataOwnerId to AccessLevel.Write,
 				userInfoP2.dataOwnerId to AccessLevel.Read
-			)
+			).keyAsLocalDataOwnerReferences()
 			hasUnknownAnonymousDataOwners shouldBe false
 		}
 		apiP2.patient.getDataOwnersWithAccessTo(entity).apply {
@@ -193,7 +193,7 @@ class DelegationsDeAnonymizationTest : StringSpec({
 				userInfoB.dataOwnerId to AccessLevel.Write,
 				userInfoP1.dataOwnerId to AccessLevel.Read, // P2 is only aware of the P1->P2 delegation
 				userInfoP2.dataOwnerId to AccessLevel.Read
-			)
+			).keyAsLocalDataOwnerReferences()
 			hasUnknownAnonymousDataOwners shouldBe true
 		}
 		/*
@@ -213,7 +213,7 @@ class DelegationsDeAnonymizationTest : StringSpec({
 				userInfoB.dataOwnerId to AccessLevel.Write,
 				userInfoP1.dataOwnerId to AccessLevel.Write,
 				userInfoP2.dataOwnerId to AccessLevel.Write
-			)
+			).keyAsLocalDataOwnerReferences()
 			hasUnknownAnonymousDataOwners shouldBe true
 		}
 		apiB.patient.getDataOwnersWithAccessTo(entity).apply {
@@ -221,7 +221,7 @@ class DelegationsDeAnonymizationTest : StringSpec({
 				userInfoA.dataOwnerId to AccessLevel.Write,
 				userInfoB.dataOwnerId to AccessLevel.Write,
 				userInfoP1.dataOwnerId to AccessLevel.Read
-			)
+			).keyAsLocalDataOwnerReferences()
 			hasUnknownAnonymousDataOwners shouldBe true
 		}
 		apiP1.patient.getDataOwnersWithAccessTo(entity).apply {
@@ -230,7 +230,7 @@ class DelegationsDeAnonymizationTest : StringSpec({
 				userInfoB.dataOwnerId to AccessLevel.Write,
 				userInfoP1.dataOwnerId to AccessLevel.Write,
 				userInfoP2.dataOwnerId to AccessLevel.Read
-			)
+			).keyAsLocalDataOwnerReferences()
 			hasUnknownAnonymousDataOwners shouldBe true
 		}
 		apiP2.patient.getDataOwnersWithAccessTo(entity).apply {
@@ -239,14 +239,15 @@ class DelegationsDeAnonymizationTest : StringSpec({
 				userInfoB.dataOwnerId to AccessLevel.Write,
 				userInfoP1.dataOwnerId to AccessLevel.Read, // P2 is only aware of the P1->P2 delegation
 				userInfoP2.dataOwnerId to AccessLevel.Write
-			)
+			).keyAsLocalDataOwnerReferences()
 			hasUnknownAnonymousDataOwners shouldBe true
 		}
 	}
 
 	"Even without de-anonymization metadata the data owners should be able to identify anonymous delegates if their parent is part of the delegation with that delegate." {
 		val (parentUserInfo, parentApi) = createHcpUser().let { it to it.api(specJob) }
-		val (_, childApi) = createHcpUser(parentUserInfo).let { it to it.api(specJob) }
+		val (childUserInfo, childApi) = createHcpUser(parentUserInfo).let { it to it.api(specJob) }
+		println("${childUserInfo.username} ${childUserInfo.password}")
 		val (patientInfo, patientApi) = createPatientUser().let { it to it.api(specJob) }
 		var entity = parentApi.createSamplePatient()
 		entity = parentApi.patient.shareWith(patientInfo.dataOwnerId, entity, PatientShareOptions(
@@ -320,7 +321,7 @@ class DelegationsDeAnonymizationTest : StringSpec({
 			userInfoB.dataOwnerId to AccessLevel.Write,
 			userInfoP1.dataOwnerId to AccessLevel.Write,
 			userInfoP2.dataOwnerId to AccessLevel.Write
-		)
+		).keyAsLocalDataOwnerReferences()
 		apiP1.crypto.forceReload()
 		apiP2.crypto.forceReload()
 		apiA.patient.getDataOwnersWithAccessTo(entity).apply {

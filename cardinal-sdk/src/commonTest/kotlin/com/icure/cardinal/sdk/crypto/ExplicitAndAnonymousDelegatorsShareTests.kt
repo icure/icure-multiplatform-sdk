@@ -16,7 +16,6 @@ import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
-import kotlinx.coroutines.CoroutineScope
 
 class ExplicitAndAnonymousDelegatorsShareTests : StringSpec({
 	val patientNote = "This will be encrypted - patient"
@@ -27,7 +26,7 @@ class ExplicitAndAnonymousDelegatorsShareTests : StringSpec({
 		initializeTestEnvironment()
 	}
 
-	suspend fun CoroutineScope.testCreateSharedData(delegator: DataOwnerDetails, delegate: DataOwnerDetails) {
+	suspend fun testCreateSharedData(delegator: DataOwnerDetails, delegate: DataOwnerDetails) {
 		val delegatorApi: CardinalSdk = delegator.api(specJob)
 		val patient = delegatorApi.patient.createPatient(
 			delegatorApi.patient.withEncryptionMetadata(
@@ -66,7 +65,7 @@ class ExplicitAndAnonymousDelegatorsShareTests : StringSpec({
 		}
 	}
 
-	suspend fun CoroutineScope.testShareExistingData(delegator: DataOwnerDetails, delegate: DataOwnerDetails) {
+	suspend fun testShareExistingData(delegator: DataOwnerDetails, delegate: DataOwnerDetails) {
 		val delegatorApi: CardinalSdk =  delegator.api(specJob)
 		val patient = delegatorApi.patient.createPatient(
 			delegatorApi.patient.withEncryptionMetadata(
