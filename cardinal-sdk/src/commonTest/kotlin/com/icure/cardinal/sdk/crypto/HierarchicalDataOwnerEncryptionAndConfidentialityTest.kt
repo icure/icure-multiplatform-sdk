@@ -5,6 +5,7 @@ import com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption
 import com.icure.cardinal.sdk.model.DecryptedHealthElement
 import com.icure.cardinal.sdk.model.DecryptedPatient
 import com.icure.cardinal.sdk.model.embed.AccessLevel
+import com.icure.cardinal.sdk.test.autoCancelJob
 import com.icure.cardinal.sdk.test.createHcpUser
 import com.icure.cardinal.sdk.test.initializeTestEnvironment
 import com.icure.cardinal.sdk.utils.RequestStatusException
@@ -19,7 +20,9 @@ import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
 
 class HierarchicalDataOwnerEncryptionAndConfidentialityTest : StringSpec({
-	beforeAny {
+	val specJob = autoCancelJob()
+
+	beforeSpec {
 		initializeTestEnvironment()
 	}
 
@@ -28,7 +31,7 @@ class HierarchicalDataOwnerEncryptionAndConfidentialityTest : StringSpec({
 		val parent = createHcpUser(grandparent)
 		val hcp = createHcpUser(parent)
 		val sibling = createHcpUser(parent)
-		val hcpApi = hcp.api(this)
+		val hcpApi = hcp.api(specJob)
 		val note = "This will be encrypted"
 		val patient = hcpApi.patient.createPatient(
 			hcpApi.patient.withEncryptionMetadata(
@@ -41,10 +44,10 @@ class HierarchicalDataOwnerEncryptionAndConfidentialityTest : StringSpec({
 				delegates = mapOf(parent.dataOwnerId to AccessLevel.Write)
 			)
 		).shouldNotBeNull()
-		parent.api(this).patient.getPatient(patient.id).note shouldBe note
-		sibling.api(this).patient.getPatient(patient.id).note shouldBe note
+		parent.api(specJob).patient.getPatient(patient.id).note shouldBe note
+		sibling.api(specJob).patient.getPatient(patient.id).note shouldBe note
 		shouldThrow<RequestStatusException> {
-			grandparent.api(this).patient.getPatient(patient.id)
+			grandparent.api(specJob).patient.getPatient(patient.id)
 		}.statusCode shouldBe 403
 	}
 
@@ -52,7 +55,7 @@ class HierarchicalDataOwnerEncryptionAndConfidentialityTest : StringSpec({
 		val parent = createHcpUser()
 		val hcp = createHcpUser(parent)
 		val sibling = createHcpUser(parent)
-		val hcpApi = hcp.api(this)
+		val hcpApi = hcp.api(specJob)
 		val patient = hcpApi.patient.createPatient(
 			hcpApi.patient.withEncryptionMetadata(
 				DecryptedPatient(
@@ -122,8 +125,8 @@ class HierarchicalDataOwnerEncryptionAndConfidentialityTest : StringSpec({
 			retrievedHes.single { it.id == confidentialHe.id }.note shouldBe confidentialNote
 		}
 		listOf(
-			Pair(parent.api(this), listOf(parent.dataOwnerId)),
-			Pair(sibling.api(this), listOf(parent.dataOwnerId, sibling.dataOwnerId))
+			Pair(parent.api(specJob), listOf(parent.dataOwnerId)),
+			Pair(sibling.api(specJob), listOf(parent.dataOwnerId, sibling.dataOwnerId))
 		).forEach { (relativeApi, ids) ->
 			relativeApi.patient.getSecretIdsOf(patient) shouldBe (allSecretIds - confidentialSecretIds)
 			findHealthElementsFor(ids, relativeApi).also { retrievedHes ->

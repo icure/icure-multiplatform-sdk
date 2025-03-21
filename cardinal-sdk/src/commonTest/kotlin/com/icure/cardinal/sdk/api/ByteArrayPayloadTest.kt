@@ -1,6 +1,7 @@
 package com.icure.cardinal.sdk.api
 
 import com.icure.cardinal.sdk.model.DecryptedDocument
+import com.icure.cardinal.sdk.test.autoCancelJob
 import com.icure.cardinal.sdk.test.createHcpUser
 import com.icure.cardinal.sdk.test.initializeTestEnvironment
 import com.icure.cardinal.sdk.test.uuid
@@ -10,14 +11,15 @@ import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
 
 class  ByteArrayPayloadTest : StringSpec({
+	val specJob = autoCancelJob()
 
-	beforeAny {
+	beforeSpec {
 		initializeTestEnvironment()
 	}
 
 	"It is possible to send a ByteArray payload and retrieve it" {
 		val hcpDetails = createHcpUser()
-		val api = hcpDetails.api(this)
+		val api = hcpDetails.api(specJob)
 		val hcpUser = api.user.getCurrentUser()
 
 		val newDocument = api.document.withEncryptionMetadata(

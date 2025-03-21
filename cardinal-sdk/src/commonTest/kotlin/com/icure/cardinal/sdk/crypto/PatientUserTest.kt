@@ -6,6 +6,7 @@ import com.icure.cardinal.sdk.model.DecryptedHealthElement
 import com.icure.cardinal.sdk.model.DecryptedPatient
 import com.icure.cardinal.sdk.model.EncryptedPatient
 import com.icure.cardinal.sdk.model.embed.AccessLevel
+import com.icure.cardinal.sdk.test.autoCancelJob
 import com.icure.cardinal.sdk.test.createHcpUser
 import com.icure.cardinal.sdk.test.createPatientUser
 import com.icure.cardinal.sdk.test.createUserFromExistingPatient
@@ -22,15 +23,16 @@ import io.kotest.matchers.shouldNotBe
 import io.kotest.matchers.types.shouldBeInstanceOf
 
 class PatientUserTest : StringSpec({
-	beforeAny {
+	val specJob = autoCancelJob()
+	beforeSpec {
 		initializeTestEnvironment()
 	}
 
 	"A new user created from an existing patient should be able to create data for himself after initializing the encryption metadata" {
 		val hcp1 = createHcpUser()
-		val hcp1Api = hcp1.api(this)
+		val hcp1Api = hcp1.api(specJob)
 		val hcp2 = createHcpUser()
-		val hcp2Api = hcp2.api(this)
+		val hcp2Api = hcp2.api(specJob)
 		val patientDetails = createUserFromExistingPatient(
 			hcp1Api.patient.createPatient(
 				hcp1Api.patient.withEncryptionMetadata(
@@ -44,7 +46,7 @@ class PatientUserTest : StringSpec({
 				)
 			).shouldNotBeNull()
 		)
-		val patientApi = patientDetails.api(this)
+		val patientApi = patientDetails.api(specJob)
 		// Data owner api does not decrypt, so we can use that since the current patient can't decrypt his own info
 		val uninitializedPatient = patientApi.dataOwner.getCurrentDataOwner().shouldBeInstanceOf<DataOwnerWithType.PatientDataOwner>().dataOwner
 		shouldThrow<IllegalArgumentException> {
@@ -84,7 +86,7 @@ class PatientUserTest : StringSpec({
 
 	"A new patient user should be able to initialize his encryption metadata" {
 		val patientDetails = createPatientUser()
-		val patientApi = patientDetails.api(this)
+		val patientApi = patientDetails.api(specJob)
 		patientApi.patient.tryAndRecover.getPatient(patientDetails.dataOwnerId).shouldBeInstanceOf<EncryptedPatient>()
 		val initializedEncryptedPatient = patientApi.patient.ensureEncryptionMetadataForSelfIsInitialized()
 		val initializedPatient = patientApi.patient.decrypt(initializedEncryptedPatient)

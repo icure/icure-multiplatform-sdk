@@ -7,6 +7,7 @@ import com.icure.cardinal.sdk.model.DecryptedHealthElement
 import com.icure.cardinal.sdk.model.DecryptedPatient
 import com.icure.cardinal.sdk.model.embed.AccessLevel
 import com.icure.cardinal.sdk.test.DataOwnerDetails
+import com.icure.cardinal.sdk.test.autoCancelJob
 import com.icure.cardinal.sdk.test.createHcpUser
 import com.icure.cardinal.sdk.test.createPatientUser
 import com.icure.cardinal.sdk.test.initializeTestEnvironment
@@ -20,13 +21,14 @@ import kotlinx.coroutines.CoroutineScope
 class ExplicitAndAnonymousDelegatorsShareTests : StringSpec({
 	val patientNote = "This will be encrypted - patient"
 	val heNote = "This will be encrypted - he"
+	val specJob = autoCancelJob()
 
-	beforeAny {
+	beforeSpec {
 		initializeTestEnvironment()
 	}
 
 	suspend fun CoroutineScope.testCreateSharedData(delegator: DataOwnerDetails, delegate: DataOwnerDetails) {
-		val delegatorApi: CardinalSdk = delegator.api(this)
+		val delegatorApi: CardinalSdk = delegator.api(specJob)
 		val patient = delegatorApi.patient.createPatient(
 			delegatorApi.patient.withEncryptionMetadata(
 				DecryptedPatient(
@@ -49,7 +51,7 @@ class ExplicitAndAnonymousDelegatorsShareTests : StringSpec({
 				delegates = mapOf(delegate.dataOwnerId to AccessLevel.Write)
 			)
 		).shouldNotBeNull()
-		val delegateApi: CardinalSdk = delegate.api(this)
+		val delegateApi: CardinalSdk = delegate.api(specJob)
 		delegateApi.patient.getPatient(patient.id).run {
 			note shouldBe patientNote
 		}
@@ -65,7 +67,7 @@ class ExplicitAndAnonymousDelegatorsShareTests : StringSpec({
 	}
 
 	suspend fun CoroutineScope.testShareExistingData(delegator: DataOwnerDetails, delegate: DataOwnerDetails) {
-		val delegatorApi: CardinalSdk =  delegator.api(this)
+		val delegatorApi: CardinalSdk =  delegator.api(specJob)
 		val patient = delegatorApi.patient.createPatient(
 			delegatorApi.patient.withEncryptionMetadata(
 				DecryptedPatient(
@@ -96,7 +98,7 @@ class ExplicitAndAnonymousDelegatorsShareTests : StringSpec({
 			delegate.dataOwnerId,
 			he
 		).shouldNotBeNull()
-		val delegateApi: CardinalSdk = delegate.api(this)
+		val delegateApi: CardinalSdk = delegate.api(specJob)
 		delegateApi.patient.getPatient(patient.id).run {
 			note shouldBe patientNote
 		}

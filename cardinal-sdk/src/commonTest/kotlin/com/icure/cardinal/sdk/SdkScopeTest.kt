@@ -34,6 +34,7 @@ class SdkScopeTest : StringSpec({
 		sdk.scope.cancel()
 		sdk.scope.isActive shouldBe false
 		parentJob.isActive shouldBe true
+		parentJob.cancel()
 	}
 
 	"If a child job of the SDK scope fails or is cancelled the SDK scope and parent job shouldn't be canceled" {
@@ -47,5 +48,6 @@ class SdkScopeTest : StringSpec({
 		delay(50)
 		sdk.scope.isActive shouldBe true
 		parentJob.isActive shouldBe true
+		parentJob.cancel()
 	}
 })

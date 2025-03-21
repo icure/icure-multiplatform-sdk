@@ -14,6 +14,7 @@ import com.icure.cardinal.sdk.options.SdkOptions
 import com.icure.cardinal.sdk.options.getAuthProvider
 import com.icure.cardinal.sdk.test.DefaultRawApiConfig
 import com.icure.cardinal.sdk.test.MockMessageGatewayUtils
+import com.icure.cardinal.sdk.test.autoCancelJob
 import com.icure.cardinal.sdk.test.baseUrl
 import com.icure.cardinal.sdk.test.createHcpUser
 import com.icure.cardinal.sdk.test.createUserInMultipleGroups
@@ -44,6 +45,7 @@ import kotlinx.datetime.Clock
 
 @OptIn(InternalIcureApi::class)
 class SmartAuthProviderTest : StringSpec({
+	val specJob = autoCancelJob()
 
 	val authApi = RawAnonymousAuthApiImpl(
 		apiUrl = baseUrl,
@@ -56,7 +58,7 @@ class SmartAuthProviderTest : StringSpec({
 		DefaultRawApiConfig
 	)
 
-	beforeAny {
+	beforeSpec {
 		initializeTestEnvironment()
 	}
 
@@ -113,7 +115,7 @@ class SmartAuthProviderTest : StringSpec({
 
 	"Should automatically ask for a more powerful secret to perform elevated-security operations if the available secret/token is not good enough" {
 		val hcpDetails = createHcpUser()
-		val api = hcpDetails.api(this)
+		val api = hcpDetails.api(specJob)
 		val initialUser = api.user.getCurrentUser()
 		val adminUserApi = RawUserApiImpl(baseUrl, testGroupAdminAuth, DefaultRawApiConfig)
 		val userToken = uuid()
@@ -211,7 +213,7 @@ class SmartAuthProviderTest : StringSpec({
 
 	"Should automatically ask for TOTP after password if user has 2fa enabled" {
 		val hcpDetails = createHcpUser()
-		val api = hcpDetails.api(this)
+		val api = hcpDetails.api(specJob)
 		val otpLength = 8
 		val initialUser = api.user.getCurrentUser()
 		val adminUserApi = RawUserApiImpl(baseUrl, testGroupAdminAuth, DefaultRawApiConfig)
@@ -280,7 +282,7 @@ class SmartAuthProviderTest : StringSpec({
 
 	"Should ask for TOTP directly if password is cached" {
 		val hcpDetails = createHcpUser()
-		val api = hcpDetails.api(this)
+		val api = hcpDetails.api(specJob)
 		val otpLength = 8
 		val initialUser = api.user.getCurrentUser()
 		val adminUserApi = RawUserApiImpl(baseUrl, testGroupAdminAuth, DefaultRawApiConfig)

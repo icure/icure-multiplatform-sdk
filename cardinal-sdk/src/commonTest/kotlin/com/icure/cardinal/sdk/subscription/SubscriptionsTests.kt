@@ -29,6 +29,7 @@ import com.icure.cardinal.sdk.model.Topic
 import com.icure.cardinal.sdk.model.base.Identifiable
 import com.icure.cardinal.sdk.model.base.Identifier
 import com.icure.cardinal.sdk.test.DataOwnerDetails
+import com.icure.cardinal.sdk.test.autoCancelJob
 import com.icure.cardinal.sdk.test.createHcpUser
 import com.icure.cardinal.sdk.test.initializeTestEnvironment
 import com.icure.kryptom.crypto.defaultCryptoService
@@ -38,7 +39,6 @@ import io.kotest.core.spec.style.stringSpec
 import io.kotest.matchers.should
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.types.shouldBeInstanceOf
-import kotlinx.coroutines.cancel
 import kotlinx.coroutines.withTimeoutOrNull
 import kotlin.time.Duration.Companion.seconds
 
@@ -80,6 +80,7 @@ fun <BaseType : Identifiable<String>, MaybeDecryptedType : BaseType> subscribabl
 class SubscriptionsTests : StringSpec({
 	lateinit var hcpUser: DataOwnerDetails
 	lateinit var hcpUserApi: CardinalSdk
+	val specJob = autoCancelJob()
 
 	beforeSpec {
 		initializeTestEnvironment()
@@ -93,11 +94,7 @@ class SubscriptionsTests : StringSpec({
 				"LEGACY_MESSAGE_MANAGER",
 			)
 		)
-		hcpUserApi = hcpUser.api(null)
-	}
-
-	afterSpec {
-		hcpUserApi.scope.cancel()
+		hcpUserApi = hcpUser.api(specJob)
 	}
 
 	include(

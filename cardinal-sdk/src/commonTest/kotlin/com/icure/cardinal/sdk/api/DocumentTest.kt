@@ -1,6 +1,7 @@
 package com.icure.cardinal.sdk.api
 
 import com.icure.cardinal.sdk.model.DecryptedDocument
+import com.icure.cardinal.sdk.test.autoCancelJob
 import com.icure.cardinal.sdk.test.createHcpUser
 import com.icure.cardinal.sdk.test.initializeTestEnvironment
 import com.icure.kryptom.crypto.defaultCryptoService
@@ -11,12 +12,14 @@ import io.kotest.matchers.shouldNotBe
 import kotlin.random.Random
 
 class DocumentTest : StringSpec({
-	beforeAny {
+	val specJob = autoCancelJob()
+
+	beforeSpec {
 		initializeTestEnvironment()
 	}
 
 	"Should be able to create document and set attachment with chosen uti" {
-		val api = createHcpUser().api(this)
+		val api = createHcpUser().api(specJob)
 		val doc = api.document.createDocument(
 			api.document.withEncryptionMetadata(
 				base = DecryptedDocument(

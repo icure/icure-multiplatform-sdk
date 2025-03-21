@@ -14,6 +14,7 @@ import com.icure.cardinal.sdk.model.DecryptedPatient
 import com.icure.cardinal.sdk.model.RecoveryData
 import com.icure.cardinal.sdk.model.specializations.Base64String
 import com.icure.cardinal.sdk.model.specializations.SpkiHexString
+import com.icure.cardinal.sdk.test.autoCancelJob
 import com.icure.cardinal.sdk.test.createHcpUser
 import com.icure.cardinal.sdk.test.createPatientUser
 import com.icure.cardinal.sdk.test.initializeTestEnvironment
@@ -46,10 +47,11 @@ import kotlin.random.Random
 
 @OptIn(InternalIcureApi::class)
 class RecoveryDataEncryptionTest : StringSpec({
-	beforeAny { initializeTestEnvironment() }
+	val specJob = autoCancelJob()
+	beforeSpec { initializeTestEnvironment() }
 	"User should be able to create and use key recovery info" {
 		val hcp = createHcpUser()
-		val api = hcp.api(this)
+		val api = hcp.api(specJob)
 		val recoveryKey = api.recovery.createRecoveryInfoForAvailableKeyPairs()
 		val data = api.patient.createPatient(
 			api.patient.withEncryptionMetadata(
@@ -84,14 +86,14 @@ class RecoveryDataEncryptionTest : StringSpec({
 				cryptoPrimitives: CryptoService
 			): CryptoStrategies.KeyGenerationRequestResult = fail("Should not need to create new key")
 		}
-		val api2 = hcp.apiWithKeys(scope = this, cryptoStrategies = recoveringStrategies) // No keys will be in storage
+		val api2 = hcp.apiWithKeys(specJob, cryptoStrategies = recoveringStrategies) // No keys will be in storage
 		api2.patient.getPatient(data.id) shouldBe data
 		calledRecovery shouldBe true
 	}
 
 	"User should be able to share data with a patient that did not yet do a first login" {
 		val hcp = createHcpUser()
-		val api = hcp.api(this)
+		val api = hcp.api(specJob)
 		val patient = api.patient.createPatient(
 			api.patient.withEncryptionMetadata(
 				DecryptedPatient(
@@ -110,7 +112,7 @@ class RecoveryDataEncryptionTest : StringSpec({
 		api.patient.shareWith(patient.id, patient, PatientShareOptions(shareSecretIds = secretIdsOptions))
 		val recoveryKey = api.recovery.createExchangeDataRecoveryInfo(patient.id)
 		val patientUser = createPatientUser(existingPatientId = patient.id)
-		val apiPatient = patientUser.api(this)
+		val apiPatient = patientUser.api(specJob)
 		shouldThrow<EntityEncryptionException> { apiPatient.patient.getPatient(patient.id) }
 		apiPatient.recovery.recoverExchangeData(recoveryKey)
 		apiPatient.patient.getPatient(patient.id).note shouldBe patient.note
@@ -169,7 +171,7 @@ class RecoveryDataEncryptionTest : StringSpec({
 			"]" +
 		"}"
 		val hcp = createHcpUser()
-		val api = hcp.api(this)
+		val api = hcp.api(specJob)
 		val newKey = defaultCryptoService.aes.generateKey(AesAlgorithm.CbcWithPkcs7Padding, AesService.KeySize.Aes256)
 		val newRecoveryKey = RecoveryDataKey.fromRawBytes(defaultCryptoService.aes.exportKey(newKey))
 		api.crypto.internal.recoveryDataEncryption.raw.createRecoveryData(
@@ -219,7 +221,7 @@ class RecoveryDataEncryptionTest : StringSpec({
 			"\"rawExchangeKey\":\"$rawExchangeKey\"" +
 		"}]"
 		val hcp = createHcpUser()
-		val api = hcp.api(this)
+		val api = hcp.api(specJob)
 		api.crypto.internal.recoveryDataEncryption.raw.createRecoveryData(
 			RecoveryData(
 				id = api.crypto.internal.recoveryDataEncryption.recoveryKeyToId(recoveryKey),
@@ -240,7 +242,7 @@ class RecoveryDataEncryptionTest : StringSpec({
 
 	"Recovery data key options should be respected" {
 		val hcp = createHcpUser()
-		val api = hcp.api(this)
+		val api = hcp.api(specJob)
 		val recoveryKey1 = api.recovery.createRecoveryInfoForAvailableKeyPairs(
 			recoveryKeyOptions = RecoveryKeyOptions.Generate(RecoveryKeySize.Bytes16)
 		)
@@ -274,7 +276,7 @@ class RecoveryDataEncryptionTest : StringSpec({
 
 	"Attempting to create recovery data with an already used key should fail" {
 		val hcp = createHcpUser()
-		val api = hcp.api(this)
+		val api = hcp.api(specJob)
 		val existingRecoveryKey = api.recovery.createRecoveryInfoForAvailableKeyPairs()
 		shouldThrow<IllegalArgumentException> {
 			api.recovery.createRecoveryInfoForAvailableKeyPairs(
@@ -289,7 +291,7 @@ class RecoveryDataEncryptionTest : StringSpec({
 
 	"Should be able to wait for recovery data to be created" {
 		val hcp = createHcpUser()
-		val api = hcp.api(this)
+		val api = hcp.api(specJob)
 		val precomputedKey = api.recovery.preGenerateRecoveryKey(RecoveryKeySize.Bytes32)
 		precomputedKey.asRawBytes() shouldHaveSize 32
 		withTimeoutOrNull(6000) {

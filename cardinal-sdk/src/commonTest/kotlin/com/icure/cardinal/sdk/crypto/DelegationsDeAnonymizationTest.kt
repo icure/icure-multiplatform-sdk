@@ -11,6 +11,7 @@ import com.icure.cardinal.sdk.model.ListOfIds
 import com.icure.cardinal.sdk.model.embed.AccessLevel
 import com.icure.cardinal.sdk.model.requests.RequestedPermission
 import com.icure.cardinal.sdk.test.DefaultRawApiConfig
+import com.icure.cardinal.sdk.test.autoCancelJob
 import com.icure.cardinal.sdk.test.baseUrl
 import com.icure.cardinal.sdk.test.createHcpUser
 import com.icure.cardinal.sdk.test.createPatientUser
@@ -26,6 +27,7 @@ import io.kotest.matchers.shouldBe
 
 @OptIn(InternalIcureApi::class)
 class DelegationsDeAnonymizationTest : StringSpec({
+	val specJob = autoCancelJob()
 	beforeSpec { initializeTestEnvironment() }
 
 	suspend fun CardinalSdk.createSamplePatient() =
@@ -41,10 +43,10 @@ class DelegationsDeAnonymizationTest : StringSpec({
 		).shouldNotBeNull()
 
 	"without de-anonymisation metadata the data owners should be able to identify anonymous delegates only if they are part of the delegation with that delegate." {
-		val (userInfoA, apiA) = createHcpUser().let { it to it.api(this) }
-		val (userInfoB, apiB) = createHcpUser().let { it to it.api(this) }
-		val (userInfoP1, apiP1) = createPatientUser().let { it to it.api(this) }
-		val (userInfoP2, apiP2) = createPatientUser().let { it to it.api(this) }
+		val (userInfoA, apiA) = createHcpUser().let { it to it.api(specJob) }
+		val (userInfoB, apiB) = createHcpUser().let { it to it.api(specJob) }
+		val (userInfoP1, apiP1) = createPatientUser().let { it to it.api(specJob) }
+		val (userInfoP2, apiP2) = createPatientUser().let { it to it.api(specJob) }
 		println("""
 			A: ${userInfoA.dataOwnerId}
 			B: ${userInfoB.dataOwnerId}
@@ -243,9 +245,9 @@ class DelegationsDeAnonymizationTest : StringSpec({
 	}
 
 	"Even without de-anonymization metadata the data owners should be able to identify anonymous delegates if their parent is part of the delegation with that delegate." {
-		val (parentUserInfo, parentApi) = createHcpUser().let { it to it.api(this) }
-		val (_, childApi) = createHcpUser(parentUserInfo).let { it to it.api(this) }
-		val (patientInfo, patientApi) = createPatientUser().let { it to it.api(this) }
+		val (parentUserInfo, parentApi) = createHcpUser().let { it to it.api(specJob) }
+		val (_, childApi) = createHcpUser(parentUserInfo).let { it to it.api(specJob) }
+		val (patientInfo, patientApi) = createPatientUser().let { it to it.api(specJob) }
 		var entity = parentApi.createSamplePatient()
 		entity = parentApi.patient.shareWith(patientInfo.dataOwnerId, entity, PatientShareOptions(
 			shareSecretIds = SecretIdShareOptions.UseExactly(emptySet(), false),
@@ -267,10 +269,10 @@ class DelegationsDeAnonymizationTest : StringSpec({
 	}
 
 	"De-anonymization metadata should allow data owners that are not part of a delegation to figure out the members of that delegation." {
-		val (userInfoA, apiA) = createHcpUser().let { it to it.api(this) }
-		val (userInfoB, apiB) = createHcpUser().let { it to it.api(this) }
-		val (userInfoP1, apiP1) = createPatientUser().let { it to it.api(this) }
-		val (userInfoP2, apiP2) = createPatientUser().let { it to it.api(this) }
+		val (userInfoA, apiA) = createHcpUser().let { it to it.api(specJob) }
+		val (userInfoB, apiB) = createHcpUser().let { it to it.api(specJob) }
+		val (userInfoP1, apiP1) = createPatientUser().let { it to it.api(specJob) }
+		val (userInfoP2, apiP2) = createPatientUser().let { it to it.api(specJob) }
 		var entity = apiA.createSamplePatient()
 		entity = apiA.patient.shareWith(userInfoB.dataOwnerId, entity, PatientShareOptions(
 			shareSecretIds = SecretIdShareOptions.UseExactly(emptySet(), false),
@@ -366,11 +368,11 @@ class DelegationsDeAnonymizationTest : StringSpec({
 	}
 
 	"Hcp should be able to use de-anonymization metadata for parent" {
-		val (grandUserInfo, grandApi) = createHcpUser().let { it to it.api(this) }
-		val (parentUserInfo, parentApi) = createHcpUser(grandUserInfo).let { it to it.api(this) }
-		val (child1UserInfo, child1Api) = createHcpUser(parentUserInfo).let { it to it.api(this) }
-		val (child2UserInfo, child2Api) = createHcpUser(grandUserInfo).let { it to it.api(this) }
-		val (patientInfo, patientApi) = createPatientUser().let { it to it.api(this) }
+		val (grandUserInfo, grandApi) = createHcpUser().let { it to it.api(specJob) }
+		val (parentUserInfo, parentApi) = createHcpUser(grandUserInfo).let { it to it.api(specJob) }
+		val (child1UserInfo, child1Api) = createHcpUser(parentUserInfo).let { it to it.api(specJob) }
+		val (child2UserInfo, child2Api) = createHcpUser(grandUserInfo).let { it to it.api(specJob) }
+		val (patientInfo, patientApi) = createPatientUser().let { it to it.api(specJob) }
 		var entity = parentApi.createSamplePatient() // Auto-shared with grandApi, but no de-anonymization metadata
 		entity = parentApi.patient.shareWith(patientInfo.dataOwnerId, entity, PatientShareOptions(
 			shareSecretIds = SecretIdShareOptions.UseExactly(emptySet(), false),
@@ -395,9 +397,9 @@ class DelegationsDeAnonymizationTest : StringSpec({
 	}
 
 	"De-anonymization metadata should encrypt delegator and delegate, and its creation should be optimised" {
-		val (userInfoA, apiA) = createHcpUser().let { it to it.api(this) }
-		val (userInfoB, apiB) = createHcpUser().let { it to it.api(this) }
-		val (userInfoP, apiP) = createPatientUser().let { it to it.api(this) }
+		val (userInfoA, apiA) = createHcpUser().let { it to it.api(specJob) }
+		val (userInfoB, apiB) = createHcpUser().let { it to it.api(specJob) }
+		val (userInfoP, apiP) = createPatientUser().let { it to it.api(specJob) }
 		var entity = apiA.createSamplePatient()
 		entity = apiA.patient.shareWith(userInfoB.dataOwnerId, entity, PatientShareOptions(
 			shareSecretIds = SecretIdShareOptions.UseExactly(emptySet(), false),
@@ -432,9 +434,9 @@ class DelegationsDeAnonymizationTest : StringSpec({
 	}
 
 	"De-anonymization metadata should be usable for different entities of the same type" {
-		val (userInfoA, apiA) = createHcpUser().let { it to it.api(this) }
-		val (userInfoB, apiB) = createHcpUser().let { it to it.api(this) }
-		val (userInfoP1, apiP1) = createPatientUser().let { it to it.api(this) }
+		val (userInfoA, apiA) = createHcpUser().let { it to it.api(specJob) }
+		val (userInfoB, apiB) = createHcpUser().let { it to it.api(specJob) }
+		val (userInfoP1, apiP1) = createPatientUser().let { it to it.api(specJob) }
 		var entity1 = apiA.createSamplePatient()
 		entity1 = apiA.patient.shareWith(userInfoB.dataOwnerId, entity1, PatientShareOptions(
 			shareSecretIds = SecretIdShareOptions.UseExactly(emptySet(), false),
@@ -476,9 +478,9 @@ class DelegationsDeAnonymizationTest : StringSpec({
 	}
 
 	"De-anonymization metadata optimization: the metadata should not be re-shared with the anonymous delegator/delegate by third parties" {
-		val (userInfoA, apiA) = createHcpUser().let { it to it.api(this) }
-		val (userInfoP1, apiP1) = createPatientUser().let { it to it.api(this) }
-		val (userInfoP2, apiP2) = createPatientUser().let { it to it.api(this) }
+		val (userInfoA, apiA) = createHcpUser().let { it to it.api(specJob) }
+		val (userInfoP1, apiP1) = createPatientUser().let { it to it.api(specJob) }
+		val (userInfoP2, apiP2) = createPatientUser().let { it to it.api(specJob) }
 		val delegationMapApi = RawSecureDelegationKeyMapApiImpl(
 			baseUrl,
 			userInfoA.authService(),
@@ -518,10 +520,10 @@ class DelegationsDeAnonymizationTest : StringSpec({
 	}
 
 	"De-anonymization metadata should be shared only with selected data owners" {
-		val (userInfoA, apiA) = createHcpUser().let { it to it.api(this) }
-		val (userInfoB, apiB) = createHcpUser().let { it to it.api(this) }
-		val (userInfoC, apiC) = createHcpUser().let { it to it.api(this) }
-		val (userInfoP, apiP) = createPatientUser().let { it to it.api(this) }
+		val (userInfoA, apiA) = createHcpUser().let { it to it.api(specJob) }
+		val (userInfoB, apiB) = createHcpUser().let { it to it.api(specJob) }
+		val (userInfoC, apiC) = createHcpUser().let { it to it.api(specJob) }
+		val (userInfoP, apiP) = createPatientUser().let { it to it.api(specJob) }
 		var entity = apiA.createSamplePatient()
 		entity = apiA.patient.shareWith(userInfoB.dataOwnerId, entity, PatientShareOptions(
 			shareSecretIds = SecretIdShareOptions.UseExactly(emptySet(), false),
@@ -564,12 +566,12 @@ class DelegationsDeAnonymizationTest : StringSpec({
 	}
 
 	"A member of a delegation should be able to update the corresponding de-anonymization metadata even if he was not the original creator" {
-		val (userInfoA, apiA) = createHcpUser().let{ it to it.api(this) }
-		val (userInfoB, apiB) = createHcpUser().let{ it to it.api(this) }
-		val (userInfoC, apiC) = createHcpUser().let{ it to it.api(this) }
-		val (userInfoP, apiP) = createPatientUser().let{ it to it.api(this) }
-		val (grandUserInfo, parentApi) = createHcpUser().let{ it to it.api(this) }
-		val (parentUserInfo, childApi) = createHcpUser(grandUserInfo).let{ it to it.api(this) }
+		val (userInfoA, apiA) = createHcpUser().let{ it to it.api(specJob) }
+		val (userInfoB, apiB) = createHcpUser().let{ it to it.api(specJob) }
+		val (userInfoC, apiC) = createHcpUser().let{ it to it.api(specJob) }
+		val (userInfoP, apiP) = createPatientUser().let{ it to it.api(specJob) }
+		val (grandUserInfo, parentApi) = createHcpUser().let{ it to it.api(specJob) }
+		val (parentUserInfo, childApi) = createHcpUser(grandUserInfo).let{ it to it.api(specJob) }
 		var entity = parentApi.createSamplePatient()
 		entity = parentApi.patient.shareWith(userInfoA.dataOwnerId, entity, PatientShareOptions(
 			shareSecretIds = SecretIdShareOptions.UseExactly(emptySet(), false),

@@ -8,6 +8,7 @@ import com.icure.cardinal.sdk.model.DecryptedPatient
 import com.icure.cardinal.sdk.model.embed.AccessLevel
 import com.icure.cardinal.sdk.model.sdk.KeyPairUpdateNotification
 import com.icure.cardinal.sdk.test.DataOwnerDetails
+import com.icure.cardinal.sdk.test.autoCancelJob
 import com.icure.cardinal.sdk.test.createHcpUser
 import com.icure.cardinal.sdk.test.createPatientUser
 import com.icure.cardinal.sdk.test.initializeTestEnvironment
@@ -20,11 +21,12 @@ import io.kotest.matchers.collections.shouldBeEmpty
 import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
-import kotlinx.coroutines.CoroutineScope
 
 @OptIn(InternalIcureApi::class)
 class KeyPairUpdateNotificationTest : StringSpec({
-	beforeAny {
+	val specJob = autoCancelJob()
+
+	beforeSpec {
 		initializeTestEnvironment()
 	}
 
@@ -61,10 +63,9 @@ class KeyPairUpdateNotificationTest : StringSpec({
 	}
 
 	suspend fun DataOwnerDetails.checkReceivedMaintenanceTaskAndGiveAccessBack(
-		scope: CoroutineScope,
 		expectedNotification: KeyPairUpdateNotification
 	) {
-		val api = api(scope)
+		val api = api(specJob)
 		val tasks = api.getMaintenanceTasks()
 		tasks shouldHaveSize 1
 		val request = KeyPairUpdateNotification.parseFromMaintenanceTask(tasks.first())
@@ -72,10 +73,8 @@ class KeyPairUpdateNotificationTest : StringSpec({
 		api.cardinalMaintenanceTask.applyKeyPairUpdate(expectedNotification)
 	}
 
-	suspend fun DataOwnerDetails.checkNoReceivedMaintenanceTask(
-		scope: CoroutineScope
-	) {
-		api(scope).getMaintenanceTasks().shouldBeEmpty()
+	suspend fun DataOwnerDetails.checkNoReceivedMaintenanceTask() {
+		api(specJob).getMaintenanceTasks().shouldBeEmpty()
 	}
 
 	"The api should allow to automatically create any necessary keypair update notifications and to use them to give access back to data" {
@@ -85,26 +84,26 @@ class KeyPairUpdateNotificationTest : StringSpec({
 		val noNotifyBecauseAlreadyGaveAccessBack = createHcpUser()
 		val noNotifyBecauseNoExchangeData = createHcpUser()
 		val noNotifyBecausePatient = createPatientUser()
-		val initialUserApi = user.api(this)
+		val initialUserApi = user.api(specJob)
 		val accessibleAfterGiveAccessBack = listOf(
 			initialUserApi.createDataAndShareWith(toNotifyAsDelegator),
-			toNotifyAsDelegate.api(this).createDataAndShareWith(user),
+			toNotifyAsDelegate.api(specJob).createDataAndShareWith(user),
 			initialUserApi.createDataAndShareWith(noNotifyBecauseAlreadyGaveAccessBack)
 		)
 		initialUserApi.createDataAndShareWith(noNotifyBecausePatient)
-		val (apiWithLostKey, newKey) = user.apiWithLostKeys(this)
+		val (apiWithLostKey, newKey) = user.apiWithLostKeys(specJob)
 		val newKeySpki = defaultCryptoService.rsa.exportSpkiHex(newKey.public)
 		val expectedNotification = KeyPairUpdateNotification(
 			newPublicKey = newKeySpki,
 			concernedDataOwnerId = user.dataOwnerId
 		)
-		noNotifyBecauseAlreadyGaveAccessBack.api(this).cardinalMaintenanceTask.applyKeyPairUpdate(expectedNotification)
+		noNotifyBecauseAlreadyGaveAccessBack.api(specJob).cardinalMaintenanceTask.applyKeyPairUpdate(expectedNotification)
 		apiWithLostKey.cardinalMaintenanceTask.createKeyPairUpdateNotificationsToAllDelegationCounterparts(newKeySpki)
-		toNotifyAsDelegate.checkReceivedMaintenanceTaskAndGiveAccessBack(this, expectedNotification)
-		toNotifyAsDelegator.checkReceivedMaintenanceTaskAndGiveAccessBack(this, expectedNotification)
-		noNotifyBecauseNoExchangeData.checkNoReceivedMaintenanceTask(this)
-		noNotifyBecausePatient.checkNoReceivedMaintenanceTask(this)
-		val apiAfterGiveAccessBack = user.apiWithKeys(this, newKey)
+		toNotifyAsDelegate.checkReceivedMaintenanceTaskAndGiveAccessBack(expectedNotification)
+		toNotifyAsDelegator.checkReceivedMaintenanceTaskAndGiveAccessBack(expectedNotification)
+		noNotifyBecauseNoExchangeData.checkNoReceivedMaintenanceTask()
+		noNotifyBecausePatient.checkNoReceivedMaintenanceTask()
+		val apiAfterGiveAccessBack = user.apiWithKeys(specJob, newKey)
 		accessibleAfterGiveAccessBack.forEach { apiAfterGiveAccessBack.verifyDataAccessible(it) }
 	}
 })

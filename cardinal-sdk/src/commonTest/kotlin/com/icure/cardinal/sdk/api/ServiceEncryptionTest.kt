@@ -11,6 +11,7 @@ import com.icure.cardinal.sdk.model.embed.DecryptedService
 import com.icure.cardinal.sdk.model.embed.EncryptedContent
 import com.icure.cardinal.sdk.model.embed.EncryptedService
 import com.icure.cardinal.sdk.test.DataOwnerDetails
+import com.icure.cardinal.sdk.test.autoCancelJob
 import com.icure.cardinal.sdk.test.createHcpUser
 import com.icure.cardinal.sdk.test.initializeTestEnvironment
 import com.icure.cardinal.sdk.test.uuid
@@ -22,22 +23,18 @@ import io.kotest.matchers.maps.shouldBeEmpty
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
-import kotlinx.coroutines.cancel
 
 class ServiceEncryptionTest : StringSpec({
 	lateinit var hcp: DataOwnerDetails
 	lateinit var sdk: CardinalSdk
 	lateinit var patient: DecryptedPatient
+	val specJob = autoCancelJob()
 
 	beforeSpec {
 		initializeTestEnvironment()
 		hcp = createHcpUser()
-		sdk = hcp.api(null)
+		sdk = hcp.api(specJob)
 		patient = sdk.patient.createPatient(sdk.patient.withEncryptionMetadata(DecryptedPatient(uuid())))
-	}
-
-	afterSpec {
-		sdk.scope.cancel()
 	}
 
 	fun checkDecryptedServicesContent(
