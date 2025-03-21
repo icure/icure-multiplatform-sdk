@@ -159,7 +159,7 @@ abstract class BaseRawApi(
 				),
 				requiredAuthClass
 			)
-			return request(method, authService, authenticationClass, accessControlKeysGroupId, block)
+			return request(method, authService, requiredAuthClass, accessControlKeysGroupId, block)
 		} else {
 			responseResult
 		}
