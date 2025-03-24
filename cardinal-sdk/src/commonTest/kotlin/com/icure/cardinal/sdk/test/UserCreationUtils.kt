@@ -162,7 +162,7 @@ suspend fun createHcpUser(parent: DataOwnerDetails? = null, useLegacyKey: Boolea
 	if (roles != null) {
 		userRawApi.setRolesForUser(created.id, ListOfIds(roles.toList()))
 	} else if (parent != null) {
-		val currentUserRoles = userRawApi.getCurrentUser(true).successBody().systemMetadata!!.roles
+		val currentUserRoles = userRawApi.getUser(created.id, true).successBody().systemMetadata!!.roles
 		if ("HIERARCHICAL_DATA_OWNER" !in currentUserRoles) {
 			userRawApi.setRolesForUser(created.id, ListOfIds(currentUserRoles.toList() + "HIERARCHICAL_DATA_OWNER"))
 		}
