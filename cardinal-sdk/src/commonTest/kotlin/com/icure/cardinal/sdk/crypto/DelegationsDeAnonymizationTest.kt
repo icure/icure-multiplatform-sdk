@@ -374,6 +374,7 @@ class DelegationsDeAnonymizationTest : StringSpec({
 		val (child1UserInfo, child1Api) = createHcpUser(parentUserInfo).let { it to it.api(specJob) }
 		val (child2UserInfo, child2Api) = createHcpUser(grandUserInfo).let { it to it.api(specJob) }
 		val (patientInfo, patientApi) = createPatientUser().let { it to it.api(specJob) }
+		println(parentApi.user.getCurrentUser().systemMetadata?.roles)
 		var entity = parentApi.createSamplePatient() // Auto-shared with grandApi, but no de-anonymization metadata
 		entity = parentApi.patient.shareWith(patientInfo.dataOwnerId, entity, PatientShareOptions(
 			shareSecretIds = SecretIdShareOptions.UseExactly(emptySet(), false),
@@ -515,8 +516,10 @@ class DelegationsDeAnonymizationTest : StringSpec({
 				listOf(
 					p1ToP2DelegationKey
 				)
-			), emptyList()).successBody().single()
-		delegationMapAfterAttemptedResharingByA.securityMetadata?.secureDelegations.shouldNotBeNull().shouldHaveSize(3)
+			),
+			emptyList()
+		).successBody().single()
+		delegationMapAfterAttemptedResharingByA.securityMetadata shouldBe delegationMapBeforeAttemptedResharingByA.securityMetadata
 		delegationMapAfterAttemptedResharingByA.rev shouldBe delegationMapBeforeAttemptedResharingByA.rev
 	}
 

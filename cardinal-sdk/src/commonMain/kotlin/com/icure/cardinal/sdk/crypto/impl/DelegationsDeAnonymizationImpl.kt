@@ -185,8 +185,11 @@ class DelegationsDeAnonymizationImpl(
 			securityMetadataDecryptor.getSecureDelegationMemberDetails(entityGroupId, keyMap, entityType)
 				.flatMap { (_, v) -> listOfNotNull(v.delegate, v.delegator) }
 		// Delegator and delegate got access to the entity when it was first created: no need to share with them ever.
-		val dataOwnersWithAccessToMap =
-			setOfNotNull(keyMap.delegate, keyMap.delegator, *dataOwnersWithAccessToMapThroughDelegation.toTypedArray())
+		val dataOwnersWithAccessToMap = setOfNotNull(
+			keyMap.delegate?.let { DataOwnerReferenceInGroup.parse(it, entityGroupId, boundGroup) },
+			keyMap.delegator?.let { DataOwnerReferenceInGroup.parse(it, entityGroupId, boundGroup) },
+			*dataOwnersWithAccessToMapThroughDelegation.toTypedArray()
+		)
 		val dataOwnersNeedingShare = delegates.filter { it !in dataOwnersWithAccessToMap }
 		val accessControlKeysHeaders = accessControlKeysHeadersProvider.getAccessControlKeysHeadersFor(entityGroupId, entityType)
 		val resolvedGroup = boundGroup.resolve(entityGroupId)
