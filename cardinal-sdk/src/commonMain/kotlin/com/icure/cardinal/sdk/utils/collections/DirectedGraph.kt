@@ -1,9 +1,7 @@
 package com.icure.cardinal.sdk.utils.collections
 
-import kotlin.jvm.JvmInline
-
-@JvmInline
-internal value class DirectedGraph<T>(val nodesToEdges: Map<T, Set<T>>) {
+// Was value class but causes a crash on native https://youtrack.jetbrains.com/issue/KT-76252/Kotlin-native-executable-crash-with-generic-value-classes
+internal class DirectedGraph<T>(val nodesToEdges: Map<T, Set<T>>) {
 	companion object {
 		/**
 		 * Creates a graph from a series of edges and optionally additional nodes.
