@@ -112,7 +112,7 @@ class RawExchangeDataApiImpl(
 		get(authProvider) {
 			url {
 				takeFrom(apiUrl)
-				appendPathSegments("rest", "v2", "exchangedata", "byDelegatorDelegate", delegatorId, delegateId)
+				appendPathSegments("rest", "v2", "exchangedata", "byDelegatorDelegate", delegatorId, delegateId, encodeSlash = true)
 				parameter("ts", GMTDate().timestamp)
 			}
 			accept(Application.Json)
@@ -234,7 +234,8 @@ class RawExchangeDataApiImpl(
 		get(authProvider) {
 			url {
 				takeFrom(apiUrl)
-				appendPathSegments("rest", "v2", "exchangedata", "byParticipant", dataOwnerId, "inGroup", groupId)
+				appendPathSegments("rest", "v2", "exchangedata", "byParticipant", "inGroup", groupId)
+				parameter("dataOwnerId", dataOwnerId)
 				parameter("startDocumentId", startDocumentId)
 				parameter("limit", limit)
 				parameter("ts", GMTDate().timestamp)
@@ -250,7 +251,9 @@ class RawExchangeDataApiImpl(
 		get(authProvider) {
 			url {
 				takeFrom(apiUrl)
-				appendPathSegments("rest", "v2", "exchangedata", "byDelegatorDelegate", delegatorId, delegateId, "inGroup", groupId)
+				appendPathSegments("rest", "v2", "exchangedata", "byDelegatorDelegate", "inGroup", groupId)
+				parameter("delegatorId", delegatorId)
+				parameter("delegateId", delegateId)
 				parameter("ts", GMTDate().timestamp)
 			}
 			accept(Application.Json)

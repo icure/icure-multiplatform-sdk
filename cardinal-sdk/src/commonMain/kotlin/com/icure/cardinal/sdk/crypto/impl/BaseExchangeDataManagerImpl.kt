@@ -61,10 +61,18 @@ class BaseExchangeDataManagerImpl(
 					startDocumentId = next?.startKeyDocId,
 					groupId = it
 				).successBody()
-			} ?: raw.getExchangeDataByParticipant(
-				dataOwnerId = selfReferenceString,
-				startDocumentId = next?.startKeyDocId,
-			).successBody()
+			} ?: if (selfReferenceString.contains('/')) {
+				raw.getExchangeDataByParticipantQuery(
+					dataOwnerId = selfReferenceString,
+					startDocumentId = next?.startKeyDocId,
+				).successBody()
+			} else {
+				// TODO Temporary, to allow still usage of new cardinal sdk without using inter-group sharing also on older kraken versions
+				raw.getExchangeDataByParticipant(
+					dataOwnerId = selfReferenceString,
+					startDocumentId = next?.startKeyDocId,
+				).successBody()
+			}
 		}.toList()
 	}
 
@@ -81,10 +89,18 @@ class BaseExchangeDataManagerImpl(
 				delegateId = delegateReferenceString,
 				groupId = it
 			).successBody()
-		} ?: raw.getExchangeDataByDelegatorDelegate(
-			delegatorId = delegatorReferenceString,
-			delegateId = delegateReferenceString
-		).successBody()
+		} ?: if (delegatorReferenceString.contains('/') || delegateReferenceString.contains('/')) {
+			raw.getExchangeDataByDelegatorDelegateQuery(
+				delegatorId = delegatorReferenceString,
+				delegateId = delegateReferenceString
+			).successBody()
+		} else {
+			// TODO Temporary, to allow still usage of new cardinal sdk without using inter-group sharing also on older kraken versions
+			raw.getExchangeDataByDelegatorDelegate(
+				delegatorId = delegatorReferenceString,
+				delegateId = delegateReferenceString
+			).successBody()
+		}
 	}
 
 	override suspend fun getExchangeDataByIds(
