@@ -4,10 +4,13 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-public enum class Laterality() {
-	@SerialName("left")
-	Left,
+public enum class UserAccessLevel() {
+	@SerialName("Admin")
+	Admin,
 
-	@SerialName("right")
-	Right,
+	@SerialName("Read")
+	Read,
+
+	@SerialName("Write")
+	Write,
 }

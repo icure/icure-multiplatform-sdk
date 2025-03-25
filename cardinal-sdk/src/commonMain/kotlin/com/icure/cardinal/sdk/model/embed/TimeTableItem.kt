@@ -8,12 +8,10 @@ import kotlin.Int
 import kotlin.Long
 import kotlin.String
 import kotlin.collections.List
-
-// WARNING: This file is auto-generated. If you change it manually, your changes will be lost.
-// If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
+import kotlin.collections.Set
 
 @Serializable
-data class TimeTableItem(
+public data class TimeTableItem(
 	public val rruleStartDate: Long? = null,
 	public val rrule: String? = null,
 	public val notBeforeInMinutes: Int? = null,
@@ -37,8 +35,6 @@ data class TimeTableItem(
 	public val acceptsNewPatient: Boolean = true,
 	@DefaultValue("false")
 	public val unavailable: Boolean = false,
-) {
-	// region TimeTableItem-TimeTableItem
-
-	// endregion
-}
+	@DefaultValue("emptySet()")
+	public val reservingRights: Set<String> = emptySet(),
+)

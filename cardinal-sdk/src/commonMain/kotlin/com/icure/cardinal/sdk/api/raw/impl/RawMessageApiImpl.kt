@@ -421,7 +421,7 @@ class RawMessageApiImpl(
 		groupId: String,
 		filter: AbstractFilter<Message>,
 	): HttpResponse<List<String>> =
-		post(authProvider) {
+		post(authProvider, groupId) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "message", "inGroup", groupId, "match")

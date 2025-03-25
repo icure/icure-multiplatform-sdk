@@ -495,6 +495,19 @@ class RawUserApiImpl(
 			setBody(userIds)
 		}.wrap()
 
+	override suspend fun getUserInGroup(
+		groupId: String,
+		userId: String,
+	): HttpResponse<User> =
+		get(authProvider) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "user", "inGroup", groupId, userId)
+				parameter("ts", GMTDate().timestamp)
+			}
+			accept(Application.Json)
+		}.wrap()
+
 	override suspend fun matchUsersInGroupBy(
 		groupId: String,
 		filter: AbstractFilter<User>,
@@ -596,6 +609,21 @@ class RawUserApiImpl(
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBodyWithSerializer(UserAbstractFilterSerializer, filter)
+		}.wrap()
+
+	override suspend fun setUserInheritsPermissions(
+		userId: String,
+		groupId: String,
+		`value`: Boolean,
+	): HttpResponse<String> =
+		put(authProvider) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "user", userId, "inGroup", groupId, "setInheritsPermissions")
+				parameter("value", value)
+			}
+			contentType(Application.Json)
+			accept(Application.Json)
 		}.wrap()
 
 	// endregion
