@@ -132,7 +132,15 @@ private abstract class AbstractCalendarItemFlavouredApi<E : CalendarItem>(
 			delegates,
 			true,
 			{ getCalendarItem(it) },
-			{ maybeDecrypt(entityGroupId, rawApi.bulkShare(it).successBody()) }
+			{
+				maybeDecrypt(
+					entityGroupId,
+					if (entityGroupId == null)
+						rawApi.bulkShare(it).successBody()
+					else
+						rawApi.bulkShare(it, entityGroupId).successBody()
+				)
+			}
 		).updatedEntityOrThrow()
 
 	@Deprecated("Use filter instead")

@@ -1,5 +1,6 @@
 package com.icure.cardinal.sdk.api
 
+import com.icure.cardinal.sdk.crypto.entities.DataOwnerReferenceInGroup
 import com.icure.cardinal.sdk.crypto.entities.HealthElementShareOptions
 import com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption
 import com.icure.cardinal.sdk.exceptions.RevisionConflictException
@@ -10,7 +11,6 @@ import com.icure.cardinal.sdk.filters.SortableFilterOptions
 import com.icure.cardinal.sdk.model.DecryptedHealthElement
 import com.icure.cardinal.sdk.model.EncryptedHealthElement
 import com.icure.cardinal.sdk.model.HealthElement
-import com.icure.cardinal.sdk.model.IcureStub
 import com.icure.cardinal.sdk.model.IdWithMandatoryRev
 import com.icure.cardinal.sdk.model.Patient
 import com.icure.cardinal.sdk.model.User
@@ -20,6 +20,7 @@ import com.icure.cardinal.sdk.model.specializations.HexString
 import com.icure.cardinal.sdk.subscription.Subscribable
 import com.icure.cardinal.sdk.utils.DefaultValue
 import com.icure.cardinal.sdk.utils.EntityEncryptionException
+import com.icure.cardinal.sdk.utils.generation.JsMapAsObjectArray
 import com.icure.cardinal.sdk.utils.pagination.PaginatedListIterator
 
 /* This interface includes the API calls that do not need encryption keys and do not return or consume encrypted/decrypted items, they are completely agnostic towards the presence of encrypted items */
@@ -129,7 +130,11 @@ interface HealthElementBasicFlavouredApi<E : HealthElement> {
 	 * @param entityId a health element id.
 	 * @return the health element with id [entityId].
 	 */
-	suspend fun getHealthElement(entityId: String): E
+	suspend fun getHealthElement(
+		entityId: String,
+		@DefaultValue("null")
+		groupId: String? = null
+	): E
 
 	/**
 	 * Get multiple health elements by their ids. Ignores all ids that do not correspond to an entity, correspond to
@@ -174,6 +179,12 @@ interface HealthElementFlavouredApi<E : HealthElement> : HealthElementBasicFlavo
 	suspend fun shareWithMany(
 		healthElement: E,
 		delegates: Map<String, HealthElementShareOptions>
+	): E
+
+	suspend fun shareInGroup(
+		healthElement: E,
+		entityGroupId: String?,
+		delegates: @JsMapAsObjectArray(flattenKey = true, flattenValue = true) Map<DataOwnerReferenceInGroup, HealthElementShareOptions>
 	): E
 
 	@Deprecated("Use filter instead")
@@ -227,7 +238,11 @@ interface HealthElementApi : HealthElementBasicFlavourlessApi, HealthElementFlav
 	 * @return the created health element with updated revision.
 	 * @throws IllegalArgumentException if the encryption metadata of the input was not initialized.
 	 */
-	suspend fun createHealthElement(entity: DecryptedHealthElement): DecryptedHealthElement
+	suspend fun createHealthElement(
+		entity: DecryptedHealthElement,
+		@DefaultValue("null")
+		groupId: String? = null
+	): DecryptedHealthElement
 
 	/**
 	 * Create multiple health elements. All the provided health elements must have the encryption metadata initialized, otherwise
@@ -257,6 +272,22 @@ interface HealthElementApi : HealthElementBasicFlavourlessApi, HealthElementFlav
 		user: User? = null,
 		@DefaultValue("emptyMap()")
 		delegates: Map<String, AccessLevel> = emptyMap(),
+		@DefaultValue("com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption.UseAnySharedWithParent")
+		secretId: SecretIdUseOption = SecretIdUseOption.UseAnySharedWithParent,
+	): DecryptedHealthElement
+
+	/**
+	 * Equivalent to [withEncryptionMetadata] but initializes the encryption metadata for storage in a group that
+	 * can be different from the current user's group, or with delegates in an external group.
+	 */
+	suspend fun withEncryptionMetadataForGroup(
+		entityGroupId: String?,
+		base: DecryptedHealthElement?,
+		patient: Patient,
+		@DefaultValue("null")
+		user: User? = null,
+		@DefaultValue("emptyMap()")
+		delegates: @JsMapAsObjectArray(flattenKey = true, valueEntryName = "accessLevel") Map<DataOwnerReferenceInGroup, AccessLevel> = emptyMap(),
 		@DefaultValue("com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption.UseAnySharedWithParent")
 		secretId: SecretIdUseOption = SecretIdUseOption.UseAnySharedWithParent,
 	): DecryptedHealthElement

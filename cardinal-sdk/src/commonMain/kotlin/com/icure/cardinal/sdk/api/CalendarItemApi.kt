@@ -293,7 +293,7 @@ interface CalendarItemApi : CalendarItemBasicFlavourlessApi, CalendarItemFlavour
 
 	/**
 	 * Equivalent to [withEncryptionMetadata] but initializes the encryption metadata for storage in a group that
-	 * can be different from the current user's group.
+	 * can be different from the current user's group, or with delegates in an external group.
 	 */
 	suspend fun withEncryptionMetadataForGroup(
 		entityGroupId: String?,

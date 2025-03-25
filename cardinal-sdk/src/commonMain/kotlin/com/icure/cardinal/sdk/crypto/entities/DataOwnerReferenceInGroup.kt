@@ -23,8 +23,8 @@ data class DataOwnerReferenceInGroup(
 	@InternalIcureApi
 	internal fun asReferenceStringInGroup(inGroup: String?, sdkGroupId: SdkBoundGroup?): String {
 		if (sdkGroupId == null) require(inGroup == null) { "Can't use in-group methods on kraken-lite" }
-		val thisGroup = groupId ?: sdkGroupId
-		val forGroup = inGroup ?: sdkGroupId
+		val thisGroup = groupId ?: sdkGroupId?.groupId
+		val forGroup = inGroup ?: sdkGroupId?.groupId
 		return if (thisGroup != forGroup) "$thisGroup/$dataOwnerId" else dataOwnerId
 	}
 

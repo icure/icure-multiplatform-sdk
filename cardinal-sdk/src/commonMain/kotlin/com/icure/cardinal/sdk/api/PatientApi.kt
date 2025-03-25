@@ -1,5 +1,6 @@
 package com.icure.cardinal.sdk.api
 
+import com.icure.cardinal.sdk.crypto.entities.DataOwnerReferenceInGroup
 import com.icure.cardinal.sdk.crypto.entities.EntityAccessInformation
 import com.icure.cardinal.sdk.crypto.entities.EntityWithTypeInfo
 import com.icure.cardinal.sdk.crypto.entities.PatientShareOptions
@@ -23,6 +24,7 @@ import com.icure.cardinal.sdk.model.specializations.HexString
 import com.icure.cardinal.sdk.subscription.Subscribable
 import com.icure.cardinal.sdk.utils.DefaultValue
 import com.icure.cardinal.sdk.utils.EntityEncryptionException
+import com.icure.cardinal.sdk.utils.generation.JsMapAsObjectArray
 import com.icure.cardinal.sdk.utils.pagination.PaginatedListIterator
 
 /* This interface includes the API calls that do not need encryption keys and do not return or consume encrypted/decrypted items, they are completely agnostic towards the presence of encrypted items */
@@ -144,8 +146,11 @@ interface PatientBasicFlavouredApi<E : Patient> {
 	 * @param entityId a patient id.
 	 * @return the patient with id [entityId].
 	 */
-	suspend fun getPatient(entityId: String): E
-
+	suspend fun getPatient(
+		entityId: String,
+		@DefaultValue("null")
+		groupId: String? = null
+	): E
 
 	/**
 	 * Get the patient with the provided id and follows the chain of patient merges indicated by the
@@ -413,6 +418,12 @@ interface PatientFlavouredApi<E : Patient> : PatientBasicFlavouredApi<E> {
 		delegates: Map<String, PatientShareOptions>
 	): E
 
+	suspend fun shareInGroup(
+		patient: E,
+		entityGroupId: String?,
+		delegates: @JsMapAsObjectArray(flattenKey = true, flattenValue = true) Map<DataOwnerReferenceInGroup, PatientShareOptions>
+	): E
+
 	/**
 	 * Initializes a new "confidential" secret id for the provided patient if there is none, and saves it. Returns the
 	 * updated patient if a new secret id was initialized, or the input if there was already a confidential secret id
@@ -489,7 +500,11 @@ interface PatientApi : PatientBasicFlavourlessApi, PatientFlavouredApi<Decrypted
 	 * @return the created patient with updated revision.
 	 * @throws IllegalArgumentException if the encryption metadata of the input was not initialized.
 	 */
-	suspend fun createPatient(patient: DecryptedPatient): DecryptedPatient
+	suspend fun createPatient(
+		patient: DecryptedPatient,
+		@DefaultValue("null")
+		groupId: String? = null
+	): DecryptedPatient
 
 	/**
 	 * Creates a new patient with initialized encryption metadata
@@ -508,6 +523,20 @@ interface PatientApi : PatientBasicFlavourlessApi, PatientFlavouredApi<Decrypted
 		@DefaultValue("emptyMap()")
 		delegates: Map<String, AccessLevel> = emptyMap()
 	): DecryptedPatient
+
+	/**
+	 * Equivalent to [withEncryptionMetadata] but initializes the encryption metadata for storage in a group that
+	 * can be different from the current user's group, or with delegates in an external group.
+	 */
+	suspend fun withEncryptionMetadataForGroup(
+		entityGroupId: String?,
+		base: DecryptedPatient?,
+		@DefaultValue("null")
+		user: User? = null,
+		@DefaultValue("emptyMap()")
+		delegates: @JsMapAsObjectArray(flattenKey = true, valueEntryName = "accessLevel") Map<DataOwnerReferenceInGroup, AccessLevel> = emptyMap(),
+	): DecryptedPatient
+	
 	/**
 	 * Specifies if the current user has write access to a patient.
 	 * @param patient a patient

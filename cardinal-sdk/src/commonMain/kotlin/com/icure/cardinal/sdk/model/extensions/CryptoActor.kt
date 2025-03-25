@@ -47,7 +47,6 @@ fun CryptoActor.asStub() =
 			publicKey = publicKey,
 			publicKeysForOaepWithSha256 = publicKeysForOaepWithSha256,
 			cryptoActorProperties = cryptoActorProperties,
-			tags = tags,
 			parentId = parentId
 		)
 

@@ -54,11 +54,12 @@ class TransferKeyRecoveryTest : StringSpec({
 		override suspend fun verifyDelegatePublicKeys(
 			delegate: CryptoActorStubWithType,
 			publicKeys: List<SpkiHexString>,
-			cryptoPrimitives: CryptoService
+			cryptoPrimitives: CryptoService,
+			groupId: String?
 		): List<SpkiHexString> =
 			publicKeys
 
-		override suspend fun dataOwnerRequiresAnonymousDelegation(dataOwner: CryptoActorStubWithType): Boolean =
+		override suspend fun dataOwnerRequiresAnonymousDelegation(dataOwner: CryptoActorStubWithType, groupId: String?): Boolean =
 			dataOwner.type == DataOwnerType.Patient
 	}
 

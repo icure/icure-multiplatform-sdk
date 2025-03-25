@@ -87,7 +87,12 @@ private abstract class AbstractPatientBasicFlavouredApi<E : Patient>(
 		rawApi.modifyPatient(validateAndMaybeEncrypt(null, entity)).successBodyOrThrowRevisionConflict().let { maybeDecrypt(null, it) }
 
 
-	override suspend fun getPatient(entityId: String): E = rawApi.getPatient(entityId).successBody().let { maybeDecrypt(null, it) }
+	override suspend fun getPatient(entityId: String, groupId: String?): E = (
+		if (groupId == null)
+			rawApi.getPatient(entityId)
+		else
+			rawApi.getPatientInGroup(groupId = groupId, patientId = entityId)
+	).successBody().let { maybeDecrypt(groupId, it) }
 
 	@Deprecated("Find methods are deprecated", replaceWith = ReplaceWith("filterPatientsBy()"))
 	override suspend fun findPatientsByNameBirthSsinAuto(
@@ -276,6 +281,29 @@ private abstract class AbstractPatientFlavouredApi<E : Patient>(
 			{ maybeDecrypt(null, rawApi.bulkShare(it).successBody()) }
 		).updatedEntityOrThrow()
 
+	override suspend fun shareInGroup(
+		patient: E,
+		entityGroupId: String?,
+		delegates: Map<DataOwnerReferenceInGroup, PatientShareOptions>
+	): E =
+		config.crypto.entity.simpleShareOrUpdateEncryptedEntityMetadata(
+			entityGroupId,
+			patient,
+			EntityWithEncryptionMetadataTypeName.HealthElement,
+			delegates,
+			true,
+			{ getPatient(it) },
+			{
+				maybeDecrypt(
+					entityGroupId,
+					if (entityGroupId == null)
+						rawApi.bulkShare(it).successBody()
+					else
+						rawApi.bulkShare(it, entityGroupId).successBody()
+				)
+			}
+		).updatedEntityOrThrow()
+
 	override suspend fun initializeConfidentialSecretId(patient: E): E {
 		requireNotNull(patient.rev) {
 			"Patient must be created before confidential secret id initialisation"
@@ -413,16 +441,20 @@ internal class PatientApiImpl(
 				) { Serialization.json.decodeFromJsonElement<DecryptedPatient>(config.jsonPatcher.patchPatient(it)) }
 		}
 
-	override suspend fun createPatient(patient: DecryptedPatient): DecryptedPatient {
+	override suspend fun createPatient(patient: DecryptedPatient, groupId: String?): DecryptedPatient {
 		require(patient.securityMetadata != null) { "Entity must have security metadata initialized. You can use the withEncryptionMetadata for that very purpose." }
-		return rawApi.createPatient(
-			config.crypto.entity.encryptEntities(
-				null,
-				listOf(patient),
-				EntityWithEncryptionMetadataTypeName.Patient,
-				DecryptedPatient.serializer(),
-				config.encryption.patient,
-			) { Serialization.json.decodeFromJsonElement<EncryptedPatient>(it) }.single(),
+		val encrypted = config.crypto.entity.encryptEntities(
+			groupId,
+			listOf(patient),
+			EntityWithEncryptionMetadataTypeName.Patient,
+			DecryptedPatient.serializer(),
+			config.encryption.patient,
+		) { Serialization.json.decodeFromJsonElement<EncryptedPatient>(it) }.single()
+		return (
+			if (groupId == null)
+				rawApi.createPatient(encrypted)
+			else
+				rawApi.createPatientInGroup(groupId, encrypted)
 		).successBody().let { decrypt(it) }
 	}
 
@@ -715,6 +747,28 @@ internal class PatientApiImpl(
 			initializeEncryptionKey = true,
 			autoDelegations = (delegates + user?.autoDelegationsFor(DelegationTag.AdministrativeData)
 				.orEmpty()).keyAsLocalDataOwnerReferences(),
+		).updatedEntity
+
+	override suspend fun withEncryptionMetadataForGroup(
+		entityGroupId: String?,
+		base: DecryptedPatient?,
+		user: User?,
+		delegates: Map<DataOwnerReferenceInGroup, AccessLevel>
+	): DecryptedPatient =
+		config.crypto.entity.entityWithInitializedEncryptedMetadata(
+			entityGroupId,
+			(base ?: DecryptedPatient(config.crypto.primitives.strongRandom.randomUUID())).copy(
+				created = base?.created ?: currentEpochMs(),
+				modified = base?.modified ?: currentEpochMs(),
+				responsible = base?.responsible ?: user?.takeIf { config.autofillAuthor }?.dataOwnerId,
+				author = base?.author ?: user?.id?.takeIf { config.autofillAuthor },
+			),
+			EntityWithEncryptionMetadataTypeName.Patient,
+			null,
+			null,
+			initializeEncryptionKey = true,
+			autoDelegations = delegates + user?.autoDelegationsFor(DelegationTag.AdministrativeData)
+				.orEmpty().keyAsLocalDataOwnerReferences(),
 		).updatedEntity
 
 	override suspend fun hasWriteAccess(patient: Patient): Boolean =

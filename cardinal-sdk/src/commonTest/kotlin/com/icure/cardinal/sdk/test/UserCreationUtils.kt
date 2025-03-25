@@ -126,9 +126,15 @@ suspend fun createUserInMultipleGroups(): Map<String, DataOwnerDetails> {
  * latter will be the grandparent of this data owner, and so on. If null the data owner will not have any parent.
  */
 @OptIn(InternalIcureApi::class)
-suspend fun createHcpUser(parent: DataOwnerDetails? = null, useLegacyKey: Boolean = false, roles: Set<String>? = null): DataOwnerDetails {
-	val hcpRawApi = RawHealthcarePartyApiImpl(baseUrl, testGroupAdminAuth, DefaultRawApiConfig)
-	val userRawApi = RawUserApiImpl(baseUrl, testGroupAdminAuth, DefaultRawApiConfig)
+suspend fun createHcpUser(
+	parent: DataOwnerDetails? = null,
+	useLegacyKey: Boolean = false,
+	roles: Set<String>? = null,
+	inGroup: String = testGroupId,
+	inheritsPermissions: Boolean = false
+): DataOwnerDetails {
+	val hcpRawApi = RawHealthcarePartyApiImpl(baseUrl, superadminAuth, DefaultRawApiConfig)
+	val userRawApi = RawUserApiImpl(baseUrl, superadminAuth, DefaultRawApiConfig)
 	val hcpId = uuid()
 	val login = "hcp-${uuid()}"
 	val password = uuid()
@@ -139,7 +145,8 @@ suspend fun createHcpUser(parent: DataOwnerDetails? = null, useLegacyKey: Boolea
 			RsaAlgorithm.RsaEncryptionAlgorithm.OaepWithSha256
 	)
 	val exportedPublic = defaultCryptoService.rsa.exportPublicKeySpki(keypair.public).toHexString().let { SpkiHexString(it) }
-	val hcp = hcpRawApi.createHealthcareParty(
+	val hcp = hcpRawApi.createHealthcarePartyInGroup(
+		inGroup,
 		HealthcareParty(
 			hcpId,
 			firstName = "Hcp-$hcpId",
@@ -149,7 +156,8 @@ suspend fun createHcpUser(parent: DataOwnerDetails? = null, useLegacyKey: Boolea
 			parentId = parent?.dataOwnerId
 		)
 	).successBody()
-	val created = userRawApi.createUser(
+	val created = userRawApi.createUserInGroup(
+		groupId = inGroup,
 		User(
 			uuid(),
 			login = login,
@@ -160,37 +168,58 @@ suspend fun createHcpUser(parent: DataOwnerDetails? = null, useLegacyKey: Boolea
 		)
 	).successBody()
 	if (roles != null) {
-		userRawApi.setRolesForUser(created.id, ListOfIds(roles.toList()))
+		userRawApi.setRolesForUserInGroup(
+			userId = created.id,
+			groupId = inGroup,
+			rolesId = ListOfIds(roles.toList())
+		)
 	} else if (parent != null) {
-		val currentUserRoles = userRawApi.getUser(created.id, true).successBody().systemMetadata!!.roles
+		val currentUserRoles = userRawApi.getUserInGroup(
+			groupId = inGroup,
+			userId = created.id
+		).successBody().systemMetadata!!.roles
 		if ("HIERARCHICAL_DATA_OWNER" !in currentUserRoles) {
-			userRawApi.setRolesForUser(created.id, ListOfIds(currentUserRoles.toList() + "HIERARCHICAL_DATA_OWNER"))
+			userRawApi.setRolesForUserInGroup(
+				userId = created.id,
+				groupId = inGroup,
+				rolesId = ListOfIds(currentUserRoles.toList() + "HIERARCHICAL_DATA_OWNER")
+			)
 		}
 	}
+	if (inheritsPermissions) userRawApi.setUserInheritsPermissions(userId = created.id, groupId = inGroup, value = true)
 	return DataOwnerDetails(hcpId, login, password, keypair, parent)
 }
 
 @OptIn(InternalIcureApi::class)
-suspend fun createPatientUser(existingPatientId: String? = null): DataOwnerDetails {
-	val patientRawApi = RawPatientApiImpl(baseUrl, testGroupAdminAuth, null, DefaultRawApiConfig)
-	val userRawApi = RawUserApiImpl(baseUrl, testGroupAdminAuth, DefaultRawApiConfig)
+suspend fun createPatientUser(
+	existingPatientId: String? = null,
+	inGroup: String = testGroupId,
+	inheritsPermissions: Boolean = false
+): DataOwnerDetails {
+	val patientRawApi = RawPatientApiImpl(baseUrl, superadminAuth, null, DefaultRawApiConfig)
+	val userRawApi = RawUserApiImpl(baseUrl, superadminAuth, DefaultRawApiConfig)
 	val patientId = existingPatientId ?: uuid()
 	val login = "patient-${uuid()}"
 	val password = uuid()
 	val keypair = defaultCryptoService.rsa.generateKeyPair(RsaAlgorithm.RsaEncryptionAlgorithm.OaepWithSha256)
-	val patientToCreateOrModify = (existingPatientId?.let { patientRawApi.getPatient(it).successBody() } ?: EncryptedPatient(
-		patientId,
-		firstName = "Patient-$patientId",
-		lastName = "Patient-$patientId",
-	)).copy(
+	val patientToCreateOrModify = (
+		existingPatientId?.let {
+			patientRawApi.getPatientInGroup(groupId = inGroup, patientId = it).successBody()
+		} ?: EncryptedPatient(
+			patientId,
+			firstName = "Patient-$patientId",
+			lastName = "Patient-$patientId",
+		)
+	).copy(
 		publicKeysForOaepWithSha256 = setOf(defaultCryptoService.rsa.exportPublicKeySpki(keypair.public).toHexString().let { SpkiHexString(it) })
 	)
 	val patient = if (patientToCreateOrModify.rev != null) {
-		patientRawApi.modifyPatient(patientToCreateOrModify).successBody()
+		patientRawApi.modifyPatientInGroup(inGroup, patientToCreateOrModify).successBody()
 	} else {
-		patientRawApi.createPatient(patientToCreateOrModify).successBody()
+		patientRawApi.createPatientInGroup(inGroup, patientToCreateOrModify).successBody()
 	}
-	userRawApi.createUser(
+	val user = userRawApi.createUserInGroup(
+		inGroup,
 		User(
 			uuid(),
 			login = login,
@@ -199,6 +228,7 @@ suspend fun createPatientUser(existingPatientId: String? = null): DataOwnerDetai
 			patientId = patient.id
 		)
 	).successBody()
+	if (inheritsPermissions) userRawApi.setUserInheritsPermissions(userId = user.id, groupId = inGroup, value = true)
 	return DataOwnerDetails(patientId, login, password, keypair, null)
 }
 
