@@ -461,8 +461,8 @@ internal class BaseSecurityMetadataDecryptorImpl(
 	private fun selfHierarchyIdsAsReferenceStrings(
 		dataOwnerHierarchyIds: Set<String>,
 		entityGroupId: String?
-	) = boundGroup.resolve(entityGroupId)?.let { g ->
-		dataOwnerHierarchyIds.mapTo(mutableSetOf()) { "$g/$it"}
+	) = boundGroup.resolve(entityGroupId)?.let {
+		dataOwnerHierarchyIds.mapTo(mutableSetOf()) { "${boundGroup!!.groupId}/$it"}
 	} ?: dataOwnerHierarchyIds
 
 	private suspend fun getExchangeDataMapsAndDecrypt(
