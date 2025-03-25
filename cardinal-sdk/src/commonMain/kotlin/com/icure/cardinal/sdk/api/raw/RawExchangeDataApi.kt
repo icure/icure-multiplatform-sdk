@@ -4,9 +4,6 @@ import com.icure.cardinal.sdk.model.ExchangeData
 import com.icure.cardinal.sdk.model.ListOfIds
 import com.icure.cardinal.sdk.model.PaginatedList
 import com.icure.utils.InternalIcureApi
-import kotlin.Int
-import kotlin.String
-import kotlin.collections.List
 
 // WARNING: This class is auto-generated. If you change it manually, your changes will be lost.
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
@@ -28,12 +25,29 @@ public interface RawExchangeDataApi {
 		limit: Int? = null,
 	): HttpResponse<PaginatedList<ExchangeData>>
 
+	suspend fun getExchangeDataByParticipantQuery(
+		dataOwnerId: String,
+		startDocumentId: String? = null,
+		limit: Int? = null,
+	): HttpResponse<PaginatedList<ExchangeData>>
+
 	suspend fun getExchangeDataByDelegatorDelegate(
 		delegatorId: String,
 		delegateId: String,
 	): HttpResponse<List<ExchangeData>>
 
+	suspend fun getExchangeDataByDelegatorDelegateQuery(
+		delegatorId: String,
+		delegateId: String,
+	): HttpResponse<List<ExchangeData>>
+
 	suspend fun getParticipantCounterparts(
+		dataOwnerId: String,
+		counterpartsTypes: String,
+		ignoreOnEntryForFingerprint: String? = null,
+	): HttpResponse<List<String>>
+
+	suspend fun getParticipantCounterpartsQuery(
 		dataOwnerId: String,
 		counterpartsTypes: String,
 		ignoreOnEntryForFingerprint: String? = null,
