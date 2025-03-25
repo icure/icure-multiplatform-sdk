@@ -638,5 +638,60 @@ class RawPatientApiImpl(
 			setBodyWithSerializer(PatientAbstractFilterSerializer, filter)
 		}.wrap()
 
+	override suspend fun createPatientInGroup(
+		groupId: String,
+		patientDto: EncryptedPatient,
+	): HttpResponse<EncryptedPatient> =
+		post(authProvider, groupId) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "patient", "inGroup", groupId)
+			}
+			contentType(Application.Json)
+			accept(Application.Json)
+			setBody(patientDto)
+		}.wrap()
+
+	override suspend fun modifyPatientInGroup(
+		groupId: String,
+		patientDto: EncryptedPatient,
+	): HttpResponse<EncryptedPatient> =
+		put(authProvider, groupId) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "patient", "inGroup", groupId)
+			}
+			contentType(Application.Json)
+			accept(Application.Json)
+			setBody(patientDto)
+		}.wrap()
+
+	override suspend fun getPatientInGroup(
+		groupId: String,
+		patientId: String,
+	): HttpResponse<EncryptedPatient> =
+		get(authProvider, groupId) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "patient", "inGroup", groupId, patientId)
+				parameter("ts", GMTDate().timestamp)
+			}
+			accept(Application.Json)
+		}.wrap()
+
+	override suspend fun bulkShare(
+		request: BulkShareOrUpdateMetadataParams,
+		groupId: String,
+	): HttpResponse<List<EntityBulkShareResult<EncryptedPatient>>> =
+		put(authProvider, groupId) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "patient", "inGroup", groupId, "bulkSharedMetadataUpdate")
+			}
+			contentType(Application.Json)
+			accept(Application.Json)
+			setBody(request)
+		}.wrap()
+
 	// endregion
 }

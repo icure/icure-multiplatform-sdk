@@ -257,4 +257,66 @@ class RawHealthElementApiImpl(
 		}.wrap()
 
 	// endregion
+
+	// region cloud endpoints
+
+	override suspend fun createHealthElementInGroup(
+		groupId: String,
+		healthElementDto: EncryptedHealthElement,
+	): HttpResponse<EncryptedHealthElement> =
+		post(authProvider, groupId) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "helement", "inGroup", groupId)
+			}
+			contentType(Application.Json)
+			accept(Application.Json)
+			setBody(healthElementDto)
+		}.wrap()
+
+	override suspend fun modifyHealthElementInGroup(
+		groupId: String,
+		healthElementDto: EncryptedHealthElement,
+	): HttpResponse<EncryptedHealthElement> =
+		put(authProvider, groupId) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "helement", "inGroup", groupId)
+			}
+			contentType(Application.Json)
+			accept(Application.Json)
+			setBody(healthElementDto)
+		}.wrap()
+
+	override suspend fun getHealthElementInGroup(
+		groupId: String,
+		healthElementId: String,
+	): HttpResponse<EncryptedHealthElement> =
+		get(authProvider, groupId) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "helement", "inGroup", groupId, healthElementId)
+				parameter("ts", GMTDate().timestamp)
+			}
+			accept(Application.Json)
+		}.wrap()
+
+	override suspend fun bulkShare(
+		request: BulkShareOrUpdateMetadataParams,
+		groupId: String,
+	): HttpResponse<List<EntityBulkShareResult<EncryptedHealthElement>>> =
+		put(
+			authProvider,
+			groupId,
+		) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "helement", "inGroup", groupId, "bulkSharedMetadataUpdate")
+			}
+			contentType(Application.Json)
+			accept(Application.Json)
+			setBody(request)
+		}.wrap()
+
+	// endregion
 }

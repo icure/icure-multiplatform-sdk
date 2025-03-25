@@ -223,5 +223,25 @@ public interface RawPatientApi {
 		groupId: String,
 		filter: AbstractFilter<Patient>,
 	): HttpResponse<List<String>>
+
+	suspend fun createPatientInGroup(
+		groupId: String,
+		patientDto: EncryptedPatient,
+	): HttpResponse<EncryptedPatient>
+
+	suspend fun modifyPatientInGroup(
+		groupId: String,
+		patientDto: EncryptedPatient,
+	): HttpResponse<EncryptedPatient>
+
+	suspend fun getPatientInGroup(
+		groupId: String,
+		patientId: String,
+	): HttpResponse<EncryptedPatient>
+
+	suspend fun bulkShare(
+		request: BulkShareOrUpdateMetadataParams,
+		groupId: String,
+	): HttpResponse<List<EntityBulkShareResult<EncryptedPatient>>>
 	// endregion
 }
