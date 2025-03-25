@@ -127,4 +127,94 @@ class RawExchangeDataApiImpl(
 		}.wrap()
 
 	// endregion
+
+	// region cloud endpoints
+
+	override suspend fun createExchangeData(
+		exchangeData: ExchangeData,
+		groupId: String,
+	): HttpResponse<ExchangeData> =
+		post(authProvider) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "exchangedata", "inGroup", groupId)
+			}
+			contentType(Application.Json)
+			accept(Application.Json)
+			setBody(exchangeData)
+		}.wrap()
+
+	override suspend fun modifyExchangeData(
+		exchangeData: ExchangeData,
+		groupId: String,
+	): HttpResponse<ExchangeData> =
+		put(authProvider) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "exchangedata", "inGroup", groupId)
+			}
+			contentType(Application.Json)
+			accept(Application.Json)
+			setBody(exchangeData)
+		}.wrap()
+
+	override suspend fun getExchangeDataById(
+		exchangeDataId: String,
+		groupId: String,
+	): HttpResponse<ExchangeData> =
+		get(authProvider) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "exchangedata", exchangeDataId, "inGroup", groupId)
+				parameter("ts", GMTDate().timestamp)
+			}
+			accept(Application.Json)
+		}.wrap()
+
+	override suspend fun getExchangeDataByIds(
+		exchangeDataIds: ListOfIds,
+		groupId: String,
+	): HttpResponse<List<ExchangeData>> =
+		post(authProvider) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "exchangedata", "byIds", "inGroup", groupId)
+			}
+			contentType(Application.Json)
+			accept(Application.Json)
+			setBody(exchangeDataIds)
+		}.wrap()
+
+	override suspend fun getExchangeDataByParticipant(
+		dataOwnerId: String,
+		startDocumentId: String?,
+		limit: Int?,
+		groupId: String,
+	): HttpResponse<PaginatedList<ExchangeData>> =
+		get(authProvider) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "exchangedata", "byParticipant", dataOwnerId, "inGroup", groupId)
+				parameter("startDocumentId", startDocumentId)
+				parameter("limit", limit)
+				parameter("ts", GMTDate().timestamp)
+			}
+			accept(Application.Json)
+		}.wrap()
+
+	override suspend fun getExchangeDataByDelegatorDelegate(
+		delegatorId: String,
+		delegateId: String,
+		groupId: String,
+	): HttpResponse<List<ExchangeData>> =
+		get(authProvider) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "exchangedata", "byDelegatorDelegate", delegatorId, delegateId, "inGroup", groupId)
+				parameter("ts", GMTDate().timestamp)
+			}
+			accept(Application.Json)
+		}.wrap()
+
+	// endregion
 }

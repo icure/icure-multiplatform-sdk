@@ -131,4 +131,21 @@ class RawDataOwnerApiImpl(
 		}.wrap()
 
 	// endregion
+
+	// region cloud endpoints
+
+	override suspend fun getCryptoActorStubInGroup(
+		groupId: String,
+		dataOwnerId: String,
+	): HttpResponse<CryptoActorStubWithType> =
+		get(authProvider) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "dataowner", "inGroup", groupId, dataOwnerId, "stub")
+				parameter("ts", GMTDate().timestamp)
+			}
+			accept(Application.Json)
+		}.wrap()
+
+	// endregion
 }

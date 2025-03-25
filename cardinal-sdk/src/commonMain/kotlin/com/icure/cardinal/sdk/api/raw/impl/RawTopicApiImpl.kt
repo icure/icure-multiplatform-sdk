@@ -199,7 +199,7 @@ class RawTopicApiImpl(
 		groupId: String,
 		filter: AbstractFilter<Topic>,
 	): HttpResponse<List<String>> =
-		post(authProvider) {
+		post(authProvider, groupId) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "topic", "inGroup", groupId, "match")

@@ -381,4 +381,131 @@ class RawCalendarItemApiImpl(
 		}.wrap()
 
 	// endregion
+
+	// region cloud endpoints
+
+	override suspend fun createCalendarItemInGroup(
+		groupId: String,
+		calendarItemDto: EncryptedCalendarItem,
+	): HttpResponse<EncryptedCalendarItem> =
+		post(
+			authProvider,
+			groupId,
+		) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "calendarItem", "inGroup", groupId)
+			}
+			contentType(Application.Json)
+			accept(Application.Json)
+			setBody(calendarItemDto)
+		}.wrap()
+
+	override suspend fun modifyCalendarItemInGroup(
+		groupId: String,
+		calendarItemDto: EncryptedCalendarItem,
+	): HttpResponse<EncryptedCalendarItem> =
+		put(
+			authProvider,
+			groupId,
+		) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "calendarItem", "inGroup", groupId)
+			}
+			contentType(Application.Json)
+			accept(Application.Json)
+			setBody(calendarItemDto)
+		}.wrap()
+
+	override suspend fun getCalendarItemInGroup(
+		groupId: String,
+		calendarItemId: String,
+	): HttpResponse<EncryptedCalendarItem> =
+		get(authProvider, groupId) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "calendarItem", "inGroup", groupId, calendarItemId)
+				parameter("ts", GMTDate().timestamp)
+			}
+			accept(Application.Json)
+		}.wrap()
+
+	override suspend fun getCalendarItemsInGroup(
+		groupId: String,
+		calendarItemIds: ListOfIds,
+	): HttpResponse<List<EncryptedCalendarItem>> =
+		post(authProvider, groupId) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "calendarItem", "inGroup", groupId, "byIds")
+			}
+			contentType(Application.Json)
+			accept(Application.Json)
+			setBody(calendarItemIds)
+		}.wrap()
+
+	override suspend fun deleteCalendarItemsInGroup(
+		groupId: String,
+		calendarItemIdsAndRevs: ListOfIdsAndRev,
+	): HttpResponse<List<DocIdentifier>> =
+		post(
+			authProvider,
+			groupId,
+		) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "calendarItem", "inGroup", groupId, "delete", "batch")
+			}
+			contentType(Application.Json)
+			accept(Application.Json)
+			setBody(calendarItemIdsAndRevs)
+		}.wrap()
+
+	override suspend fun deleteCalendarItemInGroup(
+		groupId: String,
+		calendarItemId: String,
+		rev: String,
+	): HttpResponse<DocIdentifier> =
+		delete(authProvider, groupId) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "calendarItem", "inGroup", groupId, calendarItemId)
+				parameter("rev", rev)
+			}
+			accept(Application.Json)
+		}.wrap()
+
+	override suspend fun matchCalendarItemsInGroupBy(
+		filter: AbstractFilter<CalendarItem>,
+		groupId: String,
+	): HttpResponse<List<String>> =
+		post(authProvider, groupId) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "calendarItem", "inGroup", groupId, "match")
+			}
+			contentType(Application.Json)
+			accept(Application.Json)
+			setBodyWithSerializer(CalendarItemAbstractFilterSerializer, filter)
+		}.wrap()
+
+	override suspend fun bulkShare(
+		request: BulkShareOrUpdateMetadataParams,
+		groupId: String,
+	): HttpResponse<List<EntityBulkShareResult<EncryptedCalendarItem>>> =
+		put(
+			authProvider,
+			groupId,
+		) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "calendarItem", "inGroup", groupId, "bulkSharedMetadataUpdate")
+			}
+			contentType(Application.Json)
+			accept(Application.Json)
+			setBody(request)
+		}.wrap()
+
+	// endregion
 }
