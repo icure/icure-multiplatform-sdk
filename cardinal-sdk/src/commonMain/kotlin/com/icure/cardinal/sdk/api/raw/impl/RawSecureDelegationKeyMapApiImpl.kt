@@ -89,4 +89,62 @@ class RawSecureDelegationKeyMapApiImpl(
 		}.wrap()
 
 	// endregion
+
+	// region cloud endpoints
+
+	override suspend fun createSecureDelegationKeyMap(
+		secureDelegationKeyMap: EncryptedSecureDelegationKeyMap,
+		groupId: String,
+		accessControlKeysHeaderValues: List<String>,
+	): HttpResponse<EncryptedSecureDelegationKeyMap> =
+		post(authProvider) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "securedelegationkeymap", "inGroup", groupId)
+			}
+			contentType(Application.Json)
+			accept(Application.Json)
+			setBody(secureDelegationKeyMap)
+			accessControlKeysHeaderValues.forEach {
+				`header`(ACCESS_CONTROL_KEYS_HEADER, it)
+			}
+		}.wrap()
+
+	override suspend fun findByDelegationKeys(
+		delegationKeys: ListOfIds,
+		groupId: String,
+		accessControlKeysHeaderValues: List<String>,
+	): HttpResponse<List<EncryptedSecureDelegationKeyMap>> =
+		post(authProvider) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "securedelegationkeymap", "bydelegationkeys", "inGroup", groupId)
+			}
+			contentType(Application.Json)
+			accept(Application.Json)
+			setBody(delegationKeys)
+			accessControlKeysHeaderValues.forEach {
+				`header`(ACCESS_CONTROL_KEYS_HEADER, it)
+			}
+		}.wrap()
+
+	override suspend fun bulkShare(
+		request: BulkShareOrUpdateMetadataParams,
+		groupId: String,
+		accessControlKeysHeaderValues: List<String>,
+	): HttpResponse<List<EntityBulkShareResult<EncryptedSecureDelegationKeyMap>>> =
+		put(authProvider) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "securedelegationkeymap", "bulkSharedMetadataUpdate", "inGroup", groupId)
+			}
+			contentType(Application.Json)
+			accept(Application.Json)
+			setBody(request)
+			accessControlKeysHeaderValues.forEach {
+				`header`(ACCESS_CONTROL_KEYS_HEADER, it)
+			}
+		}.wrap()
+
+	// endregion
 }

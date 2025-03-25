@@ -623,7 +623,7 @@ class RawPatientApiImpl(
 		createAutoDelegation: Boolean,
 		p: EncryptedPatient,
 	): HttpResponse<DataOwnerRegistrationSuccess> =
-		post(authProvider) {
+		post(authProvider, groupId) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "patient", "register", "forHcp", hcPartyId, "inGroup", groupId)
@@ -640,7 +640,7 @@ class RawPatientApiImpl(
 		groupId: String,
 		filter: AbstractFilter<Patient>,
 	): HttpResponse<List<String>> =
-		post(authProvider) {
+		post(authProvider, groupId) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "patient", "inGroup", groupId, "match")
@@ -648,6 +648,61 @@ class RawPatientApiImpl(
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBodyWithSerializer(PatientAbstractFilterSerializer, filter)
+		}.wrap()
+
+	override suspend fun createPatientInGroup(
+		groupId: String,
+		patientDto: EncryptedPatient,
+	): HttpResponse<EncryptedPatient> =
+		post(authProvider, groupId) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "patient", "inGroup", groupId)
+			}
+			contentType(Application.Json)
+			accept(Application.Json)
+			setBody(patientDto)
+		}.wrap()
+
+	override suspend fun modifyPatientInGroup(
+		groupId: String,
+		patientDto: EncryptedPatient,
+	): HttpResponse<EncryptedPatient> =
+		put(authProvider, groupId) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "patient", "inGroup", groupId)
+			}
+			contentType(Application.Json)
+			accept(Application.Json)
+			setBody(patientDto)
+		}.wrap()
+
+	override suspend fun getPatientInGroup(
+		groupId: String,
+		patientId: String,
+	): HttpResponse<EncryptedPatient> =
+		get(authProvider, groupId) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "patient", "inGroup", groupId, patientId)
+				parameter("ts", GMTDate().timestamp)
+			}
+			accept(Application.Json)
+		}.wrap()
+
+	override suspend fun bulkShare(
+		request: BulkShareOrUpdateMetadataParams,
+		groupId: String,
+	): HttpResponse<List<EntityBulkShareResult<EncryptedPatient>>> =
+		put(authProvider, groupId) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "patient", "inGroup", groupId, "bulkSharedMetadataUpdate")
+			}
+			contentType(Application.Json)
+			accept(Application.Json)
+			setBody(request)
 		}.wrap()
 
 	// endregion

@@ -58,4 +58,36 @@ class RawExchangeDataMapApiImpl(
 		}.wrap()
 
 	// endregion
+
+	// region cloud endpoints
+
+	override suspend fun createOrUpdateExchangeDataMapBatch(
+		batch: ExchangeDataMapCreationBatch,
+		groupId: String,
+	): HttpResponse<String> =
+		put(authProvider) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "exchangedatamap", "batch", "inGroup", groupId)
+			}
+			contentType(Application.Json)
+			accept(Application.Json)
+			setBody(batch)
+		}.wrap()
+
+	override suspend fun getExchangeDataMapBatch(
+		ids: ListOfIds,
+		groupId: String,
+	): HttpResponse<List<ExchangeDataMap>> =
+		post(authProvider) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "exchangedatamap", "batch", "inGroup", groupId)
+			}
+			contentType(Application.Json)
+			accept(Application.Json)
+			setBody(ids)
+		}.wrap()
+
+	// endregion
 }
