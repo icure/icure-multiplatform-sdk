@@ -210,7 +210,12 @@ abstract class AbstractExchangeDataManagerInGroup(
 				val verifiedSpki = if (useParentKeys && delegateReference in dataOwnerApi.getCurrentDataOwnerHierarchyIdsReference()) {
 					userEncryptionKeys.getVerifiedPublicKeysFor(delegate.stub).filter { delegateKeysBySpki.containsKey(it) }
 				} else {
-					cryptoStrategies.verifyDelegatePublicKeys(delegate, delegateKeys.map { it.pubSpkiHexString }, cryptoService)
+					cryptoStrategies.verifyDelegatePublicKeys(
+						delegate = delegate,
+						publicKeys = delegateKeys.map { it.pubSpkiHexString },
+						cryptoPrimitives = cryptoService,
+						groupId = delegateReference.normalized(sdkBoundGroup).groupId
+					)
 				}
 				require (allowNoDelegateKeys || verifiedSpki.isNotEmpty()) {
 					"Could not create exchange data to $delegateReference as no public key for the delegate could be verified."

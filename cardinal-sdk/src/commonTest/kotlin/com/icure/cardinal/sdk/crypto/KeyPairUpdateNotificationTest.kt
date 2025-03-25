@@ -77,7 +77,7 @@ class KeyPairUpdateNotificationTest : StringSpec({
 		api(specJob).getMaintenanceTasks().shouldBeEmpty()
 	}
 
-	"The api should allow to automatically create any necessary keypair update notifications and to use them to give access back to data" {
+	"The api should allow to create any necessary keypair update notifications and to use them to give access back to data" {
 		val user = createHcpUser()
 		val toNotifyAsDelegator = createHcpUser()
 		val toNotifyAsDelegate = createHcpUser()

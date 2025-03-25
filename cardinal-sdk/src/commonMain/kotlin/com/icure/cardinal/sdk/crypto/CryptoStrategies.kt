@@ -149,12 +149,14 @@ interface CryptoStrategies {
 	 * @param delegate the potential data owner delegate.
 	 * @param publicKeys public keys requiring verification, in spki hex-encoded format.
 	 * @param cryptoPrimitives cryptographic primitives you can use to support the process.
+	 * @param groupId the id of the data owner's group, or null if the data owner is in the same group as the current user
 	 * @return all verified public keys, in spki hex-encoded format.
 	 */
 	suspend fun verifyDelegatePublicKeys(
 		delegate: CryptoActorStubWithType,
 		publicKeys: List<SpkiHexString>,
 		cryptoPrimitives: CryptoService,
+		groupId: String?
 	): List<SpkiHexString> =
 		publicKeys
 
@@ -162,9 +164,10 @@ interface CryptoStrategies {
 	 * Specifies if a data owner requires anonymous delegations, i.e. his id should not appear unencrypted in new secure delegations. This should always
 	 * be the case for patient data owners.
 	 * @param dataOwner a data owner.
+	 * @param groupId the id of the data owner's group, or null if the data owner is in the same group as the current user
 	 * @return true if the delegations for the provided data owner should be anonymous.
 	 */
-	suspend fun dataOwnerRequiresAnonymousDelegation(dataOwner: CryptoActorStubWithType): Boolean =
+	suspend fun dataOwnerRequiresAnonymousDelegation(dataOwner: CryptoActorStubWithType, groupId: String?): Boolean =
 		dataOwner.type != DataOwnerType.Hcp
 
 	/**

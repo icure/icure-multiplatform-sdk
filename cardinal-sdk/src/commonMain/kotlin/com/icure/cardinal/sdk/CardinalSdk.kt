@@ -486,7 +486,7 @@ private suspend fun initializeApiCrypto(
 		boundGroup
 	)
 	val self = dataOwnerApi.getCurrentDataOwner()
-	val selfIsAnonymous = cryptoStrategies.dataOwnerRequiresAnonymousDelegation(self.asStub())
+	val selfIsAnonymous = cryptoStrategies.dataOwnerRequiresAnonymousDelegation(self.asStub(), null)
 	when {
 		self.type != DataOwnerType.Hcp && !selfIsAnonymous -> "false"
 		self.type == DataOwnerType.Hcp && selfIsAnonymous -> "true"

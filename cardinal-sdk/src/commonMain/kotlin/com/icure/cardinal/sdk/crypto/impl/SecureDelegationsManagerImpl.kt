@@ -305,7 +305,10 @@ class SecureDelegationsManagerImpl (
 		verifiedExchangeData: ExchangeDataWithUnencryptedContent
 	): EncryptedExchangeDataIdInfo {
 		val (delegateIsAnonymous, verifiedDelegateKeys) = dataOwnerAnonymityCache.get(delegateReference) ?: dataOwnerApi.getCryptoActorStubInGroup(delegateReference).let { delegate ->
-			val delegateIsAnonymous = cryptoStrategies.dataOwnerRequiresAnonymousDelegation(delegate)
+			val delegateIsAnonymous = cryptoStrategies.dataOwnerRequiresAnonymousDelegation(
+				dataOwner = delegate,
+				groupId = delegateReference.normalized(boundGroup).groupId
+			)
 			if (selfNeedsAnonymousDelegations && !delegateIsAnonymous) {
 				// Important: this requires that the exchange data signature also validates the authenticity of the public keys included in there.
 				val allDelegateKeys = cryptoService.loadEncryptionKeysForDataOwner(delegate.stub)
