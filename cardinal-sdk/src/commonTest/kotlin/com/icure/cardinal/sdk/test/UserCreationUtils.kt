@@ -21,7 +21,7 @@ import com.icure.utils.InternalIcureApi
 fun uuid() = defaultCryptoService.strongRandom.randomUUID()
 
 @OptIn(InternalIcureApi::class)
-suspend fun createUserInMultipleGroups(): Map<String, DataOwnerDetails> {
+suspend fun createUserInMultipleGroups(): List<DataOwnerDetails> {
 	val groupId1 = uuid()
 	val groupId2 = uuid()
 	val groupId3 = uuid()
@@ -96,27 +96,30 @@ suspend fun createUserInMultipleGroups(): Map<String, DataOwnerDetails> {
 			passwordHash = userPw3
 		)
 	).successBody()
-	return mapOf(
-		groupId1 to DataOwnerDetails(
+	return listOf(
+		DataOwnerDetails(
 			dataOwnerId = "",
 			username = userLogin,
 			password = userPw12,
 			keypair = defaultCryptoService.rsa.generateKeyPair(RsaAlgorithm.RsaEncryptionAlgorithm.OaepWithSha256),
-			parent = null
+			parent = null,
+			groupId = groupId1
 		),
-		groupId2 to DataOwnerDetails(
+		DataOwnerDetails(
 			dataOwnerId = "",
 			username = userLogin,
 			password = userPw12,
 			keypair = defaultCryptoService.rsa.generateKeyPair(RsaAlgorithm.RsaEncryptionAlgorithm.OaepWithSha256),
-			parent = null
+			parent = null,
+			groupId = groupId2
 		),
-		groupId3 to DataOwnerDetails(
+		DataOwnerDetails(
 			dataOwnerId = "",
 			username = userLogin,
 			password = userPw3,
 			keypair = defaultCryptoService.rsa.generateKeyPair(RsaAlgorithm.RsaEncryptionAlgorithm.OaepWithSha256),
-			parent = null
+			parent = null,
+			groupId = groupId3
 		),
 	)
 }
@@ -187,7 +190,7 @@ suspend fun createHcpUser(
 		}
 	}
 	if (inheritsPermissions) userRawApi.setUserInheritsPermissions(userId = created.id, groupId = inGroup, value = true)
-	return DataOwnerDetails(hcpId, login, password, keypair, parent)
+	return DataOwnerDetails(hcpId, login, password, keypair, parent, inGroup)
 }
 
 @OptIn(InternalIcureApi::class)
@@ -229,7 +232,7 @@ suspend fun createPatientUser(
 		)
 	).successBody()
 	if (inheritsPermissions) userRawApi.setUserInheritsPermissions(userId = user.id, groupId = inGroup, value = true)
-	return DataOwnerDetails(patientId, login, password, keypair, null)
+	return DataOwnerDetails(patientId, login, password, keypair, null, inGroup)
 }
 
 @OptIn(InternalIcureApi::class)
@@ -253,5 +256,5 @@ suspend fun createUserFromExistingPatient(patient: Patient): DataOwnerDetails {
 			patientId = updatedPatient.id
 		)
 	).successBody()
-	return DataOwnerDetails(patient.id, login, password, keypair, null)
+	return DataOwnerDetails(patient.id, login, password, keypair, null, TODO("Take group from patient"))
 }

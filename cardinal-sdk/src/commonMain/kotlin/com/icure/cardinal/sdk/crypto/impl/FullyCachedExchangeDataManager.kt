@@ -87,7 +87,7 @@ private class FullyCachedExchangeDataManagerInGroup(
 		val dataById: Map<String, CachedExchangeDataDetails>,
 		val dataByDelegationKey: Map<SecureDelegationKeyString, CachedExchangeDataDetails>,
 		val verifiedDataByDelegateId: Map<String, CachedExchangeDataDetails>,
-		val entityTypeToAccessControlKeysValue: Map<EntityWithEncryptionMetadataTypeName, Pair<List<Base64String>, List<SecureDelegationKeyString>>>
+		val entityTypeToAccessControlKeysValue: Map<EntityWithEncryptionMetadataTypeName, List<Base64String>>
 	) {
 		fun getEncryptionDataTo(delegateReferenceString: String): ExchangeDataWithUnencryptedContent? =
 			verifiedDataByDelegateId[delegateReferenceString]?.let { data ->
@@ -257,10 +257,7 @@ private class FullyCachedExchangeDataManagerInGroup(
 		}
 
 	override suspend fun getEncodedAccessControlKeysValue(entityType: EntityWithEncryptionMetadataTypeName): List<Base64String> =
-		caches.await().entityTypeToAccessControlKeysValue.getValue(entityType).first
-
-	override suspend fun getAccessControlKeysValue(entityType: EntityWithEncryptionMetadataTypeName): List<SecureDelegationKeyString> =
-		caches.await().entityTypeToAccessControlKeysValue.getValue(entityType).second
+		caches.await().entityTypeToAccessControlKeysValue.getValue(entityType)
 
 	override fun dispose() {
 		cacheUpdateAndNewDataCreationScope.cancel()
@@ -310,8 +307,7 @@ private class FullyCachedExchangeDataManagerInGroup(
 		verifiedDataByDelegateId,
 		dataById.values.mapNotNull { it.decryptedDetails?.decryptedContent?.accessControlSecret }.let { allAccessControlSecrets ->
 			EntityWithEncryptionMetadataTypeName.entries.associateWith {
-				allAccessControlSecrets.map { s -> s.toAccessControlKeyStringFor(it, cryptoService) }.encodeAsAccessControlHeaders() to
-					allAccessControlSecrets.map { s -> s.toSecureDelegationKeyFor(it, cryptoService) }
+				allAccessControlSecrets.map { s -> s.toAccessControlKeyStringFor(it, cryptoService) }.encodeAsAccessControlHeaders()
 			}
 		}
 	)

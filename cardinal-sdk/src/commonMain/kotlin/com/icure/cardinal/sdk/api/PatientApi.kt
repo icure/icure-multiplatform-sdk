@@ -482,7 +482,11 @@ interface PatientApi : PatientBasicFlavourlessApi, PatientFlavouredApi<Decrypted
 	 * @param patient a patient
 	 * @return the secret ids of the provided patient
 	 */
-	suspend fun getSecretIdsOf(patient: Patient): Set<String>
+	suspend fun getSecretIdsOf(
+		patient: Patient,
+		@DefaultValue("null")
+		groupId: String? = null
+	): Set<String>
 
 	/**
 	 * Attempts to extract the encryption keys of a patient. If the user does not have access to any encryption key
@@ -583,14 +587,14 @@ interface PatientApi : PatientBasicFlavourlessApi, PatientFlavouredApi<Decrypted
 	 * @return the decrypted patient
 	 * @throws EntityEncryptionException if the patient could not be decrypted
 	 */
-	suspend fun decrypt(patient: EncryptedPatient): DecryptedPatient
+	suspend fun decrypt(patient: EncryptedPatient, groupId: String? = null): DecryptedPatient
 
 	/**
 	 * Tries to decrypt a patient, returns the input if it is not possible.
 	 * @param patient an encrypted patient
 	 * @return the decrypted patient if the decryption was successful or the input if it was not.
 	 */
-	suspend fun tryDecrypt(patient: EncryptedPatient): Patient
+	suspend fun tryDecrypt(patient: EncryptedPatient, groupId: String? = null): Patient
 
 	/**
 	 * Give access to the encrypted flavour of the api

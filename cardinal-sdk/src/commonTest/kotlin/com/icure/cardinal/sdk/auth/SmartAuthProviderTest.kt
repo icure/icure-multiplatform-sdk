@@ -491,7 +491,7 @@ class SmartAuthProviderTest : StringSpec({
 
 	"Switched provider should keep cached secrets and should be able to have elevated security context" {
 		val details = createUserInMultipleGroups()
-		val firstUser = details.values.groupBy { it.password }.values.first { it.size > 1 }.first()
+		val firstUser = details.groupBy { it.password }.values.first { it.size > 1 }.first()
 		val authProvider = SmartAuthProvider.initialize(
 			authApi = authApi,
 			loginUsername = firstUser.username,

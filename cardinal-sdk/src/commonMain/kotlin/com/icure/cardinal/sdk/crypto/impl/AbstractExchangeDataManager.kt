@@ -117,12 +117,6 @@ abstract class AbstractExchangeDataManager(
 	): List<Base64String>? =
 		getOrCreateManagerInGroup(groupId).getEncodedAccessControlKeysValue(entityType)
 
-	override suspend fun getAccessControlKeysValue(
-		groupId: String?,
-		entityType: EntityWithEncryptionMetadataTypeName
-	): List<SecureDelegationKeyString>? =
-		getOrCreateManagerInGroup(groupId).getAccessControlKeysValue(entityType)
-
 	private suspend fun getOrCreateManagerInGroup(groupId: String?): AbstractExchangeDataManagerInGroup {
 		val normalizedGroupId = sdkBoundGroup.resolve(groupId)
 		return groupBoundManagers[normalizedGroupId] ?: createMutex.withLock {
@@ -251,8 +245,5 @@ abstract class AbstractExchangeDataManagerInGroup(
 	abstract suspend fun getEncodedAccessControlKeysValue(
 		entityType: EntityWithEncryptionMetadataTypeName
 	): List<Base64String>?
-	abstract suspend fun getAccessControlKeysValue(
-		entityType: EntityWithEncryptionMetadataTypeName
-	): List<SecureDelegationKeyString>?
 	abstract fun dispose()
 }

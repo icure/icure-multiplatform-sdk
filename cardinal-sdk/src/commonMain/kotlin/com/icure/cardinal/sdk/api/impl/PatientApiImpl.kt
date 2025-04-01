@@ -289,7 +289,7 @@ private abstract class AbstractPatientFlavouredApi<E : Patient>(
 		config.crypto.entity.simpleShareOrUpdateEncryptedEntityMetadata(
 			entityGroupId,
 			patient,
-			EntityWithEncryptionMetadataTypeName.HealthElement,
+			EntityWithEncryptionMetadataTypeName.Patient,
 			delegates,
 			true,
 			{ getPatient(it) },
@@ -455,7 +455,7 @@ internal class PatientApiImpl(
 				rawApi.createPatient(encrypted)
 			else
 				rawApi.createPatientInGroup(groupId, encrypted)
-		).successBody().let { decrypt(it) }
+		).successBody().let { decrypt(it, groupId) }
 	}
 
 	override suspend fun createPatients(patients: List<DecryptedPatient>) =
@@ -513,7 +513,7 @@ internal class PatientApiImpl(
 				val delegatesToApply = delegatesWithShareType.entries.mapNotNull { (delegateId, types) ->
 					delegateId.takeIf { tagsCondition(types) }
 				}
-				return if(entities.isNotEmpty() && delegatesToApply.isNotEmpty()) {
+				return if (entities.isNotEmpty() && delegatesToApply.isNotEmpty()) {
 					val allSecretIds = config.crypto.securityMetadataDecryptor.decryptAll(
 						null,
 						entities,
@@ -783,8 +783,8 @@ internal class PatientApiImpl(
 		)
 	}
 
-	override suspend fun getSecretIdsOf(patient: Patient): Set<String> =
-		config.crypto.entity.secretIdsOf(null, patient, EntityWithEncryptionMetadataTypeName.Patient, null)
+	override suspend fun getSecretIdsOf(patient: Patient, groupId: String?): Set<String> =
+		config.crypto.entity.secretIdsOf(groupId, patient, EntityWithEncryptionMetadataTypeName.Patient, null)
 
 	override suspend fun getEncryptionKeysOf(patient: Patient): Set<HexString> =
 		config.crypto.entity.encryptionKeysOf(null, patient, EntityWithEncryptionMetadataTypeName.Patient, null)
@@ -808,17 +808,17 @@ internal class PatientApiImpl(
 		return true
 	}
 
-	override suspend fun decrypt(patient: EncryptedPatient): DecryptedPatient =
+	override suspend fun decrypt(patient: EncryptedPatient, groupId: String?): DecryptedPatient =
 		config.crypto.entity.decryptEntities(
-			null,
+			groupId,
 			listOf(patient),
 			EntityWithEncryptionMetadataTypeName.Patient,
 			EncryptedPatient.serializer(),
 		) { Serialization.json.decodeFromJsonElement<DecryptedPatient>(config.jsonPatcher.patchPatient(it)) }.single()
 
-	override suspend fun tryDecrypt(patient: EncryptedPatient): Patient =
+	override suspend fun tryDecrypt(patient: EncryptedPatient, groupId: String?): Patient =
 		config.crypto.entity.tryDecryptEntities(
-			null,
+			groupId,
 			listOf(patient),
 			EntityWithEncryptionMetadataTypeName.Patient,
 			EncryptedPatient.serializer(),

@@ -53,11 +53,4 @@ object NoExchangeDataManager : ExchangeDataManager {
 	): List<Base64String>? {
 		TODO("Not yet implemented")
 	}
-
-	override suspend fun getAccessControlKeysValue(
-		groupId: String?,
-		entityType: EntityWithEncryptionMetadataTypeName
-	): List<SecureDelegationKeyString>? {
-		TODO("Not yet implemented")
-	}
 }

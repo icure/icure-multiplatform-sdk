@@ -12,6 +12,7 @@ import com.icure.cardinal.sdk.test.DataOwnerDetails
 import com.icure.cardinal.sdk.test.DefaultRawApiConfig
 import com.icure.cardinal.sdk.test.baseUrl
 import com.icure.cardinal.sdk.test.testGroupAdminAuth
+import com.icure.cardinal.sdk.test.testGroupId
 import com.icure.cardinal.sdk.utils.Serialization
 import com.icure.kryptom.crypto.RsaAlgorithm
 import com.icure.kryptom.crypto.defaultCryptoService
@@ -193,21 +194,24 @@ private suspend fun createTestDataAndApis(): TestData {
 		username = pLogin,
 		password = pPassword,
 		keypair = keyP,
-		parent = null
+		parent = null,
+		groupId = testGroupId
 	)
 	val aDataOwnerDetails = DataOwnerDetails(
 		dataOwnerId = aId,
 		username = aLogin,
 		password = aPassword,
 		keypair = keyA,
-		parent = pDataOwnerDetails
+		parent = pDataOwnerDetails,
+		groupId = testGroupId
 	)
 	val bDataOwnerDetails = DataOwnerDetails(
 		dataOwnerId = bId,
 		username = bLogin,
 		password = bPassword,
 		keypair = keyB,
-		parent = pDataOwnerDetails
+		parent = pDataOwnerDetails,
+		groupId = testGroupId
 	)
 	return TestData(
 		p = pDataOwnerDetails,

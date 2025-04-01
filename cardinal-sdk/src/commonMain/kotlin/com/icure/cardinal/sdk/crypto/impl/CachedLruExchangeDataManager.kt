@@ -327,9 +327,6 @@ private class CachedLruExchangeDataManagerInGroup(
 	override suspend fun getEncodedAccessControlKeysValue(entityType: EntityWithEncryptionMetadataTypeName): List<Base64String>? =
 		null
 
-	override suspend fun getAccessControlKeysValue(entityType: EntityWithEncryptionMetadataTypeName): List<SecureDelegationKeyString>? =
-		null
-
 	override fun dispose() =
 		cacheRequestsScope.cancel()
 }

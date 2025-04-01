@@ -5,6 +5,7 @@ import com.icure.cardinal.sdk.api.raw.RawMessageGatewayApi
 import com.icure.cardinal.sdk.api.raw.impl.RawAnonymousAuthApiImpl
 import com.icure.cardinal.sdk.auth.UsernamePassword
 import com.icure.cardinal.sdk.crypto.CryptoStrategies
+import com.icure.cardinal.sdk.crypto.entities.DataOwnerReferenceInGroup
 import com.icure.cardinal.sdk.crypto.impl.BasicCryptoStrategies
 import com.icure.cardinal.sdk.model.DataOwnerWithType
 import com.icure.cardinal.sdk.model.specializations.SpkiHexString
@@ -31,7 +32,8 @@ data class DataOwnerDetails private constructor (
 	val password: String,
 	val keypair: RsaKeypair<RsaAlgorithm.RsaEncryptionAlgorithm>,
 	val parent: DataOwnerDetails?,
-	val publicKeySpki: SpkiHexString
+	val publicKeySpki: SpkiHexString,
+	val groupId: String
 ) {
 	companion object {
 		fun testEmailForLogin(login: String) = "$login@test.com"
@@ -41,18 +43,23 @@ data class DataOwnerDetails private constructor (
 			username: String,
 			password: String,
 			keypair: RsaKeypair<RsaAlgorithm.RsaEncryptionAlgorithm>,
-			parent: DataOwnerDetails?
+			parent: DataOwnerDetails?,
+			groupId: String
 		) = DataOwnerDetails(
 			dataOwnerId = dataOwnerId,
 			username = username,
 			password = password,
 			keypair = keypair,
 			parent = parent,
-			publicKeySpki = SpkiHexString(defaultCryptoService.rsa.exportPublicKeySpki(keypair.public).toHexString())
+			publicKeySpki = SpkiHexString(defaultCryptoService.rsa.exportPublicKeySpki(keypair.public).toHexString()),
+			groupId = groupId
 		)
 	}
 
 	val testEmail: String get() = testEmailForLogin(username)
+
+	fun normalizedReferenceForGroup(groupId: String) = if (groupId == this.groupId) DataOwnerReferenceInGroup(dataOwnerId, null) else fullReference
+	val fullReference get() = DataOwnerReferenceInGroup(dataOwnerId, groupId)
 
 	/**
 	 * Creates a new api with access to the original key of the user and his parents.

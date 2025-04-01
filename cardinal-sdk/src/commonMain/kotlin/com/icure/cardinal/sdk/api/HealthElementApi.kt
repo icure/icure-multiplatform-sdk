@@ -358,14 +358,14 @@ interface HealthElementApi : HealthElementBasicFlavourlessApi, HealthElementFlav
 	 * @return the decrypted health element
 	 * @throws EntityEncryptionException if the health element could not be decrypted
 	 */
-	suspend fun decrypt(healthElement: EncryptedHealthElement): DecryptedHealthElement
+	suspend fun decrypt(healthElement: EncryptedHealthElement, groupId: String? = null): DecryptedHealthElement
 
 	/**
 	 * Tries to decrypt a health element, returns the input if it is not possible.
 	 * @param healthElement an encrypted health element
 	 * @return the decrypted health element if the decryption was successful or the input if it was not.
 	 */
-	suspend fun tryDecrypt(healthElement: EncryptedHealthElement): HealthElement
+	suspend fun tryDecrypt(healthElement: EncryptedHealthElement, groupId: String? = null): HealthElement
 
 	/**
 	 * Give access to the encrypted flavour of the api

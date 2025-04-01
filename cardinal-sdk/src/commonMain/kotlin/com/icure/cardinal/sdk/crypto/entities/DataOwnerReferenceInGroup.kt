@@ -49,7 +49,7 @@ data class DataOwnerReferenceInGroup(
 			return if (resolvedEntityGroup != null) {
 				when {
 					splitReference.size == 1 -> DataOwnerReferenceInGroup(dataOwnerId = splitReference[0], groupId = resolvedEntityGroup)
-					splitReference[0] == sdkGroupId?.groupId -> DataOwnerReferenceInGroup(dataOwnerId = splitReference[1], groupId = splitReference[0])
+					splitReference[0] == sdkGroupId?.groupId -> DataOwnerReferenceInGroup(dataOwnerId = splitReference[1], groupId = null)
 					else -> DataOwnerReferenceInGroup(dataOwnerId = splitReference[1], groupId = splitReference[0])
 				}
 			} else {

@@ -224,7 +224,10 @@ class BaseExchangeDataManagerImpl(
 			delegatorSignature = delegatorSignature
 		)
 		return ExchangeDataWithUnencryptedContent(
-			exchangeData = raw.createExchangeData(exchangeData).successBody(),
+			exchangeData = (
+				sdkBoundGroup.resolve(inGroup)?.let { raw.createExchangeData(exchangeData, it) }
+					?: raw.createExchangeData(exchangeData)
+			).successBody(),
 			unencryptedContent = UnencryptedExchangeDataContent(
 				exchangeKey = exchangeKey,
 				accessControlSecret = accessControlSecret,

@@ -282,7 +282,7 @@ internal class HealthElementApiImpl(
 			else
 				rawApi.createHealthElementInGroup(groupId, encrypted)
 		).successBody().let {
-			decrypt(it)
+			decrypt(it, groupId)
 		}
 	}
 
@@ -297,7 +297,7 @@ internal class HealthElementApiImpl(
 				config.encryption.healthElement,
 			) { Serialization.json.decodeFromJsonElement<EncryptedHealthElement>(it) },
 		).successBody().map {
-			decrypt(it)
+			decrypt(it, null)
 		}
 	}
 
@@ -349,7 +349,7 @@ internal class HealthElementApiImpl(
 			EntityWithEncryptionMetadataTypeName.HealthElement,
 			patient.id,
 			config.crypto.entity.resolveSecretIdOption(
-				null,
+				entityGroupId,
 				patient,
 				EntityWithEncryptionMetadataTypeName.Patient,
 				secretId
@@ -387,18 +387,18 @@ internal class HealthElementApiImpl(
 		)
 	}
 
-	override suspend fun decrypt(healthElement: EncryptedHealthElement): DecryptedHealthElement =
+	override suspend fun decrypt(healthElement: EncryptedHealthElement, groupId: String?): DecryptedHealthElement =
 		config.crypto.entity.decryptEntities(
-			null,
+			groupId,
 			listOf(healthElement),
 			EntityWithEncryptionMetadataTypeName.HealthElement,
 			EncryptedHealthElement.serializer(),
 		) { Serialization.json.decodeFromJsonElement<DecryptedHealthElement>(config.jsonPatcher.patchHealthElement(it)) }
 			.single()
 
-	override suspend fun tryDecrypt(healthElement: EncryptedHealthElement): HealthElement =
+	override suspend fun tryDecrypt(healthElement: EncryptedHealthElement, groupId: String?): HealthElement =
 		config.crypto.entity.tryDecryptEntities(
-			null,
+			groupId,
 			listOf(healthElement),
 			EntityWithEncryptionMetadataTypeName.HealthElement,
 			EncryptedHealthElement.serializer(),
