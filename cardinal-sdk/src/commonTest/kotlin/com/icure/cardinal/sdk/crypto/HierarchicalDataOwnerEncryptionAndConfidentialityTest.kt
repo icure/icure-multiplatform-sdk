@@ -26,6 +26,33 @@ class HierarchicalDataOwnerEncryptionAndConfidentialityTest : StringSpec({
 		initializeTestEnvironment()
 	}
 
+	"Child hcp should be able to share existing data he can access through parent" {
+		val parent = createHcpUser()
+		val hcp = createHcpUser(parent)
+		val sibling = createHcpUser(parent)
+		val other = createHcpUser()
+		val siblingApi = hcp.api(specJob)
+		val note = "This will be encrypted"
+		val patient = siblingApi.patient.createPatient(
+			siblingApi.patient.withEncryptionMetadata(
+				DecryptedPatient(
+					id = defaultCryptoService.strongRandom.randomUUID(),
+					firstName = "John",
+					lastName = "Doe",
+					note = note
+				),
+				delegates = mapOf(parent.dataOwnerId to AccessLevel.Write)
+			)
+		).shouldNotBeNull()
+		val hcpApi = hcp.api(specJob)
+		val shared = hcpApi.patient.shareWith(
+			other.dataOwnerId,
+			hcpApi.patient.getPatient(patient.id)
+		)
+		val retrievedByOther = other.api(specJob).patient.getPatient(patient.id)
+		retrievedByOther shouldBe shared
+	}
+
 	"Data shared with a parent hcp should be accessible to the parent and siblings, but not to the grandparent" {
 		val grandparent = createHcpUser()
 		val parent = createHcpUser(grandparent)

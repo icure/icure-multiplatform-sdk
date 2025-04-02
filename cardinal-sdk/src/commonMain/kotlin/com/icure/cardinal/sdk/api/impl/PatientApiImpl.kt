@@ -265,7 +265,6 @@ private abstract class AbstractPatientFlavouredApi<E : Patient>(
 	override suspend fun shareWith(
 		delegateId: String,
 		patient: E,
-		@DefaultValue("null")
 		options: PatientShareOptions?,
 	): E =
 		shareWithMany(patient, mapOf(delegateId to (options ?: PatientShareOptions())))

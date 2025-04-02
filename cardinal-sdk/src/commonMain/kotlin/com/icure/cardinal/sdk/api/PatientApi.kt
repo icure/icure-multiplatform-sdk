@@ -400,7 +400,7 @@ interface PatientFlavouredApi<E : Patient> : PatientBasicFlavouredApi<E> {
 		delegateId: String,
 		patient: E,
 		@DefaultValue("null")
-		options: PatientShareOptions?
+		options: PatientShareOptions? = null
 	): E
 
 	/**
