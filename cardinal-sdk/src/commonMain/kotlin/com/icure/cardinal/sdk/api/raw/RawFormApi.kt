@@ -2,7 +2,6 @@ package com.icure.cardinal.sdk.api.raw
 
 import com.icure.cardinal.sdk.model.EncryptedForm
 import com.icure.cardinal.sdk.model.Form
-import com.icure.cardinal.sdk.model.FormTemplate
 import com.icure.cardinal.sdk.model.IcureStub
 import com.icure.cardinal.sdk.model.ListOfIds
 import com.icure.cardinal.sdk.model.ListOfIdsAndRev
@@ -17,6 +16,8 @@ import kotlin.Long
 import kotlin.Nothing
 import kotlin.String
 import kotlin.collections.List
+import com.icure.cardinal.sdk.model.FormTemplate as ModelFormTemplate
+import org.taktik.icure.entities.FormTemplate as EntitiesFormTemplate
 
 // WARNING: This class is auto-generated. If you change it manually, your changes will be lost.
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
@@ -81,33 +82,33 @@ public interface RawFormApi {
 	suspend fun getFormTemplate(
 		formTemplateId: String,
 		raw: Boolean? = null,
-	): HttpResponse<FormTemplate>
+	): HttpResponse<ModelFormTemplate>
 
 	suspend fun getFormTemplatesByGuid(
 		formTemplateGuid: String,
 		specialityCode: String,
 		raw: Boolean? = null,
-	): HttpResponse<List<FormTemplate>>
+	): HttpResponse<List<ModelFormTemplate>>
 
 	suspend fun listFormTemplatesBySpeciality(
 		specialityCode: String,
 		loadLayout: Boolean? = null,
 		raw: Boolean? = null,
-	): HttpResponse<List<FormTemplate>>
+	): HttpResponse<List<ModelFormTemplate>>
 
 	suspend fun getFormTemplates(
 		loadLayout: Boolean? = null,
 		raw: Boolean? = null,
-	): HttpResponse<List<FormTemplate>>
+	): HttpResponse<List<ModelFormTemplate>>
 
-	suspend fun createFormTemplate(ft: FormTemplate): HttpResponse<FormTemplate>
+	suspend fun createFormTemplate(ft: ModelFormTemplate): HttpResponse<ModelFormTemplate>
 
-	suspend fun deleteFormTemplate(formTemplateId: String): HttpResponse<DocIdentifier>
+	suspend fun deleteFormTemplate(formTemplateId: String): HttpResponse<EntitiesFormTemplate>
 
 	suspend fun updateFormTemplate(
 		formTemplateId: String,
-		ft: FormTemplate,
-	): HttpResponse<FormTemplate>
+		ft: ModelFormTemplate,
+	): HttpResponse<ModelFormTemplate>
 
 	suspend fun setTemplateAttachment(
 		formTemplateId: String,

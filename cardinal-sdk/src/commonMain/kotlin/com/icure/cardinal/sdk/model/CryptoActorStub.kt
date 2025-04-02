@@ -15,11 +15,8 @@ import kotlin.collections.List
 import kotlin.collections.Map
 import kotlin.collections.Set
 
-// WARNING: This file is auto-generated. If you change it manually, your changes will be lost.
-// If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
-
 @Serializable
-data class CryptoActorStub(
+public data class CryptoActorStub(
 	override val id: String,
 	override val rev: String,
 	@DefaultValue("emptyMap()")
@@ -38,8 +35,4 @@ data class CryptoActorStub(
 	override val tags: Set<CodeStub> = emptySet(),
 	override val parentId: String? = null,
 	override val cryptoActorProperties: Set<DecryptedPropertyStub>? = null,
-) : Versionable<String>, CryptoActor, HasTags {
-	// region CryptoActorStub-CryptoActorStub
-
-	// endregion
-}
+) : Versionable<String>, CryptoActor, HasTags
