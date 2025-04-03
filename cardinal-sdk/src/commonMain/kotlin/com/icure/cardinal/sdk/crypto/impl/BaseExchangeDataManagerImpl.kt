@@ -3,7 +3,7 @@ package com.icure.cardinal.sdk.crypto.impl
 import com.icure.cardinal.sdk.api.DataOwnerApi
 import com.icure.cardinal.sdk.api.raw.RawExchangeDataApi
 import com.icure.cardinal.sdk.crypto.BaseExchangeDataManager
-import com.icure.cardinal.sdk.crypto.entities.DataOwnerReferenceInGroup
+import com.icure.cardinal.sdk.model.EntityReferenceInGroup
 import com.icure.cardinal.sdk.crypto.entities.DecryptionResult
 import com.icure.cardinal.sdk.crypto.entities.ExchangeDataWithUnencryptedContent
 import com.icure.cardinal.sdk.crypto.entities.RawDecryptedExchangeData
@@ -78,8 +78,8 @@ class BaseExchangeDataManagerImpl(
 
 	override suspend fun getExchangeDataByDelegatorDelegatePair(
 		inGroup: String?,
-		delegatorReference: DataOwnerReferenceInGroup,
-		delegateReference: DataOwnerReferenceInGroup
+		delegatorReference: EntityReferenceInGroup,
+		delegateReference: EntityReferenceInGroup
 	): List<ExchangeData> {
 		val delegatorReferenceString = delegatorReference.asReferenceStringInGroup(inGroup, sdkBoundGroup)
 		val delegateReferenceString = delegateReference.asReferenceStringInGroup(inGroup, sdkBoundGroup)
@@ -180,7 +180,7 @@ class BaseExchangeDataManagerImpl(
 
 	override suspend fun createExchangeData(
 		inGroup: String?,
-		delegateReference: DataOwnerReferenceInGroup,
+		delegateReference: EntityReferenceInGroup,
 		signatureKeys: SelfVerifiedKeysSet,
 		encryptionKeys: VerifiedRsaEncryptionKeysSet,
 		exchangeDataId: String?

@@ -1,7 +1,7 @@
 package com.icure.cardinal.sdk.api
 
 import com.icure.cardinal.sdk.crypto.entities.CalendarItemShareOptions
-import com.icure.cardinal.sdk.crypto.entities.DataOwnerReferenceInGroup
+import com.icure.cardinal.sdk.model.EntityReferenceInGroup
 import com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption
 import com.icure.cardinal.sdk.exceptions.RevisionConflictException
 import com.icure.cardinal.sdk.filters.BaseFilterOptions
@@ -192,7 +192,7 @@ interface CalendarItemFlavouredApi<E : CalendarItem> : CalendarItemBasicFlavoure
 	suspend fun shareInGroup(
 		calendarItem: E,
 		entityGroupId: String?,
-		delegates: @JsMapAsObjectArray(flattenKey = true, flattenValue = true) Map<DataOwnerReferenceInGroup, CalendarItemShareOptions>
+		delegates: @JsMapAsObjectArray(flattenKey = true, flattenValue = true) Map<EntityReferenceInGroup, CalendarItemShareOptions>
 	): E
 
 	@Deprecated("Use filter instead")
@@ -302,7 +302,7 @@ interface CalendarItemApi : CalendarItemBasicFlavourlessApi, CalendarItemFlavour
 		@DefaultValue("null")
 		user: User? = null,
 		@DefaultValue("emptyMap()")
-		delegates: @JsMapAsObjectArray(flattenKey = true, valueEntryName = "accessLevel") Map<DataOwnerReferenceInGroup, AccessLevel> = emptyMap(),
+		delegates: @JsMapAsObjectArray(flattenKey = true, valueEntryName = "accessLevel") Map<EntityReferenceInGroup, AccessLevel> = emptyMap(),
 		@DefaultValue("com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption.UseAnySharedWithParent")
 		secretId: SecretIdUseOption = SecretIdUseOption.UseAnySharedWithParent,
 	): DecryptedCalendarItem
@@ -369,7 +369,7 @@ interface CalendarItemApi : CalendarItemBasicFlavourlessApi, CalendarItemFlavour
 	suspend fun createDelegationDeAnonymizationMetadataInGroup(
 		entityGroupId: String?,
 		entity: CalendarItem,
-		delegates: Set<DataOwnerReferenceInGroup>
+		delegates: Set<EntityReferenceInGroup>
 	)
 
 	/**

@@ -3,7 +3,7 @@ package com.icure.cardinal.sdk.api.impl
 import com.icure.cardinal.sdk.api.DataOwnerApi
 import com.icure.cardinal.sdk.api.raw.RawDataOwnerApi
 import com.icure.cardinal.sdk.api.raw.successBodyOrThrowRevisionConflict
-import com.icure.cardinal.sdk.crypto.entities.DataOwnerReferenceInGroup
+import com.icure.cardinal.sdk.model.EntityReferenceInGroup
 import com.icure.cardinal.sdk.crypto.entities.SdkBoundGroup
 import com.icure.cardinal.sdk.model.CryptoActorStubWithType
 import com.icure.cardinal.sdk.model.DataOwnerType
@@ -98,18 +98,18 @@ class DataOwnerApiImpl(
 		)
 	}
 
-	override suspend fun getCryptoActorStubInGroup(dataOwnerReferenceInGroup: DataOwnerReferenceInGroup): CryptoActorStubWithType {
-		val dataOwnerGroup = dataOwnerReferenceInGroup.normalized(boundGroup).groupId
+	override suspend fun getCryptoActorStubInGroup(entityReferenceInGroup: EntityReferenceInGroup): CryptoActorStubWithType {
+		val dataOwnerGroup = entityReferenceInGroup.normalized(boundGroup).groupId
 		return if (dataOwnerGroup == null) {
-			rawApi.getDataOwnerStub(dataOwnerReferenceInGroup.dataOwnerId).successBody()
+			rawApi.getDataOwnerStub(entityReferenceInGroup.entityId).successBody()
 		} else {
-			rawApi.getCryptoActorStubInGroup(dataOwnerGroup, dataOwnerReferenceInGroup.dataOwnerId).successBody()
+			rawApi.getCryptoActorStubInGroup(dataOwnerGroup, entityReferenceInGroup.entityId).successBody()
 		}
 	}
 
-	override suspend fun getCurrentDataOwnerHierarchyIdsReference(): List<DataOwnerReferenceInGroup> =
-		getCurrentDataOwnerHierarchyIds().map { DataOwnerReferenceInGroup(it, null) }
+	override suspend fun getCurrentDataOwnerHierarchyIdsReference(): List<EntityReferenceInGroup> =
+		getCurrentDataOwnerHierarchyIds().map { EntityReferenceInGroup(it, null) }
 
-	override suspend fun getCurrentDataOwnerReference(): DataOwnerReferenceInGroup =
-		DataOwnerReferenceInGroup(getCurrentDataOwnerId(), null)
+	override suspend fun getCurrentDataOwnerReference(): EntityReferenceInGroup =
+		EntityReferenceInGroup(getCurrentDataOwnerId(), null)
 }

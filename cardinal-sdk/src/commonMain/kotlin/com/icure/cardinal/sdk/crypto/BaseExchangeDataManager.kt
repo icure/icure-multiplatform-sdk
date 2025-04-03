@@ -1,7 +1,7 @@
 package com.icure.cardinal.sdk.crypto
 
 import com.icure.cardinal.sdk.api.raw.RawExchangeDataApi
-import com.icure.cardinal.sdk.crypto.entities.DataOwnerReferenceInGroup
+import com.icure.cardinal.sdk.model.EntityReferenceInGroup
 import com.icure.cardinal.sdk.crypto.entities.DecryptionResult
 import com.icure.cardinal.sdk.crypto.entities.ExchangeDataWithUnencryptedContent
 import com.icure.cardinal.sdk.crypto.entities.RawDecryptedExchangeData
@@ -44,8 +44,8 @@ interface BaseExchangeDataManager {
 	 */
 	suspend fun getExchangeDataByDelegatorDelegatePair(
 		inGroup: String?,
-		delegatorReference: DataOwnerReferenceInGroup,
-		delegateReference: DataOwnerReferenceInGroup,
+		delegatorReference: EntityReferenceInGroup,
+		delegateReference: EntityReferenceInGroup,
 	): List<ExchangeData>
 
 	/**
@@ -129,7 +129,7 @@ interface BaseExchangeDataManager {
 	 */
 	suspend fun createExchangeData(
 		inGroup: String?,
-		delegateReference: DataOwnerReferenceInGroup,
+		delegateReference: EntityReferenceInGroup,
 		signatureKeys: SelfVerifiedKeysSet,
 		encryptionKeys: VerifiedRsaEncryptionKeysSet,
 		exchangeDataId: String? = null

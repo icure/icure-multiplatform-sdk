@@ -14,7 +14,7 @@ import com.icure.cardinal.sdk.api.raw.RawHealthcarePartyApi
 import com.icure.cardinal.sdk.api.raw.RawInvoiceApi
 import com.icure.cardinal.sdk.api.raw.RawPatientApi
 import com.icure.cardinal.sdk.api.raw.successBodyOrThrowRevisionConflict
-import com.icure.cardinal.sdk.crypto.entities.DataOwnerReferenceInGroup
+import com.icure.cardinal.sdk.model.EntityReferenceInGroup
 import com.icure.cardinal.sdk.crypto.entities.DelegateShareOptions
 import com.icure.cardinal.sdk.crypto.entities.EntityAccessInformation
 import com.icure.cardinal.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
@@ -63,7 +63,6 @@ import com.icure.cardinal.sdk.subscription.EntitySubscription
 import com.icure.cardinal.sdk.subscription.EntitySubscriptionConfiguration
 import com.icure.cardinal.sdk.subscription.SubscriptionEventType
 import com.icure.cardinal.sdk.subscription.WebSocketSubscription
-import com.icure.cardinal.sdk.utils.DefaultValue
 import com.icure.cardinal.sdk.utils.Serialization
 import com.icure.cardinal.sdk.utils.currentEpochMs
 import com.icure.cardinal.sdk.utils.ensureNonNull
@@ -283,7 +282,7 @@ private abstract class AbstractPatientFlavouredApi<E : Patient>(
 	override suspend fun shareInGroup(
 		patient: E,
 		entityGroupId: String?,
-		delegates: Map<DataOwnerReferenceInGroup, PatientShareOptions>
+		delegates: Map<EntityReferenceInGroup, PatientShareOptions>
 	): E =
 		config.crypto.entity.simpleShareOrUpdateEncryptedEntityMetadata(
 			entityGroupId,
@@ -752,7 +751,7 @@ internal class PatientApiImpl(
 		entityGroupId: String?,
 		base: DecryptedPatient?,
 		user: User?,
-		delegates: Map<DataOwnerReferenceInGroup, AccessLevel>
+		delegates: Map<EntityReferenceInGroup, AccessLevel>
 	): DecryptedPatient =
 		config.crypto.entity.entityWithInitializedEncryptedMetadata(
 			entityGroupId,
@@ -801,7 +800,7 @@ internal class PatientApiImpl(
 		if (patient.publicKeysSpki.isNotEmpty()) return false
 		config.crypto.exchangeDataManager.getOrCreateEncryptionDataTo(
 			null,
-			DataOwnerReferenceInGroup(patientId, null),
+			EntityReferenceInGroup(patientId, null),
 			true
 		)
 		return true

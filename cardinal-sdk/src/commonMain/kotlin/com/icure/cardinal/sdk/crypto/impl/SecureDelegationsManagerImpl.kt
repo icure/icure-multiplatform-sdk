@@ -8,7 +8,7 @@ import com.icure.cardinal.sdk.crypto.SecureDelegationsEncryption
 import com.icure.cardinal.sdk.crypto.SecureDelegationsManager
 import com.icure.cardinal.sdk.crypto.UserEncryptionKeysManager
 import com.icure.cardinal.sdk.crypto.entities.CardinalKeyInfo
-import com.icure.cardinal.sdk.crypto.entities.DataOwnerReferenceInGroup
+import com.icure.cardinal.sdk.model.EntityReferenceInGroup
 import com.icure.cardinal.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
 import com.icure.cardinal.sdk.crypto.entities.ExchangeDataWithUnencryptedContent
 import com.icure.cardinal.sdk.crypto.entities.SdkBoundGroup
@@ -50,7 +50,7 @@ class SecureDelegationsManagerImpl (
 ) : SecureDelegationsManager {
 	// Data owner id -> (is anonymous, verified keys if needed)
 	private val dataOwnerAnonymityCache = SynchronisedLruCache<
-		DataOwnerReferenceInGroup,
+		EntityReferenceInGroup,
 		Pair<Boolean, List<CardinalKeyInfo<PublicRsaKey<RsaAlgorithm.RsaEncryptionAlgorithm>>>?>
 	>(1000)
 
@@ -62,7 +62,7 @@ class SecureDelegationsManagerImpl (
 		owningEntityIds: Set<String>,
 		owningEntitySecretIds: Set<String>,
 		encryptionKeys: Set<HexString>,
-		autoDelegations: Map<DataOwnerReferenceInGroup, AccessLevel>
+		autoDelegations: Map<EntityReferenceInGroup, AccessLevel>
 	): T {
 		val selfReference = dataOwnerApi.getCurrentDataOwnerReference()
 		val rootDelegationInfo = makeSecureDelegationInfo(
@@ -106,7 +106,7 @@ class SecureDelegationsManagerImpl (
 		entityGroupId: String?,
 		entity: HasEncryptionMetadata,
 		entityType: EntityWithEncryptionMetadataTypeName,
-		delegate: DataOwnerReferenceInGroup,
+		delegate: EntityReferenceInGroup,
 		shareSecretIds: Set<String>,
 		shareEncryptionKeys: Set<HexString>,
 		shareOwningEntityIds: Set<String>,
@@ -153,7 +153,7 @@ class SecureDelegationsManagerImpl (
 	private suspend fun makeSecureDelegationInfo(
 		entityGroupId: String?,
 		entityType: EntityWithEncryptionMetadataTypeName,
-		delegateReference: DataOwnerReferenceInGroup,
+		delegateReference: EntityReferenceInGroup,
 		shareSecretIds: Set<String>,
 		shareEncryptionKeys: Set<HexString>,
 		shareOwningEntityIds: Set<String>,
@@ -230,7 +230,7 @@ class SecureDelegationsManagerImpl (
 		entityGroupId: String?,
 		exchangeDataInfo: ExchangeDataWithUnencryptedContent,
 		accessControlKey: AccessControlKeyHexString,
-		delegate: DataOwnerReferenceInGroup,
+		delegate: EntityReferenceInGroup,
 		shareSecretIds: Set<String>,
 		shareEncryptionKeys: Set<HexString>,
 		shareOwningEntityIds: Set<String>,
@@ -260,7 +260,7 @@ class SecureDelegationsManagerImpl (
 	private suspend fun makeSecureDelegationEncryptedData(
 		entityGroupId: String?,
 		exchangeDataInfo: ExchangeDataWithUnencryptedContent,
-		delegate: DataOwnerReferenceInGroup,
+		delegate: EntityReferenceInGroup,
 		shareSecretIds: Set<String>,
 		shareEncryptionKeys: Set<HexString>,
 		shareOwningEntityIds: Set<String>
@@ -284,7 +284,7 @@ class SecureDelegationsManagerImpl (
 
 	private fun makeExchangeDataIdInfoForSelf(
 		entityGroupId: String?,
-		self: DataOwnerReferenceInGroup,
+		self: EntityReferenceInGroup,
 		exchangeDataInfo: ExchangeDataWithUnencryptedContent
 	): EncryptedExchangeDataIdInfo =
 		if (selfNeedsAnonymousDelegations) {
@@ -300,8 +300,8 @@ class SecureDelegationsManagerImpl (
 
 	private suspend fun makeExchangeDataIdInfoForDelegate(
 		entityGroupId: String?,
-		selfReference: DataOwnerReferenceInGroup,
-		delegateReference: DataOwnerReferenceInGroup,
+		selfReference: EntityReferenceInGroup,
+		delegateReference: EntityReferenceInGroup,
 		verifiedExchangeData: ExchangeDataWithUnencryptedContent
 	): EncryptedExchangeDataIdInfo {
 		val (delegateIsAnonymous, verifiedDelegateKeys) = dataOwnerAnonymityCache.get(delegateReference) ?: dataOwnerApi.getCryptoActorStubInGroup(delegateReference).let { delegate ->

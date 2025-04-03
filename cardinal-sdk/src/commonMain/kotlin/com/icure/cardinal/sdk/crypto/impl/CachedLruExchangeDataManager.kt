@@ -4,7 +4,7 @@ import com.icure.cardinal.sdk.api.DataOwnerApi
 import com.icure.cardinal.sdk.crypto.BaseExchangeDataManager
 import com.icure.cardinal.sdk.crypto.CryptoStrategies
 import com.icure.cardinal.sdk.crypto.UserEncryptionKeysManager
-import com.icure.cardinal.sdk.crypto.entities.DataOwnerReferenceInGroup
+import com.icure.cardinal.sdk.model.EntityReferenceInGroup
 import com.icure.cardinal.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
 import com.icure.cardinal.sdk.crypto.entities.ExchangeDataWithPotentiallyDecryptedContent
 import com.icure.cardinal.sdk.crypto.entities.ExchangeDataWithUnencryptedContent
@@ -162,7 +162,7 @@ private class CachedLruExchangeDataManagerInGroup(
 
 	@OptIn(ExperimentalCoroutinesApi::class)
 	override suspend fun getOrCreateEncryptionDataTo(
-		delegateReference: DataOwnerReferenceInGroup,
+		delegateReference: EntityReferenceInGroup,
 		allowCreationWithoutDelegateKey: Boolean
 	): ExchangeDataWithUnencryptedContent {
 		// Using reference string as normalization

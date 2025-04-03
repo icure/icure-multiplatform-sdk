@@ -3,7 +3,7 @@ package com.icure.cardinal.sdk.api.impl
 import com.icure.cardinal.sdk.api.RecoveryApi
 import com.icure.cardinal.sdk.api.raw.HttpResponse
 import com.icure.cardinal.sdk.crypto.InternalCryptoServices
-import com.icure.cardinal.sdk.crypto.entities.DataOwnerReferenceInGroup
+import com.icure.cardinal.sdk.model.EntityReferenceInGroup
 import com.icure.cardinal.sdk.crypto.entities.ExchangeDataRecoveryDetails
 import com.icure.cardinal.sdk.crypto.entities.RecoveryDataKey
 import com.icure.cardinal.sdk.crypto.entities.RecoveryDataUseFailureReason
@@ -76,7 +76,7 @@ internal class RecoveryApiImpl(
 		val exchangeDataToDelegate = crypto.exchangeDataManager.base.getExchangeDataByDelegatorDelegatePair(
 			null,
 			crypto.dataOwnerApi.getCurrentDataOwnerReference(),
-			DataOwnerReferenceInGroup(delegateId, null)
+			EntityReferenceInGroup(delegateId, null)
 		)
 		val decryptionKeys = crypto.userEncryptionKeysManager.getDecryptionKeys(true)
 		val decryptedInformation = exchangeDataToDelegate.mapNotNull { exchangeData ->

@@ -9,7 +9,7 @@ import com.icure.cardinal.sdk.api.raw.RawCalendarItemApi
 import com.icure.cardinal.sdk.api.raw.RawDataOwnerApi
 import com.icure.cardinal.sdk.api.raw.successBodyOrThrowRevisionConflict
 import com.icure.cardinal.sdk.crypto.entities.CalendarItemShareOptions
-import com.icure.cardinal.sdk.crypto.entities.DataOwnerReferenceInGroup
+import com.icure.cardinal.sdk.model.EntityReferenceInGroup
 import com.icure.cardinal.sdk.crypto.entities.DelegateShareOptions
 import com.icure.cardinal.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
 import com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption
@@ -123,7 +123,7 @@ private abstract class AbstractCalendarItemFlavouredApi<E : CalendarItem>(
 	override suspend fun shareInGroup(
 		calendarItem: E,
 		entityGroupId: String?,
-		delegates: Map<DataOwnerReferenceInGroup, CalendarItemShareOptions>
+		delegates: Map<EntityReferenceInGroup, CalendarItemShareOptions>
 	): E =
 		config.crypto.entity.simpleShareOrUpdateEncryptedEntityMetadata(
 			entityGroupId,
@@ -387,7 +387,7 @@ internal class CalendarItemApiImpl(
 		base: DecryptedCalendarItem?,
 		patient: Patient?,
 		user: User?,
-		delegates: Map<DataOwnerReferenceInGroup, AccessLevel>,
+		delegates: Map<EntityReferenceInGroup, AccessLevel>,
 		secretId: SecretIdUseOption
 	): DecryptedCalendarItem =
 		crypto.entity.entityWithInitializedEncryptedMetadata(
@@ -418,7 +418,7 @@ internal class CalendarItemApiImpl(
 	override suspend fun createDelegationDeAnonymizationMetadataInGroup(
 		entityGroupId: String?,
 		entity: CalendarItem,
-		delegates: Set<DataOwnerReferenceInGroup>
+		delegates: Set<EntityReferenceInGroup>
 	) {
 		crypto.delegationsDeAnonymization.createOrUpdateDeAnonymizationInfo(entityGroupId, entity, EntityWithEncryptionMetadataTypeName.CalendarItem, delegates)
 	}

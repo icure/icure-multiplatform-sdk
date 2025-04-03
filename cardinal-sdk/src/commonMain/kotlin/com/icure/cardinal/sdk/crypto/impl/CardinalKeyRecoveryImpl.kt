@@ -4,7 +4,7 @@ import com.icure.cardinal.sdk.crypto.BaseExchangeDataManager
 import com.icure.cardinal.sdk.crypto.BaseExchangeKeysManager
 import com.icure.cardinal.sdk.crypto.CardinalKeyRecovery
 import com.icure.cardinal.sdk.crypto.entities.CardinalKeyInfo
-import com.icure.cardinal.sdk.crypto.entities.DataOwnerReferenceInGroup
+import com.icure.cardinal.sdk.model.EntityReferenceInGroup
 import com.icure.cardinal.sdk.crypto.entities.RsaDecryptionKeysSet
 import com.icure.cardinal.sdk.crypto.entities.ShamirSecretShare
 import com.icure.cardinal.sdk.model.DataOwnerWithType
@@ -223,8 +223,8 @@ class CardinalKeyRecoveryImpl(
 		).successfulDecryptions
 		val encryptedExchangeData = baseExchangeDataManager.getExchangeDataByDelegatorDelegatePair(
 			null,
-			DataOwnerReferenceInGroup(from, null),
-			DataOwnerReferenceInGroup(to, null)
+			EntityReferenceInGroup(from, null),
+			EntityReferenceInGroup(to, null)
 		)
 		val exchangeData =  baseExchangeDataManager.tryDecryptExchangeKeys(
 			encryptedExchangeData,

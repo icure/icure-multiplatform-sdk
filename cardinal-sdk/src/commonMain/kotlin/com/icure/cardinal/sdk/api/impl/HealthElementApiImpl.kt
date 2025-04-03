@@ -7,7 +7,7 @@ import com.icure.cardinal.sdk.api.HealthElementBasicFlavourlessApi
 import com.icure.cardinal.sdk.api.HealthElementFlavouredApi
 import com.icure.cardinal.sdk.api.raw.RawHealthElementApi
 import com.icure.cardinal.sdk.api.raw.successBodyOrThrowRevisionConflict
-import com.icure.cardinal.sdk.crypto.entities.DataOwnerReferenceInGroup
+import com.icure.cardinal.sdk.model.EntityReferenceInGroup
 import com.icure.cardinal.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
 import com.icure.cardinal.sdk.crypto.entities.HealthElementShareOptions
 import com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption
@@ -98,7 +98,7 @@ private abstract class AbstractHealthElementFlavouredApi<E : HealthElement>(
 	override suspend fun shareInGroup(
 		healthElement: E,
 		entityGroupId: String?,
-		delegates: Map<DataOwnerReferenceInGroup, HealthElementShareOptions>
+		delegates: Map<EntityReferenceInGroup, HealthElementShareOptions>
 	): E =
 		config.crypto.entity.simpleShareOrUpdateEncryptedEntityMetadata(
 			entityGroupId,
@@ -335,7 +335,7 @@ internal class HealthElementApiImpl(
 		base: DecryptedHealthElement?,
 		patient: Patient,
 		user: User?,
-		delegates: Map<DataOwnerReferenceInGroup, AccessLevel>,
+		delegates: Map<EntityReferenceInGroup, AccessLevel>,
 		secretId: SecretIdUseOption
 	): DecryptedHealthElement =
 		config.crypto.entity.entityWithInitializedEncryptedMetadata(

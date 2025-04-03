@@ -7,7 +7,7 @@ import com.icure.cardinal.sdk.crypto.BaseSecurityMetadataDecryptor
 import com.icure.cardinal.sdk.crypto.DelegationsDeAnonymization
 import com.icure.cardinal.sdk.crypto.EntityEncryptionService
 import com.icure.cardinal.sdk.crypto.JsonEncryptionService
-import com.icure.cardinal.sdk.crypto.entities.DataOwnerReferenceInGroup
+import com.icure.cardinal.sdk.model.EntityReferenceInGroup
 import com.icure.cardinal.sdk.crypto.entities.EntityAccessInformation
 import com.icure.cardinal.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
 import com.icure.cardinal.sdk.crypto.entities.SdkBoundGroup
@@ -52,7 +52,7 @@ class DelegationsDeAnonymizationImpl(
 		entityGroupId: String?,
 		entity: HasEncryptionMetadata,
 		entityType: EntityWithEncryptionMetadataTypeName,
-		shareWithDataOwners: Set<DataOwnerReferenceInGroup>
+		shareWithDataOwners: Set<EntityReferenceInGroup>
 	) {
 		val normalizedDataOwners = shareWithDataOwners.mapTo(mutableSetOf()) { it.normalized(boundGroup) }
 		require(normalizedDataOwners.size == shareWithDataOwners.size) {
@@ -90,7 +90,7 @@ class DelegationsDeAnonymizationImpl(
 		getDataOwnersWithAccessToSecureDelegations(entityGroupId, entity, entityType).merge(
 			EntityAccessInformation(
 				permissionsByDataOwnerId = entity.delegations.keys.associate {
-					DataOwnerReferenceInGroup(it, null) to AccessLevel.Write
+					EntityReferenceInGroup(it, null) to AccessLevel.Write
 				},
 				hasUnknownAnonymousDataOwners = false
 			)
@@ -124,10 +124,10 @@ class DelegationsDeAnonymizationImpl(
 				val keyMap = secureDelegationKeyMapsByDelegationKey[k.s]
 				listOfNotNull(
 					keyMap?.delegate?.let {
-						DataOwnerReferenceInGroup.parse(it, entityGroupId, boundGroup) to v.accessLevel
+						EntityReferenceInGroup.parse(it, entityGroupId, boundGroup) to v.accessLevel
 					},
 					keyMap?.delegator?.let {
-						DataOwnerReferenceInGroup.parse(it, entityGroupId, boundGroup) to v.accessLevel
+						EntityReferenceInGroup.parse(it, entityGroupId, boundGroup) to v.accessLevel
 					}
 				)
 			}
@@ -178,7 +178,7 @@ class DelegationsDeAnonymizationImpl(
 		entityGroupId: String?,
 		entityType: EntityWithEncryptionMetadataTypeName,
 		keyMap: SecureDelegationKeyMap,
-		delegates: Set<DataOwnerReferenceInGroup>
+		delegates: Set<EntityReferenceInGroup>
 	) {
 		ensure(keyMap.delegator != null && keyMap.delegate != null) { "Key map is missing delegator or delegate info." }
 		val dataOwnersWithAccessToMapThroughDelegation =
@@ -186,8 +186,8 @@ class DelegationsDeAnonymizationImpl(
 				.flatMap { (_, v) -> listOfNotNull(v.delegate, v.delegator) }
 		// Delegator and delegate got access to the entity when it was first created: no need to share with them ever.
 		val dataOwnersWithAccessToMap = setOfNotNull(
-			keyMap.delegate?.let { DataOwnerReferenceInGroup.parse(it, entityGroupId, boundGroup) },
-			keyMap.delegator?.let { DataOwnerReferenceInGroup.parse(it, entityGroupId, boundGroup) },
+			keyMap.delegate?.let { EntityReferenceInGroup.parse(it, entityGroupId, boundGroup) },
+			keyMap.delegator?.let { EntityReferenceInGroup.parse(it, entityGroupId, boundGroup) },
 			*dataOwnersWithAccessToMapThroughDelegation.toTypedArray()
 		)
 		val dataOwnersNeedingShare = delegates.filter { it !in dataOwnersWithAccessToMap }
@@ -241,7 +241,7 @@ class DelegationsDeAnonymizationImpl(
 		entityType: EntityWithEncryptionMetadataTypeName,
 		delegationKey: String,
 		delegationMembersDetails: SecureDelegationMembersDetails,
-		delegates: Set<DataOwnerReferenceInGroup>
+		delegates: Set<EntityReferenceInGroup>
 	) {
 		ensure(
 			delegationMembersDetails.delegate != null

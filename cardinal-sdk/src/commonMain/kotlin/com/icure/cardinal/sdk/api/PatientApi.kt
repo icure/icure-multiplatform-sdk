@@ -1,6 +1,6 @@
 package com.icure.cardinal.sdk.api
 
-import com.icure.cardinal.sdk.crypto.entities.DataOwnerReferenceInGroup
+import com.icure.cardinal.sdk.model.EntityReferenceInGroup
 import com.icure.cardinal.sdk.crypto.entities.EntityAccessInformation
 import com.icure.cardinal.sdk.crypto.entities.EntityWithTypeInfo
 import com.icure.cardinal.sdk.crypto.entities.PatientShareOptions
@@ -421,7 +421,7 @@ interface PatientFlavouredApi<E : Patient> : PatientBasicFlavouredApi<E> {
 	suspend fun shareInGroup(
 		patient: E,
 		entityGroupId: String?,
-		delegates: @JsMapAsObjectArray(flattenKey = true, flattenValue = true) Map<DataOwnerReferenceInGroup, PatientShareOptions>
+		delegates: @JsMapAsObjectArray(flattenKey = true, flattenValue = true) Map<EntityReferenceInGroup, PatientShareOptions>
 	): E
 
 	/**
@@ -538,7 +538,7 @@ interface PatientApi : PatientBasicFlavourlessApi, PatientFlavouredApi<Decrypted
 		@DefaultValue("null")
 		user: User? = null,
 		@DefaultValue("emptyMap()")
-		delegates: @JsMapAsObjectArray(flattenKey = true, valueEntryName = "accessLevel") Map<DataOwnerReferenceInGroup, AccessLevel> = emptyMap(),
+		delegates: @JsMapAsObjectArray(flattenKey = true, valueEntryName = "accessLevel") Map<EntityReferenceInGroup, AccessLevel> = emptyMap(),
 	): DecryptedPatient
 	
 	/**
@@ -605,6 +605,7 @@ interface PatientApi : PatientBasicFlavourlessApi, PatientFlavouredApi<Decrypted
 	 * Gives access to the polymorphic flavour of the api
 	 */
 	val tryAndRecover: PatientFlavouredApi<Patient>
+
 	suspend fun createPatients(patients: List<DecryptedPatient>): List<IdWithRev>
 
 	/**

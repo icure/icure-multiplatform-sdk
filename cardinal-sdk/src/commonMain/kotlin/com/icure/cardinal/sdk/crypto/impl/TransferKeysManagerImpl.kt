@@ -6,7 +6,7 @@ import com.icure.cardinal.sdk.crypto.TransferKeysManager
 import com.icure.cardinal.sdk.crypto.UserEncryptionKeysManager
 import com.icure.cardinal.sdk.crypto.entities.CandidateTransferKey
 import com.icure.cardinal.sdk.crypto.entities.CardinalKeyInfo
-import com.icure.cardinal.sdk.crypto.entities.DataOwnerReferenceInGroup
+import com.icure.cardinal.sdk.model.EntityReferenceInGroup
 import com.icure.cardinal.sdk.crypto.entities.VerifiedRsaEncryptionKeysSet
 import com.icure.cardinal.sdk.model.CryptoActorStubWithType
 import com.icure.cardinal.sdk.model.base.CryptoActor
@@ -49,7 +49,7 @@ internal class TransferKeysManagerImpl(
 		val keysToUse = VerifiedRsaEncryptionKeysSet(cryptoService.loadEncryptionKeysForDataOwner(self.stub, allVerifiedSourcesAndTarget))
 		val exchangeData = exchangeDataManager.getOrCreateEncryptionDataTo(
 			null,
-			DataOwnerReferenceInGroup(selfId, null),
+			EntityReferenceInGroup(selfId, null),
 			false
 		)
 		// If the exchange data already existed ensure that it has all the necessary keys

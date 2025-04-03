@@ -1,6 +1,6 @@
 package com.icure.cardinal.sdk.api
 
-import com.icure.cardinal.sdk.crypto.entities.DataOwnerReferenceInGroup
+import com.icure.cardinal.sdk.model.EntityReferenceInGroup
 import com.icure.cardinal.sdk.crypto.entities.HealthElementShareOptions
 import com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption
 import com.icure.cardinal.sdk.exceptions.RevisionConflictException
@@ -184,7 +184,7 @@ interface HealthElementFlavouredApi<E : HealthElement> : HealthElementBasicFlavo
 	suspend fun shareInGroup(
 		healthElement: E,
 		entityGroupId: String?,
-		delegates: @JsMapAsObjectArray(flattenKey = true, flattenValue = true) Map<DataOwnerReferenceInGroup, HealthElementShareOptions>
+		delegates: @JsMapAsObjectArray(flattenKey = true, flattenValue = true) Map<EntityReferenceInGroup, HealthElementShareOptions>
 	): E
 
 	@Deprecated("Use filter instead")
@@ -287,7 +287,7 @@ interface HealthElementApi : HealthElementBasicFlavourlessApi, HealthElementFlav
 		@DefaultValue("null")
 		user: User? = null,
 		@DefaultValue("emptyMap()")
-		delegates: @JsMapAsObjectArray(flattenKey = true, valueEntryName = "accessLevel") Map<DataOwnerReferenceInGroup, AccessLevel> = emptyMap(),
+		delegates: @JsMapAsObjectArray(flattenKey = true, valueEntryName = "accessLevel") Map<EntityReferenceInGroup, AccessLevel> = emptyMap(),
 		@DefaultValue("com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption.UseAnySharedWithParent")
 		secretId: SecretIdUseOption = SecretIdUseOption.UseAnySharedWithParent,
 	): DecryptedHealthElement

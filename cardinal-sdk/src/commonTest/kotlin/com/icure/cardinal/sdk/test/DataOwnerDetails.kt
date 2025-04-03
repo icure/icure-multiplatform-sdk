@@ -5,7 +5,7 @@ import com.icure.cardinal.sdk.api.raw.RawMessageGatewayApi
 import com.icure.cardinal.sdk.api.raw.impl.RawAnonymousAuthApiImpl
 import com.icure.cardinal.sdk.auth.UsernamePassword
 import com.icure.cardinal.sdk.crypto.CryptoStrategies
-import com.icure.cardinal.sdk.crypto.entities.DataOwnerReferenceInGroup
+import com.icure.cardinal.sdk.model.EntityReferenceInGroup
 import com.icure.cardinal.sdk.crypto.impl.BasicCryptoStrategies
 import com.icure.cardinal.sdk.model.DataOwnerWithType
 import com.icure.cardinal.sdk.model.specializations.SpkiHexString
@@ -58,8 +58,8 @@ data class DataOwnerDetails private constructor (
 
 	val testEmail: String get() = testEmailForLogin(username)
 
-	fun normalizedReferenceForGroup(groupId: String) = if (groupId == this.groupId) DataOwnerReferenceInGroup(dataOwnerId, null) else fullReference
-	val fullReference get() = DataOwnerReferenceInGroup(dataOwnerId, groupId)
+	fun normalizedReferenceForGroup(groupId: String) = if (groupId == this.groupId) EntityReferenceInGroup(dataOwnerId, null) else fullReference
+	val fullReference get() = EntityReferenceInGroup(dataOwnerId, groupId)
 
 	/**
 	 * Creates a new api with access to the original key of the user and his parents.

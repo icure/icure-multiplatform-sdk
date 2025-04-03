@@ -6,7 +6,7 @@ import com.icure.cardinal.sdk.crypto.CryptoStrategies
 import com.icure.cardinal.sdk.crypto.ExchangeDataManager
 import com.icure.cardinal.sdk.crypto.UserEncryptionKeysManager
 import com.icure.cardinal.sdk.crypto.entities.CardinalKeyInfo
-import com.icure.cardinal.sdk.crypto.entities.DataOwnerReferenceInGroup
+import com.icure.cardinal.sdk.model.EntityReferenceInGroup
 import com.icure.cardinal.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
 import com.icure.cardinal.sdk.crypto.entities.ExchangeDataWithPotentiallyDecryptedContent
 import com.icure.cardinal.sdk.crypto.entities.ExchangeDataWithUnencryptedContent
@@ -56,18 +56,18 @@ abstract class AbstractExchangeDataManager(
 		val allExchangeDataToUpdate = if (self == otherDataOwner) {
 			base.getExchangeDataByDelegatorDelegatePair(
 				null,
-				DataOwnerReferenceInGroup(self),
-				DataOwnerReferenceInGroup(self)
+				EntityReferenceInGroup(self),
+				EntityReferenceInGroup(self)
 			)
 		} else {
 			base.getExchangeDataByDelegatorDelegatePair(
 				null,
-				DataOwnerReferenceInGroup(self),
-				DataOwnerReferenceInGroup(otherDataOwner)
+				EntityReferenceInGroup(self),
+				EntityReferenceInGroup(otherDataOwner)
 			) + base.getExchangeDataByDelegatorDelegatePair(
 				null,
-				DataOwnerReferenceInGroup(otherDataOwner),
-				DataOwnerReferenceInGroup(self)
+				EntityReferenceInGroup(otherDataOwner),
+				EntityReferenceInGroup(self)
 			)
 		}
 		// Can improve with batch but there should not be many anyway and it is a rare operation
@@ -90,7 +90,7 @@ abstract class AbstractExchangeDataManager(
 
 	override suspend fun getOrCreateEncryptionDataTo(
 		groupId: String?,
-		delegateReference: DataOwnerReferenceInGroup,
+		delegateReference: EntityReferenceInGroup,
 		allowCreationWithoutDelegateKey: Boolean
 	): ExchangeDataWithUnencryptedContent =
 		getOrCreateManagerInGroup(groupId).getOrCreateEncryptionDataTo(
@@ -187,7 +187,7 @@ abstract class AbstractExchangeDataManagerInGroup(
 	}
 
 	protected suspend fun createNewExchangeData(
-		delegateReference: DataOwnerReferenceInGroup,
+		delegateReference: EntityReferenceInGroup,
 		newDataId: String?,
 		allowNoDelegateKeys: Boolean
 	): ExchangeDataWithUnencryptedContent {
@@ -232,7 +232,7 @@ abstract class AbstractExchangeDataManagerInGroup(
 	}
 
 	abstract suspend fun getOrCreateEncryptionDataTo(
-		delegateReference: DataOwnerReferenceInGroup,
+		delegateReference: EntityReferenceInGroup,
 		allowCreationWithoutDelegateKey: Boolean,
 	): ExchangeDataWithUnencryptedContent
 	abstract suspend fun getCachedDecryptionDataKeyByAccessControlHash(

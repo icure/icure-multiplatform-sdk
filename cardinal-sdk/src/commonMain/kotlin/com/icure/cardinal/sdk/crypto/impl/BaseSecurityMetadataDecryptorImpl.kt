@@ -6,7 +6,7 @@ import com.icure.cardinal.sdk.crypto.ExchangeDataManager
 import com.icure.cardinal.sdk.crypto.ExchangeDataMapManager
 import com.icure.cardinal.sdk.crypto.ExchangeKeysManager
 import com.icure.cardinal.sdk.crypto.SecureDelegationsEncryption
-import com.icure.cardinal.sdk.crypto.entities.DataOwnerReferenceInGroup
+import com.icure.cardinal.sdk.model.EntityReferenceInGroup
 import com.icure.cardinal.sdk.crypto.entities.DecryptedMetadataDetails
 import com.icure.cardinal.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
 import com.icure.cardinal.sdk.crypto.entities.ExchangeDataWithPotentiallyDecryptedContent
@@ -380,8 +380,8 @@ internal class BaseSecurityMetadataDecryptorImpl(
 		return entity.securityMetadata?.secureDelegations?.mapValues { (delegationKey, delegation) ->
 			if (delegation.delegate != null && delegation.delegator != null) {
 				SecureDelegationMembersDetails(
-					delegator = DataOwnerReferenceInGroup.parse(delegation.delegator, entityGroupId, boundGroup),
-					delegate = DataOwnerReferenceInGroup.parse(delegation.delegate, entityGroupId, boundGroup),
+					delegator = EntityReferenceInGroup.parse(delegation.delegator, entityGroupId, boundGroup),
+					delegate = EntityReferenceInGroup.parse(delegation.delegate, entityGroupId, boundGroup),
 					fullyExplicit = true,
 					accessControlSecret = null,
 					accessLevel = delegation.permissions
@@ -390,10 +390,10 @@ internal class BaseSecurityMetadataDecryptorImpl(
 				val exchangeData = loadedExchangeData.getExchangeDataFor(delegationKey, delegation)
 				SecureDelegationMembersDetails(
 					delegator = (delegation.delegator ?: exchangeData?.exchangeData?.delegator)?.let {
-						DataOwnerReferenceInGroup.parse(it, entityGroupId, boundGroup)
+						EntityReferenceInGroup.parse(it, entityGroupId, boundGroup)
 					},
 					delegate = (delegation.delegate ?: exchangeData?.exchangeData?.delegate)?.let {
-						DataOwnerReferenceInGroup.parse(it, entityGroupId, boundGroup)
+						EntityReferenceInGroup.parse(it, entityGroupId, boundGroup)
 					},
 					fullyExplicit = false,
 					accessControlSecret = exchangeData?.unencryptedContent?.accessControlSecret,

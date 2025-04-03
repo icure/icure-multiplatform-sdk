@@ -1,7 +1,7 @@
 package com.icure.cardinal.sdk.crypto
 
 import com.icure.cardinal.sdk.crypto.entities.BulkShareResult
-import com.icure.cardinal.sdk.crypto.entities.DataOwnerReferenceInGroup
+import com.icure.cardinal.sdk.model.EntityReferenceInGroup
 import com.icure.cardinal.sdk.crypto.entities.DelegateShareOptions
 import com.icure.cardinal.sdk.crypto.entities.EncryptedFieldsManifest
 import com.icure.cardinal.sdk.crypto.entities.EntityDataEncryptionResult
@@ -176,7 +176,7 @@ interface EntityEncryptionService : EntityValidationService {
 		owningEntityId: String?,
 		owningEntitySecretId: Set<String>?,
 		initializeEncryptionKey: Boolean,
-		autoDelegations: Map<DataOwnerReferenceInGroup, AccessLevel>
+		autoDelegations: Map<EntityReferenceInGroup, AccessLevel>
 	): EntityEncryptionMetadataInitialisationResult<T>
 
 	/**
@@ -204,7 +204,7 @@ interface EntityEncryptionService : EntityValidationService {
 	 */
 	suspend fun <T : HasEncryptionMetadata> bulkShareOrUpdateEncryptedEntityMetadata(
 		entityGroupId: String?,
-		entitiesUpdates: List<Pair<T, Map<DataOwnerReferenceInGroup, DelegateShareOptions>>>,
+		entitiesUpdates: List<Pair<T, Map<EntityReferenceInGroup, DelegateShareOptions>>>,
 		entitiesType: EntityWithEncryptionMetadataTypeName,
 		autoRetry: Boolean,
 		getUpdatedEntity: suspend (String) -> T,
@@ -243,7 +243,7 @@ interface EntityEncryptionService : EntityValidationService {
 		entityGroupId: String?,
 		entity: T,
 		entityType: EntityWithEncryptionMetadataTypeName,
-		delegates: Map<DataOwnerReferenceInGroup, SimpleDelegateShareOptions>,
+		delegates: Map<EntityReferenceInGroup, SimpleDelegateShareOptions>,
 		autoRetry: Boolean,
 		getUpdatedEntity: suspend (String) -> T,
 		doRequestBulkShareOrUpdate: suspend (request: BulkShareOrUpdateMetadataParams) -> List<EntityBulkShareResult<out T>>

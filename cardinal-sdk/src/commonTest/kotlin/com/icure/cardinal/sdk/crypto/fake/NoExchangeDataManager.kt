@@ -2,7 +2,7 @@ package com.icure.cardinal.sdk.crypto.fake
 
 import com.icure.cardinal.sdk.crypto.BaseExchangeDataManager
 import com.icure.cardinal.sdk.crypto.ExchangeDataManager
-import com.icure.cardinal.sdk.crypto.entities.DataOwnerReferenceInGroup
+import com.icure.cardinal.sdk.model.EntityReferenceInGroup
 import com.icure.cardinal.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
 import com.icure.cardinal.sdk.crypto.entities.ExchangeDataWithPotentiallyDecryptedContent
 import com.icure.cardinal.sdk.crypto.entities.ExchangeDataWithUnencryptedContent
@@ -22,7 +22,7 @@ object NoExchangeDataManager : ExchangeDataManager {
 
 	override suspend fun getOrCreateEncryptionDataTo(
 		groupId: String?,
-		delegateReference: DataOwnerReferenceInGroup,
+		delegateReference: EntityReferenceInGroup,
 		allowCreationWithoutDelegateKey: Boolean
 	): ExchangeDataWithUnencryptedContent {
 		TODO("Not yet implemented")

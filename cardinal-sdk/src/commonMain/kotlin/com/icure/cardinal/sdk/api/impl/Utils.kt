@@ -1,9 +1,9 @@
 package com.icure.cardinal.sdk.api.impl
 
-import com.icure.cardinal.sdk.crypto.entities.DataOwnerReferenceInGroup
+import com.icure.cardinal.sdk.model.EntityReferenceInGroup
 
 fun <T> Map<String, T>.keyAsLocalDataOwnerReferences() =
-	mapKeys { DataOwnerReferenceInGroup(it.key, null) }
+	mapKeys { EntityReferenceInGroup(it.key, null) }
 
-fun Set<String>.asLocalDataOwnerReferences(): Set<DataOwnerReferenceInGroup> =
-	mapTo(mutableSetOf()) { DataOwnerReferenceInGroup(it, null) }
+fun Set<String>.asLocalDataOwnerReferences(): Set<EntityReferenceInGroup> =
+	mapTo(mutableSetOf()) { EntityReferenceInGroup(it, null) }

@@ -1,7 +1,7 @@
 package com.icure.cardinal.sdk.crypto.impl
 
 import com.icure.cardinal.sdk.crypto.EntityAccessInformationProvider
-import com.icure.cardinal.sdk.crypto.entities.DataOwnerReferenceInGroup
+import com.icure.cardinal.sdk.model.EntityReferenceInGroup
 import com.icure.cardinal.sdk.crypto.entities.EntityAccessInformation
 import com.icure.cardinal.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
 import com.icure.cardinal.sdk.crypto.entities.SdkBoundGroup
@@ -29,7 +29,7 @@ internal class BasicEntityAccessInformationProvider(
 		val infoFromLegacyDelegations = EntityAccessInformation(
 			entity.delegations.keys.associate {
 				// Legacy delegations don't support inter-group sharing
-				Pair(DataOwnerReferenceInGroup(it, null), AccessLevel.Write)
+				Pair(EntityReferenceInGroup(it, null), AccessLevel.Write)
 			},
 			false
 		)
@@ -40,10 +40,10 @@ internal class BasicEntityAccessInformationProvider(
 				entity.securityMetadata?.secureDelegations?.values?.flatMap { d->
 					listOfNotNull(
 						d.delegate?.let {
-							DataOwnerReferenceInGroup.parse(it, entityGroupId, boundGroupId) to d.permissions
+							EntityReferenceInGroup.parse(it, entityGroupId, boundGroupId) to d.permissions
 						},
 						d.delegator?.let {
-							DataOwnerReferenceInGroup.parse(it, entityGroupId, boundGroupId) to d.permissions
+							EntityReferenceInGroup.parse(it, entityGroupId, boundGroupId) to d.permissions
 						}
 					)
 				} ?: emptyList()

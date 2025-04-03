@@ -4,7 +4,7 @@ import com.icure.cardinal.sdk.api.DataOwnerApi
 import com.icure.cardinal.sdk.crypto.BaseExchangeDataManager
 import com.icure.cardinal.sdk.crypto.CryptoStrategies
 import com.icure.cardinal.sdk.crypto.UserEncryptionKeysManager
-import com.icure.cardinal.sdk.crypto.entities.DataOwnerReferenceInGroup
+import com.icure.cardinal.sdk.model.EntityReferenceInGroup
 import com.icure.cardinal.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
 import com.icure.cardinal.sdk.crypto.entities.ExchangeDataWithPotentiallyDecryptedContent
 import com.icure.cardinal.sdk.crypto.entities.ExchangeDataWithUnencryptedContent
@@ -124,7 +124,7 @@ private class FullyCachedExchangeDataManagerInGroup(
 	}
 
 	override suspend fun getOrCreateEncryptionDataTo(
-		delegateReference: DataOwnerReferenceInGroup,
+		delegateReference: EntityReferenceInGroup,
 		allowCreationWithoutDelegateKey: Boolean
 	): ExchangeDataWithUnencryptedContent {
 		val delegateReferenceString = delegateReference.asReferenceStringInGroup(requestGroup, sdkBoundGroup)
@@ -135,7 +135,7 @@ private class FullyCachedExchangeDataManagerInGroup(
 
 	private suspend fun awaitOrStartCreationJob(
 		checkedCachesDeferred: Deferred<Caches>,
-		delegateReference: DataOwnerReferenceInGroup,
+		delegateReference: EntityReferenceInGroup,
 		delegateReferenceString: String
 	): ExchangeDataWithUnencryptedContent {
 		val (shouldRetryIfFailure, creationJob) = creationAndCachesErrorReloadMutex.withLock {
@@ -173,7 +173,7 @@ private class FullyCachedExchangeDataManagerInGroup(
 
 	private fun startCreationJob(
 		checkedCachesDeferred: Deferred<Caches>,
-		delegateReference: DataOwnerReferenceInGroup,
+		delegateReference: EntityReferenceInGroup,
 		delegateReferenceString: String
 	) = cacheUpdateAndNewDataCreationScope.async {
 		// It could be possible that the caches have been updated between the last time we tried and the
@@ -188,7 +188,7 @@ private class FullyCachedExchangeDataManagerInGroup(
 	}
 
 	private suspend fun doCreateAndCacheEncryptionDataTo(
-		delegateReference: DataOwnerReferenceInGroup,
+		delegateReference: EntityReferenceInGroup,
 		delegateReferenceString: String
 	): ExchangeDataWithUnencryptedContent = createNewExchangeData(
 		delegateReference,

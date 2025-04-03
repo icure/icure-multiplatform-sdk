@@ -1,5 +1,6 @@
 package com.icure.cardinal.sdk.crypto.entities
 
+import com.icure.cardinal.sdk.model.EntityReferenceInGroup
 import com.icure.cardinal.sdk.model.embed.AccessLevel
 import kotlinx.serialization.Serializable
 
@@ -11,7 +12,7 @@ data class EntityAccessInformation(
 	/**
 	 * The data owners with access to the entity, and how
 	 */
-	val permissionsByDataOwnerId: Map<DataOwnerReferenceInGroup, AccessLevel>,
+	val permissionsByDataOwnerId: Map<EntityReferenceInGroup, AccessLevel>,
 	/**
 	 * Whether the entity has been shared with anonymous data owner who could not be identified by the current data
 	 * owner.
@@ -20,7 +21,7 @@ data class EntityAccessInformation(
 ) {
 	companion object {
 		internal fun buildPermissionsMap(
-			permissionsList: List<Pair<DataOwnerReferenceInGroup, AccessLevel>>
+			permissionsList: List<Pair<EntityReferenceInGroup, AccessLevel>>
 		) =
 			permissionsList.groupBy { it.first }.mapValues { (_, permissions) ->
 				if (permissions.any { it.second == AccessLevel.Write }) AccessLevel.Write else AccessLevel.Read

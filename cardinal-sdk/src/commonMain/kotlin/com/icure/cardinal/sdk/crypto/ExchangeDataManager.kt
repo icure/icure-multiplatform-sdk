@@ -1,6 +1,6 @@
 package com.icure.cardinal.sdk.crypto
 
-import com.icure.cardinal.sdk.crypto.entities.DataOwnerReferenceInGroup
+import com.icure.cardinal.sdk.model.EntityReferenceInGroup
 import com.icure.cardinal.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
 import com.icure.cardinal.sdk.crypto.entities.ExchangeDataWithPotentiallyDecryptedContent
 import com.icure.cardinal.sdk.crypto.entities.ExchangeDataWithUnencryptedContent
@@ -37,7 +37,7 @@ interface ExchangeDataManager {
 	 */
 	suspend fun getOrCreateEncryptionDataTo(
 		groupId: String?,
-		delegateReference: DataOwnerReferenceInGroup,
+		delegateReference: EntityReferenceInGroup,
 		allowCreationWithoutDelegateKey: Boolean,
 	): ExchangeDataWithUnencryptedContent
 
