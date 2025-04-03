@@ -133,6 +133,21 @@ class RawExchangeDataApiImpl(
 			accept(Application.Json)
 		}.wrap()
 
+	override suspend fun getExchangeDataByDelegatorDelegateQuery(
+		delegatorId: String,
+		delegateId: String,
+	): HttpResponse<List<ExchangeData>> =
+		get(authProvider) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "exchangedata", "byDelegatorDelegate")
+				parameter("delegatorId", delegatorId)
+				parameter("delegateId", delegateId)
+				parameter("ts", GMTDate().timestamp)
+			}
+			accept(Application.Json)
+		}.wrap()
+
 	override suspend fun getParticipantCounterparts(
 		dataOwnerId: String,
 		counterpartsTypes: String,

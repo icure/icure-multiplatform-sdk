@@ -7,7 +7,6 @@ import com.icure.cardinal.sdk.api.raw.RawFrontEndMigrationApi
 import com.icure.cardinal.sdk.api.raw.wrap
 import com.icure.cardinal.sdk.auth.services.AuthProvider
 import com.icure.cardinal.sdk.model.FrontEndMigration
-import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.utils.InternalIcureApi
 import io.ktor.client.HttpClient
 import io.ktor.client.request.accept
@@ -55,7 +54,7 @@ class RawFrontEndMigrationApiImpl(
 			setBody(frontEndMigrationDto)
 		}.wrap()
 
-	override suspend fun deleteFrontEndMigration(frontEndMigrationId: String): HttpResponse<DocIdentifier> =
+	override suspend fun deleteFrontEndMigration(frontEndMigrationId: String): HttpResponse<FrontEndMigration> =
 		delete(authProvider) {
 			url {
 				takeFrom(apiUrl)

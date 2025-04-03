@@ -327,7 +327,7 @@ class RawFormApiImpl(
 			setBody(ft)
 		}.wrap()
 
-	override suspend fun deleteFormTemplate(formTemplateId: String): HttpResponse<DocIdentifier> =
+	override suspend fun deleteFormTemplate(formTemplateId: String): HttpResponse<FormTemplate> =
 		delete(authProvider) {
 			url {
 				takeFrom(apiUrl)

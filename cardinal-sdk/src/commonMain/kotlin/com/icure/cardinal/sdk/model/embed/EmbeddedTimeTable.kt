@@ -21,5 +21,6 @@ data class EmbeddedTimeTable(
 	public val items: List<TimeTableItem> = emptyList(),
 ) {
 	// region EmbeddedTimeTable-EmbeddedTimeTable
+
 	// endregion
 }
