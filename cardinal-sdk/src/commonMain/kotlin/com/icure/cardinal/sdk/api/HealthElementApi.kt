@@ -152,6 +152,7 @@ interface HealthElementFlavouredApi<E : HealthElement> : HealthElementBasicFlavo
 	 * Share a health element with another data owner. The health element must already exist in the database for this method to
 	 * succeed. If you want to share the health element before creation you should instead pass provide the delegates in
 	 * the initialize encryption metadata method.
+	 * Note: this method only updates the security metadata. If the input entity has unsaved changes they may be lost.
 	 * @param delegateId the owner that will gain access to the health element
 	 * @param healthElement the health element to share with [delegateId]
 	 * @param options specifies how the health element will be shared. By default, all data available to the current user
@@ -170,6 +171,7 @@ interface HealthElementFlavouredApi<E : HealthElement> : HealthElementBasicFlavo
 	 * Share a health element with multiple data owners. The health element must already exist in the database for this method to
 	 * succeed. If you want to share the health element before creation you should instead pass provide the delegates in
 	 * the initialize encryption metadata method.
+	 * Note: this method only updates the security metadata. If the input entity has unsaved changes they may be lost.
 	 * Throws an exception if the operation fails.
 	 * @param healthElement the health element to share
 	 * @param delegates specify the data owners which will gain access to the entity and the options for sharing with

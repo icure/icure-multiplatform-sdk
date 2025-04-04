@@ -233,6 +233,7 @@ interface FormFlavouredApi<E : Form> : FormBasicFlavouredApi<E> {
 	 * Share a form with another data owner. The form must already exist in the database for this method to
 	 * succeed. If you want to share the form before creation you should instead pass provide the delegates in
 	 * the initialize encryption metadata method.
+	 * Note: this method only updates the security metadata. If the input entity has unsaved changes they may be lost.
 	 * @param delegateId the owner that will gain access to the form
 	 * @param form the form to share with [delegateId]
 	 * @param options specifies how the form will be shared. By default, all data available to the current user
@@ -251,6 +252,7 @@ interface FormFlavouredApi<E : Form> : FormBasicFlavouredApi<E> {
 	 * Share a form with multiple data owners. The form must already exist in the database for this method to
 	 * succeed. If you want to share the form before creation you should instead pass provide the delegates in
 	 * the initialize encryption metadata method.
+	 * Note: this method only updates the security metadata. If the input entity has unsaved changes they may be lost.
 	 * Throws an exception if the operation fails.
 	 * @param form the form to share
 	 * @param delegates specify the data owners which will gain access to the entity and the options for sharing with

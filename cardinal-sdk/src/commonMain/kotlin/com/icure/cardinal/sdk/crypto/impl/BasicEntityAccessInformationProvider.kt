@@ -1,13 +1,15 @@
 package com.icure.cardinal.sdk.crypto.impl
 
 import com.icure.cardinal.sdk.crypto.EntityAccessInformationProvider
-import com.icure.cardinal.sdk.model.EntityReferenceInGroup
 import com.icure.cardinal.sdk.crypto.entities.EntityAccessInformation
 import com.icure.cardinal.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
 import com.icure.cardinal.sdk.crypto.entities.SdkBoundGroup
+import com.icure.cardinal.sdk.model.EntityReferenceInGroup
 import com.icure.cardinal.sdk.model.base.HasEncryptionMetadata
 import com.icure.cardinal.sdk.model.embed.AccessLevel
 import com.icure.utils.InternalIcureApi
+import kotlin.coroutines.CoroutineContext
+import kotlin.coroutines.coroutineContext
 
 /**
  * Implementation of [EntityAccessInformationProvider] that doesn't attempt to de-anonymize any delegation, can be used
@@ -19,7 +21,7 @@ internal class BasicEntityAccessInformationProvider(
 	 * On basic SDK this should give the (constant) bound group id
 	 * On unbound SDK this should give the group id of the current request
 	 */
-	private val currentBoundGroupId: suspend () -> String?
+	private val currentBoundGroupId: (CoroutineContext) -> String?
 ) : EntityAccessInformationProvider {
 	override suspend fun getDataOwnersWithAccessTo(
 		entityGroupId: String?,
@@ -34,7 +36,7 @@ internal class BasicEntityAccessInformationProvider(
 			false
 		)
 		// bound group id actually needed only if entity group id is not null.
-		val boundGroupId = if (entityGroupId == null) null else currentBoundGroupId()?.let(::SdkBoundGroup)
+		val boundGroupId = if (entityGroupId == null) null else currentBoundGroupId(coroutineContext)?.let(::SdkBoundGroup)
 		val infoFromSecureDelegations = EntityAccessInformation(
 			EntityAccessInformation.buildPermissionsMap(
 				entity.securityMetadata?.secureDelegations?.values?.flatMap { d->

@@ -161,6 +161,7 @@ interface TopicFlavouredApi<E : Topic> : TopicBasicFlavouredApi<E> {
 	 * Share a topic with another data owner. The topic must already exist in the database for this method to
 	 * succeed. If you want to share the topic before creation you should instead pass provide the delegates in
 	 * the initialize encryption metadata method.
+	 * Note: this method only updates the security metadata. If the input entity has unsaved changes they may be lost.
 	 * @param delegateId the owner that will gain access to the topic
 	 * @param topic the topic to share with [delegateId]
 	 * @param options specifies how the topic will be shared. By default, all data available to the current user
@@ -179,6 +180,7 @@ interface TopicFlavouredApi<E : Topic> : TopicBasicFlavouredApi<E> {
 	 * Share a topic with multiple data owners. The topic must already exist in the database for this method to
 	 * succeed. If you want to share the topic before creation you should instead pass provide the delegates in
 	 * the initialize encryption metadata method.
+	 * Note: this method only updates the security metadata. If the input entity has unsaved changes they may be lost.
 	 * Throws an exception if the operation fails.
 	 * @param topic the topic to share
 	 * @param delegates specify the data owners which will gain access to the entity and the options for sharing with

@@ -73,6 +73,7 @@ interface ClassificationFlavouredApi<E : Classification> : ClassificationBasicFl
 	 * Share a classification with another data owner. The classification must already exist in the database for this method to
 	 * succeed. If you want to share the classification before creation you should instead pass provide the delegates in
 	 * the initialize encryption metadata method.
+	 * Note: this method only updates the security metadata. If the input entity has unsaved changes they may be lost.
 	 * @param delegateId the owner that will gain access to the classification
 	 * @param classification the classification to share with [delegateId]
 	 * @param options specifies how the classification will be shared. By default, all data available to the current user
@@ -91,6 +92,7 @@ interface ClassificationFlavouredApi<E : Classification> : ClassificationBasicFl
 	 * Share a classification with multiple data owners. The classification must already exist in the database for this method to
 	 * succeed. If you want to share the classification before creation you should instead pass provide the delegates in
 	 * the initialize encryption metadata method.
+	 * Note: this method only updates the security metadata. If the input entity has unsaved changes they may be lost.
 	 * Throws an exception if the operation fails.
 	 * @param classification the classification to share
 	 * @param delegates specify the data owners which will gain access to the entity and the options for sharing with

@@ -67,7 +67,7 @@ import com.icure.cardinal.sdk.api.impl.KeywordApiImpl
 import com.icure.cardinal.sdk.api.impl.MaintenanceTaskApiImpl
 import com.icure.cardinal.sdk.api.impl.MedicalLocationApiImpl
 import com.icure.cardinal.sdk.api.impl.MessageApiImpl
-import com.icure.cardinal.sdk.api.impl.PatientApiImpl
+import com.icure.cardinal.sdk.api.impl.initPatientApi
 import com.icure.cardinal.sdk.api.impl.PermissionApiImpl
 import com.icure.cardinal.sdk.api.impl.PlaceApiImpl
 import com.icure.cardinal.sdk.api.impl.ReceiptApiImpl
@@ -736,7 +736,7 @@ private class CardinalApiImpl(
 	}
 
 	override val patient: PatientApi by lazy {
-		PatientApiImpl(
+		initPatientApi(
 			rawPatientApi,
 			rawHealthcarePartyApi,
 			rawHealthElementApi,

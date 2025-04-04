@@ -12,6 +12,7 @@ import io.ktor.client.HttpClient
 import kotlinx.coroutines.Job
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
+import kotlin.coroutines.CoroutineContext
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
 
@@ -202,9 +203,7 @@ data class UnboundBasicSdkOptions(
 	 * However, if it is possible for you to extract the group id from the context of the coroutine that is executing
 	 * the method, you can provide the function here to allow using these methods also on unbound SDK.
 	 */
-	val getBoundGroupId: suspend () -> String? = {
-		throw UnsupportedOperationException("To use this method you need to configure `getBoundGroupId` in the UnboundBasicSdkOptions")
-	},
+	val getBoundGroupId: ((CoroutineContext) -> String?)? = null,
 	override val requestTimeout: Duration? = null,
 	override val requestRetryConfiguration: RequestRetryConfiguration = RequestRetryConfiguration(),
 ): CommonSdkOptions {

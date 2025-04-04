@@ -160,6 +160,7 @@ interface CalendarItemFlavouredApi<E : CalendarItem> : CalendarItemBasicFlavoure
 	 * Share a calendar item with another data owner. The calendar item must already exist in the database for this method to
 	 * succeed. If you want to share the calendar item before creation you should instead pass provide the delegates in
 	 * the initialize encryption metadata method.
+	 * Note: this method only updates the security metadata. If the input entity has unsaved changes they may be lost.
 	 * @param delegateId the owner that will gain access to the calendar item
 	 * @param calendarItem the calendar item to share with [delegateId]
 	 * @param options specifies how the calendar item will be shared. By default, all data available to the current user
@@ -178,6 +179,7 @@ interface CalendarItemFlavouredApi<E : CalendarItem> : CalendarItemBasicFlavoure
 	 * Share a calendar item with multiple data owners. The calendar item must already exist in the database for this method to
 	 * succeed. If you want to share the calendar item before creation you should instead pass provide the delegates in
 	 * the initialize encryption metadata method.
+	 * Note: this method only updates the security metadata. If the input entity has unsaved changes they may be lost.
 	 * Throws an exception if the operation fails.
 	 * @param calendarItem the calendar item to share
 	 * @param delegates specify the data owners which will gain access to the entity and the options for sharing with

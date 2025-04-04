@@ -6,16 +6,22 @@ import com.icure.cardinal.sdk.utils.DefaultValue
 import com.icure.utils.InternalIcureApi
 import kotlinx.serialization.Serializable
 
+// TODO maybe have sealed interface instead?
 /**
  * A reference to an entity in a group.
  *
  * The entity group id can be null, which means the entity is in the same group as the user currently logged in to the
  * SDK.
  *
- * Methods of the SDK always return entity references with groupId set to null when it matches the groupId of the
- * current user.
- * However, when providing input to the SDK methods you can use references with the group of the logged user or null
+ * When providing input to any SDK method you can use references with the group of the logged user or null
  * interchangeably.
+ *
+ * However, some SDK methods that return [EntityReferenceInGroup] consistently fill the [groupId] of the logged user
+ * while others consistently leave it null.
+ * The general rule is that the methods from `inGroup` apis always fill all [groupId] values, even when the group
+ * matches the current user's group. Methods that always act on the logged user's group instead always leave null
+ * [groupId] when it would match the logged user's group.
+ *
  * Note that `equals` methods can't take in consideration the group of the current user, therefore
  * `EntityReferenceInGroup(x, userGroup) != EntityReferenceInGroup(x, null)`, even though the SDK for a user in
  * userGroup treats them the same.
@@ -44,7 +50,10 @@ data class EntityReferenceInGroup(
 	@InternalIcureApi
 	internal fun normalized(sdkGroupId: SdkBoundGroup?): EntityReferenceInGroup {
 		if (sdkGroupId == null) require(groupId == null) { "Can't use in-group references on kraken-lite" }
-		return if (groupId != null && groupId == sdkGroupId?.groupId) EntityReferenceInGroup(entityId, null) else this
+		return if (groupId != null && groupId == sdkGroupId?.groupId) com.icure.cardinal.sdk.model.EntityReferenceInGroup(
+			entityId,
+			null
+		) else this
 	}
 
 	companion object {
@@ -61,15 +70,27 @@ data class EntityReferenceInGroup(
 			}
 			return if (resolvedEntityGroup != null) {
 				when {
-					splitReference.size == 1 -> EntityReferenceInGroup(entityId = splitReference[0], groupId = resolvedEntityGroup)
-					splitReference[0] == sdkGroupId?.groupId -> EntityReferenceInGroup(entityId = splitReference[1], groupId = null)
-					else -> EntityReferenceInGroup(entityId = splitReference[1], groupId = splitReference[0])
+					splitReference.size == 1 -> com.icure.cardinal.sdk.model.EntityReferenceInGroup(
+						entityId = splitReference[0],
+						groupId = resolvedEntityGroup
+					)
+					splitReference[0] == sdkGroupId?.groupId -> com.icure.cardinal.sdk.model.EntityReferenceInGroup(
+						entityId = splitReference[1],
+						groupId = null
+					)
+					else -> com.icure.cardinal.sdk.model.EntityReferenceInGroup(
+						entityId = splitReference[1],
+						groupId = splitReference[0]
+					)
 				}
 			} else {
 				if (splitReference.size == 1)
-					EntityReferenceInGroup(entityId = splitReference[0])
+					com.icure.cardinal.sdk.model.EntityReferenceInGroup(entityId = splitReference[0])
 				else
-					EntityReferenceInGroup(entityId = splitReference[1], groupId = splitReference[0])
+					com.icure.cardinal.sdk.model.EntityReferenceInGroup(
+						entityId = splitReference[1],
+						groupId = splitReference[0]
+					)
 			}
 		}
 	}

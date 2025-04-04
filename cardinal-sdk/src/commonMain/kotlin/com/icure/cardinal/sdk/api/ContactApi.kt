@@ -226,6 +226,7 @@ interface ContactFlavouredApi<E : Contact, S : Service> : ContactBasicFlavouredA
 	 * Share a contact with another data owner. The contact must already exist in the database for this method to
 	 * succeed. If you want to share the contact before creation you should instead pass provide the delegates in
 	 * the initialize encryption metadata method.
+	 * Note: this method only updates the security metadata. If the input entity has unsaved changes they may be lost.
 	 * @param delegateId the owner that will gain access to the contact
 	 * @param contact the contact to share with [delegateId]
 	 * @param options specifies how the contact will be shared. By default, all data available to the current user
@@ -244,6 +245,7 @@ interface ContactFlavouredApi<E : Contact, S : Service> : ContactBasicFlavouredA
 	 * Share a contact with multiple data owners. The contact must already exist in the database for this method to
 	 * succeed. If you want to share the contact before creation you should instead pass provide the delegates in
 	 * the initialize encryption metadata method.
+	 * Note: this method only updates the security metadata. If the input entity has unsaved changes they may be lost.
 	 * Throws an exception if the operation fails.
 	 * @param contact the contact to share
 	 * @param delegates specify the data owners which will gain access to the entity and the options for sharing with

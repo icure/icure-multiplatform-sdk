@@ -7,13 +7,116 @@ import com.icure.cardinal.sdk.model.PaginatedList
 import com.icure.cardinal.sdk.model.base.HasEncryptionMetadata
 import com.icure.cardinal.sdk.model.embed.Encryptable
 import com.icure.cardinal.sdk.model.requests.EntityBulkShareResult
+import com.icure.cardinal.sdk.options.ApiConfiguration
+import com.icure.cardinal.sdk.options.BasicApiConfiguration
+import com.icure.cardinal.sdk.options.EntitiesEncryptedFieldsManifests
+import com.icure.cardinal.sdk.options.JsonPatcher
 import com.icure.cardinal.sdk.utils.Serialization
 import com.icure.utils.InternalIcureApi
 import kotlinx.serialization.KSerializer
+import kotlinx.serialization.json.JsonElement
 
 internal interface FlavouredApi<EncryptedEntity : HasEncryptionMetadata, FlavouredEntity : HasEncryptionMetadata> {
 	suspend fun validateAndMaybeEncrypt(entitiesGroupId: String?, entities: List<FlavouredEntity>): List<EncryptedEntity>
 	suspend fun maybeDecrypt(entitiesGroupId: String?, entities: List<EncryptedEntity>): List<FlavouredEntity>
+
+	companion object {
+		@InternalIcureApi
+		inline fun <EncryptedEntity, DecryptedEntity> decrypted(
+			config: ApiConfiguration,
+			encryptedSerializer: KSerializer<EncryptedEntity>,
+			decryptedSerializer: KSerializer<DecryptedEntity>,
+			type: EntityWithEncryptionMetadataTypeName,
+			crossinline manifest: EntitiesEncryptedFieldsManifests.() -> EncryptedFieldsManifest,
+			crossinline patchJson: JsonPatcher.(JsonElement) -> JsonElement
+		) where EncryptedEntity: HasEncryptionMetadata,
+				DecryptedEntity: HasEncryptionMetadata,
+				EncryptedEntity: Encryptable,
+				DecryptedEntity: Encryptable = object : FlavouredApi<EncryptedEntity, DecryptedEntity> {
+			override suspend fun validateAndMaybeEncrypt(
+				entitiesGroupId: String?,
+				entities: List<DecryptedEntity>
+			): List<EncryptedEntity> =
+				config.crypto.entity.encryptEntities(
+					entitiesGroupId,
+					entities,
+					type,
+					decryptedSerializer,
+					config.encryption.manifest(),
+				) { Serialization.json.decodeFromJsonElement(encryptedSerializer, it) }
+
+			override suspend fun maybeDecrypt(
+				entitiesGroupId: String?,
+				entities: List<EncryptedEntity>
+			): List<DecryptedEntity> =
+				config.crypto.entity.decryptEntities(
+					entitiesGroupId,
+					entities,
+					type,
+					encryptedSerializer,
+				) { Serialization.json.decodeFromJsonElement(decryptedSerializer, config.jsonPatcher.patchJson(it)) }
+		}
+
+		@InternalIcureApi
+		inline fun <EncryptedEntity> encrypted(
+			config: BasicApiConfiguration,
+			encryptedSerializer: KSerializer<EncryptedEntity>,
+			type: EntityWithEncryptionMetadataTypeName,
+			crossinline manifest: EntitiesEncryptedFieldsManifests.() -> EncryptedFieldsManifest,
+		) where EncryptedEntity: HasEncryptionMetadata,
+				EncryptedEntity: Encryptable = object : FlavouredApi<EncryptedEntity, EncryptedEntity> {
+			override suspend fun validateAndMaybeEncrypt(
+				entitiesGroupId: String?,
+				entities: List<EncryptedEntity>
+			): List<EncryptedEntity> =
+				config.crypto.validationService.validateEncryptedEntities(
+					entities,
+					type,
+					encryptedSerializer,
+					config.encryption.manifest()
+				)
+
+			override suspend fun maybeDecrypt(
+				entitiesGroupId: String?,
+				entities: List<EncryptedEntity>
+			): List<EncryptedEntity> =
+				entities
+		}
+
+		@InternalIcureApi
+		inline fun <Base, reified EncryptedEntity : Base, reified DecryptedEntity : Base> tryAndRecover(
+			config: ApiConfiguration,
+			encryptedSerializer: KSerializer<EncryptedEntity>,
+			decryptedSerializer: KSerializer<DecryptedEntity>,
+			type: EntityWithEncryptionMetadataTypeName,
+			crossinline manifest: EntitiesEncryptedFieldsManifests.() -> EncryptedFieldsManifest,
+			crossinline patchJson: JsonPatcher.(JsonElement) -> JsonElement
+		) where Base: HasEncryptionMetadata, Base: Encryptable = object : FlavouredApi<EncryptedEntity, Base> {
+			override suspend fun validateAndMaybeEncrypt(
+				entitiesGroupId: String?,
+				entities: List<Base>
+			): List<EncryptedEntity> =
+				config.crypto.entity.validateOrEncryptEntities(
+					entitiesGroupId = entitiesGroupId,
+					entities = entities,
+					entitiesType = type,
+					encryptedSerializer = encryptedSerializer,
+					decryptedSerializer = decryptedSerializer,
+					fieldsToEncrypt = config.encryption.manifest()
+				)
+
+			override suspend fun maybeDecrypt(
+				entitiesGroupId: String?,
+				entities: List<EncryptedEntity>
+			): List<Base> =
+				config.crypto.entity.tryDecryptEntities(
+					entitiesGroupId,
+					entities,
+					type,
+					encryptedSerializer,
+				) { Serialization.json.decodeFromJsonElement(decryptedSerializer, config.jsonPatcher.patchJson(it)) }
+		}
+	}
 }
 
 internal suspend inline fun <EncryptedEntity : HasEncryptionMetadata, FlavouredEntity : HasEncryptionMetadata> FlavouredApi<EncryptedEntity, FlavouredEntity>.validateAndMaybeEncrypt(entitiesGroupId: String?, entity: FlavouredEntity): EncryptedEntity =

@@ -42,7 +42,7 @@ import com.icure.cardinal.sdk.api.impl.KeywordApiImpl
 import com.icure.cardinal.sdk.api.impl.MaintenanceTaskBasicApiImpl
 import com.icure.cardinal.sdk.api.impl.MedicalLocationApiImpl
 import com.icure.cardinal.sdk.api.impl.MessageBasicApiImpl
-import com.icure.cardinal.sdk.api.impl.PatientBasicApiImpl
+import com.icure.cardinal.sdk.api.impl.initPatientBasicApi
 import com.icure.cardinal.sdk.api.impl.PermissionApiImpl
 import com.icure.cardinal.sdk.api.impl.PlaceApiImpl
 import com.icure.cardinal.sdk.api.impl.ReceiptBasicApiImpl
@@ -162,7 +162,11 @@ interface CardinalUnboundBaseSdk : CardinalBaseApis {
 				BasicInternalCryptoApiImpl(
 					jsonEncryptionService,
 					EntityValidationServiceImpl(jsonEncryptionService),
-					BasicEntityAccessInformationProvider(options.getBoundGroupId)
+					BasicEntityAccessInformationProvider(
+						options.getBoundGroupId ?: {
+							throw UnsupportedOperationException("To use this method you need to configure `getBoundGroupId` in the UnboundBasicSdkOptions")
+						}
+					)
 				),
 				manifests,
 				rawApiConfig
@@ -392,7 +396,7 @@ private class CardinalBaseApisImpl(
 		)
 	}
 	override val patient by lazy {
-		PatientBasicApiImpl(
+		initPatientBasicApi(
 			RawPatientApiImpl(
 				apiUrl,
 				authProvider,

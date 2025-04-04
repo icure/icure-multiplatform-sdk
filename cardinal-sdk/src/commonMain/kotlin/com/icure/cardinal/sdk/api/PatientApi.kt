@@ -1,6 +1,5 @@
 package com.icure.cardinal.sdk.api
 
-import com.icure.cardinal.sdk.model.EntityReferenceInGroup
 import com.icure.cardinal.sdk.crypto.entities.EntityAccessInformation
 import com.icure.cardinal.sdk.crypto.entities.EntityWithTypeInfo
 import com.icure.cardinal.sdk.crypto.entities.PatientShareOptions
@@ -12,6 +11,8 @@ import com.icure.cardinal.sdk.filters.FilterOptions
 import com.icure.cardinal.sdk.filters.SortableFilterOptions
 import com.icure.cardinal.sdk.model.DecryptedPatient
 import com.icure.cardinal.sdk.model.EncryptedPatient
+import com.icure.cardinal.sdk.model.EntityReferenceInGroup
+import com.icure.cardinal.sdk.model.GroupScoped
 import com.icure.cardinal.sdk.model.IdWithMandatoryRev
 import com.icure.cardinal.sdk.model.IdWithRev
 import com.icure.cardinal.sdk.model.PaginatedList
@@ -101,6 +102,42 @@ interface PatientBasicFlavourlessApi {
 	suspend fun countOfPatients(hcPartyId: String): Int
 }
 
+interface PatientBasicFlavourlessInGroupApi {
+	/**
+	 * In-group version of [PatientBasicFlavourlessApi.deletePatientById]
+	 */
+	// TODO suspend fun deletePatientById(groupId: String, entityId: String, rev: String): GroupScoped<DocIdentifier>
+
+	/**
+	 * In-group version of [PatientBasicFlavourlessApi.deletePatientsByIds]
+	 */
+	// TODO? suspend fun deletePatientsByIds(entityIds: List<GroupScoped<IdWithMandatoryRev>>): List<GroupScoped<DocIdentifier>> // would need to make GroupScoped constructor public, provide a method for converting GroupScoped<Revisionable> to GroupScoped<IdWithMandatoryRev>>, or similar...
+	/**
+	 * In-group version of [PatientBasicFlavourlessApi.purgePatientById]
+	 */
+	// TODO suspend fun purgePatientById(groupId: String, entityId: String, rev: String)
+
+	/**
+	 * In-group version of [PatientBasicFlavourlessApi.deletePatient]
+	 */
+	// TODO suspend fun deletePatient(patient: GroupScoped<Patient>): GroupScoped<DocIdentifier>
+
+	/**
+	 * In-group version of [PatientBasicFlavourlessApi.deletePatients]
+	 */
+	// TODO suspend fun deletePatients(patients: List<GroupScoped<Patient>>): List<GroupScoped<DocIdentifier>>
+
+	/**
+	 * In-group version of [PatientBasicFlavourlessApi.purgePatient]
+	 */
+	// TODO suspend fun purgePatient(patient: GroupScoped<Patient>)
+
+	/**
+	 * In-group version of [PatientBasicFlavourlessApi.getDataOwnersWithAccessTo].
+	 */
+	suspend fun getDataOwnersWithAccessTo(patient: GroupScoped<Patient>): EntityAccessInformation
+}
+
 /* This interface includes the API calls can be used on decrypted items if encryption keys are available *or* encrypted items if no encryption keys are available */
 interface PatientBasicFlavouredApi<E : Patient> {
 	/**
@@ -146,11 +183,7 @@ interface PatientBasicFlavouredApi<E : Patient> {
 	 * @param entityId a patient id.
 	 * @return the patient with id [entityId].
 	 */
-	suspend fun getPatient(
-		entityId: String,
-		@DefaultValue("null")
-		groupId: String? = null
-	): E
+	suspend fun getPatient(	entityId: String): E
 
 	/**
 	 * Get the patient with the provided id and follows the chain of patient merges indicated by the
@@ -385,12 +418,60 @@ interface PatientBasicFlavouredApi<E : Patient> {
 	suspend fun mergePatients(from: Patient, mergedInto: E): E
 }
 
+interface PatientBasicFlavouredInGroupApi<E : Patient> {
+	/**
+	 * In-group version of [PatientBasicFlavouredApi.undeletePatient]
+	 */
+	// TODO suspend fun undeletePatient(patient: GroupScoped<Patient>): GroupScoped<E>
+
+	/**
+	 * In-group version of [PatientBasicFlavouredApi.modifyPatient]
+	 */
+	// TODO suspend fun modifyPatient(entity: GroupScoped<E>): GroupScoped<E>
+
+	/**
+	 * In-group version of [PatientBasicFlavouredApi.undeletePatientById]
+	 */
+	// TODO suspend fun undeletePatientById(groupId: String, id: String, rev: String): GroupScoped<E>
+
+	/**
+	 * In-group version of [PatientBasicFlavouredApi.undeletePatients]
+	 */
+	// TODO? suspend fun undeletePatients(ids: List<GroupScoped<IdWithMandatoryRev>>): List<GroupScoped<E>> // would need to make GroupScoped constructor public, provide a method for converting GroupScoped<Revisionable> to GroupScoped<IdWithMandatoryRev>>, or similar...
+
+	/**
+	 * In-group version of [PatientBasicFlavouredApi.getPatient]
+	 */
+	suspend fun getPatient(groupId: String, entityId: String): GroupScoped<E>
+
+	/**
+	 * In-group version of [PatientBasicFlavouredApi.getPatientResolvingMerges]
+	 */
+	suspend fun getPatientResolvingMerges(groupId: String, patientId: String, maxMergeDepth: Int? = null): GroupScoped<E>
+
+	/**
+	 * In-group version of [PatientBasicFlavouredApi.getPatients]
+	 */
+	// TODO suspend fun getPatients(groupId: String, patientIds: List<String>): List<GroupScoped<E>>
+
+	/**
+	 * In-group version of [PatientBasicFlavouredApi.modifyPatients]
+	 */
+	// TODO suspend fun modifyPatients(patientDtos: List<GroupScoped<E>>): List<GroupScoped<IdWithRev>>
+
+	/**
+	 * In-group version of [PatientBasicFlavouredApi.mergePatients]
+	 */
+	// TODO? suspend fun mergePatients(from: GroupScoped<Patient>, mergedInto: GroupScoped<E>): GroupScoped<E>
+}
+
 /* The extra API calls declared in this interface are the ones that can be used on encrypted or decrypted items but only when the user is a data owner */
 interface PatientFlavouredApi<E : Patient> : PatientBasicFlavouredApi<E> {
 	/**
 	 * Share a patient with another data owner. The patient must already exist in the database for this method to
 	 * succeed. If you want to share the patient before creation you should instead pass provide the delegates in
 	 * the initialize encryption metadata method.
+	 * Note: this method only updates the security metadata. If the input entity has unsaved changes they may be lost.
 	 * @param delegateId the owner that will gain access to the patient
 	 * @param patient the patient to share with [delegateId]
 	 * @param options specifies how the patient will be shared. Refer to the documentation of [PatientShareOptions] for more information.
@@ -407,6 +488,7 @@ interface PatientFlavouredApi<E : Patient> : PatientBasicFlavouredApi<E> {
 	 * Share a patient with multiple data owners. The patient must already exist in the database for this method to
 	 * succeed. If you want to share the patient before creation you should instead pass provide the delegates in
 	 * the initialize encryption metadata method.
+	 * Note: this method only updates the security metadata. If the input entity has unsaved changes they may be lost.
 	 * Throws an exception if the operation fails.
 	 * @param patient the patient to share
 	 * @param delegates specify the data owners which will gain access to the entity and the options for sharing with
@@ -416,12 +498,6 @@ interface PatientFlavouredApi<E : Patient> : PatientBasicFlavouredApi<E> {
 	suspend fun shareWithMany(
 		patient: E,
 		delegates: Map<String, PatientShareOptions>
-	): E
-
-	suspend fun shareInGroup(
-		patient: E,
-		entityGroupId: String?,
-		delegates: @JsMapAsObjectArray(flattenKey = true, flattenValue = true) Map<EntityReferenceInGroup, PatientShareOptions>
 	): E
 
 	/**
@@ -438,6 +514,8 @@ interface PatientFlavouredApi<E : Patient> : PatientBasicFlavouredApi<E> {
 	 *
 	 * Confidential secret ids only make sense in environments where a hierarchical data owner structure is used. In
 	 * other environments all secret ids are confidential by nature.
+	 *
+	 * Note: this method only updates the security metadata. If the input entity has unsaved changes they may be lost.
 	 *
 	 * @param patient a patient
 	 * @return the input if there is already a secret id available for the patient, or the updated patient otherwise.
@@ -475,24 +553,98 @@ interface PatientFlavouredApi<E : Patient> : PatientBasicFlavouredApi<E> {
 	): PaginatedListIterator<E>
 }
 
+interface PatientFlavouredInGroupApi<E : Patient> : PatientBasicFlavouredInGroupApi<E> {
+
+	/**
+	 * In-group version of [PatientFlavouredApi.shareWith]
+	 */
+	suspend fun shareWith(
+		delegate: EntityReferenceInGroup,
+		patient: GroupScoped<E>,
+		@DefaultValue("null")
+		options: PatientShareOptions? = null
+	): GroupScoped<E>
+
+	/**
+	 * In-group version of [PatientFlavouredApi.shareWithMany]
+	 */
+	suspend fun shareWithMany(
+		patient: GroupScoped<E>,
+		delegates: @JsMapAsObjectArray(flattenKey = true, flattenValue = true) Map<EntityReferenceInGroup, PatientShareOptions>
+	): GroupScoped<E>
+
+	/**
+	 * In-group version of [PatientFlavouredApi.initializeConfidentialSecretId]
+	 */
+	suspend fun initializeConfidentialSecretId(patient: GroupScoped<E>): GroupScoped<E>
+
+	/**
+	 * In-group version of [PatientFlavouredApi.filterPatientsBy]
+	 */
+	// TODO suspend fun filterPatientsBy(groupId: String, filter: FilterOptions<Patient>): PaginatedListIterator<GroupScoped<E>>
+
+	/**
+	 * In-group version of [PatientFlavouredApi.filterPatientsBySorted]
+	 */
+	// TODO suspend fun filterPatientsBySorted(groupId: String, filter: SortableFilterOptions<Patient>): PaginatedListIterator<GroupScoped<E>>
+}
+
 /* The extra API calls declared in this interface are the ones that can only be used on decrypted items when encryption keys are available */
 interface PatientApi : PatientBasicFlavourlessApi, PatientFlavouredApi<DecryptedPatient>, Subscribable<Patient, EncryptedPatient, FilterOptions<Patient>> {
+	/**
+	 * Give access to the encrypted flavour of the api
+	 */
+	val encrypted: PatientFlavouredApi<EncryptedPatient>
+
+	/**
+	 * Gives access to the polymorphic flavour of the api
+	 */
+	val tryAndRecover: PatientFlavouredApi<Patient>
+
+	/**
+	 * Gives access to methods of the api that allow to use entities or work with data owners in groups other than the
+	 * current user's group.
+	 * These methods aren't available when connected to a kraken-lite instance.
+	 */
+	val inGroup: PatientInGroupApi
+
+	/**
+	 * Decrypts patients, throwing an exception if it is not possible.
+	 * @param patients encrypted patients
+	 * @return the decrypted patients
+	 * @throws EntityEncryptionException if any of the provided patients couldn't be decrypted
+	 */
+	suspend fun decrypt(patients: List<EncryptedPatient>): List<DecryptedPatient>
+
+	/**
+	 * Tries to decrypt a patient, returns the input if it is not possible.
+	 * @param patients encrypted patients
+	 * @return all the provided patients, each of them decrypted if possible or unchanged (still encrypted)
+	 */
+	suspend fun tryDecrypt(patients: List<EncryptedPatient>): List<Patient>
+
+	/**
+	 * Encrypts provided decrypted patients, and validates already encrypted patients.
+	 * @param patients patients to encrypt and/or validate
+	 * @return the encrypted and validates patients
+	 * @throws EntityEncryptionException if any of the provided decrypted patients couldn't be encrypted (the current
+	 * user can't access its encryption key or no key was initialized) or if the already encrypted patients don't
+	 * respect the manifest.
+	 */
+	suspend fun encryptOrValidate(patients: List<Patient>): List<EncryptedPatient>
+
 	/**
 	 * Get all the secret ids that the current data owner can access from the provided patient.
 	 * @param patient a patient
 	 * @return the secret ids of the provided patient
 	 */
-	suspend fun getSecretIdsOf(
-		patient: Patient,
-		@DefaultValue("null")
-		groupId: String? = null
-	): Set<String>
+	suspend fun getSecretIdsOf(patient: Patient): Set<String>
 
 	/**
-	 * Attempts to extract the encryption keys of a patient. If the user does not have access to any encryption key
+	 * Attempts to extract the encryption keys of a patient. If the user doesn't have access to any encryption key
 	 * of the access log the method will return an empty set.
 	 * Note: entities now have only one encryption key, but this method returns a set for compatibility with older
-	 * versions of iCure where this was not a guarantee.
+	 * versions of iCure where this wasn't a guarantee.
 	 * @param patient a patient
 	 * @return the encryption keys extracted from the provided patient.
 	 */
@@ -502,13 +654,9 @@ interface PatientApi : PatientBasicFlavourlessApi, PatientFlavouredApi<Decrypted
 	 * Create a new patient. The provided patient must have the encryption metadata initialized.
 	 * @param patient a patient with initialized encryption metadata
 	 * @return the created patient with updated revision.
-	 * @throws IllegalArgumentException if the encryption metadata of the input was not initialized.
+	 * @throws IllegalArgumentException if the encryption metadata of the input wasn't initialized.
 	 */
-	suspend fun createPatient(
-		patient: DecryptedPatient,
-		@DefaultValue("null")
-		groupId: String? = null
-	): DecryptedPatient
+	suspend fun createPatient(patient: DecryptedPatient): DecryptedPatient
 
 	/**
 	 * Creates a new patient with initialized encryption metadata
@@ -528,19 +676,6 @@ interface PatientApi : PatientBasicFlavourlessApi, PatientFlavouredApi<Decrypted
 		delegates: Map<String, AccessLevel> = emptyMap()
 	): DecryptedPatient
 
-	/**
-	 * Equivalent to [withEncryptionMetadata] but initializes the encryption metadata for storage in a group that
-	 * can be different from the current user's group, or with delegates in an external group.
-	 */
-	suspend fun withEncryptionMetadataForGroup(
-		entityGroupId: String?,
-		base: DecryptedPatient?,
-		@DefaultValue("null")
-		user: User? = null,
-		@DefaultValue("emptyMap()")
-		delegates: @JsMapAsObjectArray(flattenKey = true, valueEntryName = "accessLevel") Map<EntityReferenceInGroup, AccessLevel> = emptyMap(),
-	): DecryptedPatient
-	
 	/**
 	 * Specifies if the current user has write access to a patient.
 	 * @param patient a patient
@@ -580,31 +715,6 @@ interface PatientApi : PatientBasicFlavourlessApi, PatientFlavouredApi<Decrypted
 	 * @param delegates a set of data owner ids
 	 */
 	suspend fun createDelegationDeAnonymizationMetadata(entity: Patient, delegates: Set<String>)
-
-	/**
-	 * Decrypts a patient, throwing an exception if it is not possible.
-	 * @param patient a patient
-	 * @return the decrypted patient
-	 * @throws EntityEncryptionException if the patient could not be decrypted
-	 */
-	suspend fun decrypt(patient: EncryptedPatient, groupId: String? = null): DecryptedPatient
-
-	/**
-	 * Tries to decrypt a patient, returns the input if it is not possible.
-	 * @param patient an encrypted patient
-	 * @return the decrypted patient if the decryption was successful or the input if it was not.
-	 */
-	suspend fun tryDecrypt(patient: EncryptedPatient, groupId: String? = null): Patient
-
-	/**
-	 * Give access to the encrypted flavour of the api
-	 */
-	val encrypted: PatientFlavouredApi<EncryptedPatient>
-
-	/**
-	 * Gives access to the polymorphic flavour of the api
-	 */
-	val tryAndRecover: PatientFlavouredApi<Patient>
 
 	suspend fun createPatients(patients: List<DecryptedPatient>): List<IdWithRev>
 
@@ -706,8 +816,110 @@ interface PatientApi : PatientBasicFlavourlessApi, PatientFlavouredApi<Decrypted
 	): EncryptedPatient
 }
 
+interface PatientInGroupApi : PatientBasicFlavourlessInGroupApi, PatientFlavouredInGroupApi<DecryptedPatient> { // TODO subscribable?
+	/**
+	 * Give access to the encrypted flavour of the api
+	 */
+	val encrypted: PatientFlavouredInGroupApi<EncryptedPatient>
+
+	/**
+	 * In-group version of [PatientApi.tryAndRecover]
+	 */
+	val tryAndRecover: PatientFlavouredInGroupApi<Patient>
+
+	/**
+	 * In-group version of [PatientApi.decrypt]
+	 */
+	suspend fun decrypt(patients: List<GroupScoped<EncryptedPatient>>): List<GroupScoped<DecryptedPatient>>
+
+	/**
+	 * In-group version of [PatientApi.tryDecrypt]
+	 */
+	suspend fun tryDecrypt(patients: List<GroupScoped<EncryptedPatient>>): List<GroupScoped<Patient>>
+
+	/**
+	 * In-group version of [PatientApi.encryptOrValidate]
+	 */
+	suspend fun encryptOrValidate(patients: List<GroupScoped<Patient>>): List<GroupScoped<EncryptedPatient>>
+
+	/**
+	 * In-group version of [PatientApi.getSecretIdsOf]
+	 */
+	suspend fun getSecretIdsOf(patient: GroupScoped<Patient>): Set<String>
+
+	/**
+	 * In-group version of [PatientApi.getEncryptionKeysOf]
+	 */
+	suspend fun getEncryptionKeysOf(patient: GroupScoped<Patient>): Set<HexString>
+
+	/**
+	 * In-group version of [PatientApi.createPatient]
+	 */
+	suspend fun createPatient(patient: GroupScoped<DecryptedPatient>): GroupScoped<DecryptedPatient>
+
+	/**
+	 * In-group version of [PatientApi.withEncryptionMetadata]
+	 */
+	suspend fun withEncryptionMetadata(
+		entityGroupId: String,
+		base: DecryptedPatient?,
+		@DefaultValue("null")
+		user: User? = null,
+		@DefaultValue("emptyMap()")
+		delegates: @JsMapAsObjectArray(flattenKey = true, valueEntryName = "accessLevel") Map<EntityReferenceInGroup, AccessLevel> = emptyMap(),
+	): GroupScoped<DecryptedPatient>
+
+	/**
+	 * In-group version of [PatientApi.hasWriteAccess]
+	 */
+	suspend fun hasWriteAccess(patient: GroupScoped<DecryptedPatient>): Boolean
+
+	/**
+	 * In-group version of [PatientApi.createDelegationDeAnonymizationMetadata]
+	 */
+	suspend fun createDelegationDeAnonymizationMetadata(
+		entity: GroupScoped<DecryptedPatient>,
+		delegates: Set<EntityReferenceInGroup>
+	)
+
+	/**
+	 * In-group version of [PatientApi.createPatients]
+	 */
+	// TODO suspend fun createPatients(patients: List<GroupScoped<DecryptedPatient>>): List<IdWithRev>
+
+
+	/**
+	 * In-group version of [PatientApi.getConfidentialSecretIdsOf]
+	 */
+	// TODO suspend fun getConfidentialSecretIdsOf(patient: GroupScoped<DecryptedPatient>): Set<String>
+
+
+	/**
+	 * In-group version of [PatientApi.matchPatientsBy]
+	 */
+	// TODO suspend fun matchPatientsBy(filter: FilterOptions<GroupScoped<DecryptedPatient>>): List<GroupScoped<String>>
+
+
+	/**
+	 * In-group version of [PatientApi.matchPatientsBySorted]
+	 */
+	// TODO suspend fun matchPatientsBySorted(filter: SortableFilterOptions<GroupScoped<DecryptedPatient>>): List<GroupScoped<String>>
+
+
+	/**
+	 * In-group version of [PatientApi.forceInitializeExchangeDataToNewlyInvitedPatient]
+	 */
+	// TODO? suspend fun forceInitializeExchangeDataToNewlyInvitedPatient(groupId: String, patientId: String): Boolean
+}
+
 interface PatientBasicApi : PatientBasicFlavourlessApi, PatientBasicFlavouredApi<EncryptedPatient>,
 	Subscribable<Patient, EncryptedPatient, BaseFilterOptions<Patient>> {
+	/**
+	 * Gives access to methods of the api that allow to use entitiesin groups other than the current user's group.
+	 * These methods aren't available when connected to a kraken-lite instance.
+	 */
+	val inGroup: PatientBasicInGroupApi
+
 	/**
 	 * Get the ids of all patients matching the provided filter.
 	 *
@@ -761,4 +973,26 @@ interface PatientBasicApi : PatientBasicFlavourlessApi, PatientBasicFlavouredApi
 	suspend fun filterPatientsBySorted(
 		filter: BaseSortableFilterOptions<Patient>
 	): PaginatedListIterator<EncryptedPatient>
+}
+
+interface PatientBasicInGroupApi : PatientBasicFlavourlessInGroupApi, PatientBasicFlavouredInGroupApi<EncryptedPatient> { // TODO subscribable?
+	/**
+	 * In-group version of [PatientBasicApi.matchPatientsBy]
+	 */
+	// TODO suspend fun matchPatientsBy(groupId: String, filter: BaseFilterOptions<Patient>): List<GroupScoped<String>>
+
+	/**
+	 * In-group version of [PatientBasicApi.matchPatientsBySorted]
+	 */
+	// TODO suspend fun matchPatientsBySorted(groupId: String, filter: BaseSortableFilterOptions<Patient>): List<GroupScoped<String>>
+
+	/**
+	 * In-group version of [PatientBasicApi.filterPatientsBy]
+	 */
+	// TODO suspend fun filterPatientsBy(groupId: String, filter: BaseFilterOptions<Patient>): PaginatedListIterator<GroupScoped<EncryptedPatient>>
+
+	/**
+	 * In-group version of [PatientBasicApi.filterPatientsBySorted]
+	 */
+	// TODO suspend fun filterPatientsBySorted(groupId: String, filter: BaseSortableFilterOptions<Patient>): PaginatedListIterator<GroupScoped<EncryptedPatient>>
 }
