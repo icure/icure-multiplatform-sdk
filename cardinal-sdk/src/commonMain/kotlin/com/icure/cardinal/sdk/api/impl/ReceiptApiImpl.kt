@@ -34,6 +34,13 @@ import kotlinx.serialization.json.decodeFromJsonElement
 private abstract class AbstractReceiptBasicFlavouredApi<E : Receipt>(
 	protected val rawApi: RawReceiptApi
 ) : ReceiptBasicFlavouredApi<E>, FlavouredApi<EncryptedReceipt, E> {
+	override suspend fun createReceipt(entity: E): E {
+		require(entity.securityMetadata != null) { "Entity must have security metadata initialized. Make sure to use the `withEncryptionMetadata` method." }
+		return rawApi.createReceipt(
+			validateAndMaybeEncrypt(null, entity),
+		).successBody().let { maybeDecrypt(null, it) }
+	}
+
 	override suspend fun modifyReceipt(entity: E): E =
 		rawApi.modifyReceipt(validateAndMaybeEncrypt(null, entity)).successBodyOrThrowRevisionConflict().let { maybeDecrypt(null, it) }
 
@@ -156,19 +163,6 @@ internal class ReceiptApiImpl(
 					EncryptedReceipt.serializer(),
 				) { Serialization.json.decodeFromJsonElement<DecryptedReceipt>(config.jsonPatcher.patchReceipt(it)) }
 		}
-
-	override suspend fun createReceipt(entity: DecryptedReceipt): DecryptedReceipt {
-		require(entity.securityMetadata != null) { "Entity must have security metadata initialized. You can use the withEncryptionMetadata for that very purpose." }
-		return rawApi.createReceipt(
-			config.crypto.entity.encryptEntities(
-				null,
-				listOf(entity),
-				EntityWithEncryptionMetadataTypeName.Receipt,
-				DecryptedReceipt.serializer(),
-				config.encryption.receipt,
-			) { Serialization.json.decodeFromJsonElement<EncryptedReceipt>(it) }.single(),
-		).successBody().let { decrypt(it) }
-	}
 
 	override suspend fun withEncryptionMetadata(
 		base: DecryptedReceipt?,

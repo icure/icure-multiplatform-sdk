@@ -11,8 +11,8 @@ import com.icure.cardinal.sdk.model.DecryptedForm
 import com.icure.cardinal.sdk.model.EncryptedForm
 import com.icure.cardinal.sdk.model.Form
 import com.icure.cardinal.sdk.model.FormTemplate
-import com.icure.cardinal.sdk.model.StoredDocumentIdentifier
 import com.icure.cardinal.sdk.model.Patient
+import com.icure.cardinal.sdk.model.StoredDocumentIdentifier
 import com.icure.cardinal.sdk.model.User
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.model.embed.AccessLevel
@@ -136,6 +136,23 @@ interface FormBasicFlavourlessApi {
 
 /* This interface includes the API calls can be used on decrypted items if encryption keys are available *or* encrypted items if no encryption keys are available */
 interface FormBasicFlavouredApi<E : Form> {
+	/**
+	 * Create a new form. The provided form must have the encryption metadata initialized.
+	 * @param entity a form with initialized encryption metadata
+	 * @return the created form with updated revision.
+	 * @throws IllegalArgumentException if the encryption metadata of the input was not initialized.
+	 */
+	suspend fun createForm(entity: E): E
+
+	/**
+	 * Create multiple forms. All the provided forms must have the encryption metadata initialized, otherwise
+	 * this method fails without doing anything.
+	 * @param entities forms with initialized encryption metadata
+	 * @return the created forms with updated revision.
+	 * @throws IllegalArgumentException if the encryption metadata of any form in the input was not initialized.
+	 */
+	suspend fun createForms(entities: List<E>): List<E>
+
 	/**
 	 * Modifies a form. You need to have write access to the entity.
 	 * Flavoured method.
@@ -308,23 +325,6 @@ interface FormFlavouredApi<E : Form> : FormBasicFlavouredApi<E> {
 
 /* The extra API calls declared in this interface are the ones that can only be used on decrypted items when encryption keys are available */
 interface FormApi : FormBasicFlavourlessApi, FormFlavouredApi<DecryptedForm> {
-	/**
-	 * Create a new form. The provided form must have the encryption metadata initialized.
-	 * @param entity a form with initialized encryption metadata
-	 * @return the created form with updated revision.
-	 * @throws IllegalArgumentException if the encryption metadata of the input was not initialized.
-	 */
-	suspend fun createForm(entity: DecryptedForm): DecryptedForm
-
-	/**
-	 * Create multiple forms. All the provided forms must have the encryption metadata initialized, otherwise
-	 * this method fails without doing anything.
-	 * @param entities forms with initialized encryption metadata
-	 * @return the created forms with updated revision.
-	 * @throws IllegalArgumentException if the encryption metadata of any form in the input was not initialized.
-	 */
-	suspend fun createForms(entities: List<DecryptedForm>): List<DecryptedForm>
-
 	/**
 	 * Creates a new form with initialized encryption metadata
 	 * @param base a form with initialized content and uninitialized encryption metadata. The result of this

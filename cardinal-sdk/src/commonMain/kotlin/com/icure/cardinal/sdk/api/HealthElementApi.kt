@@ -121,6 +121,23 @@ interface HealthElementBasicFlavourlessInGroupApi  {
 /* This interface includes the API calls can be used on decrypted items if encryption keys are available *or* encrypted items if no encryption keys are available */
 interface HealthElementBasicFlavouredApi<E : HealthElement> {
 	/**
+	 * Create a new health element. The provided health element must have the encryption metadata initialized.
+	 * @param entity a health element with initialized encryption metadata
+	 * @return the created health element with updated revision.
+	 * @throws IllegalArgumentException if the encryption metadata of the input was not initialized.
+	 */
+	suspend fun createHealthElement(entity: E): E
+
+	/**
+	 * Create multiple health elements. All the provided health elements must have the encryption metadata initialized, otherwise
+	 * this method fails without doing anything.
+	 * @param entities health elements with initialized encryption metadata
+	 * @return the created health elements with updated revision.
+	 * @throws IllegalArgumentException if the encryption metadata of any health element in the input was not initialized.
+	 */
+	suspend fun createHealthElements(entities: List<E>): List<E>
+
+	/**
 	 * Restores a healthElement that was marked as deleted.
 	 * @param id the id of the entity
 	 * @param rev the latest revision of the entity.
@@ -175,6 +192,16 @@ interface HealthElementBasicFlavouredApi<E : HealthElement> {
 }
 
 interface HealthElementBasicFlavouredInGroupApi<E : HealthElement> {
+	/**
+	 * In-group version of [HealthElementApi.createHealthElement]
+	 */
+	suspend fun createHealthElement(entity: GroupScoped<E>): GroupScoped<E>
+
+	/**
+	 * In-group version of [HealthElementApi.createHealthElements]
+	 */
+	// TODO suspend fun createHealthElements(entities: List<GroupScoped<E>>): List<GroupScoped<E>>
+
 	/**
 	 * In-group version of [HealthElementBasicFlavouredApi.undeleteHealthElementById]
 	 */
@@ -336,23 +363,6 @@ interface HealthElementApi : HealthElementBasicFlavourlessApi, HealthElementFlav
 	val inGroup: HealthElementInGroupApi
 
 	/**
-	 * Create a new health element. The provided health element must have the encryption metadata initialized.
-	 * @param entity a health element with initialized encryption metadata
-	 * @return the created health element with updated revision.
-	 * @throws IllegalArgumentException if the encryption metadata of the input was not initialized.
-	 */
-	suspend fun createHealthElement(entity: DecryptedHealthElement): DecryptedHealthElement
-
-	/**
-	 * Create multiple health elements. All the provided health elements must have the encryption metadata initialized, otherwise
-	 * this method fails without doing anything.
-	 * @param entities health elements with initialized encryption metadata
-	 * @return the created health elements with updated revision.
-	 * @throws IllegalArgumentException if the encryption metadata of any health element in the input was not initialized.
-	 */
-	suspend fun createHealthElements(entities: List<DecryptedHealthElement>): List<DecryptedHealthElement>
-
-	/**
 	 * Creates a new health element with initialized encryption metadata
 	 * @param base a health element with initialized content and uninitialized encryption metadata. The result of this
 	 * method takes the content from [base] if provided.
@@ -499,16 +509,6 @@ interface HealthElementInGroupApi : HealthElementBasicFlavourlessInGroupApi, Hea
 	 * Gives access to the polymorphic flavour of the api
 	 */
 	val tryAndRecover: HealthElementFlavouredInGroupApi<HealthElement>
-
-	/**
-	 * In-group version of [HealthElementApi.createHealthElement]
-	 */
-	suspend fun createHealthElement(entity: GroupScoped<DecryptedHealthElement>): GroupScoped<DecryptedHealthElement>
-
-	/**
-	 * In-group version of [HealthElementApi.createHealthElements]
-	 */
-	// TODO suspend fun createHealthElements(entities: List<GroupScoped<DecryptedHealthElement>>): List<GroupScoped<DecryptedHealthElement>>
 
 	/**
 	 * In-group version of [HealthElementApi.withEncryptionMetadata]

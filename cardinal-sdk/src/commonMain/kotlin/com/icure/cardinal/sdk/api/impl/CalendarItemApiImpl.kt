@@ -100,6 +100,26 @@ private open class AbstractCalendarItemBasicFlavouredApi<E : CalendarItem>(
 	CalendarItemBasicFlavouredInGroupApi<E>,
 	FlavouredApi<EncryptedCalendarItem, E> by flavour {
 
+	override suspend fun createCalendarItem(entity: E): E =
+		doCreateCalendarItem(null, entity)
+
+	override suspend fun createCalendarItem(entity: GroupScoped<E>): GroupScoped<E> =
+		GroupScoped(doCreateCalendarItem(entity.groupId, entity.entity), entity.groupId)
+
+	private suspend fun doCreateCalendarItem(groupId: String?, entity: E): E {
+		require(entity.securityMetadata != null) { "Entity must have security metadata initialized. Make sure to use the `withEncryptionMetadata` method." }
+		val encrypted = validateAndMaybeEncrypt(groupId, entity)
+		return (
+			if (groupId == null) {
+				rawApi.createCalendarItem(encrypted)
+			} else {
+				rawApi.createCalendarItemInGroup(groupId, encrypted)
+			}
+			).successBody().let {
+				maybeDecrypt(groupId, it)
+			}
+	}
+
 	override suspend fun undeleteCalendarItemById(id: String, rev: String): E =
 		rawApi.undeleteCalendarItem(id, rev).successBodyOrThrowRevisionConflict().let { maybeDecrypt(null, it) }
 
@@ -432,9 +452,6 @@ private class CalendarItemApiImpl(
 				tryAndRecoverFlavour.validateAndMaybeEncrypt(groupId, entities)
 			}
 
-		override suspend fun createCalendarItem(entity: GroupScoped<DecryptedCalendarItem>): GroupScoped<DecryptedCalendarItem> =
-			GroupScoped(doCreateCalendarItem(entity.groupId, entity.entity), entity.groupId)
-
 		override suspend fun withEncryptionMetadata(
 			entityGroupId: String,
 			base: DecryptedCalendarItem?,
@@ -469,23 +486,6 @@ private class CalendarItemApiImpl(
 
 		override suspend fun hasWriteAccess(calendarItem: GroupScoped<CalendarItem>): Boolean =
 			doHasWriteAccess(calendarItem.groupId, calendarItem.entity)
-	}
-
-	override suspend fun createCalendarItem(entity: DecryptedCalendarItem): DecryptedCalendarItem =
-		doCreateCalendarItem(null, entity)
-
-	private suspend fun doCreateCalendarItem(groupId: String?, entity: DecryptedCalendarItem): DecryptedCalendarItem {
-		require(entity.securityMetadata != null) { "Entity must have security metadata initialized. You can use the withEncryptionMetadata for that very purpose." }
-		val encrypted = decryptedFlavour.validateAndMaybeEncrypt(groupId, entity)
-		return (
-			if (groupId == null) {
-				rawApi.createCalendarItem(encrypted)
-			} else {
-				rawApi.createCalendarItemInGroup(groupId, encrypted)
-			}
-		).successBody().let {
-			decryptedFlavour.maybeDecrypt(groupId, it)
-		}
 	}
 
 	private val crypto get() = config.crypto

@@ -125,6 +125,14 @@ interface CalendarItemBasicFlavourlessInGroupApi {
 /* This interface includes the API calls can be used on decrypted items if encryption keys are available *or* encrypted items if no encryption keys are available */
 interface CalendarItemBasicFlavouredApi<E : CalendarItem> {
 	/**
+	 * Create a new calendar item. The provided calendar item must have the encryption metadata initialized.
+	 * @param entity a calendar item with initialized encryption metadata
+	 * @return the created calendar item with updated revision.
+	 * @throws IllegalArgumentException if the encryption metadata of the input was not initialized.
+	 */
+	suspend fun createCalendarItem(entity: E): E
+
+	/**
 	 * Restores a calendarItem that was marked as deleted.
 	 * @param id the id of the entity
 	 * @param rev the latest revision of the entity.
@@ -186,6 +194,11 @@ interface CalendarItemBasicFlavouredApi<E : CalendarItem> {
 }
 
 interface CalendarItemBasicFlavouredInGroupApi<E : CalendarItem> {
+	/**
+	 * In-group version of [CalendarItemBasicFlavouredApi.createCalendarItem].
+	 */
+	suspend fun createCalendarItem(entity: GroupScoped<E>): GroupScoped<E>
+
 	/**
 	 * In-group version of [CalendarItemBasicFlavouredApi.undeleteCalendarItemById]
 	 */
@@ -360,14 +373,6 @@ interface CalendarItemApi : CalendarItemBasicFlavourlessApi, CalendarItemFlavour
 	val inGroup: CalendarItemInGroupApi
 
 	/**
-	 * Create a new calendar item. The provided calendar item must have the encryption metadata initialized.
-	 * @param entity a calendar item with initialized encryption metadata
-	 * @return the created calendar item with updated revision.
-	 * @throws IllegalArgumentException if the encryption metadata of the input was not initialized.
-	 */
-	suspend fun createCalendarItem(entity: DecryptedCalendarItem): DecryptedCalendarItem
-
-	/**
 	 * Creates a new calendar item entity with initialized encryption metadata.
 	 * NOTE: this method doesn't send the entity to the backend, to store it you will need to pass the entity to the
 	 * [createCalendarItem] method.
@@ -516,11 +521,6 @@ interface CalendarItemInGroupApi : CalendarItemBasicFlavourlessInGroupApi, Calen
 	 * Gives access to the polymorphic flavour of the api
 	 */
 	val tryAndRecover: CalendarItemFlavouredInGroupApi<CalendarItem>
-
-	/**
-	 * In-group version of [CalendarItemApi.createCalendarItem]
-	 */
-	suspend fun createCalendarItem(entity: GroupScoped<DecryptedCalendarItem>): GroupScoped<DecryptedCalendarItem>
 
 	/**
 	 * In-group version of [CalendarItemApi.withEncryptionMetadata]

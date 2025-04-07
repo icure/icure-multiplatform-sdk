@@ -49,6 +49,15 @@ private abstract class AbstractMaintenanceTaskBasicFlavouredApi<E : MaintenanceT
 	private val config: BasicApiConfiguration
 ) : MaintenanceTaskBasicFlavouredApi<E>, FlavouredApi<EncryptedMaintenanceTask, E> {
 
+	override suspend fun createMaintenanceTask(entity: E): E {
+		require(entity.securityMetadata != null) { "Entity must have security metadata initialized. Make sure to use the `withEncryptionMetadata` method." }
+		return rawApi.createMaintenanceTask(
+			validateAndMaybeEncrypt(null, entity)
+		).successBody().let {
+			maybeDecrypt(null, it)
+		}
+	}
+
 	override suspend fun undeleteMaintenanceTaskById(id: String, rev: String): E =
 		rawApi.undeleteMaintenanceTask(id, rev).successBodyOrThrowRevisionConflict().let { maybeDecrypt(null, it) }
 
@@ -209,21 +218,6 @@ internal class MaintenanceTaskApiImpl(
 					)
 				}
 		}
-
-	override suspend fun createMaintenanceTask(entity: DecryptedMaintenanceTask): DecryptedMaintenanceTask {
-		require(entity.securityMetadata != null) { "Entity must have security metadata initialized. You can use the withEncryptionMetadata for that very purpose." }
-		return rawApi.createMaintenanceTask(
-			config.crypto.entity.encryptEntities(
-				null,
-				listOf(entity),
-				EntityWithEncryptionMetadataTypeName.MaintenanceTask,
-				DecryptedMaintenanceTask.serializer(),
-				config.encryption.maintenanceTask,
-			) { Serialization.json.decodeFromJsonElement<EncryptedMaintenanceTask>(it) }.single(),
-		).successBody().let {
-			decrypt(it)
-		}
-	}
 
 	override suspend fun getEncryptionKeysOf(maintenanceTask: MaintenanceTask): Set<HexString> =
 		config.crypto.entity.encryptionKeysOf(

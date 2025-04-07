@@ -119,6 +119,23 @@ private open class AbstractPatientBasicFlavouredApi<E : Patient>(
 	protected open val config: BasicApiConfiguration,
 	protected val flavour: FlavouredApi<EncryptedPatient, E>
 ) : PatientBasicFlavouredApi<E>, PatientBasicFlavouredInGroupApi<E>, FlavouredApi<EncryptedPatient, E> by flavour {
+	override suspend fun createPatient(patient: E): E =
+		doCreatePatient(null, patient)
+
+	override suspend fun createPatient(patient: GroupScoped<E>): GroupScoped<E> =
+		GroupScoped(doCreatePatient(patient.groupId, patient.entity), patient.groupId)
+
+	private suspend fun doCreatePatient(groupId: String?, patient: E): E {
+		require(patient.securityMetadata != null) { "Entity must have security metadata initialized. Make sure to use the `withEncryptionMetadata` method." }
+		val encrypted = validateAndMaybeEncrypt(groupId, patient)
+		return (
+			if (groupId == null)
+				rawApi.createPatient(encrypted)
+			else
+				rawApi.createPatientInGroup(groupId, encrypted)
+			).successBody().let { maybeDecrypt(groupId, it) }
+	}
+
 	override suspend fun undeletePatientById(id: String, rev: String): E =
 		rawApi.undeletePatient(id, rev).successBodyOrThrowRevisionConflict().let { maybeDecrypt(null, it) }
 
@@ -523,9 +540,6 @@ private class PatientApiImpl(
 				tryAndRecoverFlavour.validateAndMaybeEncrypt(groupId, entities)
 			}
 
-		override suspend fun createPatient(patient: GroupScoped<DecryptedPatient>): GroupScoped<DecryptedPatient> =
-			GroupScoped(doCreatePatient(patient.groupId, patient.entity), patient.groupId)
-
 		override suspend fun getSecretIdsOf(patient: GroupScoped<Patient>): Set<String> =
 			doGetSecretIdsOf(patient.groupId, patient.entity)
 
@@ -556,26 +570,6 @@ private class PatientApiImpl(
 			delegates: Set<EntityReferenceInGroup>
 		) =
 			doCreateDelegationDeAnonymizationMetadata(entity.groupId, entity.entity, delegates)
-	}
-
-	override suspend fun createPatient(patient: DecryptedPatient): DecryptedPatient =
-		doCreatePatient(null, patient)
-
-	private suspend fun doCreatePatient(groupId: String?, patient: DecryptedPatient): DecryptedPatient {
-		require(patient.securityMetadata != null) { "Entity must have security metadata initialized. You can use the withEncryptionMetadata for that very purpose." }
-		val encrypted = config.crypto.entity.encryptEntities(
-			groupId,
-			listOf(patient),
-			EntityWithEncryptionMetadataTypeName.Patient,
-			DecryptedPatient.serializer(),
-			config.encryption.patient,
-		) { Serialization.json.decodeFromJsonElement<EncryptedPatient>(it) }.single()
-		return (
-			if (groupId == null)
-				rawApi.createPatient(encrypted)
-			else
-				rawApi.createPatientInGroup(groupId, encrypted)
-		).successBody().let { decryptedFlavour.maybeDecrypt(groupId, it) }
 	}
 
 	override suspend fun createPatients(patients: List<DecryptedPatient>) =

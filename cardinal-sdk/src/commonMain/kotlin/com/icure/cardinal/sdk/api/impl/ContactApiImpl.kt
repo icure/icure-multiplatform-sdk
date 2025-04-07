@@ -71,6 +71,24 @@ private abstract class AbstractContactBasicFlavouredApi<E : Contact, S : Service
 	protected val rawApi: RawContactApi,
 	private val config: BasicApiConfiguration
 ) : ContactBasicFlavouredApi<E, S>, FlavouredApi<EncryptedContact, E> {
+	override suspend fun createContact(entity: E): E {
+		require(entity.securityMetadata != null) { "Entity must have security metadata initialized. Make sure to use the `withEncryptionMetadata` method." }
+		return rawApi.createContact(
+			validateAndMaybeEncrypt(null, entity),
+		).successBody().let {
+			maybeDecrypt(null, it)
+		}
+	}
+
+	override suspend fun createContacts(entities: List<E>): List<E> {
+		require(entities.all { it.securityMetadata != null }) { "All entities must have security metadata initialized. Make sure to use the `withEncryptionMetadata` method." }
+		return rawApi.createContacts(
+			validateAndMaybeEncrypt(null, entities),
+		).successBody().let {
+			maybeDecrypt(null, it)
+		}
+	}
+
 	override suspend fun undeleteContactById(id: String, rev: String): E =
 		rawApi.undeleteContact(id, rev).successBodyOrThrowRevisionConflict().let { maybeDecrypt(null, it) }
 
@@ -507,24 +525,6 @@ internal class ContactApiImpl(
 					{ validateEncryptedContacts(config, it) }
 				)
 		}
-
-	override suspend fun createContact(entity: DecryptedContact): DecryptedContact {
-		require(entity.securityMetadata != null) { "Entity must have security metadata initialized. You can use the withEncryptionMetadata for that very purpose." }
-		return rawApi.createContact(
-			encryptContacts(config, null, listOf(entity)).single(),
-		).successBody().let {
-			decrypt(it)
-		}
-	}
-
-	override suspend fun createContacts(entities: List<DecryptedContact>): List<DecryptedContact> {
-		require(entities.all { it.securityMetadata != null }) { "All entities must have security metadata initialized. You can use the withEncryptionMetadata for that very purpose." }
-		return rawApi.createContacts(
-			encryptContacts(config, null, entities),
-		).successBody().map {
-			decrypt(it)
-		}
-	}
 
 	override suspend fun withEncryptionMetadata(
 		base: DecryptedContact?,

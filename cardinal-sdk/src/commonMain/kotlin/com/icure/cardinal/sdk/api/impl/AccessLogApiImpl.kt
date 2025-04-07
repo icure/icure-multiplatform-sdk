@@ -45,6 +45,15 @@ import kotlinx.serialization.json.decodeFromJsonElement
 private abstract class AbstractAccessLogBasicFlavouredApi<E : AccessLog>(
 	protected val rawApi: RawAccessLogApi
 ) : AccessLogBasicFlavouredApi<E>, FlavouredApi<EncryptedAccessLog, E> {
+	override suspend fun createAccessLog(entity: E): E {
+		require(entity.securityMetadata != null) { "Entity must have security metadata initialized. Make sure to use the `withEncryptionMetadata` method." }
+		return rawApi.createAccessLog(
+			validateAndMaybeEncrypt(null, entity),
+		).successBody().let {
+			maybeDecrypt(null, it)
+		}
+	}
+	
 	override suspend fun undeleteAccessLogById(id: String, rev: String): E =
 		rawApi.undeleteAccessLog(id, rev).successBodyOrThrowRevisionConflict().let { maybeDecrypt(null, it) }
 
@@ -260,21 +269,6 @@ internal class AccessLogApiImpl(
 
 	override suspend fun createDelegationDeAnonymizationMetadata(entity: AccessLog, delegates: Set<String>) {
 		crypto.delegationsDeAnonymization.createOrUpdateDeAnonymizationInfo(null, entity, EntityWithEncryptionMetadataTypeName.AccessLog, delegates.asLocalDataOwnerReferences())
-	}
-
-	override suspend fun createAccessLog(entity: DecryptedAccessLog): DecryptedAccessLog {
-		require(entity.securityMetadata != null) { "Entity must have security metadata initialized. You can use the withEncryptionMetadata for that very purpose." }
-		return rawApi.createAccessLog(
-			crypto.entity.encryptEntities(
-				null,
-				listOf(entity),
-				EntityWithEncryptionMetadataTypeName.AccessLog,
-				DecryptedAccessLog.serializer(),
-				config.encryption.accessLog,
-			) { Serialization.json.decodeFromJsonElement<EncryptedAccessLog>(it) }.single(),
-		).successBody().let {
-			decrypt(it)
-		}
 	}
 
 	override suspend fun withEncryptionMetadata(

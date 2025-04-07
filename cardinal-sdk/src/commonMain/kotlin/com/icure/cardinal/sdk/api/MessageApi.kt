@@ -9,10 +9,10 @@ import com.icure.cardinal.sdk.filters.FilterOptions
 import com.icure.cardinal.sdk.filters.SortableFilterOptions
 import com.icure.cardinal.sdk.model.DecryptedMessage
 import com.icure.cardinal.sdk.model.EncryptedMessage
-import com.icure.cardinal.sdk.model.StoredDocumentIdentifier
 import com.icure.cardinal.sdk.model.Message
 import com.icure.cardinal.sdk.model.PaginatedList
 import com.icure.cardinal.sdk.model.Patient
+import com.icure.cardinal.sdk.model.StoredDocumentIdentifier
 import com.icure.cardinal.sdk.model.User
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.model.embed.AccessLevel
@@ -89,6 +89,26 @@ interface MessageBasicFlavourlessApi {
 
 /* This interface includes the API calls can be used on decrypted items if encryption keys are available *or* encrypted items if no encryption keys are available */
 interface MessageBasicFlavouredApi<E : Message> {
+	/**
+	 * Create a new Message. The provided Message must have the encryption metadata initialized. This method requires
+	 * the permission to create messages outside of topics. If you want to create a message within a topic use the
+	 * [createMessageInTopic] method instead.
+	 * @param entity a message with initialized encryption metadata
+	 * @return the created Message with updated revision.
+	 * @throws IllegalArgumentException if the encryption metadata of the input was not initialized.
+	 */
+	suspend fun createMessage(entity: E): E
+
+	/**
+	 * Create a new Message. The provided Message must have the encryption metadata initialized, and the id of the topic
+	 * set in [Message.transportGuid] (note that your configuration must not encrypt the transport guid). The user needs
+	 * to be a participant in that topic for this method to succeed.
+	 * @param entity a message with initialized encryption metadata and with a transportGuid set to the topic
+	 * @return the created Message with updated revision.
+	 * @throws IllegalArgumentException if the encryption metadata of the input was not initialized.
+	 */
+	suspend fun createMessageInTopic(entity: E): E
+
 	/**
 	 * Restores a message that was marked as deleted.
 	 * @param message the message to undelete
@@ -298,26 +318,6 @@ interface MessageFlavouredApi<E : Message> : MessageBasicFlavouredApi<E> {
 
 /* The extra API calls declared in this interface are the ones that can only be used on decrypted items when encryption keys are available */
 interface MessageApi : MessageBasicFlavourlessApi, MessageFlavouredApi<DecryptedMessage>, Subscribable<Message, EncryptedMessage, FilterOptions<Message>> {
-	/**
-	 * Create a new Message. The provided Message must have the encryption metadata initialized. This method requires
-	 * the permission to create messages outside of topics. If you want to create a message within a topic use the
-	 * [createMessageInTopic] method instead.
-	 * @param entity a message with initialized encryption metadata
-	 * @return the created Message with updated revision.
-	 * @throws IllegalArgumentException if the encryption metadata of the input was not initialized.
-	 */
-	suspend fun createMessage(entity: DecryptedMessage): DecryptedMessage
-
-	/**
-	 * Create a new Message. The provided Message must have the encryption metadata initialized, and the id of the topic
-	 * set in [Message.transportGuid] (note that your configuration must not encrypt the transport guid). The user needs
-	 * to be a participant in that topic for this method to succeed.
-	 * @param entity a message with initialized encryption metadata and with a transportGuid set to the topic
-	 * @return the created Message with updated revision.
-	 * @throws IllegalArgumentException if the encryption metadata of the input was not initialized.
-	 */
-	suspend fun createMessageInTopic(entity: DecryptedMessage): DecryptedMessage
-
 	/**
 	 * Creates a new Message with initialized encryption metadata
 	 * @param base a message with initialized content and uninitialized encryption metadata. The result of this

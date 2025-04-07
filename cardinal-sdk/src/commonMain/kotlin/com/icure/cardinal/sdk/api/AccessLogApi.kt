@@ -10,9 +10,9 @@ import com.icure.cardinal.sdk.filters.SortableFilterOptions
 import com.icure.cardinal.sdk.model.AccessLog
 import com.icure.cardinal.sdk.model.DecryptedAccessLog
 import com.icure.cardinal.sdk.model.EncryptedAccessLog
-import com.icure.cardinal.sdk.model.StoredDocumentIdentifier
 import com.icure.cardinal.sdk.model.PaginatedList
 import com.icure.cardinal.sdk.model.Patient
+import com.icure.cardinal.sdk.model.StoredDocumentIdentifier
 import com.icure.cardinal.sdk.model.User
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.model.embed.AccessLevel
@@ -86,6 +86,14 @@ interface AccessLogBasicFlavourlessApi {
 
 /* This interface includes the API calls can be used on decrypted items if encryption keys are available *or* encrypted items if no encryption keys are available */
 interface AccessLogBasicFlavouredApi<E : AccessLog> {
+	/**
+	 * Create a new access log. The provided access log must have the encryption metadata initialized.
+	 * @param entity an access log with initialized encryption metadata
+	 * @return the created access log with updated revision.
+	 * @throws IllegalArgumentException if the encryption metadata of the input was not initialized.
+	 */
+	suspend fun createAccessLog(entity: E): E
+
 	/**
 	 * Restores a accessLog that was marked as deleted.
 	 * @param id the id of the entity
@@ -245,14 +253,6 @@ interface AccessLogFlavouredApi<E : AccessLog> : AccessLogBasicFlavouredApi<E> {
 
 /* The extra API calls declared in this interface are the ones that can only be used on decrypted items when encryption keys are available */
 interface AccessLogApi : AccessLogBasicFlavourlessApi, AccessLogFlavouredApi<DecryptedAccessLog> {
-	/**
-	 * Create a new access log. The provided access log must have the encryption metadata initialized.
-	 * @param entity an access log with initialized encryption metadata
-	 * @return the created access log with updated revision.
-	 * @throws IllegalArgumentException if the encryption metadata of the input was not initialized.
-	 */
-	suspend fun createAccessLog(entity: DecryptedAccessLog): DecryptedAccessLog
-
 	/**
 	 * Creates a new access log with initialized encryption metadata
 	 * @param base an access log with initialized content and uninitialized encryption metadata. The result of this

@@ -9,9 +9,9 @@ import com.icure.cardinal.sdk.filters.SortableFilterOptions
 import com.icure.cardinal.sdk.model.DecryptedDocument
 import com.icure.cardinal.sdk.model.Document
 import com.icure.cardinal.sdk.model.EncryptedDocument
-import com.icure.cardinal.sdk.model.StoredDocumentIdentifier
 import com.icure.cardinal.sdk.model.Message
 import com.icure.cardinal.sdk.model.Patient
+import com.icure.cardinal.sdk.model.StoredDocumentIdentifier
 import com.icure.cardinal.sdk.model.User
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.model.embed.AccessLevel
@@ -195,6 +195,14 @@ interface DocumentBasicFlavourlessApi {
 /* This interface includes the API calls can be used on decrypted items if encryption keys are available *or* encrypted items if no encryption keys are available */
 interface DocumentBasicFlavouredApi<E : Document> {
 	/**
+	 * Create a new document. The provided document must have the encryption metadata initialized.
+	 * @param entity a document with initialized encryption metadata
+	 * @return the created document with updated revision.
+	 * @throws IllegalArgumentException if the encryption metadata of the input was not initialized.
+	 */
+	suspend fun createDocument(entity: E): E
+
+	/**
 	 * Restores a document that was marked as deleted.
 	 * @param id the id of the entity
 	 * @param rev the latest revision of the entity.
@@ -344,13 +352,6 @@ interface DocumentFlavouredApi<E : Document> : DocumentBasicFlavouredApi<E> {
 
 /* The extra API calls declared in this interface are the ones that can only be used on decrypted items when encryption keys are available */
 interface DocumentApi : DocumentBasicFlavourlessApi, DocumentFlavouredApi<DecryptedDocument> {
-	/**
-	 * Create a new document. The provided document must have the encryption metadata initialized.
-	 * @param entity a document with initialized encryption metadata
-	 * @return the created document with updated revision.
-	 * @throws IllegalArgumentException if the encryption metadata of the input was not initialized.
-	 */
-	suspend fun createDocument(entity: DecryptedDocument): DecryptedDocument
 
 	/**
 	 * Creates a new document with initialized encryption metadata

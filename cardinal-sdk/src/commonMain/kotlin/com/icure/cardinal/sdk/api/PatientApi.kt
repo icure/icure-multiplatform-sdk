@@ -140,6 +140,14 @@ interface PatientBasicFlavourlessInGroupApi {
 /* This interface includes the API calls can be used on decrypted items if encryption keys are available *or* encrypted items if no encryption keys are available */
 interface PatientBasicFlavouredApi<E : Patient> {
 	/**
+	 * Create a new patient. The provided patient must have the encryption metadata initialized.
+	 * @param patient a patient with initialized encryption metadata
+	 * @return the created patient with updated revision.
+	 * @throws IllegalArgumentException if the encryption metadata of the input wasn't initialized.
+	 */
+	suspend fun createPatient(patient: E): E
+
+	/**
 	 * Restores a patient that was marked as deleted.
 	 * @param patient the patient to undelete
 	 * @return the restored patient.
@@ -419,6 +427,11 @@ interface PatientBasicFlavouredApi<E : Patient> {
 
 interface PatientBasicFlavouredInGroupApi<E : Patient> {
 	/**
+	 * In-group version of [PatientApi.createPatient]
+	 */
+	suspend fun createPatient(patient: GroupScoped<E>): GroupScoped<E>
+
+	/**
 	 * In-group version of [PatientBasicFlavouredApi.undeletePatient]
 	 */
 	// TODO suspend fun undeletePatient(patient: GroupScoped<Patient>): GroupScoped<E>
@@ -650,14 +663,6 @@ interface PatientApi : PatientBasicFlavourlessApi, PatientFlavouredApi<Decrypted
 	suspend fun getEncryptionKeysOf(patient: Patient): Set<HexString>
 
 	/**
-	 * Create a new patient. The provided patient must have the encryption metadata initialized.
-	 * @param patient a patient with initialized encryption metadata
-	 * @return the created patient with updated revision.
-	 * @throws IllegalArgumentException if the encryption metadata of the input wasn't initialized.
-	 */
-	suspend fun createPatient(patient: DecryptedPatient): DecryptedPatient
-
-	/**
 	 * Creates a new patient with initialized encryption metadata
 	 * @param base a patient with initialized content and uninitialized encryption metadata. The result of this
 	 * method takes the content from [base] if provided.
@@ -854,11 +859,6 @@ interface PatientInGroupApi : PatientBasicFlavourlessInGroupApi, PatientFlavoure
 	 * In-group version of [PatientApi.getEncryptionKeysOf]
 	 */
 	suspend fun getEncryptionKeysOf(patient: GroupScoped<Patient>): Set<HexString>
-
-	/**
-	 * In-group version of [PatientApi.createPatient]
-	 */
-	suspend fun createPatient(patient: GroupScoped<DecryptedPatient>): GroupScoped<DecryptedPatient>
 
 	/**
 	 * In-group version of [PatientApi.withEncryptionMetadata]

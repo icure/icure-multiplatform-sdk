@@ -93,6 +93,37 @@ private open class AbstractHealthElementBasicFlavouredApi<E : HealthElement>(
 	protected open val config: BasicApiConfiguration,
 	private val flavour: FlavouredApi<EncryptedHealthElement, E>
 ) : HealthElementBasicFlavouredApi<E>, HealthElementBasicFlavouredInGroupApi<E>, FlavouredApi<EncryptedHealthElement, E> by flavour {
+	override suspend fun createHealthElement(entity: E): E =
+		doCreateHealthElement(null, entity)
+
+	override suspend fun createHealthElement(entity: GroupScoped<E>): GroupScoped<E> =
+		GroupScoped(doCreateHealthElement(entity.groupId, entity.entity), entity.groupId)
+
+	private suspend fun doCreateHealthElement(
+		groupId: String?,
+		entity: E
+	): E {
+		require(entity.securityMetadata != null) { "Entity must have security metadata initialized. Make sure to use the `withEncryptionMetadata` method." }
+		val encrypted = validateAndMaybeEncrypt(groupId, entity)
+		return (
+			if (groupId == null)
+				rawApi.createHealthElement(encrypted)
+			else
+				rawApi.createHealthElementInGroup(groupId, encrypted)
+			).successBody().let {
+				maybeDecrypt(groupId, it)
+			}
+	}
+
+	override suspend fun createHealthElements(entities: List<E>): List<E> {
+		require(entities.all { it.securityMetadata != null }) { "All entities must have security metadata initialized. Make sure to use the `withEncryptionMetadata` method." }
+		return rawApi.createHealthElements(
+			validateAndMaybeEncrypt(null, entities),
+		).successBody().let {
+			maybeDecrypt(null, it)
+		}
+	}
+
 	override suspend fun modifyHealthElement(entity: E): E =
 		doModifyHealthElement(null, entity)
 
@@ -308,9 +339,6 @@ private class HealthElementApiImpl(
 				tryAndRecoverFlavour.validateAndMaybeEncrypt(groupId, entities)
 			}
 
-		override suspend fun createHealthElement(entity: GroupScoped<DecryptedHealthElement>): GroupScoped<DecryptedHealthElement> =
-			GroupScoped(doCreateHealthElement(entity.groupId, entity.entity), entity.groupId)
-
 		override suspend fun withEncryptionMetadata(
 			entityGroupId: String,
 			base: DecryptedHealthElement?,
@@ -345,34 +373,6 @@ private class HealthElementApiImpl(
 			delegates: Set<EntityReferenceInGroup>
 		) =
 			doCreateDelegationDeAnonymizationMetadata(entity.groupId, entity.entity, delegates)
-	}
-
-	override suspend fun createHealthElement(entity: DecryptedHealthElement): DecryptedHealthElement =
-		doCreateHealthElement(null, entity)
-
-	private suspend fun doCreateHealthElement(
-		groupId: String?,
-		entity: DecryptedHealthElement
-	): DecryptedHealthElement {
-		require(entity.securityMetadata != null) { "Entity must have security metadata initialized. You can use the withEncryptionMetadata for that very purpose." }
-		val encrypted = decryptedFlavour.validateAndMaybeEncrypt(groupId, entity)
-		return (
-			if (groupId == null)
-				rawApi.createHealthElement(encrypted)
-			else
-				rawApi.createHealthElementInGroup(groupId, encrypted)
-		).successBody().let {
-			decryptedFlavour.maybeDecrypt(groupId, it)
-		}
-	}
-
-	override suspend fun createHealthElements(entities: List<DecryptedHealthElement>): List<DecryptedHealthElement> {
-		require(entities.all { it.securityMetadata != null }) { "All entities must have security metadata initialized. You can use the withEncryptionMetadata for that very purpose." }
-		return rawApi.createHealthElements(
-			decryptedFlavour.validateAndMaybeEncrypt(null, entities),
-		).successBody().let {
-			decryptedFlavour.maybeDecrypt(null, it)
-		}
 	}
 
 	override suspend fun withEncryptionMetadata(

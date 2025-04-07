@@ -40,6 +40,14 @@ interface ClassificationBasicFlavourlessApi {
 /* This interface includes the API calls can be used on decrypted items if encryption keys are available *or* encrypted items if no encryption keys are available */
 interface ClassificationBasicFlavouredApi<E : Classification> {
 	/**
+	 * Create a new classification. The provided classification must have the encryption metadata initialized.
+	 * @param entity a classification with initialized encryption metadata
+	 * @return the created classification with updated revision.
+	 * @throws IllegalArgumentException if the encryption metadata of the input was not initialized.
+	 */
+	suspend fun createClassification(entity: E): E
+
+	/**
 	 * Modifies a classification. You need to have write access to the entity.
 	 * Flavoured method.
 	 * @param entity a classification with update content
@@ -149,14 +157,6 @@ interface ClassificationFlavouredApi<E : Classification> : ClassificationBasicFl
 
 /* The extra API calls declared in this interface are the ones that can only be used on decrypted items when encryption keys are available */
 interface ClassificationApi : ClassificationBasicFlavourlessApi, ClassificationFlavouredApi<DecryptedClassification> {
-	/**
-	 * Create a new classification. The provided classification must have the encryption metadata initialized.
-	 * @param entity a classification with initialized encryption metadata
-	 * @return the created classification with updated revision.
-	 * @throws IllegalArgumentException if the encryption metadata of the input was not initialized.
-	 */
-	suspend fun createClassification(entity: DecryptedClassification): DecryptedClassification
-
 	/**
 	 * Creates a new classification with initialized encryption metadata
 	 * @param base a classification with initialized content and uninitialized encryption metadata. The result of this

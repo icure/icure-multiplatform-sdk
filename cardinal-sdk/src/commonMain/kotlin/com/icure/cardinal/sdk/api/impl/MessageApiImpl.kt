@@ -53,6 +53,18 @@ private abstract class AbstractMessageBasicFlavouredApi<E : Message>(
 	protected val rawApi: RawMessageApi,
 	private val config: BasicApiConfiguration,
 ) : MessageBasicFlavouredApi<E>, FlavouredApi<EncryptedMessage, E> {
+	override suspend fun createMessage(entity: E): E {
+		require(entity.securityMetadata != null) { "Entity must have security metadata initialized. Make sure to use the `withEncryptionMetadata` method." }
+		return rawApi.createMessage(
+			validateAndMaybeEncrypt(null, entity)
+		).successBody().let { maybeDecrypt(null, it) }
+	}
+
+	override suspend fun createMessageInTopic(entity: E): E =
+		rawApi.createMessageInTopic(
+			validateAndMaybeEncrypt(null, entity)
+		).successBody().let { maybeDecrypt(null, it) }
+
 	override suspend fun undeleteMessageById(id: String, rev: String): E =
 		rawApi.undeleteMessage(id, rev).successBodyOrThrowRevisionConflict().let { maybeDecrypt(null, it) }
 
@@ -291,30 +303,6 @@ internal class MessageApiImpl(
 					EncryptedMessage.serializer(),
 				) { Serialization.json.decodeFromJsonElement<DecryptedMessage>(config.jsonPatcher.patchMessage(it)) }
 		}
-
-	override suspend fun createMessage(entity: DecryptedMessage): DecryptedMessage {
-		require(entity.securityMetadata != null) { "Entity must have security metadata initialized. You can use the withEncryptionMetadata for that very purpose." }
-		return rawApi.createMessage(
-			config.crypto.entity.encryptEntities(
-				null,
-				listOf(entity),
-				EntityWithEncryptionMetadataTypeName.Message,
-				DecryptedMessage.serializer(),
-				config.encryption.message,
-			) { Serialization.json.decodeFromJsonElement<EncryptedMessage>(it) }.single(),
-		).successBody().let { decrypt(it) }
-	}
-
-	override suspend fun createMessageInTopic(entity: DecryptedMessage): DecryptedMessage =
-		rawApi.createMessageInTopic(
-			config.crypto.entity.encryptEntities(
-				null,
-				listOf(entity),
-				EntityWithEncryptionMetadataTypeName.Message,
-				DecryptedMessage.serializer(),
-				config.encryption.message,
-			) { Serialization.json.decodeFromJsonElement<EncryptedMessage>(it) }.single()
-		).successBody().let { decrypt(it) }
 
 	override suspend fun withEncryptionMetadata(
 		base: DecryptedMessage?,

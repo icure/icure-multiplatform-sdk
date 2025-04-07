@@ -10,9 +10,9 @@ import com.icure.cardinal.sdk.filters.SortableFilterOptions
 import com.icure.cardinal.sdk.model.Contact
 import com.icure.cardinal.sdk.model.DecryptedContact
 import com.icure.cardinal.sdk.model.EncryptedContact
-import com.icure.cardinal.sdk.model.StoredDocumentIdentifier
 import com.icure.cardinal.sdk.model.PaginatedList
 import com.icure.cardinal.sdk.model.Patient
+import com.icure.cardinal.sdk.model.StoredDocumentIdentifier
 import com.icure.cardinal.sdk.model.User
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.model.data.LabelledOccurence
@@ -105,6 +105,23 @@ interface ContactBasicFlavourlessApi {
 
 /* This interface includes the API calls can be used on decrypted items if encryption keys are available *or* encrypted items if no encryption keys are available */
 interface ContactBasicFlavouredApi<E : Contact, S : Service> {
+	/**
+	 * Create a new contact. The provided contact must have the encryption metadata initialized.
+	 * @param entity a contact with initialized encryption metadata
+	 * @return the created contact with updated revision.
+	 * @throws IllegalArgumentException if the encryption metadata of the input was not initialized.
+	 */
+	suspend fun createContact(entity: E): E
+
+	/**
+	 * Create multiple contacts. All the provided contacts must have the encryption metadata initialized, otherwise
+	 * this method fails without doing anything.
+	 * @param entities contacts with initialized encryption metadata
+	 * @return the created contacts with updated revision.
+	 * @throws IllegalArgumentException if the encryption metadata of any contact in the input was not initialized.
+	 */
+	suspend fun createContacts(entities: List<E>): List<E>
+
 	/**
 	 * Restores a contact that was marked as deleted.
 	 * @param id the id of the entity
@@ -369,23 +386,6 @@ interface ContactApi : ContactBasicFlavourlessApi, ContactFlavouredApi<Decrypted
 	 * @return a list of service ids
 	 */
 	suspend fun matchServicesBySorted(filter: SortableFilterOptions<Service>): List<String>
-
-	/**
-	 * Create a new contact. The provided contact must have the encryption metadata initialized.
-	 * @param entity a contact with initialized encryption metadata
-	 * @return the created contact with updated revision.
-	 * @throws IllegalArgumentException if the encryption metadata of the input was not initialized.
-	 */
-	suspend fun createContact(entity: DecryptedContact): DecryptedContact
-
-	/**
-	 * Create multiple contacts. All the provided contacts must have the encryption metadata initialized, otherwise
-	 * this method fails without doing anything.
-	 * @param entities contacts with initialized encryption metadata
-	 * @return the created contacts with updated revision.
-	 * @throws IllegalArgumentException if the encryption metadata of any contact in the input was not initialized.
-	 */
-	suspend fun createContacts(entities: List<DecryptedContact>): List<DecryptedContact>
 
 	/**
 	 * Creates a new contact with initialized encryption metadata

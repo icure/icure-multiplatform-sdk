@@ -53,6 +53,13 @@ private abstract class AbstractTopicBasicFlavouredApi<E : Topic>(
 	protected val rawApi: RawTopicApi,
 	private val config: BasicApiConfiguration,
 ) : TopicBasicFlavouredApi<E>, FlavouredApi<EncryptedTopic, E> {
+	override suspend fun createTopic(entity: E): E {
+		require(entity.securityMetadata != null) { "Entity must have security metadata initialized. Make sure to use the `withEncryptionMetadata` method." }
+		return rawApi.createTopic(
+			validateAndMaybeEncrypt(null, entity),
+		).successBody().let { maybeDecrypt(null, it) }
+	}
+
 	override suspend fun undeleteTopicById(id: String, rev: String): E =
 		rawApi.undeleteTopic(id, rev).successBodyOrThrowRevisionConflict().let { maybeDecrypt(null, it) }
 
@@ -198,19 +205,6 @@ internal class TopicApiImpl(
 					EncryptedTopic.serializer(),
 				) { Serialization.json.decodeFromJsonElement<DecryptedTopic>(config.jsonPatcher.patchTopic(it)) }
 		}
-
-	override suspend fun createTopic(entity: DecryptedTopic): DecryptedTopic {
-		require(entity.securityMetadata != null) { "Entity must have security metadata initialized. You can use the withEncryptionMetadata for that very purpose." }
-		return rawApi.createTopic(
-			config.crypto.entity.encryptEntities(
-				null,
-				listOf(entity),
-				EntityWithEncryptionMetadataTypeName.Topic,
-				DecryptedTopic.serializer(),
-				config.encryption.topic,
-			) { Serialization.json.decodeFromJsonElement<EncryptedTopic>(it) }.single(),
-		).successBody().let { decrypt(it) }
-	}
 
 	override suspend fun withEncryptionMetadata(
 		base: DecryptedTopic?,

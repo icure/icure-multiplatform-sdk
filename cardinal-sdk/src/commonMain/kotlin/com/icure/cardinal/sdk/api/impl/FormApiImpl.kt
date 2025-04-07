@@ -43,6 +43,24 @@ import kotlinx.serialization.json.decodeFromJsonElement
 @InternalIcureApi
 private abstract class AbstractFormBasicFlavouredApi<E : Form>(protected val rawApi: RawFormApi) :
 	FormBasicFlavouredApi<E>, FlavouredApi<EncryptedForm, E> {
+	override suspend fun createForm(entity: E): E {
+		require(entity.securityMetadata != null) { "Entity must have security metadata initialized. Make sure to use the `withEncryptionMetadata` method." }
+		return rawApi.createForm(
+			validateAndMaybeEncrypt(null, entity),
+		).successBody().let {
+			maybeDecrypt(null, it)
+		}
+	}
+
+	override suspend fun createForms(entities: List<E>): List<E> {
+		require(entities.all { it.securityMetadata != null }) { "All entities must have security metadata initialized. Make sure to use the `withEncryptionMetadata` method." }
+		return rawApi.createForms(
+			validateAndMaybeEncrypt(null, entities),
+		).successBody().let {
+			maybeDecrypt(null, it)
+		}
+	}
+
 	override suspend fun undeleteFormById(id: String, rev: String): E =
 		rawApi.undeleteForm(id, rev).successBodyOrThrowRevisionConflict().let { maybeDecrypt(null, it) }
 
@@ -261,36 +279,6 @@ internal class FormApiImpl(
 					EncryptedForm.serializer(),
 				) { Serialization.json.decodeFromJsonElement<DecryptedForm>(config.jsonPatcher.patchForm(it)) }
 		}
-
-	override suspend fun createForm(entity: DecryptedForm): DecryptedForm {
-		require(entity.securityMetadata != null) { "Entity must have security metadata initialized. You can use the withEncryptionMetadata for that very purpose." }
-		return rawApi.createForm(
-			config.crypto.entity.encryptEntities(
-				null,
-				listOf(entity),
-				EntityWithEncryptionMetadataTypeName.Form,
-				DecryptedForm.serializer(),
-				config.encryption.form,
-			) { Serialization.json.decodeFromJsonElement<EncryptedForm>(it) }.single(),
-		).successBody().let {
-			decrypt(it)
-		}
-	}
-
-	override suspend fun createForms(entities: List<DecryptedForm>): List<DecryptedForm> {
-		require(entities.all { it.securityMetadata != null }) { "All entities must have security metadata initialized. You can use the withEncryptionMetadata for that very purpose." }
-		return rawApi.createForms(
-			config.crypto.entity.encryptEntities(
-				null,
-				entities,
-				EntityWithEncryptionMetadataTypeName.Form,
-				DecryptedForm.serializer(),
-				config.encryption.form,
-			) { Serialization.json.decodeFromJsonElement<EncryptedForm>(it) },
-		).successBody().map {
-			decrypt(it)
-		}
-	}
 
 	override suspend fun withEncryptionMetadata(
 		base: DecryptedForm?,

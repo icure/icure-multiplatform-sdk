@@ -309,7 +309,7 @@ internal class InvoiceApiImpl(
 		}
 
 	private suspend fun createInvoice(entity: DecryptedInvoice): DecryptedInvoice {
-		require(entity.securityMetadata != null) { "Entity must have security metadata initialized. You can use the withEncryptionMetadata for that very purpose." }
+		require(entity.securityMetadata != null) { "Entity must have security metadata initialized. Make sure to use the `withEncryptionMetadata` method." }
 		return rawApi.createInvoice(
 			config.crypto.entity.encryptEntities(
 				null,
@@ -354,7 +354,7 @@ internal class InvoiceApiImpl(
 	}
 
 	override suspend fun createInvoices(entities: List<DecryptedInvoice>): List<DecryptedInvoice> {
-		require(entities.all { it.securityMetadata != null }) { "All entities must have security metadata initialized. You can use the withEncryptionMetadata for that very purpose." }
+		require(entities.all { it.securityMetadata != null }) { "All entities must have security metadata initialized. Make sure to use the `withEncryptionMetadata` method." }
 		return rawApi.createInvoices(
 			config.crypto.entity.encryptEntities(
 				null,

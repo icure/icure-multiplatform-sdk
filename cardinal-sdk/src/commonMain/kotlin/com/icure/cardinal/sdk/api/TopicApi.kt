@@ -9,8 +9,8 @@ import com.icure.cardinal.sdk.filters.FilterOptions
 import com.icure.cardinal.sdk.filters.SortableFilterOptions
 import com.icure.cardinal.sdk.model.DecryptedTopic
 import com.icure.cardinal.sdk.model.EncryptedTopic
-import com.icure.cardinal.sdk.model.StoredDocumentIdentifier
 import com.icure.cardinal.sdk.model.Patient
+import com.icure.cardinal.sdk.model.StoredDocumentIdentifier
 import com.icure.cardinal.sdk.model.Topic
 import com.icure.cardinal.sdk.model.TopicRole
 import com.icure.cardinal.sdk.model.User
@@ -87,6 +87,14 @@ interface TopicBasicFlavourlessApi {
 
 /* This interface includes the API calls can be used on decrypted items if encryption keys are available *or* encrypted items if no encryption keys are available */
 interface TopicBasicFlavouredApi<E : Topic> {
+	/**
+	 * Create a new topic. The provided topic must have the encryption metadata initialized.
+	 * @param entity a topic with initialized encryption metadata
+	 * @return the created topic with updated revision.
+	 * @throws IllegalArgumentException if the encryption metadata of the input was not initialized.
+	 */
+	suspend fun createTopic(entity: E): E
+
 	/**
 	 * Restores a topic that was marked as deleted.
 	 * @param topic the topic to undelete
@@ -224,14 +232,6 @@ interface TopicFlavouredApi<E : Topic> : TopicBasicFlavouredApi<E> {
 
 /* The extra API calls declared in this interface are the ones that can only be used on decrypted items when encryption keys are available */
 interface TopicApi : TopicBasicFlavourlessApi, TopicFlavouredApi<DecryptedTopic>, Subscribable<Topic, EncryptedTopic, FilterOptions<Topic>> {
-	/**
-	 * Create a new topic. The provided topic must have the encryption metadata initialized.
-	 * @param entity a topic with initialized encryption metadata
-	 * @return the created topic with updated revision.
-	 * @throws IllegalArgumentException if the encryption metadata of the input was not initialized.
-	 */
-	suspend fun createTopic(entity: DecryptedTopic): DecryptedTopic
-
 	/**
 	 * Creates a new topic with initialized encryption metadata
 	 * @param base a topic with initialized content and uninitialized encryption metadata. The result of this

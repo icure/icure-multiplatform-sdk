@@ -39,6 +39,16 @@ import kotlinx.serialization.json.decodeFromJsonElement
 @InternalIcureApi
 private abstract class AbstractClassificationBasicFlavouredApi<E : Classification>(protected val rawApi: RawClassificationApi) :
 	ClassificationBasicFlavouredApi<E>, FlavouredApi<EncryptedClassification, E> {
+
+	override suspend fun createClassification(entity: E): E {
+		require(entity.securityMetadata != null) { "Entity must have security metadata initialized. Make sure to use the `withEncryptionMetadata` method." }
+		return rawApi.createClassification(
+			validateAndMaybeEncrypt(null, entity),
+		).successBody().let {
+			maybeDecrypt(null, it)
+		}
+	}
+
 	override suspend fun modifyClassification(entity: E): E =
 		rawApi.modifyClassification(validateAndMaybeEncrypt(null, entity)).successBodyOrThrowRevisionConflict().let { maybeDecrypt(null, it) }
 
@@ -203,21 +213,6 @@ internal class ClassificationApiImpl(
 					)
 				}
 		}
-
-	override suspend fun createClassification(entity: DecryptedClassification): DecryptedClassification {
-		require(entity.securityMetadata != null) { "Entity must have security metadata initialized. You can use the withEncryptionMetadata for that very purpose." }
-		return rawApi.createClassification(
-			crypto.entity.encryptEntities(
-				null,
-				listOf(entity),
-				EntityWithEncryptionMetadataTypeName.Classification,
-				DecryptedClassification.serializer(),
-				config.encryption.classification
-			) { Serialization.json.decodeFromJsonElement<EncryptedClassification>(it) }.single(),
-		).successBody().let {
-			decrypt(it)
-		}
-	}
 
 	private val crypto get() = config.crypto
 

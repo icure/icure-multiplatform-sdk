@@ -46,6 +46,15 @@ import kotlinx.serialization.json.decodeFromJsonElement
 private abstract class AbstractDocumentBasicFlavouredApi<E : Document>(
 	protected val rawApi: RawDocumentApi
 ) : DocumentBasicFlavouredApi<E>, FlavouredApi<EncryptedDocument, E> {
+	override suspend fun createDocument(entity: E): E {
+		require(entity.securityMetadata != null) { "Entity must have security metadata initialized. Make sure to use the `withEncryptionMetadata` method." }
+		return rawApi.createDocument(
+			validateAndMaybeEncrypt(null, entity),
+		).successBody().let {
+			maybeDecrypt(null, it)
+		}
+	}
+
 	override suspend fun undeleteDocumentById(id: String, rev: String): E =
 		rawApi.undeleteDocument(id, rev).successBodyOrThrowRevisionConflict().let { maybeDecrypt(null, it) }
 
@@ -277,21 +286,6 @@ internal class DocumentApiImpl(
 					EncryptedDocument.serializer(),
 				) { Serialization.json.decodeFromJsonElement<DecryptedDocument>(config.jsonPatcher.patchDocument(it)) }
 		}
-
-	override suspend fun createDocument(entity: DecryptedDocument): DecryptedDocument {
-		require(entity.securityMetadata != null) { "Entity must have security metadata initialized. You can use the withEncryptionMetadata for that very purpose." }
-		return rawApi.createDocument(
-			crypto.entity.encryptEntities(
-				null,
-				listOf(entity),
-				EntityWithEncryptionMetadataTypeName.Document,
-				DecryptedDocument.serializer(),
-				fieldsToEncrypt,
-			) { Serialization.json.decodeFromJsonElement<EncryptedDocument>(it) }.single(),
-		).successBody().let {
-			decrypt(it)
-		}
-	}
 
 	private val crypto get() = config.crypto
 	private val fieldsToEncrypt get() = config.encryption.document

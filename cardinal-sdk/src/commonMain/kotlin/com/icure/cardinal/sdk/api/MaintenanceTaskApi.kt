@@ -8,8 +8,8 @@ import com.icure.cardinal.sdk.filters.FilterOptions
 import com.icure.cardinal.sdk.filters.SortableFilterOptions
 import com.icure.cardinal.sdk.model.DecryptedMaintenanceTask
 import com.icure.cardinal.sdk.model.EncryptedMaintenanceTask
-import com.icure.cardinal.sdk.model.StoredDocumentIdentifier
 import com.icure.cardinal.sdk.model.MaintenanceTask
+import com.icure.cardinal.sdk.model.StoredDocumentIdentifier
 import com.icure.cardinal.sdk.model.User
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.model.embed.AccessLevel
@@ -84,6 +84,14 @@ interface MaintenanceTaskBasicFlavourlessApi {
 
 /* This interface includes the API calls can be used on decrypted items if encryption keys are available *or* encrypted items if no encryption keys are available */
 interface MaintenanceTaskBasicFlavouredApi<E : MaintenanceTask> {
+	/**
+	 * Create a new maintenance task. The provided maintenance task must have the encryption metadata initialized.
+	 * @param entity a maintenance task with initialized encryption metadata
+	 * @return the created maintenance task with updated revision.
+	 * @throws IllegalArgumentException if the encryption metadata of the input was not initialized.
+	 */
+	suspend fun createMaintenanceTask(entity: E): E
+
 	/**
 	 * Restores a maintenanceTask that was marked as deleted.
 	 * @param maintenanceTask the maintenanceTask to undelete
@@ -200,14 +208,6 @@ interface MaintenanceTaskFlavouredApi<E : MaintenanceTask> : MaintenanceTaskBasi
 
 /* The extra API calls declared in this interface are the ones that can only be used on decrypted items when encryption keys are available */
 interface MaintenanceTaskApi : MaintenanceTaskBasicFlavourlessApi, MaintenanceTaskFlavouredApi<DecryptedMaintenanceTask>, Subscribable<MaintenanceTask, EncryptedMaintenanceTask, FilterOptions<MaintenanceTask>> {
-	/**
-	 * Create a new maintenance task. The provided maintenance task must have the encryption metadata initialized.
-	 * @param entity a maintenance task with initialized encryption metadata
-	 * @return the created maintenance task with updated revision.
-	 * @throws IllegalArgumentException if the encryption metadata of the input was not initialized.
-	 */
-	suspend fun createMaintenanceTask(entity: DecryptedMaintenanceTask): DecryptedMaintenanceTask
-
 	/**
 	 * Creates a maintenance task with initialized encryption metadata, using the provided maintenance task as a base.
 	 * @param maintenanceTask a maintenance task with initialized content, to be used as a base for the result.
