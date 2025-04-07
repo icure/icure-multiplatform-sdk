@@ -432,13 +432,7 @@ private class AbstractPatientBasicFlavourlessApi(val rawApi: RawPatientApi, val 
 		doGetDataOwnersWithAccessTo(null, patient)
 
 	override suspend fun getDataOwnersWithAccessTo(patient: GroupScoped<Patient>): EntityAccessInformation =
-		doGetDataOwnersWithAccessTo(patient.groupId, patient.entity).let { accessInfo ->
-			accessInfo.copy(
-				permissionsByDataOwnerId = accessInfo.permissionsByDataOwnerId.mapKeys { (k, _) ->
-					if (k.groupId == null) k.copy(groupId = patient.groupId) else k
-				}
-			)
-		}
+		doGetDataOwnersWithAccessTo(patient.groupId, patient.entity).mapNullGroupTo(patient.groupId)
 
 	private suspend fun doGetDataOwnersWithAccessTo(groupId: String?, patient: Patient): EntityAccessInformation =
 		config.crypto.entityAccessInformationProvider.getDataOwnersWithAccessTo(groupId, patient, EntityWithEncryptionMetadataTypeName.Patient)
@@ -877,7 +871,6 @@ private class PatientApiImpl(
 			),
 			EntityWithEncryptionMetadataTypeName.Patient,
 			null,
-			null,
 			initializeEncryptionKey = true,
 			autoDelegations = delegates + user?.autoDelegationsFor(DelegationTag.AdministrativeData)
 				.orEmpty().keyAsLocalDataOwnerReferences(),
@@ -985,8 +978,7 @@ private class PatientApiImpl(
 					entityGroupId = null,
 					entity = self,
 					entityType = EntityWithEncryptionMetadataTypeName.Patient,
-					owningEntityId = null,
-					owningEntitySecretId = null,
+					owningEntityDetails = null,
 					initializeEncryptionKey = true,
 					autoDelegations = sharingWith.keyAsLocalDataOwnerReferences()
 				).updatedEntity

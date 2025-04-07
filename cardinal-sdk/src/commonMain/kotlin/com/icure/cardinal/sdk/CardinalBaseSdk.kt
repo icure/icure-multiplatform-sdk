@@ -34,7 +34,7 @@ import com.icure.cardinal.sdk.api.impl.EntityTemplateApiImpl
 import com.icure.cardinal.sdk.api.impl.FormBasicApiImpl
 import com.icure.cardinal.sdk.api.impl.FrontEndMigrationApiImpl
 import com.icure.cardinal.sdk.api.impl.GroupApiImpl
-import com.icure.cardinal.sdk.api.impl.HealthElementBasicApiImpl
+import com.icure.cardinal.sdk.api.impl.initHealthElementBasicApi
 import com.icure.cardinal.sdk.api.impl.HealthcarePartyApiImpl
 import com.icure.cardinal.sdk.api.impl.InsuranceApiImpl
 import com.icure.cardinal.sdk.api.impl.InvoiceBasicApiImpl
@@ -344,7 +344,7 @@ private class CardinalBaseApisImpl(
 		)
 	}
 	override val healthElement by lazy {
-		HealthElementBasicApiImpl(
+		initHealthElementBasicApi(
 			RawHealthElementApiImpl(
 				apiUrl,
 				authProvider,

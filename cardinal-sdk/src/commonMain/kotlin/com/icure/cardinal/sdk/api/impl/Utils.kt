@@ -1,5 +1,6 @@
 package com.icure.cardinal.sdk.api.impl
 
+import com.icure.cardinal.sdk.crypto.entities.EntityAccessInformation
 import com.icure.cardinal.sdk.model.EntityReferenceInGroup
 import com.icure.cardinal.sdk.model.GroupScoped
 import com.icure.cardinal.sdk.model.base.Identifiable
@@ -63,4 +64,15 @@ internal inline fun <E, T> List<GroupScoped<E>>.mapExactlyChunkedByGroup(
 		}
 	}
 	return res.filterNotNullTo(ArrayList(this.size)) // Nothing will be null
+}
+
+fun EntityAccessInformation.mapNullGroupTo(groupId: String): EntityAccessInformation =
+	copy(
+		permissionsByDataOwnerId = permissionsByDataOwnerId.mapKeys { (k, _) ->
+			if (k.groupId == null) k.copy(groupId = groupId) else k
+		}
+	)
+
+fun Set<EntityReferenceInGroup>.mapNullGroupTo(groupId: String): Set<EntityReferenceInGroup> = mapTo(mutableSetOf()) {
+	if (it.groupId == null) EntityReferenceInGroup(entityId = it.entityId, groupId = groupId) else it
 }

@@ -3,13 +3,18 @@ package com.icure.cardinal.sdk.api.impl
 import com.icure.cardinal.sdk.api.HealthElementApi
 import com.icure.cardinal.sdk.api.HealthElementBasicApi
 import com.icure.cardinal.sdk.api.HealthElementBasicFlavouredApi
+import com.icure.cardinal.sdk.api.HealthElementBasicFlavouredInGroupApi
 import com.icure.cardinal.sdk.api.HealthElementBasicFlavourlessApi
+import com.icure.cardinal.sdk.api.HealthElementBasicFlavourlessInGroupApi
+import com.icure.cardinal.sdk.api.HealthElementBasicInGroupApi
 import com.icure.cardinal.sdk.api.HealthElementFlavouredApi
+import com.icure.cardinal.sdk.api.HealthElementFlavouredInGroupApi
+import com.icure.cardinal.sdk.api.HealthElementInGroupApi
 import com.icure.cardinal.sdk.api.raw.RawHealthElementApi
 import com.icure.cardinal.sdk.api.raw.successBodyOrThrowRevisionConflict
-import com.icure.cardinal.sdk.model.EntityReferenceInGroup
 import com.icure.cardinal.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
 import com.icure.cardinal.sdk.crypto.entities.HealthElementShareOptions
+import com.icure.cardinal.sdk.crypto.entities.OwningEntityDetails
 import com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption
 import com.icure.cardinal.sdk.filters.BaseFilterOptions
 import com.icure.cardinal.sdk.filters.BaseSortableFilterOptions
@@ -18,20 +23,24 @@ import com.icure.cardinal.sdk.filters.SortableFilterOptions
 import com.icure.cardinal.sdk.filters.mapHealthElementFilterOptions
 import com.icure.cardinal.sdk.model.DecryptedHealthElement
 import com.icure.cardinal.sdk.model.EncryptedHealthElement
+import com.icure.cardinal.sdk.model.EntityReferenceInGroup
+import com.icure.cardinal.sdk.model.GroupScoped
 import com.icure.cardinal.sdk.model.HealthElement
-import com.icure.cardinal.sdk.model.StoredDocumentIdentifier
 import com.icure.cardinal.sdk.model.ListOfIds
 import com.icure.cardinal.sdk.model.ListOfIdsAndRev
 import com.icure.cardinal.sdk.model.Patient
+import com.icure.cardinal.sdk.model.StoredDocumentIdentifier
 import com.icure.cardinal.sdk.model.User
-import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.model.embed.AccessLevel
 import com.icure.cardinal.sdk.model.embed.DelegationTag
 import com.icure.cardinal.sdk.model.extensions.autoDelegationsFor
 import com.icure.cardinal.sdk.model.extensions.dataOwnerId
 import com.icure.cardinal.sdk.model.specializations.HexString
+import com.icure.cardinal.sdk.model.toStoredDocumentIdentifier
 import com.icure.cardinal.sdk.options.ApiConfiguration
 import com.icure.cardinal.sdk.options.BasicApiConfiguration
+import com.icure.cardinal.sdk.options.EntitiesEncryptedFieldsManifests
+import com.icure.cardinal.sdk.options.JsonPatcher
 import com.icure.cardinal.sdk.serialization.HealthElementAbstractFilterSerializer
 import com.icure.cardinal.sdk.serialization.SubscriptionSerializer
 import com.icure.cardinal.sdk.subscription.EntitySubscription
@@ -43,21 +52,71 @@ import com.icure.cardinal.sdk.utils.currentEpochMs
 import com.icure.cardinal.sdk.utils.pagination.IdsPageIterator
 import com.icure.cardinal.sdk.utils.pagination.PaginatedListIterator
 import com.icure.utils.InternalIcureApi
-import kotlinx.serialization.json.decodeFromJsonElement
-
 
 @InternalIcureApi
-private abstract class AbstractHealthElementBasicFlavouredApi<E : HealthElement>(
+private fun encryptedApiFlavour(
+	config: BasicApiConfiguration
+): FlavouredApi<EncryptedHealthElement, EncryptedHealthElement> = FlavouredApi.encrypted(
+	config = config,
+	encryptedSerializer = EncryptedHealthElement.serializer(),
+	type = EntityWithEncryptionMetadataTypeName.HealthElement,
+	manifest = EntitiesEncryptedFieldsManifests::healthElement
+)
+
+@InternalIcureApi
+private fun decryptedApiFlavour(
+	config: ApiConfiguration
+): FlavouredApi<EncryptedHealthElement, DecryptedHealthElement> = FlavouredApi.decrypted(
+	config = config,
+	encryptedSerializer = EncryptedHealthElement.serializer(),
+	decryptedSerializer = DecryptedHealthElement.serializer(),
+	type = EntityWithEncryptionMetadataTypeName.HealthElement,
+	manifest = EntitiesEncryptedFieldsManifests::healthElement,
+	patchJson = JsonPatcher::patchHealthElement
+)
+
+@InternalIcureApi
+private fun tryAndRecoverApiFlavour(
+	config: ApiConfiguration
+): FlavouredApi<EncryptedHealthElement, HealthElement> = FlavouredApi.tryAndRecover(
+	config = config,
+	encryptedSerializer = EncryptedHealthElement.serializer(),
+	decryptedSerializer = DecryptedHealthElement.serializer(),
+	type = EntityWithEncryptionMetadataTypeName.HealthElement,
+	manifest = EntitiesEncryptedFieldsManifests::healthElement,
+	patchJson = JsonPatcher::patchHealthElement
+)
+
+@InternalIcureApi
+private open class AbstractHealthElementBasicFlavouredApi<E : HealthElement>(
 	protected val rawApi: RawHealthElementApi,
-	private val config: BasicApiConfiguration
-) : HealthElementBasicFlavouredApi<E>, FlavouredApi<EncryptedHealthElement, E> {
+	protected open val config: BasicApiConfiguration,
+	private val flavour: FlavouredApi<EncryptedHealthElement, E>
+) : HealthElementBasicFlavouredApi<E>, HealthElementBasicFlavouredInGroupApi<E>, FlavouredApi<EncryptedHealthElement, E> by flavour {
 	override suspend fun modifyHealthElement(entity: E): E =
-		rawApi.modifyHealthElement(validateAndMaybeEncrypt(null, entity)).successBodyOrThrowRevisionConflict().let { maybeDecrypt(null, it) }
+		doModifyHealthElement(null, entity)
+
+	override suspend fun modifyHealthElement(entity: GroupScoped<E>): GroupScoped<E> =
+		GroupScoped(doModifyHealthElement(entity.groupId, entity.entity), entity.groupId)
+
+	private suspend fun doModifyHealthElement(groupId: String?, entity: E): E =
+		validateAndMaybeEncrypt(groupId, entity).let {
+			if (groupId == null)
+				rawApi.modifyHealthElement(it)
+			else
+				rawApi.modifyHealthElementInGroup(groupId, it)
+		}.successBodyOrThrowRevisionConflict().let { maybeDecrypt(groupId, it) }
 
 	override suspend fun modifyHealthElements(entities: List<E>): List<E> =
-		rawApi.modifyHealthElements(entities.let { validateAndMaybeEncrypt(it) }).successBody().let { maybeDecrypt(it) }
+		rawApi.modifyHealthElements(validateAndMaybeEncrypt(entities)).successBody().let { maybeDecrypt(it) }
 
-	override suspend fun getHealthElement(entityId: String, groupId: String?): E =
+	override suspend fun getHealthElement(groupId: String, entityId: String): GroupScoped<E> =
+		GroupScoped(doGetHealthElement(groupId, entityId), groupId)
+
+	override suspend fun getHealthElement(entityId: String): E =
+		doGetHealthElement(null, entityId)
+
+	protected suspend fun doGetHealthElement(groupId: String?, entityId: String): E =
 		(
 			if (groupId == null)
 				rawApi.getHealthElement(entityId)
@@ -73,10 +132,11 @@ private abstract class AbstractHealthElementBasicFlavouredApi<E : HealthElement>
 }
 
 @InternalIcureApi
-private abstract class AbstractHealthElementFlavouredApi<E : HealthElement>(
+private class AbstractHealthElementFlavouredApi<E : HealthElement>(
 	rawApi: RawHealthElementApi,
-	protected val config: ApiConfiguration
-) : AbstractHealthElementBasicFlavouredApi<E>(rawApi, config), HealthElementFlavouredApi<E> {
+	override val config: ApiConfiguration,
+	flavour: FlavouredApi<EncryptedHealthElement, E>
+) : AbstractHealthElementBasicFlavouredApi<E>(rawApi, config, flavour), HealthElementFlavouredApi<E>, HealthElementFlavouredInGroupApi<E> {
 	override suspend fun shareWith(
 		delegateId: String,
 		healthElement: E,
@@ -85,19 +145,31 @@ private abstract class AbstractHealthElementFlavouredApi<E : HealthElement>(
 		shareWithMany(healthElement, mapOf(delegateId to (options ?: HealthElementShareOptions())))
 
 	override suspend fun shareWithMany(healthElement: E, delegates: Map<String, HealthElementShareOptions>): E =
-		config.crypto.entity.simpleShareOrUpdateEncryptedEntityMetadata(
-			null,
-			healthElement,
-			EntityWithEncryptionMetadataTypeName.HealthElement,
-			delegates.keyAsLocalDataOwnerReferences(),
-			true,
-			{ getHealthElement(it) },
-			{ maybeDecrypt(null, rawApi.bulkShare(it).successBody()) }
-		).updatedEntityOrThrow()
+		doShareWithMany(null, healthElement, delegates.keyAsLocalDataOwnerReferences())
 
-	override suspend fun shareInGroup(
-		healthElement: E,
+	override suspend fun shareWith(
+		delegate: EntityReferenceInGroup,
+		healthElement: GroupScoped<E>,
+		options: HealthElementShareOptions?
+	): GroupScoped<E> =
+		shareWithMany(healthElement, mapOf(delegate to (options ?: HealthElementShareOptions())))
+
+	override suspend fun shareWithMany(
+		healthElement: GroupScoped<E>,
+		delegates: Map<EntityReferenceInGroup, HealthElementShareOptions>
+	): GroupScoped<E> =
+		GroupScoped(
+			doShareWithMany(
+				healthElement.groupId,
+				healthElement.entity,
+				delegates
+			),
+			healthElement.groupId
+		)
+
+	private suspend fun doShareWithMany(
 		entityGroupId: String?,
+		healthElement: E,
 		delegates: Map<EntityReferenceInGroup, HealthElementShareOptions>
 	): E =
 		config.crypto.entity.simpleShareOrUpdateEncryptedEntityMetadata(
@@ -106,7 +178,7 @@ private abstract class AbstractHealthElementFlavouredApi<E : HealthElement>(
 			EntityWithEncryptionMetadataTypeName.HealthElement,
 			delegates,
 			true,
-			{ getHealthElement(it) },
+			{ doGetHealthElement(entityGroupId, it) },
 			{
 				maybeDecrypt(
 					entityGroupId,
@@ -159,23 +231,21 @@ private abstract class AbstractHealthElementFlavouredApi<E : HealthElement>(
 
 @InternalIcureApi
 private class AbstractHealthElementBasicFlavourlessApi(
-	val rawApi: RawHealthElementApi,
-	private val config: BasicApiConfiguration
-) : HealthElementBasicFlavourlessApi {
+	val rawApi: RawHealthElementApi
+) : HealthElementBasicFlavourlessApi, HealthElementBasicFlavourlessInGroupApi {
+	@Deprecated("Deletion without rev is unsafe")
+	override suspend fun deleteHealthElementUnsafe(entityId: String): StoredDocumentIdentifier =
+		rawApi.deleteHealthElement(entityId).successBodyOrThrowRevisionConflict().toStoredDocumentIdentifier()
 
 	@Deprecated("Deletion without rev is unsafe")
-	override suspend fun deleteHealthElementUnsafe(entityId: String): DocIdentifier =
-		rawApi.deleteHealthElement(entityId).successBodyOrThrowRevisionConflict()
-
-	@Deprecated("Deletion without rev is unsafe")
-	override suspend fun deleteHealthElementsUnsafe(entityIds: List<String>): List<DocIdentifier> =
-		rawApi.deleteHealthElements(ListOfIds(entityIds)).successBody()
+	override suspend fun deleteHealthElementsUnsafe(entityIds: List<String>): List<StoredDocumentIdentifier> =
+		rawApi.deleteHealthElements(ListOfIds(entityIds)).successBody().toStoredDocumentIdentifier()
 	
-	override suspend fun deleteHealthElementById(entityId: String, rev: String?): DocIdentifier =
-		rawApi.deleteHealthElement(entityId, rev).successBodyOrThrowRevisionConflict()
+	override suspend fun deleteHealthElementById(entityId: String, rev: String): StoredDocumentIdentifier =
+		rawApi.deleteHealthElement(entityId, rev).successBodyOrThrowRevisionConflict().toStoredDocumentIdentifier()
 
-	override suspend fun deleteHealthElementsByIds(entityIds: List<StoredDocumentIdentifier>): List<DocIdentifier> =
-		rawApi.deleteHealthElementsWithRev(ListOfIdsAndRev(entityIds)).successBody()
+	override suspend fun deleteHealthElementsByIds(entityIds: List<StoredDocumentIdentifier>): List<StoredDocumentIdentifier> =
+		rawApi.deleteHealthElementsWithRev(ListOfIdsAndRev(entityIds)).successBody().toStoredDocumentIdentifier()
 
 	override suspend fun purgeHealthElementById(id: String, rev: String) {
 		rawApi.purgeHealthElement(id, rev).successBodyOrThrowRevisionConflict()
@@ -183,121 +253,125 @@ private class AbstractHealthElementBasicFlavourlessApi(
 }
 
 @InternalIcureApi
-internal class HealthElementApiImpl(
+internal fun initHealthElementApi(
+	rawApi: RawHealthElementApi,
+	config: ApiConfiguration
+): HealthElementApi {
+	val decryptedFlavour = decryptedApiFlavour(config)
+	val encryptedFlavour = encryptedApiFlavour(config)
+	val tryAndRecoverFlavour = tryAndRecoverApiFlavour(config)
+	val decryptedApi = AbstractHealthElementFlavouredApi(rawApi, config, decryptedFlavour)
+	val encryptedApi = AbstractHealthElementFlavouredApi(rawApi, config, encryptedFlavour)
+	val tryAndRecoverApi = AbstractHealthElementFlavouredApi(rawApi, config, tryAndRecoverFlavour)
+	val basicFlavourless = AbstractHealthElementBasicFlavourlessApi(rawApi)
+	return HealthElementApiImpl(
+		rawApi,
+		config,
+		encryptedApi,
+		decryptedApi,
+		tryAndRecoverApi,
+		basicFlavourless
+	)
+}
+
+@InternalIcureApi
+private class HealthElementApiImpl(
 	private val rawApi: RawHealthElementApi,
-	private val config: ApiConfiguration
-) : HealthElementApi, HealthElementFlavouredApi<DecryptedHealthElement> by object :
-	AbstractHealthElementFlavouredApi<DecryptedHealthElement>(rawApi, config) {
-	override suspend fun validateAndMaybeEncrypt(
-		entitiesGroupId: String?,
-		entities: List<DecryptedHealthElement>
-	): List<EncryptedHealthElement> =
-		this.config.crypto.entity.encryptEntities(
-			entitiesGroupId,
-			entities,
-			EntityWithEncryptionMetadataTypeName.HealthElement,
-			DecryptedHealthElement.serializer(),
-			this.config.encryption.healthElement,
-		) { Serialization.json.decodeFromJsonElement<EncryptedHealthElement>(it) }
+	private val config: ApiConfiguration,
+	private val encryptedFlavour: AbstractHealthElementFlavouredApi<EncryptedHealthElement>,
+	private val decryptedFlavour: AbstractHealthElementFlavouredApi<DecryptedHealthElement>,
+	private val tryAndRecoverFlavour: AbstractHealthElementFlavouredApi<HealthElement>,
+	private val base: AbstractHealthElementBasicFlavourlessApi
+) : HealthElementApi,
+	HealthElementFlavouredApi<DecryptedHealthElement> by decryptedFlavour,
+	HealthElementBasicFlavourlessApi by base {
+	override val encrypted: HealthElementFlavouredApi<EncryptedHealthElement> = encryptedFlavour
+	override val tryAndRecover: HealthElementFlavouredApi<HealthElement> = tryAndRecoverFlavour
+	override val inGroup: HealthElementInGroupApi = object : HealthElementInGroupApi,
+		HealthElementFlavouredInGroupApi<DecryptedHealthElement> by decryptedFlavour,
+		HealthElementBasicFlavourlessInGroupApi by base {
+		override val encrypted: HealthElementFlavouredInGroupApi<EncryptedHealthElement> = encryptedFlavour
+		override val tryAndRecover: HealthElementFlavouredInGroupApi<HealthElement> = tryAndRecoverFlavour
+		
+		override suspend fun decrypt(healthElements: List<GroupScoped<EncryptedHealthElement>>): List<GroupScoped<DecryptedHealthElement>> =
+			healthElements.mapExactlyChunkedByGroup { groupId, entities ->
+				decryptedFlavour.maybeDecrypt(groupId, entities)
+			}
 
-	override suspend fun maybeDecrypt(
-		entitiesGroupId: String?,
-		entities: List<EncryptedHealthElement>
-	): List<DecryptedHealthElement> = this.config.crypto.entity.decryptEntities(
-		entitiesGroupId,
-		entities,
-		EntityWithEncryptionMetadataTypeName.HealthElement,
-		EncryptedHealthElement.serializer(),
-	) { Serialization.json.decodeFromJsonElement<DecryptedHealthElement>(config.jsonPatcher.patchHealthElement(it)) }
-}, HealthElementBasicFlavourlessApi by AbstractHealthElementBasicFlavourlessApi(rawApi, config) {
+		override suspend fun tryDecrypt(healthElements: List<GroupScoped<EncryptedHealthElement>>): List<GroupScoped<HealthElement>> =
+			healthElements.mapExactlyChunkedByGroup { groupId, entities ->
+				tryAndRecoverFlavour.maybeDecrypt(groupId, entities)
+			}
 
-	override val encrypted: HealthElementFlavouredApi<EncryptedHealthElement> =
-		object : AbstractHealthElementFlavouredApi<EncryptedHealthElement>(rawApi, config) {
-			override suspend fun validateAndMaybeEncrypt(
-				entitiesGroupId: String?,
-				entities: List<EncryptedHealthElement>
-			): List<EncryptedHealthElement> =
-				config.crypto.entity.validateEncryptedEntities(
-					entities,
-					EntityWithEncryptionMetadataTypeName.HealthElement,
-					EncryptedHealthElement.serializer(),
-					config.encryption.healthElement
-				)
+		override suspend fun encryptOrValidate(healthElements: List<GroupScoped<HealthElement>>): List<GroupScoped<EncryptedHealthElement>> =
+			healthElements.mapExactlyChunkedByGroup { groupId, entities ->
+				tryAndRecoverFlavour.validateAndMaybeEncrypt(groupId, entities)
+			}
 
-			override suspend fun maybeDecrypt(
-				entitiesGroupId: String?,
-				entities: List<EncryptedHealthElement>
-			): List<EncryptedHealthElement> =
-				entities
-		}
+		override suspend fun createHealthElement(entity: GroupScoped<DecryptedHealthElement>): GroupScoped<DecryptedHealthElement> =
+			GroupScoped(doCreateHealthElement(entity.groupId, entity.entity), entity.groupId)
 
-	override val tryAndRecover: HealthElementFlavouredApi<HealthElement> =
-		object : AbstractHealthElementFlavouredApi<HealthElement>(rawApi, config) {
-			override suspend fun validateAndMaybeEncrypt(
-				entitiesGroupId: String?,
-				entities: List<HealthElement>
-			): List<EncryptedHealthElement> =
-				config.crypto.entity.validateOrEncryptEntities(
-					entitiesGroupId,
-					entities,
-					EntityWithEncryptionMetadataTypeName.HealthElement,
-					EncryptedHealthElement.serializer(),
-					DecryptedHealthElement.serializer(),
-					config.encryption.healthElement
-				)
+		override suspend fun withEncryptionMetadata(
+			groupId: String,
+			base: DecryptedHealthElement?,
+			patient: GroupScoped<Patient>,
+			user: User?,
+			delegates: Map<EntityReferenceInGroup, AccessLevel>,
+			secretId: SecretIdUseOption
+		): GroupScoped<DecryptedHealthElement> =
+			GroupScoped(
+				doWithEncryptionMetadata(
+					groupId,
+					base,
+					patient.entity to patient.groupId,
+					user,
+					delegates,
+					secretId
+				),
+				groupId
+			)
 
-			override suspend fun maybeDecrypt(
-				entitiesGroupId: String?,
-				entities: List<EncryptedHealthElement>
-			): List<HealthElement> =
-				config.crypto.entity.tryDecryptEntities(
-					entitiesGroupId,
-					entities,
-					EntityWithEncryptionMetadataTypeName.HealthElement,
-					EncryptedHealthElement.serializer(),
-				) {
-					Serialization.json.decodeFromJsonElement<DecryptedHealthElement>(
-						config.jsonPatcher.patchHealthElement(
-							it
-						)
-					)
-				}
-		}
+		override suspend fun getEncryptionKeysOf(healthElement: GroupScoped<HealthElement>): Set<HexString> =
+			doGetEncryptionKeysOf(healthElement.groupId, healthElement.entity)
 
-	override suspend fun createHealthElement(
-		entity: DecryptedHealthElement,
-		groupId: String?
+		override suspend fun hasWriteAccess(healthElement: GroupScoped<HealthElement>): Boolean =
+			doHasWriteAccess(healthElement.groupId, healthElement.entity)
+
+		override suspend fun decryptPatientIdOf(healthElement: GroupScoped<HealthElement>): Set<EntityReferenceInGroup> =
+			doDecryptPatientIdOf(healthElement.groupId, healthElement.entity).mapNullGroupTo(healthElement.groupId)
+
+		override suspend fun createDelegationDeAnonymizationMetadata(
+			entity: GroupScoped<HealthElement>,
+			delegates: Set<EntityReferenceInGroup>
+		) =
+			doCreateDelegationDeAnonymizationMetadata(entity.groupId, entity.entity, delegates)
+	}
+
+	override suspend fun createHealthElement(entity: DecryptedHealthElement): DecryptedHealthElement =
+		doCreateHealthElement(null, entity)
+
+	private suspend fun doCreateHealthElement(
+		groupId: String?,
+		entity: DecryptedHealthElement
 	): DecryptedHealthElement {
 		require(entity.securityMetadata != null) { "Entity must have security metadata initialized. You can use the withEncryptionMetadata for that very purpose." }
-		val encrypted = config.crypto.entity.encryptEntities(
-			groupId,
-			listOf(entity),
-			EntityWithEncryptionMetadataTypeName.HealthElement,
-			DecryptedHealthElement.serializer(),
-			config.encryption.healthElement,
-		) { Serialization.json.decodeFromJsonElement<EncryptedHealthElement>(it) }.single()
+		val encrypted = decryptedFlavour.validateAndMaybeEncrypt(groupId, entity)
 		return (
 			if (groupId == null)
 				rawApi.createHealthElement(encrypted)
 			else
 				rawApi.createHealthElementInGroup(groupId, encrypted)
 		).successBody().let {
-			decrypt(it, groupId)
+			decryptedFlavour.maybeDecrypt(groupId, it)
 		}
 	}
 
 	override suspend fun createHealthElements(entities: List<DecryptedHealthElement>): List<DecryptedHealthElement> {
 		require(entities.all { it.securityMetadata != null }) { "All entities must have security metadata initialized. You can use the withEncryptionMetadata for that very purpose." }
 		return rawApi.createHealthElements(
-			config.crypto.entity.encryptEntities(
-				null,
-				entities,
-				EntityWithEncryptionMetadataTypeName.HealthElement,
-				DecryptedHealthElement.serializer(),
-				config.encryption.healthElement,
-			) { Serialization.json.decodeFromJsonElement<EncryptedHealthElement>(it) },
-		).successBody().map {
-			decrypt(it, null)
+			decryptedFlavour.validateAndMaybeEncrypt(null, entities),
+		).successBody().let {
+			decryptedFlavour.maybeDecrypt(null, it)
 		}
 	}
 
@@ -309,31 +383,19 @@ internal class HealthElementApiImpl(
 		secretId: SecretIdUseOption,
 		// Temporary, needs a lot more stuff to match typescript implementation
 	): DecryptedHealthElement =
-		config.crypto.entity.entityWithInitializedEncryptedMetadata(
+		doWithEncryptionMetadata(
 			null,
-			(base ?: DecryptedHealthElement(config.crypto.primitives.strongRandom.randomUUID())).copy(
-				created = base?.created ?: currentEpochMs(),
-				modified = base?.modified ?: currentEpochMs(),
-				responsible = base?.responsible ?: user?.takeIf { config.autofillAuthor }?.dataOwnerId,
-				author = base?.author ?: user?.id?.takeIf { config.autofillAuthor },
-			),
-			EntityWithEncryptionMetadataTypeName.HealthElement,
-			patient.id,
-			config.crypto.entity.resolveSecretIdOption(
-				null,
-				patient,
-				EntityWithEncryptionMetadataTypeName.Patient,
-				secretId
-			),
-			initializeEncryptionKey = true,
-			autoDelegations = (delegates + user?.autoDelegationsFor(DelegationTag.MedicalInformation)
-				.orEmpty()).keyAsLocalDataOwnerReferences(),
-		).updatedEntity
+			base,
+			patient to null,
+			user,
+			delegates.keyAsLocalDataOwnerReferences(),
+			secretId
+		)
 
-	override suspend fun withEncryptionMetadataForGroup(
+	private suspend fun doWithEncryptionMetadata(
 		entityGroupId: String?,
 		base: DecryptedHealthElement?,
-		patient: Patient,
+		patient: Pair<Patient, String?>,
 		user: User?,
 		delegates: Map<EntityReferenceInGroup, AccessLevel>,
 		secretId: SecretIdUseOption
@@ -347,63 +409,62 @@ internal class HealthElementApiImpl(
 				author = base?.author ?: user?.id?.takeIf { config.autofillAuthor },
 			),
 			EntityWithEncryptionMetadataTypeName.HealthElement,
-			patient.id,
-			config.crypto.entity.resolveSecretIdOption(
-				entityGroupId,
-				patient,
-				EntityWithEncryptionMetadataTypeName.Patient,
-				secretId
-			),
+			owningEntityDetails = patient.let { (patient, patientGroup) ->
+				OwningEntityDetails(
+					patientGroup,
+					patient.id,
+					config.crypto.entity.resolveSecretIdOption(
+						entityGroupId,
+						patient,
+						EntityWithEncryptionMetadataTypeName.Patient,
+						secretId
+					)
+				)
+			},
 			initializeEncryptionKey = true,
 			autoDelegations = delegates + user?.autoDelegationsFor(DelegationTag.MedicalInformation)
 				.orEmpty().keyAsLocalDataOwnerReferences(),
 		).updatedEntity
 
 	override suspend fun getEncryptionKeysOf(healthElement: HealthElement): Set<HexString> =
+		doGetEncryptionKeysOf(null, healthElement)
+
+	private suspend fun doGetEncryptionKeysOf(groupId: String?, healthElement: HealthElement): Set<HexString> =
 		config.crypto.entity.encryptionKeysOf(
-			null,
+			groupId,
 			healthElement,
 			EntityWithEncryptionMetadataTypeName.HealthElement,
 			null
 		)
 
 	override suspend fun hasWriteAccess(healthElement: HealthElement): Boolean =
-		config.crypto.entity.hasWriteAccess(null, healthElement, EntityWithEncryptionMetadataTypeName.HealthElement)
+		doHasWriteAccess(null, healthElement)
 
-	override suspend fun decryptPatientIdOf(healthElement: HealthElement): Set<String> =
+	private suspend fun doHasWriteAccess(groupId: String?, healthElement: HealthElement): Boolean =
+		config.crypto.entity.hasWriteAccess(groupId, healthElement, EntityWithEncryptionMetadataTypeName.HealthElement)
+
+	override suspend fun decryptPatientIdOf(healthElement: HealthElement): Set<EntityReferenceInGroup> =
+		doDecryptPatientIdOf(null, healthElement)
+
+	private suspend fun doDecryptPatientIdOf(groupId: String?, healthElement: HealthElement): Set<EntityReferenceInGroup> =
 		config.crypto.entity.owningEntityIdsOf(
-			null,
+			groupId,
 			healthElement,
 			EntityWithEncryptionMetadataTypeName.HealthElement,
 			null
-		)
+		).mapTo(mutableSetOf()) { config.crypto.entity.parseReference(groupId, it) }
 
-	override suspend fun createDelegationDeAnonymizationMetadata(entity: HealthElement, delegates: Set<String>) {
+	override suspend fun createDelegationDeAnonymizationMetadata(entity: HealthElement, delegates: Set<String>) =
+		doCreateDelegationDeAnonymizationMetadata(null, entity, delegates.asLocalDataOwnerReferences())
+
+	private suspend fun doCreateDelegationDeAnonymizationMetadata(groupId: String?, entity: HealthElement, delegates: Set<EntityReferenceInGroup>) {
 		config.crypto.delegationsDeAnonymization.createOrUpdateDeAnonymizationInfo(
-			null,
+			groupId,
 			entity,
 			EntityWithEncryptionMetadataTypeName.HealthElement,
-			delegates.asLocalDataOwnerReferences()
+			delegates
 		)
 	}
-
-	override suspend fun decrypt(healthElement: EncryptedHealthElement, groupId: String?): DecryptedHealthElement =
-		config.crypto.entity.decryptEntities(
-			groupId,
-			listOf(healthElement),
-			EntityWithEncryptionMetadataTypeName.HealthElement,
-			EncryptedHealthElement.serializer(),
-		) { Serialization.json.decodeFromJsonElement<DecryptedHealthElement>(config.jsonPatcher.patchHealthElement(it)) }
-			.single()
-
-	override suspend fun tryDecrypt(healthElement: EncryptedHealthElement, groupId: String?): HealthElement =
-		config.crypto.entity.tryDecryptEntities(
-			groupId,
-			listOf(healthElement),
-			EntityWithEncryptionMetadataTypeName.HealthElement,
-			EncryptedHealthElement.serializer(),
-		) { Serialization.json.decodeFromJsonElement<DecryptedHealthElement>(config.jsonPatcher.patchHealthElement(it)) }
-			.single()
 
 	override suspend fun matchHealthElementsBy(filter: FilterOptions<HealthElement>): List<String> =
 		rawApi.matchHealthElementsBy(mapHealthElementFilterOptions(
@@ -440,25 +501,42 @@ internal class HealthElementApiImpl(
 			config = subscriptionConfig
 		)
 	}
+
+	override suspend fun decrypt(healthElements: List<EncryptedHealthElement>): List<DecryptedHealthElement> =
+		decryptedFlavour.maybeDecrypt(null, healthElements)
+
+	override suspend fun tryDecrypt(healthElements: List<EncryptedHealthElement>): List<HealthElement> =
+		tryAndRecoverFlavour.maybeDecrypt(null, healthElements)
+
+	override suspend fun encryptOrValidate(healthElements: List<HealthElement>): List<EncryptedHealthElement> =
+		tryAndRecoverFlavour.validateAndMaybeEncrypt(null, healthElements)
 }
 
-@InternalIcureApi
-internal class HealthElementBasicApiImpl(
-	private val rawApi: RawHealthElementApi,
-	private val config: BasicApiConfiguration
-) : HealthElementBasicApi, HealthElementBasicFlavouredApi<EncryptedHealthElement> by object :
-	AbstractHealthElementBasicFlavouredApi<EncryptedHealthElement>(rawApi, config) {
-	override suspend fun validateAndMaybeEncrypt(
-		entitiesGroupId: String?,
-		entities: List<EncryptedHealthElement>
-	): List<EncryptedHealthElement> =
-		config.crypto.validationService.validateEncryptedEntities(entities, EntityWithEncryptionMetadataTypeName.HealthElement, EncryptedHealthElement.serializer(), config.encryption.healthElement)
 
-	override suspend fun maybeDecrypt(
-		entitiesGroupId: String?,
-		entities: List<EncryptedHealthElement>
-	): List<EncryptedHealthElement> = entities
-}, HealthElementBasicFlavourlessApi by AbstractHealthElementBasicFlavourlessApi(rawApi, config) {
+@InternalIcureApi
+internal fun initHealthElementBasicApi(
+	rawApi: RawHealthElementApi,
+	config: BasicApiConfiguration
+): HealthElementBasicApi = HealthElementBasicApiImpl(
+	rawApi,
+	config,
+	AbstractHealthElementBasicFlavouredApi(rawApi, config, encryptedApiFlavour(config)),
+	AbstractHealthElementBasicFlavourlessApi(rawApi)
+)
+
+@InternalIcureApi
+private class HealthElementBasicApiImpl(
+	private val rawApi: RawHealthElementApi,
+	private val config: BasicApiConfiguration,
+	private val encryptedFlavour: AbstractHealthElementBasicFlavouredApi<EncryptedHealthElement>,
+	private val base: AbstractHealthElementBasicFlavourlessApi
+) : HealthElementBasicApi,
+	HealthElementBasicFlavouredApi<EncryptedHealthElement> by encryptedFlavour,
+	HealthElementBasicFlavourlessApi by base {
+	override val inGroup: HealthElementBasicInGroupApi = object : HealthElementBasicInGroupApi,
+		HealthElementBasicFlavouredInGroupApi<EncryptedHealthElement> by encryptedFlavour,
+		HealthElementBasicFlavourlessInGroupApi by base {}
+
 	override suspend fun matchHealthElementsBy(filter: BaseFilterOptions<HealthElement>): List<String> =
 		rawApi.matchHealthElementsBy(mapHealthElementFilterOptions(filter, null, null)).successBody()
 

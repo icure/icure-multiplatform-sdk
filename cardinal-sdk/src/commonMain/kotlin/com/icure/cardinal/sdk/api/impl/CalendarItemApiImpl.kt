@@ -113,12 +113,12 @@ private open class AbstractCalendarItemBasicFlavouredApi<E : CalendarItem>(
 		doModifyCalendarItem(null, entity)
 
 	private suspend fun doModifyCalendarItem(groupId: String?, entity: E): E =
-		(
+		validateAndMaybeEncrypt(groupId, entity)?.let {
 			if (groupId == null)
-				rawApi.modifyCalendarItem(validateAndMaybeEncrypt(groupId, entity))
+				rawApi.modifyCalendarItem(it)
 			else
-				rawApi.modifyCalendarItemInGroup(groupId, validateAndMaybeEncrypt(groupId, entity))
-		).successBodyOrThrowRevisionConflict().let {
+				rawApi.modifyCalendarItemInGroup(groupId, it)
+		}.successBodyOrThrowRevisionConflict().let {
 			maybeDecrypt(groupId, it)
 		}
 
@@ -453,7 +453,7 @@ private class CalendarItemApiImpl(
 			)
 
 		override suspend fun decryptPatientIdOf(calendarItem: GroupScoped<CalendarItem>): Set<EntityReferenceInGroup> =
-			doDecryptPatientIdOf(calendarItem.groupId, calendarItem.entity)
+			doDecryptPatientIdOf(calendarItem.groupId, calendarItem.entity).mapNullGroupTo(calendarItem.groupId)
 
 		override suspend fun createDelegationDeAnonymizationMetadata(
 			entity: GroupScoped<CalendarItem>,
