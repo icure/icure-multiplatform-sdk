@@ -526,7 +526,7 @@ interface CalendarItemInGroupApi : CalendarItemBasicFlavourlessInGroupApi, Calen
 	 * In-group version of [CalendarItemApi.withEncryptionMetadata]
 	 */
 	suspend fun withEncryptionMetadata(
-		groupId: String,
+		entityGroupId: String,
 		base: DecryptedCalendarItem?,
 		patient: GroupScoped<Patient>?,
 		@DefaultValue("null")

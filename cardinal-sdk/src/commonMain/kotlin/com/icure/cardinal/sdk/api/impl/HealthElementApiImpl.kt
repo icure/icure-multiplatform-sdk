@@ -312,7 +312,7 @@ private class HealthElementApiImpl(
 			GroupScoped(doCreateHealthElement(entity.groupId, entity.entity), entity.groupId)
 
 		override suspend fun withEncryptionMetadata(
-			groupId: String,
+			entityGroupId: String,
 			base: DecryptedHealthElement?,
 			patient: GroupScoped<Patient>,
 			user: User?,
@@ -321,14 +321,14 @@ private class HealthElementApiImpl(
 		): GroupScoped<DecryptedHealthElement> =
 			GroupScoped(
 				doWithEncryptionMetadata(
-					groupId,
+					entityGroupId,
 					base,
 					patient.entity to patient.groupId,
 					user,
 					delegates,
 					secretId
 				),
-				groupId
+				entityGroupId
 			)
 
 		override suspend fun getEncryptionKeysOf(healthElement: GroupScoped<HealthElement>): Set<HexString> =

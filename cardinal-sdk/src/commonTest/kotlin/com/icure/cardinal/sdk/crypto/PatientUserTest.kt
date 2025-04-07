@@ -63,7 +63,7 @@ class PatientUserTest : StringSpec({
 			mapOf(hcp2.dataOwnerId to AccessLevel.Read)
 		)
 		// Patient shouldn't be able to access his encryption key, it was created by someone else
-		patientApi.patient.tryDecrypt(initializedPatient).shouldBeInstanceOf<EncryptedPatient>()
+		patientApi.patient.tryDecrypt(listOf(initializedPatient)).single().shouldBeInstanceOf<EncryptedPatient>()
 		val createdData = patientApi.healthElement.createHealthElement(
 			patientApi.healthElement.withEncryptionMetadata(
 				DecryptedHealthElement(
@@ -89,7 +89,7 @@ class PatientUserTest : StringSpec({
 		val patientApi = patientDetails.api(specJob)
 		patientApi.patient.tryAndRecover.getPatient(patientDetails.dataOwnerId).shouldBeInstanceOf<EncryptedPatient>()
 		val initializedEncryptedPatient = patientApi.patient.ensureEncryptionMetadataForSelfIsInitialized()
-		val initializedPatient = patientApi.patient.decrypt(initializedEncryptedPatient)
+		val initializedPatient = patientApi.patient.decrypt(listOf(initializedEncryptedPatient)).single()
 		val updatedPatient = patientApi.patient.modifyPatient(initializedPatient.copy(note = "My secret note"))
 		updatedPatient.rev shouldNotBe initializedPatient.rev
 		patientApi.patient.getPatient(updatedPatient.id).note shouldBe "My secret note"

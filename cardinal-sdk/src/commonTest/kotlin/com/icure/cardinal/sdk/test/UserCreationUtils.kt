@@ -256,5 +256,5 @@ suspend fun createUserFromExistingPatient(patient: Patient): DataOwnerDetails {
 			patientId = updatedPatient.id
 		)
 	).successBody()
-	return DataOwnerDetails(patient.id, login, password, keypair, null, TODO("Take group from patient"))
+	return DataOwnerDetails(patient.id, login, password, keypair, null, testGroupId)
 }

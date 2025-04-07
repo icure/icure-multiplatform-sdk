@@ -1,12 +1,14 @@
 package com.icure.cardinal.sdk.crypto
 
+import com.icure.cardinal.sdk.CardinalSdk
 import com.icure.cardinal.sdk.api.raw.impl.RawGroupApiImpl
-import com.icure.cardinal.sdk.crypto.entities.HealthElementShareOptions
 import com.icure.cardinal.sdk.crypto.entities.PatientShareOptions
 import com.icure.cardinal.sdk.crypto.entities.SecretIdShareOptions
 import com.icure.cardinal.sdk.model.DatabaseInitialisation
 import com.icure.cardinal.sdk.model.DecryptedHealthElement
 import com.icure.cardinal.sdk.model.DecryptedPatient
+import com.icure.cardinal.sdk.model.HealthElement
+import com.icure.cardinal.sdk.model.Patient
 import com.icure.cardinal.sdk.model.embed.AccessLevel
 import com.icure.cardinal.sdk.test.DataOwnerDetails
 import com.icure.cardinal.sdk.test.DefaultRawApiConfig
@@ -65,6 +67,29 @@ class InterGroupSharingTest : StringSpec({
 			createPatientUser(inGroup = groupId, inheritsPermissions = groupId != childGroupId)
 		}
 
+	suspend fun checkCanGet(
+		api: CardinalSdk,
+		apiGroup: String,
+		basePatient: Patient,
+		baseHe: HealthElement,
+	) {
+		api.crypto.forceReload()
+		api.patient.inGroup.getPatient(
+			groupId = childGroupId,
+			entityId = basePatient.id
+		).entity.note shouldBe basePatient.note
+		if (apiGroup == childGroupId) {
+			api.patient.getPatient(basePatient.id).note shouldBe basePatient.note
+		}
+		api.healthElement.inGroup.getHealthElement(
+			groupId = childGroupId,
+			entityId = baseHe.id
+		).entity.descr shouldBe baseHe.descr
+		if (apiGroup == childGroupId) {
+			api.healthElement.getHealthElement(baseHe.id).descr shouldBe baseHe.descr
+		}
+	}
+
 	suspend fun testCreateSharedData(
 		explicitDelegator: Boolean,
 		delegatorGroupId: String,
@@ -83,44 +108,27 @@ class InterGroupSharingTest : StringSpec({
 				note = "super secret note in patient"
 			)
 			val delegateReference = if (useFullReferences) delegate.fullReference else delegate.normalizedReferenceForGroup(delegator.groupId)
-			val createdPatient = delegatorApi.patient.createPatient(
-				delegatorApi.patient.withEncryptionMetadataForGroup(
-					if (useFullReferences || delegator.groupId != childGroupId) childGroupId else null,
+			val createdPatient = delegatorApi.patient.inGroup.createPatient(
+				delegatorApi.patient.inGroup.withEncryptionMetadata(
+					entityGroupId = childGroupId,
 					base = basePatient,
 					delegates = mapOf(delegateReference to AccessLevel.Write)
 				),
-				if (useFullReferences || delegator.groupId != childGroupId) childGroupId else null
 			)
 			val baseHe = DecryptedHealthElement(
 				id = uuid(),
 				descr = "super secret note in he"
 			)
-			delegatorApi.healthElement.createHealthElement(
-				delegatorApi.healthElement.withEncryptionMetadataForGroup(
-					if (useFullReferences || delegator.groupId != childGroupId) childGroupId else null,
+			delegatorApi.healthElement.inGroup.createHealthElement(
+				delegatorApi.healthElement.inGroup.withEncryptionMetadata(
+					entityGroupId = childGroupId,
 					base = baseHe,
 					patient = createdPatient,
 					delegates = mapOf(delegateReference to AccessLevel.Write)
-				),
-				if (useFullReferences || delegator.groupId != childGroupId) childGroupId else null
+				)
 			)
-			delegateApi.crypto.forceReload()
-			delegateApi.patient.getPatient(
-				basePatient.id,
-				groupId = if (useFullReferences || delegate.groupId != childGroupId) childGroupId else null
-			).note shouldBe basePatient.note
-			delegateApi.healthElement.getHealthElement(
-				baseHe.id,
-				groupId = if (useFullReferences || delegate.groupId != childGroupId) childGroupId else null
-			).descr shouldBe baseHe.descr
-			delegatorApi.patient.getPatient(
-				basePatient.id,
-				groupId = if (useFullReferences || delegator.groupId != childGroupId) childGroupId else null
-			).note shouldBe basePatient.note
-			delegatorApi.healthElement.getHealthElement(
-				baseHe.id,
-				groupId = if (useFullReferences || delegator.groupId != childGroupId) childGroupId else null
-			).descr shouldBe baseHe.descr
+			checkCanGet(delegatorApi, delegator.groupId, basePatient, baseHe)
+			checkCanGet(delegateApi, delegate.groupId, basePatient, baseHe)
 		}
 		doTest(true)
 		doTest(false)
@@ -144,54 +152,36 @@ class InterGroupSharingTest : StringSpec({
 				note = "super secret note in patient"
 			)
 			val delegateReference = if (useFullReferences) delegate.fullReference else delegate.normalizedReferenceForGroup(delegator.groupId)
-			val patient = delegatorApi.patient.createPatient(
-				delegatorApi.patient.withEncryptionMetadataForGroup(
-					if (useFullReferences || delegator.groupId != childGroupId) childGroupId else null,
+			val patient = delegatorApi.patient.inGroup.createPatient(
+				delegatorApi.patient.inGroup.withEncryptionMetadata(
+					childGroupId,
 					basePatient
-				),
-				if (useFullReferences || delegator.groupId != childGroupId) childGroupId else null
+				)
 			).shouldNotBeNull()
-			val sfk = delegatorApi.patient.getSecretIdsOf(patient, childGroupId).also { it shouldHaveSize 1 }
+			val sfk = delegatorApi.patient.inGroup.getSecretIdsOf(patient).also { it shouldHaveSize 1 }
 			val baseHe = DecryptedHealthElement(
 				id = uuid(),
 				descr = "super secret note in he"
 			)
-			val he = delegatorApi.healthElement.createHealthElement(
-				delegatorApi.healthElement.withEncryptionMetadataForGroup(
-					entityGroupId = if (useFullReferences || delegator.groupId != childGroupId) childGroupId else null,
+			val he = delegatorApi.healthElement.inGroup.createHealthElement(
+				delegatorApi.healthElement.inGroup.withEncryptionMetadata(
+					entityGroupId = childGroupId,
 					base = baseHe,
 					user = delegatorApi.user.getCurrentUser(),
 					patient = patient
-				),
-				if (useFullReferences || delegator.groupId != childGroupId) childGroupId else null
+				)
 			).shouldNotBeNull()
-			delegatorApi.patient.shareInGroup(
+			delegatorApi.patient.inGroup.shareWith(
+				delegateReference,
 				patient,
-				if (useFullReferences || delegator.groupId != childGroupId) childGroupId else null,
-				mapOf(delegateReference to PatientShareOptions(shareSecretIds = SecretIdShareOptions.UseExactly(sfk, false)))
+				PatientShareOptions(shareSecretIds = SecretIdShareOptions.UseExactly(sfk, false))
 			).shouldNotBeNull()
-			delegatorApi.healthElement.shareInGroup(
-				he,
-				if (useFullReferences || delegator.groupId != childGroupId) childGroupId else null,
-				mapOf(delegateReference to HealthElementShareOptions())
+			delegatorApi.healthElement.inGroup.shareWith(
+				delegateReference,
+				he
 			).shouldNotBeNull()
-			delegateApi.crypto.forceReload()
-			delegateApi.patient.getPatient(
-				patient.id,
-				if (useFullReferences || delegate.groupId != childGroupId) childGroupId else null
-			)
-			delegateApi.healthElement.getHealthElement(
-				he.id,
-				if (useFullReferences || delegate.groupId != childGroupId) childGroupId else null
-			)
-			delegatorApi.patient.getPatient(
-				patient.id,
-				if (useFullReferences || delegator.groupId != childGroupId) childGroupId else null
-			)
-			delegatorApi.healthElement.getHealthElement(
-				he.id,
-				if (useFullReferences || delegator.groupId != childGroupId) childGroupId else null
-			)
+			checkCanGet(delegatorApi, delegator.groupId, basePatient, baseHe)
+			checkCanGet(delegateApi, delegate.groupId, basePatient, baseHe)
 		}
 		doTest(true)
 		doTest(false)

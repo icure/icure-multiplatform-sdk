@@ -436,7 +436,7 @@ private class CalendarItemApiImpl(
 			GroupScoped(doCreateCalendarItem(entity.groupId, entity.entity), entity.groupId)
 
 		override suspend fun withEncryptionMetadata(
-			groupId: String,
+			entityGroupId: String,
 			base: DecryptedCalendarItem?,
 			patient: GroupScoped<Patient>?,
 			user: User?,
@@ -445,14 +445,14 @@ private class CalendarItemApiImpl(
 		): GroupScoped<DecryptedCalendarItem> =
 			GroupScoped(
 				doWithEncryptionMetadata(
-					groupId,
+					entityGroupId,
 					base,
 					patient?.let { Pair(it.entity, it.groupId) },
 					user,
 					delegates,
 					secretId
 				),
-				groupId
+				entityGroupId
 			)
 
 		override suspend fun decryptPatientIdOf(calendarItem: GroupScoped<CalendarItem>): Set<EntityReferenceInGroup> =

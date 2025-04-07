@@ -514,7 +514,7 @@ interface HealthElementInGroupApi : HealthElementBasicFlavourlessInGroupApi, Hea
 	 * In-group version of [HealthElementApi.withEncryptionMetadata]
 	 */
 	suspend fun withEncryptionMetadata(
-		groupId: String,
+		entityGroupId: String,
 		base: DecryptedHealthElement?,
 		patient: GroupScoped<Patient>,
 		@DefaultValue("null")
