@@ -11,7 +11,7 @@ import com.icure.cardinal.sdk.filters.SortableFilterOptions
 import com.icure.cardinal.sdk.model.DecryptedHealthElement
 import com.icure.cardinal.sdk.model.EncryptedHealthElement
 import com.icure.cardinal.sdk.model.HealthElement
-import com.icure.cardinal.sdk.model.IdWithMandatoryRev
+import com.icure.cardinal.sdk.model.StoredDocumentIdentifier
 import com.icure.cardinal.sdk.model.Patient
 import com.icure.cardinal.sdk.model.User
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
@@ -46,7 +46,7 @@ interface HealthElementBasicFlavourlessApi  {
 	 * @return the id and revision of the deleted healthElements. If some entities could not be deleted (for example
 	 * because you had no write access to them) they will not be included in this list.
 	 */
-	suspend fun deleteHealthElementsByIds(entityIds: List<IdWithMandatoryRev>): List<DocIdentifier>
+	suspend fun deleteHealthElementsByIds(entityIds: List<StoredDocumentIdentifier>): List<DocIdentifier>
 
 	/**
 	 * Permanently deletes a healthElement.
@@ -73,7 +73,7 @@ interface HealthElementBasicFlavourlessApi  {
 	 */
 	suspend fun deleteHealthElements(healthElements: List<HealthElement>): List<DocIdentifier> =
 		deleteHealthElementsByIds(healthElements.map { healthElement ->
-			IdWithMandatoryRev(healthElement.id, requireNotNull(healthElement.rev) { "Can't delete an healthElement that has no rev" })
+			StoredDocumentIdentifier(healthElement.id, requireNotNull(healthElement.rev) { "Can't delete an healthElement that has no rev" })
 		})
 
 	/**

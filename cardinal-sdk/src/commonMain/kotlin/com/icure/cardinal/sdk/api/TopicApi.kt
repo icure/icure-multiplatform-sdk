@@ -9,7 +9,7 @@ import com.icure.cardinal.sdk.filters.FilterOptions
 import com.icure.cardinal.sdk.filters.SortableFilterOptions
 import com.icure.cardinal.sdk.model.DecryptedTopic
 import com.icure.cardinal.sdk.model.EncryptedTopic
-import com.icure.cardinal.sdk.model.IdWithMandatoryRev
+import com.icure.cardinal.sdk.model.StoredDocumentIdentifier
 import com.icure.cardinal.sdk.model.Patient
 import com.icure.cardinal.sdk.model.Topic
 import com.icure.cardinal.sdk.model.TopicRole
@@ -21,7 +21,6 @@ import com.icure.cardinal.sdk.subscription.Subscribable
 import com.icure.cardinal.sdk.utils.DefaultValue
 import com.icure.cardinal.sdk.utils.EntityEncryptionException
 import com.icure.cardinal.sdk.utils.pagination.PaginatedListIterator
-import kotlin.js.JsName
 
 /* This interface includes the API calls that do not need encryption keys and do not return or consume encrypted/decrypted items, they are completely agnostic towards the presence of encrypted items */
 interface TopicBasicFlavourlessApi {
@@ -46,7 +45,7 @@ interface TopicBasicFlavourlessApi {
 	 * @return the id and revision of the deleted topics. If some entities could not be deleted (for example
 	 * because you had no write access to them) they will not be included in this list.
 	 */
-	suspend fun deleteTopicsByIds(entityIds: List<IdWithMandatoryRev>): List<DocIdentifier>
+	suspend fun deleteTopicsByIds(entityIds: List<StoredDocumentIdentifier>): List<DocIdentifier>
 
 	/**
 	 * Permanently deletes a topic.
@@ -73,7 +72,7 @@ interface TopicBasicFlavourlessApi {
 	 */
 	suspend fun deleteTopics(topics: List<Topic>): List<DocIdentifier> =
 		deleteTopicsByIds(topics.map { topic ->
-			IdWithMandatoryRev(topic.id, requireNotNull(topic.rev) { "Can't delete a topic that has no rev" })
+			StoredDocumentIdentifier(topic.id, requireNotNull(topic.rev) { "Can't delete a topic that has no rev" })
 		})
 
 	/**

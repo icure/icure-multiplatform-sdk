@@ -19,7 +19,7 @@ import com.icure.cardinal.sdk.filters.mapHealthElementFilterOptions
 import com.icure.cardinal.sdk.model.DecryptedHealthElement
 import com.icure.cardinal.sdk.model.EncryptedHealthElement
 import com.icure.cardinal.sdk.model.HealthElement
-import com.icure.cardinal.sdk.model.IdWithMandatoryRev
+import com.icure.cardinal.sdk.model.StoredDocumentIdentifier
 import com.icure.cardinal.sdk.model.ListOfIds
 import com.icure.cardinal.sdk.model.ListOfIdsAndRev
 import com.icure.cardinal.sdk.model.Patient
@@ -174,7 +174,7 @@ private class AbstractHealthElementBasicFlavourlessApi(
 	override suspend fun deleteHealthElementById(entityId: String, rev: String?): DocIdentifier =
 		rawApi.deleteHealthElement(entityId, rev).successBodyOrThrowRevisionConflict()
 
-	override suspend fun deleteHealthElementsByIds(entityIds: List<IdWithMandatoryRev>): List<DocIdentifier> =
+	override suspend fun deleteHealthElementsByIds(entityIds: List<StoredDocumentIdentifier>): List<DocIdentifier> =
 		rawApi.deleteHealthElementsWithRev(ListOfIdsAndRev(entityIds)).successBody()
 
 	override suspend fun purgeHealthElementById(id: String, rev: String) {

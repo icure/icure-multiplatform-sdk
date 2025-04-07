@@ -9,7 +9,7 @@ import com.icure.cardinal.sdk.filters.SortableFilterOptions
 import com.icure.cardinal.sdk.model.DecryptedDocument
 import com.icure.cardinal.sdk.model.Document
 import com.icure.cardinal.sdk.model.EncryptedDocument
-import com.icure.cardinal.sdk.model.IdWithMandatoryRev
+import com.icure.cardinal.sdk.model.StoredDocumentIdentifier
 import com.icure.cardinal.sdk.model.Message
 import com.icure.cardinal.sdk.model.Patient
 import com.icure.cardinal.sdk.model.User
@@ -20,7 +20,6 @@ import com.icure.cardinal.sdk.utils.DefaultValue
 import com.icure.cardinal.sdk.utils.EntityEncryptionException
 import com.icure.cardinal.sdk.utils.pagination.PaginatedListIterator
 import kotlinx.serialization.json.JsonElement
-import kotlin.js.JsName
 
 /* This interface includes the API calls that do not need encryption keys and do not return or consume encrypted/decrypted items, they are completely agnostic towards the presence of encrypted items */
 interface DocumentBasicFlavourlessApi {
@@ -45,7 +44,7 @@ interface DocumentBasicFlavourlessApi {
 	 * @return the id and revision of the deleted documents. If some entities couldn't be deleted (for example
 	 * because you had no write access to them) they will not be included in this list.
 	 */
-	suspend fun deleteDocumentsByIds(entityIds: List<IdWithMandatoryRev>): List<DocIdentifier>
+	suspend fun deleteDocumentsByIds(entityIds: List<StoredDocumentIdentifier>): List<DocIdentifier>
 
 	/**
 	 * Permanently deletes a document.
@@ -72,7 +71,7 @@ interface DocumentBasicFlavourlessApi {
 	 */
 	suspend fun deleteDocuments(documents: List<Document>): List<DocIdentifier> =
 		deleteDocumentsByIds(documents.map { document ->
-			IdWithMandatoryRev(document.id, requireNotNull(document.rev) { "Can't delete a document that has no rev" })
+			StoredDocumentIdentifier(document.id, requireNotNull(document.rev) { "Can't delete a document that has no rev" })
 		})
 
 	/**

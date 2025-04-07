@@ -19,7 +19,7 @@ import com.icure.cardinal.sdk.model.DecryptedForm
 import com.icure.cardinal.sdk.model.EncryptedForm
 import com.icure.cardinal.sdk.model.Form
 import com.icure.cardinal.sdk.model.FormTemplate
-import com.icure.cardinal.sdk.model.IdWithMandatoryRev
+import com.icure.cardinal.sdk.model.StoredDocumentIdentifier
 import com.icure.cardinal.sdk.model.ListOfIds
 import com.icure.cardinal.sdk.model.ListOfIdsAndRev
 import com.icure.cardinal.sdk.model.Patient
@@ -142,7 +142,7 @@ private class AbstractFormBasicFlavourlessApi(val rawApi: RawFormApi) : FormBasi
 	override suspend fun deleteFormById(entityId: String, rev: String): DocIdentifier =
 		rawApi.deleteForm(entityId, rev).successBodyOrThrowRevisionConflict()
 
-	override suspend fun deleteFormsByIds(entityIds: List<IdWithMandatoryRev>): List<DocIdentifier> =
+	override suspend fun deleteFormsByIds(entityIds: List<StoredDocumentIdentifier>): List<DocIdentifier> =
 		rawApi.deleteFormsWithRev(ListOfIdsAndRev(entityIds)).successBody()
 
 	override suspend fun purgeFormById(id: String, rev: String) {

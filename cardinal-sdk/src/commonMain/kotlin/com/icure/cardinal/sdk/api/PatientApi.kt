@@ -13,12 +13,11 @@ import com.icure.cardinal.sdk.model.DecryptedPatient
 import com.icure.cardinal.sdk.model.EncryptedPatient
 import com.icure.cardinal.sdk.model.EntityReferenceInGroup
 import com.icure.cardinal.sdk.model.GroupScoped
-import com.icure.cardinal.sdk.model.IdWithMandatoryRev
 import com.icure.cardinal.sdk.model.IdWithRev
 import com.icure.cardinal.sdk.model.PaginatedList
 import com.icure.cardinal.sdk.model.Patient
+import com.icure.cardinal.sdk.model.StoredDocumentIdentifier
 import com.icure.cardinal.sdk.model.User
-import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.model.couchdb.SortDirection
 import com.icure.cardinal.sdk.model.embed.AccessLevel
 import com.icure.cardinal.sdk.model.specializations.HexString
@@ -31,9 +30,9 @@ import com.icure.cardinal.sdk.utils.pagination.PaginatedListIterator
 /* This interface includes the API calls that do not need encryption keys and do not return or consume encrypted/decrypted items, they are completely agnostic towards the presence of encrypted items */
 interface PatientBasicFlavourlessApi {
 	@Deprecated("Deletion without rev is unsafe")
-	suspend fun deletePatientUnsafe(entityId: String): DocIdentifier
+	suspend fun deletePatientUnsafe(entityId: String): StoredDocumentIdentifier
 	@Deprecated("Deletion without rev is unsafe")
-	suspend fun deletePatientsUnsafe(entityIds: List<String>): List<DocIdentifier>
+	suspend fun deletePatientsUnsafe(entityIds: List<String>): List<StoredDocumentIdentifier>
 
 	/**
 	 * Deletes a patient. If you don't have write access to the patient the method will fail.
@@ -42,7 +41,7 @@ interface PatientBasicFlavourlessApi {
 	 * @return the id and revision of the deleted patient.
 	 * @throws RevisionConflictException if the provided revision doesn't match the latest known revision
 	 */
-	suspend fun deletePatientById(entityId: String, rev: String): DocIdentifier
+	suspend fun deletePatientById(entityId: String, rev: String): StoredDocumentIdentifier
 
 	/**
 	 * Deletes many patients. Ids that do not correspond to an entity, or that correspond to an entity for which
@@ -51,7 +50,7 @@ interface PatientBasicFlavourlessApi {
 	 * @return the id and revision of the deleted patients. If some entities could not be deleted (for example
 	 * because you had no write access to them) they will not be included in this list.
 	 */
-	suspend fun deletePatientsByIds(entityIds: List<IdWithMandatoryRev>): List<DocIdentifier>
+	suspend fun deletePatientsByIds(entityIds: List<StoredDocumentIdentifier>): List<StoredDocumentIdentifier>
 
 	/**
 	 * Permanently deletes a patient.
@@ -67,7 +66,7 @@ interface PatientBasicFlavourlessApi {
 	 * @return the id and revision of the deleted patient.
 	 * @throws RevisionConflictException if the provided patient doesn't match the latest known revision
 	 */
-	suspend fun deletePatient(patient: Patient): DocIdentifier =
+	suspend fun deletePatient(patient: Patient): StoredDocumentIdentifier =
 		deletePatientById(patient.id, requireNotNull(patient.rev) { "Can't delete a patient that has no rev" })
 
 	/**
@@ -76,9 +75,9 @@ interface PatientBasicFlavourlessApi {
 	 * @return the id and revision of the deleted patients. If some entities couldn't be deleted they will not be
 	 * included in this list.
 	 */
-	suspend fun deletePatients(patients: List<Patient>): List<DocIdentifier> =
+	suspend fun deletePatients(patients: List<Patient>): List<StoredDocumentIdentifier> =
 		deletePatientsByIds(patients.map { patient ->
-			IdWithMandatoryRev(patient.id, requireNotNull(patient.rev) { "Can't delete a patient that has no rev" })
+			StoredDocumentIdentifier(patient.id, requireNotNull(patient.rev) { "Can't delete a patient that has no rev" })
 		})
 
 	/**
@@ -106,12 +105,12 @@ interface PatientBasicFlavourlessInGroupApi {
 	/**
 	 * In-group version of [PatientBasicFlavourlessApi.deletePatientById]
 	 */
-	// TODO suspend fun deletePatientById(groupId: String, entityId: String, rev: String): GroupScoped<DocIdentifier>
+	// TODO suspend fun deletePatientById(groupId: String, entityId: String, rev: String): GroupScoped<StoredDocumentIdentifier>
 
 	/**
 	 * In-group version of [PatientBasicFlavourlessApi.deletePatientsByIds]
 	 */
-	// TODO? suspend fun deletePatientsByIds(entityIds: List<GroupScoped<IdWithMandatoryRev>>): List<GroupScoped<DocIdentifier>> // would need to make GroupScoped constructor public, provide a method for converting GroupScoped<Revisionable> to GroupScoped<IdWithMandatoryRev>>, or similar...
+	// TODO? suspend fun deletePatientsByIds(entityIds: List<GroupScoped<IdWithMandatoryRev>>): List<GroupScoped<StoredDocumentIdentifier>> // would need to make GroupScoped constructor public, provide a method for converting GroupScoped<Revisionable> to GroupScoped<IdWithMandatoryRev>>, or similar...
 	/**
 	 * In-group version of [PatientBasicFlavourlessApi.purgePatientById]
 	 */
@@ -120,12 +119,12 @@ interface PatientBasicFlavourlessInGroupApi {
 	/**
 	 * In-group version of [PatientBasicFlavourlessApi.deletePatient]
 	 */
-	// TODO suspend fun deletePatient(patient: GroupScoped<Patient>): GroupScoped<DocIdentifier>
+	// TODO suspend fun deletePatient(patient: GroupScoped<Patient>): GroupScoped<StoredDocumentIdentifier>
 
 	/**
 	 * In-group version of [PatientBasicFlavourlessApi.deletePatients]
 	 */
-	// TODO suspend fun deletePatients(patients: List<GroupScoped<Patient>>): List<GroupScoped<DocIdentifier>>
+	// TODO suspend fun deletePatients(patients: List<GroupScoped<Patient>>): List<GroupScoped<StoredDocumentIdentifier>>
 
 	/**
 	 * In-group version of [PatientBasicFlavourlessApi.purgePatient]
@@ -173,7 +172,7 @@ interface PatientBasicFlavouredApi<E : Patient> {
 	 * @param ids the ids and revisions of the patients to restore
 	 * @return the restored entities.
 	 */
-	suspend fun undeletePatients(ids: List<IdWithMandatoryRev>): List<E>
+	suspend fun undeletePatients(ids: List<StoredDocumentIdentifier>): List<E>
 
 	/**
 	 * Get a patient by its id. You must have read access to the entity. Fails if the id does not correspond to any

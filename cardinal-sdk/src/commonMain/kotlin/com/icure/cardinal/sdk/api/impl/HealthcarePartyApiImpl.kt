@@ -8,7 +8,7 @@ import com.icure.cardinal.sdk.filters.BaseSortableFilterOptions
 import com.icure.cardinal.sdk.filters.FilterOptions
 import com.icure.cardinal.sdk.filters.mapHealthcarePartyFilterOptions
 import com.icure.cardinal.sdk.model.HealthcareParty
-import com.icure.cardinal.sdk.model.IdWithMandatoryRev
+import com.icure.cardinal.sdk.model.StoredDocumentIdentifier
 import com.icure.cardinal.sdk.model.ListOfIds
 import com.icure.cardinal.sdk.options.BasicApiConfiguration
 import com.icure.cardinal.sdk.serialization.HealthcarePartyAbstractFilterSerializer
@@ -130,7 +130,7 @@ internal class HealthcarePartyApiImpl(
 	override suspend fun deleteHealthcarePartyById(entityId: String, rev: String): DocIdentifier =
 		rawApi.deleteHealthcareParty(entityId, rev).successBodyOrThrowRevisionConflict()
 
-	override suspend fun deleteHealthcarePartiesByIds(entityIds: List<IdWithMandatoryRev>): List<DocIdentifier> =
+	override suspend fun deleteHealthcarePartiesByIds(entityIds: List<StoredDocumentIdentifier>): List<DocIdentifier> =
 		rawApi.deleteHealthcarePartiesWithRev(ListOfIdsAndRev(entityIds)).successBody()
 
 	override suspend fun deleteHealthcarePartyInGroupById(groupId: String, entityId: String, rev: String): DocIdentifier =
@@ -142,7 +142,7 @@ internal class HealthcarePartyApiImpl(
 
 	override suspend fun deleteHealthcarePartiesInGroupByIds(
 		groupId: String,
-		entityIds: List<IdWithMandatoryRev>
+		entityIds: List<StoredDocumentIdentifier>
 	): List<DocIdentifier> =
 		rawApi.deleteHealthcarePartiesInGroupWithRev(groupId, ListOfIdsAndRev(entityIds)).successBody()
 

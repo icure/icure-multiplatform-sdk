@@ -7,7 +7,7 @@ import com.icure.cardinal.sdk.filters.BaseFilterOptions
 import com.icure.cardinal.sdk.filters.BaseSortableFilterOptions
 import com.icure.cardinal.sdk.filters.mapAgendaFilterOptions
 import com.icure.cardinal.sdk.model.Agenda
-import com.icure.cardinal.sdk.model.IdWithMandatoryRev
+import com.icure.cardinal.sdk.model.StoredDocumentIdentifier
 import com.icure.cardinal.sdk.model.ListOfIds
 import com.icure.cardinal.sdk.model.ListOfIdsAndRev
 import com.icure.cardinal.sdk.model.PaginatedList
@@ -39,7 +39,7 @@ internal class AgendaApiImpl (
 	override suspend fun deleteAgendaById(entityId: String, rev: String): DocIdentifier =
 		rawApi.deleteAgenda(entityId, rev).successBodyOrThrowRevisionConflict()
 
-	override suspend fun deleteAgendasByIds(entityIds: List<IdWithMandatoryRev>): List<DocIdentifier> =
+	override suspend fun deleteAgendasByIds(entityIds: List<StoredDocumentIdentifier>): List<DocIdentifier> =
 		rawApi.deleteAgendasWithRev(ListOfIdsAndRev(entityIds)).successBody()
 
 	override suspend fun purgeAgendaById(id: String, rev: String) {

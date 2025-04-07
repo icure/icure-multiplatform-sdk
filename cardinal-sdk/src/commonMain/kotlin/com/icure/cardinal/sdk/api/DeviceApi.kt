@@ -5,13 +5,12 @@ import com.icure.cardinal.sdk.filters.BaseFilterOptions
 import com.icure.cardinal.sdk.filters.BaseSortableFilterOptions
 import com.icure.cardinal.sdk.filters.FilterOptions
 import com.icure.cardinal.sdk.model.Device
-import com.icure.cardinal.sdk.model.IdWithMandatoryRev
+import com.icure.cardinal.sdk.model.StoredDocumentIdentifier
 import com.icure.cardinal.sdk.model.IdWithRev
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.subscription.Subscribable
 import com.icure.cardinal.sdk.utils.DefaultValue
 import com.icure.cardinal.sdk.utils.pagination.PaginatedListIterator
-import kotlin.js.JsName
 
 interface DeviceApi: Subscribable<Device, Device, FilterOptions<Device>> {
 	@Deprecated("Deletion without rev is unsafe")
@@ -52,7 +51,7 @@ interface DeviceApi: Subscribable<Device, Device, FilterOptions<Device>> {
 	 * @return the id and revision of the deleted devices. If some entities could not be deleted (for example
 	 * because you had no write access to them) they will not be included in this list.
 	 */
-	suspend fun deleteDevicesByIds(entityIds: List<IdWithMandatoryRev>): List<DocIdentifier>
+	suspend fun deleteDevicesByIds(entityIds: List<StoredDocumentIdentifier>): List<DocIdentifier>
 
 	/**
 	 * Permanently deletes a device.
@@ -88,7 +87,7 @@ interface DeviceApi: Subscribable<Device, Device, FilterOptions<Device>> {
 	 */
 	suspend fun deleteDevices(devices: List<Device>): List<DocIdentifier> =
 		deleteDevicesByIds(devices.map { device ->
-			IdWithMandatoryRev(device.id, requireNotNull(device.rev) { "Can't delete a device that has no rev" })
+			StoredDocumentIdentifier(device.id, requireNotNull(device.rev) { "Can't delete a device that has no rev" })
 		})
 
 	/**

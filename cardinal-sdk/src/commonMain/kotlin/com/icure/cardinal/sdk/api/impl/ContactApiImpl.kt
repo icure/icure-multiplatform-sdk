@@ -21,7 +21,7 @@ import com.icure.cardinal.sdk.model.Contact
 import com.icure.cardinal.sdk.model.DecryptedContact
 import com.icure.cardinal.sdk.model.EncryptedContact
 import com.icure.cardinal.sdk.model.IcureStub
-import com.icure.cardinal.sdk.model.IdWithMandatoryRev
+import com.icure.cardinal.sdk.model.StoredDocumentIdentifier
 import com.icure.cardinal.sdk.model.ListOfIds
 import com.icure.cardinal.sdk.model.ListOfIdsAndRev
 import com.icure.cardinal.sdk.model.PaginatedList
@@ -359,7 +359,7 @@ private class AbstractContactBasicFlavourlessApi(
 	override suspend fun deleteContactById(entityId: String, rev: String): DocIdentifier =
 		rawApi.deleteContact(entityId, rev).successBodyOrThrowRevisionConflict()
 
-	override suspend fun deleteContactsByIds(entityIds: List<IdWithMandatoryRev>): List<DocIdentifier> =
+	override suspend fun deleteContactsByIds(entityIds: List<StoredDocumentIdentifier>): List<DocIdentifier> =
 		rawApi.deleteContactsWithRev(ListOfIdsAndRev(entityIds)).successBody()
 
 	override suspend fun purgeContactById(id: String, rev: String) {

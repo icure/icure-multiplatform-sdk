@@ -15,7 +15,7 @@ import com.icure.cardinal.sdk.js.model.entityTemplate_fromJs
 import com.icure.cardinal.sdk.js.model.entityTemplate_toJs
 import com.icure.cardinal.sdk.js.model.idWithMandatoryRev_fromJs
 import com.icure.cardinal.sdk.model.EntityTemplate
-import com.icure.cardinal.sdk.model.IdWithMandatoryRev
+import com.icure.cardinal.sdk.model.StoredDocumentIdentifier
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import kotlin.Array
 import kotlin.Boolean
@@ -245,7 +245,7 @@ internal class EntityTemplateApiImplJs(
 
 	override fun deleteEntityTemplates(entityTemplateIds: Array<IdWithMandatoryRevJs>):
 			Promise<Array<DocIdentifierJs>> = GlobalScope.promise {
-		val entityTemplateIdsConverted: List<IdWithMandatoryRev> = arrayToList(
+		val entityTemplateIdsConverted: List<StoredDocumentIdentifier> = arrayToList(
 			entityTemplateIds,
 			"entityTemplateIds",
 			{ x1: IdWithMandatoryRevJs ->

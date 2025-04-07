@@ -18,7 +18,7 @@ import com.icure.cardinal.sdk.filters.mapAccessLogFilterOptions
 import com.icure.cardinal.sdk.model.AccessLog
 import com.icure.cardinal.sdk.model.DecryptedAccessLog
 import com.icure.cardinal.sdk.model.EncryptedAccessLog
-import com.icure.cardinal.sdk.model.IdWithMandatoryRev
+import com.icure.cardinal.sdk.model.StoredDocumentIdentifier
 import com.icure.cardinal.sdk.model.ListOfIds
 import com.icure.cardinal.sdk.model.ListOfIdsAndRev
 import com.icure.cardinal.sdk.model.PaginatedList
@@ -162,7 +162,7 @@ private class AbstractAccessLogBasicFlavourlessApi(val rawApi: RawAccessLogApi) 
 	override suspend fun deleteAccessLogById(entityId: String, rev: String): DocIdentifier =
 		rawApi.deleteAccessLog(entityId, rev).successBodyOrThrowRevisionConflict()
 
-	override suspend fun deleteAccessLogsByIds(entityIds: List<IdWithMandatoryRev>): List<DocIdentifier> =
+	override suspend fun deleteAccessLogsByIds(entityIds: List<StoredDocumentIdentifier>): List<DocIdentifier> =
 		rawApi.deleteAccessLogsWithRev(ListOfIdsAndRev(entityIds)).successBody()
 
 	override suspend fun purgeAccessLogById(id: String, rev: String) {

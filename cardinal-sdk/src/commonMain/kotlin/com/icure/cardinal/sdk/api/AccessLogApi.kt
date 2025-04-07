@@ -10,7 +10,7 @@ import com.icure.cardinal.sdk.filters.SortableFilterOptions
 import com.icure.cardinal.sdk.model.AccessLog
 import com.icure.cardinal.sdk.model.DecryptedAccessLog
 import com.icure.cardinal.sdk.model.EncryptedAccessLog
-import com.icure.cardinal.sdk.model.IdWithMandatoryRev
+import com.icure.cardinal.sdk.model.StoredDocumentIdentifier
 import com.icure.cardinal.sdk.model.PaginatedList
 import com.icure.cardinal.sdk.model.Patient
 import com.icure.cardinal.sdk.model.User
@@ -44,7 +44,7 @@ interface AccessLogBasicFlavourlessApi {
 	 * @return the id and revision of the deleted accessLogs. If some entities couldn't be deleted (for example
 	 * because you had no write access to them) they will not be included in this list.
 	 */
-	suspend fun deleteAccessLogsByIds(entityIds: List<IdWithMandatoryRev>): List<DocIdentifier>
+	suspend fun deleteAccessLogsByIds(entityIds: List<StoredDocumentIdentifier>): List<DocIdentifier>
 
 	/**
 	 * Permanently deletes a accessLog.
@@ -71,7 +71,7 @@ interface AccessLogBasicFlavourlessApi {
 	 */
 	suspend fun deleteAccessLogs(accessLogs: List<AccessLog>): List<DocIdentifier> =
 		deleteAccessLogsByIds(accessLogs.map { accessLog ->
-			IdWithMandatoryRev(accessLog.id, requireNotNull(accessLog.rev) { "Can't delete an accessLog that has no rev" })
+			StoredDocumentIdentifier(accessLog.id, requireNotNull(accessLog.rev) { "Can't delete an accessLog that has no rev" })
 		})
 
 	/**

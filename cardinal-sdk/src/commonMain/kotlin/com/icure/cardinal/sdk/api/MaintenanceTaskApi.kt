@@ -8,7 +8,7 @@ import com.icure.cardinal.sdk.filters.FilterOptions
 import com.icure.cardinal.sdk.filters.SortableFilterOptions
 import com.icure.cardinal.sdk.model.DecryptedMaintenanceTask
 import com.icure.cardinal.sdk.model.EncryptedMaintenanceTask
-import com.icure.cardinal.sdk.model.IdWithMandatoryRev
+import com.icure.cardinal.sdk.model.StoredDocumentIdentifier
 import com.icure.cardinal.sdk.model.MaintenanceTask
 import com.icure.cardinal.sdk.model.User
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
@@ -18,7 +18,6 @@ import com.icure.cardinal.sdk.subscription.Subscribable
 import com.icure.cardinal.sdk.utils.DefaultValue
 import com.icure.cardinal.sdk.utils.EntityEncryptionException
 import com.icure.cardinal.sdk.utils.pagination.PaginatedListIterator
-import kotlin.js.JsName
 
 /* This interface includes the API calls that do not need encryption keys and do not return or consume encrypted/decrypted items, they are completely agnostic towards the presence of encrypted items */
 interface MaintenanceTaskBasicFlavourlessApi {
@@ -43,7 +42,7 @@ interface MaintenanceTaskBasicFlavourlessApi {
 	 * @return the id and revision of the deleted maintenanceTasks. If some entities could not be deleted (for example
 	 * because you had no write access to them) they will not be included in this list.
 	 */
-	suspend fun deleteMaintenanceTasksByIds(entityIds: List<IdWithMandatoryRev>): List<DocIdentifier>
+	suspend fun deleteMaintenanceTasksByIds(entityIds: List<StoredDocumentIdentifier>): List<DocIdentifier>
 
 	/**
 	 * Permanently deletes a maintenanceTask.
@@ -70,7 +69,7 @@ interface MaintenanceTaskBasicFlavourlessApi {
 	 */
 	suspend fun deleteMaintenanceTasks(maintenanceTasks: List<MaintenanceTask>): List<DocIdentifier> =
 		deleteMaintenanceTasksByIds(maintenanceTasks.map { maintenanceTask ->
-			IdWithMandatoryRev(maintenanceTask.id, requireNotNull(maintenanceTask.rev) { "Can't delete a maintenanceTask that has no rev" })
+			StoredDocumentIdentifier(maintenanceTask.id, requireNotNull(maintenanceTask.rev) { "Can't delete a maintenanceTask that has no rev" })
 		})
 
 	/**

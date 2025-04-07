@@ -6,7 +6,7 @@ import com.icure.cardinal.sdk.api.raw.successBodyOrThrowRevisionConflict
 import com.icure.cardinal.sdk.filters.BaseFilterOptions
 import com.icure.cardinal.sdk.filters.BaseSortableFilterOptions
 import com.icure.cardinal.sdk.filters.mapTimeTableFilterOptions
-import com.icure.cardinal.sdk.model.IdWithMandatoryRev
+import com.icure.cardinal.sdk.model.StoredDocumentIdentifier
 import com.icure.cardinal.sdk.model.ListOfIds
 import com.icure.cardinal.sdk.model.ListOfIdsAndRev
 import com.icure.cardinal.sdk.model.TimeTable
@@ -31,7 +31,7 @@ internal class TimeTableApiImpl(
 	override suspend fun deleteTimeTableById(entityId: String, rev: String): DocIdentifier =
 		rawApi.deleteTimeTable(entityId, rev).successBodyOrThrowRevisionConflict()
 
-	override suspend fun deleteTimeTablesByIds(entityIds: List<IdWithMandatoryRev>): List<DocIdentifier> =
+	override suspend fun deleteTimeTablesByIds(entityIds: List<StoredDocumentIdentifier>): List<DocIdentifier> =
 		rawApi.deleteTimeTablesWithRev(ListOfIdsAndRev(entityIds)).successBody()
 
 	override suspend fun purgeTimeTableById(id: String, rev: String) {

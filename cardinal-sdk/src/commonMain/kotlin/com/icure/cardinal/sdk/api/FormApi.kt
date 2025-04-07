@@ -11,7 +11,7 @@ import com.icure.cardinal.sdk.model.DecryptedForm
 import com.icure.cardinal.sdk.model.EncryptedForm
 import com.icure.cardinal.sdk.model.Form
 import com.icure.cardinal.sdk.model.FormTemplate
-import com.icure.cardinal.sdk.model.IdWithMandatoryRev
+import com.icure.cardinal.sdk.model.StoredDocumentIdentifier
 import com.icure.cardinal.sdk.model.Patient
 import com.icure.cardinal.sdk.model.User
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
@@ -20,7 +20,6 @@ import com.icure.cardinal.sdk.model.specializations.HexString
 import com.icure.cardinal.sdk.utils.DefaultValue
 import com.icure.cardinal.sdk.utils.EntityEncryptionException
 import com.icure.cardinal.sdk.utils.pagination.PaginatedListIterator
-import kotlin.js.JsName
 
 /* This interface includes the API calls that do not need encryption keys and do not return or consume encrypted/decrypted items, they are completely agnostic towards the presence of encrypted items */
 interface FormBasicFlavourlessApi {
@@ -45,7 +44,7 @@ interface FormBasicFlavourlessApi {
 	 * @return the id and revision of the deleted forms. If some entities could not be deleted (for example
 	 * because you had no write access to them) they will not be included in this list.
 	 */
-	suspend fun deleteFormsByIds(entityIds: List<IdWithMandatoryRev>): List<DocIdentifier>
+	suspend fun deleteFormsByIds(entityIds: List<StoredDocumentIdentifier>): List<DocIdentifier>
 
 	/**
 	 * Permanently deletes a form.
@@ -72,7 +71,7 @@ interface FormBasicFlavourlessApi {
 	 */
 	suspend fun deleteForms(forms: List<Form>): List<DocIdentifier> =
 		deleteFormsByIds(forms.map { form ->
-			IdWithMandatoryRev(form.id, requireNotNull(form.rev) { "Can't delete a form that has no rev" })
+			StoredDocumentIdentifier(form.id, requireNotNull(form.rev) { "Can't delete a form that has no rev" })
 		})
 
 	/**

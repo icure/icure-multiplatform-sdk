@@ -8,7 +8,7 @@ import com.icure.cardinal.sdk.filters.BaseSortableFilterOptions
 import com.icure.cardinal.sdk.filters.FilterOptions
 import com.icure.cardinal.sdk.filters.mapDeviceFilterOptions
 import com.icure.cardinal.sdk.model.Device
-import com.icure.cardinal.sdk.model.IdWithMandatoryRev
+import com.icure.cardinal.sdk.model.StoredDocumentIdentifier
 import com.icure.cardinal.sdk.model.IdWithRev
 import com.icure.cardinal.sdk.model.ListOfIds
 import com.icure.cardinal.sdk.options.BasicApiConfiguration
@@ -65,7 +65,7 @@ internal class DeviceApiImpl(
 	override suspend fun deleteDeviceById(entityId: String, rev: String): DocIdentifier =
 		rawApi.deleteDevice(entityId, rev).successBodyOrThrowRevisionConflict()
 
-	override suspend fun deleteDevicesByIds(entityIds: List<IdWithMandatoryRev>): List<DocIdentifier> =
+	override suspend fun deleteDevicesByIds(entityIds: List<StoredDocumentIdentifier>): List<DocIdentifier> =
 		rawApi.deleteDevicesWithRev(ListOfIdsAndRev(entityIds)).successBody()
 
 	override suspend fun purgeDeviceById(id: String, rev: String) {

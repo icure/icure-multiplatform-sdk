@@ -9,7 +9,7 @@ import com.icure.cardinal.sdk.filters.FilterOptions
 import com.icure.cardinal.sdk.filters.SortableFilterOptions
 import com.icure.cardinal.sdk.model.DecryptedMessage
 import com.icure.cardinal.sdk.model.EncryptedMessage
-import com.icure.cardinal.sdk.model.IdWithMandatoryRev
+import com.icure.cardinal.sdk.model.StoredDocumentIdentifier
 import com.icure.cardinal.sdk.model.Message
 import com.icure.cardinal.sdk.model.PaginatedList
 import com.icure.cardinal.sdk.model.Patient
@@ -23,7 +23,6 @@ import com.icure.cardinal.sdk.utils.DefaultValue
 import com.icure.cardinal.sdk.utils.EntityEncryptionException
 import com.icure.cardinal.sdk.utils.pagination.PaginatedListIterator
 import kotlinx.serialization.json.JsonElement
-import kotlin.js.JsName
 
 /* This interface includes the API calls that do not need encryption keys and do not return or consume encrypted/decrypted items, they are completely agnostic towards the presence of encrypted items */
 interface MessageBasicFlavourlessApi {
@@ -48,7 +47,7 @@ interface MessageBasicFlavourlessApi {
 	 * @return the id and revision of the deleted messages. If some entities could not be deleted (for example
 	 * because you had no write access to them) they will not be included in this list.
 	 */
-	suspend fun deleteMessagesByIds(entityIds: List<IdWithMandatoryRev>): List<DocIdentifier>
+	suspend fun deleteMessagesByIds(entityIds: List<StoredDocumentIdentifier>): List<DocIdentifier>
 
 	/**
 	 * Permanently deletes a message.
@@ -75,7 +74,7 @@ interface MessageBasicFlavourlessApi {
 	 */
 	suspend fun deleteMessages(messages: List<Message>): List<DocIdentifier> =
 		deleteMessagesByIds(messages.map { message ->
-			IdWithMandatoryRev(message.id, requireNotNull(message.rev) { "Can't delete a message that has no rev" })
+			StoredDocumentIdentifier(message.id, requireNotNull(message.rev) { "Can't delete a message that has no rev" })
 		})
 
 	/**

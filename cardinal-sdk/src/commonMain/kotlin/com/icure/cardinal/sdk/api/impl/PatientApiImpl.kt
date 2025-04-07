@@ -44,13 +44,12 @@ import com.icure.cardinal.sdk.model.EncryptedPatient
 import com.icure.cardinal.sdk.model.EntityReferenceInGroup
 import com.icure.cardinal.sdk.model.GroupScoped
 import com.icure.cardinal.sdk.model.IcureStub
-import com.icure.cardinal.sdk.model.IdWithMandatoryRev
 import com.icure.cardinal.sdk.model.ListOfIds
 import com.icure.cardinal.sdk.model.ListOfIdsAndRev
 import com.icure.cardinal.sdk.model.Patient
+import com.icure.cardinal.sdk.model.StoredDocumentIdentifier
 import com.icure.cardinal.sdk.model.User
 import com.icure.cardinal.sdk.model.base.HasEncryptionMetadata
-import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.model.couchdb.SortDirection
 import com.icure.cardinal.sdk.model.embed.AccessLevel
 import com.icure.cardinal.sdk.model.embed.DelegationTag
@@ -61,6 +60,7 @@ import com.icure.cardinal.sdk.model.requests.BulkShareOrUpdateMetadataParams
 import com.icure.cardinal.sdk.model.requests.EntityBulkShareResult
 import com.icure.cardinal.sdk.model.requests.RequestedPermission
 import com.icure.cardinal.sdk.model.specializations.HexString
+import com.icure.cardinal.sdk.model.toStoredDocumentIdentifier
 import com.icure.cardinal.sdk.options.ApiConfiguration
 import com.icure.cardinal.sdk.options.BasicApiConfiguration
 import com.icure.cardinal.sdk.options.EntitiesEncryptedFieldsManifests
@@ -122,7 +122,7 @@ private open class AbstractPatientBasicFlavouredApi<E : Patient>(
 	override suspend fun undeletePatientById(id: String, rev: String): E =
 		rawApi.undeletePatient(id, rev).successBodyOrThrowRevisionConflict().let { maybeDecrypt(null, it) }
 
-	override suspend fun undeletePatients(ids: List<IdWithMandatoryRev>): List<E> =
+	override suspend fun undeletePatients(ids: List<StoredDocumentIdentifier>): List<E> =
 		rawApi.undeletePatients(ListOfIdsAndRev(ids)).successBody().let { maybeDecrypt(it) }
 
 	override suspend fun modifyPatient(entity: E): E =
@@ -411,18 +411,18 @@ private class AbstractPatientBasicFlavourlessApi(val rawApi: RawPatientApi, val 
 	PatientBasicFlavourlessApi, PatientBasicFlavourlessInGroupApi {
 
 	@Deprecated("Deletion without rev is unsafe")
-	override suspend fun deletePatientUnsafe(entityId: String): DocIdentifier =
-		rawApi.deletePatient(entityId).successBodyOrThrowRevisionConflict()
+	override suspend fun deletePatientUnsafe(entityId: String): StoredDocumentIdentifier =
+		rawApi.deletePatient(entityId).successBodyOrThrowRevisionConflict().toStoredDocumentIdentifier()
 
 	@Deprecated("Deletion without rev is unsafe")
-	override suspend fun deletePatientsUnsafe(entityIds: List<String>): List<DocIdentifier> =
-		rawApi.deletePatients(ListOfIds(entityIds)).successBody()
+	override suspend fun deletePatientsUnsafe(entityIds: List<String>): List<StoredDocumentIdentifier> =
+		rawApi.deletePatients(ListOfIds(entityIds)).successBody().toStoredDocumentIdentifier()
 
-	override suspend fun deletePatientById(entityId: String, rev: String): DocIdentifier =
-		rawApi.deletePatient(entityId, rev).successBodyOrThrowRevisionConflict()
+	override suspend fun deletePatientById(entityId: String, rev: String): StoredDocumentIdentifier =
+		rawApi.deletePatient(entityId, rev).successBodyOrThrowRevisionConflict().toStoredDocumentIdentifier()
 
-	override suspend fun deletePatientsByIds(entityIds: List<IdWithMandatoryRev>): List<DocIdentifier> =
-		rawApi.deletePatientsWithRev(ListOfIdsAndRev(entityIds)).successBody()
+	override suspend fun deletePatientsByIds(entityIds: List<StoredDocumentIdentifier>): List<StoredDocumentIdentifier> =
+		rawApi.deletePatientsWithRev(ListOfIdsAndRev(entityIds)).successBody().toStoredDocumentIdentifier()
 
 	override suspend fun purgePatientById(id: String, rev: String) {
 		rawApi.purgePatient(id, rev).successBodyOrThrowRevisionConflict()

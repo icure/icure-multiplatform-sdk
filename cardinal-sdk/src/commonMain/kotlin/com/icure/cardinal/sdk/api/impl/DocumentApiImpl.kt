@@ -18,7 +18,7 @@ import com.icure.cardinal.sdk.filters.mapDocumentFilterOptions
 import com.icure.cardinal.sdk.model.DecryptedDocument
 import com.icure.cardinal.sdk.model.Document
 import com.icure.cardinal.sdk.model.EncryptedDocument
-import com.icure.cardinal.sdk.model.IdWithMandatoryRev
+import com.icure.cardinal.sdk.model.StoredDocumentIdentifier
 import com.icure.cardinal.sdk.model.ListOfIds
 import com.icure.cardinal.sdk.model.ListOfIdsAndRev
 import com.icure.cardinal.sdk.model.Message
@@ -153,7 +153,7 @@ private class AbstractDocumentBasicFlavourlessApi(val rawApi: RawDocumentApi) : 
 	override suspend fun deleteDocumentById(entityId: String, rev: String): DocIdentifier =
 		rawApi.deleteDocument(entityId, rev).successBodyOrThrowRevisionConflict()
 
-	override suspend fun deleteDocumentsByIds(entityIds: List<IdWithMandatoryRev>): List<DocIdentifier> =
+	override suspend fun deleteDocumentsByIds(entityIds: List<StoredDocumentIdentifier>): List<DocIdentifier> =
 		rawApi.deleteDocumentsWithRev(ListOfIdsAndRev(entityIds)).successBody()
 
 	override suspend fun purgeDocumentById(id: String, rev: String) {
