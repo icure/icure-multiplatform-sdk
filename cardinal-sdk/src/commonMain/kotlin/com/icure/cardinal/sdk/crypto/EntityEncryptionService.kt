@@ -1,7 +1,6 @@
 package com.icure.cardinal.sdk.crypto
 
 import com.icure.cardinal.sdk.crypto.entities.BulkShareResult
-import com.icure.cardinal.sdk.model.EntityReferenceInGroup
 import com.icure.cardinal.sdk.crypto.entities.DelegateShareOptions
 import com.icure.cardinal.sdk.crypto.entities.EncryptedFieldsManifest
 import com.icure.cardinal.sdk.crypto.entities.EntityDataEncryptionResult
@@ -10,9 +9,11 @@ import com.icure.cardinal.sdk.crypto.entities.EntityEncryptionMetadataInitialisa
 import com.icure.cardinal.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
 import com.icure.cardinal.sdk.crypto.entities.HierarchicallyDecryptedMetadata
 import com.icure.cardinal.sdk.crypto.entities.MinimalBulkShareResult
+import com.icure.cardinal.sdk.crypto.entities.OwningEntityDetails
 import com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption
 import com.icure.cardinal.sdk.crypto.entities.SimpleDelegateShareOptions
 import com.icure.cardinal.sdk.crypto.entities.SimpleShareResult
+import com.icure.cardinal.sdk.model.EntityReferenceInGroup
 import com.icure.cardinal.sdk.model.base.HasEncryptionMetadata
 import com.icure.cardinal.sdk.model.embed.AccessLevel
 import com.icure.cardinal.sdk.model.embed.Encryptable
@@ -33,6 +34,15 @@ import kotlinx.serialization.json.JsonElement
 @InternalIcureApi
 interface EntityEncryptionService : EntityValidationService {
 	// region metadata decryption
+	/**
+	 * Parse an entity reference string coming from group [sourceGroupId] (null for being current user group)
+	 * Return a reference with null groupId if local
+	 */
+	fun parseReference(
+		sourceGroupId: String?,
+		reference: String
+	): EntityReferenceInGroup
+
 	/**
 	 * Get the encryption keys of an entity that the provided data owner can access, potentially using the keys for his parent.
 	 * There should only be one encryption key for each entity, but the method supports more to allow to deal with conflicts and merged duplicate data.
@@ -159,7 +169,7 @@ interface EntityEncryptionService : EntityValidationService {
 	 * the clear text secret foreign key of the parent entity.
 	 * This method returns a modified copy of the entity and DOES NOT SAVE the entity to the cloud/DB: you will have to save the entity manually.
 	 * @param entity entity which requires encryption metadata initialisation.
-	 * @param owningEntityId id of the owning entity, if any (e.g. patient id for Contact/HealtchareElement, message id for Document, ...).
+	 * @param owningEntityDetails details of the owning entity, if any (e.g. patient id for Contact/HealtchareElement, message id for Document, ...).
 	 * @param owningEntitySecretId secret id of the parent entity, to use in the secret foreign keys for the provided entity, if any.
 	 * @param initializeEncryptionKey if false this method will not initialize an encryption key for the entity. Use only for entities which use
 	 * delegations for access control but don't actually have any encrypted content.
@@ -173,8 +183,7 @@ interface EntityEncryptionService : EntityValidationService {
 		entityGroupId: String?,
 		entity: T,
 		entityType: EntityWithEncryptionMetadataTypeName,
-		owningEntityId: String?,
-		owningEntitySecretId: Set<String>?,
+		owningEntityDetails: OwningEntityDetails?,
 		initializeEncryptionKey: Boolean,
 		autoDelegations: Map<EntityReferenceInGroup, AccessLevel>
 	): EntityEncryptionMetadataInitialisationResult<T>

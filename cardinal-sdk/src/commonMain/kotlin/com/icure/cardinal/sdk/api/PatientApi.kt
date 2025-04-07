@@ -569,7 +569,7 @@ interface PatientFlavouredInGroupApi<E : Patient> : PatientBasicFlavouredInGroup
 	 */
 	suspend fun shareWithMany(
 		patient: GroupScoped<E>,
-		delegates: @JsMapAsObjectArray(flattenKey = true, flattenValue = true) Map<EntityReferenceInGroup, PatientShareOptions>
+		delegates: @JsMapAsObjectArray(keyEntryName = "delegate", valueEntryName = "shareOptions") Map<EntityReferenceInGroup, PatientShareOptions>
 	): GroupScoped<E>
 
 	/**
@@ -676,7 +676,11 @@ interface PatientApi : PatientBasicFlavourlessApi, PatientFlavouredApi<Decrypted
 	): DecryptedPatient
 
 	/**
-	 * Specifies if the current user has write access to a patient.
+	 * Specifies if the current user has write access to a patient through delegations.
+	 * Doesn't consider actual permissions on the server side: for example, if the data owner has access to all entities
+	 * thanks to extended permission but has no delegation on the provided entity this method returns false. Similarly,
+	 * if the SDK was initialized in hierarchical mode but the user is lacking the hierarchical permission on the server
+	 * side this method will still return true if there is a delegation to the parent.
 	 * @param patient a patient
 	 * @return if the current user has write access to the provided patient
 	 */
@@ -822,7 +826,7 @@ interface PatientInGroupApi : PatientBasicFlavourlessInGroupApi, PatientFlavoure
 	val encrypted: PatientFlavouredInGroupApi<EncryptedPatient>
 
 	/**
-	 * In-group version of [PatientApi.tryAndRecover]
+	 * Gives access to the polymorphic flavour of the api
 	 */
 	val tryAndRecover: PatientFlavouredInGroupApi<Patient>
 
@@ -865,7 +869,7 @@ interface PatientInGroupApi : PatientBasicFlavourlessInGroupApi, PatientFlavoure
 		@DefaultValue("null")
 		user: User? = null,
 		@DefaultValue("emptyMap()")
-		delegates: @JsMapAsObjectArray(flattenKey = true, valueEntryName = "accessLevel") Map<EntityReferenceInGroup, AccessLevel> = emptyMap(),
+		delegates: @JsMapAsObjectArray(keyEntryName = "delegate", valueEntryName = "accessLevel") Map<EntityReferenceInGroup, AccessLevel> = emptyMap(),
 	): GroupScoped<DecryptedPatient>
 
 	/**

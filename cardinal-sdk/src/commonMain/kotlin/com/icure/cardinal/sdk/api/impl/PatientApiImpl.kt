@@ -116,7 +116,7 @@ private fun tryAndRecoverApiFlavour(
 @InternalIcureApi
 private open class AbstractPatientBasicFlavouredApi<E : Patient>(
 	protected val rawApi: RawPatientApi,
-	open protected val config: BasicApiConfiguration,
+	protected open val config: BasicApiConfiguration,
 	protected val flavour: FlavouredApi<EncryptedPatient, E>
 ) : PatientBasicFlavouredApi<E>, PatientBasicFlavouredInGroupApi<E>, FlavouredApi<EncryptedPatient, E> by flavour {
 	override suspend fun undeletePatientById(id: String, rev: String): E =
@@ -134,7 +134,7 @@ private open class AbstractPatientBasicFlavouredApi<E : Patient>(
 	override suspend fun getPatient(groupId: String, entityId: String): GroupScoped<E> =
 		GroupScoped(doGetPatient(groupId, entityId), groupId)
 
-	private suspend fun doGetPatient(groupId: String?, entityId: String) =
+	protected suspend fun doGetPatient(groupId: String?, entityId: String) =
 		doGetEncryptedPatient(groupId, entityId).let { maybeDecrypt(groupId, it) }
 
 	private suspend fun doGetEncryptedPatient(groupId: String?, entityId: String) =
@@ -365,7 +365,7 @@ private class AbstractPatientFlavouredApi<E : Patient>(
 			EntityWithEncryptionMetadataTypeName.Patient,
 			delegates,
 			true,
-			{ getPatient(it) },
+			{ doGetPatient(groupId, it) },
 			{
 				maybeDecrypt(
 					groupId,
@@ -385,7 +385,7 @@ private class AbstractPatientFlavouredApi<E : Patient>(
 			groupId,
 			patient,
 			EntityWithEncryptionMetadataTypeName.Patient,
-			{ getPatient(it) },
+			{ doGetPatient(groupId, it) },
 			{ maybeDecrypt(null, rawApi.bulkShare(it).successBody()) }
 		) ?: patient
 	}
@@ -515,17 +515,17 @@ private class PatientApiImpl(
 		override val tryAndRecover: PatientFlavouredInGroupApi<Patient> = tryAndRecoverFlavour
 
 		override suspend fun decrypt(patients: List<GroupScoped<EncryptedPatient>>): List<GroupScoped<DecryptedPatient>> =
-			patients.mapChunkedByGroup { groupId, entities ->
+			patients.mapExactlyChunkedByGroup { groupId, entities ->
 				decryptedFlavour.maybeDecrypt(groupId, entities)
 			}
 
 		override suspend fun tryDecrypt(patients: List<GroupScoped<EncryptedPatient>>): List<GroupScoped<Patient>> =
-			patients.mapChunkedByGroup { groupId, entities ->
+			patients.mapExactlyChunkedByGroup { groupId, entities ->
 				tryAndRecoverFlavour.maybeDecrypt(groupId, entities)
 			}
 
 		override suspend fun encryptOrValidate(patients: List<GroupScoped<Patient>>): List<GroupScoped<EncryptedPatient>> =
-			patients.mapChunkedByGroup { groupId, entities ->
+			patients.mapExactlyChunkedByGroup { groupId, entities ->
 				tryAndRecoverFlavour.validateAndMaybeEncrypt(groupId, entities)
 			}
 

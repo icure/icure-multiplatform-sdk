@@ -9,7 +9,6 @@ import com.icure.cardinal.sdk.crypto.JsonEncryptionService
 import com.icure.cardinal.sdk.crypto.SecureDelegationsManager
 import com.icure.cardinal.sdk.crypto.decrypt
 import com.icure.cardinal.sdk.crypto.entities.BulkShareResult
-import com.icure.cardinal.sdk.model.EntityReferenceInGroup
 import com.icure.cardinal.sdk.crypto.entities.DecryptedMetadataDetails
 import com.icure.cardinal.sdk.crypto.entities.DelegateShareOptions
 import com.icure.cardinal.sdk.crypto.entities.EncryptedFieldsManifest
@@ -20,6 +19,7 @@ import com.icure.cardinal.sdk.crypto.entities.EntityWithEncryptionMetadataTypeNa
 import com.icure.cardinal.sdk.crypto.entities.FailedRequestDetails
 import com.icure.cardinal.sdk.crypto.entities.HierarchicallyDecryptedMetadata
 import com.icure.cardinal.sdk.crypto.entities.MinimalBulkShareResult
+import com.icure.cardinal.sdk.crypto.entities.OwningEntityDetails
 import com.icure.cardinal.sdk.crypto.entities.SdkBoundGroup
 import com.icure.cardinal.sdk.crypto.entities.SecretIdShareOptions
 import com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption
@@ -29,6 +29,7 @@ import com.icure.cardinal.sdk.crypto.entities.SimpleDelegateShareOptions
 import com.icure.cardinal.sdk.crypto.entities.SimpleDelegateShareOptionsImpl
 import com.icure.cardinal.sdk.crypto.entities.SimpleShareResult
 import com.icure.cardinal.sdk.crypto.entities.resolve
+import com.icure.cardinal.sdk.model.EntityReferenceInGroup
 import com.icure.cardinal.sdk.model.base.HasEncryptionMetadata
 import com.icure.cardinal.sdk.model.embed.AccessLevel
 import com.icure.cardinal.sdk.model.embed.Encryptable
@@ -74,6 +75,13 @@ class EntityEncryptionServiceImpl(
 		private val log = getLogger("EntityEncryptionService")
 	}
 
+	override fun parseReference(sourceGroupId: String?, reference: String): EntityReferenceInGroup =
+		EntityReferenceInGroup.parse(
+			reference,
+			sourceGroupId,
+			boundGroup
+		)
+
 	override suspend fun encryptionKeysOf(
 		entityGroupId: String?,
 		entity: HasEncryptionMetadata,
@@ -107,7 +115,7 @@ class EntityEncryptionServiceImpl(
 		entity: HasEncryptionMetadata,
 		entityType: EntityWithEncryptionMetadataTypeName,
 		dataOwnerId: String?
-	): Set<String> =
+	): Set<EntityReferenceInGroup> =
 		decryptAllSecurityMetadata(
 			entityGroupId,
 			entity,
@@ -404,8 +412,7 @@ class EntityEncryptionServiceImpl(
 		entityGroupId: String?,
 		entity: T,
 		entityType: EntityWithEncryptionMetadataTypeName,
-		owningEntityId: String?,
-		owningEntitySecretId: Set<String>?,
+		owningEntityDetails: OwningEntityDetails?,
 		initializeEncryptionKey: Boolean,
 		autoDelegations: Map<EntityReferenceInGroup, AccessLevel>
 	): EntityEncryptionMetadataInitialisationResult<T> {
@@ -421,9 +428,16 @@ class EntityEncryptionServiceImpl(
 			entity = entity,
 			entityType = entityType,
 			secretIds = setOf(newSecretId),
-			owningEntityIds = setOfNotNull(owningEntityId),
+			owningEntityIds = setOfNotNull(
+				owningEntityDetails?.let {
+					EntityReferenceInGroup(it.id, it.groupId).asReferenceStringInGroup(
+						entityGroupId,
+						boundGroup
+					)
+				}
+			),
 			encryptionKeys = setOfNotNull(newRawKey),
-			owningEntitySecretIds = owningEntitySecretId ?: emptySet(),
+			owningEntitySecretIds = owningEntityDetails?.secretIds.orEmpty(),
 			autoDelegations = normalizedAutoDelegations,
 		)
 		return EntityEncryptionMetadataInitialisationResult(

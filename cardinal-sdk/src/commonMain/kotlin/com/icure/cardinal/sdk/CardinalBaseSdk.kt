@@ -21,7 +21,7 @@ import com.icure.cardinal.sdk.api.impl.AccessLogBasicApiImpl
 import com.icure.cardinal.sdk.api.impl.AgendaApiImpl
 import com.icure.cardinal.sdk.api.impl.ApplicationSettingsApiImpl
 import com.icure.cardinal.sdk.api.impl.AuthApiImpl
-import com.icure.cardinal.sdk.api.impl.CalendarItemBasicApiImpl
+import com.icure.cardinal.sdk.api.impl.initCalendarItemBasicApi
 import com.icure.cardinal.sdk.api.impl.CalendarItemTypeApiImpl
 import com.icure.cardinal.sdk.api.impl.ClassificationBasicApiImpl
 import com.icure.cardinal.sdk.api.impl.CodeApiImpl
@@ -280,7 +280,7 @@ private class CardinalBaseApisImpl(
 		)
 	}
 	override val calendarItem by lazy {
-		CalendarItemBasicApiImpl(
+		initCalendarItemBasicApi(
 			RawCalendarItemApiImpl(
 				apiUrl,
 				authProvider,

@@ -266,7 +266,11 @@ interface TopicApi : TopicBasicFlavourlessApi, TopicFlavouredApi<DecryptedTopic>
 	suspend fun getEncryptionKeysOf(topic: Topic): Set<HexString>
 
 	/**
-	 * Specifies if the current user has write access to a topic.
+	 * Specifies if the current user has write access to a topic through delegations.
+	 * Doesn't consider actual permissions on the server side: for example, if the data owner has access to all entities
+	 * thanks to extended permission but has no delegation on the provided entity this method returns false. Similarly,
+	 * if the SDK was initialized in hierarchical mode but the user is lacking the hierarchical permission on the server
+	 * side this method will still return true if there is a delegation to the parent.
 	 * @param topic a topic
 	 * @return if the current user has write access to the provided topic
 	 */

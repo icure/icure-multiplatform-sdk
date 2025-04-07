@@ -1,6 +1,5 @@
 package com.icure.cardinal.sdk.api
 
-import com.icure.cardinal.sdk.model.EntityReferenceInGroup
 import com.icure.cardinal.sdk.crypto.entities.HealthElementShareOptions
 import com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption
 import com.icure.cardinal.sdk.exceptions.RevisionConflictException
@@ -10,9 +9,10 @@ import com.icure.cardinal.sdk.filters.FilterOptions
 import com.icure.cardinal.sdk.filters.SortableFilterOptions
 import com.icure.cardinal.sdk.model.DecryptedHealthElement
 import com.icure.cardinal.sdk.model.EncryptedHealthElement
+import com.icure.cardinal.sdk.model.EntityReferenceInGroup
 import com.icure.cardinal.sdk.model.HealthElement
-import com.icure.cardinal.sdk.model.StoredDocumentIdentifier
 import com.icure.cardinal.sdk.model.Patient
+import com.icure.cardinal.sdk.model.StoredDocumentIdentifier
 import com.icure.cardinal.sdk.model.User
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.model.embed.AccessLevel
@@ -186,7 +186,7 @@ interface HealthElementFlavouredApi<E : HealthElement> : HealthElementBasicFlavo
 	suspend fun shareInGroup(
 		healthElement: E,
 		entityGroupId: String?,
-		delegates: @JsMapAsObjectArray(flattenKey = true, flattenValue = true) Map<EntityReferenceInGroup, HealthElementShareOptions>
+		delegates: @JsMapAsObjectArray(keyEntryName = "delegate", valueEntryName = "shareOptions") Map<EntityReferenceInGroup, HealthElementShareOptions>
 	): E
 
 	@Deprecated("Use filter instead")
@@ -289,7 +289,7 @@ interface HealthElementApi : HealthElementBasicFlavourlessApi, HealthElementFlav
 		@DefaultValue("null")
 		user: User? = null,
 		@DefaultValue("emptyMap()")
-		delegates: @JsMapAsObjectArray(flattenKey = true, valueEntryName = "accessLevel") Map<EntityReferenceInGroup, AccessLevel> = emptyMap(),
+		delegates: @JsMapAsObjectArray(keyEntryName = "delegate", valueEntryName = "accessLevel") Map<EntityReferenceInGroup, AccessLevel> = emptyMap(),
 		@DefaultValue("com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption.UseAnySharedWithParent")
 		secretId: SecretIdUseOption = SecretIdUseOption.UseAnySharedWithParent,
 	): DecryptedHealthElement
@@ -305,7 +305,11 @@ interface HealthElementApi : HealthElementBasicFlavourlessApi, HealthElementFlav
 	suspend fun getEncryptionKeysOf(healthElement: HealthElement): Set<HexString>
 
 	/**
-	 * Specifies if the current user has write access to a health element.
+	 * Specifies if the current user has write access to a health element through delegations.
+	 * Doesn't consider actual permissions on the server side: for example, if the data owner has access to all entities
+	 * thanks to extended permission but has no delegation on the provided entity this method returns false. Similarly,
+	 * if the SDK was initialized in hierarchical mode but the user is lacking the hierarchical permission on the server
+	 * side this method will still return true if there is a delegation to the parent.
 	 * @param healthElement a health element
 	 * @return if the current user has write access to the provided health element
 	 */
