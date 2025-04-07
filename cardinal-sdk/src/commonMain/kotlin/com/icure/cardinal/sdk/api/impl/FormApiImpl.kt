@@ -9,6 +9,7 @@ import com.icure.cardinal.sdk.api.raw.RawFormApi
 import com.icure.cardinal.sdk.api.raw.successBodyOrThrowRevisionConflict
 import com.icure.cardinal.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
 import com.icure.cardinal.sdk.crypto.entities.FormShareOptions
+import com.icure.cardinal.sdk.crypto.entities.OwningEntityDetails
 import com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption
 import com.icure.cardinal.sdk.filters.BaseFilterOptions
 import com.icure.cardinal.sdk.filters.BaseSortableFilterOptions
@@ -19,10 +20,10 @@ import com.icure.cardinal.sdk.model.DecryptedForm
 import com.icure.cardinal.sdk.model.EncryptedForm
 import com.icure.cardinal.sdk.model.Form
 import com.icure.cardinal.sdk.model.FormTemplate
-import com.icure.cardinal.sdk.model.StoredDocumentIdentifier
 import com.icure.cardinal.sdk.model.ListOfIds
 import com.icure.cardinal.sdk.model.ListOfIdsAndRev
 import com.icure.cardinal.sdk.model.Patient
+import com.icure.cardinal.sdk.model.StoredDocumentIdentifier
 import com.icure.cardinal.sdk.model.User
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.model.embed.AccessLevel
@@ -307,12 +308,15 @@ internal class FormApiImpl(
 				author = base?.author ?: user?.id?.takeIf { config.autofillAuthor },
 			),
 			EntityWithEncryptionMetadataTypeName.Form,
-			patient.id,
-			config.crypto.entity.resolveSecretIdOption(
+			OwningEntityDetails(
 				null,
-				patient,
-				EntityWithEncryptionMetadataTypeName.Patient,
-				secretId
+				patient.id,
+				config.crypto.entity.resolveSecretIdOption(
+					null,
+					patient,
+					EntityWithEncryptionMetadataTypeName.Patient,
+					secretId
+				),
 			),
 			initializeEncryptionKey = true,
 			autoDelegations = (delegates + user?.autoDelegationsFor(DelegationTag.MedicalInformation)

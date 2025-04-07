@@ -8,6 +8,7 @@ import com.icure.cardinal.sdk.api.ReceiptFlavouredApi
 import com.icure.cardinal.sdk.api.raw.RawReceiptApi
 import com.icure.cardinal.sdk.api.raw.successBodyOrThrowRevisionConflict
 import com.icure.cardinal.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
+import com.icure.cardinal.sdk.crypto.entities.OwningEntityDetails
 import com.icure.cardinal.sdk.crypto.entities.ReceiptShareOptions
 import com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption
 import com.icure.cardinal.sdk.model.DecryptedReceipt
@@ -186,13 +187,16 @@ internal class ReceiptApiImpl(
 				author = base?.author ?: user?.id?.takeIf { config.autofillAuthor },
 			),
 			EntityWithEncryptionMetadataTypeName.Receipt,
-			patient?.id,
 			patient?.let {
-				config.crypto.entity.resolveSecretIdOption(
+				OwningEntityDetails(
 					null,
-					it,
-					EntityWithEncryptionMetadataTypeName.Patient,
-					secretId
+					it.id,
+					config.crypto.entity.resolveSecretIdOption(
+						null,
+						it,
+						EntityWithEncryptionMetadataTypeName.Patient,
+						secretId
+					)
 				)
 			},
 			initializeEncryptionKey = true,

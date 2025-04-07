@@ -7,7 +7,6 @@ import com.icure.cardinal.sdk.crypto.BaseSecurityMetadataDecryptor
 import com.icure.cardinal.sdk.crypto.DelegationsDeAnonymization
 import com.icure.cardinal.sdk.crypto.EntityEncryptionService
 import com.icure.cardinal.sdk.crypto.JsonEncryptionService
-import com.icure.cardinal.sdk.model.EntityReferenceInGroup
 import com.icure.cardinal.sdk.crypto.entities.EntityAccessInformation
 import com.icure.cardinal.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
 import com.icure.cardinal.sdk.crypto.entities.SdkBoundGroup
@@ -18,6 +17,7 @@ import com.icure.cardinal.sdk.crypto.entities.SimpleDelegateShareOptionsImpl
 import com.icure.cardinal.sdk.crypto.entities.resolve
 import com.icure.cardinal.sdk.model.DecryptedSecureDelegationKeyMap
 import com.icure.cardinal.sdk.model.EncryptedSecureDelegationKeyMap
+import com.icure.cardinal.sdk.model.EntityReferenceInGroup
 import com.icure.cardinal.sdk.model.ListOfIds
 import com.icure.cardinal.sdk.model.SecureDelegationKeyMap
 import com.icure.cardinal.sdk.model.base.HasEncryptionMetadata
@@ -265,8 +265,7 @@ class DelegationsDeAnonymizationImpl(
 				delegationKey = delegationKey
 			),
 			entityType = entityType,
-			owningEntityId = null,
-			owningEntitySecretId = null,
+			owningEntityDetails = null,
 			initializeEncryptionKey = true,
 			autoDelegations = initialDelegates.associateWith { AccessLevel.Read },
 			entityGroupId = resolvedGroup

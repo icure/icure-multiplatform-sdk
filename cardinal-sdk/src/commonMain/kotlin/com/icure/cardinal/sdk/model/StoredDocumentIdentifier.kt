@@ -6,6 +6,7 @@ import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.utils.ensureNonNull
 import com.icure.utils.InternalIcureApi
 import kotlinx.serialization.Serializable
+import kotlin.jvm.JvmName
 
 /**
  * Identifier for a document stored in iCure, includes revision.
@@ -16,6 +17,7 @@ data class StoredDocumentIdentifier(
 	val rev: String
 ) : Identifiable<String>
 
+@JvmName("docIdentifiersToStoredDocumentIdentifier")
 internal fun List<DocIdentifier>.toStoredDocumentIdentifier(): List<StoredDocumentIdentifier> =
 	map { it.toStoredDocumentIdentifier() }
 
@@ -32,11 +34,14 @@ internal fun StoredDocument.toStoredDocumentIdentifier(): StoredDocumentIdentifi
 		ensureNonNull(rev) { "${this::class.simpleName}(\"${this.id}\") has no rev. Was not yet stored?" }
 	)
 
+
+@JvmName("storedDocumentsToStoredDocumentIdentifier")
 internal fun List<StoredDocument>.toStoredDocumentIdentifier(): List<StoredDocumentIdentifier> =
 	map { it.toStoredDocumentIdentifier() }
 
 internal fun GroupScoped<StoredDocument>.toStoredDocumentIdentifier(): GroupScoped<StoredDocumentIdentifier> =
 	GroupScoped(entity.toStoredDocumentIdentifier(), groupId)
 
+@JvmName("groupScopedStoredDocumentsToStoredDocumentIdentifier")
 internal fun List<GroupScoped<StoredDocument>>.toStoredDocumentIdentifier(): List<GroupScoped<StoredDocumentIdentifier>> =
 	map { it.toStoredDocumentIdentifier() }

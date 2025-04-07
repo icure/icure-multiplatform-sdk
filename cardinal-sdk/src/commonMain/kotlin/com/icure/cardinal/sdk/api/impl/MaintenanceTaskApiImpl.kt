@@ -16,10 +16,10 @@ import com.icure.cardinal.sdk.filters.SortableFilterOptions
 import com.icure.cardinal.sdk.filters.mapMaintenanceTaskFilterOptions
 import com.icure.cardinal.sdk.model.DecryptedMaintenanceTask
 import com.icure.cardinal.sdk.model.EncryptedMaintenanceTask
-import com.icure.cardinal.sdk.model.StoredDocumentIdentifier
 import com.icure.cardinal.sdk.model.ListOfIds
 import com.icure.cardinal.sdk.model.ListOfIdsAndRev
 import com.icure.cardinal.sdk.model.MaintenanceTask
+import com.icure.cardinal.sdk.model.StoredDocumentIdentifier
 import com.icure.cardinal.sdk.model.User
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.model.embed.AccessLevel
@@ -268,8 +268,7 @@ internal class MaintenanceTaskApiImpl(
 				author = maintenanceTask?.author ?: user?.id?.takeIf { config.autofillAuthor },
 			),
 			entityType = EntityWithEncryptionMetadataTypeName.MaintenanceTask,
-			owningEntityId = null,
-			owningEntitySecretId = null,
+			owningEntityDetails = null,
 			initializeEncryptionKey = true,
 			autoDelegations = (delegates + (user?.autoDelegationsFor(DelegationTag.All)
 				?: emptyMap())).keyAsLocalDataOwnerReferences(),

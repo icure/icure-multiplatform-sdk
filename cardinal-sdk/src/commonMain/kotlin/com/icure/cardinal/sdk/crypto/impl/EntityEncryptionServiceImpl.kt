@@ -115,7 +115,7 @@ class EntityEncryptionServiceImpl(
 		entity: HasEncryptionMetadata,
 		entityType: EntityWithEncryptionMetadataTypeName,
 		dataOwnerId: String?
-	): Set<EntityReferenceInGroup> =
+	): Set<String> =
 		decryptAllSecurityMetadata(
 			entityGroupId,
 			entity,

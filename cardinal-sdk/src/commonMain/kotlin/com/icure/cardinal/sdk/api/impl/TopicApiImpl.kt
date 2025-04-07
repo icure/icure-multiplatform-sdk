@@ -8,6 +8,7 @@ import com.icure.cardinal.sdk.api.TopicFlavouredApi
 import com.icure.cardinal.sdk.api.raw.RawTopicApi
 import com.icure.cardinal.sdk.api.raw.successBodyOrThrowRevisionConflict
 import com.icure.cardinal.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
+import com.icure.cardinal.sdk.crypto.entities.OwningEntityDetails
 import com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption
 import com.icure.cardinal.sdk.crypto.entities.TopicShareOptions
 import com.icure.cardinal.sdk.filters.BaseFilterOptions
@@ -17,10 +18,10 @@ import com.icure.cardinal.sdk.filters.SortableFilterOptions
 import com.icure.cardinal.sdk.filters.mapTopicFilterOptions
 import com.icure.cardinal.sdk.model.DecryptedTopic
 import com.icure.cardinal.sdk.model.EncryptedTopic
-import com.icure.cardinal.sdk.model.StoredDocumentIdentifier
 import com.icure.cardinal.sdk.model.ListOfIds
 import com.icure.cardinal.sdk.model.ListOfIdsAndRev
 import com.icure.cardinal.sdk.model.Patient
+import com.icure.cardinal.sdk.model.StoredDocumentIdentifier
 import com.icure.cardinal.sdk.model.Topic
 import com.icure.cardinal.sdk.model.TopicRole
 import com.icure.cardinal.sdk.model.User
@@ -228,13 +229,16 @@ internal class TopicApiImpl(
 				author = base?.author ?: user?.id?.takeIf { config.autofillAuthor },
 			),
 			EntityWithEncryptionMetadataTypeName.Topic,
-			patient?.id,
 			patient?.let {
-				config.crypto.entity.resolveSecretIdOption(
+				OwningEntityDetails(
 					null,
-					it,
-					EntityWithEncryptionMetadataTypeName.Patient,
-					secretId
+					it.id,
+					config.crypto.entity.resolveSecretIdOption(
+						null,
+						it,
+						EntityWithEncryptionMetadataTypeName.Patient,
+						secretId
+					)
 				)
 			},
 			initializeEncryptionKey = true,

@@ -11,6 +11,7 @@ import com.icure.cardinal.sdk.api.raw.successBodyOrNull
 import com.icure.cardinal.sdk.api.raw.successBodyOrThrowRevisionConflict
 import com.icure.cardinal.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
 import com.icure.cardinal.sdk.crypto.entities.InvoiceShareOptions
+import com.icure.cardinal.sdk.crypto.entities.OwningEntityDetails
 import com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption
 import com.icure.cardinal.sdk.model.DecryptedInvoice
 import com.icure.cardinal.sdk.model.EncryptedInvoice
@@ -404,13 +405,16 @@ internal class InvoiceApiImpl(
 				invoiceDate = base?.invoiceDate ?: currentFuzzyDateTime(TimeZone.currentSystemDefault()),
 			),
 			EntityWithEncryptionMetadataTypeName.Invoice,
-			patient?.id,
 			patient?.let {
-				config.crypto.entity.resolveSecretIdOption(
+				OwningEntityDetails(
 					null,
-					it,
-					EntityWithEncryptionMetadataTypeName.Patient,
-					secretId
+					it.id,
+					config.crypto.entity.resolveSecretIdOption(
+						null,
+						it,
+						EntityWithEncryptionMetadataTypeName.Patient,
+						secretId
+					)
 				)
 			},
 			initializeEncryptionKey = true,

@@ -9,6 +9,7 @@ import com.icure.cardinal.sdk.api.raw.RawAccessLogApi
 import com.icure.cardinal.sdk.api.raw.successBodyOrThrowRevisionConflict
 import com.icure.cardinal.sdk.crypto.entities.AccessLogShareOptions
 import com.icure.cardinal.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
+import com.icure.cardinal.sdk.crypto.entities.OwningEntityDetails
 import com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption
 import com.icure.cardinal.sdk.filters.BaseFilterOptions
 import com.icure.cardinal.sdk.filters.BaseSortableFilterOptions
@@ -18,11 +19,11 @@ import com.icure.cardinal.sdk.filters.mapAccessLogFilterOptions
 import com.icure.cardinal.sdk.model.AccessLog
 import com.icure.cardinal.sdk.model.DecryptedAccessLog
 import com.icure.cardinal.sdk.model.EncryptedAccessLog
-import com.icure.cardinal.sdk.model.StoredDocumentIdentifier
 import com.icure.cardinal.sdk.model.ListOfIds
 import com.icure.cardinal.sdk.model.ListOfIdsAndRev
 import com.icure.cardinal.sdk.model.PaginatedList
 import com.icure.cardinal.sdk.model.Patient
+import com.icure.cardinal.sdk.model.StoredDocumentIdentifier
 import com.icure.cardinal.sdk.model.User
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.model.embed.AccessLevel
@@ -293,12 +294,15 @@ internal class AccessLogApiImpl(
 				author = base?.author ?: user?.id?.takeIf { config.autofillAuthor },
 			),
 			entityType = EntityWithEncryptionMetadataTypeName.AccessLog,
-			owningEntityId = patient.id,
-			owningEntitySecretId = crypto.entity.resolveSecretIdOption(
+			owningEntityDetails = OwningEntityDetails(
 				null,
-				patient,
-				EntityWithEncryptionMetadataTypeName.Patient,
-				secretId
+				patient.id,
+				crypto.entity.resolveSecretIdOption(
+					null,
+					patient,
+					EntityWithEncryptionMetadataTypeName.Patient,
+					secretId
+				)
 			),
 			initializeEncryptionKey = true,
 			autoDelegations = (delegates + user?.autoDelegationsFor(DelegationTag.AdministrativeData).orEmpty()).keyAsLocalDataOwnerReferences(),

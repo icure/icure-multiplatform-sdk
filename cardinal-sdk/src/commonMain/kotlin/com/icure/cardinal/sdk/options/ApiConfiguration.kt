@@ -4,7 +4,6 @@ import com.icure.cardinal.sdk.api.raw.RawApiConfig
 import com.icure.cardinal.sdk.auth.services.JwtBasedAuthProvider
 import com.icure.cardinal.sdk.crypto.BasicInternalCryptoApi
 import com.icure.cardinal.sdk.crypto.InternalCryptoServices
-import com.icure.cardinal.sdk.crypto.entities.SdkBoundGroup
 import com.icure.cardinal.sdk.storage.CardinalStorageFacade
 import com.icure.utils.InternalIcureApi
 import kotlinx.coroutines.Job
@@ -19,17 +18,9 @@ internal interface BasicApiConfiguration {
 	val crypto: BasicInternalCryptoApi
 	val encryption: EntitiesEncryptedFieldsManifests
 	val rawApiConfig: RawApiConfig
-	val boundGroup: SdkBoundGroup?
 
 	fun requireWebSocketAuthProvider(): JwtBasedAuthProvider =
 		webSocketAuthProvider ?: throw UnsupportedOperationException("Your chosen authentication method does not support websocket subscriptions")
-
-	/**
-	 * - If the group id is null or matches the sdk bound group (if available) returns null
-	 * - If the sdk is not bound throws
-	 *
-	 */
-	fun resolveGroupId(groupId: String?): String?
 }
 
 @InternalIcureApi
@@ -52,7 +43,6 @@ internal data class ApiConfigurationImpl(
 	override val jsonPatcher: JsonPatcher,
 	override val parentJob: Job?,
 	override val rawApiConfig: RawApiConfig,
-	override val boundGroup: SdkBoundGroup?,
 ) : ApiConfiguration
 
 @InternalIcureApi
@@ -62,5 +52,4 @@ internal data class BasicApiConfigurationImpl(
 	override val crypto: BasicInternalCryptoApi,
 	override val encryption: EntitiesEncryptedFieldsManifests,
 	override val rawApiConfig: RawApiConfig,
-	override val boundGroup: SdkBoundGroup?,
 ) : BasicApiConfiguration
