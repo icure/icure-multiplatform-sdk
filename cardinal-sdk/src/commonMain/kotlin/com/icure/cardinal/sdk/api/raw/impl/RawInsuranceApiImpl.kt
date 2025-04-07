@@ -5,10 +5,8 @@ import com.icure.cardinal.sdk.api.raw.HttpResponse
 import com.icure.cardinal.sdk.api.raw.RawInsuranceApi
 import com.icure.cardinal.sdk.api.raw.wrap
 import com.icure.cardinal.sdk.auth.services.AuthProvider
-import com.icure.cardinal.sdk.model.Insurance
 import com.icure.cardinal.sdk.model.ListOfIds
 import com.icure.cardinal.sdk.model.PaginatedList
-import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.utils.InternalIcureApi
 import io.ktor.client.HttpClient
 import io.ktor.client.request.accept
@@ -25,6 +23,8 @@ import kotlin.String
 import kotlin.collections.List
 import kotlin.collections.Map
 import kotlin.time.Duration
+import com.icure.cardinal.sdk.model.Insurance as ModelInsurance
+import org.taktik.icure.entities.Insurance as EntitiesInsurance
 
 // WARNING: This class is auto-generated. If you change it manually, your changes will be lost.
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
@@ -42,7 +42,7 @@ class RawInsuranceApiImpl(
 	override suspend fun getAllInsurances(
 		startDocumentId: String?,
 		limit: Int?,
-	): HttpResponse<PaginatedList<Insurance>> =
+	): HttpResponse<PaginatedList<ModelInsurance>> =
 		get(authProvider) {
 			url {
 				takeFrom(apiUrl)
@@ -54,7 +54,7 @@ class RawInsuranceApiImpl(
 			accept(Application.Json)
 		}.wrap()
 
-	override suspend fun createInsurance(insuranceDto: Insurance): HttpResponse<Insurance> =
+	override suspend fun createInsurance(insuranceDto: ModelInsurance): HttpResponse<ModelInsurance> =
 		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
@@ -65,7 +65,7 @@ class RawInsuranceApiImpl(
 			setBody(insuranceDto)
 		}.wrap()
 
-	override suspend fun deleteInsurance(insuranceId: String): HttpResponse<DocIdentifier> =
+	override suspend fun deleteInsurance(insuranceId: String): HttpResponse<EntitiesInsurance> =
 		delete(authProvider) {
 			url {
 				takeFrom(apiUrl)
@@ -74,7 +74,7 @@ class RawInsuranceApiImpl(
 			accept(Application.Json)
 		}.wrap()
 
-	override suspend fun getInsurance(insuranceId: String): HttpResponse<Insurance> =
+	override suspend fun getInsurance(insuranceId: String): HttpResponse<ModelInsurance> =
 		get(authProvider) {
 			url {
 				takeFrom(apiUrl)
@@ -84,7 +84,7 @@ class RawInsuranceApiImpl(
 			accept(Application.Json)
 		}.wrap()
 
-	override suspend fun getInsurances(insuranceIds: ListOfIds): HttpResponse<List<Insurance>> =
+	override suspend fun getInsurances(insuranceIds: ListOfIds): HttpResponse<List<ModelInsurance>> =
 		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
@@ -95,7 +95,7 @@ class RawInsuranceApiImpl(
 			setBody(insuranceIds)
 		}.wrap()
 
-	override suspend fun listInsurancesByCode(insuranceCode: String): HttpResponse<List<Insurance>> =
+	override suspend fun listInsurancesByCode(insuranceCode: String): HttpResponse<List<ModelInsurance>> =
 		get(authProvider) {
 			url {
 				takeFrom(apiUrl)
@@ -105,7 +105,7 @@ class RawInsuranceApiImpl(
 			accept(Application.Json)
 		}.wrap()
 
-	override suspend fun listInsurancesByName(insuranceName: String): HttpResponse<List<Insurance>> =
+	override suspend fun listInsurancesByName(insuranceName: String): HttpResponse<List<ModelInsurance>> =
 		get(authProvider) {
 			url {
 				takeFrom(apiUrl)
@@ -115,7 +115,7 @@ class RawInsuranceApiImpl(
 			accept(Application.Json)
 		}.wrap()
 
-	override suspend fun modifyInsurance(insuranceDto: Insurance): HttpResponse<Insurance> =
+	override suspend fun modifyInsurance(insuranceDto: ModelInsurance): HttpResponse<ModelInsurance> =
 		put(authProvider) {
 			url {
 				takeFrom(apiUrl)
