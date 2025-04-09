@@ -9,7 +9,6 @@ import com.icure.cardinal.sdk.crypto.AccessControlKeysHeadersProvider
 import com.icure.cardinal.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
 import com.icure.cardinal.sdk.model.EncryptedForm
 import com.icure.cardinal.sdk.model.Form
-import com.icure.cardinal.sdk.model.FormTemplate
 import com.icure.cardinal.sdk.model.IcureStub
 import com.icure.cardinal.sdk.model.ListOfIds
 import com.icure.cardinal.sdk.model.ListOfIdsAndRev
@@ -38,6 +37,8 @@ import kotlin.String
 import kotlin.collections.List
 import kotlin.collections.Map
 import kotlin.time.Duration
+import com.icure.cardinal.sdk.model.FormTemplate as ModelFormTemplate
+import org.taktik.icure.entities.FormTemplate as EntitiesFormTemplate
 
 // WARNING: This class is auto-generated. If you change it manually, your changes will be lost.
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
@@ -271,7 +272,7 @@ class RawFormApiImpl(
 	override suspend fun getFormTemplate(
 		formTemplateId: String,
 		raw: Boolean?,
-	): HttpResponse<FormTemplate> =
+	): HttpResponse<ModelFormTemplate> =
 		get(authProvider) {
 			url {
 				takeFrom(apiUrl)
@@ -286,7 +287,7 @@ class RawFormApiImpl(
 		formTemplateGuid: String,
 		specialityCode: String,
 		raw: Boolean?,
-	): HttpResponse<List<FormTemplate>> =
+	): HttpResponse<List<ModelFormTemplate>> =
 		get(authProvider) {
 			url {
 				takeFrom(apiUrl)
@@ -301,7 +302,7 @@ class RawFormApiImpl(
 		specialityCode: String,
 		loadLayout: Boolean?,
 		raw: Boolean?,
-	): HttpResponse<List<FormTemplate>> =
+	): HttpResponse<List<ModelFormTemplate>> =
 		get(authProvider) {
 			url {
 				takeFrom(apiUrl)
@@ -316,7 +317,7 @@ class RawFormApiImpl(
 	override suspend fun getFormTemplates(
 		loadLayout: Boolean?,
 		raw: Boolean?,
-	): HttpResponse<List<FormTemplate>> =
+	): HttpResponse<List<ModelFormTemplate>> =
 		get(authProvider) {
 			url {
 				takeFrom(apiUrl)
@@ -328,7 +329,7 @@ class RawFormApiImpl(
 			accept(Application.Json)
 		}.wrap()
 
-	override suspend fun createFormTemplate(ft: FormTemplate): HttpResponse<FormTemplate> =
+	override suspend fun createFormTemplate(ft: ModelFormTemplate): HttpResponse<ModelFormTemplate> =
 		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
@@ -339,7 +340,7 @@ class RawFormApiImpl(
 			setBody(ft)
 		}.wrap()
 
-	override suspend fun deleteFormTemplate(formTemplateId: String): HttpResponse<DocIdentifier> =
+	override suspend fun deleteFormTemplate(formTemplateId: String): HttpResponse<EntitiesFormTemplate> =
 		delete(authProvider) {
 			url {
 				takeFrom(apiUrl)
@@ -350,8 +351,8 @@ class RawFormApiImpl(
 
 	override suspend fun updateFormTemplate(
 		formTemplateId: String,
-		ft: FormTemplate,
-	): HttpResponse<FormTemplate> =
+		ft: ModelFormTemplate,
+	): HttpResponse<ModelFormTemplate> =
 		put(authProvider) {
 			url {
 				takeFrom(apiUrl)
