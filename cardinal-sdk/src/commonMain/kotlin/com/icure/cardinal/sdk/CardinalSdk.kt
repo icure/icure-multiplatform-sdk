@@ -43,7 +43,6 @@ import com.icure.cardinal.sdk.api.impl.AccessLogApiImpl
 import com.icure.cardinal.sdk.api.impl.AgendaApiImpl
 import com.icure.cardinal.sdk.api.impl.ApplicationSettingsApiImpl
 import com.icure.cardinal.sdk.api.impl.AuthApiImpl
-import com.icure.cardinal.sdk.api.impl.initCalendarItemApi
 import com.icure.cardinal.sdk.api.impl.CalendarItemTypeApiImpl
 import com.icure.cardinal.sdk.api.impl.CardinalMaintenanceTaskApiImpl
 import com.icure.cardinal.sdk.api.impl.ClassificationApiImpl
@@ -59,7 +58,6 @@ import com.icure.cardinal.sdk.api.impl.EntityTemplateApiImpl
 import com.icure.cardinal.sdk.api.impl.FormApiImpl
 import com.icure.cardinal.sdk.api.impl.FrontEndMigrationApiImpl
 import com.icure.cardinal.sdk.api.impl.GroupApiImpl
-import com.icure.cardinal.sdk.api.impl.initHealthElementApi
 import com.icure.cardinal.sdk.api.impl.HealthcarePartyApiImpl
 import com.icure.cardinal.sdk.api.impl.InsuranceApiImpl
 import com.icure.cardinal.sdk.api.impl.InvoiceApiImpl
@@ -67,7 +65,6 @@ import com.icure.cardinal.sdk.api.impl.KeywordApiImpl
 import com.icure.cardinal.sdk.api.impl.MaintenanceTaskApiImpl
 import com.icure.cardinal.sdk.api.impl.MedicalLocationApiImpl
 import com.icure.cardinal.sdk.api.impl.MessageApiImpl
-import com.icure.cardinal.sdk.api.impl.initPatientApi
 import com.icure.cardinal.sdk.api.impl.PermissionApiImpl
 import com.icure.cardinal.sdk.api.impl.PlaceApiImpl
 import com.icure.cardinal.sdk.api.impl.ReceiptApiImpl
@@ -79,6 +76,9 @@ import com.icure.cardinal.sdk.api.impl.TarificationApiImpl
 import com.icure.cardinal.sdk.api.impl.TimeTableApiImpl
 import com.icure.cardinal.sdk.api.impl.TopicApiImpl
 import com.icure.cardinal.sdk.api.impl.UserApiImpl
+import com.icure.cardinal.sdk.api.impl.initCalendarItemApi
+import com.icure.cardinal.sdk.api.impl.initHealthElementApi
+import com.icure.cardinal.sdk.api.impl.initPatientApi
 import com.icure.cardinal.sdk.api.raw.RawAnonymousAuthApi
 import com.icure.cardinal.sdk.api.raw.RawApiConfig
 import com.icure.cardinal.sdk.api.raw.RawMessageGatewayApi
@@ -659,7 +659,8 @@ private suspend fun initializeApiCrypto(
 			iCureStorage,
 			options.jsonPatcher ?: object : JsonPatcher {},
 			options.parentJob,
-			rawApiConfig
+			rawApiConfig,
+			boundGroup
 		),
 		userEncryptionKeysInitInfo.newKey?.key,
 		sdkScope

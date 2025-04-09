@@ -21,7 +21,7 @@ internal class BasicEntityAccessInformationProvider(
 	 * On basic SDK this should give the (constant) bound group id
 	 * On unbound SDK this should give the group id of the current request
 	 */
-	private val currentBoundGroupId: (CoroutineContext) -> String?
+	private val currentBoundGroupId: (CoroutineContext) -> SdkBoundGroup?
 ) : EntityAccessInformationProvider {
 	override suspend fun getDataOwnersWithAccessTo(
 		entityGroupId: String?,
@@ -35,17 +35,16 @@ internal class BasicEntityAccessInformationProvider(
 			},
 			false
 		)
-		// bound group id actually needed only if entity group id is not null.
-		val boundGroupId = if (entityGroupId == null) null else currentBoundGroupId(coroutineContext)?.let(::SdkBoundGroup)
+		val boundGroup = currentBoundGroupId(coroutineContext)
 		val infoFromSecureDelegations = EntityAccessInformation(
 			EntityAccessInformation.buildPermissionsMap(
 				entity.securityMetadata?.secureDelegations?.values?.flatMap { d->
 					listOfNotNull(
 						d.delegate?.let {
-							EntityReferenceInGroup.parse(it, entityGroupId, boundGroupId) to d.permissions
+							EntityReferenceInGroup.parse(it, entityGroupId, boundGroup) to d.permissions
 						},
 						d.delegator?.let {
-							EntityReferenceInGroup.parse(it, entityGroupId, boundGroupId) to d.permissions
+							EntityReferenceInGroup.parse(it, entityGroupId, boundGroup) to d.permissions
 						}
 					)
 				} ?: emptyList()

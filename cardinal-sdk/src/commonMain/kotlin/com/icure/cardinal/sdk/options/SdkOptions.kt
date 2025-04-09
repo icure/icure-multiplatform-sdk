@@ -203,7 +203,7 @@ data class UnboundBasicSdkOptions(
 	 * However, if it is possible for you to extract the group id from the context of the coroutine that is executing
 	 * the method, you can provide the function here to allow using these methods also on unbound SDK.
 	 */
-	val getBoundGroupId: ((CoroutineContext) -> String?)? = null,
+	val getBoundGroupId: (CoroutineContext) -> String? = { null },
 	override val requestTimeout: Duration? = null,
 	override val requestRetryConfiguration: RequestRetryConfiguration = RequestRetryConfiguration(),
 ): CommonSdkOptions {

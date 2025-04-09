@@ -164,7 +164,7 @@ private open class AbstractCalendarItemBasicFlavouredApi<E : CalendarItem>(
 	override suspend fun getCalendarItems(entityIds: List<String>): List<E> =
 		doGetCalendarItems(null, entityIds)
 
-	private suspend fun doGetCalendarItems(groupId: String?, entityIds: List<String>): List<E> =
+	suspend fun doGetCalendarItems(groupId: String?, entityIds: List<String>): List<E> =
 		maybeDecrypt(
 			groupId,
 			if (groupId == null)
@@ -328,16 +328,42 @@ private class AbstractCalendarItemFlavouredApi<E : CalendarItem>(
 		filterCalendarItemsBy(filter)
 
 	override suspend fun filterCalendarItemsBy(filter: FilterOptions<CalendarItem>): PaginatedListIterator<E> =
+		doFilterCalendarItemsBy(
+			null,
+			filter
+		) { it }
+
+	override suspend fun filterCalendarItemsBySorted(
+		groupId: String,
+		filter: SortableFilterOptions<CalendarItem>
+	): PaginatedListIterator<GroupScoped<E>> =
+		filterCalendarItemsBy(groupId, filter)
+
+	override suspend fun filterCalendarItemsBy(
+		groupId: String,
+		filter: FilterOptions<CalendarItem>
+	): PaginatedListIterator<GroupScoped<E>> =
+		doFilterCalendarItemsBy(
+			groupId,
+			filter
+		) { GroupScoped(it, groupId) }
+
+	private suspend inline fun <T : Any> doFilterCalendarItemsBy(
+		groupId: String?,
+		filter: FilterOptions<CalendarItem>,
+		crossinline mapEntity: (E) -> T
+	): PaginatedListIterator<T> =
 		IdsPageIterator(
 			rawApi.matchCalendarItemsBy(
 				mapCalendarItemFilterOptions(
 					filter,
-					config.crypto.dataOwnerApi.getCurrentDataOwnerId(),
-					config.crypto.entity
+					config,
+					groupId
 				)
 			).successBody(),
-			::getCalendarItems
-		)
+		) {
+			doGetCalendarItems(groupId, it).map { calendarItem -> mapEntity(calendarItem) }
+		}
 }
 
 @InternalIcureApi
@@ -486,6 +512,17 @@ private class CalendarItemApiImpl(
 
 		override suspend fun hasWriteAccess(calendarItem: GroupScoped<CalendarItem>): Boolean =
 			doHasWriteAccess(calendarItem.groupId, calendarItem.entity)
+
+		override suspend fun matchCalendarItemsBy(groupId: String, filter: FilterOptions<CalendarItem>): List<String> {
+			TODO("Not yet implemented")
+		}
+
+		override suspend fun matchCalendarItemsBySorted(
+			groupId: String,
+			filter: SortableFilterOptions<CalendarItem>
+		): List<String> {
+			TODO("Not yet implemented")
+		}
 	}
 
 	private val crypto get() = config.crypto
@@ -585,16 +622,25 @@ private class CalendarItemApiImpl(
 		tryAndRecoverFlavour.validateAndMaybeEncrypt(null, calendarItems)
 
 	override suspend fun matchCalendarItemsBy(filter: FilterOptions<CalendarItem>): List<String> =
+		doMatchCalendarItemsBy(null, filter)
+
+	private suspend fun doMatchCalendarItemsBy(groupId: String?, filter: FilterOptions<CalendarItem>): List<String> =
 		rawApi.matchCalendarItemsBy(
 			mapCalendarItemFilterOptions(
 				filter,
-				config.crypto.dataOwnerApi.getCurrentDataOwnerId(),
-				config.crypto.entity
+				config,
+				groupId
 			)
 		).successBody()
 
 	override suspend fun matchCalendarItemsBySorted(filter: SortableFilterOptions<CalendarItem>): List<String> =
-		matchCalendarItemsBy(filter)
+		doMatchCalendarItemsBySorted(null, filter)
+
+	private suspend fun doMatchCalendarItemsBySorted(
+		groupId: String?,
+		filter: SortableFilterOptions<CalendarItem>
+	): List<String> =
+		doMatchCalendarItemsBy(groupId, filter)
 
 	override suspend fun subscribeToEvents(
 		events: Set<SubscriptionEventType>,
@@ -610,8 +656,8 @@ private class CalendarItemApiImpl(
 			events = events,
 			filter = mapCalendarItemFilterOptions(
 				filter,
-				config.crypto.dataOwnerApi.getCurrentDataOwnerId(),
-				config.crypto.entity
+				config,
+				null
 			),
 			qualifiedName = CalendarItem.KRAKEN_QUALIFIED_NAME,
 			subscriptionRequestSerializer = {
@@ -643,19 +689,64 @@ private class CalendarItemBasicApiImpl(
 	CalendarItemBasicFlavourlessApi by CalendarItemBasicFlavourlessApiImpl(rawApi) {
 	override val inGroup: CalendarItemBasicInGroupApi = object : CalendarItemBasicInGroupApi,
 		CalendarItemBasicFlavourlessInGroupApi by CalendarItemBasicFlavourlessInGroupApiImpl(rawApi),
-		CalendarItemBasicFlavouredInGroupApi<EncryptedCalendarItem> by encryptedFlavour {}
+		CalendarItemBasicFlavouredInGroupApi<EncryptedCalendarItem> by encryptedFlavour {
+
+		override suspend fun matchCalendarItemsBy(
+			groupId: String,
+			filter: BaseFilterOptions<CalendarItem>
+		): List<String> =
+			doMatchCalendarItemsBy(groupId, filter)
+
+		override suspend fun matchCalendarItemsBySorted(
+			groupId: String,
+			filter: BaseSortableFilterOptions<CalendarItem>
+		): List<String> =
+			matchCalendarItemsBy(groupId, filter)
+
+		override suspend fun filterCalendarItemsBy(
+			groupId: String,
+			filter: BaseFilterOptions<CalendarItem>
+		): PaginatedListIterator<GroupScoped<EncryptedCalendarItem>> =
+			doFilterCalendarItemsBy(groupId, filter) { GroupScoped(it, groupId) }
+
+		override suspend fun filterCalendarItemsBySorted(
+			groupId: String,
+			filter: BaseSortableFilterOptions<CalendarItem>
+		): PaginatedListIterator<GroupScoped<EncryptedCalendarItem>> =
+			filterCalendarItemsBy(groupId, filter)
+	}
 
 	override suspend fun matchCalendarItemsBy(filter: BaseFilterOptions<CalendarItem>): List<String> =
-		rawApi.matchCalendarItemsBy(mapCalendarItemFilterOptions(filter, null, null)).successBody()
+		doMatchCalendarItemsBy(null, filter)
 
 	override suspend fun matchCalendarItemsBySorted(filter: BaseSortableFilterOptions<CalendarItem>): List<String> =
 		matchCalendarItemsBy(filter)
 
 	override suspend fun filterCalendarItemsBy(filter: BaseFilterOptions<CalendarItem>): PaginatedListIterator<EncryptedCalendarItem> =
-		IdsPageIterator(matchCalendarItemsBy(filter), ::getCalendarItems)
+		doFilterCalendarItemsBy(null, filter) { it }
 
 	override suspend fun filterCalendarItemsBySorted(filter: BaseSortableFilterOptions<CalendarItem>): PaginatedListIterator<EncryptedCalendarItem> =
 		filterCalendarItemsBy(filter)
+
+	private suspend fun doMatchCalendarItemsBy(groupId: String?, filter: BaseFilterOptions<CalendarItem>): List<String> =
+		rawApi.matchCalendarItemsBy(
+			mapCalendarItemFilterOptions(
+				filter,
+				config,
+				groupId
+			)
+		).successBody()
+
+	private suspend inline fun <T : Any> doFilterCalendarItemsBy(
+		groupId: String?,
+		filter: BaseFilterOptions<CalendarItem>,
+		crossinline mapEntity: (EncryptedCalendarItem) -> T
+	): PaginatedListIterator<T> =
+		IdsPageIterator(
+			doMatchCalendarItemsBy(groupId, filter),
+		) {
+			encryptedFlavour.doGetCalendarItems(groupId, it).map { calendarItem -> mapEntity(calendarItem) }
+		}
 
 	override suspend fun subscribeToEvents(
 		events: Set<SubscriptionEventType>,
@@ -669,7 +760,7 @@ private class CalendarItemBasicApiImpl(
 			clientJson = config.rawApiConfig.json,
 			entitySerializer = EncryptedCalendarItem.serializer(),
 			events = events,
-			filter = mapCalendarItemFilterOptions(filter, null, null),
+			filter = mapCalendarItemFilterOptions(filter, config, null),
 			qualifiedName = CalendarItem.KRAKEN_QUALIFIED_NAME,
 			subscriptionRequestSerializer = {
 				Serialization.json.encodeToString(SubscriptionSerializer(CalendarItemAbstractFilterSerializer), it)

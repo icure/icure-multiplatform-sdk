@@ -343,12 +343,12 @@ interface CalendarItemFlavouredInGroupApi<E : CalendarItem> : CalendarItemBasicF
 	/**
 	 * In-group version of [CalendarItemFlavouredApi.filterCalendarItemsBy]
 	 */
-	// TODO suspend fun filterCalendarItemsBy(filter: FilterOptions<CalendarItem>): PaginatedListIterator<E>
+	suspend fun filterCalendarItemsBy(groupId: String, filter: FilterOptions<CalendarItem>): PaginatedListIterator<GroupScoped<E>>
 
 	/**
 	 * In-group version of [CalendarItemFlavouredApi.filterCalendarItemsBySorted]
 	 */
-	// TODO suspend fun filterCalendarItemsBySorted(filter: SortableFilterOptions<CalendarItem>): PaginatedListIterator<E>
+	suspend fun filterCalendarItemsBySorted(groupId: String, filter: SortableFilterOptions<CalendarItem>): PaginatedListIterator<GroupScoped<E>>
 }
 
 /* The extra API calls declared in this interface are the ones that can only be used on decrypted items when encryption keys are available */
@@ -575,12 +575,12 @@ interface CalendarItemInGroupApi : CalendarItemBasicFlavourlessInGroupApi, Calen
 	/**
 	 * In-group version of [CalendarItemApi.matchCalendarItemsBy]
 	 */
-	// TODO suspend fun matchCalendarItemsBy(filter: FilterOptions<CalendarItem>): List<String>
+	suspend fun matchCalendarItemsBy(groupId: String, filter: FilterOptions<CalendarItem>): List<String>
 
 	/**
 	 * In-group version of [CalendarItemApi.matchCalendarItemsBySorted]
 	 */
-	// TODO suspend fun matchCalendarItemsBySorted(filter: SortableFilterOptions<CalendarItem>): List<String>
+	 suspend fun matchCalendarItemsBySorted(groupId: String, filter: SortableFilterOptions<CalendarItem>): List<String>
 }
 
 interface CalendarItemBasicApi : CalendarItemBasicFlavourlessApi, CalendarItemBasicFlavouredApi<EncryptedCalendarItem>,
@@ -652,20 +652,20 @@ interface CalendarItemBasicInGroupApi : CalendarItemBasicFlavourlessInGroupApi, 
 	/**
 	 * In-group version of [CalendarItemBasicApi.matchCalendarItemsBy]
 	 */
-	// TODO suspend fun matchCalendarItemsBy(filter: BaseFilterOptions<CalendarItem>): List<String>
+	suspend fun matchCalendarItemsBy(groupId: String, filter: BaseFilterOptions<CalendarItem>): List<String>
 
 	/**
 	 * In-group version of [CalendarItemBasicApi.matchCalendarItemsBySorted]
 	 */
-	// TODO suspend fun matchCalendarItemsBySorted(filter: BaseSortableFilterOptions<CalendarItem>): List<String>
+	suspend fun matchCalendarItemsBySorted(groupId: String, filter: BaseSortableFilterOptions<CalendarItem>): List<String>
 
 	/**
 	 * In-group version of [CalendarItemBasicApi.filterCalendarItemsBy]
 	 */
-	// TODO suspend fun filterCalendarItemsBy(filter: BaseFilterOptions<CalendarItem>): PaginatedListIterator<EncryptedCalendarItem>
+	 suspend fun filterCalendarItemsBy(groupId: String, filter: BaseFilterOptions<CalendarItem>): PaginatedListIterator<GroupScoped<EncryptedCalendarItem>>
 
 	/**
 	 * In-group version of [CalendarItemBasicApi.filterCalendarItemsBySorted]
 	 */
-	// TODO suspend fun filterCalendarItemsBySorted(filter: BaseSortableFilterOptions<CalendarItem>): PaginatedListIterator<EncryptedCalendarItem>
+	suspend fun filterCalendarItemsBySorted(groupId: String, filter: BaseSortableFilterOptions<CalendarItem>): PaginatedListIterator<GroupScoped<EncryptedCalendarItem>>
 }

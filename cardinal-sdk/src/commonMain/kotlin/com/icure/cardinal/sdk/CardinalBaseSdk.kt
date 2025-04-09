@@ -21,7 +21,6 @@ import com.icure.cardinal.sdk.api.impl.AccessLogBasicApiImpl
 import com.icure.cardinal.sdk.api.impl.AgendaApiImpl
 import com.icure.cardinal.sdk.api.impl.ApplicationSettingsApiImpl
 import com.icure.cardinal.sdk.api.impl.AuthApiImpl
-import com.icure.cardinal.sdk.api.impl.initCalendarItemBasicApi
 import com.icure.cardinal.sdk.api.impl.CalendarItemTypeApiImpl
 import com.icure.cardinal.sdk.api.impl.ClassificationBasicApiImpl
 import com.icure.cardinal.sdk.api.impl.CodeApiImpl
@@ -34,7 +33,6 @@ import com.icure.cardinal.sdk.api.impl.EntityTemplateApiImpl
 import com.icure.cardinal.sdk.api.impl.FormBasicApiImpl
 import com.icure.cardinal.sdk.api.impl.FrontEndMigrationApiImpl
 import com.icure.cardinal.sdk.api.impl.GroupApiImpl
-import com.icure.cardinal.sdk.api.impl.initHealthElementBasicApi
 import com.icure.cardinal.sdk.api.impl.HealthcarePartyApiImpl
 import com.icure.cardinal.sdk.api.impl.InsuranceApiImpl
 import com.icure.cardinal.sdk.api.impl.InvoiceBasicApiImpl
@@ -42,7 +40,6 @@ import com.icure.cardinal.sdk.api.impl.KeywordApiImpl
 import com.icure.cardinal.sdk.api.impl.MaintenanceTaskBasicApiImpl
 import com.icure.cardinal.sdk.api.impl.MedicalLocationApiImpl
 import com.icure.cardinal.sdk.api.impl.MessageBasicApiImpl
-import com.icure.cardinal.sdk.api.impl.initPatientBasicApi
 import com.icure.cardinal.sdk.api.impl.PermissionApiImpl
 import com.icure.cardinal.sdk.api.impl.PlaceApiImpl
 import com.icure.cardinal.sdk.api.impl.ReceiptBasicApiImpl
@@ -52,6 +49,9 @@ import com.icure.cardinal.sdk.api.impl.TarificationApiImpl
 import com.icure.cardinal.sdk.api.impl.TimeTableApiImpl
 import com.icure.cardinal.sdk.api.impl.TopicBasicApiImpl
 import com.icure.cardinal.sdk.api.impl.UserApiImpl
+import com.icure.cardinal.sdk.api.impl.initCalendarItemBasicApi
+import com.icure.cardinal.sdk.api.impl.initHealthElementBasicApi
+import com.icure.cardinal.sdk.api.impl.initPatientBasicApi
 import com.icure.cardinal.sdk.api.raw.RawApiConfig
 import com.icure.cardinal.sdk.api.raw.RawMessageGatewayApi
 import com.icure.cardinal.sdk.api.raw.impl.RawAccessLogApiImpl
@@ -91,6 +91,7 @@ import com.icure.cardinal.sdk.api.raw.impl.RawTopicApiImpl
 import com.icure.cardinal.sdk.api.raw.impl.RawUserApiImpl
 import com.icure.cardinal.sdk.auth.services.AuthProvider
 import com.icure.cardinal.sdk.auth.services.JwtBasedAuthProvider
+import com.icure.cardinal.sdk.crypto.entities.SdkBoundGroup
 import com.icure.cardinal.sdk.crypto.impl.BasicEntityAccessInformationProvider
 import com.icure.cardinal.sdk.crypto.impl.BasicInternalCryptoApiImpl
 import com.icure.cardinal.sdk.crypto.impl.EntityValidationServiceImpl
@@ -101,12 +102,14 @@ import com.icure.cardinal.sdk.options.BasicApiConfiguration
 import com.icure.cardinal.sdk.options.BasicApiConfigurationImpl
 import com.icure.cardinal.sdk.options.BasicSdkOptions
 import com.icure.cardinal.sdk.options.EntitiesEncryptedFieldsManifests
+import com.icure.cardinal.sdk.options.UnboundBasicApiConfigurationImpl
 import com.icure.cardinal.sdk.options.UnboundBasicSdkOptions
 import com.icure.cardinal.sdk.options.configuredClientOrDefault
 import com.icure.cardinal.sdk.options.configuredJsonOrDefault
 import com.icure.cardinal.sdk.options.getAuthProvider
 import com.icure.cardinal.sdk.options.getGroupAndAuthProvider
 import com.icure.utils.InternalIcureApi
+import kotlin.coroutines.CoroutineContext
 
 /**
  * Similar to the [CardinalBaseSdk] but is not bound to a specific user and/or group.
@@ -156,20 +159,18 @@ interface CardinalUnboundBaseSdk : CardinalBaseApis {
 			)
 			val manifests = EntitiesEncryptedFieldsManifests.fromEncryptedFields(options.encryptedFields)
 			val jsonEncryptionService = JsonEncryptionServiceImpl(cryptoService)
-			val config = BasicApiConfigurationImpl(
+			val boundGroupProvider = { context: CoroutineContext -> options.getBoundGroupId(context)?.let(::SdkBoundGroup) }
+			val config = UnboundBasicApiConfigurationImpl(
 				apiUrl,
 				if (authProvider is JwtBasedAuthProvider) authProvider else null,
 				BasicInternalCryptoApiImpl(
 					jsonEncryptionService,
 					EntityValidationServiceImpl(jsonEncryptionService),
-					BasicEntityAccessInformationProvider(
-						options.getBoundGroupId ?: {
-							throw UnsupportedOperationException("To use this method you need to configure `getBoundGroupId` in the UnboundBasicSdkOptions")
-						}
-					)
+					BasicEntityAccessInformationProvider(boundGroupProvider)
 				),
 				manifests,
-				rawApiConfig
+				rawApiConfig,
+				boundGroupProvider
 			)
 			return object : CardinalUnboundBaseSdk, CardinalBaseApis by CardinalBaseSdkImpl(
 				authProvider,
@@ -234,6 +235,7 @@ interface CardinalBaseSdk : CardinalBaseApis {
 				options.groupSelector,
 				rawApiConfig,
 			)
+			val boundGroup = chosenGroup?.let(::SdkBoundGroup)
 			val manifests = EntitiesEncryptedFieldsManifests.fromEncryptedFields(options.encryptedFields)
 			val jsonEncryptionService = JsonEncryptionServiceImpl(cryptoService)
 			val config = BasicApiConfigurationImpl(
@@ -242,10 +244,11 @@ interface CardinalBaseSdk : CardinalBaseApis {
 				BasicInternalCryptoApiImpl(
 					jsonEncryptionService,
 					EntityValidationServiceImpl(jsonEncryptionService),
-					BasicEntityAccessInformationProvider { chosenGroup }
+					BasicEntityAccessInformationProvider { boundGroup }
 				),
 				manifests,
-				rawApiConfig
+				rawApiConfig,
+				boundGroup
 			)
 			return CardinalBaseSdkImpl(
 				authProvider,
