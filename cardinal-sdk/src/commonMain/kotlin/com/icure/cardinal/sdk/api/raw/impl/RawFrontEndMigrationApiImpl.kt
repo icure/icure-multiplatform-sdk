@@ -5,8 +5,6 @@ import com.icure.cardinal.sdk.api.raw.HttpResponse
 import com.icure.cardinal.sdk.api.raw.RawFrontEndMigrationApi
 import com.icure.cardinal.sdk.api.raw.wrap
 import com.icure.cardinal.sdk.auth.services.AuthProvider
-import com.icure.cardinal.sdk.model.FrontEndMigration
-import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.utils.InternalIcureApi
 import io.ktor.client.HttpClient
 import io.ktor.client.request.accept
@@ -22,6 +20,8 @@ import kotlin.String
 import kotlin.collections.List
 import kotlin.collections.Map
 import kotlin.time.Duration
+import com.icure.cardinal.sdk.model.FrontEndMigration as ModelFrontEndMigration
+import org.taktik.icure.entities.FrontEndMigration as EntitiesFrontEndMigration
 
 // WARNING: This class is auto-generated. If you change it manually, your changes will be lost.
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
@@ -36,7 +36,7 @@ class RawFrontEndMigrationApiImpl(
 ) : BaseRawApi(httpClient, additionalHeaders, timeout, json), RawFrontEndMigrationApi {
 	// region common endpoints
 
-	override suspend fun getFrontEndMigrations(): HttpResponse<List<FrontEndMigration>> =
+	override suspend fun getFrontEndMigrations(): HttpResponse<List<ModelFrontEndMigration>> =
 		get(authProvider) {
 			url {
 				takeFrom(apiUrl)
@@ -46,7 +46,7 @@ class RawFrontEndMigrationApiImpl(
 			accept(Application.Json)
 		}.wrap()
 
-	override suspend fun createFrontEndMigration(frontEndMigrationDto: FrontEndMigration): HttpResponse<FrontEndMigration> =
+	override suspend fun createFrontEndMigration(frontEndMigrationDto: ModelFrontEndMigration): HttpResponse<ModelFrontEndMigration> =
 		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
@@ -57,7 +57,7 @@ class RawFrontEndMigrationApiImpl(
 			setBody(frontEndMigrationDto)
 		}.wrap()
 
-	override suspend fun deleteFrontEndMigration(frontEndMigrationId: String): HttpResponse<DocIdentifier> =
+	override suspend fun deleteFrontEndMigration(frontEndMigrationId: String): HttpResponse<EntitiesFrontEndMigration> =
 		delete(authProvider) {
 			url {
 				takeFrom(apiUrl)
@@ -66,7 +66,7 @@ class RawFrontEndMigrationApiImpl(
 			accept(Application.Json)
 		}.wrap()
 
-	override suspend fun getFrontEndMigration(frontEndMigrationId: String): HttpResponse<FrontEndMigration> =
+	override suspend fun getFrontEndMigration(frontEndMigrationId: String): HttpResponse<ModelFrontEndMigration> =
 		get(authProvider) {
 			url {
 				takeFrom(apiUrl)
@@ -76,7 +76,7 @@ class RawFrontEndMigrationApiImpl(
 			accept(Application.Json)
 		}.wrap()
 
-	override suspend fun getFrontEndMigrationByName(frontEndMigrationName: String): HttpResponse<List<FrontEndMigration>> =
+	override suspend fun getFrontEndMigrationByName(frontEndMigrationName: String): HttpResponse<List<ModelFrontEndMigration>> =
 		get(authProvider) {
 			url {
 				takeFrom(apiUrl)
@@ -86,7 +86,7 @@ class RawFrontEndMigrationApiImpl(
 			accept(Application.Json)
 		}.wrap()
 
-	override suspend fun modifyFrontEndMigration(frontEndMigrationDto: FrontEndMigration): HttpResponse<FrontEndMigration> =
+	override suspend fun modifyFrontEndMigration(frontEndMigrationDto: ModelFrontEndMigration): HttpResponse<ModelFrontEndMigration> =
 		put(authProvider) {
 			url {
 				takeFrom(apiUrl)
