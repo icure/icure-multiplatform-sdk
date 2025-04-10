@@ -8,7 +8,6 @@ import com.icure.cardinal.sdk.auth.services.AuthProvider
 import com.icure.cardinal.sdk.model.Insurance
 import com.icure.cardinal.sdk.model.ListOfIds
 import com.icure.cardinal.sdk.model.PaginatedList
-import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.utils.InternalIcureApi
 import io.ktor.client.HttpClient
 import io.ktor.client.request.accept
@@ -65,7 +64,7 @@ class RawInsuranceApiImpl(
 			setBody(insuranceDto)
 		}.wrap()
 
-	override suspend fun deleteInsurance(insuranceId: String): HttpResponse<DocIdentifier> =
+	override suspend fun deleteInsurance(insuranceId: String): HttpResponse<Insurance> =
 		delete(authProvider) {
 			url {
 				takeFrom(apiUrl)
