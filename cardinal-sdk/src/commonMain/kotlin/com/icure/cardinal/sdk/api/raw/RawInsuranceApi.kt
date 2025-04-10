@@ -3,7 +3,6 @@ package com.icure.cardinal.sdk.api.raw
 import com.icure.cardinal.sdk.model.Insurance
 import com.icure.cardinal.sdk.model.ListOfIds
 import com.icure.cardinal.sdk.model.PaginatedList
-import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.utils.InternalIcureApi
 import kotlin.Int
 import kotlin.String
@@ -22,7 +21,7 @@ public interface RawInsuranceApi {
 
 	suspend fun createInsurance(insuranceDto: Insurance): HttpResponse<Insurance>
 
-	suspend fun deleteInsurance(insuranceId: String): HttpResponse<DocIdentifier>
+	suspend fun deleteInsurance(insuranceId: String): HttpResponse<Insurance>
 
 	suspend fun getInsurance(insuranceId: String): HttpResponse<Insurance>
 
