@@ -102,7 +102,7 @@ public interface RawFormApi {
 
 	suspend fun createFormTemplate(ft: FormTemplate): HttpResponse<FormTemplate>
 
-	suspend fun deleteFormTemplate(formTemplateId: String): HttpResponse<DocIdentifier>
+	suspend fun deleteFormTemplate(formTemplateId: String): HttpResponse<FormTemplate>
 
 	suspend fun updateFormTemplate(
 		formTemplateId: String,
