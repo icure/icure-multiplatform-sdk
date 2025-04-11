@@ -60,6 +60,7 @@ import com.icure.cardinal.sdk.model.filter.contact.ContactByServiceIdsFilter
 import com.icure.cardinal.sdk.model.filter.device.AllDevicesFilter
 import com.icure.cardinal.sdk.model.filter.device.DeviceByHcPartyFilter
 import com.icure.cardinal.sdk.model.filter.device.DeviceByIdsFilter
+import com.icure.cardinal.sdk.model.filter.document.AllDocumentsFilter
 import com.icure.cardinal.sdk.model.filter.document.DocumentByDataOwnerPatientDateFilter
 import com.icure.cardinal.sdk.model.filter.document.DocumentByTypeDataOwnerPatientFilter
 import com.icure.cardinal.sdk.model.filter.form.FormByDataOwnerParentIdFilter
@@ -502,6 +503,7 @@ internal object DocumentAbstractFilterSerializer :
 			"ComplementFilter" -> ComplementFilterSerializer(this)
 			"IntersectionFilter" -> IntersectionFilterSerializer(this)
 			"UnionFilter" -> UnionFilterSerializer(this)
+			"AllDocumentsFilter" -> AllDocumentsFilter.serializer()
 			"DocumentByDataOwnerPatientDateFilter" -> DocumentByDataOwnerPatientDateFilter.serializer()
 			"DocumentByTypeDataOwnerPatientFilter" -> DocumentByTypeDataOwnerPatientFilter.serializer()
 			else -> null
@@ -512,6 +514,7 @@ internal object DocumentAbstractFilterSerializer :
 			ComplementFilter::class -> ComplementFilterSerializer(this)
 			IntersectionFilter::class -> IntersectionFilterSerializer(this)
 			UnionFilter::class -> UnionFilterSerializer(this)
+			AllDocumentsFilter::class -> AllDocumentsFilter.serializer()
 			DocumentByDataOwnerPatientDateFilter::class -> DocumentByDataOwnerPatientDateFilter.serializer()
 			DocumentByTypeDataOwnerPatientFilter::class -> DocumentByTypeDataOwnerPatientFilter.serializer()
 			else -> null
