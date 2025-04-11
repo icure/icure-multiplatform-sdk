@@ -35,6 +35,13 @@ import io.ktor.http.appendPathSegments
 import io.ktor.http.contentType
 import io.ktor.http.takeFrom
 import io.ktor.util.date.GMTDate
+import kotlin.Boolean
+import kotlin.Int
+import kotlin.Long
+import kotlin.Nothing
+import kotlin.String
+import kotlin.collections.List
+import kotlin.collections.Map
 
 // WARNING: This class is auto-generated. If you change it manually, your changes will be lost.
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
@@ -46,7 +53,10 @@ class RawPatientApiImpl(
 	rawApiConfig: RawApiConfig,
 ) : BaseRawApi(rawApiConfig), RawPatientApi {
 	override suspend fun getAccessControlKeysHeaderValues(groupId: String?): List<String>? =
-		accessControlKeysHeadersProvider?.getAccessControlKeysHeadersFor(groupId, EntityWithEncryptionMetadataTypeName.Patient)
+		accessControlKeysHeadersProvider?.getAccessControlKeysHeadersFor(
+			groupId,
+			EntityWithEncryptionMetadataTypeName.Patient,
+		)
 
 	// region common endpoints
 
@@ -472,22 +482,44 @@ class RawPatientApiImpl(
 			accept(Application.Json)
 		}.wrap()
 
-	override suspend fun createPatients(patientDtos: List<EncryptedPatient>): HttpResponse<List<IdWithRev>> =
+	override suspend fun createPatientsMinimal(patientDtos: List<EncryptedPatient>): HttpResponse<List<IdWithRev>> =
 		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
-				appendPathSegments("rest", "v2", "patient", "batch")
+				appendPathSegments("rest", "v2", "patient", "batch", "minimal")
 			}
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(patientDtos)
 		}.wrap()
 
-	override suspend fun modifyPatients(patientDtos: List<EncryptedPatient>): HttpResponse<List<IdWithRev>> =
+	override suspend fun createPatientsFull(patientDtos: List<EncryptedPatient>): HttpResponse<List<EncryptedPatient>> =
+		post(authProvider) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "patient", "batch", "full")
+			}
+			contentType(Application.Json)
+			accept(Application.Json)
+			setBody(patientDtos)
+		}.wrap()
+
+	override suspend fun modifyPatientsMinimal(patientDtos: List<EncryptedPatient>): HttpResponse<List<IdWithRev>> =
 		put(authProvider) {
 			url {
 				takeFrom(apiUrl)
-				appendPathSegments("rest", "v2", "patient", "batch")
+				appendPathSegments("rest", "v2", "patient", "batch", "minimal")
+			}
+			contentType(Application.Json)
+			accept(Application.Json)
+			setBody(patientDtos)
+		}.wrap()
+
+	override suspend fun modifyPatientsFull(patientDtos: List<EncryptedPatient>): HttpResponse<List<EncryptedPatient>> =
+		put(authProvider) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "patient", "batch", "full")
 			}
 			contentType(Application.Json)
 			accept(Application.Json)
@@ -691,6 +723,116 @@ class RawPatientApiImpl(
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(request)
+		}.wrap()
+
+	override suspend fun getPatientsInGroup(
+		groupId: String,
+		patientIds: ListOfIds,
+	): HttpResponse<List<EncryptedPatient>> =
+		post(authProvider, groupId) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "patient", "inGroup", groupId, "byIds")
+			}
+			contentType(Application.Json)
+			accept(Application.Json)
+			setBody(patientIds)
+		}.wrap()
+
+	override suspend fun createPatientsInGroupFull(
+		groupId: String,
+		patientDtos: List<EncryptedPatient>,
+	): HttpResponse<List<EncryptedPatient>> =
+		post(
+			authProvider,
+			groupId,
+		) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "patient", "inGroup", groupId, "batch", "full")
+			}
+			contentType(Application.Json)
+			accept(Application.Json)
+			setBody(patientDtos)
+		}.wrap()
+
+	override suspend fun createPatientsInGroupMinimal(
+		groupId: String,
+		patientDtos: List<EncryptedPatient>,
+	): HttpResponse<List<IdWithRev>> =
+		post(
+			authProvider,
+			groupId,
+		) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "patient", "inGroup", groupId, "batch", "minimal")
+			}
+			contentType(Application.Json)
+			accept(Application.Json)
+			setBody(patientDtos)
+		}.wrap()
+
+	override suspend fun modifyPatientsInGroupFull(
+		groupId: String,
+		patientDtos: List<EncryptedPatient>,
+	): HttpResponse<List<EncryptedPatient>> =
+		put(
+			authProvider,
+			groupId,
+		) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "patient", "inGroup", groupId, "batch", "full")
+			}
+			contentType(Application.Json)
+			accept(Application.Json)
+			setBody(patientDtos)
+		}.wrap()
+
+	override suspend fun modifyPatientsInGroupMinimal(
+		groupId: String,
+		patientDtos: List<EncryptedPatient>,
+	): HttpResponse<List<IdWithRev>> =
+		put(
+			authProvider,
+			groupId,
+		) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "patient", "inGroup", groupId, "batch", "minimal")
+			}
+			contentType(Application.Json)
+			accept(Application.Json)
+			setBody(patientDtos)
+		}.wrap()
+
+	override suspend fun deletePatientsWithRev(
+		groupId: String,
+		patientIds: ListOfIdsAndRev,
+	): HttpResponse<List<DocIdentifier>> =
+		post(authProvider, groupId) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "patient", "inGroup", groupId, "delete", "batch")
+			}
+			contentType(Application.Json)
+			accept(Application.Json)
+			setBody(patientIds)
+		}.wrap()
+
+	override suspend fun deletePatient(
+		groupId: String,
+		patientId: String,
+		rev: String?,
+	): HttpResponse<DocIdentifier> =
+		delete(authProvider, groupId) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "patient", "inGroup", groupId, patientId)
+				parameter("rev", rev)
+			}
+			accept(Application.Json)
 		}.wrap()
 
 	// endregion
