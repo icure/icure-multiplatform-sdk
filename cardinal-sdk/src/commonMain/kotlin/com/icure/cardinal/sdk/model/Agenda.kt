@@ -40,10 +40,10 @@ data class Agenda(
 	public val rights: List<Right> = emptyList(),
 	@DefaultValue("emptyMap()")
 	public val userRights: Map<String, UserAccessLevel> = emptyMap(),
-	@DefaultValue("emptyList()")
-	public val timeTables: List<EmbeddedTimeTable> = emptyList(),
 	@DefaultValue("emptySet()")
 	public val properties: Set<DecryptedPropertyStub> = emptySet(),
+	@DefaultValue("emptyList()")
+	public val timeTables: List<EmbeddedTimeTable> = emptyList(),
 ) : StoredDocument, ICureDocument<String> {
 	// region Agenda-Agenda
 

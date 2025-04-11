@@ -19,6 +19,9 @@ import io.ktor.http.appendPathSegments
 import io.ktor.http.contentType
 import io.ktor.http.takeFrom
 import io.ktor.util.date.GMTDate
+import kotlin.Int
+import kotlin.String
+import kotlin.collections.List
 
 // WARNING: This class is auto-generated. If you change it manually, your changes will be lost.
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
@@ -40,6 +43,16 @@ class RawCalendarItemTypeApiImpl(
 				appendPathSegments("rest", "v2", "calendarItemType")
 				parameter("startDocumentId", startDocumentId)
 				parameter("limit", limit)
+				parameter("ts", GMTDate().timestamp)
+			}
+			accept(Application.Json)
+		}.wrap()
+
+	override suspend fun listCalendarItemTypesByAgendaId(agendaId: String): HttpResponse<List<CalendarItemType>> =
+		get(authProvider) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "calendarItemType", "byAgenda", agendaId)
 				parameter("ts", GMTDate().timestamp)
 			}
 			accept(Application.Json)

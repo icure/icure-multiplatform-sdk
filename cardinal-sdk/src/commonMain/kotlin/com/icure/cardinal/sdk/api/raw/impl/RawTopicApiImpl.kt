@@ -7,6 +7,7 @@ import com.icure.cardinal.sdk.api.raw.RawTopicApi
 import com.icure.cardinal.sdk.api.raw.wrap
 import com.icure.cardinal.sdk.auth.services.AuthProvider
 import com.icure.cardinal.sdk.crypto.AccessControlKeysHeadersProvider
+import com.icure.cardinal.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
 import com.icure.cardinal.sdk.model.EncryptedTopic
 import com.icure.cardinal.sdk.model.ListOfIds
 import com.icure.cardinal.sdk.model.ListOfIdsAndRev
@@ -30,6 +31,9 @@ import io.ktor.http.appendPathSegments
 import io.ktor.http.contentType
 import io.ktor.http.takeFrom
 import io.ktor.util.date.GMTDate
+import kotlin.Int
+import kotlin.String
+import kotlin.collections.List
 
 // WARNING: This class is auto-generated. If you change it manually, your changes will be lost.
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
@@ -41,6 +45,12 @@ class RawTopicApiImpl(
 	rawApiConfig: RawApiConfig,
 ) : BaseRawApi(rawApiConfig), RawTopicApi {
 	// region cloud endpoints
+
+	override suspend fun getAccessControlKeysHeaderValues(groupId: String?): List<String>? =
+		accessControlKeysHeadersProvider?.getAccessControlKeysHeadersFor(
+			groupId,
+			EntityWithEncryptionMetadataTypeName.Topic,
+		)
 
 	override suspend fun getTopic(topicId: String): HttpResponse<EncryptedTopic> =
 		get(authProvider) {
