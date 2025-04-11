@@ -1,6 +1,7 @@
 package com.icure.cardinal.sdk.api.raw
 
 import com.icure.cardinal.sdk.model.FrontEndMigration
+import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.utils.InternalIcureApi
 import kotlin.String
 import kotlin.collections.List
@@ -15,7 +16,7 @@ public interface RawFrontEndMigrationApi {
 
 	suspend fun createFrontEndMigration(frontEndMigrationDto: FrontEndMigration): HttpResponse<FrontEndMigration>
 
-	suspend fun deleteFrontEndMigration(frontEndMigrationId: String): HttpResponse<FrontEndMigration>
+	suspend fun deleteFrontEndMigration(frontEndMigrationId: String): HttpResponse<DocIdentifier>
 
 	suspend fun getFrontEndMigration(frontEndMigrationId: String): HttpResponse<FrontEndMigration>
 
