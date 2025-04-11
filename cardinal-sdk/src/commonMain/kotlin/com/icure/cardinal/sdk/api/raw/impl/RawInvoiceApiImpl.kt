@@ -2,7 +2,6 @@ package com.icure.cardinal.sdk.api.raw.`impl`
 
 import com.icure.cardinal.sdk.api.raw.BaseRawApi
 import com.icure.cardinal.sdk.api.raw.HttpResponse
-import com.icure.cardinal.sdk.api.raw.RawApiConfig
 import com.icure.cardinal.sdk.api.raw.RawInvoiceApi
 import com.icure.cardinal.sdk.api.raw.wrap
 import com.icure.cardinal.sdk.auth.services.AuthProvider
@@ -52,10 +51,13 @@ class RawInvoiceApiImpl(
 	internal val apiUrl: String,
 	private val authProvider: AuthProvider,
 	private val accessControlKeysHeadersProvider: AccessControlKeysHeadersProvider?,
-	rawApiConfig: RawApiConfig,
-) : BaseRawApi(rawApiConfig), RawInvoiceApi {
-	override suspend fun getAccessControlKeysHeaderValues(groupId: String?): List<String>? =
-		accessControlKeysHeadersProvider?.getAccessControlKeysHeadersFor(groupId, EntityWithEncryptionMetadataTypeName.Invoice)
+	httpClient: HttpClient,
+	additionalHeaders: Map<String, String> = emptyMap(),
+	timeout: Duration? = null,
+	json: Json,
+) : BaseRawApi(httpClient, additionalHeaders, timeout, json), RawInvoiceApi {
+	override suspend fun getAccessControlKeysHeaderValues(): List<String>? =
+		accessControlKeysHeadersProvider?.getAccessControlKeysHeadersFor(EntityWithEncryptionMetadataTypeName.Invoice)
 
 	// region common endpoints
 

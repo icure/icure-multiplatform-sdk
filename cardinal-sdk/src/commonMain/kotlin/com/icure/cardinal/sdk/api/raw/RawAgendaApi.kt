@@ -47,8 +47,6 @@ public interface RawAgendaApi {
 
 	suspend fun getAgendasForUser(userId: String): HttpResponse<Agenda>
 
-	suspend fun getReadableAgendasForUser(userId: String): HttpResponse<List<Agenda>>
-
 	suspend fun modifyAgenda(agendaDto: Agenda): HttpResponse<Agenda>
 
 	suspend fun matchAgendasBy(filter: AbstractFilter<Agenda>): HttpResponse<List<String>>

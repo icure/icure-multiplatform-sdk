@@ -3,7 +3,6 @@ package com.icure.cardinal.sdk.api.raw.`impl`
 import com.icure.cardinal.sdk.api.raw.BaseRawApi
 import com.icure.cardinal.sdk.api.raw.HttpResponse
 import com.icure.cardinal.sdk.api.raw.RawAnonymousAuthApi
-import com.icure.cardinal.sdk.api.raw.RawApiConfig
 import com.icure.cardinal.sdk.api.raw.wrap
 import com.icure.cardinal.sdk.model.LoginCredentials
 import com.icure.cardinal.sdk.model.security.jwt.JwtResponse
@@ -29,8 +28,11 @@ import kotlin.time.Duration
 @InternalIcureApi
 class RawAnonymousAuthApiImpl(
 	internal val apiUrl: String,
-	rawApiConfig: RawApiConfig,
-) : BaseRawApi(rawApiConfig), RawAnonymousAuthApi {
+	httpClient: HttpClient,
+	additionalHeaders: Map<String, String> = emptyMap(),
+	timeout: Duration? = null,
+	json: Json,
+) : BaseRawApi(httpClient, additionalHeaders, timeout, json), RawAnonymousAuthApi {
 	// region common endpoints
 
 	override suspend fun login(

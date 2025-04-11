@@ -3,27 +3,38 @@ package com.icure.cardinal.sdk.api.raw.`impl`
 import com.icure.cardinal.sdk.api.raw.BaseRawApi
 import com.icure.cardinal.sdk.api.raw.HttpResponse
 import com.icure.cardinal.sdk.api.raw.RawAnonymousApi
-import com.icure.cardinal.sdk.api.raw.RawApiConfig
 import com.icure.cardinal.sdk.api.raw.wrap
 import com.icure.cardinal.sdk.model.AnonymousMedicalLocation
 import com.icure.cardinal.sdk.model.AppointmentTypeAndPlace
 import com.icure.cardinal.sdk.model.PaginatedList
 import com.icure.cardinal.sdk.model.UserAndHealthcareParty
 import com.icure.utils.InternalIcureApi
+import io.ktor.client.HttpClient
 import io.ktor.client.request.accept
 import io.ktor.client.request.parameter
 import io.ktor.http.ContentType.Application
 import io.ktor.http.appendPathSegments
 import io.ktor.http.takeFrom
 import io.ktor.util.date.GMTDate
+import kotlinx.serialization.json.Json
+import kotlin.Boolean
+import kotlin.Int
+import kotlin.Long
+import kotlin.String
+import kotlin.collections.List
+import kotlin.collections.Map
+import kotlin.time.Duration
 
 // WARNING: This class is auto-generated. If you change it manually, you changes will be lost.
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
 @InternalIcureApi
 class RawAnonymousApiImpl(
 	internal val apiUrl: String,
-	rawApiConfig: RawApiConfig,
-) : BaseRawApi(rawApiConfig), RawAnonymousApi {
+	httpClient: HttpClient,
+	additionalHeaders: Map<String, String> = emptyMap(),
+	timeout: Duration? = null,
+	json: Json,
+) : BaseRawApi(httpClient, additionalHeaders, timeout, json), RawAnonymousApi {
 	// region anonymous calendaritem endpoints
 
 	override suspend fun listAppointmentTypesForUser(

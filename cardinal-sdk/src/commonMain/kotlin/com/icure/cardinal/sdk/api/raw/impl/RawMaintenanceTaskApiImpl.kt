@@ -2,7 +2,6 @@ package com.icure.cardinal.sdk.api.raw.`impl`
 
 import com.icure.cardinal.sdk.api.raw.BaseRawApi
 import com.icure.cardinal.sdk.api.raw.HttpResponse
-import com.icure.cardinal.sdk.api.raw.RawApiConfig
 import com.icure.cardinal.sdk.api.raw.RawMaintenanceTaskApi
 import com.icure.cardinal.sdk.api.raw.wrap
 import com.icure.cardinal.sdk.auth.services.AuthProvider
@@ -44,10 +43,13 @@ class RawMaintenanceTaskApiImpl(
 	internal val apiUrl: String,
 	private val authProvider: AuthProvider,
 	private val accessControlKeysHeadersProvider: AccessControlKeysHeadersProvider?,
-	rawApiConfig: RawApiConfig,
-) : BaseRawApi(rawApiConfig), RawMaintenanceTaskApi {
-	override suspend fun getAccessControlKeysHeaderValues(groupId: String?): List<String>? =
-		accessControlKeysHeadersProvider?.getAccessControlKeysHeadersFor(groupId, EntityWithEncryptionMetadataTypeName.MaintenanceTask)
+	httpClient: HttpClient,
+	additionalHeaders: Map<String, String> = emptyMap(),
+	timeout: Duration? = null,
+	json: Json,
+) : BaseRawApi(httpClient, additionalHeaders, timeout, json), RawMaintenanceTaskApi {
+	override suspend fun getAccessControlKeysHeaderValues(): List<String>? =
+		accessControlKeysHeadersProvider?.getAccessControlKeysHeadersFor(EntityWithEncryptionMetadataTypeName.MaintenanceTask)
 
 	// region common endpoints
 
