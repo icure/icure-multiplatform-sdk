@@ -13,7 +13,6 @@ import com.icure.cardinal.sdk.model.DecryptedPatient
 import com.icure.cardinal.sdk.model.EncryptedPatient
 import com.icure.cardinal.sdk.model.EntityReferenceInGroup
 import com.icure.cardinal.sdk.model.GroupScoped
-import com.icure.cardinal.sdk.model.IdWithRev
 import com.icure.cardinal.sdk.model.PaginatedList
 import com.icure.cardinal.sdk.model.Patient
 import com.icure.cardinal.sdk.model.StoredDocumentIdentifier
@@ -146,6 +145,20 @@ interface PatientBasicFlavouredApi<E : Patient> {
 	 * @throws IllegalArgumentException if the encryption metadata of the input wasn't initialized.
 	 */
 	suspend fun createPatient(patient: E): E
+
+	/**
+	 * Similar to [createPatients] but returns only the id and revision of the successfully created patients.
+	 * Note that while most of the created patient entity will be the same as the input, some fields (such as
+	 * [Patient.created]) are automatically filled in if left empty.
+	 */
+	suspend fun createPatientsMinimal(patients: List<E>): List<StoredDocumentIdentifier>
+
+	/**
+	 * Bulk version of [createPatient], returns all the successfully created patients.
+	 * If a patient couldn't be created (for example because there is already a patient with the same id) it will be
+	 * excluded from the result.
+	 */
+	suspend fun createPatients(patients: List<E>): List<E>
 
 	/**
 	 * Restores a patient that was marked as deleted.
@@ -351,13 +364,20 @@ interface PatientBasicFlavouredApi<E : Patient> {
 		system: String? = null,
 	): E
 
+
 	/**
-	 * Modifies multiple patients. Ignores all patients for which you don't have write access.
-	 * Flavoured method.
-	 * @param patientDtos patients with update content
-	 * @return the updated patients with a new revision.
+	 * Similar to [modifyPatients] but returns only the id and revision of the successfully updated patients.
+	 * Note that while most of the created patient entity will be the same as the input, some fields (such as
+	 * [Patient.modified]) are automatically filled in if left empty.
 	 */
-	suspend fun modifyPatients(patientDtos: List<EncryptedPatient>): List<IdWithRev>
+	suspend fun modifyPatientsMinimal(patients: List<E>): List<StoredDocumentIdentifier>
+
+	/**
+	 * Bulk version of [modifyPatient], returns all the successfully updated patients.
+	 * If a patient couldn't be updated (for example because of a revision mismatch) it will be excluded from the
+	 * result.
+	 */
+	suspend fun modifyPatients(patients: List<E>): List<E>
 
 	// TODO: Implement filter for this method
 	@Deprecated("List methods are deprecated", ReplaceWith("filterPatientsBy()"))
@@ -427,9 +447,19 @@ interface PatientBasicFlavouredApi<E : Patient> {
 
 interface PatientBasicFlavouredInGroupApi<E : Patient> {
 	/**
-	 * In-group version of [PatientApi.createPatient]
+	 * In-group version of [PatientBasicFlavouredApi.createPatient]
 	 */
 	suspend fun createPatient(patient: GroupScoped<E>): GroupScoped<E>
+
+	/**
+	 * In-group version of [PatientBasicFlavouredApi.createPatientsMinimal]
+	 */
+	suspend fun createPatientsMinimal(patients: List<GroupScoped<E>>): List<GroupScoped<StoredDocumentIdentifier>>
+
+	/**
+	 * In-group version of [PatientBasicFlavouredApi.createPatients]
+	 */
+	suspend fun createPatients(patients: List<GroupScoped<E>>): List<GroupScoped<E>>
 
 	/**
 	 * In-group version of [PatientBasicFlavouredApi.undeletePatient]
@@ -464,12 +494,17 @@ interface PatientBasicFlavouredInGroupApi<E : Patient> {
 	/**
 	 * In-group version of [PatientBasicFlavouredApi.getPatients]
 	 */
-	// TODO suspend fun getPatients(groupId: String, patientIds: List<String>): List<GroupScoped<E>>
+	suspend fun getPatients(groupId: String, patientIds: List<String>): List<GroupScoped<E>>
+
+	/**
+	 * In-group version of [PatientBasicFlavouredApi.modifyPatientsMinimal]
+	 */
+	suspend fun modifyPatientsMinimal(patients: List<GroupScoped<E>>): List<GroupScoped<StoredDocumentIdentifier>>
 
 	/**
 	 * In-group version of [PatientBasicFlavouredApi.modifyPatients]
 	 */
-	// TODO suspend fun modifyPatients(patientDtos: List<GroupScoped<E>>): List<GroupScoped<IdWithRev>>
+	suspend fun modifyPatients(patients: List<GroupScoped<E>>): List<GroupScoped<E>>
 
 	/**
 	 * In-group version of [PatientBasicFlavouredApi.mergePatients]
@@ -593,12 +628,12 @@ interface PatientFlavouredInGroupApi<E : Patient> : PatientBasicFlavouredInGroup
 	/**
 	 * In-group version of [PatientFlavouredApi.filterPatientsBy]
 	 */
-	// TODO suspend fun filterPatientsBy(groupId: String, filter: FilterOptions<Patient>): PaginatedListIterator<GroupScoped<E>>
+	suspend fun filterPatientsBy(groupId: String, filter: FilterOptions<Patient>): PaginatedListIterator<GroupScoped<E>>
 
 	/**
 	 * In-group version of [PatientFlavouredApi.filterPatientsBySorted]
 	 */
-	// TODO suspend fun filterPatientsBySorted(groupId: String, filter: SortableFilterOptions<Patient>): PaginatedListIterator<GroupScoped<E>>
+	suspend fun filterPatientsBySorted(groupId: String, filter: SortableFilterOptions<Patient>): PaginatedListIterator<GroupScoped<E>>
 }
 
 /* The extra API calls declared in this interface are the ones that can only be used on decrypted items when encryption keys are available */
@@ -723,8 +758,6 @@ interface PatientApi : PatientBasicFlavourlessApi, PatientFlavouredApi<Decrypted
 	 * @param delegates a set of data owner ids
 	 */
 	suspend fun createDelegationDeAnonymizationMetadata(entity: Patient, delegates: Set<String>)
-
-	suspend fun createPatients(patients: List<DecryptedPatient>): List<IdWithRev>
 
 	/**
 	 * Share a patient and all data associated to that patient that the current user can access with other data owners.
@@ -886,12 +919,6 @@ interface PatientInGroupApi : PatientBasicFlavourlessInGroupApi, PatientFlavoure
 	)
 
 	/**
-	 * In-group version of [PatientApi.createPatients]
-	 */
-	// TODO suspend fun createPatients(patients: List<GroupScoped<DecryptedPatient>>): List<IdWithRev>
-
-
-	/**
 	 * In-group version of [PatientApi.getConfidentialSecretIdsOf]
 	 */
 	// TODO suspend fun getConfidentialSecretIdsOf(patient: GroupScoped<DecryptedPatient>): Set<String>
@@ -900,13 +927,13 @@ interface PatientInGroupApi : PatientBasicFlavourlessInGroupApi, PatientFlavoure
 	/**
 	 * In-group version of [PatientApi.matchPatientsBy]
 	 */
-	// TODO suspend fun matchPatientsBy(filter: FilterOptions<GroupScoped<DecryptedPatient>>): List<GroupScoped<String>>
+	suspend fun matchPatientsBy(groupId: String, filter: FilterOptions<Patient>): List<String>
 
 
 	/**
 	 * In-group version of [PatientApi.matchPatientsBySorted]
 	 */
-	// TODO suspend fun matchPatientsBySorted(filter: SortableFilterOptions<GroupScoped<DecryptedPatient>>): List<GroupScoped<String>>
+	suspend fun matchPatientsBySorted(groupId: String, filter: SortableFilterOptions<Patient>): List<String>
 
 
 	/**
@@ -982,20 +1009,20 @@ interface PatientBasicInGroupApi : PatientBasicFlavourlessInGroupApi, PatientBas
 	/**
 	 * In-group version of [PatientBasicApi.matchPatientsBy]
 	 */
-	// TODO suspend fun matchPatientsBy(groupId: String, filter: BaseFilterOptions<Patient>): List<GroupScoped<String>>
+	suspend fun matchPatientsBy(groupId: String, filter: BaseFilterOptions<Patient>): List<String>
 
 	/**
 	 * In-group version of [PatientBasicApi.matchPatientsBySorted]
 	 */
-	// TODO suspend fun matchPatientsBySorted(groupId: String, filter: BaseSortableFilterOptions<Patient>): List<GroupScoped<String>>
+	suspend fun matchPatientsBySorted(groupId: String, filter: BaseSortableFilterOptions<Patient>): List<String>
 
 	/**
 	 * In-group version of [PatientBasicApi.filterPatientsBy]
 	 */
-	// TODO suspend fun filterPatientsBy(groupId: String, filter: BaseFilterOptions<Patient>): PaginatedListIterator<GroupScoped<EncryptedPatient>>
+	suspend fun filterPatientsBy(groupId: String, filter: BaseFilterOptions<Patient>): PaginatedListIterator<GroupScoped<EncryptedPatient>>
 
 	/**
 	 * In-group version of [PatientBasicApi.filterPatientsBySorted]
 	 */
-	// TODO suspend fun filterPatientsBySorted(groupId: String, filter: BaseSortableFilterOptions<Patient>): PaginatedListIterator<GroupScoped<EncryptedPatient>>
+	suspend fun filterPatientsBySorted(groupId: String, filter: BaseSortableFilterOptions<Patient>): PaginatedListIterator<GroupScoped<EncryptedPatient>>
 }

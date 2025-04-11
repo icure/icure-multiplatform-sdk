@@ -17,6 +17,10 @@ data class StoredDocumentIdentifier(
 	val rev: String
 ) : Identifiable<String>
 
+@JvmName("idWithRevToStoredDocumentIdentifier")
+internal fun List<IdWithRev>.toStoredDocumentIdentifier(): List<StoredDocumentIdentifier> =
+	map { it.toStoredDocumentIdentifier() }
+
 @JvmName("docIdentifiersToStoredDocumentIdentifier")
 internal fun List<DocIdentifier>.toStoredDocumentIdentifier(): List<StoredDocumentIdentifier> =
 	map { it.toStoredDocumentIdentifier() }
@@ -27,6 +31,14 @@ internal fun DocIdentifier.toStoredDocumentIdentifier(): StoredDocumentIdentifie
 		ensureNonNull(id) { "Backend returned null for stored document identifier `id`"},
 		ensureNonNull(rev) { "Backend returned null for stored document identifier `rev`"}
 	)
+
+@OptIn(InternalIcureApi::class)
+internal fun IdWithRev.toStoredDocumentIdentifier(): StoredDocumentIdentifier =
+	StoredDocumentIdentifier(
+		ensureNonNull(id) { "Backend returned null for stored document identifier `id`"},
+		ensureNonNull(rev) { "Backend returned null for stored document identifier `rev`"}
+	)
+
 @OptIn(InternalIcureApi::class)
 internal fun StoredDocument.toStoredDocumentIdentifier(): StoredDocumentIdentifier =
 	StoredDocumentIdentifier(

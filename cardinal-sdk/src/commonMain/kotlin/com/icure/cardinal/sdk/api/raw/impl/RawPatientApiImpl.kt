@@ -336,7 +336,7 @@ class RawPatientApiImpl(
 			setBody(patientIds)
 		}.wrap()
 
-	override suspend fun deletePatientsWithRev(patientIds: ListOfIdsAndRev): HttpResponse<List<DocIdentifier>> =
+	override suspend fun deletePatientsWithRevInGroup(patientIds: ListOfIdsAndRev): HttpResponse<List<DocIdentifier>> =
 		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
@@ -347,7 +347,7 @@ class RawPatientApiImpl(
 			setBody(patientIds)
 		}.wrap()
 
-	override suspend fun deletePatient(
+	override suspend fun deletePatientInGroup(
 		patientId: String,
 		rev: String?,
 	): HttpResponse<DocIdentifier> =
@@ -807,7 +807,7 @@ class RawPatientApiImpl(
 			setBody(patientDtos)
 		}.wrap()
 
-	override suspend fun deletePatientsWithRev(
+	override suspend fun deletePatientsWithRevInGroup(
 		groupId: String,
 		patientIds: ListOfIdsAndRev,
 	): HttpResponse<List<DocIdentifier>> =
@@ -821,7 +821,7 @@ class RawPatientApiImpl(
 			setBody(patientIds)
 		}.wrap()
 
-	override suspend fun deletePatient(
+	override suspend fun deletePatientInGroup(
 		groupId: String,
 		patientId: String,
 		rev: String?,
