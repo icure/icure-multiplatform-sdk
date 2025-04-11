@@ -20,6 +20,8 @@ public interface RawCalendarItemTypeApi {
 		limit: Int? = null,
 	): HttpResponse<PaginatedList<CalendarItemType>>
 
+	suspend fun listCalendarItemTypesByAgendaId(agendaId: String): HttpResponse<List<CalendarItemType>>
+
 	suspend fun getCalendarItemTypesIncludingDeleted(
 		startKey: String? = null,
 		startDocumentId: String? = null,
