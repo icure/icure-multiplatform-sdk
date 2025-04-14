@@ -199,7 +199,11 @@ val compileTypescriptSources = tasks.register("compileTypescriptSources") {
 	doLast {
 		delete(tsCompiledSources)
 		exec {
-			commandLine("tsc", "--project", projectDir.path)
+			val tsc = providers.exec {
+				commandLine("bash", "-c", "which tsc")
+			}.standardOutput.asText.get().trim()
+			println(tsc)
+			commandLine(tsc,"--project", projectDir.path)
 		}
 	}
 }
