@@ -109,4 +109,18 @@ internal class CalendarItemTypeApiImplJs(
 		)
 		calendarItemType_toJs(result)
 	}
+
+	override fun listCalendarItemTypesByAgendaId(agendaId: String): Promise<Array<CalendarItemTypeJs>>
+			= GlobalScope.promise {
+		val agendaIdConverted: String = agendaId
+		val result = calendarItemTypeApi.listCalendarItemTypesByAgendaId(
+			agendaIdConverted,
+		)
+		listToArray(
+			result,
+			{ x1: CalendarItemType ->
+				calendarItemType_toJs(x1)
+			},
+		)
+	}
 }

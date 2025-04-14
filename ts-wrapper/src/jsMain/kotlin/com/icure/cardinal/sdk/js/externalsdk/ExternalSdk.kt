@@ -5,6 +5,7 @@ import com.icure.cardinal.sdk.js.api.AccessLogApiJs
 import com.icure.cardinal.sdk.js.api.AccessLogBasicApiJs
 import com.icure.cardinal.sdk.js.api.AgendaApiJs
 import com.icure.cardinal.sdk.js.api.ApplicationSettingsApiJs
+import com.icure.cardinal.sdk.js.api.AuthApiJs
 import com.icure.cardinal.sdk.js.api.CalendarItemApiJs
 import com.icure.cardinal.sdk.js.api.CalendarItemBasicApiJs
 import com.icure.cardinal.sdk.js.api.CardinalMaintenanceTaskApiJs
@@ -55,6 +56,7 @@ import kotlin.js.Promise
 
 @JsName("CardinalApis")
 external interface CardinalApisJs {
+	val auth: AuthApiJs
 	val applicationSettings: ApplicationSettingsApiJs
 	val code: CodeApiJs
 	val device: DeviceApiJs
@@ -72,8 +74,8 @@ external interface CardinalApisJs {
 	val role: RoleApiJs
 	val tarification: TarificationApiJs
 	val user: UserApiJs
-	val medicalLocationApi: MedicalLocationApiJs
-	val agendaApi: AgendaApiJs
+	val medicalLocation: MedicalLocationApiJs
+	val agenda: AgendaApiJs
 	val accessLog: AccessLogApiJs
 	val calendarItem: CalendarItemApiJs
 	val classification: ClassificationApiJs
@@ -101,6 +103,7 @@ external interface CardinalSdkJs : CardinalApisJs {
 
 @JsName("CardinalBaseApis")
 external interface CardinalBaseApisJs {
+	val auth: AuthApiJs
 	val applicationSettings: ApplicationSettingsApiJs
 	val code: CodeApiJs
 	val device: DeviceApiJs
@@ -118,8 +121,8 @@ external interface CardinalBaseApisJs {
 	val role: RoleApiJs
 	val tarification: TarificationApiJs
 	val user: UserApiJs
-	val medicalLocationApi: MedicalLocationApiJs
-	val agendaApi: AgendaApiJs
+	val medicalLocation: MedicalLocationApiJs
+	val agenda: AgendaApiJs
 	val accessLog: AccessLogBasicApiJs
 	val calendarItem: CalendarItemBasicApiJs
 	val classification: ClassificationBasicApiJs

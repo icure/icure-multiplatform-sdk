@@ -57,8 +57,10 @@ import {TopicBasicApi} from "../api/TopicBasicApi.mjs";
 import {AgendaApi} from "../api/AgendaApi.mjs";
 import {MedicalLocationApi} from "../api/MedicalLocationApi.mjs";
 import {CaptchaOptions} from "../auth/CaptchaOptions.mjs";
+import {AuthApi} from "../api/AuthApi.mjs";
 
 export interface CardinalApis {
+  readonly auth: AuthApi
   readonly applicationSettings: ApplicationSettingsApi
   readonly code: CodeApi
   readonly device: DeviceApi
@@ -76,8 +78,8 @@ export interface CardinalApis {
   readonly role: RoleApi
   readonly tarification: TarificationApi
   readonly user: UserApi
-  readonly medicalLocationApi: MedicalLocationApi
-  readonly agendaApi: AgendaApi
+  readonly medicalLocation: MedicalLocationApi
+  readonly agenda: AgendaApi
   readonly accessLog: AccessLogApi
   readonly calendarItem: CalendarItemApi
   readonly classification: ClassificationApi
@@ -115,6 +117,7 @@ export interface CardinalSdk extends CardinalApis {
 }
 
 export interface CardinalBaseApis {
+  readonly auth: AuthApi
   readonly applicationSettings: ApplicationSettingsApi
   readonly code: CodeApi
   readonly device: DeviceApi
@@ -132,8 +135,8 @@ export interface CardinalBaseApis {
   readonly role: RoleApi
   readonly tarification: TarificationApi
   readonly user: UserApi
-  readonly medicalLocationApi: MedicalLocationApi
-  readonly agendaApi: AgendaApi
+  readonly medicalLocation: MedicalLocationApi
+  readonly agenda: AgendaApi
   readonly accessLog: AccessLogBasicApi
   readonly calendarItem: CalendarItemBasicApi
   readonly classification: ClassificationBasicApi
