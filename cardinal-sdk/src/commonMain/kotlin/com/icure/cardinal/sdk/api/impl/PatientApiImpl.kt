@@ -117,14 +117,8 @@ private open class AbstractPatientBasicFlavouredApi<E : Patient>(
 	protected val rawApi: RawPatientApi,
 	protected open val config: BasicApiConfiguration,
 	protected val flavour: FlavouredApi<EncryptedPatient, E>
-) : PatientBasicFlavouredApi<E>, PatientBasicFlavouredInGroupApi<E>, FlavouredApi<EncryptedPatient, E> by flavour {
-	override suspend fun createPatient(patient: E): E =
-		doCreatePatient(null, patient)
-
-	override suspend fun createPatient(patient: GroupScoped<E>): GroupScoped<E> =
-		GroupScoped(doCreatePatient(patient.groupId, patient.entity), patient.groupId)
-
-	private suspend fun doCreatePatient(groupId: String?, patient: E): E {
+) : FlavouredApi<EncryptedPatient, E> by flavour  {
+	protected suspend fun doCreatePatient(groupId: String?, patient: E): E {
 		require(patient.securityMetadata != null) { "Entity must have security metadata initialized. Make sure to use the `withEncryptionMetadata` method." }
 		val encrypted = validateAndMaybeEncrypt(groupId, patient)
 		return (
@@ -135,15 +129,7 @@ private open class AbstractPatientBasicFlavouredApi<E : Patient>(
 			).successBody().let { maybeDecrypt(groupId, it) }
 	}
 
-	override suspend fun createPatientsMinimal(patients: List<E>): List<StoredDocumentIdentifier> =
-		doCreatePatientsMinimal(null, patients)
-
-	override suspend fun createPatientsMinimal(patients: List<GroupScoped<E>>): List<GroupScoped<StoredDocumentIdentifier>> =
-		patients.mapUniqueIdentifiablesChunkedByGroup { groupId, entities ->
-			doCreatePatientsMinimal(groupId, entities)
-		}
-
-	private suspend fun doCreatePatientsMinimal(
+	protected suspend fun doCreatePatientsMinimal(
 		groupId: String?,
 		patients: List<E>
 	): List<StoredDocumentIdentifier> =
@@ -154,15 +140,7 @@ private open class AbstractPatientBasicFlavouredApi<E : Patient>(
 				rawApi.createPatientsInGroupMinimal(groupId, it)
 		}.successBody().toStoredDocumentIdentifier()
 
-	override suspend fun createPatients(patients: List<E>): List<E> =
-		doCreatePatients(null, patients)
-
-	override suspend fun createPatients(patients: List<GroupScoped<E>>): List<GroupScoped<E>> =
-		patients.mapUniqueIdentifiablesChunkedByGroup { groupId, entities ->
-			doCreatePatients(groupId, entities)
-		}
-
-	private suspend fun doCreatePatients(
+	protected suspend fun doCreatePatients(
 		groupId: String?,
 		patients: List<E>
 	): List<E> =
@@ -176,15 +154,7 @@ private open class AbstractPatientBasicFlavouredApi<E : Patient>(
 			}.successBody()
 		)
 
-	override suspend fun modifyPatientsMinimal(patients: List<E>): List<StoredDocumentIdentifier> =
-		doModifyPatientsMinimal(null, patients)
-
-	override suspend fun modifyPatientsMinimal(patients: List<GroupScoped<E>>): List<GroupScoped<StoredDocumentIdentifier>> =
-		patients.mapUniqueIdentifiablesChunkedByGroup { groupId, entities ->
-			doModifyPatientsMinimal(groupId, entities)
-		}
-
-	private suspend fun doModifyPatientsMinimal(
+	protected suspend fun doModifyPatientsMinimal(
 		groupId: String?,
 		patients: List<E>
 	): List<StoredDocumentIdentifier> =
@@ -195,15 +165,7 @@ private open class AbstractPatientBasicFlavouredApi<E : Patient>(
 				rawApi.modifyPatientsInGroupMinimal(groupId, it)
 		}.successBody().toStoredDocumentIdentifier()
 
-	override suspend fun modifyPatients(patients: List<E>): List<E> =
-		doModifyPatients(null, patients)
-
-	override suspend fun modifyPatients(patients: List<GroupScoped<E>>): List<GroupScoped<E>> =
-		patients.mapUniqueIdentifiablesChunkedByGroup { groupId, entities ->
-			doModifyPatients(groupId, entities)
-		}
-
-	private suspend fun doModifyPatients(
+	protected suspend fun doModifyPatients(
 		groupId: String?,
 		patients: List<E>
 	): List<E> =
@@ -217,6 +179,112 @@ private open class AbstractPatientBasicFlavouredApi<E : Patient>(
 			}.successBody()
 		)
 
+	protected suspend fun doGetPatient(groupId: String?, entityId: String) =
+		doGetEncryptedPatient(groupId, entityId).let { maybeDecrypt(groupId, it) }
+
+	protected suspend fun doGetEncryptedPatient(groupId: String?, entityId: String) =
+		(
+			if (groupId == null)
+				rawApi.getPatient(entityId)
+			else
+				rawApi.getPatientInGroup(groupId = groupId, patientId = entityId)
+			).successBody()
+
+	protected suspend fun doGetPatientResolvingMerges(
+		groupId: String?,
+		patientId: String,
+		maxMergeDepth: Int?
+	): E {
+		tailrec suspend fun findLastMergedPatientInHierarchy(patient: EncryptedPatient, depth: Int): EncryptedPatient {
+			val mergeId = patient.mergeToPatientId
+			return if (mergeId != null) {
+				require (maxMergeDepth == null || depth < maxMergeDepth) {
+					"Merge chain for patient $patientId is longer than configured maxMergeDepth $maxMergeDepth"
+				}
+				findLastMergedPatientInHierarchy(doGetEncryptedPatient(groupId, mergeId), depth + 1)
+			} else patient
+		}
+
+		return findLastMergedPatientInHierarchy(doGetEncryptedPatient(groupId, patientId), 0).let {
+			maybeDecrypt(groupId, it)
+		}
+	}
+
+	protected suspend fun doGetPatients(groupId: String?, patientIds: List<String>) =
+		ListOfIds(patientIds).let { ids ->
+			if (groupId == null)
+				rawApi.getPatients(ids)
+			else
+				rawApi.getPatientsInGroup(groupId, ids)
+		}.successBody().let {
+			maybeDecrypt(groupId, it)
+		}
+}
+
+@InternalIcureApi
+private open class PatientBasicFlavouredInGroupApiImpl<E : Patient>(
+	rawApi: RawPatientApi,
+	config: BasicApiConfiguration,
+	flavour: FlavouredApi<EncryptedPatient, E>
+): AbstractPatientBasicFlavouredApi<E>(rawApi, config, flavour), PatientBasicFlavouredInGroupApi<E> {
+	override suspend fun createPatient(patient: GroupScoped<E>): GroupScoped<E> =
+		GroupScoped(doCreatePatient(patient.groupId, patient.entity), patient.groupId)
+
+	override suspend fun createPatientsMinimal(patients: List<GroupScoped<E>>): List<GroupScoped<StoredDocumentIdentifier>> =
+		patients.mapUniqueIdentifiablesChunkedByGroup { groupId, entities ->
+			doCreatePatientsMinimal(groupId, entities)
+		}
+
+	override suspend fun createPatients(patients: List<GroupScoped<E>>): List<GroupScoped<E>> =
+		patients.mapUniqueIdentifiablesChunkedByGroup { groupId, entities ->
+			doCreatePatients(groupId, entities)
+		}
+
+	override suspend fun modifyPatientsMinimal(patients: List<GroupScoped<E>>): List<GroupScoped<StoredDocumentIdentifier>> =
+		patients.mapUniqueIdentifiablesChunkedByGroup { groupId, entities ->
+			doModifyPatientsMinimal(groupId, entities)
+		}
+
+	override suspend fun modifyPatients(patients: List<GroupScoped<E>>): List<GroupScoped<E>> =
+		patients.mapUniqueIdentifiablesChunkedByGroup { groupId, entities ->
+			doModifyPatients(groupId, entities)
+		}
+
+	override suspend fun getPatient(groupId: String, entityId: String): GroupScoped<E> =
+		GroupScoped(doGetPatient(groupId, entityId), groupId)
+
+	override suspend fun getPatientResolvingMerges(
+		groupId: String,
+		patientId: String,
+		maxMergeDepth: Int?
+	): GroupScoped<E> =
+		doGetPatientResolvingMerges(groupId, patientId, maxMergeDepth).let { GroupScoped(it, groupId) }
+
+	override suspend fun getPatients(groupId: String, patientIds: List<String>): List<GroupScoped<E>> =
+		doGetPatients(groupId, patientIds).map { GroupScoped(it, groupId) }
+}
+
+@InternalIcureApi
+private open class PatientBasicFlavouredApiImpl<E : Patient>(
+	rawApi: RawPatientApi,
+	config: BasicApiConfiguration,
+	flavour: FlavouredApi<EncryptedPatient, E>
+): AbstractPatientBasicFlavouredApi<E>(rawApi, config, flavour), PatientBasicFlavouredApi<E> {
+	override suspend fun createPatient(patient: E): E =
+		doCreatePatient(null, patient)
+
+	override suspend fun createPatientsMinimal(patients: List<E>): List<StoredDocumentIdentifier> =
+		doCreatePatientsMinimal(null, patients)
+
+	override suspend fun createPatients(patients: List<E>): List<E> =
+		doCreatePatients(null, patients)
+
+	override suspend fun modifyPatientsMinimal(patients: List<E>): List<StoredDocumentIdentifier> =
+		doModifyPatientsMinimal(null, patients)
+
+	override suspend fun modifyPatients(patients: List<E>): List<E> =
+		doModifyPatients(null, patients)
+
 	override suspend fun undeletePatientById(id: String, rev: String): E =
 		rawApi.undeletePatient(id, rev).successBodyOrThrowRevisionConflict().let { maybeDecrypt(null, it) }
 
@@ -228,21 +296,6 @@ private open class AbstractPatientBasicFlavouredApi<E : Patient>(
 
 	override suspend fun getPatient(entityId: String): E =
 		doGetPatient(null, entityId)
-
-	override suspend fun getPatient(groupId: String, entityId: String): GroupScoped<E> =
-		GroupScoped(doGetPatient(groupId, entityId), groupId)
-
-	protected suspend fun doGetPatient(groupId: String?, entityId: String) =
-		doGetEncryptedPatient(groupId, entityId).let { maybeDecrypt(groupId, it) }
-
-	private suspend fun doGetEncryptedPatient(groupId: String?, entityId: String) =
-		(
-			if (groupId == null)
-				rawApi.getPatient(entityId)
-			else
-				rawApi.getPatientInGroup(groupId = groupId, patientId = entityId)
-		).successBody()
-
 
 	@Deprecated("Find methods are deprecated", replaceWith = ReplaceWith("filterPatientsBy()"))
 	override suspend fun findPatientsByNameBirthSsinAuto(
@@ -355,19 +408,6 @@ private open class AbstractPatientBasicFlavouredApi<E : Patient>(
 	override suspend fun getPatients(patientIds: List<String>) =
 		doGetPatients(null, patientIds)
 
-	override suspend fun getPatients(groupId: String, patientIds: List<String>): List<GroupScoped<E>> =
-		doGetPatients(groupId, patientIds).map { GroupScoped(it, groupId) }
-
-	suspend fun doGetPatients(groupId: String?, patientIds: List<String>) =
-		ListOfIds(patientIds).let { ids ->
-			if (groupId == null)
-				rawApi.getPatients(ids)
-			else
-				rawApi.getPatientsInGroup(groupId, ids)
-		}.successBody().let {
-			maybeDecrypt(groupId, it)
-		}
-
 	@Deprecated("Use filter instead")
 	override suspend fun getPatientByHealthcarePartyAndIdentifier(
 		hcPartyId: String,
@@ -393,33 +433,6 @@ private open class AbstractPatientBasicFlavouredApi<E : Patient>(
 	override suspend fun getPatientResolvingMerges(patientId: String, maxMergeDepth: Int?): E =
 		doGetPatientResolvingMerges(null, patientId, maxMergeDepth)
 
-	override suspend fun getPatientResolvingMerges(
-		groupId: String,
-		patientId: String,
-		maxMergeDepth: Int?
-	): GroupScoped<E> =
-		doGetPatientResolvingMerges(groupId, patientId, maxMergeDepth).let { GroupScoped(it, groupId) }
-
-	private suspend fun doGetPatientResolvingMerges(
-		groupId: String?,
-		patientId: String,
-		maxMergeDepth: Int?
-	): E {
-		tailrec suspend fun findLastMergedPatientInHierarchy(patient: EncryptedPatient, depth: Int): EncryptedPatient {
-			val mergeId = patient.mergeToPatientId
-			return if (mergeId != null) {
-				require (maxMergeDepth == null || depth < maxMergeDepth) {
-					"Merge chain for patient $patientId is longer than configured maxMergeDepth $maxMergeDepth"
-				}
-				findLastMergedPatientInHierarchy(doGetEncryptedPatient(groupId, mergeId), depth + 1)
-			} else patient
-		}
-
-		return findLastMergedPatientInHierarchy(doGetEncryptedPatient(groupId, patientId), 0).let {
-			maybeDecrypt(groupId, it)
-		}
-	}
-
 	override suspend fun mergePatients(from: Patient, mergedInto: E): E {
 		requireNotNull(mergedInto.rev) {
 			"Into patient should have a non-null rev"
@@ -438,35 +451,12 @@ private open class AbstractPatientBasicFlavouredApi<E : Patient>(
 }
 
 @InternalIcureApi
-private class AbstractPatientFlavouredApi<E : Patient>(
+private open class AbstractPatientFlavouredApi<E : Patient>(
 	rawApi: RawPatientApi,
 	override val config: ApiConfiguration,
 	flavour: FlavouredApi<EncryptedPatient, E>
-) : AbstractPatientBasicFlavouredApi<E>(rawApi, config, flavour), PatientFlavouredApi<E>, PatientFlavouredInGroupApi<E> {
-	override suspend fun shareWith(
-		delegateId: String,
-		patient: E,
-		options: PatientShareOptions?,
-	): E =
-		shareWithMany(patient, mapOf(delegateId to (options ?: PatientShareOptions())))
-
-	override suspend fun shareWithMany(patient: E, delegates: Map<String, PatientShareOptions>): E =
-		doShareWithMany(null, patient, delegates.keyAsLocalDataOwnerReferences())
-
-	override suspend fun shareWith(
-		delegate: EntityReferenceInGroup,
-		patient: GroupScoped<E>,
-		options: PatientShareOptions?
-	): GroupScoped<E> =
-		shareWithMany(patient, mapOf(delegate to (options ?: PatientShareOptions())))
-
-	override suspend fun shareWithMany(
-		patient: GroupScoped<E>,
-		delegates: Map<EntityReferenceInGroup, PatientShareOptions>
-	): GroupScoped<E> =
-		GroupScoped(doShareWithMany(patient.groupId, patient.entity, delegates), patient.groupId)
-
-	private suspend fun doShareWithMany(
+) : AbstractPatientBasicFlavouredApi<E>(rawApi, config, flavour) {
+	protected suspend fun doShareWithMany(
 		groupId: String?,
 		patient: E,
 		delegates: Map<EntityReferenceInGroup, PatientShareOptions>
@@ -489,7 +479,7 @@ private class AbstractPatientFlavouredApi<E : Patient>(
 			}
 		).updatedEntityOrThrow()
 
-	private suspend fun doInitializeConfidentialSecretId(groupId: String?, patient: E): E {
+	protected suspend fun doInitializeConfidentialSecretId(groupId: String?, patient: E): E {
 		requireNotNull(patient.rev) {
 			"Patient must be created before confidential secret id initialisation"
 		}
@@ -502,31 +492,7 @@ private class AbstractPatientFlavouredApi<E : Patient>(
 		) ?: patient
 	}
 
-	override suspend fun initializeConfidentialSecretId(patient: E): E =
-		doInitializeConfidentialSecretId(null, patient)
-
-	override suspend fun initializeConfidentialSecretId(patient: GroupScoped<E>): GroupScoped<E> =
-		GroupScoped(doInitializeConfidentialSecretId(patient.groupId, patient.entity), patient.groupId)
-
-	override suspend fun filterPatientsBySorted(filter: SortableFilterOptions<Patient>): PaginatedListIterator<E> =
-		filterPatientsBy(filter)
-
-	override suspend fun filterPatientsBy(filter: FilterOptions<Patient>): PaginatedListIterator<E> =
-		doFilterPatientsBy(null, filter) { it }
-
-	override suspend fun filterPatientsBySorted(
-		groupId: String,
-		filter: SortableFilterOptions<Patient>
-	): PaginatedListIterator<GroupScoped<E>> =
-		filterPatientsBy(groupId, filter)
-
-	override suspend fun filterPatientsBy(
-		groupId: String,
-		filter: FilterOptions<Patient>
-	): PaginatedListIterator<GroupScoped<E>> =
-		doFilterPatientsBy(groupId, filter) { GroupScoped(it, groupId) }
-	
-	private suspend inline fun <T : Any> doFilterPatientsBy(
+	protected suspend inline fun <T : Any> doFilterPatientsBy(
 		groupId: String?,
 		filter: FilterOptions<Patient>,
 		crossinline mapEntity: (E) -> T
@@ -542,6 +508,72 @@ private class AbstractPatientFlavouredApi<E : Patient>(
 		) {
 			doGetPatients(groupId, it).map { patient -> mapEntity(patient) }
 		}
+}
+
+@InternalIcureApi
+private class PatientFlavouredInGroupApiImpl<E : Patient>(
+	rawApi: RawPatientApi,
+	config: ApiConfiguration,
+	flavour: FlavouredApi<EncryptedPatient, E>
+) : AbstractPatientFlavouredApi<E>(rawApi, config, flavour),
+	PatientFlavouredInGroupApi<E>,
+	PatientBasicFlavouredInGroupApi<E> by PatientBasicFlavouredInGroupApiImpl(rawApi, config, flavour) {
+	override suspend fun shareWith(
+		delegate: EntityReferenceInGroup,
+		patient: GroupScoped<E>,
+		options: PatientShareOptions?
+	): GroupScoped<E> =
+		shareWithMany(patient, mapOf(delegate to (options ?: PatientShareOptions())))
+
+	override suspend fun shareWithMany(
+		patient: GroupScoped<E>,
+		delegates: Map<EntityReferenceInGroup, PatientShareOptions>
+	): GroupScoped<E> =
+		GroupScoped(doShareWithMany(patient.groupId, patient.entity, delegates), patient.groupId)
+
+	override suspend fun initializeConfidentialSecretId(patient: GroupScoped<E>): GroupScoped<E> =
+		GroupScoped(doInitializeConfidentialSecretId(patient.groupId, patient.entity), patient.groupId)
+
+	override suspend fun filterPatientsBySorted(
+		groupId: String,
+		filter: SortableFilterOptions<Patient>
+	): PaginatedListIterator<GroupScoped<E>> =
+		filterPatientsBy(groupId, filter)
+
+	override suspend fun filterPatientsBy(
+		groupId: String,
+		filter: FilterOptions<Patient>
+	): PaginatedListIterator<GroupScoped<E>> =
+		doFilterPatientsBy(groupId, filter) { GroupScoped(it, groupId) }
+
+}
+
+@InternalIcureApi
+private class PatientFlavouredApiImpl<E : Patient>(
+	rawApi: RawPatientApi,
+	config: ApiConfiguration,
+	flavour: FlavouredApi<EncryptedPatient, E>
+) : AbstractPatientFlavouredApi<E>(rawApi, config, flavour),
+	PatientFlavouredApi<E>,
+	PatientBasicFlavouredApi<E> by PatientBasicFlavouredApiImpl(rawApi, config, flavour) {
+	override suspend fun shareWith(
+		delegateId: String,
+		patient: E,
+		options: PatientShareOptions?,
+	): E =
+		shareWithMany(patient, mapOf(delegateId to (options ?: PatientShareOptions())))
+
+	override suspend fun shareWithMany(patient: E, delegates: Map<String, PatientShareOptions>): E =
+		doShareWithMany(null, patient, delegates.keyAsLocalDataOwnerReferences())
+
+	override suspend fun initializeConfidentialSecretId(patient: E): E =
+		doInitializeConfidentialSecretId(null, patient)
+
+	override suspend fun filterPatientsBySorted(filter: SortableFilterOptions<Patient>): PaginatedListIterator<E> =
+		filterPatientsBy(filter)
+
+	override suspend fun filterPatientsBy(filter: FilterOptions<Patient>): PaginatedListIterator<E> =
+		doFilterPatientsBy(null, filter) { it }
 }
 
 @InternalIcureApi
@@ -596,9 +628,6 @@ internal fun initPatientApi(
 	val decryptedFlavour = decryptedApiFlavour(config)
 	val encryptedFlavour = encryptedApiFlavour(config)
 	val tryAndRecoverFlavour = tryAndRecoverApiFlavour(config)
-	val decryptedApi = AbstractPatientFlavouredApi(rawApi, config, decryptedFlavour)
-	val encryptedApi = AbstractPatientFlavouredApi(rawApi, config, encryptedFlavour)
-	val tryAndRecoverApi = AbstractPatientFlavouredApi(rawApi, config, tryAndRecoverFlavour)
 	val basicFlavourless = AbstractPatientBasicFlavourlessApi(rawApi, config)
 	return PatientApiImpl(
 		rawApi,
@@ -610,9 +639,9 @@ internal fun initPatientApi(
 		rawCalendarItemApi,
 		rawClassificationApi,
 		config,
-		decryptedApi,
-		encryptedApi,
-		tryAndRecoverApi,
+		decryptedFlavour,
+		encryptedFlavour,
+		tryAndRecoverFlavour,
 		basicFlavourless
 	)
 }
@@ -628,23 +657,22 @@ private class PatientApiImpl(
 	private val rawCalendarItemApi: RawCalendarItemApi,
 	private val rawClassificationApi: RawClassificationApi,
 	private val config: ApiConfiguration,
-	private val decryptedFlavour: AbstractPatientFlavouredApi<DecryptedPatient>,
-	private val encryptedFlavour: AbstractPatientFlavouredApi<EncryptedPatient>,
-	private val tryAndRecoverFlavour: AbstractPatientFlavouredApi<Patient>,
+	private val decryptedFlavour: FlavouredApi<EncryptedPatient, DecryptedPatient>,
+	private val encryptedFlavour: FlavouredApi<EncryptedPatient, EncryptedPatient>,
+	private val tryAndRecoverFlavour: FlavouredApi<EncryptedPatient, Patient>,
 	private val basicFlavourless: AbstractPatientBasicFlavourlessApi
-) :
-	PatientApi,
-	PatientFlavouredApi<DecryptedPatient> by decryptedFlavour,
+) :	PatientApi,
+	PatientFlavouredApi<DecryptedPatient> by PatientFlavouredApiImpl(rawApi, config, decryptedFlavour),
 	PatientBasicFlavourlessApi by basicFlavourless {
-	override val encrypted: PatientFlavouredApi<EncryptedPatient> = encryptedFlavour
+	override val encrypted: PatientFlavouredApi<EncryptedPatient> = PatientFlavouredApiImpl(rawApi, config, encryptedFlavour)
 
-	override val tryAndRecover: PatientFlavouredApi<Patient> = tryAndRecoverFlavour
+	override val tryAndRecover: PatientFlavouredApi<Patient> = PatientFlavouredApiImpl(rawApi, config, tryAndRecoverFlavour)
 
 	override val inGroup: PatientInGroupApi = object : PatientInGroupApi,
-		PatientFlavouredInGroupApi<DecryptedPatient> by decryptedFlavour,
+		PatientFlavouredInGroupApi<DecryptedPatient> by PatientFlavouredInGroupApiImpl(rawApi, config, decryptedFlavour),
 		PatientBasicFlavourlessInGroupApi by basicFlavourless {
-		override val encrypted: PatientFlavouredInGroupApi<EncryptedPatient> = encryptedFlavour
-		override val tryAndRecover: PatientFlavouredInGroupApi<Patient> = tryAndRecoverFlavour
+		override val encrypted: PatientFlavouredInGroupApi<EncryptedPatient> = PatientFlavouredInGroupApiImpl(rawApi, config, encryptedFlavour)
+		override val tryAndRecover: PatientFlavouredInGroupApi<Patient> = PatientFlavouredInGroupApiImpl(rawApi, config, tryAndRecoverFlavour)
 
 		override suspend fun matchPatientsBy(groupId: String, filter: FilterOptions<Patient>): List<String> =
 			doMatchPatientsBy(groupId, filter)
@@ -1149,23 +1177,23 @@ internal fun initPatientBasicApi(
 ): PatientBasicApi = PatientBasicApiImpl(
 	rawApi,
 	config,
-	AbstractPatientBasicFlavouredApi(rawApi, config, encryptedApiFlavour(config)),
+	encryptedApiFlavour(config),
 	AbstractPatientBasicFlavourlessApi(rawApi, config)
 )
 
 @InternalIcureApi
 private class PatientBasicApiImpl(
-	private val rawApi: RawPatientApi,
-	private val config: BasicApiConfiguration,
-	private val encryptedFlavour: AbstractPatientBasicFlavouredApi<EncryptedPatient>,
+	rawApi: RawPatientApi,
+	config: BasicApiConfiguration,
+	private val encryptedFlavour: FlavouredApi<EncryptedPatient, EncryptedPatient>,
 	private val basicFlavourless: AbstractPatientBasicFlavourlessApi
-) : PatientBasicApi,
-	PatientBasicFlavouredApi<EncryptedPatient> by encryptedFlavour,
+) : PatientBasicFlavouredApiImpl<EncryptedPatient>(rawApi, config, encryptedFlavour),
+	PatientBasicApi,
 	PatientBasicFlavourlessApi by basicFlavourless {
 	override val inGroup: PatientBasicInGroupApi = object :
 		PatientBasicInGroupApi,
 		PatientBasicFlavourlessInGroupApi by basicFlavourless,
-		PatientBasicFlavouredInGroupApi<EncryptedPatient> by encryptedFlavour {
+		PatientBasicFlavouredInGroupApi<EncryptedPatient> by PatientBasicFlavouredInGroupApiImpl(rawApi, config, encryptedFlavour) {
 		override suspend fun matchPatientsBy(groupId: String, filter: BaseFilterOptions<Patient>): List<String> =
 			doMatchPatientsBy(groupId, filter)
 
@@ -1211,7 +1239,7 @@ private class PatientBasicApiImpl(
 		IdsPageIterator(
 			doMatchPatientsBy(groupId, filter),
 		) {
-			encryptedFlavour.doGetPatients(groupId, it).map { patient -> mapEntity(patient) }
+			doGetPatients(groupId, it).map { patient -> mapEntity(patient) }
 		}
 
 	override suspend fun subscribeToEvents(

@@ -4,8 +4,8 @@ import com.icure.cardinal.sdk.exceptions.RevisionConflictException
 import com.icure.cardinal.sdk.filters.BaseFilterOptions
 import com.icure.cardinal.sdk.filters.BaseSortableFilterOptions
 import com.icure.cardinal.sdk.model.Agenda
-import com.icure.cardinal.sdk.model.StoredDocumentIdentifier
 import com.icure.cardinal.sdk.model.PaginatedList
+import com.icure.cardinal.sdk.model.StoredDocumentIdentifier
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.utils.pagination.PaginatedListIterator
 
@@ -102,9 +102,6 @@ interface AgendaApi {
 
 	@Deprecated("Use filter instead")
 	suspend fun getAgendasForUser(userId: String): Agenda
-
-	@Deprecated("Use filter instead")
-	suspend fun getReadableAgendasForUser(userId: String): List<Agenda>
 
 	suspend fun modifyAgenda(agendaDto: Agenda): Agenda
 

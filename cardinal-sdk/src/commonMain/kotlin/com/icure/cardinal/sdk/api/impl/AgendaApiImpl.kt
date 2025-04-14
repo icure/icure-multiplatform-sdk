@@ -56,9 +56,6 @@ internal class AgendaApiImpl (
 	@Deprecated("Use filter instead")
 	override suspend fun getAgendasForUser(userId: String): Agenda = rawApi.getAgendasForUser(userId).successBody()
 
-	@Deprecated("Use filter instead")
-	override suspend fun getReadableAgendasForUser(userId: String): List<Agenda> = rawApi.getReadableAgendasForUser(userId).successBody()
-
 	override suspend fun modifyAgenda(agendaDto: Agenda): Agenda = rawApi.modifyAgenda(agendaDto).successBodyOrThrowRevisionConflict()
 
 	override suspend fun matchAgendasBy(filter: BaseFilterOptions<Agenda>): List<String> =
