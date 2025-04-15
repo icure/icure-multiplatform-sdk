@@ -27,9 +27,11 @@ class EncryptedStorageFacade(
 	@OptIn(ExperimentalStdlibApi::class)
 	override suspend fun getItem(key: String): String? {
 		return storage.getItem(key)?.let { item ->
-			runCatching {
+			val encryptedItem = runCatching {
 				Serialization.json.decodeFromString(EncryptedItem.serializer(), item)
-			}.getOrNull()?.let { encryptedItem ->
+			}.getOrNull()
+
+			if (encryptedItem != null) {
 				val decryptedValue = runCatching {
 					defaultCryptoService.aes.decrypt(base64Decode(encryptedItem.encrypted), encryptionKey).decodeToString()
 				}.getOrNull()
@@ -43,9 +45,9 @@ class EncryptedStorageFacade(
 						hash.contentEquals(base64Decode(encryptedItem.hash))
 					}
 				}
+			} else {
+				defaultCryptoService.aes.decrypt(base64Decode(item), encryptionKey).decodeToString()
 			}
-
-			defaultCryptoService.aes.decrypt(base64Decode(item), encryptionKey).decodeToString()
 		}
 	}
 
