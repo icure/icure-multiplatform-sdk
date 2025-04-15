@@ -16,5 +16,6 @@ data class AllDocumentsFilter(
 	override val desc: String? = null,
 ) : AbstractFilter<Document>, Filter.AllFilter<Document> {
 	// region AllDocumentsFilter-AllDocumentsFilter
+
 	// endregion
 }
