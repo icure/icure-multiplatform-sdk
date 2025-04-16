@@ -7,13 +7,10 @@ import kotlin.String
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
 
 @Serializable
-data class ExternalJwtSelector(
-	public val id: String? = null,
-	public val emailField: String? = null,
-	public val loginField: String? = null,
-	public val mobilePhoneField: String? = null,
+data class IdentifierSelector(
+	public val assigner: String,
+	public val valueField: String,
 ) {
-	// region ExternalJwtSelector-ExternalJwtSelector
-
+	// region IdentifierSelector-IdentifierSelector
 	// endregion
 }

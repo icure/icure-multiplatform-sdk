@@ -582,7 +582,7 @@ private class AbstractPatientBasicFlavourlessApi(val rawApi: RawPatientApi, val 
 
 	@Deprecated("Deletion without rev is unsafe")
 	override suspend fun deletePatientUnsafe(entityId: String): StoredDocumentIdentifier =
-		rawApi.deletePatientInGroup(entityId).successBodyOrThrowRevisionConflict().toStoredDocumentIdentifier()
+		rawApi.deletePatient(entityId).successBodyOrThrowRevisionConflict().toStoredDocumentIdentifier()
 
 	@Deprecated("Deletion without rev is unsafe")
 	override suspend fun deletePatientsUnsafe(entityIds: List<String>): List<StoredDocumentIdentifier> =
@@ -592,7 +592,7 @@ private class AbstractPatientBasicFlavourlessApi(val rawApi: RawPatientApi, val 
 		rawApi.deletePatientInGroup(entityId, rev).successBodyOrThrowRevisionConflict().toStoredDocumentIdentifier()
 
 	override suspend fun deletePatientsByIds(entityIds: List<StoredDocumentIdentifier>): List<StoredDocumentIdentifier> =
-		rawApi.deletePatientsWithRevInGroup(ListOfIdsAndRev(entityIds)).successBody().toStoredDocumentIdentifier()
+		rawApi.deletePatientsWithRev(ListOfIdsAndRev(entityIds)).successBody().toStoredDocumentIdentifier()
 
 	override suspend fun purgePatientById(id: String, rev: String) {
 		rawApi.purgePatient(id, rev).successBodyOrThrowRevisionConflict()

@@ -17,6 +17,13 @@ import com.icure.cardinal.sdk.model.requests.EntityBulkShareResult
 import com.icure.cardinal.sdk.model.specializations.AesExchangeKeyEncryptionKeypairIdentifier
 import com.icure.cardinal.sdk.model.specializations.HexString
 import com.icure.utils.InternalIcureApi
+import kotlin.Boolean
+import kotlin.Int
+import kotlin.Long
+import kotlin.Nothing
+import kotlin.String
+import kotlin.collections.List
+import kotlin.collections.Map
 
 // WARNING: This class is auto-generated. If you change it manually, your changes will be lost.
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
@@ -117,9 +124,9 @@ public interface RawPatientApi {
 
 	suspend fun deletePatients(patientIds: ListOfIds): HttpResponse<List<DocIdentifier>>
 
-	suspend fun deletePatientsWithRevInGroup(patientIds: ListOfIdsAndRev): HttpResponse<List<DocIdentifier>>
+	suspend fun deletePatientsWithRev(patientIds: ListOfIdsAndRev): HttpResponse<List<DocIdentifier>>
 
-	suspend fun deletePatientInGroup(
+	suspend fun deletePatient(
 		patientId: String,
 		rev: String? = null,
 	): HttpResponse<DocIdentifier>

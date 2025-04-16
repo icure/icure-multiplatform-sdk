@@ -24,6 +24,7 @@ import com.icure.cardinal.sdk.model.embed.GroupType
 import com.icure.cardinal.sdk.model.embed.RoleConfiguration
 import com.icure.cardinal.sdk.model.embed.UserType
 import com.icure.cardinal.sdk.model.filter.AbstractFilter
+import com.icure.cardinal.sdk.model.security.ExternalJwtConfig
 import com.icure.cardinal.sdk.model.security.Operation
 import com.icure.cardinal.sdk.model.security.PermissionType
 import com.icure.cardinal.sdk.serialization.GroupAbstractFilterSerializer
@@ -436,6 +437,33 @@ class RawGroupApiImpl(
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "group", id, "hierarchy")
 				parameter("ts", GMTDate().timestamp)
+			}
+			accept(Application.Json)
+		}.wrap()
+
+	override suspend fun createOrUpdateExternalJwtConfig(
+		groupId: String,
+		key: String,
+		config: ExternalJwtConfig,
+	): HttpResponse<Group> =
+		put(authProvider) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "group", groupId, "externalJwtConfig", key)
+			}
+			contentType(Application.Json)
+			accept(Application.Json)
+			setBody(config)
+		}.wrap()
+
+	override suspend fun removeExternalJwtConfig(
+		groupId: String,
+		key: String,
+	): HttpResponse<Group> =
+		delete(authProvider) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "group", groupId, "externalJwtConfig", key)
 			}
 			accept(Application.Json)
 		}.wrap()
