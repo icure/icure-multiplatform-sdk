@@ -29,6 +29,7 @@ import io.ktor.http.contentType
 import io.ktor.http.takeFrom
 import io.ktor.util.date.GMTDate
 import kotlinx.serialization.json.Json
+import org.taktik.icure.entities.EnhancedUser
 import kotlin.Boolean
 import kotlin.Int
 import kotlin.Long
@@ -559,7 +560,7 @@ class RawUserApiImpl(
 			accept(Application.Json)
 		}.wrap()
 
-	override suspend fun enableFasAuthenticationForUser(fasJwtToken: String): HttpResponse<User> =
+	override suspend fun enableFasAuthenticationForUser(fasJwtToken: String): HttpResponse<EnhancedUser> =
 		post(authProvider) {
 			url {
 				takeFrom(apiUrl)

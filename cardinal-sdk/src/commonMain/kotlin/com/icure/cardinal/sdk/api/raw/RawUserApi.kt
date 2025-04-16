@@ -11,6 +11,7 @@ import com.icure.cardinal.sdk.model.filter.chain.FilterChain
 import com.icure.cardinal.sdk.model.security.Enable2faRequest
 import com.icure.cardinal.sdk.model.security.TokenWithGroup
 import com.icure.utils.InternalIcureApi
+import org.taktik.icure.entities.EnhancedUser
 import kotlin.Boolean
 import kotlin.Int
 import kotlin.Long
@@ -196,7 +197,7 @@ public interface RawUserApi {
 
 	suspend fun disable2faForUser(userId: String): HttpResponse<Unit>
 
-	suspend fun enableFasAuthenticationForUser(fasJwtToken: String): HttpResponse<User>
+	suspend fun enableFasAuthenticationForUser(fasJwtToken: String): HttpResponse<EnhancedUser>
 
 	suspend fun createAdminUser(userDto: User): HttpResponse<User>
 
