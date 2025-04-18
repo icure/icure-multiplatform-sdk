@@ -513,16 +513,13 @@ private class CalendarItemApiImpl(
 		override suspend fun hasWriteAccess(calendarItem: GroupScoped<CalendarItem>): Boolean =
 			doHasWriteAccess(calendarItem.groupId, calendarItem.entity)
 
-		override suspend fun matchCalendarItemsBy(groupId: String, filter: FilterOptions<CalendarItem>): List<String> {
-			TODO("Not yet implemented")
-		}
+		override suspend fun matchCalendarItemsBy(groupId: String, filter: FilterOptions<CalendarItem>): List<String> =
+			doMatchCalendarItemsBy(groupId, filter)
 
 		override suspend fun matchCalendarItemsBySorted(
 			groupId: String,
 			filter: SortableFilterOptions<CalendarItem>
-		): List<String> {
-			TODO("Not yet implemented")
-		}
+		): List<String> = doMatchCalendarItemsBySorted(groupId, filter)
 	}
 
 	private val crypto get() = config.crypto
