@@ -622,13 +622,24 @@ private class CalendarItemApiImpl(
 		doMatchCalendarItemsBy(null, filter)
 
 	private suspend fun doMatchCalendarItemsBy(groupId: String?, filter: FilterOptions<CalendarItem>): List<String> =
-		rawApi.matchCalendarItemsBy(
-			mapCalendarItemFilterOptions(
-				filter,
-				config,
-				groupId
-			)
-		).successBody()
+		if (groupId == null) {
+			rawApi.matchCalendarItemsBy(
+				mapCalendarItemFilterOptions(
+					filter,
+					config,
+					groupId
+				)
+			).successBody()
+		} else {
+			rawApi.matchCalendarItemsInGroupBy(
+				groupId = groupId,
+				filter = mapCalendarItemFilterOptions(
+					filter,
+					config,
+					groupId
+				)
+			).successBody()
+		}
 
 	override suspend fun matchCalendarItemsBySorted(filter: SortableFilterOptions<CalendarItem>): List<String> =
 		doMatchCalendarItemsBySorted(null, filter)
@@ -726,13 +737,24 @@ private class CalendarItemBasicApiImpl(
 		filterCalendarItemsBy(filter)
 
 	private suspend fun doMatchCalendarItemsBy(groupId: String?, filter: BaseFilterOptions<CalendarItem>): List<String> =
-		rawApi.matchCalendarItemsBy(
-			mapCalendarItemFilterOptions(
-				filter,
-				config,
-				groupId
-			)
-		).successBody()
+		if (groupId == null) {
+			rawApi.matchCalendarItemsBy(
+				mapCalendarItemFilterOptions(
+					filter,
+					config,
+					groupId
+				)
+			).successBody()
+		} else {
+			rawApi.matchCalendarItemsInGroupBy(
+				groupId = groupId,
+				filter = mapCalendarItemFilterOptions(
+					filter,
+					config,
+					groupId
+				)
+			).successBody()
+		}
 
 	private suspend inline fun <T : Any> doFilterCalendarItemsBy(
 		groupId: String?,
