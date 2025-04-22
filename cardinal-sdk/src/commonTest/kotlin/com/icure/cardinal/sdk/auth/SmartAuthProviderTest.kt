@@ -38,7 +38,6 @@ import io.kotest.matchers.collections.shouldContain
 import io.kotest.matchers.collections.shouldHaveAtLeastSize
 import io.kotest.matchers.collections.shouldNotContain
 import io.kotest.matchers.maps.shouldNotBeEmpty
-import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
 import io.ktor.http.isSuccess
@@ -187,7 +186,7 @@ class SmartAuthProviderTest : StringSpec({
 				passwordHash = newPwd,
 			)
 		).successBody()
-		userWithNewPwd.rev.shouldNotBeNull() shouldBeNextRevOf userWithLongTokenAndPwd.rev.shouldNotBeNull()
+		userWithNewPwd.rev shouldBeNextRevOf userWithLongTokenAndPwd.rev
 		calls shouldBe 2
 		val retrievedWithNewPwd = getUserApiWithProvider(
 			AuthenticationMethod.UsingCredentials(UsernamePassword(hcpDetails.username, newPwd)).getAuthProvider(
@@ -465,7 +464,7 @@ class SmartAuthProviderTest : StringSpec({
 		calls shouldBe 2
 		val updatedUser = userApi.modifyUser(userWithNewPwd).successBody()
 		calls shouldBe 3
-		updatedUser.rev.shouldNotBeNull() shouldBeNextRevOf userWithLongTokenAndPwd.rev.shouldNotBeNull()
+		updatedUser.rev shouldBeNextRevOf userWithLongTokenAndPwd.rev
 		val retrievedWithNewPwd = getUserApiWithProvider(
 			AuthenticationMethod.UsingCredentials(UsernamePassword(hcpDetails.username, newPwd)).getAuthProvider(
 				authApi,
@@ -535,7 +534,7 @@ class SmartAuthProviderTest : StringSpec({
 				)
 			)
 		)).successBody()
-		updatedDefault.rev.shouldNotBeNull() shouldBeNextRevOf switchedUser.rev.shouldNotBeNull()
+		updatedDefault.rev shouldBeNextRevOf switchedUser.rev
 		updatedDefault.authenticationTokens.shouldNotBeEmpty()
 	}
 })
