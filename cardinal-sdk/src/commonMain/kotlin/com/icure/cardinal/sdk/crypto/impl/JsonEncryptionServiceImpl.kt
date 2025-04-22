@@ -160,10 +160,11 @@ class JsonEncryptionServiceImpl(
 			}?.content?.let { base64Decode(it) }?.let {
 				encryptionKeys.firstNotNullOfOrNull { encryptionKey ->
 					kotlin.runCatching {
-						cryptoService.aes.decrypt(it, encryptionKey)
-					}.getOrNull()?.let {
-						Serialization.json.parseToJsonElement(it.decodeToString()) as? JsonObject
-					}
+						val decryptedBytes = cryptoService.aes.decrypt(it, encryptionKey)
+						// Note: chance that if wrong key provided we get "successfully" decrypt garbage -> we consider
+						// invalid json in decrypted content as an decryption error.
+						Serialization.json.parseToJsonElement(decryptedBytes.decodeToString()) as? JsonObject
+					}.getOrNull()
 				} ?: throw EntityEncryptionException("Can't decrypt ${path.joinToString("")} with provided keys")
 			}
 			return decryptedSelf?.let { JsonObject(recursivelyDecrypted + it) } ?: JsonObject(recursivelyDecrypted)
