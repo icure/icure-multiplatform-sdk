@@ -158,6 +158,9 @@ internal class UserApiImpl(
 	override suspend fun undeleteUserById(id: String, rev: String): User =
 		raw.undeleteUser(id, rev).successBodyOrThrowRevisionConflict()
 
+	override suspend fun setUserInheritsPermissions(userId: String, groupId: String, value: Boolean): String =
+		raw.setUserInheritsPermissions(userId, groupId, value).successBody()
+
 	override suspend fun setUserRoles(
 		userId: String,
 		rolesId: ListOfIds,
