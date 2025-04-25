@@ -2,6 +2,7 @@ package com.icure.cardinal.sdk.api.impl
 
 import com.icure.cardinal.sdk.api.MedicalLocationApi
 import com.icure.cardinal.sdk.api.raw.RawMedicalLocationApi
+import com.icure.cardinal.sdk.api.raw.successBodyOrNull404
 import com.icure.cardinal.sdk.api.raw.successBodyOrThrowRevisionConflict
 import com.icure.cardinal.sdk.filters.BaseFilterOptions
 import com.icure.cardinal.sdk.filters.BaseSortableFilterOptions
@@ -24,8 +25,8 @@ internal class MedicalLocationApiImpl(
 	override suspend fun deleteMedicalLocations(locationIds: ListOfIds): List<DocIdentifier> =
 		rawApi.deleteMedicalLocations(locationIds).successBody()
 
-	override suspend fun getMedicalLocation(locationId: String): MedicalLocation =
-		rawApi.getMedicalLocation(locationId).successBody()
+	override suspend fun getMedicalLocation(locationId: String): MedicalLocation? =
+		rawApi.getMedicalLocation(locationId).successBodyOrNull404()
 
 	@Deprecated("Use filter instead")
 	override suspend fun getAllMedicalLocations(startDocumentId: String?, limit: Int?): PaginatedList<MedicalLocation> =

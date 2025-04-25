@@ -127,7 +127,7 @@ interface AccessLogBasicFlavouredApi<E : AccessLog> {
 	 * @param entityId an access log id.
 	 * @return the access log with id [entityId].
 	 */
-	suspend fun getAccessLog(entityId: String): E
+	suspend fun getAccessLog(entityId: String): E?
 
 	/**
 	 * Get multiple access logs by their ids. Ignores all ids that do not exist, or access logs that you can't access.

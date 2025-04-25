@@ -129,7 +129,7 @@ interface TopicBasicFlavouredApi<E : Topic> {
 	 * @param entityId a topic id.
 	 * @return the topic with id [entityId].
 	 */
-	suspend fun getTopic(entityId: String): E
+	suspend fun getTopic(entityId: String): E?
 
 	/**
 	 * Get multiple topics by their ids. Ignores all ids that do not correspond to an entity, correspond to

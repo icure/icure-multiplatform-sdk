@@ -6,11 +6,13 @@ import com.icure.cardinal.sdk.api.ReceiptBasicFlavouredApi
 import com.icure.cardinal.sdk.api.ReceiptBasicFlavourlessApi
 import com.icure.cardinal.sdk.api.ReceiptFlavouredApi
 import com.icure.cardinal.sdk.api.raw.RawReceiptApi
+import com.icure.cardinal.sdk.api.raw.successBodyOrNull404
 import com.icure.cardinal.sdk.api.raw.successBodyOrThrowRevisionConflict
 import com.icure.cardinal.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
 import com.icure.cardinal.sdk.crypto.entities.OwningEntityDetails
 import com.icure.cardinal.sdk.crypto.entities.ReceiptShareOptions
 import com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption
+import com.icure.cardinal.sdk.exceptions.NotFoundException
 import com.icure.cardinal.sdk.model.DecryptedReceipt
 import com.icure.cardinal.sdk.model.EncryptedReceipt
 import com.icure.cardinal.sdk.model.ListOfIds
@@ -44,8 +46,8 @@ private abstract class AbstractReceiptBasicFlavouredApi<E : Receipt>(
 	override suspend fun modifyReceipt(entity: E): E =
 		rawApi.modifyReceipt(validateAndMaybeEncrypt(null, entity)).successBodyOrThrowRevisionConflict().let { maybeDecrypt(null, it) }
 
-	override suspend fun getReceipt(entityId: String): E =
-		rawApi.getReceipt(entityId).successBody().let { maybeDecrypt(null, it) }
+	override suspend fun getReceipt(entityId: String): E? =
+		rawApi.getReceipt(entityId).successBodyOrNull404()?.let { maybeDecrypt(null, it) }
 
 	override suspend fun listByReference(reference: String): List<E> =
 		rawApi.listByReference(reference).successBody().let { maybeDecrypt(it) }
@@ -71,7 +73,7 @@ private abstract class AbstractReceiptFlavouredApi<E : Receipt>(
 			EntityWithEncryptionMetadataTypeName.Receipt,
 			delegates.keyAsLocalDataOwnerReferences(),
 			true,
-			{ getReceipt(it) },
+			{ getReceipt(it) ?: throw NotFoundException("Receipt $it not found") },
 			{ maybeDecrypt(null, rawApi.bulkShare(it).successBody()) }
 		).updatedEntityOrThrow()
 

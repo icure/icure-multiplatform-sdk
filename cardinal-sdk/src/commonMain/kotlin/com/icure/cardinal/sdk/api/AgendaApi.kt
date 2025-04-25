@@ -96,7 +96,7 @@ interface AgendaApi {
 	suspend fun undeleteAgenda(agenda: Agenda): Agenda =
 		undeleteAgendaById(agenda.id, requireNotNull(agenda.rev) { "Can't delete an agenda that has no rev" })
 
-	suspend fun getAgenda(agendaId: String): Agenda
+	suspend fun getAgenda(agendaId: String): Agenda?
 
 	suspend fun getAgendas(agendaIds: List<String>): List<Agenda>
 

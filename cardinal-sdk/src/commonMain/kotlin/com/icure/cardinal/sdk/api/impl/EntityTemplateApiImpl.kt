@@ -2,6 +2,7 @@ package com.icure.cardinal.sdk.api.impl
 
 import com.icure.cardinal.sdk.api.EntityTemplateApi
 import com.icure.cardinal.sdk.api.raw.RawEntityTemplateApi
+import com.icure.cardinal.sdk.api.raw.successBodyOrNull404
 import com.icure.cardinal.sdk.api.raw.successBodyOrThrowRevisionConflict
 import com.icure.cardinal.sdk.model.EntityTemplate
 import com.icure.cardinal.sdk.model.StoredDocumentIdentifier
@@ -13,7 +14,8 @@ import com.icure.utils.InternalIcureApi
 internal class EntityTemplateApiImpl(
 	private val rawApi: RawEntityTemplateApi,
 ) : EntityTemplateApi {
-	override suspend fun getEntityTemplate(documentTemplateId: String) = rawApi.getEntityTemplate(documentTemplateId).successBody()
+	override suspend fun getEntityTemplate(documentTemplateId: String) =
+		rawApi.getEntityTemplate(documentTemplateId).successBodyOrNull404()
 
 	override suspend fun createEntityTemplate(applicationSettings: EntityTemplate) =
 		rawApi.createEntityTemplate(applicationSettings).successBody()

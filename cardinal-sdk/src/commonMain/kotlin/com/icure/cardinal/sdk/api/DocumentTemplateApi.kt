@@ -6,7 +6,7 @@ import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.utils.DefaultValue
 
 interface DocumentTemplateApi {
-	suspend fun getDocumentTemplate(documentTemplateId: String): DocumentTemplate
+	suspend fun getDocumentTemplate(documentTemplateId: String): DocumentTemplate?
 	suspend fun createDocumentTemplate(documentTemplate: DocumentTemplate): DocumentTemplate
 	suspend fun modifyDocumentTemplate(documentTemplate: DocumentTemplate): DocumentTemplate
 	suspend fun deleteDocumentTemplates(documentTemplateIds: List<String>): List<DocIdentifier>

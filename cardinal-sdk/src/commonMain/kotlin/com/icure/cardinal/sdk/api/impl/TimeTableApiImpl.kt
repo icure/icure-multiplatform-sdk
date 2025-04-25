@@ -2,6 +2,7 @@ package com.icure.cardinal.sdk.api.impl
 
 import com.icure.cardinal.sdk.api.TimeTableApi
 import com.icure.cardinal.sdk.api.raw.RawTimeTableApi
+import com.icure.cardinal.sdk.api.raw.successBodyOrNull404
 import com.icure.cardinal.sdk.api.raw.successBodyOrThrowRevisionConflict
 import com.icure.cardinal.sdk.filters.BaseFilterOptions
 import com.icure.cardinal.sdk.filters.BaseSortableFilterOptions
@@ -45,8 +46,8 @@ internal class TimeTableApiImpl(
 	override suspend fun undeleteTimeTableById(id: String, rev: String): TimeTable =
 		rawApi.undeleteTimeTable(id, rev).successBodyOrThrowRevisionConflict()
 
-	override suspend fun getTimeTable(entityId: String): TimeTable =
-		rawApi.getTimeTable(entityId).successBody()
+	override suspend fun getTimeTable(entityId: String): TimeTable? =
+		rawApi.getTimeTable(entityId).successBodyOrNull404()
 
 	override suspend fun getTimeTables(timeTableIds: List<String>): List<TimeTable> =
 		rawApi.getTimeTables(ListOfIds(timeTableIds)).successBody()

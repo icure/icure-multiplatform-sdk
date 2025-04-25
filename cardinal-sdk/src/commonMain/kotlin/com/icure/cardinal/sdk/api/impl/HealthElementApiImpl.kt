@@ -11,11 +11,13 @@ import com.icure.cardinal.sdk.api.HealthElementFlavouredApi
 import com.icure.cardinal.sdk.api.HealthElementFlavouredInGroupApi
 import com.icure.cardinal.sdk.api.HealthElementInGroupApi
 import com.icure.cardinal.sdk.api.raw.RawHealthElementApi
+import com.icure.cardinal.sdk.api.raw.successBodyOrNull404
 import com.icure.cardinal.sdk.api.raw.successBodyOrThrowRevisionConflict
 import com.icure.cardinal.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
 import com.icure.cardinal.sdk.crypto.entities.HealthElementShareOptions
 import com.icure.cardinal.sdk.crypto.entities.OwningEntityDetails
 import com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption
+import com.icure.cardinal.sdk.exceptions.NotFoundException
 import com.icure.cardinal.sdk.filters.BaseFilterOptions
 import com.icure.cardinal.sdk.filters.BaseSortableFilterOptions
 import com.icure.cardinal.sdk.filters.FilterOptions
@@ -141,19 +143,20 @@ private open class AbstractHealthElementBasicFlavouredApi<E : HealthElement>(
 	override suspend fun modifyHealthElements(entities: List<E>): List<E> =
 		rawApi.modifyHealthElements(validateAndMaybeEncrypt(entities)).successBody().let { maybeDecrypt(it) }
 
-	override suspend fun getHealthElement(groupId: String, entityId: String): GroupScoped<E> =
-		GroupScoped(doGetHealthElement(groupId, entityId), groupId)
+	override suspend fun getHealthElement(groupId: String, entityId: String): GroupScoped<E>? = doGetHealthElement(groupId, entityId)?.let {
+		GroupScoped(it, groupId)
+	}
 
-	override suspend fun getHealthElement(entityId: String): E =
+	override suspend fun getHealthElement(entityId: String): E? =
 		doGetHealthElement(null, entityId)
 
-	protected suspend fun doGetHealthElement(groupId: String?, entityId: String): E =
+	protected suspend fun doGetHealthElement(groupId: String?, entityId: String): E? =
 		(
 			if (groupId == null)
 				rawApi.getHealthElement(entityId)
 			else
 				rawApi.getHealthElementInGroup(groupId = groupId, healthElementId = entityId)
-		).successBody().let { maybeDecrypt(groupId, it) }
+		).successBodyOrNull404()?.let { maybeDecrypt(groupId, it) }
 
 	override suspend fun getHealthElements(entityIds: List<String>): List<E> =
 		rawApi.getHealthElements(ListOfIds(entityIds)).successBody().let { maybeDecrypt(it) }
@@ -209,7 +212,7 @@ private class AbstractHealthElementFlavouredApi<E : HealthElement>(
 			EntityWithEncryptionMetadataTypeName.HealthElement,
 			delegates,
 			true,
-			{ doGetHealthElement(entityGroupId, it) },
+			{ doGetHealthElement(entityGroupId, it) ?: throw NotFoundException("HealthElement $it not found") },
 			{
 				maybeDecrypt(
 					entityGroupId,

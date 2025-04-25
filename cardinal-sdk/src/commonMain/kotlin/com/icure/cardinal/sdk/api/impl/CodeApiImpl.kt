@@ -2,6 +2,7 @@ package com.icure.cardinal.sdk.api.impl
 
 import com.icure.cardinal.sdk.api.CodeApi
 import com.icure.cardinal.sdk.api.raw.RawCodeApi
+import com.icure.cardinal.sdk.api.raw.successBodyOrNull404
 import com.icure.cardinal.sdk.api.raw.successBodyOrThrowRevisionConflict
 import com.icure.cardinal.sdk.filters.BaseFilterOptions
 import com.icure.cardinal.sdk.filters.BaseSortableFilterOptions
@@ -84,13 +85,13 @@ internal class CodeApiImpl(
 		ListOfIds(codeIds)
 	).successBody()
 
-	override suspend fun getCode(codeId: String): Code = rawApi.getCode(codeId).successBody()
+	override suspend fun getCode(codeId: String): Code? = rawApi.getCode(codeId).successBodyOrNull404()
 
 	override suspend fun getCodeWithParts(
 		type: String,
 		code: String,
 		version: String,
-	): Code = rawApi.getCodeWithParts(type, code, version).successBody()
+	): Code? = rawApi.getCodeWithParts(type, code, version).successBodyOrNull404()
 
 	override suspend fun modifyCode(codeDto: Code): Code = rawApi.modifyCode(codeDto).successBodyOrThrowRevisionConflict()
 

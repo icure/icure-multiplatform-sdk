@@ -104,7 +104,7 @@ interface TimeTableApi {
 	 * @param entityId a time-table id.
 	 * @return the time-table with id [entityId].
 	 */
-	suspend fun getTimeTable(entityId: String): TimeTable
+	suspend fun getTimeTable(entityId: String): TimeTable?
 
 	/**
 	 * Get multiple time tables by their ids. Ignores all ids that do not correspond to an entity, correspond to

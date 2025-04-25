@@ -6,6 +6,7 @@ import com.icure.cardinal.sdk.api.MaintenanceTaskBasicFlavouredApi
 import com.icure.cardinal.sdk.api.MaintenanceTaskBasicFlavourlessApi
 import com.icure.cardinal.sdk.api.MaintenanceTaskFlavouredApi
 import com.icure.cardinal.sdk.api.raw.RawMaintenanceTaskApi
+import com.icure.cardinal.sdk.api.raw.successBodyOrNull404
 import com.icure.cardinal.sdk.api.raw.successBodyOrThrowRevisionConflict
 import com.icure.cardinal.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
 import com.icure.cardinal.sdk.crypto.entities.MaintenanceTaskShareOptions
@@ -65,7 +66,10 @@ private abstract class AbstractMaintenanceTaskBasicFlavouredApi<E : MaintenanceT
 		rawApi.modifyMaintenanceTask(validateAndMaybeEncrypt(null, entity)).successBodyOrThrowRevisionConflict().let { maybeDecrypt(null, it) }
 
 
-	override suspend fun getMaintenanceTask(entityId: String): E = rawApi.getMaintenanceTask(entityId).successBody().let { maybeDecrypt(null, it) }
+	override suspend fun getMaintenanceTask(entityId: String): E? =
+		rawApi.getMaintenanceTask(entityId).successBodyOrNull404()?.let {
+			maybeDecrypt(null, it)
+		}
 
 	override suspend fun getMaintenanceTasks(entityIds: List<String>): List<E> = rawApi.getMaintenanceTasks(ListOfIds(entityIds)).successBody().let { maybeDecrypt(it) }
 }

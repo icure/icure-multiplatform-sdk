@@ -6,6 +6,7 @@ import com.icure.cardinal.sdk.api.DocumentBasicFlavouredApi
 import com.icure.cardinal.sdk.api.DocumentBasicFlavourlessApi
 import com.icure.cardinal.sdk.api.DocumentFlavouredApi
 import com.icure.cardinal.sdk.api.raw.RawDocumentApi
+import com.icure.cardinal.sdk.api.raw.successBodyOrNull404
 import com.icure.cardinal.sdk.api.raw.successBodyOrThrowRevisionConflict
 import com.icure.cardinal.sdk.crypto.entities.DocumentShareOptions
 import com.icure.cardinal.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
@@ -61,7 +62,8 @@ private abstract class AbstractDocumentBasicFlavouredApi<E : Document>(
 	override suspend fun modifyDocument(entity: E) =
 		rawApi.modifyDocument(validateAndMaybeEncrypt(null, entity)).successBodyOrThrowRevisionConflict().let { maybeDecrypt(null, it) }
 
-	override suspend fun getDocument(entityId: String) = rawApi.getDocument(entityId).successBody().let { maybeDecrypt(null, it) }
+	override suspend fun getDocument(entityId: String) =
+		rawApi.getDocument(entityId).successBodyOrNull404()?.let { maybeDecrypt(null, it) }
 
 	@Deprecated("Use filter instead")
 	override suspend fun getDocumentByExternalUuid(externalUuid: String) =

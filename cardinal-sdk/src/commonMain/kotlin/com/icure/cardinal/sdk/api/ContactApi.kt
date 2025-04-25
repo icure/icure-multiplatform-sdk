@@ -164,7 +164,7 @@ interface ContactBasicFlavouredApi<E : Contact, S : Service> {
 	 * @param entityId a contact id.
 	 * @return the contact with id [entityId].
 	 */
-	suspend fun getContact(entityId: String): E
+	suspend fun getContact(entityId: String): E?
 
 	/**
 	 * Get multiple contacts by their ids. Ignores all ids that do not correspond to an entity, correspond to

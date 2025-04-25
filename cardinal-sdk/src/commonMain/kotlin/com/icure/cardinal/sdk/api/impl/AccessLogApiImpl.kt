@@ -6,11 +6,13 @@ import com.icure.cardinal.sdk.api.AccessLogBasicFlavouredApi
 import com.icure.cardinal.sdk.api.AccessLogBasicFlavourlessApi
 import com.icure.cardinal.sdk.api.AccessLogFlavouredApi
 import com.icure.cardinal.sdk.api.raw.RawAccessLogApi
+import com.icure.cardinal.sdk.api.raw.successBodyOrNull404
 import com.icure.cardinal.sdk.api.raw.successBodyOrThrowRevisionConflict
 import com.icure.cardinal.sdk.crypto.entities.AccessLogShareOptions
 import com.icure.cardinal.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
 import com.icure.cardinal.sdk.crypto.entities.OwningEntityDetails
 import com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption
+import com.icure.cardinal.sdk.exceptions.NotFoundException
 import com.icure.cardinal.sdk.filters.BaseFilterOptions
 import com.icure.cardinal.sdk.filters.BaseSortableFilterOptions
 import com.icure.cardinal.sdk.filters.FilterOptions
@@ -60,7 +62,8 @@ private abstract class AbstractAccessLogBasicFlavouredApi<E : AccessLog>(
 	override suspend fun modifyAccessLog(entity: E): E =
 		rawApi.modifyAccessLog(validateAndMaybeEncrypt(null, entity)).successBodyOrThrowRevisionConflict().let { maybeDecrypt(null, it) }
 
-	override suspend fun getAccessLog(entityId: String): E = rawApi.getAccessLog(entityId).successBody().let { maybeDecrypt(null, it) }
+	override suspend fun getAccessLog(entityId: String): E? =
+		rawApi.getAccessLog(entityId).successBodyOrNull404()?.let { maybeDecrypt(null, it) }
 
 	override suspend fun getAccessLogs(entityIds: List<String>): List<E> =
 		maybeDecrypt(rawApi.getAccessLogByIds(ListOfIds(entityIds)).successBody())
@@ -119,7 +122,7 @@ private abstract class AbstractAccessLogFlavouredApi<E : AccessLog>(
 			EntityWithEncryptionMetadataTypeName.AccessLog,
 			delegates.keyAsLocalDataOwnerReferences(),
 			true,
-			{ getAccessLog(it) },
+			{ getAccessLog(it) ?: throw NotFoundException("Access log $it not found") },
 			{ maybeDecrypt(null, rawApi.bulkShare(it).successBody()) }
 		).updatedEntityOrThrow()
 

@@ -17,7 +17,7 @@ interface DeviceApi: Subscribable<Device, Device, FilterOptions<Device>> {
 	suspend fun deleteDeviceUnsafe(entityId: String): DocIdentifier
 	@Deprecated("Deletion without rev is unsafe")
 	suspend fun deleteDevicesUnsafe(entityIds: List<String>): List<DocIdentifier>
-	suspend fun getDevice(deviceId: String): Device
+	suspend fun getDevice(deviceId: String): Device?
 	suspend fun getDevices(deviceIds: List<String>): List<Device>
 	suspend fun createDevice(p: Device): Device
 	suspend fun modifyDevice(device: Device): Device

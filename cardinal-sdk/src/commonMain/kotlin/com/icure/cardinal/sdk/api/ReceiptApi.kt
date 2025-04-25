@@ -25,7 +25,7 @@ interface ReceiptBasicFlavourlessApi {
 interface ReceiptBasicFlavouredApi<E : Receipt> {
 	suspend fun createReceipt(entity: E): E
 	suspend fun modifyReceipt(entity: E): E
-	suspend fun getReceipt(entityId: String): E
+	suspend fun getReceipt(entityId: String): E?
 	suspend fun listByReference(reference: String): List<E>
 }
 

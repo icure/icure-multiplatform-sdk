@@ -6,11 +6,13 @@ import com.icure.cardinal.sdk.api.TopicBasicFlavouredApi
 import com.icure.cardinal.sdk.api.TopicBasicFlavourlessApi
 import com.icure.cardinal.sdk.api.TopicFlavouredApi
 import com.icure.cardinal.sdk.api.raw.RawTopicApi
+import com.icure.cardinal.sdk.api.raw.successBodyOrNull404
 import com.icure.cardinal.sdk.api.raw.successBodyOrThrowRevisionConflict
 import com.icure.cardinal.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
 import com.icure.cardinal.sdk.crypto.entities.OwningEntityDetails
 import com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption
 import com.icure.cardinal.sdk.crypto.entities.TopicShareOptions
+import com.icure.cardinal.sdk.exceptions.NotFoundException
 import com.icure.cardinal.sdk.filters.BaseFilterOptions
 import com.icure.cardinal.sdk.filters.BaseSortableFilterOptions
 import com.icure.cardinal.sdk.filters.FilterOptions
@@ -66,7 +68,8 @@ private abstract class AbstractTopicBasicFlavouredApi<E : Topic>(
 	override suspend fun modifyTopic(entity: E): E =
 		rawApi.modifyTopic(validateAndMaybeEncrypt(null, entity)).successBodyOrThrowRevisionConflict().let { maybeDecrypt(null, it) }
 
-	override suspend fun getTopic(entityId: String): E = rawApi.getTopic(entityId).successBody().let { maybeDecrypt(null, it) }
+	override suspend fun getTopic(entityId: String): E? =
+		rawApi.getTopic(entityId).successBodyOrNull404()?.let { maybeDecrypt(null, it) }
 
 	override suspend fun getTopics(entityIds: List<String>): List<E> =
 		rawApi.getTopics(ListOfIds(entityIds)).successBody().let { maybeDecrypt(it) }
@@ -95,7 +98,7 @@ private abstract class AbstractTopicFlavouredApi<E : Topic>(
 			EntityWithEncryptionMetadataTypeName.Topic,
 			delegates.keyAsLocalDataOwnerReferences(),
 			true,
-			{ getTopic(it) },
+			{ getTopic(it) ?: throw NotFoundException("Topic $topic not found") },
 			{ maybeDecrypt(null, rawApi.bulkShare(it).successBody()) }
 		).updatedEntityOrThrow()
 

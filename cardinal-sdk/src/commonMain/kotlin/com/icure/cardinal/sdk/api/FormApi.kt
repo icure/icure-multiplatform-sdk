@@ -195,7 +195,7 @@ interface FormBasicFlavouredApi<E : Form> {
 	 * @param entityId a form id.
 	 * @return the form with id [entityId].
 	 */
-	suspend fun getForm(entityId: String): E
+	suspend fun getForm(entityId: String): E?
 
 	/**
 	 * Get multiple forms by their ids. Ignores all ids that do not correspond to an entity, correspond to

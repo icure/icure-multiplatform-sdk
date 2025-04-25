@@ -14,7 +14,7 @@ interface CalendarItemTypeApi {
 
 	suspend fun deleteCalendarItemTypes(calendarItemTypeIds: ListOfIds): List<DocIdentifier>
 
-	suspend fun getCalendarItemType(calendarItemTypeId: String): CalendarItemType
+	suspend fun getCalendarItemType(calendarItemTypeId: String): CalendarItemType?
 
 	suspend fun modifyCalendarItemType(calendarItemTypeDto: CalendarItemType): CalendarItemType
 }

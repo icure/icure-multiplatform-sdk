@@ -63,7 +63,7 @@ interface ClassificationBasicFlavouredApi<E : Classification> {
 	 * @param entityId a classification id.
 	 * @return the classification with id [entityId].
 	 */
-	suspend fun getClassification(entityId: String): E
+	suspend fun getClassification(entityId: String): E?
 
 	/**
 	 * Get multiple classifications by their ids. Ignores all ids that do not correspond to an entity, correspond to

@@ -6,11 +6,13 @@ import com.icure.cardinal.sdk.api.ClassificationBasicFlavouredApi
 import com.icure.cardinal.sdk.api.ClassificationBasicFlavourlessApi
 import com.icure.cardinal.sdk.api.ClassificationFlavouredApi
 import com.icure.cardinal.sdk.api.raw.RawClassificationApi
+import com.icure.cardinal.sdk.api.raw.successBodyOrNull404
 import com.icure.cardinal.sdk.api.raw.successBodyOrThrowRevisionConflict
 import com.icure.cardinal.sdk.crypto.entities.ClassificationShareOptions
 import com.icure.cardinal.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
 import com.icure.cardinal.sdk.crypto.entities.OwningEntityDetails
 import com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption
+import com.icure.cardinal.sdk.exceptions.NotFoundException
 import com.icure.cardinal.sdk.filters.BaseFilterOptions
 import com.icure.cardinal.sdk.filters.BaseSortableFilterOptions
 import com.icure.cardinal.sdk.filters.FilterOptions
@@ -53,7 +55,9 @@ private abstract class AbstractClassificationBasicFlavouredApi<E : Classificatio
 		rawApi.modifyClassification(validateAndMaybeEncrypt(null, entity)).successBodyOrThrowRevisionConflict().let { maybeDecrypt(null, it) }
 
 
-	override suspend fun getClassification(entityId: String): E = rawApi.getClassification(entityId).successBody().let { maybeDecrypt(null, it) }
+	override suspend fun getClassification(entityId: String): E? =
+		rawApi.getClassification(entityId).successBodyOrNull404()
+			?.let { maybeDecrypt(null, it) }
 
 	override suspend fun getClassifications(entityIds: List<String>): List<E> =
 		maybeDecrypt(rawApi.getClassifications(ListOfIds(entityIds)).successBody())
@@ -78,7 +82,7 @@ private abstract class AbstractClassificationFlavouredApi<E : Classification>(
 			EntityWithEncryptionMetadataTypeName.Classification,
 			delegates.keyAsLocalDataOwnerReferences(),
 			true,
-			{ getClassification(it) },
+			{ getClassification(it) ?: throw NotFoundException("Classification $it not found") },
 			{ maybeDecrypt(null, rawApi.bulkShare(it).successBody()) }
 		).updatedEntityOrThrow()
 

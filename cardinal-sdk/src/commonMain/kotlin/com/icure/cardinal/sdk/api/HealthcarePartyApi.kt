@@ -20,7 +20,7 @@ interface HealthcarePartyApi: Subscribable<HealthcareParty, HealthcareParty, Fil
 	@Deprecated("Deletion without rev is unsafe")
 	suspend fun deleteHealthcarePartiesUnsafe(entityIds: List<String>): List<DocIdentifier>
 
-	suspend fun getHealthcareParty(healthcarePartyId: String): HealthcareParty
+	suspend fun getHealthcareParty(healthcarePartyId: String): HealthcareParty?
 	suspend fun createHealthcareParty(p: HealthcareParty): HealthcareParty
 
 	suspend fun modifyHealthcarePartyInGroup(

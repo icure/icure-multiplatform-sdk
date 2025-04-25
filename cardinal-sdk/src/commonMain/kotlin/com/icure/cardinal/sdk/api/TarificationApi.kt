@@ -5,7 +5,7 @@ import com.icure.cardinal.sdk.model.Tarification
 import com.icure.cardinal.sdk.utils.DefaultValue
 
 interface TarificationApi {
-	suspend fun getTarification(tarificationId: String): Tarification
+	suspend fun getTarification(tarificationId: String): Tarification?
 	suspend fun createTarification(tarification: Tarification): Tarification
 	suspend fun getTarifications(tarificationIds: List<String>): List<Tarification>
 	suspend fun modifyTarification(tarification: Tarification): Tarification

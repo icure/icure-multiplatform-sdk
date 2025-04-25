@@ -2,6 +2,7 @@ package com.icure.cardinal.sdk.api.impl
 
 import com.icure.cardinal.sdk.api.HealthcarePartyApi
 import com.icure.cardinal.sdk.api.raw.RawHealthcarePartyApi
+import com.icure.cardinal.sdk.api.raw.successBodyOrNull404
 import com.icure.cardinal.sdk.api.raw.successBodyOrThrowRevisionConflict
 import com.icure.cardinal.sdk.filters.BaseFilterOptions
 import com.icure.cardinal.sdk.filters.BaseSortableFilterOptions
@@ -38,7 +39,8 @@ internal class HealthcarePartyApiImpl(
 	override suspend fun deleteHealthcarePartiesUnsafe(entityIds: List<String>): List<DocIdentifier> =
 		rawApi.deleteHealthcareParties(ListOfIds(entityIds)).successBody()
 
-	override suspend fun getHealthcareParty(healthcarePartyId: String) = rawApi.getHealthcareParty(healthcarePartyId).successBody()
+	override suspend fun getHealthcareParty(healthcarePartyId: String) =
+		rawApi.getHealthcareParty(healthcarePartyId).successBodyOrNull404()
 
 	override suspend fun createHealthcareParty(p: HealthcareParty) = rawApi.createHealthcareParty(p).successBody()
 

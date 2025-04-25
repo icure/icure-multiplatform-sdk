@@ -167,7 +167,7 @@ interface CalendarItemBasicFlavouredApi<E : CalendarItem> {
 	 */
 	suspend fun getCalendarItem(
 		entityId: String
-	): E
+	): E?
 
 	/**
 	 * Get multiple calendar items by their ids. Ignores all ids that do not correspond to an entity, correspond to
@@ -217,7 +217,7 @@ interface CalendarItemBasicFlavouredInGroupApi<E : CalendarItem> {
 	/**
 	 * In-group version of [CalendarItemBasicFlavouredApi.getCalendarItem]
 	 */
-	suspend fun getCalendarItem(groupId: String, entityId: String): GroupScoped<E>
+	suspend fun getCalendarItem(groupId: String, entityId: String): GroupScoped<E>?
 
 	/**
 	 * In-group version of [CalendarItemBasicFlavouredApi.getCalendarItems]

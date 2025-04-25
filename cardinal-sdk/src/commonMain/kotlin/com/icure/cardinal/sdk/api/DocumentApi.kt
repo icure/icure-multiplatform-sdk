@@ -2,6 +2,7 @@ package com.icure.cardinal.sdk.api
 
 import com.icure.cardinal.sdk.crypto.entities.DocumentShareOptions
 import com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption
+import com.icure.cardinal.sdk.exceptions.RevisionConflictException
 import com.icure.cardinal.sdk.filters.BaseFilterOptions
 import com.icure.cardinal.sdk.filters.BaseSortableFilterOptions
 import com.icure.cardinal.sdk.filters.FilterOptions
@@ -238,7 +239,7 @@ interface DocumentBasicFlavouredApi<E : Document> {
 	 * @param entityId a document id.
 	 * @return the document with id [entityId].
 	 */
-	suspend fun getDocument(entityId: String): E
+	suspend fun getDocument(entityId: String): E?
 
 	@Deprecated("Use filter instead (then you can get the first result in case of multiple matches)")
 	// Note: if multiple documents have the same uuid there is no discriminant field used to chose which one to return.

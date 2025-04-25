@@ -8,11 +8,13 @@ import com.icure.cardinal.sdk.api.InvoiceFlavouredApi
 import com.icure.cardinal.sdk.api.raw.RawEntityReferenceApi
 import com.icure.cardinal.sdk.api.raw.RawInvoiceApi
 import com.icure.cardinal.sdk.api.raw.successBodyOrNull
+import com.icure.cardinal.sdk.api.raw.successBodyOrNull404
 import com.icure.cardinal.sdk.api.raw.successBodyOrThrowRevisionConflict
 import com.icure.cardinal.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
 import com.icure.cardinal.sdk.crypto.entities.InvoiceShareOptions
 import com.icure.cardinal.sdk.crypto.entities.OwningEntityDetails
 import com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption
+import com.icure.cardinal.sdk.exceptions.NotFoundException
 import com.icure.cardinal.sdk.model.DecryptedInvoice
 import com.icure.cardinal.sdk.model.EncryptedInvoice
 import com.icure.cardinal.sdk.model.EntityReference
@@ -49,9 +51,11 @@ private abstract class AbstractInvoiceBasicFlavouredApi<E : Invoice>(
 		rawApi.modifyInvoice(validateAndMaybeEncrypt(null, entity)).successBodyOrThrowRevisionConflict().let { maybeDecrypt(null, it) }
 
 	override suspend fun modifyInvoices(entities: List<E>): List<E> =
-		rawApi.modifyInvoices(entities.let { validateAndMaybeEncrypt(it) }).successBody().let { maybeDecrypt(it) }
+		rawApi.modifyInvoices(validateAndMaybeEncrypt(entities)).successBody().let { maybeDecrypt(it) }
 
-	override suspend fun getInvoice(entityId: String): E = rawApi.getInvoice(entityId).successBody().let { maybeDecrypt(null, it) }
+	override suspend fun getInvoice(entityId: String): E? =
+		rawApi.getInvoice(entityId).successBodyOrNull404()?.let { maybeDecrypt(null, it) }
+
 	override suspend fun getInvoices(entityIds: List<String>): List<E> =
 		rawApi.getInvoices(ListOfIds(entityIds)).successBody().let { maybeDecrypt(it) }
 
@@ -185,7 +189,7 @@ private abstract class AbstractInvoiceFlavouredApi<E : Invoice>(
 			EntityWithEncryptionMetadataTypeName.Invoice,
 			delegates.keyAsLocalDataOwnerReferences(),
 			true,
-			{ getInvoice(it) },
+			{ getInvoice(it) ?: throw NotFoundException("invoice $it not found") },
 			{ maybeDecrypt(null, rawApi.bulkShare(it).successBody()) }
 		).updatedEntityOrThrow()
 

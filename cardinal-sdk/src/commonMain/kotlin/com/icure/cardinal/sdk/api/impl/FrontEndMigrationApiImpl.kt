@@ -2,6 +2,7 @@ package com.icure.cardinal.sdk.api.impl
 
 import com.icure.cardinal.sdk.api.FrontEndMigrationApi
 import com.icure.cardinal.sdk.api.raw.RawFrontEndMigrationApi
+import com.icure.cardinal.sdk.api.raw.successBodyOrNull404
 import com.icure.cardinal.sdk.api.raw.successBodyOrThrowRevisionConflict
 import com.icure.cardinal.sdk.model.FrontEndMigration
 import com.icure.utils.InternalIcureApi
@@ -10,7 +11,8 @@ import com.icure.utils.InternalIcureApi
 internal  class FrontEndMigrationApiImpl(
 	private val rawApi: RawFrontEndMigrationApi,
 ) : FrontEndMigrationApi {
-	override suspend fun getFrontEndMigration(frontEndMigrationId: String) = rawApi.getFrontEndMigration(frontEndMigrationId).successBody()
+	override suspend fun getFrontEndMigration(frontEndMigrationId: String) =
+		rawApi.getFrontEndMigration(frontEndMigrationId).successBodyOrNull404()
 
 	override suspend fun createFrontEndMigration(frontEndMigration: FrontEndMigration) =
 		rawApi.createFrontEndMigration(frontEndMigration).successBody()

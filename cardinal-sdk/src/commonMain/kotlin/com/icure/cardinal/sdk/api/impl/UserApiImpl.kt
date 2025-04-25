@@ -3,6 +3,7 @@ package com.icure.cardinal.sdk.api.impl
 import com.icure.cardinal.sdk.api.UserApi
 import com.icure.cardinal.sdk.api.raw.RawPermissionApi
 import com.icure.cardinal.sdk.api.raw.RawUserApi
+import com.icure.cardinal.sdk.api.raw.successBodyOrNull404
 import com.icure.cardinal.sdk.api.raw.successBodyOrThrowRevisionConflict
 import com.icure.cardinal.sdk.filters.BaseFilterOptions
 import com.icure.cardinal.sdk.filters.BaseSortableFilterOptions
@@ -61,14 +62,13 @@ internal class UserApiImpl(
 		raw.createUser(user).successBody()
 
 
-	override suspend fun getUser(userId: String) = raw.getUser(userId).successBody()
+	override suspend fun getUser(userId: String) = raw.getUser(userId).successBodyOrNull404()
 
 	override suspend fun getUsers(userIds: List<String>) = raw.getUsers(ListOfIds(userIds)).successBody()
 
-	override suspend fun getUserByEmail(email: String) = raw.getUserByEmail(email).successBody()
+	override suspend fun getUserByEmail(email: String) = raw.getUserByEmail(email).successBodyOrNull404()
 
-
-	override suspend fun getUserByPhoneNumber(phoneNumber: String) = raw.getUserByPhoneNumber(phoneNumber).successBody()
+	override suspend fun getUserByPhoneNumber(phoneNumber: String) = raw.getUserByPhoneNumber(phoneNumber).successBodyOrNull404()
 
 
 	override suspend fun findByHcpartyId(id: String) = raw.findByHcpartyId(id).successBody()

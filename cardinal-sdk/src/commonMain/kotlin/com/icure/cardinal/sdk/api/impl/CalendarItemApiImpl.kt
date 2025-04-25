@@ -12,12 +12,14 @@ import com.icure.cardinal.sdk.api.CalendarItemFlavouredInGroupApi
 import com.icure.cardinal.sdk.api.CalendarItemInGroupApi
 import com.icure.cardinal.sdk.api.raw.RawCalendarItemApi
 import com.icure.cardinal.sdk.api.raw.RawDataOwnerApi
+import com.icure.cardinal.sdk.api.raw.successBodyOrNull404
 import com.icure.cardinal.sdk.api.raw.successBodyOrThrowRevisionConflict
 import com.icure.cardinal.sdk.crypto.entities.CalendarItemShareOptions
 import com.icure.cardinal.sdk.crypto.entities.DelegateShareOptions
 import com.icure.cardinal.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
 import com.icure.cardinal.sdk.crypto.entities.OwningEntityDetails
 import com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption
+import com.icure.cardinal.sdk.exceptions.NotFoundException
 import com.icure.cardinal.sdk.filters.BaseFilterOptions
 import com.icure.cardinal.sdk.filters.BaseSortableFilterOptions
 import com.icure.cardinal.sdk.filters.FilterOptions
@@ -142,19 +144,19 @@ private open class AbstractCalendarItemBasicFlavouredApi<E : CalendarItem>(
 			maybeDecrypt(groupId, it)
 		}
 
-	override suspend fun getCalendarItem(groupId: String, entityId: String): GroupScoped<E> =
-		GroupScoped(doGetCalendarItem(groupId, entityId), groupId)
+	override suspend fun getCalendarItem(groupId: String, entityId: String): GroupScoped<E>? =
+		doGetCalendarItem(groupId, entityId)?.let { GroupScoped(it, groupId) }
 
-	override suspend fun getCalendarItem(entityId: String): E =
+	override suspend fun getCalendarItem(entityId: String): E? =
 		doGetCalendarItem(null, entityId)
 
-	protected suspend fun doGetCalendarItem(groupId: String?, entityId: String): E =
+	protected suspend fun doGetCalendarItem(groupId: String?, entityId: String): E? =
 		(
 			if (groupId == null)
 				rawApi.getCalendarItem(entityId)
 			else
 				rawApi.getCalendarItemInGroup(groupId = groupId, calendarItemId = entityId)
-		).successBody().let {
+		).successBodyOrNull404()?.let {
 			maybeDecrypt(groupId, it)
 		}
 
@@ -240,7 +242,7 @@ private class AbstractCalendarItemFlavouredApi<E : CalendarItem>(
 			EntityWithEncryptionMetadataTypeName.CalendarItem,
 			delegates,
 			true,
-			{ doGetCalendarItem(groupId, it) },
+			{ doGetCalendarItem(groupId, it) ?: throw NotFoundException("CalendarItem $it not found") },
 			{
 				maybeDecrypt(
 					groupId,

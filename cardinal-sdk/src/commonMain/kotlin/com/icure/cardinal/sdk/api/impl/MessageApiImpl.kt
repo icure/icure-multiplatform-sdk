@@ -6,11 +6,13 @@ import com.icure.cardinal.sdk.api.MessageBasicFlavouredApi
 import com.icure.cardinal.sdk.api.MessageBasicFlavourlessApi
 import com.icure.cardinal.sdk.api.MessageFlavouredApi
 import com.icure.cardinal.sdk.api.raw.RawMessageApi
+import com.icure.cardinal.sdk.api.raw.successBodyOrNull404
 import com.icure.cardinal.sdk.api.raw.successBodyOrThrowRevisionConflict
 import com.icure.cardinal.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
 import com.icure.cardinal.sdk.crypto.entities.MessageShareOptions
 import com.icure.cardinal.sdk.crypto.entities.OwningEntityDetails
 import com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption
+import com.icure.cardinal.sdk.exceptions.NotFoundException
 import com.icure.cardinal.sdk.filters.BaseFilterOptions
 import com.icure.cardinal.sdk.filters.BaseSortableFilterOptions
 import com.icure.cardinal.sdk.filters.FilterOptions
@@ -71,7 +73,8 @@ private abstract class AbstractMessageBasicFlavouredApi<E : Message>(
 	override suspend fun modifyMessage(entity: E): E =
 		rawApi.modifyMessage(validateAndMaybeEncrypt(null, entity)).successBodyOrThrowRevisionConflict().let { maybeDecrypt(null, it) }
 
-	override suspend fun getMessage(entityId: String): E = rawApi.getMessage(entityId).successBody().let { maybeDecrypt(null, it) }
+	override suspend fun getMessage(entityId: String): E? =
+		rawApi.getMessage(entityId).successBodyOrNull404()?.let { maybeDecrypt(null, it) }
 
 	override suspend fun getMessages(entityIds: List<String>): List<E> =
 		rawApi.getMessages(ListOfIds(entityIds)).successBody().let { maybeDecrypt(it) }
@@ -166,7 +169,7 @@ private abstract class AbstractMessageFlavouredApi<E : Message>(
 			EntityWithEncryptionMetadataTypeName.Message,
 			delegates.keyAsLocalDataOwnerReferences(),
 			true,
-			{ getMessage(it) },
+			{ getMessage(it) ?: throw NotFoundException("Message $it not found") },
 			{ maybeDecrypt(null, rawApi.bulkShare(it).successBody()) }
 		).updatedEntityOrThrow()
 

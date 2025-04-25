@@ -2,6 +2,7 @@ package com.icure.cardinal.sdk.api.impl
 
 import com.icure.cardinal.sdk.api.InsuranceApi
 import com.icure.cardinal.sdk.api.raw.RawInsuranceApi
+import com.icure.cardinal.sdk.api.raw.successBodyOrNull404
 import com.icure.cardinal.sdk.api.raw.successBodyOrThrowRevisionConflict
 import com.icure.cardinal.sdk.model.Insurance
 import com.icure.cardinal.sdk.model.ListOfIds
@@ -11,7 +12,7 @@ import com.icure.utils.InternalIcureApi
 internal class InsuranceApiImpl(
 	private val rawApi: RawInsuranceApi,
 ) : InsuranceApi {
-	override suspend fun getInsurance(insuranceId: String) = rawApi.getInsurance(insuranceId).successBody()
+	override suspend fun getInsurance(insuranceId: String) = rawApi.getInsurance(insuranceId).successBodyOrNull404()
 
 	override suspend fun getInsurances(insuranceIds: List<String>) = rawApi.getInsurances(
 		ListOfIds(insuranceIds)
@@ -21,6 +22,7 @@ internal class InsuranceApiImpl(
 
 	override suspend fun deleteInsurance(insuranceId: String) = rawApi.deleteInsurance(insuranceId).successBody()
 
+	@Deprecated("Will be replaced by filters")
 	override suspend fun getAllInsurances(
 		startDocumentId: String?,
 		limit: Int?,

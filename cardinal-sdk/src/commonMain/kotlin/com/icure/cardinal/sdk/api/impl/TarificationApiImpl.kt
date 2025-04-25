@@ -2,6 +2,7 @@ package com.icure.cardinal.sdk.api.impl
 
 import com.icure.cardinal.sdk.api.TarificationApi
 import com.icure.cardinal.sdk.api.raw.RawTarificationApi
+import com.icure.cardinal.sdk.api.raw.successBodyOrNull404
 import com.icure.cardinal.sdk.api.raw.successBodyOrThrowRevisionConflict
 import com.icure.cardinal.sdk.model.ListOfIds
 import com.icure.cardinal.sdk.model.Tarification
@@ -11,7 +12,8 @@ import com.icure.utils.InternalIcureApi
 internal class TarificationApiImpl(
 	private val rawApi: RawTarificationApi,
 ) : TarificationApi {
-	override suspend fun getTarification(tarificationId: String) = rawApi.getTarification(tarificationId).successBody()
+	override suspend fun getTarification(tarificationId: String) =
+		rawApi.getTarification(tarificationId).successBodyOrNull404()
 
 	override suspend fun createTarification(tarification: Tarification) =
 		rawApi.createTarification(tarification).successBody()
@@ -24,6 +26,7 @@ internal class TarificationApiImpl(
 
 	override suspend fun modifyTarification(tarification: Tarification) = rawApi.modifyTarification(tarification).successBodyOrThrowRevisionConflict()
 
+	@Deprecated("Will be replaced by filters")
 	override suspend fun findTarificationsByLabel(
 		region: String?,
 		types: String?,
@@ -34,6 +37,7 @@ internal class TarificationApiImpl(
 		limit: Int?,
 	) = rawApi.findTarificationsByLabel(region, types, language, label, startKey, startDocumentId, limit).successBody()
 
+	@Deprecated("Will be replaced by filters")
 	override suspend fun findTarificationsBy(
 		region: String?,
 		type: String?,

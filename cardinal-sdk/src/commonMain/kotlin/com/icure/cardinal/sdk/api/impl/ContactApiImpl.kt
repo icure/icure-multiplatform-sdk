@@ -6,6 +6,7 @@ import com.icure.cardinal.sdk.api.ContactBasicFlavouredApi
 import com.icure.cardinal.sdk.api.ContactBasicFlavourlessApi
 import com.icure.cardinal.sdk.api.ContactFlavouredApi
 import com.icure.cardinal.sdk.api.raw.RawContactApi
+import com.icure.cardinal.sdk.api.raw.successBodyOrNull404
 import com.icure.cardinal.sdk.api.raw.successBodyOrThrowRevisionConflict
 import com.icure.cardinal.sdk.crypto.decrypt
 import com.icure.cardinal.sdk.crypto.entities.ContactShareOptions
@@ -98,8 +99,9 @@ private abstract class AbstractContactBasicFlavouredApi<E : Contact, S : Service
 	override suspend fun modifyContacts(entities: List<E>): List<E> =
 		maybeDecrypt(rawApi.modifyContacts(validateAndMaybeEncrypt(entities)).successBody())
 
-	override suspend fun getContact(entityId: String): E =
-		rawApi.getContact(entityId).successBody().let { maybeDecrypt(null, it) }
+	override suspend fun getContact(entityId: String): E? =
+		rawApi.getContact(entityId).successBodyOrNull404()?.let { maybeDecrypt(null, it) }
+
 	override suspend fun getContacts(entityIds: List<String>): List<E> =
 		maybeDecrypt(rawApi.getContacts(ListOfIds(entityIds)).successBody())
 

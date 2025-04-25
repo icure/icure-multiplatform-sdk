@@ -41,10 +41,10 @@ interface UserApi: Subscribable<User, User, FilterOptions<User>> {
 	): PaginatedList<User>
 
 	suspend fun createUser(user: User): User
-	suspend fun getUser(userId: String): User
+	suspend fun getUser(userId: String): User?
 	suspend fun getUsers(userIds: List<String>): List<User>
-	suspend fun getUserByEmail(email: String): User
-	suspend fun getUserByPhoneNumber(phoneNumber: String): User
+	suspend fun getUserByEmail(email: String): User?
+	suspend fun getUserByPhoneNumber(phoneNumber: String): User?
 	suspend fun findByHcpartyId(id: String): List<String>
 	suspend fun findByPatientId(id: String): List<String>
 	suspend fun modifyUser(user: User): User

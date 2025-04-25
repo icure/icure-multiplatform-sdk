@@ -203,7 +203,7 @@ interface PatientBasicFlavouredApi<E : Patient> {
 	 * @param entityId a patient id.
 	 * @return the patient with id [entityId].
 	 */
-	suspend fun getPatient(	entityId: String): E
+	suspend fun getPatient(	entityId: String): E?
 
 	/**
 	 * Get the patient with the provided id and follows the chain of patient merges indicated by the
@@ -484,7 +484,7 @@ interface PatientBasicFlavouredInGroupApi<E : Patient> {
 	/**
 	 * In-group version of [PatientBasicFlavouredApi.getPatient]
 	 */
-	suspend fun getPatient(groupId: String, entityId: String): GroupScoped<E>
+	suspend fun getPatient(groupId: String, entityId: String): GroupScoped<E>?
 
 	/**
 	 * In-group version of [PatientBasicFlavouredApi.getPatientResolvingMerges]

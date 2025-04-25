@@ -126,7 +126,7 @@ interface MaintenanceTaskBasicFlavouredApi<E : MaintenanceTask> {
 	 * @param entityId a maintenance task id.
 	 * @return the maintenance task with id [entityId].
 	 */
-	suspend fun getMaintenanceTask(entityId: String): E
+	suspend fun getMaintenanceTask(entityId: String): E?
 
 	/**
 	 * Get multiple maintenance tasks by their ids. Ignores all ids that do not correspond to an entity, correspond to

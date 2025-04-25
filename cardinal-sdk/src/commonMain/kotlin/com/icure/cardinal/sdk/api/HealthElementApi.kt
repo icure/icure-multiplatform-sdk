@@ -179,7 +179,7 @@ interface HealthElementBasicFlavouredApi<E : HealthElement> {
 	 * @param entityId a health element id.
 	 * @return the health element with id [entityId].
 	 */
-	suspend fun getHealthElement(entityId: String): E
+	suspend fun getHealthElement(entityId: String): E?
 
 	/**
 	 * Get multiple health elements by their ids. Ignores all ids that do not correspond to an entity, correspond to
@@ -225,7 +225,7 @@ interface HealthElementBasicFlavouredInGroupApi<E : HealthElement> {
 	/**
 	 * In-group version of [HealthElementBasicFlavouredApi.getHealthElement]
 	 */
-	suspend fun getHealthElement(groupId: String, entityId: String): GroupScoped<E>
+	suspend fun getHealthElement(groupId: String, entityId: String): GroupScoped<E>?
 
 	/**
 	 * In-group version of [HealthElementBasicFlavouredApi.getHealthElements]

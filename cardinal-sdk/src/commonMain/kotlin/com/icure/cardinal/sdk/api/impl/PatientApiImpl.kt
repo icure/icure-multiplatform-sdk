@@ -18,6 +18,7 @@ import com.icure.cardinal.sdk.api.raw.RawHealthElementApi
 import com.icure.cardinal.sdk.api.raw.RawHealthcarePartyApi
 import com.icure.cardinal.sdk.api.raw.RawInvoiceApi
 import com.icure.cardinal.sdk.api.raw.RawPatientApi
+import com.icure.cardinal.sdk.api.raw.successBodyOrNull404
 import com.icure.cardinal.sdk.api.raw.successBodyOrThrowRevisionConflict
 import com.icure.cardinal.sdk.crypto.entities.DelegateShareOptions
 import com.icure.cardinal.sdk.crypto.entities.EntityAccessInformation
@@ -33,6 +34,7 @@ import com.icure.cardinal.sdk.crypto.entities.ShareMetadataBehaviour
 import com.icure.cardinal.sdk.crypto.entities.SimpleDelegateShareOptionsImpl
 import com.icure.cardinal.sdk.crypto.entities.SimpleShareResult
 import com.icure.cardinal.sdk.crypto.entities.asIcureStub
+import com.icure.cardinal.sdk.exceptions.NotFoundException
 import com.icure.cardinal.sdk.filters.BaseFilterOptions
 import com.icure.cardinal.sdk.filters.BaseSortableFilterOptions
 import com.icure.cardinal.sdk.filters.FilterOptions
@@ -180,15 +182,15 @@ private open class AbstractPatientBasicFlavouredApi<E : Patient>(
 		)
 
 	protected suspend fun doGetPatient(groupId: String?, entityId: String) =
-		doGetEncryptedPatient(groupId, entityId).let { maybeDecrypt(groupId, it) }
+		doGetEncryptedPatient(groupId, entityId)?.let { maybeDecrypt(groupId, it) }
 
-	protected suspend fun doGetEncryptedPatient(groupId: String?, entityId: String) =
+	protected suspend fun doGetEncryptedPatient(groupId: String?, entityId: String): EncryptedPatient? =
 		(
 			if (groupId == null)
 				rawApi.getPatient(entityId)
 			else
 				rawApi.getPatientInGroup(groupId = groupId, patientId = entityId)
-			).successBody()
+			).successBodyOrNull404()
 
 	protected suspend fun doGetPatientResolvingMerges(
 		groupId: String?,
@@ -201,11 +203,17 @@ private open class AbstractPatientBasicFlavouredApi<E : Patient>(
 				require (maxMergeDepth == null || depth < maxMergeDepth) {
 					"Merge chain for patient $patientId is longer than configured maxMergeDepth $maxMergeDepth"
 				}
-				findLastMergedPatientInHierarchy(doGetEncryptedPatient(groupId, mergeId), depth + 1)
+				findLastMergedPatientInHierarchy(
+					patient = doGetEncryptedPatient(groupId, mergeId) ?: throw NotFoundException("Patient $mergeId not found"),
+					depth = depth + 1
+				)
 			} else patient
 		}
 
-		return findLastMergedPatientInHierarchy(doGetEncryptedPatient(groupId, patientId), 0).let {
+		return findLastMergedPatientInHierarchy(
+			patient = doGetEncryptedPatient(groupId, patientId) ?: throw NotFoundException("Patient $patientId not found"),
+			depth = 0
+		).let {
 			maybeDecrypt(groupId, it)
 		}
 	}
@@ -250,15 +258,16 @@ private open class PatientBasicFlavouredInGroupApiImpl<E : Patient>(
 			doModifyPatients(groupId, entities)
 		}
 
-	override suspend fun getPatient(groupId: String, entityId: String): GroupScoped<E> =
-		GroupScoped(doGetPatient(groupId, entityId), groupId)
+	override suspend fun getPatient(groupId: String, entityId: String): GroupScoped<E>? = doGetPatient(groupId, entityId)?.let {
+		GroupScoped(it, groupId)
+	}
 
 	override suspend fun getPatientResolvingMerges(
 		groupId: String,
 		patientId: String,
 		maxMergeDepth: Int?
 	): GroupScoped<E> =
-		doGetPatientResolvingMerges(groupId, patientId, maxMergeDepth).let { GroupScoped(it, groupId) }
+		GroupScoped(doGetPatientResolvingMerges(groupId, patientId, maxMergeDepth), groupId)
 
 	override suspend fun getPatients(groupId: String, patientIds: List<String>): List<GroupScoped<E>> =
 		doGetPatients(groupId, patientIds).map { GroupScoped(it, groupId) }
@@ -294,7 +303,7 @@ private open class PatientBasicFlavouredApiImpl<E : Patient>(
 	override suspend fun modifyPatient(entity: E): E =
 		rawApi.modifyPatient(validateAndMaybeEncrypt(null, entity)).successBodyOrThrowRevisionConflict().let { maybeDecrypt(null, it) }
 
-	override suspend fun getPatient(entityId: String): E =
+	override suspend fun getPatient(entityId: String): E? =
 		doGetPatient(null, entityId)
 
 	@Deprecated("Find methods are deprecated", replaceWith = ReplaceWith("filterPatientsBy()"))
@@ -467,7 +476,7 @@ private open class AbstractPatientFlavouredApi<E : Patient>(
 			EntityWithEncryptionMetadataTypeName.Patient,
 			delegates,
 			true,
-			{ doGetPatient(groupId, it) },
+			{ doGetPatient(groupId, it) ?: throw NotFoundException("Patient $it not found") },
 			{
 				maybeDecrypt(
 					groupId,
@@ -487,7 +496,7 @@ private open class AbstractPatientFlavouredApi<E : Patient>(
 			groupId,
 			patient,
 			EntityWithEncryptionMetadataTypeName.Patient,
-			{ doGetPatient(groupId, it) },
+			{ doGetPatient(groupId, it) ?: throw NotFoundException("Patient $it not found") },
 			{ maybeDecrypt(null, rawApi.bulkShare(it).successBody()) }
 		) ?: patient
 	}
@@ -750,7 +759,7 @@ private class PatientApiImpl(
 
 		val hcp = rawHealthcarePartyApi.getCurrentHealthcareParty().successBody() // Shall we do it for any data owner?
 		val parentId = hcp.parentId
-		val patient = encrypted.getPatient(patientId).let { patient ->
+		val patient = encrypted.getPatient(patientId)?.let { patient ->
 			config.crypto.entity.ensureEncryptionKeysInitialized(
 				null,
 				patient,
@@ -758,7 +767,7 @@ private class PatientApiImpl(
 			)?.let {
 				encrypted.modifyPatient(it)
 			} ?: patient
-		}
+		} ?: throw NotFoundException("Patient $patientId not found")
 		val selfHierarchySet = config.crypto.dataOwnerApi.getCurrentDataOwnerHierarchyIds().toSet()
 
 		val delegationSecretKeys = getSecretIdsOf(patient)
@@ -940,7 +949,7 @@ private class PatientApiImpl(
 				),
 				EntityWithEncryptionMetadataTypeName.Patient,
 				true,
-				{ getPatient(it) },
+				{ getPatient(it) ?: throw NotFoundException("Patient $it not found") },
 				{ params -> rawApi.bulkShareMinimal(params).successBody() }
 			)
 			ShareAllPatientDataOptions.EntityResult(
@@ -981,11 +990,17 @@ private class PatientApiImpl(
 				require(maxMergeLevel > 0) {
 					"Too many merged levels for parent (Patient) of child document ${childDocument.entity.id}"
 				}
-				findLastMergedPatientInHierarchy(getPatient(patient.mergeToPatientId), maxMergeLevel - 1)
+				findLastMergedPatientInHierarchy(
+					patient = getPatient(patient.mergeToPatientId) ?: throw NotFoundException("Patient not found"),
+					maxMergeLevel = maxMergeLevel - 1
+				)
 			} else patient
 		}
 
-		return findLastMergedPatientInHierarchy(getPatient(parentIds.first()), 10).id
+		return findLastMergedPatientInHierarchy(
+			patient = getPatient(parentIds.first()) ?: throw NotFoundException("Patient not found"),
+			maxMergeLevel = 10
+		).id
 	}
 
 	override suspend fun withEncryptionMetadata(
@@ -1059,7 +1074,7 @@ private class PatientApiImpl(
 		)
 
 	override suspend fun forceInitializeExchangeDataToNewlyInvitedPatient(patientId: String): Boolean {
-		val patient = encrypted.getPatient(patientId)
+		val patient = encrypted.getPatient(patientId) ?: throw NotFoundException("Patient $patientId not found")
 		if (patient.publicKeysSpki.isNotEmpty()) return false
 		config.crypto.exchangeDataManager.getOrCreateEncryptionDataTo(
 			null,

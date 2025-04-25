@@ -2,6 +2,7 @@ package com.icure.cardinal.sdk.api.impl
 
 import com.icure.cardinal.sdk.api.DeviceApi
 import com.icure.cardinal.sdk.api.raw.RawDeviceApi
+import com.icure.cardinal.sdk.api.raw.successBodyOrNull404
 import com.icure.cardinal.sdk.api.raw.successBodyOrThrowRevisionConflict
 import com.icure.cardinal.sdk.filters.BaseFilterOptions
 import com.icure.cardinal.sdk.filters.BaseSortableFilterOptions
@@ -38,7 +39,7 @@ internal class DeviceApiImpl(
 	override suspend fun deleteDevicesUnsafe(entityIds: List<String>): List<DocIdentifier> =
 		rawApi.deleteDevices(ListOfIds(entityIds)).successBody()
 
-	override suspend fun getDevice(deviceId: String) = rawApi.getDevice(deviceId).successBody()
+	override suspend fun getDevice(deviceId: String) = rawApi.getDevice(deviceId).successBodyOrNull404()
 
 	override suspend fun getDevices(deviceIds: List<String>) = rawApi.getDevices(ListOfIds(deviceIds)).successBody()
 

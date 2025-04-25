@@ -143,7 +143,7 @@ interface MessageBasicFlavouredApi<E : Message> {
 	 * @param entityId a message id.
 	 * @return the Message with id [entityId].
 	 */
-	suspend fun getMessage(entityId: String): E
+	suspend fun getMessage(entityId: String): E?
 
 	/**
 	 * Get multiple messages by their ids. Ignores all ids that do not correspond to an entity, correspond to

@@ -70,7 +70,7 @@ interface InvoiceBasicFlavouredApi<E : Invoice> {
 	 * @param entityId an invoice id.
 	 * @return the invoice with id [entityId].
 	 */
-	suspend fun getInvoice(entityId: String): E
+	suspend fun getInvoice(entityId: String): E?
 
 	/**
 	 * Get multiple invoices by their ids. Ignores all ids that do not correspond to an entity, correspond to

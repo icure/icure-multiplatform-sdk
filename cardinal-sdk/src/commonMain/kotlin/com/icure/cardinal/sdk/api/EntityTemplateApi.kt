@@ -6,7 +6,7 @@ import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.utils.DefaultValue
 
 interface EntityTemplateApi {
-	suspend fun getEntityTemplate(documentTemplateId: String): EntityTemplate
+	suspend fun getEntityTemplate(documentTemplateId: String): EntityTemplate?
 	suspend fun createEntityTemplate(applicationSettings: EntityTemplate): EntityTemplate
 	suspend fun modifyEntityTemplate(documentTemplate: EntityTemplate): EntityTemplate
 	suspend fun listEntityTemplatesBy(
