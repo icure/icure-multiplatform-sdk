@@ -10,6 +10,7 @@ import com.icure.cardinal.sdk.api.raw.successBodyOrNull404
 import com.icure.cardinal.sdk.api.raw.successBodyOrThrowRevisionConflict
 import com.icure.cardinal.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
 import com.icure.cardinal.sdk.crypto.entities.MaintenanceTaskShareOptions
+import com.icure.cardinal.sdk.exceptions.NotFoundException
 import com.icure.cardinal.sdk.filters.BaseFilterOptions
 import com.icure.cardinal.sdk.filters.BaseSortableFilterOptions
 import com.icure.cardinal.sdk.filters.FilterOptions
@@ -94,7 +95,7 @@ private abstract class AbstractMaintenanceTaskFlavouredApi<E : MaintenanceTask>(
 			EntityWithEncryptionMetadataTypeName.MaintenanceTask,
 			delegates.keyAsLocalDataOwnerReferences(),
 			true,
-			{ getMaintenanceTask(it) },
+			{ getMaintenanceTask(it) ?: throw NotFoundException("MaintenanceTask $it not found") },
 			{ maybeDecrypt(null, rawApi.bulkShare(it).successBody()) }
 		).updatedEntityOrThrow()
 
