@@ -58,6 +58,7 @@ import {AgendaApi} from "../api/AgendaApi.mjs";
 import {MedicalLocationApi} from "../api/MedicalLocationApi.mjs";
 import {CaptchaOptions} from "../auth/CaptchaOptions.mjs";
 import {AuthApi} from "../api/AuthApi.mjs";
+import {CalendarItemTypeApi} from "../api/CalendarItemTypeApi.mjs";
 
 export interface CardinalApis {
   readonly auth: AuthApi
@@ -98,6 +99,7 @@ export interface CardinalApis {
   readonly recovery: RecoveryApi
   readonly cardinalMaintenanceTask: CardinalMaintenanceTaskApi
   readonly dataOwner: DataOwnerApi
+  readonly calendarItemType: CalendarItemTypeApi
 }
 
 /**
@@ -151,7 +153,7 @@ export interface CardinalBaseApis {
   readonly receipt: ReceiptBasicApi
   readonly timeTable: TimeTableApi
   readonly topic: TopicBasicApi
-
+  readonly calendarItemType: CalendarItemTypeApi
 }
 
 /**

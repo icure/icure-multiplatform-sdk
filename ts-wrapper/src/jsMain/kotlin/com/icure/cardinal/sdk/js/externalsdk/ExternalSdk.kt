@@ -8,6 +8,7 @@ import com.icure.cardinal.sdk.js.api.ApplicationSettingsApiJs
 import com.icure.cardinal.sdk.js.api.AuthApiJs
 import com.icure.cardinal.sdk.js.api.CalendarItemApiJs
 import com.icure.cardinal.sdk.js.api.CalendarItemBasicApiJs
+import com.icure.cardinal.sdk.js.api.CalendarItemTypeApiJs
 import com.icure.cardinal.sdk.js.api.CardinalMaintenanceTaskApiJs
 import com.icure.cardinal.sdk.js.api.ClassificationApiJs
 import com.icure.cardinal.sdk.js.api.ClassificationBasicApiJs
@@ -94,6 +95,7 @@ external interface CardinalApisJs {
 	val recovery: RecoveryApiJs
 	val cardinalMaintenanceTask: CardinalMaintenanceTaskApiJs
 	val dataOwner: DataOwnerApiJs
+	val calendarItemType: CalendarItemTypeApiJs
 }
 
 @JsName("CardinalSdk")
@@ -137,6 +139,7 @@ external interface CardinalBaseApisJs {
 	val receipt: ReceiptBasicApiJs
 	val timeTable: TimeTableApiJs
 	val topic: TopicBasicApiJs
+	val calendarItemType: CalendarItemTypeApiJs
 }
 
 @JsName("CardinalBaseSdk")

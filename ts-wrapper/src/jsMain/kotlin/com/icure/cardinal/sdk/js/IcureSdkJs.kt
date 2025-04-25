@@ -13,6 +13,7 @@ import com.icure.cardinal.sdk.js.api.ApplicationSettingsApiJs
 import com.icure.cardinal.sdk.js.api.AuthApiJs
 import com.icure.cardinal.sdk.js.api.CalendarItemApiJs
 import com.icure.cardinal.sdk.js.api.CalendarItemBasicApiJs
+import com.icure.cardinal.sdk.js.api.CalendarItemTypeApiJs
 import com.icure.cardinal.sdk.js.api.CardinalMaintenanceTaskApiJs
 import com.icure.cardinal.sdk.js.api.ClassificationApiJs
 import com.icure.cardinal.sdk.js.api.ClassificationBasicApiJs
@@ -64,6 +65,7 @@ import com.icure.cardinal.sdk.js.api.impl.ApplicationSettingsApiImplJs
 import com.icure.cardinal.sdk.js.api.impl.AuthApiImplJs
 import com.icure.cardinal.sdk.js.api.impl.CalendarItemApiImplJs
 import com.icure.cardinal.sdk.js.api.impl.CalendarItemBasicApiImplJs
+import com.icure.cardinal.sdk.js.api.impl.CalendarItemTypeApiImplJs
 import com.icure.cardinal.sdk.js.api.impl.CardinalMaintenanceTaskApiImplJs
 import com.icure.cardinal.sdk.js.api.impl.ClassificationApiImplJs
 import com.icure.cardinal.sdk.js.api.impl.ClassificationBasicApiImplJs
@@ -235,6 +237,7 @@ internal class CardinalApisJsImpl(
 	override val recovery: RecoveryApiJs by lazy { RecoveryApiImplJs(sdk.recovery) }
 	override val cardinalMaintenanceTask: CardinalMaintenanceTaskApiJs by lazy { CardinalMaintenanceTaskApiImplJs(sdk.cardinalMaintenanceTask) }
 	override val dataOwner: DataOwnerApiJs by lazy { DataOwnerApiImplJs(sdk.dataOwner) }
+	override val calendarItemType: CalendarItemTypeApiJs by lazy { CalendarItemTypeApiImplJs(sdk.calendarItemType) }
 }
 
 internal class CardinalSdkJsImpl(
@@ -282,6 +285,7 @@ internal class CardinalBaseApisJsImpl(
 	override val receipt: ReceiptBasicApiJs by lazy { ReceiptBasicApiImplJs(sdk.receipt) }
 	override val timeTable: TimeTableApiJs by lazy { TimeTableApiImplJs(sdk.timeTable) }
 	override val topic: TopicBasicApiJs by lazy { TopicBasicApiImplJs(sdk.topic) }
+	override val calendarItemType: CalendarItemTypeApiJs by lazy { CalendarItemTypeApiImplJs(sdk.calendarItemType) }
 }
 
 internal class CardinalBaseSdkJsImpl(
