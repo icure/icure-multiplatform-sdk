@@ -13,6 +13,7 @@ import com.icure.cardinal.sdk.crypto.entities.ContactShareOptions
 import com.icure.cardinal.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
 import com.icure.cardinal.sdk.crypto.entities.OwningEntityDetails
 import com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption
+import com.icure.cardinal.sdk.exceptions.NotFoundException
 import com.icure.cardinal.sdk.filters.BaseFilterOptions
 import com.icure.cardinal.sdk.filters.BaseSortableFilterOptions
 import com.icure.cardinal.sdk.filters.FilterOptions
@@ -178,7 +179,7 @@ private abstract class AbstractContactFlavouredApi<E : Contact, S : Service>(
 			EntityWithEncryptionMetadataTypeName.Contact,
 			delegates.keyAsLocalDataOwnerReferences(),
 			true,
-			{ getContact(it) },
+			{ getContact(it) ?: throw NotFoundException("Contact $it not found") },
 			{ maybeDecrypt(null, rawApi.bulkShare(it).successBody()) },
 		).updatedEntityOrThrow()
 

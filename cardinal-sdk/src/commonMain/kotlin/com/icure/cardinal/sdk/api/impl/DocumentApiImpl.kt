@@ -12,6 +12,7 @@ import com.icure.cardinal.sdk.crypto.entities.DocumentShareOptions
 import com.icure.cardinal.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
 import com.icure.cardinal.sdk.crypto.entities.OwningEntityDetails
 import com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption
+import com.icure.cardinal.sdk.exceptions.NotFoundException
 import com.icure.cardinal.sdk.filters.BaseFilterOptions
 import com.icure.cardinal.sdk.filters.BaseSortableFilterOptions
 import com.icure.cardinal.sdk.filters.FilterOptions
@@ -106,7 +107,7 @@ private abstract class AbstractDocumentFlavouredApi<E : Document>(
 			EntityWithEncryptionMetadataTypeName.Document,
 			delegates.keyAsLocalDataOwnerReferences(),
 			true,
-			{ getDocument(it) },
+			{ getDocument(it) ?: throw NotFoundException("Document $it not found") },
 			{ maybeDecrypt(null, rawApi.bulkShare(it).successBody()) }
 		).updatedEntityOrThrow()
 
