@@ -35,4 +35,6 @@ public external interface CalendarItemTypeApiJs {
 
 	public fun modifyCalendarItemType(calendarItemTypeDto: CalendarItemTypeJs):
 			Promise<CalendarItemTypeJs>
+
+	public fun listCalendarItemTypesByAgendaId(agendaId: String): Promise<Array<CalendarItemTypeJs>>
 }

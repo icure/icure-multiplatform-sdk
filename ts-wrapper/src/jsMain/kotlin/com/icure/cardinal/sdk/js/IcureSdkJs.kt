@@ -10,8 +10,10 @@ import com.icure.cardinal.sdk.js.api.AccessLogApiJs
 import com.icure.cardinal.sdk.js.api.AccessLogBasicApiJs
 import com.icure.cardinal.sdk.js.api.AgendaApiJs
 import com.icure.cardinal.sdk.js.api.ApplicationSettingsApiJs
+import com.icure.cardinal.sdk.js.api.AuthApiJs
 import com.icure.cardinal.sdk.js.api.CalendarItemApiJs
 import com.icure.cardinal.sdk.js.api.CalendarItemBasicApiJs
+import com.icure.cardinal.sdk.js.api.CalendarItemTypeApiJs
 import com.icure.cardinal.sdk.js.api.CardinalMaintenanceTaskApiJs
 import com.icure.cardinal.sdk.js.api.ClassificationApiJs
 import com.icure.cardinal.sdk.js.api.ClassificationBasicApiJs
@@ -60,8 +62,10 @@ import com.icure.cardinal.sdk.js.api.impl.AccessLogApiImplJs
 import com.icure.cardinal.sdk.js.api.impl.AccessLogBasicApiImplJs
 import com.icure.cardinal.sdk.js.api.impl.AgendaApiImplJs
 import com.icure.cardinal.sdk.js.api.impl.ApplicationSettingsApiImplJs
+import com.icure.cardinal.sdk.js.api.impl.AuthApiImplJs
 import com.icure.cardinal.sdk.js.api.impl.CalendarItemApiImplJs
 import com.icure.cardinal.sdk.js.api.impl.CalendarItemBasicApiImplJs
+import com.icure.cardinal.sdk.js.api.impl.CalendarItemTypeApiImplJs
 import com.icure.cardinal.sdk.js.api.impl.CardinalMaintenanceTaskApiImplJs
 import com.icure.cardinal.sdk.js.api.impl.ClassificationApiImplJs
 import com.icure.cardinal.sdk.js.api.impl.ClassificationBasicApiImplJs
@@ -120,9 +124,7 @@ import com.icure.cardinal.sdk.js.options.external.SdkOptionsJs
 import com.icure.cardinal.sdk.js.options.toKt
 import com.icure.cardinal.sdk.js.storage.loadStorageOptions
 import com.icure.cardinal.sdk.options.BasicSdkOptions
-import com.icure.cardinal.sdk.options.CommonSdkOptions
 import com.icure.cardinal.sdk.options.SdkOptions
-import com.icure.cardinal.sdk.utils.Serialization
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.promise
 import kotlin.js.Promise
@@ -197,6 +199,7 @@ object InternalSdkInitializers {
 internal class CardinalApisJsImpl(
 	private val sdk: CardinalApis
 ) : CardinalApisJs {
+	override val auth: AuthApiJs by lazy { AuthApiImplJs(sdk.auth) }
 	override val applicationSettings: ApplicationSettingsApiJs by lazy { ApplicationSettingsApiImplJs(sdk.applicationSettings) }
 	override val code: CodeApiJs by lazy { CodeApiImplJs(sdk.code) }
 	override val device: DeviceApiJs by lazy { DeviceApiImplJs(sdk.device) }
@@ -214,8 +217,8 @@ internal class CardinalApisJsImpl(
 	override val role: RoleApiJs by lazy { RoleApiImplJs(sdk.role) }
 	override val tarification: TarificationApiJs by lazy { TarificationApiImplJs(sdk.tarification) }
 	override val user: UserApiJs by lazy { UserApiImplJs(sdk.user) }
-	override val medicalLocationApi: MedicalLocationApiJs by lazy { MedicalLocationApiImplJs(sdk.medicalLocation) }
-	override val agendaApi: AgendaApiJs by lazy { AgendaApiImplJs(sdk.agenda) }
+	override val medicalLocation: MedicalLocationApiJs by lazy { MedicalLocationApiImplJs(sdk.medicalLocation) }
+	override val agenda: AgendaApiJs by lazy { AgendaApiImplJs(sdk.agenda) }
 	override val accessLog: AccessLogApiJs by lazy { AccessLogApiImplJs(sdk.accessLog) }
 	override val calendarItem: CalendarItemApiJs by lazy { CalendarItemApiImplJs(sdk.calendarItem) }
 	override val classification: ClassificationApiJs by lazy { ClassificationApiImplJs(sdk.classification) }
@@ -234,6 +237,7 @@ internal class CardinalApisJsImpl(
 	override val recovery: RecoveryApiJs by lazy { RecoveryApiImplJs(sdk.recovery) }
 	override val cardinalMaintenanceTask: CardinalMaintenanceTaskApiJs by lazy { CardinalMaintenanceTaskApiImplJs(sdk.cardinalMaintenanceTask) }
 	override val dataOwner: DataOwnerApiJs by lazy { DataOwnerApiImplJs(sdk.dataOwner) }
+	override val calendarItemType: CalendarItemTypeApiJs by lazy { CalendarItemTypeApiImplJs(sdk.calendarItemType) }
 }
 
 internal class CardinalSdkJsImpl(
@@ -247,6 +251,7 @@ internal class CardinalSdkJsImpl(
 internal class CardinalBaseApisJsImpl(
 	private val sdk: CardinalBaseApis
 ) : CardinalBaseApisJs {
+	override val auth: AuthApiJs by lazy { AuthApiImplJs(sdk.auth) }
 	override val applicationSettings: ApplicationSettingsApiJs by lazy { ApplicationSettingsApiImplJs(sdk.applicationSettings) }
 	override val code: CodeApiJs by lazy { CodeApiImplJs(sdk.code) }
 	override val device: DeviceApiJs by lazy { DeviceApiImplJs(sdk.device) }
@@ -264,8 +269,8 @@ internal class CardinalBaseApisJsImpl(
 	override val role: RoleApiJs by lazy { RoleApiImplJs(sdk.role) }
 	override val tarification: TarificationApiJs by lazy { TarificationApiImplJs(sdk.tarification) }
 	override val user: UserApiJs by lazy { UserApiImplJs(sdk.user) }
-	override val medicalLocationApi: MedicalLocationApiJs by lazy { MedicalLocationApiImplJs(sdk.medicalLocation) }
-	override val agendaApi: AgendaApiJs by lazy { AgendaApiImplJs(sdk.agenda) }
+	override val medicalLocation: MedicalLocationApiJs by lazy { MedicalLocationApiImplJs(sdk.medicalLocation) }
+	override val agenda: AgendaApiJs by lazy { AgendaApiImplJs(sdk.agenda) }
 	override val accessLog: AccessLogBasicApiJs by lazy { AccessLogBasicApiImplJs(sdk.accessLog) }
 	override val calendarItem: CalendarItemBasicApiJs by lazy { CalendarItemBasicApiImplJs(sdk.calendarItem) }
 	override val classification: ClassificationBasicApiJs by lazy { ClassificationBasicApiImplJs(sdk.classification) }
@@ -280,6 +285,7 @@ internal class CardinalBaseApisJsImpl(
 	override val receipt: ReceiptBasicApiJs by lazy { ReceiptBasicApiImplJs(sdk.receipt) }
 	override val timeTable: TimeTableApiJs by lazy { TimeTableApiImplJs(sdk.timeTable) }
 	override val topic: TopicBasicApiJs by lazy { TopicBasicApiImplJs(sdk.topic) }
+	override val calendarItemType: CalendarItemTypeApiJs by lazy { CalendarItemTypeApiImplJs(sdk.calendarItemType) }
 }
 
 internal class CardinalBaseSdkJsImpl(

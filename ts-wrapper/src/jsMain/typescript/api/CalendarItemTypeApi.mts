@@ -22,4 +22,6 @@ export interface CalendarItemTypeApi {
 
 	modifyCalendarItemType(calendarItemTypeDto: CalendarItemType): Promise<CalendarItemType>;
 
+	listCalendarItemTypesByAgendaId(agendaId: string): Promise<Array<CalendarItemType>>;
+
 }

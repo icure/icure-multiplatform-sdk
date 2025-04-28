@@ -34,6 +34,8 @@ export interface Form extends StoredDocument, ICureDocument<string>, HasEncrypti
 
 	parent: string | undefined;
 
+	anchorId: string | undefined;
+
 	readonly isEncrypted: boolean;
 
 }
@@ -84,6 +86,8 @@ export class DecryptedForm {
 
 	parent: string | undefined = undefined;
 
+	anchorId: string | undefined = undefined;
+
 	secretForeignKeys: Array<string> = [];
 
 	cryptedForeignKeys: { [ key: string ]: Array<Delegation> } = {};
@@ -122,6 +126,7 @@ export class DecryptedForm {
 		if ('healthElementId' in partial) this.healthElementId = partial.healthElementId;
 		if ('planOfActionId' in partial) this.planOfActionId = partial.planOfActionId;
 		if ('parent' in partial) this.parent = partial.parent;
+		if ('anchorId' in partial) this.anchorId = partial.anchorId;
 		if ('secretForeignKeys' in partial && partial.secretForeignKeys !== undefined) this.secretForeignKeys = partial.secretForeignKeys;
 		if ('cryptedForeignKeys' in partial && partial.cryptedForeignKeys !== undefined) this.cryptedForeignKeys = partial.cryptedForeignKeys;
 		if ('delegations' in partial && partial.delegations !== undefined) this.delegations = partial.delegations;
@@ -178,6 +183,8 @@ export class EncryptedForm {
 
 	parent: string | undefined = undefined;
 
+	anchorId: string | undefined = undefined;
+
 	secretForeignKeys: Array<string> = [];
 
 	cryptedForeignKeys: { [ key: string ]: Array<Delegation> } = {};
@@ -216,6 +223,7 @@ export class EncryptedForm {
 		if ('healthElementId' in partial) this.healthElementId = partial.healthElementId;
 		if ('planOfActionId' in partial) this.planOfActionId = partial.planOfActionId;
 		if ('parent' in partial) this.parent = partial.parent;
+		if ('anchorId' in partial) this.anchorId = partial.anchorId;
 		if ('secretForeignKeys' in partial && partial.secretForeignKeys !== undefined) this.secretForeignKeys = partial.secretForeignKeys;
 		if ('cryptedForeignKeys' in partial && partial.cryptedForeignKeys !== undefined) this.cryptedForeignKeys = partial.cryptedForeignKeys;
 		if ('delegations' in partial && partial.delegations !== undefined) this.delegations = partial.delegations;

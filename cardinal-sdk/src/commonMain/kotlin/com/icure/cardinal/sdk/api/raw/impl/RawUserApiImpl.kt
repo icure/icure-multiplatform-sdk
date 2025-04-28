@@ -559,6 +559,17 @@ class RawUserApiImpl(
 			accept(Application.Json)
 		}.wrap()
 
+	override suspend fun enableFasAuthenticationForUser(fasJwtToken: String): HttpResponse<User> =
+		post(authProvider) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "user", "current", "be.fas")
+			}
+			contentType(Application.Json)
+			accept(Application.Json)
+			`header`("fasJwtToken", fasJwtToken)
+		}.wrap()
+
 	override suspend fun createAdminUser(userDto: User): HttpResponse<User> =
 		post(authProvider) {
 			url {
