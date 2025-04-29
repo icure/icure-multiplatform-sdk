@@ -51,7 +51,7 @@ class KeyPairUpdateNotificationTest : StringSpec({
 	suspend fun CardinalSdk.verifyDataAccessible(
 		dataId: String
 	) =
-		patient.getPatient(dataId).note shouldBe note
+		patient.getPatient(dataId).shouldNotBeNull().note shouldBe note
 
 	suspend fun CardinalSdk.getMaintenanceTasks(): List<DecryptedMaintenanceTask> {
 		val iterator = maintenanceTask.filterMaintenanceTasksBy(MaintenanceTaskFilters.afterDateForSelf(date = testStart - 1000L))

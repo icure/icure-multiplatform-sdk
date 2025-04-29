@@ -115,7 +115,7 @@ class RecoveryDataEncryptionTest : StringSpec({
 		val apiPatient = patientUser.api(specJob)
 		shouldThrow<EntityEncryptionException> { apiPatient.patient.getPatient(patient.id) }
 		apiPatient.recovery.recoverExchangeData(recoveryKey)
-		apiPatient.patient.getPatient(patient.id).note shouldBe patient.note
+		apiPatient.patient.getPatient(patient.id).shouldNotBeNull().note shouldBe patient.note
 	}
 
 	"Existing key recovery info should be decrypted correctly" {

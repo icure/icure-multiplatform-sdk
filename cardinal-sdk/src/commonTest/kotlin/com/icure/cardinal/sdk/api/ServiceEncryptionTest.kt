@@ -368,12 +368,12 @@ class ServiceEncryptionTest : StringSpec({
 				patient
 			)
 		)
-		val encryptedContact = sdk.contact.encrypted.getContact(contact.id)
+		val encryptedContact = sdk.contact.encrypted.getContact(contact.id).shouldNotBeNull()
 		encryptedContact.services.forEach { service ->
 			service.content.shouldBeEmpty()
 		}
 		checkDecryptedServicesContent(
-			sdk.contact.getContact(contact.id).services,
+			sdk.contact.getContact(contact.id).shouldNotBeNull().services,
 			listOf(simpleService1, simpleService2, simpleService3, simpleService4)
 		)
 		checkEncryptedValidation(encryptedContact)
@@ -389,12 +389,12 @@ class ServiceEncryptionTest : StringSpec({
 				patient
 			)
 		)
-		val encryptedContact = sdk.contact.encrypted.getContact(contact.id)
+		val encryptedContact = sdk.contact.encrypted.getContact(contact.id).shouldNotBeNull()
 		verifyHasCorrectlyEncryptedCompoundService(encryptedContact)
 		verifyHasCorrectlyEncryptedMultiContentCompoundService(encryptedContact)
 		verifyHasCorrectlyEncryptedDeepCompoundService(encryptedContact)
 		checkDecryptedServicesContent(
-			sdk.contact.getContact(contact.id).services,
+			sdk.contact.getContact(contact.id).shouldNotBeNull().services,
 			listOf(compoundService, multiContentCompound, deepCompound)
 		)
 		checkEncryptedValidation(encryptedContact)
@@ -418,7 +418,7 @@ class ServiceEncryptionTest : StringSpec({
 				patient
 			)
 		)
-		val encryptedContact = sdk.contact.encrypted.getContact(contact.id)
+		val encryptedContact = sdk.contact.encrypted.getContact(contact.id).shouldNotBeNull()
 		verifyHasCorrectlyEncryptedCompoundService(encryptedContact)
 		verifyHasCorrectlyEncryptedMultiContentCompoundService(encryptedContact)
 		verifyHasCorrectlyEncryptedDeepCompoundService(encryptedContact)
@@ -426,7 +426,7 @@ class ServiceEncryptionTest : StringSpec({
 			it.content.shouldBeEmpty()
 		}
 		checkDecryptedServicesContent(
-			sdk.contact.getContact(contact.id).services,
+			sdk.contact.getContact(contact.id).shouldNotBeNull().services,
 			listOf(
 				compoundService,
 				multiContentCompound,

@@ -47,7 +47,7 @@ class HierarchicalDataOwnerEncryptionAndConfidentialityTest : StringSpec({
 		val hcpApi = hcp.api(specJob)
 		val shared = hcpApi.patient.shareWith(
 			other.dataOwnerId,
-			hcpApi.patient.getPatient(patient.id)
+			hcpApi.patient.getPatient(patient.id).shouldNotBeNull()
 		)
 		val retrievedByOther = other.api(specJob).patient.getPatient(patient.id)
 		retrievedByOther shouldBe shared
@@ -71,8 +71,8 @@ class HierarchicalDataOwnerEncryptionAndConfidentialityTest : StringSpec({
 				delegates = mapOf(parent.dataOwnerId to AccessLevel.Write)
 			)
 		).shouldNotBeNull()
-		parent.api(specJob).patient.getPatient(patient.id).note shouldBe note
-		sibling.api(specJob).patient.getPatient(patient.id).note shouldBe note
+		parent.api(specJob).patient.getPatient(patient.id).shouldNotBeNull().note shouldBe note
+		sibling.api(specJob).patient.getPatient(patient.id).shouldNotBeNull().note shouldBe note
 		shouldThrow<RequestStatusException> {
 			grandparent.api(specJob).patient.getPatient(patient.id)
 		}.statusCode shouldBe 403

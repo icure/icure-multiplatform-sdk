@@ -77,16 +77,16 @@ class InterGroupSharingTest : StringSpec({
 		api.patient.inGroup.getPatient(
 			groupId = childGroupId,
 			entityId = basePatient.id
-		).entity.note shouldBe basePatient.note
+		).shouldNotBeNull().entity.note shouldBe basePatient.note
 		if (apiGroup == childGroupId) {
-			api.patient.getPatient(basePatient.id).note shouldBe basePatient.note
+			api.patient.getPatient(basePatient.id).shouldNotBeNull().note shouldBe basePatient.note
 		}
 		api.healthElement.inGroup.getHealthElement(
 			groupId = childGroupId,
 			entityId = baseHe.id
-		).entity.descr shouldBe baseHe.descr
+		).shouldNotBeNull().entity.descr shouldBe baseHe.descr
 		if (apiGroup == childGroupId) {
-			api.healthElement.getHealthElement(baseHe.id).descr shouldBe baseHe.descr
+			api.healthElement.getHealthElement(baseHe.id).shouldNotBeNull().descr shouldBe baseHe.descr
 		}
 	}
 

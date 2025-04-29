@@ -92,7 +92,7 @@ class PatientUserTest : StringSpec({
 		val initializedPatient = patientApi.patient.decrypt(listOf(initializedEncryptedPatient)).single()
 		val updatedPatient = patientApi.patient.modifyPatient(initializedPatient.copy(note = "My secret note"))
 		updatedPatient.rev shouldNotBe initializedPatient.rev
-		patientApi.patient.getPatient(updatedPatient.id).note shouldBe "My secret note"
+		patientApi.patient.getPatient(updatedPatient.id).shouldNotBeNull().note shouldBe "My secret note"
 		val createdData = patientApi.healthElement.createHealthElement(
 			patientApi.healthElement.withEncryptionMetadata(
 				DecryptedHealthElement(

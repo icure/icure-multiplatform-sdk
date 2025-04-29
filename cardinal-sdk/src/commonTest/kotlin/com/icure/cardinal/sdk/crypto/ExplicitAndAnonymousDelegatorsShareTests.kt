@@ -51,16 +51,16 @@ class ExplicitAndAnonymousDelegatorsShareTests : StringSpec({
 			)
 		).shouldNotBeNull()
 		val delegateApi: CardinalSdk = delegate.api(specJob)
-		delegateApi.patient.getPatient(patient.id).run {
+		delegateApi.patient.getPatient(patient.id).shouldNotBeNull().run {
 			note shouldBe patientNote
 		}
-		delegateApi.healthElement.getHealthElement(he.id).run {
+		delegateApi.healthElement.getHealthElement(he.id).shouldNotBeNull().run {
 			note shouldBe heNote
 		}
-		delegatorApi.patient.getPatient(patient.id).run {
+		delegatorApi.patient.getPatient(patient.id).shouldNotBeNull().run {
 			note shouldBe patientNote
 		}
-		delegatorApi.healthElement.getHealthElement(he.id).run {
+		delegatorApi.healthElement.getHealthElement(he.id).shouldNotBeNull().run {
 			note shouldBe heNote
 		}
 	}
@@ -98,16 +98,16 @@ class ExplicitAndAnonymousDelegatorsShareTests : StringSpec({
 			he
 		).shouldNotBeNull()
 		val delegateApi: CardinalSdk = delegate.api(specJob)
-		delegateApi.patient.getPatient(patient.id).run {
+		delegateApi.patient.getPatient(patient.id).shouldNotBeNull().run {
 			note shouldBe patientNote
 		}
-		delegateApi.healthElement.getHealthElement(he.id).run {
+		delegateApi.healthElement.getHealthElement(he.id).shouldNotBeNull().run {
 			note shouldBe heNote
 		}
-		delegatorApi.patient.getPatient(patient.id).run {
+		delegatorApi.patient.getPatient(patient.id).shouldNotBeNull().run {
 			note shouldBe patientNote
 		}
-		delegatorApi.healthElement.getHealthElement(he.id).run {
+		delegatorApi.healthElement.getHealthElement(he.id).shouldNotBeNull().run {
 			note shouldBe heNote
 		}
 	}
