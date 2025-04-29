@@ -17,5 +17,6 @@ data class ExternalJwtConfig(
 	public val identifierField: IdentifierSelector? = null,
 ) {
 	// region ExternalJwtConfig-ExternalJwtConfig
+
 	// endregion
 }
