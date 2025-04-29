@@ -63,6 +63,7 @@ data class User(
 		public val roles: Set<String>,
 		public val isAdmin: Boolean,
 		public val inheritsRoles: Boolean,
+		public val loginIdentifiers: List<Identifier>,
 	)
 	// region User-User
 
