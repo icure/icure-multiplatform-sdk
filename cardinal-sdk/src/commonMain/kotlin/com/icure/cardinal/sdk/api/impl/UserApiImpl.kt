@@ -36,8 +36,8 @@ internal class UserApiImpl(
 	override suspend fun deleteUserUnsafe(entityId: String): DocIdentifier =
 		raw.deleteUser(entityId).successBodyOrThrowRevisionConflict()
 
-	override suspend fun getCurrentUser(): User =
-		raw.getCurrentUser().successBody()
+	override suspend fun getCurrentUser(includeMetadataFromGlobalUser: Boolean): User =
+		raw.getCurrentUser(includeMetadataFromGlobalUser).successBody()
 
 	@Deprecated(
 		"List methods are deprecated",
@@ -61,7 +61,7 @@ internal class UserApiImpl(
 		raw.createUser(user).successBody()
 
 
-	override suspend fun getUser(userId: String) = raw.getUser(userId).successBody()
+	override suspend fun getUser(userId: String, includeMetadataFromGlobalUser: Boolean) = raw.getUser(userId, includeMetadataFromGlobalUser).successBody()
 
 	override suspend fun getUsers(userIds: List<String>) = raw.getUsers(ListOfIds(userIds)).successBody()
 
