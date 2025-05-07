@@ -8,7 +8,7 @@ plugins {
 	androidLibrary()
 	id("maven-publish")
 	signing
-	id("com.vanniktech.maven.publish") version "0.29.0"
+	id("com.vanniktech.maven.publish") version "0.30.0"
 	id("com.google.devtools.ksp") version "2.1.20-RC-1.0.30"
 }
 
@@ -18,7 +18,7 @@ val mavenReleasesRepository: String by project
 
 group = "com.icure"
 
-val version = "1.3.0"
+val version = "1.4.0"
 project.version = version
 
 kotlin {

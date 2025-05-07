@@ -34,4 +34,7 @@ internal class CalendarItemTypeApiImpl(
 
 	override suspend fun modifyCalendarItemType(calendarItemTypeDto: CalendarItemType): CalendarItemType =
 		rawCalendarItemTypeApi.modifyCalendarItemType(calendarItemTypeDto).successBodyOrThrowRevisionConflict()
+
+	override suspend fun listCalendarItemTypesByAgendaId(agendaId: String): List<CalendarItemType> =
+		rawCalendarItemTypeApi.listCalendarItemTypesByAgendaId(agendaId).successBody()
 }

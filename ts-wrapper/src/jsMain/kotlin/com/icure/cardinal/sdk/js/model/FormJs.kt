@@ -43,6 +43,8 @@ public sealed external interface FormJs : StoredDocumentJs, ICureDocumentJs<Stri
 
 	public val parent: String?
 
+	public val anchorId: String?
+
 	public val isEncrypted: Boolean
 }
 
@@ -93,6 +95,8 @@ public external class DecryptedFormJs(
 	override val planOfActionId: String?
 
 	override val parent: String?
+
+	override val anchorId: String?
 
 	override val secretForeignKeys: Array<String>
 
@@ -156,6 +160,8 @@ public external class EncryptedFormJs(
 	override val planOfActionId: String?
 
 	override val parent: String?
+
+	override val anchorId: String?
 
 	override val secretForeignKeys: Array<String>
 

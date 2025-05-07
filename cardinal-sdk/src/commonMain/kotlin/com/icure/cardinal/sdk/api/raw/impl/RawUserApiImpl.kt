@@ -566,7 +566,7 @@ class RawUserApiImpl(
 			accept(Application.Json)
 		}.wrap()
 
-	override suspend fun enableFasAuthenticationForUser(fasJwtToken: String): HttpResponse<Boolean> =
+	override suspend fun enableFasAuthenticationForUser(fasJwtToken: String): HttpResponse<User> =
 		post(authProvider) {
 			url {
 				takeFrom(apiUrl)

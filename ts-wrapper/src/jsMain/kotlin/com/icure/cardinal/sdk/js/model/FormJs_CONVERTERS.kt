@@ -103,6 +103,9 @@ public fun form_toJs(obj: DecryptedForm): DecryptedFormJs {
 	val parent = nullToUndefined(
 		obj.parent
 	)
+	val anchorId = nullToUndefined(
+		obj.anchorId
+	)
 	val secretForeignKeys = setToArray(
 		obj.secretForeignKeys,
 		{ x1: String ->
@@ -184,6 +187,7 @@ public fun form_toJs(obj: DecryptedForm): DecryptedFormJs {
 		"healthElementId:healthElementId," +
 		"planOfActionId:planOfActionId," +
 		"parent:parent," +
+		"anchorId:anchorId," +
 		"secretForeignKeys:secretForeignKeys," +
 		"cryptedForeignKeys:cryptedForeignKeys," +
 		"delegations:delegations," +
@@ -228,6 +232,7 @@ public fun form_fromJs(obj: DecryptedFormJs): DecryptedForm {
 	val healthElementId = undefinedToNull(obj.healthElementId)
 	val planOfActionId = undefinedToNull(obj.planOfActionId)
 	val parent = undefinedToNull(obj.parent)
+	val anchorId = undefinedToNull(obj.anchorId)
 	val secretForeignKeys = arrayToSet(
 		obj.secretForeignKeys,
 		"obj.secretForeignKeys",
@@ -312,6 +317,7 @@ public fun form_fromJs(obj: DecryptedFormJs): DecryptedForm {
 		healthElementId = healthElementId,
 		planOfActionId = planOfActionId,
 		parent = parent,
+		anchorId = anchorId,
 		secretForeignKeys = secretForeignKeys,
 		cryptedForeignKeys = cryptedForeignKeys,
 		delegations = delegations,
@@ -392,6 +398,9 @@ public fun form_toJs(obj: EncryptedForm): EncryptedFormJs {
 	)
 	val parent = nullToUndefined(
 		obj.parent
+	)
+	val anchorId = nullToUndefined(
+		obj.anchorId
 	)
 	val secretForeignKeys = setToArray(
 		obj.secretForeignKeys,
@@ -474,6 +483,7 @@ public fun form_toJs(obj: EncryptedForm): EncryptedFormJs {
 		"healthElementId:healthElementId," +
 		"planOfActionId:planOfActionId," +
 		"parent:parent," +
+		"anchorId:anchorId," +
 		"secretForeignKeys:secretForeignKeys," +
 		"cryptedForeignKeys:cryptedForeignKeys," +
 		"delegations:delegations," +
@@ -518,6 +528,7 @@ public fun form_fromJs(obj: EncryptedFormJs): EncryptedForm {
 	val healthElementId = undefinedToNull(obj.healthElementId)
 	val planOfActionId = undefinedToNull(obj.planOfActionId)
 	val parent = undefinedToNull(obj.parent)
+	val anchorId = undefinedToNull(obj.anchorId)
 	val secretForeignKeys = arrayToSet(
 		obj.secretForeignKeys,
 		"obj.secretForeignKeys",
@@ -602,6 +613,7 @@ public fun form_fromJs(obj: EncryptedFormJs): EncryptedForm {
 		healthElementId = healthElementId,
 		planOfActionId = planOfActionId,
 		parent = parent,
+		anchorId = anchorId,
 		secretForeignKeys = secretForeignKeys,
 		cryptedForeignKeys = cryptedForeignKeys,
 		delegations = delegations,
