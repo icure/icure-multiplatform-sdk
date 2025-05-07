@@ -1,6 +1,5 @@
 package com.icure.cardinal.sdk.test
 
-import com.icure.cardinal.sdk.CardinalSdk
 import com.icure.cardinal.sdk.api.raw.impl.RawGroupApiImpl
 import com.icure.cardinal.sdk.api.raw.impl.RawHealthcarePartyApiImpl
 import com.icure.cardinal.sdk.api.raw.impl.RawPatientApiImpl
@@ -14,7 +13,6 @@ import com.icure.cardinal.sdk.model.Patient
 import com.icure.cardinal.sdk.model.User
 import com.icure.cardinal.sdk.model.embed.DelegationTag
 import com.icure.cardinal.sdk.model.specializations.SpkiHexString
-import com.icure.cardinal.sdk.utils.Serialization
 import com.icure.kryptom.crypto.RsaAlgorithm
 import com.icure.kryptom.crypto.defaultCryptoService
 import com.icure.kryptom.utils.toHexString
@@ -23,7 +21,7 @@ import com.icure.utils.InternalIcureApi
 fun uuid() = defaultCryptoService.strongRandom.randomUUID()
 
 @OptIn(InternalIcureApi::class)
-suspend fun createUserInMultipleGroups(): Map<String, DataOwnerDetails> {
+suspend fun createUserInMultipleGroups(): List<DataOwnerDetails> {
 	val groupId1 = uuid()
 	val groupId2 = uuid()
 	val groupId3 = uuid()
@@ -33,8 +31,8 @@ suspend fun createUserInMultipleGroups(): Map<String, DataOwnerDetails> {
 	val userId1 = uuid()
 	val userId2 = uuid()
 	val userId3 = uuid()
-	val groupRawApi = RawGroupApiImpl(baseUrl, superadminAuth, CardinalSdk.sharedHttpClient, json = Serialization.json)
-	val userRawApi = RawUserApiImpl(baseUrl, superadminAuth, CardinalSdk.sharedHttpClient, json = Serialization.json)
+	val groupRawApi = RawGroupApiImpl(baseUrl, superadminAuth, DefaultRawApiConfig)
+	val userRawApi = RawUserApiImpl(baseUrl, superadminAuth, DefaultRawApiConfig)
 	groupRawApi.createGroup(
 		id = groupId1,
 		name = "test-group-1-${groupId1}",
@@ -98,27 +96,30 @@ suspend fun createUserInMultipleGroups(): Map<String, DataOwnerDetails> {
 			passwordHash = userPw3
 		)
 	).successBody()
-	return mapOf(
-		groupId1 to DataOwnerDetails(
+	return listOf(
+		DataOwnerDetails(
 			dataOwnerId = "",
 			username = userLogin,
 			password = userPw12,
 			keypair = defaultCryptoService.rsa.generateKeyPair(RsaAlgorithm.RsaEncryptionAlgorithm.OaepWithSha256),
-			parent = null
+			parent = null,
+			groupId = groupId1
 		),
-		groupId2 to DataOwnerDetails(
+		DataOwnerDetails(
 			dataOwnerId = "",
 			username = userLogin,
 			password = userPw12,
 			keypair = defaultCryptoService.rsa.generateKeyPair(RsaAlgorithm.RsaEncryptionAlgorithm.OaepWithSha256),
-			parent = null
+			parent = null,
+			groupId = groupId2
 		),
-		groupId3 to DataOwnerDetails(
+		DataOwnerDetails(
 			dataOwnerId = "",
 			username = userLogin,
 			password = userPw3,
 			keypair = defaultCryptoService.rsa.generateKeyPair(RsaAlgorithm.RsaEncryptionAlgorithm.OaepWithSha256),
-			parent = null
+			parent = null,
+			groupId = groupId3
 		),
 	)
 }
@@ -128,9 +129,15 @@ suspend fun createUserInMultipleGroups(): Map<String, DataOwnerDetails> {
  * latter will be the grandparent of this data owner, and so on. If null the data owner will not have any parent.
  */
 @OptIn(InternalIcureApi::class)
-suspend fun createHcpUser(parent: DataOwnerDetails? = null, useLegacyKey: Boolean = false, roles: Set<String>? = null): DataOwnerDetails {
-	val hcpRawApi = RawHealthcarePartyApiImpl(baseUrl, testGroupAdminAuth, CardinalSdk.sharedHttpClient, json = Serialization.json)
-	val userRawApi = RawUserApiImpl(baseUrl, testGroupAdminAuth, CardinalSdk.sharedHttpClient, json = Serialization.json)
+suspend fun createHcpUser(
+	parent: DataOwnerDetails? = null,
+	useLegacyKey: Boolean = false,
+	roles: Set<String>? = null,
+	inGroup: String = testGroupId,
+	inheritsPermissions: Boolean = false
+): DataOwnerDetails {
+	val hcpRawApi = RawHealthcarePartyApiImpl(baseUrl, superadminAuth, DefaultRawApiConfig)
+	val userRawApi = RawUserApiImpl(baseUrl, superadminAuth, DefaultRawApiConfig)
 	val hcpId = uuid()
 	val login = "hcp-${uuid()}"
 	val password = uuid()
@@ -141,7 +148,8 @@ suspend fun createHcpUser(parent: DataOwnerDetails? = null, useLegacyKey: Boolea
 			RsaAlgorithm.RsaEncryptionAlgorithm.OaepWithSha256
 	)
 	val exportedPublic = defaultCryptoService.rsa.exportPublicKeySpki(keypair.public).toHexString().let { SpkiHexString(it) }
-	val hcp = hcpRawApi.createHealthcareParty(
+	val hcp = hcpRawApi.createHealthcarePartyInGroup(
+		inGroup,
 		HealthcareParty(
 			hcpId,
 			firstName = "Hcp-$hcpId",
@@ -151,7 +159,8 @@ suspend fun createHcpUser(parent: DataOwnerDetails? = null, useLegacyKey: Boolea
 			parentId = parent?.dataOwnerId
 		)
 	).successBody()
-	val created = userRawApi.createUser(
+	val created = userRawApi.createUserInGroup(
+		groupId = inGroup,
 		User(
 			uuid(),
 			login = login,
@@ -162,32 +171,58 @@ suspend fun createHcpUser(parent: DataOwnerDetails? = null, useLegacyKey: Boolea
 		)
 	).successBody()
 	if (roles != null) {
-		userRawApi.setRolesForUser(created.id, ListOfIds(roles.toList()))
+		userRawApi.setRolesForUserInGroup(
+			userId = created.id,
+			groupId = inGroup,
+			rolesId = ListOfIds(roles.toList())
+		)
+	} else if (parent != null) {
+		val currentUserRoles = userRawApi.getUserInGroup(
+			groupId = inGroup,
+			userId = created.id
+		).successBody().systemMetadata!!.roles
+		if ("HIERARCHICAL_DATA_OWNER" !in currentUserRoles) {
+			userRawApi.setRolesForUserInGroup(
+				userId = created.id,
+				groupId = inGroup,
+				rolesId = ListOfIds(currentUserRoles.toList() + "HIERARCHICAL_DATA_OWNER")
+			)
+		}
 	}
-	return DataOwnerDetails(hcpId, login, password, keypair, parent)
+	if (inheritsPermissions) userRawApi.setUserInheritsPermissions(userId = created.id, groupId = inGroup, value = true)
+	return DataOwnerDetails(hcpId, login, password, keypair, parent, inGroup)
 }
 
 @OptIn(InternalIcureApi::class)
-suspend fun createPatientUser(existingPatientId: String? = null): DataOwnerDetails {
-	val patientRawApi = RawPatientApiImpl(baseUrl, testGroupAdminAuth, null, CardinalSdk.sharedHttpClient, json = Serialization.json)
-	val userRawApi = RawUserApiImpl(baseUrl, testGroupAdminAuth, CardinalSdk.sharedHttpClient, json = Serialization.json)
+suspend fun createPatientUser(
+	existingPatientId: String? = null,
+	inGroup: String = testGroupId,
+	inheritsPermissions: Boolean = false
+): DataOwnerDetails {
+	val patientRawApi = RawPatientApiImpl(baseUrl, superadminAuth, null, DefaultRawApiConfig)
+	val userRawApi = RawUserApiImpl(baseUrl, superadminAuth, DefaultRawApiConfig)
 	val patientId = existingPatientId ?: uuid()
 	val login = "patient-${uuid()}"
 	val password = uuid()
 	val keypair = defaultCryptoService.rsa.generateKeyPair(RsaAlgorithm.RsaEncryptionAlgorithm.OaepWithSha256)
-	val patientToCreateOrModify = (existingPatientId?.let { patientRawApi.getPatient(it).successBody() } ?: EncryptedPatient(
-		patientId,
-		firstName = "Patient-$patientId",
-		lastName = "Patient-$patientId",
-	)).copy(
+	val patientToCreateOrModify = (
+		existingPatientId?.let {
+			patientRawApi.getPatientInGroup(groupId = inGroup, patientId = it).successBody()
+		} ?: EncryptedPatient(
+			patientId,
+			firstName = "Patient-$patientId",
+			lastName = "Patient-$patientId",
+		)
+	).copy(
 		publicKeysForOaepWithSha256 = setOf(defaultCryptoService.rsa.exportPublicKeySpki(keypair.public).toHexString().let { SpkiHexString(it) })
 	)
 	val patient = if (patientToCreateOrModify.rev != null) {
-		patientRawApi.modifyPatient(patientToCreateOrModify).successBody()
+		patientRawApi.modifyPatientInGroup(inGroup, patientToCreateOrModify).successBody()
 	} else {
-		patientRawApi.createPatient(patientToCreateOrModify).successBody()
+		patientRawApi.createPatientInGroup(inGroup, patientToCreateOrModify).successBody()
 	}
-	userRawApi.createUser(
+	val user = userRawApi.createUserInGroup(
+		inGroup,
 		User(
 			uuid(),
 			login = login,
@@ -196,13 +231,14 @@ suspend fun createPatientUser(existingPatientId: String? = null): DataOwnerDetai
 			patientId = patient.id
 		)
 	).successBody()
-	return DataOwnerDetails(patientId, login, password, keypair, null)
+	if (inheritsPermissions) userRawApi.setUserInheritsPermissions(userId = user.id, groupId = inGroup, value = true)
+	return DataOwnerDetails(patientId, login, password, keypair, null, inGroup)
 }
 
 @OptIn(InternalIcureApi::class)
 suspend fun createUserFromExistingPatient(patient: Patient): DataOwnerDetails {
-	val patientRawApi = RawPatientApiImpl(baseUrl, testGroupAdminAuth, NoAccessControlKeysHeadersProvider, CardinalSdk.sharedHttpClient, json = Serialization.json)
-	val userRawApi = RawUserApiImpl(baseUrl, testGroupAdminAuth, CardinalSdk.sharedHttpClient, json = Serialization.json)
+	val patientRawApi = RawPatientApiImpl(baseUrl, testGroupAdminAuth, NoAccessControlKeysHeadersProvider, DefaultRawApiConfig)
+	val userRawApi = RawUserApiImpl(baseUrl, testGroupAdminAuth, DefaultRawApiConfig)
 	val login = "patient-${uuid()}"
 	val password = uuid()
 	val keypair = defaultCryptoService.rsa.generateKeyPair(RsaAlgorithm.RsaEncryptionAlgorithm.OaepWithSha256)
@@ -220,5 +256,5 @@ suspend fun createUserFromExistingPatient(patient: Patient): DataOwnerDetails {
 			patientId = updatedPatient.id
 		)
 	).successBody()
-	return DataOwnerDetails(patient.id, login, password, keypair, null)
+	return DataOwnerDetails(patient.id, login, password, keypair, null, testGroupId)
 }

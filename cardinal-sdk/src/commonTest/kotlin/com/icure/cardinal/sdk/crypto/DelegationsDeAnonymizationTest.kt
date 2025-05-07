@@ -1,6 +1,7 @@
 package com.icure.cardinal.sdk.crypto
 
 import com.icure.cardinal.sdk.CardinalSdk
+import com.icure.cardinal.sdk.api.impl.keyAsLocalDataOwnerReferences
 import com.icure.cardinal.sdk.api.raw.impl.RawSecureDelegationKeyMapApiImpl
 import com.icure.cardinal.sdk.crypto.entities.EntityAccessInformation
 import com.icure.cardinal.sdk.crypto.entities.PatientShareOptions
@@ -9,11 +10,12 @@ import com.icure.cardinal.sdk.model.DecryptedPatient
 import com.icure.cardinal.sdk.model.ListOfIds
 import com.icure.cardinal.sdk.model.embed.AccessLevel
 import com.icure.cardinal.sdk.model.requests.RequestedPermission
+import com.icure.cardinal.sdk.test.DefaultRawApiConfig
+import com.icure.cardinal.sdk.test.autoCancelJob
 import com.icure.cardinal.sdk.test.baseUrl
 import com.icure.cardinal.sdk.test.createHcpUser
 import com.icure.cardinal.sdk.test.createPatientUser
 import com.icure.cardinal.sdk.test.initializeTestEnvironment
-import com.icure.cardinal.sdk.utils.Serialization
 import com.icure.kryptom.crypto.defaultCryptoService
 import com.icure.utils.InternalIcureApi
 import io.kotest.core.spec.style.StringSpec
@@ -25,6 +27,7 @@ import io.kotest.matchers.shouldBe
 
 @OptIn(InternalIcureApi::class)
 class DelegationsDeAnonymizationTest : StringSpec({
+	val specJob = autoCancelJob()
 	beforeSpec { initializeTestEnvironment() }
 
 	suspend fun CardinalSdk.createSamplePatient() =
@@ -40,10 +43,10 @@ class DelegationsDeAnonymizationTest : StringSpec({
 		).shouldNotBeNull()
 
 	"without de-anonymisation metadata the data owners should be able to identify anonymous delegates only if they are part of the delegation with that delegate." {
-		val (userInfoA, apiA) = createHcpUser().let { it to it.api() }
-		val (userInfoB, apiB) = createHcpUser().let { it to it.api() }
-		val (userInfoP1, apiP1) = createPatientUser().let { it to it.api() }
-		val (userInfoP2, apiP2) = createPatientUser().let { it to it.api() }
+		val (userInfoA, apiA) = createHcpUser().let { it to it.api(specJob) }
+		val (userInfoB, apiB) = createHcpUser().let { it to it.api(specJob) }
+		val (userInfoP1, apiP1) = createPatientUser().let { it to it.api(specJob) }
+		val (userInfoP2, apiP2) = createPatientUser().let { it to it.api(specJob) }
 		println("""
 			A: ${userInfoA.dataOwnerId}
 			B: ${userInfoB.dataOwnerId}
@@ -57,7 +60,7 @@ class DelegationsDeAnonymizationTest : StringSpec({
 		apiA.patient.getDataOwnersWithAccessTo(entity).apply {
 			permissionsByDataOwnerId shouldBe mapOf(
 				userInfoA.dataOwnerId to AccessLevel.Write
-			)
+			).keyAsLocalDataOwnerReferences()
 			hasUnknownAnonymousDataOwners shouldBe false
 		}
 		/*
@@ -72,14 +75,14 @@ class DelegationsDeAnonymizationTest : StringSpec({
 			permissionsByDataOwnerId shouldBe mapOf(
 				userInfoA.dataOwnerId to AccessLevel.Write,
 				userInfoB.dataOwnerId to AccessLevel.Write
-			)
+			).keyAsLocalDataOwnerReferences()
 			hasUnknownAnonymousDataOwners shouldBe false
 		}
 		apiB.patient.getDataOwnersWithAccessTo(entity).apply {
 			permissionsByDataOwnerId shouldBe mapOf(
 				userInfoA.dataOwnerId to AccessLevel.Write,
 				userInfoB.dataOwnerId to AccessLevel.Write
-			)
+			).keyAsLocalDataOwnerReferences()
 			hasUnknownAnonymousDataOwners shouldBe false
 		}
 		/*
@@ -97,14 +100,14 @@ class DelegationsDeAnonymizationTest : StringSpec({
 				userInfoA.dataOwnerId to AccessLevel.Write,
 				userInfoB.dataOwnerId to AccessLevel.Write,
 				userInfoP1.dataOwnerId to AccessLevel.Write
-			)
+			).keyAsLocalDataOwnerReferences()
 			hasUnknownAnonymousDataOwners shouldBe false
 		}
 		apiB.patient.getDataOwnersWithAccessTo(entity).apply {
 			permissionsByDataOwnerId shouldBe mapOf(
 				userInfoA.dataOwnerId to AccessLevel.Write,
 				userInfoB.dataOwnerId to AccessLevel.Write
-			)
+			).keyAsLocalDataOwnerReferences()
 			hasUnknownAnonymousDataOwners shouldBe true
 		}
 		apiP1.patient.getDataOwnersWithAccessTo(entity).apply {
@@ -112,7 +115,7 @@ class DelegationsDeAnonymizationTest : StringSpec({
 				userInfoA.dataOwnerId to AccessLevel.Write,
 				userInfoB.dataOwnerId to AccessLevel.Write,
 				userInfoP1.dataOwnerId to AccessLevel.Write
-			)
+			).keyAsLocalDataOwnerReferences()
 			hasUnknownAnonymousDataOwners shouldBe false
 		}
 		/*
@@ -130,7 +133,7 @@ class DelegationsDeAnonymizationTest : StringSpec({
 				userInfoA.dataOwnerId to AccessLevel.Write,
 				userInfoB.dataOwnerId to AccessLevel.Write,
 				userInfoP1.dataOwnerId to AccessLevel.Write
-			)
+			).keyAsLocalDataOwnerReferences()
 			hasUnknownAnonymousDataOwners shouldBe true
 		}
 		apiB.patient.getDataOwnersWithAccessTo(entity).apply {
@@ -138,7 +141,7 @@ class DelegationsDeAnonymizationTest : StringSpec({
 				userInfoA.dataOwnerId to AccessLevel.Write,
 				userInfoB.dataOwnerId to AccessLevel.Write,
 				userInfoP1.dataOwnerId to AccessLevel.Read
-			)
+			).keyAsLocalDataOwnerReferences()
 			hasUnknownAnonymousDataOwners shouldBe true
 		}
 		apiP1.patient.getDataOwnersWithAccessTo(entity).apply {
@@ -146,7 +149,7 @@ class DelegationsDeAnonymizationTest : StringSpec({
 				userInfoA.dataOwnerId to AccessLevel.Write,
 				userInfoB.dataOwnerId to AccessLevel.Write,
 				userInfoP1.dataOwnerId to AccessLevel.Write
-			)
+			).keyAsLocalDataOwnerReferences()
 			hasUnknownAnonymousDataOwners shouldBe false
 		}
 		/*
@@ -164,7 +167,7 @@ class DelegationsDeAnonymizationTest : StringSpec({
 				userInfoA.dataOwnerId to AccessLevel.Write,
 				userInfoB.dataOwnerId to AccessLevel.Write,
 				userInfoP1.dataOwnerId to AccessLevel.Write,
-			)
+			).keyAsLocalDataOwnerReferences()
 			hasUnknownAnonymousDataOwners shouldBe true
 		}
 		apiB.patient.getDataOwnersWithAccessTo(entity).apply {
@@ -172,7 +175,7 @@ class DelegationsDeAnonymizationTest : StringSpec({
 				userInfoA.dataOwnerId to AccessLevel.Write,
 				userInfoB.dataOwnerId to AccessLevel.Write,
 				userInfoP1.dataOwnerId to AccessLevel.Read
-			)
+			).keyAsLocalDataOwnerReferences()
 			hasUnknownAnonymousDataOwners shouldBe true
 		}
 		apiP1.patient.getDataOwnersWithAccessTo(entity).apply {
@@ -181,7 +184,7 @@ class DelegationsDeAnonymizationTest : StringSpec({
 				userInfoB.dataOwnerId to AccessLevel.Write,
 				userInfoP1.dataOwnerId to AccessLevel.Write,
 				userInfoP2.dataOwnerId to AccessLevel.Read
-			)
+			).keyAsLocalDataOwnerReferences()
 			hasUnknownAnonymousDataOwners shouldBe false
 		}
 		apiP2.patient.getDataOwnersWithAccessTo(entity).apply {
@@ -190,7 +193,7 @@ class DelegationsDeAnonymizationTest : StringSpec({
 				userInfoB.dataOwnerId to AccessLevel.Write,
 				userInfoP1.dataOwnerId to AccessLevel.Read, // P2 is only aware of the P1->P2 delegation
 				userInfoP2.dataOwnerId to AccessLevel.Read
-			)
+			).keyAsLocalDataOwnerReferences()
 			hasUnknownAnonymousDataOwners shouldBe true
 		}
 		/*
@@ -210,7 +213,7 @@ class DelegationsDeAnonymizationTest : StringSpec({
 				userInfoB.dataOwnerId to AccessLevel.Write,
 				userInfoP1.dataOwnerId to AccessLevel.Write,
 				userInfoP2.dataOwnerId to AccessLevel.Write
-			)
+			).keyAsLocalDataOwnerReferences()
 			hasUnknownAnonymousDataOwners shouldBe true
 		}
 		apiB.patient.getDataOwnersWithAccessTo(entity).apply {
@@ -218,7 +221,7 @@ class DelegationsDeAnonymizationTest : StringSpec({
 				userInfoA.dataOwnerId to AccessLevel.Write,
 				userInfoB.dataOwnerId to AccessLevel.Write,
 				userInfoP1.dataOwnerId to AccessLevel.Read
-			)
+			).keyAsLocalDataOwnerReferences()
 			hasUnknownAnonymousDataOwners shouldBe true
 		}
 		apiP1.patient.getDataOwnersWithAccessTo(entity).apply {
@@ -227,7 +230,7 @@ class DelegationsDeAnonymizationTest : StringSpec({
 				userInfoB.dataOwnerId to AccessLevel.Write,
 				userInfoP1.dataOwnerId to AccessLevel.Write,
 				userInfoP2.dataOwnerId to AccessLevel.Read
-			)
+			).keyAsLocalDataOwnerReferences()
 			hasUnknownAnonymousDataOwners shouldBe true
 		}
 		apiP2.patient.getDataOwnersWithAccessTo(entity).apply {
@@ -236,15 +239,16 @@ class DelegationsDeAnonymizationTest : StringSpec({
 				userInfoB.dataOwnerId to AccessLevel.Write,
 				userInfoP1.dataOwnerId to AccessLevel.Read, // P2 is only aware of the P1->P2 delegation
 				userInfoP2.dataOwnerId to AccessLevel.Write
-			)
+			).keyAsLocalDataOwnerReferences()
 			hasUnknownAnonymousDataOwners shouldBe true
 		}
 	}
 
 	"Even without de-anonymization metadata the data owners should be able to identify anonymous delegates if their parent is part of the delegation with that delegate." {
-		val (parentUserInfo, parentApi) = createHcpUser().let { it to it.api() }
-		val (_, childApi) = createHcpUser(parentUserInfo).let { it to it.api() }
-		val (patientInfo, patientApi) = createPatientUser().let { it to it.api() }
+		val (parentUserInfo, parentApi) = createHcpUser().let { it to it.api(specJob) }
+		val (childUserInfo, childApi) = createHcpUser(parentUserInfo).let { it to it.api(specJob) }
+		println("${childUserInfo.username} ${childUserInfo.password}")
+		val (patientInfo, patientApi) = createPatientUser().let { it to it.api(specJob) }
 		var entity = parentApi.createSamplePatient()
 		entity = parentApi.patient.shareWith(patientInfo.dataOwnerId, entity, PatientShareOptions(
 			shareSecretIds = SecretIdShareOptions.UseExactly(emptySet(), false),
@@ -257,7 +261,7 @@ class DelegationsDeAnonymizationTest : StringSpec({
 				// No child user: has no direct access, only access through parent delegation
 				parentUserInfo.dataOwnerId to AccessLevel.Write,
 				patientInfo.dataOwnerId to AccessLevel.Write
-			),
+			).keyAsLocalDataOwnerReferences(),
 			hasUnknownAnonymousDataOwners = false
 		)
 		childApi.patient.getDataOwnersWithAccessTo(entity) shouldBe expectedAccessInfo
@@ -266,10 +270,10 @@ class DelegationsDeAnonymizationTest : StringSpec({
 	}
 
 	"De-anonymization metadata should allow data owners that are not part of a delegation to figure out the members of that delegation." {
-		val (userInfoA, apiA) = createHcpUser().let { it to it.api() }
-		val (userInfoB, apiB) = createHcpUser().let { it to it.api() }
-		val (userInfoP1, apiP1) = createPatientUser().let { it to it.api() }
-		val (userInfoP2, apiP2) = createPatientUser().let { it to it.api() }
+		val (userInfoA, apiA) = createHcpUser().let { it to it.api(specJob) }
+		val (userInfoB, apiB) = createHcpUser().let { it to it.api(specJob) }
+		val (userInfoP1, apiP1) = createPatientUser().let { it to it.api(specJob) }
+		val (userInfoP2, apiP2) = createPatientUser().let { it to it.api(specJob) }
 		var entity = apiA.createSamplePatient()
 		entity = apiA.patient.shareWith(userInfoB.dataOwnerId, entity, PatientShareOptions(
 			shareSecretIds = SecretIdShareOptions.UseExactly(emptySet(), false),
@@ -317,7 +321,7 @@ class DelegationsDeAnonymizationTest : StringSpec({
 			userInfoB.dataOwnerId to AccessLevel.Write,
 			userInfoP1.dataOwnerId to AccessLevel.Write,
 			userInfoP2.dataOwnerId to AccessLevel.Write
-		)
+		).keyAsLocalDataOwnerReferences()
 		apiP1.crypto.forceReload()
 		apiP2.crypto.forceReload()
 		apiA.patient.getDataOwnersWithAccessTo(entity).apply {
@@ -365,11 +369,12 @@ class DelegationsDeAnonymizationTest : StringSpec({
 	}
 
 	"Hcp should be able to use de-anonymization metadata for parent" {
-		val (grandUserInfo, grandApi) = createHcpUser().let { it to it.api() }
-		val (parentUserInfo, parentApi) = createHcpUser(grandUserInfo).let { it to it.api() }
-		val (child1UserInfo, child1Api) = createHcpUser(parentUserInfo).let { it to it.api() }
-		val (child2UserInfo, child2Api) = createHcpUser(grandUserInfo).let { it to it.api() }
-		val (patientInfo, patientApi) = createPatientUser().let { it to it.api() }
+		val (grandUserInfo, grandApi) = createHcpUser().let { it to it.api(specJob) }
+		val (parentUserInfo, parentApi) = createHcpUser(grandUserInfo).let { it to it.api(specJob) }
+		val (child1UserInfo, child1Api) = createHcpUser(parentUserInfo).let { it to it.api(specJob) }
+		val (child2UserInfo, child2Api) = createHcpUser(grandUserInfo).let { it to it.api(specJob) }
+		val (patientInfo, patientApi) = createPatientUser().let { it to it.api(specJob) }
+		println(parentApi.user.getCurrentUser().systemMetadata?.roles)
 		var entity = parentApi.createSamplePatient() // Auto-shared with grandApi, but no de-anonymization metadata
 		entity = parentApi.patient.shareWith(patientInfo.dataOwnerId, entity, PatientShareOptions(
 			shareSecretIds = SecretIdShareOptions.UseExactly(emptySet(), false),
@@ -383,7 +388,7 @@ class DelegationsDeAnonymizationTest : StringSpec({
 				parentUserInfo.dataOwnerId to AccessLevel.Write,
 				grandUserInfo.dataOwnerId to AccessLevel.Write,
 				patientInfo.dataOwnerId to AccessLevel.Write
-			),
+			).keyAsLocalDataOwnerReferences(),
 			false
 		)
 		child1Api.patient.getDataOwnersWithAccessTo(entity) shouldBe expectedAccess
@@ -394,9 +399,9 @@ class DelegationsDeAnonymizationTest : StringSpec({
 	}
 
 	"De-anonymization metadata should encrypt delegator and delegate, and its creation should be optimised" {
-		val (userInfoA, apiA) = createHcpUser().let { it to it.api() }
-		val (userInfoB, apiB) = createHcpUser().let { it to it.api() }
-		val (userInfoP, apiP) = createPatientUser().let { it to it.api() }
+		val (userInfoA, apiA) = createHcpUser().let { it to it.api(specJob) }
+		val (userInfoB, apiB) = createHcpUser().let { it to it.api(specJob) }
+		val (userInfoP, apiP) = createPatientUser().let { it to it.api(specJob) }
 		var entity = apiA.createSamplePatient()
 		entity = apiA.patient.shareWith(userInfoB.dataOwnerId, entity, PatientShareOptions(
 			shareSecretIds = SecretIdShareOptions.UseExactly(emptySet(), false),
@@ -412,8 +417,7 @@ class DelegationsDeAnonymizationTest : StringSpec({
 		val secureDelegationKeyMapApi = RawSecureDelegationKeyMapApiImpl(
 			baseUrl,
 			userInfoA.authService(),
-			CardinalSdk.sharedHttpClient,
-			json = Serialization.json
+			DefaultRawApiConfig
 		)
 		val secureDelegationKeyMaps = secureDelegationKeyMapApi.findByDelegationKeys(
 			ListOfIds(
@@ -432,9 +436,9 @@ class DelegationsDeAnonymizationTest : StringSpec({
 	}
 
 	"De-anonymization metadata should be usable for different entities of the same type" {
-		val (userInfoA, apiA) = createHcpUser().let { it to it.api() }
-		val (userInfoB, apiB) = createHcpUser().let { it to it.api() }
-		val (userInfoP1, apiP1) = createPatientUser().let { it to it.api() }
+		val (userInfoA, apiA) = createHcpUser().let { it to it.api(specJob) }
+		val (userInfoB, apiB) = createHcpUser().let { it to it.api(specJob) }
+		val (userInfoP1, apiP1) = createPatientUser().let { it to it.api(specJob) }
 		var entity1 = apiA.createSamplePatient()
 		entity1 = apiA.patient.shareWith(userInfoB.dataOwnerId, entity1, PatientShareOptions(
 			shareSecretIds = SecretIdShareOptions.UseExactly(emptySet(), false),
@@ -463,7 +467,7 @@ class DelegationsDeAnonymizationTest : StringSpec({
 				userInfoA.dataOwnerId to AccessLevel.Write,
 				userInfoB.dataOwnerId to AccessLevel.Write,
 				userInfoP1.dataOwnerId to AccessLevel.Write
-			),
+			).keyAsLocalDataOwnerReferences(),
 			false
 		)
 		apiP1.crypto.forceReload()
@@ -476,14 +480,13 @@ class DelegationsDeAnonymizationTest : StringSpec({
 	}
 
 	"De-anonymization metadata optimization: the metadata should not be re-shared with the anonymous delegator/delegate by third parties" {
-		val (userInfoA, apiA) = createHcpUser().let { it to it.api() }
-		val (userInfoP1, apiP1) = createPatientUser().let { it to it.api() }
-		val (userInfoP2, apiP2) = createPatientUser().let { it to it.api() }
+		val (userInfoA, apiA) = createHcpUser().let { it to it.api(specJob) }
+		val (userInfoP1, apiP1) = createPatientUser().let { it to it.api(specJob) }
+		val (userInfoP2, apiP2) = createPatientUser().let { it to it.api(specJob) }
 		val delegationMapApi = RawSecureDelegationKeyMapApiImpl(
 			baseUrl,
 			userInfoA.authService(),
-			CardinalSdk.sharedHttpClient,
-			json = Serialization.json
+			DefaultRawApiConfig
 		) // Use raw api from A as it does not require access control keys
 		var entity = apiP1.createSamplePatient()
 		entity = apiP1.patient.shareWith(userInfoA.dataOwnerId, entity, PatientShareOptions(
@@ -513,16 +516,18 @@ class DelegationsDeAnonymizationTest : StringSpec({
 				listOf(
 					p1ToP2DelegationKey
 				)
-			), emptyList()).successBody().single()
-		delegationMapAfterAttemptedResharingByA.securityMetadata?.secureDelegations.shouldNotBeNull().shouldHaveSize(3)
+			),
+			emptyList()
+		).successBody().single()
+		delegationMapAfterAttemptedResharingByA.securityMetadata shouldBe delegationMapBeforeAttemptedResharingByA.securityMetadata
 		delegationMapAfterAttemptedResharingByA.rev shouldBe delegationMapBeforeAttemptedResharingByA.rev
 	}
 
 	"De-anonymization metadata should be shared only with selected data owners" {
-		val (userInfoA, apiA) = createHcpUser().let { it to it.api() }
-		val (userInfoB, apiB) = createHcpUser().let { it to it.api() }
-		val (userInfoC, apiC) = createHcpUser().let { it to it.api() }
-		val (userInfoP, apiP) = createPatientUser().let { it to it.api() }
+		val (userInfoA, apiA) = createHcpUser().let { it to it.api(specJob) }
+		val (userInfoB, apiB) = createHcpUser().let { it to it.api(specJob) }
+		val (userInfoC, apiC) = createHcpUser().let { it to it.api(specJob) }
+		val (userInfoP, apiP) = createPatientUser().let { it to it.api(specJob) }
 		var entity = apiA.createSamplePatient()
 		entity = apiA.patient.shareWith(userInfoB.dataOwnerId, entity, PatientShareOptions(
 			shareSecretIds = SecretIdShareOptions.UseExactly(emptySet(), false),
@@ -546,7 +551,7 @@ class DelegationsDeAnonymizationTest : StringSpec({
 				userInfoB.dataOwnerId to AccessLevel.Write,
 				userInfoC.dataOwnerId to AccessLevel.Write,
 				userInfoP.dataOwnerId to AccessLevel.Write
-			),
+			).keyAsLocalDataOwnerReferences(),
 			false
 		)
 		apiP.crypto.forceReload()
@@ -559,18 +564,18 @@ class DelegationsDeAnonymizationTest : StringSpec({
 				userInfoA.dataOwnerId to AccessLevel.Write,
 				userInfoB.dataOwnerId to AccessLevel.Write,
 				userInfoC.dataOwnerId to AccessLevel.Write
-			),
+			).keyAsLocalDataOwnerReferences(),
 			true
 		)
 	}
 
 	"A member of a delegation should be able to update the corresponding de-anonymization metadata even if he was not the original creator" {
-		val (userInfoA, apiA) = createHcpUser().let{ it to it.api() }
-		val (userInfoB, apiB) = createHcpUser().let{ it to it.api() }
-		val (userInfoC, apiC) = createHcpUser().let{ it to it.api() }
-		val (userInfoP, apiP) = createPatientUser().let{ it to it.api() }
-		val (grandUserInfo, parentApi) = createHcpUser().let{ it to it.api() }
-		val (parentUserInfo, childApi) = createHcpUser(grandUserInfo).let{ it to it.api() }
+		val (userInfoA, apiA) = createHcpUser().let{ it to it.api(specJob) }
+		val (userInfoB, apiB) = createHcpUser().let{ it to it.api(specJob) }
+		val (userInfoC, apiC) = createHcpUser().let{ it to it.api(specJob) }
+		val (userInfoP, apiP) = createPatientUser().let{ it to it.api(specJob) }
+		val (grandUserInfo, parentApi) = createHcpUser().let{ it to it.api(specJob) }
+		val (parentUserInfo, childApi) = createHcpUser(grandUserInfo).let{ it to it.api(specJob) }
 		var entity = parentApi.createSamplePatient()
 		entity = parentApi.patient.shareWith(userInfoA.dataOwnerId, entity, PatientShareOptions(
 			shareSecretIds = SecretIdShareOptions.UseExactly(emptySet(), false),
@@ -615,7 +620,7 @@ class DelegationsDeAnonymizationTest : StringSpec({
 				userInfoB.dataOwnerId to AccessLevel.Write,
 				userInfoC.dataOwnerId to AccessLevel.Write,
 				userInfoP.dataOwnerId to AccessLevel.Write
-			),
+			).keyAsLocalDataOwnerReferences(),
 			false
 		)
 		parentApi.patient.getDataOwnersWithAccessTo(entity) shouldBe expectedAccess
@@ -627,8 +632,7 @@ class DelegationsDeAnonymizationTest : StringSpec({
 		val delegationKeyMapApi = RawSecureDelegationKeyMapApiImpl(
 			baseUrl,
 			userInfoA.authService(),
-			CardinalSdk.sharedHttpClient,
-			json = Serialization.json
+			DefaultRawApiConfig
 		)
 		val delegationKeyToP = entity.securityMetadata?.secureDelegations?.filter { it.value.delegate == null }?.keys?.map { it.s }.shouldNotBeNull().single()
 		delegationKeyMapApi.findByDelegationKeys(

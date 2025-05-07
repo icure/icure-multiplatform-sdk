@@ -1,11 +1,11 @@
 // auto-generated file
 package com.icure.cardinal.sdk.js.model
 
-import com.icure.cardinal.sdk.model.IdWithMandatoryRev
+import com.icure.cardinal.sdk.model.StoredDocumentIdentifier
 import kotlin.Suppress
 
 @Suppress("UNUSED_VARIABLE")
-public fun idWithMandatoryRev_toJs(obj: IdWithMandatoryRev): IdWithMandatoryRevJs {
+public fun idWithMandatoryRev_toJs(obj: StoredDocumentIdentifier): IdWithMandatoryRevJs {
 	val id = obj.id
 	val rev = obj.rev
 	return IdWithMandatoryRevJs(js("{" +
@@ -14,10 +14,10 @@ public fun idWithMandatoryRev_toJs(obj: IdWithMandatoryRev): IdWithMandatoryRevJ
 	"}"))
 }
 
-public fun idWithMandatoryRev_fromJs(obj: IdWithMandatoryRevJs): IdWithMandatoryRev {
+public fun idWithMandatoryRev_fromJs(obj: IdWithMandatoryRevJs): StoredDocumentIdentifier {
 	val id = obj.id
 	val rev = obj.rev
-	return IdWithMandatoryRev(
+	return StoredDocumentIdentifier(
 		id = id,
 		rev = rev,
 	)

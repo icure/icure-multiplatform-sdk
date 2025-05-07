@@ -60,7 +60,7 @@ import com.icure.cardinal.sdk.js.utils.pagination.paginatedListIterator_toJs
 import com.icure.cardinal.sdk.model.Contact
 import com.icure.cardinal.sdk.model.DecryptedContact
 import com.icure.cardinal.sdk.model.EncryptedContact
-import com.icure.cardinal.sdk.model.IdWithMandatoryRev
+import com.icure.cardinal.sdk.model.StoredDocumentIdentifier
 import com.icure.cardinal.sdk.model.Patient
 import com.icure.cardinal.sdk.model.User
 import com.icure.cardinal.sdk.model.`data`.LabelledOccurence
@@ -1240,7 +1240,7 @@ internal class ContactApiImplJs(
 
 	override fun deleteContactsByIds(entityIds: Array<IdWithMandatoryRevJs>):
 			Promise<Array<DocIdentifierJs>> = GlobalScope.promise {
-		val entityIdsConverted: List<IdWithMandatoryRev> = arrayToList(
+		val entityIdsConverted: List<StoredDocumentIdentifier> = arrayToList(
 			entityIds,
 			"entityIds",
 			{ x1: IdWithMandatoryRevJs ->

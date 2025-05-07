@@ -13,7 +13,7 @@ data class ListOfIdsAndRev(
 	// region ListOfIdsAndRev-ListOfIdsAndRev
 
 	companion object {
-		operator fun invoke(ids: List<IdWithMandatoryRev>) = ListOfIdsAndRev(ids.map { IdWithRev(it.id, it.rev) })
+		operator fun invoke(ids: List<StoredDocumentIdentifier>) = ListOfIdsAndRev(ids.map { IdWithRev(it.id, it.rev) })
 	}
 	// endregion
 }

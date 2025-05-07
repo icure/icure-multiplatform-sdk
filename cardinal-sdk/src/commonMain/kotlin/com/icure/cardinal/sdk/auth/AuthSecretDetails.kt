@@ -27,7 +27,11 @@ sealed interface AuthSecretDetails {
 	 * @param secret a short-lived token obtained through an authentication process
 	 * @param authenticationProcessInfo the authentication process that was used to create the secret
 	 */
-	data class ShortLivedTokenDetails(override val secret: String, val authenticationProcessInfo: AuthenticationProcessRequest) : AuthSecretDetails {
+	data class ShortLivedTokenDetails(
+		override val secret: String,
+		val authenticationProcessInfo: AuthenticationProcessRequest,
+		val createLongLivedToken: Boolean = false
+	) : AuthSecretDetails {
 		override val type = AuthenticationClass.ShortLivedToken
 	}
 

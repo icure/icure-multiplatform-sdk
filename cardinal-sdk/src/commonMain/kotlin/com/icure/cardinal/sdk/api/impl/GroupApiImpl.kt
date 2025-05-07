@@ -19,6 +19,7 @@ import com.icure.cardinal.sdk.model.couchdb.GroupDatabasesInfo
 import com.icure.cardinal.sdk.model.embed.GroupType
 import com.icure.cardinal.sdk.model.embed.RoleConfiguration
 import com.icure.cardinal.sdk.model.embed.UserType
+import com.icure.cardinal.sdk.model.security.ExternalJwtConfig
 import com.icure.cardinal.sdk.model.security.Operation
 import com.icure.cardinal.sdk.model.security.PermissionType
 import com.icure.utils.InternalIcureApi
@@ -62,12 +63,14 @@ internal class GroupApiImpl(
 
     override suspend fun listApps(): List<Group> = rawApi.listApps().successBody()
 
+    @Deprecated("Will be replaced by filters")
     override suspend fun findGroups(
 		id: String,
 		startDocumentId: String?,
 		limit: Int?,
     ): PaginatedList<Group> = rawApi.findGroups(id, startDocumentId, limit).successBody()
 
+    @Deprecated("Will be replaced by filters")
     override suspend fun findGroupsWithContent(
 	    id: String,
 	    searchString: String,
@@ -128,4 +131,8 @@ internal class GroupApiImpl(
     override suspend fun getReplicationInfo(id: String): ReplicationInfo = rawApi.getReplicationInfo(id).successBody()
     override suspend fun getHierarchy(id: String): List<String> = rawApi.getHierarchy(id).successBody()
     override suspend fun listAllGroupsIds(): List<DocIdentifier> = rawApi.listAllGroupsIds().successBody()
+	override suspend fun createOrUpdateExternalJwtConfig(groupId: String, key: String, config: ExternalJwtConfig): Group =
+		rawApi.createOrUpdateExternalJwtConfig(groupId, key, config).successBody()
+	override suspend fun removeExternalJwtConfig(groupId: String, key: String): Group =
+		rawApi.removeExternalJwtConfig(groupId, key).successBody()
 }

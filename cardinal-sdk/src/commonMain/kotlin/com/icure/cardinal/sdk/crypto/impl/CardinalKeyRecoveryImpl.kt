@@ -1,15 +1,10 @@
 package com.icure.cardinal.sdk.crypto.impl
 
-import com.icure.kryptom.crypto.AesAlgorithm
-import com.icure.kryptom.crypto.AesKey
-import com.icure.kryptom.crypto.CryptoService
-import com.icure.kryptom.crypto.RsaAlgorithm
-import com.icure.kryptom.crypto.RsaKeypair
-import com.icure.kryptom.utils.toHexString
 import com.icure.cardinal.sdk.crypto.BaseExchangeDataManager
 import com.icure.cardinal.sdk.crypto.BaseExchangeKeysManager
 import com.icure.cardinal.sdk.crypto.CardinalKeyRecovery
 import com.icure.cardinal.sdk.crypto.entities.CardinalKeyInfo
+import com.icure.cardinal.sdk.model.EntityReferenceInGroup
 import com.icure.cardinal.sdk.crypto.entities.RsaDecryptionKeysSet
 import com.icure.cardinal.sdk.crypto.entities.ShamirSecretShare
 import com.icure.cardinal.sdk.model.DataOwnerWithType
@@ -18,8 +13,14 @@ import com.icure.cardinal.sdk.model.extensions.publicKeysSpki
 import com.icure.cardinal.sdk.model.specializations.HexString
 import com.icure.cardinal.sdk.model.specializations.KeypairFingerprintV1String
 import com.icure.cardinal.sdk.model.specializations.SpkiHexString
-import com.icure.utils.InternalIcureApi
 import com.icure.cardinal.sdk.utils.getLogger
+import com.icure.kryptom.crypto.AesAlgorithm
+import com.icure.kryptom.crypto.AesKey
+import com.icure.kryptom.crypto.CryptoService
+import com.icure.kryptom.crypto.RsaAlgorithm
+import com.icure.kryptom.crypto.RsaKeypair
+import com.icure.kryptom.utils.toHexString
+import com.icure.utils.InternalIcureApi
 
 /**
  * Recovers keys using available shamir splits and transfer keys.
@@ -220,7 +221,11 @@ class CardinalKeyRecoveryImpl(
 			baseExchangeKeysManager.getEncryptedExchangeKeysFor(delegatorId = from, delegateId = to),
 			availableDecryptionKeys
 		).successfulDecryptions
-		val encryptedExchangeData = baseExchangeDataManager.getExchangeDataByDelegatorDelegatePair(delegatorId = from, delegateId = to)
+		val encryptedExchangeData = baseExchangeDataManager.getExchangeDataByDelegatorDelegatePair(
+			null,
+			EntityReferenceInGroup(from, null),
+			EntityReferenceInGroup(to, null)
+		)
 		val exchangeData =  baseExchangeDataManager.tryDecryptExchangeKeys(
 			encryptedExchangeData,
 			availableDecryptionKeys

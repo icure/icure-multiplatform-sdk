@@ -10,7 +10,7 @@ import com.icure.cardinal.sdk.filters.FilterOptions
 import com.icure.cardinal.sdk.filters.SortableFilterOptions
 import com.icure.cardinal.sdk.model.DecryptedPatient
 import com.icure.cardinal.sdk.model.EncryptedPatient
-import com.icure.cardinal.sdk.model.IdWithMandatoryRev
+import com.icure.cardinal.sdk.model.StoredDocumentIdentifier
 import com.icure.cardinal.sdk.model.IdWithRev
 import com.icure.cardinal.sdk.model.PaginatedList
 import com.icure.cardinal.sdk.model.Patient
@@ -764,7 +764,7 @@ public fun deletePatientByIdAsync(
 
 @Serializable
 private class DeletePatientsByIdsParams(
-	public val entityIds: List<IdWithMandatoryRev>,
+	public val entityIds: List<StoredDocumentIdentifier>,
 )
 
 @OptIn(InternalIcureApi::class)
@@ -1317,7 +1317,7 @@ public fun undeletePatientByIdAsync(
 
 @Serializable
 private class UndeletePatientsParams(
-	public val ids: List<IdWithMandatoryRev>,
+	public val ids: List<StoredDocumentIdentifier>,
 )
 
 @OptIn(InternalIcureApi::class)

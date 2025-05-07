@@ -18,6 +18,7 @@ import com.icure.cardinal.sdk.model.embed.GroupType
 import com.icure.cardinal.sdk.model.embed.RoleConfiguration
 import com.icure.cardinal.sdk.model.embed.UserType
 import com.icure.cardinal.sdk.model.filter.AbstractFilter
+import com.icure.cardinal.sdk.model.security.ExternalJwtConfig
 import com.icure.cardinal.sdk.model.security.Operation
 import com.icure.cardinal.sdk.model.security.PermissionType
 import com.icure.utils.InternalIcureApi
@@ -160,6 +161,17 @@ public interface RawGroupApi {
 	suspend fun getReplicationInfo(id: String): HttpResponse<ReplicationInfo>
 
 	suspend fun getHierarchy(id: String): HttpResponse<List<String>>
+
+	suspend fun createOrUpdateExternalJwtConfig(
+		groupId: String,
+		key: String,
+		config: ExternalJwtConfig,
+	): HttpResponse<Group>
+
+	suspend fun removeExternalJwtConfig(
+		groupId: String,
+		key: String,
+	): HttpResponse<Group>
 
 	suspend fun listAllGroupsIds(): HttpResponse<List<DocIdentifier>>
 

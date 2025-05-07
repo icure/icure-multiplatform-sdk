@@ -2,12 +2,13 @@ package com.icure.cardinal.sdk.api.impl
 
 import com.icure.cardinal.sdk.api.AgendaApi
 import com.icure.cardinal.sdk.api.raw.RawAgendaApi
+import com.icure.cardinal.sdk.api.raw.successBodyOrNull404
 import com.icure.cardinal.sdk.api.raw.successBodyOrThrowRevisionConflict
 import com.icure.cardinal.sdk.filters.BaseFilterOptions
 import com.icure.cardinal.sdk.filters.BaseSortableFilterOptions
 import com.icure.cardinal.sdk.filters.mapAgendaFilterOptions
 import com.icure.cardinal.sdk.model.Agenda
-import com.icure.cardinal.sdk.model.IdWithMandatoryRev
+import com.icure.cardinal.sdk.model.StoredDocumentIdentifier
 import com.icure.cardinal.sdk.model.ListOfIds
 import com.icure.cardinal.sdk.model.ListOfIdsAndRev
 import com.icure.cardinal.sdk.model.PaginatedList
@@ -39,7 +40,7 @@ internal class AgendaApiImpl (
 	override suspend fun deleteAgendaById(entityId: String, rev: String): DocIdentifier =
 		rawApi.deleteAgenda(entityId, rev).successBodyOrThrowRevisionConflict()
 
-	override suspend fun deleteAgendasByIds(entityIds: List<IdWithMandatoryRev>): List<DocIdentifier> =
+	override suspend fun deleteAgendasByIds(entityIds: List<StoredDocumentIdentifier>): List<DocIdentifier> =
 		rawApi.deleteAgendasWithRev(ListOfIdsAndRev(entityIds)).successBody()
 
 	override suspend fun purgeAgendaById(id: String, rev: String) {
@@ -49,15 +50,12 @@ internal class AgendaApiImpl (
 	override suspend fun undeleteAgendaById(id: String, rev: String): Agenda =
 		rawApi.undeleteAgenda(id, rev).successBodyOrThrowRevisionConflict()
 
-	override suspend fun getAgenda(agendaId: String): Agenda = rawApi.getAgenda(agendaId).successBody()
+	override suspend fun getAgenda(agendaId: String): Agenda? = rawApi.getAgenda(agendaId).successBodyOrNull404()
 
 	override suspend fun getAgendas(agendaIds: List<String>): List<Agenda> = rawApi.getAgendasByIds(ListOfIds(agendaIds)).successBody()
 
 	@Deprecated("Use filter instead")
 	override suspend fun getAgendasForUser(userId: String): Agenda = rawApi.getAgendasForUser(userId).successBody()
-
-	@Deprecated("Use filter instead")
-	override suspend fun getReadableAgendasForUser(userId: String): List<Agenda> = rawApi.getReadableAgendasForUser(userId).successBody()
 
 	override suspend fun modifyAgenda(agendaDto: Agenda): Agenda = rawApi.modifyAgenda(agendaDto).successBodyOrThrowRevisionConflict()
 

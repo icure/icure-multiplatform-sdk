@@ -3,6 +3,7 @@ package com.icure.cardinal.sdk.api.impl
 import com.icure.cardinal.sdk.api.RecoveryApi
 import com.icure.cardinal.sdk.api.raw.HttpResponse
 import com.icure.cardinal.sdk.crypto.InternalCryptoServices
+import com.icure.cardinal.sdk.model.EntityReferenceInGroup
 import com.icure.cardinal.sdk.crypto.entities.ExchangeDataRecoveryDetails
 import com.icure.cardinal.sdk.crypto.entities.RecoveryDataKey
 import com.icure.cardinal.sdk.crypto.entities.RecoveryDataUseFailureReason
@@ -73,8 +74,9 @@ internal class RecoveryApiImpl(
 		recoveryKeyOptions: RecoveryKeyOptions?
 	): RecoveryDataKey {
 		val exchangeDataToDelegate = crypto.exchangeDataManager.base.getExchangeDataByDelegatorDelegatePair(
-			crypto.dataOwnerApi.getCurrentDataOwnerId(),
-			delegateId
+			null,
+			crypto.dataOwnerApi.getCurrentDataOwnerReference(),
+			EntityReferenceInGroup(delegateId, null)
 		)
 		val decryptionKeys = crypto.userEncryptionKeysManager.getDecryptionKeys(true)
 		val decryptedInformation = exchangeDataToDelegate.mapNotNull { exchangeData ->
@@ -96,7 +98,7 @@ internal class RecoveryApiImpl(
 				crypto.userEncryptionKeysManager.getSelfVerifiedKeys().map { it.toPublicKeyInfo() }
 			)
 			recoveredExchangeData.forEach { exchangeDataInfo ->
-				val retrievedData = crypto.exchangeDataManager.base.getExchangeDataById(exchangeDataInfo.exchangeDataId)
+				val retrievedData = crypto.exchangeDataManager.base.getExchangeDataByIds(null, listOf(exchangeDataInfo.exchangeDataId)).singleOrNull()
 				if (retrievedData == null) {
 					log.w { "Could not recover exchange data with id ${exchangeDataInfo.exchangeDataId} as it was not found. Ignoring" }
 				} else {

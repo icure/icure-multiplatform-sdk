@@ -8,10 +8,13 @@ import com.icure.cardinal.sdk.api.InvoiceFlavouredApi
 import com.icure.cardinal.sdk.api.raw.RawEntityReferenceApi
 import com.icure.cardinal.sdk.api.raw.RawInvoiceApi
 import com.icure.cardinal.sdk.api.raw.successBodyOrNull
+import com.icure.cardinal.sdk.api.raw.successBodyOrNull404
 import com.icure.cardinal.sdk.api.raw.successBodyOrThrowRevisionConflict
+import com.icure.cardinal.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
 import com.icure.cardinal.sdk.crypto.entities.InvoiceShareOptions
+import com.icure.cardinal.sdk.crypto.entities.OwningEntityDetails
 import com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption
-import com.icure.cardinal.sdk.crypto.entities.withTypeInfo
+import com.icure.cardinal.sdk.exceptions.NotFoundException
 import com.icure.cardinal.sdk.model.DecryptedInvoice
 import com.icure.cardinal.sdk.model.EncryptedInvoice
 import com.icure.cardinal.sdk.model.EntityReference
@@ -29,7 +32,6 @@ import com.icure.cardinal.sdk.model.extensions.dataOwnerId
 import com.icure.cardinal.sdk.model.specializations.HexString
 import com.icure.cardinal.sdk.options.ApiConfiguration
 import com.icure.cardinal.sdk.options.BasicApiConfiguration
-import com.icure.cardinal.sdk.utils.EntityEncryptionException
 import com.icure.cardinal.sdk.utils.Serialization
 import com.icure.cardinal.sdk.utils.currentEpochMs
 import com.icure.cardinal.sdk.utils.currentFuzzyDateTime
@@ -42,31 +44,34 @@ import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.decodeFromJsonElement
 
 @InternalIcureApi
-private abstract class AbstractInvoiceBasicFlavouredApi<E : Invoice>(protected val rawApi: RawInvoiceApi) :
-	InvoiceBasicFlavouredApi<E> {
+private abstract class AbstractInvoiceBasicFlavouredApi<E : Invoice>(
+	protected val rawApi: RawInvoiceApi
+) : InvoiceBasicFlavouredApi<E>, FlavouredApi<EncryptedInvoice, E> {
 	override suspend fun modifyInvoice(entity: E): E =
-		rawApi.modifyInvoice(validateAndMaybeEncrypt(entity)).successBodyOrThrowRevisionConflict().let { maybeDecrypt(it) }
+		rawApi.modifyInvoice(validateAndMaybeEncrypt(null, entity)).successBodyOrThrowRevisionConflict().let { maybeDecrypt(null, it) }
 
 	override suspend fun modifyInvoices(entities: List<E>): List<E> =
-		rawApi.modifyInvoices(entities.map { validateAndMaybeEncrypt(it) }).successBody().map { maybeDecrypt(it) }
+		rawApi.modifyInvoices(validateAndMaybeEncrypt(entities)).successBody().let { maybeDecrypt(it) }
 
-	override suspend fun getInvoice(entityId: String): E = rawApi.getInvoice(entityId).successBody().let { maybeDecrypt(it) }
+	override suspend fun getInvoice(entityId: String): E? =
+		rawApi.getInvoice(entityId).successBodyOrNull404()?.let { maybeDecrypt(null, it) }
+
 	override suspend fun getInvoices(entityIds: List<String>): List<E> =
-		rawApi.getInvoices(ListOfIds(entityIds)).successBody().map { maybeDecrypt(it) }
+		rawApi.getInvoices(ListOfIds(entityIds)).successBody().let { maybeDecrypt(it) }
 
 	override suspend fun reassignInvoice(invoice: E): E =
-		rawApi.reassignInvoice(validateAndMaybeEncrypt(invoice)).successBody().let { maybeDecrypt(it) }
+		rawApi.reassignInvoice(validateAndMaybeEncrypt(null, invoice)).successBody().let { maybeDecrypt(null, it) }
 
 	override suspend fun mergeTo(
 		invoiceId: String,
 		ids: List<String>,
-		) = rawApi.mergeTo(invoiceId, ListOfIds(ids)).successBody().let { maybeDecrypt(it) }
+		) = rawApi.mergeTo(invoiceId, ListOfIds(ids)).successBody().let { maybeDecrypt(null, it) }
 
 	override suspend fun validate(
 		invoiceId: String,
 		scheme: String,
 		forcedValue: String,
-		): E = rawApi.validate(invoiceId, scheme, forcedValue).successBody().let { maybeDecrypt(it) }
+		): E = rawApi.validate(invoiceId, scheme, forcedValue).successBody().let { maybeDecrypt(null, it) }
 
 	//TODO: Maybe manage a separate manifest for InvoicingCode and encrypt automatically
 	override suspend fun appendCodes(
@@ -79,7 +84,7 @@ private abstract class AbstractInvoiceBasicFlavouredApi<E : Invoice>(protected v
 		gracePeriod: Int?,
 		invoicingCodes: List<EncryptedInvoicingCode>,
 		): List<E> =
-		rawApi.appendCodes(userId, type, sentMediumType, secretFKeys, insuranceId, invoiceId, gracePeriod, invoicingCodes).successBody().map { maybeDecrypt(it) }
+		rawApi.appendCodes(userId, type, sentMediumType, secretFKeys, insuranceId, invoiceId, gracePeriod, invoicingCodes).successBody().let { maybeDecrypt(it) }
 
 	override suspend fun removeCodes(
 		userId: String,
@@ -87,7 +92,7 @@ private abstract class AbstractInvoiceBasicFlavouredApi<E : Invoice>(protected v
 		secretFKeys: String,
 		tarificationIds: List<String>,
 		): List<E> =
-		rawApi.removeCodes(userId, serviceId, secretFKeys, tarificationIds).successBody().map { maybeDecrypt(it) }
+		rawApi.removeCodes(userId, serviceId, secretFKeys, tarificationIds).successBody().let { maybeDecrypt(it) }
 
 	@Deprecated("Find methods are deprecated", replaceWith = ReplaceWith("filterInvoicesBy()"))
 	override suspend fun findInvoicesByAuthor(
@@ -97,11 +102,11 @@ private abstract class AbstractInvoiceBasicFlavouredApi<E : Invoice>(protected v
 		startKey: JsonElement?,
 		startDocumentId: String?,
 		limit: Int?,
-		) = rawApi.findInvoicesByAuthor(hcPartyId, fromDate, toDate, startKey.encodeStartKey(), startDocumentId, limit).successBody().map { maybeDecrypt(it) }
+		) = rawApi.findInvoicesByAuthor(hcPartyId, fromDate, toDate, startKey.encodeStartKey(), startDocumentId, limit).successBody().let { maybeDecrypt(it) }
 
 	@Deprecated("Use filter instead")
 	override suspend fun listInvoicesByHcPartyAndGroupId(hcPartyId: String, groupId: String): List<E> =
-		rawApi.listInvoicesByHcPartyAndGroupId(hcPartyId, groupId).successBody().map { maybeDecrypt(it) }
+		rawApi.listInvoicesByHcPartyAndGroupId(hcPartyId, groupId).successBody().let { maybeDecrypt(it) }
 
 	@Deprecated("Use filter instead")
 	override suspend fun listInvoicesByHcPartySentMediumTypeInvoiceTypeSentDate(
@@ -111,35 +116,35 @@ private abstract class AbstractInvoiceBasicFlavouredApi<E : Invoice>(protected v
 		sent: Boolean,
 		from: Long?,
 		to: Long?,
-	) = rawApi.listInvoicesByHcPartySentMediumTypeInvoiceTypeSentDate(hcPartyId, sentMediumType, invoiceType, sent, from, to).successBody().map { maybeDecrypt(it) }
+	) = rawApi.listInvoicesByHcPartySentMediumTypeInvoiceTypeSentDate(hcPartyId, sentMediumType, invoiceType, sent, from, to).successBody().let { maybeDecrypt(it) }
 
 	@Deprecated("Use filter instead")
 	override suspend fun listInvoicesByContactIds(contactIds: List<String>): List<E> =
-		rawApi.listInvoicesByContactIds(ListOfIds(contactIds)).successBody().map { maybeDecrypt(it) }
+		rawApi.listInvoicesByContactIds(ListOfIds(contactIds)).successBody().let { maybeDecrypt(it) }
 
 	@Deprecated("Use filter instead")
 	override suspend fun listInvoicesByRecipientsIds(recipientsIds: List<String>): List<E> =
-		rawApi.listInvoicesByRecipientsIds(recipientsIds.joinToString(",")).successBody().map { maybeDecrypt(it) }
+		rawApi.listInvoicesByRecipientsIds(recipientsIds.joinToString(",")).successBody().let { maybeDecrypt(it) }
 
 	@Deprecated("Use filter instead")
 	override suspend fun listToInsurances(userIds: List<String>): List<E> =
-		rawApi.listToInsurances(userIds.joinToString(",")).successBody().map { maybeDecrypt(it) }
+		rawApi.listToInsurances(userIds.joinToString(",")).successBody().let { maybeDecrypt(it) }
 
 	@Deprecated("Use filter instead")
 	override suspend fun listToInsurancesUnsent(userIds: List<String>): List<E> =
-		rawApi.listToInsurancesUnsent(userIds.joinToString(",")).successBody().map { maybeDecrypt(it) }
+		rawApi.listToInsurancesUnsent(userIds.joinToString(",")).successBody().let { maybeDecrypt(it) }
 
 	@Deprecated("Use filter instead")
 	override suspend fun listToPatients(hcPartyId: String): List<E> =
-		rawApi.listToPatients(hcPartyId).successBody().map { maybeDecrypt(it) }
+		rawApi.listToPatients(hcPartyId).successBody().let { maybeDecrypt(it) }
 
 	@Deprecated("Use filter instead")
 	override suspend fun listToPatientsUnsent(hcPartyId: String?): List<E> =
-		rawApi.listToPatientsUnsent(hcPartyId).successBody().map { maybeDecrypt(it) }
+		rawApi.listToPatientsUnsent(hcPartyId).successBody().let { maybeDecrypt(it) }
 
 	@Deprecated("Use filter instead")
 	override suspend fun listInvoicesByIds(ids: List<String>): List<E> =
-		rawApi.listInvoicesByIds(ids.joinToString(",")).successBody().map { maybeDecrypt(it) }
+		rawApi.listInvoicesByIds(ids.joinToString(",")).successBody().let { maybeDecrypt(it) }
 
 	@Deprecated("Use filter instead")
 	override suspend fun listInvoicesByHcpartySendingModeStatusDate(
@@ -148,11 +153,11 @@ private abstract class AbstractInvoiceBasicFlavouredApi<E : Invoice>(protected v
 		status: String,
 		from: Long,
 		to: Long,
-	): List<E> = rawApi.listInvoicesByHcpartySendingModeStatusDate(hcPartyId, sendingMode, status, from, to).successBody().map { maybeDecrypt(it) }
+	): List<E> = rawApi.listInvoicesByHcpartySendingModeStatusDate(hcPartyId, sendingMode, status, from, to).successBody().let { maybeDecrypt(it) }
 
 	@Deprecated("Use filter instead")
 	override suspend fun listInvoicesByServiceIds(serviceIds: List<String>): List<E> =
-		rawApi.listInvoicesByServiceIds(serviceIds.joinToString(",")).successBody().map { maybeDecrypt(it) }
+		rawApi.listInvoicesByServiceIds(serviceIds.joinToString(",")).successBody().let { maybeDecrypt(it) }
 
 	@Deprecated("Use filter instead")
 	override suspend fun listAllHcpsByStatus(
@@ -161,20 +166,14 @@ private abstract class AbstractInvoiceBasicFlavouredApi<E : Invoice>(protected v
 		to: Long?,
 		hcpIds: List<String>,
 		): List<E> =
-		rawApi.listAllHcpsByStatus(status, from, to, ListOfIds(hcpIds)).successBody().map { maybeDecrypt(it) }
-
-
-	abstract suspend fun validateAndMaybeEncrypt(entity: E): EncryptedInvoice
-	abstract suspend fun maybeDecrypt(entity: EncryptedInvoice): E
+		rawApi.listAllHcpsByStatus(status, from, to, ListOfIds(hcpIds)).successBody().let { maybeDecrypt(it) }
 }
 
 @InternalIcureApi
 private abstract class AbstractInvoiceFlavouredApi<E : Invoice>(
 	rawApi: RawInvoiceApi,
-	private val config: ApiConfiguration
+	protected val config: ApiConfiguration
 ) : AbstractInvoiceBasicFlavouredApi<E>(rawApi), InvoiceFlavouredApi<E> {
-	protected val crypto get() = config.crypto
-	protected val fieldsToEncrypt get() = config.encryption.invoice
 
 	override suspend fun shareWith(
 		delegateId: String,
@@ -184,12 +183,14 @@ private abstract class AbstractInvoiceFlavouredApi<E : Invoice>(
 		shareWithMany(invoice, mapOf(delegateId to (options ?: InvoiceShareOptions())))
 
 	override suspend fun shareWithMany(invoice: E, delegates: Map<String, InvoiceShareOptions>): E =
-		crypto.entity.simpleShareOrUpdateEncryptedEntityMetadata(
-			invoice.withTypeInfo(),
-			delegates,
+		config.crypto.entity.simpleShareOrUpdateEncryptedEntityMetadata(
+			null,
+			invoice,
+			EntityWithEncryptionMetadataTypeName.Invoice,
+			delegates.keyAsLocalDataOwnerReferences(),
 			true,
-			{ getInvoice(it).withTypeInfo() },
-			{ rawApi.bulkShare(it).successBody().map { r -> r.map { he -> maybeDecrypt(he) } } }
+			{ getInvoice(it) ?: throw NotFoundException("invoice $it not found") },
+			{ maybeDecrypt(null, rawApi.bulkShare(it).successBody()) }
 		).updatedEntityOrThrow()
 
 
@@ -206,10 +207,16 @@ private abstract class AbstractInvoiceFlavouredApi<E : Invoice>(
 			startDate = startDate,
 			endDate = endDate,
 			descending = descending,
-			secretPatientKeys = ListOfIds(crypto.entity.secretIdsOf(patient.withTypeInfo(), null).toList())
+			secretPatientKeys = ListOfIds(
+				config.crypto.entity.secretIdsOf(
+					null,
+					patient,
+					EntityWithEncryptionMetadataTypeName.Patient,
+					null
+				).toList())
 		).successBody()
 	) { ids ->
-		rawApi.getInvoices(ListOfIds(ids)).successBody().map { maybeDecrypt(it) }
+		rawApi.getInvoices(ListOfIds(ids)).successBody().let { maybeDecrypt(it) }
 	}
 
 }
@@ -234,57 +241,87 @@ internal class InvoiceApiImpl(
 	private val config: ApiConfiguration,
 ) : InvoiceApi, InvoiceFlavouredApi<DecryptedInvoice> by object :
 	AbstractInvoiceFlavouredApi<DecryptedInvoice>(rawApi, config) {
-	override suspend fun validateAndMaybeEncrypt(entity: DecryptedInvoice): EncryptedInvoice =
-		crypto.entity.encryptEntity(
-			entity.withTypeInfo(),
+	override suspend fun validateAndMaybeEncrypt(
+		entitiesGroupId: String?,
+		entities: List<DecryptedInvoice>
+	): List<EncryptedInvoice> =
+		this.config.crypto.entity.encryptEntities(
+			entitiesGroupId,
+			entities,
+			EntityWithEncryptionMetadataTypeName.Invoice,
 			DecryptedInvoice.serializer(),
-			fieldsToEncrypt,
+			this.config.encryption.invoice,
 		) { Serialization.json.decodeFromJsonElement<EncryptedInvoice>(it) }
 
-	override suspend fun maybeDecrypt(entity: EncryptedInvoice): DecryptedInvoice {
-		return crypto.entity.tryDecryptEntity(
-			entity.withTypeInfo(),
+	override suspend fun maybeDecrypt(
+		entitiesGroupId: String?,
+		entities: List<EncryptedInvoice>
+	): List<DecryptedInvoice> =
+		this.config.crypto.entity.decryptEntities(
+			entitiesGroupId,
+			entities,
+			EntityWithEncryptionMetadataTypeName.Invoice,
 			EncryptedInvoice.serializer(),
 		) { Serialization.json.decodeFromJsonElement<DecryptedInvoice>(config.jsonPatcher.patchInvoice(it)) }
-			?: throw EntityEncryptionException("Entity ${entity.id} cannot be created")
-	}
 }, InvoiceBasicFlavourlessApi by AbstractInvoiceBasicFlavourlessApi(rawApi) {
 	override val encrypted: InvoiceFlavouredApi<EncryptedInvoice> =
 		object : AbstractInvoiceFlavouredApi<EncryptedInvoice>(rawApi, config) {
-			override suspend fun validateAndMaybeEncrypt(entity: EncryptedInvoice): EncryptedInvoice =
-				crypto.entity.validateEncryptedEntity(entity.withTypeInfo(), EncryptedInvoice.serializer(), fieldsToEncrypt)
+			override suspend fun validateAndMaybeEncrypt(
+				entitiesGroupId: String?,
+				entities: List<EncryptedInvoice>
+			): List<EncryptedInvoice> =
+				config.crypto.entity.validateEncryptedEntities(
+					entities,
+					EntityWithEncryptionMetadataTypeName.Invoice,
+					EncryptedInvoice.serializer(),
+					config.encryption.invoice
+				)
 
-			override suspend fun maybeDecrypt(entity: EncryptedInvoice): EncryptedInvoice = entity
+			override suspend fun maybeDecrypt(
+				entitiesGroupId: String?,
+				entities: List<EncryptedInvoice>
+			): List<EncryptedInvoice> =
+				entities
 		}
 
 	override val tryAndRecover: InvoiceFlavouredApi<Invoice> =
 		object : AbstractInvoiceFlavouredApi<Invoice>(rawApi, config) {
-			override suspend fun maybeDecrypt(entity: EncryptedInvoice): Invoice =
-				crypto.entity.tryDecryptEntity(
-					entity.withTypeInfo(),
-					EncryptedInvoice.serializer(),
-				) { Serialization.json.decodeFromJsonElement<DecryptedInvoice>(config.jsonPatcher.patchInvoice(it)) }
-					?: entity
 
-			override suspend fun validateAndMaybeEncrypt(entity: Invoice): EncryptedInvoice = when (entity) {
-				is EncryptedInvoice -> crypto.entity.validateEncryptedEntity(
-					entity.withTypeInfo(),
-					EncryptedInvoice.serializer(),
-					fieldsToEncrypt,
+			override suspend fun validateAndMaybeEncrypt(
+				entitiesGroupId: String?,
+				entities: List<Invoice>
+			): List<EncryptedInvoice> =
+				config.crypto.entity.validateOrEncryptEntities(
+					entitiesGroupId = entitiesGroupId,
+					entities = entities,
+					entitiesType = EntityWithEncryptionMetadataTypeName.Invoice,
+					encryptedSerializer = EncryptedInvoice.serializer(),
+					decryptedSerializer = DecryptedInvoice.serializer(),
+					fieldsToEncrypt = config.encryption.invoice
 				)
 
-				is DecryptedInvoice -> crypto.entity.encryptEntity(
-					entity.withTypeInfo(),
-					DecryptedInvoice.serializer(),
-					fieldsToEncrypt,
-				) { Serialization.json.decodeFromJsonElement<EncryptedInvoice>(it) }
-			}
+			override suspend fun maybeDecrypt(
+				entitiesGroupId: String?,
+				entities: List<EncryptedInvoice>
+			): List<Invoice> =
+				config.crypto.entity.decryptEntities(
+					entitiesGroupId,
+					entities,
+					EntityWithEncryptionMetadataTypeName.Invoice,
+					EncryptedInvoice.serializer(),
+				) { Serialization.json.decodeFromJsonElement<DecryptedInvoice>(config.jsonPatcher.patchInvoice(it)) }
 		}
 
 	private suspend fun createInvoice(entity: DecryptedInvoice): DecryptedInvoice {
-		require(entity.securityMetadata != null) { "Entity must have security metadata initialized. You can use the withEncryptionMetadata for that very purpose." }
+		require(entity.securityMetadata != null) { "Entity must have security metadata initialized. Make sure to use the `withEncryptionMetadata` method." }
 		return rawApi.createInvoice(
-			encrypt(entity),
+			config.crypto.entity.encryptEntities(
+				null,
+				listOf(entity),
+				EntityWithEncryptionMetadataTypeName.Invoice,
+				DecryptedInvoice.serializer(),
+				config.encryption.invoice,
+			) { Serialization.json.decodeFromJsonElement<EncryptedInvoice>(it) }.single(),
 		).successBody().let {
 			decrypt(it)
 		}
@@ -321,27 +358,36 @@ internal class InvoiceApiImpl(
 	}
 
 	override suspend fun createInvoices(entities: List<DecryptedInvoice>): List<DecryptedInvoice> {
-		require(entities.all { it.securityMetadata != null }) { "All entities must have security metadata initialized. You can use the withEncryptionMetadata for that very purpose." }
+		require(entities.all { it.securityMetadata != null }) { "All entities must have security metadata initialized. Make sure to use the `withEncryptionMetadata` method." }
 		return rawApi.createInvoices(
-			entities.map {
-				encrypt(it)
-			},
+			config.crypto.entity.encryptEntities(
+				null,
+				entities,
+				EntityWithEncryptionMetadataTypeName.Invoice,
+				DecryptedInvoice.serializer(),
+				config.encryption.invoice,
+			) { Serialization.json.decodeFromJsonElement<EncryptedInvoice>(it) },
 		).successBody().map {
 			decrypt(it)
 		}
 	}
 
-	private val crypto get() = config.crypto
-	private val fieldsToEncrypt get() = config.encryption.invoice
+	override suspend fun getEncryptionKeysOf(invoice: Invoice): Set<HexString> =
+		config.crypto.entity.encryptionKeysOf(null, invoice, EntityWithEncryptionMetadataTypeName.Invoice, null)
 
-	override suspend fun getEncryptionKeysOf(invoice: Invoice): Set<HexString> = crypto.entity.encryptionKeysOf(invoice.withTypeInfo(), null)
+	override suspend fun hasWriteAccess(invoice: Invoice): Boolean =
+		config.crypto.entity.hasWriteAccess(null, invoice, EntityWithEncryptionMetadataTypeName.Invoice)
 
-	override suspend fun hasWriteAccess(invoice: Invoice): Boolean = crypto.entity.hasWriteAccess(invoice.withTypeInfo())
-
-	override suspend fun decryptPatientIdOf(invoice: Invoice): Set<String> = crypto.entity.owningEntityIdsOf(invoice.withTypeInfo(), null)
+	override suspend fun decryptPatientIdOf(invoice: Invoice): Set<String> =
+		config.crypto.entity.owningEntityIdsOf(null, invoice, EntityWithEncryptionMetadataTypeName.Invoice, null)
 
 	override suspend fun createDelegationDeAnonymizationMetadata(entity: Invoice, delegates: Set<String>) {
-		crypto.delegationsDeAnonymization.createOrUpdateDeAnonymizationInfo(entity.withTypeInfo(), delegates)
+		config.crypto.delegationsDeAnonymization.createOrUpdateDeAnonymizationInfo(
+			null,
+			entity,
+			EntityWithEncryptionMetadataTypeName.Invoice,
+			delegates.asLocalDataOwnerReferences()
+		)
 	}
 
 	override suspend fun withEncryptionMetadata(
@@ -352,37 +398,49 @@ internal class InvoiceApiImpl(
 		secretId: SecretIdUseOption,
 		// Temporary, needs a lot more stuff to match typescript implementation
 	): DecryptedInvoice =
-		crypto.entity.entityWithInitializedEncryptedMetadata(
-			(base ?: DecryptedInvoice(crypto.primitives.strongRandom.randomUUID())).copy(
+		config.crypto.entity.entityWithInitializedEncryptedMetadata(
+			null,
+			(base ?: DecryptedInvoice(config.crypto.primitives.strongRandom.randomUUID())).copy(
 				created = base?.created ?: currentEpochMs(),
 				modified = base?.modified ?: currentEpochMs(),
 				responsible = base?.responsible ?: user?.takeIf { config.autofillAuthor }?.dataOwnerId,
 				author = base?.author ?: user?.id?.takeIf { config.autofillAuthor },
 				groupId = base?.groupId ?: base?.id,
 				invoiceDate = base?.invoiceDate ?: currentFuzzyDateTime(TimeZone.currentSystemDefault()),
-			).withTypeInfo(),
-			patient?.id,
-			patient?.let { crypto.entity.resolveSecretIdOption(it.withTypeInfo(), secretId) },
+			),
+			EntityWithEncryptionMetadataTypeName.Invoice,
+			patient?.let {
+				OwningEntityDetails(
+					null,
+					it.id,
+					config.crypto.entity.resolveSecretIdOption(
+						null,
+						it,
+						EntityWithEncryptionMetadataTypeName.Patient,
+						secretId
+					)
+				)
+			},
 			initializeEncryptionKey = true,
-			autoDelegations = delegates + user?.autoDelegationsFor(DelegationTag.AdministrativeData).orEmpty(),
+			autoDelegations = (delegates + user?.autoDelegationsFor(DelegationTag.AdministrativeData)
+				.orEmpty()).keyAsLocalDataOwnerReferences(),
 		).updatedEntity
 
-	private suspend fun encrypt(entity: DecryptedInvoice) = crypto.entity.encryptEntity(
-		entity.withTypeInfo(),
-		DecryptedInvoice.serializer(),
-		fieldsToEncrypt,
-	) { Serialization.json.decodeFromJsonElement<EncryptedInvoice>(it) }
-
-	private suspend fun decryptOrNull(entity: EncryptedInvoice): DecryptedInvoice? = crypto.entity.tryDecryptEntity(
-		entity.withTypeInfo(),
-		EncryptedInvoice.serializer(),
-	) { Serialization.json.decodeFromJsonElement<DecryptedInvoice>(config.jsonPatcher.patchInvoice(it)) }
-
 	override suspend fun decrypt(invoice: EncryptedInvoice): DecryptedInvoice =
-		decryptOrNull(invoice) ?: throw EntityEncryptionException("Invoice cannot be decrypted")
+		config.crypto.entity.decryptEntities(
+			null,
+			listOf(invoice),
+			EntityWithEncryptionMetadataTypeName.Invoice,
+			EncryptedInvoice.serializer(),
+		) { Serialization.json.decodeFromJsonElement<DecryptedInvoice>(config.jsonPatcher.patchInvoice(it)) }.single()
 
 	override suspend fun tryDecrypt(invoice: EncryptedInvoice): Invoice =
-		decryptOrNull(invoice) ?: invoice
+		config.crypto.entity.tryDecryptEntities(
+			null,
+			listOf(invoice),
+			EntityWithEncryptionMetadataTypeName.Invoice,
+			EncryptedInvoice.serializer(),
+		) { Serialization.json.decodeFromJsonElement<DecryptedInvoice>(config.jsonPatcher.patchInvoice(it)) }.single()
 }
 
 @InternalIcureApi
@@ -391,8 +449,15 @@ internal class InvoiceBasicApiImpl(
 	private val config: BasicApiConfiguration
 ) : InvoiceBasicApi, InvoiceBasicFlavouredApi<EncryptedInvoice> by object :
 	AbstractInvoiceBasicFlavouredApi<EncryptedInvoice>(rawApi) {
-	override suspend fun validateAndMaybeEncrypt(entity: EncryptedInvoice): EncryptedInvoice =
-		config.crypto.validationService.validateEncryptedEntity(entity.withTypeInfo(), EncryptedInvoice.serializer(), config.encryption.invoice)
+	override suspend fun validateAndMaybeEncrypt(
+		entitiesGroupId: String?,
+		entities: List<EncryptedInvoice>
+	): List<EncryptedInvoice> =
+		config.crypto.validationService.validateEncryptedEntities(entities, EntityWithEncryptionMetadataTypeName.Invoice, EncryptedInvoice.serializer(), config.encryption.invoice)
 
-	override suspend fun maybeDecrypt(entity: EncryptedInvoice): EncryptedInvoice = entity
+	override suspend fun maybeDecrypt(
+		entitiesGroupId: String?,
+		entities: List<EncryptedInvoice>
+	): List<EncryptedInvoice> =
+		entities
 }, InvoiceBasicFlavourlessApi by AbstractInvoiceBasicFlavourlessApi(rawApi)

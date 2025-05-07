@@ -1,6 +1,5 @@
 package com.icure.cardinal.sdk.crypto
 
-import com.icure.kryptom.crypto.defaultCryptoService
 import com.icure.cardinal.sdk.CardinalSdk
 import com.icure.cardinal.sdk.crypto.impl.exportSpkiHex
 import com.icure.cardinal.sdk.filters.MaintenanceTaskFilters
@@ -9,12 +8,14 @@ import com.icure.cardinal.sdk.model.DecryptedPatient
 import com.icure.cardinal.sdk.model.embed.AccessLevel
 import com.icure.cardinal.sdk.model.sdk.KeyPairUpdateNotification
 import com.icure.cardinal.sdk.test.DataOwnerDetails
+import com.icure.cardinal.sdk.test.autoCancelJob
 import com.icure.cardinal.sdk.test.createHcpUser
 import com.icure.cardinal.sdk.test.createPatientUser
 import com.icure.cardinal.sdk.test.initializeTestEnvironment
-import com.icure.utils.InternalIcureApi
 import com.icure.cardinal.sdk.utils.currentEpochMs
 import com.icure.cardinal.sdk.utils.pagination.forEach
+import com.icure.kryptom.crypto.defaultCryptoService
+import com.icure.utils.InternalIcureApi
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.collections.shouldBeEmpty
 import io.kotest.matchers.collections.shouldHaveSize
@@ -23,7 +24,9 @@ import io.kotest.matchers.shouldBe
 
 @OptIn(InternalIcureApi::class)
 class KeyPairUpdateNotificationTest : StringSpec({
-	beforeAny {
+	val specJob = autoCancelJob()
+
+	beforeSpec {
 		initializeTestEnvironment()
 	}
 
@@ -48,7 +51,7 @@ class KeyPairUpdateNotificationTest : StringSpec({
 	suspend fun CardinalSdk.verifyDataAccessible(
 		dataId: String
 	) =
-		patient.getPatient(dataId).note shouldBe note
+		patient.getPatient(dataId).shouldNotBeNull().note shouldBe note
 
 	suspend fun CardinalSdk.getMaintenanceTasks(): List<DecryptedMaintenanceTask> {
 		val iterator = maintenanceTask.filterMaintenanceTasksBy(MaintenanceTaskFilters.afterDateForSelf(date = testStart - 1000L))
@@ -62,7 +65,7 @@ class KeyPairUpdateNotificationTest : StringSpec({
 	suspend fun DataOwnerDetails.checkReceivedMaintenanceTaskAndGiveAccessBack(
 		expectedNotification: KeyPairUpdateNotification
 	) {
-		val api = api()
+		val api = api(specJob)
 		val tasks = api.getMaintenanceTasks()
 		tasks shouldHaveSize 1
 		val request = KeyPairUpdateNotification.parseFromMaintenanceTask(tasks.first())
@@ -71,36 +74,36 @@ class KeyPairUpdateNotificationTest : StringSpec({
 	}
 
 	suspend fun DataOwnerDetails.checkNoReceivedMaintenanceTask() {
-		api().getMaintenanceTasks().shouldBeEmpty()
+		api(specJob).getMaintenanceTasks().shouldBeEmpty()
 	}
 
-	"The api should allow to automatically create any necessary keypair update notifications and to use them to give access back to data" {
+	"The api should allow to create any necessary keypair update notifications and to use them to give access back to data" {
 		val user = createHcpUser()
 		val toNotifyAsDelegator = createHcpUser()
 		val toNotifyAsDelegate = createHcpUser()
 		val noNotifyBecauseAlreadyGaveAccessBack = createHcpUser()
 		val noNotifyBecauseNoExchangeData = createHcpUser()
 		val noNotifyBecausePatient = createPatientUser()
-		val initialUserApi = user.api()
+		val initialUserApi = user.api(specJob)
 		val accessibleAfterGiveAccessBack = listOf(
 			initialUserApi.createDataAndShareWith(toNotifyAsDelegator),
-			toNotifyAsDelegate.api().createDataAndShareWith(user),
+			toNotifyAsDelegate.api(specJob).createDataAndShareWith(user),
 			initialUserApi.createDataAndShareWith(noNotifyBecauseAlreadyGaveAccessBack)
 		)
 		initialUserApi.createDataAndShareWith(noNotifyBecausePatient)
-		val (apiWithLostKey, newKey) = user.apiWithLostKeys()
+		val (apiWithLostKey, newKey) = user.apiWithLostKeys(specJob)
 		val newKeySpki = defaultCryptoService.rsa.exportSpkiHex(newKey.public)
 		val expectedNotification = KeyPairUpdateNotification(
 			newPublicKey = newKeySpki,
 			concernedDataOwnerId = user.dataOwnerId
 		)
-		noNotifyBecauseAlreadyGaveAccessBack.api().cardinalMaintenanceTask.applyKeyPairUpdate(expectedNotification)
+		noNotifyBecauseAlreadyGaveAccessBack.api(specJob).cardinalMaintenanceTask.applyKeyPairUpdate(expectedNotification)
 		apiWithLostKey.cardinalMaintenanceTask.createKeyPairUpdateNotificationsToAllDelegationCounterparts(newKeySpki)
 		toNotifyAsDelegate.checkReceivedMaintenanceTaskAndGiveAccessBack(expectedNotification)
 		toNotifyAsDelegator.checkReceivedMaintenanceTaskAndGiveAccessBack(expectedNotification)
 		noNotifyBecauseNoExchangeData.checkNoReceivedMaintenanceTask()
 		noNotifyBecausePatient.checkNoReceivedMaintenanceTask()
-		val apiAfterGiveAccessBack = user.apiWithKeys(newKey)
+		val apiAfterGiveAccessBack = user.apiWithKeys(specJob, newKey)
 		accessibleAfterGiveAccessBack.forEach { apiAfterGiveAccessBack.verifyDataAccessible(it) }
 	}
 })

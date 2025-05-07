@@ -6,10 +6,13 @@ import com.icure.cardinal.sdk.api.TopicBasicFlavouredApi
 import com.icure.cardinal.sdk.api.TopicBasicFlavourlessApi
 import com.icure.cardinal.sdk.api.TopicFlavouredApi
 import com.icure.cardinal.sdk.api.raw.RawTopicApi
+import com.icure.cardinal.sdk.api.raw.successBodyOrNull404
 import com.icure.cardinal.sdk.api.raw.successBodyOrThrowRevisionConflict
+import com.icure.cardinal.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
+import com.icure.cardinal.sdk.crypto.entities.OwningEntityDetails
 import com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption
 import com.icure.cardinal.sdk.crypto.entities.TopicShareOptions
-import com.icure.cardinal.sdk.crypto.entities.withTypeInfo
+import com.icure.cardinal.sdk.exceptions.NotFoundException
 import com.icure.cardinal.sdk.filters.BaseFilterOptions
 import com.icure.cardinal.sdk.filters.BaseSortableFilterOptions
 import com.icure.cardinal.sdk.filters.FilterOptions
@@ -17,10 +20,10 @@ import com.icure.cardinal.sdk.filters.SortableFilterOptions
 import com.icure.cardinal.sdk.filters.mapTopicFilterOptions
 import com.icure.cardinal.sdk.model.DecryptedTopic
 import com.icure.cardinal.sdk.model.EncryptedTopic
-import com.icure.cardinal.sdk.model.IdWithMandatoryRev
 import com.icure.cardinal.sdk.model.ListOfIds
 import com.icure.cardinal.sdk.model.ListOfIdsAndRev
 import com.icure.cardinal.sdk.model.Patient
+import com.icure.cardinal.sdk.model.StoredDocumentIdentifier
 import com.icure.cardinal.sdk.model.Topic
 import com.icure.cardinal.sdk.model.TopicRole
 import com.icure.cardinal.sdk.model.User
@@ -40,7 +43,6 @@ import com.icure.cardinal.sdk.subscription.EntitySubscription
 import com.icure.cardinal.sdk.subscription.EntitySubscriptionConfiguration
 import com.icure.cardinal.sdk.subscription.SubscriptionEventType
 import com.icure.cardinal.sdk.subscription.WebSocketSubscription
-import com.icure.cardinal.sdk.utils.EntityEncryptionException
 import com.icure.cardinal.sdk.utils.Serialization
 import com.icure.cardinal.sdk.utils.currentEpochMs
 import com.icure.cardinal.sdk.utils.pagination.IdsPageIterator
@@ -52,35 +54,36 @@ import kotlinx.serialization.json.decodeFromJsonElement
 private abstract class AbstractTopicBasicFlavouredApi<E : Topic>(
 	protected val rawApi: RawTopicApi,
 	private val config: BasicApiConfiguration,
-) :
-	TopicBasicFlavouredApi<E> {
+) : TopicBasicFlavouredApi<E>, FlavouredApi<EncryptedTopic, E> {
+	override suspend fun createTopic(entity: E): E {
+		require(entity.securityMetadata != null) { "Entity must have security metadata initialized. Make sure to use the `withEncryptionMetadata` method." }
+		return rawApi.createTopic(
+			validateAndMaybeEncrypt(null, entity),
+		).successBody().let { maybeDecrypt(null, it) }
+	}
+
 	override suspend fun undeleteTopicById(id: String, rev: String): E =
-		rawApi.undeleteTopic(id, rev).successBodyOrThrowRevisionConflict().let { maybeDecrypt(it) }
+		rawApi.undeleteTopic(id, rev).successBodyOrThrowRevisionConflict().let { maybeDecrypt(null, it) }
 
 	override suspend fun modifyTopic(entity: E): E =
-		rawApi.modifyTopic(validateAndMaybeEncrypt(entity)).successBodyOrThrowRevisionConflict().let { maybeDecrypt(it) }
+		rawApi.modifyTopic(validateAndMaybeEncrypt(null, entity)).successBodyOrThrowRevisionConflict().let { maybeDecrypt(null, it) }
 
-	override suspend fun getTopic(entityId: String): E = rawApi.getTopic(entityId).successBody().let { maybeDecrypt(it) }
+	override suspend fun getTopic(entityId: String): E? =
+		rawApi.getTopic(entityId).successBodyOrNull404()?.let { maybeDecrypt(null, it) }
 
 	override suspend fun getTopics(entityIds: List<String>): List<E> =
-		rawApi.getTopics(ListOfIds(entityIds)).successBody().map { maybeDecrypt(it) }
+		rawApi.getTopics(ListOfIds(entityIds)).successBody().let { maybeDecrypt(it) }
 	override suspend fun addParticipant(entityId: String, dataOwnerId: String, topicRole: TopicRole) =
-		rawApi.addParticipant(entityId, AddParticipant(dataOwnerId, topicRole)).successBody().let { maybeDecrypt(it) }
+		rawApi.addParticipant(entityId, AddParticipant(dataOwnerId, topicRole)).successBody().let { maybeDecrypt(null, it) }
 	override suspend fun removeParticipant(entityId: String, dataOwnerId: String) =
-		rawApi.removeParticipant(entityId, RemoveParticipant(dataOwnerId)).successBody().let { maybeDecrypt(it) }
-
-	abstract suspend fun validateAndMaybeEncrypt(entity: E): EncryptedTopic
-	abstract suspend fun maybeDecrypt(entity: EncryptedTopic): E
+		rawApi.removeParticipant(entityId, RemoveParticipant(dataOwnerId)).successBody().let { maybeDecrypt(null, it) }
 }
 
 @InternalIcureApi
 private abstract class AbstractTopicFlavouredApi<E : Topic>(
 	rawApi: RawTopicApi,
-	private val config: ApiConfiguration
+	protected val config: ApiConfiguration
 ) : AbstractTopicBasicFlavouredApi<E>(rawApi, config), TopicFlavouredApi<E> {
-	protected val crypto get() = config.crypto
-	protected val fieldsToEncrypt get() = config.encryption.topic
-
 	override suspend fun shareWith(
 		delegateId: String,
 		topic: E,
@@ -89,12 +92,14 @@ private abstract class AbstractTopicFlavouredApi<E : Topic>(
 		shareWithMany(topic, mapOf(delegateId to (options ?: TopicShareOptions())))
 
 	override suspend fun shareWithMany(topic: E, delegates: Map<String, TopicShareOptions>): E =
-		crypto.entity.simpleShareOrUpdateEncryptedEntityMetadata(
-			topic.withTypeInfo(),
-			delegates,
+		config.crypto.entity.simpleShareOrUpdateEncryptedEntityMetadata(
+			null,
+			topic,
+			EntityWithEncryptionMetadataTypeName.Topic,
+			delegates.keyAsLocalDataOwnerReferences(),
 			true,
-			{ getTopic(it).withTypeInfo() },
-			{ rawApi.bulkShare(it).successBody().map { r -> r.map { he -> maybeDecrypt(he) } } }
+			{ getTopic(it) ?: throw NotFoundException("Topic $topic not found") },
+			{ maybeDecrypt(null, rawApi.bulkShare(it).successBody()) }
 		).updatedEntityOrThrow()
 
 	override suspend fun filterTopicsBy(filter: FilterOptions<Topic>): PaginatedListIterator<E> =
@@ -122,7 +127,7 @@ private class AbstractTopicBasicFlavourlessApi(val rawApi: RawTopicApi, private 
 	override suspend fun deleteTopicById(entityId: String, rev: String): DocIdentifier =
 		rawApi.deleteTopic(entityId, rev).successBodyOrThrowRevisionConflict()
 
-	override suspend fun deleteTopicsByIds(entityIds: List<IdWithMandatoryRev>): List<DocIdentifier> =
+	override suspend fun deleteTopicsByIds(entityIds: List<StoredDocumentIdentifier>): List<DocIdentifier> =
 		rawApi.deleteTopicsWithRev(ListOfIdsAndRev(entityIds)).successBody()
 
 	override suspend fun purgeTopicById(id: String, rev: String) {
@@ -138,62 +143,71 @@ internal class TopicApiImpl(
 	rawApi,
 	config
 ) {
-	override suspend fun validateAndMaybeEncrypt(entity: DecryptedTopic): EncryptedTopic =
-		crypto.entity.encryptEntity(
-			entity.withTypeInfo(),
+	override suspend fun validateAndMaybeEncrypt(
+		entitiesGroupId: String?,
+		entities: List<DecryptedTopic>
+	): List<EncryptedTopic> =
+		this.config.crypto.entity.encryptEntities(
+			entitiesGroupId,
+			entities,
+			EntityWithEncryptionMetadataTypeName.Topic,
 			DecryptedTopic.serializer(),
-			fieldsToEncrypt,
+			this.config.encryption.topic,
 		) { Serialization.json.decodeFromJsonElement<EncryptedTopic>(it) }
 
-	override suspend fun maybeDecrypt(entity: EncryptedTopic): DecryptedTopic {
-		return crypto.entity.tryDecryptEntity(
-			entity.withTypeInfo(),
+
+	override suspend fun maybeDecrypt(entitiesGroupId: String?, entities: List<EncryptedTopic>): List<DecryptedTopic> =
+		this.config.crypto.entity.decryptEntities(
+			entitiesGroupId,
+			entities,
+			EntityWithEncryptionMetadataTypeName.Topic,
 			EncryptedTopic.serializer(),
 		) { Serialization.json.decodeFromJsonElement<DecryptedTopic>(config.jsonPatcher.patchTopic(it)) }
-			?: throw EntityEncryptionException("Entity ${entity.id} cannot be created")
-	}
 }, TopicBasicFlavourlessApi by AbstractTopicBasicFlavourlessApi(rawApi, config) {
 	override val encrypted: TopicFlavouredApi<EncryptedTopic> =
 		object : AbstractTopicFlavouredApi<EncryptedTopic>(rawApi, config) {
-			override suspend fun validateAndMaybeEncrypt(entity: EncryptedTopic): EncryptedTopic =
-				crypto.entity.validateEncryptedEntity(entity.withTypeInfo(), EncryptedTopic.serializer(), fieldsToEncrypt)
+			override suspend fun validateAndMaybeEncrypt(
+				entitiesGroupId: String?,
+				entities: List<EncryptedTopic>
+			): List<EncryptedTopic> =
+				config.crypto.entity.validateEncryptedEntities(
+					entities,
+					EntityWithEncryptionMetadataTypeName.Topic,
+					EncryptedTopic.serializer(),
+					config.encryption.topic
+				)
 
-			override suspend fun maybeDecrypt(entity: EncryptedTopic): EncryptedTopic = entity
+			override suspend fun maybeDecrypt(
+				entitiesGroupId: String?,
+				entities: List<EncryptedTopic>
+			): List<EncryptedTopic> =
+				entities
 		}
 
 	override val tryAndRecover: TopicFlavouredApi<Topic> =
 		object : AbstractTopicFlavouredApi<Topic>(rawApi, config) {
-			override suspend fun maybeDecrypt(entity: EncryptedTopic): Topic =
-				crypto.entity.tryDecryptEntity(
-					entity.withTypeInfo(),
-					EncryptedTopic.serializer(),
-				) { Serialization.json.decodeFromJsonElement<DecryptedTopic>(config.jsonPatcher.patchTopic(it)) }
-					?: entity
 
-			override suspend fun validateAndMaybeEncrypt(entity: Topic): EncryptedTopic = when (entity) {
-				is EncryptedTopic -> crypto.entity.validateEncryptedEntity(
-					entity.withTypeInfo(),
-					EncryptedTopic.serializer(),
-					fieldsToEncrypt,
+			override suspend fun validateAndMaybeEncrypt(
+				entitiesGroupId: String?,
+				entities: List<Topic>
+			): List<EncryptedTopic> =
+				config.crypto.entity.validateOrEncryptEntities(
+					entitiesGroupId = entitiesGroupId,
+					entities = entities,
+					entitiesType = EntityWithEncryptionMetadataTypeName.Topic,
+					encryptedSerializer = EncryptedTopic.serializer(),
+					decryptedSerializer = DecryptedTopic.serializer(),
+					fieldsToEncrypt = config.encryption.topic
 				)
 
-				is DecryptedTopic -> crypto.entity.encryptEntity(
-					entity.withTypeInfo(),
-					DecryptedTopic.serializer(),
-					fieldsToEncrypt,
-				) { Serialization.json.decodeFromJsonElement<EncryptedTopic>(it) }
-			}
+			override suspend fun maybeDecrypt(entitiesGroupId: String?, entities: List<EncryptedTopic>): List<Topic> =
+				config.crypto.entity.tryDecryptEntities(
+					entitiesGroupId,
+					entities,
+					EntityWithEncryptionMetadataTypeName.Topic,
+					EncryptedTopic.serializer(),
+				) { Serialization.json.decodeFromJsonElement<DecryptedTopic>(config.jsonPatcher.patchTopic(it)) }
 		}
-
-	override suspend fun createTopic(entity: DecryptedTopic): DecryptedTopic {
-		require(entity.securityMetadata != null) { "Entity must have security metadata initialized. You can use the withEncryptionMetadata for that very purpose." }
-		return rawApi.createTopic(
-			encrypt(entity),
-		).successBody().let { decrypt(it) }
-	}
-
-	private val crypto get() = config.crypto
-	private val fieldsToEncrypt get() = config.encryption.topic
 
 	override suspend fun withEncryptionMetadata(
 		base: DecryptedTopic?,
@@ -203,51 +217,71 @@ internal class TopicApiImpl(
 		secretId: SecretIdUseOption,
 		// Temporary, needs a lot more stuff to match typescript implementation
 	): DecryptedTopic =
-		crypto.entity.entityWithInitializedEncryptedMetadata(
-			(base ?: DecryptedTopic(crypto.primitives.strongRandom.randomUUID())).copy(
+		config.crypto.entity.entityWithInitializedEncryptedMetadata(
+			null,
+			(base ?: DecryptedTopic(config.crypto.primitives.strongRandom.randomUUID())).copy(
 				created = base?.created ?: currentEpochMs(),
 				modified = base?.modified ?: currentEpochMs(),
 				responsible = base?.responsible ?: user?.takeIf { config.autofillAuthor }?.dataOwnerId,
 				author = base?.author ?: user?.id?.takeIf { config.autofillAuthor },
-			).withTypeInfo(),
-			patient?.id,
-			patient?.let { crypto.entity.resolveSecretIdOption(it.withTypeInfo(), secretId) },
+			),
+			EntityWithEncryptionMetadataTypeName.Topic,
+			patient?.let {
+				OwningEntityDetails(
+					null,
+					it.id,
+					config.crypto.entity.resolveSecretIdOption(
+						null,
+						it,
+						EntityWithEncryptionMetadataTypeName.Patient,
+						secretId
+					)
+				)
+			},
 			initializeEncryptionKey = true,
-			autoDelegations = delegates  + user?.autoDelegationsFor(DelegationTag.MedicalInformation).orEmpty(),
+			autoDelegations = (delegates + user?.autoDelegationsFor(DelegationTag.MedicalInformation)
+				.orEmpty()).keyAsLocalDataOwnerReferences(),
 		).updatedEntity
 
-	override suspend fun getEncryptionKeysOf(topic: Topic): Set<HexString> = crypto.entity.encryptionKeysOf(topic.withTypeInfo(), null)
+	override suspend fun getEncryptionKeysOf(topic: Topic): Set<HexString> =
+		config.crypto.entity.encryptionKeysOf(null, topic, EntityWithEncryptionMetadataTypeName.Topic, null)
 
-	override suspend fun hasWriteAccess(topic: Topic): Boolean = crypto.entity.hasWriteAccess(topic.withTypeInfo())
+	override suspend fun hasWriteAccess(topic: Topic): Boolean =
+		config.crypto.entity.hasWriteAccess(null, topic, EntityWithEncryptionMetadataTypeName.Topic)
 
-	override suspend fun decryptPatientIdOf(topic: Topic): Set<String> = crypto.entity.owningEntityIdsOf(topic.withTypeInfo(), null)
+	override suspend fun decryptPatientIdOf(topic: Topic): Set<String> =
+		config.crypto.entity.owningEntityIdsOf(null, topic, EntityWithEncryptionMetadataTypeName.Topic, null)
 
 	override suspend fun createDelegationDeAnonymizationMetadata(entity: Topic, delegates: Set<String>) {
-		crypto.delegationsDeAnonymization.createOrUpdateDeAnonymizationInfo(entity.withTypeInfo(), delegates)
+		config.crypto.delegationsDeAnonymization.createOrUpdateDeAnonymizationInfo(
+			null,
+			entity,
+			EntityWithEncryptionMetadataTypeName.Topic,
+			delegates.asLocalDataOwnerReferences()
+		)
 	}
 
-	private suspend fun encrypt(entity: DecryptedTopic) = crypto.entity.encryptEntity(
-		entity.withTypeInfo(),
-		DecryptedTopic.serializer(),
-		fieldsToEncrypt,
-	) { Serialization.json.decodeFromJsonElement<EncryptedTopic>(it) }
-
-	private suspend fun decryptOrNull(entity: EncryptedTopic): DecryptedTopic? = crypto.entity.tryDecryptEntity(
-		entity.withTypeInfo(),
-		EncryptedTopic.serializer(),
-	) { Serialization.json.decodeFromJsonElement<DecryptedTopic>(config.jsonPatcher.patchTopic(it)) }
-
 	override suspend fun decrypt(topic: EncryptedTopic): DecryptedTopic =
-		decryptOrNull(topic) ?: throw EntityEncryptionException("Topic cannot be decrypted")
+		config.crypto.entity.decryptEntities(
+			null,
+			listOf(topic),
+			EntityWithEncryptionMetadataTypeName.Topic,
+			EncryptedTopic.serializer(),
+		) { Serialization.json.decodeFromJsonElement<DecryptedTopic>(config.jsonPatcher.patchTopic(it)) }.single()
 
 	override suspend fun tryDecrypt(topic: EncryptedTopic): Topic =
-		decryptOrNull(topic) ?: topic
+		config.crypto.entity.tryDecryptEntities(
+			null,
+			listOf(topic),
+			EntityWithEncryptionMetadataTypeName.Topic,
+			EncryptedTopic.serializer(),
+		) { Serialization.json.decodeFromJsonElement<DecryptedTopic>(config.jsonPatcher.patchTopic(it)) }.single()
 
 	override suspend fun matchTopicsBy(filter: FilterOptions<Topic>): List<String> =
 		rawApi.matchTopicsBy(mapTopicFilterOptions(
 			filter,
-			crypto.dataOwnerApi.getCurrentDataOwnerId(),
-			crypto.entity
+			config.crypto.dataOwnerApi.getCurrentDataOwnerId(),
+			config.crypto.entity
 		)).successBody()
 
 	override suspend fun matchTopicsBySorted(filter: SortableFilterOptions<Topic>): List<String> =
@@ -259,16 +293,16 @@ internal class TopicApiImpl(
 		subscriptionConfig: EntitySubscriptionConfiguration?
 	): EntitySubscription<EncryptedTopic> {
 		return WebSocketSubscription.initialize(
-			client = config.httpClient,
+			client = config.rawApiConfig.httpClient,
 			hostname = config.apiUrl,
 			path = "/ws/v2/notification/subscribe",
-			clientJson = config.clientJson,
+			clientJson = config.rawApiConfig.json,
 			entitySerializer = EncryptedTopic.serializer(),
 			events = events,
 			filter = mapTopicFilterOptions(
 				filter,
-				crypto.dataOwnerApi.getCurrentDataOwnerId(),
-				crypto.entity
+				config.crypto.dataOwnerApi.getCurrentDataOwnerId(),
+				config.crypto.entity
 			),
 			qualifiedName = Topic.KRAKEN_QUALIFIED_NAME,
 			subscriptionRequestSerializer = {
@@ -286,14 +320,19 @@ internal class TopicBasicApiImpl(
 	private val config: BasicApiConfiguration
 ) : TopicBasicApi, TopicBasicFlavouredApi<EncryptedTopic> by object :
 	AbstractTopicBasicFlavouredApi<EncryptedTopic>(rawApi, config) {
-	override suspend fun validateAndMaybeEncrypt(entity: EncryptedTopic): EncryptedTopic =
-		config.crypto.validationService.validateEncryptedEntity(
-			entity.withTypeInfo(),
+	override suspend fun validateAndMaybeEncrypt(
+		entitiesGroupId: String?,
+		entities: List<EncryptedTopic>
+	): List<EncryptedTopic> =
+		config.crypto.validationService.validateEncryptedEntities(
+			entities,
+			EntityWithEncryptionMetadataTypeName.Topic,
 			EncryptedTopic.serializer(),
 			config.encryption.topic
 		)
 
-	override suspend fun maybeDecrypt(entity: EncryptedTopic): EncryptedTopic = entity
+	override suspend fun maybeDecrypt(entitiesGroupId: String?, entities: List<EncryptedTopic>): List<EncryptedTopic> =
+		entities
 }, TopicBasicFlavourlessApi by AbstractTopicBasicFlavourlessApi(rawApi, config) {
 	override suspend fun matchTopicsBy(filter: BaseFilterOptions<Topic>): List<String> =
 		rawApi.matchTopicsBy(mapTopicFilterOptions(filter, null, null)).successBody()
@@ -316,10 +355,10 @@ internal class TopicBasicApiImpl(
 		subscriptionConfig: EntitySubscriptionConfiguration?
 	): EntitySubscription<EncryptedTopic> {
 		return WebSocketSubscription.initialize(
-			client = config.httpClient,
+			client = config.rawApiConfig.httpClient,
 			hostname = config.apiUrl,
 			path = "/ws/v2/notification/subscribe",
-			clientJson = config.clientJson,
+			clientJson = config.rawApiConfig.json,
 			entitySerializer = EncryptedTopic.serializer(),
 			events = events,
 			filter = mapTopicFilterOptions(filter, null, null),

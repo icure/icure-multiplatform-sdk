@@ -169,9 +169,13 @@ public interface RawPatientApi {
 		system: String? = null,
 	): HttpResponse<EncryptedPatient>
 
-	suspend fun createPatients(patientDtos: List<EncryptedPatient>): HttpResponse<List<IdWithRev>>
+	suspend fun createPatientsMinimal(patientDtos: List<EncryptedPatient>): HttpResponse<List<IdWithRev>>
 
-	suspend fun modifyPatients(patientDtos: List<EncryptedPatient>): HttpResponse<List<IdWithRev>>
+	suspend fun createPatientsFull(patientDtos: List<EncryptedPatient>): HttpResponse<List<EncryptedPatient>>
+
+	suspend fun modifyPatientsMinimal(patientDtos: List<EncryptedPatient>): HttpResponse<List<IdWithRev>>
+
+	suspend fun modifyPatientsFull(patientDtos: List<EncryptedPatient>): HttpResponse<List<EncryptedPatient>>
 
 	suspend fun modifyPatient(patientDto: EncryptedPatient): HttpResponse<EncryptedPatient>
 
@@ -223,5 +227,61 @@ public interface RawPatientApi {
 		groupId: String,
 		filter: AbstractFilter<Patient>,
 	): HttpResponse<List<String>>
+
+	suspend fun createPatientInGroup(
+		groupId: String,
+		patientDto: EncryptedPatient,
+	): HttpResponse<EncryptedPatient>
+
+	suspend fun modifyPatientInGroup(
+		groupId: String,
+		patientDto: EncryptedPatient,
+	): HttpResponse<EncryptedPatient>
+
+	suspend fun getPatientInGroup(
+		groupId: String,
+		patientId: String,
+	): HttpResponse<EncryptedPatient>
+
+	suspend fun bulkShare(
+		request: BulkShareOrUpdateMetadataParams,
+		groupId: String,
+	): HttpResponse<List<EntityBulkShareResult<EncryptedPatient>>>
+
+	suspend fun getPatientsInGroup(
+		groupId: String,
+		patientIds: ListOfIds,
+	): HttpResponse<List<EncryptedPatient>>
+
+	suspend fun createPatientsInGroupFull(
+		groupId: String,
+		patientDtos: List<EncryptedPatient>,
+	): HttpResponse<List<EncryptedPatient>>
+
+	suspend fun createPatientsInGroupMinimal(
+		groupId: String,
+		patientDtos: List<EncryptedPatient>,
+	): HttpResponse<List<IdWithRev>>
+
+	suspend fun modifyPatientsInGroupFull(
+		groupId: String,
+		patientDtos: List<EncryptedPatient>,
+	): HttpResponse<List<EncryptedPatient>>
+
+	suspend fun modifyPatientsInGroupMinimal(
+		groupId: String,
+		patientDtos: List<EncryptedPatient>,
+	): HttpResponse<List<IdWithRev>>
+
+	suspend fun deletePatientsWithRevInGroup(
+		groupId: String,
+		patientIds: ListOfIdsAndRev,
+	): HttpResponse<List<DocIdentifier>>
+
+	suspend fun deletePatientInGroup(
+		groupId: String,
+		patientId: String,
+		rev: String? = null,
+	): HttpResponse<DocIdentifier>
 	// endregion
 }

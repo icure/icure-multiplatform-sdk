@@ -1,42 +1,71 @@
 package com.icure.cardinal.sdk.crypto.impl
 
-import com.icure.kryptom.crypto.CryptoService
 import com.icure.cardinal.sdk.api.raw.RawExchangeDataMapApi
 import com.icure.cardinal.sdk.crypto.ExchangeDataMapManager
+import com.icure.cardinal.sdk.crypto.entities.SdkBoundGroup
+import com.icure.cardinal.sdk.crypto.entities.resolve
 import com.icure.cardinal.sdk.model.ExchangeDataMap
 import com.icure.cardinal.sdk.model.ExchangeDataMapCreationBatch
 import com.icure.cardinal.sdk.model.ListOfIds
 import com.icure.cardinal.sdk.model.specializations.SecureDelegationKeyString
-import com.icure.utils.InternalIcureApi
 import com.icure.cardinal.sdk.utils.SynchronisedLruCache
+import com.icure.kryptom.crypto.CryptoService
+import com.icure.utils.InternalIcureApi
 
 @InternalIcureApi
 class ExchangeDataMapManagerImpl(
 	private val rawApi: RawExchangeDataMapApi,
-	private val cryptoService: CryptoService
+	private val cryptoService: CryptoService,
+	private val sdkBoundGroup: SdkBoundGroup?
 ) : ExchangeDataMapManager {
 	// We don't cache the map value because it is used only once and then cached in the exchange data manager.
-	// We cache only the keys to prevent unnecessary requests when we know they are available.
-	private val cache = SynchronisedLruCache<SecureDelegationKeyString, Unit>(1000)
+	// We cache only the keys to prevent unnecessary create requests when we know they're available.
+	private val cache = SynchronisedLruCache<Pair<String?, SecureDelegationKeyString>, Unit>(1000)
 
-	override suspend fun createExchangeDataMaps(batch: ExchangeDataMapCreationBatch) {
+	override suspend fun createExchangeDataMaps(
+		groupId: String?,
+		batch: ExchangeDataMapCreationBatch
+	) {
 		if (batch.batch.isEmpty()) return
-		val accessKeyToDelegationKey = batch.batch.keys.associateWith { it.toSecureDelegationKeyString(cryptoService) }
+		val requestGroup = sdkBoundGroup.resolve(groupId)
+		val accessKeyToDelegationKey = batch.batch.keys.associateWith {
+			Pair(requestGroup, it.toSecureDelegationKeyString(cryptoService))
+		}
 		val existing = cache.getMany(accessKeyToDelegationKey.values).keys
 		val toCreate = ExchangeDataMapCreationBatch(batch.batch.filter { accessKeyToDelegationKey[it.key] !in existing })
 		if (toCreate.batch.isNotEmpty()) {
 			// Note that by now another coroutine could have started the creation of the same exchange data map, but it
 			// is only wasted job, not really a big deal.
 			// In future still we may want to try to improve this.
-			rawApi.createOrUpdateExchangeDataMapBatch(toCreate).successBody()
+			(
+				if (requestGroup == null)
+					rawApi.createOrUpdateExchangeDataMapBatch(toCreate)
+				else
+					rawApi.createOrUpdateExchangeDataMapBatch(toCreate, requestGroup)
+			).successBody()
 			cache.setMany(toCreate.batch.keys.map { accessKeyToDelegationKey.getValue(it) to Unit })
 		}
 	}
 
 	override suspend fun getExchangeDataMapBatch(
-		accessControlKeyHashes: List<SecureDelegationKeyString>
-	): List<ExchangeDataMap> =
-		rawApi.getExchangeDataMapBatch(ListOfIds(accessControlKeyHashes.map { it.s })).successBody().also { retrieved ->
-			cache.setMany(retrieved.map { SecureDelegationKeyString(it.id) to Unit })
-		}
+		groupId: String?,
+		accessControlKeyHashes: Set<SecureDelegationKeyString>
+	): List<ExchangeDataMap> {
+		val requestGroup = sdkBoundGroup.resolve(groupId)
+		val toGet = ListOfIds(accessControlKeyHashes.map { it.s })
+		return (
+			if (requestGroup == null)
+				rawApi.getExchangeDataMapBatch(toGet)
+			else
+				rawApi.getExchangeDataMapBatch(toGet, requestGroup)
+		).successBody()/*.also { retrieved ->
+			cache.setMany(retrieved.map { Pair(requestGroup, SecureDelegationKeyString(it.id)) to Unit })
+		}*/
+		/*
+		 * It is probably more interesting to keep update the cache only on creation, because the cache is used only
+		 * when sharing data with an anonymous data owner.
+		 * Since a user will generally share data to few users, but could get data shared from many different users, we
+		 * risk evicting the keys actually interesting to the user if we keep filling also on retrieve.
+		 */
+	}
 }

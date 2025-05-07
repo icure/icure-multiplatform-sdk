@@ -1,14 +1,20 @@
 package com.icure.cardinal.sdk.options
 
+import com.icure.cardinal.sdk.CardinalSdk
 import com.icure.cardinal.sdk.crypto.CryptoStrategies
 import com.icure.cardinal.sdk.model.UserGroup
 import com.icure.cardinal.sdk.storage.KeyStorageFacade
 import com.icure.cardinal.sdk.storage.StorageFacade
+import com.icure.cardinal.sdk.utils.Serialization
 import com.icure.kryptom.crypto.CryptoService
 import com.icure.kryptom.crypto.defaultCryptoService
 import io.ktor.client.HttpClient
+import kotlinx.coroutines.Job
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
+import kotlin.coroutines.CoroutineContext
+import kotlin.time.Duration
+import kotlin.time.Duration.Companion.seconds
 
 interface CommonSdkOptions {
 	/**
@@ -43,6 +49,26 @@ interface CommonSdkOptions {
 	 */
 	val saltPasswordWithApplicationId: Boolean
 	/**
+	 * If true the SDK will use lenient deserialization of the entities coming from the backend.
+	 *
+	 * This could be helpful when developing using the nightly deployments of the backend, as the SDK will ignore minor changes to the data model.
+	 *
+	 * This option however could cause loss of data when connecting with incompatible versions of the backend, and should be disabled in production.
+	 */
+	val lenientJson: Boolean
+	/**
+	 * Configure a global timeout for requests, overriding the configuration on [httpClient] if provided.
+	 * The default timeout on the default http client is 60s
+	 */
+	val requestTimeout: Duration?
+	/**
+	 * Configures how requests should be retried in case of server errors or connection errors.
+	 */
+	val requestRetryConfiguration: RequestRetryConfiguration?
+}
+
+interface BoundSdkOptions : CommonSdkOptions {
+	/**
 	 * An instance of iCure SDK is initialized for working as a specific user in a single group.
 	 * However, the user credentials may match multiple users in different groups (but at most one per group).
 	 * If that is the case, this function will be used to pick the actual user for which the sdk will be initialized.
@@ -52,14 +78,6 @@ interface CommonSdkOptions {
 	 * In single-group applications this parameter won't be used, so it can be left as null.
 	 */
 	val groupSelector: GroupSelector?
-	/**
-	 * If true the SDK will use lenient deserialization of the entities coming from the backend.
-	 *
-	 * This could be helpful when developing using the nightly deployments of the backend, as the SDK will ignore minor changes to the data model.
-	 *
-	 * This option however could cause loss of data when connecting with incompatible versions of the backend, and should be disabled in production.
-	 */
-	val lenientJson: Boolean
 }
 
 /**
@@ -118,16 +136,16 @@ data class SdkOptions(
 	 * of the entity.
 	 */
 	val jsonPatcher: JsonPatcher? = null,
-
-	/**
-	 * If true the SDK will use lenient deserialization of the entities coming from the backend.
-	 *
-	 * This could be helpful when developing using the nightly deployments of the backend, as the SDK will ignore minor changes to the data model.
-	 *
-	 * This option however could cause loss of data when connecting with incompatible versions of the backend, and should be disabled in production.
-	 */
 	override val lenientJson: Boolean = false,
-): CommonSdkOptions {
+	/**
+	 * Sets a parent job to use in the sdk scope.
+	 * When that job is canceled, the SDK scope which runs all background tasks will also be canceled.
+	 * The SDK shouldn't be used anymore after this job is canceled.
+	 */
+	val parentJob: Job? = null,
+	override val requestTimeout: Duration? = null,
+	override val requestRetryConfiguration: RequestRetryConfiguration = RequestRetryConfiguration(),
+): BoundSdkOptions {
 	init {
 		if (httpClientJson != null) {
 			require(httpClient != null) {
@@ -151,6 +169,43 @@ data class BasicSdkOptions(
 	override val saltPasswordWithApplicationId: Boolean = true,
 	override val groupSelector: GroupSelector? = null,
 	override val lenientJson: Boolean = false,
+	override val requestTimeout: Duration? = null,
+	override val requestRetryConfiguration: RequestRetryConfiguration = RequestRetryConfiguration(),
+): BoundSdkOptions {
+	init {
+		if (httpClientJson != null) {
+			require(httpClient != null) {
+				"httpClient should be provided if httpClientJson is provided"
+			}
+		}
+
+		if (lenientJson) {
+			require(httpClient == null) {
+				"Cannot use lenientJson with a custom httpClient"
+			}
+		}
+	}
+}
+
+data class UnboundBasicSdkOptions(
+	override val encryptedFields: EncryptedFieldsConfiguration = EncryptedFieldsConfiguration(),
+	override val httpClient: HttpClient? = null,
+	override val httpClientJson: Json? = null,
+	override val cryptoService: CryptoService = defaultCryptoService,
+	override val saltPasswordWithApplicationId: Boolean = true,
+	override val lenientJson: Boolean = false,
+	/**
+	 * Some basic SDK methods require as context the group where the SDK is acting on.
+	 *
+	 * Since for unbound SDK the group could change at each request, by default, these methods aren't supported on
+	 * unbound SDK instances.
+	 *
+	 * However, if it is possible for you to extract the group id from the context of the coroutine that is executing
+	 * the method, you can provide the function here to allow using these methods also on unbound SDK.
+	 */
+	val getBoundGroupId: (CoroutineContext) -> String? = { null },
+	override val requestTimeout: Duration? = null,
+	override val requestRetryConfiguration: RequestRetryConfiguration = RequestRetryConfiguration(),
 ): CommonSdkOptions {
 	init {
 		if (httpClientJson != null) {
@@ -262,3 +317,50 @@ data class EncryptedFieldsConfiguration(
 		"reason"
 	),
 )
+
+/**
+ * Configures how requests should be retried.
+ */
+data class RequestRetryConfiguration(
+	/**
+	 * How many times the request will be retried in case of issues.
+	 * Must be >= 0 where 0 means the requests will never be retried.
+	 */
+	val maxRetries: Int = 3,
+	/**
+	 * Minimum delay between the first failed request and first retry.
+	 */
+	val initialDelay: Duration = 2.seconds,
+	/**
+	 * Factor applied to the milliseconds value of the [initialDelay] in case of multiple failed requests.
+	 * For example in a configuration with [initialDelay] 2 seconds and [exponentialBackoffFactor] 2.0 the time
+	 * between requests will be 2 s, 4 s, 8 s, and so on, until the request succeeds or [maxRetries] is reached.
+	 *
+	 * Note the backoff is applied on a per-request basis. Different requests calculate their delays independently of
+	 * any other failed or successful request.
+	 */
+	val exponentialBackoffFactor: Double = 2.0,
+	/**
+	 * Provides a hard limit to the exponential backoff delay.
+	 * For example in a configuration with [initialDelay] 2 seconds, [exponentialBackoffFactor] 2.0 and
+	 * [exponentialBackoffCeil] 10 seconds the time between requests will be 2 s, 4 s, 8 s, and 10 seconds for all
+	 * remaining requests.
+	 * Must be >= initialDelay or null
+	 */
+	val exponentialBackoffCeil: Duration? = null
+) {
+	init {
+		require(maxRetries >= 0) {
+			"`maxRetries` must be >= 0"
+		}
+		require(exponentialBackoffFactor > 0) {
+			"`exponentialBackoffFactor` must be positive"
+		}
+		require(exponentialBackoffCeil == null || exponentialBackoffCeil.inWholeMilliseconds >= initialDelay.inWholeMilliseconds) {
+			"`exponentialBackoffCeil` must be >= `exponentialBackoffFactor`"
+		}
+	}
+}
+
+internal fun CommonSdkOptions.configuredClientOrDefault() = this.httpClient ?: (if (this.lenientJson) CardinalSdk.sharedHttpClientUsingLenientJson else CardinalSdk.sharedHttpClient)
+internal fun CommonSdkOptions.configuredJsonOrDefault() = this.httpClientJson ?: (if (this.lenientJson) Serialization.lenientJson else Serialization.json)

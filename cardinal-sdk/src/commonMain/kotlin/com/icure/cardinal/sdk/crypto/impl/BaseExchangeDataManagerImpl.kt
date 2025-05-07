@@ -2,23 +2,25 @@ package com.icure.cardinal.sdk.crypto.impl
 
 import com.icure.cardinal.sdk.api.DataOwnerApi
 import com.icure.cardinal.sdk.api.raw.RawExchangeDataApi
-import com.icure.cardinal.sdk.api.raw.successBodyOrNull404
 import com.icure.cardinal.sdk.crypto.BaseExchangeDataManager
+import com.icure.cardinal.sdk.model.EntityReferenceInGroup
 import com.icure.cardinal.sdk.crypto.entities.DecryptionResult
 import com.icure.cardinal.sdk.crypto.entities.ExchangeDataWithUnencryptedContent
 import com.icure.cardinal.sdk.crypto.entities.RawDecryptedExchangeData
 import com.icure.cardinal.sdk.crypto.entities.RsaDecryptionKeysSet
+import com.icure.cardinal.sdk.crypto.entities.SdkBoundGroup
 import com.icure.cardinal.sdk.crypto.entities.SelfVerifiedKeysSet
 import com.icure.cardinal.sdk.crypto.entities.UnencryptedExchangeDataContent
 import com.icure.cardinal.sdk.crypto.entities.VerifiedRsaEncryptionKeysSet
+import com.icure.cardinal.sdk.crypto.entities.resolve
 import com.icure.cardinal.sdk.model.ExchangeData
+import com.icure.cardinal.sdk.model.ListOfIds
 import com.icure.cardinal.sdk.model.specializations.AccessControlSecret
 import com.icure.cardinal.sdk.model.specializations.Base64String
 import com.icure.cardinal.sdk.model.specializations.KeypairFingerprintV2String
 import com.icure.cardinal.sdk.utils.base64Encode
 import com.icure.cardinal.sdk.utils.decode
 import com.icure.cardinal.sdk.utils.ensure
-import com.icure.cardinal.sdk.utils.getLogger
 import com.icure.cardinal.sdk.utils.pagination.exhaustPaginatedRequest
 import com.icure.cardinal.sdk.utils.validateResponseContent
 import com.icure.kryptom.crypto.AesAlgorithm
@@ -42,31 +44,77 @@ class BaseExchangeDataManagerImpl(
 	override val raw: RawExchangeDataApi,
 	private val dataOwnerApi: DataOwnerApi,
 	private val cryptoService: CryptoService,
-	private val selfIsAnonymousDataOwner: Boolean
+	private val selfIsAnonymousDataOwner: Boolean,
+	private val sdkBoundGroup: SdkBoundGroup?
 ) : BaseExchangeDataManager {
-	companion object {
-		private val log = getLogger("BaseExchangeDataManager")
-	}
-
-	override suspend fun getAllExchangeDataForCurrentDataOwnerIfAllowed(): List<ExchangeData>? {
+	override suspend fun getAllExchangeDataForCurrentDataOwnerIfAllowed(inGroup: String?): List<ExchangeData>? {
 		if (!selfIsAnonymousDataOwner) return null
-		val selfId = dataOwnerApi.getCurrentDataOwnerId()
+		val selfReferenceString = dataOwnerApi.getCurrentDataOwnerReference()
+			.asReferenceStringInGroup(inGroup, sdkBoundGroup)
 		return exhaustPaginatedRequest { next ->
-			validateResponseContent(next == null || (next.startKey as? JsonPrimitive)?.takeIf { it.isString }?.content == selfId) {
+			validateResponseContent(next == null || (next.startKey as? JsonPrimitive)?.takeIf { it.isString }?.content == selfReferenceString) {
 				"Received next key should be the current data owner id"
 			}
-			raw.getExchangeDataByParticipant(selfId, startDocumentId = next?.startKeyDocId).successBody()
+			sdkBoundGroup.resolve(inGroup)?.let {
+				raw.getExchangeDataByParticipant(
+					dataOwnerId = selfReferenceString,
+					startDocumentId = next?.startKeyDocId,
+					groupId = it
+				).successBody()
+			} ?: if (selfReferenceString.contains('/')) {
+				raw.getExchangeDataByParticipantQuery(
+					dataOwnerId = selfReferenceString,
+					startDocumentId = next?.startKeyDocId,
+				).successBody()
+			} else {
+				// TODO Temporary, to allow still usage of new cardinal sdk without using inter-group sharing also on older kraken versions
+				raw.getExchangeDataByParticipant(
+					dataOwnerId = selfReferenceString,
+					startDocumentId = next?.startKeyDocId,
+				).successBody()
+			}
 		}.toList()
 	}
 
 	override suspend fun getExchangeDataByDelegatorDelegatePair(
-		delegatorId: String,
-		delegateId: String
-	): List<ExchangeData> =
-		raw.getExchangeDataByDelegatorDelegate(delegatorId, delegateId).successBody()
+		inGroup: String?,
+		delegatorReference: EntityReferenceInGroup,
+		delegateReference: EntityReferenceInGroup
+	): List<ExchangeData> {
+		val delegatorReferenceString = delegatorReference.asReferenceStringInGroup(inGroup, sdkBoundGroup)
+		val delegateReferenceString = delegateReference.asReferenceStringInGroup(inGroup, sdkBoundGroup)
+		return sdkBoundGroup.resolve(inGroup)?.let {
+			raw.getExchangeDataByDelegatorDelegate(
+				delegatorId = delegatorReferenceString,
+				delegateId = delegateReferenceString,
+				groupId = it
+			).successBody()
+		} ?: if (delegatorReferenceString.contains('/') || delegateReferenceString.contains('/')) {
+			raw.getExchangeDataByDelegatorDelegateQuery(
+				delegatorId = delegatorReferenceString,
+				delegateId = delegateReferenceString
+			).successBody()
+		} else {
+			// TODO Temporary, to allow still usage of new cardinal sdk without using inter-group sharing also on older kraken versions
+			raw.getExchangeDataByDelegatorDelegate(
+				delegatorId = delegatorReferenceString,
+				delegateId = delegateReferenceString
+			).successBody()
+		}
+	}
 
-	override suspend fun getExchangeDataById(exchangeDataId: String): ExchangeData? =
-		raw.getExchangeDataById(exchangeDataId).successBodyOrNull404()
+	override suspend fun getExchangeDataByIds(
+		inGroup: String?,
+		exchangeDataIds: Collection<String>
+	): List<ExchangeData> =
+		sdkBoundGroup.resolve(inGroup)?.let {
+			raw.getExchangeDataByIds(
+				exchangeDataIds = ListOfIds(exchangeDataIds.toList()),
+				groupId = it
+			).successBody()
+		} ?: raw.getExchangeDataByIds(
+			exchangeDataIds = ListOfIds(exchangeDataIds.toList()),
+		).successBody()
 
 	override suspend fun verifyExchangeData(
 		data: ExchangeDataWithUnencryptedContent,
@@ -131,7 +179,8 @@ class BaseExchangeDataManagerImpl(
 		)
 
 	override suspend fun createExchangeData(
-		delegateId: String,
+		inGroup: String?,
+		delegateReference: EntityReferenceInGroup,
 		signatureKeys: SelfVerifiedKeysSet,
 		encryptionKeys: VerifiedRsaEncryptionKeysSet,
 		exchangeDataId: String?
@@ -145,11 +194,12 @@ class BaseExchangeDataManagerImpl(
 		val encryptedExchangeKey = cryptoService.encryptDataWithKeys(rawExchangeKey, encryptionKeys, KeyIdentifierFormat.FingerprintV2)
 		val encryptedSharedSignatureKey = cryptoService.encryptDataWithKeys(rawSharedSignatureKey, encryptionKeys, KeyIdentifierFormat.FingerprintV2)
 		val encryptedAccessControlSecret = cryptoService.encryptDataWithKeys(rawAccessControlSecret, encryptionKeys, KeyIdentifierFormat.FingerprintV2)
-		val delegator = dataOwnerApi.getCurrentDataOwnerId()
+		val delegatorReferenceString = dataOwnerApi.getCurrentDataOwnerReference().asReferenceStringInGroup(inGroup, sdkBoundGroup)
+		val delegateReferenceString = delegateReference.asReferenceStringInGroup(inGroup, sdkBoundGroup)
 		val sharedSignature = cryptoService.hmac.sign(
 			bytesToSignForSharedSignature(
-				delegator = delegator,
-				delegate = delegateId,
+				delegator = delegatorReferenceString,
+				delegate = delegateReferenceString,
 				decryptedAccessControlSecret = accessControlSecret,
 				decryptedExchangeKey = exchangeKey,
 				publicKeysFingerprints = encryptionKeys.allKeys.mapTo(mutableSetOf()) { it.pubSpkiHexString.fingerprintV2() }
@@ -165,8 +215,8 @@ class BaseExchangeDataManagerImpl(
 		}
 		val exchangeData = ExchangeData(
 			id = exchangeDataId ?: cryptoService.strongRandom.randomUUID(),
-			delegator = delegator,
-			delegate = delegateId,
+			delegator = delegatorReferenceString,
+			delegate = delegateReferenceString,
 			exchangeKey = encryptedExchangeKey,
 			accessControlSecret = encryptedAccessControlSecret,
 			sharedSignatureKey = encryptedSharedSignatureKey,
@@ -174,7 +224,10 @@ class BaseExchangeDataManagerImpl(
 			delegatorSignature = delegatorSignature
 		)
 		return ExchangeDataWithUnencryptedContent(
-			exchangeData = raw.createExchangeData(exchangeData).successBody(),
+			exchangeData = (
+				sdkBoundGroup.resolve(inGroup)?.let { raw.createExchangeData(exchangeData, it) }
+					?: raw.createExchangeData(exchangeData)
+			).successBody(),
 			unencryptedContent = UnencryptedExchangeDataContent(
 				exchangeKey = exchangeKey,
 				accessControlSecret = accessControlSecret,

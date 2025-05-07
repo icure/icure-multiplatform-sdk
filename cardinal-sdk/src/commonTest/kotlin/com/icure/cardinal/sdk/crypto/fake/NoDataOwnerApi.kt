@@ -1,6 +1,7 @@
 package com.icure.cardinal.sdk.crypto.fake
 
 import com.icure.cardinal.sdk.api.DataOwnerApi
+import com.icure.cardinal.sdk.model.EntityReferenceInGroup
 import com.icure.cardinal.sdk.model.CryptoActorStubWithType
 import com.icure.cardinal.sdk.model.DataOwnerType
 import com.icure.cardinal.sdk.model.DataOwnerWithType
@@ -18,11 +19,27 @@ object NoDataOwnerApi : DataOwnerApi {
 		TODO("Not yet implemented")
 	}
 
+	override suspend fun getCurrentDataOwnerReference(): EntityReferenceInGroup {
+		TODO("Not yet implemented")
+	}
+
 	override suspend fun getCurrentDataOwnerHierarchyIds(): List<String> {
 		TODO("Not yet implemented")
 	}
 
+	override suspend fun getCurrentDataOwnerHierarchyIdsReference(): List<EntityReferenceInGroup> {
+		TODO("Not yet implemented")
+	}
+
 	override suspend fun getDataOwner(ownerId: String): DataOwnerWithType {
+		TODO("Not yet implemented")
+	}
+
+	override suspend fun getCryptoActorStub(ownerId: String): CryptoActorStubWithType {
+		TODO("Not yet implemented")
+	}
+
+	override suspend fun getCryptoActorStubInGroup(entityReferenceInGroup: EntityReferenceInGroup): CryptoActorStubWithType {
 		TODO("Not yet implemented")
 	}
 
@@ -39,10 +56,6 @@ object NoDataOwnerApi : DataOwnerApi {
 	}
 
 	override suspend fun getCurrentDataOwnerType(): DataOwnerType {
-		TODO("Not yet implemented")
-	}
-
-	override suspend fun getCryptoActorStub(ownerId: String): CryptoActorStubWithType {
 		TODO("Not yet implemented")
 	}
 

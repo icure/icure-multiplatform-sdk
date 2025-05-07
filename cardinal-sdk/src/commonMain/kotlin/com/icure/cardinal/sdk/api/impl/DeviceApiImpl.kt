@@ -2,13 +2,14 @@ package com.icure.cardinal.sdk.api.impl
 
 import com.icure.cardinal.sdk.api.DeviceApi
 import com.icure.cardinal.sdk.api.raw.RawDeviceApi
+import com.icure.cardinal.sdk.api.raw.successBodyOrNull404
 import com.icure.cardinal.sdk.api.raw.successBodyOrThrowRevisionConflict
 import com.icure.cardinal.sdk.filters.BaseFilterOptions
 import com.icure.cardinal.sdk.filters.BaseSortableFilterOptions
 import com.icure.cardinal.sdk.filters.FilterOptions
 import com.icure.cardinal.sdk.filters.mapDeviceFilterOptions
 import com.icure.cardinal.sdk.model.Device
-import com.icure.cardinal.sdk.model.IdWithMandatoryRev
+import com.icure.cardinal.sdk.model.StoredDocumentIdentifier
 import com.icure.cardinal.sdk.model.IdWithRev
 import com.icure.cardinal.sdk.model.ListOfIds
 import com.icure.cardinal.sdk.options.BasicApiConfiguration
@@ -38,7 +39,7 @@ internal class DeviceApiImpl(
 	override suspend fun deleteDevicesUnsafe(entityIds: List<String>): List<DocIdentifier> =
 		rawApi.deleteDevices(ListOfIds(entityIds)).successBody()
 
-	override suspend fun getDevice(deviceId: String) = rawApi.getDevice(deviceId).successBody()
+	override suspend fun getDevice(deviceId: String) = rawApi.getDevice(deviceId).successBodyOrNull404()
 
 	override suspend fun getDevices(deviceIds: List<String>) = rawApi.getDevices(ListOfIds(deviceIds)).successBody()
 
@@ -65,7 +66,7 @@ internal class DeviceApiImpl(
 	override suspend fun deleteDeviceById(entityId: String, rev: String): DocIdentifier =
 		rawApi.deleteDevice(entityId, rev).successBodyOrThrowRevisionConflict()
 
-	override suspend fun deleteDevicesByIds(entityIds: List<IdWithMandatoryRev>): List<DocIdentifier> =
+	override suspend fun deleteDevicesByIds(entityIds: List<StoredDocumentIdentifier>): List<DocIdentifier> =
 		rawApi.deleteDevicesWithRev(ListOfIdsAndRev(entityIds)).successBody()
 
 	override suspend fun purgeDeviceById(id: String, rev: String) {
@@ -93,10 +94,10 @@ internal class DeviceApiImpl(
 		subscriptionConfig: EntitySubscriptionConfiguration?,
 	): EntitySubscription<Device> {
 		return WebSocketSubscription.initialize(
-			client = config.httpClient,
+			client = config.rawApiConfig.httpClient,
 			hostname = config.apiUrl,
 			path = "/ws/v2/notification/subscribe",
-			clientJson = config.clientJson,
+			clientJson = config.rawApiConfig.json,
 			entitySerializer = Device.serializer(),
 			events = events,
 			filter = mapDeviceFilterOptions(filter),

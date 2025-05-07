@@ -15,6 +15,7 @@ import com.icure.cardinal.sdk.model.couchdb.GroupDatabasesInfo
 import com.icure.cardinal.sdk.model.embed.GroupType
 import com.icure.cardinal.sdk.model.embed.RoleConfiguration
 import com.icure.cardinal.sdk.model.embed.UserType
+import com.icure.cardinal.sdk.model.security.ExternalJwtConfig
 import com.icure.cardinal.sdk.model.security.Operation
 import com.icure.cardinal.sdk.model.security.PermissionType
 import com.icure.cardinal.sdk.utils.DefaultValue
@@ -114,5 +115,7 @@ interface GroupApi {
 	suspend fun getReplicationInfo(id: String): ReplicationInfo
 	suspend fun getHierarchy(id: String): List<String>
 	suspend fun listAllGroupsIds(): List<DocIdentifier>
+	suspend fun createOrUpdateExternalJwtConfig(groupId: String, key: String, config: ExternalJwtConfig): Group
+	suspend fun removeExternalJwtConfig(groupId: String, key: String): Group
 }
 

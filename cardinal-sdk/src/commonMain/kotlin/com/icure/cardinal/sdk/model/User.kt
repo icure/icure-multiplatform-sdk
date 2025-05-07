@@ -63,6 +63,8 @@ data class User(
 		public val roles: Set<String>,
 		public val isAdmin: Boolean,
 		public val inheritsRoles: Boolean,
+		@DefaultValue("emptyList()")
+		public val loginIdentifiers: List<Identifier> = emptyList(),
 	)
 	// region User-User
 

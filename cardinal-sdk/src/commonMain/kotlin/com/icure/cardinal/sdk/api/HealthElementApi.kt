@@ -9,25 +9,26 @@ import com.icure.cardinal.sdk.filters.FilterOptions
 import com.icure.cardinal.sdk.filters.SortableFilterOptions
 import com.icure.cardinal.sdk.model.DecryptedHealthElement
 import com.icure.cardinal.sdk.model.EncryptedHealthElement
+import com.icure.cardinal.sdk.model.EntityReferenceInGroup
+import com.icure.cardinal.sdk.model.GroupScoped
 import com.icure.cardinal.sdk.model.HealthElement
-import com.icure.cardinal.sdk.model.IcureStub
-import com.icure.cardinal.sdk.model.IdWithMandatoryRev
 import com.icure.cardinal.sdk.model.Patient
+import com.icure.cardinal.sdk.model.StoredDocumentIdentifier
 import com.icure.cardinal.sdk.model.User
-import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.model.embed.AccessLevel
 import com.icure.cardinal.sdk.model.specializations.HexString
 import com.icure.cardinal.sdk.subscription.Subscribable
 import com.icure.cardinal.sdk.utils.DefaultValue
 import com.icure.cardinal.sdk.utils.EntityEncryptionException
+import com.icure.cardinal.sdk.utils.generation.JsMapAsObjectArray
 import com.icure.cardinal.sdk.utils.pagination.PaginatedListIterator
 
 /* This interface includes the API calls that do not need encryption keys and do not return or consume encrypted/decrypted items, they are completely agnostic towards the presence of encrypted items */
 interface HealthElementBasicFlavourlessApi  {
 	@Deprecated("Deletion without rev is unsafe")
-	suspend fun deleteHealthElementUnsafe(entityId: String): DocIdentifier
+	suspend fun deleteHealthElementUnsafe(entityId: String): StoredDocumentIdentifier
 	@Deprecated("Deletion without rev is unsafe")
-	suspend fun deleteHealthElementsUnsafe(entityIds: List<String>): List<DocIdentifier>
+	suspend fun deleteHealthElementsUnsafe(entityIds: List<String>): List<StoredDocumentIdentifier>
 	
 	/**
 	 * Deletes a healthElement. If you don't have write access to the healthElement the method will fail.
@@ -36,7 +37,7 @@ interface HealthElementBasicFlavourlessApi  {
 	 * @return the id and revision of the deleted healthElement.
 	 * @throws RevisionConflictException if the provided revision doesn't match the latest known revision
 	 */
-	suspend fun deleteHealthElementById(entityId: String, rev: String?): DocIdentifier
+	suspend fun deleteHealthElementById(entityId: String, rev: String): StoredDocumentIdentifier
 
 	/**
 	 * Deletes many healthElements. Ids that do not correspond to an entity, or that correspond to an entity for which
@@ -45,7 +46,7 @@ interface HealthElementBasicFlavourlessApi  {
 	 * @return the id and revision of the deleted healthElements. If some entities could not be deleted (for example
 	 * because you had no write access to them) they will not be included in this list.
 	 */
-	suspend fun deleteHealthElementsByIds(entityIds: List<IdWithMandatoryRev>): List<DocIdentifier>
+	suspend fun deleteHealthElementsByIds(entityIds: List<StoredDocumentIdentifier>): List<StoredDocumentIdentifier>
 
 	/**
 	 * Permanently deletes a healthElement.
@@ -61,7 +62,7 @@ interface HealthElementBasicFlavourlessApi  {
 	 * @return the id and revision of the deleted healthElement.
 	 * @throws RevisionConflictException if the provided healthElement doesn't match the latest known revision
 	 */
-	suspend fun deleteHealthElement(healthElement: HealthElement): DocIdentifier =
+	suspend fun deleteHealthElement(healthElement: HealthElement): StoredDocumentIdentifier =
 		deleteHealthElementById(healthElement.id, requireNotNull(healthElement.rev) { "Can't delete an healthElement that has no rev" })
 
 	/**
@@ -70,9 +71,9 @@ interface HealthElementBasicFlavourlessApi  {
 	 * @return the id and revision of the deleted healthElements. If some entities couldn't be deleted they will not be
 	 * included in this list.
 	 */
-	suspend fun deleteHealthElements(healthElements: List<HealthElement>): List<DocIdentifier> =
+	suspend fun deleteHealthElements(healthElements: List<HealthElement>): List<StoredDocumentIdentifier> =
 		deleteHealthElementsByIds(healthElements.map { healthElement ->
-			IdWithMandatoryRev(healthElement.id, requireNotNull(healthElement.rev) { "Can't delete an healthElement that has no rev" })
+			StoredDocumentIdentifier(healthElement.id, requireNotNull(healthElement.rev) { "Can't delete an healthElement that has no rev" })
 		})
 
 	/**
@@ -85,8 +86,57 @@ interface HealthElementBasicFlavourlessApi  {
 	}
 }
 
+interface HealthElementBasicFlavourlessInGroupApi  {
+	/**
+	 * In-group version of [HealthElementBasicFlavourlessApi.deleteHealthElementById]
+	 */
+	// TODO suspend fun deleteHealthElementById(entityId: GroupScoped<StoredDocumentIdentifier>): GroupScoped<StoredDocumentIdentifier>
+
+	/**
+	 * In-group version of [HealthElementBasicFlavourlessApi.deleteHealthElementsByIds]
+	 */
+	// TODO suspend fun deleteHealthElementsByIds(entityIds: List<GroupScoped<StoredDocumentIdentifier>>): List<GroupScoped<StoredDocumentIdentifier>>
+
+	/**
+	 * In-group version of [HealthElementBasicFlavourlessApi.purgeHealthElementById]
+	 */
+	// TODO suspend fun purgeHealthElementById(entityId: GroupScoped<StoredDocumentIdentifier>)
+	
+	/**
+	 * In-group version of [HealthElementBasicFlavourlessApi.deleteHealthElement]
+	 */
+	// TODO suspend fun deleteHealthElement(healthElement: GroupScoped<HealthElement>): GroupScoped<StoredDocumentIdentifier> = deleteHealthElementById(healthElement.toStoredDocumentIdentifier())
+
+	/**
+	 * In-group version of [HealthElementBasicFlavourlessApi.deleteHealthElements]
+	 */
+	// TODO suspend fun deleteHealthElements(healthElements: List<GroupScoped<HealthElement>>): List<GroupScoped<StoredDocumentIdentifier>> = deleteHealthElementsByIds(healthElements.toStoredDocumentIdentifier())
+
+	/**
+	 * In-group version of [HealthElementBasicFlavourlessApi.purgeHealthElement]
+	 */
+	// TODO suspend fun purgeHealthElement(healthElement: GroupScoped<HealthElement>)
+}
+
 /* This interface includes the API calls can be used on decrypted items if encryption keys are available *or* encrypted items if no encryption keys are available */
 interface HealthElementBasicFlavouredApi<E : HealthElement> {
+	/**
+	 * Create a new health element. The provided health element must have the encryption metadata initialized.
+	 * @param entity a health element with initialized encryption metadata
+	 * @return the created health element with updated revision.
+	 * @throws IllegalArgumentException if the encryption metadata of the input was not initialized.
+	 */
+	suspend fun createHealthElement(entity: E): E
+
+	/**
+	 * Create multiple health elements. All the provided health elements must have the encryption metadata initialized, otherwise
+	 * this method fails without doing anything.
+	 * @param entities health elements with initialized encryption metadata
+	 * @return the created health elements with updated revision.
+	 * @throws IllegalArgumentException if the encryption metadata of any health element in the input was not initialized.
+	 */
+	suspend fun createHealthElements(entities: List<E>): List<E>
+
 	/**
 	 * Restores a healthElement that was marked as deleted.
 	 * @param id the id of the entity
@@ -95,7 +145,7 @@ interface HealthElementBasicFlavouredApi<E : HealthElement> {
 	 * @throws RevisionConflictException if the provided revision doesn't match the latest known revision
 	 */
 	suspend fun undeleteHealthElementById(id: String, rev: String): E
-	
+
 	/**
 	 * Restores a healthElement that was marked as deleted.
 	 * @param healthElement the healthElement to undelete
@@ -129,7 +179,7 @@ interface HealthElementBasicFlavouredApi<E : HealthElement> {
 	 * @param entityId a health element id.
 	 * @return the health element with id [entityId].
 	 */
-	suspend fun getHealthElement(entityId: String): E
+	suspend fun getHealthElement(entityId: String): E?
 
 	/**
 	 * Get multiple health elements by their ids. Ignores all ids that do not correspond to an entity, correspond to
@@ -141,12 +191,55 @@ interface HealthElementBasicFlavouredApi<E : HealthElement> {
 	suspend fun getHealthElements(entityIds: List<String>): List<E>
 }
 
+interface HealthElementBasicFlavouredInGroupApi<E : HealthElement> {
+	/**
+	 * In-group version of [HealthElementApi.createHealthElement]
+	 */
+	suspend fun createHealthElement(entity: GroupScoped<E>): GroupScoped<E>
+
+	/**
+	 * In-group version of [HealthElementApi.createHealthElements]
+	 */
+	// TODO suspend fun createHealthElements(entities: List<GroupScoped<E>>): List<GroupScoped<E>>
+
+	/**
+	 * In-group version of [HealthElementBasicFlavouredApi.undeleteHealthElementById]
+	 */
+	// TODO suspend fun undeleteHealthElementById(id: String, rev: String): E
+
+	/**
+	 * In-group version of [HealthElementBasicFlavouredApi.undeleteHealthElement]
+	 */
+	// TODO suspend fun undeleteHealthElement(healthElement: HealthElement): E
+
+	/**
+	 * In-group version of [HealthElementBasicFlavouredApi.modifyHealthElement]
+	 */
+	suspend fun modifyHealthElement(entity: GroupScoped<E>): GroupScoped<E>
+
+	/**
+	 * In-group version of [HealthElementBasicFlavouredApi.modifyHealthElements]
+	 */
+	// TODO suspend fun modifyHealthElements(entities: List<GroupScoped<E>>): List<GroupScoped<E>>
+
+	/**
+	 * In-group version of [HealthElementBasicFlavouredApi.getHealthElement]
+	 */
+	suspend fun getHealthElement(groupId: String, entityId: String): GroupScoped<E>?
+
+	/**
+	 * In-group version of [HealthElementBasicFlavouredApi.getHealthElements]
+	 */
+	// TODO suspend fun getHealthElements(groupId: String, entityIds: List<String>): List<GroupScoped<E>>
+}
+
 /* The extra API calls declared in this interface are the ones that can be used on encrypted or decrypted items but only when the user is a data owner */
 interface HealthElementFlavouredApi<E : HealthElement> : HealthElementBasicFlavouredApi<E> {
 	/**
 	 * Share a health element with another data owner. The health element must already exist in the database for this method to
 	 * succeed. If you want to share the health element before creation you should instead pass provide the delegates in
 	 * the initialize encryption metadata method.
+	 * Note: this method only updates the security metadata. If the input entity has unsaved changes they may be lost.
 	 * @param delegateId the owner that will gain access to the health element
 	 * @param healthElement the health element to share with [delegateId]
 	 * @param options specifies how the health element will be shared. By default, all data available to the current user
@@ -165,6 +258,7 @@ interface HealthElementFlavouredApi<E : HealthElement> : HealthElementBasicFlavo
 	 * Share a health element with multiple data owners. The health element must already exist in the database for this method to
 	 * succeed. If you want to share the health element before creation you should instead pass provide the delegates in
 	 * the initialize encryption metadata method.
+	 * Note: this method only updates the security metadata. If the input entity has unsaved changes they may be lost.
 	 * Throws an exception if the operation fails.
 	 * @param healthElement the health element to share
 	 * @param delegates specify the data owners which will gain access to the entity and the options for sharing with
@@ -219,24 +313,54 @@ interface HealthElementFlavouredApi<E : HealthElement> : HealthElementBasicFlavo
 	): PaginatedListIterator<E>
 }
 
+interface HealthElementFlavouredInGroupApi<E : HealthElement> : HealthElementBasicFlavouredInGroupApi<E> {
+	/**
+	 * In-group version of [HealthElementFlavouredApi.shareWith]
+	 */
+	suspend fun shareWith(
+		delegate: EntityReferenceInGroup,
+		healthElement: GroupScoped<E>,
+		@DefaultValue("null")
+		options: HealthElementShareOptions? = null
+	): GroupScoped<E>
+
+	/**
+	 * In-group version of [HealthElementFlavouredApi.shareWithMany]
+	 */
+	suspend fun shareWithMany(
+		healthElement: GroupScoped<E>,
+		delegates: @JsMapAsObjectArray(keyEntryName = "delegate", valueEntryName = "shareOptions") Map<EntityReferenceInGroup, HealthElementShareOptions>
+	): GroupScoped<E>
+
+	/**
+	 * In-group version of [HealthElementFlavouredApi.filterHealthElementsBy]
+	 */
+	// TODO suspend fun filterHealthElementsBy(filter: FilterOptions<HealthElement>): PaginatedListIterator<E>
+
+	/**
+	 * In-group version of [HealthElementFlavouredApi.filterHealthElementsBySorted]
+	 */
+	// TODO suspend fun filterHealthElementsBySorted(filter: SortableFilterOptions<HealthElement>): PaginatedListIterator<E>
+}
+
 /* The extra API calls declared in this interface are the ones that can only be used on decrypted items when encryption keys are available */
 interface HealthElementApi : HealthElementBasicFlavourlessApi, HealthElementFlavouredApi<DecryptedHealthElement>, Subscribable<HealthElement, EncryptedHealthElement, FilterOptions<HealthElement>> {
 	/**
-	 * Create a new health element. The provided health element must have the encryption metadata initialized.
-	 * @param entity a health element with initialized encryption metadata
-	 * @return the created health element with updated revision.
-	 * @throws IllegalArgumentException if the encryption metadata of the input was not initialized.
+	 * Give access to the encrypted flavour of the api
 	 */
-	suspend fun createHealthElement(entity: DecryptedHealthElement): DecryptedHealthElement
+	val encrypted: HealthElementFlavouredApi<EncryptedHealthElement>
 
 	/**
-	 * Create multiple health elements. All the provided health elements must have the encryption metadata initialized, otherwise
-	 * this method fails without doing anything.
-	 * @param entities health elements with initialized encryption metadata
-	 * @return the created health elements with updated revision.
-	 * @throws IllegalArgumentException if the encryption metadata of any health element in the input was not initialized.
+	 * Gives access to the polymorphic flavour of the api
 	 */
-	suspend fun createHealthElements(entities: List<DecryptedHealthElement>): List<DecryptedHealthElement>
+	val tryAndRecover: HealthElementFlavouredApi<HealthElement>
+
+	/**
+	 * Gives access to methods of the api that allow to use entities or work with data owners in groups other than the
+	 * current user's group.
+	 * These methods aren't available when connected to a kraken-lite instance.
+	 */
+	val inGroup: HealthElementInGroupApi
 
 	/**
 	 * Creates a new health element with initialized encryption metadata
@@ -272,7 +396,11 @@ interface HealthElementApi : HealthElementBasicFlavourlessApi, HealthElementFlav
 	suspend fun getEncryptionKeysOf(healthElement: HealthElement): Set<HexString>
 
 	/**
-	 * Specifies if the current user has write access to a health element.
+	 * Specifies if the current user has write access to a health element through delegations.
+	 * Doesn't consider actual permissions on the server side: for example, if the data owner has access to all entities
+	 * thanks to extended permission but has no delegation on the provided entity this method returns false. Similarly,
+	 * if the SDK was initialized in hierarchical mode but the user is lacking the hierarchical permission on the server
+	 * side this method will still return true if there is a delegation to the parent.
 	 * @param healthElement a health element
 	 * @return if the current user has write access to the provided health element
 	 */
@@ -286,7 +414,7 @@ interface HealthElementApi : HealthElementBasicFlavourlessApi, HealthElementFlav
 	 * @return the id of the patient linked to the health element, or empty if the current user can't access any patient id
 	 * of the health element.
 	 */
-	suspend fun decryptPatientIdOf(healthElement: HealthElement): Set<String>
+	suspend fun decryptPatientIdOf(healthElement: HealthElement): Set<EntityReferenceInGroup>
 
 	/**
 	 * Create metadata to allow other users to identify the anonymous delegates of a health element.
@@ -322,30 +450,30 @@ interface HealthElementApi : HealthElementBasicFlavourlessApi, HealthElementFlav
 	suspend fun createDelegationDeAnonymizationMetadata(entity: HealthElement, delegates: Set<String>)
 
 	/**
-	 * Decrypts a health element, throwing an exception if it is not possible.
-	 * @param healthElement a health element
-	 * @return the decrypted health element
-	 * @throws EntityEncryptionException if the health element could not be decrypted
+	 * Decrypts HealthElements, throwing an exception if it is not possible.
+	 * @param healthElements encrypted HealthElements
+	 * @return the decrypted HealthElements
+	 * @throws EntityEncryptionException if any of the provided HealthElements couldn't be decrypted
 	 */
-	suspend fun decrypt(healthElement: EncryptedHealthElement): DecryptedHealthElement
+	suspend fun decrypt(healthElements: List<EncryptedHealthElement>): List<DecryptedHealthElement>
 
 	/**
-	 * Tries to decrypt a health element, returns the input if it is not possible.
-	 * @param healthElement an encrypted health element
-	 * @return the decrypted health element if the decryption was successful or the input if it was not.
+	 * Tries to decrypt a HealthElement, returns the input if it is not possible.
+	 * @param healthElements encrypted HealthElements
+	 * @return all the provided HealthElements, each of them decrypted if possible or unchanged (still encrypted)
 	 */
-	suspend fun tryDecrypt(healthElement: EncryptedHealthElement): HealthElement
+	suspend fun tryDecrypt(healthElements: List<EncryptedHealthElement>): List<HealthElement>
 
 	/**
-	 * Give access to the encrypted flavour of the api
+	 * Encrypts provided decrypted HealthElements, and validates already encrypted HealthElements.
+	 * @param healthElements HealthElements to encrypt and/or validate
+	 * @return the encrypted and validates HealthElements
+	 * @throws EntityEncryptionException if any of the provided decrypted HealthElements couldn't be encrypted (the current
+	 * user can't access its encryption key or no key was initialized) or if the already encrypted HealthElements don't
+	 * respect the manifest.
 	 */
-	val encrypted: HealthElementFlavouredApi<EncryptedHealthElement>
-
-	/**
-	 * Gives access to the polymorphic flavour of the api
-	 */
-	val tryAndRecover: HealthElementFlavouredApi<HealthElement>
-
+	suspend fun encryptOrValidate(healthElements: List<HealthElement>): List<EncryptedHealthElement>
+	
 	/**
 	 * Get the ids of all health elements matching the provided filter.
 	 *
@@ -371,7 +499,86 @@ interface HealthElementApi : HealthElementBasicFlavourlessApi, HealthElementFlav
 	suspend fun matchHealthElementsBySorted(filter: SortableFilterOptions<HealthElement>): List<String>
 }
 
+interface HealthElementInGroupApi : HealthElementBasicFlavourlessInGroupApi, HealthElementFlavouredInGroupApi<DecryptedHealthElement> { // TODO subscribable
+	/**
+	 * Give access to the encrypted flavour of the api
+	 */
+	val encrypted: HealthElementFlavouredInGroupApi<EncryptedHealthElement>
+
+	/**
+	 * Gives access to the polymorphic flavour of the api
+	 */
+	val tryAndRecover: HealthElementFlavouredInGroupApi<HealthElement>
+
+	/**
+	 * In-group version of [HealthElementApi.withEncryptionMetadata]
+	 */
+	suspend fun withEncryptionMetadata(
+		entityGroupId: String,
+		base: DecryptedHealthElement?,
+		patient: GroupScoped<Patient>,
+		@DefaultValue("null")
+		user: User? = null,
+		@DefaultValue("emptyMap()")
+		delegates: @JsMapAsObjectArray(keyEntryName = "delegate", valueEntryName = "accessLevel") Map<EntityReferenceInGroup, AccessLevel> = emptyMap(),
+		@DefaultValue("com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption.UseAnySharedWithParent")
+		secretId: SecretIdUseOption = SecretIdUseOption.UseAnySharedWithParent,
+	): GroupScoped<DecryptedHealthElement>
+
+	/**
+	 * In-group version of [HealthElementApi.getEncryptionKeysOf]
+	 */
+	suspend fun getEncryptionKeysOf(healthElement: GroupScoped<HealthElement>): Set<HexString>
+
+	/**
+	 * In-group version of [HealthElementApi.hasWriteAccess]
+	 */
+	suspend fun hasWriteAccess(healthElement: GroupScoped<HealthElement>): Boolean
+
+	/**
+	 * In-group version of [HealthElementApi.decryptPatientIdOf]
+	 */
+	suspend fun decryptPatientIdOf(healthElement: GroupScoped<HealthElement>): Set<EntityReferenceInGroup>
+
+	/**
+	 * In-group version of [HealthElementApi.createDelegationDeAnonymizationMetadata]
+	 */
+	suspend fun createDelegationDeAnonymizationMetadata(entity: GroupScoped<HealthElement>, delegates: Set<EntityReferenceInGroup>)
+
+	/**
+	 * In-group version of [HealthElementApi.decrypt]
+	 */
+	suspend fun decrypt(healthElements: List<GroupScoped<EncryptedHealthElement>>): List<GroupScoped<DecryptedHealthElement>>
+
+	/**
+	 * In-group version of [HealthElementApi.tryDecrypt]
+	 */
+	suspend fun tryDecrypt(healthElements: List<GroupScoped<EncryptedHealthElement>>): List<GroupScoped<HealthElement>>
+
+	/**
+	 * In-group version of [HealthElementApi.encryptOrValidate]
+	 */
+	suspend fun encryptOrValidate(healthElements: List<GroupScoped<HealthElement>>): List<GroupScoped<EncryptedHealthElement>>
+
+	/**
+	 * In-group version of [HealthElementApi.matchHealthElementsBy]
+	 */
+	// TODO suspend fun matchHealthElementsBy(filter: FilterOptions<HealthElement>): List<String>
+
+	/**
+	 * In-group version of [HealthElementApi.matchHealthElementsBySorted]
+	 */
+	// TODO suspend fun matchHealthElementsBySorted(filter: SortableFilterOptions<HealthElement>): List<String>
+}
+
 interface HealthElementBasicApi : HealthElementBasicFlavourlessApi, HealthElementBasicFlavouredApi<EncryptedHealthElement>, Subscribable<HealthElement, EncryptedHealthElement, BaseFilterOptions<HealthElement>> {
+	/**
+	 * Gives access to methods of the api that allow to use entities or work with data owners in groups other than the
+	 * current user's group.
+	 * These methods aren't available when connected to a kraken-lite instance.
+	 */
+	val inGroup: HealthElementBasicInGroupApi
+
 	/**
 	 * Get the ids of all health elements matching the provided filter.
 	 *
@@ -425,4 +632,26 @@ interface HealthElementBasicApi : HealthElementBasicFlavourlessApi, HealthElemen
 	suspend fun filterHealthElementsBySorted(
 		filter: BaseSortableFilterOptions<HealthElement>
 	): PaginatedListIterator<EncryptedHealthElement>
+}
+
+interface HealthElementBasicInGroupApi : HealthElementBasicFlavourlessInGroupApi, HealthElementBasicFlavouredInGroupApi<EncryptedHealthElement> { // TODO subscribable
+	/**
+	 * In-group version of [HealthElementApi.matchHealthElementsBy]
+	 */
+	// TODO suspend fun matchHealthElementsBy(filter: BaseFilterOptions<HealthElement>): List<String>
+
+	/**
+	 * In-group version of [HealthElementApi.matchHealthElementsBySorted]
+	 */
+	// TODO suspend fun matchHealthElementsBySorted(filter: BaseSortableFilterOptions<HealthElement>): List<String>
+
+	/**
+	 * In-group version of [HealthElementApi.filterHealthElementsBy]
+	 */
+	// TODO suspend fun filterHealthElementsBy(filter: BaseFilterOptions<HealthElement>): PaginatedListIterator<EncryptedHealthElement>
+
+	/**
+	 * In-group version of [HealthElementApi.filterHealthElementsBySorted]
+	 */
+	// TODO suspend fun filterHealthElementsBySorted(filter: BaseSortableFilterOptions<HealthElement>): PaginatedListIterator<EncryptedHealthElement>
 }

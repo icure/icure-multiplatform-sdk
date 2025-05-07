@@ -2,6 +2,7 @@ package com.icure.cardinal.sdk.crypto.impl
 
 import com.icure.cardinal.sdk.api.DataOwnerApi
 import com.icure.cardinal.sdk.crypto.AccessControlKeysHeadersProvider
+import com.icure.cardinal.sdk.crypto.BaseSecurityMetadataDecryptor
 import com.icure.cardinal.sdk.crypto.BasicInternalCryptoApi
 import com.icure.cardinal.sdk.crypto.CryptoStrategies
 import com.icure.cardinal.sdk.crypto.DelegationsDeAnonymization
@@ -10,9 +11,11 @@ import com.icure.cardinal.sdk.crypto.EntityEncryptionService
 import com.icure.cardinal.sdk.crypto.EntityValidationService
 import com.icure.cardinal.sdk.crypto.ExchangeDataManager
 import com.icure.cardinal.sdk.crypto.ExchangeKeysManager
+import com.icure.cardinal.sdk.crypto.IncrementalSecurityMetadataDecryptor
 import com.icure.cardinal.sdk.crypto.InternalCryptoServices
 import com.icure.cardinal.sdk.crypto.JsonEncryptionService
 import com.icure.cardinal.sdk.crypto.RecoveryDataEncryption
+import com.icure.cardinal.sdk.crypto.SecureDelegationsManager
 import com.icure.cardinal.sdk.crypto.UserEncryptionKeysManager
 import com.icure.kryptom.crypto.CryptoService
 import com.icure.utils.InternalIcureApi
@@ -34,7 +37,9 @@ class InternalCryptoApiImpl(
 	override val recoveryDataEncryption: RecoveryDataEncryption,
 	override val headersProvider: AccessControlKeysHeadersProvider,
 	override val strategies: CryptoStrategies,
-	override val overrideAnonymityHeader: Pair<String, String>?
+	private val secureDelegationsManager: SecureDelegationsManager,
+	override val incrementalSecurityMetadataDecryptor: IncrementalSecurityMetadataDecryptor,
+	override val securityMetadataDecryptor: BaseSecurityMetadataDecryptor,
 ) : InternalCryptoServices {
 	/**
 	 * Deletes all cached data in crypto services and reloads as needed.
@@ -43,6 +48,8 @@ class InternalCryptoApiImpl(
 		dataOwnerApi.clearCurrentDataOwnerIdsCache()
 		userEncryptionKeysManager.reloadKeys()
 		exchangeDataManager.clearOrRepopulateCache()
+		exchangeKeysManager.requestCacheReload()
+		secureDelegationsManager.clearCachedDataOwnersInfo()
 	}
 }
 
@@ -50,7 +57,5 @@ class InternalCryptoApiImpl(
 class BasicInternalCryptoApiImpl(
 	override val jsonEncryption: JsonEncryptionService,
 	override val validationService: EntityValidationService,
-) : BasicInternalCryptoApi {
-	override val entityAccessInformationProvider: EntityAccessInformationProvider get() =
-		BasicEntityAccessInformationProvider
-}
+	override val entityAccessInformationProvider: EntityAccessInformationProvider
+) : BasicInternalCryptoApi

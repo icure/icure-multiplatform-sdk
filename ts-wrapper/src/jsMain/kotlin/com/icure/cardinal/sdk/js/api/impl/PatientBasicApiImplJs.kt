@@ -39,7 +39,7 @@ import com.icure.cardinal.sdk.js.subscription.entitySubscription_toJs
 import com.icure.cardinal.sdk.js.utils.pagination.PaginatedListIteratorJs
 import com.icure.cardinal.sdk.js.utils.pagination.paginatedListIterator_toJs
 import com.icure.cardinal.sdk.model.EncryptedPatient
-import com.icure.cardinal.sdk.model.IdWithMandatoryRev
+import com.icure.cardinal.sdk.model.StoredDocumentIdentifier
 import com.icure.cardinal.sdk.model.IdWithRev
 import com.icure.cardinal.sdk.model.Patient
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
@@ -163,7 +163,7 @@ internal class PatientBasicApiImplJs(
 
 	override fun deletePatientsByIds(entityIds: Array<IdWithMandatoryRevJs>):
 			Promise<Array<DocIdentifierJs>> = GlobalScope.promise {
-		val entityIdsConverted: List<IdWithMandatoryRev> = arrayToList(
+		val entityIdsConverted: List<StoredDocumentIdentifier> = arrayToList(
 			entityIds,
 			"entityIds",
 			{ x1: IdWithMandatoryRevJs ->
@@ -274,7 +274,7 @@ internal class PatientBasicApiImplJs(
 
 	override fun undeletePatients(ids: Array<IdWithMandatoryRevJs>): Promise<Array<EncryptedPatientJs>>
 			= GlobalScope.promise {
-		val idsConverted: List<IdWithMandatoryRev> = arrayToList(
+		val idsConverted: List<StoredDocumentIdentifier> = arrayToList(
 			ids,
 			"ids",
 			{ x1: IdWithMandatoryRevJs ->

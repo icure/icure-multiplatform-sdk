@@ -2,9 +2,10 @@ package com.icure.cardinal.sdk.api.impl
 
 import com.icure.cardinal.sdk.api.EntityTemplateApi
 import com.icure.cardinal.sdk.api.raw.RawEntityTemplateApi
+import com.icure.cardinal.sdk.api.raw.successBodyOrNull404
 import com.icure.cardinal.sdk.api.raw.successBodyOrThrowRevisionConflict
 import com.icure.cardinal.sdk.model.EntityTemplate
-import com.icure.cardinal.sdk.model.IdWithMandatoryRev
+import com.icure.cardinal.sdk.model.StoredDocumentIdentifier
 import com.icure.cardinal.sdk.model.ListOfIds
 import com.icure.cardinal.sdk.model.ListOfIdsAndRev
 import com.icure.utils.InternalIcureApi
@@ -13,7 +14,8 @@ import com.icure.utils.InternalIcureApi
 internal class EntityTemplateApiImpl(
 	private val rawApi: RawEntityTemplateApi,
 ) : EntityTemplateApi {
-	override suspend fun getEntityTemplate(documentTemplateId: String) = rawApi.getEntityTemplate(documentTemplateId).successBody()
+	override suspend fun getEntityTemplate(documentTemplateId: String) =
+		rawApi.getEntityTemplate(documentTemplateId).successBodyOrNull404()
 
 	override suspend fun createEntityTemplate(applicationSettings: EntityTemplate) =
 		rawApi.createEntityTemplate(applicationSettings).successBody()
@@ -56,7 +58,7 @@ internal class EntityTemplateApiImpl(
 	override suspend fun createEntityTemplates(entityTemplates: List<EntityTemplate>) =
 		rawApi.createEntityTemplates(entityTemplates).successBody()
 
-	override suspend fun deleteEntityTemplates(entityTemplateIds: List<IdWithMandatoryRev>) = rawApi.deleteEntityTemplatesWithRev(
+	override suspend fun deleteEntityTemplates(entityTemplateIds: List<StoredDocumentIdentifier>) = rawApi.deleteEntityTemplatesWithRev(
 		ListOfIdsAndRev(entityTemplateIds)
 	).successBody()
 }

@@ -7,7 +7,6 @@ import com.icure.cardinal.sdk.auth.UsernamePassword
 import com.icure.cardinal.sdk.options.AuthenticationMethod
 import com.icure.cardinal.sdk.options.SdkOptions
 import com.icure.cardinal.sdk.options.getAuthProvider
-import com.icure.cardinal.sdk.utils.Serialization
 import com.icure.kryptom.crypto.defaultCryptoService
 import com.icure.utils.InternalIcureApi
 
@@ -24,7 +23,7 @@ internal val testGroupAdminAuth =
 	AuthenticationMethod.UsingCredentials(
 		UsernamePassword(testGroupAdmin, testGroupAdminPassword)
 	).getAuthProvider(
-		RawAnonymousAuthApiImpl(baseUrl, CardinalSdk.sharedHttpClient, json = Serialization.json),
+		RawAnonymousAuthApiImpl(baseUrl, DefaultRawApiConfig),
 		defaultCryptoService,
 		null,
 		SdkOptions(saltPasswordWithApplicationId = false),
@@ -36,7 +35,7 @@ internal val superadminAuth =
 	AuthenticationMethod.UsingCredentials(
 		UsernamePassword("john", "LetMeIn"),
 	).getAuthProvider(
-		RawAnonymousAuthApiImpl(baseUrl, CardinalSdk.sharedHttpClient, json = Serialization.json),
+		RawAnonymousAuthApiImpl(baseUrl, DefaultRawApiConfig),
 		defaultCryptoService,
 		null,
 		SdkOptions(saltPasswordWithApplicationId = false),

@@ -52,7 +52,7 @@ import com.icure.cardinal.sdk.js.utils.pagination.paginatedListIterator_toJs
 import com.icure.cardinal.sdk.model.CalendarItem
 import com.icure.cardinal.sdk.model.DecryptedCalendarItem
 import com.icure.cardinal.sdk.model.EncryptedCalendarItem
-import com.icure.cardinal.sdk.model.IdWithMandatoryRev
+import com.icure.cardinal.sdk.model.StoredDocumentIdentifier
 import com.icure.cardinal.sdk.model.Patient
 import com.icure.cardinal.sdk.model.User
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
@@ -827,7 +827,7 @@ internal class CalendarItemApiImplJs(
 
 	override fun deleteCalendarItemsByIds(entityIds: Array<IdWithMandatoryRevJs>):
 			Promise<Array<DocIdentifierJs>> = GlobalScope.promise {
-		val entityIdsConverted: List<IdWithMandatoryRev> = arrayToList(
+		val entityIdsConverted: List<StoredDocumentIdentifier> = arrayToList(
 			entityIds,
 			"entityIds",
 			{ x1: IdWithMandatoryRevJs ->

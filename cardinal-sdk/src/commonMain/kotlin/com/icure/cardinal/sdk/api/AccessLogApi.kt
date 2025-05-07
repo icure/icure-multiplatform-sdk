@@ -10,9 +10,9 @@ import com.icure.cardinal.sdk.filters.SortableFilterOptions
 import com.icure.cardinal.sdk.model.AccessLog
 import com.icure.cardinal.sdk.model.DecryptedAccessLog
 import com.icure.cardinal.sdk.model.EncryptedAccessLog
-import com.icure.cardinal.sdk.model.IdWithMandatoryRev
 import com.icure.cardinal.sdk.model.PaginatedList
 import com.icure.cardinal.sdk.model.Patient
+import com.icure.cardinal.sdk.model.StoredDocumentIdentifier
 import com.icure.cardinal.sdk.model.User
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.model.embed.AccessLevel
@@ -44,7 +44,7 @@ interface AccessLogBasicFlavourlessApi {
 	 * @return the id and revision of the deleted accessLogs. If some entities couldn't be deleted (for example
 	 * because you had no write access to them) they will not be included in this list.
 	 */
-	suspend fun deleteAccessLogsByIds(entityIds: List<IdWithMandatoryRev>): List<DocIdentifier>
+	suspend fun deleteAccessLogsByIds(entityIds: List<StoredDocumentIdentifier>): List<DocIdentifier>
 
 	/**
 	 * Permanently deletes a accessLog.
@@ -71,7 +71,7 @@ interface AccessLogBasicFlavourlessApi {
 	 */
 	suspend fun deleteAccessLogs(accessLogs: List<AccessLog>): List<DocIdentifier> =
 		deleteAccessLogsByIds(accessLogs.map { accessLog ->
-			IdWithMandatoryRev(accessLog.id, requireNotNull(accessLog.rev) { "Can't delete an accessLog that has no rev" })
+			StoredDocumentIdentifier(accessLog.id, requireNotNull(accessLog.rev) { "Can't delete an accessLog that has no rev" })
 		})
 
 	/**
@@ -86,6 +86,14 @@ interface AccessLogBasicFlavourlessApi {
 
 /* This interface includes the API calls can be used on decrypted items if encryption keys are available *or* encrypted items if no encryption keys are available */
 interface AccessLogBasicFlavouredApi<E : AccessLog> {
+	/**
+	 * Create a new access log. The provided access log must have the encryption metadata initialized.
+	 * @param entity an access log with initialized encryption metadata
+	 * @return the created access log with updated revision.
+	 * @throws IllegalArgumentException if the encryption metadata of the input was not initialized.
+	 */
+	suspend fun createAccessLog(entity: E): E
+
 	/**
 	 * Restores a accessLog that was marked as deleted.
 	 * @param id the id of the entity
@@ -119,7 +127,7 @@ interface AccessLogBasicFlavouredApi<E : AccessLog> {
 	 * @param entityId an access log id.
 	 * @return the access log with id [entityId].
 	 */
-	suspend fun getAccessLog(entityId: String): E
+	suspend fun getAccessLog(entityId: String): E?
 
 	/**
 	 * Get multiple access logs by their ids. Ignores all ids that do not exist, or access logs that you can't access.
@@ -246,14 +254,6 @@ interface AccessLogFlavouredApi<E : AccessLog> : AccessLogBasicFlavouredApi<E> {
 /* The extra API calls declared in this interface are the ones that can only be used on decrypted items when encryption keys are available */
 interface AccessLogApi : AccessLogBasicFlavourlessApi, AccessLogFlavouredApi<DecryptedAccessLog> {
 	/**
-	 * Create a new access log. The provided access log must have the encryption metadata initialized.
-	 * @param entity an access log with initialized encryption metadata
-	 * @return the created access log with updated revision.
-	 * @throws IllegalArgumentException if the encryption metadata of the input was not initialized.
-	 */
-	suspend fun createAccessLog(entity: DecryptedAccessLog): DecryptedAccessLog
-
-	/**
 	 * Creates a new access log with initialized encryption metadata
 	 * @param base an access log with initialized content and uninitialized encryption metadata. The result of this
 	 * method takes the content from [base] if provided.
@@ -287,7 +287,11 @@ interface AccessLogApi : AccessLogBasicFlavourlessApi, AccessLogFlavouredApi<Dec
 	suspend fun getEncryptionKeysOf(accessLog: AccessLog): Set<HexString>
 
 	/**
-	 * Specifies if the current user has write access to an access log.
+	 * Specifies if the current user has write access to an access log through delegations.
+ 	 * Doesn't consider actual permissions on the server side: for example, if the data owner has access to all entities
+ 	 * thanks to extended permission but has no delegation on the provided entity this method returns false. Similarly,
+ 	 * if the SDK was initialized in hierarchical mode but the user is lacking the hierarchical permission on the server
+ 	 * side this method will still return true if there is a delegation to the parent.
 	 * @param accessLog an access log
 	 * @return if the current user has write access to the provided access log
 	 */

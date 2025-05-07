@@ -4,13 +4,12 @@ import com.icure.cardinal.sdk.CardinalBaseApis
 import com.icure.cardinal.sdk.crypto.EntityEncryptionService
 import com.icure.cardinal.sdk.crypto.entities.EntityWithEncryptionMetadataStub
 import com.icure.cardinal.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
-import com.icure.cardinal.sdk.crypto.entities.EntityWithTypeInfo
 import com.icure.cardinal.sdk.crypto.entities.toEncryptionMetadataStub
 import com.icure.cardinal.sdk.model.Contact
-import com.icure.cardinal.sdk.model.embed.SubContact
-import com.icure.cardinal.sdk.model.embed.Service
 import com.icure.cardinal.sdk.model.Patient
 import com.icure.cardinal.sdk.model.base.Identifier
+import com.icure.cardinal.sdk.model.embed.Service
+import com.icure.cardinal.sdk.model.embed.SubContact
 import com.icure.cardinal.sdk.model.filter.AbstractFilter
 import com.icure.cardinal.sdk.model.filter.contact.ContactByDataOwnerFormIdsFilter
 import com.icure.cardinal.sdk.model.filter.contact.ContactByDataOwnerOpeningDateFilter
@@ -100,7 +99,7 @@ object ContactFilters {
 		descending: Boolean = false
 	) : SortableFilterOptions<Contact> = ByPatientsOpeningDateForDataOwner(
 		dataOwnerId = dataOwnerId,
-		patients = patients.map { EntityWithTypeInfo(it.toEncryptionMetadataStub(), EntityWithEncryptionMetadataTypeName.Patient) },
+		patients = patients.map { it.toEncryptionMetadataStub() },
 		from = from,
 		to = to,
 		descending = descending
@@ -138,7 +137,7 @@ object ContactFilters {
 		@DefaultValue("false")
 		descending: Boolean = false
 	) : SortableFilterOptions<Contact> = ByPatientsOpeningDateForSelf(
-		patients = patients.map { EntityWithTypeInfo(it.toEncryptionMetadataStub(), EntityWithEncryptionMetadataTypeName.Patient) },
+		patients = patients.map { it.toEncryptionMetadataStub() },
 		from = from,
 		to = to,
 		descending = descending
@@ -543,7 +542,7 @@ object ContactFilters {
 		dataOwnerId: String,
 		patients: List<Patient>
 	): SortableFilterOptions<Contact> = ByPatientsForDataOwner(
-		patients = patients.map { EntityWithTypeInfo(it.toEncryptionMetadataStub(), EntityWithEncryptionMetadataTypeName.Patient) },
+		patients = patients.map { it.toEncryptionMetadataStub() },
 		dataOwnerId = dataOwnerId
 	)
 
@@ -567,7 +566,7 @@ object ContactFilters {
 	fun byPatientsForSelf(
 		patients: List<Patient>
 	): SortableFilterOptions<Contact> = ByPatientsForSelf(
-		patients = patients.map { EntityWithTypeInfo(it.toEncryptionMetadataStub(), EntityWithEncryptionMetadataTypeName.Patient) }
+		patients = patients.map { it.toEncryptionMetadataStub() }
 	)
 
 	/**
@@ -638,7 +637,7 @@ object ContactFilters {
 	@InternalIcureApi
 	internal class ByPatientsOpeningDateForDataOwner(
 		val dataOwnerId: String,
-		val patients: List<EntityWithTypeInfo<EntityWithEncryptionMetadataStub>>,
+		val patients: List<EntityWithEncryptionMetadataStub>,
 		val from: Long?,
 		val to: Long?,
 		val descending: Boolean
@@ -647,7 +646,7 @@ object ContactFilters {
 	@Serializable
 	@InternalIcureApi
 	internal class ByPatientsOpeningDateForSelf(
-		val patients: List<EntityWithTypeInfo<EntityWithEncryptionMetadataStub>>,
+		val patients: List<EntityWithEncryptionMetadataStub>,
 		val from: Long?,
 		val to: Long?,
 		val descending: Boolean
@@ -788,14 +787,14 @@ object ContactFilters {
 	@Serializable
 	@InternalIcureApi
 	internal class ByPatientsForDataOwner(
-		val patients: List<EntityWithTypeInfo<EntityWithEncryptionMetadataStub>>,
+		val patients: List<EntityWithEncryptionMetadataStub>,
 		val dataOwnerId: String
 	): BaseSortableFilterOptions<Contact>
 
 	@Serializable
 	@InternalIcureApi
 	internal class ByPatientsForSelf(
-		val patients: List<EntityWithTypeInfo<EntityWithEncryptionMetadataStub>>,
+		val patients: List<EntityWithEncryptionMetadataStub>,
 	): SortableFilterOptions<Contact>
 
 	@Serializable
@@ -837,9 +836,7 @@ internal suspend fun mapContactFilterOptions(
 		filterOptions.ensureNonBaseEnvironment(selfDataOwnerId, entityEncryptionService)
 		ContactByDataOwnerPatientOpeningDateFilter(
 			dataOwnerId = filterOptions.dataOwnerId,
-			secretForeignKeys = filterOptions.patients.flatMap {
-				entityEncryptionService.secretIdsOf(it, null)
-			}.toSet(),
+			secretForeignKeys = entityEncryptionService.secretIdsOf(null, filterOptions.patients, EntityWithEncryptionMetadataTypeName.Patient, null).values.flatten().toSet(),
 			startDate = filterOptions.to,
 			endDate = filterOptions.from,
 			descending = filterOptions.descending
@@ -849,9 +846,7 @@ internal suspend fun mapContactFilterOptions(
 		filterOptions.ensureNonBaseEnvironment(selfDataOwnerId, entityEncryptionService)
 		ContactByDataOwnerPatientOpeningDateFilter(
 			dataOwnerId = selfDataOwnerId,
-			secretForeignKeys = filterOptions.patients.flatMap {
-				entityEncryptionService.secretIdsOf(it, null)
-			}.toSet(),
+			secretForeignKeys = entityEncryptionService.secretIdsOf(null, filterOptions.patients, EntityWithEncryptionMetadataTypeName.Patient, null).values.flatten().toSet(),
 			startDate = filterOptions.to,
 			endDate = filterOptions.from,
 			descending = filterOptions.descending
@@ -912,18 +907,14 @@ internal suspend fun mapContactFilterOptions(
 	is ContactFilters.ByPatientsForDataOwner -> {
 		filterOptions.ensureNonBaseEnvironment(selfDataOwnerId, entityEncryptionService)
 		ContactByHcPartyPatientTagCodeDateFilter(
-			patientSecretForeignKeys = filterOptions.patients.flatMap {
-				entityEncryptionService.secretIdsOf(it, null)
-			},
+			patientSecretForeignKeys = entityEncryptionService.secretIdsOf(null, filterOptions.patients, EntityWithEncryptionMetadataTypeName.Patient, null).values.flatten().distinct(),
 			healthcarePartyId = filterOptions.dataOwnerId
 		)
 	}
 	is ContactFilters.ByPatientsForSelf -> {
 		filterOptions.ensureNonBaseEnvironment(selfDataOwnerId, entityEncryptionService)
 		ContactByHcPartyPatientTagCodeDateFilter(
-			patientSecretForeignKeys = filterOptions.patients.flatMap {
-				entityEncryptionService.secretIdsOf(it, null)
-			},
+			patientSecretForeignKeys = entityEncryptionService.secretIdsOf(null, filterOptions.patients, EntityWithEncryptionMetadataTypeName.Patient, null).values.flatten().distinct(),
 			healthcarePartyId = selfDataOwnerId
 		)
 	}

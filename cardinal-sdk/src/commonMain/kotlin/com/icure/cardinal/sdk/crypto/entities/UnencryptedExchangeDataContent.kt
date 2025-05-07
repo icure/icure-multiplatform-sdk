@@ -1,10 +1,10 @@
 package com.icure.cardinal.sdk.crypto.entities
 
+import com.icure.cardinal.sdk.model.specializations.AccessControlSecret
 import com.icure.kryptom.crypto.AesAlgorithm
 import com.icure.kryptom.crypto.AesKey
 import com.icure.kryptom.crypto.HmacAlgorithm
 import com.icure.kryptom.crypto.HmacKey
-import com.icure.cardinal.sdk.model.specializations.AccessControlSecret
 import com.icure.utils.InternalIcureApi
 
 /**
@@ -18,5 +18,5 @@ import com.icure.utils.InternalIcureApi
 data class UnencryptedExchangeDataContent(
 	val exchangeKey: AesKey<AesAlgorithm.CbcWithPkcs7Padding>,
 	val accessControlSecret: AccessControlSecret,
-	val sharedSignatureKey: HmacKey<HmacAlgorithm.HmacSha512>
+	val sharedSignatureKey: HmacKey<HmacAlgorithm.HmacSha512>,
 )
