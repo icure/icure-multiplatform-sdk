@@ -1,5 +1,6 @@
 package com.icure.cardinal.sdk.crypto.impl
 
+import com.icure.cardinal.sdk.api.raw.RawApiConfig
 import com.icure.cardinal.sdk.api.raw.RawRecoveryDataApi
 import com.icure.cardinal.sdk.crypto.RecoveryDataEncryption
 import com.icure.cardinal.sdk.crypto.entities.ExchangeDataRecoveryDetails
@@ -31,6 +32,7 @@ import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.decodeFromJsonElement
 import kotlinx.serialization.json.encodeToJsonElement
+import kotlin.time.Duration.Companion.seconds
 
 
 // Keep name of parameters for compatibility with typescript SDK
@@ -57,8 +59,16 @@ private data class DelegateKeyPairInfo(
 @OptIn(InternalIcureApi::class)
 class RecoveryDataEncryptionImpl(
 	private val primitives: CryptoService,
-	override val raw: RawRecoveryDataApi,
+	defaultRawApiConfig: RawApiConfig,
+	createRawApi: (RawApiConfig) -> RawRecoveryDataApi
 ) : RecoveryDataEncryption {
+	override val raw = createRawApi(defaultRawApiConfig)
+	private val rawForLongPolling = if (defaultRawApiConfig.requestTimeout?.let { it.inWholeSeconds >= MAX_WAIT_DURATION_S + REQUEST_TIMEOUT_MARGIN_S } != false) {
+		raw
+	} else {
+		createRawApi(defaultRawApiConfig.copy(requestTimeout = (MAX_WAIT_DURATION_S + REQUEST_TIMEOUT_MARGIN_S).seconds))
+	}
+
 	override suspend fun recoveryKeyToId(recoveryKey: RecoveryDataKey): String =
 		primitives.digest.sha256(recoveryKey.asRawBytes()).toHexString()
 
@@ -200,7 +210,7 @@ class RecoveryDataEncryptionImpl(
 			else
 				LongPollingUtils.doLongPoll(
 					LongPollingUtils.splitForRequestsDuration(waitingSeconds, MAX_WAIT_DURATION_S),
-					request = { raw.getRecoveryDataWaiting(id, it) },
+					request = { rawForLongPolling.getRecoveryDataWaiting(id, it) },
 					shouldRetry = { it.status.value == 404 }
 				)
 		return when (getResult.status.value) {
@@ -236,5 +246,7 @@ class RecoveryDataEncryptionImpl(
 	companion object {
 		// As configured on backend
 		private const val MAX_WAIT_DURATION_S = 30
+
+		private const val REQUEST_TIMEOUT_MARGIN_S = 5
 	}
 }

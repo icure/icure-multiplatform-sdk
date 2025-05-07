@@ -4,11 +4,10 @@ import com.icure.cardinal.sdk.exceptions.RevisionConflictException
 import com.icure.cardinal.sdk.filters.BaseFilterOptions
 import com.icure.cardinal.sdk.filters.BaseSortableFilterOptions
 import com.icure.cardinal.sdk.model.Agenda
-import com.icure.cardinal.sdk.model.IdWithMandatoryRev
 import com.icure.cardinal.sdk.model.PaginatedList
+import com.icure.cardinal.sdk.model.StoredDocumentIdentifier
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.utils.pagination.PaginatedListIterator
-import kotlin.js.JsName
 
 interface AgendaApi {
 	@Deprecated("Use filter instead")
@@ -40,7 +39,7 @@ interface AgendaApi {
 	 * @return the id and revision of the deleted agendas. If some entities couldn't be deleted (for example
 	 * because you had no write access to them) they will not be included in this list.
 	 */
-	suspend fun deleteAgendasByIds(entityIds: List<IdWithMandatoryRev>): List<DocIdentifier>
+	suspend fun deleteAgendasByIds(entityIds: List<StoredDocumentIdentifier>): List<DocIdentifier>
 
 	/**
 	 * Permanently deletes a agenda.
@@ -76,7 +75,7 @@ interface AgendaApi {
 	 */
 	suspend fun deleteAgendas(agendas: List<Agenda>): List<DocIdentifier> =
 		deleteAgendasByIds(agendas.map { agenda ->
-			IdWithMandatoryRev(agenda.id, requireNotNull(agenda.rev) { "Can't delete an agenda that has no rev" })
+			StoredDocumentIdentifier(agenda.id, requireNotNull(agenda.rev) { "Can't delete an agenda that has no rev" })
 		})
 
 	/**
@@ -97,15 +96,12 @@ interface AgendaApi {
 	suspend fun undeleteAgenda(agenda: Agenda): Agenda =
 		undeleteAgendaById(agenda.id, requireNotNull(agenda.rev) { "Can't delete an agenda that has no rev" })
 
-	suspend fun getAgenda(agendaId: String): Agenda
+	suspend fun getAgenda(agendaId: String): Agenda?
 
 	suspend fun getAgendas(agendaIds: List<String>): List<Agenda>
 
 	@Deprecated("Use filter instead")
 	suspend fun getAgendasForUser(userId: String): Agenda
-
-	@Deprecated("Use filter instead")
-	suspend fun getReadableAgendasForUser(userId: String): List<Agenda>
 
 	suspend fun modifyAgenda(agendaDto: Agenda): Agenda
 

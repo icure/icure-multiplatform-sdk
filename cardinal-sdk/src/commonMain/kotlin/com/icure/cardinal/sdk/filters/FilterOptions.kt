@@ -2,6 +2,7 @@ package com.icure.cardinal.sdk.filters
 
 import com.icure.cardinal.sdk.CardinalBaseApis
 import com.icure.cardinal.sdk.crypto.EntityEncryptionService
+import com.icure.cardinal.sdk.model.EntityReferenceInGroup
 import com.icure.cardinal.sdk.model.base.Identifiable
 import com.icure.cardinal.sdk.utils.InternalCardinalException
 import com.icure.utils.InternalIcureApi
@@ -93,6 +94,22 @@ internal fun FilterOptions<*>.ensureNonBaseEnvironment(
 	// Internal exception because the compiler should have caught the user mistake...
 	// We may have made a mistake in the typings somewhere
 	if (selfId == null || encryptionService == null) throw InternalCardinalException(
+		"Filter options ${this::class.simpleName} should not be usable with base apis."
+	)
+}
+
+@OptIn(ExperimentalContracts::class)
+@InternalIcureApi
+internal fun FilterOptions<*>.ensureNonBaseEnvironment(
+	selfReference: EntityReferenceInGroup?,
+	encryptionService: EntityEncryptionService?,
+) {
+	contract {
+		returns() implies (selfReference != null && encryptionService != null)
+	}
+	// Internal exception because the compiler should have caught the user mistake...
+	// We may have made a mistake in the typings somewhere
+	if (selfReference == null || encryptionService == null) throw InternalCardinalException(
 		"Filter options ${this::class.simpleName} should not be usable with base apis."
 	)
 }

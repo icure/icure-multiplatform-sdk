@@ -39,7 +39,7 @@ import com.icure.cardinal.sdk.js.subscription.entitySubscription_toJs
 import com.icure.cardinal.sdk.js.utils.pagination.PaginatedListIteratorJs
 import com.icure.cardinal.sdk.js.utils.pagination.paginatedListIterator_toJs
 import com.icure.cardinal.sdk.model.HealthcareParty
-import com.icure.cardinal.sdk.model.IdWithMandatoryRev
+import com.icure.cardinal.sdk.model.StoredDocumentIdentifier
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.subscription.EntitySubscriptionConfiguration
 import com.icure.cardinal.sdk.subscription.SubscriptionEventType
@@ -548,7 +548,7 @@ internal class HealthcarePartyApiImplJs(
 
 	override fun deleteHealthcarePartiesByIds(entityIds: Array<IdWithMandatoryRevJs>):
 			Promise<Array<DocIdentifierJs>> = GlobalScope.promise {
-		val entityIdsConverted: List<IdWithMandatoryRev> = arrayToList(
+		val entityIdsConverted: List<StoredDocumentIdentifier> = arrayToList(
 			entityIds,
 			"entityIds",
 			{ x1: IdWithMandatoryRevJs ->
@@ -585,7 +585,7 @@ internal class HealthcarePartyApiImplJs(
 	override fun deleteHealthcarePartiesInGroupByIds(groupId: String,
 			entityIds: Array<IdWithMandatoryRevJs>): Promise<Array<DocIdentifierJs>> = GlobalScope.promise {
 		val groupIdConverted: String = groupId
-		val entityIdsConverted: List<IdWithMandatoryRev> = arrayToList(
+		val entityIdsConverted: List<StoredDocumentIdentifier> = arrayToList(
 			entityIds,
 			"entityIds",
 			{ x1: IdWithMandatoryRevJs ->

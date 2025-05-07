@@ -4,7 +4,6 @@ import com.icure.cardinal.sdk.CardinalBaseApis
 import com.icure.cardinal.sdk.crypto.EntityEncryptionService
 import com.icure.cardinal.sdk.crypto.entities.EntityWithEncryptionMetadataStub
 import com.icure.cardinal.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
-import com.icure.cardinal.sdk.crypto.entities.EntityWithTypeInfo
 import com.icure.cardinal.sdk.crypto.entities.toEncryptionMetadataStub
 import com.icure.cardinal.sdk.model.Classification
 import com.icure.cardinal.sdk.model.Patient
@@ -51,7 +50,7 @@ object ClassificationFilters {
 		descending: Boolean = false
 	): SortableFilterOptions<Classification> = ByPatientsCreatedForDataOwner(
 		dataOwnerId = dataOwnerId,
-		patients = patients.map { EntityWithTypeInfo(it.toEncryptionMetadataStub(), EntityWithEncryptionMetadataTypeName.Patient) },
+		patients = patients.map { it.toEncryptionMetadataStub() },
 		from = from,
 		to = to,
 		descending = descending
@@ -89,7 +88,7 @@ object ClassificationFilters {
 		@DefaultValue("false")
 		descending: Boolean = false
 	): SortableFilterOptions<Classification> = ByPatientsCreatedForSelf(
-		patients = patients.map { EntityWithTypeInfo(it.toEncryptionMetadataStub(), EntityWithEncryptionMetadataTypeName.Patient) },
+		patients = patients.map { it.toEncryptionMetadataStub() },
 		from = from,
 		to = to,
 		descending = descending
@@ -158,7 +157,7 @@ object ClassificationFilters {
 	@InternalIcureApi
 	internal class ByPatientsCreatedForDataOwner(
 		val dataOwnerId: String,
-		val patients: List<EntityWithTypeInfo<EntityWithEncryptionMetadataStub>>,
+		val patients: List<EntityWithEncryptionMetadataStub>,
 		val from: Long?,
 		val to: Long?,
 		val descending: Boolean
@@ -167,7 +166,7 @@ object ClassificationFilters {
 	@Serializable
 	@InternalIcureApi
 	internal class ByPatientsCreatedForSelf(
-		val patients: List<EntityWithTypeInfo<EntityWithEncryptionMetadataStub>>,
+		val patients: List<EntityWithEncryptionMetadataStub>,
 		val from: Long?,
 		val to: Long?,
 		val descending: Boolean
@@ -204,9 +203,7 @@ internal suspend fun mapClassificationFilterOptions(
 		filterOptions.ensureNonBaseEnvironment(selfDataOwnerId, entityEncryptionService)
 		ClassificationByDataOwnerPatientCreatedDateFilter(
 			dataOwnerId = filterOptions.dataOwnerId,
-			secretForeignKeys = filterOptions.patients.flatMap {
-				entityEncryptionService.secretIdsOf(it, null)
-			}.toSet(),
+			secretForeignKeys = entityEncryptionService.secretIdsOf(null, filterOptions.patients, EntityWithEncryptionMetadataTypeName.Patient, null).values.flatten().toSet(),
 			startDate = filterOptions.to,
 			endDate = filterOptions.from,
 			descending = filterOptions.descending
@@ -216,9 +213,7 @@ internal suspend fun mapClassificationFilterOptions(
 		filterOptions.ensureNonBaseEnvironment(selfDataOwnerId, entityEncryptionService)
 		ClassificationByDataOwnerPatientCreatedDateFilter(
 			dataOwnerId = selfDataOwnerId,
-			secretForeignKeys = filterOptions.patients.flatMap {
-				entityEncryptionService.secretIdsOf(it, null)
-			}.toSet(),
+			secretForeignKeys = entityEncryptionService.secretIdsOf(null, filterOptions.patients, EntityWithEncryptionMetadataTypeName.Patient, null).values.flatten().toSet(),
 			startDate = filterOptions.to,
 			endDate = filterOptions.from,
 			descending = filterOptions.descending

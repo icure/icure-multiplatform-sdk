@@ -1,7 +1,8 @@
 package com.icure.cardinal.sdk.crypto.entities
 
-import com.icure.cardinal.sdk.model.specializations.AccessControlSecret
+import com.icure.cardinal.sdk.model.EntityReferenceInGroup
 import com.icure.cardinal.sdk.model.embed.AccessLevel
+import com.icure.cardinal.sdk.model.specializations.AccessControlSecret
 import com.icure.utils.InternalIcureApi
 
 @InternalIcureApi
@@ -9,11 +10,11 @@ data class SecureDelegationMembersDetails(
 	/**
 	 * Delegator of the delegation, if known (obtained from the delegation or from the exchange data).
 	 */
-	val delegator: String?,
+	val delegator: EntityReferenceInGroup?,
 	/**
 	 * Delegate of the delegation, if known (obtained from the delegation or from the exchange data).
 	 */
-	val delegate: String?,
+	val delegate: EntityReferenceInGroup?,
 	/**
 	 * If the delegation was fully explicit.
 	 */

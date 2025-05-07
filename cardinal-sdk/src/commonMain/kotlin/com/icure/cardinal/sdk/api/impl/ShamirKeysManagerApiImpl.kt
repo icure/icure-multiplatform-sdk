@@ -4,6 +4,7 @@ import com.icure.cardinal.sdk.api.DataOwnerApi
 import com.icure.cardinal.sdk.api.ShamirKeysManagerApi
 import com.icure.cardinal.sdk.crypto.ExchangeDataManager
 import com.icure.cardinal.sdk.crypto.UserEncryptionKeysManager
+import com.icure.cardinal.sdk.model.EntityReferenceInGroup
 import com.icure.cardinal.sdk.crypto.entities.RsaDecryptionKeysSet
 import com.icure.cardinal.sdk.crypto.entities.ShamirUpdateRequest
 import com.icure.cardinal.sdk.crypto.impl.ShamirSecretSharingService
@@ -58,7 +59,7 @@ class ShamirKeysManagerApiImpl(
 			"Can't delete non-existing key split. $keySplitsToDelete"
 		}
 		val exchangeDataByDelegate = keySplitsToUpdate.keys.flatMap { keySplitsToUpdate[it]!!.notariesIds }.distinct().associateWith {
-			exchangeDataManager.getOrCreateEncryptionDataTo(it, false).unencryptedContent.exchangeKey
+			exchangeDataManager.getOrCreateEncryptionDataTo(null, EntityReferenceInGroup(it, null), false).unencryptedContent.exchangeKey
 		}
 		val updatedSelf = keySplitsToUpdate.toList().fold(self) { acc, (key, request) ->
 			updateKeySplit(acc, key, request, exchangeDataByDelegate, allKeys)

@@ -9,7 +9,7 @@ import com.icure.cardinal.sdk.filters.SortableFilterOptions
 import com.icure.cardinal.sdk.model.DecryptedDocument
 import com.icure.cardinal.sdk.model.Document
 import com.icure.cardinal.sdk.model.EncryptedDocument
-import com.icure.cardinal.sdk.model.IdWithMandatoryRev
+import com.icure.cardinal.sdk.model.StoredDocumentIdentifier
 import com.icure.cardinal.sdk.model.Message
 import com.icure.cardinal.sdk.model.Patient
 import com.icure.cardinal.sdk.model.User
@@ -1085,7 +1085,7 @@ public fun deleteDocumentByIdAsync(
 
 @Serializable
 private class DeleteDocumentsByIdsParams(
-	public val entityIds: List<IdWithMandatoryRev>,
+	public val entityIds: List<StoredDocumentIdentifier>,
 )
 
 @OptIn(InternalIcureApi::class)

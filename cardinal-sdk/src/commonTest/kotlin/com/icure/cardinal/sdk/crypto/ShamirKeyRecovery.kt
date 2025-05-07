@@ -1,30 +1,31 @@
 package com.icure.cardinal.sdk.crypto
 
-import com.icure.kryptom.crypto.defaultCryptoService
 import com.icure.cardinal.sdk.crypto.entities.ShamirUpdateRequest
 import com.icure.cardinal.sdk.crypto.impl.exportSpkiHex
 import com.icure.cardinal.sdk.model.DecryptedPatient
 import com.icure.cardinal.sdk.model.sdk.KeyPairUpdateNotification
 import com.icure.cardinal.sdk.test.DataOwnerDetails
+import com.icure.cardinal.sdk.test.autoCancelJob
 import com.icure.cardinal.sdk.test.createHcpUser
 import com.icure.cardinal.sdk.test.initializeTestEnvironment
 import com.icure.cardinal.sdk.utils.EntityEncryptionException
-import com.icure.utils.InternalIcureApi
+import com.icure.kryptom.crypto.defaultCryptoService
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
+import kotlinx.coroutines.CoroutineScope
 
-@OptIn(InternalIcureApi::class)
 class ShamirKeyRecovery : StringSpec({
-	beforeAny { initializeTestEnvironment() }
+	val specJob = autoCancelJob()
+	beforeSpec { initializeTestEnvironment() }
 
-	suspend fun doTest(
+	suspend fun CoroutineScope.doTest(
 		userDetails: DataOwnerDetails,
 		shareWith: Set<DataOwnerDetails>,
 		askAccessBackTo: Set<DataOwnerDetails>
 	) {
-		val api = userDetails.api()
+		val api = userDetails.api(specJob)
 		val note = "Secret note"
 		val createdPatient = api.patient.createPatient(
 			api.patient.withEncryptionMetadata(
@@ -44,17 +45,17 @@ class ShamirKeyRecovery : StringSpec({
 			),
 			emptySet()
 		)
-		val (lostKeyApi, newKey) = userDetails.apiWithLostKeys()
+		val (lostKeyApi, newKey) = userDetails.apiWithLostKeys(specJob)
 		shouldThrow<EntityEncryptionException> { lostKeyApi.patient.getPatient(createdPatient.id) }
 		askAccessBackTo.forEach { giveAccessBackDataOwner ->
-			giveAccessBackDataOwner.api().cardinalMaintenanceTask.applyKeyPairUpdate(
+			giveAccessBackDataOwner.api(specJob).cardinalMaintenanceTask.applyKeyPairUpdate(
 				KeyPairUpdateNotification(
 					concernedDataOwnerId = userDetails.dataOwnerId,
 					newPublicKey = defaultCryptoService.rsa.exportSpkiHex(newKey.public)
 				)
 			)
 		}
-		val recoveredThroughShamirApi = userDetails.apiWithKeys(newKey)
+		val recoveredThroughShamirApi = userDetails.apiWithKeys(specJob, newKey)
 		recoveredThroughShamirApi.patient.getPatient(createdPatient.id).shouldNotBeNull().note shouldBe note
 	}
 

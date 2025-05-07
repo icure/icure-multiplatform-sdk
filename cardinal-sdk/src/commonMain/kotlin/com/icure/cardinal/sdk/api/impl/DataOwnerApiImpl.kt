@@ -3,13 +3,15 @@ package com.icure.cardinal.sdk.api.impl
 import com.icure.cardinal.sdk.api.DataOwnerApi
 import com.icure.cardinal.sdk.api.raw.RawDataOwnerApi
 import com.icure.cardinal.sdk.api.raw.successBodyOrThrowRevisionConflict
+import com.icure.cardinal.sdk.model.EntityReferenceInGroup
+import com.icure.cardinal.sdk.crypto.entities.SdkBoundGroup
 import com.icure.cardinal.sdk.model.CryptoActorStubWithType
 import com.icure.cardinal.sdk.model.DataOwnerType
 import com.icure.cardinal.sdk.model.DataOwnerWithType
 import com.icure.cardinal.sdk.model.HealthcareParty
 import com.icure.cardinal.sdk.model.base.CryptoActor
-import com.icure.cardinal.sdk.model.extensions.publicKeysSpki
 import com.icure.cardinal.sdk.model.extensions.asStub
+import com.icure.cardinal.sdk.model.extensions.publicKeysSpki
 import com.icure.cardinal.sdk.model.extensions.type
 import com.icure.cardinal.sdk.utils.IllegalEntityException
 import com.icure.cardinal.sdk.utils.SingleValueAsyncCache
@@ -18,6 +20,7 @@ import com.icure.utils.InternalIcureApi
 @OptIn(InternalIcureApi::class)
 class DataOwnerApiImpl(
 	private val rawApi: RawDataOwnerApi,
+	private val boundGroup: SdkBoundGroup?,
 ) : DataOwnerApi {
 	private data class DataOwnerInfo(
 		val hierarchy: List<String>,
@@ -94,4 +97,19 @@ class DataOwnerApiImpl(
 			"Different public keys for ${dataOwner.id} have the same fingerprint; this should not happen in normal circumstances. Please report this error to iCure."
 		)
 	}
+
+	override suspend fun getCryptoActorStubInGroup(entityReferenceInGroup: EntityReferenceInGroup): CryptoActorStubWithType {
+		val dataOwnerGroup = entityReferenceInGroup.normalized(boundGroup).groupId
+		return if (dataOwnerGroup == null) {
+			rawApi.getDataOwnerStub(entityReferenceInGroup.entityId).successBody()
+		} else {
+			rawApi.getCryptoActorStubInGroup(dataOwnerGroup, entityReferenceInGroup.entityId).successBody()
+		}
+	}
+
+	override suspend fun getCurrentDataOwnerHierarchyIdsReference(): List<EntityReferenceInGroup> =
+		getCurrentDataOwnerHierarchyIds().map { EntityReferenceInGroup(it, null) }
+
+	override suspend fun getCurrentDataOwnerReference(): EntityReferenceInGroup =
+		EntityReferenceInGroup(getCurrentDataOwnerId(), null)
 }

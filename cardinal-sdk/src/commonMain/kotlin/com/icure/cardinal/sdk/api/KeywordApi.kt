@@ -6,8 +6,8 @@ import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.utils.DefaultValue
 
 interface KeywordApi {
-	suspend fun getKeyword(frontEndMigrationId: String): Keyword
-	suspend fun createKeyword(frontEndMigration: Keyword): Keyword
+	suspend fun getKeyword(keywordId: String): Keyword?
+	suspend fun createKeyword(keyword: Keyword): Keyword
 	@Deprecated("Will be replaced by filters")
 	suspend fun getKeywords(
 		@DefaultValue("null")

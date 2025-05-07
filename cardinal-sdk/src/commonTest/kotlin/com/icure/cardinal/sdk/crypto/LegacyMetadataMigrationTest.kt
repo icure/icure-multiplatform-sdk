@@ -2,10 +2,6 @@
 
 package com.icure.cardinal.sdk.crypto
 
-import com.icure.kryptom.crypto.RsaAlgorithm
-import com.icure.kryptom.crypto.defaultCryptoService
-import com.icure.kryptom.utils.hexToByteArray
-import com.icure.cardinal.sdk.CardinalSdk
 import com.icure.cardinal.sdk.api.raw.impl.RawHealthcarePartyApiImpl
 import com.icure.cardinal.sdk.api.raw.impl.RawPatientApiImpl
 import com.icure.cardinal.sdk.api.raw.impl.RawUserApiImpl
@@ -13,10 +9,15 @@ import com.icure.cardinal.sdk.model.EncryptedPatient
 import com.icure.cardinal.sdk.model.HealthcareParty
 import com.icure.cardinal.sdk.model.User
 import com.icure.cardinal.sdk.test.DataOwnerDetails
+import com.icure.cardinal.sdk.test.DefaultRawApiConfig
 import com.icure.cardinal.sdk.test.baseUrl
 import com.icure.cardinal.sdk.test.testGroupAdminAuth
-import com.icure.utils.InternalIcureApi
+import com.icure.cardinal.sdk.test.testGroupId
 import com.icure.cardinal.sdk.utils.Serialization
+import com.icure.kryptom.crypto.RsaAlgorithm
+import com.icure.kryptom.crypto.defaultCryptoService
+import com.icure.kryptom.utils.hexToByteArray
+import com.icure.utils.InternalIcureApi
 
 private data class TestData(
 	val p: DataOwnerDetails,
@@ -28,6 +29,7 @@ private data class TestData(
 )
 
 // The following data was created for test purposes only and does not contain any real key / secrets.
+@InternalIcureApi
 private suspend fun createTestDataAndApis(): TestData {
 	val pId = defaultCryptoService.strongRandom.randomUUID().toString()
 	val pLogin = "parent-${defaultCryptoService.strongRandom.randomUUID()}"
@@ -174,9 +176,9 @@ private suspend fun createTestDataAndApis(): TestData {
 		"encryptedSelf": "jgAFAlmd2QStXpOt3LnIhs4upJv2e10fp0u6/PburW7mq1r3vo/Q5/a4Yk7EWXG7oydMWb2i1UCCiNN80czGdA==" 
 	}
 	""")
-	val userApi = RawUserApiImpl(baseUrl, testGroupAdminAuth, CardinalSdk.sharedHttpClient, json = Serialization.json)
-	val patientApi = RawPatientApiImpl(baseUrl, testGroupAdminAuth, null, CardinalSdk.sharedHttpClient, json = Serialization.json)
-	val healthcarePartyApi = RawHealthcarePartyApiImpl(baseUrl, testGroupAdminAuth, CardinalSdk.sharedHttpClient, json = Serialization.json)
+	val userApi = RawUserApiImpl(baseUrl, testGroupAdminAuth, DefaultRawApiConfig)
+	val patientApi = RawPatientApiImpl(baseUrl, testGroupAdminAuth, null, DefaultRawApiConfig)
+	val healthcarePartyApi = RawHealthcarePartyApiImpl(baseUrl, testGroupAdminAuth, DefaultRawApiConfig)
 	healthcarePartyApi.createHealthcareParty(pHcpBase)
 	healthcarePartyApi.createHealthcareParty(aHcpBase)
 	healthcarePartyApi.createHealthcareParty(bHcpBase)
@@ -192,21 +194,24 @@ private suspend fun createTestDataAndApis(): TestData {
 		username = pLogin,
 		password = pPassword,
 		keypair = keyP,
-		parent = null
+		parent = null,
+		groupId = testGroupId
 	)
 	val aDataOwnerDetails = DataOwnerDetails(
 		dataOwnerId = aId,
 		username = aLogin,
 		password = aPassword,
 		keypair = keyA,
-		parent = pDataOwnerDetails
+		parent = pDataOwnerDetails,
+		groupId = testGroupId
 	)
 	val bDataOwnerDetails = DataOwnerDetails(
 		dataOwnerId = bId,
 		username = bLogin,
 		password = bPassword,
 		keypair = keyB,
-		parent = pDataOwnerDetails
+		parent = pDataOwnerDetails,
+		groupId = testGroupId
 	)
 	return TestData(
 		p = pDataOwnerDetails,

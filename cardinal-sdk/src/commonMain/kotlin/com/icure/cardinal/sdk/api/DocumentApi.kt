@@ -2,6 +2,7 @@ package com.icure.cardinal.sdk.api
 
 import com.icure.cardinal.sdk.crypto.entities.DocumentShareOptions
 import com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption
+import com.icure.cardinal.sdk.exceptions.RevisionConflictException
 import com.icure.cardinal.sdk.filters.BaseFilterOptions
 import com.icure.cardinal.sdk.filters.BaseSortableFilterOptions
 import com.icure.cardinal.sdk.filters.FilterOptions
@@ -9,9 +10,9 @@ import com.icure.cardinal.sdk.filters.SortableFilterOptions
 import com.icure.cardinal.sdk.model.DecryptedDocument
 import com.icure.cardinal.sdk.model.Document
 import com.icure.cardinal.sdk.model.EncryptedDocument
-import com.icure.cardinal.sdk.model.IdWithMandatoryRev
 import com.icure.cardinal.sdk.model.Message
 import com.icure.cardinal.sdk.model.Patient
+import com.icure.cardinal.sdk.model.StoredDocumentIdentifier
 import com.icure.cardinal.sdk.model.User
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.model.embed.AccessLevel
@@ -20,7 +21,6 @@ import com.icure.cardinal.sdk.utils.DefaultValue
 import com.icure.cardinal.sdk.utils.EntityEncryptionException
 import com.icure.cardinal.sdk.utils.pagination.PaginatedListIterator
 import kotlinx.serialization.json.JsonElement
-import kotlin.js.JsName
 
 /* This interface includes the API calls that do not need encryption keys and do not return or consume encrypted/decrypted items, they are completely agnostic towards the presence of encrypted items */
 interface DocumentBasicFlavourlessApi {
@@ -45,7 +45,7 @@ interface DocumentBasicFlavourlessApi {
 	 * @return the id and revision of the deleted documents. If some entities couldn't be deleted (for example
 	 * because you had no write access to them) they will not be included in this list.
 	 */
-	suspend fun deleteDocumentsByIds(entityIds: List<IdWithMandatoryRev>): List<DocIdentifier>
+	suspend fun deleteDocumentsByIds(entityIds: List<StoredDocumentIdentifier>): List<DocIdentifier>
 
 	/**
 	 * Permanently deletes a document.
@@ -72,7 +72,7 @@ interface DocumentBasicFlavourlessApi {
 	 */
 	suspend fun deleteDocuments(documents: List<Document>): List<DocIdentifier> =
 		deleteDocumentsByIds(documents.map { document ->
-			IdWithMandatoryRev(document.id, requireNotNull(document.rev) { "Can't delete a document that has no rev" })
+			StoredDocumentIdentifier(document.id, requireNotNull(document.rev) { "Can't delete a document that has no rev" })
 		})
 
 	/**
@@ -196,6 +196,14 @@ interface DocumentBasicFlavourlessApi {
 /* This interface includes the API calls can be used on decrypted items if encryption keys are available *or* encrypted items if no encryption keys are available */
 interface DocumentBasicFlavouredApi<E : Document> {
 	/**
+	 * Create a new document. The provided document must have the encryption metadata initialized.
+	 * @param entity a document with initialized encryption metadata
+	 * @return the created document with updated revision.
+	 * @throws IllegalArgumentException if the encryption metadata of the input was not initialized.
+	 */
+	suspend fun createDocument(entity: E): E
+
+	/**
 	 * Restores a document that was marked as deleted.
 	 * @param id the id of the entity
 	 * @param rev the latest revision of the entity.
@@ -231,7 +239,7 @@ interface DocumentBasicFlavouredApi<E : Document> {
 	 * @param entityId a document id.
 	 * @return the document with id [entityId].
 	 */
-	suspend fun getDocument(entityId: String): E
+	suspend fun getDocument(entityId: String): E?
 
 	@Deprecated("Use filter instead (then you can get the first result in case of multiple matches)")
 	// Note: if multiple documents have the same uuid there is no discriminant field used to chose which one to return.
@@ -268,6 +276,7 @@ interface DocumentFlavouredApi<E : Document> : DocumentBasicFlavouredApi<E> {
 	 * Share a document with another data owner. The document must already exist in the database for this method to
 	 * succeed. If you want to share the document before creation you should instead pass provide the delegates in
 	 * the initialize encryption metadata method.
+	 * Note: this method only updates the security metadata. If the input entity has unsaved changes they may be lost.
 	 * @param delegateId the owner that will gain access to the document
 	 * @param document the document to share with [delegateId]
 	 * @param options specifies how the document will be shared. By default, all data available to the current user
@@ -286,6 +295,7 @@ interface DocumentFlavouredApi<E : Document> : DocumentBasicFlavouredApi<E> {
 	 * Share a document with multiple data owners. The document must already exist in the database for this method to
 	 * succeed. If you want to share the document before creation you should instead pass provide the delegates in
 	 * the initialize encryption metadata method.
+	 * Note: this method only updates the security metadata. If the input entity has unsaved changes they may be lost.
 	 * Throws an exception if the operation fails.
 	 * @param document the document to share
 	 * @param delegates specify the data owners which will gain access to the entity and the options for sharing with
@@ -343,13 +353,6 @@ interface DocumentFlavouredApi<E : Document> : DocumentBasicFlavouredApi<E> {
 
 /* The extra API calls declared in this interface are the ones that can only be used on decrypted items when encryption keys are available */
 interface DocumentApi : DocumentBasicFlavourlessApi, DocumentFlavouredApi<DecryptedDocument> {
-	/**
-	 * Create a new document. The provided document must have the encryption metadata initialized.
-	 * @param entity a document with initialized encryption metadata
-	 * @return the created document with updated revision.
-	 * @throws IllegalArgumentException if the encryption metadata of the input was not initialized.
-	 */
-	suspend fun createDocument(entity: DecryptedDocument): DecryptedDocument
 
 	/**
 	 * Creates a new document with initialized encryption metadata
@@ -489,7 +492,11 @@ interface DocumentApi : DocumentBasicFlavourlessApi, DocumentFlavouredApi<Decryp
 	suspend fun getEncryptionKeysOf(document: Document): Set<HexString>
 
 	/**
-	 * Specifies if the current user has write access to a document.
+	 * Specifies if the current user has write access to a document through delegations.
+	 * Doesn't consider actual permissions on the server side: for example, if the data owner has access to all entities
+	 * thanks to extended permission but has no delegation on the provided entity this method returns false. Similarly,
+	 * if the SDK was initialized in hierarchical mode but the user is lacking the hierarchical permission on the server
+	 * side this method will still return true if there is a delegation to the parent.
 	 * @param document a document
 	 * @return if the current user has write access to the provided document
 	 */

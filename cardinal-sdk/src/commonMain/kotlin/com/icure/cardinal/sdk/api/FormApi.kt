@@ -11,8 +11,8 @@ import com.icure.cardinal.sdk.model.DecryptedForm
 import com.icure.cardinal.sdk.model.EncryptedForm
 import com.icure.cardinal.sdk.model.Form
 import com.icure.cardinal.sdk.model.FormTemplate
-import com.icure.cardinal.sdk.model.IdWithMandatoryRev
 import com.icure.cardinal.sdk.model.Patient
+import com.icure.cardinal.sdk.model.StoredDocumentIdentifier
 import com.icure.cardinal.sdk.model.User
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.model.embed.AccessLevel
@@ -20,7 +20,6 @@ import com.icure.cardinal.sdk.model.specializations.HexString
 import com.icure.cardinal.sdk.utils.DefaultValue
 import com.icure.cardinal.sdk.utils.EntityEncryptionException
 import com.icure.cardinal.sdk.utils.pagination.PaginatedListIterator
-import kotlin.js.JsName
 
 /* This interface includes the API calls that do not need encryption keys and do not return or consume encrypted/decrypted items, they are completely agnostic towards the presence of encrypted items */
 interface FormBasicFlavourlessApi {
@@ -45,7 +44,7 @@ interface FormBasicFlavourlessApi {
 	 * @return the id and revision of the deleted forms. If some entities could not be deleted (for example
 	 * because you had no write access to them) they will not be included in this list.
 	 */
-	suspend fun deleteFormsByIds(entityIds: List<IdWithMandatoryRev>): List<DocIdentifier>
+	suspend fun deleteFormsByIds(entityIds: List<StoredDocumentIdentifier>): List<DocIdentifier>
 
 	/**
 	 * Permanently deletes a form.
@@ -72,7 +71,7 @@ interface FormBasicFlavourlessApi {
 	 */
 	suspend fun deleteForms(forms: List<Form>): List<DocIdentifier> =
 		deleteFormsByIds(forms.map { form ->
-			IdWithMandatoryRev(form.id, requireNotNull(form.rev) { "Can't delete a form that has no rev" })
+			StoredDocumentIdentifier(form.id, requireNotNull(form.rev) { "Can't delete a form that has no rev" })
 		})
 
 	/**
@@ -138,6 +137,23 @@ interface FormBasicFlavourlessApi {
 /* This interface includes the API calls can be used on decrypted items if encryption keys are available *or* encrypted items if no encryption keys are available */
 interface FormBasicFlavouredApi<E : Form> {
 	/**
+	 * Create a new form. The provided form must have the encryption metadata initialized.
+	 * @param entity a form with initialized encryption metadata
+	 * @return the created form with updated revision.
+	 * @throws IllegalArgumentException if the encryption metadata of the input was not initialized.
+	 */
+	suspend fun createForm(entity: E): E
+
+	/**
+	 * Create multiple forms. All the provided forms must have the encryption metadata initialized, otherwise
+	 * this method fails without doing anything.
+	 * @param entities forms with initialized encryption metadata
+	 * @return the created forms with updated revision.
+	 * @throws IllegalArgumentException if the encryption metadata of any form in the input was not initialized.
+	 */
+	suspend fun createForms(entities: List<E>): List<E>
+
+	/**
 	 * Modifies a form. You need to have write access to the entity.
 	 * Flavoured method.
 	 * @param entity a form with update content
@@ -179,7 +195,7 @@ interface FormBasicFlavouredApi<E : Form> {
 	 * @param entityId a form id.
 	 * @return the form with id [entityId].
 	 */
-	suspend fun getForm(entityId: String): E
+	suspend fun getForm(entityId: String): E?
 
 	/**
 	 * Get multiple forms by their ids. Ignores all ids that do not correspond to an entity, correspond to
@@ -233,6 +249,7 @@ interface FormFlavouredApi<E : Form> : FormBasicFlavouredApi<E> {
 	 * Share a form with another data owner. The form must already exist in the database for this method to
 	 * succeed. If you want to share the form before creation you should instead pass provide the delegates in
 	 * the initialize encryption metadata method.
+	 * Note: this method only updates the security metadata. If the input entity has unsaved changes they may be lost.
 	 * @param delegateId the owner that will gain access to the form
 	 * @param form the form to share with [delegateId]
 	 * @param options specifies how the form will be shared. By default, all data available to the current user
@@ -251,6 +268,7 @@ interface FormFlavouredApi<E : Form> : FormBasicFlavouredApi<E> {
 	 * Share a form with multiple data owners. The form must already exist in the database for this method to
 	 * succeed. If you want to share the form before creation you should instead pass provide the delegates in
 	 * the initialize encryption metadata method.
+	 * Note: this method only updates the security metadata. If the input entity has unsaved changes they may be lost.
 	 * Throws an exception if the operation fails.
 	 * @param form the form to share
 	 * @param delegates specify the data owners which will gain access to the entity and the options for sharing with
@@ -308,23 +326,6 @@ interface FormFlavouredApi<E : Form> : FormBasicFlavouredApi<E> {
 /* The extra API calls declared in this interface are the ones that can only be used on decrypted items when encryption keys are available */
 interface FormApi : FormBasicFlavourlessApi, FormFlavouredApi<DecryptedForm> {
 	/**
-	 * Create a new form. The provided form must have the encryption metadata initialized.
-	 * @param entity a form with initialized encryption metadata
-	 * @return the created form with updated revision.
-	 * @throws IllegalArgumentException if the encryption metadata of the input was not initialized.
-	 */
-	suspend fun createForm(entity: DecryptedForm): DecryptedForm
-
-	/**
-	 * Create multiple forms. All the provided forms must have the encryption metadata initialized, otherwise
-	 * this method fails without doing anything.
-	 * @param entities forms with initialized encryption metadata
-	 * @return the created forms with updated revision.
-	 * @throws IllegalArgumentException if the encryption metadata of any form in the input was not initialized.
-	 */
-	suspend fun createForms(entities: List<DecryptedForm>): List<DecryptedForm>
-
-	/**
 	 * Creates a new form with initialized encryption metadata
 	 * @param base a form with initialized content and uninitialized encryption metadata. The result of this
 	 * method takes the content from [base] if provided.
@@ -358,7 +359,11 @@ interface FormApi : FormBasicFlavourlessApi, FormFlavouredApi<DecryptedForm> {
 	suspend fun getEncryptionKeysOf(form: Form): Set<HexString>
 
 	/**
-	 * Specifies if the current user has write access to a form.
+	 * Specifies if the current user has write access to a form through delegations.
+	 * Doesn't consider actual permissions on the server side: for example, if the data owner has access to all entities
+	 * thanks to extended permission but has no delegation on the provided entity this method returns false. Similarly,
+	 * if the SDK was initialized in hierarchical mode but the user is lacking the hierarchical permission on the server
+	 * side this method will still return true if there is a delegation to the parent.
 	 * @param form a form
 	 * @return if the current user has write access to the provided form
 	 */

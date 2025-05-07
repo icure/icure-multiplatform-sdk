@@ -6,14 +6,13 @@ import com.icure.cardinal.sdk.filters.BaseSortableFilterOptions
 import com.icure.cardinal.sdk.filters.FilterOptions
 import com.icure.cardinal.sdk.model.DataOwnerRegistrationSuccess
 import com.icure.cardinal.sdk.model.HealthcareParty
-import com.icure.cardinal.sdk.model.IdWithMandatoryRev
+import com.icure.cardinal.sdk.model.StoredDocumentIdentifier
 import com.icure.cardinal.sdk.model.PaginatedList
 import com.icure.cardinal.sdk.model.PublicKey
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.subscription.Subscribable
 import com.icure.cardinal.sdk.utils.DefaultValue
 import com.icure.cardinal.sdk.utils.pagination.PaginatedListIterator
-import kotlin.js.JsName
 
 interface HealthcarePartyApi: Subscribable<HealthcareParty, HealthcareParty, FilterOptions<HealthcareParty>> {
 	@Deprecated("Deletion without rev is unsafe")
@@ -21,7 +20,7 @@ interface HealthcarePartyApi: Subscribable<HealthcareParty, HealthcareParty, Fil
 	@Deprecated("Deletion without rev is unsafe")
 	suspend fun deleteHealthcarePartiesUnsafe(entityIds: List<String>): List<DocIdentifier>
 
-	suspend fun getHealthcareParty(healthcarePartyId: String): HealthcareParty
+	suspend fun getHealthcareParty(healthcarePartyId: String): HealthcareParty?
 	suspend fun createHealthcareParty(p: HealthcareParty): HealthcareParty
 
 	suspend fun modifyHealthcarePartyInGroup(
@@ -154,7 +153,7 @@ interface HealthcarePartyApi: Subscribable<HealthcareParty, HealthcareParty, Fil
 	 * @return the id and revision of the deleted healthcareParties. If some entities could not be deleted (for example
 	 * because you had no write access to them) they will not be included in this list.
 	 */
-	suspend fun deleteHealthcarePartiesByIds(entityIds: List<IdWithMandatoryRev>): List<DocIdentifier>
+	suspend fun deleteHealthcarePartiesByIds(entityIds: List<StoredDocumentIdentifier>): List<DocIdentifier>
 
 	/**
 	 * Deletes a healthcareParty from a specific group. If you don't have write access to the healthcareParty the method will fail.
@@ -174,7 +173,7 @@ interface HealthcarePartyApi: Subscribable<HealthcareParty, HealthcareParty, Fil
 	 * @return the id and revision of the deleted healthcareParties. If some entities could not be deleted (for example
 	 * because you had no write access to them) they will not be included in this list.
 	 */
-	suspend fun deleteHealthcarePartiesInGroupByIds(groupId: String, entityIds: List<IdWithMandatoryRev>): List<DocIdentifier>
+	suspend fun deleteHealthcarePartiesInGroupByIds(groupId: String, entityIds: List<StoredDocumentIdentifier>): List<DocIdentifier>
 
 	/**
 	 * Permanently deletes a healthcareParty.
@@ -210,7 +209,7 @@ interface HealthcarePartyApi: Subscribable<HealthcareParty, HealthcareParty, Fil
 	 */
 	suspend fun deleteHealthcareParties(healthcareParties: List<HealthcareParty>): List<DocIdentifier> =
 		deleteHealthcarePartiesByIds(healthcareParties.map { healthcareParty ->
-			IdWithMandatoryRev(healthcareParty.id, requireNotNull(healthcareParty.rev) { "Can't delete an healthcareParty that has no rev" })
+			StoredDocumentIdentifier(healthcareParty.id, requireNotNull(healthcareParty.rev) { "Can't delete an healthcareParty that has no rev" })
 		})
 
 	/**
@@ -255,7 +254,7 @@ interface HealthcarePartyApi: Subscribable<HealthcareParty, HealthcareParty, Fil
 		deleteHealthcarePartiesInGroupByIds(
 			groupId,
 			healthcareParties.map { healthcareParty ->
-				IdWithMandatoryRev(healthcareParty.id, requireNotNull(healthcareParty.rev) { "Can't delete an healthcareParty that has no rev" })
+				StoredDocumentIdentifier(healthcareParty.id, requireNotNull(healthcareParty.rev) { "Can't delete an healthcareParty that has no rev" })
 			}
 		)
 }

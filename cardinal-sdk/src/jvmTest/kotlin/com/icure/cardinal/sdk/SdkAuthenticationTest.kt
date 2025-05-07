@@ -11,6 +11,7 @@ import com.icure.cardinal.sdk.test.mockMessageGatewayUrl
 import com.icure.cardinal.sdk.test.mockSpecId
 import com.icure.cardinal.sdk.test.testGroupId
 import io.kotest.core.spec.style.StringSpec
+import kotlinx.coroutines.cancel
 
 class SdkAuthenticationTest : StringSpec({
 	beforeAny { initializeTestEnvironment() }
@@ -36,5 +37,6 @@ class SdkAuthenticationTest : StringSpec({
 		val authCode = MockMessageGatewayUtils.getLatestEmailTo(hcpDetails.testEmail).subject
 		val sdk = authStep.completeAuthentication(authCode)
 		sdk.user.getCurrentUser()
+		sdk.scope.cancel()
 	}
 })

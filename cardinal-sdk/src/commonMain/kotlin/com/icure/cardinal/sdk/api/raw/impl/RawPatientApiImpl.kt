@@ -2,6 +2,7 @@ package com.icure.cardinal.sdk.api.raw.`impl`
 
 import com.icure.cardinal.sdk.api.raw.BaseRawApi
 import com.icure.cardinal.sdk.api.raw.HttpResponse
+import com.icure.cardinal.sdk.api.raw.RawApiConfig
 import com.icure.cardinal.sdk.api.raw.RawPatientApi
 import com.icure.cardinal.sdk.api.raw.wrap
 import com.icure.cardinal.sdk.auth.services.AuthProvider
@@ -26,7 +27,6 @@ import com.icure.cardinal.sdk.model.specializations.HexString
 import com.icure.cardinal.sdk.serialization.FilterChainSerializer
 import com.icure.cardinal.sdk.serialization.PatientAbstractFilterSerializer
 import com.icure.utils.InternalIcureApi
-import io.ktor.client.HttpClient
 import io.ktor.client.request.accept
 import io.ktor.client.request.parameter
 import io.ktor.client.request.setBody
@@ -35,7 +35,6 @@ import io.ktor.http.appendPathSegments
 import io.ktor.http.contentType
 import io.ktor.http.takeFrom
 import io.ktor.util.date.GMTDate
-import kotlinx.serialization.json.Json
 import kotlin.Boolean
 import kotlin.Int
 import kotlin.Long
@@ -43,7 +42,6 @@ import kotlin.Nothing
 import kotlin.String
 import kotlin.collections.List
 import kotlin.collections.Map
-import kotlin.time.Duration
 
 // WARNING: This class is auto-generated. If you change it manually, your changes will be lost.
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
@@ -52,13 +50,13 @@ class RawPatientApiImpl(
 	internal val apiUrl: String,
 	private val authProvider: AuthProvider,
 	private val accessControlKeysHeadersProvider: AccessControlKeysHeadersProvider?,
-	httpClient: HttpClient,
-	additionalHeaders: Map<String, String> = emptyMap(),
-	timeout: Duration? = null,
-	json: Json,
-) : BaseRawApi(httpClient, additionalHeaders, timeout, json), RawPatientApi {
-	override suspend fun getAccessControlKeysHeaderValues(): List<String>? =
-		accessControlKeysHeadersProvider?.getAccessControlKeysHeadersFor(EntityWithEncryptionMetadataTypeName.Patient)
+	rawApiConfig: RawApiConfig,
+) : BaseRawApi(rawApiConfig), RawPatientApi {
+	override suspend fun getAccessControlKeysHeaderValues(groupId: String?): List<String>? =
+		accessControlKeysHeadersProvider?.getAccessControlKeysHeadersFor(
+			groupId,
+			EntityWithEncryptionMetadataTypeName.Patient,
+		)
 
 	// region common endpoints
 
@@ -484,22 +482,44 @@ class RawPatientApiImpl(
 			accept(Application.Json)
 		}.wrap()
 
-	override suspend fun createPatients(patientDtos: List<EncryptedPatient>): HttpResponse<List<IdWithRev>> =
+	override suspend fun createPatientsMinimal(patientDtos: List<EncryptedPatient>): HttpResponse<List<IdWithRev>> =
 		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
-				appendPathSegments("rest", "v2", "patient", "batch")
+				appendPathSegments("rest", "v2", "patient", "batch", "minimal")
 			}
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(patientDtos)
 		}.wrap()
 
-	override suspend fun modifyPatients(patientDtos: List<EncryptedPatient>): HttpResponse<List<IdWithRev>> =
+	override suspend fun createPatientsFull(patientDtos: List<EncryptedPatient>): HttpResponse<List<EncryptedPatient>> =
+		post(authProvider) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "patient", "batch", "full")
+			}
+			contentType(Application.Json)
+			accept(Application.Json)
+			setBody(patientDtos)
+		}.wrap()
+
+	override suspend fun modifyPatientsMinimal(patientDtos: List<EncryptedPatient>): HttpResponse<List<IdWithRev>> =
 		put(authProvider) {
 			url {
 				takeFrom(apiUrl)
-				appendPathSegments("rest", "v2", "patient", "batch")
+				appendPathSegments("rest", "v2", "patient", "batch", "minimal")
+			}
+			contentType(Application.Json)
+			accept(Application.Json)
+			setBody(patientDtos)
+		}.wrap()
+
+	override suspend fun modifyPatientsFull(patientDtos: List<EncryptedPatient>): HttpResponse<List<EncryptedPatient>> =
+		put(authProvider) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "patient", "batch", "full")
 			}
 			contentType(Application.Json)
 			accept(Application.Json)
@@ -623,7 +643,7 @@ class RawPatientApiImpl(
 		createAutoDelegation: Boolean,
 		p: EncryptedPatient,
 	): HttpResponse<DataOwnerRegistrationSuccess> =
-		post(authProvider) {
+		post(authProvider, groupId) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "patient", "register", "forHcp", hcPartyId, "inGroup", groupId)
@@ -640,7 +660,7 @@ class RawPatientApiImpl(
 		groupId: String,
 		filter: AbstractFilter<Patient>,
 	): HttpResponse<List<String>> =
-		post(authProvider) {
+		post(authProvider, groupId) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "patient", "inGroup", groupId, "match")
@@ -648,6 +668,171 @@ class RawPatientApiImpl(
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBodyWithSerializer(PatientAbstractFilterSerializer, filter)
+		}.wrap()
+
+	override suspend fun createPatientInGroup(
+		groupId: String,
+		patientDto: EncryptedPatient,
+	): HttpResponse<EncryptedPatient> =
+		post(authProvider, groupId) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "patient", "inGroup", groupId)
+			}
+			contentType(Application.Json)
+			accept(Application.Json)
+			setBody(patientDto)
+		}.wrap()
+
+	override suspend fun modifyPatientInGroup(
+		groupId: String,
+		patientDto: EncryptedPatient,
+	): HttpResponse<EncryptedPatient> =
+		put(authProvider, groupId) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "patient", "inGroup", groupId)
+			}
+			contentType(Application.Json)
+			accept(Application.Json)
+			setBody(patientDto)
+		}.wrap()
+
+	override suspend fun getPatientInGroup(
+		groupId: String,
+		patientId: String,
+	): HttpResponse<EncryptedPatient> =
+		get(authProvider, groupId) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "patient", "inGroup", groupId, patientId)
+				parameter("ts", GMTDate().timestamp)
+			}
+			accept(Application.Json)
+		}.wrap()
+
+	override suspend fun bulkShare(
+		request: BulkShareOrUpdateMetadataParams,
+		groupId: String,
+	): HttpResponse<List<EntityBulkShareResult<EncryptedPatient>>> =
+		put(authProvider, groupId) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "patient", "inGroup", groupId, "bulkSharedMetadataUpdate")
+			}
+			contentType(Application.Json)
+			accept(Application.Json)
+			setBody(request)
+		}.wrap()
+
+	override suspend fun getPatientsInGroup(
+		groupId: String,
+		patientIds: ListOfIds,
+	): HttpResponse<List<EncryptedPatient>> =
+		post(authProvider, groupId) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "patient", "inGroup", groupId, "byIds")
+			}
+			contentType(Application.Json)
+			accept(Application.Json)
+			setBody(patientIds)
+		}.wrap()
+
+	override suspend fun createPatientsInGroupFull(
+		groupId: String,
+		patientDtos: List<EncryptedPatient>,
+	): HttpResponse<List<EncryptedPatient>> =
+		post(
+			authProvider,
+			groupId,
+		) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "patient", "inGroup", groupId, "batch", "full")
+			}
+			contentType(Application.Json)
+			accept(Application.Json)
+			setBody(patientDtos)
+		}.wrap()
+
+	override suspend fun createPatientsInGroupMinimal(
+		groupId: String,
+		patientDtos: List<EncryptedPatient>,
+	): HttpResponse<List<IdWithRev>> =
+		post(
+			authProvider,
+			groupId,
+		) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "patient", "inGroup", groupId, "batch", "minimal")
+			}
+			contentType(Application.Json)
+			accept(Application.Json)
+			setBody(patientDtos)
+		}.wrap()
+
+	override suspend fun modifyPatientsInGroupFull(
+		groupId: String,
+		patientDtos: List<EncryptedPatient>,
+	): HttpResponse<List<EncryptedPatient>> =
+		put(
+			authProvider,
+			groupId,
+		) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "patient", "inGroup", groupId, "batch", "full")
+			}
+			contentType(Application.Json)
+			accept(Application.Json)
+			setBody(patientDtos)
+		}.wrap()
+
+	override suspend fun modifyPatientsInGroupMinimal(
+		groupId: String,
+		patientDtos: List<EncryptedPatient>,
+	): HttpResponse<List<IdWithRev>> =
+		put(
+			authProvider,
+			groupId,
+		) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "patient", "inGroup", groupId, "batch", "minimal")
+			}
+			contentType(Application.Json)
+			accept(Application.Json)
+			setBody(patientDtos)
+		}.wrap()
+
+	override suspend fun deletePatientsWithRevInGroup(
+		groupId: String,
+		patientIds: ListOfIdsAndRev,
+	): HttpResponse<List<DocIdentifier>> =
+		post(authProvider, groupId) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "patient", "inGroup", groupId, "delete", "batch")
+			}
+			contentType(Application.Json)
+			accept(Application.Json)
+			setBody(patientIds)
+		}.wrap()
+
+	override suspend fun deletePatientInGroup(
+		groupId: String,
+		patientId: String,
+		rev: String?,
+	): HttpResponse<DocIdentifier> =
+		delete(authProvider, groupId) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "patient", "inGroup", groupId, patientId)
+				parameter("rev", rev)
+			}
+			accept(Application.Json)
 		}.wrap()
 
 	// endregion

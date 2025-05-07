@@ -7,6 +7,7 @@ import com.icure.cardinal.sdk.model.DecryptedHealthElement
 import com.icure.cardinal.sdk.model.DecryptedPatient
 import com.icure.cardinal.sdk.model.embed.AccessLevel
 import com.icure.cardinal.sdk.test.DataOwnerDetails
+import com.icure.cardinal.sdk.test.autoCancelJob
 import com.icure.cardinal.sdk.test.createHcpUser
 import com.icure.cardinal.sdk.test.createPatientUser
 import com.icure.cardinal.sdk.test.initializeTestEnvironment
@@ -19,13 +20,14 @@ import io.kotest.matchers.shouldBe
 class ExplicitAndAnonymousDelegatorsShareTests : StringSpec({
 	val patientNote = "This will be encrypted - patient"
 	val heNote = "This will be encrypted - he"
+	val specJob = autoCancelJob()
 
-	beforeAny {
+	beforeSpec {
 		initializeTestEnvironment()
 	}
 
 	suspend fun testCreateSharedData(delegator: DataOwnerDetails, delegate: DataOwnerDetails) {
-		val delegatorApi: CardinalSdk = delegator.api()
+		val delegatorApi: CardinalSdk = delegator.api(specJob)
 		val patient = delegatorApi.patient.createPatient(
 			delegatorApi.patient.withEncryptionMetadata(
 				DecryptedPatient(
@@ -48,23 +50,23 @@ class ExplicitAndAnonymousDelegatorsShareTests : StringSpec({
 				delegates = mapOf(delegate.dataOwnerId to AccessLevel.Write)
 			)
 		).shouldNotBeNull()
-		val delegateApi: CardinalSdk = delegate.api()
-		delegateApi.patient.getPatient(patient.id).run {
+		val delegateApi: CardinalSdk = delegate.api(specJob)
+		delegateApi.patient.getPatient(patient.id).shouldNotBeNull().run {
 			note shouldBe patientNote
 		}
-		delegateApi.healthElement.getHealthElement(he.id).run {
+		delegateApi.healthElement.getHealthElement(he.id).shouldNotBeNull().run {
 			note shouldBe heNote
 		}
-		delegatorApi.patient.getPatient(patient.id).run {
+		delegatorApi.patient.getPatient(patient.id).shouldNotBeNull().run {
 			note shouldBe patientNote
 		}
-		delegatorApi.healthElement.getHealthElement(he.id).run {
+		delegatorApi.healthElement.getHealthElement(he.id).shouldNotBeNull().run {
 			note shouldBe heNote
 		}
 	}
 
 	suspend fun testShareExistingData(delegator: DataOwnerDetails, delegate: DataOwnerDetails) {
-		val delegatorApi: CardinalSdk =  delegator.api()
+		val delegatorApi: CardinalSdk =  delegator.api(specJob)
 		val patient = delegatorApi.patient.createPatient(
 			delegatorApi.patient.withEncryptionMetadata(
 				DecryptedPatient(
@@ -95,17 +97,17 @@ class ExplicitAndAnonymousDelegatorsShareTests : StringSpec({
 			delegate.dataOwnerId,
 			he
 		).shouldNotBeNull()
-		val delegateApi: CardinalSdk = delegate.api()
-		delegateApi.patient.getPatient(patient.id).run {
+		val delegateApi: CardinalSdk = delegate.api(specJob)
+		delegateApi.patient.getPatient(patient.id).shouldNotBeNull().run {
 			note shouldBe patientNote
 		}
-		delegateApi.healthElement.getHealthElement(he.id).run {
+		delegateApi.healthElement.getHealthElement(he.id).shouldNotBeNull().run {
 			note shouldBe heNote
 		}
-		delegatorApi.patient.getPatient(patient.id).run {
+		delegatorApi.patient.getPatient(patient.id).shouldNotBeNull().run {
 			note shouldBe patientNote
 		}
-		delegatorApi.healthElement.getHealthElement(he.id).run {
+		delegatorApi.healthElement.getHealthElement(he.id).shouldNotBeNull().run {
 			note shouldBe heNote
 		}
 	}

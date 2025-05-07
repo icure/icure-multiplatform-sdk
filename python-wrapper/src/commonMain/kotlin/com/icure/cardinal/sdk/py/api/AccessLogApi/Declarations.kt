@@ -9,7 +9,7 @@ import com.icure.cardinal.sdk.filters.SortableFilterOptions
 import com.icure.cardinal.sdk.model.AccessLog
 import com.icure.cardinal.sdk.model.DecryptedAccessLog
 import com.icure.cardinal.sdk.model.EncryptedAccessLog
-import com.icure.cardinal.sdk.model.IdWithMandatoryRev
+import com.icure.cardinal.sdk.model.StoredDocumentIdentifier
 import com.icure.cardinal.sdk.model.PaginatedList
 import com.icure.cardinal.sdk.model.Patient
 import com.icure.cardinal.sdk.model.User
@@ -538,7 +538,7 @@ public fun deleteAccessLogByIdAsync(
 
 @Serializable
 private class DeleteAccessLogsByIdsParams(
-	public val entityIds: List<IdWithMandatoryRev>,
+	public val entityIds: List<StoredDocumentIdentifier>,
 )
 
 @OptIn(InternalIcureApi::class)

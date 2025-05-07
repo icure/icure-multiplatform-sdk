@@ -13,7 +13,7 @@ interface MedicalLocationApi {
 
 	suspend fun deleteMedicalLocations(locationIds: ListOfIds): List<DocIdentifier>
 
-	suspend fun getMedicalLocation(locationId: String): MedicalLocation
+	suspend fun getMedicalLocation(locationId: String): MedicalLocation?
 
 	@Deprecated("Use filter instead")
 	suspend fun getAllMedicalLocations(

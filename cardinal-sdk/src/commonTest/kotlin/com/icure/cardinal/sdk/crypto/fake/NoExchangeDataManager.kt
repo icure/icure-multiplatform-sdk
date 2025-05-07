@@ -2,6 +2,7 @@ package com.icure.cardinal.sdk.crypto.fake
 
 import com.icure.cardinal.sdk.crypto.BaseExchangeDataManager
 import com.icure.cardinal.sdk.crypto.ExchangeDataManager
+import com.icure.cardinal.sdk.model.EntityReferenceInGroup
 import com.icure.cardinal.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
 import com.icure.cardinal.sdk.crypto.entities.ExchangeDataWithPotentiallyDecryptedContent
 import com.icure.cardinal.sdk.crypto.entities.ExchangeDataWithUnencryptedContent
@@ -20,23 +21,25 @@ object NoExchangeDataManager : ExchangeDataManager {
 	}
 
 	override suspend fun getOrCreateEncryptionDataTo(
-		delegateId: String,
+		groupId: String?,
+		delegateReference: EntityReferenceInGroup,
 		allowCreationWithoutDelegateKey: Boolean
 	): ExchangeDataWithUnencryptedContent {
 		TODO("Not yet implemented")
 	}
 
 	override suspend fun getCachedDecryptionDataKeyByAccessControlHash(
-		hashes: Collection<SecureDelegationKeyString>,
-		entityType: EntityWithEncryptionMetadataTypeName
+		groupId: String?,
+		hashes: Set<SecureDelegationKeyString>
 	): Map<SecureDelegationKeyString, ExchangeDataWithUnencryptedContent> {
 		TODO("Not yet implemented")
 	}
 
-	override suspend fun getDecryptionDataById(
-		id: String,
-		retrieveIfNotCached: Boolean
-	): ExchangeDataWithPotentiallyDecryptedContent? {
+	override suspend fun getDecryptionDataByIds(
+		groupId: String?,
+		ids: Set<String>,
+		waitOrRetrieveUncached: Boolean
+	): Map<String, ExchangeDataWithPotentiallyDecryptedContent> {
 		TODO("Not yet implemented")
 	}
 
@@ -44,11 +47,10 @@ object NoExchangeDataManager : ExchangeDataManager {
 		TODO("Not yet implemented")
 	}
 
-	override suspend fun getEncodedAccessControlKeysValue(entityType: EntityWithEncryptionMetadataTypeName): List<Base64String>? {
-		TODO("Not yet implemented")
-	}
-
-	override suspend fun getAccessControlKeysValue(entityType: EntityWithEncryptionMetadataTypeName): List<SecureDelegationKeyString>? {
+	override suspend fun getEncodedAccessControlKeysValue(
+		groupId: String?,
+		entityType: EntityWithEncryptionMetadataTypeName
+	): List<Base64String>? {
 		TODO("Not yet implemented")
 	}
 }

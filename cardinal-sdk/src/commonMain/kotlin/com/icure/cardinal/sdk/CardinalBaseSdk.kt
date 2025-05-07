@@ -21,7 +21,6 @@ import com.icure.cardinal.sdk.api.impl.AccessLogBasicApiImpl
 import com.icure.cardinal.sdk.api.impl.AgendaApiImpl
 import com.icure.cardinal.sdk.api.impl.ApplicationSettingsApiImpl
 import com.icure.cardinal.sdk.api.impl.AuthApiImpl
-import com.icure.cardinal.sdk.api.impl.CalendarItemBasicApiImpl
 import com.icure.cardinal.sdk.api.impl.CalendarItemTypeApiImpl
 import com.icure.cardinal.sdk.api.impl.ClassificationBasicApiImpl
 import com.icure.cardinal.sdk.api.impl.CodeApiImpl
@@ -34,7 +33,6 @@ import com.icure.cardinal.sdk.api.impl.EntityTemplateApiImpl
 import com.icure.cardinal.sdk.api.impl.FormBasicApiImpl
 import com.icure.cardinal.sdk.api.impl.FrontEndMigrationApiImpl
 import com.icure.cardinal.sdk.api.impl.GroupApiImpl
-import com.icure.cardinal.sdk.api.impl.HealthElementBasicApiImpl
 import com.icure.cardinal.sdk.api.impl.HealthcarePartyApiImpl
 import com.icure.cardinal.sdk.api.impl.InsuranceApiImpl
 import com.icure.cardinal.sdk.api.impl.InvoiceBasicApiImpl
@@ -42,7 +40,6 @@ import com.icure.cardinal.sdk.api.impl.KeywordApiImpl
 import com.icure.cardinal.sdk.api.impl.MaintenanceTaskBasicApiImpl
 import com.icure.cardinal.sdk.api.impl.MedicalLocationApiImpl
 import com.icure.cardinal.sdk.api.impl.MessageBasicApiImpl
-import com.icure.cardinal.sdk.api.impl.PatientBasicApiImpl
 import com.icure.cardinal.sdk.api.impl.PermissionApiImpl
 import com.icure.cardinal.sdk.api.impl.PlaceApiImpl
 import com.icure.cardinal.sdk.api.impl.ReceiptBasicApiImpl
@@ -52,6 +49,10 @@ import com.icure.cardinal.sdk.api.impl.TarificationApiImpl
 import com.icure.cardinal.sdk.api.impl.TimeTableApiImpl
 import com.icure.cardinal.sdk.api.impl.TopicBasicApiImpl
 import com.icure.cardinal.sdk.api.impl.UserApiImpl
+import com.icure.cardinal.sdk.api.impl.initCalendarItemBasicApi
+import com.icure.cardinal.sdk.api.impl.initHealthElementBasicApi
+import com.icure.cardinal.sdk.api.impl.initPatientBasicApi
+import com.icure.cardinal.sdk.api.raw.RawApiConfig
 import com.icure.cardinal.sdk.api.raw.RawMessageGatewayApi
 import com.icure.cardinal.sdk.api.raw.impl.RawAccessLogApiImpl
 import com.icure.cardinal.sdk.api.raw.impl.RawAgendaApiImpl
@@ -90,6 +91,8 @@ import com.icure.cardinal.sdk.api.raw.impl.RawTopicApiImpl
 import com.icure.cardinal.sdk.api.raw.impl.RawUserApiImpl
 import com.icure.cardinal.sdk.auth.services.AuthProvider
 import com.icure.cardinal.sdk.auth.services.JwtBasedAuthProvider
+import com.icure.cardinal.sdk.crypto.entities.SdkBoundGroup
+import com.icure.cardinal.sdk.crypto.impl.BasicEntityAccessInformationProvider
 import com.icure.cardinal.sdk.crypto.impl.BasicInternalCryptoApiImpl
 import com.icure.cardinal.sdk.crypto.impl.EntityValidationServiceImpl
 import com.icure.cardinal.sdk.crypto.impl.JsonEncryptionServiceImpl
@@ -99,10 +102,14 @@ import com.icure.cardinal.sdk.options.BasicApiConfiguration
 import com.icure.cardinal.sdk.options.BasicApiConfigurationImpl
 import com.icure.cardinal.sdk.options.BasicSdkOptions
 import com.icure.cardinal.sdk.options.EntitiesEncryptedFieldsManifests
+import com.icure.cardinal.sdk.options.UnboundBasicApiConfigurationImpl
+import com.icure.cardinal.sdk.options.UnboundBasicSdkOptions
+import com.icure.cardinal.sdk.options.configuredClientOrDefault
+import com.icure.cardinal.sdk.options.configuredJsonOrDefault
 import com.icure.cardinal.sdk.options.getAuthProvider
-import com.icure.cardinal.sdk.options.getAuthProviderInGroup
+import com.icure.cardinal.sdk.options.getGroupAndAuthProvider
 import com.icure.utils.InternalIcureApi
-import kotlinx.serialization.json.Json
+import kotlin.coroutines.CoroutineContext
 
 /**
  * Similar to the [CardinalBaseSdk] but is not bound to a specific user and/or group.
@@ -126,18 +133,22 @@ interface CardinalUnboundBaseSdk : CardinalBaseApis {
 		fun initialize(
 			baseUrl: String,
 			authenticationMethod: AuthenticationMethod,
-			options: BasicSdkOptions = BasicSdkOptions()
+			options: UnboundBasicSdkOptions = UnboundBasicSdkOptions()
 		): CardinalUnboundBaseSdk {
-			require(options.groupSelector == null) { "Group selector should be null for unbound based sdk" }
-
 			val client = options.configuredClientOrDefault()
 			val json = options.configuredJsonOrDefault()
 			val cryptoService = options.cryptoService
 			val apiUrl = baseUrl
-			val rawAuthApi = RawAnonymousAuthApiImpl(
-				apiUrl = apiUrl,
+			val rawApiConfig = RawApiConfig(
 				httpClient = client,
 				json = json,
+				requestTimeout = options.requestTimeout,
+				additionalHeaders = emptyMap(),
+				retryConfiguration = options.requestRetryConfiguration
+			)
+			val rawAuthApi = RawAnonymousAuthApiImpl(
+				apiUrl = apiUrl,
+				rawApiConfig = rawApiConfig
 			)
 			val authProvider = authenticationMethod.getAuthProvider(
 				rawAuthApi,
@@ -146,28 +157,36 @@ interface CardinalUnboundBaseSdk : CardinalBaseApis {
 				options,
 				RawMessageGatewayApi(client, cryptoService)
 			)
-
 			val manifests = EntitiesEncryptedFieldsManifests.fromEncryptedFields(options.encryptedFields)
-
 			val jsonEncryptionService = JsonEncryptionServiceImpl(cryptoService)
-			val config = BasicApiConfigurationImpl(
+			val boundGroupProvider = { context: CoroutineContext -> options.getBoundGroupId(context)?.let(::SdkBoundGroup) }
+			val config = UnboundBasicApiConfigurationImpl(
 				apiUrl,
-				client,
-				json,
 				if (authProvider is JwtBasedAuthProvider) authProvider else null,
-				BasicInternalCryptoApiImpl(jsonEncryptionService, EntityValidationServiceImpl(jsonEncryptionService)),
-				manifests
+				BasicInternalCryptoApiImpl(
+					jsonEncryptionService,
+					EntityValidationServiceImpl(jsonEncryptionService),
+					BasicEntityAccessInformationProvider(boundGroupProvider)
+				),
+				manifests,
+				rawApiConfig,
+				boundGroupProvider
 			)
 			return object : CardinalUnboundBaseSdk, CardinalBaseApis by CardinalBaseSdkImpl(
 				authProvider,
-				json,
-				config
+				config,
+				null
 			) {}
 		}
 	}
 }
 
 interface CardinalBaseSdk : CardinalBaseApis {
+	/**
+	 * The id of the group this SDK is bound to. Always `null` when working with kraken-lite instances.
+	 */
+	val boundGroupId: String?
+
 	/**
 	 * Get a new sdk using the same configurations and user authentication methods but for a different group.
 	 * To use this method, the authentication method provided at initialization of this sdk must be valid also for the
@@ -201,30 +220,40 @@ interface CardinalBaseSdk : CardinalBaseApis {
 			val json = options.configuredJsonOrDefault()
 			val cryptoService = options.cryptoService
 			val apiUrl = baseUrl
-			val authProvider = authenticationMethod.getAuthProviderInGroup(
+			val rawApiConfig = RawApiConfig(
+				httpClient = client,
+				json = json,
+				requestTimeout = options.requestTimeout,
+				additionalHeaders = emptyMap(),
+				retryConfiguration = options.requestRetryConfiguration
+			)
+			val (chosenGroup, authProvider) = authenticationMethod.getGroupAndAuthProvider(
 				apiUrl,
-				client,
 				cryptoService,
 				applicationId,
 				options,
-				options.groupSelector
+				options.groupSelector,
+				rawApiConfig,
 			)
-
+			val boundGroup = chosenGroup?.let(::SdkBoundGroup)
 			val manifests = EntitiesEncryptedFieldsManifests.fromEncryptedFields(options.encryptedFields)
-
 			val jsonEncryptionService = JsonEncryptionServiceImpl(cryptoService)
 			val config = BasicApiConfigurationImpl(
 				apiUrl,
-				client,
-				json,
 				if (authProvider is JwtBasedAuthProvider) authProvider else null,
-				BasicInternalCryptoApiImpl(jsonEncryptionService, EntityValidationServiceImpl(jsonEncryptionService)),
-				manifests
+				BasicInternalCryptoApiImpl(
+					jsonEncryptionService,
+					EntityValidationServiceImpl(jsonEncryptionService),
+					BasicEntityAccessInformationProvider { boundGroup }
+				),
+				manifests,
+				rawApiConfig,
+				boundGroup
 			)
 			return CardinalBaseSdkImpl(
 				authProvider,
-				json,
-				config
+				config,
+				chosenGroup
 			)
 		}
 	}
@@ -233,11 +262,9 @@ interface CardinalBaseSdk : CardinalBaseApis {
 @OptIn(InternalIcureApi::class)
 private class CardinalBaseApisImpl(
 	private val authProvider: AuthProvider,
-	private val httpClientJson: Json,
 	private val config: BasicApiConfiguration
 ) : CardinalBaseApis {
 	private val apiUrl get() = config.apiUrl
-	private val client get() = config.httpClient
 
 	override val auth: AuthApi by lazy {
 		AuthApiImpl(
@@ -251,19 +278,17 @@ private class CardinalBaseApisImpl(
 				apiUrl,
 				authProvider,
 				NoAccessControlKeysHeadersProvider,
-				client,
-				json = httpClientJson
+				config.rawApiConfig
 			), config
 		)
 	}
 	override val calendarItem by lazy {
-		CalendarItemBasicApiImpl(
+		initCalendarItemBasicApi(
 			RawCalendarItemApiImpl(
 				apiUrl,
 				authProvider,
 				NoAccessControlKeysHeadersProvider,
-				client,
-				json = httpClientJson
+				config.rawApiConfig
 			), config
 		)
 	}
@@ -273,14 +298,13 @@ private class CardinalBaseApisImpl(
 				apiUrl,
 				authProvider,
 				NoAccessControlKeysHeadersProvider,
-				client,
-				json = httpClientJson
+				config.rawApiConfig
 			), config
 		)
 	}
-	override val code by lazy { CodeApiImpl(RawCodeApiImpl(apiUrl, authProvider, client, json = httpClientJson)) }
+	override val code by lazy { CodeApiImpl(RawCodeApiImpl(apiUrl, authProvider, config.rawApiConfig)) }
 	override val calendarItemType: CalendarItemTypeApi by lazy {
-		CalendarItemTypeApiImpl(RawCalendarItemTypeApiImpl(apiUrl, authProvider, client, json = httpClientJson))
+		CalendarItemTypeApiImpl(RawCalendarItemTypeApiImpl(apiUrl, authProvider, config.rawApiConfig))
 	}
 	override val contact by lazy {
 		ContactBasicApiImpl(
@@ -288,20 +312,18 @@ private class CardinalBaseApisImpl(
 				apiUrl,
 				authProvider,
 				NoAccessControlKeysHeadersProvider,
-				client,
-				json = httpClientJson
+				config.rawApiConfig
 			), config
 		)
 	}
-	override val device by lazy { DeviceApiImpl(RawDeviceApiImpl(apiUrl, authProvider, client, json = httpClientJson), config) }
+	override val device by lazy { DeviceApiImpl(RawDeviceApiImpl(apiUrl, authProvider, config.rawApiConfig), config) }
 	override val document by lazy {
 		DocumentBasicApiImpl(
 			RawDocumentApiImpl(
 				apiUrl,
 				authProvider,
 				NoAccessControlKeysHeadersProvider,
-				client,
-				json = httpClientJson
+				config.rawApiConfig
 			), config
 		)
 	}
@@ -311,8 +333,7 @@ private class CardinalBaseApisImpl(
 				apiUrl,
 				authProvider,
 				NoAccessControlKeysHeadersProvider,
-				client,
-				json = httpClientJson
+				config.rawApiConfig
 			), config
 		)
 	}
@@ -321,19 +342,17 @@ private class CardinalBaseApisImpl(
 			RawGroupApiImpl(
 				apiUrl,
 				authProvider,
-				client,
-				json = httpClientJson
+				config.rawApiConfig
 			)
 		)
 	}
 	override val healthElement by lazy {
-		HealthElementBasicApiImpl(
+		initHealthElementBasicApi(
 			RawHealthElementApiImpl(
 				apiUrl,
 				authProvider,
 				NoAccessControlKeysHeadersProvider,
-				client,
-				json = httpClientJson
+				config.rawApiConfig
 			), config
 		)
 	}
@@ -342,8 +361,7 @@ private class CardinalBaseApisImpl(
 			RawHealthcarePartyApiImpl(
 				apiUrl,
 				authProvider,
-				client,
-				json = httpClientJson
+				config.rawApiConfig
 			),
 			config
 		)
@@ -356,8 +374,7 @@ private class CardinalBaseApisImpl(
 				apiUrl,
 				authProvider,
 				NoAccessControlKeysHeadersProvider,
-				client,
-				json = httpClientJson
+				config.rawApiConfig
 			), config
 		)
 	}
@@ -367,8 +384,7 @@ private class CardinalBaseApisImpl(
 				apiUrl,
 				authProvider,
 				NoAccessControlKeysHeadersProvider,
-				client,
-				json = httpClientJson
+				config.rawApiConfig
 			), config
 		)
 	}
@@ -378,19 +394,17 @@ private class CardinalBaseApisImpl(
 				apiUrl,
 				authProvider,
 				NoAccessControlKeysHeadersProvider,
-				client,
-				json = httpClientJson
+				config.rawApiConfig
 			), config
 		)
 	}
 	override val patient by lazy {
-		PatientBasicApiImpl(
+		initPatientBasicApi(
 			RawPatientApiImpl(
 				apiUrl,
 				authProvider,
 				NoAccessControlKeysHeadersProvider,
-				client,
-				json = httpClientJson
+				config.rawApiConfig
 			), config
 		)
 	}
@@ -399,8 +413,7 @@ private class CardinalBaseApisImpl(
 			RawPermissionApiImpl(
 				apiUrl,
 				authProvider,
-				client,
-				json = httpClientJson
+				config.rawApiConfig
 			)
 		)
 	}
@@ -412,8 +425,7 @@ private class CardinalBaseApisImpl(
 				apiUrl,
 				authProvider,
 				NoAccessControlKeysHeadersProvider,
-				client,
-				json = httpClientJson
+				config.rawApiConfig
 			), config
 		)
 	}
@@ -422,8 +434,7 @@ private class CardinalBaseApisImpl(
 			RawTimeTableApiImpl(
 				apiUrl,
 				authProvider,
-				client,
-				json = httpClientJson
+				config.rawApiConfig
 			)
 		)
 	}
@@ -433,69 +444,68 @@ private class CardinalBaseApisImpl(
 				apiUrl,
 				authProvider,
 				NoAccessControlKeysHeadersProvider,
-				client,
-				json = httpClientJson
+				config.rawApiConfig
 			), config
 		)
 	}
 	override val user: UserApi by lazy {
 		UserApiImpl(
-			RawUserApiImpl(apiUrl, authProvider, client, json = httpClientJson),
-			RawPermissionApiImpl(apiUrl, authProvider, client, json = httpClientJson),
+			RawUserApiImpl(apiUrl, authProvider, config.rawApiConfig),
+			RawPermissionApiImpl(apiUrl, authProvider, config.rawApiConfig),
 			config
 		)
 	}
 
 	override val applicationSettings: ApplicationSettingsApi by lazy {
-		ApplicationSettingsApiImpl(RawApplicationSettingsApiImpl(apiUrl, authProvider, client, json = httpClientJson))
+		ApplicationSettingsApiImpl(RawApplicationSettingsApiImpl(apiUrl, authProvider, config.rawApiConfig))
 	}
 	override val documentTemplate: DocumentTemplateApi by lazy {
-		DocumentTemplateApiImpl(apiUrl, RawDocumentTemplateApiImpl(apiUrl, authProvider, client, json = httpClientJson))
+		DocumentTemplateApiImpl(apiUrl, RawDocumentTemplateApiImpl(apiUrl, authProvider, config.rawApiConfig))
 	}
 	override val entityReference: EntityReferenceApi by lazy {
-		EntityReferenceApiImpl(RawEntityReferenceApiImpl(apiUrl, authProvider, client, json = httpClientJson))
+		EntityReferenceApiImpl(RawEntityReferenceApiImpl(apiUrl, authProvider, config.rawApiConfig))
 	}
 	override val entityTemplate: EntityTemplateApi by lazy {
-		EntityTemplateApiImpl(RawEntityTemplateApiImpl(apiUrl, authProvider, client, json = httpClientJson))
+		EntityTemplateApiImpl(RawEntityTemplateApiImpl(apiUrl, authProvider, config.rawApiConfig))
 	}
 	override val frontEndMigration: FrontEndMigrationApi by lazy {
-		FrontEndMigrationApiImpl(RawFrontEndMigrationApiImpl(apiUrl, authProvider, client, json = httpClientJson))
+		FrontEndMigrationApiImpl(RawFrontEndMigrationApiImpl(apiUrl, authProvider, config.rawApiConfig))
 	}
 	override val system: SystemApi by lazy {
-		SystemApiImpl(RawICureApiImpl(apiUrl, authProvider, client, json = httpClientJson))
+		SystemApiImpl(RawICureApiImpl(apiUrl, authProvider, config.rawApiConfig))
 	}
 	override val insurance: InsuranceApi by lazy {
-		InsuranceApiImpl(RawInsuranceApiImpl(apiUrl, authProvider, client, json = httpClientJson))
+		InsuranceApiImpl(RawInsuranceApiImpl(apiUrl, authProvider, config.rawApiConfig))
 	}
 	override val keyword: KeywordApi by lazy {
-		KeywordApiImpl(RawKeywordApiImpl(apiUrl, authProvider, client, json = httpClientJson))
+		KeywordApiImpl(RawKeywordApiImpl(apiUrl, authProvider, config.rawApiConfig))
 	}
 	override val place: PlaceApi by lazy {
-		PlaceApiImpl(RawPlaceApiImpl(apiUrl, authProvider, client, json = httpClientJson))
+		PlaceApiImpl(RawPlaceApiImpl(apiUrl, authProvider, config.rawApiConfig))
 	}
 	override val role: RoleApi by lazy {
-		RoleApiImpl(RawRoleApiImpl(apiUrl, authProvider, client, json = httpClientJson))
+		RoleApiImpl(RawRoleApiImpl(apiUrl, authProvider, config.rawApiConfig))
 	}
 	override val tarification: TarificationApi by lazy {
-		TarificationApiImpl(RawTarificationApiImpl(apiUrl, authProvider, client, json = httpClientJson))
+		TarificationApiImpl(RawTarificationApiImpl(apiUrl, authProvider, config.rawApiConfig))
 	}
 	override val medicalLocation: MedicalLocationApi by lazy {
-		MedicalLocationApiImpl(RawMedicalLocationApiImpl(apiUrl, authProvider, client, json = httpClientJson))
+		MedicalLocationApiImpl(RawMedicalLocationApiImpl(apiUrl, authProvider, config.rawApiConfig))
 	}
 	override val agenda: AgendaApi by lazy {
-		AgendaApiImpl(RawAgendaApiImpl(apiUrl, authProvider, client, json = httpClientJson))
+		AgendaApiImpl(RawAgendaApiImpl(apiUrl, authProvider, config.rawApiConfig))
 	}
 }
 
 @InternalIcureApi
 private class CardinalBaseSdkImpl(
 	private val authProvider: AuthProvider,
-	private val httpClientJson: Json,
-	private val config: BasicApiConfiguration
-) : CardinalBaseSdk, CardinalBaseApis by CardinalBaseApisImpl(authProvider, httpClientJson, config) {
+	private val config: BasicApiConfiguration,
+	override val boundGroupId: String?
+) : CardinalBaseSdk, CardinalBaseApis by CardinalBaseApisImpl(authProvider, config) {
 	override suspend fun switchGroup(groupId: String): CardinalBaseSdk = CardinalBaseSdkImpl(
 		authProvider.switchGroup(groupId),
-		httpClientJson,
-		config
+		config,
+		groupId
 	)
 }

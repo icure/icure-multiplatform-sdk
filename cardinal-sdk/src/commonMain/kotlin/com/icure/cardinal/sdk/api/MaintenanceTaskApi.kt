@@ -8,8 +8,8 @@ import com.icure.cardinal.sdk.filters.FilterOptions
 import com.icure.cardinal.sdk.filters.SortableFilterOptions
 import com.icure.cardinal.sdk.model.DecryptedMaintenanceTask
 import com.icure.cardinal.sdk.model.EncryptedMaintenanceTask
-import com.icure.cardinal.sdk.model.IdWithMandatoryRev
 import com.icure.cardinal.sdk.model.MaintenanceTask
+import com.icure.cardinal.sdk.model.StoredDocumentIdentifier
 import com.icure.cardinal.sdk.model.User
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.model.embed.AccessLevel
@@ -18,7 +18,6 @@ import com.icure.cardinal.sdk.subscription.Subscribable
 import com.icure.cardinal.sdk.utils.DefaultValue
 import com.icure.cardinal.sdk.utils.EntityEncryptionException
 import com.icure.cardinal.sdk.utils.pagination.PaginatedListIterator
-import kotlin.js.JsName
 
 /* This interface includes the API calls that do not need encryption keys and do not return or consume encrypted/decrypted items, they are completely agnostic towards the presence of encrypted items */
 interface MaintenanceTaskBasicFlavourlessApi {
@@ -43,7 +42,7 @@ interface MaintenanceTaskBasicFlavourlessApi {
 	 * @return the id and revision of the deleted maintenanceTasks. If some entities could not be deleted (for example
 	 * because you had no write access to them) they will not be included in this list.
 	 */
-	suspend fun deleteMaintenanceTasksByIds(entityIds: List<IdWithMandatoryRev>): List<DocIdentifier>
+	suspend fun deleteMaintenanceTasksByIds(entityIds: List<StoredDocumentIdentifier>): List<DocIdentifier>
 
 	/**
 	 * Permanently deletes a maintenanceTask.
@@ -70,7 +69,7 @@ interface MaintenanceTaskBasicFlavourlessApi {
 	 */
 	suspend fun deleteMaintenanceTasks(maintenanceTasks: List<MaintenanceTask>): List<DocIdentifier> =
 		deleteMaintenanceTasksByIds(maintenanceTasks.map { maintenanceTask ->
-			IdWithMandatoryRev(maintenanceTask.id, requireNotNull(maintenanceTask.rev) { "Can't delete a maintenanceTask that has no rev" })
+			StoredDocumentIdentifier(maintenanceTask.id, requireNotNull(maintenanceTask.rev) { "Can't delete a maintenanceTask that has no rev" })
 		})
 
 	/**
@@ -85,6 +84,14 @@ interface MaintenanceTaskBasicFlavourlessApi {
 
 /* This interface includes the API calls can be used on decrypted items if encryption keys are available *or* encrypted items if no encryption keys are available */
 interface MaintenanceTaskBasicFlavouredApi<E : MaintenanceTask> {
+	/**
+	 * Create a new maintenance task. The provided maintenance task must have the encryption metadata initialized.
+	 * @param entity a maintenance task with initialized encryption metadata
+	 * @return the created maintenance task with updated revision.
+	 * @throws IllegalArgumentException if the encryption metadata of the input was not initialized.
+	 */
+	suspend fun createMaintenanceTask(entity: E): E
+
 	/**
 	 * Restores a maintenanceTask that was marked as deleted.
 	 * @param maintenanceTask the maintenanceTask to undelete
@@ -119,7 +126,7 @@ interface MaintenanceTaskBasicFlavouredApi<E : MaintenanceTask> {
 	 * @param entityId a maintenance task id.
 	 * @return the maintenance task with id [entityId].
 	 */
-	suspend fun getMaintenanceTask(entityId: String): E
+	suspend fun getMaintenanceTask(entityId: String): E?
 
 	/**
 	 * Get multiple maintenance tasks by their ids. Ignores all ids that do not correspond to an entity, correspond to
@@ -137,6 +144,7 @@ interface MaintenanceTaskFlavouredApi<E : MaintenanceTask> : MaintenanceTaskBasi
 	 * Share a maintenance task with another data owner. The maintenance task must already exist in the database for this method to
 	 * succeed. If you want to share the maintenance task before creation you should instead pass provide the delegates in
 	 * the initialize encryption metadata method.
+	 * Note: this method only updates the security metadata. If the input entity has unsaved changes they may be lost.
 	 * @param delegateId the owner that will gain access to the maintenance task
 	 * @param maintenanceTask the maintenance task to share with [delegateId]
 	 * @param options specifies how the maintenance task will be shared. By default, all data available to the current user
@@ -155,6 +163,7 @@ interface MaintenanceTaskFlavouredApi<E : MaintenanceTask> : MaintenanceTaskBasi
 	 * Share a maintenance task with multiple data owners. The maintenance task must already exist in the database for this method to
 	 * succeed. If you want to share the maintenance task before creation you should instead pass provide the delegates in
 	 * the initialize encryption metadata method.
+	 * Note: this method only updates the security metadata. If the input entity has unsaved changes they may be lost.
 	 * Throws an exception if the operation fails.
 	 * @param maintenanceTask the maintenance task to share
 	 * @param delegates specify the data owners which will gain access to the entity and the options for sharing with
@@ -200,14 +209,6 @@ interface MaintenanceTaskFlavouredApi<E : MaintenanceTask> : MaintenanceTaskBasi
 /* The extra API calls declared in this interface are the ones that can only be used on decrypted items when encryption keys are available */
 interface MaintenanceTaskApi : MaintenanceTaskBasicFlavourlessApi, MaintenanceTaskFlavouredApi<DecryptedMaintenanceTask>, Subscribable<MaintenanceTask, EncryptedMaintenanceTask, FilterOptions<MaintenanceTask>> {
 	/**
-	 * Create a new maintenance task. The provided maintenance task must have the encryption metadata initialized.
-	 * @param entity a maintenance task with initialized encryption metadata
-	 * @return the created maintenance task with updated revision.
-	 * @throws IllegalArgumentException if the encryption metadata of the input was not initialized.
-	 */
-	suspend fun createMaintenanceTask(entity: DecryptedMaintenanceTask): DecryptedMaintenanceTask
-
-	/**
 	 * Creates a maintenance task with initialized encryption metadata, using the provided maintenance task as a base.
 	 * @param maintenanceTask a maintenance task with initialized content, to be used as a base for the result.
 	 * @param user the current user. If provided the auto-delegations from the user will be used in addition to
@@ -235,7 +236,11 @@ interface MaintenanceTaskApi : MaintenanceTaskBasicFlavourlessApi, MaintenanceTa
 	suspend fun getEncryptionKeysOf(maintenanceTask: MaintenanceTask): Set<HexString>
 
 	/**
-	 * Specifies if the current user has write access to a maintenance task.
+	 * Specifies if the current user has write access to a maintenance task through delegations.
+	 * Doesn't consider actual permissions on the server side: for example, if the data owner has access to all entities
+	 * thanks to extended permission but has no delegation on the provided entity this method returns false. Similarly,
+	 * if the SDK was initialized in hierarchical mode but the user is lacking the hierarchical permission on the server
+	 * side this method will still return true if there is a delegation to the parent.
 	 * @param maintenanceTask a maintenance task
 	 * @return if the current user has write access to the provided maintenance task
 	 */

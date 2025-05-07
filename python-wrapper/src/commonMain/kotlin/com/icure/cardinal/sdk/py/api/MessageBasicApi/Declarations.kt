@@ -5,7 +5,7 @@ import com.icure.cardinal.sdk.CardinalBaseApis
 import com.icure.cardinal.sdk.filters.BaseFilterOptions
 import com.icure.cardinal.sdk.filters.BaseSortableFilterOptions
 import com.icure.cardinal.sdk.model.EncryptedMessage
-import com.icure.cardinal.sdk.model.IdWithMandatoryRev
+import com.icure.cardinal.sdk.model.StoredDocumentIdentifier
 import com.icure.cardinal.sdk.model.Message
 import com.icure.cardinal.sdk.model.PaginatedList
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
@@ -305,7 +305,7 @@ public fun deleteMessageByIdAsync(
 
 @Serializable
 private class DeleteMessagesByIdsParams(
-	public val entityIds: List<IdWithMandatoryRev>,
+	public val entityIds: List<StoredDocumentIdentifier>,
 )
 
 @OptIn(InternalIcureApi::class)

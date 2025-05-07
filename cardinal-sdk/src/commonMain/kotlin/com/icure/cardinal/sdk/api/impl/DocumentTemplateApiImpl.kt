@@ -2,6 +2,7 @@ package com.icure.cardinal.sdk.api.impl
 
 import com.icure.cardinal.sdk.api.DocumentTemplateApi
 import com.icure.cardinal.sdk.api.raw.RawDocumentTemplateApi
+import com.icure.cardinal.sdk.api.raw.successBodyOrNull404
 import com.icure.cardinal.sdk.api.raw.successBodyOrThrowRevisionConflict
 import com.icure.cardinal.sdk.model.DocumentTemplate
 import com.icure.cardinal.sdk.model.ListOfIds
@@ -12,7 +13,8 @@ internal class DocumentTemplateApiImpl(
 	private val apiUrl: String,
 	private val rawApi: RawDocumentTemplateApi,
 ) : DocumentTemplateApi {
-	override suspend fun getDocumentTemplate(documentTemplateId: String) = rawApi.getDocumentTemplate(documentTemplateId).successBody()
+	override suspend fun getDocumentTemplate(documentTemplateId: String) =
+		rawApi.getDocumentTemplate(documentTemplateId).successBodyOrNull404()
 
 	override suspend fun createDocumentTemplate(documentTemplate: DocumentTemplate) =
 		rawApi.createDocumentTemplate(documentTemplate).successBody()

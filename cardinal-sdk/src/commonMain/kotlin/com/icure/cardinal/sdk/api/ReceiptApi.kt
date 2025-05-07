@@ -23,8 +23,9 @@ interface ReceiptBasicFlavourlessApi {
 
 /* This interface includes the API calls can be used on decrypted items if encryption keys are available *or* encrypted items if no encryption keys are available */
 interface ReceiptBasicFlavouredApi<E : Receipt> {
+	suspend fun createReceipt(entity: E): E
 	suspend fun modifyReceipt(entity: E): E
-	suspend fun getReceipt(entityId: String): E
+	suspend fun getReceipt(entityId: String): E?
 	suspend fun listByReference(reference: String): List<E>
 }
 
@@ -60,7 +61,6 @@ interface ReceiptFlavouredApi<E : Receipt> : ReceiptBasicFlavouredApi<E> {
 /* The extra API calls declared in this interface are the ones that can only be used on decrypted items when encryption keys are available */
 @Deprecated("The receipt API and model are highly specialised for the belgian market. They will be provided as a separate package in future")
 interface ReceiptApi : ReceiptBasicFlavourlessApi, ReceiptFlavouredApi<DecryptedReceipt> {
-	suspend fun createReceipt(entity: DecryptedReceipt): DecryptedReceipt
 	suspend fun withEncryptionMetadata(
 		base: DecryptedReceipt?,
 		patient: Patient?,

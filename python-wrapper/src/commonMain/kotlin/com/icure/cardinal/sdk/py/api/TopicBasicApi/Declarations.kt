@@ -5,7 +5,7 @@ import com.icure.cardinal.sdk.CardinalBaseApis
 import com.icure.cardinal.sdk.filters.BaseFilterOptions
 import com.icure.cardinal.sdk.filters.BaseSortableFilterOptions
 import com.icure.cardinal.sdk.model.EncryptedTopic
-import com.icure.cardinal.sdk.model.IdWithMandatoryRev
+import com.icure.cardinal.sdk.model.StoredDocumentIdentifier
 import com.icure.cardinal.sdk.model.Topic
 import com.icure.cardinal.sdk.model.TopicRole
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
@@ -301,7 +301,7 @@ public fun deleteTopicByIdAsync(
 
 @Serializable
 private class DeleteTopicsByIdsParams(
-	public val entityIds: List<IdWithMandatoryRev>,
+	public val entityIds: List<StoredDocumentIdentifier>,
 )
 
 @OptIn(InternalIcureApi::class)

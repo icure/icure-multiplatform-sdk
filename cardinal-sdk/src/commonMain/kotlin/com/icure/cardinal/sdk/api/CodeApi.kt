@@ -103,12 +103,12 @@ interface CodeApi {
 	suspend fun getCodes(codeIds: List<String>): List<Code>
 	@JsName("getCodesInGroup")
 	suspend fun getCodes(groupId: String, codeIds: List<String>): List<Code>
-	suspend fun getCode(codeId: String): Code
+	suspend fun getCode(codeId: String): Code?
 	suspend fun getCodeWithParts(
 		type: String,
 		code: String,
 		version: String,
-	): Code
+	): Code?
 
 	suspend fun modifyCode(codeDto: Code): Code
 	suspend fun modifyCodes(codeBatch: List<Code>): List<Code>

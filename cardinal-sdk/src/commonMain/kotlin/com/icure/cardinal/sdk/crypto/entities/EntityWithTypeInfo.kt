@@ -1,19 +1,6 @@
 package com.icure.cardinal.sdk.crypto.entities
 
-import com.icure.cardinal.sdk.model.AccessLog
-import com.icure.cardinal.sdk.model.Article
-import com.icure.cardinal.sdk.model.CalendarItem
-import com.icure.cardinal.sdk.model.Classification
-import com.icure.cardinal.sdk.model.Contact
-import com.icure.cardinal.sdk.model.Document
-import com.icure.cardinal.sdk.model.Form
-import com.icure.cardinal.sdk.model.HealthElement
 import com.icure.cardinal.sdk.model.IcureStub
-import com.icure.cardinal.sdk.model.Invoice
-import com.icure.cardinal.sdk.model.MaintenanceTask
-import com.icure.cardinal.sdk.model.Message
-import com.icure.cardinal.sdk.model.Patient
-import com.icure.cardinal.sdk.model.Receipt
 import com.icure.cardinal.sdk.model.Topic
 import com.icure.cardinal.sdk.model.base.HasEncryptionMetadata
 import com.icure.cardinal.sdk.model.base.ICureDocument
@@ -58,39 +45,23 @@ fun <T:HasEncryptionMetadata> T.toEncryptionMetadataStub() = EntityWithEncryptio
 	securityMetadata = securityMetadata
 )
 
-fun <T:Article> T.withTypeInfo() = EntityWithTypeInfo(this, EntityWithEncryptionMetadataTypeName.Article)
-fun <T:AccessLog> T.withTypeInfo() = EntityWithTypeInfo(this, EntityWithEncryptionMetadataTypeName.AccessLog)
-fun <T:CalendarItem> T.withTypeInfo() = EntityWithTypeInfo(this, EntityWithEncryptionMetadataTypeName.CalendarItem)
-fun <T:Classification> T.withTypeInfo() = EntityWithTypeInfo(this, EntityWithEncryptionMetadataTypeName.Classification)
-fun <T:Contact> T.withTypeInfo() = EntityWithTypeInfo(this, EntityWithEncryptionMetadataTypeName.Contact)
-fun <T:Document> T.withTypeInfo() = EntityWithTypeInfo(this, EntityWithEncryptionMetadataTypeName.Document)
-fun <T:Form> T.withTypeInfo() = EntityWithTypeInfo(this, EntityWithEncryptionMetadataTypeName.Form)
-fun <T:HealthElement> T.withTypeInfo() = EntityWithTypeInfo(this, EntityWithEncryptionMetadataTypeName.HealthElement)
-fun <T:Invoice> T.withTypeInfo() = EntityWithTypeInfo(this, EntityWithEncryptionMetadataTypeName.Invoice)
-fun <T:MaintenanceTask> T.withTypeInfo() = EntityWithTypeInfo(this, EntityWithEncryptionMetadataTypeName.MaintenanceTask)
-fun <T:Message> T.withTypeInfo() = EntityWithTypeInfo(this, EntityWithEncryptionMetadataTypeName.Message)
-fun <T:Patient> T.withTypeInfo() = EntityWithTypeInfo(this, EntityWithEncryptionMetadataTypeName.Patient)
-fun <T:Receipt> T.withTypeInfo() = EntityWithTypeInfo(this, EntityWithEncryptionMetadataTypeName.Receipt)
 fun <T:Topic> T.withTypeInfo() = EntityWithTypeInfo(this, EntityWithEncryptionMetadataTypeName.Topic)
 
-fun <T> EntityWithTypeInfo<T>.asIcureStub(): EntityWithTypeInfo<IcureStub> where T : HasEncryptionMetadata, T : ICureDocument<String> =
-	EntityWithTypeInfo(
-		IcureStub(
-			id = entity.id,
-			rev = entity.rev,
-			created = entity.created,
-			modified = entity.modified,
-			author = entity.author,
-			responsible = entity.responsible,
-			medicalLocationId = entity.medicalLocationId,
-			tags = entity.tags,
-			codes = entity.codes,
-			endOfLife = entity.endOfLife,
-			secretForeignKeys = entity.secretForeignKeys,
-			cryptedForeignKeys = entity.cryptedForeignKeys,
-			delegations = entity.delegations,
-			encryptionKeys = entity.encryptionKeys,
-			securityMetadata = entity.securityMetadata,
-		),
-		type
+fun <T> T.asIcureStub(): IcureStub where T : HasEncryptionMetadata, T : ICureDocument<String> =
+	IcureStub(
+		id = id,
+		rev = rev,
+		created = created,
+		modified = modified,
+		author = author,
+		responsible = responsible,
+		medicalLocationId = medicalLocationId,
+		tags = tags,
+		codes = codes,
+		endOfLife = endOfLife,
+		secretForeignKeys = secretForeignKeys,
+		cryptedForeignKeys = cryptedForeignKeys,
+		delegations = delegations,
+		encryptionKeys = encryptionKeys,
+		securityMetadata = securityMetadata,
 	)

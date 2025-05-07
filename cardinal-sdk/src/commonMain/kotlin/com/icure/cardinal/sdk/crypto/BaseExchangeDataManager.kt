@@ -1,6 +1,7 @@
 package com.icure.cardinal.sdk.crypto
 
 import com.icure.cardinal.sdk.api.raw.RawExchangeDataApi
+import com.icure.cardinal.sdk.model.EntityReferenceInGroup
 import com.icure.cardinal.sdk.crypto.entities.DecryptionResult
 import com.icure.cardinal.sdk.crypto.entities.ExchangeDataWithUnencryptedContent
 import com.icure.cardinal.sdk.crypto.entities.RawDecryptedExchangeData
@@ -33,7 +34,7 @@ interface BaseExchangeDataManager {
 	 * @return all the exchange data for the current data owner or null if the crypto strategies don't allow to retrieve
 	 * all data for the current data owner.
 	 */
-	suspend fun getAllExchangeDataForCurrentDataOwnerIfAllowed(): List<ExchangeData>?
+	suspend fun getAllExchangeDataForCurrentDataOwnerIfAllowed(inGroup: String?): List<ExchangeData>?
 
 	/**
 	 * Get all exchange data for the provided delegator-delegate pair.
@@ -41,14 +42,21 @@ interface BaseExchangeDataManager {
 	 * @param delegateId id of a delegate data owner.
 	 * @return all exchange data for the provided delegator-delegate pair.
 	 */
-	suspend fun getExchangeDataByDelegatorDelegatePair(delegatorId: String, delegateId: String): List<ExchangeData>
+	suspend fun getExchangeDataByDelegatorDelegatePair(
+		inGroup: String?,
+		delegatorReference: EntityReferenceInGroup,
+		delegateReference: EntityReferenceInGroup,
+	): List<ExchangeData>
 
 	/**
 	 * Get the exchange data with the provided id.
 	 * @param exchangeDataId id of the exchange data.
 	 * @return the exchange data with the provided id or undefined if no exchange data with such id could be found.
 	 */
-	suspend fun getExchangeDataById(exchangeDataId: String): ExchangeData?
+	suspend fun getExchangeDataByIds(
+		inGroup: String?,
+		exchangeDataIds: Collection<String>
+	): List<ExchangeData>
 
 	/**
 	 * Verifies the authenticity of the exchange data by checking the signature.
@@ -120,7 +128,8 @@ interface BaseExchangeDataManager {
 	 * @return the newly created exchange data, and its decrypted exchange key and access control secret.
 	 */
 	suspend fun createExchangeData(
-		delegateId: String,
+		inGroup: String?,
+		delegateReference: EntityReferenceInGroup,
 		signatureKeys: SelfVerifiedKeysSet,
 		encryptionKeys: VerifiedRsaEncryptionKeysSet,
 		exchangeDataId: String? = null

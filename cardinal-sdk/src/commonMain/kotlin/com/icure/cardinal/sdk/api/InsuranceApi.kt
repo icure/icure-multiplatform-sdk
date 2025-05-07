@@ -6,7 +6,7 @@ import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.utils.DefaultValue
 
 interface InsuranceApi {
-	suspend fun getInsurance(insuranceId: String): Insurance
+	suspend fun getInsurance(insuranceId: String): Insurance?
 	suspend fun getInsurances(insuranceIds: List<String>): List<Insurance>
 	suspend fun createInsurance(insurance: Insurance): Insurance
 	suspend fun deleteInsurance(insuranceId: String): DocIdentifier

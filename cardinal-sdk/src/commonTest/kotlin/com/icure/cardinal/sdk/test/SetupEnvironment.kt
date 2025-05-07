@@ -2,13 +2,11 @@
 
 package com.icure.cardinal.sdk.test
 
-import com.icure.cardinal.sdk.CardinalSdk
 import com.icure.cardinal.sdk.api.raw.impl.RawGroupApiImpl
 import com.icure.cardinal.sdk.api.raw.impl.RawUserApiImpl
 import com.icure.cardinal.sdk.model.DatabaseInitialisation
 import com.icure.cardinal.sdk.model.User
 import com.icure.utils.InternalIcureApi
-import com.icure.cardinal.sdk.utils.Serialization
 
 private var initialized = false
 
@@ -19,7 +17,7 @@ suspend fun initializeTestEnvironment() {
 	}
 	initialized = true
 	println("Creating test group")
-	val groupApi = RawGroupApiImpl(baseUrl, superadminAuth, CardinalSdk.sharedHttpClient, json = Serialization.json)
+	val groupApi = RawGroupApiImpl(baseUrl, superadminAuth, DefaultRawApiConfig)
 	if (groupApi.getGroup(testGroupId).status.value == 200) {
 		println("Group already exist")
 	} else  {
@@ -35,7 +33,7 @@ suspend fun initializeTestEnvironment() {
 		)
 	}
 	println("Creating admin user - $testGroupAdmin:$testGroupAdminPassword")
-	RawUserApiImpl(baseUrl, superadminAuth, CardinalSdk.sharedHttpClient, json = Serialization.json).createAdminUserInGroup(
+	RawUserApiImpl(baseUrl, superadminAuth, DefaultRawApiConfig).createAdminUserInGroup(
 		testGroupId,
 		User(
 			uuid(),

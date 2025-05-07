@@ -12,7 +12,9 @@ import com.icure.cardinal.sdk.model.security.Enable2faRequest
 import com.icure.cardinal.sdk.options.AuthenticationMethod
 import com.icure.cardinal.sdk.options.SdkOptions
 import com.icure.cardinal.sdk.options.getAuthProvider
+import com.icure.cardinal.sdk.test.DefaultRawApiConfig
 import com.icure.cardinal.sdk.test.MockMessageGatewayUtils
+import com.icure.cardinal.sdk.test.autoCancelJob
 import com.icure.cardinal.sdk.test.baseUrl
 import com.icure.cardinal.sdk.test.createHcpUser
 import com.icure.cardinal.sdk.test.createUserInMultipleGroups
@@ -24,7 +26,6 @@ import com.icure.cardinal.sdk.test.testGroupAdminAuth
 import com.icure.cardinal.sdk.test.testGroupId
 import com.icure.cardinal.sdk.test.uuid
 import com.icure.cardinal.sdk.utils.RequestStatusException
-import com.icure.cardinal.sdk.utils.Serialization
 import com.icure.kotp.ShaVersion
 import com.icure.kotp.Totp
 import com.icure.kryptom.crypto.HmacAlgorithm
@@ -34,9 +35,9 @@ import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.collections.shouldBeEmpty
 import io.kotest.matchers.collections.shouldContain
+import io.kotest.matchers.collections.shouldHaveAtLeastSize
 import io.kotest.matchers.collections.shouldNotContain
 import io.kotest.matchers.maps.shouldNotBeEmpty
-import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
 import io.ktor.http.isSuccess
@@ -44,21 +45,20 @@ import kotlinx.datetime.Clock
 
 @OptIn(InternalIcureApi::class)
 class SmartAuthProviderTest : StringSpec({
+	val specJob = autoCancelJob()
 
 	val authApi = RawAnonymousAuthApiImpl(
 		apiUrl = baseUrl,
-		httpClient = CardinalSdk.sharedHttpClient,
-		json = Serialization.json
+		DefaultRawApiConfig
 	)
 
 	fun getUserApiWithProvider(authProvider: AuthProvider) = RawUserApiImpl(
 		apiUrl = baseUrl,
 		authProvider = authProvider,
-		httpClient = CardinalSdk.sharedHttpClient,
-		json = Serialization.json
+		DefaultRawApiConfig
 	)
 
-	beforeAny {
+	beforeSpec {
 		initializeTestEnvironment()
 	}
 
@@ -115,9 +115,9 @@ class SmartAuthProviderTest : StringSpec({
 
 	"Should automatically ask for a more powerful secret to perform elevated-security operations if the available secret/token is not good enough" {
 		val hcpDetails = createHcpUser()
-		val api = hcpDetails.api()
+		val api = hcpDetails.api(specJob)
 		val initialUser = api.user.getCurrentUser()
-		val adminUserApi = RawUserApiImpl(baseUrl, testGroupAdminAuth, CardinalSdk.sharedHttpClient, json = Serialization.json)
+		val adminUserApi = RawUserApiImpl(baseUrl, testGroupAdminAuth, DefaultRawApiConfig)
 		val userToken = uuid()
 		val userPwd = uuid()
 		val userWithLongTokenAndPwd = adminUserApi.modifyUser(
@@ -186,7 +186,7 @@ class SmartAuthProviderTest : StringSpec({
 				passwordHash = newPwd,
 			)
 		).successBody()
-		userWithNewPwd.rev.shouldNotBeNull() shouldBeNextRevOf userWithLongTokenAndPwd.rev.shouldNotBeNull()
+		userWithNewPwd.rev shouldBeNextRevOf userWithLongTokenAndPwd.rev
 		calls shouldBe 2
 		val retrievedWithNewPwd = getUserApiWithProvider(
 			AuthenticationMethod.UsingCredentials(UsernamePassword(hcpDetails.username, newPwd)).getAuthProvider(
@@ -213,10 +213,10 @@ class SmartAuthProviderTest : StringSpec({
 
 	"Should automatically ask for TOTP after password if user has 2fa enabled" {
 		val hcpDetails = createHcpUser()
-		val api = hcpDetails.api()
+		val api = hcpDetails.api(specJob)
 		val otpLength = 8
 		val initialUser = api.user.getCurrentUser()
-		val adminUserApi = RawUserApiImpl(baseUrl, testGroupAdminAuth, CardinalSdk.sharedHttpClient, json = Serialization.json)
+		val adminUserApi = RawUserApiImpl(baseUrl, testGroupAdminAuth, DefaultRawApiConfig)
 		val totpSecret = Totp.generateTOTPSecret(32, HmacAlgorithm.HmacSha256)
 		val totp = Totp(secret = totpSecret, shaVersion = ShaVersion.Sha256)
 		val userPwd = uuid()
@@ -282,10 +282,10 @@ class SmartAuthProviderTest : StringSpec({
 
 	"Should ask for TOTP directly if password is cached" {
 		val hcpDetails = createHcpUser()
-		val api = hcpDetails.api()
+		val api = hcpDetails.api(specJob)
 		val otpLength = 8
 		val initialUser = api.user.getCurrentUser()
-		val adminUserApi = RawUserApiImpl(baseUrl, testGroupAdminAuth, CardinalSdk.sharedHttpClient, json = Serialization.json)
+		val adminUserApi = RawUserApiImpl(baseUrl, testGroupAdminAuth, DefaultRawApiConfig)
 		val totpSecret = Totp.generateTOTPSecret(32, HmacAlgorithm.HmacSha256)
 		val totp = Totp(secret = totpSecret, shaVersion = ShaVersion.Sha256)
 		val userPwd = uuid()
@@ -378,10 +378,119 @@ class SmartAuthProviderTest : StringSpec({
 		calls shouldBe 1
 	}
 
+	"If auth secret provider gives invalid result the request should fail with IllegalArgumentException, but future requests should work again" {
+		val hcpDetails = createHcpUser()
+		val api = hcpDetails.api(specJob)
+		val initialUser = api.user.getCurrentUser()
+		val adminUserApi = RawUserApiImpl(baseUrl, testGroupAdminAuth, DefaultRawApiConfig)
+		val userToken = uuid()
+		val userPwd = uuid()
+		val userWithLongTokenAndPwd = adminUserApi.modifyUser(
+			initialUser.copy(
+				passwordHash = userPwd,
+				authenticationTokens = mapOf(
+					"test-long-lived-token" to AuthenticationToken(
+						token = userToken,
+						creationTime = Clock.System.now().toEpochMilliseconds(),
+						validity = 60 * 60 * 24 * 7
+					)
+				)
+			)
+		).successBody()
+		var calls = 0
+		val authProvider = SmartAuthProvider.initialize(
+			authApi = authApi,
+			loginUsername = hcpDetails.username,
+			secretProvider = object : AuthSecretProvider {
+				override suspend fun getSecret(
+					acceptedSecrets: Set<AuthenticationClass>,
+					previousAttempts: List<AuthSecretDetails>,
+					authProcessApi: AuthenticationProcessApi
+				): AuthSecretDetails {
+					return when(calls) {
+						0 -> {
+							acceptedSecrets shouldContain AuthenticationClass.Password
+							acceptedSecrets shouldContain AuthenticationClass.LongLivedToken
+							acceptedSecrets shouldContain AuthenticationClass.ShortLivedToken
+							acceptedSecrets shouldNotContain AuthenticationClass.TwoFactorAuthentication
+							previousAttempts.shouldBeEmpty()
+							calls++
+							AuthSecretDetails.LongLivedTokenDetails(userToken)
+						}
+						1 -> {
+							acceptedSecrets shouldContain AuthenticationClass.Password
+							acceptedSecrets shouldNotContain AuthenticationClass.LongLivedToken
+							acceptedSecrets shouldContain AuthenticationClass.ShortLivedToken
+							acceptedSecrets shouldNotContain AuthenticationClass.TwoFactorAuthentication
+							previousAttempts.shouldBeEmpty()
+							calls++
+							AuthSecretDetails.LongLivedTokenDetails(userToken) // Invalid result
+						}
+						2 -> {
+							acceptedSecrets shouldContain AuthenticationClass.Password
+							acceptedSecrets shouldNotContain AuthenticationClass.LongLivedToken
+							acceptedSecrets shouldContain AuthenticationClass.ShortLivedToken
+							acceptedSecrets shouldNotContain AuthenticationClass.TwoFactorAuthentication
+							previousAttempts.shouldBeEmpty()
+							calls++
+							AuthSecretDetails.PasswordDetails(userPwd)
+						}
+						else -> throw IllegalStateException("Invalid number of attempts: $calls")
+					}
+				}
+			},
+			initialSecret = null,
+			initialAuthToken = null,
+			initialRefreshToken = null,
+			groupId = null,
+			applicationId = null,
+			cryptoService = defaultCryptoService,
+			passwordClientSideSalt = null,
+			cacheSecrets = true,
+			allowSecretRetry = true,
+			messageGatewayApi = RawMessageGatewayApi(CardinalSdk.sharedHttpClient, defaultCryptoService)
+		)
+
+		val userApi = getUserApiWithProvider(authProvider)
+		userApi.getCurrentUser().successBody().rev shouldBe userWithLongTokenAndPwd.rev
+		calls shouldBe 1
+		val newPwd = uuid()
+		val userWithNewPwd = userWithLongTokenAndPwd.copy(
+			passwordHash = newPwd,
+		)
+		shouldThrow<IllegalArgumentException> { userApi.modifyUser(userWithNewPwd) }
+		calls shouldBe 2
+		userApi.getCurrentUser().successBody().rev shouldBe userWithLongTokenAndPwd.rev
+		calls shouldBe 2
+		val updatedUser = userApi.modifyUser(userWithNewPwd).successBody()
+		calls shouldBe 3
+		updatedUser.rev shouldBeNextRevOf userWithLongTokenAndPwd.rev
+		val retrievedWithNewPwd = getUserApiWithProvider(
+			AuthenticationMethod.UsingCredentials(UsernamePassword(hcpDetails.username, newPwd)).getAuthProvider(
+				authApi,
+				defaultCryptoService,
+				null,
+				SdkOptions(),
+				RawMessageGatewayApi(CardinalSdk.sharedHttpClient, defaultCryptoService)
+			)
+		).getCurrentUser().successBody()
+		retrievedWithNewPwd shouldBe updatedUser
+		shouldThrow<RequestStatusException> {
+			getUserApiWithProvider(
+				AuthenticationMethod.UsingCredentials(UsernamePassword(hcpDetails.username, userPwd)).getAuthProvider(
+					authApi,
+					defaultCryptoService,
+					null,
+					SdkOptions(),
+					RawMessageGatewayApi(CardinalSdk.sharedHttpClient, defaultCryptoService)
+				)
+			).getCurrentUser()
+		}.statusCode shouldBe 401
+	}
+
 	"Switched provider should keep cached secrets and should be able to have elevated security context" {
 		val details = createUserInMultipleGroups()
-		val groups = details.keys.toList()
-		val firstUser = details.values.first()
+		val firstUser = details.groupBy { it.password }.values.first { it.size > 1 }.first()
 		val authProvider = SmartAuthProvider.initialize(
 			authApi = authApi,
 			loginUsername = firstUser.username,
@@ -409,8 +518,9 @@ class SmartAuthProviderTest : StringSpec({
 		)
 		val defaultGroupUserApi = getUserApiWithProvider(authProvider)
 		val defaultGroupUser = defaultGroupUserApi.getCurrentUser().successBody()
-		val otherGroupId = if (defaultGroupUser.groupId == groups[0]) groups[1] else groups[0]
 		val matches = defaultGroupUserApi.getMatchingUsers().successBody()
+		matches.shouldHaveAtLeastSize(2)
+		val otherGroupId = matches.first { it.groupId != defaultGroupUser.groupId }.groupId!!
 		val switchedUserApi = getUserApiWithProvider(authProvider.switchGroup(otherGroupId))
 		val switchedUser = switchedUserApi.getCurrentUser().successBody()
 		switchedUser.id shouldNotBe defaultGroupUser.id
@@ -424,7 +534,7 @@ class SmartAuthProviderTest : StringSpec({
 				)
 			)
 		)).successBody()
-		updatedDefault.rev.shouldNotBeNull() shouldBeNextRevOf switchedUser.rev.shouldNotBeNull()
+		updatedDefault.rev shouldBeNextRevOf switchedUser.rev
 		updatedDefault.authenticationTokens.shouldNotBeEmpty()
 	}
 })

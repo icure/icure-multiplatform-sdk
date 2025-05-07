@@ -1,7 +1,6 @@
 package com.icure.cardinal.sdk.serialization
 
 import com.icure.cardinal.sdk.model.CryptoActorStub
-import com.icure.cardinal.sdk.model.base.CodeStub
 import com.icure.cardinal.sdk.model.base.CryptoActor
 import com.icure.cardinal.sdk.model.specializations.AesExchangeKeyEncryptionKeypairIdentifier
 import com.icure.cardinal.sdk.model.specializations.HexString
@@ -32,7 +31,6 @@ object CryptoActorAsStubDeserializer : KSerializer<CryptoActor> {
 		element<Map<String, HexString>>("privateKeyShamirPartitions")
 		element<SpkiHexString>("publicKey")
 		element<Set<SpkiHexString>>("publicKeysForOaepWithSha256")
-		element<Set<CodeStub>>("tags")
 	}
 
 	override fun deserialize(decoder: Decoder): CryptoActor {
@@ -63,9 +61,6 @@ object CryptoActorAsStubDeserializer : KSerializer<CryptoActor> {
 			publicKeysForOaepWithSha256 = jsonObject["publicKeysForOaepWithSha256"]?.let {
 				decoder.json.decodeFromJsonElement(it)
 			} ?: throw SerializationException("Missing value for publicKeysForOaepWithSha256"),
-			tags = jsonObject["tags"]?.let {
-				decoder.json.decodeFromJsonElement(it)
-			} ?: emptySet(),
 			cryptoActorProperties = jsonObject["cryptoActorProperties"]?.let {
 				decoder.json.decodeFromJsonElement(it)
 			},

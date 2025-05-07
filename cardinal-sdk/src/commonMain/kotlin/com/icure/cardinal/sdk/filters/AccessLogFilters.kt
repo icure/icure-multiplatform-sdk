@@ -4,7 +4,6 @@ import com.icure.cardinal.sdk.CardinalBaseApis
 import com.icure.cardinal.sdk.crypto.EntityEncryptionService
 import com.icure.cardinal.sdk.crypto.entities.EntityWithEncryptionMetadataStub
 import com.icure.cardinal.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
-import com.icure.cardinal.sdk.crypto.entities.EntityWithTypeInfo
 import com.icure.cardinal.sdk.crypto.entities.toEncryptionMetadataStub
 import com.icure.cardinal.sdk.model.AccessLog
 import com.icure.cardinal.sdk.model.Patient
@@ -54,7 +53,7 @@ object AccessLogFilters {
 		descending: Boolean = false
 	): SortableFilterOptions<AccessLog> = ByPatientsDateForDataOwner(
 		dataOwnerId = dataOwnerId,
-		patients = patients.map { EntityWithTypeInfo(it.toEncryptionMetadataStub(), EntityWithEncryptionMetadataTypeName.Patient) },
+		patients = patients.map { it.toEncryptionMetadataStub() },
 		from = from,
 		to = to,
 		descending = descending
@@ -92,7 +91,7 @@ object AccessLogFilters {
 		@DefaultValue("false")
 		descending: Boolean = false
 	): SortableFilterOptions<AccessLog> = ByPatientsDateForSelf(
-		patients = patients.map { EntityWithTypeInfo(it.toEncryptionMetadataStub(), EntityWithEncryptionMetadataTypeName.Patient) },
+		patients = patients.map { it.toEncryptionMetadataStub() },
 		from = from,
 		to = to,
 		descending = descending
@@ -207,7 +206,7 @@ object AccessLogFilters {
 	@InternalIcureApi
 	internal class ByPatientsDateForDataOwner(
 		val dataOwnerId: String,
-		val patients: List<EntityWithTypeInfo<EntityWithEncryptionMetadataStub>>,
+		val patients: List<EntityWithEncryptionMetadataStub>,
 		val from: Instant?,
 		val to: Instant?,
 		val descending: Boolean
@@ -216,7 +215,7 @@ object AccessLogFilters {
 	@Serializable
 	@InternalIcureApi
 	internal class ByPatientsDateForSelf(
-		val patients: List<EntityWithTypeInfo<EntityWithEncryptionMetadataStub>>,
+		val patients: List<EntityWithEncryptionMetadataStub>,
 		val from: Instant?,
 		val to: Instant?,
 		val descending: Boolean
@@ -274,9 +273,7 @@ internal suspend fun mapAccessLogFilterOptions(
 		filterOptions.ensureNonBaseEnvironment(selfDataOwnerId, entityEncryptionService)
 		AccessLogByDataOwnerPatientDateFilter(
 			dataOwnerId = filterOptions.dataOwnerId,
-			secretPatientIds = filterOptions.patients.flatMap {
-				entityEncryptionService.secretIdsOf(it, null)
-			}.toSet(),
+			secretPatientIds = entityEncryptionService.secretIdsOf(null, filterOptions.patients, EntityWithEncryptionMetadataTypeName.Patient, null).values.flatten().toSet(),
 			startDate = filterOptions.from,
 			endDate = filterOptions.to,
 			descending = filterOptions.descending
@@ -286,9 +283,7 @@ internal suspend fun mapAccessLogFilterOptions(
 		filterOptions.ensureNonBaseEnvironment(selfDataOwnerId, entityEncryptionService)
 		AccessLogByDataOwnerPatientDateFilter(
 			dataOwnerId = selfDataOwnerId,
-			secretPatientIds = filterOptions.patients.flatMap {
-				entityEncryptionService.secretIdsOf(it, null)
-			}.toSet(),
+			secretPatientIds = entityEncryptionService.secretIdsOf(null, filterOptions.patients, EntityWithEncryptionMetadataTypeName.Patient, null).values.flatten().toSet(),
 			startDate = filterOptions.from,
 			endDate = filterOptions.to,
 			descending = filterOptions.descending

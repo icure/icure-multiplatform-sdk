@@ -70,7 +70,7 @@ interface InvoiceBasicFlavouredApi<E : Invoice> {
 	 * @param entityId an invoice id.
 	 * @return the invoice with id [entityId].
 	 */
-	suspend fun getInvoice(entityId: String): E
+	suspend fun getInvoice(entityId: String): E?
 
 	/**
 	 * Get multiple invoices by their ids. Ignores all ids that do not correspond to an entity, correspond to
@@ -172,6 +172,7 @@ interface InvoiceFlavouredApi<E : Invoice> : InvoiceBasicFlavouredApi<E> {
 	 * Share an invoice with another data owner. The invoice must already exist in the database for this method to
 	 * succeed. If you want to share the invoice before creation you should instead pass provide the delegates in
 	 * the initialize encryption metadata method.
+	 * Note: this method only updates the security metadata. If the input entity has unsaved changes they may be lost.
 	 * @param delegateId the owner that will gain access to the invoice
 	 * @param invoice the invoice to share with [delegateId]
 	 * @param options specifies how the invoice will be shared. By default, all data available to the current user
@@ -190,6 +191,7 @@ interface InvoiceFlavouredApi<E : Invoice> : InvoiceBasicFlavouredApi<E> {
 	 * Share an invoice with multiple data owners. The invoice must already exist in the database for this method to
 	 * succeed. If you want to share the invoice before creation you should instead pass provide the delegates in
 	 * the initialize encryption metadata method.
+	 * Note: this method only updates the security metadata. If the input entity has unsaved changes they may be lost.
 	 * Throws an exception if the operation fails.
 	 * @param invoice the invoice to share
 	 * @param delegates specify the data owners which will gain access to the entity and the options for sharing with
@@ -268,7 +270,11 @@ interface InvoiceApi : InvoiceBasicFlavourlessApi, InvoiceFlavouredApi<Decrypted
 	suspend fun getEncryptionKeysOf(invoice: Invoice): Set<HexString>
 
 	/**
-	 * Specifies if the current user has write access to an invoice.
+	 * Specifies if the current user has write access to an invoice through delegations.
+	 * Doesn't consider actual permissions on the server side: for example, if the data owner has access to all entities
+	 * thanks to extended permission but has no delegation on the provided entity this method returns false. Similarly,
+	 * if the SDK was initialized in hierarchical mode but the user is lacking the hierarchical permission on the server
+	 * side this method will still return true if there is a delegation to the parent.
 	 * @param invoice an invoice
 	 * @return if the current user has write access to the provided invoice
 	 */

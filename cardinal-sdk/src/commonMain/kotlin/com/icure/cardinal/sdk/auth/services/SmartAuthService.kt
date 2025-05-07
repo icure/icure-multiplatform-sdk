@@ -3,8 +3,9 @@ package com.icure.cardinal.sdk.auth.services
 import com.icure.cardinal.sdk.auth.JwtBearer
 import com.icure.cardinal.sdk.auth.SmartTokenProvider
 import com.icure.cardinal.sdk.model.embed.AuthenticationClass
-import com.icure.utils.InternalIcureApi
+import com.icure.cardinal.sdk.utils.InternalCardinalException
 import com.icure.cardinal.sdk.utils.RequestStatusException
+import com.icure.utils.InternalIcureApi
 import io.ktor.client.request.HttpRequestBuilder
 import io.ktor.client.request.bearerAuth
 
@@ -26,9 +27,12 @@ internal class SmartAuthService(
 	private var currentState: SmartAuthServiceState = SmartAuthServiceState.Initial
 
 	private suspend fun getTokenInState(authenticationClass: AuthenticationClass?): String = when(val immutableCurrentState = currentState) {
-		is SmartAuthServiceState.Initial -> {
+		is SmartAuthServiceState.Initial, is SmartAuthServiceState.DoneInitial -> {
 			if(authenticationClass != null) {
-				throw IllegalStateException("Illegal state: cannot ask for a specific auth class level at the first request attempt.")
+				throw InternalCardinalException("Illegal state: cannot ask for a specific auth class level at the first request attempt.")
+			} else if (immutableCurrentState is SmartAuthServiceState.DoneInitial) {
+				// Needed for reattempts on connection errors or 500
+				immutableCurrentState.token
 			} else {
 				val tokens = smartTokenProvider.getCachedOrRefreshedOrNewToken()
 				currentState = SmartAuthServiceState.DoneInitial(tokens.jwt)
@@ -58,7 +62,7 @@ internal class SmartAuthService(
 				throw immutableCurrentState.errorFromNewToken
 			}
 		}
-		else -> throw IllegalStateException("Illegal state: cannot get token in state: ${immutableCurrentState::class.simpleName}")
+		else -> throw InternalCardinalException("Illegal state: cannot get token in state: ${immutableCurrentState::class.simpleName}")
 	}
 
 	override suspend fun getToken(): JwtBearer = JwtBearer(getTokenInState(null))
@@ -75,7 +79,7 @@ internal class SmartAuthService(
 			is SmartAuthServiceState.DoneInitial -> SmartAuthServiceState.Reattempt(token = immutableCurrentState.token, initialError = error)
 			is SmartAuthServiceState.ReattemptedWithNewUnboundToken -> SmartAuthServiceState.ExpectRequestWithSpecificAuthClass(errorFromNewToken = error)
 			is SmartAuthServiceState.ReattemptedWithAuthClassSpecificToken -> throw error
-			else -> throw IllegalStateException("Illegal state: cannot invalidate header in state: ${immutableCurrentState::class.simpleName}")
+			else -> throw InternalCardinalException("Illegal state: cannot invalidate header in state: ${immutableCurrentState::class.simpleName}")
 		}
 	}
 

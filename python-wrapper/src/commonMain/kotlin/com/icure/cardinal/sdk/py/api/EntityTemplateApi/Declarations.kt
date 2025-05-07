@@ -3,7 +3,7 @@ package com.icure.cardinal.sdk.py.api.EntityTemplateApi
 
 import com.icure.cardinal.sdk.CardinalNonCryptoApis
 import com.icure.cardinal.sdk.model.EntityTemplate
-import com.icure.cardinal.sdk.model.IdWithMandatoryRev
+import com.icure.cardinal.sdk.model.StoredDocumentIdentifier
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.py.utils.failureToPyStringAsyncCallback
 import com.icure.cardinal.sdk.py.utils.toPyString
@@ -426,7 +426,7 @@ public fun createEntityTemplatesAsync(
 
 @Serializable
 private class DeleteEntityTemplatesParams(
-	public val entityTemplateIds: List<IdWithMandatoryRev>,
+	public val entityTemplateIds: List<StoredDocumentIdentifier>,
 )
 
 @OptIn(InternalIcureApi::class)

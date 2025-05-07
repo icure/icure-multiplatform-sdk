@@ -1,15 +1,16 @@
 package com.icure.cardinal.sdk.crypto
 
-import com.icure.kryptom.crypto.defaultCryptoService
 import com.icure.cardinal.sdk.CardinalSdk
 import com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption
 import com.icure.cardinal.sdk.model.DecryptedHealthElement
 import com.icure.cardinal.sdk.model.DecryptedPatient
 import com.icure.cardinal.sdk.model.embed.AccessLevel
+import com.icure.cardinal.sdk.test.autoCancelJob
 import com.icure.cardinal.sdk.test.createHcpUser
 import com.icure.cardinal.sdk.test.initializeTestEnvironment
 import com.icure.cardinal.sdk.utils.RequestStatusException
 import com.icure.cardinal.sdk.utils.pagination.forEach
+import com.icure.kryptom.crypto.defaultCryptoService
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.collections.shouldContain
@@ -19,8 +20,37 @@ import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
 
 class HierarchicalDataOwnerEncryptionAndConfidentialityTest : StringSpec({
-	beforeAny {
+	val specJob = autoCancelJob()
+
+	beforeSpec {
 		initializeTestEnvironment()
+	}
+
+	"Child hcp should be able to share existing data he can access through parent" {
+		val parent = createHcpUser()
+		val hcp = createHcpUser(parent)
+		val sibling = createHcpUser(parent)
+		val other = createHcpUser()
+		val siblingApi = hcp.api(specJob)
+		val note = "This will be encrypted"
+		val patient = siblingApi.patient.createPatient(
+			siblingApi.patient.withEncryptionMetadata(
+				DecryptedPatient(
+					id = defaultCryptoService.strongRandom.randomUUID(),
+					firstName = "John",
+					lastName = "Doe",
+					note = note
+				),
+				delegates = mapOf(parent.dataOwnerId to AccessLevel.Write)
+			)
+		).shouldNotBeNull()
+		val hcpApi = hcp.api(specJob)
+		val shared = hcpApi.patient.shareWith(
+			other.dataOwnerId,
+			hcpApi.patient.getPatient(patient.id).shouldNotBeNull()
+		)
+		val retrievedByOther = other.api(specJob).patient.getPatient(patient.id)
+		retrievedByOther shouldBe shared
 	}
 
 	"Data shared with a parent hcp should be accessible to the parent and siblings, but not to the grandparent" {
@@ -28,7 +58,7 @@ class HierarchicalDataOwnerEncryptionAndConfidentialityTest : StringSpec({
 		val parent = createHcpUser(grandparent)
 		val hcp = createHcpUser(parent)
 		val sibling = createHcpUser(parent)
-		val hcpApi = hcp.api()
+		val hcpApi = hcp.api(specJob)
 		val note = "This will be encrypted"
 		val patient = hcpApi.patient.createPatient(
 			hcpApi.patient.withEncryptionMetadata(
@@ -41,10 +71,10 @@ class HierarchicalDataOwnerEncryptionAndConfidentialityTest : StringSpec({
 				delegates = mapOf(parent.dataOwnerId to AccessLevel.Write)
 			)
 		).shouldNotBeNull()
-		parent.api().patient.getPatient(patient.id).note shouldBe note
-		sibling.api().patient.getPatient(patient.id).note shouldBe note
+		parent.api(specJob).patient.getPatient(patient.id).shouldNotBeNull().note shouldBe note
+		sibling.api(specJob).patient.getPatient(patient.id).shouldNotBeNull().note shouldBe note
 		shouldThrow<RequestStatusException> {
-			grandparent.api().patient.getPatient(patient.id)
+			grandparent.api(specJob).patient.getPatient(patient.id)
 		}.statusCode shouldBe 403
 	}
 
@@ -52,7 +82,7 @@ class HierarchicalDataOwnerEncryptionAndConfidentialityTest : StringSpec({
 		val parent = createHcpUser()
 		val hcp = createHcpUser(parent)
 		val sibling = createHcpUser(parent)
-		val hcpApi = hcp.api()
+		val hcpApi = hcp.api(specJob)
 		val patient = hcpApi.patient.createPatient(
 			hcpApi.patient.withEncryptionMetadata(
 				DecryptedPatient(
@@ -122,8 +152,8 @@ class HierarchicalDataOwnerEncryptionAndConfidentialityTest : StringSpec({
 			retrievedHes.single { it.id == confidentialHe.id }.note shouldBe confidentialNote
 		}
 		listOf(
-			Pair(parent.api(), listOf(parent.dataOwnerId)),
-			Pair(sibling.api(), listOf(parent.dataOwnerId, sibling.dataOwnerId))
+			Pair(parent.api(specJob), listOf(parent.dataOwnerId)),
+			Pair(sibling.api(specJob), listOf(parent.dataOwnerId, sibling.dataOwnerId))
 		).forEach { (relativeApi, ids) ->
 			relativeApi.patient.getSecretIdsOf(patient) shouldBe (allSecretIds - confidentialSecretIds)
 			findHealthElementsFor(ids, relativeApi).also { retrievedHes ->

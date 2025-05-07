@@ -1,11 +1,12 @@
 package com.icure.cardinal.sdk.crypto
 
-import com.icure.cardinal.sdk.crypto.entities.EntityWithTypeInfo
-import com.icure.cardinal.sdk.model.embed.AccessLevel
-import com.icure.cardinal.sdk.model.specializations.HexString
+import com.icure.cardinal.sdk.model.EntityReferenceInGroup
+import com.icure.cardinal.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
 import com.icure.cardinal.sdk.model.base.HasEncryptionMetadata
+import com.icure.cardinal.sdk.model.embed.AccessLevel
 import com.icure.cardinal.sdk.model.requests.EntityShareOrMetadataUpdateRequest
 import com.icure.cardinal.sdk.model.requests.RequestedPermission
+import com.icure.cardinal.sdk.model.specializations.HexString
 import com.icure.utils.InternalIcureApi
 
 @InternalIcureApi
@@ -22,12 +23,14 @@ interface SecureDelegationsManager {
 	 * @return the entity with the security metadata initialized for the provided parameters.
 	 */
 	suspend fun <T : HasEncryptionMetadata> entityWithInitializedEncryptedMetadata(
-		entity: EntityWithTypeInfo<T>,
+		entityGroupId: String?,
+		entity: T,
+		entityType: EntityWithEncryptionMetadataTypeName,
 		secretIds: Set<String>,
 		owningEntityIds: Set<String>,
 		owningEntitySecretIds: Set<String>,
 		encryptionKeys: Set<HexString>,
-		autoDelegations: Map<String, AccessLevel>
+		autoDelegations: Map<EntityReferenceInGroup, AccessLevel>
 	): T
 
 	/**
@@ -36,7 +39,7 @@ interface SecureDelegationsManager {
 	 * for the delegate, and it already contains all the provided metadata, this method returns undefined, since there is no need to make any request to
 	 * share the provided data.
 	 * @param entity the entity to share
-	 * @param delegateId the id of the delegate
+	 * @param delegate the id of the delegate
 	 * @param shareSecretIds the secret ids to share
 	 * @param shareEncryptionKeys the encryption keys to share
 	 * @param shareOwningEntityIds the owning entity ids to share
@@ -46,8 +49,10 @@ interface SecureDelegationsManager {
 	 * the entity to allow the delegate to access the provided data.
 	 */
 	suspend fun makeShareOrUpdateRequestParams(
-		entity: EntityWithTypeInfo<*>,
-		delegateId: String,
+		entityGroupId: String?,
+		entity: HasEncryptionMetadata,
+		entityType: EntityWithEncryptionMetadataTypeName,
+		delegate: EntityReferenceInGroup,
 		shareSecretIds: Set<String>,
 		shareEncryptionKeys: Set<HexString>,
 		shareOwningEntityIds: Set<String>,
@@ -55,7 +60,8 @@ interface SecureDelegationsManager {
 	): EntityShareOrMetadataUpdateRequest?
 
 	/**
-	 * Clears any cached data owner information. Should be needed only if a data owner changes type.
+	 * Clears any cached data owner information.
+	 * Should be needed only if a data owner changes type or adds new keys.
 	 */
 	suspend fun clearCachedDataOwnersInfo()
 }

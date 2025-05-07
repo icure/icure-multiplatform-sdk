@@ -4,7 +4,6 @@ import com.icure.cardinal.sdk.CardinalBaseApis
 import com.icure.cardinal.sdk.crypto.EntityEncryptionService
 import com.icure.cardinal.sdk.crypto.entities.EntityWithEncryptionMetadataStub
 import com.icure.cardinal.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
-import com.icure.cardinal.sdk.crypto.entities.EntityWithTypeInfo
 import com.icure.cardinal.sdk.crypto.entities.toEncryptionMetadataStub
 import com.icure.cardinal.sdk.model.Document
 import com.icure.cardinal.sdk.model.Patient
@@ -54,7 +53,7 @@ object DocumentFilters {
 		descending: Boolean = false
 	): SortableFilterOptions<Document> = ByPatientsCreatedForDataOwner(
 		dataOwnerId = dataOwnerId,
-		patients = patients.map { EntityWithTypeInfo(it.toEncryptionMetadataStub(), EntityWithEncryptionMetadataTypeName.Patient) },
+		patients = patients.map { it.toEncryptionMetadataStub() },
 		from = from,
 		to = to,
 		descending = descending
@@ -92,7 +91,7 @@ object DocumentFilters {
 		@DefaultValue("false")
 		descending: Boolean = false
 	): SortableFilterOptions<Document> = ByPatientsCreatedForSelf(
-		patients = patients.map { EntityWithTypeInfo(it.toEncryptionMetadataStub(), EntityWithEncryptionMetadataTypeName.Patient) },
+		patients = patients.map { it.toEncryptionMetadataStub() },
 		from = from,
 		to = to,
 		descending = descending
@@ -179,7 +178,7 @@ object DocumentFilters {
 		patients: List<Patient>
 	): FilterOptions<Document> = ByPatientsTypeForDataOwner(
 		dataOwnerId = dataOwnerId,
-		patients = patients.map { EntityWithTypeInfo(it.toEncryptionMetadataStub(), EntityWithEncryptionMetadataTypeName.Patient) },
+		patients = patients.map { it.toEncryptionMetadataStub() },
 		type = documentType
 	)
 
@@ -202,7 +201,7 @@ object DocumentFilters {
 		documentType: DocumentType,
 		patients: List<Patient>
 	): FilterOptions<Document> = ByPatientsTypeForSelf(
-		patients = patients.map { EntityWithTypeInfo(it.toEncryptionMetadataStub(), EntityWithEncryptionMetadataTypeName.Patient) },
+		patients = patients.map { it.toEncryptionMetadataStub() },
 		documentType
 	)
 
@@ -246,7 +245,7 @@ object DocumentFilters {
 	@InternalIcureApi
 	internal class ByPatientsCreatedForDataOwner(
 		val dataOwnerId: String,
-		val patients: List<EntityWithTypeInfo<EntityWithEncryptionMetadataStub>>,
+		val patients: List<EntityWithEncryptionMetadataStub>,
 		val from: Instant?,
 		val to: Instant?,
 		val descending: Boolean
@@ -255,7 +254,7 @@ object DocumentFilters {
 	@Serializable
 	@InternalIcureApi
 	internal class ByPatientsCreatedForSelf(
-		val patients: List<EntityWithTypeInfo<EntityWithEncryptionMetadataStub>>,
+		val patients: List<EntityWithEncryptionMetadataStub>,
 		val from: Instant?,
 		val to: Instant?,
 		val descending: Boolean
@@ -282,14 +281,14 @@ object DocumentFilters {
 	@InternalIcureApi
 	internal class ByPatientsTypeForDataOwner(
 		val dataOwnerId: String,
-		val patients: List<EntityWithTypeInfo<EntityWithEncryptionMetadataStub>>,
+		val patients: List<EntityWithEncryptionMetadataStub>,
 		val type: DocumentType
 	): FilterOptions<Document>
 
 	@Serializable
 	@InternalIcureApi
 	internal class ByPatientsTypeForSelf(
-		val patients: List<EntityWithTypeInfo<EntityWithEncryptionMetadataStub>>,
+		val patients: List<EntityWithEncryptionMetadataStub>,
 		val type: DocumentType
 	): FilterOptions<Document>
 
@@ -319,9 +318,7 @@ internal suspend fun mapDocumentFilterOptions(
 		filterOptions.ensureNonBaseEnvironment(selfDataOwnerId, entityEncryptionService)
 		DocumentByDataOwnerPatientDateFilter(
 			dataOwnerId = filterOptions.dataOwnerId,
-			secretPatientKeys = filterOptions.patients.flatMap {
-				entityEncryptionService.secretIdsOf(it, null)
-			}.toSet(),
+			secretPatientKeys = entityEncryptionService.secretIdsOf(null, filterOptions.patients, EntityWithEncryptionMetadataTypeName.Patient, null).values.flatten().toSet(),
 			startDate = filterOptions.to,
 			endDate = filterOptions.from,
 			descending = filterOptions.descending
@@ -331,9 +328,7 @@ internal suspend fun mapDocumentFilterOptions(
 		filterOptions.ensureNonBaseEnvironment(selfDataOwnerId, entityEncryptionService)
 		DocumentByDataOwnerPatientDateFilter(
 			dataOwnerId = selfDataOwnerId,
-			secretPatientKeys = filterOptions.patients.flatMap {
-				entityEncryptionService.secretIdsOf(it, null)
-			}.toSet(),
+			secretPatientKeys = entityEncryptionService.secretIdsOf(null, filterOptions.patients, EntityWithEncryptionMetadataTypeName.Patient, null).values.flatten().toSet(),
 			startDate = filterOptions.to,
 			endDate = filterOptions.from,
 			descending = filterOptions.descending
@@ -360,9 +355,7 @@ internal suspend fun mapDocumentFilterOptions(
 		filterOptions.ensureNonBaseEnvironment(selfDataOwnerId, entityEncryptionService)
 		DocumentByTypeDataOwnerPatientFilter(
 			dataOwnerId = filterOptions.dataOwnerId,
-			secretPatientKeys = filterOptions.patients.flatMap {
-				entityEncryptionService.secretIdsOf(it, null)
-			}.toSet(),
+			secretPatientKeys = entityEncryptionService.secretIdsOf(null, filterOptions.patients, EntityWithEncryptionMetadataTypeName.Patient, null).values.flatten().toSet(),
 			documentType = filterOptions.type
 		)
 	}
@@ -370,9 +363,7 @@ internal suspend fun mapDocumentFilterOptions(
 		filterOptions.ensureNonBaseEnvironment(selfDataOwnerId, entityEncryptionService)
 		DocumentByTypeDataOwnerPatientFilter(
 			dataOwnerId = selfDataOwnerId,
-			secretPatientKeys = filterOptions.patients.flatMap {
-				entityEncryptionService.secretIdsOf(it, null)
-			}.toSet(),
+			secretPatientKeys = entityEncryptionService.secretIdsOf(null, filterOptions.patients, EntityWithEncryptionMetadataTypeName.Patient, null).values.flatten().toSet(),
 			documentType = filterOptions.type
 		)
 	}

@@ -10,10 +10,9 @@ import com.icure.cardinal.sdk.filters.SortableFilterOptions
 import com.icure.cardinal.sdk.model.Contact
 import com.icure.cardinal.sdk.model.DecryptedContact
 import com.icure.cardinal.sdk.model.EncryptedContact
-import com.icure.cardinal.sdk.model.IcureStub
-import com.icure.cardinal.sdk.model.IdWithMandatoryRev
 import com.icure.cardinal.sdk.model.PaginatedList
 import com.icure.cardinal.sdk.model.Patient
+import com.icure.cardinal.sdk.model.StoredDocumentIdentifier
 import com.icure.cardinal.sdk.model.User
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.model.data.LabelledOccurence
@@ -29,7 +28,6 @@ import com.icure.cardinal.sdk.utils.DefaultValue
 import com.icure.cardinal.sdk.utils.EntityEncryptionException
 import com.icure.cardinal.sdk.utils.pagination.PaginatedListIterator
 import kotlinx.serialization.json.JsonElement
-import kotlin.js.JsName
 
 /* This interface includes the API calls that do not need encryption keys and do not return or consume encrypted/decrypted items, they are completely agnostic towards the presence of encrypted items */
 interface ContactBasicFlavourlessApi {
@@ -54,7 +52,7 @@ interface ContactBasicFlavourlessApi {
 	 * @return the id and revision of the deleted contacts. If some entities couldn't be deleted (for example
 	 * because you had no write access to them) they will not be included in this list.
 	 */
-	suspend fun deleteContactsByIds(entityIds: List<IdWithMandatoryRev>): List<DocIdentifier>
+	suspend fun deleteContactsByIds(entityIds: List<StoredDocumentIdentifier>): List<DocIdentifier>
 
 	/**
 	 * Permanently deletes a contact.
@@ -81,7 +79,7 @@ interface ContactBasicFlavourlessApi {
 	 */
 	suspend fun deleteContacts(contacts: List<Contact>): List<DocIdentifier> =
 		deleteContactsByIds(contacts.map { contact ->
-			IdWithMandatoryRev(contact.id, requireNotNull(contact.rev) { "Can't delete a contact that has no rev" })
+			StoredDocumentIdentifier(contact.id, requireNotNull(contact.rev) { "Can't delete a contact that has no rev" })
 		})
 
 	/**
@@ -107,6 +105,23 @@ interface ContactBasicFlavourlessApi {
 
 /* This interface includes the API calls can be used on decrypted items if encryption keys are available *or* encrypted items if no encryption keys are available */
 interface ContactBasicFlavouredApi<E : Contact, S : Service> {
+	/**
+	 * Create a new contact. The provided contact must have the encryption metadata initialized.
+	 * @param entity a contact with initialized encryption metadata
+	 * @return the created contact with updated revision.
+	 * @throws IllegalArgumentException if the encryption metadata of the input was not initialized.
+	 */
+	suspend fun createContact(entity: E): E
+
+	/**
+	 * Create multiple contacts. All the provided contacts must have the encryption metadata initialized, otherwise
+	 * this method fails without doing anything.
+	 * @param entities contacts with initialized encryption metadata
+	 * @return the created contacts with updated revision.
+	 * @throws IllegalArgumentException if the encryption metadata of any contact in the input was not initialized.
+	 */
+	suspend fun createContacts(entities: List<E>): List<E>
+
 	/**
 	 * Restores a contact that was marked as deleted.
 	 * @param id the id of the entity
@@ -149,7 +164,7 @@ interface ContactBasicFlavouredApi<E : Contact, S : Service> {
 	 * @param entityId a contact id.
 	 * @return the contact with id [entityId].
 	 */
-	suspend fun getContact(entityId: String): E
+	suspend fun getContact(entityId: String): E?
 
 	/**
 	 * Get multiple contacts by their ids. Ignores all ids that do not correspond to an entity, correspond to
@@ -226,6 +241,7 @@ interface ContactFlavouredApi<E : Contact, S : Service> : ContactBasicFlavouredA
 	 * Share a contact with another data owner. The contact must already exist in the database for this method to
 	 * succeed. If you want to share the contact before creation you should instead pass provide the delegates in
 	 * the initialize encryption metadata method.
+	 * Note: this method only updates the security metadata. If the input entity has unsaved changes they may be lost.
 	 * @param delegateId the owner that will gain access to the contact
 	 * @param contact the contact to share with [delegateId]
 	 * @param options specifies how the contact will be shared. By default, all data available to the current user
@@ -244,6 +260,7 @@ interface ContactFlavouredApi<E : Contact, S : Service> : ContactBasicFlavouredA
 	 * Share a contact with multiple data owners. The contact must already exist in the database for this method to
 	 * succeed. If you want to share the contact before creation you should instead pass provide the delegates in
 	 * the initialize encryption metadata method.
+	 * Note: this method only updates the security metadata. If the input entity has unsaved changes they may be lost.
 	 * Throws an exception if the operation fails.
 	 * @param contact the contact to share
 	 * @param delegates specify the data owners which will gain access to the entity and the options for sharing with
@@ -371,23 +388,6 @@ interface ContactApi : ContactBasicFlavourlessApi, ContactFlavouredApi<Decrypted
 	suspend fun matchServicesBySorted(filter: SortableFilterOptions<Service>): List<String>
 
 	/**
-	 * Create a new contact. The provided contact must have the encryption metadata initialized.
-	 * @param entity a contact with initialized encryption metadata
-	 * @return the created contact with updated revision.
-	 * @throws IllegalArgumentException if the encryption metadata of the input was not initialized.
-	 */
-	suspend fun createContact(entity: DecryptedContact): DecryptedContact
-
-	/**
-	 * Create multiple contacts. All the provided contacts must have the encryption metadata initialized, otherwise
-	 * this method fails without doing anything.
-	 * @param entities contacts with initialized encryption metadata
-	 * @return the created contacts with updated revision.
-	 * @throws IllegalArgumentException if the encryption metadata of any contact in the input was not initialized.
-	 */
-	suspend fun createContacts(entities: List<DecryptedContact>): List<DecryptedContact>
-
-	/**
 	 * Creates a new contact with initialized encryption metadata
 	 * @param base a contact with initialized content and uninitialized encryption metadata. The result of this
 	 * method takes the content from [base] if provided.
@@ -421,7 +421,11 @@ interface ContactApi : ContactBasicFlavourlessApi, ContactFlavouredApi<Decrypted
 	suspend fun getEncryptionKeysOf(contact: Contact): Set<HexString>
 
 	/**
-	 * Specifies if the current user has write access to a contact.
+	 * Specifies if the current user has write access to a contact through delegations.
+	 * Doesn't consider actual permissions on the server side: for example, if the data owner has access to all entities
+	 * thanks to extended permission but has no delegation on the provided entity this method returns false. Similarly,
+	 * if the SDK was initialized in hierarchical mode but the user is lacking the hierarchical permission on the server
+	 * side this method will still return true if there is a delegation to the parent.
 	 * @param contact a contact
 	 * @return if the current user has write access to the provided contact
 	 */

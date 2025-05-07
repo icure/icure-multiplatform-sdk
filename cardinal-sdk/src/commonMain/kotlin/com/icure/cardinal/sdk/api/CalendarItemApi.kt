@@ -10,25 +10,27 @@ import com.icure.cardinal.sdk.filters.SortableFilterOptions
 import com.icure.cardinal.sdk.model.CalendarItem
 import com.icure.cardinal.sdk.model.DecryptedCalendarItem
 import com.icure.cardinal.sdk.model.EncryptedCalendarItem
-import com.icure.cardinal.sdk.model.IdWithMandatoryRev
+import com.icure.cardinal.sdk.model.EntityReferenceInGroup
+import com.icure.cardinal.sdk.model.GroupScoped
 import com.icure.cardinal.sdk.model.PaginatedList
 import com.icure.cardinal.sdk.model.Patient
+import com.icure.cardinal.sdk.model.StoredDocumentIdentifier
 import com.icure.cardinal.sdk.model.User
-import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.model.embed.AccessLevel
 import com.icure.cardinal.sdk.model.specializations.HexString
+import com.icure.cardinal.sdk.model.toStoredDocumentIdentifier
 import com.icure.cardinal.sdk.subscription.Subscribable
 import com.icure.cardinal.sdk.utils.DefaultValue
 import com.icure.cardinal.sdk.utils.EntityEncryptionException
+import com.icure.cardinal.sdk.utils.generation.JsMapAsObjectArray
 import com.icure.cardinal.sdk.utils.pagination.PaginatedListIterator
-import kotlin.js.JsName
 
 /* This interface includes the API calls that do not need encryption keys and do not return or consume encrypted/decrypted items, they are completely agnostic towards the presence of encrypted items */
 interface CalendarItemBasicFlavourlessApi {
 	@Deprecated("Deletion without rev is unsafe")
-	suspend fun deleteCalendarItemUnsafe(entityId: String): DocIdentifier
+	suspend fun deleteCalendarItemUnsafe(entityId: String): StoredDocumentIdentifier
 	@Deprecated("Deletion without rev is unsafe")
-	suspend fun deleteCalendarItemsUnsafe(entityIds: List<String>): List<DocIdentifier>
+	suspend fun deleteCalendarItemsUnsafe(entityIds: List<String>): List<StoredDocumentIdentifier>
 	
 	/**
 	 * Deletes a calendarItem. If you don't have write access to the calendarItem the method will fail.
@@ -37,7 +39,7 @@ interface CalendarItemBasicFlavourlessApi {
 	 * @return the id and revision of the deleted calendarItem.
 	 * @throws RevisionConflictException if the provided revision doesn't match the latest known revision
 	 */
-	suspend fun deleteCalendarItemById(entityId: String, rev: String): DocIdentifier
+	suspend fun deleteCalendarItemById(entityId: String, rev: String): StoredDocumentIdentifier
 
 	/**
 	 * Deletes many calendarItems. Ids that don't correspond to an entity, or that correspond to an entity for which
@@ -46,7 +48,7 @@ interface CalendarItemBasicFlavourlessApi {
 	 * @return the id and revision of the deleted calendarItems. If some entities couldn't be deleted (for example
 	 * because you had no write access to them) they will not be included in this list.
 	 */
-	suspend fun deleteCalendarItemsByIds(entityIds: List<IdWithMandatoryRev>): List<DocIdentifier>
+	suspend fun deleteCalendarItemsByIds(entityIds: List<StoredDocumentIdentifier>): List<StoredDocumentIdentifier>
 
 	/**
 	 * Permanently deletes a calendarItem.
@@ -62,7 +64,7 @@ interface CalendarItemBasicFlavourlessApi {
 	 * @return the id and revision of the deleted calendarItem.
 	 * @throws RevisionConflictException if the provided calendarItem doesn't match the latest known revision
 	 */
-	suspend fun deleteCalendarItem(calendarItem: CalendarItem): DocIdentifier =
+	suspend fun deleteCalendarItem(calendarItem: CalendarItem): StoredDocumentIdentifier =
 		deleteCalendarItemById(calendarItem.id, requireNotNull(calendarItem.rev) { "Can't delete a calendarItem that has no rev" })
 
 	/**
@@ -71,9 +73,9 @@ interface CalendarItemBasicFlavourlessApi {
 	 * @return the id and revision of the deleted calendarItems. If some entities couldn't be deleted they will not be
 	 * included in this list.
 	 */
-	suspend fun deleteCalendarItems(calendarItems: List<CalendarItem>): List<DocIdentifier> =
+	suspend fun deleteCalendarItems(calendarItems: List<CalendarItem>): List<StoredDocumentIdentifier> =
 		deleteCalendarItemsByIds(calendarItems.map { calendarItem ->
-			IdWithMandatoryRev(calendarItem.id, requireNotNull(calendarItem.rev) { "Can't delete a calendarItem that has no rev" })
+			StoredDocumentIdentifier(calendarItem.id, requireNotNull(calendarItem.rev) { "Can't delete a calendarItem that has no rev" })
 		})
 
 	/**
@@ -86,8 +88,50 @@ interface CalendarItemBasicFlavourlessApi {
 	}
 }
 
+interface CalendarItemBasicFlavourlessInGroupApi {
+	/**
+	 * In-group version of [CalendarItemBasicFlavourlessApi.deleteCalendarItemById]
+	 */
+	suspend fun deleteCalendarItemById(entityId: GroupScoped<StoredDocumentIdentifier>): GroupScoped<StoredDocumentIdentifier>
+
+	/**
+	 * In-group version of [CalendarItemBasicFlavourlessApi.deleteCalendarItemsByIds]
+	 */
+	 suspend fun deleteCalendarItemsByIds(entityIds: List<GroupScoped<StoredDocumentIdentifier>>): List<GroupScoped<StoredDocumentIdentifier>>
+
+	/**
+	 * In-group version of [CalendarItemBasicFlavourlessApi.purgeCalendarItemById]
+	 */
+	// TODO suspend fun purgeCalendarItemById(entityId: GroupScoped<StoredDocumentIdentifier>)
+
+	/**
+	 * In-group version of [CalendarItemBasicFlavourlessApi.deleteCalendarItem]
+	 */
+	suspend fun deleteCalendarItem(calendarItem: GroupScoped<CalendarItem>): GroupScoped<StoredDocumentIdentifier> =
+		deleteCalendarItemById(calendarItem.toStoredDocumentIdentifier())
+
+	/**
+	 * In-group version of [CalendarItemBasicFlavourlessApi.deleteCalendarItems]
+	 */
+	suspend fun deleteCalendarItems(calendarItems: List<GroupScoped<CalendarItem>>): List<GroupScoped<StoredDocumentIdentifier>> =
+		deleteCalendarItemsByIds(calendarItems.toStoredDocumentIdentifier())
+
+	/**
+	 * In-group version of [CalendarItemBasicFlavourlessApi.purgeCalendarItem]
+	 */
+	// TODO suspend fun purgeCalendarItem(calendarItem: GroupScoped<CalendarItem>)
+}
+
 /* This interface includes the API calls can be used on decrypted items if encryption keys are available *or* encrypted items if no encryption keys are available */
 interface CalendarItemBasicFlavouredApi<E : CalendarItem> {
+	/**
+	 * Create a new calendar item. The provided calendar item must have the encryption metadata initialized.
+	 * @param entity a calendar item with initialized encryption metadata
+	 * @return the created calendar item with updated revision.
+	 * @throws IllegalArgumentException if the encryption metadata of the input was not initialized.
+	 */
+	suspend fun createCalendarItem(entity: E): E
+
 	/**
 	 * Restores a calendarItem that was marked as deleted.
 	 * @param id the id of the entity
@@ -118,11 +162,12 @@ interface CalendarItemBasicFlavouredApi<E : CalendarItem> {
 	 * Get a calendar item by its id. You must have read access to the entity. Fails if the id does not correspond to any
 	 * entity, corresponds to an entity that is not a calendar item, or corresponds to an entity for which you don't have
 	 * read access.
-	 * Flavoured method.
 	 * @param entityId a calendar item id.
 	 * @return the calendar item with id [entityId].
 	 */
-	suspend fun getCalendarItem(entityId: String): E
+	suspend fun getCalendarItem(
+		entityId: String
+	): E?
 
 	/**
 	 * Get multiple calendar items by their ids. Ignores all ids that do not correspond to an entity, correspond to
@@ -148,12 +193,45 @@ interface CalendarItemBasicFlavouredApi<E : CalendarItem> {
 	): PaginatedList<E>
 }
 
+interface CalendarItemBasicFlavouredInGroupApi<E : CalendarItem> {
+	/**
+	 * In-group version of [CalendarItemBasicFlavouredApi.createCalendarItem].
+	 */
+	suspend fun createCalendarItem(entity: GroupScoped<E>): GroupScoped<E>
+
+	/**
+	 * In-group version of [CalendarItemBasicFlavouredApi.undeleteCalendarItemById]
+	 */
+	// TODO suspend fun undeleteCalendarItemById(entityId: GroupScoped<StoredDocumentIdentifier>): GroupScoped<E>
+
+	/**
+	 * In-group version of [CalendarItemBasicFlavouredApi.undeleteCalendarItem]
+	 */
+	// TODO suspend fun undeleteCalendarItem(calendarItem: GroupScoped<CalendarItem>): GroupScoped<E>
+
+	/**
+	 * In-group version of [CalendarItemBasicFlavouredApi.modifyCalendarItem]
+	 */
+	suspend fun modifyCalendarItem(entity: GroupScoped<E>): GroupScoped<E>
+
+	/**
+	 * In-group version of [CalendarItemBasicFlavouredApi.getCalendarItem]
+	 */
+	suspend fun getCalendarItem(groupId: String, entityId: String): GroupScoped<E>?
+
+	/**
+	 * In-group version of [CalendarItemBasicFlavouredApi.getCalendarItems]
+	 */
+	suspend fun getCalendarItems(groupId: String, entityIds: List<String>): List<GroupScoped<E>>
+}
+
 /* The extra API calls declared in this interface are the ones that can be used on encrypted or decrypted items but only when the user is a data owner */
 interface CalendarItemFlavouredApi<E : CalendarItem> : CalendarItemBasicFlavouredApi<E> {
 	/**
 	 * Share a calendar item with another data owner. The calendar item must already exist in the database for this method to
 	 * succeed. If you want to share the calendar item before creation you should instead pass provide the delegates in
 	 * the initialize encryption metadata method.
+	 * Note: this method only updates the security metadata. If the input entity has unsaved changes they may be lost.
 	 * @param delegateId the owner that will gain access to the calendar item
 	 * @param calendarItem the calendar item to share with [delegateId]
 	 * @param options specifies how the calendar item will be shared. By default, all data available to the current user
@@ -172,6 +250,7 @@ interface CalendarItemFlavouredApi<E : CalendarItem> : CalendarItemBasicFlavoure
 	 * Share a calendar item with multiple data owners. The calendar item must already exist in the database for this method to
 	 * succeed. If you want to share the calendar item before creation you should instead pass provide the delegates in
 	 * the initialize encryption metadata method.
+	 * Note: this method only updates the security metadata. If the input entity has unsaved changes they may be lost.
 	 * Throws an exception if the operation fails.
 	 * @param calendarItem the calendar item to share
 	 * @param delegates specify the data owners which will gain access to the entity and the options for sharing with
@@ -237,19 +316,66 @@ interface CalendarItemFlavouredApi<E : CalendarItem> : CalendarItemBasicFlavoure
 	): PaginatedListIterator<E>
 }
 
+interface CalendarItemFlavouredInGroupApi<E : CalendarItem> : CalendarItemBasicFlavouredInGroupApi<E> {
+	/**
+	 * In-group version of [CalendarItemFlavouredApi.shareWith]
+	 */
+	suspend fun shareWith(
+		delegate: EntityReferenceInGroup,
+		calendarItem: GroupScoped<E>,
+		@DefaultValue("null")
+		options: CalendarItemShareOptions? = null
+	): GroupScoped<E>
+
+	/**
+	 * In-group version of [CalendarItemFlavouredApi.shareWithMany]
+	 */
+	suspend fun shareWithMany(
+		calendarItem: GroupScoped<E>,
+		delegates: @JsMapAsObjectArray(keyEntryName = "delegate", valueEntryName = "shareOptions") Map<EntityReferenceInGroup, CalendarItemShareOptions>
+	): GroupScoped<E>
+
+	/**
+	 * In-group version of [CalendarItemFlavouredApi.linkToPatient]
+	 */
+	// TODO? suspend fun linkToPatient(calendarItem: CalendarItem, patient: Patient, shareLinkWithDelegates: Set<String>): E
+
+	/**
+	 * In-group version of [CalendarItemFlavouredApi.filterCalendarItemsBy]
+	 */
+	suspend fun filterCalendarItemsBy(groupId: String, filter: FilterOptions<CalendarItem>): PaginatedListIterator<GroupScoped<E>>
+
+	/**
+	 * In-group version of [CalendarItemFlavouredApi.filterCalendarItemsBySorted]
+	 */
+	suspend fun filterCalendarItemsBySorted(groupId: String, filter: SortableFilterOptions<CalendarItem>): PaginatedListIterator<GroupScoped<E>>
+}
+
 /* The extra API calls declared in this interface are the ones that can only be used on decrypted items when encryption keys are available */
 interface CalendarItemApi : CalendarItemBasicFlavourlessApi, CalendarItemFlavouredApi<DecryptedCalendarItem>,
 	Subscribable<CalendarItem, EncryptedCalendarItem, FilterOptions<CalendarItem>> {
-	/**
-	 * Create a new calendar item. The provided calendar item must have the encryption metadata initialized.
-	 * @param entity a calendar item with initialized encryption metadata
-	 * @return the created calendar item with updated revision.
-	 * @throws IllegalArgumentException if the encryption metadata of the input was not initialized.
-	 */
-	suspend fun createCalendarItem(entity: DecryptedCalendarItem): DecryptedCalendarItem
 
 	/**
-	 * Creates a new calendar item with initialized encryption metadata
+	 * Give access to the encrypted flavour of the api
+	 */
+	val encrypted: CalendarItemFlavouredApi<EncryptedCalendarItem>
+
+	/**
+	 * Gives access to the polymorphic flavour of the api
+	 */
+	val tryAndRecover: CalendarItemFlavouredApi<CalendarItem>
+
+	/**
+	 * Gives access to methods of the api that allow to use entities or work with data owners in groups other than the
+	 * current user's group.
+	 * These methods aren't available when connected to a kraken-lite instance.
+	 */
+	val inGroup: CalendarItemInGroupApi
+
+	/**
+	 * Creates a new calendar item entity with initialized encryption metadata.
+	 * NOTE: this method doesn't send the entity to the backend, to store it you will need to pass the entity to the
+	 * [createCalendarItem] method.
 	 * @param base a calendar item with initialized content and uninitialized encryption metadata. The result of this
 	 * method takes the content from [base] if provided.
 	 * @param patient the patient linked to the calendar item.
@@ -282,7 +408,11 @@ interface CalendarItemApi : CalendarItemBasicFlavourlessApi, CalendarItemFlavour
 	suspend fun getEncryptionKeysOf(calendarItem: CalendarItem): Set<HexString>
 
 	/**
-	 * Specifies if the current user has write access to a calendar item.
+	 * Specifies if the current user has write access to a calendar item through delegations.
+	 * Doesn't consider actual permissions on the server side: for example, if the data owner has access to all entities
+	 * thanks to extended permission but has no delegation on the provided entity this method returns false. Similarly,
+	 * if the SDK was initialized in hierarchical mode but the user is lacking the hierarchical permission on the server
+	 * side this method will still return true if there is a delegation to the parent.
 	 * @param calendarItem a calendar item
 	 * @return if the current user has write access to the provided calendar item
 	 */
@@ -296,7 +426,7 @@ interface CalendarItemApi : CalendarItemBasicFlavourlessApi, CalendarItemFlavour
 	 * @return the id of the patient linked to the calendar item, or empty if the current user can't access any patient id
 	 * of the calendar item.
 	 */
-	suspend fun decryptPatientIdOf(calendarItem: CalendarItem): Set<String>
+	suspend fun decryptPatientIdOf(calendarItem: CalendarItem): Set<EntityReferenceInGroup>
 
 	/**
 	 * Create metadata to allow other users to identify the anonymous delegates of a calendar item.
@@ -332,29 +462,29 @@ interface CalendarItemApi : CalendarItemBasicFlavourlessApi, CalendarItemFlavour
 	suspend fun createDelegationDeAnonymizationMetadata(entity: CalendarItem, delegates: Set<String>)
 
 	/**
-	 * Decrypts a calendar item, throwing an exception if it is not possible.
-	 * @param calendarItem a calendar item
-	 * @return the decrypted calendar item
-	 * @throws EntityEncryptionException if the calendar item could not be decrypted
+	 * Decrypts CalendarItems, throwing an exception if it is not possible.
+	 * @param calendarItems encrypted CalendarItems
+	 * @return the decrypted CalendarItems
+	 * @throws EntityEncryptionException if any of the provided CalendarItems couldn't be decrypted
 	 */
-	suspend fun decrypt(calendarItem: EncryptedCalendarItem): DecryptedCalendarItem
+	suspend fun decrypt(calendarItems: List<EncryptedCalendarItem>): List<DecryptedCalendarItem>
 
 	/**
-	 * Tries to decrypt a calendar item, returns the input if it is not possible.
-	 * @param calendarItem an encrypted calendar item
-	 * @return the decrypted calendar item if the decryption was successful or the input if it was not.
+	 * Tries to decrypt a CalendarItem, returns the input if it is not possible.
+	 * @param calendarItems encrypted CalendarItems
+	 * @return all the provided CalendarItems, each of them decrypted if possible or unchanged (still encrypted)
 	 */
-	suspend fun tryDecrypt(calendarItem: EncryptedCalendarItem): CalendarItem
+	suspend fun tryDecrypt(calendarItems: List<EncryptedCalendarItem>): List<CalendarItem>
 
 	/**
-	 * Give access to the encrypted flavour of the api
+	 * Encrypts provided decrypted CalendarItems, and validates already encrypted CalendarItems.
+	 * @param calendarItems CalendarItems to encrypt and/or validate
+	 * @return the encrypted and validates CalendarItems
+	 * @throws EntityEncryptionException if any of the provided decrypted CalendarItems couldn't be encrypted (the current
+	 * user can't access its encryption key or no key was initialized) or if the already encrypted CalendarItems don't
+	 * respect the manifest.
 	 */
-	val encrypted: CalendarItemFlavouredApi<EncryptedCalendarItem>
-
-	/**
-	 * Gives access to the polymorphic flavour of the api
-	 */
-	val tryAndRecover: CalendarItemFlavouredApi<CalendarItem>
+	suspend fun encryptOrValidate(calendarItems: List<CalendarItem>): List<EncryptedCalendarItem>
 
 	/**
 	 * Get the ids of all calendarItems matching the provided filter.
@@ -381,8 +511,88 @@ interface CalendarItemApi : CalendarItemBasicFlavourlessApi, CalendarItemFlavour
 	suspend fun matchCalendarItemsBySorted(filter: SortableFilterOptions<CalendarItem>): List<String>
 }
 
+interface CalendarItemInGroupApi : CalendarItemBasicFlavourlessInGroupApi, CalendarItemFlavouredInGroupApi<DecryptedCalendarItem> { // TODO subscribable?
+	/**
+	 * Give access to the encrypted flavour of the api
+	 */
+	val encrypted: CalendarItemFlavouredInGroupApi<EncryptedCalendarItem>
+
+	/**
+	 * Gives access to the polymorphic flavour of the api
+	 */
+	val tryAndRecover: CalendarItemFlavouredInGroupApi<CalendarItem>
+
+	/**
+	 * In-group version of [CalendarItemApi.withEncryptionMetadata]
+	 */
+	suspend fun withEncryptionMetadata(
+		entityGroupId: String,
+		base: DecryptedCalendarItem?,
+		patient: GroupScoped<Patient>?,
+		@DefaultValue("null")
+		user: User? = null,
+		@DefaultValue("emptyMap()")
+		delegates: @JsMapAsObjectArray(keyEntryName = "delegate", valueEntryName = "accessLevel") Map<EntityReferenceInGroup, AccessLevel> = emptyMap(),
+		@DefaultValue("com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption.UseAnySharedWithParent")
+		secretId: SecretIdUseOption = SecretIdUseOption.UseAnySharedWithParent,
+	): GroupScoped<DecryptedCalendarItem>
+
+	/**
+	 * In-group version of [CalendarItemApi.getEncryptionKeysOf]
+	 */
+	suspend fun getEncryptionKeysOf(calendarItem: GroupScoped<CalendarItem>): Set<HexString>
+
+	/**
+	 * In-group version of [CalendarItemApi.hasWriteAccess]
+	 */
+	suspend fun hasWriteAccess(calendarItem: GroupScoped<CalendarItem>): Boolean
+
+	/**
+	 * In-group version of [CalendarItemApi.decryptPatientIdOf]
+	 */
+	suspend fun decryptPatientIdOf(calendarItem: GroupScoped<CalendarItem>): Set<EntityReferenceInGroup>
+
+	/**
+	 * In-group version of [CalendarItemApi.createDelegationDeAnonymizationMetadata]
+	 */
+	suspend fun createDelegationDeAnonymizationMetadata(entity: GroupScoped<CalendarItem>, delegates: Set<EntityReferenceInGroup>)
+
+	/**
+	 * In-group version of [CalendarItemApi.decrypt]
+	 */
+	suspend fun decrypt(calendarItems: List<GroupScoped<EncryptedCalendarItem>>): List<GroupScoped<DecryptedCalendarItem>>
+
+	/**
+	 * In-group version of [CalendarItemApi.tryDecrypt]
+	 */
+	suspend fun tryDecrypt(calendarItems: List<GroupScoped<EncryptedCalendarItem>>): List<GroupScoped<CalendarItem>>
+
+	/**
+	 * In-group version of [CalendarItemApi.encryptOrValidate]
+	 */
+	suspend fun encryptOrValidate(calendarItems: List<GroupScoped<CalendarItem>>): List<GroupScoped<EncryptedCalendarItem>>
+
+	/**
+	 * In-group version of [CalendarItemApi.matchCalendarItemsBy]
+	 */
+	suspend fun matchCalendarItemsBy(groupId: String, filter: FilterOptions<CalendarItem>): List<String>
+
+	/**
+	 * In-group version of [CalendarItemApi.matchCalendarItemsBySorted]
+	 */
+	 suspend fun matchCalendarItemsBySorted(groupId: String, filter: SortableFilterOptions<CalendarItem>): List<String>
+}
+
 interface CalendarItemBasicApi : CalendarItemBasicFlavourlessApi, CalendarItemBasicFlavouredApi<EncryptedCalendarItem>,
 	Subscribable<CalendarItem, EncryptedCalendarItem, FilterOptions<CalendarItem>> {
+
+	/**
+	 * Gives access to methods of the api that allow to use entities or work with data owners in groups other than the
+	 * current user's group.
+	 * These methods aren't available when connected to a kraken-lite instance.
+	 */
+	val inGroup: CalendarItemBasicInGroupApi
+
 	/**
 	 * Get the ids of all calendarItems matching the provided filter.
 	 *
@@ -436,4 +646,26 @@ interface CalendarItemBasicApi : CalendarItemBasicFlavourlessApi, CalendarItemBa
 	suspend fun filterCalendarItemsBySorted(
 		filter: BaseSortableFilterOptions<CalendarItem>
 	): PaginatedListIterator<EncryptedCalendarItem>
+}
+
+interface CalendarItemBasicInGroupApi : CalendarItemBasicFlavourlessInGroupApi, CalendarItemBasicFlavouredInGroupApi<EncryptedCalendarItem> { // TODO subscribable
+	/**
+	 * In-group version of [CalendarItemBasicApi.matchCalendarItemsBy]
+	 */
+	suspend fun matchCalendarItemsBy(groupId: String, filter: BaseFilterOptions<CalendarItem>): List<String>
+
+	/**
+	 * In-group version of [CalendarItemBasicApi.matchCalendarItemsBySorted]
+	 */
+	suspend fun matchCalendarItemsBySorted(groupId: String, filter: BaseSortableFilterOptions<CalendarItem>): List<String>
+
+	/**
+	 * In-group version of [CalendarItemBasicApi.filterCalendarItemsBy]
+	 */
+	 suspend fun filterCalendarItemsBy(groupId: String, filter: BaseFilterOptions<CalendarItem>): PaginatedListIterator<GroupScoped<EncryptedCalendarItem>>
+
+	/**
+	 * In-group version of [CalendarItemBasicApi.filterCalendarItemsBySorted]
+	 */
+	suspend fun filterCalendarItemsBySorted(groupId: String, filter: BaseSortableFilterOptions<CalendarItem>): PaginatedListIterator<GroupScoped<EncryptedCalendarItem>>
 }

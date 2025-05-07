@@ -41,10 +41,10 @@ interface UserApi: Subscribable<User, User, FilterOptions<User>> {
 	): PaginatedList<User>
 
 	suspend fun createUser(user: User): User
-	suspend fun getUser(userId: String): User
+	suspend fun getUser(userId: String): User?
 	suspend fun getUsers(userIds: List<String>): List<User>
-	suspend fun getUserByEmail(email: String): User
-	suspend fun getUserByPhoneNumber(phoneNumber: String): User
+	suspend fun getUserByEmail(email: String): User?
+	suspend fun getUserByPhoneNumber(phoneNumber: String): User?
 	suspend fun findByHcpartyId(id: String): List<String>
 	suspend fun findByPatientId(id: String): List<String>
 	suspend fun modifyUser(user: User): User
@@ -245,5 +245,18 @@ interface UserApi: Subscribable<User, User, FilterOptions<User>> {
 	 */
 	suspend fun undeleteUser(user: User): User =
 		undeleteUserById(user.id, requireNotNull(user.rev) { "Can't delete a user that has no rev" })
+
+	/**
+	 * Defines if a user inherits the permission they have in their group in all the groups that are children of their group.
+	 *
+	 * @param userId the id of the user to update.
+	 * @param groupId the id of the group of the user.
+	 * @param value true if the user should inherit the permissions, false otherwise.
+	 */
+	suspend fun setUserInheritsPermissions(
+		userId: String,
+		groupId: String,
+		value: Boolean,
+	): String
 }
 

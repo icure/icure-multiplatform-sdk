@@ -2,29 +2,54 @@ package com.icure.cardinal.sdk.crypto.impl
 
 import com.icure.cardinal.sdk.crypto.EntityAccessInformationProvider
 import com.icure.cardinal.sdk.crypto.entities.EntityAccessInformation
-import com.icure.cardinal.sdk.crypto.entities.EntityWithTypeInfo
+import com.icure.cardinal.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
+import com.icure.cardinal.sdk.crypto.entities.SdkBoundGroup
+import com.icure.cardinal.sdk.model.EntityReferenceInGroup
+import com.icure.cardinal.sdk.model.base.HasEncryptionMetadata
 import com.icure.cardinal.sdk.model.embed.AccessLevel
+import com.icure.utils.InternalIcureApi
+import kotlin.coroutines.CoroutineContext
+import kotlin.coroutines.coroutineContext
 
 /**
- * Implementation of [EntityAccessInformationProvider] that does not attempt to de-anonymize any delegation, can be used
+ * Implementation of [EntityAccessInformationProvider] that doesn't attempt to de-anonymize any delegation, can be used
  * even with the basic/non-data-owner sdk.
  */
-internal object BasicEntityAccessInformationProvider : EntityAccessInformationProvider {
-	override suspend fun getDataOwnersWithAccessTo(entityWithType: EntityWithTypeInfo<*>): EntityAccessInformation {
+@InternalIcureApi
+internal class BasicEntityAccessInformationProvider(
+	/**
+	 * On basic SDK this should give the (constant) bound group id
+	 * On unbound SDK this should give the group id of the current request
+	 */
+	private val currentBoundGroupId: (CoroutineContext) -> SdkBoundGroup?
+) : EntityAccessInformationProvider {
+	override suspend fun getDataOwnersWithAccessTo(
+		entityGroupId: String?,
+		entity: HasEncryptionMetadata,
+		entityType: EntityWithEncryptionMetadataTypeName
+	): EntityAccessInformation {
 		val infoFromLegacyDelegations = EntityAccessInformation(
-			entityWithType.entity.delegations.keys.associateWith { AccessLevel.Write },
+			entity.delegations.keys.associate {
+				// Legacy delegations don't support inter-group sharing
+				Pair(EntityReferenceInGroup(it, null), AccessLevel.Write)
+			},
 			false
 		)
+		val boundGroup = currentBoundGroupId(coroutineContext)
 		val infoFromSecureDelegations = EntityAccessInformation(
 			EntityAccessInformation.buildPermissionsMap(
-				entityWithType.entity.securityMetadata?.secureDelegations?.values?.flatMap { d->
+				entity.securityMetadata?.secureDelegations?.values?.flatMap { d->
 					listOfNotNull(
-						d.delegate?.let { it to d.permissions },
-						d.delegator?.let { it to d.permissions }
+						d.delegate?.let {
+							EntityReferenceInGroup.parse(it, entityGroupId, boundGroup) to d.permissions
+						},
+						d.delegator?.let {
+							EntityReferenceInGroup.parse(it, entityGroupId, boundGroup) to d.permissions
+						}
 					)
 				} ?: emptyList()
 			),
-			entityWithType.entity.securityMetadata?.secureDelegations?.values?.any { v ->
+			entity.securityMetadata?.secureDelegations?.values?.any { v ->
 				v.delegate == null || v.delegator == null
 			} ?: false
 		)

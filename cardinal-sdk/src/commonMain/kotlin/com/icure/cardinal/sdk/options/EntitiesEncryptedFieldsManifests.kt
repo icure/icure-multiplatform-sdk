@@ -12,7 +12,7 @@ internal class EntitiesEncryptedFieldsManifests private constructor(
 	val accessLog: EncryptedFieldsManifest,
 	val calendarItem: EncryptedFieldsManifest,
 	val contact: EncryptedFieldsManifest,
-	val service: EncryptedFieldsManifest,
+	val serviceBase: EncryptedFieldsManifest,
 	val healthElement: EncryptedFieldsManifest,
 	val maintenanceTask: EncryptedFieldsManifest,
 	val patient: EncryptedFieldsManifest,
@@ -43,7 +43,7 @@ internal class EntitiesEncryptedFieldsManifests private constructor(
 			}
 			return EntitiesEncryptedFieldsManifests(
 				contact = contactManifest,
-				service = serviceManifest,
+				serviceBase = serviceManifest,
 				accessLog = JsonEncryptionService.parseEncryptedFields(
 					encryptedFields.accessLog,
 					"AccessLog."
@@ -99,4 +99,6 @@ internal class EntitiesEncryptedFieldsManifests private constructor(
 			)
 		}
 	}
+
+	val serviceWithContent: EncryptedFieldsManifest = serviceBase.copy(topLevelFields = serviceBase.topLevelFields + "content")
 }

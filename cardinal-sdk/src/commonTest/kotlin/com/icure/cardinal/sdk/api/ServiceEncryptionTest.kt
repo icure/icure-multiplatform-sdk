@@ -11,6 +11,7 @@ import com.icure.cardinal.sdk.model.embed.DecryptedService
 import com.icure.cardinal.sdk.model.embed.EncryptedContent
 import com.icure.cardinal.sdk.model.embed.EncryptedService
 import com.icure.cardinal.sdk.test.DataOwnerDetails
+import com.icure.cardinal.sdk.test.autoCancelJob
 import com.icure.cardinal.sdk.test.createHcpUser
 import com.icure.cardinal.sdk.test.initializeTestEnvironment
 import com.icure.cardinal.sdk.test.uuid
@@ -27,10 +28,12 @@ class ServiceEncryptionTest : StringSpec({
 	lateinit var hcp: DataOwnerDetails
 	lateinit var sdk: CardinalSdk
 	lateinit var patient: DecryptedPatient
-	beforeAny {
+	val specJob = autoCancelJob()
+
+	beforeSpec {
 		initializeTestEnvironment()
 		hcp = createHcpUser()
-		sdk = hcp.api()
+		sdk = hcp.api(specJob)
 		patient = sdk.patient.createPatient(sdk.patient.withEncryptionMetadata(DecryptedPatient(uuid())))
 	}
 
@@ -365,12 +368,12 @@ class ServiceEncryptionTest : StringSpec({
 				patient
 			)
 		)
-		val encryptedContact = sdk.contact.encrypted.getContact(contact.id)
+		val encryptedContact = sdk.contact.encrypted.getContact(contact.id).shouldNotBeNull()
 		encryptedContact.services.forEach { service ->
 			service.content.shouldBeEmpty()
 		}
 		checkDecryptedServicesContent(
-			sdk.contact.getContact(contact.id).services,
+			sdk.contact.getContact(contact.id).shouldNotBeNull().services,
 			listOf(simpleService1, simpleService2, simpleService3, simpleService4)
 		)
 		checkEncryptedValidation(encryptedContact)
@@ -386,12 +389,12 @@ class ServiceEncryptionTest : StringSpec({
 				patient
 			)
 		)
-		val encryptedContact = sdk.contact.encrypted.getContact(contact.id)
+		val encryptedContact = sdk.contact.encrypted.getContact(contact.id).shouldNotBeNull()
 		verifyHasCorrectlyEncryptedCompoundService(encryptedContact)
 		verifyHasCorrectlyEncryptedMultiContentCompoundService(encryptedContact)
 		verifyHasCorrectlyEncryptedDeepCompoundService(encryptedContact)
 		checkDecryptedServicesContent(
-			sdk.contact.getContact(contact.id).services,
+			sdk.contact.getContact(contact.id).shouldNotBeNull().services,
 			listOf(compoundService, multiContentCompound, deepCompound)
 		)
 		checkEncryptedValidation(encryptedContact)
@@ -415,7 +418,7 @@ class ServiceEncryptionTest : StringSpec({
 				patient
 			)
 		)
-		val encryptedContact = sdk.contact.encrypted.getContact(contact.id)
+		val encryptedContact = sdk.contact.encrypted.getContact(contact.id).shouldNotBeNull()
 		verifyHasCorrectlyEncryptedCompoundService(encryptedContact)
 		verifyHasCorrectlyEncryptedMultiContentCompoundService(encryptedContact)
 		verifyHasCorrectlyEncryptedDeepCompoundService(encryptedContact)
@@ -423,7 +426,7 @@ class ServiceEncryptionTest : StringSpec({
 			it.content.shouldBeEmpty()
 		}
 		checkDecryptedServicesContent(
-			sdk.contact.getContact(contact.id).services,
+			sdk.contact.getContact(contact.id).shouldNotBeNull().services,
 			listOf(
 				compoundService,
 				multiContentCompound,

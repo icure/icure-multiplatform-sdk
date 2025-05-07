@@ -4,7 +4,6 @@ import com.icure.cardinal.sdk.CardinalBaseApis
 import com.icure.cardinal.sdk.crypto.EntityEncryptionService
 import com.icure.cardinal.sdk.crypto.entities.EntityWithEncryptionMetadataStub
 import com.icure.cardinal.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
-import com.icure.cardinal.sdk.crypto.entities.EntityWithTypeInfo
 import com.icure.cardinal.sdk.crypto.entities.toEncryptionMetadataStub
 import com.icure.cardinal.sdk.model.Message
 import com.icure.cardinal.sdk.model.Patient
@@ -122,7 +121,7 @@ object MessageFilters {
 		descending: Boolean = false
 	): SortableFilterOptions<Message> = ByPatientsSentDateForDataOwner(
 		dataOwnerId = dataOwnerId,
-		patients = patients.map { EntityWithTypeInfo(it.toEncryptionMetadataStub(), EntityWithEncryptionMetadataTypeName.Patient) },
+		patients = patients.map { it.toEncryptionMetadataStub() },
 		from = from,
 		to = to,
 		descending = descending
@@ -160,7 +159,7 @@ object MessageFilters {
 		@DefaultValue("false")
 		descending: Boolean = false
 	): SortableFilterOptions<Message> = ByPatientsSentDateForSelf(
-		patients = patients.map { EntityWithTypeInfo(it.toEncryptionMetadataStub(), EntityWithEncryptionMetadataTypeName.Patient) },
+		patients = patients.map { it.toEncryptionMetadataStub() },
 		from = from,
 		to = to,
 		descending = descending
@@ -369,7 +368,7 @@ object MessageFilters {
 	@InternalIcureApi
 	internal class ByPatientsSentDateForDataOwner(
 		val dataOwnerId: String,
-		val patients: List<EntityWithTypeInfo<EntityWithEncryptionMetadataStub>>,
+		val patients: List<EntityWithEncryptionMetadataStub>,
 		val from: Instant?,
 		val to: Instant?,
 		val descending: Boolean
@@ -378,7 +377,7 @@ object MessageFilters {
 	@Serializable
 	@InternalIcureApi
 	internal class ByPatientsSentDateForSelf(
-		val patients: List<EntityWithTypeInfo<EntityWithEncryptionMetadataStub>>,
+		val patients: List<EntityWithEncryptionMetadataStub>,
 		val from: Instant?,
 		val to: Instant?,
 		val descending: Boolean
@@ -488,9 +487,7 @@ internal suspend fun mapMessageFilterOptions(
 		filterOptions.ensureNonBaseEnvironment(selfDataOwnerId, entityEncryptionService)
 		MessageByDataOwnerPatientSentDateFilter(
 			dataOwnerId = filterOptions.dataOwnerId,
-			secretPatientKeys = filterOptions.patients.flatMap {
-				entityEncryptionService.secretIdsOf(it, null)
-			}.toSet(),
+			secretPatientKeys = entityEncryptionService.secretIdsOf(null, filterOptions.patients, EntityWithEncryptionMetadataTypeName.Patient, null).values.flatten().toSet(),
 			startDate = filterOptions.from,
 			endDate = filterOptions.to,
 			descending = filterOptions.descending
@@ -500,9 +497,7 @@ internal suspend fun mapMessageFilterOptions(
 		filterOptions.ensureNonBaseEnvironment(selfDataOwnerId, entityEncryptionService)
 		MessageByDataOwnerPatientSentDateFilter(
 			dataOwnerId = selfDataOwnerId,
-			secretPatientKeys = filterOptions.patients.flatMap {
-				entityEncryptionService.secretIdsOf(it, null)
-			}.toSet(),
+			secretPatientKeys = entityEncryptionService.secretIdsOf(null, filterOptions.patients, EntityWithEncryptionMetadataTypeName.Patient, null).values.flatten().toSet(),
 			startDate = filterOptions.from,
 			endDate = filterOptions.to,
 			descending = filterOptions.descending

@@ -5,7 +5,7 @@ import com.icure.cardinal.sdk.CardinalBaseApis
 import com.icure.cardinal.sdk.filters.BaseFilterOptions
 import com.icure.cardinal.sdk.filters.BaseSortableFilterOptions
 import com.icure.cardinal.sdk.model.EncryptedMaintenanceTask
-import com.icure.cardinal.sdk.model.IdWithMandatoryRev
+import com.icure.cardinal.sdk.model.StoredDocumentIdentifier
 import com.icure.cardinal.sdk.model.MaintenanceTask
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.py.utils.PyResult
@@ -312,7 +312,7 @@ public fun deleteMaintenanceTaskByIdAsync(
 
 @Serializable
 private class DeleteMaintenanceTasksByIdsParams(
-	public val entityIds: List<IdWithMandatoryRev>,
+	public val entityIds: List<StoredDocumentIdentifier>,
 )
 
 @OptIn(InternalIcureApi::class)

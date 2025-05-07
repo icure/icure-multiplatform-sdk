@@ -4,9 +4,11 @@ import com.icure.cardinal.sdk.CardinalBaseApis
 import com.icure.cardinal.sdk.crypto.EntityEncryptionService
 import com.icure.cardinal.sdk.crypto.entities.EntityWithEncryptionMetadataStub
 import com.icure.cardinal.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
-import com.icure.cardinal.sdk.crypto.entities.EntityWithTypeInfo
+import com.icure.cardinal.sdk.crypto.entities.SdkBoundGroup
 import com.icure.cardinal.sdk.crypto.entities.toEncryptionMetadataStub
 import com.icure.cardinal.sdk.model.CalendarItem
+import com.icure.cardinal.sdk.model.EntityReferenceInGroup
+import com.icure.cardinal.sdk.model.GroupScoped
 import com.icure.cardinal.sdk.model.Patient
 import com.icure.cardinal.sdk.model.filter.AbstractFilter
 import com.icure.cardinal.sdk.model.filter.calendarItem.CalendarItemByDataOwnerLifecycleBetween
@@ -14,9 +16,12 @@ import com.icure.cardinal.sdk.model.filter.calendarItem.CalendarItemByDataOwnerP
 import com.icure.cardinal.sdk.model.filter.calendarItem.CalendarItemByPeriodAndAgendaIdFilter
 import com.icure.cardinal.sdk.model.filter.calendarItem.CalendarItemByPeriodAndDataOwnerIdFilter
 import com.icure.cardinal.sdk.model.filter.calendarItem.CalendarItemByRecurrenceIdFilter
+import com.icure.cardinal.sdk.options.ApiConfiguration
+import com.icure.cardinal.sdk.options.BasicApiConfiguration
 import com.icure.cardinal.sdk.utils.DefaultValue
 import com.icure.utils.InternalIcureApi
 import kotlinx.serialization.Serializable
+import kotlin.coroutines.coroutineContext
 
 object CalendarItemFilters {
 
@@ -54,8 +59,30 @@ object CalendarItemFilters {
 		@DefaultValue("false")
 		descending: Boolean = false
 	): SortableFilterOptions<CalendarItem> = ByPatientsStartTimeForDataOwner(
-		dataOwnerId = dataOwnerId,
-		patients = patients.map { EntityWithTypeInfo(it.toEncryptionMetadataStub(), EntityWithEncryptionMetadataTypeName.Patient) },
+		dataOwner = EntityReferenceInGroup(dataOwnerId, null),
+		patients = patients.map { Pair(it.toEncryptionMetadataStub(), null) },
+		from = from,
+		to = to,
+		descending = descending
+	)
+
+	/**
+	 * In-group version of [byPatientsStartTimeForDataOwner].
+	 * The data owner and patients can be from a different group than the group of the user executing the query.
+	 */
+	@OptIn(InternalIcureApi::class)
+	fun byPatientsStartTimeForDataOwnerInGroup(
+		dataOwner: EntityReferenceInGroup,
+		patients: List<GroupScoped<Patient>>,
+		@DefaultValue("null")
+		from: Long? = null,
+		@DefaultValue("null")
+		to: Long? = null,
+		@DefaultValue("false")
+		descending: Boolean = false
+	): SortableFilterOptions<CalendarItem> = ByPatientsStartTimeForDataOwner(
+		dataOwner = dataOwner,
+		patients = patients.map { Pair(it.entity.toEncryptionMetadataStub(), it.groupId) },
 		from = from,
 		to = to,
 		descending = descending
@@ -93,7 +120,7 @@ object CalendarItemFilters {
 		@DefaultValue("false")
 		descending: Boolean = false
 	): SortableFilterOptions<CalendarItem> = ByPatientsStartTimeForSelf(
-		patients = patients.map { EntityWithTypeInfo(it.toEncryptionMetadataStub(), EntityWithEncryptionMetadataTypeName.Patient) },
+		patients = patients.map { it.toEncryptionMetadataStub() },
 		from = from,
 		to = to,
 		descending = descending
@@ -127,7 +154,34 @@ object CalendarItemFilters {
 		to: Long? = null,
 		@DefaultValue("false")
 		descending: Boolean = false
-	): BaseSortableFilterOptions<CalendarItem> = ByPatientSecretIdsStartTimeForDataOwner(dataOwnerId, secretIds, from, to, descending)
+	): BaseSortableFilterOptions<CalendarItem> = ByPatientSecretIdsStartTimeForDataOwner(
+		EntityReferenceInGroup(dataOwnerId, null),
+		secretIds,
+		from,
+		to,
+		descending
+	)
+
+	/**
+	 * In-group version of [byPatientSecretIdsStartTimeForDataOwner].
+	 * The data owner can be from a different group than the group of the user executing the query.
+	 */
+	fun byPatientSecretIdsStartTimeForDataOwnerInGroup(
+		dataOwner: EntityReferenceInGroup,
+		secretIds: List<String>,
+		@DefaultValue("null")
+		from: Long? = null,
+		@DefaultValue("null")
+		to: Long? = null,
+		@DefaultValue("false")
+		descending: Boolean = false
+	): BaseSortableFilterOptions<CalendarItem> = ByPatientSecretIdsStartTimeForDataOwner(
+		dataOwner,
+		secretIds,
+		from,
+		to,
+		descending
+	)
 
 	/**
 	 * Options for calendar item filtering which match all calendar items shared directly (i.e. ignoring hierarchies) with the current data owner
@@ -190,7 +244,17 @@ object CalendarItemFilters {
 		dataOwnerId: String,
 		from: Long,
 		to: Long
-	): BaseFilterOptions<CalendarItem> = ByPeriodForDataOwner(dataOwnerId, from, to)
+	): BaseFilterOptions<CalendarItem> = ByPeriodForDataOwner(EntityReferenceInGroup(dataOwnerId, null), from, to)
+
+	/**
+	 * In-group version of [byPeriodForDataOwner].
+	 * The data owner can be from a different group than the group of the user executing the query.
+	 */
+	fun byPeriodForDataOwner(
+		dataOwner: EntityReferenceInGroup,
+		from: Long,
+		to: Long
+	): BaseFilterOptions<CalendarItem> = ByPeriodForDataOwner(dataOwner, from, to)
 
 	/**
 	 * Options for calendar item filtering which match all calendar items shared directly (i.e. ignoring hierarchies) with the current data owner
@@ -230,7 +294,28 @@ object CalendarItemFilters {
 		startTimestamp: Long?,
 		endTimestamp: Long?,
 		descending: Boolean = false
-	): BaseFilterOptions<CalendarItem> = LifecycleBetweenForDataOwner(dataOwnerId, startTimestamp, endTimestamp, descending)
+	): BaseFilterOptions<CalendarItem> = LifecycleBetweenForDataOwner(
+		EntityReferenceInGroup(dataOwnerId, null),
+		startTimestamp,
+		endTimestamp,
+		descending
+	)
+
+	/**
+	 * In-group version of [lifecycleBetweenForDataOwner].
+	 * The data owner can be from a different group than the group of the user executing the query.
+	 */
+	fun lifecycleBetweenForDataOwnerInGroup(
+		dataOwner: EntityReferenceInGroup,
+		startTimestamp: Long?,
+		endTimestamp: Long?,
+		descending: Boolean = false
+	): BaseFilterOptions<CalendarItem> = LifecycleBetweenForDataOwner(
+		dataOwner,
+		startTimestamp,
+		endTimestamp,
+		descending
+	)
 
 	/**
 	 * Options for calendar item filtering which match all calendar items shared directly (i.e. ignoring hierarchies) with the current data owner
@@ -250,8 +335,8 @@ object CalendarItemFilters {
 	@Serializable
 	@InternalIcureApi
 	internal class ByPatientsStartTimeForDataOwner(
-		val dataOwnerId: String,
-		val patients: List<EntityWithTypeInfo<EntityWithEncryptionMetadataStub>>,
+		val dataOwner: EntityReferenceInGroup,
+		val patients: List<Pair<EntityWithEncryptionMetadataStub, String?>>,
 		val from: Long?,
 		val to: Long?,
 		val descending: Boolean
@@ -260,7 +345,7 @@ object CalendarItemFilters {
 	@Serializable
 	@InternalIcureApi
 	internal class ByPatientsStartTimeForSelf(
-		val patients: List<EntityWithTypeInfo<EntityWithEncryptionMetadataStub>>,
+		val patients: List<EntityWithEncryptionMetadataStub>,
 		val from: Long?,
 		val to: Long?,
 		val descending: Boolean
@@ -268,7 +353,7 @@ object CalendarItemFilters {
 
 	@Serializable
 	internal class ByPatientSecretIdsStartTimeForDataOwner(
-		val dataOwnerId: String,
+		val dataOwner: EntityReferenceInGroup,
 		val secretIds: List<String>,
 		val from: Long?,
 		val to: Long?,
@@ -293,7 +378,7 @@ object CalendarItemFilters {
 
 	@Serializable
 	internal class ByPeriodForDataOwner(
-		val dataOwnerId: String,
+		val dataOwner: EntityReferenceInGroup,
 		val from: Long,
 		val to: Long
 	): BaseFilterOptions<CalendarItem>
@@ -306,7 +391,7 @@ object CalendarItemFilters {
 
 	@Serializable
 	internal class LifecycleBetweenForDataOwner(
-		val dataOwnerId: String,
+		val dataOwner: EntityReferenceInGroup,
 		val startTimestamp: Long?,
 		val endTimestamp: Long?,
 		val descending: Boolean
@@ -328,46 +413,66 @@ object CalendarItemFilters {
 @InternalIcureApi
 internal suspend fun mapCalendarItemFilterOptions(
 	filterOptions: FilterOptions<CalendarItem>,
-	selfDataOwnerId: String?,
-	entityEncryptionService: EntityEncryptionService?
+	config: BasicApiConfiguration,
+	requestGroup: String?
+): AbstractFilter<CalendarItem> {
+	val nonBasicConfig = config as? ApiConfiguration
+	return mapCalendarItemFilterOptions(
+		filterOptions,
+		nonBasicConfig?.crypto?.dataOwnerApi?.getCurrentDataOwnerReference(),
+		nonBasicConfig?.crypto?.entity,
+		config.getBoundGroup(coroutineContext),
+		requestGroup
+	)
+}
+
+@InternalIcureApi
+private suspend fun mapCalendarItemFilterOptions(
+	filterOptions: FilterOptions<CalendarItem>,
+	selfDataOwner: EntityReferenceInGroup?,
+	entityEncryptionService: EntityEncryptionService?,
+	boundGroup: SdkBoundGroup?,
+	requestGroup: String?
 ): AbstractFilter<CalendarItem> = mapIfMetaFilterOptions(filterOptions) {
-	mapCalendarItemFilterOptions(it, selfDataOwnerId, entityEncryptionService)
+	mapCalendarItemFilterOptions(it, selfDataOwner, entityEncryptionService, boundGroup, requestGroup)
 } ?: when (filterOptions) {
 	is CalendarItemFilters.ByPatientsStartTimeForDataOwner -> {
-		filterOptions.ensureNonBaseEnvironment(selfDataOwnerId, entityEncryptionService)
+		filterOptions.ensureNonBaseEnvironment(selfDataOwner, entityEncryptionService)
 		CalendarItemByDataOwnerPatientStartTimeFilter(
-			dataOwnerId = filterOptions.dataOwnerId,
-			secretPatientIds = filterOptions.patients.flatMap {
-				entityEncryptionService.secretIdsOf(it, null)
-			}.toSet(),
+			dataOwnerId = filterOptions.dataOwner.asReferenceStringInGroup(requestGroup, boundGroup),
+			secretPatientIds = filterOptions.patients.mapToSecretIds(
+				entityEncryptionService,
+				EntityWithEncryptionMetadataTypeName.Patient
+			),
 			startDate = filterOptions.to,
 			endDate = filterOptions.from,
 			descending = filterOptions.descending
 		)
 	}
 	is CalendarItemFilters.ByPatientsStartTimeForSelf -> {
-		filterOptions.ensureNonBaseEnvironment(selfDataOwnerId, entityEncryptionService)
+		filterOptions.ensureNonBaseEnvironment(selfDataOwner, entityEncryptionService)
 		CalendarItemByDataOwnerPatientStartTimeFilter(
-			dataOwnerId = selfDataOwnerId,
-			secretPatientIds = filterOptions.patients.flatMap {
-				entityEncryptionService.secretIdsOf(it, null)
-			}.toSet(),
+			dataOwnerId = selfDataOwner.asReferenceStringInGroup(requestGroup, boundGroup),
+			secretPatientIds = filterOptions.patients.map { Pair(it, null) }.mapToSecretIds(
+				entityEncryptionService,
+				EntityWithEncryptionMetadataTypeName.Patient
+			),
 			startDate = filterOptions.to,
 			endDate = filterOptions.from,
 			descending = filterOptions.descending
 		)
 	}
 	is CalendarItemFilters.ByPatientSecretIdsStartTimeForDataOwner -> CalendarItemByDataOwnerPatientStartTimeFilter(
-		dataOwnerId = filterOptions.dataOwnerId,
+		dataOwnerId = filterOptions.dataOwner.asReferenceStringInGroup(requestGroup, boundGroup),
 		secretPatientIds = filterOptions.secretIds.toSet(),
 		startDate = filterOptions.to,
 		endDate = filterOptions.from,
 		descending = filterOptions.descending
 	)
 	is CalendarItemFilters.ByPatientSecretIdsStartTimeForSelf -> {
-		filterOptions.ensureNonBaseEnvironment(selfDataOwnerId, entityEncryptionService)
+		filterOptions.ensureNonBaseEnvironment(selfDataOwner, entityEncryptionService)
 		CalendarItemByDataOwnerPatientStartTimeFilter(
-			dataOwnerId = selfDataOwnerId,
+			dataOwnerId = selfDataOwner.asReferenceStringInGroup(requestGroup, boundGroup),
 			secretPatientIds = filterOptions.secretIds.toSet(),
 			startDate = filterOptions.to,
 			endDate = filterOptions.from,
@@ -381,28 +486,28 @@ internal suspend fun mapCalendarItemFilterOptions(
 		descending = filterOptions.descending
 	)
 	is CalendarItemFilters.ByPeriodForDataOwner -> CalendarItemByPeriodAndDataOwnerIdFilter(
-		dataOwnerId = filterOptions.dataOwnerId,
+		dataOwnerId = filterOptions.dataOwner.asReferenceStringInGroup(requestGroup, boundGroup),
 		startTime = filterOptions.from,
 		endTime = filterOptions.to
 	)
 	is CalendarItemFilters.ByPeriodForSelf -> {
-		filterOptions.ensureNonBaseEnvironment(selfDataOwnerId, entityEncryptionService)
+		filterOptions.ensureNonBaseEnvironment(selfDataOwner, entityEncryptionService)
 		CalendarItemByPeriodAndDataOwnerIdFilter(
-			dataOwnerId = selfDataOwnerId,
+			dataOwnerId = selfDataOwner.asReferenceStringInGroup(requestGroup, boundGroup),
 			startTime = filterOptions.from,
 			endTime = filterOptions.to
 		)
 	}
 	is CalendarItemFilters.LifecycleBetweenForDataOwner -> CalendarItemByDataOwnerLifecycleBetween(
-		dataOwnerId = filterOptions.dataOwnerId,
+		dataOwnerId = filterOptions.dataOwner.asReferenceStringInGroup(requestGroup, boundGroup),
 		startTimestamp = filterOptions.startTimestamp,
 		endTimestamp = filterOptions.endTimestamp,
 		descending = filterOptions.descending
 	)
 	is CalendarItemFilters.LifecycleBetweenForSelf -> {
-		filterOptions.ensureNonBaseEnvironment(selfDataOwnerId, entityEncryptionService)
+		filterOptions.ensureNonBaseEnvironment(selfDataOwner, entityEncryptionService)
 		CalendarItemByDataOwnerLifecycleBetween(
-			dataOwnerId = selfDataOwnerId,
+			dataOwnerId = selfDataOwner.asReferenceStringInGroup(requestGroup, boundGroup),
 			startTimestamp = filterOptions.startTimestamp,
 			endTimestamp = filterOptions.endTimestamp,
 			descending = filterOptions.descending

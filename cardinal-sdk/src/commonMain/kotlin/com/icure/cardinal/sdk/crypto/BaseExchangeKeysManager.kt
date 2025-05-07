@@ -1,14 +1,14 @@
 package com.icure.cardinal.sdk.crypto
 
-import com.icure.kryptom.crypto.AesAlgorithm
-import com.icure.kryptom.crypto.AesKey
 import com.icure.cardinal.sdk.crypto.entities.DataOwnerExchangeKeys
 import com.icure.cardinal.sdk.crypto.entities.DecryptionResult
 import com.icure.cardinal.sdk.crypto.entities.RsaDecryptionKeysSet
 import com.icure.cardinal.sdk.model.DataOwnerType
+import com.icure.cardinal.sdk.model.specializations.AesExchangeKeyEncryptionKeypairIdentifier
 import com.icure.cardinal.sdk.model.specializations.HexString
-import com.icure.cardinal.sdk.model.specializations.KeypairFingerprintV1String
 import com.icure.cardinal.sdk.model.specializations.SpkiHexString
+import com.icure.kryptom.crypto.AesAlgorithm
+import com.icure.kryptom.crypto.AesKey
 import com.icure.utils.InternalIcureApi
 
 @InternalIcureApi
@@ -35,7 +35,7 @@ interface BaseExchangeKeysManager {
 	suspend fun getEncryptedExchangeKeysFor(
 		delegatorId: String,
 		delegateId: String
-	): List<Map<KeypairFingerprintV1String?, HexString>>
+	): List<Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>>
 
 	/**
 	 * Get all exchange keys where the provided data owner is involved either as the delegator or as the delegate.
@@ -56,7 +56,7 @@ interface BaseExchangeKeysManager {
 	 * @return an array all successfully decrypted exchange keys and an array containing all exchange keys which could not be decrypted.
 	 */
 	suspend fun tryDecryptExchangeKeys(
-		encryptedExchangeKeys: List<Map<KeypairFingerprintV1String?, HexString>>,
+		encryptedExchangeKeys: List<Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>>,
 		keyPairsByFingerprint: RsaDecryptionKeysSet
-	): DecryptionResult<Map<KeypairFingerprintV1String?, HexString>, AesKey<AesAlgorithm.CbcWithPkcs7Padding>>
+	): DecryptionResult<Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>, AesKey<AesAlgorithm.CbcWithPkcs7Padding>>
 }

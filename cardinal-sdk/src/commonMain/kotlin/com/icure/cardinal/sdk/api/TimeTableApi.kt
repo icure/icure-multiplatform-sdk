@@ -3,7 +3,7 @@ package com.icure.cardinal.sdk.api
 import com.icure.cardinal.sdk.exceptions.RevisionConflictException
 import com.icure.cardinal.sdk.filters.BaseFilterOptions
 import com.icure.cardinal.sdk.filters.BaseSortableFilterOptions
-import com.icure.cardinal.sdk.model.IdWithMandatoryRev
+import com.icure.cardinal.sdk.model.StoredDocumentIdentifier
 import com.icure.cardinal.sdk.model.TimeTable
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.utils.pagination.PaginatedListIterator
@@ -31,7 +31,7 @@ interface TimeTableApi {
 	 * @return the id and revision of the deleted timeTables. If some entities could not be deleted (for example
 	 * because you had no write access to them) they will not be included in this list.
 	 */
-	suspend fun deleteTimeTablesByIds(entityIds: List<IdWithMandatoryRev>): List<DocIdentifier>
+	suspend fun deleteTimeTablesByIds(entityIds: List<StoredDocumentIdentifier>): List<DocIdentifier>
 
 	/**
 	 * Permanently deletes a timeTable.
@@ -58,7 +58,7 @@ interface TimeTableApi {
 	 */
 	suspend fun deleteTimeTables(timeTables: List<TimeTable>): List<DocIdentifier> =
 		deleteTimeTablesByIds(timeTables.map { timeTable ->
-			IdWithMandatoryRev(timeTable.id, requireNotNull(timeTable.rev) { "Can't delete a timeTable that has no rev" })
+			StoredDocumentIdentifier(timeTable.id, requireNotNull(timeTable.rev) { "Can't delete a timeTable that has no rev" })
 		})
 
 	/**
@@ -104,7 +104,7 @@ interface TimeTableApi {
 	 * @param entityId a time-table id.
 	 * @return the time-table with id [entityId].
 	 */
-	suspend fun getTimeTable(entityId: String): TimeTable
+	suspend fun getTimeTable(entityId: String): TimeTable?
 
 	/**
 	 * Get multiple time tables by their ids. Ignores all ids that do not correspond to an entity, correspond to

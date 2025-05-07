@@ -9,10 +9,10 @@ import com.icure.cardinal.sdk.filters.FilterOptions
 import com.icure.cardinal.sdk.filters.SortableFilterOptions
 import com.icure.cardinal.sdk.model.DecryptedMessage
 import com.icure.cardinal.sdk.model.EncryptedMessage
-import com.icure.cardinal.sdk.model.IdWithMandatoryRev
 import com.icure.cardinal.sdk.model.Message
 import com.icure.cardinal.sdk.model.PaginatedList
 import com.icure.cardinal.sdk.model.Patient
+import com.icure.cardinal.sdk.model.StoredDocumentIdentifier
 import com.icure.cardinal.sdk.model.User
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.model.embed.AccessLevel
@@ -23,7 +23,6 @@ import com.icure.cardinal.sdk.utils.DefaultValue
 import com.icure.cardinal.sdk.utils.EntityEncryptionException
 import com.icure.cardinal.sdk.utils.pagination.PaginatedListIterator
 import kotlinx.serialization.json.JsonElement
-import kotlin.js.JsName
 
 /* This interface includes the API calls that do not need encryption keys and do not return or consume encrypted/decrypted items, they are completely agnostic towards the presence of encrypted items */
 interface MessageBasicFlavourlessApi {
@@ -48,7 +47,7 @@ interface MessageBasicFlavourlessApi {
 	 * @return the id and revision of the deleted messages. If some entities could not be deleted (for example
 	 * because you had no write access to them) they will not be included in this list.
 	 */
-	suspend fun deleteMessagesByIds(entityIds: List<IdWithMandatoryRev>): List<DocIdentifier>
+	suspend fun deleteMessagesByIds(entityIds: List<StoredDocumentIdentifier>): List<DocIdentifier>
 
 	/**
 	 * Permanently deletes a message.
@@ -75,7 +74,7 @@ interface MessageBasicFlavourlessApi {
 	 */
 	suspend fun deleteMessages(messages: List<Message>): List<DocIdentifier> =
 		deleteMessagesByIds(messages.map { message ->
-			IdWithMandatoryRev(message.id, requireNotNull(message.rev) { "Can't delete a message that has no rev" })
+			StoredDocumentIdentifier(message.id, requireNotNull(message.rev) { "Can't delete a message that has no rev" })
 		})
 
 	/**
@@ -90,6 +89,26 @@ interface MessageBasicFlavourlessApi {
 
 /* This interface includes the API calls can be used on decrypted items if encryption keys are available *or* encrypted items if no encryption keys are available */
 interface MessageBasicFlavouredApi<E : Message> {
+	/**
+	 * Create a new Message. The provided Message must have the encryption metadata initialized. This method requires
+	 * the permission to create messages outside of topics. If you want to create a message within a topic use the
+	 * [createMessageInTopic] method instead.
+	 * @param entity a message with initialized encryption metadata
+	 * @return the created Message with updated revision.
+	 * @throws IllegalArgumentException if the encryption metadata of the input was not initialized.
+	 */
+	suspend fun createMessage(entity: E): E
+
+	/**
+	 * Create a new Message. The provided Message must have the encryption metadata initialized, and the id of the topic
+	 * set in [Message.transportGuid] (note that your configuration must not encrypt the transport guid). The user needs
+	 * to be a participant in that topic for this method to succeed.
+	 * @param entity a message with initialized encryption metadata and with a transportGuid set to the topic
+	 * @return the created Message with updated revision.
+	 * @throws IllegalArgumentException if the encryption metadata of the input was not initialized.
+	 */
+	suspend fun createMessageInTopic(entity: E): E
+
 	/**
 	 * Restores a message that was marked as deleted.
 	 * @param message the message to undelete
@@ -124,7 +143,7 @@ interface MessageBasicFlavouredApi<E : Message> {
 	 * @param entityId a message id.
 	 * @return the Message with id [entityId].
 	 */
-	suspend fun getMessage(entityId: String): E
+	suspend fun getMessage(entityId: String): E?
 
 	/**
 	 * Get multiple messages by their ids. Ignores all ids that do not correspond to an entity, correspond to
@@ -224,6 +243,7 @@ interface MessageFlavouredApi<E : Message> : MessageBasicFlavouredApi<E> {
 	 * Share a message with another data owner. The Message must already exist in the database for this method to
 	 * succeed. If you want to share the Message before creation you should instead pass provide the delegates in
 	 * the initialize encryption metadata method.
+	 * Note: this method only updates the security metadata. If the input entity has unsaved changes they may be lost.
 	 * @param delegateId the owner that will gain access to the Message
 	 * @param message the Message to share with [delegateId]
 	 * @param options specifies how the Message will be shared. Refer to the documentation of [MessageShareOptions] for
@@ -241,6 +261,7 @@ interface MessageFlavouredApi<E : Message> : MessageBasicFlavouredApi<E> {
 	 * Share a message with multiple data owners. The Message must already exist in the database for this method to
 	 * succeed. If you want to share the Message before creation you should instead pass provide the delegates in
 	 * the initialize encryption metadata method.
+	 * Note: this method only updates the security metadata. If the input entity has unsaved changes they may be lost.
 	 * Throws an exception if the operation fails.
 	 * @param message the Message to share
 	 * @param delegates specify the data owners which will gain access to the entity and the options for sharing with
@@ -298,26 +319,6 @@ interface MessageFlavouredApi<E : Message> : MessageBasicFlavouredApi<E> {
 /* The extra API calls declared in this interface are the ones that can only be used on decrypted items when encryption keys are available */
 interface MessageApi : MessageBasicFlavourlessApi, MessageFlavouredApi<DecryptedMessage>, Subscribable<Message, EncryptedMessage, FilterOptions<Message>> {
 	/**
-	 * Create a new Message. The provided Message must have the encryption metadata initialized. This method requires
-	 * the permission to create messages outside of topics. If you want to create a message within a topic use the
-	 * [createMessageInTopic] method instead.
-	 * @param entity a message with initialized encryption metadata
-	 * @return the created Message with updated revision.
-	 * @throws IllegalArgumentException if the encryption metadata of the input was not initialized.
-	 */
-	suspend fun createMessage(entity: DecryptedMessage): DecryptedMessage
-
-	/**
-	 * Create a new Message. The provided Message must have the encryption metadata initialized, and the id of the topic
-	 * set in [Message.transportGuid] (note that your configuration must not encrypt the transport guid). The user needs
-	 * to be a participant in that topic for this method to succeed.
-	 * @param entity a message with initialized encryption metadata and with a transportGuid set to the topic
-	 * @return the created Message with updated revision.
-	 * @throws IllegalArgumentException if the encryption metadata of the input was not initialized.
-	 */
-	suspend fun createMessageInTopic(entity: DecryptedMessage): DecryptedMessage
-
-	/**
 	 * Creates a new Message with initialized encryption metadata
 	 * @param base a message with initialized content and uninitialized encryption metadata. The result of this
 	 * method takes the content from [base] if provided.
@@ -351,7 +352,11 @@ interface MessageApi : MessageBasicFlavourlessApi, MessageFlavouredApi<Decrypted
 	suspend fun getEncryptionKeysOf(message: Message): Set<HexString>
 
 	/**
-	 * Specifies if the current user has write access to a message.
+	 * Specifies if the current user has write access to a message through delegations.
+	 * Doesn't consider actual permissions on the server side: for example, if the data owner has access to all entities
+	 * thanks to extended permission but has no delegation on the provided entity this method returns false. Similarly,
+	 * if the SDK was initialized in hierarchical mode but the user is lacking the hierarchical permission on the server
+	 * side this method will still return true if there is a delegation to the parent.
 	 * @param message a message
 	 * @return if the current user has write access to the provided Message
 	 */

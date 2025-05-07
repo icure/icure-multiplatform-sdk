@@ -2,6 +2,7 @@ package com.icure.cardinal.sdk.api.impl
 
 import com.icure.cardinal.sdk.api.CalendarItemTypeApi
 import com.icure.cardinal.sdk.api.raw.RawCalendarItemTypeApi
+import com.icure.cardinal.sdk.api.raw.successBodyOrNull404
 import com.icure.cardinal.sdk.api.raw.successBodyOrThrowRevisionConflict
 import com.icure.cardinal.sdk.model.CalendarItemType
 import com.icure.cardinal.sdk.model.ListOfIds
@@ -28,8 +29,8 @@ internal class CalendarItemTypeApiImpl(
 	override suspend fun deleteCalendarItemTypes(calendarItemTypeIds: ListOfIds): List<DocIdentifier> =
 		rawCalendarItemTypeApi.deleteCalendarItemTypes(calendarItemTypeIds).successBody()
 
-	override suspend fun getCalendarItemType(calendarItemTypeId: String): CalendarItemType =
-		rawCalendarItemTypeApi.getCalendarItemType(calendarItemTypeId).successBody()
+	override suspend fun getCalendarItemType(calendarItemTypeId: String): CalendarItemType? =
+		rawCalendarItemTypeApi.getCalendarItemType(calendarItemTypeId).successBodyOrNull404()
 
 	override suspend fun modifyCalendarItemType(calendarItemTypeDto: CalendarItemType): CalendarItemType =
 		rawCalendarItemTypeApi.modifyCalendarItemType(calendarItemTypeDto).successBodyOrThrowRevisionConflict()

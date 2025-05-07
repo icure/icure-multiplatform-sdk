@@ -1,18 +1,22 @@
 package com.icure.cardinal.sdk.test
 
 import com.icure.kryptom.utils.toHexString
+import io.kotest.assertions.fail
 import io.kotest.matchers.shouldBe
 import kotlin.random.Random
 
-infix fun String.shouldBeNextRevOf(otherRev: String) {
+infix fun String?.shouldBeNextRevOf(otherRev: String?) {
+	if (this == null) fail("null rev is not next rev of any valid rev")
 	require("^\\d+-[a-fA-F0-9]{32}\$".toRegex().matches(this)) {
 		"$this is not a valid rev"
 	}
-	require("^\\d+-[a-fA-F0-9]{32}\$".toRegex().matches(otherRev)) {
-		"$otherRev is not a valid rev"
-	}
 	val thisVersion = split("-", limit = 2).first().toInt()
-	val otherVersion = otherRev.split("-", limit = 2).first().toInt()
+	val otherVersion = otherRev?.let {
+		require("^\\d+-[a-fA-F0-9]{32}\$".toRegex().matches(it)) {
+			"$it is not a valid rev"
+		}
+		it.split("-", limit = 2).first().toInt()
+	} ?: 0
 	thisVersion shouldBe (otherVersion + 1)
 }
 
