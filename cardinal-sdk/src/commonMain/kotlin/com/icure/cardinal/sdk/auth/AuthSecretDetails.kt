@@ -12,7 +12,7 @@ sealed interface AuthSecretDetails {
 	/**
 	 * @param secret the password of the user
 	 */
-	data class PasswordDetails(override val secret: String) : AuthSecretDetails.Cacheable {
+	data class PasswordDetails(override val secret: String) : Cacheable {
 		override val type = AuthenticationClass.Password
 	}
 
@@ -38,7 +38,7 @@ sealed interface AuthSecretDetails {
 	/**
 	 * @param secret a long-lived token of the user.
 	 */
-	data class LongLivedTokenDetails(override val secret: String) : AuthSecretDetails.Cacheable {
+	data class LongLivedTokenDetails(override val secret: String) : Cacheable {
 		override val type = AuthenticationClass.LongLivedToken
 	}
 
@@ -46,7 +46,7 @@ sealed interface AuthSecretDetails {
 	 * @param secret some token or another secret that can be used to authenticate the user to a supported third party service
 	 * @param oauthType the third party service that should recognize the provided secret.
 	 */
-	data class ExternalAuthenticationDetails(override val secret: String, val oauthType: ThirdPartyProvider): AuthSecretDetails.Cacheable {
+	data class ExternalAuthenticationDetails(override val secret: String, val oauthType: ThirdPartyProvider): Cacheable {
 		override val type = AuthenticationClass.ExternalAuthentication
 	}
 
