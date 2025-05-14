@@ -9,13 +9,12 @@ import kotlin.String
 // WARNING: This file is auto-generated. If you change it manually, your changes will be lost.
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
 
-@SerialName("AgendaReadableByUserRightsFilter")
+@SerialName("AgendaWithPropertyFilter")
 @Serializable
-data class AgendaReadableByUserRightsFilter(
-	public val userId: String,
-	override val desc: String?,
+data class AgendaWithPropertyFilter(
+	public val propertyId: String,
+	override val desc: String? = null,
 ) : AbstractFilter<Agenda> {
-	// region AgendaReadableByUserRightsFilter-AgendaReadableByUserRightsFilter
-
+	// region AgendaWithPropertyFilter-AgendaWithPropertyFilter
 	// endregion
 }

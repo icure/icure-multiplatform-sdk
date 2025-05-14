@@ -26,5 +26,6 @@ data class HealthElementByHcPartySecretForeignKeysFilter(
 	public val descending: Boolean = false,
 ) : AbstractFilter<HealthElement> {
 	// region HealthElementByHcPartySecretForeignKeysFilter-HealthElementByHcPartySecretForeignKeysFilter
+
 	// endregion
 }
