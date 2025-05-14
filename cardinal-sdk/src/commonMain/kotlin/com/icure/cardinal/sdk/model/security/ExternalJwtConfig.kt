@@ -1,21 +1,60 @@
 package com.icure.cardinal.sdk.model.security
 
-import com.icure.cardinal.sdk.model.specializations.Base64String
+import com.icure.cardinal.sdk.model.embed.AuthenticationClass
 import kotlinx.serialization.Serializable
 import kotlin.String
+import com.icure.cardinal.sdk.model.specializations.Base64String
 
 // WARNING: This file is auto-generated. If you change it manually, your changes will be lost.
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
 
 @Serializable
 data class ExternalJwtConfig(
-	public val publicKey: Base64String,
-	public val id: String? = null,
-	public val emailField: String? = null,
-	public val loginField: String? = null,
-	public val mobilePhoneField: String? = null,
-	public val identifierField: IdentifierSelector? = null,
+	public val validationMethod: ValidationMethod,
+	public val fieldSelector: FieldSelector,
+	public val authenticationClass: AuthenticationClass,
 ) {
+	@Serializable
+	public sealed interface ValidationMethod {
+		@Serializable
+		public data class PublicKey(
+			public val key: String,
+		) : ValidationMethod
+
+		@Serializable
+		public data class Oidc(
+			public val issureLocation: String,
+		) : ValidationMethod
+	}
+
+	@Serializable
+	public sealed interface FieldSelector {
+		@Serializable
+		public data class LocalId(
+			public val fieldName: String,
+		) : FieldSelector
+
+		@Serializable
+		public data class Email(
+			public val fieldName: String,
+		) : FieldSelector
+
+		@Serializable
+		public data class MobilePhone(
+			public val fieldName: String,
+		) : FieldSelector
+
+		@Serializable
+		public data class Username(
+			public val fieldName: String,
+		) : FieldSelector
+
+		@Serializable
+		public data class Identifier(
+			public val identifierAssigner: String,
+			public val fieldName: String,
+		) : FieldSelector
+	}
 	// region ExternalJwtConfig-ExternalJwtConfig
 
 	// endregion

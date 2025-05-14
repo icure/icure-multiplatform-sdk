@@ -566,7 +566,7 @@ class RawUserApiImpl(
 			accept(Application.Json)
 		}.wrap()
 
-	override suspend fun enableFasAuthenticationForUser(fasJwtToken: String): HttpResponse<User> =
+	override suspend fun enableFasAuthenticationForUser(fasJwtToken: String): HttpResponse<Boolean> =
 		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
@@ -575,6 +575,20 @@ class RawUserApiImpl(
 			contentType(Application.Json)
 			accept(Application.Json)
 			`header`("fasJwtToken", fasJwtToken)
+		}.wrap()
+
+	override suspend fun setExternalJwtAuthByIdentifiersForCurrentUser(
+		externalJwtConfigId: String,
+		externalAuthenticationToken: String,
+	): HttpResponse<Boolean> =
+		put(authProvider) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "user", "current", "externalJwtAuth", externalJwtConfigId, "identifiers")
+			}
+			contentType(Application.Json)
+			accept(Application.Json)
+			`header`("externalAuthenticationToken", externalAuthenticationToken)
 		}.wrap()
 
 	override suspend fun createAdminUser(userDto: User): HttpResponse<User> =
