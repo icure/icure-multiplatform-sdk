@@ -201,7 +201,12 @@ public interface RawUserApi {
 
 	suspend fun disable2faForUser(userId: String): HttpResponse<Unit>
 
-	suspend fun enableFasAuthenticationForUser(fasJwtToken: String): HttpResponse<User>
+	suspend fun enableFasAuthenticationForUser(fasJwtToken: String): HttpResponse<Boolean>
+
+	suspend fun setExternalJwtAuthByIdentifiersForCurrentUser(
+		externalJwtConfigId: String,
+		externalAuthenticationToken: String,
+	): HttpResponse<Boolean>
 
 	suspend fun createAdminUser(userDto: User): HttpResponse<User>
 

@@ -179,4 +179,105 @@ class RawAgendaApiImpl(
 		}.wrap()
 
 	// endregion
+
+	// region cloud endpoints
+
+	override suspend fun createAgendaInGroup(
+		groupId: String,
+		agendaDto: Agenda,
+	): HttpResponse<Agenda> =
+		post(authProvider) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "agenda", "inGroup", groupId)
+			}
+			contentType(Application.Json)
+			accept(Application.Json)
+			setBody(agendaDto)
+		}.wrap()
+
+	override suspend fun modifyAgendaInGroup(
+		groupId: String,
+		agendaDto: Agenda,
+	): HttpResponse<Agenda> =
+		put(authProvider) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "agenda", "inGroup", groupId)
+			}
+			contentType(Application.Json)
+			accept(Application.Json)
+			setBody(agendaDto)
+		}.wrap()
+
+	override suspend fun getAgendaInGroup(
+		groupId: String,
+		agendaId: String,
+	): HttpResponse<Agenda> =
+		get(authProvider) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "agenda", "inGroup", groupId, agendaId)
+				parameter("ts", GMTDate().timestamp)
+			}
+			accept(Application.Json)
+		}.wrap()
+
+	override suspend fun getAgendasInGroup(
+		groupId: String,
+		agendaIds: ListOfIds,
+	): HttpResponse<List<Agenda>> =
+		post(authProvider) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "agenda", "inGroup", groupId, "byIds")
+			}
+			contentType(Application.Json)
+			accept(Application.Json)
+			setBody(agendaIds)
+		}.wrap()
+
+	override suspend fun deleteAgendasInGroup(
+		groupId: String,
+		agendaIdsAndRevs: ListOfIdsAndRev,
+	): HttpResponse<List<DocIdentifier>> =
+		post(authProvider) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "agenda", "inGroup", groupId, "delete", "batch")
+			}
+			contentType(Application.Json)
+			accept(Application.Json)
+			setBody(agendaIdsAndRevs)
+		}.wrap()
+
+	override suspend fun deleteAgendaInGroup(
+		groupId: String,
+		agendaId: String,
+		rev: String,
+	): HttpResponse<DocIdentifier> =
+		delete(authProvider) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "agenda", "inGroup", groupId, agendaId)
+				parameter("rev", rev)
+			}
+			accept(Application.Json)
+		}.wrap()
+
+	override suspend fun matchCalendarItemsInGroupBy(
+		filter: AbstractFilter<Agenda>,
+		groupId: String,
+	): HttpResponse<List<String>> =
+		post(authProvider) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "agenda", "inGroup", groupId, "match")
+			}
+			contentType(Application.Json)
+			accept(Application.Json)
+			setBodyWithSerializer(AgendaAbstractFilterSerializer, filter)
+		}.wrap()
+
+	// endregion
 }
