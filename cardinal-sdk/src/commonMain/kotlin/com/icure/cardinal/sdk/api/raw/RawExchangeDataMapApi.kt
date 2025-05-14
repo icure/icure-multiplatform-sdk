@@ -17,17 +17,4 @@ public interface RawExchangeDataMapApi {
 
 	suspend fun getExchangeDataMapBatch(ids: ListOfIds): HttpResponse<List<ExchangeDataMap>>
 	// endregion
-
-	// region cloud endpoints
-
-	suspend fun createOrUpdateExchangeDataMapBatch(
-		batch: ExchangeDataMapCreationBatch,
-		groupId: String,
-	): HttpResponse<String>
-
-	suspend fun getExchangeDataMapBatch(
-		ids: ListOfIds,
-		groupId: String,
-	): HttpResponse<List<ExchangeDataMap>>
-	// endregion
 }

@@ -28,18 +28,7 @@ public interface RawExchangeDataApi {
 		limit: Int? = null,
 	): HttpResponse<PaginatedList<ExchangeData>>
 
-	suspend fun getExchangeDataByParticipantQuery(
-		dataOwnerId: String,
-		startDocumentId: String? = null,
-		limit: Int? = null,
-	): HttpResponse<PaginatedList<ExchangeData>>
-
 	suspend fun getExchangeDataByDelegatorDelegate(
-		delegatorId: String,
-		delegateId: String,
-	): HttpResponse<List<ExchangeData>>
-
-	suspend fun getExchangeDataByDelegatorDelegateQuery(
 		delegatorId: String,
 		delegateId: String,
 	): HttpResponse<List<ExchangeData>>
@@ -49,47 +38,5 @@ public interface RawExchangeDataApi {
 		counterpartsTypes: String,
 		ignoreOnEntryForFingerprint: String? = null,
 	): HttpResponse<List<String>>
-
-	suspend fun getParticipantCounterpartsQuery(
-		dataOwnerId: String,
-		counterpartsTypes: String,
-		ignoreOnEntryForFingerprint: String? = null,
-	): HttpResponse<List<String>>
-	// endregion
-
-	// region cloud endpoints
-
-	suspend fun createExchangeData(
-		exchangeData: ExchangeData,
-		groupId: String,
-	): HttpResponse<ExchangeData>
-
-	suspend fun modifyExchangeData(
-		exchangeData: ExchangeData,
-		groupId: String,
-	): HttpResponse<ExchangeData>
-
-	suspend fun getExchangeDataById(
-		exchangeDataId: String,
-		groupId: String,
-	): HttpResponse<ExchangeData>
-
-	suspend fun getExchangeDataByIds(
-		exchangeDataIds: ListOfIds,
-		groupId: String,
-	): HttpResponse<List<ExchangeData>>
-
-	suspend fun getExchangeDataByParticipant(
-		dataOwnerId: String,
-		startDocumentId: String? = null,
-		limit: Int? = null,
-		groupId: String,
-	): HttpResponse<PaginatedList<ExchangeData>>
-
-	suspend fun getExchangeDataByDelegatorDelegate(
-		delegatorId: String,
-		delegateId: String,
-		groupId: String,
-	): HttpResponse<List<ExchangeData>>
 	// endregion
 }

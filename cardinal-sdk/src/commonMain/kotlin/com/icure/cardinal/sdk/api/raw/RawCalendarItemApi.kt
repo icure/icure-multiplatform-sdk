@@ -122,48 +122,4 @@ public interface RawCalendarItemApi {
 
 	suspend fun bulkShareMinimal(request: BulkShareOrUpdateMetadataParams): HttpResponse<List<EntityBulkShareResult<Nothing>>>
 	// endregion
-
-	// region cloud endpoints
-
-	suspend fun createCalendarItemInGroup(
-		groupId: String,
-		calendarItemDto: EncryptedCalendarItem,
-	): HttpResponse<EncryptedCalendarItem>
-
-	suspend fun modifyCalendarItemInGroup(
-		groupId: String,
-		calendarItemDto: EncryptedCalendarItem,
-	): HttpResponse<EncryptedCalendarItem>
-
-	suspend fun getCalendarItemInGroup(
-		groupId: String,
-		calendarItemId: String,
-	): HttpResponse<EncryptedCalendarItem>
-
-	suspend fun getCalendarItemsInGroup(
-		groupId: String,
-		calendarItemIds: ListOfIds,
-	): HttpResponse<List<EncryptedCalendarItem>>
-
-	suspend fun deleteCalendarItemsInGroup(
-		groupId: String,
-		calendarItemIdsAndRevs: ListOfIdsAndRev,
-	): HttpResponse<List<DocIdentifier>>
-
-	suspend fun deleteCalendarItemInGroup(
-		groupId: String,
-		calendarItemId: String,
-		rev: String,
-	): HttpResponse<DocIdentifier>
-
-	suspend fun matchCalendarItemsInGroupBy(
-		filter: AbstractFilter<CalendarItem>,
-		groupId: String,
-	): HttpResponse<List<String>>
-
-	suspend fun bulkShare(
-		request: BulkShareOrUpdateMetadataParams,
-		groupId: String,
-	): HttpResponse<List<EntityBulkShareResult<EncryptedCalendarItem>>>
-	// endregion
 }

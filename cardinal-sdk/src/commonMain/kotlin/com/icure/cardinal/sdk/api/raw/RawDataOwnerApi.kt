@@ -31,12 +31,4 @@ public interface RawDataOwnerApi {
 
 	suspend fun getCurrentDataOwnerHierarchyStub(): HttpResponse<List<CryptoActorStubWithType>>
 	// endregion
-
-	// region cloud endpoints
-
-	suspend fun getCryptoActorStubInGroup(
-		groupId: String,
-		dataOwnerId: String,
-	): HttpResponse<CryptoActorStubWithType>
-	// endregion
 }

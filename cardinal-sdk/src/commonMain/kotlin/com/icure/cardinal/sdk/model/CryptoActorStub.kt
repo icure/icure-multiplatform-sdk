@@ -1,6 +1,8 @@
 package com.icure.cardinal.sdk.model
 
+import com.icure.cardinal.sdk.model.base.CodeStub
 import com.icure.cardinal.sdk.model.base.CryptoActor
+import com.icure.cardinal.sdk.model.base.HasTags
 import com.icure.cardinal.sdk.model.base.Versionable
 import com.icure.cardinal.sdk.model.specializations.AesExchangeKeyEncryptionKeypairIdentifier
 import com.icure.cardinal.sdk.model.specializations.AesExchangeKeyEntryKeyString
@@ -12,8 +14,6 @@ import kotlin.String
 import kotlin.collections.List
 import kotlin.collections.Map
 import kotlin.collections.Set
-import com.icure.cardinal.sdk.model.base.CodeStub
-import com.icure.cardinal.sdk.model.base.HasTags
 
 // WARNING: This file is auto-generated. If you change it manually, your changes will be lost.
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
@@ -34,9 +34,11 @@ data class CryptoActorStub(
 	override val privateKeyShamirPartitions: Map<String, HexString> = emptyMap(),
 	override val publicKey: SpkiHexString? = null,
 	override val publicKeysForOaepWithSha256: Set<SpkiHexString>,
+	@DefaultValue("emptySet()")
+	override val tags: Set<CodeStub> = emptySet(),
 	override val parentId: String? = null,
 	override val cryptoActorProperties: Set<DecryptedPropertyStub>? = null,
-) : Versionable<String>, CryptoActor {
+) : Versionable<String>, CryptoActor, HasTags {
 	// region CryptoActorStub-CryptoActorStub
 
 	// endregion

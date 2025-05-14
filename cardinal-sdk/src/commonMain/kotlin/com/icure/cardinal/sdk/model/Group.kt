@@ -5,7 +5,7 @@ import com.icure.cardinal.sdk.model.base.HasTags
 import com.icure.cardinal.sdk.model.base.StoredDocument
 import com.icure.cardinal.sdk.model.embed.AuthenticationClass
 import com.icure.cardinal.sdk.model.embed.UserType
-import com.icure.cardinal.sdk.model.security.ExternalJwtConfig
+import com.icure.cardinal.sdk.model.security.ExternalJwtSelector
 import com.icure.cardinal.sdk.model.security.OperationToken
 import com.icure.cardinal.sdk.utils.DefaultValue
 import kotlinx.serialization.Serializable
@@ -15,6 +15,7 @@ import kotlin.String
 import kotlin.collections.List
 import kotlin.collections.Map
 import kotlin.collections.Set
+import com.icure.cardinal.sdk.model.security.ExternalJwtConfig
 
 // WARNING: This file is auto-generated. If you change it manually, your changes will be lost.
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
@@ -41,7 +42,7 @@ data class Group(
 	public val sharedEntities: Map<String, String> = emptyMap(),
 	public val minimumKrakenVersion: String? = null,
 	@DefaultValue("emptyMap()")
-	public val externalJwtConfig: Map<String, ExternalJwtConfig> = emptyMap(),
+	public val externalJwtPublicKeys: Map<String, ExternalJwtSelector> = emptyMap(),
 	public val minimumAuthenticationClassForElevatedPrivileges: AuthenticationClass,
 	public val superGroup: String? = null,
 	public val applicationId: String? = null,

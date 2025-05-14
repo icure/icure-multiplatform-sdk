@@ -38,8 +38,6 @@ data class TimeTableItem(
 	public val acceptsNewPatient: Boolean = true,
 	@DefaultValue("false")
 	public val unavailable: Boolean = false,
-	@DefaultValue("emptySet()")
-	public val reservingRights: Set<String> = emptySet(),
 ) {
 	// region TimeTableItem-TimeTableItem
 

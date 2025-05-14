@@ -78,27 +78,4 @@ public interface RawHealthElementApi {
 
 	suspend fun bulkShareMinimal(request: BulkShareOrUpdateMetadataParams): HttpResponse<List<EntityBulkShareResult<Nothing>>>
 	// endregion
-
-	// region cloud endpoints
-
-	suspend fun createHealthElementInGroup(
-		groupId: String,
-		healthElementDto: EncryptedHealthElement,
-	): HttpResponse<EncryptedHealthElement>
-
-	suspend fun modifyHealthElementInGroup(
-		groupId: String,
-		healthElementDto: EncryptedHealthElement,
-	): HttpResponse<EncryptedHealthElement>
-
-	suspend fun getHealthElementInGroup(
-		groupId: String,
-		healthElementId: String,
-	): HttpResponse<EncryptedHealthElement>
-
-	suspend fun bulkShare(
-		request: BulkShareOrUpdateMetadataParams,
-		groupId: String,
-	): HttpResponse<List<EntityBulkShareResult<EncryptedHealthElement>>>
-	// endregion
 }

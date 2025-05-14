@@ -2,7 +2,6 @@ package com.icure.cardinal.sdk.api.raw.`impl`
 
 import com.icure.cardinal.sdk.api.raw.BaseRawApi
 import com.icure.cardinal.sdk.api.raw.HttpResponse
-import com.icure.cardinal.sdk.api.raw.RawApiConfig
 import com.icure.cardinal.sdk.api.raw.RawCalendarItemApi
 import com.icure.cardinal.sdk.api.raw.wrap
 import com.icure.cardinal.sdk.auth.services.AuthProvider
@@ -20,6 +19,7 @@ import com.icure.cardinal.sdk.model.requests.BulkShareOrUpdateMetadataParams
 import com.icure.cardinal.sdk.model.requests.EntityBulkShareResult
 import com.icure.cardinal.sdk.serialization.CalendarItemAbstractFilterSerializer
 import com.icure.utils.InternalIcureApi
+import io.ktor.client.HttpClient
 import io.ktor.client.request.accept
 import io.ktor.client.request.parameter
 import io.ktor.client.request.setBody
@@ -28,12 +28,15 @@ import io.ktor.http.appendPathSegments
 import io.ktor.http.contentType
 import io.ktor.http.takeFrom
 import io.ktor.util.date.GMTDate
+import kotlinx.serialization.json.Json
 import kotlin.Boolean
 import kotlin.Int
 import kotlin.Long
 import kotlin.Nothing
 import kotlin.String
 import kotlin.collections.List
+import kotlin.collections.Map
+import kotlin.time.Duration
 
 // WARNING: This class is auto-generated. If you change it manually, your changes will be lost.
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
@@ -42,13 +45,13 @@ class RawCalendarItemApiImpl(
 	internal val apiUrl: String,
 	private val authProvider: AuthProvider,
 	private val accessControlKeysHeadersProvider: AccessControlKeysHeadersProvider?,
-	rawApiConfig: RawApiConfig,
-) : BaseRawApi(rawApiConfig), RawCalendarItemApi {
-	override suspend fun getAccessControlKeysHeaderValues(groupId: String?): List<String>? =
-		accessControlKeysHeadersProvider?.getAccessControlKeysHeadersFor(
-			groupId,
-			EntityWithEncryptionMetadataTypeName.CalendarItem,
-		)
+	httpClient: HttpClient,
+	additionalHeaders: Map<String, String> = emptyMap(),
+	timeout: Duration? = null,
+	json: Json,
+) : BaseRawApi(httpClient, additionalHeaders, timeout, json), RawCalendarItemApi {
+	override suspend fun getAccessControlKeysHeaderValues(): List<String>? =
+		accessControlKeysHeadersProvider?.getAccessControlKeysHeadersFor(EntityWithEncryptionMetadataTypeName.CalendarItem)
 
 	// region common endpoints
 
@@ -371,133 +374,6 @@ class RawCalendarItemApiImpl(
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "calendarItem", "bulkSharedMetadataUpdateMinimal")
-			}
-			contentType(Application.Json)
-			accept(Application.Json)
-			setBody(request)
-		}.wrap()
-
-	// endregion
-
-	// region cloud endpoints
-
-	override suspend fun createCalendarItemInGroup(
-		groupId: String,
-		calendarItemDto: EncryptedCalendarItem,
-	): HttpResponse<EncryptedCalendarItem> =
-		post(
-			authProvider,
-			groupId,
-		) {
-			url {
-				takeFrom(apiUrl)
-				appendPathSegments("rest", "v2", "calendarItem", "inGroup", groupId)
-			}
-			contentType(Application.Json)
-			accept(Application.Json)
-			setBody(calendarItemDto)
-		}.wrap()
-
-	override suspend fun modifyCalendarItemInGroup(
-		groupId: String,
-		calendarItemDto: EncryptedCalendarItem,
-	): HttpResponse<EncryptedCalendarItem> =
-		put(
-			authProvider,
-			groupId,
-		) {
-			url {
-				takeFrom(apiUrl)
-				appendPathSegments("rest", "v2", "calendarItem", "inGroup", groupId)
-			}
-			contentType(Application.Json)
-			accept(Application.Json)
-			setBody(calendarItemDto)
-		}.wrap()
-
-	override suspend fun getCalendarItemInGroup(
-		groupId: String,
-		calendarItemId: String,
-	): HttpResponse<EncryptedCalendarItem> =
-		get(authProvider, groupId) {
-			url {
-				takeFrom(apiUrl)
-				appendPathSegments("rest", "v2", "calendarItem", "inGroup", groupId, calendarItemId)
-				parameter("ts", GMTDate().timestamp)
-			}
-			accept(Application.Json)
-		}.wrap()
-
-	override suspend fun getCalendarItemsInGroup(
-		groupId: String,
-		calendarItemIds: ListOfIds,
-	): HttpResponse<List<EncryptedCalendarItem>> =
-		post(authProvider, groupId) {
-			url {
-				takeFrom(apiUrl)
-				appendPathSegments("rest", "v2", "calendarItem", "inGroup", groupId, "byIds")
-			}
-			contentType(Application.Json)
-			accept(Application.Json)
-			setBody(calendarItemIds)
-		}.wrap()
-
-	override suspend fun deleteCalendarItemsInGroup(
-		groupId: String,
-		calendarItemIdsAndRevs: ListOfIdsAndRev,
-	): HttpResponse<List<DocIdentifier>> =
-		post(
-			authProvider,
-			groupId,
-		) {
-			url {
-				takeFrom(apiUrl)
-				appendPathSegments("rest", "v2", "calendarItem", "inGroup", groupId, "delete", "batch")
-			}
-			contentType(Application.Json)
-			accept(Application.Json)
-			setBody(calendarItemIdsAndRevs)
-		}.wrap()
-
-	override suspend fun deleteCalendarItemInGroup(
-		groupId: String,
-		calendarItemId: String,
-		rev: String,
-	): HttpResponse<DocIdentifier> =
-		delete(authProvider, groupId) {
-			url {
-				takeFrom(apiUrl)
-				appendPathSegments("rest", "v2", "calendarItem", "inGroup", groupId, calendarItemId)
-				parameter("rev", rev)
-			}
-			accept(Application.Json)
-		}.wrap()
-
-	override suspend fun matchCalendarItemsInGroupBy(
-		filter: AbstractFilter<CalendarItem>,
-		groupId: String,
-	): HttpResponse<List<String>> =
-		post(authProvider, groupId) {
-			url {
-				takeFrom(apiUrl)
-				appendPathSegments("rest", "v2", "calendarItem", "inGroup", groupId, "match")
-			}
-			contentType(Application.Json)
-			accept(Application.Json)
-			setBodyWithSerializer(CalendarItemAbstractFilterSerializer, filter)
-		}.wrap()
-
-	override suspend fun bulkShare(
-		request: BulkShareOrUpdateMetadataParams,
-		groupId: String,
-	): HttpResponse<List<EntityBulkShareResult<EncryptedCalendarItem>>> =
-		put(
-			authProvider,
-			groupId,
-		) {
-			url {
-				takeFrom(apiUrl)
-				appendPathSegments("rest", "v2", "calendarItem", "inGroup", groupId, "bulkSharedMetadataUpdate")
 			}
 			contentType(Application.Json)
 			accept(Application.Json)

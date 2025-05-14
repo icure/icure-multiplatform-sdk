@@ -173,11 +173,6 @@ public interface RawUserApi {
 		userIds: ListOfIds,
 	): HttpResponse<List<User>>
 
-	suspend fun getUserInGroup(
-		groupId: String,
-		userId: String,
-	): HttpResponse<User>
-
 	suspend fun matchUsersInGroupBy(
 		groupId: String,
 		filter: AbstractFilter<User>,
@@ -201,7 +196,7 @@ public interface RawUserApi {
 
 	suspend fun disable2faForUser(userId: String): HttpResponse<Unit>
 
-	suspend fun enableFasAuthenticationForUser(fasJwtToken: String): HttpResponse<User>
+	suspend fun enableFasAuthenticationForUser(fasJwtToken: String): HttpResponse<Boolean>
 
 	suspend fun createAdminUser(userDto: User): HttpResponse<User>
 
@@ -214,11 +209,5 @@ public interface RawUserApi {
 		groupId: String,
 		filter: AbstractFilter<User>,
 	): HttpResponse<List<String>>
-
-	suspend fun setUserInheritsPermissions(
-		userId: String,
-		groupId: String,
-		`value`: Boolean,
-	): HttpResponse<String>
 	// endregion
 }

@@ -3,17 +3,17 @@ package com.icure.cardinal.sdk.model
 import com.icure.cardinal.sdk.model.base.CodeStub
 import com.icure.cardinal.sdk.model.base.ICureDocument
 import com.icure.cardinal.sdk.model.base.StoredDocument
-import com.icure.cardinal.sdk.model.embed.EmbeddedTimeTable
 import com.icure.cardinal.sdk.model.embed.Right
-import com.icure.cardinal.sdk.model.embed.UserAccessLevel
 import com.icure.cardinal.sdk.utils.DefaultValue
 import kotlinx.serialization.Serializable
-import kotlin.Deprecated
 import kotlin.Long
 import kotlin.String
 import kotlin.collections.List
-import kotlin.collections.Map
 import kotlin.collections.Set
+import com.icure.cardinal.sdk.model.embed.EmbeddedTimeTable
+import com.icure.cardinal.sdk.model.embed.UserAccessLevel
+import kotlin.Deprecated
+import kotlin.collections.Map
 
 // WARNING: This file is auto-generated. If you change it manually, your changes will be lost.
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
@@ -36,14 +36,7 @@ data class Agenda(
 	public val name: String? = null,
 	public val userId: String? = null,
 	@DefaultValue("emptyList()")
-	@Deprecated("Use `userRights` instead")
 	public val rights: List<Right> = emptyList(),
-	@DefaultValue("emptyMap()")
-	public val userRights: Map<String, UserAccessLevel> = emptyMap(),
-	@DefaultValue("emptySet()")
-	public val properties: Set<DecryptedPropertyStub> = emptySet(),
-	@DefaultValue("emptyList()")
-	public val timeTables: List<EmbeddedTimeTable> = emptyList(),
 ) : StoredDocument, ICureDocument<String> {
 	// region Agenda-Agenda
 

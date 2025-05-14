@@ -81,6 +81,7 @@ import com.icure.cardinal.sdk.model.filter.hcparty.HealthcarePartyByTypeSpecialt
 import com.icure.cardinal.sdk.model.filter.healthelement.HealthElementByDataOwnerPatientOpeningDate
 import com.icure.cardinal.sdk.model.filter.healthelement.HealthElementByHcPartyFilter
 import com.icure.cardinal.sdk.model.filter.healthelement.HealthElementByHcPartyIdentifiersFilter
+import com.icure.cardinal.sdk.model.filter.healthelement.HealthElementByHcPartySecretForeignKeysFilter
 import com.icure.cardinal.sdk.model.filter.healthelement.HealthElementByHcPartyStatusFilter
 import com.icure.cardinal.sdk.model.filter.healthelement.HealthElementByHcPartyTagCodeFilter
 import com.icure.cardinal.sdk.model.filter.healthelement.HealthElementByIdsFilter
@@ -144,13 +145,13 @@ internal object AnyAbstractFilterSerializer :
 	@Suppress("UNCHECKED_CAST")
 	override fun getSerializerBySerialName(serialName: String): KSerializer<out AbstractFilter<*>>? =
 		when (serialName) {
-			"ComplementFilter" ->
-				ComplementFilterSerializer(
+			"IntersectionFilter" ->
+				IntersectionFilterSerializer(
 					this as
 						KSerializer<AbstractFilter<Identifiable<String>>>,
 				)
-			"IntersectionFilter" ->
-				IntersectionFilterSerializer(
+			"ComplementFilter" ->
+				ComplementFilterSerializer(
 					this as
 						KSerializer<AbstractFilter<Identifiable<String>>>,
 				)
@@ -181,13 +182,13 @@ internal object AnyAbstractFilterSerializer :
 	@Suppress("UNCHECKED_CAST")
 	override fun getSerializerByClass(kclass: KClass<out AbstractFilter<*>>): KSerializer<out AbstractFilter<*>>? =
 		when (kclass) {
-			ComplementFilter::class ->
-				ComplementFilterSerializer(
+			IntersectionFilter::class ->
+				IntersectionFilterSerializer(
 					this as
 						KSerializer<AbstractFilter<Identifiable<String>>>,
 				)
-			IntersectionFilter::class ->
-				IntersectionFilterSerializer(
+			ComplementFilter::class ->
+				ComplementFilterSerializer(
 					this as
 						KSerializer<AbstractFilter<Identifiable<String>>>,
 				)
@@ -588,6 +589,8 @@ internal object HealthElementAbstractFilterSerializer :
 				HealthElementByDataOwnerPatientOpeningDate.serializer()
 			"HealthElementByHcPartyFilter" -> HealthElementByHcPartyFilter.serializer()
 			"HealthElementByHcPartyIdentifiersFilter" -> HealthElementByHcPartyIdentifiersFilter.serializer()
+			"HealthElementByHcPartySecretForeignKeysFilter" ->
+				HealthElementByHcPartySecretForeignKeysFilter.serializer()
 			"HealthElementByHcPartyStatusFilter" -> HealthElementByHcPartyStatusFilter.serializer()
 			"HealthElementByHcPartyTagCodeFilter" -> HealthElementByHcPartyTagCodeFilter.serializer()
 			"HealthElementByIdsFilter" -> HealthElementByIdsFilter.serializer()
@@ -604,6 +607,8 @@ internal object HealthElementAbstractFilterSerializer :
 			HealthElementByHcPartyFilter::class -> HealthElementByHcPartyFilter.serializer()
 			HealthElementByHcPartyIdentifiersFilter::class ->
 				HealthElementByHcPartyIdentifiersFilter.serializer()
+			HealthElementByHcPartySecretForeignKeysFilter::class ->
+				HealthElementByHcPartySecretForeignKeysFilter.serializer()
 			HealthElementByHcPartyStatusFilter::class -> HealthElementByHcPartyStatusFilter.serializer()
 			HealthElementByHcPartyTagCodeFilter::class -> HealthElementByHcPartyTagCodeFilter.serializer()
 			HealthElementByIdsFilter::class -> HealthElementByIdsFilter.serializer()

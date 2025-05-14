@@ -2,7 +2,6 @@ package com.icure.cardinal.sdk.api.raw.`impl`
 
 import com.icure.cardinal.sdk.api.raw.BaseRawApi
 import com.icure.cardinal.sdk.api.raw.HttpResponse
-import com.icure.cardinal.sdk.api.raw.RawApiConfig
 import com.icure.cardinal.sdk.api.raw.RawHealthcarePartyApi
 import com.icure.cardinal.sdk.api.raw.wrap
 import com.icure.cardinal.sdk.auth.services.AuthProvider
@@ -20,6 +19,7 @@ import com.icure.cardinal.sdk.model.specializations.HexString
 import com.icure.cardinal.sdk.serialization.FilterChainSerializer
 import com.icure.cardinal.sdk.serialization.HealthcarePartyAbstractFilterSerializer
 import com.icure.utils.InternalIcureApi
+import io.ktor.client.HttpClient
 import io.ktor.client.request.accept
 import io.ktor.client.request.parameter
 import io.ktor.client.request.setBody
@@ -28,11 +28,13 @@ import io.ktor.http.appendPathSegments
 import io.ktor.http.contentType
 import io.ktor.http.takeFrom
 import io.ktor.util.date.GMTDate
+import kotlinx.serialization.json.Json
 import kotlin.Boolean
 import kotlin.Int
 import kotlin.String
 import kotlin.collections.List
 import kotlin.collections.Map
+import kotlin.time.Duration
 
 // WARNING: This class is auto-generated. If you change it manually, your changes will be lost.
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
@@ -40,8 +42,11 @@ import kotlin.collections.Map
 class RawHealthcarePartyApiImpl(
 	internal val apiUrl: String,
 	private val authProvider: AuthProvider,
-	rawApiConfig: RawApiConfig,
-) : BaseRawApi(rawApiConfig), RawHealthcarePartyApi {
+	httpClient: HttpClient,
+	additionalHeaders: Map<String, String> = emptyMap(),
+	timeout: Duration? = null,
+	json: Json,
+) : BaseRawApi(httpClient, additionalHeaders, timeout, json), RawHealthcarePartyApi {
 	// region common endpoints
 
 	override suspend fun getCurrentHealthcareParty(): HttpResponse<HealthcareParty> =
