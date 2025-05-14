@@ -30,9 +30,11 @@ import com.icure.cardinal.sdk.model.filter.UnionFilter
 import com.icure.cardinal.sdk.model.filter.accesslog.AccessLogByDataOwnerPatientDateFilter
 import com.icure.cardinal.sdk.model.filter.accesslog.AccessLogByDateFilter
 import com.icure.cardinal.sdk.model.filter.accesslog.AccessLogByUserIdUserTypeDateFilter
+import com.icure.cardinal.sdk.model.filter.agenda.AgendaByTypedPropertyFilter
 import com.icure.cardinal.sdk.model.filter.agenda.AgendaByUserIdFilter
 import com.icure.cardinal.sdk.model.filter.agenda.AgendaReadableByUserIdFilter
 import com.icure.cardinal.sdk.model.filter.agenda.AgendaReadableByUserRightsFilter
+import com.icure.cardinal.sdk.model.filter.agenda.AgendaWithPropertyFilter
 import com.icure.cardinal.sdk.model.filter.agenda.AllAgendasFilter
 import com.icure.cardinal.sdk.model.filter.calendarItem.CalendarItemByDataOwnerLifecycleBetween
 import com.icure.cardinal.sdk.model.filter.calendarItem.CalendarItemByDataOwnerPatientStartTimeFilter
@@ -308,9 +310,11 @@ internal object AgendaAbstractFilterSerializer :
 			"ComplementFilter" -> ComplementFilterSerializer(this)
 			"IntersectionFilter" -> IntersectionFilterSerializer(this)
 			"UnionFilter" -> UnionFilterSerializer(this)
+			"AgendaByTypedPropertyFilter" -> AgendaByTypedPropertyFilter.serializer()
 			"AgendaByUserIdFilter" -> AgendaByUserIdFilter.serializer()
 			"AgendaReadableByUserIdFilter" -> AgendaReadableByUserIdFilter.serializer()
 			"AgendaReadableByUserRightsFilter" -> AgendaReadableByUserRightsFilter.serializer()
+			"AgendaWithPropertyFilter" -> AgendaWithPropertyFilter.serializer()
 			"AllAgendasFilter" -> AllAgendasFilter.serializer()
 			else -> null
 		}
@@ -320,9 +324,11 @@ internal object AgendaAbstractFilterSerializer :
 			ComplementFilter::class -> ComplementFilterSerializer(this)
 			IntersectionFilter::class -> IntersectionFilterSerializer(this)
 			UnionFilter::class -> UnionFilterSerializer(this)
+			AgendaByTypedPropertyFilter::class -> AgendaByTypedPropertyFilter.serializer()
 			AgendaByUserIdFilter::class -> AgendaByUserIdFilter.serializer()
 			AgendaReadableByUserIdFilter::class -> AgendaReadableByUserIdFilter.serializer()
 			AgendaReadableByUserRightsFilter::class -> AgendaReadableByUserRightsFilter.serializer()
+			AgendaWithPropertyFilter::class -> AgendaWithPropertyFilter.serializer()
 			AllAgendasFilter::class -> AllAgendasFilter.serializer()
 			else -> null
 		}
