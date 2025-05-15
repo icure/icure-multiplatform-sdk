@@ -2,10 +2,14 @@ package com.icure.cardinal.sdk.filters
 
 import com.icure.cardinal.sdk.crypto.entities.SdkBoundGroup
 import com.icure.cardinal.sdk.model.Agenda
+import com.icure.cardinal.sdk.model.DecryptedPropertyStub
 import com.icure.cardinal.sdk.model.EntityReferenceInGroup
+import com.icure.cardinal.sdk.model.embed.DecryptedTypedValue
 import com.icure.cardinal.sdk.model.filter.AbstractFilter
+import com.icure.cardinal.sdk.model.filter.agenda.AgendaByTypedPropertyFilter
 import com.icure.cardinal.sdk.model.filter.agenda.AgendaByUserIdFilter
 import com.icure.cardinal.sdk.model.filter.agenda.AgendaReadableByUserIdFilter
+import com.icure.cardinal.sdk.model.filter.agenda.AgendaWithPropertyFilter
 import com.icure.cardinal.sdk.model.filter.agenda.AllAgendasFilter
 import com.icure.cardinal.sdk.options.BasicApiConfiguration
 import com.icure.utils.InternalIcureApi
@@ -55,6 +59,83 @@ object AgendaFilters {
 		userReference: EntityReferenceInGroup
 	): BaseFilterOptions<Agenda> = ReadableByUserId(userReference)
 
+	/**
+	 * Options for agenda filtering that returns all the agendas where [Agenda.properties] contains a property with id equal to [propertyId]
+	 * and a typed value with a string value equals to [propertyValue].
+	 *
+	 * @param propertyId the id of the property.
+	 * @param propertyValue the string value of the property.
+	 */
+	fun byStringProperty(
+		propertyId: String,
+		propertyValue: String
+	): BaseFilterOptions<Agenda> = ByPropertyFilter(
+		DecryptedPropertyStub(
+			id = propertyId,
+			typedValue = DecryptedTypedValue(stringValue = propertyValue)
+		)
+	)
+
+	/**
+	 * Options for agenda filtering that returns all the agendas where [Agenda.properties] contains a property with id equal to [propertyId]
+	 * and a typed value with a boolean value equals to [propertyValue].
+	 *
+	 * @param propertyId the id of the property.
+	 * @param propertyValue the boolean value of the property.
+	 */
+	fun byBooleanProperty(
+		propertyId: String,
+		propertyValue: Boolean
+	): BaseFilterOptions<Agenda> = ByPropertyFilter(
+		DecryptedPropertyStub(
+			id = propertyId,
+			typedValue = DecryptedTypedValue(booleanValue = propertyValue)
+		)
+	)
+
+	/**
+	 * Options for agenda filtering that returns all the agendas where [Agenda.properties] contains a property with id equal to [propertyId]
+	 * and a typed value with a long value equals to [propertyValue].
+	 *
+	 * @param propertyId the id of the property.
+	 * @param propertyValue the long value of the property.
+	 */
+	fun byLongProperty(
+		propertyId: String,
+		propertyValue: Long
+	): BaseFilterOptions<Agenda> = ByPropertyFilter(
+		DecryptedPropertyStub(
+			id = propertyId,
+			typedValue = DecryptedTypedValue(integerValue = propertyValue)
+		)
+	)
+
+	/**
+	 * Options for agenda filtering that returns all the agendas where [Agenda.properties] contains a property with id equal to [propertyId]
+	 * and a typed value with a double value equals to [propertyValue].
+	 *
+	 * @param propertyId the id of the property.
+	 * @param propertyValue the double value of the property.
+	 */
+	fun byDoubleProperty(
+		propertyId: String,
+		propertyValue: Double
+	): BaseFilterOptions<Agenda> = ByPropertyFilter(
+		DecryptedPropertyStub(
+			id = propertyId,
+			typedValue = DecryptedTypedValue(doubleValue = propertyValue)
+		)
+	)
+
+	/**
+	 * Options for agenda filtering that returns all the agendas where [Agenda.properties] contains a property with id equal to [propertyId].
+	 *
+	 * @param propertyId the id of the property.
+	 */
+	fun withProperty(
+		propertyId: String
+	): BaseFilterOptions<Agenda> = WithProperty(propertyId = propertyId)
+
 	@Serializable
 	internal data object All : BaseFilterOptions<Agenda>
 
@@ -66,6 +147,16 @@ object AgendaFilters {
 	@Serializable
 	internal class ReadableByUserId(
 		val userId: EntityReferenceInGroup
+	): BaseFilterOptions<Agenda>
+
+	@Serializable
+	internal class ByPropertyFilter(
+		val property: DecryptedPropertyStub
+	): BaseFilterOptions<Agenda>
+
+	@Serializable
+	internal class WithProperty(
+		val propertyId: String
 	): BaseFilterOptions<Agenda>
 
 }
@@ -96,6 +187,14 @@ internal suspend fun mapAgendaFilterOptions(
 	)
 	is AgendaFilters.ReadableByUserId -> AgendaReadableByUserIdFilter(
 		userId = filterOptions.userId.asReferenceStringInGroup(requestGroupId, boundGroup),
+		desc = null
+	)
+	is AgendaFilters.ByPropertyFilter -> AgendaByTypedPropertyFilter(
+		property = filterOptions.property,
+		desc = null
+	)
+	is AgendaFilters.WithProperty -> AgendaWithPropertyFilter(
+		propertyId = filterOptions.propertyId,
 		desc = null
 	)
 	else -> throw IllegalArgumentException("Filter options ${filterOptions::class.simpleName} are not valid for filtering Agendas")
