@@ -117,5 +117,6 @@ interface GroupApi {
 	suspend fun listAllGroupsIds(): List<DocIdentifier>
 	suspend fun createOrUpdateExternalJwtConfig(groupId: String, key: String, config: ExternalJwtConfig): Group
 	suspend fun removeExternalJwtConfig(groupId: String, key: String): Group
+	suspend fun getOperationTokenForGroup(groupId: String, operation: Operation, duration: Long?, description: String? = null) : String
 }
 
