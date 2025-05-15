@@ -35,7 +35,7 @@ data class RawApiConfig(
 
 @InternalIcureApi
 abstract class BaseRawApi(
-	protected val config: RawApiConfig
+	private val config: RawApiConfig
 ) {
 	init {
 		require(config.additionalHeaders.keys.none { it.lowercase() == "content-type" }) {
