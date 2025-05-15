@@ -114,7 +114,11 @@ internal class AgendaGroupApiImpl (
 		}
 
 	override suspend fun deleteAgenda(agenda: GroupScoped<Agenda>): GroupScoped<StoredDocumentIdentifier> =
-		rawApi.deleteAgendaInGroup(agenda.groupId, agenda.entity.id, agenda.entity.rev).successBody().let {
+		rawApi.deleteAgendaInGroup(
+			groupId = agenda.groupId,
+			agendaId = agenda.entity.id,
+			rev = requireNotNull(agenda.entity.rev) { "Cannot delete an agenda without a rev"}
+		).successBody().let {
 			GroupScoped(it.toStoredDocumentIdentifier(), agenda.groupId)
 		}
 
@@ -135,7 +139,7 @@ internal class AgendaGroupApiImpl (
 	override suspend fun matchAgendasBy(
 		groupId: String,
 		filter: BaseFilterOptions<Agenda>,
-	): List<String> = rawApi.matchAgendasInGroup(
+	): List<String> = rawApi.matchAgendasInGroupBy(
 		groupId = groupId,
 		filter = mapAgendaFilterOptions(filter, config, groupId)
 	).successBody()
