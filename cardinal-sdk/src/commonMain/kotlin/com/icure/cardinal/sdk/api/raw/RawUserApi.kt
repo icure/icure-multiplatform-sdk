@@ -9,6 +9,7 @@ import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.model.filter.AbstractFilter
 import com.icure.cardinal.sdk.model.filter.chain.FilterChain
 import com.icure.cardinal.sdk.model.security.Enable2faRequest
+import com.icure.cardinal.sdk.model.security.LoginIdentifier
 import com.icure.cardinal.sdk.model.security.TokenWithGroup
 import com.icure.utils.InternalIcureApi
 import kotlin.Boolean
@@ -206,6 +207,13 @@ public interface RawUserApi {
 	suspend fun setExternalJwtAuthByIdentifiersForCurrentUser(
 		externalJwtConfigId: String,
 		externalAuthenticationToken: String,
+	): HttpResponse<Boolean>
+
+	suspend fun setLoginIdentifiers(
+		userId: String,
+		groupId: String,
+		replaceExisting: Boolean,
+		identifier: LoginIdentifier,
 	): HttpResponse<Boolean>
 
 	suspend fun createAdminUser(userDto: User): HttpResponse<User>

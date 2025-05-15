@@ -6,6 +6,7 @@ import com.icure.cardinal.sdk.model.embed.DelegationTag
 import com.icure.cardinal.sdk.model.enums.UsersStatus
 import com.icure.cardinal.sdk.model.enums.UsersType
 import com.icure.cardinal.sdk.model.security.AuthenticationToken
+import com.icure.cardinal.sdk.model.security.LoginIdentifier
 import com.icure.cardinal.sdk.model.security.Permission
 import com.icure.cardinal.sdk.serialization.InstantSerializer
 import com.icure.cardinal.sdk.utils.DefaultValue
@@ -64,7 +65,7 @@ data class User(
 		public val isAdmin: Boolean,
 		public val inheritsRoles: Boolean,
 		@DefaultValue("emptyList()")
-		public val loginIdentifiers: List<Identifier> = emptyList(),
+		public val loginIdentifiers: List<LoginIdentifier> = emptyList(),
 	)
 	// region User-User
 
