@@ -56,18 +56,40 @@ public interface RawAgendaApi {
 
 	// region cloud endpoints
 
-	suspend fun createAgendaInGroup(groupId: String, agendaDto: Agenda): HttpResponse<Agenda>
+	suspend fun createAgendaInGroup(
+		groupId: String,
+		agendaDto: Agenda,
+	): HttpResponse<Agenda>
 
-	suspend fun modifyAgendaInGroup(groupId: String, agendaDto: Agenda): HttpResponse<Agenda>
+	suspend fun modifyAgendaInGroup(
+		groupId: String,
+		agendaDto: Agenda,
+	): HttpResponse<Agenda>
 
-	suspend fun getAgendaInGroup(groupId: String, agendaId: String): HttpResponse<Agenda>
+	suspend fun getAgendaInGroup(
+		groupId: String,
+		agendaId: String,
+	): HttpResponse<Agenda>
 
-	suspend fun getAgendasInGroup(groupId: String, agendaIds: ListOfIds): HttpResponse<List<Agenda>>
+	suspend fun getAgendasInGroup(
+		groupId: String,
+		agendaIds: ListOfIds,
+	): HttpResponse<List<Agenda>>
 
-	suspend fun deleteAgendasInGroup(groupId: String, agendaIdsAndRevs: ListOfIdsAndRev): HttpResponse<List<DocIdentifier>>
+	suspend fun deleteAgendasInGroup(
+		groupId: String,
+		agendaIdsAndRevs: ListOfIdsAndRev,
+	): HttpResponse<List<DocIdentifier>>
 
-	suspend fun deleteAgendaInGroup(groupId: String, agendaId: String, rev: String? = null): HttpResponse<DocIdentifier>
+	suspend fun deleteAgendaInGroup(
+		groupId: String,
+		agendaId: String,
+		rev: String,
+	): HttpResponse<DocIdentifier>
 
-	suspend fun matchAgendasInGroup(groupId: String, filter: AbstractFilter<Agenda>): HttpResponse<List<String>>
+	suspend fun matchCalendarItemsInGroupBy(
+		filter: AbstractFilter<Agenda>,
+		groupId: String,
+	): HttpResponse<List<String>>
 	// endregion
 }
