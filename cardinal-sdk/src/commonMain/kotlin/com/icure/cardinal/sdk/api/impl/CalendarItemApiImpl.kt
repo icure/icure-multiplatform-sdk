@@ -55,6 +55,7 @@ import com.icure.cardinal.sdk.subscription.SubscriptionEventType
 import com.icure.cardinal.sdk.subscription.WebSocketSubscription
 import com.icure.cardinal.sdk.utils.Serialization
 import com.icure.cardinal.sdk.utils.currentEpochMs
+import com.icure.cardinal.sdk.utils.generation.JsMapAsObjectArray
 import com.icure.cardinal.sdk.utils.pagination.IdsPageIterator
 import com.icure.cardinal.sdk.utils.pagination.PaginatedListIterator
 import com.icure.utils.InternalIcureApi
@@ -227,14 +228,14 @@ private class AbstractCalendarItemFlavouredApi<E : CalendarItem>(
 
 	override suspend fun shareWithMany(
 		calendarItem: GroupScoped<E>,
-		delegates: Map<EntityReferenceInGroup, CalendarItemShareOptions>
+		delegates: @JsMapAsObjectArray(keyEntryName = "delegate", valueEntryName = "shareOptions") Map<EntityReferenceInGroup, CalendarItemShareOptions>
 	): GroupScoped<E> =
 		GroupScoped(doShareWithMany(calendarItem.groupId, calendarItem.entity, delegates), calendarItem.groupId)
 
 	private suspend fun doShareWithMany(
 		groupId: String?,
 		calendarItem: E,
-		delegates: Map<EntityReferenceInGroup, CalendarItemShareOptions>
+		delegates: @JsMapAsObjectArray(keyEntryName = "delegate", valueEntryName = "shareOptions") Map<EntityReferenceInGroup, CalendarItemShareOptions>
 	): E =
 		config.crypto.entity.simpleShareOrUpdateEncryptedEntityMetadata(
 			groupId,
@@ -485,7 +486,7 @@ private class CalendarItemApiImpl(
 			base: DecryptedCalendarItem?,
 			patient: GroupScoped<Patient>?,
 			user: User?,
-			delegates: Map<EntityReferenceInGroup, AccessLevel>,
+			delegates: @JsMapAsObjectArray(keyEntryName = "delegate", valueEntryName = "accessLevel") Map<EntityReferenceInGroup, AccessLevel>,
 			secretId: SecretIdUseOption
 		): GroupScoped<DecryptedCalendarItem> =
 			GroupScoped(
@@ -547,7 +548,7 @@ private class CalendarItemApiImpl(
 		base: DecryptedCalendarItem?,
 		patientInGroup: Pair<Patient, String?>?,
 		user: User?,
-		delegates: Map<EntityReferenceInGroup, AccessLevel>,
+		delegates: @JsMapAsObjectArray(keyEntryName = "delegate", valueEntryName = "accessLevel") Map<EntityReferenceInGroup, AccessLevel>,
 		secretId: SecretIdUseOption
 	): DecryptedCalendarItem =
 		crypto.entity.entityWithInitializedEncryptedMetadata(
