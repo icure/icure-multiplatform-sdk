@@ -265,7 +265,7 @@ class RawAgendaApiImpl(
 			accept(Application.Json)
 		}.wrap()
 
-	override suspend fun matchAgendasInGroupBy(
+	override suspend fun matchCalendarItemsInGroupBy(
 		filter: AbstractFilter<Agenda>,
 		groupId: String,
 	): HttpResponse<List<String>> =
