@@ -135,4 +135,6 @@ internal class GroupApiImpl(
 		rawApi.createOrUpdateExternalJwtConfig(groupId, key, config).successBody()
 	override suspend fun removeExternalJwtConfig(groupId: String, key: String): Group =
 		rawApi.removeExternalJwtConfig(groupId, key).successBody()
+	override suspend fun getOperationTokenForGroup(groupId: String, operation: Operation, duration: Long?, description: String?): String =
+		rawApi.getOperationTokenForGroup(groupId, operation, duration, description).successBody()
 }

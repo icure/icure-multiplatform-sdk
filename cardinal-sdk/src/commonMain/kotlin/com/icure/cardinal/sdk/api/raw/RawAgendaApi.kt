@@ -87,7 +87,7 @@ public interface RawAgendaApi {
 		rev: String,
 	): HttpResponse<DocIdentifier>
 
-	suspend fun matchCalendarItemsInGroupBy(
+	suspend fun matchAgendasInGroupBy(
 		filter: AbstractFilter<Agenda>,
 		groupId: String,
 	): HttpResponse<List<String>>
