@@ -17,5 +17,6 @@ data class AgendaByTypedPropertyFilter(
 	override val desc: String?,
 ) : AbstractFilter<Agenda> {
 	// region AgendaByTypedPropertyFilter-AgendaByTypedPropertyFilter
+
 	// endregion
 }
