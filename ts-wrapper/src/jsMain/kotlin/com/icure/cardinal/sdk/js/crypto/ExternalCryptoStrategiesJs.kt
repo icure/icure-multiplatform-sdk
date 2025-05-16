@@ -27,11 +27,13 @@ external interface CryptoStrategiesJs {
 	fun verifyDelegatePublicKeys(
 		delegate: CryptoActorStubWithTypeJs,
 		publicKeys: Array<String>,
-		cryptoPrimitives: XCryptoService
+		cryptoPrimitives: XCryptoService,
+		groupId: String?
 	): Promise<Array<String>>
 
 	fun dataOwnerRequiresAnonymousDelegation(
-		dataOwner: CryptoActorStubWithTypeJs
+		dataOwner: CryptoActorStubWithTypeJs,
+		groupId: String?
 	): Promise<Boolean>
 
 	fun notifyNewKeyCreated(
