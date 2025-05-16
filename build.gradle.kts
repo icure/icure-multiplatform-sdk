@@ -1,7 +1,6 @@
 import com.github.jk1.license.render.CsvReportRenderer
 import com.github.jk1.license.render.ReportRenderer
 
-@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
 	kotlinMultiplatform(false)
 	kotlinSerialization(false)
