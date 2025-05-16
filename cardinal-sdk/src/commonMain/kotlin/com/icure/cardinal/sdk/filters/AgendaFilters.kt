@@ -9,6 +9,7 @@ import com.icure.cardinal.sdk.model.filter.AbstractFilter
 import com.icure.cardinal.sdk.model.filter.agenda.AgendaByTypedPropertyFilter
 import com.icure.cardinal.sdk.model.filter.agenda.AgendaByUserIdFilter
 import com.icure.cardinal.sdk.model.filter.agenda.AgendaReadableByUserIdFilter
+import com.icure.cardinal.sdk.model.filter.agenda.AgendaReadableByUserRightsFilter
 import com.icure.cardinal.sdk.model.filter.agenda.AgendaWithPropertyFilter
 import com.icure.cardinal.sdk.model.filter.agenda.AllAgendasFilter
 import com.icure.cardinal.sdk.options.BasicApiConfiguration
@@ -46,6 +47,12 @@ object AgendaFilters {
 	 *
 	 * @param userId the id of that can read the agenda.
 	 */
+	@Deprecated(
+		message = "Use readableByUserRights instead",
+		ReplaceWith(
+			expression = "readableByUserRights(userId)",
+		)
+	)
 	fun readableByUser(
 		userId: String
 	): BaseFilterOptions<Agenda> = ReadableByUserId(EntityReferenceInGroup(userId, null))
@@ -55,9 +62,33 @@ object AgendaFilters {
 	 *
 	 * @param userReference the id of that can read the agenda.
 	 */
+	@Deprecated(
+		message = "Use readableByUserRights instead",
+		ReplaceWith(
+			expression = "readableByUserRights(userReference)",
+		)
+	)
 	fun readableByUser(
 		userReference: EntityReferenceInGroup
 	): BaseFilterOptions<Agenda> = ReadableByUserId(userReference)
+
+	/**
+	 * Options for agenda filtering that returns all the agendas where [Agenda.userRights] contains [userId].
+	 *
+	 * @param userId the id of that can read the agenda.
+	 */
+	fun readableByUserRights(
+		userId: String
+	): BaseFilterOptions<Agenda> = ReadableByUserRights(EntityReferenceInGroup(userId, null))
+
+	/**
+	 * Options for agenda filtering that returns all the agendas where [Agenda.userRights] contains [userReference].
+	 *
+	 * @param userReference the id of that can read the agenda.
+	 */
+	fun readableByUserRights(
+		userReference: EntityReferenceInGroup
+	): BaseFilterOptions<Agenda> = ReadableByUserRights(userReference)
 
 	/**
 	 * Options for agenda filtering that returns all the agendas where [Agenda.properties] contains a property with id equal to [propertyId]
@@ -150,6 +181,11 @@ object AgendaFilters {
 	): BaseFilterOptions<Agenda>
 
 	@Serializable
+	internal class ReadableByUserRights(
+		val userId: EntityReferenceInGroup
+	): BaseFilterOptions<Agenda>
+
+	@Serializable
 	internal class ByPropertyFilter(
 		val property: DecryptedPropertyStub
 	): BaseFilterOptions<Agenda>
@@ -186,6 +222,10 @@ internal suspend fun mapAgendaFilterOptions(
 		desc = null
 	)
 	is AgendaFilters.ReadableByUserId -> AgendaReadableByUserIdFilter(
+		userId = filterOptions.userId.asReferenceStringInGroup(requestGroupId, boundGroup),
+		desc = null
+	)
+	is AgendaFilters.ReadableByUserRights -> AgendaReadableByUserRightsFilter(
 		userId = filterOptions.userId.asReferenceStringInGroup(requestGroupId, boundGroup),
 		desc = null
 	)
