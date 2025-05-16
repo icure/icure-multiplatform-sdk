@@ -14,9 +14,9 @@ import kotlinx.serialization.SerialName
 data class ExternalJwtConfig(
 	public val validationMethod: ValidationMethod,
 	public val fieldSelector: FieldSelector,
-	@DefaultValue("AuthenticationClassDto.EXTERNAL_AUTHENTICATION")
+	@DefaultValue("AuthenticationClass.ExternalAuthentication")
 	public val authenticationClass: AuthenticationClass =
-		AuthenticationClassDto.EXTERNAL_AUTHENTICATION,
+		AuthenticationClass.ExternalAuthentication,
 ) {
 	@Serializable
 	public sealed interface ValidationMethod {
