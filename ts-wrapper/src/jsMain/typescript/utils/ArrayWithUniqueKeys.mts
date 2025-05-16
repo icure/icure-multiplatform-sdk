@@ -25,4 +25,4 @@
  * @param T The object type of array elements.
  * @param K A union of keys from `T` that must be unique across all elements in the array.
  */
-type ArrayWithUniqueKeys<T, K extends keyof T> = Array<T>
+export type ArrayWithUniqueKeys<T, K extends keyof T> = Array<T>
