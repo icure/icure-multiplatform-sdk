@@ -7,7 +7,7 @@ import kotlinx.serialization.Serializable
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
 
 @Serializable
-enum class Operation() {
+enum class Operation(internal val serialName: String) {
 	@SerialName("TRANSFER_GROUP")
-	TransferGroup,
+	TransferGroup("TRANSFER_GROUP"),
 }

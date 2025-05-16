@@ -225,7 +225,7 @@ class RawGroupApiImpl(
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "group", "operationToken")
-				parameter("operation", operation)
+				parameter("operation", operation.serialName)
 				parameter("duration", duration)
 				parameter("description", description)
 			}
@@ -243,7 +243,7 @@ class RawGroupApiImpl(
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "group", groupId, "operationToken")
-				parameter("operation", operation)
+				parameter("operation", operation.serialName)
 				parameter("duration", duration)
 				parameter("description", description)
 			}
