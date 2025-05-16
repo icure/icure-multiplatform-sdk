@@ -13,7 +13,7 @@ import com.icure.cardinal.sdk.model.specializations.Base64String
 data class ExternalJwtConfig(
 	public val validationMethod: ValidationMethod,
 	public val fieldSelector: FieldSelector,
-	@DefaultValue("AuthenticationClass.EXTERNAL_AUTHENTICATION")
+	@DefaultValue("AuthenticationClass.ExternalAuthentication")
 	public val authenticationClass: AuthenticationClass =
 		AuthenticationClass.ExternalAuthentication,
 ) {
