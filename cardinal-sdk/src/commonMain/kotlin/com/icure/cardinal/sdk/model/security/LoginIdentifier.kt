@@ -12,5 +12,6 @@ data class LoginIdentifier(
 	public val `value`: String,
 ) {
 	// region LoginIdentifier-LoginIdentifier
+
 	// endregion
 }
