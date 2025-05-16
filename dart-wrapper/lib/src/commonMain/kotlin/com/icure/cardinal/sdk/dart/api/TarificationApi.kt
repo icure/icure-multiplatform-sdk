@@ -11,6 +11,7 @@ import kotlin.OptIn
 import kotlin.String
 import kotlin.Unit
 import kotlinx.serialization.builtins.ListSerializer
+import kotlinx.serialization.builtins.nullable
 import kotlinx.serialization.builtins.serializer
 
 @OptIn(InternalIcureApi::class)
@@ -31,7 +32,7 @@ public object TarificationApi {
     )
     ApiScope.execute(
       dartResultCallback,
-      Tarification.serializer()) {
+      Tarification.serializer().nullable) {
       NativeReferences.get<CardinalNonCryptoApis>(sdkId).tarification.getTarification(
         tarificationId,
       )

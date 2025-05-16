@@ -17,6 +17,7 @@ import kotlin.String
 import kotlin.Unit
 import kotlinx.serialization.PolymorphicSerializer
 import kotlinx.serialization.builtins.ListSerializer
+import kotlinx.serialization.builtins.nullable
 import kotlinx.serialization.builtins.serializer
 
 @OptIn(InternalIcureApi::class)
@@ -169,6 +170,29 @@ public object ClassificationBasicApi {
     }
   }
 
+  public fun createClassification(
+    dartResultCallback: (
+      String?,
+      String?,
+      String?,
+      String?,
+    ) -> Unit,
+    sdkId: String,
+    entityString: String,
+  ) {
+    val entity = fullLanguageInteropJson.decodeFromString(
+      EncryptedClassification.serializer(),
+      entityString
+    )
+    ApiScope.execute(
+      dartResultCallback,
+      EncryptedClassification.serializer()) {
+      NativeReferences.get<CardinalBaseApis>(sdkId).classification.createClassification(
+        entity,
+      )
+    }
+  }
+
   public fun modifyClassification(
     dartResultCallback: (
       String?,
@@ -208,7 +232,7 @@ public object ClassificationBasicApi {
     )
     ApiScope.execute(
       dartResultCallback,
-      EncryptedClassification.serializer()) {
+      EncryptedClassification.serializer().nullable) {
       NativeReferences.get<CardinalBaseApis>(sdkId).classification.getClassification(
         entityId,
       )

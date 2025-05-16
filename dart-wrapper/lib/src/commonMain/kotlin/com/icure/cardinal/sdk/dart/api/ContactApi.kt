@@ -11,8 +11,8 @@ import com.icure.cardinal.sdk.filters.SortableFilterOptions
 import com.icure.cardinal.sdk.model.Contact
 import com.icure.cardinal.sdk.model.DecryptedContact
 import com.icure.cardinal.sdk.model.EncryptedContact
-import com.icure.cardinal.sdk.model.IdWithMandatoryRev
 import com.icure.cardinal.sdk.model.Patient
+import com.icure.cardinal.sdk.model.StoredDocumentIdentifier
 import com.icure.cardinal.sdk.model.User
 import com.icure.cardinal.sdk.model.`data`.LabelledOccurence
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
@@ -129,52 +129,6 @@ public object ContactApi {
       ListSerializer(String.serializer())) {
       NativeReferences.get<CardinalApis>(sdkId).contact.matchServicesBySorted(
         filter,
-      )
-    }
-  }
-
-  public fun createContact(
-    dartResultCallback: (
-      String?,
-      String?,
-      String?,
-      String?,
-    ) -> Unit,
-    sdkId: String,
-    entityString: String,
-  ) {
-    val entity = fullLanguageInteropJson.decodeFromString(
-      DecryptedContact.serializer(),
-      entityString
-    )
-    ApiScope.execute(
-      dartResultCallback,
-      DecryptedContact.serializer()) {
-      NativeReferences.get<CardinalApis>(sdkId).contact.createContact(
-        entity,
-      )
-    }
-  }
-
-  public fun createContacts(
-    dartResultCallback: (
-      String?,
-      String?,
-      String?,
-      String?,
-    ) -> Unit,
-    sdkId: String,
-    entitiesString: String,
-  ) {
-    val entities = fullLanguageInteropJson.decodeFromString(
-      ListSerializer(DecryptedContact.serializer()),
-      entitiesString
-    )
-    ApiScope.execute(
-      dartResultCallback,
-      ListSerializer(DecryptedContact.serializer())) {
-      NativeReferences.get<CardinalApis>(sdkId).contact.createContacts(
-        entities,
       )
     }
   }
@@ -490,7 +444,7 @@ public object ContactApi {
     entityIdsString: String,
   ) {
     val entityIds = fullLanguageInteropJson.decodeFromString(
-      ListSerializer(IdWithMandatoryRev.serializer()),
+      ListSerializer(StoredDocumentIdentifier.serializer()),
       entityIdsString
     )
     ApiScope.execute(
@@ -801,6 +755,52 @@ public object ContactApi {
     }
   }
 
+  public fun createContact(
+    dartResultCallback: (
+      String?,
+      String?,
+      String?,
+      String?,
+    ) -> Unit,
+    sdkId: String,
+    entityString: String,
+  ) {
+    val entity = fullLanguageInteropJson.decodeFromString(
+      DecryptedContact.serializer(),
+      entityString
+    )
+    ApiScope.execute(
+      dartResultCallback,
+      DecryptedContact.serializer()) {
+      NativeReferences.get<CardinalApis>(sdkId).contact.createContact(
+        entity,
+      )
+    }
+  }
+
+  public fun createContacts(
+    dartResultCallback: (
+      String?,
+      String?,
+      String?,
+      String?,
+    ) -> Unit,
+    sdkId: String,
+    entitiesString: String,
+  ) {
+    val entities = fullLanguageInteropJson.decodeFromString(
+      ListSerializer(DecryptedContact.serializer()),
+      entitiesString
+    )
+    ApiScope.execute(
+      dartResultCallback,
+      ListSerializer(DecryptedContact.serializer())) {
+      NativeReferences.get<CardinalApis>(sdkId).contact.createContacts(
+        entities,
+      )
+    }
+  }
+
   public fun undeleteContactById(
     dartResultCallback: (
       String?,
@@ -915,7 +915,7 @@ public object ContactApi {
     )
     ApiScope.execute(
       dartResultCallback,
-      DecryptedContact.serializer()) {
+      DecryptedContact.serializer().nullable) {
       NativeReferences.get<CardinalApis>(sdkId).contact.getContact(
         entityId,
       )
@@ -1208,6 +1208,52 @@ public object ContactApi {
       }
     }
 
+    public fun createContact(
+      dartResultCallback: (
+        String?,
+        String?,
+        String?,
+        String?,
+      ) -> Unit,
+      sdkId: String,
+      entityString: String,
+    ) {
+      val entity = fullLanguageInteropJson.decodeFromString(
+        EncryptedContact.serializer(),
+        entityString
+      )
+      ApiScope.execute(
+        dartResultCallback,
+        EncryptedContact.serializer()) {
+        NativeReferences.get<CardinalApis>(sdkId).contact.encrypted.createContact(
+          entity,
+        )
+      }
+    }
+
+    public fun createContacts(
+      dartResultCallback: (
+        String?,
+        String?,
+        String?,
+        String?,
+      ) -> Unit,
+      sdkId: String,
+      entitiesString: String,
+    ) {
+      val entities = fullLanguageInteropJson.decodeFromString(
+        ListSerializer(EncryptedContact.serializer()),
+        entitiesString
+      )
+      ApiScope.execute(
+        dartResultCallback,
+        ListSerializer(EncryptedContact.serializer())) {
+        NativeReferences.get<CardinalApis>(sdkId).contact.encrypted.createContacts(
+          entities,
+        )
+      }
+    }
+
     public fun undeleteContactById(
       dartResultCallback: (
         String?,
@@ -1322,7 +1368,7 @@ public object ContactApi {
       )
       ApiScope.execute(
         dartResultCallback,
-        EncryptedContact.serializer()) {
+        EncryptedContact.serializer().nullable) {
         NativeReferences.get<CardinalApis>(sdkId).contact.encrypted.getContact(
           entityId,
         )
@@ -1577,6 +1623,52 @@ public object ContactApi {
       }
     }
 
+    public fun createContact(
+      dartResultCallback: (
+        String?,
+        String?,
+        String?,
+        String?,
+      ) -> Unit,
+      sdkId: String,
+      entityString: String,
+    ) {
+      val entity = fullLanguageInteropJson.decodeFromString(
+        PolymorphicSerializer(Contact::class),
+        entityString
+      )
+      ApiScope.execute(
+        dartResultCallback,
+        PolymorphicSerializer(Contact::class)) {
+        NativeReferences.get<CardinalApis>(sdkId).contact.tryAndRecover.createContact(
+          entity,
+        )
+      }
+    }
+
+    public fun createContacts(
+      dartResultCallback: (
+        String?,
+        String?,
+        String?,
+        String?,
+      ) -> Unit,
+      sdkId: String,
+      entitiesString: String,
+    ) {
+      val entities = fullLanguageInteropJson.decodeFromString(
+        ListSerializer(PolymorphicSerializer(Contact::class)),
+        entitiesString
+      )
+      ApiScope.execute(
+        dartResultCallback,
+        ListSerializer(PolymorphicSerializer(Contact::class))) {
+        NativeReferences.get<CardinalApis>(sdkId).contact.tryAndRecover.createContacts(
+          entities,
+        )
+      }
+    }
+
     public fun undeleteContactById(
       dartResultCallback: (
         String?,
@@ -1691,7 +1783,7 @@ public object ContactApi {
       )
       ApiScope.execute(
         dartResultCallback,
-        PolymorphicSerializer(Contact::class)) {
+        PolymorphicSerializer(Contact::class).nullable) {
         NativeReferences.get<CardinalApis>(sdkId).contact.tryAndRecover.getContact(
           entityId,
         )

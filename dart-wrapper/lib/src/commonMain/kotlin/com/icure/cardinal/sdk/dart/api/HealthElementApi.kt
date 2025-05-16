@@ -10,14 +10,16 @@ import com.icure.cardinal.sdk.filters.FilterOptions
 import com.icure.cardinal.sdk.filters.SortableFilterOptions
 import com.icure.cardinal.sdk.model.DecryptedHealthElement
 import com.icure.cardinal.sdk.model.EncryptedHealthElement
+import com.icure.cardinal.sdk.model.EntityReferenceInGroup
+import com.icure.cardinal.sdk.model.GroupScoped
 import com.icure.cardinal.sdk.model.HealthElement
-import com.icure.cardinal.sdk.model.IdWithMandatoryRev
 import com.icure.cardinal.sdk.model.Patient
+import com.icure.cardinal.sdk.model.StoredDocumentIdentifier
 import com.icure.cardinal.sdk.model.User
-import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.model.embed.AccessLevel
 import com.icure.cardinal.sdk.model.specializations.HexString
 import com.icure.cardinal.sdk.serialization.EntitySubscriptionWithSerializer
+import com.icure.cardinal.sdk.serialization.MapAsArraySerializer
 import com.icure.cardinal.sdk.serialization.PaginatedListIteratorWithSerializer
 import com.icure.cardinal.sdk.subscription.EntitySubscriptionConfiguration
 import com.icure.cardinal.sdk.subscription.SubscriptionEventType
@@ -36,52 +38,6 @@ import kotlinx.serialization.builtins.serializer
 
 @OptIn(InternalIcureApi::class)
 public object HealthElementApi {
-  public fun createHealthElement(
-    dartResultCallback: (
-      String?,
-      String?,
-      String?,
-      String?,
-    ) -> Unit,
-    sdkId: String,
-    entityString: String,
-  ) {
-    val entity = fullLanguageInteropJson.decodeFromString(
-      DecryptedHealthElement.serializer(),
-      entityString
-    )
-    ApiScope.execute(
-      dartResultCallback,
-      DecryptedHealthElement.serializer()) {
-      NativeReferences.get<CardinalApis>(sdkId).healthElement.createHealthElement(
-        entity,
-      )
-    }
-  }
-
-  public fun createHealthElements(
-    dartResultCallback: (
-      String?,
-      String?,
-      String?,
-      String?,
-    ) -> Unit,
-    sdkId: String,
-    entitiesString: String,
-  ) {
-    val entities = fullLanguageInteropJson.decodeFromString(
-      ListSerializer(DecryptedHealthElement.serializer()),
-      entitiesString
-    )
-    ApiScope.execute(
-      dartResultCallback,
-      ListSerializer(DecryptedHealthElement.serializer())) {
-      NativeReferences.get<CardinalApis>(sdkId).healthElement.createHealthElements(
-        entities,
-      )
-    }
-  }
-
   public fun withEncryptionMetadata(
     dartResultCallback: (
       String?,
@@ -191,7 +147,7 @@ public object HealthElementApi {
     )
     ApiScope.execute(
       dartResultCallback,
-      SetSerializer(String.serializer())) {
+      SetSerializer(EntityReferenceInGroup.serializer())) {
       NativeReferences.get<CardinalApis>(sdkId).healthElement.decryptPatientIdOf(
         healthElement,
       )
@@ -235,17 +191,17 @@ public object HealthElementApi {
       String?,
     ) -> Unit,
     sdkId: String,
-    healthElementString: String,
+    healthElementsString: String,
   ) {
-    val healthElement = fullLanguageInteropJson.decodeFromString(
-      EncryptedHealthElement.serializer(),
-      healthElementString
+    val healthElements = fullLanguageInteropJson.decodeFromString(
+      ListSerializer(EncryptedHealthElement.serializer()),
+      healthElementsString
     )
     ApiScope.execute(
       dartResultCallback,
-      DecryptedHealthElement.serializer()) {
+      ListSerializer(DecryptedHealthElement.serializer())) {
       NativeReferences.get<CardinalApis>(sdkId).healthElement.decrypt(
-        healthElement,
+        healthElements,
       )
     }
   }
@@ -258,17 +214,40 @@ public object HealthElementApi {
       String?,
     ) -> Unit,
     sdkId: String,
-    healthElementString: String,
+    healthElementsString: String,
   ) {
-    val healthElement = fullLanguageInteropJson.decodeFromString(
-      EncryptedHealthElement.serializer(),
-      healthElementString
+    val healthElements = fullLanguageInteropJson.decodeFromString(
+      ListSerializer(EncryptedHealthElement.serializer()),
+      healthElementsString
     )
     ApiScope.execute(
       dartResultCallback,
-      PolymorphicSerializer(HealthElement::class)) {
+      ListSerializer(PolymorphicSerializer(HealthElement::class))) {
       NativeReferences.get<CardinalApis>(sdkId).healthElement.tryDecrypt(
-        healthElement,
+        healthElements,
+      )
+    }
+  }
+
+  public fun encryptOrValidate(
+    dartResultCallback: (
+      String?,
+      String?,
+      String?,
+      String?,
+    ) -> Unit,
+    sdkId: String,
+    healthElementsString: String,
+  ) {
+    val healthElements = fullLanguageInteropJson.decodeFromString(
+      ListSerializer(PolymorphicSerializer(HealthElement::class)),
+      healthElementsString
+    )
+    ApiScope.execute(
+      dartResultCallback,
+      ListSerializer(EncryptedHealthElement.serializer())) {
+      NativeReferences.get<CardinalApis>(sdkId).healthElement.encryptOrValidate(
+        healthElements,
       )
     }
   }
@@ -335,12 +314,12 @@ public object HealthElementApi {
       entityIdString
     )
     val rev = fullLanguageInteropJson.decodeFromString(
-      String.serializer().nullable,
+      String.serializer(),
       revString
     )
     ApiScope.execute(
       dartResultCallback,
-      DocIdentifier.serializer()) {
+      StoredDocumentIdentifier.serializer()) {
       NativeReferences.get<CardinalApis>(sdkId).healthElement.deleteHealthElementById(
         entityId,
         rev,
@@ -359,12 +338,12 @@ public object HealthElementApi {
     entityIdsString: String,
   ) {
     val entityIds = fullLanguageInteropJson.decodeFromString(
-      ListSerializer(IdWithMandatoryRev.serializer()),
+      ListSerializer(StoredDocumentIdentifier.serializer()),
       entityIdsString
     )
     ApiScope.execute(
       dartResultCallback,
-      ListSerializer(DocIdentifier.serializer())) {
+      ListSerializer(StoredDocumentIdentifier.serializer())) {
       NativeReferences.get<CardinalApis>(sdkId).healthElement.deleteHealthElementsByIds(
         entityIds,
       )
@@ -416,7 +395,7 @@ public object HealthElementApi {
     )
     ApiScope.execute(
       dartResultCallback,
-      DocIdentifier.serializer()) {
+      StoredDocumentIdentifier.serializer()) {
       NativeReferences.get<CardinalApis>(sdkId).healthElement.deleteHealthElement(
         healthElement,
       )
@@ -439,7 +418,7 @@ public object HealthElementApi {
     )
     ApiScope.execute(
       dartResultCallback,
-      ListSerializer(DocIdentifier.serializer())) {
+      ListSerializer(StoredDocumentIdentifier.serializer())) {
       NativeReferences.get<CardinalApis>(sdkId).healthElement.deleteHealthElements(
         healthElements,
       )
@@ -589,6 +568,52 @@ public object HealthElementApi {
     }
   }
 
+  public fun createHealthElement(
+    dartResultCallback: (
+      String?,
+      String?,
+      String?,
+      String?,
+    ) -> Unit,
+    sdkId: String,
+    entityString: String,
+  ) {
+    val entity = fullLanguageInteropJson.decodeFromString(
+      DecryptedHealthElement.serializer(),
+      entityString
+    )
+    ApiScope.execute(
+      dartResultCallback,
+      DecryptedHealthElement.serializer()) {
+      NativeReferences.get<CardinalApis>(sdkId).healthElement.createHealthElement(
+        entity,
+      )
+    }
+  }
+
+  public fun createHealthElements(
+    dartResultCallback: (
+      String?,
+      String?,
+      String?,
+      String?,
+    ) -> Unit,
+    sdkId: String,
+    entitiesString: String,
+  ) {
+    val entities = fullLanguageInteropJson.decodeFromString(
+      ListSerializer(DecryptedHealthElement.serializer()),
+      entitiesString
+    )
+    ApiScope.execute(
+      dartResultCallback,
+      ListSerializer(DecryptedHealthElement.serializer())) {
+      NativeReferences.get<CardinalApis>(sdkId).healthElement.createHealthElements(
+        entities,
+      )
+    }
+  }
+
   public fun undeleteHealthElementById(
     dartResultCallback: (
       String?,
@@ -703,7 +728,7 @@ public object HealthElementApi {
     )
     ApiScope.execute(
       dartResultCallback,
-      DecryptedHealthElement.serializer()) {
+      DecryptedHealthElement.serializer().nullable) {
       NativeReferences.get<CardinalApis>(sdkId).healthElement.getHealthElement(
         entityId,
       )
@@ -894,6 +919,52 @@ public object HealthElementApi {
       }
     }
 
+    public fun createHealthElement(
+      dartResultCallback: (
+        String?,
+        String?,
+        String?,
+        String?,
+      ) -> Unit,
+      sdkId: String,
+      entityString: String,
+    ) {
+      val entity = fullLanguageInteropJson.decodeFromString(
+        EncryptedHealthElement.serializer(),
+        entityString
+      )
+      ApiScope.execute(
+        dartResultCallback,
+        EncryptedHealthElement.serializer()) {
+        NativeReferences.get<CardinalApis>(sdkId).healthElement.encrypted.createHealthElement(
+          entity,
+        )
+      }
+    }
+
+    public fun createHealthElements(
+      dartResultCallback: (
+        String?,
+        String?,
+        String?,
+        String?,
+      ) -> Unit,
+      sdkId: String,
+      entitiesString: String,
+    ) {
+      val entities = fullLanguageInteropJson.decodeFromString(
+        ListSerializer(EncryptedHealthElement.serializer()),
+        entitiesString
+      )
+      ApiScope.execute(
+        dartResultCallback,
+        ListSerializer(EncryptedHealthElement.serializer())) {
+        NativeReferences.get<CardinalApis>(sdkId).healthElement.encrypted.createHealthElements(
+          entities,
+        )
+      }
+    }
+
     public fun undeleteHealthElementById(
       dartResultCallback: (
         String?,
@@ -1008,7 +1079,7 @@ public object HealthElementApi {
       )
       ApiScope.execute(
         dartResultCallback,
-        EncryptedHealthElement.serializer()) {
+        EncryptedHealthElement.serializer().nullable) {
         NativeReferences.get<CardinalApis>(sdkId).healthElement.encrypted.getHealthElement(
           entityId,
         )
@@ -1161,6 +1232,52 @@ public object HealthElementApi {
       }
     }
 
+    public fun createHealthElement(
+      dartResultCallback: (
+        String?,
+        String?,
+        String?,
+        String?,
+      ) -> Unit,
+      sdkId: String,
+      entityString: String,
+    ) {
+      val entity = fullLanguageInteropJson.decodeFromString(
+        PolymorphicSerializer(HealthElement::class),
+        entityString
+      )
+      ApiScope.execute(
+        dartResultCallback,
+        PolymorphicSerializer(HealthElement::class)) {
+        NativeReferences.get<CardinalApis>(sdkId).healthElement.tryAndRecover.createHealthElement(
+          entity,
+        )
+      }
+    }
+
+    public fun createHealthElements(
+      dartResultCallback: (
+        String?,
+        String?,
+        String?,
+        String?,
+      ) -> Unit,
+      sdkId: String,
+      entitiesString: String,
+    ) {
+      val entities = fullLanguageInteropJson.decodeFromString(
+        ListSerializer(PolymorphicSerializer(HealthElement::class)),
+        entitiesString
+      )
+      ApiScope.execute(
+        dartResultCallback,
+        ListSerializer(PolymorphicSerializer(HealthElement::class))) {
+        NativeReferences.get<CardinalApis>(sdkId).healthElement.tryAndRecover.createHealthElements(
+          entities,
+        )
+      }
+    }
+
     public fun undeleteHealthElementById(
       dartResultCallback: (
         String?,
@@ -1275,7 +1392,7 @@ public object HealthElementApi {
       )
       ApiScope.execute(
         dartResultCallback,
-        PolymorphicSerializer(HealthElement::class)) {
+        PolymorphicSerializer(HealthElement::class).nullable) {
         NativeReferences.get<CardinalApis>(sdkId).healthElement.tryAndRecover.getHealthElement(
           entityId,
         )
@@ -1302,6 +1419,655 @@ public object HealthElementApi {
         NativeReferences.get<CardinalApis>(sdkId).healthElement.tryAndRecover.getHealthElements(
           entityIds,
         )
+      }
+    }
+  }
+
+  @OptIn(InternalIcureApi::class)
+  public object inGroup {
+    public fun withEncryptionMetadata(
+      dartResultCallback: (
+        String?,
+        String?,
+        String?,
+        String?,
+      ) -> Unit,
+      sdkId: String,
+      entityGroupIdString: String,
+      baseString: String,
+      patientString: String,
+      userString: String,
+      delegatesString: String,
+      secretIdString: String,
+    ) {
+      val entityGroupId = fullLanguageInteropJson.decodeFromString(
+        String.serializer(),
+        entityGroupIdString
+      )
+      val base = fullLanguageInteropJson.decodeFromString(
+        DecryptedHealthElement.serializer().nullable,
+        baseString
+      )
+      val patient = fullLanguageInteropJson.decodeFromString(
+        GroupScoped.serializer(PolymorphicSerializer(Patient::class)),
+        patientString
+      )
+      val user = fullLanguageInteropJson.decodeFromString(
+        User.serializer().nullable,
+        userString
+      )
+      val delegates = fullLanguageInteropJson.decodeFromString(
+        MapAsArraySerializer(EntityReferenceInGroup.serializer(), AccessLevel.serializer()),
+        delegatesString
+      )
+      val secretId = fullLanguageInteropJson.decodeFromString(
+        SecretIdUseOption.serializer(),
+        secretIdString
+      )
+      ApiScope.execute(
+        dartResultCallback,
+        GroupScoped.serializer(DecryptedHealthElement.serializer())) {
+        NativeReferences.get<CardinalApis>(sdkId).healthElement.inGroup.withEncryptionMetadata(
+          entityGroupId,
+          base,
+          patient,
+          user,
+          delegates,
+          secretId,
+        )
+      }
+    }
+
+    public fun getEncryptionKeysOf(
+      dartResultCallback: (
+        String?,
+        String?,
+        String?,
+        String?,
+      ) -> Unit,
+      sdkId: String,
+      healthElementString: String,
+    ) {
+      val healthElement = fullLanguageInteropJson.decodeFromString(
+        GroupScoped.serializer(PolymorphicSerializer(HealthElement::class)),
+        healthElementString
+      )
+      ApiScope.execute(
+        dartResultCallback,
+        SetSerializer(HexString.serializer())) {
+        NativeReferences.get<CardinalApis>(sdkId).healthElement.inGroup.getEncryptionKeysOf(
+          healthElement,
+        )
+      }
+    }
+
+    public fun hasWriteAccess(
+      dartResultCallback: (
+        String?,
+        String?,
+        String?,
+        String?,
+      ) -> Unit,
+      sdkId: String,
+      healthElementString: String,
+    ) {
+      val healthElement = fullLanguageInteropJson.decodeFromString(
+        GroupScoped.serializer(PolymorphicSerializer(HealthElement::class)),
+        healthElementString
+      )
+      ApiScope.execute(
+        dartResultCallback,
+        Boolean.serializer()) {
+        NativeReferences.get<CardinalApis>(sdkId).healthElement.inGroup.hasWriteAccess(
+          healthElement,
+        )
+      }
+    }
+
+    public fun decryptPatientIdOf(
+      dartResultCallback: (
+        String?,
+        String?,
+        String?,
+        String?,
+      ) -> Unit,
+      sdkId: String,
+      healthElementString: String,
+    ) {
+      val healthElement = fullLanguageInteropJson.decodeFromString(
+        GroupScoped.serializer(PolymorphicSerializer(HealthElement::class)),
+        healthElementString
+      )
+      ApiScope.execute(
+        dartResultCallback,
+        SetSerializer(EntityReferenceInGroup.serializer())) {
+        NativeReferences.get<CardinalApis>(sdkId).healthElement.inGroup.decryptPatientIdOf(
+          healthElement,
+        )
+      }
+    }
+
+    public fun createDelegationDeAnonymizationMetadata(
+      dartResultCallback: (
+        String?,
+        String?,
+        String?,
+        String?,
+      ) -> Unit,
+      sdkId: String,
+      entityString: String,
+      delegatesString: String,
+    ) {
+      val entity = fullLanguageInteropJson.decodeFromString(
+        GroupScoped.serializer(PolymorphicSerializer(HealthElement::class)),
+        entityString
+      )
+      val delegates = fullLanguageInteropJson.decodeFromString(
+        SetSerializer(EntityReferenceInGroup.serializer()),
+        delegatesString
+      )
+      ApiScope.execute(
+        dartResultCallback,
+        Unit.serializer()) {
+        NativeReferences.get<CardinalApis>(sdkId).healthElement.inGroup.createDelegationDeAnonymizationMetadata(
+          entity,
+          delegates,
+        )
+      }
+    }
+
+    public fun decrypt(
+      dartResultCallback: (
+        String?,
+        String?,
+        String?,
+        String?,
+      ) -> Unit,
+      sdkId: String,
+      healthElementsString: String,
+    ) {
+      val healthElements = fullLanguageInteropJson.decodeFromString(
+        ListSerializer(GroupScoped.serializer(EncryptedHealthElement.serializer())),
+        healthElementsString
+      )
+      ApiScope.execute(
+        dartResultCallback,
+        ListSerializer(GroupScoped.serializer(DecryptedHealthElement.serializer()))) {
+        NativeReferences.get<CardinalApis>(sdkId).healthElement.inGroup.decrypt(
+          healthElements,
+        )
+      }
+    }
+
+    public fun tryDecrypt(
+      dartResultCallback: (
+        String?,
+        String?,
+        String?,
+        String?,
+      ) -> Unit,
+      sdkId: String,
+      healthElementsString: String,
+    ) {
+      val healthElements = fullLanguageInteropJson.decodeFromString(
+        ListSerializer(GroupScoped.serializer(EncryptedHealthElement.serializer())),
+        healthElementsString
+      )
+      ApiScope.execute(
+        dartResultCallback,
+        ListSerializer(GroupScoped.serializer(PolymorphicSerializer(HealthElement::class)))) {
+        NativeReferences.get<CardinalApis>(sdkId).healthElement.inGroup.tryDecrypt(
+          healthElements,
+        )
+      }
+    }
+
+    public fun encryptOrValidate(
+      dartResultCallback: (
+        String?,
+        String?,
+        String?,
+        String?,
+      ) -> Unit,
+      sdkId: String,
+      healthElementsString: String,
+    ) {
+      val healthElements = fullLanguageInteropJson.decodeFromString(
+        ListSerializer(GroupScoped.serializer(PolymorphicSerializer(HealthElement::class))),
+        healthElementsString
+      )
+      ApiScope.execute(
+        dartResultCallback,
+        ListSerializer(GroupScoped.serializer(EncryptedHealthElement.serializer()))) {
+        NativeReferences.get<CardinalApis>(sdkId).healthElement.inGroup.encryptOrValidate(
+          healthElements,
+        )
+      }
+    }
+
+    public fun shareWith(
+      dartResultCallback: (
+        String?,
+        String?,
+        String?,
+        String?,
+      ) -> Unit,
+      sdkId: String,
+      delegateString: String,
+      healthElementString: String,
+      optionsString: String,
+    ) {
+      val delegate = fullLanguageInteropJson.decodeFromString(
+        EntityReferenceInGroup.serializer(),
+        delegateString
+      )
+      val healthElement = fullLanguageInteropJson.decodeFromString(
+        GroupScoped.serializer(DecryptedHealthElement.serializer()),
+        healthElementString
+      )
+      val options = fullLanguageInteropJson.decodeFromString(
+        HealthElementShareOptions.serializer().nullable,
+        optionsString
+      )
+      ApiScope.execute(
+        dartResultCallback,
+        GroupScoped.serializer(DecryptedHealthElement.serializer())) {
+        NativeReferences.get<CardinalApis>(sdkId).healthElement.inGroup.shareWith(
+          delegate,
+          healthElement,
+          options,
+        )
+      }
+    }
+
+    public fun shareWithMany(
+      dartResultCallback: (
+        String?,
+        String?,
+        String?,
+        String?,
+      ) -> Unit,
+      sdkId: String,
+      healthElementString: String,
+      delegatesString: String,
+    ) {
+      val healthElement = fullLanguageInteropJson.decodeFromString(
+        GroupScoped.serializer(DecryptedHealthElement.serializer()),
+        healthElementString
+      )
+      val delegates = fullLanguageInteropJson.decodeFromString(
+        MapAsArraySerializer(EntityReferenceInGroup.serializer(),
+            HealthElementShareOptions.serializer()),
+        delegatesString
+      )
+      ApiScope.execute(
+        dartResultCallback,
+        GroupScoped.serializer(DecryptedHealthElement.serializer())) {
+        NativeReferences.get<CardinalApis>(sdkId).healthElement.inGroup.shareWithMany(
+          healthElement,
+          delegates,
+        )
+      }
+    }
+
+    public fun createHealthElement(
+      dartResultCallback: (
+        String?,
+        String?,
+        String?,
+        String?,
+      ) -> Unit,
+      sdkId: String,
+      entityString: String,
+    ) {
+      val entity = fullLanguageInteropJson.decodeFromString(
+        GroupScoped.serializer(DecryptedHealthElement.serializer()),
+        entityString
+      )
+      ApiScope.execute(
+        dartResultCallback,
+        GroupScoped.serializer(DecryptedHealthElement.serializer())) {
+        NativeReferences.get<CardinalApis>(sdkId).healthElement.inGroup.createHealthElement(
+          entity,
+        )
+      }
+    }
+
+    public fun modifyHealthElement(
+      dartResultCallback: (
+        String?,
+        String?,
+        String?,
+        String?,
+      ) -> Unit,
+      sdkId: String,
+      entityString: String,
+    ) {
+      val entity = fullLanguageInteropJson.decodeFromString(
+        GroupScoped.serializer(DecryptedHealthElement.serializer()),
+        entityString
+      )
+      ApiScope.execute(
+        dartResultCallback,
+        GroupScoped.serializer(DecryptedHealthElement.serializer())) {
+        NativeReferences.get<CardinalApis>(sdkId).healthElement.inGroup.modifyHealthElement(
+          entity,
+        )
+      }
+    }
+
+    public fun getHealthElement(
+      dartResultCallback: (
+        String?,
+        String?,
+        String?,
+        String?,
+      ) -> Unit,
+      sdkId: String,
+      groupIdString: String,
+      entityIdString: String,
+    ) {
+      val groupId = fullLanguageInteropJson.decodeFromString(
+        String.serializer(),
+        groupIdString
+      )
+      val entityId = fullLanguageInteropJson.decodeFromString(
+        String.serializer(),
+        entityIdString
+      )
+      ApiScope.execute(
+        dartResultCallback,
+        GroupScoped.serializer(DecryptedHealthElement.serializer()).nullable) {
+        NativeReferences.get<CardinalApis>(sdkId).healthElement.inGroup.getHealthElement(
+          groupId,
+          entityId,
+        )
+      }
+    }
+
+    @OptIn(InternalIcureApi::class)
+    public object encrypted {
+      public fun shareWith(
+        dartResultCallback: (
+          String?,
+          String?,
+          String?,
+          String?,
+        ) -> Unit,
+        sdkId: String,
+        delegateString: String,
+        healthElementString: String,
+        optionsString: String,
+      ) {
+        val delegate = fullLanguageInteropJson.decodeFromString(
+          EntityReferenceInGroup.serializer(),
+          delegateString
+        )
+        val healthElement = fullLanguageInteropJson.decodeFromString(
+          GroupScoped.serializer(EncryptedHealthElement.serializer()),
+          healthElementString
+        )
+        val options = fullLanguageInteropJson.decodeFromString(
+          HealthElementShareOptions.serializer().nullable,
+          optionsString
+        )
+        ApiScope.execute(
+          dartResultCallback,
+          GroupScoped.serializer(EncryptedHealthElement.serializer())) {
+          NativeReferences.get<CardinalApis>(sdkId).healthElement.inGroup.encrypted.shareWith(
+            delegate,
+            healthElement,
+            options,
+          )
+        }
+      }
+
+      public fun shareWithMany(
+        dartResultCallback: (
+          String?,
+          String?,
+          String?,
+          String?,
+        ) -> Unit,
+        sdkId: String,
+        healthElementString: String,
+        delegatesString: String,
+      ) {
+        val healthElement = fullLanguageInteropJson.decodeFromString(
+          GroupScoped.serializer(EncryptedHealthElement.serializer()),
+          healthElementString
+        )
+        val delegates = fullLanguageInteropJson.decodeFromString(
+          MapAsArraySerializer(EntityReferenceInGroup.serializer(),
+              HealthElementShareOptions.serializer()),
+          delegatesString
+        )
+        ApiScope.execute(
+          dartResultCallback,
+          GroupScoped.serializer(EncryptedHealthElement.serializer())) {
+          NativeReferences.get<CardinalApis>(sdkId).healthElement.inGroup.encrypted.shareWithMany(
+            healthElement,
+            delegates,
+          )
+        }
+      }
+
+      public fun createHealthElement(
+        dartResultCallback: (
+          String?,
+          String?,
+          String?,
+          String?,
+        ) -> Unit,
+        sdkId: String,
+        entityString: String,
+      ) {
+        val entity = fullLanguageInteropJson.decodeFromString(
+          GroupScoped.serializer(EncryptedHealthElement.serializer()),
+          entityString
+        )
+        ApiScope.execute(
+          dartResultCallback,
+          GroupScoped.serializer(EncryptedHealthElement.serializer())) {
+          NativeReferences.get<CardinalApis>(sdkId).healthElement.inGroup.encrypted.createHealthElement(
+            entity,
+          )
+        }
+      }
+
+      public fun modifyHealthElement(
+        dartResultCallback: (
+          String?,
+          String?,
+          String?,
+          String?,
+        ) -> Unit,
+        sdkId: String,
+        entityString: String,
+      ) {
+        val entity = fullLanguageInteropJson.decodeFromString(
+          GroupScoped.serializer(EncryptedHealthElement.serializer()),
+          entityString
+        )
+        ApiScope.execute(
+          dartResultCallback,
+          GroupScoped.serializer(EncryptedHealthElement.serializer())) {
+          NativeReferences.get<CardinalApis>(sdkId).healthElement.inGroup.encrypted.modifyHealthElement(
+            entity,
+          )
+        }
+      }
+
+      public fun getHealthElement(
+        dartResultCallback: (
+          String?,
+          String?,
+          String?,
+          String?,
+        ) -> Unit,
+        sdkId: String,
+        groupIdString: String,
+        entityIdString: String,
+      ) {
+        val groupId = fullLanguageInteropJson.decodeFromString(
+          String.serializer(),
+          groupIdString
+        )
+        val entityId = fullLanguageInteropJson.decodeFromString(
+          String.serializer(),
+          entityIdString
+        )
+        ApiScope.execute(
+          dartResultCallback,
+          GroupScoped.serializer(EncryptedHealthElement.serializer()).nullable) {
+          NativeReferences.get<CardinalApis>(sdkId).healthElement.inGroup.encrypted.getHealthElement(
+            groupId,
+            entityId,
+          )
+        }
+      }
+    }
+
+    @OptIn(InternalIcureApi::class)
+    public object tryAndRecover {
+      public fun shareWith(
+        dartResultCallback: (
+          String?,
+          String?,
+          String?,
+          String?,
+        ) -> Unit,
+        sdkId: String,
+        delegateString: String,
+        healthElementString: String,
+        optionsString: String,
+      ) {
+        val delegate = fullLanguageInteropJson.decodeFromString(
+          EntityReferenceInGroup.serializer(),
+          delegateString
+        )
+        val healthElement = fullLanguageInteropJson.decodeFromString(
+          GroupScoped.serializer(PolymorphicSerializer(HealthElement::class)),
+          healthElementString
+        )
+        val options = fullLanguageInteropJson.decodeFromString(
+          HealthElementShareOptions.serializer().nullable,
+          optionsString
+        )
+        ApiScope.execute(
+          dartResultCallback,
+          GroupScoped.serializer(PolymorphicSerializer(HealthElement::class))) {
+          NativeReferences.get<CardinalApis>(sdkId).healthElement.inGroup.tryAndRecover.shareWith(
+            delegate,
+            healthElement,
+            options,
+          )
+        }
+      }
+
+      public fun shareWithMany(
+        dartResultCallback: (
+          String?,
+          String?,
+          String?,
+          String?,
+        ) -> Unit,
+        sdkId: String,
+        healthElementString: String,
+        delegatesString: String,
+      ) {
+        val healthElement = fullLanguageInteropJson.decodeFromString(
+          GroupScoped.serializer(PolymorphicSerializer(HealthElement::class)),
+          healthElementString
+        )
+        val delegates = fullLanguageInteropJson.decodeFromString(
+          MapAsArraySerializer(EntityReferenceInGroup.serializer(),
+              HealthElementShareOptions.serializer()),
+          delegatesString
+        )
+        ApiScope.execute(
+          dartResultCallback,
+          GroupScoped.serializer(PolymorphicSerializer(HealthElement::class))) {
+          NativeReferences.get<CardinalApis>(sdkId).healthElement.inGroup.tryAndRecover.shareWithMany(
+            healthElement,
+            delegates,
+          )
+        }
+      }
+
+      public fun createHealthElement(
+        dartResultCallback: (
+          String?,
+          String?,
+          String?,
+          String?,
+        ) -> Unit,
+        sdkId: String,
+        entityString: String,
+      ) {
+        val entity = fullLanguageInteropJson.decodeFromString(
+          GroupScoped.serializer(PolymorphicSerializer(HealthElement::class)),
+          entityString
+        )
+        ApiScope.execute(
+          dartResultCallback,
+          GroupScoped.serializer(PolymorphicSerializer(HealthElement::class))) {
+          NativeReferences.get<CardinalApis>(sdkId).healthElement.inGroup.tryAndRecover.createHealthElement(
+            entity,
+          )
+        }
+      }
+
+      public fun modifyHealthElement(
+        dartResultCallback: (
+          String?,
+          String?,
+          String?,
+          String?,
+        ) -> Unit,
+        sdkId: String,
+        entityString: String,
+      ) {
+        val entity = fullLanguageInteropJson.decodeFromString(
+          GroupScoped.serializer(PolymorphicSerializer(HealthElement::class)),
+          entityString
+        )
+        ApiScope.execute(
+          dartResultCallback,
+          GroupScoped.serializer(PolymorphicSerializer(HealthElement::class))) {
+          NativeReferences.get<CardinalApis>(sdkId).healthElement.inGroup.tryAndRecover.modifyHealthElement(
+            entity,
+          )
+        }
+      }
+
+      public fun getHealthElement(
+        dartResultCallback: (
+          String?,
+          String?,
+          String?,
+          String?,
+        ) -> Unit,
+        sdkId: String,
+        groupIdString: String,
+        entityIdString: String,
+      ) {
+        val groupId = fullLanguageInteropJson.decodeFromString(
+          String.serializer(),
+          groupIdString
+        )
+        val entityId = fullLanguageInteropJson.decodeFromString(
+          String.serializer(),
+          entityIdString
+        )
+        ApiScope.execute(
+          dartResultCallback,
+          GroupScoped.serializer(PolymorphicSerializer(HealthElement::class)).nullable) {
+          NativeReferences.get<CardinalApis>(sdkId).healthElement.inGroup.tryAndRecover.getHealthElement(
+            groupId,
+            entityId,
+          )
+        }
       }
     }
   }

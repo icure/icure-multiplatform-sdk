@@ -9,8 +9,8 @@ import com.icure.cardinal.sdk.filters.FilterOptions
 import com.icure.cardinal.sdk.filters.SortableFilterOptions
 import com.icure.cardinal.sdk.model.DecryptedMaintenanceTask
 import com.icure.cardinal.sdk.model.EncryptedMaintenanceTask
-import com.icure.cardinal.sdk.model.IdWithMandatoryRev
 import com.icure.cardinal.sdk.model.MaintenanceTask
+import com.icure.cardinal.sdk.model.StoredDocumentIdentifier
 import com.icure.cardinal.sdk.model.User
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.model.embed.AccessLevel
@@ -34,29 +34,6 @@ import kotlinx.serialization.builtins.serializer
 
 @OptIn(InternalIcureApi::class)
 public object MaintenanceTaskApi {
-  public fun createMaintenanceTask(
-    dartResultCallback: (
-      String?,
-      String?,
-      String?,
-      String?,
-    ) -> Unit,
-    sdkId: String,
-    entityString: String,
-  ) {
-    val entity = fullLanguageInteropJson.decodeFromString(
-      DecryptedMaintenanceTask.serializer(),
-      entityString
-    )
-    ApiScope.execute(
-      dartResultCallback,
-      DecryptedMaintenanceTask.serializer()) {
-      NativeReferences.get<CardinalApis>(sdkId).maintenanceTask.createMaintenanceTask(
-        entity,
-      )
-    }
-  }
-
   public fun withEncryptionMetadata(
     dartResultCallback: (
       String?,
@@ -322,7 +299,7 @@ public object MaintenanceTaskApi {
     entityIdsString: String,
   ) {
     val entityIds = fullLanguageInteropJson.decodeFromString(
-      ListSerializer(IdWithMandatoryRev.serializer()),
+      ListSerializer(StoredDocumentIdentifier.serializer()),
       entityIdsString
     )
     ApiScope.execute(
@@ -552,6 +529,29 @@ public object MaintenanceTaskApi {
     }
   }
 
+  public fun createMaintenanceTask(
+    dartResultCallback: (
+      String?,
+      String?,
+      String?,
+      String?,
+    ) -> Unit,
+    sdkId: String,
+    entityString: String,
+  ) {
+    val entity = fullLanguageInteropJson.decodeFromString(
+      DecryptedMaintenanceTask.serializer(),
+      entityString
+    )
+    ApiScope.execute(
+      dartResultCallback,
+      DecryptedMaintenanceTask.serializer()) {
+      NativeReferences.get<CardinalApis>(sdkId).maintenanceTask.createMaintenanceTask(
+        entity,
+      )
+    }
+  }
+
   public fun undeleteMaintenanceTask(
     dartResultCallback: (
       String?,
@@ -643,7 +643,7 @@ public object MaintenanceTaskApi {
     )
     ApiScope.execute(
       dartResultCallback,
-      DecryptedMaintenanceTask.serializer()) {
+      DecryptedMaintenanceTask.serializer().nullable) {
       NativeReferences.get<CardinalApis>(sdkId).maintenanceTask.getMaintenanceTask(
         entityId,
       )
@@ -834,6 +834,29 @@ public object MaintenanceTaskApi {
       }
     }
 
+    public fun createMaintenanceTask(
+      dartResultCallback: (
+        String?,
+        String?,
+        String?,
+        String?,
+      ) -> Unit,
+      sdkId: String,
+      entityString: String,
+    ) {
+      val entity = fullLanguageInteropJson.decodeFromString(
+        EncryptedMaintenanceTask.serializer(),
+        entityString
+      )
+      ApiScope.execute(
+        dartResultCallback,
+        EncryptedMaintenanceTask.serializer()) {
+        NativeReferences.get<CardinalApis>(sdkId).maintenanceTask.encrypted.createMaintenanceTask(
+          entity,
+        )
+      }
+    }
+
     public fun undeleteMaintenanceTask(
       dartResultCallback: (
         String?,
@@ -925,7 +948,7 @@ public object MaintenanceTaskApi {
       )
       ApiScope.execute(
         dartResultCallback,
-        EncryptedMaintenanceTask.serializer()) {
+        EncryptedMaintenanceTask.serializer().nullable) {
         NativeReferences.get<CardinalApis>(sdkId).maintenanceTask.encrypted.getMaintenanceTask(
           entityId,
         )
@@ -1078,6 +1101,29 @@ public object MaintenanceTaskApi {
       }
     }
 
+    public fun createMaintenanceTask(
+      dartResultCallback: (
+        String?,
+        String?,
+        String?,
+        String?,
+      ) -> Unit,
+      sdkId: String,
+      entityString: String,
+    ) {
+      val entity = fullLanguageInteropJson.decodeFromString(
+        PolymorphicSerializer(MaintenanceTask::class),
+        entityString
+      )
+      ApiScope.execute(
+        dartResultCallback,
+        PolymorphicSerializer(MaintenanceTask::class)) {
+        NativeReferences.get<CardinalApis>(sdkId).maintenanceTask.tryAndRecover.createMaintenanceTask(
+          entity,
+        )
+      }
+    }
+
     public fun undeleteMaintenanceTask(
       dartResultCallback: (
         String?,
@@ -1169,7 +1215,7 @@ public object MaintenanceTaskApi {
       )
       ApiScope.execute(
         dartResultCallback,
-        PolymorphicSerializer(MaintenanceTask::class)) {
+        PolymorphicSerializer(MaintenanceTask::class).nullable) {
         NativeReferences.get<CardinalApis>(sdkId).maintenanceTask.tryAndRecover.getMaintenanceTask(
           entityId,
         )

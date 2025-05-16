@@ -12,6 +12,7 @@ import com.icure.cardinal.sdk.dart.utils.ApiScope
 import com.icure.cardinal.sdk.dart.utils.NativeReferences
 import com.icure.cardinal.sdk.dart.utils.toPkcs8Bytes
 import com.icure.cardinal.sdk.model.specializations.SpkiHexString
+import com.icure.cardinal.sdk.serialization.MapAsArraySerializer
 import com.icure.cardinal.sdk.serialization.Pkcs8BytesAsBase64Serializer
 import com.icure.cardinal.sdk.utils.Serialization.fullLanguageInteropJson
 import com.icure.utils.InternalIcureApi
@@ -84,7 +85,7 @@ public object RecoveryApi {
     ApiScope.execute(
       dartResultCallback,
       RecoveryResult.serializer(MapSerializer(String.serializer(),
-          MapSerializer(SpkiHexString.serializer(), Pkcs8BytesAsBase64Serializer)))) {
+          MapAsArraySerializer(SpkiHexString.serializer(), Pkcs8BytesAsBase64Serializer)))) {
       val res = NativeReferences.get<CardinalApis>(sdkId).recovery.recoverKeyPairs(
         recoveryKey,
         autoDelete,
@@ -132,7 +133,7 @@ public object RecoveryApi {
       dartResultCallback,
       cancellationToken,
       RecoveryResult.serializer(MapSerializer(String.serializer(),
-          MapSerializer(SpkiHexString.serializer(), Pkcs8BytesAsBase64Serializer)))) {
+          MapAsArraySerializer(SpkiHexString.serializer(), Pkcs8BytesAsBase64Serializer)))) {
       val res =
           NativeReferences.get<CardinalApis>(sdkId).recovery.recoverKeyPairsWaitingForCreation(
         recoveryKey,

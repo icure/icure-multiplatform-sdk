@@ -18,6 +18,7 @@ import com.icure.cardinal.sdk.model.couchdb.GroupDatabasesInfo
 import com.icure.cardinal.sdk.model.embed.GroupType
 import com.icure.cardinal.sdk.model.embed.RoleConfiguration
 import com.icure.cardinal.sdk.model.embed.UserType
+import com.icure.cardinal.sdk.model.security.ExternalJwtConfig
 import com.icure.cardinal.sdk.model.security.Operation
 import com.icure.cardinal.sdk.model.security.PermissionType
 import com.icure.cardinal.sdk.utils.Serialization.fullLanguageInteropJson
@@ -693,6 +694,70 @@ public object GroupApi {
       dartResultCallback,
       ListSerializer(DocIdentifier.serializer())) {
       NativeReferences.get<CardinalNonCryptoApis>(sdkId).group.listAllGroupsIds()
+    }
+  }
+
+  public fun createOrUpdateExternalJwtConfig(
+    dartResultCallback: (
+      String?,
+      String?,
+      String?,
+      String?,
+    ) -> Unit,
+    sdkId: String,
+    groupIdString: String,
+    keyString: String,
+    configString: String,
+  ) {
+    val groupId = fullLanguageInteropJson.decodeFromString(
+      String.serializer(),
+      groupIdString
+    )
+    val key = fullLanguageInteropJson.decodeFromString(
+      String.serializer(),
+      keyString
+    )
+    val config = fullLanguageInteropJson.decodeFromString(
+      ExternalJwtConfig.serializer(),
+      configString
+    )
+    ApiScope.execute(
+      dartResultCallback,
+      Group.serializer()) {
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).group.createOrUpdateExternalJwtConfig(
+        groupId,
+        key,
+        config,
+      )
+    }
+  }
+
+  public fun removeExternalJwtConfig(
+    dartResultCallback: (
+      String?,
+      String?,
+      String?,
+      String?,
+    ) -> Unit,
+    sdkId: String,
+    groupIdString: String,
+    keyString: String,
+  ) {
+    val groupId = fullLanguageInteropJson.decodeFromString(
+      String.serializer(),
+      groupIdString
+    )
+    val key = fullLanguageInteropJson.decodeFromString(
+      String.serializer(),
+      keyString
+    )
+    ApiScope.execute(
+      dartResultCallback,
+      Group.serializer()) {
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).group.removeExternalJwtConfig(
+        groupId,
+        key,
+      )
     }
   }
 }

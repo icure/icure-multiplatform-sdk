@@ -20,6 +20,7 @@ import com.icure.cardinal.sdk.subscription.EntitySubscriptionConfiguration
 import com.icure.cardinal.sdk.subscription.SubscriptionEventType
 import com.icure.cardinal.sdk.utils.Serialization.fullLanguageInteropJson
 import com.icure.utils.InternalIcureApi
+import kotlin.Boolean
 import kotlin.Long
 import kotlin.OptIn
 import kotlin.String
@@ -83,7 +84,7 @@ public object UserApi {
     )
     ApiScope.execute(
       dartResultCallback,
-      User.serializer()) {
+      User.serializer().nullable) {
       NativeReferences.get<CardinalNonCryptoApis>(sdkId).user.getUser(
         userId,
       )
@@ -129,7 +130,7 @@ public object UserApi {
     )
     ApiScope.execute(
       dartResultCallback,
-      User.serializer()) {
+      User.serializer().nullable) {
       NativeReferences.get<CardinalNonCryptoApis>(sdkId).user.getUserByEmail(
         email,
       )
@@ -152,7 +153,7 @@ public object UserApi {
     )
     ApiScope.execute(
       dartResultCallback,
-      User.serializer()) {
+      User.serializer().nullable) {
       NativeReferences.get<CardinalNonCryptoApis>(sdkId).user.getUserByPhoneNumber(
         phoneNumber,
       )
@@ -1234,6 +1235,41 @@ public object UserApi {
       User.serializer()) {
       NativeReferences.get<CardinalNonCryptoApis>(sdkId).user.undeleteUser(
         user,
+      )
+    }
+  }
+
+  public fun setUserInheritsPermissions(
+    dartResultCallback: (
+      String?,
+      String?,
+      String?,
+      String?,
+    ) -> Unit,
+    sdkId: String,
+    userIdString: String,
+    groupIdString: String,
+    valueString: String,
+  ) {
+    val userId = fullLanguageInteropJson.decodeFromString(
+      String.serializer(),
+      userIdString
+    )
+    val groupId = fullLanguageInteropJson.decodeFromString(
+      String.serializer(),
+      groupIdString
+    )
+    val value = fullLanguageInteropJson.decodeFromString(
+      Boolean.serializer(),
+      valueString
+    )
+    ApiScope.execute(
+      dartResultCallback,
+      String.serializer()) {
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).user.setUserInheritsPermissions(
+        userId,
+        groupId,
+        value,
       )
     }
   }
