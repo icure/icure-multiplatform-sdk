@@ -14,6 +14,7 @@ import com.icure.cardinal.sdk.model.ListOfIds
 import com.icure.cardinal.sdk.model.User
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.model.security.Enable2faRequest
+import com.icure.cardinal.sdk.model.security.LoginIdentifier
 import com.icure.cardinal.sdk.model.security.Permission
 import com.icure.cardinal.sdk.options.BasicApiConfiguration
 import com.icure.cardinal.sdk.serialization.SubscriptionSerializer
@@ -160,6 +161,18 @@ internal class UserApiImpl(
 
 	override suspend fun setUserInheritsPermissions(userId: String, groupId: String, value: Boolean): String =
 		raw.setUserInheritsPermissions(userId, groupId, value).successBody()
+
+	override suspend fun setLoginIdentifiers(
+		userId: String,
+		groupId: String,
+		identifier: LoginIdentifier,
+		replaceExisting: Boolean
+	): Boolean = raw.setLoginIdentifiers(
+		userId = userId,
+		groupId = groupId,
+		identifier = identifier,
+		replaceExisting = replaceExisting
+	).successBody()
 
 	override suspend fun setUserRoles(
 		userId: String,

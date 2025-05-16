@@ -1,5 +1,6 @@
 package com.icure.cardinal.sdk.api
 
+import com.icure.cardinal.sdk.api.raw.HttpResponse
 import com.icure.cardinal.sdk.exceptions.RevisionConflictException
 import com.icure.cardinal.sdk.filters.BaseFilterOptions
 import com.icure.cardinal.sdk.filters.BaseSortableFilterOptions
@@ -11,6 +12,7 @@ import com.icure.cardinal.sdk.model.User
 import com.icure.cardinal.sdk.model.UserGroup
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.model.security.Enable2faRequest
+import com.icure.cardinal.sdk.model.security.LoginIdentifier
 import com.icure.cardinal.sdk.model.security.TokenWithGroup
 import com.icure.cardinal.sdk.subscription.Subscribable
 import com.icure.cardinal.sdk.utils.DefaultValue
@@ -258,5 +260,12 @@ interface UserApi: Subscribable<User, User, FilterOptions<User>> {
 		groupId: String,
 		value: Boolean,
 	): String
+
+	suspend fun setLoginIdentifiers(
+		userId: String,
+		groupId: String,
+		identifier: LoginIdentifier,
+		replaceExisting: Boolean,
+	): Boolean
 }
 
