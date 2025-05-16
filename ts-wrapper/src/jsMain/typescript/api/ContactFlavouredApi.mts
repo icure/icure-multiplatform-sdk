@@ -25,6 +25,10 @@ export interface ContactFlavouredApi<E extends Contact, S extends Service> {
 
 	filterServicesBySorted(filter: SortableFilterOptions<Service>): Promise<PaginatedListIterator<S>>;
 
+	createContact(entity: E): Promise<E>;
+
+	createContacts(entities: Array<E>): Promise<Array<E>>;
+
 	undeleteContactById(id: string, rev: string): Promise<E>;
 
 	undeleteContact(contact: Contact): Promise<E>;
@@ -33,7 +37,7 @@ export interface ContactFlavouredApi<E extends Contact, S extends Service> {
 
 	modifyContacts(entities: Array<E>): Promise<Array<E>>;
 
-	getContact(entityId: string): Promise<E>;
+	getContact(entityId: string): Promise<E | undefined>;
 
 	getContacts(entityIds: Array<string>): Promise<Array<E>>;
 

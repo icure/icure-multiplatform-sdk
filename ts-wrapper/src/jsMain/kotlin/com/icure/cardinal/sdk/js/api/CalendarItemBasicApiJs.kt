@@ -8,9 +8,8 @@ import com.icure.cardinal.sdk.js.filters.BaseSortableFilterOptionsJs
 import com.icure.cardinal.sdk.js.filters.FilterOptionsJs
 import com.icure.cardinal.sdk.js.model.CalendarItemJs
 import com.icure.cardinal.sdk.js.model.EncryptedCalendarItemJs
-import com.icure.cardinal.sdk.js.model.IdWithMandatoryRevJs
 import com.icure.cardinal.sdk.js.model.PaginatedListJs
-import com.icure.cardinal.sdk.js.model.couchdb.DocIdentifierJs
+import com.icure.cardinal.sdk.js.model.StoredDocumentIdentifierJs
 import com.icure.cardinal.sdk.js.subscription.EntitySubscriptionJs
 import com.icure.cardinal.sdk.js.utils.pagination.PaginatedListIteratorJs
 import kotlin.Array
@@ -23,6 +22,8 @@ import kotlin.js.Promise
 
 @JsName("CalendarItemBasicApi")
 public external interface CalendarItemBasicApiJs {
+	public val inGroup: CalendarItemBasicInGroupApiJs
+
 	public fun matchCalendarItemsBy(filter: BaseFilterOptionsJs<CalendarItemJs>):
 			Promise<Array<String>>
 
@@ -35,23 +36,27 @@ public external interface CalendarItemBasicApiJs {
 	public fun filterCalendarItemsBySorted(filter: BaseSortableFilterOptionsJs<CalendarItemJs>):
 			Promise<PaginatedListIteratorJs<EncryptedCalendarItemJs>>
 
-	public fun deleteCalendarItemUnsafe(entityId: String): Promise<DocIdentifierJs>
+	public fun deleteCalendarItemUnsafe(entityId: String): Promise<StoredDocumentIdentifierJs>
 
-	public fun deleteCalendarItemsUnsafe(entityIds: Array<String>): Promise<Array<DocIdentifierJs>>
+	public fun deleteCalendarItemsUnsafe(entityIds: Array<String>):
+			Promise<Array<StoredDocumentIdentifierJs>>
 
-	public fun deleteCalendarItemById(entityId: String, rev: String): Promise<DocIdentifierJs>
+	public fun deleteCalendarItemById(entityId: String, rev: String):
+			Promise<StoredDocumentIdentifierJs>
 
-	public fun deleteCalendarItemsByIds(entityIds: Array<IdWithMandatoryRevJs>):
-			Promise<Array<DocIdentifierJs>>
+	public fun deleteCalendarItemsByIds(entityIds: Array<StoredDocumentIdentifierJs>):
+			Promise<Array<StoredDocumentIdentifierJs>>
 
 	public fun purgeCalendarItemById(id: String, rev: String): Promise<Unit>
 
-	public fun deleteCalendarItem(calendarItem: CalendarItemJs): Promise<DocIdentifierJs>
+	public fun deleteCalendarItem(calendarItem: CalendarItemJs): Promise<StoredDocumentIdentifierJs>
 
 	public fun deleteCalendarItems(calendarItems: Array<CalendarItemJs>):
-			Promise<Array<DocIdentifierJs>>
+			Promise<Array<StoredDocumentIdentifierJs>>
 
 	public fun purgeCalendarItem(calendarItem: CalendarItemJs): Promise<Unit>
+
+	public fun createCalendarItem(entity: EncryptedCalendarItemJs): Promise<EncryptedCalendarItemJs>
 
 	public fun undeleteCalendarItemById(id: String, rev: String): Promise<EncryptedCalendarItemJs>
 
@@ -59,7 +64,7 @@ public external interface CalendarItemBasicApiJs {
 
 	public fun modifyCalendarItem(entity: EncryptedCalendarItemJs): Promise<EncryptedCalendarItemJs>
 
-	public fun getCalendarItem(entityId: String): Promise<EncryptedCalendarItemJs>
+	public fun getCalendarItem(entityId: String): Promise<EncryptedCalendarItemJs?>
 
 	public fun getCalendarItems(entityIds: Array<String>): Promise<Array<EncryptedCalendarItemJs>>
 

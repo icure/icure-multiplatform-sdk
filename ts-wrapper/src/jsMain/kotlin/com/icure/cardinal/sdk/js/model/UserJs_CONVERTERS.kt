@@ -308,10 +308,17 @@ public fun user_SystemMetadata_toJs(obj: User.SystemMetadata): UserJs_SystemMeta
 	)
 	val isAdmin = obj.isAdmin
 	val inheritsRoles = obj.inheritsRoles
+	val loginIdentifiers = listToArray(
+		obj.loginIdentifiers,
+		{ x1: Identifier ->
+			identifier_toJs(x1)
+		},
+	)
 	return UserJs_SystemMetadataJs(js("{" +
 		"roles:roles," +
 		"isAdmin:isAdmin," +
-		"inheritsRoles:inheritsRoles" +
+		"inheritsRoles:inheritsRoles," +
+		"loginIdentifiers:loginIdentifiers" +
 	"}"))
 }
 
@@ -325,9 +332,17 @@ public fun user_SystemMetadata_fromJs(obj: UserJs_SystemMetadataJs): User.System
 	)
 	val isAdmin = obj.isAdmin
 	val inheritsRoles = obj.inheritsRoles
+	val loginIdentifiers = arrayToList(
+		obj.loginIdentifiers,
+		"obj.loginIdentifiers",
+		{ x1: IdentifierJs ->
+			identifier_fromJs(x1)
+		},
+	)
 	return User.SystemMetadata(
 		roles = roles,
 		isAdmin = isAdmin,
 		inheritsRoles = inheritsRoles,
+		loginIdentifiers = loginIdentifiers,
 	)
 }

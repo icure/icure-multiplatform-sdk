@@ -14,6 +14,7 @@ import {GroupDatabasesInfo} from '../model/couchdb/GroupDatabasesInfo.mjs';
 import {GroupType} from '../model/embed/GroupType.mjs';
 import {RoleConfiguration} from '../model/embed/RoleConfiguration.mjs';
 import {UserType} from '../model/embed/UserType.mjs';
+import {ExternalJwtConfig} from '../model/security/ExternalJwtConfig.mjs';
 import {Operation} from '../model/security/Operation.mjs';
 import {PermissionType} from '../model/security/PermissionType.mjs';
 
@@ -82,5 +83,10 @@ export interface GroupApi {
 	getHierarchy(id: string): Promise<Array<string>>;
 
 	listAllGroupsIds(): Promise<Array<DocIdentifier>>;
+
+	createOrUpdateExternalJwtConfig(groupId: string, key: string,
+			config: ExternalJwtConfig): Promise<Group>;
+
+	removeExternalJwtConfig(groupId: string, key: string): Promise<Group>;
 
 }

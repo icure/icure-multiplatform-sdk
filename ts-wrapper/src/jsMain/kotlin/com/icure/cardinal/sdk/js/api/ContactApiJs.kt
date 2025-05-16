@@ -9,9 +9,9 @@ import com.icure.cardinal.sdk.js.filters.SortableFilterOptionsJs
 import com.icure.cardinal.sdk.js.model.ContactJs
 import com.icure.cardinal.sdk.js.model.DecryptedContactJs
 import com.icure.cardinal.sdk.js.model.EncryptedContactJs
-import com.icure.cardinal.sdk.js.model.IdWithMandatoryRevJs
 import com.icure.cardinal.sdk.js.model.PaginatedListJs
 import com.icure.cardinal.sdk.js.model.PatientJs
+import com.icure.cardinal.sdk.js.model.StoredDocumentIdentifierJs
 import com.icure.cardinal.sdk.js.model.`data`.LabelledOccurenceJs
 import com.icure.cardinal.sdk.js.model.couchdb.DocIdentifierJs
 import com.icure.cardinal.sdk.js.model.embed.DecryptedServiceJs
@@ -45,10 +45,6 @@ public external interface ContactApiJs {
 	public fun matchServicesBySorted(filter: SortableFilterOptionsJs<ServiceJs>):
 			Promise<Array<String>>
 
-	public fun createContact(entity: DecryptedContactJs): Promise<DecryptedContactJs>
-
-	public fun createContacts(entities: Array<DecryptedContactJs>): Promise<Array<DecryptedContactJs>>
-
 	public fun withEncryptionMetadata(
 		base: DecryptedContactJs?,
 		patient: PatientJs,
@@ -81,7 +77,7 @@ public external interface ContactApiJs {
 
 	public fun deleteContactById(entityId: String, rev: String): Promise<DocIdentifierJs>
 
-	public fun deleteContactsByIds(entityIds: Array<IdWithMandatoryRevJs>):
+	public fun deleteContactsByIds(entityIds: Array<StoredDocumentIdentifierJs>):
 			Promise<Array<DocIdentifierJs>>
 
 	public fun purgeContactById(id: String, rev: String): Promise<Unit>
@@ -122,6 +118,10 @@ public external interface ContactApiJs {
 	public fun filterServicesBySorted(filter: SortableFilterOptionsJs<ServiceJs>):
 			Promise<PaginatedListIteratorJs<DecryptedServiceJs>>
 
+	public fun createContact(entity: DecryptedContactJs): Promise<DecryptedContactJs>
+
+	public fun createContacts(entities: Array<DecryptedContactJs>): Promise<Array<DecryptedContactJs>>
+
 	public fun undeleteContactById(id: String, rev: String): Promise<DecryptedContactJs>
 
 	public fun undeleteContact(contact: ContactJs): Promise<DecryptedContactJs>
@@ -130,7 +130,7 @@ public external interface ContactApiJs {
 
 	public fun modifyContacts(entities: Array<DecryptedContactJs>): Promise<Array<DecryptedContactJs>>
 
-	public fun getContact(entityId: String): Promise<DecryptedContactJs>
+	public fun getContact(entityId: String): Promise<DecryptedContactJs?>
 
 	public fun getContacts(entityIds: Array<String>): Promise<Array<DecryptedContactJs>>
 

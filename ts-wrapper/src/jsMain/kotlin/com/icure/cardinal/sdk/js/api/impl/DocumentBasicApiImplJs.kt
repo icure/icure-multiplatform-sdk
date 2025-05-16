@@ -12,15 +12,16 @@ import com.icure.cardinal.sdk.js.filters.baseSortableFilterOptions_fromJs
 import com.icure.cardinal.sdk.js.model.CheckedConverters.arrayToList
 import com.icure.cardinal.sdk.js.model.CheckedConverters.jsonToDynamic
 import com.icure.cardinal.sdk.js.model.CheckedConverters.listToArray
+import com.icure.cardinal.sdk.js.model.CheckedConverters.nullToUndefined
 import com.icure.cardinal.sdk.js.model.CheckedConverters.numberToInt
 import com.icure.cardinal.sdk.js.model.DocumentJs
 import com.icure.cardinal.sdk.js.model.EncryptedDocumentJs
-import com.icure.cardinal.sdk.js.model.IdWithMandatoryRevJs
+import com.icure.cardinal.sdk.js.model.StoredDocumentIdentifierJs
 import com.icure.cardinal.sdk.js.model.couchdb.DocIdentifierJs
 import com.icure.cardinal.sdk.js.model.couchdb.docIdentifier_toJs
 import com.icure.cardinal.sdk.js.model.document_fromJs
 import com.icure.cardinal.sdk.js.model.document_toJs
-import com.icure.cardinal.sdk.js.model.idWithMandatoryRev_fromJs
+import com.icure.cardinal.sdk.js.model.storedDocumentIdentifier_fromJs
 import com.icure.cardinal.sdk.js.utils.pagination.PaginatedListIteratorJs
 import com.icure.cardinal.sdk.js.utils.pagination.paginatedListIterator_toJs
 import com.icure.cardinal.sdk.model.Document
@@ -143,13 +144,13 @@ internal class DocumentBasicApiImplJs(
 		docIdentifier_toJs(result)
 	}
 
-	override fun deleteDocumentsByIds(entityIds: Array<IdWithMandatoryRevJs>):
+	override fun deleteDocumentsByIds(entityIds: Array<StoredDocumentIdentifierJs>):
 			Promise<Array<DocIdentifierJs>> = GlobalScope.promise {
 		val entityIdsConverted: List<StoredDocumentIdentifier> = arrayToList(
 			entityIds,
 			"entityIds",
-			{ x1: IdWithMandatoryRevJs ->
-				idWithMandatoryRev_fromJs(x1)
+			{ x1: StoredDocumentIdentifierJs ->
+				storedDocumentIdentifier_fromJs(x1)
 			},
 		)
 		val result = documentBasicApi.deleteDocumentsByIds(
@@ -331,6 +332,15 @@ internal class DocumentBasicApiImplJs(
 		document_toJs(result)
 	}
 
+	override fun createDocument(entity: EncryptedDocumentJs): Promise<EncryptedDocumentJs> =
+			GlobalScope.promise {
+		val entityConverted: EncryptedDocument = document_fromJs(entity)
+		val result = documentBasicApi.createDocument(
+			entityConverted,
+		)
+		document_toJs(result)
+	}
+
 	override fun undeleteDocumentById(id: String, rev: String): Promise<EncryptedDocumentJs> =
 			GlobalScope.promise {
 		val idConverted: String = id
@@ -360,12 +370,16 @@ internal class DocumentBasicApiImplJs(
 		document_toJs(result)
 	}
 
-	override fun getDocument(entityId: String): Promise<EncryptedDocumentJs> = GlobalScope.promise {
+	override fun getDocument(entityId: String): Promise<EncryptedDocumentJs?> = GlobalScope.promise {
 		val entityIdConverted: String = entityId
 		val result = documentBasicApi.getDocument(
 			entityIdConverted,
 		)
-		document_toJs(result)
+		nullToUndefined(
+			result?.let { nonNull1 ->
+				document_toJs(nonNull1)
+			}
+		)
 	}
 
 	override fun getDocumentByExternalUuid(externalUuid: String): Promise<EncryptedDocumentJs> =

@@ -6,6 +6,7 @@ import com.icure.cardinal.sdk.js.api.DefaultParametersSupport.convertingOptionOr
 import com.icure.cardinal.sdk.js.api.PlaceApiJs
 import com.icure.cardinal.sdk.js.model.CheckedConverters.arrayToList
 import com.icure.cardinal.sdk.js.model.CheckedConverters.listToArray
+import com.icure.cardinal.sdk.js.model.CheckedConverters.nullToUndefined
 import com.icure.cardinal.sdk.js.model.CheckedConverters.numberToInt
 import com.icure.cardinal.sdk.js.model.CheckedConverters.undefinedToNull
 import com.icure.cardinal.sdk.js.model.PaginatedListJs
@@ -32,12 +33,16 @@ import kotlinx.coroutines.promise
 internal class PlaceApiImplJs(
 	private val placeApi: PlaceApi,
 ) : PlaceApiJs {
-	override fun getPlace(placeId: String): Promise<PlaceJs> = GlobalScope.promise {
+	override fun getPlace(placeId: String): Promise<PlaceJs?> = GlobalScope.promise {
 		val placeIdConverted: String = placeId
 		val result = placeApi.getPlace(
 			placeIdConverted,
 		)
-		place_toJs(result)
+		nullToUndefined(
+			result?.let { nonNull1 ->
+				place_toJs(nonNull1)
+			}
+		)
 	}
 
 	override fun createPlace(place: PlaceJs): Promise<PlaceJs> = GlobalScope.promise {

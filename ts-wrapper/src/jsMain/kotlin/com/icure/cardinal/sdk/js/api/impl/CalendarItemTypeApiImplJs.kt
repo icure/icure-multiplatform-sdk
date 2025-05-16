@@ -5,6 +5,7 @@ import com.icure.cardinal.sdk.api.CalendarItemTypeApi
 import com.icure.cardinal.sdk.js.api.CalendarItemTypeApiJs
 import com.icure.cardinal.sdk.js.model.CalendarItemTypeJs
 import com.icure.cardinal.sdk.js.model.CheckedConverters.listToArray
+import com.icure.cardinal.sdk.js.model.CheckedConverters.nullToUndefined
 import com.icure.cardinal.sdk.js.model.CheckedConverters.numberToInt
 import com.icure.cardinal.sdk.js.model.CheckedConverters.undefinedToNull
 import com.icure.cardinal.sdk.js.model.ListOfIdsJs
@@ -92,13 +93,17 @@ internal class CalendarItemTypeApiImplJs(
 		)
 	}
 
-	override fun getCalendarItemType(calendarItemTypeId: String): Promise<CalendarItemTypeJs> =
+	override fun getCalendarItemType(calendarItemTypeId: String): Promise<CalendarItemTypeJs?> =
 			GlobalScope.promise {
 		val calendarItemTypeIdConverted: String = calendarItemTypeId
 		val result = calendarItemTypeApi.getCalendarItemType(
 			calendarItemTypeIdConverted,
 		)
-		calendarItemType_toJs(result)
+		nullToUndefined(
+			result?.let { nonNull1 ->
+				calendarItemType_toJs(nonNull1)
+			}
+		)
 	}
 
 	override fun modifyCalendarItemType(calendarItemTypeDto: CalendarItemTypeJs):

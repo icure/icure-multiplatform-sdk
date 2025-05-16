@@ -1,15 +1,17 @@
 // auto-generated file
 import {BaseFilterOptions, BaseSortableFilterOptions, FilterOptions, PaginatedListIterator} from '../cardinal-sdk-ts.mjs';
 import {CalendarItem, EncryptedCalendarItem} from '../model/CalendarItem.mjs';
-import {IdWithMandatoryRev} from '../model/IdWithMandatoryRev.mjs';
 import {PaginatedList} from '../model/PaginatedList.mjs';
-import {DocIdentifier} from '../model/couchdb/DocIdentifier.mjs';
+import {StoredDocumentIdentifier} from '../model/StoredDocumentIdentifier.mjs';
 import {EntitySubscription} from '../subscription/EntitySubscription.mjs';
 import {EntitySubscriptionConfiguration} from '../subscription/EntitySubscriptionConfiguration.mjs';
 import {SubscriptionEventType} from '../subscription/SubscriptionEventType.mjs';
+import {CalendarItemBasicInGroupApi} from './CalendarItemBasicInGroupApi.mjs';
 
 
 export interface CalendarItemBasicApi {
+
+	inGroup: CalendarItemBasicInGroupApi;
 
 	matchCalendarItemsBy(filter: BaseFilterOptions<CalendarItem>): Promise<Array<string>>;
 
@@ -19,21 +21,23 @@ export interface CalendarItemBasicApi {
 
 	filterCalendarItemsBySorted(filter: BaseSortableFilterOptions<CalendarItem>): Promise<PaginatedListIterator<EncryptedCalendarItem>>;
 
-	deleteCalendarItemUnsafe(entityId: string): Promise<DocIdentifier>;
+	deleteCalendarItemUnsafe(entityId: string): Promise<StoredDocumentIdentifier>;
 
-	deleteCalendarItemsUnsafe(entityIds: Array<string>): Promise<Array<DocIdentifier>>;
+	deleteCalendarItemsUnsafe(entityIds: Array<string>): Promise<Array<StoredDocumentIdentifier>>;
 
-	deleteCalendarItemById(entityId: string, rev: string): Promise<DocIdentifier>;
+	deleteCalendarItemById(entityId: string, rev: string): Promise<StoredDocumentIdentifier>;
 
-	deleteCalendarItemsByIds(entityIds: Array<IdWithMandatoryRev>): Promise<Array<DocIdentifier>>;
+	deleteCalendarItemsByIds(entityIds: Array<StoredDocumentIdentifier>): Promise<Array<StoredDocumentIdentifier>>;
 
 	purgeCalendarItemById(id: string, rev: string): Promise<void>;
 
-	deleteCalendarItem(calendarItem: CalendarItem): Promise<DocIdentifier>;
+	deleteCalendarItem(calendarItem: CalendarItem): Promise<StoredDocumentIdentifier>;
 
-	deleteCalendarItems(calendarItems: Array<CalendarItem>): Promise<Array<DocIdentifier>>;
+	deleteCalendarItems(calendarItems: Array<CalendarItem>): Promise<Array<StoredDocumentIdentifier>>;
 
 	purgeCalendarItem(calendarItem: CalendarItem): Promise<void>;
+
+	createCalendarItem(entity: EncryptedCalendarItem): Promise<EncryptedCalendarItem>;
 
 	undeleteCalendarItemById(id: string, rev: string): Promise<EncryptedCalendarItem>;
 
@@ -41,7 +45,7 @@ export interface CalendarItemBasicApi {
 
 	modifyCalendarItem(entity: EncryptedCalendarItem): Promise<EncryptedCalendarItem>;
 
-	getCalendarItem(entityId: string): Promise<EncryptedCalendarItem>;
+	getCalendarItem(entityId: string): Promise<EncryptedCalendarItem | undefined>;
 
 	getCalendarItems(entityIds: Array<string>): Promise<Array<EncryptedCalendarItem>>;
 

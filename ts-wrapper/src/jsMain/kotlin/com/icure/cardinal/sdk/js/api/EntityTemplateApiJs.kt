@@ -4,7 +4,7 @@
 package com.icure.cardinal.sdk.js.api
 
 import com.icure.cardinal.sdk.js.model.EntityTemplateJs
-import com.icure.cardinal.sdk.js.model.IdWithMandatoryRevJs
+import com.icure.cardinal.sdk.js.model.StoredDocumentIdentifierJs
 import com.icure.cardinal.sdk.js.model.couchdb.DocIdentifierJs
 import kotlin.Array
 import kotlin.Boolean
@@ -15,7 +15,7 @@ import kotlin.js.Promise
 
 @JsName("EntityTemplateApi")
 public external interface EntityTemplateApiJs {
-	public fun getEntityTemplate(documentTemplateId: String): Promise<EntityTemplateJs>
+	public fun getEntityTemplate(documentTemplateId: String): Promise<EntityTemplateJs?>
 
 	public fun createEntityTemplate(applicationSettings: EntityTemplateJs): Promise<EntityTemplateJs>
 
@@ -51,6 +51,6 @@ public external interface EntityTemplateApiJs {
 	public fun createEntityTemplates(entityTemplates: Array<EntityTemplateJs>):
 			Promise<Array<EntityTemplateJs>>
 
-	public fun deleteEntityTemplates(entityTemplateIds: Array<IdWithMandatoryRevJs>):
+	public fun deleteEntityTemplates(entityTemplateIds: Array<StoredDocumentIdentifierJs>):
 			Promise<Array<DocIdentifierJs>>
 }

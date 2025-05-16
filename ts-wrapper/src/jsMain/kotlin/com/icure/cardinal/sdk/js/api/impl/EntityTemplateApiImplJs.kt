@@ -6,14 +6,15 @@ import com.icure.cardinal.sdk.js.api.DefaultParametersSupport.convertingOptionOr
 import com.icure.cardinal.sdk.js.api.EntityTemplateApiJs
 import com.icure.cardinal.sdk.js.model.CheckedConverters.arrayToList
 import com.icure.cardinal.sdk.js.model.CheckedConverters.listToArray
+import com.icure.cardinal.sdk.js.model.CheckedConverters.nullToUndefined
 import com.icure.cardinal.sdk.js.model.CheckedConverters.undefinedToNull
 import com.icure.cardinal.sdk.js.model.EntityTemplateJs
-import com.icure.cardinal.sdk.js.model.IdWithMandatoryRevJs
+import com.icure.cardinal.sdk.js.model.StoredDocumentIdentifierJs
 import com.icure.cardinal.sdk.js.model.couchdb.DocIdentifierJs
 import com.icure.cardinal.sdk.js.model.couchdb.docIdentifier_toJs
 import com.icure.cardinal.sdk.js.model.entityTemplate_fromJs
 import com.icure.cardinal.sdk.js.model.entityTemplate_toJs
-import com.icure.cardinal.sdk.js.model.idWithMandatoryRev_fromJs
+import com.icure.cardinal.sdk.js.model.storedDocumentIdentifier_fromJs
 import com.icure.cardinal.sdk.model.EntityTemplate
 import com.icure.cardinal.sdk.model.StoredDocumentIdentifier
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
@@ -31,13 +32,17 @@ import kotlinx.coroutines.promise
 internal class EntityTemplateApiImplJs(
 	private val entityTemplateApi: EntityTemplateApi,
 ) : EntityTemplateApiJs {
-	override fun getEntityTemplate(documentTemplateId: String): Promise<EntityTemplateJs> =
+	override fun getEntityTemplate(documentTemplateId: String): Promise<EntityTemplateJs?> =
 			GlobalScope.promise {
 		val documentTemplateIdConverted: String = documentTemplateId
 		val result = entityTemplateApi.getEntityTemplate(
 			documentTemplateIdConverted,
 		)
-		entityTemplate_toJs(result)
+		nullToUndefined(
+			result?.let { nonNull1 ->
+				entityTemplate_toJs(nonNull1)
+			}
+		)
 	}
 
 	override fun createEntityTemplate(applicationSettings: EntityTemplateJs): Promise<EntityTemplateJs>
@@ -243,13 +248,13 @@ internal class EntityTemplateApiImplJs(
 		)
 	}
 
-	override fun deleteEntityTemplates(entityTemplateIds: Array<IdWithMandatoryRevJs>):
+	override fun deleteEntityTemplates(entityTemplateIds: Array<StoredDocumentIdentifierJs>):
 			Promise<Array<DocIdentifierJs>> = GlobalScope.promise {
 		val entityTemplateIdsConverted: List<StoredDocumentIdentifier> = arrayToList(
 			entityTemplateIds,
 			"entityTemplateIds",
-			{ x1: IdWithMandatoryRevJs ->
-				idWithMandatoryRev_fromJs(x1)
+			{ x1: StoredDocumentIdentifierJs ->
+				storedDocumentIdentifier_fromJs(x1)
 			},
 		)
 		val result = entityTemplateApi.deleteEntityTemplates(

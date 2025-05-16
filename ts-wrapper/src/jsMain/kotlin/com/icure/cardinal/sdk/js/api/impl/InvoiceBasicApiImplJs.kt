@@ -7,6 +7,7 @@ import com.icure.cardinal.sdk.js.api.InvoiceBasicApiJs
 import com.icure.cardinal.sdk.js.model.CheckedConverters.arrayToList
 import com.icure.cardinal.sdk.js.model.CheckedConverters.dynamicToJsonNullsafe
 import com.icure.cardinal.sdk.js.model.CheckedConverters.listToArray
+import com.icure.cardinal.sdk.js.model.CheckedConverters.nullToUndefined
 import com.icure.cardinal.sdk.js.model.CheckedConverters.numberToInt
 import com.icure.cardinal.sdk.js.model.CheckedConverters.numberToLong
 import com.icure.cardinal.sdk.js.model.CheckedConverters.undefinedToNull
@@ -95,12 +96,16 @@ internal class InvoiceBasicApiImplJs(
 		)
 	}
 
-	override fun getInvoice(entityId: String): Promise<EncryptedInvoiceJs> = GlobalScope.promise {
+	override fun getInvoice(entityId: String): Promise<EncryptedInvoiceJs?> = GlobalScope.promise {
 		val entityIdConverted: String = entityId
 		val result = invoiceBasicApi.getInvoice(
 			entityIdConverted,
 		)
-		invoice_toJs(result)
+		nullToUndefined(
+			result?.let { nonNull1 ->
+				invoice_toJs(nonNull1)
+			}
+		)
 	}
 
 	override fun getInvoices(entityIds: Array<String>): Promise<Array<EncryptedInvoiceJs>> =

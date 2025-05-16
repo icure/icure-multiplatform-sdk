@@ -8,8 +8,8 @@ import com.icure.cardinal.sdk.js.filters.FilterOptionsJs
 import com.icure.cardinal.sdk.js.filters.SortableFilterOptionsJs
 import com.icure.cardinal.sdk.js.model.DecryptedTopicJs
 import com.icure.cardinal.sdk.js.model.EncryptedTopicJs
-import com.icure.cardinal.sdk.js.model.IdWithMandatoryRevJs
 import com.icure.cardinal.sdk.js.model.PatientJs
+import com.icure.cardinal.sdk.js.model.StoredDocumentIdentifierJs
 import com.icure.cardinal.sdk.js.model.TopicJs
 import com.icure.cardinal.sdk.js.model.couchdb.DocIdentifierJs
 import com.icure.cardinal.sdk.js.subscription.EntitySubscriptionJs
@@ -28,8 +28,6 @@ public external interface TopicApiJs {
 	public val encrypted: TopicFlavouredApiJs<EncryptedTopicJs>
 
 	public val tryAndRecover: TopicFlavouredApiJs<TopicJs>
-
-	public fun createTopic(entity: DecryptedTopicJs): Promise<DecryptedTopicJs>
 
 	public fun withEncryptionMetadata(
 		base: DecryptedTopicJs?,
@@ -60,7 +58,7 @@ public external interface TopicApiJs {
 
 	public fun deleteTopicById(entityId: String, rev: String): Promise<DocIdentifierJs>
 
-	public fun deleteTopicsByIds(entityIds: Array<IdWithMandatoryRevJs>):
+	public fun deleteTopicsByIds(entityIds: Array<StoredDocumentIdentifierJs>):
 			Promise<Array<DocIdentifierJs>>
 
 	public fun purgeTopicById(id: String, rev: String): Promise<Unit>
@@ -86,13 +84,15 @@ public external interface TopicApiJs {
 	public fun filterTopicsBySorted(filter: SortableFilterOptionsJs<TopicJs>):
 			Promise<PaginatedListIteratorJs<DecryptedTopicJs>>
 
+	public fun createTopic(entity: DecryptedTopicJs): Promise<DecryptedTopicJs>
+
 	public fun undeleteTopic(topic: TopicJs): Promise<TopicJs>
 
 	public fun modifyTopic(entity: DecryptedTopicJs): Promise<DecryptedTopicJs>
 
 	public fun undeleteTopicById(id: String, rev: String): Promise<DecryptedTopicJs>
 
-	public fun getTopic(entityId: String): Promise<DecryptedTopicJs>
+	public fun getTopic(entityId: String): Promise<DecryptedTopicJs?>
 
 	public fun getTopics(entityIds: Array<String>): Promise<Array<DecryptedTopicJs>>
 

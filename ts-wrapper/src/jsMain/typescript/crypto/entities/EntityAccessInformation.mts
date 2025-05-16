@@ -1,10 +1,12 @@
 // auto-generated file
+import {EntityReferenceInGroup} from '../../model/EntityReferenceInGroup.mjs';
 import {AccessLevel} from '../../model/embed/AccessLevel.mjs';
+import {ArrayWithUniqueKeys} from '../../utils/ArrayWithUniqueKeys.mjs';
 
 
 export class EntityAccessInformation {
 
-	permissionsByDataOwnerId: { [ key: string ]: AccessLevel };
+	permissionsByDataOwnerId: ArrayWithUniqueKeys<{ delegate: EntityReferenceInGroup, accessLevel: AccessLevel }, 'delegate'>;
 
 	hasUnknownAnonymousDataOwners: boolean;
 

@@ -1,14 +1,16 @@
 // auto-generated file
 import {BaseFilterOptions, BaseSortableFilterOptions, PaginatedListIterator} from '../cardinal-sdk-ts.mjs';
 import {EncryptedHealthElement, HealthElement} from '../model/HealthElement.mjs';
-import {IdWithMandatoryRev} from '../model/IdWithMandatoryRev.mjs';
-import {DocIdentifier} from '../model/couchdb/DocIdentifier.mjs';
+import {StoredDocumentIdentifier} from '../model/StoredDocumentIdentifier.mjs';
 import {EntitySubscription} from '../subscription/EntitySubscription.mjs';
 import {EntitySubscriptionConfiguration} from '../subscription/EntitySubscriptionConfiguration.mjs';
 import {SubscriptionEventType} from '../subscription/SubscriptionEventType.mjs';
+import {HealthElementBasicInGroupApi} from './HealthElementBasicInGroupApi.mjs';
 
 
 export interface HealthElementBasicApi {
+
+	inGroup: HealthElementBasicInGroupApi;
 
 	matchHealthElementsBy(filter: BaseFilterOptions<HealthElement>): Promise<Array<string>>;
 
@@ -18,21 +20,25 @@ export interface HealthElementBasicApi {
 
 	filterHealthElementsBySorted(filter: BaseSortableFilterOptions<HealthElement>): Promise<PaginatedListIterator<EncryptedHealthElement>>;
 
-	deleteHealthElementUnsafe(entityId: string): Promise<DocIdentifier>;
+	deleteHealthElementUnsafe(entityId: string): Promise<StoredDocumentIdentifier>;
 
-	deleteHealthElementsUnsafe(entityIds: Array<string>): Promise<Array<DocIdentifier>>;
+	deleteHealthElementsUnsafe(entityIds: Array<string>): Promise<Array<StoredDocumentIdentifier>>;
 
-	deleteHealthElementById(entityId: string, rev: string | undefined): Promise<DocIdentifier>;
+	deleteHealthElementById(entityId: string, rev: string): Promise<StoredDocumentIdentifier>;
 
-	deleteHealthElementsByIds(entityIds: Array<IdWithMandatoryRev>): Promise<Array<DocIdentifier>>;
+	deleteHealthElementsByIds(entityIds: Array<StoredDocumentIdentifier>): Promise<Array<StoredDocumentIdentifier>>;
 
 	purgeHealthElementById(id: string, rev: string): Promise<void>;
 
-	deleteHealthElement(healthElement: HealthElement): Promise<DocIdentifier>;
+	deleteHealthElement(healthElement: HealthElement): Promise<StoredDocumentIdentifier>;
 
-	deleteHealthElements(healthElements: Array<HealthElement>): Promise<Array<DocIdentifier>>;
+	deleteHealthElements(healthElements: Array<HealthElement>): Promise<Array<StoredDocumentIdentifier>>;
 
 	purgeHealthElement(healthElement: HealthElement): Promise<void>;
+
+	createHealthElement(entity: EncryptedHealthElement): Promise<EncryptedHealthElement>;
+
+	createHealthElements(entities: Array<EncryptedHealthElement>): Promise<Array<EncryptedHealthElement>>;
 
 	undeleteHealthElementById(id: string, rev: string): Promise<EncryptedHealthElement>;
 
@@ -42,7 +48,7 @@ export interface HealthElementBasicApi {
 
 	modifyHealthElements(entities: Array<EncryptedHealthElement>): Promise<Array<EncryptedHealthElement>>;
 
-	getHealthElement(entityId: string): Promise<EncryptedHealthElement>;
+	getHealthElement(entityId: string): Promise<EncryptedHealthElement | undefined>;
 
 	getHealthElements(entityIds: Array<string>): Promise<Array<EncryptedHealthElement>>;
 

@@ -16,6 +16,7 @@ import com.icure.cardinal.sdk.js.filters.filterOptions_fromJs
 import com.icure.cardinal.sdk.js.model.CheckedConverters.arrayToList
 import com.icure.cardinal.sdk.js.model.CheckedConverters.arrayToSet
 import com.icure.cardinal.sdk.js.model.CheckedConverters.listToArray
+import com.icure.cardinal.sdk.js.model.CheckedConverters.nullToUndefined
 import com.icure.cardinal.sdk.js.model.CheckedConverters.numberToInt
 import com.icure.cardinal.sdk.js.model.CheckedConverters.numberToLong
 import com.icure.cardinal.sdk.js.model.CheckedConverters.undefinedToNull
@@ -137,12 +138,16 @@ internal class UserApiImplJs(
 		user_toJs(result)
 	}
 
-	override fun getUser(userId: String): Promise<UserJs> = GlobalScope.promise {
+	override fun getUser(userId: String): Promise<UserJs?> = GlobalScope.promise {
 		val userIdConverted: String = userId
 		val result = userApi.getUser(
 			userIdConverted,
 		)
-		user_toJs(result)
+		nullToUndefined(
+			result?.let { nonNull1 ->
+				user_toJs(nonNull1)
+			}
+		)
 	}
 
 	override fun getUsers(userIds: Array<String>): Promise<Array<UserJs>> = GlobalScope.promise {
@@ -164,20 +169,28 @@ internal class UserApiImplJs(
 		)
 	}
 
-	override fun getUserByEmail(email: String): Promise<UserJs> = GlobalScope.promise {
+	override fun getUserByEmail(email: String): Promise<UserJs?> = GlobalScope.promise {
 		val emailConverted: String = email
 		val result = userApi.getUserByEmail(
 			emailConverted,
 		)
-		user_toJs(result)
+		nullToUndefined(
+			result?.let { nonNull1 ->
+				user_toJs(nonNull1)
+			}
+		)
 	}
 
-	override fun getUserByPhoneNumber(phoneNumber: String): Promise<UserJs> = GlobalScope.promise {
+	override fun getUserByPhoneNumber(phoneNumber: String): Promise<UserJs?> = GlobalScope.promise {
 		val phoneNumberConverted: String = phoneNumber
 		val result = userApi.getUserByPhoneNumber(
 			phoneNumberConverted,
 		)
-		user_toJs(result)
+		nullToUndefined(
+			result?.let { nonNull1 ->
+				user_toJs(nonNull1)
+			}
+		)
 	}
 
 	override fun findByHcpartyId(id: String): Promise<Array<String>> = GlobalScope.promise {
@@ -755,6 +768,22 @@ internal class UserApiImplJs(
 			userConverted,
 		)
 		user_toJs(result)
+	}
+
+	override fun setUserInheritsPermissions(
+		userId: String,
+		groupId: String,
+		`value`: Boolean,
+	): Promise<String> = GlobalScope.promise {
+		val userIdConverted: String = userId
+		val groupIdConverted: String = groupId
+		val valueConverted: Boolean = value
+		val result = userApi.setUserInheritsPermissions(
+			userIdConverted,
+			groupIdConverted,
+			valueConverted,
+		)
+		result
 	}
 
 	override fun subscribeToEvents(

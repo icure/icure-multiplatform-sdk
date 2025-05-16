@@ -16,6 +16,7 @@ import com.icure.cardinal.sdk.js.model.CheckedConverters.arrayToList
 import com.icure.cardinal.sdk.js.model.CheckedConverters.arrayToSet
 import com.icure.cardinal.sdk.js.model.CheckedConverters.dynamicToJsonNullsafe
 import com.icure.cardinal.sdk.js.model.CheckedConverters.listToArray
+import com.icure.cardinal.sdk.js.model.CheckedConverters.nullToUndefined
 import com.icure.cardinal.sdk.js.model.CheckedConverters.numberToInt
 import com.icure.cardinal.sdk.js.model.CheckedConverters.numberToLong
 import com.icure.cardinal.sdk.js.model.CheckedConverters.objectToMap
@@ -199,12 +200,16 @@ internal class InvoiceApiImplJs(
 			)
 		}
 
-		override fun getInvoice(entityId: String): Promise<EncryptedInvoiceJs> = GlobalScope.promise {
+		override fun getInvoice(entityId: String): Promise<EncryptedInvoiceJs?> = GlobalScope.promise {
 			val entityIdConverted: String = entityId
 			val result = invoiceApi.encrypted.getInvoice(
 				entityIdConverted,
 			)
-			invoice_toJs(result)
+			nullToUndefined(
+				result?.let { nonNull1 ->
+					invoice_toJs(nonNull1)
+				}
+			)
 		}
 
 		override fun getInvoices(entityIds: Array<String>): Promise<Array<EncryptedInvoiceJs>> =
@@ -820,12 +825,16 @@ internal class InvoiceApiImplJs(
 			)
 		}
 
-		override fun getInvoice(entityId: String): Promise<InvoiceJs> = GlobalScope.promise {
+		override fun getInvoice(entityId: String): Promise<InvoiceJs?> = GlobalScope.promise {
 			val entityIdConverted: String = entityId
 			val result = invoiceApi.tryAndRecover.getInvoice(
 				entityIdConverted,
 			)
-			invoice_toJs(result)
+			nullToUndefined(
+				result?.let { nonNull1 ->
+					invoice_toJs(nonNull1)
+				}
+			)
 		}
 
 		override fun getInvoices(entityIds: Array<String>): Promise<Array<InvoiceJs>> =
@@ -1617,12 +1626,16 @@ internal class InvoiceApiImplJs(
 		)
 	}
 
-	override fun getInvoice(entityId: String): Promise<DecryptedInvoiceJs> = GlobalScope.promise {
+	override fun getInvoice(entityId: String): Promise<DecryptedInvoiceJs?> = GlobalScope.promise {
 		val entityIdConverted: String = entityId
 		val result = invoiceApi.getInvoice(
 			entityIdConverted,
 		)
-		invoice_toJs(result)
+		nullToUndefined(
+			result?.let { nonNull1 ->
+				invoice_toJs(nonNull1)
+			}
+		)
 	}
 
 	override fun getInvoices(entityIds: Array<String>): Promise<Array<DecryptedInvoiceJs>> =

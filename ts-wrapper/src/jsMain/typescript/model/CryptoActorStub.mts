@@ -1,15 +1,13 @@
 // auto-generated file
 import {randomUuid} from '../utils/Id.mjs';
 import {DecryptedPropertyStub} from './PropertyStub.mjs';
-import {CodeStub} from './base/CodeStub.mjs';
 import {CryptoActor} from './base/CryptoActor.mjs';
-import {HasTags} from './base/HasTags.mjs';
 import {Versionable} from './base/Versionable.mjs';
 import {HexString} from './specializations/HexString.mjs';
 import {SpkiHexString} from './specializations/SpkiHexString.mjs';
 
 
-export class CryptoActorStub implements Versionable<string>, CryptoActor, HasTags {
+export class CryptoActorStub implements Versionable<string>, CryptoActor {
 
 	id: string;
 
@@ -27,8 +25,6 @@ export class CryptoActorStub implements Versionable<string>, CryptoActor, HasTag
 
 	publicKeysForOaepWithSha256: Array<SpkiHexString>;
 
-	tags: Array<CodeStub> = [];
-
 	parentId: string | undefined = undefined;
 
 	cryptoActorProperties: Array<DecryptedPropertyStub> | undefined = undefined;
@@ -44,7 +40,6 @@ export class CryptoActorStub implements Versionable<string>, CryptoActor, HasTag
 		if ('privateKeyShamirPartitions' in partial && partial.privateKeyShamirPartitions !== undefined) this.privateKeyShamirPartitions = partial.privateKeyShamirPartitions;
 		if ('publicKey' in partial) this.publicKey = partial.publicKey;
 		this.publicKeysForOaepWithSha256 = partial.publicKeysForOaepWithSha256;
-		if ('tags' in partial && partial.tags !== undefined) this.tags = partial.tags;
 		if ('parentId' in partial) this.parentId = partial.parentId;
 		if ('cryptoActorProperties' in partial) this.cryptoActorProperties = partial.cryptoActorProperties;
 	}

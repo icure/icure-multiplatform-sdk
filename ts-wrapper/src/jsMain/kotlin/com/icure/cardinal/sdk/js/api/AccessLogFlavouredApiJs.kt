@@ -41,13 +41,15 @@ public external interface AccessLogFlavouredApiJs<E : AccessLogJs> {
 	public fun filterAccessLogsBySorted(filter: SortableFilterOptionsJs<AccessLogJs>):
 			Promise<PaginatedListIteratorJs<E>>
 
+	public fun createAccessLog(entity: E): Promise<E>
+
 	public fun undeleteAccessLogById(id: String, rev: String): Promise<E>
 
 	public fun undeleteAccessLog(accessLog: AccessLogJs): Promise<E>
 
 	public fun modifyAccessLog(entity: E): Promise<E>
 
-	public fun getAccessLog(entityId: String): Promise<E>
+	public fun getAccessLog(entityId: String): Promise<E?>
 
 	public fun getAccessLogs(entityIds: Array<String>): Promise<Array<E>>
 

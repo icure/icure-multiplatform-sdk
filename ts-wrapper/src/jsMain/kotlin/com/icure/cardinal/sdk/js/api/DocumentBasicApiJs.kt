@@ -7,7 +7,7 @@ import com.icure.cardinal.sdk.js.filters.BaseFilterOptionsJs
 import com.icure.cardinal.sdk.js.filters.BaseSortableFilterOptionsJs
 import com.icure.cardinal.sdk.js.model.DocumentJs
 import com.icure.cardinal.sdk.js.model.EncryptedDocumentJs
-import com.icure.cardinal.sdk.js.model.IdWithMandatoryRevJs
+import com.icure.cardinal.sdk.js.model.StoredDocumentIdentifierJs
 import com.icure.cardinal.sdk.js.model.couchdb.DocIdentifierJs
 import com.icure.cardinal.sdk.js.utils.pagination.PaginatedListIteratorJs
 import kotlin.Array
@@ -39,7 +39,7 @@ public external interface DocumentBasicApiJs {
 
 	public fun deleteDocumentById(entityId: String, rev: String): Promise<DocIdentifierJs>
 
-	public fun deleteDocumentsByIds(entityIds: Array<IdWithMandatoryRevJs>):
+	public fun deleteDocumentsByIds(entityIds: Array<StoredDocumentIdentifierJs>):
 			Promise<Array<DocIdentifierJs>>
 
 	public fun purgeDocumentById(id: String, rev: String): Promise<Unit>
@@ -83,13 +83,15 @@ public external interface DocumentBasicApiJs {
 		rev: String,
 	): Promise<EncryptedDocumentJs>
 
+	public fun createDocument(entity: EncryptedDocumentJs): Promise<EncryptedDocumentJs>
+
 	public fun undeleteDocumentById(id: String, rev: String): Promise<EncryptedDocumentJs>
 
 	public fun undeleteDocument(document: DocumentJs): Promise<EncryptedDocumentJs>
 
 	public fun modifyDocument(entity: EncryptedDocumentJs): Promise<EncryptedDocumentJs>
 
-	public fun getDocument(entityId: String): Promise<EncryptedDocumentJs>
+	public fun getDocument(entityId: String): Promise<EncryptedDocumentJs?>
 
 	public fun getDocumentByExternalUuid(externalUuid: String): Promise<EncryptedDocumentJs>
 

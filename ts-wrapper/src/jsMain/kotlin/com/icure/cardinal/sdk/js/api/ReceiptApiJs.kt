@@ -26,8 +26,6 @@ public external interface ReceiptApiJs {
 
 	public val tryAndRecover: ReceiptFlavouredApiJs<ReceiptJs>
 
-	public fun createReceipt(entity: DecryptedReceiptJs): Promise<DecryptedReceiptJs>
-
 	public fun withEncryptionMetadata(
 		base: DecryptedReceiptJs?,
 		patient: PatientJs?,
@@ -86,9 +84,11 @@ public external interface ReceiptApiJs {
 	public fun shareWithMany(receipt: DecryptedReceiptJs,
 			delegates: Record<String, ReceiptShareOptionsJs>): Promise<DecryptedReceiptJs>
 
+	public fun createReceipt(entity: DecryptedReceiptJs): Promise<DecryptedReceiptJs>
+
 	public fun modifyReceipt(entity: DecryptedReceiptJs): Promise<DecryptedReceiptJs>
 
-	public fun getReceipt(entityId: String): Promise<DecryptedReceiptJs>
+	public fun getReceipt(entityId: String): Promise<DecryptedReceiptJs?>
 
 	public fun listByReference(reference: String): Promise<Array<DecryptedReceiptJs>>
 }

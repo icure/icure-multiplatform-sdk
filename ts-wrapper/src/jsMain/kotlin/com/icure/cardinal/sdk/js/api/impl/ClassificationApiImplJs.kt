@@ -21,6 +21,7 @@ import com.icure.cardinal.sdk.js.filters.sortableFilterOptions_fromJs
 import com.icure.cardinal.sdk.js.model.CheckedConverters.arrayToList
 import com.icure.cardinal.sdk.js.model.CheckedConverters.arrayToSet
 import com.icure.cardinal.sdk.js.model.CheckedConverters.listToArray
+import com.icure.cardinal.sdk.js.model.CheckedConverters.nullToUndefined
 import com.icure.cardinal.sdk.js.model.CheckedConverters.numberToLong
 import com.icure.cardinal.sdk.js.model.CheckedConverters.objectToMap
 import com.icure.cardinal.sdk.js.model.CheckedConverters.setToArray
@@ -191,6 +192,15 @@ internal class ClassificationApiImplJs(
 			)
 		}
 
+		override fun createClassification(entity: EncryptedClassificationJs):
+				Promise<EncryptedClassificationJs> = GlobalScope.promise {
+			val entityConverted: EncryptedClassification = classification_fromJs(entity)
+			val result = classificationApi.encrypted.createClassification(
+				entityConverted,
+			)
+			classification_toJs(result)
+		}
+
 		override fun modifyClassification(entity: EncryptedClassificationJs):
 				Promise<EncryptedClassificationJs> = GlobalScope.promise {
 			val entityConverted: EncryptedClassification = classification_fromJs(entity)
@@ -200,13 +210,17 @@ internal class ClassificationApiImplJs(
 			classification_toJs(result)
 		}
 
-		override fun getClassification(entityId: String): Promise<EncryptedClassificationJs> =
+		override fun getClassification(entityId: String): Promise<EncryptedClassificationJs?> =
 				GlobalScope.promise {
 			val entityIdConverted: String = entityId
 			val result = classificationApi.encrypted.getClassification(
 				entityIdConverted,
 			)
-			classification_toJs(result)
+			nullToUndefined(
+				result?.let { nonNull1 ->
+					classification_toJs(nonNull1)
+				}
+			)
 		}
 
 		override fun getClassifications(entityIds: Array<String>):
@@ -354,6 +368,15 @@ internal class ClassificationApiImplJs(
 			)
 		}
 
+		override fun createClassification(entity: ClassificationJs): Promise<ClassificationJs> =
+				GlobalScope.promise {
+			val entityConverted: Classification = classification_fromJs(entity)
+			val result = classificationApi.tryAndRecover.createClassification(
+				entityConverted,
+			)
+			classification_toJs(result)
+		}
+
 		override fun modifyClassification(entity: ClassificationJs): Promise<ClassificationJs> =
 				GlobalScope.promise {
 			val entityConverted: Classification = classification_fromJs(entity)
@@ -363,13 +386,17 @@ internal class ClassificationApiImplJs(
 			classification_toJs(result)
 		}
 
-		override fun getClassification(entityId: String): Promise<ClassificationJs> =
+		override fun getClassification(entityId: String): Promise<ClassificationJs?> =
 				GlobalScope.promise {
 			val entityIdConverted: String = entityId
 			val result = classificationApi.tryAndRecover.getClassification(
 				entityIdConverted,
 			)
-			classification_toJs(result)
+			nullToUndefined(
+				result?.let { nonNull1 ->
+					classification_toJs(nonNull1)
+				}
+			)
 		}
 
 		override fun getClassifications(entityIds: Array<String>): Promise<Array<ClassificationJs>> =
@@ -391,15 +418,6 @@ internal class ClassificationApiImplJs(
 				},
 			)
 		}
-	}
-
-	override fun createClassification(entity: DecryptedClassificationJs):
-			Promise<DecryptedClassificationJs> = GlobalScope.promise {
-		val entityConverted: DecryptedClassification = classification_fromJs(entity)
-		val result = classificationApi.createClassification(
-			entityConverted,
-		)
-		classification_toJs(result)
 	}
 
 	override fun withEncryptionMetadata(
@@ -707,6 +725,15 @@ internal class ClassificationApiImplJs(
 		)
 	}
 
+	override fun createClassification(entity: DecryptedClassificationJs):
+			Promise<DecryptedClassificationJs> = GlobalScope.promise {
+		val entityConverted: DecryptedClassification = classification_fromJs(entity)
+		val result = classificationApi.createClassification(
+			entityConverted,
+		)
+		classification_toJs(result)
+	}
+
 	override fun modifyClassification(entity: DecryptedClassificationJs):
 			Promise<DecryptedClassificationJs> = GlobalScope.promise {
 		val entityConverted: DecryptedClassification = classification_fromJs(entity)
@@ -716,13 +743,17 @@ internal class ClassificationApiImplJs(
 		classification_toJs(result)
 	}
 
-	override fun getClassification(entityId: String): Promise<DecryptedClassificationJs> =
+	override fun getClassification(entityId: String): Promise<DecryptedClassificationJs?> =
 			GlobalScope.promise {
 		val entityIdConverted: String = entityId
 		val result = classificationApi.getClassification(
 			entityIdConverted,
 		)
-		classification_toJs(result)
+		nullToUndefined(
+			result?.let { nonNull1 ->
+				classification_toJs(nonNull1)
+			}
+		)
 	}
 
 	override fun getClassifications(entityIds: Array<String>):

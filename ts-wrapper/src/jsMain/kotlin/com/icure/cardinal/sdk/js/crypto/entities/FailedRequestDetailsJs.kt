@@ -3,6 +3,7 @@
 
 package com.icure.cardinal.sdk.js.crypto.entities
 
+import com.icure.cardinal.sdk.js.model.EntityReferenceInGroupJs
 import kotlin.Boolean
 import kotlin.Double
 import kotlin.String
@@ -15,7 +16,7 @@ public external class FailedRequestDetailsJs(
 ) {
 	public val entityId: String
 
-	public val delegateId: String
+	public val delegateReference: EntityReferenceInGroupJs
 
 	public val updatedForMigration: Boolean
 

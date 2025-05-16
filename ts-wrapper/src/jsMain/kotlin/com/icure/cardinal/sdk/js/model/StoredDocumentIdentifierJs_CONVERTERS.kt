@@ -5,16 +5,18 @@ import com.icure.cardinal.sdk.model.StoredDocumentIdentifier
 import kotlin.Suppress
 
 @Suppress("UNUSED_VARIABLE")
-public fun idWithMandatoryRev_toJs(obj: StoredDocumentIdentifier): IdWithMandatoryRevJs {
+public fun storedDocumentIdentifier_toJs(obj: StoredDocumentIdentifier):
+		StoredDocumentIdentifierJs {
 	val id = obj.id
 	val rev = obj.rev
-	return IdWithMandatoryRevJs(js("{" +
+	return StoredDocumentIdentifierJs(js("{" +
 		"id:id," +
 		"rev:rev" +
 	"}"))
 }
 
-public fun idWithMandatoryRev_fromJs(obj: IdWithMandatoryRevJs): StoredDocumentIdentifier {
+public fun storedDocumentIdentifier_fromJs(obj: StoredDocumentIdentifierJs):
+		StoredDocumentIdentifier {
 	val id = obj.id
 	val rev = obj.rev
 	return StoredDocumentIdentifier(

@@ -7,11 +7,11 @@ import kotlin.String
 import kotlin.js.JsName
 import kotlin.js.JsQualifier
 
-@JsName("IdWithMandatoryRev")
-public external class IdWithMandatoryRevJs(
+@JsName("GroupScoped")
+public external class GroupScopedJs<E>(
 	partial: dynamic,
 ) {
-	public val id: String
+	public val entity: E
 
-	public val rev: String
+	public val groupId: String
 }

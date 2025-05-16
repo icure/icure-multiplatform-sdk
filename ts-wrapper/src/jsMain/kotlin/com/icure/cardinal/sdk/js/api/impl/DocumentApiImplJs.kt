@@ -31,18 +31,18 @@ import com.icure.cardinal.sdk.js.model.CheckedConverters.undefinedToNull
 import com.icure.cardinal.sdk.js.model.DecryptedDocumentJs
 import com.icure.cardinal.sdk.js.model.DocumentJs
 import com.icure.cardinal.sdk.js.model.EncryptedDocumentJs
-import com.icure.cardinal.sdk.js.model.IdWithMandatoryRevJs
 import com.icure.cardinal.sdk.js.model.MessageJs
 import com.icure.cardinal.sdk.js.model.PatientJs
+import com.icure.cardinal.sdk.js.model.StoredDocumentIdentifierJs
 import com.icure.cardinal.sdk.js.model.UserJs
 import com.icure.cardinal.sdk.js.model.couchdb.DocIdentifierJs
 import com.icure.cardinal.sdk.js.model.couchdb.docIdentifier_toJs
 import com.icure.cardinal.sdk.js.model.document_fromJs
 import com.icure.cardinal.sdk.js.model.document_toJs
-import com.icure.cardinal.sdk.js.model.idWithMandatoryRev_fromJs
 import com.icure.cardinal.sdk.js.model.message_fromJs
 import com.icure.cardinal.sdk.js.model.patient_fromJs
 import com.icure.cardinal.sdk.js.model.specializations.hexString_toJs
+import com.icure.cardinal.sdk.js.model.storedDocumentIdentifier_fromJs
 import com.icure.cardinal.sdk.js.model.user_fromJs
 import com.icure.cardinal.sdk.js.utils.Record
 import com.icure.cardinal.sdk.js.utils.pagination.PaginatedListIteratorJs
@@ -50,9 +50,9 @@ import com.icure.cardinal.sdk.js.utils.pagination.paginatedListIterator_toJs
 import com.icure.cardinal.sdk.model.DecryptedDocument
 import com.icure.cardinal.sdk.model.Document
 import com.icure.cardinal.sdk.model.EncryptedDocument
-import com.icure.cardinal.sdk.model.StoredDocumentIdentifier
 import com.icure.cardinal.sdk.model.Message
 import com.icure.cardinal.sdk.model.Patient
+import com.icure.cardinal.sdk.model.StoredDocumentIdentifier
 import com.icure.cardinal.sdk.model.User
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.model.embed.AccessLevel
@@ -203,6 +203,15 @@ internal class DocumentApiImplJs(
 			)
 		}
 
+		override fun createDocument(entity: EncryptedDocumentJs): Promise<EncryptedDocumentJs> =
+				GlobalScope.promise {
+			val entityConverted: EncryptedDocument = document_fromJs(entity)
+			val result = documentApi.encrypted.createDocument(
+				entityConverted,
+			)
+			document_toJs(result)
+		}
+
 		override fun undeleteDocumentById(id: String, rev: String): Promise<EncryptedDocumentJs> =
 				GlobalScope.promise {
 			val idConverted: String = id
@@ -232,12 +241,16 @@ internal class DocumentApiImplJs(
 			document_toJs(result)
 		}
 
-		override fun getDocument(entityId: String): Promise<EncryptedDocumentJs> = GlobalScope.promise {
+		override fun getDocument(entityId: String): Promise<EncryptedDocumentJs?> = GlobalScope.promise {
 			val entityIdConverted: String = entityId
 			val result = documentApi.encrypted.getDocument(
 				entityIdConverted,
 			)
-			document_toJs(result)
+			nullToUndefined(
+				result?.let { nonNull1 ->
+					document_toJs(nonNull1)
+				}
+			)
 		}
 
 		override fun getDocumentByExternalUuid(externalUuid: String): Promise<EncryptedDocumentJs> =
@@ -441,6 +454,14 @@ internal class DocumentApiImplJs(
 			)
 		}
 
+		override fun createDocument(entity: DocumentJs): Promise<DocumentJs> = GlobalScope.promise {
+			val entityConverted: Document = document_fromJs(entity)
+			val result = documentApi.tryAndRecover.createDocument(
+				entityConverted,
+			)
+			document_toJs(result)
+		}
+
 		override fun undeleteDocumentById(id: String, rev: String): Promise<DocumentJs> =
 				GlobalScope.promise {
 			val idConverted: String = id
@@ -468,12 +489,16 @@ internal class DocumentApiImplJs(
 			document_toJs(result)
 		}
 
-		override fun getDocument(entityId: String): Promise<DocumentJs> = GlobalScope.promise {
+		override fun getDocument(entityId: String): Promise<DocumentJs?> = GlobalScope.promise {
 			val entityIdConverted: String = entityId
 			val result = documentApi.tryAndRecover.getDocument(
 				entityIdConverted,
 			)
-			document_toJs(result)
+			nullToUndefined(
+				result?.let { nonNull1 ->
+					document_toJs(nonNull1)
+				}
+			)
 		}
 
 		override fun getDocumentByExternalUuid(externalUuid: String): Promise<DocumentJs> =
@@ -552,15 +577,6 @@ internal class DocumentApiImplJs(
 				},
 			)
 		}
-	}
-
-	override fun createDocument(entity: DecryptedDocumentJs): Promise<DecryptedDocumentJs> =
-			GlobalScope.promise {
-		val entityConverted: DecryptedDocument = document_fromJs(entity)
-		val result = documentApi.createDocument(
-			entityConverted,
-		)
-		document_toJs(result)
 	}
 
 	override fun withEncryptionMetadata(
@@ -972,13 +988,13 @@ internal class DocumentApiImplJs(
 		docIdentifier_toJs(result)
 	}
 
-	override fun deleteDocumentsByIds(entityIds: Array<IdWithMandatoryRevJs>):
+	override fun deleteDocumentsByIds(entityIds: Array<StoredDocumentIdentifierJs>):
 			Promise<Array<DocIdentifierJs>> = GlobalScope.promise {
 		val entityIdsConverted: List<StoredDocumentIdentifier> = arrayToList(
 			entityIds,
 			"entityIds",
-			{ x1: IdWithMandatoryRevJs ->
-				idWithMandatoryRev_fromJs(x1)
+			{ x1: StoredDocumentIdentifierJs ->
+				storedDocumentIdentifier_fromJs(x1)
 			},
 		)
 		val result = documentApi.deleteDocumentsByIds(
@@ -1282,6 +1298,15 @@ internal class DocumentApiImplJs(
 		)
 	}
 
+	override fun createDocument(entity: DecryptedDocumentJs): Promise<DecryptedDocumentJs> =
+			GlobalScope.promise {
+		val entityConverted: DecryptedDocument = document_fromJs(entity)
+		val result = documentApi.createDocument(
+			entityConverted,
+		)
+		document_toJs(result)
+	}
+
 	override fun undeleteDocumentById(id: String, rev: String): Promise<DecryptedDocumentJs> =
 			GlobalScope.promise {
 		val idConverted: String = id
@@ -1311,12 +1336,16 @@ internal class DocumentApiImplJs(
 		document_toJs(result)
 	}
 
-	override fun getDocument(entityId: String): Promise<DecryptedDocumentJs> = GlobalScope.promise {
+	override fun getDocument(entityId: String): Promise<DecryptedDocumentJs?> = GlobalScope.promise {
 		val entityIdConverted: String = entityId
 		val result = documentApi.getDocument(
 			entityIdConverted,
 		)
-		document_toJs(result)
+		nullToUndefined(
+			result?.let { nonNull1 ->
+				document_toJs(nonNull1)
+			}
+		)
 	}
 
 	override fun getDocumentByExternalUuid(externalUuid: String): Promise<DecryptedDocumentJs> =

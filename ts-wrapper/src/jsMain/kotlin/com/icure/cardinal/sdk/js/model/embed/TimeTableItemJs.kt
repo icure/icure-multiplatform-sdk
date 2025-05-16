@@ -41,4 +41,6 @@ public external class TimeTableItemJs(
 	public val acceptsNewPatient: Boolean
 
 	public val unavailable: Boolean
+
+	public val reservingRights: Array<String>
 }

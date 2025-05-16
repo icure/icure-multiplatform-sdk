@@ -17,6 +17,7 @@ import com.icure.cardinal.sdk.js.model.security.TokenWithGroupJs
 import com.icure.cardinal.sdk.js.subscription.EntitySubscriptionJs
 import com.icure.cardinal.sdk.js.utils.pagination.PaginatedListIteratorJs
 import kotlin.Array
+import kotlin.Boolean
 import kotlin.String
 import kotlin.Unit
 import kotlin.js.JsName
@@ -33,13 +34,13 @@ public external interface UserApiJs {
 
 	public fun createUser(user: UserJs): Promise<UserJs>
 
-	public fun getUser(userId: String): Promise<UserJs>
+	public fun getUser(userId: String): Promise<UserJs?>
 
 	public fun getUsers(userIds: Array<String>): Promise<Array<UserJs>>
 
-	public fun getUserByEmail(email: String): Promise<UserJs>
+	public fun getUserByEmail(email: String): Promise<UserJs?>
 
-	public fun getUserByPhoneNumber(phoneNumber: String): Promise<UserJs>
+	public fun getUserByPhoneNumber(phoneNumber: String): Promise<UserJs?>
 
 	public fun findByHcpartyId(id: String): Promise<Array<String>>
 
@@ -152,6 +153,12 @@ public external interface UserApiJs {
 	public fun purgeUser(user: UserJs): Promise<Unit>
 
 	public fun undeleteUser(user: UserJs): Promise<UserJs>
+
+	public fun setUserInheritsPermissions(
+		userId: String,
+		groupId: String,
+		`value`: Boolean,
+	): Promise<String>
 
 	public fun subscribeToEvents(
 		events: Array<String>,

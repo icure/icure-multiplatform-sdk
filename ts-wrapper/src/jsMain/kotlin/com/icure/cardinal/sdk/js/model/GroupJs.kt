@@ -6,7 +6,7 @@ package com.icure.cardinal.sdk.js.model
 import com.icure.cardinal.sdk.js.model.base.CodeStubJs
 import com.icure.cardinal.sdk.js.model.base.HasTagsJs
 import com.icure.cardinal.sdk.js.model.base.StoredDocumentJs
-import com.icure.cardinal.sdk.js.model.security.ExternalJwtSelectorJs
+import com.icure.cardinal.sdk.js.model.security.ExternalJwtConfigJs
 import com.icure.cardinal.sdk.js.model.security.OperationTokenJs
 import com.icure.cardinal.sdk.js.utils.Record
 import kotlin.Array
@@ -46,7 +46,7 @@ public external class GroupJs(
 
 	public val minimumKrakenVersion: String?
 
-	public val externalJwtPublicKeys: Record<String, ExternalJwtSelectorJs>
+	public val externalJwtConfig: Record<String, ExternalJwtConfigJs>
 
 	public val minimumAuthenticationClassForElevatedPrivileges: String
 

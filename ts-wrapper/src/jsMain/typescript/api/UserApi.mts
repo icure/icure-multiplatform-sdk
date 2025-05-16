@@ -23,13 +23,13 @@ export interface UserApi {
 
 	createUser(user: User): Promise<User>;
 
-	getUser(userId: string): Promise<User>;
+	getUser(userId: string): Promise<User | undefined>;
 
 	getUsers(userIds: Array<string>): Promise<Array<User>>;
 
-	getUserByEmail(email: string): Promise<User>;
+	getUserByEmail(email: string): Promise<User | undefined>;
 
-	getUserByPhoneNumber(phoneNumber: string): Promise<User>;
+	getUserByPhoneNumber(phoneNumber: string): Promise<User | undefined>;
 
 	findByHcpartyId(id: string): Promise<Array<string>>;
 
@@ -116,6 +116,8 @@ export interface UserApi {
 	purgeUser(user: User): Promise<void>;
 
 	undeleteUser(user: User): Promise<User>;
+
+	setUserInheritsPermissions(userId: string, groupId: string, value: boolean): Promise<string>;
 
 	subscribeToEvents(events: Array<SubscriptionEventType>, filter: FilterOptions<User>,
 			options?: { subscriptionConfig?: EntitySubscriptionConfiguration | undefined }): Promise<EntitySubscription<User>>;

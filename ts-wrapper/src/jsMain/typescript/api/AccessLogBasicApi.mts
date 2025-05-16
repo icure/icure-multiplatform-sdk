@@ -1,8 +1,8 @@
 // auto-generated file
 import {BaseFilterOptions, BaseSortableFilterOptions, PaginatedListIterator} from '../cardinal-sdk-ts.mjs';
 import {AccessLog, EncryptedAccessLog} from '../model/AccessLog.mjs';
-import {IdWithMandatoryRev} from '../model/IdWithMandatoryRev.mjs';
 import {PaginatedList} from '../model/PaginatedList.mjs';
+import {StoredDocumentIdentifier} from '../model/StoredDocumentIdentifier.mjs';
 import {DocIdentifier} from '../model/couchdb/DocIdentifier.mjs';
 
 
@@ -22,7 +22,7 @@ export interface AccessLogBasicApi {
 
 	deleteAccessLogById(entityId: string, rev: string): Promise<DocIdentifier>;
 
-	deleteAccessLogsByIds(entityIds: Array<IdWithMandatoryRev>): Promise<Array<DocIdentifier>>;
+	deleteAccessLogsByIds(entityIds: Array<StoredDocumentIdentifier>): Promise<Array<DocIdentifier>>;
 
 	purgeAccessLogById(id: string, rev: string): Promise<void>;
 
@@ -32,13 +32,15 @@ export interface AccessLogBasicApi {
 
 	purgeAccessLog(accessLog: AccessLog): Promise<void>;
 
+	createAccessLog(entity: EncryptedAccessLog): Promise<EncryptedAccessLog>;
+
 	undeleteAccessLogById(id: string, rev: string): Promise<EncryptedAccessLog>;
 
 	undeleteAccessLog(accessLog: AccessLog): Promise<EncryptedAccessLog>;
 
 	modifyAccessLog(entity: EncryptedAccessLog): Promise<EncryptedAccessLog>;
 
-	getAccessLog(entityId: string): Promise<EncryptedAccessLog>;
+	getAccessLog(entityId: string): Promise<EncryptedAccessLog | undefined>;
 
 	getAccessLogs(entityIds: Array<string>): Promise<Array<EncryptedAccessLog>>;
 

@@ -13,7 +13,7 @@ import kotlin.js.Promise
 
 @JsName("FrontEndMigrationApi")
 public external interface FrontEndMigrationApiJs {
-	public fun getFrontEndMigration(frontEndMigrationId: String): Promise<FrontEndMigrationJs>
+	public fun getFrontEndMigration(frontEndMigrationId: String): Promise<FrontEndMigrationJs?>
 
 	public fun createFrontEndMigration(frontEndMigration: FrontEndMigrationJs):
 			Promise<FrontEndMigrationJs>

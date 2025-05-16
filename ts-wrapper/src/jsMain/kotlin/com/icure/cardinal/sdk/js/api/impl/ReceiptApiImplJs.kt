@@ -15,6 +15,7 @@ import com.icure.cardinal.sdk.js.crypto.entities.secretIdUseOption_fromJs
 import com.icure.cardinal.sdk.js.model.CheckedConverters.arrayToList
 import com.icure.cardinal.sdk.js.model.CheckedConverters.arrayToSet
 import com.icure.cardinal.sdk.js.model.CheckedConverters.listToArray
+import com.icure.cardinal.sdk.js.model.CheckedConverters.nullToUndefined
 import com.icure.cardinal.sdk.js.model.CheckedConverters.objectToMap
 import com.icure.cardinal.sdk.js.model.CheckedConverters.setToArray
 import com.icure.cardinal.sdk.js.model.DecryptedReceiptJs
@@ -106,6 +107,15 @@ internal class ReceiptApiImplJs(
 			receipt_toJs(result)
 		}
 
+		override fun createReceipt(entity: EncryptedReceiptJs): Promise<EncryptedReceiptJs> =
+				GlobalScope.promise {
+			val entityConverted: EncryptedReceipt = receipt_fromJs(entity)
+			val result = receiptApi.encrypted.createReceipt(
+				entityConverted,
+			)
+			receipt_toJs(result)
+		}
+
 		override fun modifyReceipt(entity: EncryptedReceiptJs): Promise<EncryptedReceiptJs> =
 				GlobalScope.promise {
 			val entityConverted: EncryptedReceipt = receipt_fromJs(entity)
@@ -115,12 +125,16 @@ internal class ReceiptApiImplJs(
 			receipt_toJs(result)
 		}
 
-		override fun getReceipt(entityId: String): Promise<EncryptedReceiptJs> = GlobalScope.promise {
+		override fun getReceipt(entityId: String): Promise<EncryptedReceiptJs?> = GlobalScope.promise {
 			val entityIdConverted: String = entityId
 			val result = receiptApi.encrypted.getReceipt(
 				entityIdConverted,
 			)
-			receipt_toJs(result)
+			nullToUndefined(
+				result?.let { nonNull1 ->
+					receipt_toJs(nonNull1)
+				}
+			)
 		}
 
 		override fun listByReference(reference: String): Promise<Array<EncryptedReceiptJs>> =
@@ -187,6 +201,14 @@ internal class ReceiptApiImplJs(
 			receipt_toJs(result)
 		}
 
+		override fun createReceipt(entity: ReceiptJs): Promise<ReceiptJs> = GlobalScope.promise {
+			val entityConverted: Receipt = receipt_fromJs(entity)
+			val result = receiptApi.tryAndRecover.createReceipt(
+				entityConverted,
+			)
+			receipt_toJs(result)
+		}
+
 		override fun modifyReceipt(entity: ReceiptJs): Promise<ReceiptJs> = GlobalScope.promise {
 			val entityConverted: Receipt = receipt_fromJs(entity)
 			val result = receiptApi.tryAndRecover.modifyReceipt(
@@ -195,12 +217,16 @@ internal class ReceiptApiImplJs(
 			receipt_toJs(result)
 		}
 
-		override fun getReceipt(entityId: String): Promise<ReceiptJs> = GlobalScope.promise {
+		override fun getReceipt(entityId: String): Promise<ReceiptJs?> = GlobalScope.promise {
 			val entityIdConverted: String = entityId
 			val result = receiptApi.tryAndRecover.getReceipt(
 				entityIdConverted,
 			)
-			receipt_toJs(result)
+			nullToUndefined(
+				result?.let { nonNull1 ->
+					receipt_toJs(nonNull1)
+				}
+			)
 		}
 
 		override fun listByReference(reference: String): Promise<Array<ReceiptJs>> = GlobalScope.promise {
@@ -215,15 +241,6 @@ internal class ReceiptApiImplJs(
 				},
 			)
 		}
-	}
-
-	override fun createReceipt(entity: DecryptedReceiptJs): Promise<DecryptedReceiptJs> =
-			GlobalScope.promise {
-		val entityConverted: DecryptedReceipt = receipt_fromJs(entity)
-		val result = receiptApi.createReceipt(
-			entityConverted,
-		)
-		receipt_toJs(result)
 	}
 
 	override fun withEncryptionMetadata(
@@ -512,6 +529,15 @@ internal class ReceiptApiImplJs(
 		receipt_toJs(result)
 	}
 
+	override fun createReceipt(entity: DecryptedReceiptJs): Promise<DecryptedReceiptJs> =
+			GlobalScope.promise {
+		val entityConverted: DecryptedReceipt = receipt_fromJs(entity)
+		val result = receiptApi.createReceipt(
+			entityConverted,
+		)
+		receipt_toJs(result)
+	}
+
 	override fun modifyReceipt(entity: DecryptedReceiptJs): Promise<DecryptedReceiptJs> =
 			GlobalScope.promise {
 		val entityConverted: DecryptedReceipt = receipt_fromJs(entity)
@@ -521,12 +547,16 @@ internal class ReceiptApiImplJs(
 		receipt_toJs(result)
 	}
 
-	override fun getReceipt(entityId: String): Promise<DecryptedReceiptJs> = GlobalScope.promise {
+	override fun getReceipt(entityId: String): Promise<DecryptedReceiptJs?> = GlobalScope.promise {
 		val entityIdConverted: String = entityId
 		val result = receiptApi.getReceipt(
 			entityIdConverted,
 		)
-		receipt_toJs(result)
+		nullToUndefined(
+			result?.let { nonNull1 ->
+				receipt_toJs(nonNull1)
+			}
+		)
 	}
 
 	override fun listByReference(reference: String): Promise<Array<DecryptedReceiptJs>> =

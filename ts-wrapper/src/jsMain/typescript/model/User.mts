@@ -102,10 +102,13 @@ export namespace User {
 
 		inheritsRoles: boolean;
 
+		loginIdentifiers: Array<Identifier> = [];
+
 		constructor(partial: Partial<SystemMetadata> & Pick<SystemMetadata, "roles" | "isAdmin" | "inheritsRoles">) {
 			this.roles = partial.roles;
 			this.isAdmin = partial.isAdmin;
 			this.inheritsRoles = partial.inheritsRoles;
+			if ('loginIdentifiers' in partial && partial.loginIdentifiers !== undefined) this.loginIdentifiers = partial.loginIdentifiers;
 		}
 
 	}

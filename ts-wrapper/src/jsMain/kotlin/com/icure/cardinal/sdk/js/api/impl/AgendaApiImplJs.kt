@@ -12,16 +12,17 @@ import com.icure.cardinal.sdk.js.filters.baseSortableFilterOptions_fromJs
 import com.icure.cardinal.sdk.js.model.AgendaJs
 import com.icure.cardinal.sdk.js.model.CheckedConverters.arrayToList
 import com.icure.cardinal.sdk.js.model.CheckedConverters.listToArray
+import com.icure.cardinal.sdk.js.model.CheckedConverters.nullToUndefined
 import com.icure.cardinal.sdk.js.model.CheckedConverters.numberToInt
 import com.icure.cardinal.sdk.js.model.CheckedConverters.undefinedToNull
-import com.icure.cardinal.sdk.js.model.IdWithMandatoryRevJs
 import com.icure.cardinal.sdk.js.model.PaginatedListJs
+import com.icure.cardinal.sdk.js.model.StoredDocumentIdentifierJs
 import com.icure.cardinal.sdk.js.model.agenda_fromJs
 import com.icure.cardinal.sdk.js.model.agenda_toJs
 import com.icure.cardinal.sdk.js.model.couchdb.DocIdentifierJs
 import com.icure.cardinal.sdk.js.model.couchdb.docIdentifier_toJs
-import com.icure.cardinal.sdk.js.model.idWithMandatoryRev_fromJs
 import com.icure.cardinal.sdk.js.model.paginatedList_toJs
+import com.icure.cardinal.sdk.js.model.storedDocumentIdentifier_fromJs
 import com.icure.cardinal.sdk.js.utils.pagination.PaginatedListIteratorJs
 import com.icure.cardinal.sdk.js.utils.pagination.paginatedListIterator_toJs
 import com.icure.cardinal.sdk.model.Agenda
@@ -106,13 +107,13 @@ internal class AgendaApiImplJs(
 		docIdentifier_toJs(result)
 	}
 
-	override fun deleteAgendasByIds(entityIds: Array<IdWithMandatoryRevJs>):
+	override fun deleteAgendasByIds(entityIds: Array<StoredDocumentIdentifierJs>):
 			Promise<Array<DocIdentifierJs>> = GlobalScope.promise {
 		val entityIdsConverted: List<StoredDocumentIdentifier> = arrayToList(
 			entityIds,
 			"entityIds",
-			{ x1: IdWithMandatoryRevJs ->
-				idWithMandatoryRev_fromJs(x1)
+			{ x1: StoredDocumentIdentifierJs ->
+				storedDocumentIdentifier_fromJs(x1)
 			},
 		)
 		val result = agendaApi.deleteAgendasByIds(
@@ -190,12 +191,16 @@ internal class AgendaApiImplJs(
 		agenda_toJs(result)
 	}
 
-	override fun getAgenda(agendaId: String): Promise<AgendaJs> = GlobalScope.promise {
+	override fun getAgenda(agendaId: String): Promise<AgendaJs?> = GlobalScope.promise {
 		val agendaIdConverted: String = agendaId
 		val result = agendaApi.getAgenda(
 			agendaIdConverted,
 		)
-		agenda_toJs(result)
+		nullToUndefined(
+			result?.let { nonNull1 ->
+				agenda_toJs(nonNull1)
+			}
+		)
 	}
 
 	override fun getAgendas(agendaIds: Array<String>): Promise<Array<AgendaJs>> = GlobalScope.promise {
@@ -223,20 +228,6 @@ internal class AgendaApiImplJs(
 			userIdConverted,
 		)
 		agenda_toJs(result)
-	}
-
-	override fun getReadableAgendasForUser(userId: String): Promise<Array<AgendaJs>> =
-			GlobalScope.promise {
-		val userIdConverted: String = userId
-		val result = agendaApi.getReadableAgendasForUser(
-			userIdConverted,
-		)
-		listToArray(
-			result,
-			{ x1: Agenda ->
-				agenda_toJs(x1)
-			},
-		)
 	}
 
 	override fun modifyAgenda(agendaDto: AgendaJs): Promise<AgendaJs> = GlobalScope.promise {

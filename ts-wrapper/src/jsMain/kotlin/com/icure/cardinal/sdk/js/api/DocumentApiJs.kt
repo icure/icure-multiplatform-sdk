@@ -9,9 +9,9 @@ import com.icure.cardinal.sdk.js.filters.SortableFilterOptionsJs
 import com.icure.cardinal.sdk.js.model.DecryptedDocumentJs
 import com.icure.cardinal.sdk.js.model.DocumentJs
 import com.icure.cardinal.sdk.js.model.EncryptedDocumentJs
-import com.icure.cardinal.sdk.js.model.IdWithMandatoryRevJs
 import com.icure.cardinal.sdk.js.model.MessageJs
 import com.icure.cardinal.sdk.js.model.PatientJs
+import com.icure.cardinal.sdk.js.model.StoredDocumentIdentifierJs
 import com.icure.cardinal.sdk.js.model.couchdb.DocIdentifierJs
 import com.icure.cardinal.sdk.js.utils.Record
 import com.icure.cardinal.sdk.js.utils.pagination.PaginatedListIteratorJs
@@ -30,8 +30,6 @@ public external interface DocumentApiJs {
 	public val encrypted: DocumentFlavouredApiJs<EncryptedDocumentJs>
 
 	public val tryAndRecover: DocumentFlavouredApiJs<DocumentJs>
-
-	public fun createDocument(entity: DecryptedDocumentJs): Promise<DecryptedDocumentJs>
 
 	public fun withEncryptionMetadata(
 		base: DecryptedDocumentJs?,
@@ -99,7 +97,7 @@ public external interface DocumentApiJs {
 
 	public fun deleteDocumentById(entityId: String, rev: String): Promise<DocIdentifierJs>
 
-	public fun deleteDocumentsByIds(entityIds: Array<IdWithMandatoryRevJs>):
+	public fun deleteDocumentsByIds(entityIds: Array<StoredDocumentIdentifierJs>):
 			Promise<Array<DocIdentifierJs>>
 
 	public fun purgeDocumentById(id: String, rev: String): Promise<Unit>
@@ -164,13 +162,15 @@ public external interface DocumentApiJs {
 	public fun filterDocumentsBySorted(filter: SortableFilterOptionsJs<DocumentJs>):
 			Promise<PaginatedListIteratorJs<DecryptedDocumentJs>>
 
+	public fun createDocument(entity: DecryptedDocumentJs): Promise<DecryptedDocumentJs>
+
 	public fun undeleteDocumentById(id: String, rev: String): Promise<DecryptedDocumentJs>
 
 	public fun undeleteDocument(document: DocumentJs): Promise<DecryptedDocumentJs>
 
 	public fun modifyDocument(entity: DecryptedDocumentJs): Promise<DecryptedDocumentJs>
 
-	public fun getDocument(entityId: String): Promise<DecryptedDocumentJs>
+	public fun getDocument(entityId: String): Promise<DecryptedDocumentJs?>
 
 	public fun getDocumentByExternalUuid(externalUuid: String): Promise<DecryptedDocumentJs>
 

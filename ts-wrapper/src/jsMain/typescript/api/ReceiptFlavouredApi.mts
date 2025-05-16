@@ -10,9 +10,11 @@ export interface ReceiptFlavouredApi<E extends Receipt> {
 
 	shareWithMany(receipt: E, delegates: { [ key: string ]: ReceiptShareOptions }): Promise<E>;
 
+	createReceipt(entity: E): Promise<E>;
+
 	modifyReceipt(entity: E): Promise<E>;
 
-	getReceipt(entityId: string): Promise<E>;
+	getReceipt(entityId: string): Promise<E | undefined>;
 
 	listByReference(reference: string): Promise<Array<E>>;
 

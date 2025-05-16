@@ -7,8 +7,8 @@ import com.icure.cardinal.sdk.js.filters.BaseFilterOptionsJs
 import com.icure.cardinal.sdk.js.filters.BaseSortableFilterOptionsJs
 import com.icure.cardinal.sdk.js.model.AccessLogJs
 import com.icure.cardinal.sdk.js.model.EncryptedAccessLogJs
-import com.icure.cardinal.sdk.js.model.IdWithMandatoryRevJs
 import com.icure.cardinal.sdk.js.model.PaginatedListJs
+import com.icure.cardinal.sdk.js.model.StoredDocumentIdentifierJs
 import com.icure.cardinal.sdk.js.model.couchdb.DocIdentifierJs
 import com.icure.cardinal.sdk.js.utils.pagination.PaginatedListIteratorJs
 import kotlin.Array
@@ -38,7 +38,7 @@ public external interface AccessLogBasicApiJs {
 
 	public fun deleteAccessLogById(entityId: String, rev: String): Promise<DocIdentifierJs>
 
-	public fun deleteAccessLogsByIds(entityIds: Array<IdWithMandatoryRevJs>):
+	public fun deleteAccessLogsByIds(entityIds: Array<StoredDocumentIdentifierJs>):
 			Promise<Array<DocIdentifierJs>>
 
 	public fun purgeAccessLogById(id: String, rev: String): Promise<Unit>
@@ -49,13 +49,15 @@ public external interface AccessLogBasicApiJs {
 
 	public fun purgeAccessLog(accessLog: AccessLogJs): Promise<Unit>
 
+	public fun createAccessLog(entity: EncryptedAccessLogJs): Promise<EncryptedAccessLogJs>
+
 	public fun undeleteAccessLogById(id: String, rev: String): Promise<EncryptedAccessLogJs>
 
 	public fun undeleteAccessLog(accessLog: AccessLogJs): Promise<EncryptedAccessLogJs>
 
 	public fun modifyAccessLog(entity: EncryptedAccessLogJs): Promise<EncryptedAccessLogJs>
 
-	public fun getAccessLog(entityId: String): Promise<EncryptedAccessLogJs>
+	public fun getAccessLog(entityId: String): Promise<EncryptedAccessLogJs?>
 
 	public fun getAccessLogs(entityIds: Array<String>): Promise<Array<EncryptedAccessLogJs>>
 

@@ -6,6 +6,7 @@ import com.icure.cardinal.sdk.js.api.DefaultParametersSupport.convertingOptionOr
 import com.icure.cardinal.sdk.js.api.DocumentTemplateApiJs
 import com.icure.cardinal.sdk.js.model.CheckedConverters.arrayToList
 import com.icure.cardinal.sdk.js.model.CheckedConverters.listToArray
+import com.icure.cardinal.sdk.js.model.CheckedConverters.nullToUndefined
 import com.icure.cardinal.sdk.js.model.CheckedConverters.numberToInt
 import com.icure.cardinal.sdk.js.model.CheckedConverters.undefinedToNull
 import com.icure.cardinal.sdk.js.model.DocumentTemplateJs
@@ -33,13 +34,17 @@ import kotlinx.coroutines.promise
 internal class DocumentTemplateApiImplJs(
 	private val documentTemplateApi: DocumentTemplateApi,
 ) : DocumentTemplateApiJs {
-	override fun getDocumentTemplate(documentTemplateId: String): Promise<DocumentTemplateJs> =
+	override fun getDocumentTemplate(documentTemplateId: String): Promise<DocumentTemplateJs?> =
 			GlobalScope.promise {
 		val documentTemplateIdConverted: String = documentTemplateId
 		val result = documentTemplateApi.getDocumentTemplate(
 			documentTemplateIdConverted,
 		)
-		documentTemplate_toJs(result)
+		nullToUndefined(
+			result?.let { nonNull1 ->
+				documentTemplate_toJs(nonNull1)
+			}
+		)
 	}
 
 	override fun createDocumentTemplate(documentTemplate: DocumentTemplateJs):

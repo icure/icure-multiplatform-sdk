@@ -11,6 +11,7 @@ import com.icure.cardinal.sdk.js.filters.baseFilterOptions_fromJs
 import com.icure.cardinal.sdk.js.filters.baseSortableFilterOptions_fromJs
 import com.icure.cardinal.sdk.js.model.CheckedConverters.arrayToList
 import com.icure.cardinal.sdk.js.model.CheckedConverters.listToArray
+import com.icure.cardinal.sdk.js.model.CheckedConverters.nullToUndefined
 import com.icure.cardinal.sdk.js.model.CheckedConverters.numberToInt
 import com.icure.cardinal.sdk.js.model.CheckedConverters.undefinedToNull
 import com.icure.cardinal.sdk.js.model.ListOfIdsJs
@@ -65,13 +66,17 @@ internal class MedicalLocationApiImplJs(
 		)
 	}
 
-	override fun getMedicalLocation(locationId: String): Promise<MedicalLocationJs> =
+	override fun getMedicalLocation(locationId: String): Promise<MedicalLocationJs?> =
 			GlobalScope.promise {
 		val locationIdConverted: String = locationId
 		val result = medicalLocationApi.getMedicalLocation(
 			locationIdConverted,
 		)
-		medicalLocation_toJs(result)
+		nullToUndefined(
+			result?.let { nonNull1 ->
+				medicalLocation_toJs(nonNull1)
+			}
+		)
 	}
 
 	override fun getAllMedicalLocations(startDocumentId: String?, limit: Double?):

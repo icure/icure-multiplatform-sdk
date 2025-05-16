@@ -11,12 +11,13 @@ import com.icure.cardinal.sdk.js.filters.baseFilterOptions_fromJs
 import com.icure.cardinal.sdk.js.filters.baseSortableFilterOptions_fromJs
 import com.icure.cardinal.sdk.js.model.CheckedConverters.arrayToList
 import com.icure.cardinal.sdk.js.model.CheckedConverters.listToArray
+import com.icure.cardinal.sdk.js.model.CheckedConverters.nullToUndefined
 import com.icure.cardinal.sdk.js.model.CheckedConverters.numberToLong
-import com.icure.cardinal.sdk.js.model.IdWithMandatoryRevJs
+import com.icure.cardinal.sdk.js.model.StoredDocumentIdentifierJs
 import com.icure.cardinal.sdk.js.model.TimeTableJs
 import com.icure.cardinal.sdk.js.model.couchdb.DocIdentifierJs
 import com.icure.cardinal.sdk.js.model.couchdb.docIdentifier_toJs
-import com.icure.cardinal.sdk.js.model.idWithMandatoryRev_fromJs
+import com.icure.cardinal.sdk.js.model.storedDocumentIdentifier_fromJs
 import com.icure.cardinal.sdk.js.model.timeTable_fromJs
 import com.icure.cardinal.sdk.js.model.timeTable_toJs
 import com.icure.cardinal.sdk.js.utils.pagination.PaginatedListIteratorJs
@@ -80,13 +81,13 @@ internal class TimeTableApiImplJs(
 		docIdentifier_toJs(result)
 	}
 
-	override fun deleteTimeTablesByIds(entityIds: Array<IdWithMandatoryRevJs>):
+	override fun deleteTimeTablesByIds(entityIds: Array<StoredDocumentIdentifierJs>):
 			Promise<Array<DocIdentifierJs>> = GlobalScope.promise {
 		val entityIdsConverted: List<StoredDocumentIdentifier> = arrayToList(
 			entityIds,
 			"entityIds",
-			{ x1: IdWithMandatoryRevJs ->
-				idWithMandatoryRev_fromJs(x1)
+			{ x1: StoredDocumentIdentifierJs ->
+				storedDocumentIdentifier_fromJs(x1)
 			},
 		)
 		val result = timeTableApi.deleteTimeTablesByIds(
@@ -175,12 +176,16 @@ internal class TimeTableApiImplJs(
 		timeTable_toJs(result)
 	}
 
-	override fun getTimeTable(entityId: String): Promise<TimeTableJs> = GlobalScope.promise {
+	override fun getTimeTable(entityId: String): Promise<TimeTableJs?> = GlobalScope.promise {
 		val entityIdConverted: String = entityId
 		val result = timeTableApi.getTimeTable(
 			entityIdConverted,
 		)
-		timeTable_toJs(result)
+		nullToUndefined(
+			result?.let { nonNull1 ->
+				timeTable_toJs(nonNull1)
+			}
+		)
 	}
 
 	override fun getTimeTables(timeTableIds: Array<String>): Promise<Array<TimeTableJs>> =

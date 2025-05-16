@@ -16,13 +16,15 @@ export interface TopicFlavouredApi<E extends Topic> {
 
 	filterTopicsBySorted(filter: SortableFilterOptions<Topic>): Promise<PaginatedListIterator<E>>;
 
+	createTopic(entity: E): Promise<E>;
+
 	undeleteTopic(topic: Topic): Promise<Topic>;
 
 	modifyTopic(entity: E): Promise<E>;
 
 	undeleteTopicById(id: string, rev: string): Promise<E>;
 
-	getTopic(entityId: string): Promise<E>;
+	getTopic(entityId: string): Promise<E | undefined>;
 
 	getTopics(entityIds: Array<string>): Promise<Array<E>>;
 

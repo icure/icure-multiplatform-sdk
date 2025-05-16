@@ -1,6 +1,6 @@
 // auto-generated file
 import {BaseFilterOptions, BaseSortableFilterOptions, PaginatedListIterator} from '../cardinal-sdk-ts.mjs';
-import {IdWithMandatoryRev} from '../model/IdWithMandatoryRev.mjs';
+import {StoredDocumentIdentifier} from '../model/StoredDocumentIdentifier.mjs';
 import {EncryptedTopic, Topic} from '../model/Topic.mjs';
 import {TopicRole} from '../model/TopicRole.mjs';
 import {DocIdentifier} from '../model/couchdb/DocIdentifier.mjs';
@@ -25,7 +25,7 @@ export interface TopicBasicApi {
 
 	deleteTopicById(entityId: string, rev: string): Promise<DocIdentifier>;
 
-	deleteTopicsByIds(entityIds: Array<IdWithMandatoryRev>): Promise<Array<DocIdentifier>>;
+	deleteTopicsByIds(entityIds: Array<StoredDocumentIdentifier>): Promise<Array<DocIdentifier>>;
 
 	purgeTopicById(id: string, rev: string): Promise<void>;
 
@@ -35,13 +35,15 @@ export interface TopicBasicApi {
 
 	purgeTopic(topic: Topic): Promise<void>;
 
+	createTopic(entity: EncryptedTopic): Promise<EncryptedTopic>;
+
 	undeleteTopic(topic: Topic): Promise<Topic>;
 
 	modifyTopic(entity: EncryptedTopic): Promise<EncryptedTopic>;
 
 	undeleteTopicById(id: string, rev: string): Promise<EncryptedTopic>;
 
-	getTopic(entityId: string): Promise<EncryptedTopic>;
+	getTopic(entityId: string): Promise<EncryptedTopic | undefined>;
 
 	getTopics(entityIds: Array<string>): Promise<Array<EncryptedTopic>>;
 

@@ -2,9 +2,9 @@
 import {BaseFilterOptions, BaseSortableFilterOptions, FilterOptions, PaginatedListIterator} from '../cardinal-sdk-ts.mjs';
 import {DataOwnerRegistrationSuccess} from '../model/DataOwnerRegistrationSuccess.mjs';
 import {HealthcareParty} from '../model/HealthcareParty.mjs';
-import {IdWithMandatoryRev} from '../model/IdWithMandatoryRev.mjs';
 import {PaginatedList} from '../model/PaginatedList.mjs';
 import {PublicKey} from '../model/PublicKey.mjs';
+import {StoredDocumentIdentifier} from '../model/StoredDocumentIdentifier.mjs';
 import {DocIdentifier} from '../model/couchdb/DocIdentifier.mjs';
 import {EntitySubscription} from '../subscription/EntitySubscription.mjs';
 import {EntitySubscriptionConfiguration} from '../subscription/EntitySubscriptionConfiguration.mjs';
@@ -17,7 +17,7 @@ export interface HealthcarePartyApi {
 
 	deleteHealthcarePartiesUnsafe(entityIds: Array<string>): Promise<Array<DocIdentifier>>;
 
-	getHealthcareParty(healthcarePartyId: string): Promise<HealthcareParty>;
+	getHealthcareParty(healthcarePartyId: string): Promise<HealthcareParty | undefined>;
 
 	createHealthcareParty(p: HealthcareParty): Promise<HealthcareParty>;
 
@@ -70,13 +70,13 @@ export interface HealthcarePartyApi {
 
 	deleteHealthcarePartyById(entityId: string, rev: string): Promise<DocIdentifier>;
 
-	deleteHealthcarePartiesByIds(entityIds: Array<IdWithMandatoryRev>): Promise<Array<DocIdentifier>>;
+	deleteHealthcarePartiesByIds(entityIds: Array<StoredDocumentIdentifier>): Promise<Array<DocIdentifier>>;
 
 	deleteHealthcarePartyInGroupById(groupId: string, entityId: string,
 			rev: string): Promise<DocIdentifier>;
 
 	deleteHealthcarePartiesInGroupByIds(groupId: string,
-			entityIds: Array<IdWithMandatoryRev>): Promise<Array<DocIdentifier>>;
+			entityIds: Array<StoredDocumentIdentifier>): Promise<Array<DocIdentifier>>;
 
 	purgeHealthcarePartyById(id: string, rev: string): Promise<void>;
 

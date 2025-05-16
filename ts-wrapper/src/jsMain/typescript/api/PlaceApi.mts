@@ -6,7 +6,7 @@ import {DocIdentifier} from '../model/couchdb/DocIdentifier.mjs';
 
 export interface PlaceApi {
 
-	getPlace(placeId: string): Promise<Place>;
+	getPlace(placeId: string): Promise<Place | undefined>;
 
 	createPlace(place: Place): Promise<Place>;
 

@@ -18,7 +18,7 @@ export interface InvoiceBasicApi {
 
 	modifyInvoices(entities: Array<EncryptedInvoice>): Promise<Array<EncryptedInvoice>>;
 
-	getInvoice(entityId: string): Promise<EncryptedInvoice>;
+	getInvoice(entityId: string): Promise<EncryptedInvoice | undefined>;
 
 	getInvoices(entityIds: Array<string>): Promise<Array<EncryptedInvoice>>;
 

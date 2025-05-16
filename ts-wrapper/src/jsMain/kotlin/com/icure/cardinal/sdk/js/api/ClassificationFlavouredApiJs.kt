@@ -39,9 +39,11 @@ public external interface ClassificationFlavouredApiJs<E : ClassificationJs> {
 	public fun filterClassificationsBySorted(filter: SortableFilterOptionsJs<ClassificationJs>):
 			Promise<PaginatedListIteratorJs<E>>
 
+	public fun createClassification(entity: E): Promise<E>
+
 	public fun modifyClassification(entity: E): Promise<E>
 
-	public fun getClassification(entityId: String): Promise<E>
+	public fun getClassification(entityId: String): Promise<E?>
 
 	public fun getClassifications(entityIds: Array<String>): Promise<Array<E>>
 }

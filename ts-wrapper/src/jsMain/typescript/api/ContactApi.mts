@@ -3,9 +3,9 @@ import {FilterOptions, PaginatedListIterator, SortableFilterOptions} from '../ca
 import {ContactShareOptions} from '../crypto/entities/ContactShareOptions.mjs';
 import {SecretIdUseOption} from '../crypto/entities/SecretIdUseOption.mjs';
 import {Contact, DecryptedContact, EncryptedContact} from '../model/Contact.mjs';
-import {IdWithMandatoryRev} from '../model/IdWithMandatoryRev.mjs';
 import {PaginatedList} from '../model/PaginatedList.mjs';
 import {Patient} from '../model/Patient.mjs';
+import {StoredDocumentIdentifier} from '../model/StoredDocumentIdentifier.mjs';
 import {User} from '../model/User.mjs';
 import {DocIdentifier} from '../model/couchdb/DocIdentifier.mjs';
 import {LabelledOccurence} from '../model/data/LabelledOccurence.mjs';
@@ -31,10 +31,6 @@ export interface ContactApi {
 	matchContactsBySorted(filter: SortableFilterOptions<Contact>): Promise<Array<string>>;
 
 	matchServicesBySorted(filter: SortableFilterOptions<Service>): Promise<Array<string>>;
-
-	createContact(entity: DecryptedContact): Promise<DecryptedContact>;
-
-	createContacts(entities: Array<DecryptedContact>): Promise<Array<DecryptedContact>>;
 
 	withEncryptionMetadata(base: DecryptedContact | undefined, patient: Patient,
 			options?: { user?: User | undefined, delegates?: { [ key: string ]: AccessLevel }, secretId?: SecretIdUseOption }): Promise<DecryptedContact>;
@@ -64,7 +60,7 @@ export interface ContactApi {
 
 	deleteContactById(entityId: string, rev: string): Promise<DocIdentifier>;
 
-	deleteContactsByIds(entityIds: Array<IdWithMandatoryRev>): Promise<Array<DocIdentifier>>;
+	deleteContactsByIds(entityIds: Array<StoredDocumentIdentifier>): Promise<Array<DocIdentifier>>;
 
 	purgeContactById(id: string, rev: string): Promise<void>;
 
@@ -94,6 +90,10 @@ export interface ContactApi {
 
 	filterServicesBySorted(filter: SortableFilterOptions<Service>): Promise<PaginatedListIterator<DecryptedService>>;
 
+	createContact(entity: DecryptedContact): Promise<DecryptedContact>;
+
+	createContacts(entities: Array<DecryptedContact>): Promise<Array<DecryptedContact>>;
+
 	undeleteContactById(id: string, rev: string): Promise<DecryptedContact>;
 
 	undeleteContact(contact: Contact): Promise<DecryptedContact>;
@@ -102,7 +102,7 @@ export interface ContactApi {
 
 	modifyContacts(entities: Array<DecryptedContact>): Promise<Array<DecryptedContact>>;
 
-	getContact(entityId: string): Promise<DecryptedContact>;
+	getContact(entityId: string): Promise<DecryptedContact | undefined>;
 
 	getContacts(entityIds: Array<string>): Promise<Array<DecryptedContact>>;
 

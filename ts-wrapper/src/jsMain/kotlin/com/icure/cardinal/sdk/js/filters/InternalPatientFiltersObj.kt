@@ -6,9 +6,12 @@ import com.icure.cardinal.sdk.js.api.DefaultParametersSupport.convertingOptionOr
 import com.icure.cardinal.sdk.js.model.CheckedConverters.arrayToList
 import com.icure.cardinal.sdk.js.model.CheckedConverters.numberToInt
 import com.icure.cardinal.sdk.js.model.CheckedConverters.undefinedToNull
+import com.icure.cardinal.sdk.js.model.EntityReferenceInGroupJs
 import com.icure.cardinal.sdk.js.model.PatientJs
 import com.icure.cardinal.sdk.js.model.base.IdentifierJs
 import com.icure.cardinal.sdk.js.model.base.identifier_fromJs
+import com.icure.cardinal.sdk.js.model.entityReferenceInGroup_fromJs
+import com.icure.cardinal.sdk.model.EntityReferenceInGroup
 import com.icure.cardinal.sdk.model.base.Identifier
 import com.icure.cardinal.sdk.model.embed.Gender
 import kotlin.Array
@@ -25,6 +28,15 @@ public object InternalPatientFiltersObj {
 		val dataOwnerIdConverted: String = dataOwnerId
 		val result = PatientFilters.allPatientsForDataOwner(
 			dataOwnerIdConverted,
+		)
+		return BaseFilterOptionsJsImpl(result)
+	}
+
+	public fun allPatientsForDataOwnerInGroup(dataOwner: EntityReferenceInGroupJs):
+			BaseFilterOptionsJs<PatientJs> {
+		val dataOwnerConverted: EntityReferenceInGroup = entityReferenceInGroup_fromJs(dataOwner)
+		val result = PatientFilters.allPatientsForDataOwnerInGroup(
+			dataOwnerConverted,
 		)
 		return BaseFilterOptionsJsImpl(result)
 	}
@@ -66,6 +78,23 @@ public object InternalPatientFiltersObj {
 		return BaseSortableFilterOptionsJsImpl(result)
 	}
 
+	public fun byIdentifiersForDataOwnerInGroup(dataOwner: EntityReferenceInGroupJs,
+			identifiers: Array<IdentifierJs>): BaseSortableFilterOptionsJs<PatientJs> {
+		val dataOwnerConverted: EntityReferenceInGroup = entityReferenceInGroup_fromJs(dataOwner)
+		val identifiersConverted: List<Identifier> = arrayToList(
+			identifiers,
+			"identifiers",
+			{ x1: IdentifierJs ->
+				identifier_fromJs(x1)
+			},
+		)
+		val result = PatientFilters.byIdentifiersForDataOwnerInGroup(
+			dataOwnerConverted,
+			identifiersConverted,
+		)
+		return BaseSortableFilterOptionsJsImpl(result)
+	}
+
 	public fun bySsinsForDataOwner(dataOwnerId: String, ssins: Array<String>):
 			BaseSortableFilterOptionsJs<PatientJs> {
 		val dataOwnerIdConverted: String = dataOwnerId
@@ -78,6 +107,23 @@ public object InternalPatientFiltersObj {
 		)
 		val result = PatientFilters.bySsinsForDataOwner(
 			dataOwnerIdConverted,
+			ssinsConverted,
+		)
+		return BaseSortableFilterOptionsJsImpl(result)
+	}
+
+	public fun bySsinsForDataOwnerInGroup(dataOwner: EntityReferenceInGroupJs, ssins: Array<String>):
+			BaseSortableFilterOptionsJs<PatientJs> {
+		val dataOwnerConverted: EntityReferenceInGroup = entityReferenceInGroup_fromJs(dataOwner)
+		val ssinsConverted: List<String> = arrayToList(
+			ssins,
+			"ssins",
+			{ x1: String ->
+				x1
+			},
+		)
+		val result = PatientFilters.bySsinsForDataOwnerInGroup(
+			dataOwnerConverted,
 			ssinsConverted,
 		)
 		return BaseSortableFilterOptionsJsImpl(result)
@@ -99,12 +145,39 @@ public object InternalPatientFiltersObj {
 		return BaseSortableFilterOptionsJsImpl(result)
 	}
 
+	public fun byDateOfBirthBetweenForDataOwnerInGroup(
+		dataOwner: EntityReferenceInGroupJs,
+		fromDate: Double,
+		toDate: Double,
+	): BaseSortableFilterOptionsJs<PatientJs> {
+		val dataOwnerConverted: EntityReferenceInGroup = entityReferenceInGroup_fromJs(dataOwner)
+		val fromDateConverted: Int = numberToInt(fromDate, "fromDate")
+		val toDateConverted: Int = numberToInt(toDate, "toDate")
+		val result = PatientFilters.byDateOfBirthBetweenForDataOwnerInGroup(
+			dataOwnerConverted,
+			fromDateConverted,
+			toDateConverted,
+		)
+		return BaseSortableFilterOptionsJsImpl(result)
+	}
+
 	public fun byFuzzyNameForDataOwner(dataOwnerId: String, searchString: String):
 			BaseFilterOptionsJs<PatientJs> {
 		val dataOwnerIdConverted: String = dataOwnerId
 		val searchStringConverted: String = searchString
 		val result = PatientFilters.byFuzzyNameForDataOwner(
 			dataOwnerIdConverted,
+			searchStringConverted,
+		)
+		return BaseFilterOptionsJsImpl(result)
+	}
+
+	public fun byFuzzyNameForDataOwnerInGroup(dataOwner: EntityReferenceInGroupJs,
+			searchString: String): BaseFilterOptionsJs<PatientJs> {
+		val dataOwnerConverted: EntityReferenceInGroup = entityReferenceInGroup_fromJs(dataOwner)
+		val searchStringConverted: String = searchString
+		val result = PatientFilters.byFuzzyNameForDataOwnerInGroup(
+			dataOwnerConverted,
 			searchStringConverted,
 		)
 		return BaseFilterOptionsJsImpl(result)
@@ -141,6 +214,37 @@ public object InternalPatientFiltersObj {
 		return BaseSortableFilterOptionsJsImpl(result)
 	}
 
+	public fun byGenderEducationProfessionForDataOwnerInGroup(
+		dataOwner: EntityReferenceInGroupJs,
+		gender: String,
+		options: dynamic,
+	): BaseSortableFilterOptionsJs<PatientJs> {
+		val _options = options ?: js("{}")
+		val dataOwnerConverted: EntityReferenceInGroup = entityReferenceInGroup_fromJs(dataOwner)
+		val genderConverted: Gender = Gender.valueOf(gender)
+		val educationConverted: String? = convertingOptionOrDefaultNullable(
+			_options,
+			"education",
+			null
+		) { education: String? ->
+			undefinedToNull(education)
+		}
+		val professionConverted: String? = convertingOptionOrDefaultNullable(
+			_options,
+			"profession",
+			null
+		) { profession: String? ->
+			undefinedToNull(profession)
+		}
+		val result = PatientFilters.byGenderEducationProfessionForDataOwnerInGroup(
+			dataOwnerConverted,
+			genderConverted,
+			educationConverted,
+			professionConverted,
+		)
+		return BaseSortableFilterOptionsJsImpl(result)
+	}
+
 	public fun byActiveForDataOwner(dataOwnerId: String, active: Boolean):
 			BaseFilterOptionsJs<PatientJs> {
 		val dataOwnerIdConverted: String = dataOwnerId
@@ -152,12 +256,34 @@ public object InternalPatientFiltersObj {
 		return BaseFilterOptionsJsImpl(result)
 	}
 
+	public fun byActiveForDataOwnerInGroup(dataOwner: EntityReferenceInGroupJs, active: Boolean):
+			BaseFilterOptionsJs<PatientJs> {
+		val dataOwnerConverted: EntityReferenceInGroup = entityReferenceInGroup_fromJs(dataOwner)
+		val activeConverted: Boolean = active
+		val result = PatientFilters.byActiveForDataOwnerInGroup(
+			dataOwnerConverted,
+			activeConverted,
+		)
+		return BaseFilterOptionsJsImpl(result)
+	}
+
 	public fun byTelecomForDataOwner(dataOwnerId: String, searchString: String):
 			BaseSortableFilterOptionsJs<PatientJs> {
 		val dataOwnerIdConverted: String = dataOwnerId
 		val searchStringConverted: String = searchString
 		val result = PatientFilters.byTelecomForDataOwner(
 			dataOwnerIdConverted,
+			searchStringConverted,
+		)
+		return BaseSortableFilterOptionsJsImpl(result)
+	}
+
+	public fun byTelecomForDataOwnerInGroup(dataOwner: EntityReferenceInGroupJs, searchString: String):
+			BaseSortableFilterOptionsJs<PatientJs> {
+		val dataOwnerConverted: EntityReferenceInGroup = entityReferenceInGroup_fromJs(dataOwner)
+		val searchStringConverted: String = searchString
+		val result = PatientFilters.byTelecomForDataOwnerInGroup(
+			dataOwnerConverted,
 			searchStringConverted,
 		)
 		return BaseSortableFilterOptionsJsImpl(result)
@@ -189,6 +315,32 @@ public object InternalPatientFiltersObj {
 		return BaseSortableFilterOptionsJsImpl(result)
 	}
 
+	public fun byAddressPostalCodeHouseNumberForDataOwnerInGroup(
+		dataOwner: EntityReferenceInGroupJs,
+		searchString: String,
+		postalCode: String,
+		options: dynamic,
+	): BaseSortableFilterOptionsJs<PatientJs> {
+		val _options = options ?: js("{}")
+		val dataOwnerConverted: EntityReferenceInGroup = entityReferenceInGroup_fromJs(dataOwner)
+		val searchStringConverted: String = searchString
+		val postalCodeConverted: String = postalCode
+		val houseNumberConverted: String? = convertingOptionOrDefaultNullable(
+			_options,
+			"houseNumber",
+			null
+		) { houseNumber: String? ->
+			undefinedToNull(houseNumber)
+		}
+		val result = PatientFilters.byAddressPostalCodeHouseNumberForDataOwnerInGroup(
+			dataOwnerConverted,
+			searchStringConverted,
+			postalCodeConverted,
+			houseNumberConverted,
+		)
+		return BaseSortableFilterOptionsJsImpl(result)
+	}
+
 	public fun byAddressForDataOwner(dataOwnerId: String, searchString: String):
 			BaseSortableFilterOptionsJs<PatientJs> {
 		val dataOwnerIdConverted: String = dataOwnerId
@@ -200,12 +352,34 @@ public object InternalPatientFiltersObj {
 		return BaseSortableFilterOptionsJsImpl(result)
 	}
 
+	public fun byAddressForDataOwnerInGroup(dataOwner: EntityReferenceInGroupJs, searchString: String):
+			BaseSortableFilterOptionsJs<PatientJs> {
+		val dataOwnerConverted: EntityReferenceInGroup = entityReferenceInGroup_fromJs(dataOwner)
+		val searchStringConverted: String = searchString
+		val result = PatientFilters.byAddressForDataOwnerInGroup(
+			dataOwnerConverted,
+			searchStringConverted,
+		)
+		return BaseSortableFilterOptionsJsImpl(result)
+	}
+
 	public fun byExternalIdForDataOwner(dataOwnerId: String, externalIdPrefix: String):
 			BaseSortableFilterOptionsJs<PatientJs> {
 		val dataOwnerIdConverted: String = dataOwnerId
 		val externalIdPrefixConverted: String = externalIdPrefix
 		val result = PatientFilters.byExternalIdForDataOwner(
 			dataOwnerIdConverted,
+			externalIdPrefixConverted,
+		)
+		return BaseSortableFilterOptionsJsImpl(result)
+	}
+
+	public fun byExternalIdForDataOwnerInGroup(dataOwner: EntityReferenceInGroupJs,
+			externalIdPrefix: String): BaseSortableFilterOptionsJs<PatientJs> {
+		val dataOwnerConverted: EntityReferenceInGroup = entityReferenceInGroup_fromJs(dataOwner)
+		val externalIdPrefixConverted: String = externalIdPrefix
+		val result = PatientFilters.byExternalIdForDataOwnerInGroup(
+			dataOwnerConverted,
 			externalIdPrefixConverted,
 		)
 		return BaseSortableFilterOptionsJsImpl(result)
@@ -360,6 +534,22 @@ public object InternalPatientFiltersObj {
 		val tagCodeConverted: String? = undefinedToNull(tagCode)
 		val result = PatientFilters.byTagForDataOwner(
 			dataOwnerIdConverted,
+			tagTypeConverted,
+			tagCodeConverted,
+		)
+		return BaseFilterOptionsJsImpl(result)
+	}
+
+	public fun byTagForDataOwnerInGroup(
+		dataOwner: EntityReferenceInGroupJs,
+		tagType: String,
+		tagCode: String?,
+	): BaseFilterOptionsJs<PatientJs> {
+		val dataOwnerConverted: EntityReferenceInGroup = entityReferenceInGroup_fromJs(dataOwner)
+		val tagTypeConverted: String = tagType
+		val tagCodeConverted: String? = undefinedToNull(tagCode)
+		val result = PatientFilters.byTagForDataOwnerInGroup(
+			dataOwnerConverted,
 			tagTypeConverted,
 			tagCodeConverted,
 		)
