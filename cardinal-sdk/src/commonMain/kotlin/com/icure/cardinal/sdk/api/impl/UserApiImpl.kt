@@ -174,6 +174,14 @@ internal class UserApiImpl(
 		replaceExisting = replaceExisting
 	).successBody()
 
+	override suspend fun setExternalJwtAuthByIdentifiersForCurrentUser(
+		externalJwtConfigId: String,
+		externalAuthenticationToken: String
+	): Boolean = raw.setExternalJwtAuthByIdentifiersForCurrentUser(
+		externalJwtConfigId = externalJwtConfigId,
+		externalAuthenticationToken = externalAuthenticationToken
+	).successBody()
+
 	override suspend fun setUserRoles(
 		userId: String,
 		rolesId: ListOfIds,

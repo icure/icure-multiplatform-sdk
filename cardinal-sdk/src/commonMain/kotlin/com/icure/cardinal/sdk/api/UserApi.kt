@@ -267,5 +267,10 @@ interface UserApi: Subscribable<User, User, FilterOptions<User>> {
 		identifier: LoginIdentifier,
 		replaceExisting: Boolean,
 	): Boolean
+
+	suspend fun setExternalJwtAuthByIdentifiersForCurrentUser(
+		externalJwtConfigId: String,
+		externalAuthenticationToken: String,
+	): Boolean
 }
 
