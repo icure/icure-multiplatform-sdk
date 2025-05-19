@@ -683,9 +683,10 @@ interface PatientApi : PatientBasicFlavourlessApi, PatientFlavouredApi<Decrypted
 	/**
 	 * Get all the secret ids that the current data owner can access from the provided patient.
 	 * @param patient a patient
-	 * @return the secret ids of the provided patient
+	 * @return the secret ids of the provided patient associated to the data owners which are known to have access
+	 * to that id.
 	 */
-	suspend fun getSecretIdsOf(patient: Patient): Set<String>
+	suspend fun getSecretIdsOf(patient: Patient): Map<String, Set<EntityReferenceInGroup>>
 
 	/**
 	 * Attempts to extract the encryption keys of a patient. If the user doesn't have access to any encryption key
@@ -886,7 +887,7 @@ interface PatientInGroupApi : PatientBasicFlavourlessInGroupApi, PatientFlavoure
 	/**
 	 * In-group version of [PatientApi.getSecretIdsOf]
 	 */
-	suspend fun getSecretIdsOf(patient: GroupScoped<Patient>): Set<String>
+	suspend fun getSecretIdsOf(patient: GroupScoped<Patient>): Map<String, Set<EntityReferenceInGroup>>
 
 	/**
 	 * In-group version of [PatientApi.getEncryptionKeysOf]

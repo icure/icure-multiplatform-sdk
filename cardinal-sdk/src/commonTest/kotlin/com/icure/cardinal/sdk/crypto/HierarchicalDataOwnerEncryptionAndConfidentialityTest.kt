@@ -95,7 +95,7 @@ class HierarchicalDataOwnerEncryptionAndConfidentialityTest : StringSpec({
 			)
 		).shouldNotBeNull().let { hcpApi.patient.initializeConfidentialSecretId(it) }
 		val confidentialSecretIds = hcpApi.patient.getConfidentialSecretIdsOf(patient)
-		val allSecretIds = hcpApi.patient.getSecretIdsOf(patient)
+		val allSecretIds = hcpApi.patient.getSecretIdsOf(patient).keys
 		allSecretIds shouldHaveSize 2
 		confidentialSecretIds shouldHaveSize 1
 		allSecretIds shouldContain confidentialSecretIds.single()
