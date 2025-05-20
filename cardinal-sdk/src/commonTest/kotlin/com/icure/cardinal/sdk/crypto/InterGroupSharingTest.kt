@@ -158,7 +158,7 @@ class InterGroupSharingTest : StringSpec({
 					basePatient
 				)
 			).shouldNotBeNull()
-			val sfk = delegatorApi.patient.inGroup.getSecretIdsOf(patient).also { it shouldHaveSize 1 }
+			val sfk = delegatorApi.patient.inGroup.getSecretIdsOf(patient).keys.also { it shouldHaveSize 1 }
 			val baseHe = DecryptedHealthElement(
 				id = uuid(),
 				descr = "super secret note in he"

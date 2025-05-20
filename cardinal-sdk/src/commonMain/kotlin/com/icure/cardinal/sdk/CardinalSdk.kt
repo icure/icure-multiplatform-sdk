@@ -1038,7 +1038,7 @@ private class CardinalApiImpl(
 		AuthApiImpl(authProvider)
 	}
 	override val agenda: AgendaApi by lazy {
-		AgendaApiImpl(RawAgendaApiImpl(apiUrl, authProvider, config.rawApiConfig))
+		AgendaApiImpl(RawAgendaApiImpl(apiUrl, authProvider, config.rawApiConfig), config)
 	}
 
 	override suspend fun switchGroup(groupId: String): CardinalSdk {

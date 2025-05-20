@@ -619,12 +619,14 @@ class RawPatientApiImpl(
 		fromId: String,
 		expectedFromRev: String,
 		updatedInto: EncryptedPatient,
+		omitEncryptionKeysOfFrom: Boolean?,
 	): HttpResponse<EncryptedPatient> =
 		put(authProvider) {
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "patient", "mergeInto", intoId, "from", fromId)
 				parameter("expectedFromRev", expectedFromRev)
+				parameter("omitEncryptionKeysOfFrom", omitEncryptionKeysOfFrom)
 			}
 			contentType(Application.Json)
 			accept(Application.Json)

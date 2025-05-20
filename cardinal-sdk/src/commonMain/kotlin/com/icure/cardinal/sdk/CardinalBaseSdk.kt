@@ -493,7 +493,7 @@ private class CardinalBaseApisImpl(
 		MedicalLocationApiImpl(RawMedicalLocationApiImpl(apiUrl, authProvider, config.rawApiConfig))
 	}
 	override val agenda: AgendaApi by lazy {
-		AgendaApiImpl(RawAgendaApiImpl(apiUrl, authProvider, config.rawApiConfig))
+		AgendaApiImpl(RawAgendaApiImpl(apiUrl, authProvider, config.rawApiConfig), config)
 	}
 }
 

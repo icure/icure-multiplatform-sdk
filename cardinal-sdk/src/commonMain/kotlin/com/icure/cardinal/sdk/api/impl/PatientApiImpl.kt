@@ -707,7 +707,7 @@ private class PatientApiImpl(
 				tryAndRecoverFlavour.validateAndMaybeEncrypt(groupId, entities)
 			}
 
-		override suspend fun getSecretIdsOf(patient: GroupScoped<Patient>): Set<String> =
+		override suspend fun getSecretIdsOf(patient: GroupScoped<Patient>): Map<String, Set<EntityReferenceInGroup>> =
 			doGetSecretIdsOf(patient.groupId, patient.entity)
 
 		override suspend fun getEncryptionKeysOf(patient: GroupScoped<Patient>): Set<HexString> =
@@ -770,7 +770,7 @@ private class PatientApiImpl(
 		} ?: throw NotFoundException("Patient $patientId not found")
 		val selfHierarchySet = config.crypto.dataOwnerApi.getCurrentDataOwnerHierarchyIds().toSet()
 
-		val delegationSecretKeys = getSecretIdsOf(patient)
+		val delegationSecretKeys = getSecretIdsOf(patient).keys
 
 		val shareStatus = if(delegationSecretKeys.isNotEmpty()) {
 			suspend fun <T : HasEncryptionMetadata> doShareEntitiesAndUpdateStatus(
@@ -1050,11 +1050,14 @@ private class PatientApiImpl(
 		)
 	}
 
-	override suspend fun getSecretIdsOf(patient: Patient): Set<String> =
+	override suspend fun getSecretIdsOf(patient: Patient): Map<String, Set<EntityReferenceInGroup>> =
 		doGetSecretIdsOf(null, patient)
 
-	private suspend fun doGetSecretIdsOf(groupId: String?, patient: Patient): Set<String> =
-		config.crypto.entity.secretIdsOf(groupId, patient, EntityWithEncryptionMetadataTypeName.Patient, null)
+	private suspend fun doGetSecretIdsOf(groupId: String?, patient: Patient): Map<String, Set<EntityReferenceInGroup>> =
+		ensureNonNull(config.crypto.entity.secretIdsWithDataOwnersInfo(groupId, listOf(patient), EntityWithEncryptionMetadataTypeName.Patient).values.singleOrNull()) {
+			"Method secretIdsWithDataOwnersInfo should have returned single item for single patient"
+		}
+
 
 	override suspend fun getEncryptionKeysOf(patient: Patient): Set<HexString> =
 		doGetEncryptionKeysOf(null, patient)

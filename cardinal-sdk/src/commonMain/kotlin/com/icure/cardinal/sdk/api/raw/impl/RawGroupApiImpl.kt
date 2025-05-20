@@ -225,7 +225,25 @@ class RawGroupApiImpl(
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "group", "operationToken")
-				parameter("operation", operation)
+				parameter("operation", operation.serialName)
+				parameter("duration", duration)
+				parameter("description", description)
+			}
+			contentType(Application.Json)
+			accept(Application.Json)
+		}.wrap()
+
+	override suspend fun getOperationTokenForGroup(
+		groupId: String,
+		operation: Operation,
+		duration: Long?,
+		description: String?,
+	): HttpResponse<String> =
+		post(authProvider) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "group", groupId, "operationToken")
+				parameter("operation", operation.serialName)
 				parameter("duration", duration)
 				parameter("description", description)
 			}

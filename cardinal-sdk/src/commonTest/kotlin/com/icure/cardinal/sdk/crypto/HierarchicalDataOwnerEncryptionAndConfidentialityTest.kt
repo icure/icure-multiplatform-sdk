@@ -95,7 +95,7 @@ class HierarchicalDataOwnerEncryptionAndConfidentialityTest : StringSpec({
 			)
 		).shouldNotBeNull().let { hcpApi.patient.initializeConfidentialSecretId(it) }
 		val confidentialSecretIds = hcpApi.patient.getConfidentialSecretIdsOf(patient)
-		val allSecretIds = hcpApi.patient.getSecretIdsOf(patient)
+		val allSecretIds = hcpApi.patient.getSecretIdsOf(patient).keys
 		allSecretIds shouldHaveSize 2
 		confidentialSecretIds shouldHaveSize 1
 		allSecretIds shouldContain confidentialSecretIds.single()
@@ -155,7 +155,7 @@ class HierarchicalDataOwnerEncryptionAndConfidentialityTest : StringSpec({
 			Pair(parent.api(specJob), listOf(parent.dataOwnerId)),
 			Pair(sibling.api(specJob), listOf(parent.dataOwnerId, sibling.dataOwnerId))
 		).forEach { (relativeApi, ids) ->
-			relativeApi.patient.getSecretIdsOf(patient) shouldBe (allSecretIds - confidentialSecretIds)
+			relativeApi.patient.getSecretIdsOf(patient).keys shouldBe (allSecretIds - confidentialSecretIds)
 			findHealthElementsFor(ids, relativeApi).also { retrievedHes ->
 				retrievedHes shouldHaveSize 1
 				retrievedHes.single().id shouldBe nonConfidentialHe.id

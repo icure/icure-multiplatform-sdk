@@ -6,7 +6,6 @@ import com.icure.cardinal.sdk.crypto.ExchangeDataManager
 import com.icure.cardinal.sdk.crypto.ExchangeDataMapManager
 import com.icure.cardinal.sdk.crypto.ExchangeKeysManager
 import com.icure.cardinal.sdk.crypto.SecureDelegationsEncryption
-import com.icure.cardinal.sdk.model.EntityReferenceInGroup
 import com.icure.cardinal.sdk.crypto.entities.DecryptedMetadataDetails
 import com.icure.cardinal.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
 import com.icure.cardinal.sdk.crypto.entities.ExchangeDataWithPotentiallyDecryptedContent
@@ -15,6 +14,7 @@ import com.icure.cardinal.sdk.crypto.entities.SdkBoundGroup
 import com.icure.cardinal.sdk.crypto.entities.SecureDelegationMembersDetails
 import com.icure.cardinal.sdk.crypto.entities.SecurityMetadataType
 import com.icure.cardinal.sdk.crypto.entities.resolve
+import com.icure.cardinal.sdk.model.EntityReferenceInGroup
 import com.icure.cardinal.sdk.model.base.HasEncryptionMetadata
 import com.icure.cardinal.sdk.model.embed.AccessLevel
 import com.icure.cardinal.sdk.model.embed.Delegation
@@ -78,9 +78,11 @@ internal class BaseSecurityMetadataDecryptorImpl(
 				DecryptedMetadataDetails(
 					metadataType.mapLegacyDecrypted(decryptedValue),
 					setOfNotNull(
-						delegation.delegatedTo?.takeIf { it in dataOwnersHierarchySubset },
-						delegation.owner?.takeIf { it in dataOwnersHierarchySubset },
-					)
+						delegation.delegatedTo,
+						delegation.owner,
+					).mapTo(mutableSetOf()) {
+						EntityReferenceInGroup(it, null)
+					}
 				)
 			}
 		}
@@ -320,10 +322,6 @@ internal class BaseSecurityMetadataDecryptorImpl(
 		dataOwnersHierarchySubset: Set<String>,
 		metadataType: SecurityMetadataType<T>
 	): Map<String, List<DecryptedMetadataDetails<T>>> {
-		val dataOwnersHierarchyReferences = selfHierarchyIdsAsReferenceStrings(
-			dataOwnersHierarchySubset,
-			entitiesGroupId
-		)
 		val loadedExchangeData = loadAllExchangeDataForEntitiesSecureDelegations(
 			entitiesGroupId,
 			entities,
@@ -337,20 +335,16 @@ internal class BaseSecurityMetadataDecryptorImpl(
 				exchangeDataToUse?.unencryptedContent?.exchangeKey?.let {
 					metadataType.decryptSecureDelegation(delegation, it, secureDelegationsEncryption)
 				}?.let { decrypted ->
-					val plainMembers = setOfNotNull(
-						exchangeDataToUse.exchangeData.delegate.takeIf { it in dataOwnersHierarchyReferences },
-						exchangeDataToUse.exchangeData.delegator.takeIf { it in dataOwnersHierarchyReferences },
-					).map { dataOwnerReferenceString ->
-						dataOwnerReferenceString.split("/").let { splitReference ->
-							when (splitReference.size) {
-								1 -> splitReference[0]
-								2 -> splitReference[1]
-								else -> throw IllegalArgumentException(
-									"Entity with id ${e.id} has an invalid data owner reference \"${dataOwnerReferenceString}\" in security metadata"
-								)
-							}
-						}
-					}.toSet()
+					val plainMembers = setOf(
+						exchangeDataToUse.exchangeData.delegate,
+						exchangeDataToUse.exchangeData.delegator,
+					).mapTo(mutableSetOf()) { dataOwnerReferenceString ->
+						EntityReferenceInGroup.parse(
+							dataOwnerReferenceString,
+							entitiesGroupId,
+							boundGroup
+						)
+					}
 					decrypted.map {
 						DecryptedMetadataDetails(it, plainMembers)
 					}

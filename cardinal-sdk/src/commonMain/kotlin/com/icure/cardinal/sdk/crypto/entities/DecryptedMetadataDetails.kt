@@ -1,5 +1,6 @@
 package com.icure.cardinal.sdk.crypto.entities
 
+import com.icure.cardinal.sdk.model.EntityReferenceInGroup
 import com.icure.utils.InternalIcureApi
 
 /**
@@ -12,7 +13,7 @@ data class DecryptedMetadataDetails<T : Any>(
 	 */
 	val value: T,
 	/**
-	 * The ids data owners know to have access to [value]. Never includes the group id.
+	 * The ids data owners know to have access to [value].
 	 */
-	val dataOwnersWithAccess: Set<String>
+	val dataOwnersWithAccess: Set<EntityReferenceInGroup>
 )
