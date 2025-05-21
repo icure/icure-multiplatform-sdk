@@ -59,6 +59,8 @@ class UserApiDispatcher {
     case "purgeUser": purgeUser(parameters: parameters, resultCallback: resultCallback)
     case "undeleteUser": undeleteUser(parameters: parameters, resultCallback: resultCallback)
     case "setUserInheritsPermissions": setUserInheritsPermissions(parameters: parameters, resultCallback: resultCallback)
+    case "setLoginIdentifiers": setLoginIdentifiers(parameters: parameters, resultCallback: resultCallback)
+    case "setExternalJwtAuthByIdentifiersForCurrentUser": setExternalJwtAuthByIdentifiersForCurrentUser(parameters: parameters, resultCallback: resultCallback)
     case "subscribeToEvents": subscribeToEvents(parameters: parameters, resultCallback: resultCallback)
     default: return false
     }
@@ -680,6 +682,36 @@ class UserApiDispatcher {
     	userIdString: parameters["userId"]!,
     	groupIdString: parameters["groupId"]!,
     	valueString: parameters["value"]!
+    )
+  }
+
+  private static func setLoginIdentifiers(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    UserApi.shared.setLoginIdentifiers(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	userIdString: parameters["userId"]!,
+    	groupIdString: parameters["groupId"]!,
+    	identifierString: parameters["identifier"]!,
+    	replaceExistingString: parameters["replaceExisting"]!
+    )
+  }
+
+  private static func setExternalJwtAuthByIdentifiersForCurrentUser(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    UserApi.shared.setExternalJwtAuthByIdentifiersForCurrentUser(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	externalJwtConfigIdString: parameters["externalJwtConfigId"]!,
+    	externalAuthenticationTokenString: parameters["externalAuthenticationToken"]!
     )
   }
 

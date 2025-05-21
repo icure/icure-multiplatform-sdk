@@ -370,4 +370,20 @@ class GroupPlatformApi {
 		final parsedResJson = jsonDecode(res);
 		return Group.fromJSON(parsedResJson);
 	}
+
+	Future<String> getOperationTokenForGroup(String sdkId, String groupId, Operation operation, int? duration, String? description) async {
+		final res = await _methodChannel.invokeMethod<String>(
+			'GroupApi.getOperationTokenForGroup',
+			{
+				"sdkId": sdkId,
+				"groupId": jsonEncode(groupId),
+				"operation": jsonEncode(Operation.encode(operation)),
+				"duration": jsonEncode(duration),
+				"description": jsonEncode(description),
+			}
+		).catchError(convertPlatformException);
+		if (res == null) throw AssertionError("received null result from platform method getOperationTokenForGroup");
+		final parsedResJson = jsonDecode(res);
+		return (parsedResJson as String);
+	}
 }

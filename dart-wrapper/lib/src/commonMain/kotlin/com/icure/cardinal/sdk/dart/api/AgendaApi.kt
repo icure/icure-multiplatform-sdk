@@ -1,12 +1,14 @@
 // auto-generated file
 package com.icure.cardinal.sdk.dart.api
 
+import com.icure.cardinal.sdk.CardinalApis
 import com.icure.cardinal.sdk.CardinalNonCryptoApis
 import com.icure.cardinal.sdk.dart.utils.ApiScope
 import com.icure.cardinal.sdk.dart.utils.NativeReferences
 import com.icure.cardinal.sdk.filters.BaseFilterOptions
 import com.icure.cardinal.sdk.filters.BaseSortableFilterOptions
 import com.icure.cardinal.sdk.model.Agenda
+import com.icure.cardinal.sdk.model.GroupScoped
 import com.icure.cardinal.sdk.model.StoredDocumentIdentifier
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.serialization.PaginatedListIteratorWithSerializer
@@ -413,6 +415,330 @@ public object AgendaApi {
         richResult,
         Agenda.serializer()
       ))
+    }
+  }
+
+  @OptIn(InternalIcureApi::class)
+  public object inGroup {
+    public fun getAgenda(
+      dartResultCallback: (
+        String?,
+        String?,
+        String?,
+        String?,
+      ) -> Unit,
+      sdkId: String,
+      groupIdString: String,
+      entityIdString: String,
+    ) {
+      val groupId = fullLanguageInteropJson.decodeFromString(
+        String.serializer(),
+        groupIdString
+      )
+      val entityId = fullLanguageInteropJson.decodeFromString(
+        String.serializer(),
+        entityIdString
+      )
+      ApiScope.execute(
+        dartResultCallback,
+        GroupScoped.serializer(Agenda.serializer()).nullable) {
+        NativeReferences.get<CardinalApis>(sdkId).agenda.inGroup.getAgenda(
+          groupId,
+          entityId,
+        )
+      }
+    }
+
+    public fun getAgendas(
+      dartResultCallback: (
+        String?,
+        String?,
+        String?,
+        String?,
+      ) -> Unit,
+      sdkId: String,
+      groupIdString: String,
+      entityIdsString: String,
+    ) {
+      val groupId = fullLanguageInteropJson.decodeFromString(
+        String.serializer(),
+        groupIdString
+      )
+      val entityIds = fullLanguageInteropJson.decodeFromString(
+        ListSerializer(String.serializer()),
+        entityIdsString
+      )
+      ApiScope.execute(
+        dartResultCallback,
+        ListSerializer(GroupScoped.serializer(Agenda.serializer()))) {
+        NativeReferences.get<CardinalApis>(sdkId).agenda.inGroup.getAgendas(
+          groupId,
+          entityIds,
+        )
+      }
+    }
+
+    public fun createAgenda(
+      dartResultCallback: (
+        String?,
+        String?,
+        String?,
+        String?,
+      ) -> Unit,
+      sdkId: String,
+      entityString: String,
+    ) {
+      val entity = fullLanguageInteropJson.decodeFromString(
+        GroupScoped.serializer(Agenda.serializer()),
+        entityString
+      )
+      ApiScope.execute(
+        dartResultCallback,
+        GroupScoped.serializer(Agenda.serializer())) {
+        NativeReferences.get<CardinalApis>(sdkId).agenda.inGroup.createAgenda(
+          entity,
+        )
+      }
+    }
+
+    public fun modifyAgenda(
+      dartResultCallback: (
+        String?,
+        String?,
+        String?,
+        String?,
+      ) -> Unit,
+      sdkId: String,
+      entityString: String,
+    ) {
+      val entity = fullLanguageInteropJson.decodeFromString(
+        GroupScoped.serializer(Agenda.serializer()),
+        entityString
+      )
+      ApiScope.execute(
+        dartResultCallback,
+        GroupScoped.serializer(Agenda.serializer())) {
+        NativeReferences.get<CardinalApis>(sdkId).agenda.inGroup.modifyAgenda(
+          entity,
+        )
+      }
+    }
+
+    public fun deleteAgendas(
+      dartResultCallback: (
+        String?,
+        String?,
+        String?,
+        String?,
+      ) -> Unit,
+      sdkId: String,
+      agendasString: String,
+    ) {
+      val agendas = fullLanguageInteropJson.decodeFromString(
+        ListSerializer(GroupScoped.serializer(Agenda.serializer())),
+        agendasString
+      )
+      ApiScope.execute(
+        dartResultCallback,
+        ListSerializer(GroupScoped.serializer(StoredDocumentIdentifier.serializer()))) {
+        NativeReferences.get<CardinalApis>(sdkId).agenda.inGroup.deleteAgendas(
+          agendas,
+        )
+      }
+    }
+
+    public fun deleteAgenda(
+      dartResultCallback: (
+        String?,
+        String?,
+        String?,
+        String?,
+      ) -> Unit,
+      sdkId: String,
+      agendaString: String,
+    ) {
+      val agenda = fullLanguageInteropJson.decodeFromString(
+        GroupScoped.serializer(Agenda.serializer()),
+        agendaString
+      )
+      ApiScope.execute(
+        dartResultCallback,
+        GroupScoped.serializer(StoredDocumentIdentifier.serializer())) {
+        NativeReferences.get<CardinalApis>(sdkId).agenda.inGroup.deleteAgenda(
+          agenda,
+        )
+      }
+    }
+
+    public fun deleteAgendasByIds(
+      dartResultCallback: (
+        String?,
+        String?,
+        String?,
+        String?,
+      ) -> Unit,
+      sdkId: String,
+      entityIdsString: String,
+    ) {
+      val entityIds = fullLanguageInteropJson.decodeFromString(
+        ListSerializer(GroupScoped.serializer(StoredDocumentIdentifier.serializer())),
+        entityIdsString
+      )
+      ApiScope.execute(
+        dartResultCallback,
+        ListSerializer(GroupScoped.serializer(StoredDocumentIdentifier.serializer()))) {
+        NativeReferences.get<CardinalApis>(sdkId).agenda.inGroup.deleteAgendasByIds(
+          entityIds,
+        )
+      }
+    }
+
+    public fun deleteAgendaById(
+      dartResultCallback: (
+        String?,
+        String?,
+        String?,
+        String?,
+      ) -> Unit,
+      sdkId: String,
+      entityIdString: String,
+    ) {
+      val entityId = fullLanguageInteropJson.decodeFromString(
+        GroupScoped.serializer(StoredDocumentIdentifier.serializer()),
+        entityIdString
+      )
+      ApiScope.execute(
+        dartResultCallback,
+        GroupScoped.serializer(StoredDocumentIdentifier.serializer())) {
+        NativeReferences.get<CardinalApis>(sdkId).agenda.inGroup.deleteAgendaById(
+          entityId,
+        )
+      }
+    }
+
+    public fun matchAgendasBy(
+      dartResultCallback: (
+        String?,
+        String?,
+        String?,
+        String?,
+      ) -> Unit,
+      sdkId: String,
+      groupIdString: String,
+      filterString: String,
+    ) {
+      val groupId = fullLanguageInteropJson.decodeFromString(
+        String.serializer(),
+        groupIdString
+      )
+      val filter = fullLanguageInteropJson.decodeFromString(
+        BaseFilterOptions.serializer(Agenda.serializer()),
+        filterString
+      )
+      ApiScope.execute(
+        dartResultCallback,
+        ListSerializer(String.serializer())) {
+        NativeReferences.get<CardinalApis>(sdkId).agenda.inGroup.matchAgendasBy(
+          groupId,
+          filter,
+        )
+      }
+    }
+
+    public fun matchAgendasBySorted(
+      dartResultCallback: (
+        String?,
+        String?,
+        String?,
+        String?,
+      ) -> Unit,
+      sdkId: String,
+      groupIdString: String,
+      filterString: String,
+    ) {
+      val groupId = fullLanguageInteropJson.decodeFromString(
+        String.serializer(),
+        groupIdString
+      )
+      val filter = fullLanguageInteropJson.decodeFromString(
+        BaseSortableFilterOptions.serializer(Agenda.serializer()),
+        filterString
+      )
+      ApiScope.execute(
+        dartResultCallback,
+        ListSerializer(String.serializer())) {
+        NativeReferences.get<CardinalApis>(sdkId).agenda.inGroup.matchAgendasBySorted(
+          groupId,
+          filter,
+        )
+      }
+    }
+
+    public fun filterAgendasBy(
+      dartResultCallback: (
+        String?,
+        String?,
+        String?,
+        String?,
+      ) -> Unit,
+      sdkId: String,
+      groupIdString: String,
+      filterString: String,
+    ) {
+      val groupId = fullLanguageInteropJson.decodeFromString(
+        String.serializer(),
+        groupIdString
+      )
+      val filter = fullLanguageInteropJson.decodeFromString(
+        BaseFilterOptions.serializer(Agenda.serializer()),
+        filterString
+      )
+      ApiScope.execute(
+        dartResultCallback,
+        String.serializer()) {
+        val richResult = NativeReferences.get<CardinalApis>(sdkId).agenda.inGroup.filterAgendasBy(
+          groupId,
+          filter,
+        )
+        NativeReferences.create(PaginatedListIteratorWithSerializer(
+          richResult,
+          GroupScoped.serializer(Agenda.serializer())
+        ))
+      }
+    }
+
+    public fun filterAgendasBySorted(
+      dartResultCallback: (
+        String?,
+        String?,
+        String?,
+        String?,
+      ) -> Unit,
+      sdkId: String,
+      groupIdString: String,
+      filterString: String,
+    ) {
+      val groupId = fullLanguageInteropJson.decodeFromString(
+        String.serializer(),
+        groupIdString
+      )
+      val filter = fullLanguageInteropJson.decodeFromString(
+        BaseSortableFilterOptions.serializer(Agenda.serializer()),
+        filterString
+      )
+      ApiScope.execute(
+        dartResultCallback,
+        String.serializer()) {
+        val richResult =
+            NativeReferences.get<CardinalApis>(sdkId).agenda.inGroup.filterAgendasBySorted(
+          groupId,
+          filter,
+        )
+        NativeReferences.create(PaginatedListIteratorWithSerializer(
+          richResult,
+          GroupScoped.serializer(Agenda.serializer())
+        ))
+      }
     }
   }
 }

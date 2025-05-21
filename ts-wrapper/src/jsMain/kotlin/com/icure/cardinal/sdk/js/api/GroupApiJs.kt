@@ -118,4 +118,11 @@ public external interface GroupApiJs {
 	): Promise<GroupJs>
 
 	public fun removeExternalJwtConfig(groupId: String, key: String): Promise<GroupJs>
+
+	public fun getOperationTokenForGroup(
+		groupId: String,
+		operation: String,
+		duration: Double?,
+		description: String?,
+	): Promise<String>
 }

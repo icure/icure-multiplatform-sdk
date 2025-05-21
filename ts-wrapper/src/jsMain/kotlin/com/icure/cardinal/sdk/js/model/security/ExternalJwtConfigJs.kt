@@ -11,15 +11,9 @@ import kotlin.js.JsQualifier
 public external class ExternalJwtConfigJs(
 	partial: dynamic,
 ) {
-	public val publicKey: String
+	public val validationMethod: ExternalJwtConfigJs_ValidationMethodJs
 
-	public val id: String?
+	public val fieldSelector: ExternalJwtConfigJs_FieldSelectorJs
 
-	public val emailField: String?
-
-	public val loginField: String?
-
-	public val mobilePhoneField: String?
-
-	public val identifierField: IdentifierSelectorJs?
+	public val authenticationClass: String
 }

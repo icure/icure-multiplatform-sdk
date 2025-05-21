@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:cardinal_sdk/model/patient.dart';
 import 'dart:convert';
 import 'package:cardinal_sdk/utils/internal/platform_exception_convertion.dart';
+import 'package:cardinal_sdk/model/entity_reference_in_group.dart';
 import 'package:cardinal_sdk/model/specializations/hex_string.dart';
 import 'package:cardinal_sdk/model/user.dart';
 import 'package:cardinal_sdk/model/embed/access_level.dart';
@@ -16,7 +17,6 @@ import 'package:cardinal_sdk/subscription/subscription_event_type.dart';
 import 'package:cardinal_sdk/subscription/entity_subscription_configuration.dart';
 import 'package:cardinal_sdk/subscription/entity_subscription.dart';
 import 'package:cardinal_sdk/model/group_scoped.dart';
-import 'package:cardinal_sdk/model/entity_reference_in_group.dart';
 
 
 class PatientPlatformApi {
@@ -69,7 +69,7 @@ class PatientPlatformApi {
 		return (parsedResJson as List<dynamic>).map((x1) => EncryptedPatient.fromJSON(x1) ).toList();
 	}
 
-	Future<Set<String>> getSecretIdsOf(String sdkId, Patient patient) async {
+	Future<Map<String, Set<EntityReferenceInGroup>>> getSecretIdsOf(String sdkId, Patient patient) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'PatientApi.getSecretIdsOf',
 			{
@@ -79,7 +79,7 @@ class PatientPlatformApi {
 		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getSecretIdsOf");
 		final parsedResJson = jsonDecode(res);
-		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toSet();
+		return (parsedResJson as Map<String, dynamic>).map((k1, v1) => MapEntry((k1 as String), (v1 as List<dynamic>).map((x2) => EntityReferenceInGroup.fromJSON(x2) ).toSet()));
 	}
 
 	Future<Set<HexString>> getEncryptionKeysOf(String sdkId, Patient patient) async {
@@ -1124,7 +1124,7 @@ class PatientInGroupPlatformApi {
 		) ).toList();
 	}
 
-	Future<Set<String>> getSecretIdsOf(String sdkId, GroupScoped<Patient> patient) async {
+	Future<Map<String, Set<EntityReferenceInGroup>>> getSecretIdsOf(String sdkId, GroupScoped<Patient> patient) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'PatientApi.inGroup.getSecretIdsOf',
 			{
@@ -1139,7 +1139,7 @@ class PatientInGroupPlatformApi {
 		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getSecretIdsOf");
 		final parsedResJson = jsonDecode(res);
-		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toSet();
+		return (parsedResJson as Map<String, dynamic>).map((k1, v1) => MapEntry((k1 as String), (v1 as List<dynamic>).map((x2) => EntityReferenceInGroup.fromJSON(x2) ).toSet()));
 	}
 
 	Future<Set<HexString>> getEncryptionKeysOf(String sdkId, GroupScoped<Patient> patient) async {

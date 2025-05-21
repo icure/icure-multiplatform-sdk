@@ -1,6 +1,7 @@
 // auto-generated file
 import 'package:cardinal_sdk/model/patient.dart';
 import 'package:cardinal_sdk/plugin/cardinal_sdk_platform_interface.dart';
+import 'package:cardinal_sdk/model/entity_reference_in_group.dart';
 import 'package:cardinal_sdk/model/specializations/hex_string.dart';
 import 'package:cardinal_sdk/model/user.dart';
 import 'package:cardinal_sdk/model/embed/access_level.dart';
@@ -14,7 +15,6 @@ import 'package:cardinal_sdk/subscription/subscription_event_type.dart';
 import 'package:cardinal_sdk/subscription/entity_subscription_configuration.dart';
 import 'package:cardinal_sdk/subscription/entity_subscription.dart';
 import 'package:cardinal_sdk/model/group_scoped.dart';
-import 'package:cardinal_sdk/model/entity_reference_in_group.dart';
 
 
 class PatientApi {
@@ -51,7 +51,7 @@ class PatientApi {
 		);
 	}
 
-	Future<Set<String>> getSecretIdsOf(Patient patient) async {
+	Future<Map<String, Set<EntityReferenceInGroup>>> getSecretIdsOf(Patient patient) async {
 		return await CardinalSdkPlatformInterface.instance.apis.patient.getSecretIdsOf(
 			_sdkId,
 			patient,
@@ -639,7 +639,7 @@ class PatientInGroupApi {
 		);
 	}
 
-	Future<Set<String>> getSecretIdsOf(GroupScoped<Patient> patient) async {
+	Future<Map<String, Set<EntityReferenceInGroup>>> getSecretIdsOf(GroupScoped<Patient> patient) async {
 		return await CardinalSdkPlatformInterface.instance.apis.patient.inGroup.getSecretIdsOf(
 			_sdkId,
 			patient,

@@ -3,7 +3,7 @@
 
 package com.icure.cardinal.sdk.js.model
 
-import com.icure.cardinal.sdk.js.model.base.IdentifierJs
+import com.icure.cardinal.sdk.js.model.security.LoginIdentifierJs
 import kotlin.Array
 import kotlin.Boolean
 import kotlin.String
@@ -20,5 +20,5 @@ public external class UserJs_SystemMetadataJs(
 
 	public val inheritsRoles: Boolean
 
-	public val loginIdentifiers: Array<IdentifierJs>
+	public val loginIdentifiers: Array<LoginIdentifierJs>
 }

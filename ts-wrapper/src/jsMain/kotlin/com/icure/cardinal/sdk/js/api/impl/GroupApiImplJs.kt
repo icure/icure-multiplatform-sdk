@@ -610,4 +610,23 @@ internal class GroupApiImplJs(
 		)
 		group_toJs(result)
 	}
+
+	override fun getOperationTokenForGroup(
+		groupId: String,
+		operation: String,
+		duration: Double?,
+		description: String?,
+	): Promise<String> = GlobalScope.promise {
+		val groupIdConverted: String = groupId
+		val operationConverted: Operation = Operation.valueOf(operation)
+		val durationConverted: Long? = numberToLong(duration, "duration")
+		val descriptionConverted: String? = undefinedToNull(description)
+		val result = groupApi.getOperationTokenForGroup(
+			groupIdConverted,
+			operationConverted,
+			durationConverted,
+			descriptionConverted,
+		)
+		result
+	}
 }

@@ -20,6 +20,8 @@ import kotlin.js.Promise
 
 @JsName("AgendaApi")
 public external interface AgendaApiJs {
+	public val inGroup: AgendaInGroupApiJs
+
 	public fun getAllAgendas(startDocumentId: String?, limit: Double?):
 			Promise<PaginatedListJs<AgendaJs>>
 

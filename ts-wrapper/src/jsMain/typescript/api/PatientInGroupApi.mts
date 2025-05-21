@@ -25,7 +25,7 @@ export interface PatientInGroupApi {
 
 	encryptOrValidate(patients: Array<GroupScoped<Patient>>): Promise<Array<GroupScoped<EncryptedPatient>>>;
 
-	getSecretIdsOf(patient: GroupScoped<Patient>): Promise<Array<string>>;
+	getSecretIdsOf(patient: GroupScoped<Patient>): Promise<{ [ key: string ]: Array<EntityReferenceInGroup> }>;
 
 	getEncryptionKeysOf(patient: GroupScoped<Patient>): Promise<Array<HexString>>;
 

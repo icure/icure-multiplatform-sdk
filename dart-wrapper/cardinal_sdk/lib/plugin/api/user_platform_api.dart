@@ -11,6 +11,7 @@ import 'package:cardinal_sdk/model/list_of_ids.dart';
 import 'package:cardinal_sdk/model/security/token_with_group.dart';
 import 'package:cardinal_sdk/model/security/enable2fa_request.dart';
 import 'package:cardinal_sdk/model/couchdb/doc_identifier.dart';
+import 'package:cardinal_sdk/model/security/login_identifier.dart';
 import 'package:cardinal_sdk/subscription/subscription_event_type.dart';
 import 'package:cardinal_sdk/subscription/entity_subscription_configuration.dart';
 import 'package:cardinal_sdk/subscription/entity_subscription.dart';
@@ -618,6 +619,36 @@ class UserPlatformApi {
 		if (res == null) throw AssertionError("received null result from platform method setUserInheritsPermissions");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as String);
+	}
+
+	Future<bool> setLoginIdentifiers(String sdkId, String userId, String groupId, LoginIdentifier identifier, bool replaceExisting) async {
+		final res = await _methodChannel.invokeMethod<String>(
+			'UserApi.setLoginIdentifiers',
+			{
+				"sdkId": sdkId,
+				"userId": jsonEncode(userId),
+				"groupId": jsonEncode(groupId),
+				"identifier": jsonEncode(LoginIdentifier.encode(identifier)),
+				"replaceExisting": jsonEncode(replaceExisting),
+			}
+		).catchError(convertPlatformException);
+		if (res == null) throw AssertionError("received null result from platform method setLoginIdentifiers");
+		final parsedResJson = jsonDecode(res);
+		return (parsedResJson as bool);
+	}
+
+	Future<bool> setExternalJwtAuthByIdentifiersForCurrentUser(String sdkId, String externalJwtConfigId, String externalAuthenticationToken) async {
+		final res = await _methodChannel.invokeMethod<String>(
+			'UserApi.setExternalJwtAuthByIdentifiersForCurrentUser',
+			{
+				"sdkId": sdkId,
+				"externalJwtConfigId": jsonEncode(externalJwtConfigId),
+				"externalAuthenticationToken": jsonEncode(externalAuthenticationToken),
+			}
+		).catchError(convertPlatformException);
+		if (res == null) throw AssertionError("received null result from platform method setExternalJwtAuthByIdentifiersForCurrentUser");
+		final parsedResJson = jsonDecode(res);
+		return (parsedResJson as bool);
 	}
 
 	Future<EntitySubscription<User>> subscribeToEvents(String sdkId, Set<SubscriptionEventType> events, FilterOptions<User> filter, EntitySubscriptionConfiguration? subscriptionConfig) async {

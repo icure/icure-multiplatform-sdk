@@ -39,6 +39,7 @@ class GroupApiDispatcher {
     case "listAllGroupsIds": listAllGroupsIds(parameters: parameters, resultCallback: resultCallback)
     case "createOrUpdateExternalJwtConfig": createOrUpdateExternalJwtConfig(parameters: parameters, resultCallback: resultCallback)
     case "removeExternalJwtConfig": removeExternalJwtConfig(parameters: parameters, resultCallback: resultCallback)
+    case "getOperationTokenForGroup": getOperationTokenForGroup(parameters: parameters, resultCallback: resultCallback)
     default: return false
     }
     return true
@@ -393,6 +394,22 @@ class GroupApiDispatcher {
     	sdkId: parameters["sdkId"]!,
     	groupIdString: parameters["groupId"]!,
     	keyString: parameters["key"]!
+    )
+  }
+
+  private static func getOperationTokenForGroup(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    GroupApi.shared.getOperationTokenForGroup(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	groupIdString: parameters["groupId"]!,
+    	operationString: parameters["operation"]!,
+    	durationString: parameters["duration"]!,
+    	descriptionString: parameters["description"]!
     )
   }
 

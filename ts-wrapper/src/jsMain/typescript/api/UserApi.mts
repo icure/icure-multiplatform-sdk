@@ -7,6 +7,7 @@ import {User} from '../model/User.mjs';
 import {UserGroup} from '../model/UserGroup.mjs';
 import {DocIdentifier} from '../model/couchdb/DocIdentifier.mjs';
 import {Enable2faRequest} from '../model/security/Enable2faRequest.mjs';
+import {LoginIdentifier} from '../model/security/LoginIdentifier.mjs';
 import {TokenWithGroup} from '../model/security/TokenWithGroup.mjs';
 import {EntitySubscription} from '../subscription/EntitySubscription.mjs';
 import {EntitySubscriptionConfiguration} from '../subscription/EntitySubscriptionConfiguration.mjs';
@@ -118,6 +119,12 @@ export interface UserApi {
 	undeleteUser(user: User): Promise<User>;
 
 	setUserInheritsPermissions(userId: string, groupId: string, value: boolean): Promise<string>;
+
+	setLoginIdentifiers(userId: string, groupId: string, identifier: LoginIdentifier,
+			replaceExisting: boolean): Promise<boolean>;
+
+	setExternalJwtAuthByIdentifiersForCurrentUser(externalJwtConfigId: string,
+			externalAuthenticationToken: string): Promise<boolean>;
 
 	subscribeToEvents(events: Array<SubscriptionEventType>, filter: FilterOptions<User>,
 			options?: { subscriptionConfig?: EntitySubscriptionConfiguration | undefined }): Promise<EntitySubscription<User>>;

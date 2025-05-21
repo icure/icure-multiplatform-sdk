@@ -89,4 +89,7 @@ export interface GroupApi {
 
 	removeExternalJwtConfig(groupId: string, key: string): Promise<Group>;
 
+	getOperationTokenForGroup(groupId: string, operation: Operation, duration: number | undefined,
+			description: string | undefined): Promise<string>;
+
 }

@@ -124,7 +124,7 @@ public object PatientApi {
     )
     ApiScope.execute(
       dartResultCallback,
-      SetSerializer(String.serializer())) {
+      MapSerializer(String.serializer(), SetSerializer(EntityReferenceInGroup.serializer()))) {
       NativeReferences.get<CardinalApis>(sdkId).patient.getSecretIdsOf(
         patient,
       )
@@ -2069,7 +2069,7 @@ public object PatientApi {
       )
       ApiScope.execute(
         dartResultCallback,
-        SetSerializer(String.serializer())) {
+        MapSerializer(String.serializer(), SetSerializer(EntityReferenceInGroup.serializer()))) {
         NativeReferences.get<CardinalApis>(sdkId).patient.inGroup.getSecretIdsOf(
           patient,
         )

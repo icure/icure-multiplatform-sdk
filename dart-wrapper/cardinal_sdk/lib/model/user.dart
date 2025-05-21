@@ -8,6 +8,7 @@ import 'package:cardinal_sdk/model/embed/delegation_tag.dart';
 import 'package:cardinal_sdk/model/security/authentication_token.dart';
 import 'package:cardinal_sdk/model/base/stored_document.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:cardinal_sdk/model/security/login_identifier.dart';
 part "user.freezed.dart";
 
 
@@ -110,7 +111,7 @@ abstract class UserSystemMetadata with _$UserSystemMetadata {
 		required Set<String> roles,
 		required bool isAdmin,
 		required bool inheritsRoles,
-		@Default([]) List<Identifier> loginIdentifiers,
+		@Default([]) List<LoginIdentifier> loginIdentifiers,
 	}) = _UserSystemMetadata;
 
 
@@ -119,7 +120,7 @@ abstract class UserSystemMetadata with _$UserSystemMetadata {
 			"roles" : value.roles.map((x0) => x0).toList(),
 			"isAdmin" : value.isAdmin,
 			"inheritsRoles" : value.inheritsRoles,
-			"loginIdentifiers" : value.loginIdentifiers.map((x0) => Identifier.encode(x0)).toList()
+			"loginIdentifiers" : value.loginIdentifiers.map((x0) => LoginIdentifier.encode(x0)).toList()
 		};
 		return entityAsMap;
 	}
@@ -129,7 +130,7 @@ abstract class UserSystemMetadata with _$UserSystemMetadata {
 			roles: (data["roles"] as List<dynamic>).map((x0) => (x0 as String) ).toSet(),
 			isAdmin: (data["isAdmin"] as bool),
 			inheritsRoles: (data["inheritsRoles"] as bool),
-			loginIdentifiers: (data["loginIdentifiers"] as List<dynamic>).map((x0) => Identifier.fromJSON(x0) ).toList(),
+			loginIdentifiers: (data["loginIdentifiers"] as List<dynamic>).map((x0) => LoginIdentifier.fromJSON(x0) ).toList(),
 		);
 	}
 }

@@ -4,6 +4,7 @@ import {EntityAccessInformation} from '../crypto/entities/EntityAccessInformatio
 import {EntityWithTypeInfo} from '../crypto/entities/EntityWithTypeInfo.mjs';
 import {PatientShareOptions} from '../crypto/entities/PatientShareOptions.mjs';
 import {ShareAllPatientDataOptions} from '../crypto/entities/ShareAllPatientDataOptions.mjs';
+import {EntityReferenceInGroup} from '../model/EntityReferenceInGroup.mjs';
 import {PaginatedList} from '../model/PaginatedList.mjs';
 import {DecryptedPatient, EncryptedPatient, Patient} from '../model/Patient.mjs';
 import {StoredDocumentIdentifier} from '../model/StoredDocumentIdentifier.mjs';
@@ -32,7 +33,7 @@ export interface PatientApi {
 
 	encryptOrValidate(patients: Array<Patient>): Promise<Array<EncryptedPatient>>;
 
-	getSecretIdsOf(patient: Patient): Promise<Array<string>>;
+	getSecretIdsOf(patient: Patient): Promise<{ [ key: string ]: Array<EntityReferenceInGroup> }>;
 
 	getEncryptionKeysOf(patient: Patient): Promise<Array<HexString>>;
 

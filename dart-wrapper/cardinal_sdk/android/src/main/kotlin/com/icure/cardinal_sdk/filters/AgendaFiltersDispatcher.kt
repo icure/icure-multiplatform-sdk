@@ -20,7 +20,16 @@ public object AgendaFiltersDispatcher {
   ): Boolean = when(methodName) {
     "all" -> all(parameters, resultCallback)
     "byUser" -> byUser(parameters, resultCallback)
+    "byUser" -> byUser(parameters, resultCallback)
     "readableByUser" -> readableByUser(parameters, resultCallback)
+    "readableByUser" -> readableByUser(parameters, resultCallback)
+    "readableByUserRights" -> readableByUserRights(parameters, resultCallback)
+    "readableByUserRights" -> readableByUserRights(parameters, resultCallback)
+    "byStringProperty" -> byStringProperty(parameters, resultCallback)
+    "byBooleanProperty" -> byBooleanProperty(parameters, resultCallback)
+    "byLongProperty" -> byLongProperty(parameters, resultCallback)
+    "byDoubleProperty" -> byDoubleProperty(parameters, resultCallback)
+    "withProperty" -> withProperty(parameters, resultCallback)
     else -> null
   }?.let { true } ?: false
 
@@ -47,6 +56,18 @@ public object AgendaFiltersDispatcher {
     )
   }
 
+  private fun byUser(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    AgendaFilters.byUser(
+      resultCallback,
+      parameters.getValue("userReference"),
+    )
+  }
+
   private fun readableByUser(parameters: Map<String, String>, resultCallback: (
     String?,
     String?,
@@ -56,6 +77,106 @@ public object AgendaFiltersDispatcher {
     AgendaFilters.readableByUser(
       resultCallback,
       parameters.getValue("userId"),
+    )
+  }
+
+  private fun readableByUser(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    AgendaFilters.readableByUser(
+      resultCallback,
+      parameters.getValue("userReference"),
+    )
+  }
+
+  private fun readableByUserRights(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    AgendaFilters.readableByUserRights(
+      resultCallback,
+      parameters.getValue("userId"),
+    )
+  }
+
+  private fun readableByUserRights(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    AgendaFilters.readableByUserRights(
+      resultCallback,
+      parameters.getValue("userReference"),
+    )
+  }
+
+  private fun byStringProperty(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    AgendaFilters.byStringProperty(
+      resultCallback,
+      parameters.getValue("propertyId"),
+      parameters.getValue("propertyValue"),
+    )
+  }
+
+  private fun byBooleanProperty(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    AgendaFilters.byBooleanProperty(
+      resultCallback,
+      parameters.getValue("propertyId"),
+      parameters.getValue("propertyValue"),
+    )
+  }
+
+  private fun byLongProperty(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    AgendaFilters.byLongProperty(
+      resultCallback,
+      parameters.getValue("propertyId"),
+      parameters.getValue("propertyValue"),
+    )
+  }
+
+  private fun byDoubleProperty(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    AgendaFilters.byDoubleProperty(
+      resultCallback,
+      parameters.getValue("propertyId"),
+      parameters.getValue("propertyValue"),
+    )
+  }
+
+  private fun withProperty(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    AgendaFilters.withProperty(
+      resultCallback,
+      parameters.getValue("propertyId"),
     )
   }
 }

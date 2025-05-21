@@ -29,6 +29,7 @@ import com.icure.cardinal.sdk.js.model.CheckedConverters.arrayToList
 import com.icure.cardinal.sdk.js.model.CheckedConverters.arrayToSet
 import com.icure.cardinal.sdk.js.model.CheckedConverters.intToNumber
 import com.icure.cardinal.sdk.js.model.CheckedConverters.listToArray
+import com.icure.cardinal.sdk.js.model.CheckedConverters.mapToObject
 import com.icure.cardinal.sdk.js.model.CheckedConverters.nullToUndefined
 import com.icure.cardinal.sdk.js.model.CheckedConverters.numberToInt
 import com.icure.cardinal.sdk.js.model.CheckedConverters.numberToLong
@@ -44,6 +45,7 @@ import com.icure.cardinal.sdk.js.model.PatientJs
 import com.icure.cardinal.sdk.js.model.StoredDocumentIdentifierJs
 import com.icure.cardinal.sdk.js.model.UserJs
 import com.icure.cardinal.sdk.js.model.entityReferenceInGroup_fromJs
+import com.icure.cardinal.sdk.js.model.entityReferenceInGroup_toJs
 import com.icure.cardinal.sdk.js.model.groupScoped_fromJs
 import com.icure.cardinal.sdk.js.model.groupScoped_toJs
 import com.icure.cardinal.sdk.js.model.paginatedList_toJs
@@ -2529,8 +2531,8 @@ internal class PatientApiImplJs(
 			)
 		}
 
-		override fun getSecretIdsOf(patient: GroupScopedJs<PatientJs>): Promise<Array<String>> =
-				GlobalScope.promise {
+		override fun getSecretIdsOf(patient: GroupScopedJs<PatientJs>):
+				Promise<Record<String, Array<EntityReferenceInGroupJs>>> = GlobalScope.promise {
 			val patientConverted: GroupScoped<Patient> = groupScoped_fromJs(
 				patient,
 				{ x1: PatientJs ->
@@ -2540,10 +2542,18 @@ internal class PatientApiImplJs(
 			val result = patientApi.inGroup.getSecretIdsOf(
 				patientConverted,
 			)
-			setToArray(
+			mapToObject(
 				result,
 				{ x1: String ->
 					x1
+				},
+				{ x1: Set<EntityReferenceInGroup> ->
+					setToArray(
+						x1,
+						{ x2: EntityReferenceInGroup ->
+							entityReferenceInGroup_toJs(x2)
+						},
+					)
 				},
 			)
 		}
@@ -3081,15 +3091,24 @@ internal class PatientApiImplJs(
 		)
 	}
 
-	override fun getSecretIdsOf(patient: PatientJs): Promise<Array<String>> = GlobalScope.promise {
+	override fun getSecretIdsOf(patient: PatientJs):
+			Promise<Record<String, Array<EntityReferenceInGroupJs>>> = GlobalScope.promise {
 		val patientConverted: Patient = patient_fromJs(patient)
 		val result = patientApi.getSecretIdsOf(
 			patientConverted,
 		)
-		setToArray(
+		mapToObject(
 			result,
 			{ x1: String ->
 				x1
+			},
+			{ x1: Set<EntityReferenceInGroup> ->
+				setToArray(
+					x1,
+					{ x2: EntityReferenceInGroup ->
+						entityReferenceInGroup_toJs(x2)
+					},
+				)
 			},
 		)
 	}

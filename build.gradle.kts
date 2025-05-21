@@ -1,6 +1,5 @@
 import com.github.jk1.license.render.CsvReportRenderer
 import com.github.jk1.license.render.ReportRenderer
-import jdk.tools.jlink.resources.plugins
 
 plugins {
 	kotlinMultiplatform(false)

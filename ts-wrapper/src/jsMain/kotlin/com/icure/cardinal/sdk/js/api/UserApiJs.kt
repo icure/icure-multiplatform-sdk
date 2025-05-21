@@ -13,6 +13,7 @@ import com.icure.cardinal.sdk.js.model.UserGroupJs
 import com.icure.cardinal.sdk.js.model.UserJs
 import com.icure.cardinal.sdk.js.model.couchdb.DocIdentifierJs
 import com.icure.cardinal.sdk.js.model.security.Enable2faRequestJs
+import com.icure.cardinal.sdk.js.model.security.LoginIdentifierJs
 import com.icure.cardinal.sdk.js.model.security.TokenWithGroupJs
 import com.icure.cardinal.sdk.js.subscription.EntitySubscriptionJs
 import com.icure.cardinal.sdk.js.utils.pagination.PaginatedListIteratorJs
@@ -159,6 +160,16 @@ public external interface UserApiJs {
 		groupId: String,
 		`value`: Boolean,
 	): Promise<String>
+
+	public fun setLoginIdentifiers(
+		userId: String,
+		groupId: String,
+		identifier: LoginIdentifierJs,
+		replaceExisting: Boolean,
+	): Promise<Boolean>
+
+	public fun setExternalJwtAuthByIdentifiersForCurrentUser(externalJwtConfigId: String,
+			externalAuthenticationToken: String): Promise<Boolean>
 
 	public fun subscribeToEvents(
 		events: Array<String>,

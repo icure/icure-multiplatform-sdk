@@ -43,6 +43,7 @@ public object GroupApiDispatcher {
     "listAllGroupsIds" -> listAllGroupsIds(parameters, resultCallback)
     "createOrUpdateExternalJwtConfig" -> createOrUpdateExternalJwtConfig(parameters, resultCallback)
     "removeExternalJwtConfig" -> removeExternalJwtConfig(parameters, resultCallback)
+    "getOperationTokenForGroup" -> getOperationTokenForGroup(parameters, resultCallback)
     else -> null
   }?.let { true } ?: false
 
@@ -395,6 +396,22 @@ public object GroupApiDispatcher {
       parameters.getValue("sdkId"),
       parameters.getValue("groupId"),
       parameters.getValue("key"),
+    )
+  }
+
+  private fun getOperationTokenForGroup(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    GroupApi.getOperationTokenForGroup(
+      resultCallback,
+      parameters.getValue("sdkId"),
+      parameters.getValue("groupId"),
+      parameters.getValue("operation"),
+      parameters.getValue("duration"),
+      parameters.getValue("description"),
     )
   }
 }

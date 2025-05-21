@@ -760,4 +760,45 @@ public object GroupApi {
       )
     }
   }
+
+  public fun getOperationTokenForGroup(
+    dartResultCallback: (
+      String?,
+      String?,
+      String?,
+      String?,
+    ) -> Unit,
+    sdkId: String,
+    groupIdString: String,
+    operationString: String,
+    durationString: String,
+    descriptionString: String,
+  ) {
+    val groupId = fullLanguageInteropJson.decodeFromString(
+      String.serializer(),
+      groupIdString
+    )
+    val operation = fullLanguageInteropJson.decodeFromString(
+      Operation.serializer(),
+      operationString
+    )
+    val duration = fullLanguageInteropJson.decodeFromString(
+      Long.serializer().nullable,
+      durationString
+    )
+    val description = fullLanguageInteropJson.decodeFromString(
+      String.serializer().nullable,
+      descriptionString
+    )
+    ApiScope.execute(
+      dartResultCallback,
+      String.serializer()) {
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).group.getOperationTokenForGroup(
+        groupId,
+        operation,
+        duration,
+        description,
+      )
+    }
+  }
 }

@@ -228,4 +228,14 @@ class GroupApi {
 			key,
 		);
 	}
+
+	Future<String> getOperationTokenForGroup(String groupId, Operation operation, int? duration, String? description) async {
+		return await CardinalSdkPlatformInterface.instance.apis.group.getOperationTokenForGroup(
+			_sdkId,
+			groupId,
+			operation,
+			duration,
+			description,
+		);
+	}
 }

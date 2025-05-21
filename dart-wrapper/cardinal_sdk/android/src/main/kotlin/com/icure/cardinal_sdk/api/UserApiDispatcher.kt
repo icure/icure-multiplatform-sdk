@@ -63,6 +63,8 @@ public object UserApiDispatcher {
     "purgeUser" -> purgeUser(parameters, resultCallback)
     "undeleteUser" -> undeleteUser(parameters, resultCallback)
     "setUserInheritsPermissions" -> setUserInheritsPermissions(parameters, resultCallback)
+    "setLoginIdentifiers" -> setLoginIdentifiers(parameters, resultCallback)
+    "setExternalJwtAuthByIdentifiersForCurrentUser" -> setExternalJwtAuthByIdentifiersForCurrentUser(parameters, resultCallback)
     "subscribeToEvents" -> subscribeToEvents(parameters, resultCallback)
     else -> null
   }?.let { true } ?: false
@@ -682,6 +684,37 @@ public object UserApiDispatcher {
       parameters.getValue("userId"),
       parameters.getValue("groupId"),
       parameters.getValue("value"),
+    )
+  }
+
+  private fun setLoginIdentifiers(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    UserApi.setLoginIdentifiers(
+      resultCallback,
+      parameters.getValue("sdkId"),
+      parameters.getValue("userId"),
+      parameters.getValue("groupId"),
+      parameters.getValue("identifier"),
+      parameters.getValue("replaceExisting"),
+    )
+  }
+
+  private fun setExternalJwtAuthByIdentifiersForCurrentUser(parameters: Map<String, String>,
+      resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    UserApi.setExternalJwtAuthByIdentifiersForCurrentUser(
+      resultCallback,
+      parameters.getValue("sdkId"),
+      parameters.getValue("externalJwtConfigId"),
+      parameters.getValue("externalAuthenticationToken"),
     )
   }
 

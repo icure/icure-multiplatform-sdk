@@ -4,9 +4,12 @@ import {Agenda} from '../model/Agenda.mjs';
 import {PaginatedList} from '../model/PaginatedList.mjs';
 import {StoredDocumentIdentifier} from '../model/StoredDocumentIdentifier.mjs';
 import {DocIdentifier} from '../model/couchdb/DocIdentifier.mjs';
+import {AgendaInGroupApi} from './AgendaInGroupApi.mjs';
 
 
 export interface AgendaApi {
+
+	inGroup: AgendaInGroupApi;
 
 	getAllAgendas(startDocumentId: string | undefined,
 			limit: number | undefined): Promise<PaginatedList<Agenda>>;

@@ -11,6 +11,7 @@ import com.icure.cardinal.sdk.js.filters.FilterOptionsJs
 import com.icure.cardinal.sdk.js.filters.SortableFilterOptionsJs
 import com.icure.cardinal.sdk.js.model.DecryptedPatientJs
 import com.icure.cardinal.sdk.js.model.EncryptedPatientJs
+import com.icure.cardinal.sdk.js.model.EntityReferenceInGroupJs
 import com.icure.cardinal.sdk.js.model.PaginatedListJs
 import com.icure.cardinal.sdk.js.model.PatientJs
 import com.icure.cardinal.sdk.js.model.StoredDocumentIdentifierJs
@@ -40,7 +41,8 @@ public external interface PatientApiJs {
 
 	public fun encryptOrValidate(patients: Array<PatientJs>): Promise<Array<EncryptedPatientJs>>
 
-	public fun getSecretIdsOf(patient: PatientJs): Promise<Array<String>>
+	public fun getSecretIdsOf(patient: PatientJs):
+			Promise<Record<String, Array<EntityReferenceInGroupJs>>>
 
 	public fun getEncryptionKeysOf(patient: PatientJs): Promise<Array<String>>
 

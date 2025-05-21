@@ -769,7 +769,7 @@ mixin _$UserSystemMetadata {
   Set<String> get roles;
   bool get isAdmin;
   bool get inheritsRoles;
-  List<Identifier> get loginIdentifiers;
+  List<LoginIdentifier> get loginIdentifiers;
 
   /// Create a copy of UserSystemMetadata
   /// with the given fields replaced by the non-null parameter values.
@@ -816,7 +816,7 @@ abstract mixin class $UserSystemMetadataCopyWith<$Res> {
       {Set<String> roles,
       bool isAdmin,
       bool inheritsRoles,
-      List<Identifier> loginIdentifiers});
+      List<LoginIdentifier> loginIdentifiers});
 }
 
 /// @nodoc
@@ -853,7 +853,7 @@ class _$UserSystemMetadataCopyWithImpl<$Res>
       loginIdentifiers: null == loginIdentifiers
           ? _self.loginIdentifiers
           : loginIdentifiers // ignore: cast_nullable_to_non_nullable
-              as List<Identifier>,
+              as List<LoginIdentifier>,
     ));
   }
 }
@@ -865,7 +865,7 @@ class _UserSystemMetadata implements UserSystemMetadata {
       {required final Set<String> roles,
       required this.isAdmin,
       required this.inheritsRoles,
-      final List<Identifier> loginIdentifiers = const []})
+      final List<LoginIdentifier> loginIdentifiers = const []})
       : _roles = roles,
         _loginIdentifiers = loginIdentifiers;
 
@@ -881,10 +881,10 @@ class _UserSystemMetadata implements UserSystemMetadata {
   final bool isAdmin;
   @override
   final bool inheritsRoles;
-  final List<Identifier> _loginIdentifiers;
+  final List<LoginIdentifier> _loginIdentifiers;
   @override
   @JsonKey()
-  List<Identifier> get loginIdentifiers {
+  List<LoginIdentifier> get loginIdentifiers {
     if (_loginIdentifiers is EqualUnmodifiableListView)
       return _loginIdentifiers;
     // ignore: implicit_dynamic_type
@@ -938,7 +938,7 @@ abstract mixin class _$UserSystemMetadataCopyWith<$Res>
       {Set<String> roles,
       bool isAdmin,
       bool inheritsRoles,
-      List<Identifier> loginIdentifiers});
+      List<LoginIdentifier> loginIdentifiers});
 }
 
 /// @nodoc
@@ -975,7 +975,7 @@ class __$UserSystemMetadataCopyWithImpl<$Res>
       loginIdentifiers: null == loginIdentifiers
           ? _self._loginIdentifiers
           : loginIdentifiers // ignore: cast_nullable_to_non_nullable
-              as List<Identifier>,
+              as List<LoginIdentifier>,
     ));
   }
 }

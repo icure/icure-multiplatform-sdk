@@ -13,6 +13,7 @@ import com.icure.cardinal.sdk.js.model.GroupScopedJs
 import com.icure.cardinal.sdk.js.model.PatientJs
 import com.icure.cardinal.sdk.js.model.StoredDocumentIdentifierJs
 import com.icure.cardinal.sdk.js.synthetic.mapasobjectarray.EntityReferenceInGroupToPatientShareOptionsMapObject_delegate_shareOptions
+import com.icure.cardinal.sdk.js.utils.Record
 import com.icure.cardinal.sdk.js.utils.pagination.PaginatedListIteratorJs
 import kotlin.Array
 import kotlin.Boolean
@@ -38,7 +39,8 @@ public external interface PatientInGroupApiJs {
 	public fun encryptOrValidate(patients: Array<GroupScopedJs<PatientJs>>):
 			Promise<Array<GroupScopedJs<EncryptedPatientJs>>>
 
-	public fun getSecretIdsOf(patient: GroupScopedJs<PatientJs>): Promise<Array<String>>
+	public fun getSecretIdsOf(patient: GroupScopedJs<PatientJs>):
+			Promise<Record<String, Array<EntityReferenceInGroupJs>>>
 
 	public fun getEncryptionKeysOf(patient: GroupScopedJs<PatientJs>): Promise<Array<String>>
 
