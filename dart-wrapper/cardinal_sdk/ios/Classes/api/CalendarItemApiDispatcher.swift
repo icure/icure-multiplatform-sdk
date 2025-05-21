@@ -1091,7 +1091,7 @@ class CalendarItemApiDispatcher {
     String?,
     String?
   ) -> Void) {
-    CalendarItemApi.inGroup.encrypted.shared.shareWith(
+    CalendarItemApi.inGroupEncrypted.shared.shareWith(
     	dartResultCallback: resultCallback,
     	sdkId: parameters["sdkId"]!,
     	delegateString: parameters["delegate"]!,
@@ -1106,7 +1106,7 @@ class CalendarItemApiDispatcher {
     String?,
     String?
   ) -> Void) {
-    CalendarItemApi.inGroup.encrypted.shared.shareWithMany(
+    CalendarItemApi.inGroupEncrypted.shared.shareWithMany(
     	dartResultCallback: resultCallback,
     	sdkId: parameters["sdkId"]!,
     	calendarItemString: parameters["calendarItem"]!,
@@ -1120,7 +1120,7 @@ class CalendarItemApiDispatcher {
     String?,
     String?
   ) -> Void) {
-    CalendarItemApi.inGroup.encrypted.shared.filterCalendarItemsBy(
+    CalendarItemApi.inGroupEncrypted.shared.filterCalendarItemsBy(
     	dartResultCallback: resultCallback,
     	sdkId: parameters["sdkId"]!,
     	groupIdString: parameters["groupId"]!,
@@ -1134,7 +1134,7 @@ class CalendarItemApiDispatcher {
     String?,
     String?
   ) -> Void) {
-    CalendarItemApi.inGroup.encrypted.shared.filterCalendarItemsBySorted(
+    CalendarItemApi.inGroupEncrypted.shared.filterCalendarItemsBySorted(
     	dartResultCallback: resultCallback,
     	sdkId: parameters["sdkId"]!,
     	groupIdString: parameters["groupId"]!,
@@ -1148,7 +1148,7 @@ class CalendarItemApiDispatcher {
     String?,
     String?
   ) -> Void) {
-    CalendarItemApi.inGroup.encrypted.shared.createCalendarItem(
+    CalendarItemApi.inGroupEncrypted.shared.createCalendarItem(
     	dartResultCallback: resultCallback,
     	sdkId: parameters["sdkId"]!,
     	entityString: parameters["entity"]!
@@ -1161,7 +1161,7 @@ class CalendarItemApiDispatcher {
     String?,
     String?
   ) -> Void) {
-    CalendarItemApi.inGroup.encrypted.shared.modifyCalendarItem(
+    CalendarItemApi.inGroupEncrypted.shared.modifyCalendarItem(
     	dartResultCallback: resultCallback,
     	sdkId: parameters["sdkId"]!,
     	entityString: parameters["entity"]!
@@ -1174,7 +1174,7 @@ class CalendarItemApiDispatcher {
     String?,
     String?
   ) -> Void) {
-    CalendarItemApi.inGroup.encrypted.shared.getCalendarItem(
+    CalendarItemApi.inGroupEncrypted.shared.getCalendarItem(
     	dartResultCallback: resultCallback,
     	sdkId: parameters["sdkId"]!,
     	groupIdString: parameters["groupId"]!,
@@ -1188,7 +1188,7 @@ class CalendarItemApiDispatcher {
     String?,
     String?
   ) -> Void) {
-    CalendarItemApi.inGroup.encrypted.shared.getCalendarItems(
+    CalendarItemApi.inGroupEncrypted.shared.getCalendarItems(
     	dartResultCallback: resultCallback,
     	sdkId: parameters["sdkId"]!,
     	groupIdString: parameters["groupId"]!,
@@ -1202,7 +1202,7 @@ class CalendarItemApiDispatcher {
     String?,
     String?
   ) -> Void) {
-    CalendarItemApi.inGroup.tryAndRecover.shared.shareWith(
+    CalendarItemApi.inGroupTryAndRecover.shared.shareWith(
     	dartResultCallback: resultCallback,
     	sdkId: parameters["sdkId"]!,
     	delegateString: parameters["delegate"]!,
@@ -1217,7 +1217,7 @@ class CalendarItemApiDispatcher {
     String?,
     String?
   ) -> Void) {
-    CalendarItemApi.inGroup.tryAndRecover.shared.shareWithMany(
+    CalendarItemApi.inGroupTryAndRecover.shared.shareWithMany(
     	dartResultCallback: resultCallback,
     	sdkId: parameters["sdkId"]!,
     	calendarItemString: parameters["calendarItem"]!,
@@ -1231,7 +1231,7 @@ class CalendarItemApiDispatcher {
     String?,
     String?
   ) -> Void) {
-    CalendarItemApi.inGroup.tryAndRecover.shared.filterCalendarItemsBy(
+    CalendarItemApi.inGroupTryAndRecover.shared.filterCalendarItemsBy(
     	dartResultCallback: resultCallback,
     	sdkId: parameters["sdkId"]!,
     	groupIdString: parameters["groupId"]!,
@@ -1245,7 +1245,7 @@ class CalendarItemApiDispatcher {
     String?,
     String?
   ) -> Void) {
-    CalendarItemApi.inGroup.tryAndRecover.shared.filterCalendarItemsBySorted(
+    CalendarItemApi.inGroupTryAndRecover.shared.filterCalendarItemsBySorted(
     	dartResultCallback: resultCallback,
     	sdkId: parameters["sdkId"]!,
     	groupIdString: parameters["groupId"]!,
@@ -1259,7 +1259,7 @@ class CalendarItemApiDispatcher {
     String?,
     String?
   ) -> Void) {
-    CalendarItemApi.inGroup.tryAndRecover.shared.createCalendarItem(
+    CalendarItemApi.inGroupTryAndRecover.shared.createCalendarItem(
     	dartResultCallback: resultCallback,
     	sdkId: parameters["sdkId"]!,
     	entityString: parameters["entity"]!
@@ -1272,7 +1272,7 @@ class CalendarItemApiDispatcher {
     String?,
     String?
   ) -> Void) {
-    CalendarItemApi.inGroup.tryAndRecover.shared.modifyCalendarItem(
+    CalendarItemApi.inGroupTryAndRecover.shared.modifyCalendarItem(
     	dartResultCallback: resultCallback,
     	sdkId: parameters["sdkId"]!,
     	entityString: parameters["entity"]!
@@ -1285,7 +1285,7 @@ class CalendarItemApiDispatcher {
     String?,
     String?
   ) -> Void) {
-    CalendarItemApi.inGroup.tryAndRecover.shared.getCalendarItem(
+    CalendarItemApi.inGroupTryAndRecover.shared.getCalendarItem(
     	dartResultCallback: resultCallback,
     	sdkId: parameters["sdkId"]!,
     	groupIdString: parameters["groupId"]!,
@@ -1299,7 +1299,7 @@ class CalendarItemApiDispatcher {
     String?,
     String?
   ) -> Void) {
-    CalendarItemApi.inGroup.tryAndRecover.shared.getCalendarItems(
+    CalendarItemApi.inGroupTryAndRecover.shared.getCalendarItems(
     	dartResultCallback: resultCallback,
     	sdkId: parameters["sdkId"]!,
     	groupIdString: parameters["groupId"]!,

@@ -19,8 +19,8 @@ abstract class AgendaFilters {
 		);
 	}
 
-	static Future<BaseFilterOptions<Agenda>> byUser(EntityReferenceInGroup userReference) async {
-		return CardinalSdkPlatformInterface.instance.filters.agenda.byUser(
+	static Future<BaseFilterOptions<Agenda>> byUserInGroup(EntityReferenceInGroup userReference) async {
+		return CardinalSdkPlatformInterface.instance.filters.agenda.byUserInGroup(
 			userReference,
 		);
 	}
@@ -31,8 +31,8 @@ abstract class AgendaFilters {
 		);
 	}
 
-	static Future<BaseFilterOptions<Agenda>> readableByUser(EntityReferenceInGroup userReference) async {
-		return CardinalSdkPlatformInterface.instance.filters.agenda.readableByUser(
+	static Future<BaseFilterOptions<Agenda>> readableByUserInGroup(EntityReferenceInGroup userReference) async {
+		return CardinalSdkPlatformInterface.instance.filters.agenda.readableByUserInGroup(
 			userReference,
 		);
 	}
@@ -43,8 +43,8 @@ abstract class AgendaFilters {
 		);
 	}
 
-	static Future<BaseFilterOptions<Agenda>> readableByUserRights(EntityReferenceInGroup userReference) async {
-		return CardinalSdkPlatformInterface.instance.filters.agenda.readableByUserRights(
+	static Future<BaseFilterOptions<Agenda>> readableByUserRightsInGroup(EntityReferenceInGroup userReference) async {
+		return CardinalSdkPlatformInterface.instance.filters.agenda.readableByUserRightsInGroup(
 			userReference,
 		);
 	}

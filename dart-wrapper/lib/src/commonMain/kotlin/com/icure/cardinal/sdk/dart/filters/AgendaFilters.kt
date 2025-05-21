@@ -52,7 +52,7 @@ public object AgendaFilters {
     }
   }
 
-  public fun byUser(dartResultCallback: (
+  public fun byUserInGroup(dartResultCallback: (
     String?,
     String?,
     String?,
@@ -66,7 +66,7 @@ public object AgendaFilters {
       dartResultCallback,
       BaseFilterOptions.serializer(Agenda.serializer())
     ) {
-      com.icure.cardinal.sdk.filters.AgendaFilters.byUser(
+      com.icure.cardinal.sdk.filters.AgendaFilters.byUserInGroup(
         userReference,
       )
     }
@@ -92,7 +92,7 @@ public object AgendaFilters {
     }
   }
 
-  public fun readableByUser(dartResultCallback: (
+  public fun readableByUserInGroup(dartResultCallback: (
     String?,
     String?,
     String?,
@@ -106,7 +106,7 @@ public object AgendaFilters {
       dartResultCallback,
       BaseFilterOptions.serializer(Agenda.serializer())
     ) {
-      com.icure.cardinal.sdk.filters.AgendaFilters.readableByUser(
+      com.icure.cardinal.sdk.filters.AgendaFilters.readableByUserInGroup(
         userReference,
       )
     }
@@ -132,7 +132,7 @@ public object AgendaFilters {
     }
   }
 
-  public fun readableByUserRights(dartResultCallback: (
+  public fun readableByUserRightsInGroup(dartResultCallback: (
     String?,
     String?,
     String?,
@@ -146,7 +146,7 @@ public object AgendaFilters {
       dartResultCallback,
       BaseFilterOptions.serializer(Agenda.serializer())
     ) {
-      com.icure.cardinal.sdk.filters.AgendaFilters.readableByUserRights(
+      com.icure.cardinal.sdk.filters.AgendaFilters.readableByUserRightsInGroup(
         userReference,
       )
     }

@@ -20,11 +20,11 @@ public object AgendaFiltersDispatcher {
   ): Boolean = when(methodName) {
     "all" -> all(parameters, resultCallback)
     "byUser" -> byUser(parameters, resultCallback)
-    "byUser" -> byUser(parameters, resultCallback)
+    "byUserInGroup" -> byUserInGroup(parameters, resultCallback)
     "readableByUser" -> readableByUser(parameters, resultCallback)
-    "readableByUser" -> readableByUser(parameters, resultCallback)
+    "readableByUserInGroup" -> readableByUserInGroup(parameters, resultCallback)
     "readableByUserRights" -> readableByUserRights(parameters, resultCallback)
-    "readableByUserRights" -> readableByUserRights(parameters, resultCallback)
+    "readableByUserRightsInGroup" -> readableByUserRightsInGroup(parameters, resultCallback)
     "byStringProperty" -> byStringProperty(parameters, resultCallback)
     "byBooleanProperty" -> byBooleanProperty(parameters, resultCallback)
     "byLongProperty" -> byLongProperty(parameters, resultCallback)
@@ -56,13 +56,13 @@ public object AgendaFiltersDispatcher {
     )
   }
 
-  private fun byUser(parameters: Map<String, String>, resultCallback: (
+  private fun byUserInGroup(parameters: Map<String, String>, resultCallback: (
     String?,
     String?,
     String?,
     String?,
   ) -> Unit) {
-    AgendaFilters.byUser(
+    AgendaFilters.byUserInGroup(
       resultCallback,
       parameters.getValue("userReference"),
     )
@@ -80,13 +80,13 @@ public object AgendaFiltersDispatcher {
     )
   }
 
-  private fun readableByUser(parameters: Map<String, String>, resultCallback: (
+  private fun readableByUserInGroup(parameters: Map<String, String>, resultCallback: (
     String?,
     String?,
     String?,
     String?,
   ) -> Unit) {
-    AgendaFilters.readableByUser(
+    AgendaFilters.readableByUserInGroup(
       resultCallback,
       parameters.getValue("userReference"),
     )
@@ -104,13 +104,13 @@ public object AgendaFiltersDispatcher {
     )
   }
 
-  private fun readableByUserRights(parameters: Map<String, String>, resultCallback: (
+  private fun readableByUserRightsInGroup(parameters: Map<String, String>, resultCallback: (
     String?,
     String?,
     String?,
     String?,
   ) -> Unit) {
-    AgendaFilters.readableByUserRights(
+    AgendaFilters.readableByUserRightsInGroup(
       resultCallback,
       parameters.getValue("userReference"),
     )

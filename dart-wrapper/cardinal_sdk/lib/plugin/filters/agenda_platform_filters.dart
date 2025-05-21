@@ -34,14 +34,14 @@ class AgendaPlatformFilters {
 		return BaseFilterOptions.fromJSON(parsedResJson);
 	}
 
-	Future<BaseFilterOptions<Agenda>> byUser(EntityReferenceInGroup userReference) async {
+	Future<BaseFilterOptions<Agenda>> byUserInGroup(EntityReferenceInGroup userReference) async {
 		final res = await _methodChannel.invokeMethod<String>(
-			'AgendaFilters.byUser',
+			'AgendaFilters.byUserInGroup',
 			{
 				"userReference": jsonEncode(EntityReferenceInGroup.encode(userReference)),
 			}
 		).catchError(convertPlatformException);
-		if (res == null) throw AssertionError("received null result from platform method byUser");
+		if (res == null) throw AssertionError("received null result from platform method byUserInGroup");
 		final parsedResJson = jsonDecode(res);
 		return BaseFilterOptions.fromJSON(parsedResJson);
 	}
@@ -58,14 +58,14 @@ class AgendaPlatformFilters {
 		return BaseFilterOptions.fromJSON(parsedResJson);
 	}
 
-	Future<BaseFilterOptions<Agenda>> readableByUser(EntityReferenceInGroup userReference) async {
+	Future<BaseFilterOptions<Agenda>> readableByUserInGroup(EntityReferenceInGroup userReference) async {
 		final res = await _methodChannel.invokeMethod<String>(
-			'AgendaFilters.readableByUser',
+			'AgendaFilters.readableByUserInGroup',
 			{
 				"userReference": jsonEncode(EntityReferenceInGroup.encode(userReference)),
 			}
 		).catchError(convertPlatformException);
-		if (res == null) throw AssertionError("received null result from platform method readableByUser");
+		if (res == null) throw AssertionError("received null result from platform method readableByUserInGroup");
 		final parsedResJson = jsonDecode(res);
 		return BaseFilterOptions.fromJSON(parsedResJson);
 	}
@@ -82,14 +82,14 @@ class AgendaPlatformFilters {
 		return BaseFilterOptions.fromJSON(parsedResJson);
 	}
 
-	Future<BaseFilterOptions<Agenda>> readableByUserRights(EntityReferenceInGroup userReference) async {
+	Future<BaseFilterOptions<Agenda>> readableByUserRightsInGroup(EntityReferenceInGroup userReference) async {
 		final res = await _methodChannel.invokeMethod<String>(
-			'AgendaFilters.readableByUserRights',
+			'AgendaFilters.readableByUserRightsInGroup',
 			{
 				"userReference": jsonEncode(EntityReferenceInGroup.encode(userReference)),
 			}
 		).catchError(convertPlatformException);
-		if (res == null) throw AssertionError("received null result from platform method readableByUserRights");
+		if (res == null) throw AssertionError("received null result from platform method readableByUserRightsInGroup");
 		final parsedResJson = jsonDecode(res);
 		return BaseFilterOptions.fromJSON(parsedResJson);
 	}

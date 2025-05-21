@@ -16,11 +16,11 @@ class AgendaFiltersDispatcher {
     switch methodName {
     case "all": all(parameters: parameters, resultCallback: resultCallback)
     case "byUser": byUser(parameters: parameters, resultCallback: resultCallback)
-    case "byUser": byUser(parameters: parameters, resultCallback: resultCallback)
+    case "byUserInGroup": byUserInGroup(parameters: parameters, resultCallback: resultCallback)
     case "readableByUser": readableByUser(parameters: parameters, resultCallback: resultCallback)
-    case "readableByUser": readableByUser(parameters: parameters, resultCallback: resultCallback)
+    case "readableByUserInGroup": readableByUserInGroup(parameters: parameters, resultCallback: resultCallback)
     case "readableByUserRights": readableByUserRights(parameters: parameters, resultCallback: resultCallback)
-    case "readableByUserRights": readableByUserRights(parameters: parameters, resultCallback: resultCallback)
+    case "readableByUserRightsInGroup": readableByUserRightsInGroup(parameters: parameters, resultCallback: resultCallback)
     case "byStringProperty": byStringProperty(parameters: parameters, resultCallback: resultCallback)
     case "byBooleanProperty": byBooleanProperty(parameters: parameters, resultCallback: resultCallback)
     case "byLongProperty": byLongProperty(parameters: parameters, resultCallback: resultCallback)
@@ -54,13 +54,13 @@ class AgendaFiltersDispatcher {
     )
   }
 
-  private static func byUser(parameters: [String : String], resultCallback: @escaping (
+  private static func byUserInGroup(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
     String?,
     String?
   ) -> Void) {
-    AgendaFilters.shared.byUser(
+    AgendaFilters.shared.byUserInGroup(
     	dartResultCallback: resultCallback,
     	userReferenceString: parameters["userReference"]!
     )
@@ -78,13 +78,13 @@ class AgendaFiltersDispatcher {
     )
   }
 
-  private static func readableByUser(parameters: [String : String], resultCallback: @escaping (
+  private static func readableByUserInGroup(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
     String?,
     String?
   ) -> Void) {
-    AgendaFilters.shared.readableByUser(
+    AgendaFilters.shared.readableByUserInGroup(
     	dartResultCallback: resultCallback,
     	userReferenceString: parameters["userReference"]!
     )
@@ -102,13 +102,13 @@ class AgendaFiltersDispatcher {
     )
   }
 
-  private static func readableByUserRights(parameters: [String : String], resultCallback: @escaping (
+  private static func readableByUserRightsInGroup(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
     String?,
     String?
   ) -> Void) {
-    AgendaFilters.shared.readableByUserRights(
+    AgendaFilters.shared.readableByUserRightsInGroup(
     	dartResultCallback: resultCallback,
     	userReferenceString: parameters["userReference"]!
     )

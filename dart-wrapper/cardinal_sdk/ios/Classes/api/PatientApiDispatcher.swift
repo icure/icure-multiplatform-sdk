@@ -1492,7 +1492,7 @@ class PatientApiDispatcher {
     String?,
     String?
   ) -> Void) {
-    PatientApi.inGroup.encrypted.shared.shareWith(
+    PatientApi.inGroupEncrypted.shared.shareWith(
     	dartResultCallback: resultCallback,
     	sdkId: parameters["sdkId"]!,
     	delegateString: parameters["delegate"]!,
@@ -1507,7 +1507,7 @@ class PatientApiDispatcher {
     String?,
     String?
   ) -> Void) {
-    PatientApi.inGroup.encrypted.shared.shareWithMany(
+    PatientApi.inGroupEncrypted.shared.shareWithMany(
     	dartResultCallback: resultCallback,
     	sdkId: parameters["sdkId"]!,
     	patientString: parameters["patient"]!,
@@ -1521,7 +1521,7 @@ class PatientApiDispatcher {
     String?,
     String?
   ) -> Void) {
-    PatientApi.inGroup.encrypted.shared.initializeConfidentialSecretId(
+    PatientApi.inGroupEncrypted.shared.initializeConfidentialSecretId(
     	dartResultCallback: resultCallback,
     	sdkId: parameters["sdkId"]!,
     	patientString: parameters["patient"]!
@@ -1534,7 +1534,7 @@ class PatientApiDispatcher {
     String?,
     String?
   ) -> Void) {
-    PatientApi.inGroup.encrypted.shared.filterPatientsBy(
+    PatientApi.inGroupEncrypted.shared.filterPatientsBy(
     	dartResultCallback: resultCallback,
     	sdkId: parameters["sdkId"]!,
     	groupIdString: parameters["groupId"]!,
@@ -1548,7 +1548,7 @@ class PatientApiDispatcher {
     String?,
     String?
   ) -> Void) {
-    PatientApi.inGroup.encrypted.shared.filterPatientsBySorted(
+    PatientApi.inGroupEncrypted.shared.filterPatientsBySorted(
     	dartResultCallback: resultCallback,
     	sdkId: parameters["sdkId"]!,
     	groupIdString: parameters["groupId"]!,
@@ -1562,7 +1562,7 @@ class PatientApiDispatcher {
     String?,
     String?
   ) -> Void) {
-    PatientApi.inGroup.encrypted.shared.createPatient(
+    PatientApi.inGroupEncrypted.shared.createPatient(
     	dartResultCallback: resultCallback,
     	sdkId: parameters["sdkId"]!,
     	patientString: parameters["patient"]!
@@ -1575,7 +1575,7 @@ class PatientApiDispatcher {
     String?,
     String?
   ) -> Void) {
-    PatientApi.inGroup.encrypted.shared.createPatientsMinimal(
+    PatientApi.inGroupEncrypted.shared.createPatientsMinimal(
     	dartResultCallback: resultCallback,
     	sdkId: parameters["sdkId"]!,
     	patientsString: parameters["patients"]!
@@ -1588,7 +1588,7 @@ class PatientApiDispatcher {
     String?,
     String?
   ) -> Void) {
-    PatientApi.inGroup.encrypted.shared.createPatients(
+    PatientApi.inGroupEncrypted.shared.createPatients(
     	dartResultCallback: resultCallback,
     	sdkId: parameters["sdkId"]!,
     	patientsString: parameters["patients"]!
@@ -1601,7 +1601,7 @@ class PatientApiDispatcher {
     String?,
     String?
   ) -> Void) {
-    PatientApi.inGroup.encrypted.shared.getPatient(
+    PatientApi.inGroupEncrypted.shared.getPatient(
     	dartResultCallback: resultCallback,
     	sdkId: parameters["sdkId"]!,
     	groupIdString: parameters["groupId"]!,
@@ -1615,7 +1615,7 @@ class PatientApiDispatcher {
     String?,
     String?
   ) -> Void) {
-    PatientApi.inGroup.encrypted.shared.getPatientResolvingMerges(
+    PatientApi.inGroupEncrypted.shared.getPatientResolvingMerges(
     	dartResultCallback: resultCallback,
     	sdkId: parameters["sdkId"]!,
     	groupIdString: parameters["groupId"]!,
@@ -1630,7 +1630,7 @@ class PatientApiDispatcher {
     String?,
     String?
   ) -> Void) {
-    PatientApi.inGroup.encrypted.shared.getPatients(
+    PatientApi.inGroupEncrypted.shared.getPatients(
     	dartResultCallback: resultCallback,
     	sdkId: parameters["sdkId"]!,
     	groupIdString: parameters["groupId"]!,
@@ -1644,7 +1644,7 @@ class PatientApiDispatcher {
     String?,
     String?
   ) -> Void) {
-    PatientApi.inGroup.encrypted.shared.modifyPatientsMinimal(
+    PatientApi.inGroupEncrypted.shared.modifyPatientsMinimal(
     	dartResultCallback: resultCallback,
     	sdkId: parameters["sdkId"]!,
     	patientsString: parameters["patients"]!
@@ -1657,7 +1657,7 @@ class PatientApiDispatcher {
     String?,
     String?
   ) -> Void) {
-    PatientApi.inGroup.encrypted.shared.modifyPatients(
+    PatientApi.inGroupEncrypted.shared.modifyPatients(
     	dartResultCallback: resultCallback,
     	sdkId: parameters["sdkId"]!,
     	patientsString: parameters["patients"]!
@@ -1670,7 +1670,7 @@ class PatientApiDispatcher {
     String?,
     String?
   ) -> Void) {
-    PatientApi.inGroup.tryAndRecover.shared.shareWith(
+    PatientApi.inGroupTryAndRecover.shared.shareWith(
     	dartResultCallback: resultCallback,
     	sdkId: parameters["sdkId"]!,
     	delegateString: parameters["delegate"]!,
@@ -1685,7 +1685,7 @@ class PatientApiDispatcher {
     String?,
     String?
   ) -> Void) {
-    PatientApi.inGroup.tryAndRecover.shared.shareWithMany(
+    PatientApi.inGroupTryAndRecover.shared.shareWithMany(
     	dartResultCallback: resultCallback,
     	sdkId: parameters["sdkId"]!,
     	patientString: parameters["patient"]!,
@@ -1699,7 +1699,7 @@ class PatientApiDispatcher {
     String?,
     String?
   ) -> Void) {
-    PatientApi.inGroup.tryAndRecover.shared.initializeConfidentialSecretId(
+    PatientApi.inGroupTryAndRecover.shared.initializeConfidentialSecretId(
     	dartResultCallback: resultCallback,
     	sdkId: parameters["sdkId"]!,
     	patientString: parameters["patient"]!
@@ -1712,7 +1712,7 @@ class PatientApiDispatcher {
     String?,
     String?
   ) -> Void) {
-    PatientApi.inGroup.tryAndRecover.shared.filterPatientsBy(
+    PatientApi.inGroupTryAndRecover.shared.filterPatientsBy(
     	dartResultCallback: resultCallback,
     	sdkId: parameters["sdkId"]!,
     	groupIdString: parameters["groupId"]!,
@@ -1726,7 +1726,7 @@ class PatientApiDispatcher {
     String?,
     String?
   ) -> Void) {
-    PatientApi.inGroup.tryAndRecover.shared.filterPatientsBySorted(
+    PatientApi.inGroupTryAndRecover.shared.filterPatientsBySorted(
     	dartResultCallback: resultCallback,
     	sdkId: parameters["sdkId"]!,
     	groupIdString: parameters["groupId"]!,
@@ -1740,7 +1740,7 @@ class PatientApiDispatcher {
     String?,
     String?
   ) -> Void) {
-    PatientApi.inGroup.tryAndRecover.shared.createPatient(
+    PatientApi.inGroupTryAndRecover.shared.createPatient(
     	dartResultCallback: resultCallback,
     	sdkId: parameters["sdkId"]!,
     	patientString: parameters["patient"]!
@@ -1753,7 +1753,7 @@ class PatientApiDispatcher {
     String?,
     String?
   ) -> Void) {
-    PatientApi.inGroup.tryAndRecover.shared.createPatientsMinimal(
+    PatientApi.inGroupTryAndRecover.shared.createPatientsMinimal(
     	dartResultCallback: resultCallback,
     	sdkId: parameters["sdkId"]!,
     	patientsString: parameters["patients"]!
@@ -1766,7 +1766,7 @@ class PatientApiDispatcher {
     String?,
     String?
   ) -> Void) {
-    PatientApi.inGroup.tryAndRecover.shared.createPatients(
+    PatientApi.inGroupTryAndRecover.shared.createPatients(
     	dartResultCallback: resultCallback,
     	sdkId: parameters["sdkId"]!,
     	patientsString: parameters["patients"]!
@@ -1779,7 +1779,7 @@ class PatientApiDispatcher {
     String?,
     String?
   ) -> Void) {
-    PatientApi.inGroup.tryAndRecover.shared.getPatient(
+    PatientApi.inGroupTryAndRecover.shared.getPatient(
     	dartResultCallback: resultCallback,
     	sdkId: parameters["sdkId"]!,
     	groupIdString: parameters["groupId"]!,
@@ -1793,7 +1793,7 @@ class PatientApiDispatcher {
     String?,
     String?
   ) -> Void) {
-    PatientApi.inGroup.tryAndRecover.shared.getPatientResolvingMerges(
+    PatientApi.inGroupTryAndRecover.shared.getPatientResolvingMerges(
     	dartResultCallback: resultCallback,
     	sdkId: parameters["sdkId"]!,
     	groupIdString: parameters["groupId"]!,
@@ -1808,7 +1808,7 @@ class PatientApiDispatcher {
     String?,
     String?
   ) -> Void) {
-    PatientApi.inGroup.tryAndRecover.shared.getPatients(
+    PatientApi.inGroupTryAndRecover.shared.getPatients(
     	dartResultCallback: resultCallback,
     	sdkId: parameters["sdkId"]!,
     	groupIdString: parameters["groupId"]!,
@@ -1822,7 +1822,7 @@ class PatientApiDispatcher {
     String?,
     String?
   ) -> Void) {
-    PatientApi.inGroup.tryAndRecover.shared.modifyPatientsMinimal(
+    PatientApi.inGroupTryAndRecover.shared.modifyPatientsMinimal(
     	dartResultCallback: resultCallback,
     	sdkId: parameters["sdkId"]!,
     	patientsString: parameters["patients"]!
@@ -1835,7 +1835,7 @@ class PatientApiDispatcher {
     String?,
     String?
   ) -> Void) {
-    PatientApi.inGroup.tryAndRecover.shared.modifyPatients(
+    PatientApi.inGroupTryAndRecover.shared.modifyPatients(
     	dartResultCallback: resultCallback,
     	sdkId: parameters["sdkId"]!,
     	patientsString: parameters["patients"]!

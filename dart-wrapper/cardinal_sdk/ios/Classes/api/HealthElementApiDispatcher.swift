@@ -990,7 +990,7 @@ class HealthElementApiDispatcher {
     String?,
     String?
   ) -> Void) {
-    HealthElementApi.inGroup.encrypted.shared.shareWith(
+    HealthElementApi.inGroupEncrypted.shared.shareWith(
     	dartResultCallback: resultCallback,
     	sdkId: parameters["sdkId"]!,
     	delegateString: parameters["delegate"]!,
@@ -1005,7 +1005,7 @@ class HealthElementApiDispatcher {
     String?,
     String?
   ) -> Void) {
-    HealthElementApi.inGroup.encrypted.shared.shareWithMany(
+    HealthElementApi.inGroupEncrypted.shared.shareWithMany(
     	dartResultCallback: resultCallback,
     	sdkId: parameters["sdkId"]!,
     	healthElementString: parameters["healthElement"]!,
@@ -1019,7 +1019,7 @@ class HealthElementApiDispatcher {
     String?,
     String?
   ) -> Void) {
-    HealthElementApi.inGroup.encrypted.shared.createHealthElement(
+    HealthElementApi.inGroupEncrypted.shared.createHealthElement(
     	dartResultCallback: resultCallback,
     	sdkId: parameters["sdkId"]!,
     	entityString: parameters["entity"]!
@@ -1032,7 +1032,7 @@ class HealthElementApiDispatcher {
     String?,
     String?
   ) -> Void) {
-    HealthElementApi.inGroup.encrypted.shared.modifyHealthElement(
+    HealthElementApi.inGroupEncrypted.shared.modifyHealthElement(
     	dartResultCallback: resultCallback,
     	sdkId: parameters["sdkId"]!,
     	entityString: parameters["entity"]!
@@ -1045,7 +1045,7 @@ class HealthElementApiDispatcher {
     String?,
     String?
   ) -> Void) {
-    HealthElementApi.inGroup.encrypted.shared.getHealthElement(
+    HealthElementApi.inGroupEncrypted.shared.getHealthElement(
     	dartResultCallback: resultCallback,
     	sdkId: parameters["sdkId"]!,
     	groupIdString: parameters["groupId"]!,
@@ -1059,7 +1059,7 @@ class HealthElementApiDispatcher {
     String?,
     String?
   ) -> Void) {
-    HealthElementApi.inGroup.tryAndRecover.shared.shareWith(
+    HealthElementApi.inGroupTryAndRecover.shared.shareWith(
     	dartResultCallback: resultCallback,
     	sdkId: parameters["sdkId"]!,
     	delegateString: parameters["delegate"]!,
@@ -1074,7 +1074,7 @@ class HealthElementApiDispatcher {
     String?,
     String?
   ) -> Void) {
-    HealthElementApi.inGroup.tryAndRecover.shared.shareWithMany(
+    HealthElementApi.inGroupTryAndRecover.shared.shareWithMany(
     	dartResultCallback: resultCallback,
     	sdkId: parameters["sdkId"]!,
     	healthElementString: parameters["healthElement"]!,
@@ -1088,7 +1088,7 @@ class HealthElementApiDispatcher {
     String?,
     String?
   ) -> Void) {
-    HealthElementApi.inGroup.tryAndRecover.shared.createHealthElement(
+    HealthElementApi.inGroupTryAndRecover.shared.createHealthElement(
     	dartResultCallback: resultCallback,
     	sdkId: parameters["sdkId"]!,
     	entityString: parameters["entity"]!
@@ -1101,7 +1101,7 @@ class HealthElementApiDispatcher {
     String?,
     String?
   ) -> Void) {
-    HealthElementApi.inGroup.tryAndRecover.shared.modifyHealthElement(
+    HealthElementApi.inGroupTryAndRecover.shared.modifyHealthElement(
     	dartResultCallback: resultCallback,
     	sdkId: parameters["sdkId"]!,
     	entityString: parameters["entity"]!
@@ -1114,7 +1114,7 @@ class HealthElementApiDispatcher {
     String?,
     String?
   ) -> Void) {
-    HealthElementApi.inGroup.tryAndRecover.shared.getHealthElement(
+    HealthElementApi.inGroupTryAndRecover.shared.getHealthElement(
     	dartResultCallback: resultCallback,
     	sdkId: parameters["sdkId"]!,
     	groupIdString: parameters["groupId"]!,
