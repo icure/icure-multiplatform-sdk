@@ -3,14 +3,16 @@ import 'package:cardinal_sdk/model/base/code_stub.dart';
 import 'package:cardinal_sdk/model/specializations/base64string.dart';
 import 'package:cardinal_sdk/model/embed/schooling_info.dart';
 import 'package:cardinal_sdk/model/embed/encryptable.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+part "schooling_info.freezed.dart";
 
 
 sealed class SchoolingInfo implements Encryptable {
-	abstract int? startDate;
-	abstract int? endDate;
-	abstract String? school;
-	abstract CodeStub? typeOfEducation;
-	@override abstract Base64String? encryptedSelf;
+	abstract final int? startDate;
+	abstract final int? endDate;
+	abstract final String? school;
+	abstract final CodeStub? typeOfEducation;
+	@override abstract final Base64String? encryptedSelf;
 
 	static Map<String, dynamic> encode(SchoolingInfo value) {
 		switch (value) {
@@ -41,22 +43,16 @@ sealed class SchoolingInfo implements Encryptable {
 	}
 }
 
-class EncryptedSchoolingInfo implements SchoolingInfo {
-	@override int? startDate = null;
-	@override int? endDate = null;
-	@override String? school = null;
-	@override CodeStub? typeOfEducation = null;
-	@override Base64String? encryptedSelf;
-	EncryptedSchoolingInfo({
-			this.encryptedSelf,
-			int? startDate,
-			int? endDate,
-			String? school,
-			CodeStub? typeOfEducation
-		}) : startDate = startDate ?? null,
-		endDate = endDate ?? null,
-		school = school ?? null,
-		typeOfEducation = typeOfEducation ?? null;
+@freezed
+abstract class EncryptedSchoolingInfo with _$EncryptedSchoolingInfo implements SchoolingInfo {
+	const factory EncryptedSchoolingInfo({
+		@Default(null) int? startDate,
+		@Default(null) int? endDate,
+		@Default(null) String? school,
+		@Default(null) CodeStub? typeOfEducation,
+		required Base64String? encryptedSelf,
+	}) = _EncryptedSchoolingInfo;
+
 
 	static Map<String, dynamic> encode(EncryptedSchoolingInfo value) {
 		Map<String, dynamic> entityAsMap = {
@@ -80,22 +76,16 @@ class EncryptedSchoolingInfo implements SchoolingInfo {
 	}
 }
 
-class DecryptedSchoolingInfo implements SchoolingInfo {
-	@override int? startDate = null;
-	@override int? endDate = null;
-	@override String? school = null;
-	@override CodeStub? typeOfEducation = null;
-	@override Base64String? encryptedSelf;
-	DecryptedSchoolingInfo({
-			this.encryptedSelf,
-			int? startDate,
-			int? endDate,
-			String? school,
-			CodeStub? typeOfEducation
-		}) : startDate = startDate ?? null,
-		endDate = endDate ?? null,
-		school = school ?? null,
-		typeOfEducation = typeOfEducation ?? null;
+@freezed
+abstract class DecryptedSchoolingInfo with _$DecryptedSchoolingInfo implements SchoolingInfo {
+	const factory DecryptedSchoolingInfo({
+		@Default(null) int? startDate,
+		@Default(null) int? endDate,
+		@Default(null) String? school,
+		@Default(null) CodeStub? typeOfEducation,
+		required Base64String? encryptedSelf,
+	}) = _DecryptedSchoolingInfo;
+
 
 	static Map<String, dynamic> encode(DecryptedSchoolingInfo value) {
 		Map<String, dynamic> entityAsMap = {

@@ -5,7 +5,7 @@ import 'package:cardinal_sdk/model/id_with_rev.dart';
 import 'package:cardinal_sdk/filters/filter_options.dart';
 import 'package:cardinal_sdk/utils/pagination/paginated_list_iterator.dart';
 import 'package:cardinal_sdk/model/couchdb/doc_identifier.dart';
-import 'package:cardinal_sdk/model/id_with_mandatory_rev.dart';
+import 'package:cardinal_sdk/model/stored_document_identifier.dart';
 import 'package:cardinal_sdk/subscription/subscription_event_type.dart';
 import 'package:cardinal_sdk/subscription/entity_subscription_configuration.dart';
 import 'package:cardinal_sdk/subscription/entity_subscription.dart';
@@ -19,7 +19,7 @@ class DeviceApi {
 		this._dartSdk
 		);
 
-	Future<Device> getDevice(String deviceId) async {
+	Future<Device?> getDevice(String deviceId) async {
 		return await CardinalSdkPlatformInterface.instance.apis.device.getDevice(
 			_sdkId,
 			deviceId,
@@ -97,7 +97,7 @@ class DeviceApi {
 		);
 	}
 
-	Future<List<DocIdentifier>> deleteDevicesByIds(List<IdWithMandatoryRev> entityIds) async {
+	Future<List<DocIdentifier>> deleteDevicesByIds(List<StoredDocumentIdentifier> entityIds) async {
 		return await CardinalSdkPlatformInterface.instance.apis.device.deleteDevicesByIds(
 			_sdkId,
 			entityIds,

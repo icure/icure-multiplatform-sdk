@@ -1,88 +1,45 @@
 // auto-generated file
 import 'package:cardinal_sdk/model/base/code_stub.dart';
-import 'dart:typed_data';
+import 'dart:convert';
 import 'package:cardinal_sdk/model/embed/document_type.dart';
 import 'package:cardinal_sdk/model/base/report_version.dart';
 import 'package:cardinal_sdk/model/embed/document_group.dart';
-import 'dart:convert';
 import 'package:cardinal_sdk/model/base/stored_document.dart';
 import 'package:cardinal_sdk/model/base/icure_document.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+import 'dart:typed_data';
+part "document_template.freezed.dart";
 
 
-class DocumentTemplate implements StoredDocument, ICureDocument<String> {
-	@override String id;
-	@override String? rev = null;
-	@override int? created = null;
-	@override int? modified = null;
-	@override String? author = null;
-	@override String? responsible = null;
-	@override String? medicalLocationId = null;
-	@override Set<CodeStub> tags = {};
-	@override Set<CodeStub> codes = {};
-	@override int? endOfLife = null;
-	@override int? deletionDate = null;
-	Uint8List? attachment = null;
-	DocumentType? documentType = null;
-	String? mainUti = null;
-	String? name = null;
-	Set<String> otherUtis = {};
-	String? attachmentId = null;
-	ReportVersion? version = null;
-	String? owner = null;
-	String? guid = null;
-	DocumentGroup? group = null;
-	String? descr = null;
-	String? disabled = null;
-	CodeStub? specialty = null;
-	DocumentTemplate(
-		this.id,
-		{
-			String? rev,
-			int? created,
-			int? modified,
-			String? author,
-			String? responsible,
-			String? medicalLocationId,
-			Set<CodeStub>? tags,
-			Set<CodeStub>? codes,
-			int? endOfLife,
-			int? deletionDate,
-			Uint8List? attachment,
-			DocumentType? documentType,
-			String? mainUti,
-			String? name,
-			Set<String>? otherUtis,
-			String? attachmentId,
-			ReportVersion? version,
-			String? owner,
-			String? guid,
-			DocumentGroup? group,
-			String? descr,
-			String? disabled,
-			CodeStub? specialty
-		}) : rev = rev ?? null,
-		created = created ?? null,
-		modified = modified ?? null,
-		author = author ?? null,
-		responsible = responsible ?? null,
-		medicalLocationId = medicalLocationId ?? null,
-		tags = tags ?? {},
-		codes = codes ?? {},
-		endOfLife = endOfLife ?? null,
-		deletionDate = deletionDate ?? null,
-		attachment = attachment ?? null,
-		documentType = documentType ?? null,
-		mainUti = mainUti ?? null,
-		name = name ?? null,
-		otherUtis = otherUtis ?? {},
-		attachmentId = attachmentId ?? null,
-		version = version ?? null,
-		owner = owner ?? null,
-		guid = guid ?? null,
-		group = group ?? null,
-		descr = descr ?? null,
-		disabled = disabled ?? null,
-		specialty = specialty ?? null;
+@freezed
+abstract class DocumentTemplate with _$DocumentTemplate implements StoredDocument, ICureDocument<String> {
+	const factory DocumentTemplate({
+		required String id,
+		@Default(null) String? rev,
+		@Default(null) int? created,
+		@Default(null) int? modified,
+		@Default(null) String? author,
+		@Default(null) String? responsible,
+		@Default(null) String? medicalLocationId,
+		@Default({}) Set<CodeStub> tags,
+		@Default({}) Set<CodeStub> codes,
+		@Default(null) int? endOfLife,
+		@Default(null) int? deletionDate,
+		@Default(null) Uint8List? attachment,
+		@Default(null) DocumentType? documentType,
+		@Default(null) String? mainUti,
+		@Default(null) String? name,
+		@Default({}) Set<String> otherUtis,
+		@Default(null) String? attachmentId,
+		@Default(null) ReportVersion? version,
+		@Default(null) String? owner,
+		@Default(null) String? guid,
+		@Default(null) DocumentGroup? group,
+		@Default(null) String? descr,
+		@Default(null) String? disabled,
+		@Default(null) CodeStub? specialty,
+	}) = _DocumentTemplate;
+
 
 	static Map<String, dynamic> encode(DocumentTemplate value) {
 		Map<String, dynamic> entityAsMap = {
@@ -116,7 +73,7 @@ class DocumentTemplate implements StoredDocument, ICureDocument<String> {
 
 	static DocumentTemplate fromJSON(Map<String, dynamic> data) {
 		return DocumentTemplate(
-			(data["id"] as String),
+			id: (data["id"] as String),
 			rev: (data["rev"] as String?),
 			created: (data["created"] as int?),
 			modified: (data["modified"] as int?),

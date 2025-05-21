@@ -1,20 +1,19 @@
 // auto-generated file
 import 'package:cardinal_sdk/model/filter/predicate/operator.dart';
-import 'package:cardinal_sdk/model/specializations/any_primitive.dart';
 import 'package:cardinal_sdk/model/filter/predicate/predicate.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:cardinal_sdk/model/specializations/any_primitive.dart';
+part "key_value_predicate.freezed.dart";
 
 
-class KeyValuePredicate implements Predicate {
-	String? key = null;
-	Operator? operator = null;
-	AnyPrimitive? value = null;
-	KeyValuePredicate({
-			String? key,
-			Operator? operator,
-			AnyPrimitive? value
-		}) : key = key ?? null,
-		operator = operator ?? null,
-		value = value ?? null;
+@freezed
+abstract class KeyValuePredicate with _$KeyValuePredicate implements Predicate {
+	const factory KeyValuePredicate({
+		@Default(null) String? key,
+		@Default(null) Operator? operator,
+		@Default(null) AnyPrimitive? value,
+	}) = _KeyValuePredicate;
+
 
 	static Map<String, dynamic> encode(KeyValuePredicate value) {
 		Map<String, dynamic> entityAsMap = {

@@ -6,7 +6,7 @@ import 'dart:convert';
 import 'package:cardinal_sdk/utils/internal/platform_exception_convertion.dart';
 import 'package:cardinal_sdk/utils/pagination/paginated_list_iterator.dart';
 import 'package:cardinal_sdk/model/couchdb/doc_identifier.dart';
-import 'package:cardinal_sdk/model/id_with_mandatory_rev.dart';
+import 'package:cardinal_sdk/model/stored_document_identifier.dart';
 import 'dart:typed_data';
 
 
@@ -80,12 +80,12 @@ class DocumentBasicPlatformApi {
 		return DocIdentifier.fromJSON(parsedResJson);
 	}
 
-	Future<List<DocIdentifier>> deleteDocumentsByIds(String sdkId, List<IdWithMandatoryRev> entityIds) async {
+	Future<List<DocIdentifier>> deleteDocumentsByIds(String sdkId, List<StoredDocumentIdentifier> entityIds) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'DocumentBasicApi.deleteDocumentsByIds',
 			{
 				"sdkId": sdkId,
-				"entityIds": jsonEncode(entityIds.map((x0) => IdWithMandatoryRev.encode(x0)).toList()),
+				"entityIds": jsonEncode(entityIds.map((x0) => StoredDocumentIdentifier.encode(x0)).toList()),
 			}
 		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method deleteDocumentsByIds");
@@ -231,6 +231,19 @@ class DocumentBasicPlatformApi {
 		return EncryptedDocument.fromJSON(parsedResJson);
 	}
 
+	Future<EncryptedDocument> createDocument(String sdkId, EncryptedDocument entity) async {
+		final res = await _methodChannel.invokeMethod<String>(
+			'DocumentBasicApi.createDocument',
+			{
+				"sdkId": sdkId,
+				"entity": jsonEncode(EncryptedDocument.encode(entity)),
+			}
+		).catchError(convertPlatformException);
+		if (res == null) throw AssertionError("received null result from platform method createDocument");
+		final parsedResJson = jsonDecode(res);
+		return EncryptedDocument.fromJSON(parsedResJson);
+	}
+
 	Future<EncryptedDocument> undeleteDocumentById(String sdkId, String id, String rev) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'DocumentBasicApi.undeleteDocumentById',
@@ -271,7 +284,7 @@ class DocumentBasicPlatformApi {
 		return EncryptedDocument.fromJSON(parsedResJson);
 	}
 
-	Future<EncryptedDocument> getDocument(String sdkId, String entityId) async {
+	Future<EncryptedDocument?> getDocument(String sdkId, String entityId) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'DocumentBasicApi.getDocument',
 			{
@@ -281,7 +294,7 @@ class DocumentBasicPlatformApi {
 		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getDocument");
 		final parsedResJson = jsonDecode(res);
-		return EncryptedDocument.fromJSON(parsedResJson);
+		return parsedResJson == null ? null : EncryptedDocument.fromJSON(parsedResJson);
 	}
 
 	Future<List<EncryptedDocument>> getDocuments(String sdkId, List<String> entityIds) async {

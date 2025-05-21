@@ -1,15 +1,16 @@
 // auto-generated file
+import 'package:freezed_annotation/freezed_annotation.dart';
+part "registration_success.freezed.dart";
 
 
-class RegistrationSuccess {
-	String groupId;
-	String userId;
-	String token;
-	RegistrationSuccess(
-		this.groupId,
-		this.userId,
-		this.token
-		);
+@freezed
+abstract class RegistrationSuccess with _$RegistrationSuccess {
+	const factory RegistrationSuccess({
+		required String groupId,
+		required String userId,
+		required String token,
+	}) = _RegistrationSuccess;
+
 
 	static Map<String, dynamic> encode(RegistrationSuccess value) {
 		Map<String, dynamic> entityAsMap = {
@@ -22,9 +23,9 @@ class RegistrationSuccess {
 
 	static RegistrationSuccess fromJSON(Map<String, dynamic> data) {
 		return RegistrationSuccess(
-			(data["groupId"] as String),
-			(data["userId"] as String),
-			(data["token"] as String)
+			groupId: (data["groupId"] as String),
+			userId: (data["userId"] as String),
+			token: (data["token"] as String)
 		);
 	}
 }

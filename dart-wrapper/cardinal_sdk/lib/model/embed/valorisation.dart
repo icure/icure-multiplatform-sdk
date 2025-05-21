@@ -2,20 +2,22 @@
 import 'package:cardinal_sdk/model/specializations/base64string.dart';
 import 'package:cardinal_sdk/model/embed/valorisation.dart';
 import 'package:cardinal_sdk/model/embed/encryptable.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+part "valorisation.freezed.dart";
 
 
 sealed class Valorisation implements Encryptable {
-	abstract int? startOfValidity;
-	abstract int? endOfValidity;
-	abstract String? predicate;
-	abstract List<int>? reference;
-	abstract double? totalAmount;
-	abstract double? reimbursement;
-	abstract double? patientIntervention;
-	abstract double? doctorSupplement;
-	abstract double? vat;
-	abstract Map<String, String>? label;
-	@override abstract Base64String? encryptedSelf;
+	abstract final int? startOfValidity;
+	abstract final int? endOfValidity;
+	abstract final String? predicate;
+	abstract final List<int>? reference;
+	abstract final double? totalAmount;
+	abstract final double? reimbursement;
+	abstract final double? patientIntervention;
+	abstract final double? doctorSupplement;
+	abstract final double? vat;
+	abstract final Map<String, String>? label;
+	@override abstract final Base64String? encryptedSelf;
 
 	static Map<String, dynamic> encode(Valorisation value) {
 		switch (value) {
@@ -46,41 +48,22 @@ sealed class Valorisation implements Encryptable {
 	}
 }
 
-class EncryptedValorisation implements Valorisation {
-	@override int? startOfValidity = null;
-	@override int? endOfValidity = null;
-	@override String? predicate = null;
-	@override List<int>? reference = null;
-	@override double? totalAmount = null;
-	@override double? reimbursement = null;
-	@override double? patientIntervention = null;
-	@override double? doctorSupplement = null;
-	@override double? vat = null;
-	@override Map<String, String>? label = {};
-	@override Base64String? encryptedSelf = null;
-	EncryptedValorisation({
-			int? startOfValidity,
-			int? endOfValidity,
-			String? predicate,
-			List<int>? reference,
-			double? totalAmount,
-			double? reimbursement,
-			double? patientIntervention,
-			double? doctorSupplement,
-			double? vat,
-			Map<String, String>? label,
-			Base64String? encryptedSelf
-		}) : startOfValidity = startOfValidity ?? null,
-		endOfValidity = endOfValidity ?? null,
-		predicate = predicate ?? null,
-		reference = reference ?? null,
-		totalAmount = totalAmount ?? null,
-		reimbursement = reimbursement ?? null,
-		patientIntervention = patientIntervention ?? null,
-		doctorSupplement = doctorSupplement ?? null,
-		vat = vat ?? null,
-		label = label ?? {},
-		encryptedSelf = encryptedSelf ?? null;
+@freezed
+abstract class EncryptedValorisation with _$EncryptedValorisation implements Valorisation {
+	const factory EncryptedValorisation({
+		@Default(null) int? startOfValidity,
+		@Default(null) int? endOfValidity,
+		@Default(null) String? predicate,
+		@Default(null) List<int>? reference,
+		@Default(null) double? totalAmount,
+		@Default(null) double? reimbursement,
+		@Default(null) double? patientIntervention,
+		@Default(null) double? doctorSupplement,
+		@Default(null) double? vat,
+		@Default({}) Map<String, String>? label,
+		@Default(null) Base64String? encryptedSelf,
+	}) = _EncryptedValorisation;
+
 
 	static Map<String, dynamic> encode(EncryptedValorisation value) {
 		Map<String, dynamic> entityAsMap = {
@@ -116,41 +99,22 @@ class EncryptedValorisation implements Valorisation {
 	}
 }
 
-class DecryptedValorisation implements Valorisation {
-	@override int? startOfValidity = null;
-	@override int? endOfValidity = null;
-	@override String? predicate = null;
-	@override List<int>? reference = null;
-	@override double? totalAmount = null;
-	@override double? reimbursement = null;
-	@override double? patientIntervention = null;
-	@override double? doctorSupplement = null;
-	@override double? vat = null;
-	@override Map<String, String>? label = {};
-	@override Base64String? encryptedSelf = null;
-	DecryptedValorisation({
-			int? startOfValidity,
-			int? endOfValidity,
-			String? predicate,
-			List<int>? reference,
-			double? totalAmount,
-			double? reimbursement,
-			double? patientIntervention,
-			double? doctorSupplement,
-			double? vat,
-			Map<String, String>? label,
-			Base64String? encryptedSelf
-		}) : startOfValidity = startOfValidity ?? null,
-		endOfValidity = endOfValidity ?? null,
-		predicate = predicate ?? null,
-		reference = reference ?? null,
-		totalAmount = totalAmount ?? null,
-		reimbursement = reimbursement ?? null,
-		patientIntervention = patientIntervention ?? null,
-		doctorSupplement = doctorSupplement ?? null,
-		vat = vat ?? null,
-		label = label ?? {},
-		encryptedSelf = encryptedSelf ?? null;
+@freezed
+abstract class DecryptedValorisation with _$DecryptedValorisation implements Valorisation {
+	const factory DecryptedValorisation({
+		@Default(null) int? startOfValidity,
+		@Default(null) int? endOfValidity,
+		@Default(null) String? predicate,
+		@Default(null) List<int>? reference,
+		@Default(null) double? totalAmount,
+		@Default(null) double? reimbursement,
+		@Default(null) double? patientIntervention,
+		@Default(null) double? doctorSupplement,
+		@Default(null) double? vat,
+		@Default({}) Map<String, String>? label,
+		@Default(null) Base64String? encryptedSelf,
+	}) = _DecryptedValorisation;
+
 
 	static Map<String, dynamic> encode(DecryptedValorisation value) {
 		Map<String, dynamic> entityAsMap = {

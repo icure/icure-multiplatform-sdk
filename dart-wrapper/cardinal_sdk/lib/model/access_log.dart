@@ -8,32 +8,34 @@ import 'package:cardinal_sdk/model/base/stored_document.dart';
 import 'package:cardinal_sdk/model/base/icure_document.dart';
 import 'package:cardinal_sdk/model/base/has_encryption_metadata.dart';
 import 'package:cardinal_sdk/model/embed/encryptable.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+part "access_log.freezed.dart";
 
 
 sealed class AccessLog implements StoredDocument, ICureDocument<String>, HasEncryptionMetadata, Encryptable {
-	@override abstract String id;
-	@override abstract String? rev;
-	@override abstract int? created;
-	@override abstract int? modified;
-	@override abstract String? author;
-	@override abstract String? responsible;
-	@override abstract String? medicalLocationId;
-	@override abstract Set<CodeStub> tags;
-	@override abstract Set<CodeStub> codes;
-	@override abstract int? endOfLife;
-	@override abstract int? deletionDate;
-	abstract String? objectId;
-	abstract String? accessType;
-	abstract String? user;
-	abstract String? detail;
-	abstract DateTime? date;
-	abstract String? patientId;
-	@override abstract Set<String> secretForeignKeys;
-	@override abstract Map<String, Set<Delegation>> cryptedForeignKeys;
-	@override abstract Map<String, Set<Delegation>> delegations;
-	@override abstract Map<String, Set<Delegation>> encryptionKeys;
-	@override abstract Base64String? encryptedSelf;
-	@override abstract SecurityMetadata? securityMetadata;
+	@override abstract final String id;
+	@override abstract final String? rev;
+	@override abstract final int? created;
+	@override abstract final int? modified;
+	@override abstract final String? author;
+	@override abstract final String? responsible;
+	@override abstract final String? medicalLocationId;
+	@override abstract final Set<CodeStub> tags;
+	@override abstract final Set<CodeStub> codes;
+	@override abstract final int? endOfLife;
+	@override abstract final int? deletionDate;
+	abstract final String? objectId;
+	abstract final String? accessType;
+	abstract final String? user;
+	abstract final String? detail;
+	abstract final DateTime? date;
+	abstract final String? patientId;
+	@override abstract final Set<String> secretForeignKeys;
+	@override abstract final Map<String, Set<Delegation>> cryptedForeignKeys;
+	@override abstract final Map<String, Set<Delegation>> delegations;
+	@override abstract final Map<String, Set<Delegation>> encryptionKeys;
+	@override abstract final Base64String? encryptedSelf;
+	@override abstract final SecurityMetadata? securityMetadata;
 
 	static Map<String, dynamic> encode(AccessLog value) {
 		switch (value) {
@@ -64,77 +66,34 @@ sealed class AccessLog implements StoredDocument, ICureDocument<String>, HasEncr
 	}
 }
 
-class DecryptedAccessLog implements AccessLog {
-	@override String id;
-	@override String? rev = null;
-	@override int? created = null;
-	@override int? modified = null;
-	@override String? author = null;
-	@override String? responsible = null;
-	@override String? medicalLocationId = null;
-	@override Set<CodeStub> tags = {};
-	@override Set<CodeStub> codes = {};
-	@override int? endOfLife = null;
-	@override int? deletionDate = null;
-	@override String? objectId = null;
-	@override String? accessType = null;
-	@override String? user = null;
-	@override String? detail = null;
-	@override DateTime? date = null;
-	@override String? patientId = null;
-	@override Set<String> secretForeignKeys = {};
-	@override Map<String, Set<Delegation>> cryptedForeignKeys = {};
-	@override Map<String, Set<Delegation>> delegations = {};
-	@override Map<String, Set<Delegation>> encryptionKeys = {};
-	@override Base64String? encryptedSelf = null;
-	@override SecurityMetadata? securityMetadata = null;
-	DecryptedAccessLog(
-		this.id,
-		{
-			String? rev,
-			int? created,
-			int? modified,
-			String? author,
-			String? responsible,
-			String? medicalLocationId,
-			Set<CodeStub>? tags,
-			Set<CodeStub>? codes,
-			int? endOfLife,
-			int? deletionDate,
-			String? objectId,
-			String? accessType,
-			String? user,
-			String? detail,
-			DateTime? date,
-			String? patientId,
-			Set<String>? secretForeignKeys,
-			Map<String, Set<Delegation>>? cryptedForeignKeys,
-			Map<String, Set<Delegation>>? delegations,
-			Map<String, Set<Delegation>>? encryptionKeys,
-			Base64String? encryptedSelf,
-			SecurityMetadata? securityMetadata
-		}) : rev = rev ?? null,
-		created = created ?? null,
-		modified = modified ?? null,
-		author = author ?? null,
-		responsible = responsible ?? null,
-		medicalLocationId = medicalLocationId ?? null,
-		tags = tags ?? {},
-		codes = codes ?? {},
-		endOfLife = endOfLife ?? null,
-		deletionDate = deletionDate ?? null,
-		objectId = objectId ?? null,
-		accessType = accessType ?? null,
-		user = user ?? null,
-		detail = detail ?? null,
-		date = date ?? null,
-		patientId = patientId ?? null,
-		secretForeignKeys = secretForeignKeys ?? {},
-		cryptedForeignKeys = cryptedForeignKeys ?? {},
-		delegations = delegations ?? {},
-		encryptionKeys = encryptionKeys ?? {},
-		encryptedSelf = encryptedSelf ?? null,
-		securityMetadata = securityMetadata ?? null;
+@freezed
+abstract class DecryptedAccessLog with _$DecryptedAccessLog implements AccessLog {
+	const factory DecryptedAccessLog({
+		required String id,
+		@Default(null) String? rev,
+		@Default(null) int? created,
+		@Default(null) int? modified,
+		@Default(null) String? author,
+		@Default(null) String? responsible,
+		@Default(null) String? medicalLocationId,
+		@Default({}) Set<CodeStub> tags,
+		@Default({}) Set<CodeStub> codes,
+		@Default(null) int? endOfLife,
+		@Default(null) int? deletionDate,
+		@Default(null) String? objectId,
+		@Default(null) String? accessType,
+		@Default(null) String? user,
+		@Default(null) String? detail,
+		@Default(null) DateTime? date,
+		@Default(null) String? patientId,
+		@Default({}) Set<String> secretForeignKeys,
+		@Default({}) Map<String, Set<Delegation>> cryptedForeignKeys,
+		@Default({}) Map<String, Set<Delegation>> delegations,
+		@Default({}) Map<String, Set<Delegation>> encryptionKeys,
+		@Default(null) Base64String? encryptedSelf,
+		@Default(null) SecurityMetadata? securityMetadata,
+	}) = _DecryptedAccessLog;
+
 
 	static Map<String, dynamic> encode(DecryptedAccessLog value) {
 		Map<String, dynamic> entityAsMap = {
@@ -167,7 +126,7 @@ class DecryptedAccessLog implements AccessLog {
 
 	static DecryptedAccessLog fromJSON(Map<String, dynamic> data) {
 		return DecryptedAccessLog(
-			(data["id"] as String),
+			id: (data["id"] as String),
 			rev: (data["rev"] as String?),
 			created: (data["created"] as int?),
 			modified: (data["modified"] as int?),
@@ -194,77 +153,34 @@ class DecryptedAccessLog implements AccessLog {
 	}
 }
 
-class EncryptedAccessLog implements AccessLog {
-	@override String id;
-	@override String? rev = null;
-	@override int? created = null;
-	@override int? modified = null;
-	@override String? author = null;
-	@override String? responsible = null;
-	@override String? medicalLocationId = null;
-	@override Set<CodeStub> tags = {};
-	@override Set<CodeStub> codes = {};
-	@override int? endOfLife = null;
-	@override int? deletionDate = null;
-	@override String? objectId = null;
-	@override String? accessType = null;
-	@override String? user = null;
-	@override String? detail = null;
-	@override DateTime? date = null;
-	@override String? patientId = null;
-	@override Set<String> secretForeignKeys = {};
-	@override Map<String, Set<Delegation>> cryptedForeignKeys = {};
-	@override Map<String, Set<Delegation>> delegations = {};
-	@override Map<String, Set<Delegation>> encryptionKeys = {};
-	@override Base64String? encryptedSelf = null;
-	@override SecurityMetadata? securityMetadata = null;
-	EncryptedAccessLog(
-		this.id,
-		{
-			String? rev,
-			int? created,
-			int? modified,
-			String? author,
-			String? responsible,
-			String? medicalLocationId,
-			Set<CodeStub>? tags,
-			Set<CodeStub>? codes,
-			int? endOfLife,
-			int? deletionDate,
-			String? objectId,
-			String? accessType,
-			String? user,
-			String? detail,
-			DateTime? date,
-			String? patientId,
-			Set<String>? secretForeignKeys,
-			Map<String, Set<Delegation>>? cryptedForeignKeys,
-			Map<String, Set<Delegation>>? delegations,
-			Map<String, Set<Delegation>>? encryptionKeys,
-			Base64String? encryptedSelf,
-			SecurityMetadata? securityMetadata
-		}) : rev = rev ?? null,
-		created = created ?? null,
-		modified = modified ?? null,
-		author = author ?? null,
-		responsible = responsible ?? null,
-		medicalLocationId = medicalLocationId ?? null,
-		tags = tags ?? {},
-		codes = codes ?? {},
-		endOfLife = endOfLife ?? null,
-		deletionDate = deletionDate ?? null,
-		objectId = objectId ?? null,
-		accessType = accessType ?? null,
-		user = user ?? null,
-		detail = detail ?? null,
-		date = date ?? null,
-		patientId = patientId ?? null,
-		secretForeignKeys = secretForeignKeys ?? {},
-		cryptedForeignKeys = cryptedForeignKeys ?? {},
-		delegations = delegations ?? {},
-		encryptionKeys = encryptionKeys ?? {},
-		encryptedSelf = encryptedSelf ?? null,
-		securityMetadata = securityMetadata ?? null;
+@freezed
+abstract class EncryptedAccessLog with _$EncryptedAccessLog implements AccessLog {
+	const factory EncryptedAccessLog({
+		required String id,
+		@Default(null) String? rev,
+		@Default(null) int? created,
+		@Default(null) int? modified,
+		@Default(null) String? author,
+		@Default(null) String? responsible,
+		@Default(null) String? medicalLocationId,
+		@Default({}) Set<CodeStub> tags,
+		@Default({}) Set<CodeStub> codes,
+		@Default(null) int? endOfLife,
+		@Default(null) int? deletionDate,
+		@Default(null) String? objectId,
+		@Default(null) String? accessType,
+		@Default(null) String? user,
+		@Default(null) String? detail,
+		@Default(null) DateTime? date,
+		@Default(null) String? patientId,
+		@Default({}) Set<String> secretForeignKeys,
+		@Default({}) Map<String, Set<Delegation>> cryptedForeignKeys,
+		@Default({}) Map<String, Set<Delegation>> delegations,
+		@Default({}) Map<String, Set<Delegation>> encryptionKeys,
+		@Default(null) Base64String? encryptedSelf,
+		@Default(null) SecurityMetadata? securityMetadata,
+	}) = _EncryptedAccessLog;
+
 
 	static Map<String, dynamic> encode(EncryptedAccessLog value) {
 		Map<String, dynamic> entityAsMap = {
@@ -297,7 +213,7 @@ class EncryptedAccessLog implements AccessLog {
 
 	static EncryptedAccessLog fromJSON(Map<String, dynamic> data) {
 		return EncryptedAccessLog(
-			(data["id"] as String),
+			id: (data["id"] as String),
 			rev: (data["rev"] as String?),
 			created: (data["created"] as int?),
 			modified: (data["modified"] as int?),

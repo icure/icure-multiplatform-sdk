@@ -1,10 +1,14 @@
 // auto-generated file
+import 'package:freezed_annotation/freezed_annotation.dart';
+part "list_of_ids.freezed.dart";
 
 
-class ListOfIds {
-	List<String> ids = [];
-	ListOfIds({
-			List<String>? ids}) : ids = ids ?? [];
+@freezed
+abstract class ListOfIds with _$ListOfIds {
+	const factory ListOfIds({
+		@Default([]) List<String> ids,
+	}) = _ListOfIds;
+
 
 	static Map<String, dynamic> encode(ListOfIds value) {
 		Map<String, dynamic> entityAsMap = {

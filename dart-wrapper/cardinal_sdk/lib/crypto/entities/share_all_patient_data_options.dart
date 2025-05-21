@@ -1,7 +1,8 @@
 // auto-generated file
-import 'package:cardinal_sdk/annotations/actual_int32.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:cardinal_sdk/model/patient.dart';
 import 'package:cardinal_sdk/crypto/entities/failed_request_details.dart';
+part "share_all_patient_data_options.freezed.dart";
 
 
 class ShareAllPatientDataOptions {
@@ -113,25 +114,14 @@ enum ShareAllPatientDataOptionsShareableEntity {
 
 }
 
-class ShareAllPatientDataOptionsEntityResult {
-	bool? success = null;
-	ShareAllPatientDataOptionsSharePatientDataError? error = null;
-	int _modified;
-	@ActualInt32() int get modified => _modified;
-	@ActualInt32() set modified(int value) {
-		if (value > 2147483647) {
-			throw ArgumentError('modified value cannot exceed 2147483647');
-		}
-		_modified = value;
-	}
-	ShareAllPatientDataOptionsEntityResult(
-		int modified,
-		{
-			bool? success,
-			ShareAllPatientDataOptionsSharePatientDataError? error
-		}) : success = success ?? null,
-		error = error ?? null,
-		_modified = modified;
+@freezed
+abstract class ShareAllPatientDataOptionsEntityResult with _$ShareAllPatientDataOptionsEntityResult {
+	const factory ShareAllPatientDataOptionsEntityResult({
+		@Default(null) bool? success,
+		@Default(null) ShareAllPatientDataOptionsSharePatientDataError? error,
+		required int modified,
+	}) = _ShareAllPatientDataOptionsEntityResult;
+
 
 	static Map<String, dynamic> encode(ShareAllPatientDataOptionsEntityResult value) {
 		Map<String, dynamic> entityAsMap = {
@@ -144,20 +134,20 @@ class ShareAllPatientDataOptionsEntityResult {
 
 	static ShareAllPatientDataOptionsEntityResult fromJSON(Map<String, dynamic> data) {
 		return ShareAllPatientDataOptionsEntityResult(
-			(data["modified"] as int),
+			modified: (data["modified"] as int),
 			success: (data["success"] as bool?),
 			error: data["error"] == null ? null : ShareAllPatientDataOptionsSharePatientDataError.fromJSON(data["error"]),
 		);
 	}
 }
 
-class ShareAllPatientDataOptionsResult {
-	EncryptedPatient patient;
-	Map<ShareAllPatientDataOptionsShareableEntity, ShareAllPatientDataOptionsEntityResult> statuses;
-	ShareAllPatientDataOptionsResult(
-		this.patient,
-		this.statuses
-		);
+@freezed
+abstract class ShareAllPatientDataOptionsResult with _$ShareAllPatientDataOptionsResult {
+	const factory ShareAllPatientDataOptionsResult({
+		required EncryptedPatient patient,
+		required Map<ShareAllPatientDataOptionsShareableEntity, ShareAllPatientDataOptionsEntityResult> statuses,
+	}) = _ShareAllPatientDataOptionsResult;
+
 
 	static Map<String, dynamic> encode(ShareAllPatientDataOptionsResult value) {
 		Map<String, dynamic> entityAsMap = {
@@ -169,8 +159,8 @@ class ShareAllPatientDataOptionsResult {
 
 	static ShareAllPatientDataOptionsResult fromJSON(Map<String, dynamic> data) {
 		return ShareAllPatientDataOptionsResult(
-			EncryptedPatient.fromJSON(data["patient"]),
-			(data["statuses"] as Map<String, dynamic>).map((k0, v0) => MapEntry(ShareAllPatientDataOptionsShareableEntity.fromJSON(k0), ShareAllPatientDataOptionsEntityResult.fromJSON(v0)))
+			patient: EncryptedPatient.fromJSON(data["patient"]),
+			statuses: (data["statuses"] as Map<String, dynamic>).map((k0, v0) => MapEntry(ShareAllPatientDataOptionsShareableEntity.fromJSON(k0), ShareAllPatientDataOptionsEntityResult.fromJSON(v0)))
 		);
 	}
 }
@@ -206,13 +196,13 @@ sealed class ShareAllPatientDataOptionsSharePatientDataError {
 	}
 }
 
-class ShareAllPatientDataOptionsBulkShareFailure implements ShareAllPatientDataOptionsSharePatientDataError {
-	List<FailedRequestDetails> errors;
-	String message;
-	ShareAllPatientDataOptionsBulkShareFailure(
-		this.errors,
-		this.message
-		);
+@freezed
+abstract class ShareAllPatientDataOptionsBulkShareFailure with _$ShareAllPatientDataOptionsBulkShareFailure implements ShareAllPatientDataOptionsSharePatientDataError {
+	const factory ShareAllPatientDataOptionsBulkShareFailure({
+		required List<FailedRequestDetails> errors,
+		required String message,
+	}) = _ShareAllPatientDataOptionsBulkShareFailure;
+
 
 	static Map<String, dynamic> encode(ShareAllPatientDataOptionsBulkShareFailure value) {
 		Map<String, dynamic> entityAsMap = {
@@ -224,15 +214,18 @@ class ShareAllPatientDataOptionsBulkShareFailure implements ShareAllPatientDataO
 
 	static ShareAllPatientDataOptionsBulkShareFailure fromJSON(Map<String, dynamic> data) {
 		return ShareAllPatientDataOptionsBulkShareFailure(
-			(data["errors"] as List<dynamic>).map((x0) => FailedRequestDetails.fromJSON(x0) ).toList(),
-			(data["message"] as String)
+			errors: (data["errors"] as List<dynamic>).map((x0) => FailedRequestDetails.fromJSON(x0) ).toList(),
+			message: (data["message"] as String)
 		);
 	}
 }
 
-class ShareAllPatientDataOptionsFailedRequest implements ShareAllPatientDataOptionsSharePatientDataError {
-	String description;
-	ShareAllPatientDataOptionsFailedRequest(this.description);
+@freezed
+abstract class ShareAllPatientDataOptionsFailedRequest with _$ShareAllPatientDataOptionsFailedRequest implements ShareAllPatientDataOptionsSharePatientDataError {
+	const factory ShareAllPatientDataOptionsFailedRequest({
+		required String description,
+	}) = _ShareAllPatientDataOptionsFailedRequest;
+
 
 	static Map<String, dynamic> encode(ShareAllPatientDataOptionsFailedRequest value) {
 		Map<String, dynamic> entityAsMap = {
@@ -243,7 +236,7 @@ class ShareAllPatientDataOptionsFailedRequest implements ShareAllPatientDataOpti
 
 	static ShareAllPatientDataOptionsFailedRequest fromJSON(Map<String, dynamic> data) {
 		return ShareAllPatientDataOptionsFailedRequest(
-			(data["description"] as String)
+			description: (data["description"] as String)
 		);
 	}
 }

@@ -1,30 +1,21 @@
 // auto-generated file
 import 'package:cardinal_sdk/model/base/code_identification.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+part "code_stub.freezed.dart";
 
 
-class CodeStub implements CodeIdentification<String?> {
-	@override String? id = null;
-	@override String? context = null;
-	@override String? type = null;
-	@override String? code = null;
-	@override String? version = null;
-	String? contextLabel = null;
-	@override Map<String, String>? label = null;
-	CodeStub({
-			String? id,
-			String? context,
-			String? type,
-			String? code,
-			String? version,
-			String? contextLabel,
-			Map<String, String>? label
-		}) : id = id ?? null,
-		context = context ?? null,
-		type = type ?? null,
-		code = code ?? null,
-		version = version ?? null,
-		contextLabel = contextLabel ?? null,
-		label = label ?? null;
+@freezed
+abstract class CodeStub with _$CodeStub implements CodeIdentification<String?> {
+	const factory CodeStub({
+		@Default(null) String? id,
+		@Default(null) String? context,
+		@Default(null) String? type,
+		@Default(null) String? code,
+		@Default(null) String? version,
+		@Default(null) String? contextLabel,
+		@Default(null) Map<String, String>? label,
+	}) = _CodeStub;
+
 
 	static Map<String, dynamic> encode(CodeStub value) {
 		Map<String, dynamic> entityAsMap = {

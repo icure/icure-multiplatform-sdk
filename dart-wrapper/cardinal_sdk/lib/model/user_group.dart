@@ -1,45 +1,26 @@
 // auto-generated file
 import 'package:cardinal_sdk/model/group.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+part "user_group.freezed.dart";
 
 
-class UserGroup {
-	String? groupId = null;
-	String? groupName = null;
-	List<Group> groupsHierarchy = [];
-	String? userId = null;
-	String? login = null;
-	String? name = null;
-	String? email = null;
-	String? phone = null;
-	String? patientId = null;
-	String? healthcarePartyId = null;
-	String? deviceId = null;
-	String? nameOfParentOfTopmostGroupInHierarchy = null;
-	UserGroup({
-			String? groupId,
-			String? groupName,
-			List<Group>? groupsHierarchy,
-			String? userId,
-			String? login,
-			String? name,
-			String? email,
-			String? phone,
-			String? patientId,
-			String? healthcarePartyId,
-			String? deviceId,
-			String? nameOfParentOfTopmostGroupInHierarchy
-		}) : groupId = groupId ?? null,
-		groupName = groupName ?? null,
-		groupsHierarchy = groupsHierarchy ?? [],
-		userId = userId ?? null,
-		login = login ?? null,
-		name = name ?? null,
-		email = email ?? null,
-		phone = phone ?? null,
-		patientId = patientId ?? null,
-		healthcarePartyId = healthcarePartyId ?? null,
-		deviceId = deviceId ?? null,
-		nameOfParentOfTopmostGroupInHierarchy = nameOfParentOfTopmostGroupInHierarchy ?? null;
+@freezed
+abstract class UserGroup with _$UserGroup {
+	const factory UserGroup({
+		@Default(null) String? groupId,
+		@Default(null) String? groupName,
+		@Default([]) List<Group> groupsHierarchy,
+		@Default(null) String? userId,
+		@Default(null) String? login,
+		@Default(null) String? name,
+		@Default(null) String? email,
+		@Default(null) String? phone,
+		@Default(null) String? patientId,
+		@Default(null) String? healthcarePartyId,
+		@Default(null) String? deviceId,
+		@Default(null) String? nameOfParentOfTopmostGroupInHierarchy,
+	}) = _UserGroup;
+
 
 	static Map<String, dynamic> encode(UserGroup value) {
 		Map<String, dynamic> entityAsMap = {

@@ -1,4 +1,6 @@
 // auto-generated file
+import 'package:freezed_annotation/freezed_annotation.dart';
+part "secret_id_share_options.freezed.dart";
 
 
 sealed class SecretIdShareOptions {
@@ -32,9 +34,12 @@ sealed class SecretIdShareOptions {
 	}
 }
 
-class SecretIdShareOptionsAllAvailable implements SecretIdShareOptions {
-	bool requireAtLeastOne;
-	SecretIdShareOptionsAllAvailable(this.requireAtLeastOne);
+@freezed
+abstract class SecretIdShareOptionsAllAvailable with _$SecretIdShareOptionsAllAvailable implements SecretIdShareOptions {
+	const factory SecretIdShareOptionsAllAvailable({
+		@Default(false) bool requireAtLeastOne,
+	}) = _SecretIdShareOptionsAllAvailable;
+
 
 	static Map<String, dynamic> encode(SecretIdShareOptionsAllAvailable value) {
 		Map<String, dynamic> entityAsMap = {
@@ -45,18 +50,18 @@ class SecretIdShareOptionsAllAvailable implements SecretIdShareOptions {
 
 	static SecretIdShareOptionsAllAvailable fromJSON(Map<String, dynamic> data) {
 		return SecretIdShareOptionsAllAvailable(
-			(data["requireAtLeastOne"] as bool)
+			requireAtLeastOne: (data["requireAtLeastOne"] as bool)
 		);
 	}
 }
 
-class SecretIdShareOptionsUseExactly implements SecretIdShareOptions {
-	Set<String> secretIds;
-	bool createUnknownSecretIds;
-	SecretIdShareOptionsUseExactly(
-		this.secretIds,
-		this.createUnknownSecretIds
-		);
+@freezed
+abstract class SecretIdShareOptionsUseExactly with _$SecretIdShareOptionsUseExactly implements SecretIdShareOptions {
+	const factory SecretIdShareOptionsUseExactly({
+		required Set<String> secretIds,
+		required bool createUnknownSecretIds,
+	}) = _SecretIdShareOptionsUseExactly;
+
 
 	static Map<String, dynamic> encode(SecretIdShareOptionsUseExactly value) {
 		Map<String, dynamic> entityAsMap = {
@@ -68,8 +73,8 @@ class SecretIdShareOptionsUseExactly implements SecretIdShareOptions {
 
 	static SecretIdShareOptionsUseExactly fromJSON(Map<String, dynamic> data) {
 		return SecretIdShareOptionsUseExactly(
-			(data["secretIds"] as List<dynamic>).map((x0) => (x0 as String) ).toSet(),
-			(data["createUnknownSecretIds"] as bool)
+			secretIds: (data["secretIds"] as List<dynamic>).map((x0) => (x0 as String) ).toSet(),
+			createUnknownSecretIds: (data["createUnknownSecretIds"] as bool)
 		);
 	}
 }

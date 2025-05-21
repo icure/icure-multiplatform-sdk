@@ -2,7 +2,7 @@
 import 'package:cardinal_sdk/model/agenda.dart';
 import 'package:cardinal_sdk/plugin/cardinal_sdk_platform_interface.dart';
 import 'package:cardinal_sdk/model/couchdb/doc_identifier.dart';
-import 'package:cardinal_sdk/model/id_with_mandatory_rev.dart';
+import 'package:cardinal_sdk/model/stored_document_identifier.dart';
 import 'package:cardinal_sdk/filters/filter_options.dart';
 import 'package:cardinal_sdk/utils/pagination/paginated_list_iterator.dart';
 
@@ -30,7 +30,7 @@ class AgendaApi {
 		);
 	}
 
-	Future<List<DocIdentifier>> deleteAgendasByIds(List<IdWithMandatoryRev> entityIds) async {
+	Future<List<DocIdentifier>> deleteAgendasByIds(List<StoredDocumentIdentifier> entityIds) async {
 		return await CardinalSdkPlatformInterface.instance.apis.agenda.deleteAgendasByIds(
 			_sdkId,
 			entityIds,
@@ -81,7 +81,7 @@ class AgendaApi {
 		);
 	}
 
-	Future<Agenda> getAgenda(String agendaId) async {
+	Future<Agenda?> getAgenda(String agendaId) async {
 		return await CardinalSdkPlatformInterface.instance.apis.agenda.getAgenda(
 			_sdkId,
 			agendaId,

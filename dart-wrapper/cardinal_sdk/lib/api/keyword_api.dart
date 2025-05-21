@@ -12,17 +12,17 @@ class KeywordApi {
 		this._dartSdk
 		);
 
-	Future<Keyword> getKeyword(String frontEndMigrationId) async {
+	Future<Keyword?> getKeyword(String keywordId) async {
 		return await CardinalSdkPlatformInterface.instance.apis.keyword.getKeyword(
 			_sdkId,
-			frontEndMigrationId,
+			keywordId,
 		);
 	}
 
-	Future<Keyword> createKeyword(Keyword frontEndMigration) async {
+	Future<Keyword> createKeyword(Keyword keyword) async {
 		return await CardinalSdkPlatformInterface.instance.apis.keyword.createKeyword(
 			_sdkId,
-			frontEndMigration,
+			keyword,
 		);
 	}
 

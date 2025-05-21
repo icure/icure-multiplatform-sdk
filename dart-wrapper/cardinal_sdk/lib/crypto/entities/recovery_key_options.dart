@@ -1,6 +1,8 @@
 // auto-generated file
 import 'package:cardinal_sdk/crypto/entities/recovery_key_size.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:cardinal_sdk/crypto/entities/recovery_data_key.dart';
+part "recovery_key_options.freezed.dart";
 
 
 sealed class RecoveryKeyOptions {
@@ -34,9 +36,12 @@ sealed class RecoveryKeyOptions {
 	}
 }
 
-class RecoveryKeyOptionsGenerate implements RecoveryKeyOptions {
-	RecoveryKeySize recoveryKeySize;
-	RecoveryKeyOptionsGenerate(this.recoveryKeySize);
+@freezed
+abstract class RecoveryKeyOptionsGenerate with _$RecoveryKeyOptionsGenerate implements RecoveryKeyOptions {
+	const factory RecoveryKeyOptionsGenerate({
+		required RecoveryKeySize recoveryKeySize,
+	}) = _RecoveryKeyOptionsGenerate;
+
 
 	static Map<String, dynamic> encode(RecoveryKeyOptionsGenerate value) {
 		Map<String, dynamic> entityAsMap = {
@@ -47,14 +52,17 @@ class RecoveryKeyOptionsGenerate implements RecoveryKeyOptions {
 
 	static RecoveryKeyOptionsGenerate fromJSON(Map<String, dynamic> data) {
 		return RecoveryKeyOptionsGenerate(
-			RecoveryKeySize.fromJSON(data["recoveryKeySize"])
+			recoveryKeySize: RecoveryKeySize.fromJSON(data["recoveryKeySize"])
 		);
 	}
 }
 
-class RecoveryKeyOptionsUse implements RecoveryKeyOptions {
-	RecoveryDataKey key;
-	RecoveryKeyOptionsUse(this.key);
+@freezed
+abstract class RecoveryKeyOptionsUse with _$RecoveryKeyOptionsUse implements RecoveryKeyOptions {
+	const factory RecoveryKeyOptionsUse({
+		required RecoveryDataKey key,
+	}) = _RecoveryKeyOptionsUse;
+
 
 	static Map<String, dynamic> encode(RecoveryKeyOptionsUse value) {
 		Map<String, dynamic> entityAsMap = {
@@ -65,7 +73,7 @@ class RecoveryKeyOptionsUse implements RecoveryKeyOptions {
 
 	static RecoveryKeyOptionsUse fromJSON(Map<String, dynamic> data) {
 		return RecoveryKeyOptionsUse(
-			RecoveryDataKey.fromJSON(data["key"])
+			key: RecoveryDataKey.fromJSON(data["key"])
 		);
 	}
 }

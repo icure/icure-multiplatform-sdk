@@ -2,14 +2,16 @@
 import 'package:cardinal_sdk/model/specializations/base64string.dart';
 import 'package:cardinal_sdk/model/embed/calendar_item_tag.dart';
 import 'package:cardinal_sdk/model/embed/encryptable.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+part "calendar_item_tag.freezed.dart";
 
 
 sealed class CalendarItemTag implements Encryptable {
-	abstract String? code;
-	abstract int? date;
-	abstract String? userId;
-	abstract String? userName;
-	@override abstract Base64String? encryptedSelf;
+	abstract final String? code;
+	abstract final int? date;
+	abstract final String? userId;
+	abstract final String? userName;
+	@override abstract final Base64String? encryptedSelf;
 
 	static Map<String, dynamic> encode(CalendarItemTag value) {
 		switch (value) {
@@ -40,22 +42,16 @@ sealed class CalendarItemTag implements Encryptable {
 	}
 }
 
-class EncryptedCalendarItemTag implements CalendarItemTag {
-	@override String? code = null;
-	@override int? date = null;
-	@override String? userId = null;
-	@override String? userName = null;
-	@override Base64String? encryptedSelf;
-	EncryptedCalendarItemTag({
-			this.encryptedSelf,
-			String? code,
-			int? date,
-			String? userId,
-			String? userName
-		}) : code = code ?? null,
-		date = date ?? null,
-		userId = userId ?? null,
-		userName = userName ?? null;
+@freezed
+abstract class EncryptedCalendarItemTag with _$EncryptedCalendarItemTag implements CalendarItemTag {
+	const factory EncryptedCalendarItemTag({
+		@Default(null) String? code,
+		@Default(null) int? date,
+		@Default(null) String? userId,
+		@Default(null) String? userName,
+		required Base64String? encryptedSelf,
+	}) = _EncryptedCalendarItemTag;
+
 
 	static Map<String, dynamic> encode(EncryptedCalendarItemTag value) {
 		Map<String, dynamic> entityAsMap = {
@@ -79,22 +75,16 @@ class EncryptedCalendarItemTag implements CalendarItemTag {
 	}
 }
 
-class DecryptedCalendarItemTag implements CalendarItemTag {
-	@override String? code = null;
-	@override int? date = null;
-	@override String? userId = null;
-	@override String? userName = null;
-	@override Base64String? encryptedSelf;
-	DecryptedCalendarItemTag({
-			this.encryptedSelf,
-			String? code,
-			int? date,
-			String? userId,
-			String? userName
-		}) : code = code ?? null,
-		date = date ?? null,
-		userId = userId ?? null,
-		userName = userName ?? null;
+@freezed
+abstract class DecryptedCalendarItemTag with _$DecryptedCalendarItemTag implements CalendarItemTag {
+	const factory DecryptedCalendarItemTag({
+		@Default(null) String? code,
+		@Default(null) int? date,
+		@Default(null) String? userId,
+		@Default(null) String? userName,
+		required Base64String? encryptedSelf,
+	}) = _DecryptedCalendarItemTag;
+
 
 	static Map<String, dynamic> encode(DecryptedCalendarItemTag value) {
 		Map<String, dynamic> entityAsMap = {

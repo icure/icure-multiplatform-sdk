@@ -1,77 +1,40 @@
 // auto-generated file
 import 'package:cardinal_sdk/model/embed/form/template/form_template_layout.dart';
-import 'dart:typed_data';
+import 'dart:convert';
 import 'package:cardinal_sdk/model/embed/document_group.dart';
 import 'package:cardinal_sdk/model/base/code_stub.dart';
-import 'dart:convert';
 import 'package:cardinal_sdk/model/base/stored_document.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+import 'dart:typed_data';
+part "form_template.freezed.dart";
 
 
-class FormTemplate implements StoredDocument {
-	@override String id;
-	@override String? rev = null;
-	@override int? deletionDate = null;
-	FormTemplateLayout? templateLayout = null;
-	Uint8List? rawTemplateLayout = null;
-	String? name = null;
-	String? guid = null;
-	DocumentGroup? group = null;
-	String? descr = null;
-	String? disabled = null;
-	CodeStub? specialty = null;
-	String? author = null;
-	String? formInstancePreferredLocation = null;
-	String? keyboardShortcut = null;
-	String? shortReport = null;
-	String? mediumReport = null;
-	String? longReport = null;
-	Set<String> reports = {};
-	Set<CodeStub> tags = {};
-	String? layoutAttachmentId = null;
-	String? templateLayoutAttachmentId = null;
-	FormTemplate(
-		this.id,
-		{
-			String? rev,
-			int? deletionDate,
-			FormTemplateLayout? templateLayout,
-			Uint8List? rawTemplateLayout,
-			String? name,
-			String? guid,
-			DocumentGroup? group,
-			String? descr,
-			String? disabled,
-			CodeStub? specialty,
-			String? author,
-			String? formInstancePreferredLocation,
-			String? keyboardShortcut,
-			String? shortReport,
-			String? mediumReport,
-			String? longReport,
-			Set<String>? reports,
-			Set<CodeStub>? tags,
-			String? layoutAttachmentId,
-			String? templateLayoutAttachmentId
-		}) : rev = rev ?? null,
-		deletionDate = deletionDate ?? null,
-		templateLayout = templateLayout ?? null,
-		rawTemplateLayout = rawTemplateLayout ?? null,
-		name = name ?? null,
-		guid = guid ?? null,
-		group = group ?? null,
-		descr = descr ?? null,
-		disabled = disabled ?? null,
-		specialty = specialty ?? null,
-		author = author ?? null,
-		formInstancePreferredLocation = formInstancePreferredLocation ?? null,
-		keyboardShortcut = keyboardShortcut ?? null,
-		shortReport = shortReport ?? null,
-		mediumReport = mediumReport ?? null,
-		longReport = longReport ?? null,
-		reports = reports ?? {},
-		tags = tags ?? {},
-		layoutAttachmentId = layoutAttachmentId ?? null,
-		templateLayoutAttachmentId = templateLayoutAttachmentId ?? null;
+@freezed
+abstract class FormTemplate with _$FormTemplate implements StoredDocument {
+	const factory FormTemplate({
+		required String id,
+		@Default(null) String? rev,
+		@Default(null) int? deletionDate,
+		@Default(null) FormTemplateLayout? templateLayout,
+		@Default(null) Uint8List? rawTemplateLayout,
+		@Default(null) String? name,
+		@Default(null) String? guid,
+		@Default(null) DocumentGroup? group,
+		@Default(null) String? descr,
+		@Default(null) String? disabled,
+		@Default(null) CodeStub? specialty,
+		@Default(null) String? author,
+		@Default(null) String? formInstancePreferredLocation,
+		@Default(null) String? keyboardShortcut,
+		@Default(null) String? shortReport,
+		@Default(null) String? mediumReport,
+		@Default(null) String? longReport,
+		@Default({}) Set<String> reports,
+		@Default({}) Set<CodeStub> tags,
+		@Default(null) String? layoutAttachmentId,
+		@Default(null) String? templateLayoutAttachmentId,
+	}) = _FormTemplate;
+
 
 	static Map<String, dynamic> encode(FormTemplate value) {
 		Map<String, dynamic> entityAsMap = {
@@ -102,7 +65,7 @@ class FormTemplate implements StoredDocument {
 
 	static FormTemplate fromJSON(Map<String, dynamic> data) {
 		return FormTemplate(
-			(data["id"] as String),
+			id: (data["id"] as String),
 			rev: (data["rev"] as String?),
 			deletionDate: (data["deletionDate"] as int?),
 			templateLayout: data["templateLayout"] == null ? null : FormTemplateLayout.fromJSON(data["templateLayout"]),

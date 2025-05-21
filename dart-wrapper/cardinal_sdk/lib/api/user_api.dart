@@ -35,7 +35,7 @@ class UserApi {
 		);
 	}
 
-	Future<User> getUser(String userId) async {
+	Future<User?> getUser(String userId) async {
 		return await CardinalSdkPlatformInterface.instance.apis.user.getUser(
 			_sdkId,
 			userId,
@@ -49,14 +49,14 @@ class UserApi {
 		);
 	}
 
-	Future<User> getUserByEmail(String email) async {
+	Future<User?> getUserByEmail(String email) async {
 		return await CardinalSdkPlatformInterface.instance.apis.user.getUserByEmail(
 			_sdkId,
 			email,
 		);
 	}
 
-	Future<User> getUserByPhoneNumber(String phoneNumber) async {
+	Future<User?> getUserByPhoneNumber(String phoneNumber) async {
 		return await CardinalSdkPlatformInterface.instance.apis.user.getUserByPhoneNumber(
 			_sdkId,
 			phoneNumber,
@@ -358,6 +358,15 @@ class UserApi {
 		return await CardinalSdkPlatformInterface.instance.apis.user.undeleteUser(
 			_sdkId,
 			user,
+		);
+	}
+
+	Future<String> setUserInheritsPermissions(String userId, String groupId, bool value) async {
+		return await CardinalSdkPlatformInterface.instance.apis.user.setUserInheritsPermissions(
+			_sdkId,
+			userId,
+			groupId,
+			value,
 		);
 	}
 

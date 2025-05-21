@@ -1,14 +1,15 @@
 // auto-generated file
+import 'package:freezed_annotation/freezed_annotation.dart';
+part "public_key.freezed.dart";
 
 
-class PublicKey {
-	String? hcPartyId = null;
-	String? hexString = null;
-	PublicKey({
-			String? hcPartyId,
-			String? hexString
-		}) : hcPartyId = hcPartyId ?? null,
-		hexString = hexString ?? null;
+@freezed
+abstract class PublicKey with _$PublicKey {
+	const factory PublicKey({
+		@Default(null) String? hcPartyId,
+		@Default(null) String? hexString,
+	}) = _PublicKey;
+
 
 	static Map<String, dynamic> encode(PublicKey value) {
 		Map<String, dynamic> entityAsMap = {

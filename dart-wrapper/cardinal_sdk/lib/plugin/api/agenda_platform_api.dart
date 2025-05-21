@@ -4,7 +4,7 @@ import 'package:cardinal_sdk/model/agenda.dart';
 import 'dart:convert';
 import 'package:cardinal_sdk/utils/internal/platform_exception_convertion.dart';
 import 'package:cardinal_sdk/model/couchdb/doc_identifier.dart';
-import 'package:cardinal_sdk/model/id_with_mandatory_rev.dart';
+import 'package:cardinal_sdk/model/stored_document_identifier.dart';
 import 'package:cardinal_sdk/filters/filter_options.dart';
 import 'package:cardinal_sdk/utils/pagination/paginated_list_iterator.dart';
 
@@ -40,12 +40,12 @@ class AgendaPlatformApi {
 		return DocIdentifier.fromJSON(parsedResJson);
 	}
 
-	Future<List<DocIdentifier>> deleteAgendasByIds(String sdkId, List<IdWithMandatoryRev> entityIds) async {
+	Future<List<DocIdentifier>> deleteAgendasByIds(String sdkId, List<StoredDocumentIdentifier> entityIds) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'AgendaApi.deleteAgendasByIds',
 			{
 				"sdkId": sdkId,
-				"entityIds": jsonEncode(entityIds.map((x0) => IdWithMandatoryRev.encode(x0)).toList()),
+				"entityIds": jsonEncode(entityIds.map((x0) => StoredDocumentIdentifier.encode(x0)).toList()),
 			}
 		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method deleteAgendasByIds");
@@ -127,7 +127,7 @@ class AgendaPlatformApi {
 		return Agenda.fromJSON(parsedResJson);
 	}
 
-	Future<Agenda> getAgenda(String sdkId, String agendaId) async {
+	Future<Agenda?> getAgenda(String sdkId, String agendaId) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'AgendaApi.getAgenda',
 			{
@@ -137,7 +137,7 @@ class AgendaPlatformApi {
 		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getAgenda");
 		final parsedResJson = jsonDecode(res);
-		return Agenda.fromJSON(parsedResJson);
+		return parsedResJson == null ? null : Agenda.fromJSON(parsedResJson);
 	}
 
 	Future<List<Agenda>> getAgendas(String sdkId, List<String> agendaIds) async {

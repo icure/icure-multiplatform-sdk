@@ -11,7 +11,7 @@ import 'package:cardinal_sdk/model/specializations/hex_string.dart';
 import 'package:cardinal_sdk/subscription/entity_subscription_configuration.dart';
 import 'package:cardinal_sdk/subscription/entity_subscription.dart';
 import 'package:cardinal_sdk/model/couchdb/doc_identifier.dart';
-import 'package:cardinal_sdk/model/id_with_mandatory_rev.dart';
+import 'package:cardinal_sdk/model/stored_document_identifier.dart';
 import 'package:cardinal_sdk/model/data/labelled_occurence.dart';
 import 'package:cardinal_sdk/crypto/entities/contact_share_options.dart';
 import 'package:cardinal_sdk/utils/pagination/paginated_list_iterator.dart';
@@ -21,13 +21,13 @@ import 'package:cardinal_sdk/subscription/subscription_event_type.dart';
 class ContactApi {
 	final String _sdkId;
 	final Object _dartSdk;
-	final TryAndRecoverContactApi tryAndRecover;
-	final EncryptedContactApi encrypted;
+	final ContactEncryptedApi encrypted;
+	final ContactTryAndRecoverApi tryAndRecover;
 	ContactApi(
 		this._sdkId,
 		this._dartSdk
-		) : tryAndRecover = TryAndRecoverContactApi(_sdkId, _dartSdk),
-		encrypted = EncryptedContactApi(_sdkId, _dartSdk);
+		) : encrypted = ContactEncryptedApi(_sdkId, _dartSdk),
+		tryAndRecover = ContactTryAndRecoverApi(_sdkId, _dartSdk);
 
 	Future<List<String>> matchContactsBy(FilterOptions<Contact> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.contact.matchContactsBy(
@@ -54,20 +54,6 @@ class ContactApi {
 		return await CardinalSdkPlatformInterface.instance.apis.contact.matchServicesBySorted(
 			_sdkId,
 			filter,
-		);
-	}
-
-	Future<DecryptedContact> createContact(DecryptedContact entity) async {
-		return await CardinalSdkPlatformInterface.instance.apis.contact.createContact(
-			_sdkId,
-			entity,
-		);
-	}
-
-	Future<List<DecryptedContact>> createContacts(List<DecryptedContact> entities) async {
-		return await CardinalSdkPlatformInterface.instance.apis.contact.createContacts(
-			_sdkId,
-			entities,
 		);
 	}
 
@@ -155,7 +141,7 @@ class ContactApi {
 		);
 	}
 
-	Future<List<DocIdentifier>> deleteContactsByIds(List<IdWithMandatoryRev> entityIds) async {
+	Future<List<DocIdentifier>> deleteContactsByIds(List<StoredDocumentIdentifier> entityIds) async {
 		return await CardinalSdkPlatformInterface.instance.apis.contact.deleteContactsByIds(
 			_sdkId,
 			entityIds,
@@ -244,6 +230,20 @@ class ContactApi {
 		);
 	}
 
+	Future<DecryptedContact> createContact(DecryptedContact entity) async {
+		return await CardinalSdkPlatformInterface.instance.apis.contact.createContact(
+			_sdkId,
+			entity,
+		);
+	}
+
+	Future<List<DecryptedContact>> createContacts(List<DecryptedContact> entities) async {
+		return await CardinalSdkPlatformInterface.instance.apis.contact.createContacts(
+			_sdkId,
+			entities,
+		);
+	}
+
 	Future<DecryptedContact> undeleteContactById(String id, String rev) async {
 		return await CardinalSdkPlatformInterface.instance.apis.contact.undeleteContactById(
 			_sdkId,
@@ -273,7 +273,7 @@ class ContactApi {
 		);
 	}
 
-	Future<DecryptedContact> getContact(String entityId) async {
+	Future<DecryptedContact?> getContact(String entityId) async {
 		return await CardinalSdkPlatformInterface.instance.apis.contact.getContact(
 			_sdkId,
 			entityId,
@@ -311,10 +311,10 @@ class ContactApi {
 	}
 }
 
-class TryAndRecoverContactApi {
+class ContactTryAndRecoverApi {
 	final String _sdkId;
 	final Object _dartSdk;
-	TryAndRecoverContactApi(
+	ContactTryAndRecoverApi(
 		this._sdkId,
 		this._dartSdk
 		);
@@ -364,6 +364,20 @@ class TryAndRecoverContactApi {
 		);
 	}
 
+	Future<Contact> createContact(Contact entity) async {
+		return await CardinalSdkPlatformInterface.instance.apis.contact.tryAndRecover.createContact(
+			_sdkId,
+			entity,
+		);
+	}
+
+	Future<List<Contact>> createContacts(List<Contact> entities) async {
+		return await CardinalSdkPlatformInterface.instance.apis.contact.tryAndRecover.createContacts(
+			_sdkId,
+			entities,
+		);
+	}
+
 	Future<Contact> undeleteContactById(String id, String rev) async {
 		return await CardinalSdkPlatformInterface.instance.apis.contact.tryAndRecover.undeleteContactById(
 			_sdkId,
@@ -393,7 +407,7 @@ class TryAndRecoverContactApi {
 		);
 	}
 
-	Future<Contact> getContact(String entityId) async {
+	Future<Contact?> getContact(String entityId) async {
 		return await CardinalSdkPlatformInterface.instance.apis.contact.tryAndRecover.getContact(
 			_sdkId,
 			entityId,
@@ -422,10 +436,10 @@ class TryAndRecoverContactApi {
 	}
 }
 
-class EncryptedContactApi {
+class ContactEncryptedApi {
 	final String _sdkId;
 	final Object _dartSdk;
-	EncryptedContactApi(
+	ContactEncryptedApi(
 		this._sdkId,
 		this._dartSdk
 		);
@@ -475,6 +489,20 @@ class EncryptedContactApi {
 		);
 	}
 
+	Future<EncryptedContact> createContact(EncryptedContact entity) async {
+		return await CardinalSdkPlatformInterface.instance.apis.contact.encrypted.createContact(
+			_sdkId,
+			entity,
+		);
+	}
+
+	Future<List<EncryptedContact>> createContacts(List<EncryptedContact> entities) async {
+		return await CardinalSdkPlatformInterface.instance.apis.contact.encrypted.createContacts(
+			_sdkId,
+			entities,
+		);
+	}
+
 	Future<EncryptedContact> undeleteContactById(String id, String rev) async {
 		return await CardinalSdkPlatformInterface.instance.apis.contact.encrypted.undeleteContactById(
 			_sdkId,
@@ -504,7 +532,7 @@ class EncryptedContactApi {
 		);
 	}
 
-	Future<EncryptedContact> getContact(String entityId) async {
+	Future<EncryptedContact?> getContact(String entityId) async {
 		return await CardinalSdkPlatformInterface.instance.apis.contact.encrypted.getContact(
 			_sdkId,
 			entityId,

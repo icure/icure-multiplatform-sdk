@@ -56,6 +56,13 @@ class ClassificationBasicApi {
 		);
 	}
 
+	Future<EncryptedClassification> createClassification(EncryptedClassification entity) async {
+		return await CardinalSdkPlatformInterface.instance.apis.classificationBasic.createClassification(
+			_sdkId,
+			entity,
+		);
+	}
+
 	Future<EncryptedClassification> modifyClassification(EncryptedClassification entity) async {
 		return await CardinalSdkPlatformInterface.instance.apis.classificationBasic.modifyClassification(
 			_sdkId,
@@ -63,7 +70,7 @@ class ClassificationBasicApi {
 		);
 	}
 
-	Future<EncryptedClassification> getClassification(String entityId) async {
+	Future<EncryptedClassification?> getClassification(String entityId) async {
 		return await CardinalSdkPlatformInterface.instance.apis.classificationBasic.getClassification(
 			_sdkId,
 			entityId,

@@ -14,7 +14,6 @@ class MaintenanceTaskApiDispatcher {
     ) -> Void
   ) -> Bool {
     switch methodName {
-    case "createMaintenanceTask": createMaintenanceTask(parameters: parameters, resultCallback: resultCallback)
     case "withEncryptionMetadata": withEncryptionMetadata(parameters: parameters, resultCallback: resultCallback)
     case "getEncryptionKeysOf": getEncryptionKeysOf(parameters: parameters, resultCallback: resultCallback)
     case "hasWriteAccess": hasWriteAccess(parameters: parameters, resultCallback: resultCallback)
@@ -34,6 +33,7 @@ class MaintenanceTaskApiDispatcher {
     case "shareWithMany": shareWithMany(parameters: parameters, resultCallback: resultCallback)
     case "filterMaintenanceTasksBy": filterMaintenanceTasksBy(parameters: parameters, resultCallback: resultCallback)
     case "filterMaintenanceTasksBySorted": filterMaintenanceTasksBySorted(parameters: parameters, resultCallback: resultCallback)
+    case "createMaintenanceTask": createMaintenanceTask(parameters: parameters, resultCallback: resultCallback)
     case "undeleteMaintenanceTask": undeleteMaintenanceTask(parameters: parameters, resultCallback: resultCallback)
     case "undeleteMaintenanceTaskById": undeleteMaintenanceTaskById(parameters: parameters, resultCallback: resultCallback)
     case "modifyMaintenanceTask": modifyMaintenanceTask(parameters: parameters, resultCallback: resultCallback)
@@ -44,6 +44,7 @@ class MaintenanceTaskApiDispatcher {
     case "encrypted.shareWithMany": encrypted_shareWithMany(parameters: parameters, resultCallback: resultCallback)
     case "encrypted.filterMaintenanceTasksBy": encrypted_filterMaintenanceTasksBy(parameters: parameters, resultCallback: resultCallback)
     case "encrypted.filterMaintenanceTasksBySorted": encrypted_filterMaintenanceTasksBySorted(parameters: parameters, resultCallback: resultCallback)
+    case "encrypted.createMaintenanceTask": encrypted_createMaintenanceTask(parameters: parameters, resultCallback: resultCallback)
     case "encrypted.undeleteMaintenanceTask": encrypted_undeleteMaintenanceTask(parameters: parameters, resultCallback: resultCallback)
     case "encrypted.undeleteMaintenanceTaskById": encrypted_undeleteMaintenanceTaskById(parameters: parameters, resultCallback: resultCallback)
     case "encrypted.modifyMaintenanceTask": encrypted_modifyMaintenanceTask(parameters: parameters, resultCallback: resultCallback)
@@ -53,6 +54,7 @@ class MaintenanceTaskApiDispatcher {
     case "tryAndRecover.shareWithMany": tryAndRecover_shareWithMany(parameters: parameters, resultCallback: resultCallback)
     case "tryAndRecover.filterMaintenanceTasksBy": tryAndRecover_filterMaintenanceTasksBy(parameters: parameters, resultCallback: resultCallback)
     case "tryAndRecover.filterMaintenanceTasksBySorted": tryAndRecover_filterMaintenanceTasksBySorted(parameters: parameters, resultCallback: resultCallback)
+    case "tryAndRecover.createMaintenanceTask": tryAndRecover_createMaintenanceTask(parameters: parameters, resultCallback: resultCallback)
     case "tryAndRecover.undeleteMaintenanceTask": tryAndRecover_undeleteMaintenanceTask(parameters: parameters, resultCallback: resultCallback)
     case "tryAndRecover.undeleteMaintenanceTaskById": tryAndRecover_undeleteMaintenanceTaskById(parameters: parameters, resultCallback: resultCallback)
     case "tryAndRecover.modifyMaintenanceTask": tryAndRecover_modifyMaintenanceTask(parameters: parameters, resultCallback: resultCallback)
@@ -61,19 +63,6 @@ class MaintenanceTaskApiDispatcher {
     default: return false
     }
     return true
-  }
-
-  private static func createMaintenanceTask(parameters: [String : String], resultCallback: @escaping (
-    String?,
-    String?,
-    String?,
-    String?
-  ) -> Void) {
-    MaintenanceTaskApi.shared.createMaintenanceTask(
-    	dartResultCallback: resultCallback,
-    	sdkId: parameters["sdkId"]!,
-    	entityString: parameters["entity"]!
-    )
   }
 
   private static func withEncryptionMetadata(parameters: [String : String], resultCallback: @escaping (
@@ -331,6 +320,19 @@ class MaintenanceTaskApiDispatcher {
     )
   }
 
+  private static func createMaintenanceTask(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    MaintenanceTaskApi.shared.createMaintenanceTask(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	entityString: parameters["entity"]!
+    )
+  }
+
   private static func undeleteMaintenanceTask(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
@@ -467,6 +469,19 @@ class MaintenanceTaskApiDispatcher {
     )
   }
 
+  private static func encrypted_createMaintenanceTask(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    MaintenanceTaskApi.encrypted.shared.createMaintenanceTask(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	entityString: parameters["entity"]!
+    )
+  }
+
   private static func encrypted_undeleteMaintenanceTask(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
@@ -585,6 +600,19 @@ class MaintenanceTaskApiDispatcher {
     	dartResultCallback: resultCallback,
     	sdkId: parameters["sdkId"]!,
     	filterString: parameters["filter"]!
+    )
+  }
+
+  private static func tryAndRecover_createMaintenanceTask(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    MaintenanceTaskApi.tryAndRecover.shared.createMaintenanceTask(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	entityString: parameters["entity"]!
     )
   }
 

@@ -41,6 +41,8 @@ public object GroupApiDispatcher {
     "getReplicationInfo" -> getReplicationInfo(parameters, resultCallback)
     "getHierarchy" -> getHierarchy(parameters, resultCallback)
     "listAllGroupsIds" -> listAllGroupsIds(parameters, resultCallback)
+    "createOrUpdateExternalJwtConfig" -> createOrUpdateExternalJwtConfig(parameters, resultCallback)
+    "removeExternalJwtConfig" -> removeExternalJwtConfig(parameters, resultCallback)
     else -> null
   }?.let { true } ?: false
 
@@ -364,6 +366,35 @@ public object GroupApiDispatcher {
     GroupApi.listAllGroupsIds(
       resultCallback,
       parameters.getValue("sdkId"),
+    )
+  }
+
+  private fun createOrUpdateExternalJwtConfig(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    GroupApi.createOrUpdateExternalJwtConfig(
+      resultCallback,
+      parameters.getValue("sdkId"),
+      parameters.getValue("groupId"),
+      parameters.getValue("key"),
+      parameters.getValue("config"),
+    )
+  }
+
+  private fun removeExternalJwtConfig(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    GroupApi.removeExternalJwtConfig(
+      resultCallback,
+      parameters.getValue("sdkId"),
+      parameters.getValue("groupId"),
+      parameters.getValue("key"),
     )
   }
 }

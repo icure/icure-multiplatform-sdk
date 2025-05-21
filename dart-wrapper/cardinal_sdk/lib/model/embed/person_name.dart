@@ -1,33 +1,22 @@
 // auto-generated file
 import 'package:cardinal_sdk/model/embed/person_name_use.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+part "person_name.freezed.dart";
 
 
-class PersonName {
-	String? lastName = null;
-	List<String> firstNames = [];
-	int? start = null;
-	int? end = null;
-	List<String> prefix = [];
-	List<String> suffix = [];
-	String? text = null;
-	PersonNameUse? use = null;
-	PersonName({
-			String? lastName,
-			List<String>? firstNames,
-			int? start,
-			int? end,
-			List<String>? prefix,
-			List<String>? suffix,
-			String? text,
-			PersonNameUse? use
-		}) : lastName = lastName ?? null,
-		firstNames = firstNames ?? [],
-		start = start ?? null,
-		end = end ?? null,
-		prefix = prefix ?? [],
-		suffix = suffix ?? [],
-		text = text ?? null,
-		use = use ?? null;
+@freezed
+abstract class PersonName with _$PersonName {
+	const factory PersonName({
+		@Default(null) String? lastName,
+		@Default([]) List<String> firstNames,
+		@Default(null) int? start,
+		@Default(null) int? end,
+		@Default([]) List<String> prefix,
+		@Default([]) List<String> suffix,
+		@Default(null) String? text,
+		@Default(null) PersonNameUse? use,
+	}) = _PersonName;
+
 
 	static Map<String, dynamic> encode(PersonName value) {
 		Map<String, dynamic> entityAsMap = {

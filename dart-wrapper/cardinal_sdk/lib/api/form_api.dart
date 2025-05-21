@@ -1,14 +1,14 @@
 // auto-generated file
 import 'package:cardinal_sdk/model/form.dart';
-import 'package:cardinal_sdk/plugin/cardinal_sdk_platform_interface.dart';
 import 'package:cardinal_sdk/model/patient.dart';
 import 'package:cardinal_sdk/model/user.dart';
 import 'package:cardinal_sdk/model/embed/access_level.dart';
 import 'package:cardinal_sdk/crypto/entities/secret_id_use_option.dart';
+import 'package:cardinal_sdk/plugin/cardinal_sdk_platform_interface.dart';
 import 'package:cardinal_sdk/model/specializations/hex_string.dart';
 import 'package:cardinal_sdk/filters/filter_options.dart';
 import 'package:cardinal_sdk/model/couchdb/doc_identifier.dart';
-import 'package:cardinal_sdk/model/id_with_mandatory_rev.dart';
+import 'package:cardinal_sdk/model/stored_document_identifier.dart';
 import 'package:cardinal_sdk/model/form_template.dart';
 import 'dart:typed_data';
 import 'package:cardinal_sdk/crypto/entities/form_share_options.dart';
@@ -18,27 +18,13 @@ import 'package:cardinal_sdk/utils/pagination/paginated_list_iterator.dart';
 class FormApi {
 	final String _sdkId;
 	final Object _dartSdk;
-	final TryAndRecoverFormApi tryAndRecover;
-	final EncryptedFormApi encrypted;
+	final FormEncryptedApi encrypted;
+	final FormTryAndRecoverApi tryAndRecover;
 	FormApi(
 		this._sdkId,
 		this._dartSdk
-		) : tryAndRecover = TryAndRecoverFormApi(_sdkId, _dartSdk),
-		encrypted = EncryptedFormApi(_sdkId, _dartSdk);
-
-	Future<DecryptedForm> createForm(DecryptedForm entity) async {
-		return await CardinalSdkPlatformInterface.instance.apis.form.createForm(
-			_sdkId,
-			entity,
-		);
-	}
-
-	Future<List<DecryptedForm>> createForms(List<DecryptedForm> entities) async {
-		return await CardinalSdkPlatformInterface.instance.apis.form.createForms(
-			_sdkId,
-			entities,
-		);
-	}
+		) : encrypted = FormEncryptedApi(_sdkId, _dartSdk),
+		tryAndRecover = FormTryAndRecoverApi(_sdkId, _dartSdk);
 
 	Future<DecryptedForm> withEncryptionMetadata(DecryptedForm? base, Patient patient, { User? user, Map<String, AccessLevel> delegates = const {}, SecretIdUseOption secretId = SecretIdUseOption.UseAnySharedWithParent }) async {
 		return await CardinalSdkPlatformInterface.instance.apis.form.withEncryptionMetadata(
@@ -116,7 +102,7 @@ class FormApi {
 		);
 	}
 
-	Future<List<DocIdentifier>> deleteFormsByIds(List<IdWithMandatoryRev> entityIds) async {
+	Future<List<DocIdentifier>> deleteFormsByIds(List<StoredDocumentIdentifier> entityIds) async {
 		return await CardinalSdkPlatformInterface.instance.apis.form.deleteFormsByIds(
 			_sdkId,
 			entityIds,
@@ -220,6 +206,20 @@ class FormApi {
 		);
 	}
 
+	Future<DecryptedForm> createForm(DecryptedForm entity) async {
+		return await CardinalSdkPlatformInterface.instance.apis.form.createForm(
+			_sdkId,
+			entity,
+		);
+	}
+
+	Future<List<DecryptedForm>> createForms(List<DecryptedForm> entities) async {
+		return await CardinalSdkPlatformInterface.instance.apis.form.createForms(
+			_sdkId,
+			entities,
+		);
+	}
+
 	Future<DecryptedForm> modifyForm(DecryptedForm entity) async {
 		return await CardinalSdkPlatformInterface.instance.apis.form.modifyForm(
 			_sdkId,
@@ -249,7 +249,7 @@ class FormApi {
 		);
 	}
 
-	Future<DecryptedForm> getForm(String entityId) async {
+	Future<DecryptedForm?> getForm(String entityId) async {
 		return await CardinalSdkPlatformInterface.instance.apis.form.getForm(
 			_sdkId,
 			entityId,
@@ -278,10 +278,10 @@ class FormApi {
 	}
 }
 
-class TryAndRecoverFormApi {
+class FormTryAndRecoverApi {
 	final String _sdkId;
 	final Object _dartSdk;
-	TryAndRecoverFormApi(
+	FormTryAndRecoverApi(
 		this._sdkId,
 		this._dartSdk
 		);
@@ -317,6 +317,20 @@ class TryAndRecoverFormApi {
 		);
 	}
 
+	Future<Form> createForm(Form entity) async {
+		return await CardinalSdkPlatformInterface.instance.apis.form.tryAndRecover.createForm(
+			_sdkId,
+			entity,
+		);
+	}
+
+	Future<List<Form>> createForms(List<Form> entities) async {
+		return await CardinalSdkPlatformInterface.instance.apis.form.tryAndRecover.createForms(
+			_sdkId,
+			entities,
+		);
+	}
+
 	Future<Form> modifyForm(Form entity) async {
 		return await CardinalSdkPlatformInterface.instance.apis.form.tryAndRecover.modifyForm(
 			_sdkId,
@@ -346,7 +360,7 @@ class TryAndRecoverFormApi {
 		);
 	}
 
-	Future<Form> getForm(String entityId) async {
+	Future<Form?> getForm(String entityId) async {
 		return await CardinalSdkPlatformInterface.instance.apis.form.tryAndRecover.getForm(
 			_sdkId,
 			entityId,
@@ -375,10 +389,10 @@ class TryAndRecoverFormApi {
 	}
 }
 
-class EncryptedFormApi {
+class FormEncryptedApi {
 	final String _sdkId;
 	final Object _dartSdk;
-	EncryptedFormApi(
+	FormEncryptedApi(
 		this._sdkId,
 		this._dartSdk
 		);
@@ -414,6 +428,20 @@ class EncryptedFormApi {
 		);
 	}
 
+	Future<EncryptedForm> createForm(EncryptedForm entity) async {
+		return await CardinalSdkPlatformInterface.instance.apis.form.encrypted.createForm(
+			_sdkId,
+			entity,
+		);
+	}
+
+	Future<List<EncryptedForm>> createForms(List<EncryptedForm> entities) async {
+		return await CardinalSdkPlatformInterface.instance.apis.form.encrypted.createForms(
+			_sdkId,
+			entities,
+		);
+	}
+
 	Future<EncryptedForm> modifyForm(EncryptedForm entity) async {
 		return await CardinalSdkPlatformInterface.instance.apis.form.encrypted.modifyForm(
 			_sdkId,
@@ -443,7 +471,7 @@ class EncryptedFormApi {
 		);
 	}
 
-	Future<EncryptedForm> getForm(String entityId) async {
+	Future<EncryptedForm?> getForm(String entityId) async {
 		return await CardinalSdkPlatformInterface.instance.apis.form.encrypted.getForm(
 			_sdkId,
 			entityId,

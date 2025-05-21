@@ -1,29 +1,20 @@
 // auto-generated file
+import 'package:freezed_annotation/freezed_annotation.dart';
+part "time_series.freezed.dart";
 
 
-class TimeSeries {
-	List<String> fields = [];
-	List<List<double>> samples = [];
-	List<double> min = [];
-	List<double> max = [];
-	List<double> mean = [];
-	List<double> median = [];
-	List<double> variance = [];
-	TimeSeries({
-			List<String>? fields,
-			List<List<double>>? samples,
-			List<double>? min,
-			List<double>? max,
-			List<double>? mean,
-			List<double>? median,
-			List<double>? variance
-		}) : fields = fields ?? [],
-		samples = samples ?? [],
-		min = min ?? [],
-		max = max ?? [],
-		mean = mean ?? [],
-		median = median ?? [],
-		variance = variance ?? [];
+@freezed
+abstract class TimeSeries with _$TimeSeries {
+	const factory TimeSeries({
+		@Default([]) List<String> fields,
+		@Default([]) List<List<double>> samples,
+		@Default([]) List<double> min,
+		@Default([]) List<double> max,
+		@Default([]) List<double> mean,
+		@Default([]) List<double> median,
+		@Default([]) List<double> variance,
+	}) = _TimeSeries;
+
 
 	static Map<String, dynamic> encode(TimeSeries value) {
 		Map<String, dynamic> entityAsMap = {

@@ -127,7 +127,7 @@ class _AuthFormState extends State<AuthForm> {
     print("Sdk initialized");
     final patient = await sdk.patient.createPatient(
       await sdk.patient.withEncryptionMetadata(DecryptedPatient(
-        generateUuid(),
+        id: generateUuid(),
         firstName: "Gino",
         lastName: "Bros",
         note: "The third mario bros"
@@ -136,9 +136,9 @@ class _AuthFormState extends State<AuthForm> {
     print("Created patient");
     print(patient);
     print("Retrieved patient");
-    print(DecryptedPatient.encode(await sdk.patient.getPatient(patient.id)));
+    print(DecryptedPatient.encode((await sdk.patient.getPatient(patient.id))!));
     print("Retrieved encrypted patient");
-    print(EncryptedPatient.encode(await sdk.patient.encrypted.getPatient(patient.id)));
+    print(EncryptedPatient.encode((await sdk.patient.encrypted.getPatient(patient.id))!));
     // print("Creating more patients");
     // final List<DecryptedPatient> manyPatients = [];
     // for (int i = 0; i < 100; i++) {
@@ -162,7 +162,7 @@ class _AuthFormState extends State<AuthForm> {
     print("Create some data and get event");
     for (int i = 0; i < 3; i++) {
       await sdk.patient.createPatient(await sdk.patient.withEncryptionMetadata(DecryptedPatient(
-        generateUuid(),
+        id: generateUuid(),
         firstName: "Gino",
         lastName: "Bros-${generateUuid()}",
         note: "$i"
@@ -197,7 +197,7 @@ class _AuthFormState extends State<AuthForm> {
     await doFilterExample();
     try {
       await sdk.patient.createPatient(DecryptedPatient(
-          generateUuid(),
+          id: generateUuid(),
           firstName: "Gino",
           lastName: "Bros-${generateUuid()}",
           note: "Should not work"

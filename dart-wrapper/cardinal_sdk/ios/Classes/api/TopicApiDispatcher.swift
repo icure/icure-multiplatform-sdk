@@ -14,7 +14,6 @@ class TopicApiDispatcher {
     ) -> Void
   ) -> Bool {
     switch methodName {
-    case "createTopic": createTopic(parameters: parameters, resultCallback: resultCallback)
     case "withEncryptionMetadata": withEncryptionMetadata(parameters: parameters, resultCallback: resultCallback)
     case "getEncryptionKeysOf": getEncryptionKeysOf(parameters: parameters, resultCallback: resultCallback)
     case "hasWriteAccess": hasWriteAccess(parameters: parameters, resultCallback: resultCallback)
@@ -34,6 +33,7 @@ class TopicApiDispatcher {
     case "shareWithMany": shareWithMany(parameters: parameters, resultCallback: resultCallback)
     case "filterTopicsBy": filterTopicsBy(parameters: parameters, resultCallback: resultCallback)
     case "filterTopicsBySorted": filterTopicsBySorted(parameters: parameters, resultCallback: resultCallback)
+    case "createTopic": createTopic(parameters: parameters, resultCallback: resultCallback)
     case "undeleteTopic": undeleteTopic(parameters: parameters, resultCallback: resultCallback)
     case "modifyTopic": modifyTopic(parameters: parameters, resultCallback: resultCallback)
     case "undeleteTopicById": undeleteTopicById(parameters: parameters, resultCallback: resultCallback)
@@ -46,6 +46,7 @@ class TopicApiDispatcher {
     case "encrypted.shareWithMany": encrypted_shareWithMany(parameters: parameters, resultCallback: resultCallback)
     case "encrypted.filterTopicsBy": encrypted_filterTopicsBy(parameters: parameters, resultCallback: resultCallback)
     case "encrypted.filterTopicsBySorted": encrypted_filterTopicsBySorted(parameters: parameters, resultCallback: resultCallback)
+    case "encrypted.createTopic": encrypted_createTopic(parameters: parameters, resultCallback: resultCallback)
     case "encrypted.undeleteTopic": encrypted_undeleteTopic(parameters: parameters, resultCallback: resultCallback)
     case "encrypted.modifyTopic": encrypted_modifyTopic(parameters: parameters, resultCallback: resultCallback)
     case "encrypted.undeleteTopicById": encrypted_undeleteTopicById(parameters: parameters, resultCallback: resultCallback)
@@ -57,6 +58,7 @@ class TopicApiDispatcher {
     case "tryAndRecover.shareWithMany": tryAndRecover_shareWithMany(parameters: parameters, resultCallback: resultCallback)
     case "tryAndRecover.filterTopicsBy": tryAndRecover_filterTopicsBy(parameters: parameters, resultCallback: resultCallback)
     case "tryAndRecover.filterTopicsBySorted": tryAndRecover_filterTopicsBySorted(parameters: parameters, resultCallback: resultCallback)
+    case "tryAndRecover.createTopic": tryAndRecover_createTopic(parameters: parameters, resultCallback: resultCallback)
     case "tryAndRecover.undeleteTopic": tryAndRecover_undeleteTopic(parameters: parameters, resultCallback: resultCallback)
     case "tryAndRecover.modifyTopic": tryAndRecover_modifyTopic(parameters: parameters, resultCallback: resultCallback)
     case "tryAndRecover.undeleteTopicById": tryAndRecover_undeleteTopicById(parameters: parameters, resultCallback: resultCallback)
@@ -67,19 +69,6 @@ class TopicApiDispatcher {
     default: return false
     }
     return true
-  }
-
-  private static func createTopic(parameters: [String : String], resultCallback: @escaping (
-    String?,
-    String?,
-    String?,
-    String?
-  ) -> Void) {
-    TopicApi.shared.createTopic(
-    	dartResultCallback: resultCallback,
-    	sdkId: parameters["sdkId"]!,
-    	entityString: parameters["entity"]!
-    )
   }
 
   private static func withEncryptionMetadata(parameters: [String : String], resultCallback: @escaping (
@@ -339,6 +328,19 @@ class TopicApiDispatcher {
     )
   }
 
+  private static func createTopic(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    TopicApi.shared.createTopic(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	entityString: parameters["entity"]!
+    )
+  }
+
   private static func undeleteTopic(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
@@ -504,6 +506,19 @@ class TopicApiDispatcher {
     )
   }
 
+  private static func encrypted_createTopic(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    TopicApi.encrypted.shared.createTopic(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	entityString: parameters["entity"]!
+    )
+  }
+
   private static func encrypted_undeleteTopic(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
@@ -651,6 +666,19 @@ class TopicApiDispatcher {
     	dartResultCallback: resultCallback,
     	sdkId: parameters["sdkId"]!,
     	filterString: parameters["filter"]!
+    )
+  }
+
+  private static func tryAndRecover_createTopic(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    TopicApi.tryAndRecover.shared.createTopic(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	entityString: parameters["entity"]!
     )
   }
 

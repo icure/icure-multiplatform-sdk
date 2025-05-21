@@ -1,107 +1,46 @@
 // auto-generated file
+import 'package:freezed_annotation/freezed_annotation.dart';
+part "flow_item.freezed.dart";
 
 
-class FlowItem {
-	String? id = null;
-	String? title = null;
-	String? comment = null;
-	int? receptionDate = null;
-	int? processingDate = null;
-	String? processer = null;
-	int? cancellationDate = null;
-	String? canceller = null;
-	String? cancellationReason = null;
-	String? cancellationNote = null;
-	String? status = null;
-	bool? homeVisit = null;
-	String? municipality = null;
-	String? town = null;
-	String? zipCode = null;
-	String? street = null;
-	String? building = null;
-	String? buildingNumber = null;
-	String? doorbellName = null;
-	String? floor = null;
-	String? letterBox = null;
-	String? notesOps = null;
-	String? notesContact = null;
-	String? latitude = null;
-	String? longitude = null;
-	String? type = null;
-	bool? emergency = null;
-	String? phoneNumber = null;
-	String? patientId = null;
-	String? patientLastName = null;
-	String? patientFirstName = null;
-	String? description = null;
-	String? interventionCode = null;
-	FlowItem({
-			String? id,
-			String? title,
-			String? comment,
-			int? receptionDate,
-			int? processingDate,
-			String? processer,
-			int? cancellationDate,
-			String? canceller,
-			String? cancellationReason,
-			String? cancellationNote,
-			String? status,
-			bool? homeVisit,
-			String? municipality,
-			String? town,
-			String? zipCode,
-			String? street,
-			String? building,
-			String? buildingNumber,
-			String? doorbellName,
-			String? floor,
-			String? letterBox,
-			String? notesOps,
-			String? notesContact,
-			String? latitude,
-			String? longitude,
-			String? type,
-			bool? emergency,
-			String? phoneNumber,
-			String? patientId,
-			String? patientLastName,
-			String? patientFirstName,
-			String? description,
-			String? interventionCode
-		}) : id = id ?? null,
-		title = title ?? null,
-		comment = comment ?? null,
-		receptionDate = receptionDate ?? null,
-		processingDate = processingDate ?? null,
-		processer = processer ?? null,
-		cancellationDate = cancellationDate ?? null,
-		canceller = canceller ?? null,
-		cancellationReason = cancellationReason ?? null,
-		cancellationNote = cancellationNote ?? null,
-		status = status ?? null,
-		homeVisit = homeVisit ?? null,
-		municipality = municipality ?? null,
-		town = town ?? null,
-		zipCode = zipCode ?? null,
-		street = street ?? null,
-		building = building ?? null,
-		buildingNumber = buildingNumber ?? null,
-		doorbellName = doorbellName ?? null,
-		floor = floor ?? null,
-		letterBox = letterBox ?? null,
-		notesOps = notesOps ?? null,
-		notesContact = notesContact ?? null,
-		latitude = latitude ?? null,
-		longitude = longitude ?? null,
-		type = type ?? null,
-		emergency = emergency ?? null,
-		phoneNumber = phoneNumber ?? null,
-		patientId = patientId ?? null,
-		patientLastName = patientLastName ?? null,
-		patientFirstName = patientFirstName ?? null,
-		description = description ?? null,
-		interventionCode = interventionCode ?? null;
+@freezed
+abstract class FlowItem with _$FlowItem {
+	const factory FlowItem({
+		@Default(null) String? id,
+		@Default(null) String? title,
+		@Default(null) String? comment,
+		@Default(null) int? receptionDate,
+		@Default(null) int? processingDate,
+		@Default(null) String? processer,
+		@Default(null) int? cancellationDate,
+		@Default(null) String? canceller,
+		@Default(null) String? cancellationReason,
+		@Default(null) String? cancellationNote,
+		@Default(null) String? status,
+		@Default(null) bool? homeVisit,
+		@Default(null) String? municipality,
+		@Default(null) String? town,
+		@Default(null) String? zipCode,
+		@Default(null) String? street,
+		@Default(null) String? building,
+		@Default(null) String? buildingNumber,
+		@Default(null) String? doorbellName,
+		@Default(null) String? floor,
+		@Default(null) String? letterBox,
+		@Default(null) String? notesOps,
+		@Default(null) String? notesContact,
+		@Default(null) String? latitude,
+		@Default(null) String? longitude,
+		@Default(null) String? type,
+		@Default(null) bool? emergency,
+		@Default(null) String? phoneNumber,
+		@Default(null) String? patientId,
+		@Default(null) String? patientLastName,
+		@Default(null) String? patientFirstName,
+		@Default(null) String? description,
+		@Default(null) String? interventionCode,
+	}) = _FlowItem;
+
 
 	static Map<String, dynamic> encode(FlowItem value) {
 		Map<String, dynamic> entityAsMap = {

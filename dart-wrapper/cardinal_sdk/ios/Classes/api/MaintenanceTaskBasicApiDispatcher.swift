@@ -24,6 +24,7 @@ class MaintenanceTaskBasicApiDispatcher {
     case "deleteMaintenanceTask": deleteMaintenanceTask(parameters: parameters, resultCallback: resultCallback)
     case "deleteMaintenanceTasks": deleteMaintenanceTasks(parameters: parameters, resultCallback: resultCallback)
     case "purgeMaintenanceTask": purgeMaintenanceTask(parameters: parameters, resultCallback: resultCallback)
+    case "createMaintenanceTask": createMaintenanceTask(parameters: parameters, resultCallback: resultCallback)
     case "undeleteMaintenanceTask": undeleteMaintenanceTask(parameters: parameters, resultCallback: resultCallback)
     case "undeleteMaintenanceTaskById": undeleteMaintenanceTaskById(parameters: parameters, resultCallback: resultCallback)
     case "modifyMaintenanceTask": modifyMaintenanceTask(parameters: parameters, resultCallback: resultCallback)
@@ -164,6 +165,19 @@ class MaintenanceTaskBasicApiDispatcher {
     	dartResultCallback: resultCallback,
     	sdkId: parameters["sdkId"]!,
     	maintenanceTaskString: parameters["maintenanceTask"]!
+    )
+  }
+
+  private static func createMaintenanceTask(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    MaintenanceTaskBasicApi.shared.createMaintenanceTask(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	entityString: parameters["entity"]!
     )
   }
 

@@ -14,15 +14,14 @@ class PatientApiDispatcher {
     ) -> Void
   ) -> Bool {
     switch methodName {
+    case "decrypt": decrypt(parameters: parameters, resultCallback: resultCallback)
+    case "tryDecrypt": tryDecrypt(parameters: parameters, resultCallback: resultCallback)
+    case "encryptOrValidate": encryptOrValidate(parameters: parameters, resultCallback: resultCallback)
     case "getSecretIdsOf": getSecretIdsOf(parameters: parameters, resultCallback: resultCallback)
     case "getEncryptionKeysOf": getEncryptionKeysOf(parameters: parameters, resultCallback: resultCallback)
-    case "createPatient": createPatient(parameters: parameters, resultCallback: resultCallback)
     case "withEncryptionMetadata": withEncryptionMetadata(parameters: parameters, resultCallback: resultCallback)
     case "hasWriteAccess": hasWriteAccess(parameters: parameters, resultCallback: resultCallback)
     case "createDelegationDeAnonymizationMetadata": createDelegationDeAnonymizationMetadata(parameters: parameters, resultCallback: resultCallback)
-    case "decrypt": decrypt(parameters: parameters, resultCallback: resultCallback)
-    case "tryDecrypt": tryDecrypt(parameters: parameters, resultCallback: resultCallback)
-    case "createPatients": createPatients(parameters: parameters, resultCallback: resultCallback)
     case "shareAllDataOfPatient": shareAllDataOfPatient(parameters: parameters, resultCallback: resultCallback)
     case "getConfidentialSecretIdsOf": getConfidentialSecretIdsOf(parameters: parameters, resultCallback: resultCallback)
     case "forceInitializeExchangeDataToNewlyInvitedPatient": forceInitializeExchangeDataToNewlyInvitedPatient(parameters: parameters, resultCallback: resultCallback)
@@ -41,6 +40,9 @@ class PatientApiDispatcher {
     case "initializeConfidentialSecretId": initializeConfidentialSecretId(parameters: parameters, resultCallback: resultCallback)
     case "filterPatientsBy": filterPatientsBy(parameters: parameters, resultCallback: resultCallback)
     case "filterPatientsBySorted": filterPatientsBySorted(parameters: parameters, resultCallback: resultCallback)
+    case "createPatient": createPatient(parameters: parameters, resultCallback: resultCallback)
+    case "createPatientsMinimal": createPatientsMinimal(parameters: parameters, resultCallback: resultCallback)
+    case "createPatients": createPatients(parameters: parameters, resultCallback: resultCallback)
     case "undeletePatient": undeletePatient(parameters: parameters, resultCallback: resultCallback)
     case "modifyPatient": modifyPatient(parameters: parameters, resultCallback: resultCallback)
     case "undeletePatientById": undeletePatientById(parameters: parameters, resultCallback: resultCallback)
@@ -48,6 +50,7 @@ class PatientApiDispatcher {
     case "getPatient": getPatient(parameters: parameters, resultCallback: resultCallback)
     case "getPatientResolvingMerges": getPatientResolvingMerges(parameters: parameters, resultCallback: resultCallback)
     case "getPatients": getPatients(parameters: parameters, resultCallback: resultCallback)
+    case "modifyPatientsMinimal": modifyPatientsMinimal(parameters: parameters, resultCallback: resultCallback)
     case "modifyPatients": modifyPatients(parameters: parameters, resultCallback: resultCallback)
     case "mergePatients": mergePatients(parameters: parameters, resultCallback: resultCallback)
     case "subscribeToEvents": subscribeToEvents(parameters: parameters, resultCallback: resultCallback)
@@ -56,6 +59,9 @@ class PatientApiDispatcher {
     case "encrypted.initializeConfidentialSecretId": encrypted_initializeConfidentialSecretId(parameters: parameters, resultCallback: resultCallback)
     case "encrypted.filterPatientsBy": encrypted_filterPatientsBy(parameters: parameters, resultCallback: resultCallback)
     case "encrypted.filterPatientsBySorted": encrypted_filterPatientsBySorted(parameters: parameters, resultCallback: resultCallback)
+    case "encrypted.createPatient": encrypted_createPatient(parameters: parameters, resultCallback: resultCallback)
+    case "encrypted.createPatientsMinimal": encrypted_createPatientsMinimal(parameters: parameters, resultCallback: resultCallback)
+    case "encrypted.createPatients": encrypted_createPatients(parameters: parameters, resultCallback: resultCallback)
     case "encrypted.undeletePatient": encrypted_undeletePatient(parameters: parameters, resultCallback: resultCallback)
     case "encrypted.modifyPatient": encrypted_modifyPatient(parameters: parameters, resultCallback: resultCallback)
     case "encrypted.undeletePatientById": encrypted_undeletePatientById(parameters: parameters, resultCallback: resultCallback)
@@ -63,6 +69,7 @@ class PatientApiDispatcher {
     case "encrypted.getPatient": encrypted_getPatient(parameters: parameters, resultCallback: resultCallback)
     case "encrypted.getPatientResolvingMerges": encrypted_getPatientResolvingMerges(parameters: parameters, resultCallback: resultCallback)
     case "encrypted.getPatients": encrypted_getPatients(parameters: parameters, resultCallback: resultCallback)
+    case "encrypted.modifyPatientsMinimal": encrypted_modifyPatientsMinimal(parameters: parameters, resultCallback: resultCallback)
     case "encrypted.modifyPatients": encrypted_modifyPatients(parameters: parameters, resultCallback: resultCallback)
     case "encrypted.mergePatients": encrypted_mergePatients(parameters: parameters, resultCallback: resultCallback)
     case "tryAndRecover.shareWith": tryAndRecover_shareWith(parameters: parameters, resultCallback: resultCallback)
@@ -70,6 +77,9 @@ class PatientApiDispatcher {
     case "tryAndRecover.initializeConfidentialSecretId": tryAndRecover_initializeConfidentialSecretId(parameters: parameters, resultCallback: resultCallback)
     case "tryAndRecover.filterPatientsBy": tryAndRecover_filterPatientsBy(parameters: parameters, resultCallback: resultCallback)
     case "tryAndRecover.filterPatientsBySorted": tryAndRecover_filterPatientsBySorted(parameters: parameters, resultCallback: resultCallback)
+    case "tryAndRecover.createPatient": tryAndRecover_createPatient(parameters: parameters, resultCallback: resultCallback)
+    case "tryAndRecover.createPatientsMinimal": tryAndRecover_createPatientsMinimal(parameters: parameters, resultCallback: resultCallback)
+    case "tryAndRecover.createPatients": tryAndRecover_createPatients(parameters: parameters, resultCallback: resultCallback)
     case "tryAndRecover.undeletePatient": tryAndRecover_undeletePatient(parameters: parameters, resultCallback: resultCallback)
     case "tryAndRecover.modifyPatient": tryAndRecover_modifyPatient(parameters: parameters, resultCallback: resultCallback)
     case "tryAndRecover.undeletePatientById": tryAndRecover_undeletePatientById(parameters: parameters, resultCallback: resultCallback)
@@ -77,11 +87,101 @@ class PatientApiDispatcher {
     case "tryAndRecover.getPatient": tryAndRecover_getPatient(parameters: parameters, resultCallback: resultCallback)
     case "tryAndRecover.getPatientResolvingMerges": tryAndRecover_getPatientResolvingMerges(parameters: parameters, resultCallback: resultCallback)
     case "tryAndRecover.getPatients": tryAndRecover_getPatients(parameters: parameters, resultCallback: resultCallback)
+    case "tryAndRecover.modifyPatientsMinimal": tryAndRecover_modifyPatientsMinimal(parameters: parameters, resultCallback: resultCallback)
     case "tryAndRecover.modifyPatients": tryAndRecover_modifyPatients(parameters: parameters, resultCallback: resultCallback)
     case "tryAndRecover.mergePatients": tryAndRecover_mergePatients(parameters: parameters, resultCallback: resultCallback)
+    case "inGroup.decrypt": inGroup_decrypt(parameters: parameters, resultCallback: resultCallback)
+    case "inGroup.tryDecrypt": inGroup_tryDecrypt(parameters: parameters, resultCallback: resultCallback)
+    case "inGroup.encryptOrValidate": inGroup_encryptOrValidate(parameters: parameters, resultCallback: resultCallback)
+    case "inGroup.getSecretIdsOf": inGroup_getSecretIdsOf(parameters: parameters, resultCallback: resultCallback)
+    case "inGroup.getEncryptionKeysOf": inGroup_getEncryptionKeysOf(parameters: parameters, resultCallback: resultCallback)
+    case "inGroup.withEncryptionMetadata": inGroup_withEncryptionMetadata(parameters: parameters, resultCallback: resultCallback)
+    case "inGroup.hasWriteAccess": inGroup_hasWriteAccess(parameters: parameters, resultCallback: resultCallback)
+    case "inGroup.createDelegationDeAnonymizationMetadata": inGroup_createDelegationDeAnonymizationMetadata(parameters: parameters, resultCallback: resultCallback)
+    case "inGroup.matchPatientsBy": inGroup_matchPatientsBy(parameters: parameters, resultCallback: resultCallback)
+    case "inGroup.matchPatientsBySorted": inGroup_matchPatientsBySorted(parameters: parameters, resultCallback: resultCallback)
+    case "inGroup.getDataOwnersWithAccessTo": inGroup_getDataOwnersWithAccessTo(parameters: parameters, resultCallback: resultCallback)
+    case "inGroup.shareWith": inGroup_shareWith(parameters: parameters, resultCallback: resultCallback)
+    case "inGroup.shareWithMany": inGroup_shareWithMany(parameters: parameters, resultCallback: resultCallback)
+    case "inGroup.initializeConfidentialSecretId": inGroup_initializeConfidentialSecretId(parameters: parameters, resultCallback: resultCallback)
+    case "inGroup.filterPatientsBy": inGroup_filterPatientsBy(parameters: parameters, resultCallback: resultCallback)
+    case "inGroup.filterPatientsBySorted": inGroup_filterPatientsBySorted(parameters: parameters, resultCallback: resultCallback)
+    case "inGroup.createPatient": inGroup_createPatient(parameters: parameters, resultCallback: resultCallback)
+    case "inGroup.createPatientsMinimal": inGroup_createPatientsMinimal(parameters: parameters, resultCallback: resultCallback)
+    case "inGroup.createPatients": inGroup_createPatients(parameters: parameters, resultCallback: resultCallback)
+    case "inGroup.getPatient": inGroup_getPatient(parameters: parameters, resultCallback: resultCallback)
+    case "inGroup.getPatientResolvingMerges": inGroup_getPatientResolvingMerges(parameters: parameters, resultCallback: resultCallback)
+    case "inGroup.getPatients": inGroup_getPatients(parameters: parameters, resultCallback: resultCallback)
+    case "inGroup.modifyPatientsMinimal": inGroup_modifyPatientsMinimal(parameters: parameters, resultCallback: resultCallback)
+    case "inGroup.modifyPatients": inGroup_modifyPatients(parameters: parameters, resultCallback: resultCallback)
+    case "inGroup.encrypted.shareWith": inGroup_encrypted_shareWith(parameters: parameters, resultCallback: resultCallback)
+    case "inGroup.encrypted.shareWithMany": inGroup_encrypted_shareWithMany(parameters: parameters, resultCallback: resultCallback)
+    case "inGroup.encrypted.initializeConfidentialSecretId": inGroup_encrypted_initializeConfidentialSecretId(parameters: parameters, resultCallback: resultCallback)
+    case "inGroup.encrypted.filterPatientsBy": inGroup_encrypted_filterPatientsBy(parameters: parameters, resultCallback: resultCallback)
+    case "inGroup.encrypted.filterPatientsBySorted": inGroup_encrypted_filterPatientsBySorted(parameters: parameters, resultCallback: resultCallback)
+    case "inGroup.encrypted.createPatient": inGroup_encrypted_createPatient(parameters: parameters, resultCallback: resultCallback)
+    case "inGroup.encrypted.createPatientsMinimal": inGroup_encrypted_createPatientsMinimal(parameters: parameters, resultCallback: resultCallback)
+    case "inGroup.encrypted.createPatients": inGroup_encrypted_createPatients(parameters: parameters, resultCallback: resultCallback)
+    case "inGroup.encrypted.getPatient": inGroup_encrypted_getPatient(parameters: parameters, resultCallback: resultCallback)
+    case "inGroup.encrypted.getPatientResolvingMerges": inGroup_encrypted_getPatientResolvingMerges(parameters: parameters, resultCallback: resultCallback)
+    case "inGroup.encrypted.getPatients": inGroup_encrypted_getPatients(parameters: parameters, resultCallback: resultCallback)
+    case "inGroup.encrypted.modifyPatientsMinimal": inGroup_encrypted_modifyPatientsMinimal(parameters: parameters, resultCallback: resultCallback)
+    case "inGroup.encrypted.modifyPatients": inGroup_encrypted_modifyPatients(parameters: parameters, resultCallback: resultCallback)
+    case "inGroup.tryAndRecover.shareWith": inGroup_tryAndRecover_shareWith(parameters: parameters, resultCallback: resultCallback)
+    case "inGroup.tryAndRecover.shareWithMany": inGroup_tryAndRecover_shareWithMany(parameters: parameters, resultCallback: resultCallback)
+    case "inGroup.tryAndRecover.initializeConfidentialSecretId": inGroup_tryAndRecover_initializeConfidentialSecretId(parameters: parameters, resultCallback: resultCallback)
+    case "inGroup.tryAndRecover.filterPatientsBy": inGroup_tryAndRecover_filterPatientsBy(parameters: parameters, resultCallback: resultCallback)
+    case "inGroup.tryAndRecover.filterPatientsBySorted": inGroup_tryAndRecover_filterPatientsBySorted(parameters: parameters, resultCallback: resultCallback)
+    case "inGroup.tryAndRecover.createPatient": inGroup_tryAndRecover_createPatient(parameters: parameters, resultCallback: resultCallback)
+    case "inGroup.tryAndRecover.createPatientsMinimal": inGroup_tryAndRecover_createPatientsMinimal(parameters: parameters, resultCallback: resultCallback)
+    case "inGroup.tryAndRecover.createPatients": inGroup_tryAndRecover_createPatients(parameters: parameters, resultCallback: resultCallback)
+    case "inGroup.tryAndRecover.getPatient": inGroup_tryAndRecover_getPatient(parameters: parameters, resultCallback: resultCallback)
+    case "inGroup.tryAndRecover.getPatientResolvingMerges": inGroup_tryAndRecover_getPatientResolvingMerges(parameters: parameters, resultCallback: resultCallback)
+    case "inGroup.tryAndRecover.getPatients": inGroup_tryAndRecover_getPatients(parameters: parameters, resultCallback: resultCallback)
+    case "inGroup.tryAndRecover.modifyPatientsMinimal": inGroup_tryAndRecover_modifyPatientsMinimal(parameters: parameters, resultCallback: resultCallback)
+    case "inGroup.tryAndRecover.modifyPatients": inGroup_tryAndRecover_modifyPatients(parameters: parameters, resultCallback: resultCallback)
     default: return false
     }
     return true
+  }
+
+  private static func decrypt(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    PatientApi.shared.decrypt(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	patientsString: parameters["patients"]!
+    )
+  }
+
+  private static func tryDecrypt(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    PatientApi.shared.tryDecrypt(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	patientsString: parameters["patients"]!
+    )
+  }
+
+  private static func encryptOrValidate(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    PatientApi.shared.encryptOrValidate(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	patientsString: parameters["patients"]!
+    )
   }
 
   private static func getSecretIdsOf(parameters: [String : String], resultCallback: @escaping (
@@ -104,19 +204,6 @@ class PatientApiDispatcher {
     String?
   ) -> Void) {
     PatientApi.shared.getEncryptionKeysOf(
-    	dartResultCallback: resultCallback,
-    	sdkId: parameters["sdkId"]!,
-    	patientString: parameters["patient"]!
-    )
-  }
-
-  private static func createPatient(parameters: [String : String], resultCallback: @escaping (
-    String?,
-    String?,
-    String?,
-    String?
-  ) -> Void) {
-    PatientApi.shared.createPatient(
     	dartResultCallback: resultCallback,
     	sdkId: parameters["sdkId"]!,
     	patientString: parameters["patient"]!
@@ -162,45 +249,6 @@ class PatientApiDispatcher {
     	sdkId: parameters["sdkId"]!,
     	entityString: parameters["entity"]!,
     	delegatesString: parameters["delegates"]!
-    )
-  }
-
-  private static func decrypt(parameters: [String : String], resultCallback: @escaping (
-    String?,
-    String?,
-    String?,
-    String?
-  ) -> Void) {
-    PatientApi.shared.decrypt(
-    	dartResultCallback: resultCallback,
-    	sdkId: parameters["sdkId"]!,
-    	patientString: parameters["patient"]!
-    )
-  }
-
-  private static func tryDecrypt(parameters: [String : String], resultCallback: @escaping (
-    String?,
-    String?,
-    String?,
-    String?
-  ) -> Void) {
-    PatientApi.shared.tryDecrypt(
-    	dartResultCallback: resultCallback,
-    	sdkId: parameters["sdkId"]!,
-    	patientString: parameters["patient"]!
-    )
-  }
-
-  private static func createPatients(parameters: [String : String], resultCallback: @escaping (
-    String?,
-    String?,
-    String?,
-    String?
-  ) -> Void) {
-    PatientApi.shared.createPatients(
-    	dartResultCallback: resultCallback,
-    	sdkId: parameters["sdkId"]!,
-    	patientDtosString: parameters["patientDtos"]!
     )
   }
 
@@ -444,6 +492,45 @@ class PatientApiDispatcher {
     )
   }
 
+  private static func createPatient(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    PatientApi.shared.createPatient(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	patientString: parameters["patient"]!
+    )
+  }
+
+  private static func createPatientsMinimal(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    PatientApi.shared.createPatientsMinimal(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	patientsString: parameters["patients"]!
+    )
+  }
+
+  private static func createPatients(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    PatientApi.shared.createPatients(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	patientsString: parameters["patients"]!
+    )
+  }
+
   private static func undeletePatient(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
@@ -537,6 +624,19 @@ class PatientApiDispatcher {
     )
   }
 
+  private static func modifyPatientsMinimal(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    PatientApi.shared.modifyPatientsMinimal(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	patientsString: parameters["patients"]!
+    )
+  }
+
   private static func modifyPatients(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
@@ -546,7 +646,7 @@ class PatientApiDispatcher {
     PatientApi.shared.modifyPatients(
     	dartResultCallback: resultCallback,
     	sdkId: parameters["sdkId"]!,
-    	patientDtosString: parameters["patientDtos"]!
+    	patientsString: parameters["patients"]!
     )
   }
 
@@ -647,6 +747,45 @@ class PatientApiDispatcher {
     )
   }
 
+  private static func encrypted_createPatient(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    PatientApi.encrypted.shared.createPatient(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	patientString: parameters["patient"]!
+    )
+  }
+
+  private static func encrypted_createPatientsMinimal(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    PatientApi.encrypted.shared.createPatientsMinimal(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	patientsString: parameters["patients"]!
+    )
+  }
+
+  private static func encrypted_createPatients(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    PatientApi.encrypted.shared.createPatients(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	patientsString: parameters["patients"]!
+    )
+  }
+
   private static func encrypted_undeletePatient(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
@@ -740,6 +879,19 @@ class PatientApiDispatcher {
     )
   }
 
+  private static func encrypted_modifyPatientsMinimal(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    PatientApi.encrypted.shared.modifyPatientsMinimal(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	patientsString: parameters["patients"]!
+    )
+  }
+
   private static func encrypted_modifyPatients(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
@@ -749,7 +901,7 @@ class PatientApiDispatcher {
     PatientApi.encrypted.shared.modifyPatients(
     	dartResultCallback: resultCallback,
     	sdkId: parameters["sdkId"]!,
-    	patientDtosString: parameters["patientDtos"]!
+    	patientsString: parameters["patients"]!
     )
   }
 
@@ -832,6 +984,45 @@ class PatientApiDispatcher {
     	dartResultCallback: resultCallback,
     	sdkId: parameters["sdkId"]!,
     	filterString: parameters["filter"]!
+    )
+  }
+
+  private static func tryAndRecover_createPatient(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    PatientApi.tryAndRecover.shared.createPatient(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	patientString: parameters["patient"]!
+    )
+  }
+
+  private static func tryAndRecover_createPatientsMinimal(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    PatientApi.tryAndRecover.shared.createPatientsMinimal(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	patientsString: parameters["patients"]!
+    )
+  }
+
+  private static func tryAndRecover_createPatients(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    PatientApi.tryAndRecover.shared.createPatients(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	patientsString: parameters["patients"]!
     )
   }
 
@@ -928,6 +1119,19 @@ class PatientApiDispatcher {
     )
   }
 
+  private static func tryAndRecover_modifyPatientsMinimal(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    PatientApi.tryAndRecover.shared.modifyPatientsMinimal(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	patientsString: parameters["patients"]!
+    )
+  }
+
   private static func tryAndRecover_modifyPatients(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
@@ -937,7 +1141,7 @@ class PatientApiDispatcher {
     PatientApi.tryAndRecover.shared.modifyPatients(
     	dartResultCallback: resultCallback,
     	sdkId: parameters["sdkId"]!,
-    	patientDtosString: parameters["patientDtos"]!
+    	patientsString: parameters["patients"]!
     )
   }
 
@@ -952,6 +1156,689 @@ class PatientApiDispatcher {
     	sdkId: parameters["sdkId"]!,
     	fromString: parameters["from"]!,
     	mergedIntoString: parameters["mergedInto"]!
+    )
+  }
+
+  private static func inGroup_decrypt(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    PatientApi.inGroup.shared.decrypt(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	patientsString: parameters["patients"]!
+    )
+  }
+
+  private static func inGroup_tryDecrypt(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    PatientApi.inGroup.shared.tryDecrypt(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	patientsString: parameters["patients"]!
+    )
+  }
+
+  private static func inGroup_encryptOrValidate(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    PatientApi.inGroup.shared.encryptOrValidate(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	patientsString: parameters["patients"]!
+    )
+  }
+
+  private static func inGroup_getSecretIdsOf(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    PatientApi.inGroup.shared.getSecretIdsOf(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	patientString: parameters["patient"]!
+    )
+  }
+
+  private static func inGroup_getEncryptionKeysOf(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    PatientApi.inGroup.shared.getEncryptionKeysOf(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	patientString: parameters["patient"]!
+    )
+  }
+
+  private static func inGroup_withEncryptionMetadata(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    PatientApi.inGroup.shared.withEncryptionMetadata(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	entityGroupIdString: parameters["entityGroupId"]!,
+    	baseString: parameters["base"]!,
+    	userString: parameters["user"]!,
+    	delegatesString: parameters["delegates"]!
+    )
+  }
+
+  private static func inGroup_hasWriteAccess(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    PatientApi.inGroup.shared.hasWriteAccess(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	patientString: parameters["patient"]!
+    )
+  }
+
+  private static func inGroup_createDelegationDeAnonymizationMetadata(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    PatientApi.inGroup.shared.createDelegationDeAnonymizationMetadata(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	entityString: parameters["entity"]!,
+    	delegatesString: parameters["delegates"]!
+    )
+  }
+
+  private static func inGroup_matchPatientsBy(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    PatientApi.inGroup.shared.matchPatientsBy(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	groupIdString: parameters["groupId"]!,
+    	filterString: parameters["filter"]!
+    )
+  }
+
+  private static func inGroup_matchPatientsBySorted(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    PatientApi.inGroup.shared.matchPatientsBySorted(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	groupIdString: parameters["groupId"]!,
+    	filterString: parameters["filter"]!
+    )
+  }
+
+  private static func inGroup_getDataOwnersWithAccessTo(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    PatientApi.inGroup.shared.getDataOwnersWithAccessTo(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	patientString: parameters["patient"]!
+    )
+  }
+
+  private static func inGroup_shareWith(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    PatientApi.inGroup.shared.shareWith(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	delegateString: parameters["delegate"]!,
+    	patientString: parameters["patient"]!,
+    	optionsString: parameters["options"]!
+    )
+  }
+
+  private static func inGroup_shareWithMany(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    PatientApi.inGroup.shared.shareWithMany(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	patientString: parameters["patient"]!,
+    	delegatesString: parameters["delegates"]!
+    )
+  }
+
+  private static func inGroup_initializeConfidentialSecretId(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    PatientApi.inGroup.shared.initializeConfidentialSecretId(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	patientString: parameters["patient"]!
+    )
+  }
+
+  private static func inGroup_filterPatientsBy(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    PatientApi.inGroup.shared.filterPatientsBy(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	groupIdString: parameters["groupId"]!,
+    	filterString: parameters["filter"]!
+    )
+  }
+
+  private static func inGroup_filterPatientsBySorted(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    PatientApi.inGroup.shared.filterPatientsBySorted(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	groupIdString: parameters["groupId"]!,
+    	filterString: parameters["filter"]!
+    )
+  }
+
+  private static func inGroup_createPatient(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    PatientApi.inGroup.shared.createPatient(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	patientString: parameters["patient"]!
+    )
+  }
+
+  private static func inGroup_createPatientsMinimal(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    PatientApi.inGroup.shared.createPatientsMinimal(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	patientsString: parameters["patients"]!
+    )
+  }
+
+  private static func inGroup_createPatients(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    PatientApi.inGroup.shared.createPatients(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	patientsString: parameters["patients"]!
+    )
+  }
+
+  private static func inGroup_getPatient(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    PatientApi.inGroup.shared.getPatient(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	groupIdString: parameters["groupId"]!,
+    	entityIdString: parameters["entityId"]!
+    )
+  }
+
+  private static func inGroup_getPatientResolvingMerges(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    PatientApi.inGroup.shared.getPatientResolvingMerges(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	groupIdString: parameters["groupId"]!,
+    	patientIdString: parameters["patientId"]!,
+    	maxMergeDepthString: parameters["maxMergeDepth"]!
+    )
+  }
+
+  private static func inGroup_getPatients(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    PatientApi.inGroup.shared.getPatients(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	groupIdString: parameters["groupId"]!,
+    	patientIdsString: parameters["patientIds"]!
+    )
+  }
+
+  private static func inGroup_modifyPatientsMinimal(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    PatientApi.inGroup.shared.modifyPatientsMinimal(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	patientsString: parameters["patients"]!
+    )
+  }
+
+  private static func inGroup_modifyPatients(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    PatientApi.inGroup.shared.modifyPatients(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	patientsString: parameters["patients"]!
+    )
+  }
+
+  private static func inGroup_encrypted_shareWith(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    PatientApi.inGroup.encrypted.shared.shareWith(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	delegateString: parameters["delegate"]!,
+    	patientString: parameters["patient"]!,
+    	optionsString: parameters["options"]!
+    )
+  }
+
+  private static func inGroup_encrypted_shareWithMany(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    PatientApi.inGroup.encrypted.shared.shareWithMany(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	patientString: parameters["patient"]!,
+    	delegatesString: parameters["delegates"]!
+    )
+  }
+
+  private static func inGroup_encrypted_initializeConfidentialSecretId(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    PatientApi.inGroup.encrypted.shared.initializeConfidentialSecretId(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	patientString: parameters["patient"]!
+    )
+  }
+
+  private static func inGroup_encrypted_filterPatientsBy(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    PatientApi.inGroup.encrypted.shared.filterPatientsBy(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	groupIdString: parameters["groupId"]!,
+    	filterString: parameters["filter"]!
+    )
+  }
+
+  private static func inGroup_encrypted_filterPatientsBySorted(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    PatientApi.inGroup.encrypted.shared.filterPatientsBySorted(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	groupIdString: parameters["groupId"]!,
+    	filterString: parameters["filter"]!
+    )
+  }
+
+  private static func inGroup_encrypted_createPatient(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    PatientApi.inGroup.encrypted.shared.createPatient(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	patientString: parameters["patient"]!
+    )
+  }
+
+  private static func inGroup_encrypted_createPatientsMinimal(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    PatientApi.inGroup.encrypted.shared.createPatientsMinimal(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	patientsString: parameters["patients"]!
+    )
+  }
+
+  private static func inGroup_encrypted_createPatients(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    PatientApi.inGroup.encrypted.shared.createPatients(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	patientsString: parameters["patients"]!
+    )
+  }
+
+  private static func inGroup_encrypted_getPatient(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    PatientApi.inGroup.encrypted.shared.getPatient(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	groupIdString: parameters["groupId"]!,
+    	entityIdString: parameters["entityId"]!
+    )
+  }
+
+  private static func inGroup_encrypted_getPatientResolvingMerges(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    PatientApi.inGroup.encrypted.shared.getPatientResolvingMerges(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	groupIdString: parameters["groupId"]!,
+    	patientIdString: parameters["patientId"]!,
+    	maxMergeDepthString: parameters["maxMergeDepth"]!
+    )
+  }
+
+  private static func inGroup_encrypted_getPatients(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    PatientApi.inGroup.encrypted.shared.getPatients(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	groupIdString: parameters["groupId"]!,
+    	patientIdsString: parameters["patientIds"]!
+    )
+  }
+
+  private static func inGroup_encrypted_modifyPatientsMinimal(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    PatientApi.inGroup.encrypted.shared.modifyPatientsMinimal(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	patientsString: parameters["patients"]!
+    )
+  }
+
+  private static func inGroup_encrypted_modifyPatients(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    PatientApi.inGroup.encrypted.shared.modifyPatients(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	patientsString: parameters["patients"]!
+    )
+  }
+
+  private static func inGroup_tryAndRecover_shareWith(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    PatientApi.inGroup.tryAndRecover.shared.shareWith(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	delegateString: parameters["delegate"]!,
+    	patientString: parameters["patient"]!,
+    	optionsString: parameters["options"]!
+    )
+  }
+
+  private static func inGroup_tryAndRecover_shareWithMany(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    PatientApi.inGroup.tryAndRecover.shared.shareWithMany(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	patientString: parameters["patient"]!,
+    	delegatesString: parameters["delegates"]!
+    )
+  }
+
+  private static func inGroup_tryAndRecover_initializeConfidentialSecretId(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    PatientApi.inGroup.tryAndRecover.shared.initializeConfidentialSecretId(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	patientString: parameters["patient"]!
+    )
+  }
+
+  private static func inGroup_tryAndRecover_filterPatientsBy(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    PatientApi.inGroup.tryAndRecover.shared.filterPatientsBy(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	groupIdString: parameters["groupId"]!,
+    	filterString: parameters["filter"]!
+    )
+  }
+
+  private static func inGroup_tryAndRecover_filterPatientsBySorted(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    PatientApi.inGroup.tryAndRecover.shared.filterPatientsBySorted(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	groupIdString: parameters["groupId"]!,
+    	filterString: parameters["filter"]!
+    )
+  }
+
+  private static func inGroup_tryAndRecover_createPatient(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    PatientApi.inGroup.tryAndRecover.shared.createPatient(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	patientString: parameters["patient"]!
+    )
+  }
+
+  private static func inGroup_tryAndRecover_createPatientsMinimal(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    PatientApi.inGroup.tryAndRecover.shared.createPatientsMinimal(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	patientsString: parameters["patients"]!
+    )
+  }
+
+  private static func inGroup_tryAndRecover_createPatients(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    PatientApi.inGroup.tryAndRecover.shared.createPatients(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	patientsString: parameters["patients"]!
+    )
+  }
+
+  private static func inGroup_tryAndRecover_getPatient(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    PatientApi.inGroup.tryAndRecover.shared.getPatient(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	groupIdString: parameters["groupId"]!,
+    	entityIdString: parameters["entityId"]!
+    )
+  }
+
+  private static func inGroup_tryAndRecover_getPatientResolvingMerges(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    PatientApi.inGroup.tryAndRecover.shared.getPatientResolvingMerges(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	groupIdString: parameters["groupId"]!,
+    	patientIdString: parameters["patientId"]!,
+    	maxMergeDepthString: parameters["maxMergeDepth"]!
+    )
+  }
+
+  private static func inGroup_tryAndRecover_getPatients(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    PatientApi.inGroup.tryAndRecover.shared.getPatients(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	groupIdString: parameters["groupId"]!,
+    	patientIdsString: parameters["patientIds"]!
+    )
+  }
+
+  private static func inGroup_tryAndRecover_modifyPatientsMinimal(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    PatientApi.inGroup.tryAndRecover.shared.modifyPatientsMinimal(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	patientsString: parameters["patients"]!
+    )
+  }
+
+  private static func inGroup_tryAndRecover_modifyPatients(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    PatientApi.inGroup.tryAndRecover.shared.modifyPatients(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	patientsString: parameters["patients"]!
     )
   }
 

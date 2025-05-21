@@ -14,7 +14,6 @@ class ClassificationApiDispatcher {
     ) -> Void
   ) -> Bool {
     switch methodName {
-    case "createClassification": createClassification(parameters: parameters, resultCallback: resultCallback)
     case "withEncryptionMetadata": withEncryptionMetadata(parameters: parameters, resultCallback: resultCallback)
     case "getEncryptionKeysOf": getEncryptionKeysOf(parameters: parameters, resultCallback: resultCallback)
     case "hasWriteAccess": hasWriteAccess(parameters: parameters, resultCallback: resultCallback)
@@ -30,6 +29,7 @@ class ClassificationApiDispatcher {
     case "shareWithMany": shareWithMany(parameters: parameters, resultCallback: resultCallback)
     case "filterClassificationsBy": filterClassificationsBy(parameters: parameters, resultCallback: resultCallback)
     case "filterClassificationsBySorted": filterClassificationsBySorted(parameters: parameters, resultCallback: resultCallback)
+    case "createClassification": createClassification(parameters: parameters, resultCallback: resultCallback)
     case "modifyClassification": modifyClassification(parameters: parameters, resultCallback: resultCallback)
     case "getClassification": getClassification(parameters: parameters, resultCallback: resultCallback)
     case "getClassifications": getClassifications(parameters: parameters, resultCallback: resultCallback)
@@ -37,6 +37,7 @@ class ClassificationApiDispatcher {
     case "encrypted.shareWithMany": encrypted_shareWithMany(parameters: parameters, resultCallback: resultCallback)
     case "encrypted.filterClassificationsBy": encrypted_filterClassificationsBy(parameters: parameters, resultCallback: resultCallback)
     case "encrypted.filterClassificationsBySorted": encrypted_filterClassificationsBySorted(parameters: parameters, resultCallback: resultCallback)
+    case "encrypted.createClassification": encrypted_createClassification(parameters: parameters, resultCallback: resultCallback)
     case "encrypted.modifyClassification": encrypted_modifyClassification(parameters: parameters, resultCallback: resultCallback)
     case "encrypted.getClassification": encrypted_getClassification(parameters: parameters, resultCallback: resultCallback)
     case "encrypted.getClassifications": encrypted_getClassifications(parameters: parameters, resultCallback: resultCallback)
@@ -44,25 +45,13 @@ class ClassificationApiDispatcher {
     case "tryAndRecover.shareWithMany": tryAndRecover_shareWithMany(parameters: parameters, resultCallback: resultCallback)
     case "tryAndRecover.filterClassificationsBy": tryAndRecover_filterClassificationsBy(parameters: parameters, resultCallback: resultCallback)
     case "tryAndRecover.filterClassificationsBySorted": tryAndRecover_filterClassificationsBySorted(parameters: parameters, resultCallback: resultCallback)
+    case "tryAndRecover.createClassification": tryAndRecover_createClassification(parameters: parameters, resultCallback: resultCallback)
     case "tryAndRecover.modifyClassification": tryAndRecover_modifyClassification(parameters: parameters, resultCallback: resultCallback)
     case "tryAndRecover.getClassification": tryAndRecover_getClassification(parameters: parameters, resultCallback: resultCallback)
     case "tryAndRecover.getClassifications": tryAndRecover_getClassifications(parameters: parameters, resultCallback: resultCallback)
     default: return false
     }
     return true
-  }
-
-  private static func createClassification(parameters: [String : String], resultCallback: @escaping (
-    String?,
-    String?,
-    String?,
-    String?
-  ) -> Void) {
-    ClassificationApi.shared.createClassification(
-    	dartResultCallback: resultCallback,
-    	sdkId: parameters["sdkId"]!,
-    	entityString: parameters["entity"]!
-    )
   }
 
   private static func withEncryptionMetadata(parameters: [String : String], resultCallback: @escaping (
@@ -268,6 +257,19 @@ class ClassificationApiDispatcher {
     )
   }
 
+  private static func createClassification(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    ClassificationApi.shared.createClassification(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	entityString: parameters["entity"]!
+    )
+  }
+
   private static func modifyClassification(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
@@ -362,6 +364,19 @@ class ClassificationApiDispatcher {
     )
   }
 
+  private static func encrypted_createClassification(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    ClassificationApi.encrypted.shared.createClassification(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	entityString: parameters["entity"]!
+    )
+  }
+
   private static func encrypted_modifyClassification(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
@@ -453,6 +468,19 @@ class ClassificationApiDispatcher {
     	dartResultCallback: resultCallback,
     	sdkId: parameters["sdkId"]!,
     	filterString: parameters["filter"]!
+    )
+  }
+
+  private static func tryAndRecover_createClassification(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    ClassificationApi.tryAndRecover.shared.createClassification(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	entityString: parameters["entity"]!
     )
   }
 

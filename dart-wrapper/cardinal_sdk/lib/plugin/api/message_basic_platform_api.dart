@@ -6,7 +6,7 @@ import 'dart:convert';
 import 'package:cardinal_sdk/utils/internal/platform_exception_convertion.dart';
 import 'package:cardinal_sdk/utils/pagination/paginated_list_iterator.dart';
 import 'package:cardinal_sdk/model/couchdb/doc_identifier.dart';
-import 'package:cardinal_sdk/model/id_with_mandatory_rev.dart';
+import 'package:cardinal_sdk/model/stored_document_identifier.dart';
 import 'package:cardinal_sdk/subscription/subscription_event_type.dart';
 import 'package:cardinal_sdk/subscription/entity_subscription_configuration.dart';
 import 'package:cardinal_sdk/subscription/entity_subscription.dart';
@@ -82,12 +82,12 @@ class MessageBasicPlatformApi {
 		return DocIdentifier.fromJSON(parsedResJson);
 	}
 
-	Future<List<DocIdentifier>> deleteMessagesByIds(String sdkId, List<IdWithMandatoryRev> entityIds) async {
+	Future<List<DocIdentifier>> deleteMessagesByIds(String sdkId, List<StoredDocumentIdentifier> entityIds) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'MessageBasicApi.deleteMessagesByIds',
 			{
 				"sdkId": sdkId,
-				"entityIds": jsonEncode(entityIds.map((x0) => IdWithMandatoryRev.encode(x0)).toList()),
+				"entityIds": jsonEncode(entityIds.map((x0) => StoredDocumentIdentifier.encode(x0)).toList()),
 			}
 		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method deleteMessagesByIds");
@@ -142,6 +142,32 @@ class MessageBasicPlatformApi {
 		).catchError(convertPlatformException);
 	}
 
+	Future<EncryptedMessage> createMessage(String sdkId, EncryptedMessage entity) async {
+		final res = await _methodChannel.invokeMethod<String>(
+			'MessageBasicApi.createMessage',
+			{
+				"sdkId": sdkId,
+				"entity": jsonEncode(EncryptedMessage.encode(entity)),
+			}
+		).catchError(convertPlatformException);
+		if (res == null) throw AssertionError("received null result from platform method createMessage");
+		final parsedResJson = jsonDecode(res);
+		return EncryptedMessage.fromJSON(parsedResJson);
+	}
+
+	Future<EncryptedMessage> createMessageInTopic(String sdkId, EncryptedMessage entity) async {
+		final res = await _methodChannel.invokeMethod<String>(
+			'MessageBasicApi.createMessageInTopic',
+			{
+				"sdkId": sdkId,
+				"entity": jsonEncode(EncryptedMessage.encode(entity)),
+			}
+		).catchError(convertPlatformException);
+		if (res == null) throw AssertionError("received null result from platform method createMessageInTopic");
+		final parsedResJson = jsonDecode(res);
+		return EncryptedMessage.fromJSON(parsedResJson);
+	}
+
 	Future<Message> undeleteMessage(String sdkId, Message message) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'MessageBasicApi.undeleteMessage',
@@ -182,7 +208,7 @@ class MessageBasicPlatformApi {
 		return EncryptedMessage.fromJSON(parsedResJson);
 	}
 
-	Future<EncryptedMessage> getMessage(String sdkId, String entityId) async {
+	Future<EncryptedMessage?> getMessage(String sdkId, String entityId) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'MessageBasicApi.getMessage',
 			{
@@ -192,7 +218,7 @@ class MessageBasicPlatformApi {
 		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getMessage");
 		final parsedResJson = jsonDecode(res);
-		return EncryptedMessage.fromJSON(parsedResJson);
+		return parsedResJson == null ? null : EncryptedMessage.fromJSON(parsedResJson);
 	}
 
 	Future<List<EncryptedMessage>> getMessages(String sdkId, List<String> entityIds) async {

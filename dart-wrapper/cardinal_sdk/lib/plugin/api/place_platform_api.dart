@@ -10,7 +10,7 @@ class PlacePlatformApi {
 	MethodChannel _methodChannel;
 	PlacePlatformApi(this._methodChannel);
 
-	Future<Place> getPlace(String sdkId, String placeId) async {
+	Future<Place?> getPlace(String sdkId, String placeId) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'PlaceApi.getPlace',
 			{
@@ -20,7 +20,7 @@ class PlacePlatformApi {
 		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getPlace");
 		final parsedResJson = jsonDecode(res);
-		return Place.fromJSON(parsedResJson);
+		return parsedResJson == null ? null : Place.fromJSON(parsedResJson);
 	}
 
 	Future<Place> createPlace(String sdkId, Place place) async {

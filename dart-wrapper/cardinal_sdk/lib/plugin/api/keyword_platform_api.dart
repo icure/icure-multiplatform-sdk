@@ -10,25 +10,25 @@ class KeywordPlatformApi {
 	MethodChannel _methodChannel;
 	KeywordPlatformApi(this._methodChannel);
 
-	Future<Keyword> getKeyword(String sdkId, String frontEndMigrationId) async {
+	Future<Keyword?> getKeyword(String sdkId, String keywordId) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'KeywordApi.getKeyword',
 			{
 				"sdkId": sdkId,
-				"frontEndMigrationId": jsonEncode(frontEndMigrationId),
+				"keywordId": jsonEncode(keywordId),
 			}
 		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getKeyword");
 		final parsedResJson = jsonDecode(res);
-		return Keyword.fromJSON(parsedResJson);
+		return parsedResJson == null ? null : Keyword.fromJSON(parsedResJson);
 	}
 
-	Future<Keyword> createKeyword(String sdkId, Keyword frontEndMigration) async {
+	Future<Keyword> createKeyword(String sdkId, Keyword keyword) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'KeywordApi.createKeyword',
 			{
 				"sdkId": sdkId,
-				"frontEndMigration": jsonEncode(Keyword.encode(frontEndMigration)),
+				"keyword": jsonEncode(Keyword.encode(keyword)),
 			}
 		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method createKeyword");

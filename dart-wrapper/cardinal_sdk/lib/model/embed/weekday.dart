@@ -1,23 +1,16 @@
 // auto-generated file
 import 'package:cardinal_sdk/model/base/code_stub.dart';
-import 'package:cardinal_sdk/annotations/actual_int32.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+part "weekday.freezed.dart";
 
 
-class Weekday {
-	CodeStub? weekday = null;
-	int? _weekNumber = null;
-	@ActualInt32() int? get weekNumber => _weekNumber;
-	@ActualInt32() set weekNumber(int? value) {
-		if (value != null && value > 2147483647) {
-			throw ArgumentError('weekNumber value cannot exceed 2147483647');
-		}
-		_weekNumber = value;
-	}
-	Weekday({
-			int? weekNumber,
-			CodeStub? weekday
-		}) : weekday = weekday ?? null,
-		_weekNumber = weekNumber ?? null;
+@freezed
+abstract class Weekday with _$Weekday {
+	const factory Weekday({
+		@Default(null) CodeStub? weekday,
+		@Default(null) int? weekNumber,
+	}) = _Weekday;
+
 
 	static Map<String, dynamic> encode(Weekday value) {
 		Map<String, dynamic> entityAsMap = {

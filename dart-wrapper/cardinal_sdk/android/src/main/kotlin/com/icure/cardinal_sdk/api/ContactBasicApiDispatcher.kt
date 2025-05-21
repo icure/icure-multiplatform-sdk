@@ -34,6 +34,8 @@ public object ContactBasicApiDispatcher {
     "deleteContacts" -> deleteContacts(parameters, resultCallback)
     "purgeContact" -> purgeContact(parameters, resultCallback)
     "getServiceCodesOccurrences" -> getServiceCodesOccurrences(parameters, resultCallback)
+    "createContact" -> createContact(parameters, resultCallback)
+    "createContacts" -> createContacts(parameters, resultCallback)
     "undeleteContactById" -> undeleteContactById(parameters, resultCallback)
     "undeleteContact" -> undeleteContact(parameters, resultCallback)
     "modifyContact" -> modifyContact(parameters, resultCallback)
@@ -256,6 +258,32 @@ public object ContactBasicApiDispatcher {
       parameters.getValue("sdkId"),
       parameters.getValue("codeType"),
       parameters.getValue("minOccurrences"),
+    )
+  }
+
+  private fun createContact(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    ContactBasicApi.createContact(
+      resultCallback,
+      parameters.getValue("sdkId"),
+      parameters.getValue("entity"),
+    )
+  }
+
+  private fun createContacts(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    ContactBasicApi.createContacts(
+      resultCallback,
+      parameters.getValue("sdkId"),
+      parameters.getValue("entities"),
     )
   }
 

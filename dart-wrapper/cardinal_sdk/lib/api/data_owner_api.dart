@@ -2,6 +2,7 @@
 import 'package:cardinal_sdk/plugin/cardinal_sdk_platform_interface.dart';
 import 'package:cardinal_sdk/model/data_owner_with_type.dart';
 import 'package:cardinal_sdk/model/crypto_actor_stub_with_type.dart';
+import 'package:cardinal_sdk/model/entity_reference_in_group.dart';
 import 'package:cardinal_sdk/model/data_owner_type.dart';
 
 
@@ -31,8 +32,20 @@ class DataOwnerApi {
 		);
 	}
 
+	Future<EntityReferenceInGroup> getCurrentDataOwnerReference() async {
+		return await CardinalSdkPlatformInterface.instance.apis.dataOwner.getCurrentDataOwnerReference(
+			_sdkId,
+		);
+	}
+
 	Future<List<String>> getCurrentDataOwnerHierarchyIds() async {
 		return await CardinalSdkPlatformInterface.instance.apis.dataOwner.getCurrentDataOwnerHierarchyIds(
+			_sdkId,
+		);
+	}
+
+	Future<List<EntityReferenceInGroup>> getCurrentDataOwnerHierarchyIdsReference() async {
+		return await CardinalSdkPlatformInterface.instance.apis.dataOwner.getCurrentDataOwnerHierarchyIdsReference(
 			_sdkId,
 		);
 	}
@@ -48,6 +61,13 @@ class DataOwnerApi {
 		return await CardinalSdkPlatformInterface.instance.apis.dataOwner.getCryptoActorStub(
 			_sdkId,
 			ownerId,
+		);
+	}
+
+	Future<CryptoActorStubWithType> getCryptoActorStubInGroup(EntityReferenceInGroup entityReferenceInGroup) async {
+		return await CardinalSdkPlatformInterface.instance.apis.dataOwner.getCryptoActorStubInGroup(
+			_sdkId,
+			entityReferenceInGroup,
 		);
 	}
 

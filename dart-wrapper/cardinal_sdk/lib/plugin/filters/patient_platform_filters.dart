@@ -4,6 +4,7 @@ import 'package:cardinal_sdk/filters/filter_options.dart';
 import 'dart:convert';
 import 'package:cardinal_sdk/utils/internal/platform_exception_convertion.dart';
 import 'package:cardinal_sdk/model/patient.dart';
+import 'package:cardinal_sdk/model/entity_reference_in_group.dart';
 import 'package:cardinal_sdk/model/base/identifier.dart';
 import 'package:cardinal_sdk/model/embed/gender.dart';
 
@@ -20,6 +21,18 @@ class PatientPlatformFilters {
 			}
 		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method allPatientsForDataOwner");
+		final parsedResJson = jsonDecode(res);
+		return BaseFilterOptions.fromJSON(parsedResJson);
+	}
+
+	Future<BaseFilterOptions<Patient>> allPatientsForDataOwnerInGroup(EntityReferenceInGroup dataOwner) async {
+		final res = await _methodChannel.invokeMethod<String>(
+			'PatientFilters.allPatientsForDataOwnerInGroup',
+			{
+				"dataOwner": jsonEncode(EntityReferenceInGroup.encode(dataOwner)),
+			}
+		).catchError(convertPlatformException);
+		if (res == null) throw AssertionError("received null result from platform method allPatientsForDataOwnerInGroup");
 		final parsedResJson = jsonDecode(res);
 		return BaseFilterOptions.fromJSON(parsedResJson);
 	}
@@ -60,6 +73,19 @@ class PatientPlatformFilters {
 		return BaseSortableFilterOptions.fromJSON(parsedResJson);
 	}
 
+	Future<BaseSortableFilterOptions<Patient>> byIdentifiersForDataOwnerInGroup(EntityReferenceInGroup dataOwner, List<Identifier> identifiers) async {
+		final res = await _methodChannel.invokeMethod<String>(
+			'PatientFilters.byIdentifiersForDataOwnerInGroup',
+			{
+				"dataOwner": jsonEncode(EntityReferenceInGroup.encode(dataOwner)),
+				"identifiers": jsonEncode(identifiers.map((x0) => Identifier.encode(x0)).toList()),
+			}
+		).catchError(convertPlatformException);
+		if (res == null) throw AssertionError("received null result from platform method byIdentifiersForDataOwnerInGroup");
+		final parsedResJson = jsonDecode(res);
+		return BaseSortableFilterOptions.fromJSON(parsedResJson);
+	}
+
 	Future<BaseSortableFilterOptions<Patient>> bySsinsForDataOwner(String dataOwnerId, List<String> ssins) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'PatientFilters.bySsinsForDataOwner',
@@ -69,6 +95,19 @@ class PatientPlatformFilters {
 			}
 		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method bySsinsForDataOwner");
+		final parsedResJson = jsonDecode(res);
+		return BaseSortableFilterOptions.fromJSON(parsedResJson);
+	}
+
+	Future<BaseSortableFilterOptions<Patient>> bySsinsForDataOwnerInGroup(EntityReferenceInGroup dataOwner, List<String> ssins) async {
+		final res = await _methodChannel.invokeMethod<String>(
+			'PatientFilters.bySsinsForDataOwnerInGroup',
+			{
+				"dataOwner": jsonEncode(EntityReferenceInGroup.encode(dataOwner)),
+				"ssins": jsonEncode(ssins.map((x0) => x0).toList()),
+			}
+		).catchError(convertPlatformException);
+		if (res == null) throw AssertionError("received null result from platform method bySsinsForDataOwnerInGroup");
 		final parsedResJson = jsonDecode(res);
 		return BaseSortableFilterOptions.fromJSON(parsedResJson);
 	}
@@ -87,6 +126,20 @@ class PatientPlatformFilters {
 		return BaseSortableFilterOptions.fromJSON(parsedResJson);
 	}
 
+	Future<BaseSortableFilterOptions<Patient>> byDateOfBirthBetweenForDataOwnerInGroup(EntityReferenceInGroup dataOwner, int fromDate, int toDate) async {
+		final res = await _methodChannel.invokeMethod<String>(
+			'PatientFilters.byDateOfBirthBetweenForDataOwnerInGroup',
+			{
+				"dataOwner": jsonEncode(EntityReferenceInGroup.encode(dataOwner)),
+				"fromDate": jsonEncode(fromDate),
+				"toDate": jsonEncode(toDate),
+			}
+		).catchError(convertPlatformException);
+		if (res == null) throw AssertionError("received null result from platform method byDateOfBirthBetweenForDataOwnerInGroup");
+		final parsedResJson = jsonDecode(res);
+		return BaseSortableFilterOptions.fromJSON(parsedResJson);
+	}
+
 	Future<BaseFilterOptions<Patient>> byFuzzyNameForDataOwner(String dataOwnerId, String searchString) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'PatientFilters.byFuzzyNameForDataOwner',
@@ -96,6 +149,19 @@ class PatientPlatformFilters {
 			}
 		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method byFuzzyNameForDataOwner");
+		final parsedResJson = jsonDecode(res);
+		return BaseFilterOptions.fromJSON(parsedResJson);
+	}
+
+	Future<BaseFilterOptions<Patient>> byFuzzyNameForDataOwnerInGroup(EntityReferenceInGroup dataOwner, String searchString) async {
+		final res = await _methodChannel.invokeMethod<String>(
+			'PatientFilters.byFuzzyNameForDataOwnerInGroup',
+			{
+				"dataOwner": jsonEncode(EntityReferenceInGroup.encode(dataOwner)),
+				"searchString": jsonEncode(searchString),
+			}
+		).catchError(convertPlatformException);
+		if (res == null) throw AssertionError("received null result from platform method byFuzzyNameForDataOwnerInGroup");
 		final parsedResJson = jsonDecode(res);
 		return BaseFilterOptions.fromJSON(parsedResJson);
 	}
@@ -115,6 +181,21 @@ class PatientPlatformFilters {
 		return BaseSortableFilterOptions.fromJSON(parsedResJson);
 	}
 
+	Future<BaseSortableFilterOptions<Patient>> byGenderEducationProfessionForDataOwnerInGroup(EntityReferenceInGroup dataOwner, Gender gender, { String? education, String? profession }) async {
+		final res = await _methodChannel.invokeMethod<String>(
+			'PatientFilters.byGenderEducationProfessionForDataOwnerInGroup',
+			{
+				"dataOwner": jsonEncode(EntityReferenceInGroup.encode(dataOwner)),
+				"gender": jsonEncode(Gender.encode(gender)),
+				"education": jsonEncode(education),
+				"profession": jsonEncode(profession),
+			}
+		).catchError(convertPlatformException);
+		if (res == null) throw AssertionError("received null result from platform method byGenderEducationProfessionForDataOwnerInGroup");
+		final parsedResJson = jsonDecode(res);
+		return BaseSortableFilterOptions.fromJSON(parsedResJson);
+	}
+
 	Future<BaseFilterOptions<Patient>> byActiveForDataOwner(String dataOwnerId, bool active) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'PatientFilters.byActiveForDataOwner',
@@ -128,6 +209,19 @@ class PatientPlatformFilters {
 		return BaseFilterOptions.fromJSON(parsedResJson);
 	}
 
+	Future<BaseFilterOptions<Patient>> byActiveForDataOwnerInGroup(EntityReferenceInGroup dataOwner, bool active) async {
+		final res = await _methodChannel.invokeMethod<String>(
+			'PatientFilters.byActiveForDataOwnerInGroup',
+			{
+				"dataOwner": jsonEncode(EntityReferenceInGroup.encode(dataOwner)),
+				"active": jsonEncode(active),
+			}
+		).catchError(convertPlatformException);
+		if (res == null) throw AssertionError("received null result from platform method byActiveForDataOwnerInGroup");
+		final parsedResJson = jsonDecode(res);
+		return BaseFilterOptions.fromJSON(parsedResJson);
+	}
+
 	Future<BaseSortableFilterOptions<Patient>> byTelecomForDataOwner(String dataOwnerId, String searchString) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'PatientFilters.byTelecomForDataOwner',
@@ -137,6 +231,19 @@ class PatientPlatformFilters {
 			}
 		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method byTelecomForDataOwner");
+		final parsedResJson = jsonDecode(res);
+		return BaseSortableFilterOptions.fromJSON(parsedResJson);
+	}
+
+	Future<BaseSortableFilterOptions<Patient>> byTelecomForDataOwnerInGroup(EntityReferenceInGroup dataOwner, String searchString) async {
+		final res = await _methodChannel.invokeMethod<String>(
+			'PatientFilters.byTelecomForDataOwnerInGroup',
+			{
+				"dataOwner": jsonEncode(EntityReferenceInGroup.encode(dataOwner)),
+				"searchString": jsonEncode(searchString),
+			}
+		).catchError(convertPlatformException);
+		if (res == null) throw AssertionError("received null result from platform method byTelecomForDataOwnerInGroup");
 		final parsedResJson = jsonDecode(res);
 		return BaseSortableFilterOptions.fromJSON(parsedResJson);
 	}
@@ -156,6 +263,21 @@ class PatientPlatformFilters {
 		return BaseSortableFilterOptions.fromJSON(parsedResJson);
 	}
 
+	Future<BaseSortableFilterOptions<Patient>> byAddressPostalCodeHouseNumberForDataOwnerInGroup(EntityReferenceInGroup dataOwner, String searchString, String postalCode, { String? houseNumber }) async {
+		final res = await _methodChannel.invokeMethod<String>(
+			'PatientFilters.byAddressPostalCodeHouseNumberForDataOwnerInGroup',
+			{
+				"dataOwner": jsonEncode(EntityReferenceInGroup.encode(dataOwner)),
+				"searchString": jsonEncode(searchString),
+				"postalCode": jsonEncode(postalCode),
+				"houseNumber": jsonEncode(houseNumber),
+			}
+		).catchError(convertPlatformException);
+		if (res == null) throw AssertionError("received null result from platform method byAddressPostalCodeHouseNumberForDataOwnerInGroup");
+		final parsedResJson = jsonDecode(res);
+		return BaseSortableFilterOptions.fromJSON(parsedResJson);
+	}
+
 	Future<BaseSortableFilterOptions<Patient>> byAddressForDataOwner(String dataOwnerId, String searchString) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'PatientFilters.byAddressForDataOwner',
@@ -169,6 +291,19 @@ class PatientPlatformFilters {
 		return BaseSortableFilterOptions.fromJSON(parsedResJson);
 	}
 
+	Future<BaseSortableFilterOptions<Patient>> byAddressForDataOwnerInGroup(EntityReferenceInGroup dataOwner, String searchString) async {
+		final res = await _methodChannel.invokeMethod<String>(
+			'PatientFilters.byAddressForDataOwnerInGroup',
+			{
+				"dataOwner": jsonEncode(EntityReferenceInGroup.encode(dataOwner)),
+				"searchString": jsonEncode(searchString),
+			}
+		).catchError(convertPlatformException);
+		if (res == null) throw AssertionError("received null result from platform method byAddressForDataOwnerInGroup");
+		final parsedResJson = jsonDecode(res);
+		return BaseSortableFilterOptions.fromJSON(parsedResJson);
+	}
+
 	Future<BaseSortableFilterOptions<Patient>> byExternalIdForDataOwner(String dataOwnerId, String externalIdPrefix) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'PatientFilters.byExternalIdForDataOwner',
@@ -178,6 +313,19 @@ class PatientPlatformFilters {
 			}
 		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method byExternalIdForDataOwner");
+		final parsedResJson = jsonDecode(res);
+		return BaseSortableFilterOptions.fromJSON(parsedResJson);
+	}
+
+	Future<BaseSortableFilterOptions<Patient>> byExternalIdForDataOwnerInGroup(EntityReferenceInGroup dataOwner, String externalIdPrefix) async {
+		final res = await _methodChannel.invokeMethod<String>(
+			'PatientFilters.byExternalIdForDataOwnerInGroup',
+			{
+				"dataOwner": jsonEncode(EntityReferenceInGroup.encode(dataOwner)),
+				"externalIdPrefix": jsonEncode(externalIdPrefix),
+			}
+		).catchError(convertPlatformException);
+		if (res == null) throw AssertionError("received null result from platform method byExternalIdForDataOwnerInGroup");
 		final parsedResJson = jsonDecode(res);
 		return BaseSortableFilterOptions.fromJSON(parsedResJson);
 	}
@@ -305,5 +453,46 @@ class PatientPlatformFilters {
 		if (res == null) throw AssertionError("received null result from platform method byExternalIdForSelf");
 		final parsedResJson = jsonDecode(res);
 		return SortableFilterOptions.fromJSON(parsedResJson);
+	}
+
+	Future<FilterOptions<Patient>> byTagForSelf(String tagType, String? tagCode) async {
+		final res = await _methodChannel.invokeMethod<String>(
+			'PatientFilters.byTagForSelf',
+			{
+				"tagType": jsonEncode(tagType),
+				"tagCode": jsonEncode(tagCode),
+			}
+		).catchError(convertPlatformException);
+		if (res == null) throw AssertionError("received null result from platform method byTagForSelf");
+		final parsedResJson = jsonDecode(res);
+		return FilterOptions.fromJSON(parsedResJson);
+	}
+
+	Future<BaseFilterOptions<Patient>> byTagForDataOwner(String dataOwnerId, String tagType, String? tagCode) async {
+		final res = await _methodChannel.invokeMethod<String>(
+			'PatientFilters.byTagForDataOwner',
+			{
+				"dataOwnerId": jsonEncode(dataOwnerId),
+				"tagType": jsonEncode(tagType),
+				"tagCode": jsonEncode(tagCode),
+			}
+		).catchError(convertPlatformException);
+		if (res == null) throw AssertionError("received null result from platform method byTagForDataOwner");
+		final parsedResJson = jsonDecode(res);
+		return BaseFilterOptions.fromJSON(parsedResJson);
+	}
+
+	Future<BaseFilterOptions<Patient>> byTagForDataOwnerInGroup(EntityReferenceInGroup dataOwner, String tagType, String? tagCode) async {
+		final res = await _methodChannel.invokeMethod<String>(
+			'PatientFilters.byTagForDataOwnerInGroup',
+			{
+				"dataOwner": jsonEncode(EntityReferenceInGroup.encode(dataOwner)),
+				"tagType": jsonEncode(tagType),
+				"tagCode": jsonEncode(tagCode),
+			}
+		).catchError(convertPlatformException);
+		if (res == null) throw AssertionError("received null result from platform method byTagForDataOwnerInGroup");
+		final parsedResJson = jsonDecode(res);
+		return BaseFilterOptions.fromJSON(parsedResJson);
 	}
 }

@@ -1,25 +1,20 @@
 // auto-generated file
 import 'package:cardinal_sdk/model/embed/partnership_type.dart';
 import 'package:cardinal_sdk/model/embed/partnership_status.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+part "partnership.freezed.dart";
 
 
-class Partnership {
-	PartnershipType? type = null;
-	PartnershipStatus? status = null;
-	String? partnerId = null;
-	String? meToOtherRelationshipDescription = null;
-	String? otherToMeRelationshipDescription = null;
-	Partnership({
-			PartnershipType? type,
-			PartnershipStatus? status,
-			String? partnerId,
-			String? meToOtherRelationshipDescription,
-			String? otherToMeRelationshipDescription
-		}) : type = type ?? null,
-		status = status ?? null,
-		partnerId = partnerId ?? null,
-		meToOtherRelationshipDescription = meToOtherRelationshipDescription ?? null,
-		otherToMeRelationshipDescription = otherToMeRelationshipDescription ?? null;
+@freezed
+abstract class Partnership with _$Partnership {
+	const factory Partnership({
+		@Default(null) PartnershipType? type,
+		@Default(null) PartnershipStatus? status,
+		@Default(null) String? partnerId,
+		@Default(null) String? meToOtherRelationshipDescription,
+		@Default(null) String? otherToMeRelationshipDescription,
+	}) = _Partnership;
+
 
 	static Map<String, dynamic> encode(Partnership value) {
 		Map<String, dynamic> entityAsMap = {

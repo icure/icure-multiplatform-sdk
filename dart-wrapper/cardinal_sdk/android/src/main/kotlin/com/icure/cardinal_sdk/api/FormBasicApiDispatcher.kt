@@ -33,6 +33,8 @@ public object FormBasicApiDispatcher {
     "deleteFormTemplate" -> deleteFormTemplate(parameters, resultCallback)
     "updateFormTemplate" -> updateFormTemplate(parameters, resultCallback)
     "setTemplateAttachment" -> setTemplateAttachment(parameters, resultCallback)
+    "createForm" -> createForm(parameters, resultCallback)
+    "createForms" -> createForms(parameters, resultCallback)
     "modifyForm" -> modifyForm(parameters, resultCallback)
     "undeleteFormById" -> undeleteFormById(parameters, resultCallback)
     "undeleteForm" -> undeleteForm(parameters, resultCallback)
@@ -240,6 +242,32 @@ public object FormBasicApiDispatcher {
       parameters.getValue("sdkId"),
       parameters.getValue("formTemplateId"),
       parameters.getValue("payload"),
+    )
+  }
+
+  private fun createForm(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    FormBasicApi.createForm(
+      resultCallback,
+      parameters.getValue("sdkId"),
+      parameters.getValue("entity"),
+    )
+  }
+
+  private fun createForms(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    FormBasicApi.createForms(
+      resultCallback,
+      parameters.getValue("sdkId"),
+      parameters.getValue("entities"),
     )
   }
 

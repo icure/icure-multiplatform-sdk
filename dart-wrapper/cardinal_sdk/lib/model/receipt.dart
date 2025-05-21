@@ -9,31 +9,33 @@ import 'package:cardinal_sdk/model/base/stored_document.dart';
 import 'package:cardinal_sdk/model/base/icure_document.dart';
 import 'package:cardinal_sdk/model/base/has_encryption_metadata.dart';
 import 'package:cardinal_sdk/model/embed/encryptable.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+part "receipt.freezed.dart";
 
 
 sealed class Receipt implements StoredDocument, ICureDocument<String>, HasEncryptionMetadata, Encryptable {
-	@override abstract String id;
-	@override abstract String? rev;
-	@override abstract int? created;
-	@override abstract int? modified;
-	@override abstract String? author;
-	@override abstract String? responsible;
-	@override abstract String? medicalLocationId;
-	@override abstract Set<CodeStub> tags;
-	@override abstract Set<CodeStub> codes;
-	@override abstract int? endOfLife;
-	@override abstract int? deletionDate;
-	abstract Map<ReceiptBlobType, String> attachmentIds;
-	abstract List<String> references;
-	abstract String? documentId;
-	abstract String? category;
-	abstract String? subCategory;
-	@override abstract Set<String> secretForeignKeys;
-	@override abstract Map<String, Set<Delegation>> cryptedForeignKeys;
-	@override abstract Map<String, Set<Delegation>> delegations;
-	@override abstract Map<String, Set<Delegation>> encryptionKeys;
-	@override abstract Base64String? encryptedSelf;
-	@override abstract SecurityMetadata? securityMetadata;
+	@override abstract final String id;
+	@override abstract final String? rev;
+	@override abstract final int? created;
+	@override abstract final int? modified;
+	@override abstract final String? author;
+	@override abstract final String? responsible;
+	@override abstract final String? medicalLocationId;
+	@override abstract final Set<CodeStub> tags;
+	@override abstract final Set<CodeStub> codes;
+	@override abstract final int? endOfLife;
+	@override abstract final int? deletionDate;
+	abstract final Map<ReceiptBlobType, String> attachmentIds;
+	abstract final List<String> references;
+	abstract final String? documentId;
+	abstract final String? category;
+	abstract final String? subCategory;
+	@override abstract final Set<String> secretForeignKeys;
+	@override abstract final Map<String, Set<Delegation>> cryptedForeignKeys;
+	@override abstract final Map<String, Set<Delegation>> delegations;
+	@override abstract final Map<String, Set<Delegation>> encryptionKeys;
+	@override abstract final Base64String? encryptedSelf;
+	@override abstract final SecurityMetadata? securityMetadata;
 
 	static Map<String, dynamic> encode(Receipt value) {
 		switch (value) {
@@ -64,74 +66,33 @@ sealed class Receipt implements StoredDocument, ICureDocument<String>, HasEncryp
 	}
 }
 
-class DecryptedReceipt implements Receipt {
-	@override String id;
-	@override String? rev = null;
-	@override int? created = null;
-	@override int? modified = null;
-	@override String? author = null;
-	@override String? responsible = null;
-	@override String? medicalLocationId = null;
-	@override Set<CodeStub> tags = {};
-	@override Set<CodeStub> codes = {};
-	@override int? endOfLife = null;
-	@override int? deletionDate = null;
-	@override Map<ReceiptBlobType, String> attachmentIds = {};
-	@override List<String> references = [];
-	@override String? documentId = null;
-	@override String? category = null;
-	@override String? subCategory = null;
-	@override Set<String> secretForeignKeys = {};
-	@override Map<String, Set<Delegation>> cryptedForeignKeys = {};
-	@override Map<String, Set<Delegation>> delegations = {};
-	@override Map<String, Set<Delegation>> encryptionKeys = {};
-	@override Base64String? encryptedSelf = null;
-	@override SecurityMetadata? securityMetadata = null;
-	DecryptedReceipt(
-		this.id,
-		{
-			String? rev,
-			int? created,
-			int? modified,
-			String? author,
-			String? responsible,
-			String? medicalLocationId,
-			Set<CodeStub>? tags,
-			Set<CodeStub>? codes,
-			int? endOfLife,
-			int? deletionDate,
-			Map<ReceiptBlobType, String>? attachmentIds,
-			List<String>? references,
-			String? documentId,
-			String? category,
-			String? subCategory,
-			Set<String>? secretForeignKeys,
-			Map<String, Set<Delegation>>? cryptedForeignKeys,
-			Map<String, Set<Delegation>>? delegations,
-			Map<String, Set<Delegation>>? encryptionKeys,
-			Base64String? encryptedSelf,
-			SecurityMetadata? securityMetadata
-		}) : rev = rev ?? null,
-		created = created ?? null,
-		modified = modified ?? null,
-		author = author ?? null,
-		responsible = responsible ?? null,
-		medicalLocationId = medicalLocationId ?? null,
-		tags = tags ?? {},
-		codes = codes ?? {},
-		endOfLife = endOfLife ?? null,
-		deletionDate = deletionDate ?? null,
-		attachmentIds = attachmentIds ?? {},
-		references = references ?? [],
-		documentId = documentId ?? null,
-		category = category ?? null,
-		subCategory = subCategory ?? null,
-		secretForeignKeys = secretForeignKeys ?? {},
-		cryptedForeignKeys = cryptedForeignKeys ?? {},
-		delegations = delegations ?? {},
-		encryptionKeys = encryptionKeys ?? {},
-		encryptedSelf = encryptedSelf ?? null,
-		securityMetadata = securityMetadata ?? null;
+@freezed
+abstract class DecryptedReceipt with _$DecryptedReceipt implements Receipt {
+	const factory DecryptedReceipt({
+		required String id,
+		@Default(null) String? rev,
+		@Default(null) int? created,
+		@Default(null) int? modified,
+		@Default(null) String? author,
+		@Default(null) String? responsible,
+		@Default(null) String? medicalLocationId,
+		@Default({}) Set<CodeStub> tags,
+		@Default({}) Set<CodeStub> codes,
+		@Default(null) int? endOfLife,
+		@Default(null) int? deletionDate,
+		@Default({}) Map<ReceiptBlobType, String> attachmentIds,
+		@Default([]) List<String> references,
+		@Default(null) String? documentId,
+		@Default(null) String? category,
+		@Default(null) String? subCategory,
+		@Default({}) Set<String> secretForeignKeys,
+		@Default({}) Map<String, Set<Delegation>> cryptedForeignKeys,
+		@Default({}) Map<String, Set<Delegation>> delegations,
+		@Default({}) Map<String, Set<Delegation>> encryptionKeys,
+		@Default(null) Base64String? encryptedSelf,
+		@Default(null) SecurityMetadata? securityMetadata,
+	}) = _DecryptedReceipt;
+
 
 	static Map<String, dynamic> encode(DecryptedReceipt value) {
 		Map<String, dynamic> entityAsMap = {
@@ -163,7 +124,7 @@ class DecryptedReceipt implements Receipt {
 
 	static DecryptedReceipt fromJSON(Map<String, dynamic> data) {
 		return DecryptedReceipt(
-			(data["id"] as String),
+			id: (data["id"] as String),
 			rev: (data["rev"] as String?),
 			created: (data["created"] as int?),
 			modified: (data["modified"] as int?),
@@ -189,74 +150,33 @@ class DecryptedReceipt implements Receipt {
 	}
 }
 
-class EncryptedReceipt implements Receipt {
-	@override String id;
-	@override String? rev = null;
-	@override int? created = null;
-	@override int? modified = null;
-	@override String? author = null;
-	@override String? responsible = null;
-	@override String? medicalLocationId = null;
-	@override Set<CodeStub> tags = {};
-	@override Set<CodeStub> codes = {};
-	@override int? endOfLife = null;
-	@override int? deletionDate = null;
-	@override Map<ReceiptBlobType, String> attachmentIds = {};
-	@override List<String> references = [];
-	@override String? documentId = null;
-	@override String? category = null;
-	@override String? subCategory = null;
-	@override Set<String> secretForeignKeys = {};
-	@override Map<String, Set<Delegation>> cryptedForeignKeys = {};
-	@override Map<String, Set<Delegation>> delegations = {};
-	@override Map<String, Set<Delegation>> encryptionKeys = {};
-	@override Base64String? encryptedSelf = null;
-	@override SecurityMetadata? securityMetadata = null;
-	EncryptedReceipt(
-		this.id,
-		{
-			String? rev,
-			int? created,
-			int? modified,
-			String? author,
-			String? responsible,
-			String? medicalLocationId,
-			Set<CodeStub>? tags,
-			Set<CodeStub>? codes,
-			int? endOfLife,
-			int? deletionDate,
-			Map<ReceiptBlobType, String>? attachmentIds,
-			List<String>? references,
-			String? documentId,
-			String? category,
-			String? subCategory,
-			Set<String>? secretForeignKeys,
-			Map<String, Set<Delegation>>? cryptedForeignKeys,
-			Map<String, Set<Delegation>>? delegations,
-			Map<String, Set<Delegation>>? encryptionKeys,
-			Base64String? encryptedSelf,
-			SecurityMetadata? securityMetadata
-		}) : rev = rev ?? null,
-		created = created ?? null,
-		modified = modified ?? null,
-		author = author ?? null,
-		responsible = responsible ?? null,
-		medicalLocationId = medicalLocationId ?? null,
-		tags = tags ?? {},
-		codes = codes ?? {},
-		endOfLife = endOfLife ?? null,
-		deletionDate = deletionDate ?? null,
-		attachmentIds = attachmentIds ?? {},
-		references = references ?? [],
-		documentId = documentId ?? null,
-		category = category ?? null,
-		subCategory = subCategory ?? null,
-		secretForeignKeys = secretForeignKeys ?? {},
-		cryptedForeignKeys = cryptedForeignKeys ?? {},
-		delegations = delegations ?? {},
-		encryptionKeys = encryptionKeys ?? {},
-		encryptedSelf = encryptedSelf ?? null,
-		securityMetadata = securityMetadata ?? null;
+@freezed
+abstract class EncryptedReceipt with _$EncryptedReceipt implements Receipt {
+	const factory EncryptedReceipt({
+		required String id,
+		@Default(null) String? rev,
+		@Default(null) int? created,
+		@Default(null) int? modified,
+		@Default(null) String? author,
+		@Default(null) String? responsible,
+		@Default(null) String? medicalLocationId,
+		@Default({}) Set<CodeStub> tags,
+		@Default({}) Set<CodeStub> codes,
+		@Default(null) int? endOfLife,
+		@Default(null) int? deletionDate,
+		@Default({}) Map<ReceiptBlobType, String> attachmentIds,
+		@Default([]) List<String> references,
+		@Default(null) String? documentId,
+		@Default(null) String? category,
+		@Default(null) String? subCategory,
+		@Default({}) Set<String> secretForeignKeys,
+		@Default({}) Map<String, Set<Delegation>> cryptedForeignKeys,
+		@Default({}) Map<String, Set<Delegation>> delegations,
+		@Default({}) Map<String, Set<Delegation>> encryptionKeys,
+		@Default(null) Base64String? encryptedSelf,
+		@Default(null) SecurityMetadata? securityMetadata,
+	}) = _EncryptedReceipt;
+
 
 	static Map<String, dynamic> encode(EncryptedReceipt value) {
 		Map<String, dynamic> entityAsMap = {
@@ -288,7 +208,7 @@ class EncryptedReceipt implements Receipt {
 
 	static EncryptedReceipt fromJSON(Map<String, dynamic> data) {
 		return EncryptedReceipt(
-			(data["id"] as String),
+			id: (data["id"] as String),
 			rev: (data["rev"] as String?),
 			created: (data["created"] as int?),
 			modified: (data["modified"] as int?),

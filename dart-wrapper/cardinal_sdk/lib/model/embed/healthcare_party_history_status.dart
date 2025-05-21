@@ -1,18 +1,18 @@
 // auto-generated file
 import 'package:cardinal_sdk/model/embed/healthcare_party_status.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+part "healthcare_party_history_status.freezed.dart";
 
 
-class HealthcarePartyHistoryStatus {
-	HealthcarePartyStatus status;
-	String specialisationCode;
-	int startDate;
-	bool active;
-	HealthcarePartyHistoryStatus(
-		this.status,
-		this.specialisationCode,
-		this.startDate,
-		this.active
-		);
+@freezed
+abstract class HealthcarePartyHistoryStatus with _$HealthcarePartyHistoryStatus {
+	const factory HealthcarePartyHistoryStatus({
+		required HealthcarePartyStatus status,
+		required String specialisationCode,
+		required int startDate,
+		required bool active,
+	}) = _HealthcarePartyHistoryStatus;
+
 
 	static Map<String, dynamic> encode(HealthcarePartyHistoryStatus value) {
 		Map<String, dynamic> entityAsMap = {
@@ -26,10 +26,10 @@ class HealthcarePartyHistoryStatus {
 
 	static HealthcarePartyHistoryStatus fromJSON(Map<String, dynamic> data) {
 		return HealthcarePartyHistoryStatus(
-			HealthcarePartyStatus.fromJSON(data["status"]),
-			(data["specialisationCode"] as String),
-			(data["startDate"] as int),
-			(data["active"] as bool)
+			status: HealthcarePartyStatus.fromJSON(data["status"]),
+			specialisationCode: (data["specialisationCode"] as String),
+			startDate: (data["startDate"] as int),
+			active: (data["active"] as bool)
 		);
 	}
 }

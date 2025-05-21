@@ -11,45 +11,47 @@ import 'package:cardinal_sdk/model/embed/security_metadata.dart';
 import 'package:cardinal_sdk/model/embed/service.dart';
 import 'package:cardinal_sdk/model/embed/encryptable.dart';
 import 'package:cardinal_sdk/model/base/icure_document.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+part "service.freezed.dart";
 
 
 sealed class Service implements Encryptable, ICureDocument<String> {
-	@override abstract String id;
-	abstract String? transactionId;
-	abstract List<Identifier> identifier;
-	abstract String? contactId;
-	abstract Set<String>? subContactIds;
-	abstract Set<String>? plansOfActionIds;
-	abstract Set<String>? healthElementsIds;
-	abstract Set<String>? formIds;
-	abstract Set<String>? secretForeignKeys;
-	abstract Map<String, Set<Delegation>> cryptedForeignKeys;
-	abstract Map<String, Set<Delegation>> delegations;
-	abstract Map<String, Set<Delegation>> encryptionKeys;
-	abstract String? label;
-	abstract int? index;
+	@override abstract final String id;
+	abstract final String? transactionId;
+	abstract final List<Identifier> identifier;
+	abstract final String? contactId;
+	abstract final Set<String>? subContactIds;
+	abstract final Set<String>? plansOfActionIds;
+	abstract final Set<String>? healthElementsIds;
+	abstract final Set<String>? formIds;
+	abstract final Set<String>? secretForeignKeys;
+	abstract final Map<String, Set<Delegation>> cryptedForeignKeys;
+	abstract final Map<String, Set<Delegation>> delegations;
+	abstract final Map<String, Set<Delegation>> encryptionKeys;
+	abstract final String? label;
+	abstract final int? index;
 	Map<String, Content> get content;
-	abstract String? encryptedContent;
-	abstract Map<String, String> textIndexes;
-	abstract int? valueDate;
-	abstract int? openingDate;
-	abstract int? closingDate;
-	abstract String? formId;
-	@override abstract int? created;
-	@override abstract int? modified;
-	@override abstract int? endOfLife;
-	@override abstract String? author;
-	@override abstract String? responsible;
-	@override abstract String? medicalLocationId;
-	abstract String? comment;
-	@ActualInt32() abstract int? status;
-	abstract Set<String> invoicingCodes;
-	abstract List<Annotation> notes;
-	abstract Map<LinkQualification, Map<String, String>> qualifiedLinks;
-	@override abstract Set<CodeStub> codes;
-	@override abstract Set<CodeStub> tags;
-	@override abstract Base64String? encryptedSelf;
-	abstract SecurityMetadata? securityMetadata;
+	abstract final String? encryptedContent;
+	abstract final Map<String, String> textIndexes;
+	abstract final int? valueDate;
+	abstract final int? openingDate;
+	abstract final int? closingDate;
+	abstract final String? formId;
+	@override abstract final int? created;
+	@override abstract final int? modified;
+	@override abstract final int? endOfLife;
+	@override abstract final String? author;
+	@override abstract final String? responsible;
+	@override abstract final String? medicalLocationId;
+	abstract final String? comment;
+	@actualInt32 abstract final int? status;
+	abstract final Set<String> invoicingCodes;
+	abstract final List<Annotation> notes;
+	abstract final Map<LinkQualification, Map<String, String>> qualifiedLinks;
+	@override abstract final Set<CodeStub> codes;
+	@override abstract final Set<CodeStub> tags;
+	@override abstract final Base64String? encryptedSelf;
+	abstract final SecurityMetadata? securityMetadata;
 
 	static Map<String, dynamic> encode(Service value) {
 		switch (value) {
@@ -80,123 +82,47 @@ sealed class Service implements Encryptable, ICureDocument<String> {
 	}
 }
 
-class DecryptedService implements Service {
-	@override String id;
-	@override String? transactionId = null;
-	@override List<Identifier> identifier = [];
-	@override String? contactId = null;
-	@override Set<String>? subContactIds = null;
-	@override Set<String>? plansOfActionIds = null;
-	@override Set<String>? healthElementsIds = null;
-	@override Set<String>? formIds = null;
-	@override Set<String>? secretForeignKeys = {};
-	@override Map<String, Set<Delegation>> cryptedForeignKeys = {};
-	@override Map<String, Set<Delegation>> delegations = {};
-	@override Map<String, Set<Delegation>> encryptionKeys = {};
-	@override String? label = null;
-	@override int? index = null;
-	@override Map<String, DecryptedContent> content = {};
-	@override String? encryptedContent = null;
-	@override Map<String, String> textIndexes = {};
-	@override int? valueDate = null;
-	@override int? openingDate = null;
-	@override int? closingDate = null;
-	@override String? formId = null;
-	@override int? created = null;
-	@override int? modified = null;
-	@override int? endOfLife = null;
-	@override String? author = null;
-	@override String? responsible = null;
-	@override String? medicalLocationId = null;
-	@override String? comment = null;
-	int? _status = null;
-	@ActualInt32() @override int? get status => _status;
-	@ActualInt32() @override set status(int? value) {
-		if (value != null && value > 2147483647) {
-			throw ArgumentError('status value cannot exceed 2147483647');
-		}
-		_status = value;
-	}
-	@override Set<String> invoicingCodes = {};
-	@override List<Annotation> notes = [];
-	@override Map<LinkQualification, Map<String, String>> qualifiedLinks = {};
-	@override Set<CodeStub> codes = {};
-	@override Set<CodeStub> tags = {};
-	@override Base64String? encryptedSelf = null;
-	@override SecurityMetadata? securityMetadata = null;
-	DecryptedService(
-		this.id,
-		{
-			int? status,
-			String? transactionId,
-			List<Identifier>? identifier,
-			String? contactId,
-			Set<String>? subContactIds,
-			Set<String>? plansOfActionIds,
-			Set<String>? healthElementsIds,
-			Set<String>? formIds,
-			Set<String>? secretForeignKeys,
-			Map<String, Set<Delegation>>? cryptedForeignKeys,
-			Map<String, Set<Delegation>>? delegations,
-			Map<String, Set<Delegation>>? encryptionKeys,
-			String? label,
-			int? index,
-			Map<String, DecryptedContent>? content,
-			String? encryptedContent,
-			Map<String, String>? textIndexes,
-			int? valueDate,
-			int? openingDate,
-			int? closingDate,
-			String? formId,
-			int? created,
-			int? modified,
-			int? endOfLife,
-			String? author,
-			String? responsible,
-			String? medicalLocationId,
-			String? comment,
-			Set<String>? invoicingCodes,
-			List<Annotation>? notes,
-			Map<LinkQualification, Map<String, String>>? qualifiedLinks,
-			Set<CodeStub>? codes,
-			Set<CodeStub>? tags,
-			Base64String? encryptedSelf,
-			SecurityMetadata? securityMetadata
-		}) : transactionId = transactionId ?? null,
-		identifier = identifier ?? [],
-		contactId = contactId ?? null,
-		subContactIds = subContactIds ?? null,
-		plansOfActionIds = plansOfActionIds ?? null,
-		healthElementsIds = healthElementsIds ?? null,
-		formIds = formIds ?? null,
-		secretForeignKeys = secretForeignKeys ?? {},
-		cryptedForeignKeys = cryptedForeignKeys ?? {},
-		delegations = delegations ?? {},
-		encryptionKeys = encryptionKeys ?? {},
-		label = label ?? null,
-		index = index ?? null,
-		content = content ?? {},
-		encryptedContent = encryptedContent ?? null,
-		textIndexes = textIndexes ?? {},
-		valueDate = valueDate ?? null,
-		openingDate = openingDate ?? null,
-		closingDate = closingDate ?? null,
-		formId = formId ?? null,
-		created = created ?? null,
-		modified = modified ?? null,
-		endOfLife = endOfLife ?? null,
-		author = author ?? null,
-		responsible = responsible ?? null,
-		medicalLocationId = medicalLocationId ?? null,
-		comment = comment ?? null,
-		invoicingCodes = invoicingCodes ?? {},
-		notes = notes ?? [],
-		qualifiedLinks = qualifiedLinks ?? {},
-		codes = codes ?? {},
-		tags = tags ?? {},
-		encryptedSelf = encryptedSelf ?? null,
-		securityMetadata = securityMetadata ?? null,
-		_status = status ?? null;
+@freezed
+abstract class DecryptedService with _$DecryptedService implements Service {
+	const factory DecryptedService({
+		required String id,
+		@Default(null) String? transactionId,
+		@Default([]) List<Identifier> identifier,
+		@Default(null) String? contactId,
+		@Default(null) Set<String>? subContactIds,
+		@Default(null) Set<String>? plansOfActionIds,
+		@Default(null) Set<String>? healthElementsIds,
+		@Default(null) Set<String>? formIds,
+		@Default({}) Set<String>? secretForeignKeys,
+		@Default({}) Map<String, Set<Delegation>> cryptedForeignKeys,
+		@Default({}) Map<String, Set<Delegation>> delegations,
+		@Default({}) Map<String, Set<Delegation>> encryptionKeys,
+		@Default(null) String? label,
+		@Default(null) int? index,
+		@Default({}) Map<String, DecryptedContent> content,
+		@Default(null) String? encryptedContent,
+		@Default({}) Map<String, String> textIndexes,
+		@Default(null) int? valueDate,
+		@Default(null) int? openingDate,
+		@Default(null) int? closingDate,
+		@Default(null) String? formId,
+		@Default(null) int? created,
+		@Default(null) int? modified,
+		@Default(null) int? endOfLife,
+		@Default(null) String? author,
+		@Default(null) String? responsible,
+		@Default(null) String? medicalLocationId,
+		@Default(null) String? comment,
+		@Default(null) int? status,
+		@Default({}) Set<String> invoicingCodes,
+		@Default([]) List<Annotation> notes,
+		@Default({}) Map<LinkQualification, Map<String, String>> qualifiedLinks,
+		@Default({}) Set<CodeStub> codes,
+		@Default({}) Set<CodeStub> tags,
+		@Default(null) Base64String? encryptedSelf,
+		@Default(null) SecurityMetadata? securityMetadata,
+	}) = _DecryptedService;
+
 
 	static Map<String, dynamic> encode(DecryptedService value) {
 		Map<String, dynamic> entityAsMap = {
@@ -242,7 +168,7 @@ class DecryptedService implements Service {
 
 	static DecryptedService fromJSON(Map<String, dynamic> data) {
 		return DecryptedService(
-			(data["id"] as String),
+			id: (data["id"] as String),
 			status: (data["status"] as int?),
 			transactionId: (data["transactionId"] as String?),
 			identifier: (data["identifier"] as List<dynamic>).map((x0) => Identifier.fromJSON(x0) ).toList(),
@@ -282,123 +208,47 @@ class DecryptedService implements Service {
 	}
 }
 
-class EncryptedService implements Service {
-	@override String id;
-	@override String? transactionId = null;
-	@override List<Identifier> identifier = [];
-	@override String? contactId = null;
-	@override Set<String>? subContactIds = null;
-	@override Set<String>? plansOfActionIds = null;
-	@override Set<String>? healthElementsIds = null;
-	@override Set<String>? formIds = null;
-	@override Set<String>? secretForeignKeys = {};
-	@override Map<String, Set<Delegation>> cryptedForeignKeys = {};
-	@override Map<String, Set<Delegation>> delegations = {};
-	@override Map<String, Set<Delegation>> encryptionKeys = {};
-	@override String? label = null;
-	@override int? index = null;
-	@override Map<String, EncryptedContent> content = {};
-	@override String? encryptedContent = null;
-	@override Map<String, String> textIndexes = {};
-	@override int? valueDate = null;
-	@override int? openingDate = null;
-	@override int? closingDate = null;
-	@override String? formId = null;
-	@override int? created = null;
-	@override int? modified = null;
-	@override int? endOfLife = null;
-	@override String? author = null;
-	@override String? responsible = null;
-	@override String? medicalLocationId = null;
-	@override String? comment = null;
-	int? _status = null;
-	@ActualInt32() @override int? get status => _status;
-	@ActualInt32() @override set status(int? value) {
-		if (value != null && value > 2147483647) {
-			throw ArgumentError('status value cannot exceed 2147483647');
-		}
-		_status = value;
-	}
-	@override Set<String> invoicingCodes = {};
-	@override List<Annotation> notes = [];
-	@override Map<LinkQualification, Map<String, String>> qualifiedLinks = {};
-	@override Set<CodeStub> codes = {};
-	@override Set<CodeStub> tags = {};
-	@override Base64String? encryptedSelf = null;
-	@override SecurityMetadata? securityMetadata = null;
-	EncryptedService(
-		this.id,
-		{
-			int? status,
-			String? transactionId,
-			List<Identifier>? identifier,
-			String? contactId,
-			Set<String>? subContactIds,
-			Set<String>? plansOfActionIds,
-			Set<String>? healthElementsIds,
-			Set<String>? formIds,
-			Set<String>? secretForeignKeys,
-			Map<String, Set<Delegation>>? cryptedForeignKeys,
-			Map<String, Set<Delegation>>? delegations,
-			Map<String, Set<Delegation>>? encryptionKeys,
-			String? label,
-			int? index,
-			Map<String, EncryptedContent>? content,
-			String? encryptedContent,
-			Map<String, String>? textIndexes,
-			int? valueDate,
-			int? openingDate,
-			int? closingDate,
-			String? formId,
-			int? created,
-			int? modified,
-			int? endOfLife,
-			String? author,
-			String? responsible,
-			String? medicalLocationId,
-			String? comment,
-			Set<String>? invoicingCodes,
-			List<Annotation>? notes,
-			Map<LinkQualification, Map<String, String>>? qualifiedLinks,
-			Set<CodeStub>? codes,
-			Set<CodeStub>? tags,
-			Base64String? encryptedSelf,
-			SecurityMetadata? securityMetadata
-		}) : transactionId = transactionId ?? null,
-		identifier = identifier ?? [],
-		contactId = contactId ?? null,
-		subContactIds = subContactIds ?? null,
-		plansOfActionIds = plansOfActionIds ?? null,
-		healthElementsIds = healthElementsIds ?? null,
-		formIds = formIds ?? null,
-		secretForeignKeys = secretForeignKeys ?? {},
-		cryptedForeignKeys = cryptedForeignKeys ?? {},
-		delegations = delegations ?? {},
-		encryptionKeys = encryptionKeys ?? {},
-		label = label ?? null,
-		index = index ?? null,
-		content = content ?? {},
-		encryptedContent = encryptedContent ?? null,
-		textIndexes = textIndexes ?? {},
-		valueDate = valueDate ?? null,
-		openingDate = openingDate ?? null,
-		closingDate = closingDate ?? null,
-		formId = formId ?? null,
-		created = created ?? null,
-		modified = modified ?? null,
-		endOfLife = endOfLife ?? null,
-		author = author ?? null,
-		responsible = responsible ?? null,
-		medicalLocationId = medicalLocationId ?? null,
-		comment = comment ?? null,
-		invoicingCodes = invoicingCodes ?? {},
-		notes = notes ?? [],
-		qualifiedLinks = qualifiedLinks ?? {},
-		codes = codes ?? {},
-		tags = tags ?? {},
-		encryptedSelf = encryptedSelf ?? null,
-		securityMetadata = securityMetadata ?? null,
-		_status = status ?? null;
+@freezed
+abstract class EncryptedService with _$EncryptedService implements Service {
+	const factory EncryptedService({
+		required String id,
+		@Default(null) String? transactionId,
+		@Default([]) List<Identifier> identifier,
+		@Default(null) String? contactId,
+		@Default(null) Set<String>? subContactIds,
+		@Default(null) Set<String>? plansOfActionIds,
+		@Default(null) Set<String>? healthElementsIds,
+		@Default(null) Set<String>? formIds,
+		@Default({}) Set<String>? secretForeignKeys,
+		@Default({}) Map<String, Set<Delegation>> cryptedForeignKeys,
+		@Default({}) Map<String, Set<Delegation>> delegations,
+		@Default({}) Map<String, Set<Delegation>> encryptionKeys,
+		@Default(null) String? label,
+		@Default(null) int? index,
+		@Default({}) Map<String, EncryptedContent> content,
+		@Default(null) String? encryptedContent,
+		@Default({}) Map<String, String> textIndexes,
+		@Default(null) int? valueDate,
+		@Default(null) int? openingDate,
+		@Default(null) int? closingDate,
+		@Default(null) String? formId,
+		@Default(null) int? created,
+		@Default(null) int? modified,
+		@Default(null) int? endOfLife,
+		@Default(null) String? author,
+		@Default(null) String? responsible,
+		@Default(null) String? medicalLocationId,
+		@Default(null) String? comment,
+		@Default(null) int? status,
+		@Default({}) Set<String> invoicingCodes,
+		@Default([]) List<Annotation> notes,
+		@Default({}) Map<LinkQualification, Map<String, String>> qualifiedLinks,
+		@Default({}) Set<CodeStub> codes,
+		@Default({}) Set<CodeStub> tags,
+		@Default(null) Base64String? encryptedSelf,
+		@Default(null) SecurityMetadata? securityMetadata,
+	}) = _EncryptedService;
+
 
 	static Map<String, dynamic> encode(EncryptedService value) {
 		Map<String, dynamic> entityAsMap = {
@@ -444,7 +294,7 @@ class EncryptedService implements Service {
 
 	static EncryptedService fromJSON(Map<String, dynamic> data) {
 		return EncryptedService(
-			(data["id"] as String),
+			id: (data["id"] as String),
 			status: (data["status"] as int?),
 			transactionId: (data["transactionId"] as String?),
 			identifier: (data["identifier"] as List<dynamic>).map((x0) => Identifier.fromJSON(x0) ).toList(),

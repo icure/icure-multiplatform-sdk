@@ -1,15 +1,16 @@
 // auto-generated file
 import 'package:cardinal_sdk/model/embed/typed_values_type.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+part "property_type_stub.freezed.dart";
 
 
-class PropertyTypeStub {
-	String? identifier = null;
-	TypedValuesType? type = null;
-	PropertyTypeStub({
-			String? identifier,
-			TypedValuesType? type
-		}) : identifier = identifier ?? null,
-		type = type ?? null;
+@freezed
+abstract class PropertyTypeStub with _$PropertyTypeStub {
+	const factory PropertyTypeStub({
+		@Default(null) String? identifier,
+		@Default(null) TypedValuesType? type,
+	}) = _PropertyTypeStub;
+
 
 	static Map<String, dynamic> encode(PropertyTypeStub value) {
 		Map<String, dynamic> entityAsMap = {

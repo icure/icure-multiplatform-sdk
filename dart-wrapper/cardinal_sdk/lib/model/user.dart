@@ -7,85 +7,40 @@ import 'package:cardinal_sdk/model/enums/users_status.dart';
 import 'package:cardinal_sdk/model/embed/delegation_tag.dart';
 import 'package:cardinal_sdk/model/security/authentication_token.dart';
 import 'package:cardinal_sdk/model/base/stored_document.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+part "user.freezed.dart";
 
 
-class User implements StoredDocument {
-	@override String id;
-	@override String? rev = null;
-	@override int? deletionDate = null;
-	int? created = null;
-	List<Identifier> identifier = [];
-	String? name = null;
-	Set<DecryptedPropertyStub> properties = {};
-	Set<Permission> permissions = {};
-	Set<String> roles = {};
-	UsersType? type = null;
-	UsersStatus? status = null;
-	String? login = null;
-	String? passwordHash = null;
-	String? groupId = null;
-	String? healthcarePartyId = null;
-	String? patientId = null;
-	String? deviceId = null;
-	Map<DelegationTag, Set<String>> autoDelegations = {};
-	DateTime? createdDate = null;
-	DateTime? termsOfUseDate = null;
-	String? email = null;
-	String? mobilePhone = null;
-	Map<String, String> applicationTokens = {};
-	Map<String, AuthenticationToken> authenticationTokens = {};
-	UserSystemMetadata? systemMetadata = null;
-	User(
-		this.id,
-		{
-			String? rev,
-			int? deletionDate,
-			int? created,
-			List<Identifier>? identifier,
-			String? name,
-			Set<DecryptedPropertyStub>? properties,
-			Set<Permission>? permissions,
-			Set<String>? roles,
-			UsersType? type,
-			UsersStatus? status,
-			String? login,
-			String? passwordHash,
-			String? groupId,
-			String? healthcarePartyId,
-			String? patientId,
-			String? deviceId,
-			Map<DelegationTag, Set<String>>? autoDelegations,
-			DateTime? createdDate,
-			DateTime? termsOfUseDate,
-			String? email,
-			String? mobilePhone,
-			Map<String, String>? applicationTokens,
-			Map<String, AuthenticationToken>? authenticationTokens,
-			UserSystemMetadata? systemMetadata
-		}) : rev = rev ?? null,
-		deletionDate = deletionDate ?? null,
-		created = created ?? null,
-		identifier = identifier ?? [],
-		name = name ?? null,
-		properties = properties ?? {},
-		permissions = permissions ?? {},
-		roles = roles ?? {},
-		type = type ?? null,
-		status = status ?? null,
-		login = login ?? null,
-		passwordHash = passwordHash ?? null,
-		groupId = groupId ?? null,
-		healthcarePartyId = healthcarePartyId ?? null,
-		patientId = patientId ?? null,
-		deviceId = deviceId ?? null,
-		autoDelegations = autoDelegations ?? {},
-		createdDate = createdDate ?? null,
-		termsOfUseDate = termsOfUseDate ?? null,
-		email = email ?? null,
-		mobilePhone = mobilePhone ?? null,
-		applicationTokens = applicationTokens ?? {},
-		authenticationTokens = authenticationTokens ?? {},
-		systemMetadata = systemMetadata ?? null;
+@freezed
+abstract class User with _$User implements StoredDocument {
+	const factory User({
+		required String id,
+		@Default(null) String? rev,
+		@Default(null) int? deletionDate,
+		@Default(null) int? created,
+		@Default([]) List<Identifier> identifier,
+		@Default(null) String? name,
+		@Default({}) Set<DecryptedPropertyStub> properties,
+		@Default({}) Set<Permission> permissions,
+		@Default({}) Set<String> roles,
+		@Default(null) UsersType? type,
+		@Default(null) UsersStatus? status,
+		@Default(null) String? login,
+		@Default(null) String? passwordHash,
+		@Default(null) String? groupId,
+		@Default(null) String? healthcarePartyId,
+		@Default(null) String? patientId,
+		@Default(null) String? deviceId,
+		@Default({}) Map<DelegationTag, Set<String>> autoDelegations,
+		@Default(null) DateTime? createdDate,
+		@Default(null) DateTime? termsOfUseDate,
+		@Default(null) String? email,
+		@Default(null) String? mobilePhone,
+		@Default({}) Map<String, String> applicationTokens,
+		@Default({}) Map<String, AuthenticationToken> authenticationTokens,
+		@Default(null) UserSystemMetadata? systemMetadata,
+	}) = _User;
+
 
 	static Map<String, dynamic> encode(User value) {
 		Map<String, dynamic> entityAsMap = {
@@ -120,7 +75,7 @@ class User implements StoredDocument {
 
 	static User fromJSON(Map<String, dynamic> data) {
 		return User(
-			(data["id"] as String),
+			id: (data["id"] as String),
 			rev: (data["rev"] as String?),
 			deletionDate: (data["deletionDate"] as int?),
 			created: (data["created"] as int?),
@@ -149,30 +104,32 @@ class User implements StoredDocument {
 	}
 }
 
-class UserSystemMetadata {
-	Set<String> roles;
-	bool isAdmin;
-	bool inheritsRoles;
-	UserSystemMetadata(
-		this.roles,
-		this.isAdmin,
-		this.inheritsRoles
-		);
+@freezed
+abstract class UserSystemMetadata with _$UserSystemMetadata {
+	const factory UserSystemMetadata({
+		required Set<String> roles,
+		required bool isAdmin,
+		required bool inheritsRoles,
+		@Default([]) List<Identifier> loginIdentifiers,
+	}) = _UserSystemMetadata;
+
 
 	static Map<String, dynamic> encode(UserSystemMetadata value) {
 		Map<String, dynamic> entityAsMap = {
 			"roles" : value.roles.map((x0) => x0).toList(),
 			"isAdmin" : value.isAdmin,
-			"inheritsRoles" : value.inheritsRoles
+			"inheritsRoles" : value.inheritsRoles,
+			"loginIdentifiers" : value.loginIdentifiers.map((x0) => Identifier.encode(x0)).toList()
 		};
 		return entityAsMap;
 	}
 
 	static UserSystemMetadata fromJSON(Map<String, dynamic> data) {
 		return UserSystemMetadata(
-			(data["roles"] as List<dynamic>).map((x0) => (x0 as String) ).toSet(),
-			(data["isAdmin"] as bool),
-			(data["inheritsRoles"] as bool)
+			roles: (data["roles"] as List<dynamic>).map((x0) => (x0 as String) ).toSet(),
+			isAdmin: (data["isAdmin"] as bool),
+			inheritsRoles: (data["inheritsRoles"] as bool),
+			loginIdentifiers: (data["loginIdentifiers"] as List<dynamic>).map((x0) => Identifier.fromJSON(x0) ).toList(),
 		);
 	}
 }

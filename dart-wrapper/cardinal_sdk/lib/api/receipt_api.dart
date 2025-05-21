@@ -1,10 +1,10 @@
 // auto-generated file
 import 'package:cardinal_sdk/model/receipt.dart';
-import 'package:cardinal_sdk/plugin/cardinal_sdk_platform_interface.dart';
 import 'package:cardinal_sdk/model/patient.dart';
 import 'package:cardinal_sdk/model/user.dart';
 import 'package:cardinal_sdk/model/embed/access_level.dart';
 import 'package:cardinal_sdk/crypto/entities/secret_id_use_option.dart';
+import 'package:cardinal_sdk/plugin/cardinal_sdk_platform_interface.dart';
 import 'dart:typed_data';
 import 'package:cardinal_sdk/model/specializations/hex_string.dart';
 import 'package:cardinal_sdk/model/couchdb/doc_identifier.dart';
@@ -14,20 +14,13 @@ import 'package:cardinal_sdk/crypto/entities/receipt_share_options.dart';
 class ReceiptApi {
 	final String _sdkId;
 	final Object _dartSdk;
-	final TryAndRecoverReceiptApi tryAndRecover;
-	final EncryptedReceiptApi encrypted;
+	final ReceiptEncryptedApi encrypted;
+	final ReceiptTryAndRecoverApi tryAndRecover;
 	ReceiptApi(
 		this._sdkId,
 		this._dartSdk
-		) : tryAndRecover = TryAndRecoverReceiptApi(_sdkId, _dartSdk),
-		encrypted = EncryptedReceiptApi(_sdkId, _dartSdk);
-
-	Future<DecryptedReceipt> createReceipt(DecryptedReceipt entity) async {
-		return await CardinalSdkPlatformInterface.instance.apis.receipt.createReceipt(
-			_sdkId,
-			entity,
-		);
-	}
+		) : encrypted = ReceiptEncryptedApi(_sdkId, _dartSdk),
+		tryAndRecover = ReceiptTryAndRecoverApi(_sdkId, _dartSdk);
 
 	Future<DecryptedReceipt> withEncryptionMetadata(DecryptedReceipt? base, Patient? patient, { User? user, Map<String, AccessLevel> delegates = const {}, SecretIdUseOption secretId = SecretIdUseOption.UseAnySharedWithParent }) async {
 		return await CardinalSdkPlatformInterface.instance.apis.receipt.withEncryptionMetadata(
@@ -160,6 +153,13 @@ class ReceiptApi {
 		);
 	}
 
+	Future<DecryptedReceipt> createReceipt(DecryptedReceipt entity) async {
+		return await CardinalSdkPlatformInterface.instance.apis.receipt.createReceipt(
+			_sdkId,
+			entity,
+		);
+	}
+
 	Future<DecryptedReceipt> modifyReceipt(DecryptedReceipt entity) async {
 		return await CardinalSdkPlatformInterface.instance.apis.receipt.modifyReceipt(
 			_sdkId,
@@ -167,7 +167,7 @@ class ReceiptApi {
 		);
 	}
 
-	Future<DecryptedReceipt> getReceipt(String entityId) async {
+	Future<DecryptedReceipt?> getReceipt(String entityId) async {
 		return await CardinalSdkPlatformInterface.instance.apis.receipt.getReceipt(
 			_sdkId,
 			entityId,
@@ -182,10 +182,10 @@ class ReceiptApi {
 	}
 }
 
-class TryAndRecoverReceiptApi {
+class ReceiptTryAndRecoverApi {
 	final String _sdkId;
 	final Object _dartSdk;
-	TryAndRecoverReceiptApi(
+	ReceiptTryAndRecoverApi(
 		this._sdkId,
 		this._dartSdk
 		);
@@ -207,6 +207,13 @@ class TryAndRecoverReceiptApi {
 		);
 	}
 
+	Future<Receipt> createReceipt(Receipt entity) async {
+		return await CardinalSdkPlatformInterface.instance.apis.receipt.tryAndRecover.createReceipt(
+			_sdkId,
+			entity,
+		);
+	}
+
 	Future<Receipt> modifyReceipt(Receipt entity) async {
 		return await CardinalSdkPlatformInterface.instance.apis.receipt.tryAndRecover.modifyReceipt(
 			_sdkId,
@@ -214,7 +221,7 @@ class TryAndRecoverReceiptApi {
 		);
 	}
 
-	Future<Receipt> getReceipt(String entityId) async {
+	Future<Receipt?> getReceipt(String entityId) async {
 		return await CardinalSdkPlatformInterface.instance.apis.receipt.tryAndRecover.getReceipt(
 			_sdkId,
 			entityId,
@@ -229,10 +236,10 @@ class TryAndRecoverReceiptApi {
 	}
 }
 
-class EncryptedReceiptApi {
+class ReceiptEncryptedApi {
 	final String _sdkId;
 	final Object _dartSdk;
-	EncryptedReceiptApi(
+	ReceiptEncryptedApi(
 		this._sdkId,
 		this._dartSdk
 		);
@@ -254,6 +261,13 @@ class EncryptedReceiptApi {
 		);
 	}
 
+	Future<EncryptedReceipt> createReceipt(EncryptedReceipt entity) async {
+		return await CardinalSdkPlatformInterface.instance.apis.receipt.encrypted.createReceipt(
+			_sdkId,
+			entity,
+		);
+	}
+
 	Future<EncryptedReceipt> modifyReceipt(EncryptedReceipt entity) async {
 		return await CardinalSdkPlatformInterface.instance.apis.receipt.encrypted.modifyReceipt(
 			_sdkId,
@@ -261,7 +275,7 @@ class EncryptedReceiptApi {
 		);
 	}
 
-	Future<EncryptedReceipt> getReceipt(String entityId) async {
+	Future<EncryptedReceipt?> getReceipt(String entityId) async {
 		return await CardinalSdkPlatformInterface.instance.apis.receipt.encrypted.getReceipt(
 			_sdkId,
 			entityId,

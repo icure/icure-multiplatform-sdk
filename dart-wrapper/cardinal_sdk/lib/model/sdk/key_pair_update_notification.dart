@@ -1,14 +1,16 @@
 // auto-generated file
 import 'package:cardinal_sdk/crypto/entities/cardinal_keys.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+part "key_pair_update_notification.freezed.dart";
 
 
-class KeyPairUpdateNotification {
-	CardinalRsaPublicKey newPublicKey;
-	String concernedDataOwnerId;
-	KeyPairUpdateNotification(
-		this.newPublicKey,
-		this.concernedDataOwnerId
-		);
+@freezed
+abstract class KeyPairUpdateNotification with _$KeyPairUpdateNotification {
+	const factory KeyPairUpdateNotification({
+		required CardinalRsaPublicKey newPublicKey,
+		required String concernedDataOwnerId,
+	}) = _KeyPairUpdateNotification;
+
 
 	static Map<String, dynamic> encode(KeyPairUpdateNotification value) {
 		Map<String, dynamic> entityAsMap = {
@@ -20,8 +22,8 @@ class KeyPairUpdateNotification {
 
 	static KeyPairUpdateNotification fromJSON(Map<String, dynamic> data) {
 		return KeyPairUpdateNotification(
-			CardinalRsaPublicKey.fromSpkiHex(data["newPublicKey"]),
-			(data["concernedDataOwnerId"] as String)
+			newPublicKey: CardinalRsaPublicKey.fromSpkiHex(data["newPublicKey"]),
+			concernedDataOwnerId: (data["concernedDataOwnerId"] as String)
 		);
 	}
 }

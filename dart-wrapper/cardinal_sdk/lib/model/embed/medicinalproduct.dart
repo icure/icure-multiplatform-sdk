@@ -1,24 +1,19 @@
 // auto-generated file
 import 'package:cardinal_sdk/model/base/code_stub.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+part "medicinalproduct.freezed.dart";
 
 
-class Medicinalproduct {
-	List<CodeStub> intendedcds = [];
-	List<CodeStub> deliveredcds = [];
-	String? intendedname = null;
-	String? deliveredname = null;
-	String? productId = null;
-	Medicinalproduct({
-			List<CodeStub>? intendedcds,
-			List<CodeStub>? deliveredcds,
-			String? intendedname,
-			String? deliveredname,
-			String? productId
-		}) : intendedcds = intendedcds ?? [],
-		deliveredcds = deliveredcds ?? [],
-		intendedname = intendedname ?? null,
-		deliveredname = deliveredname ?? null,
-		productId = productId ?? null;
+@freezed
+abstract class Medicinalproduct with _$Medicinalproduct {
+	const factory Medicinalproduct({
+		@Default([]) List<CodeStub> intendedcds,
+		@Default([]) List<CodeStub> deliveredcds,
+		@Default(null) String? intendedname,
+		@Default(null) String? deliveredname,
+		@Default(null) String? productId,
+	}) = _Medicinalproduct;
+
 
 	static Map<String, dynamic> encode(Medicinalproduct value) {
 		Map<String, dynamic> entityAsMap = {

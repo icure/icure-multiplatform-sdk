@@ -8,12 +8,12 @@ import com.icure.cardinal.sdk.dart.utils.NativeReferences
 import com.icure.cardinal.sdk.model.CryptoActorStubWithType
 import com.icure.cardinal.sdk.model.specializations.KeypairFingerprintV1String
 import com.icure.cardinal.sdk.serialization.CryptoActorAsStubDeserializer
-import com.icure.cardinal.sdk.serialization.MapAsArraySerializer
 import com.icure.cardinal.sdk.utils.Serialization.fullLanguageInteropJson
 import com.icure.utils.InternalIcureApi
 import kotlin.OptIn
 import kotlin.String
 import kotlin.Unit
+import kotlinx.serialization.builtins.MapSerializer
 import kotlinx.serialization.builtins.SetSerializer
 import kotlinx.serialization.builtins.serializer
 
@@ -35,8 +35,7 @@ public object ShamirKeysManagerApi {
     )
     ApiScope.execute(
       dartResultCallback,
-      MapAsArraySerializer(KeypairFingerprintV1String.serializer(),
-          SetSerializer(String.serializer()))) {
+      MapSerializer(KeypairFingerprintV1String.serializer(), SetSerializer(String.serializer()))) {
       NativeReferences.get<CardinalApis>(sdkId).crypto.shamirKeysManager.getExistingSplitsInfo(
         dataOwner,
       )
@@ -55,8 +54,7 @@ public object ShamirKeysManagerApi {
     keySplitsToDeleteString: String,
   ) {
     val keySplitsToUpdate = fullLanguageInteropJson.decodeFromString(
-      MapAsArraySerializer(KeypairFingerprintV1String.serializer(),
-          ShamirUpdateRequest.serializer()),
+      MapSerializer(KeypairFingerprintV1String.serializer(), ShamirUpdateRequest.serializer()),
       keySplitsToUpdateString
     )
     val keySplitsToDelete = fullLanguageInteropJson.decodeFromString(

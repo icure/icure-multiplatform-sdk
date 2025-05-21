@@ -18,15 +18,14 @@ public object PatientApiDispatcher {
       String?,
     ) -> Unit,
   ): Boolean = when(methodName) {
+    "decrypt" -> decrypt(parameters, resultCallback)
+    "tryDecrypt" -> tryDecrypt(parameters, resultCallback)
+    "encryptOrValidate" -> encryptOrValidate(parameters, resultCallback)
     "getSecretIdsOf" -> getSecretIdsOf(parameters, resultCallback)
     "getEncryptionKeysOf" -> getEncryptionKeysOf(parameters, resultCallback)
-    "createPatient" -> createPatient(parameters, resultCallback)
     "withEncryptionMetadata" -> withEncryptionMetadata(parameters, resultCallback)
     "hasWriteAccess" -> hasWriteAccess(parameters, resultCallback)
     "createDelegationDeAnonymizationMetadata" -> createDelegationDeAnonymizationMetadata(parameters, resultCallback)
-    "decrypt" -> decrypt(parameters, resultCallback)
-    "tryDecrypt" -> tryDecrypt(parameters, resultCallback)
-    "createPatients" -> createPatients(parameters, resultCallback)
     "shareAllDataOfPatient" -> shareAllDataOfPatient(parameters, resultCallback)
     "getConfidentialSecretIdsOf" -> getConfidentialSecretIdsOf(parameters, resultCallback)
     "forceInitializeExchangeDataToNewlyInvitedPatient" -> forceInitializeExchangeDataToNewlyInvitedPatient(parameters, resultCallback)
@@ -45,6 +44,9 @@ public object PatientApiDispatcher {
     "initializeConfidentialSecretId" -> initializeConfidentialSecretId(parameters, resultCallback)
     "filterPatientsBy" -> filterPatientsBy(parameters, resultCallback)
     "filterPatientsBySorted" -> filterPatientsBySorted(parameters, resultCallback)
+    "createPatient" -> createPatient(parameters, resultCallback)
+    "createPatientsMinimal" -> createPatientsMinimal(parameters, resultCallback)
+    "createPatients" -> createPatients(parameters, resultCallback)
     "undeletePatient" -> undeletePatient(parameters, resultCallback)
     "modifyPatient" -> modifyPatient(parameters, resultCallback)
     "undeletePatientById" -> undeletePatientById(parameters, resultCallback)
@@ -52,6 +54,7 @@ public object PatientApiDispatcher {
     "getPatient" -> getPatient(parameters, resultCallback)
     "getPatientResolvingMerges" -> getPatientResolvingMerges(parameters, resultCallback)
     "getPatients" -> getPatients(parameters, resultCallback)
+    "modifyPatientsMinimal" -> modifyPatientsMinimal(parameters, resultCallback)
     "modifyPatients" -> modifyPatients(parameters, resultCallback)
     "mergePatients" -> mergePatients(parameters, resultCallback)
     "subscribeToEvents" -> subscribeToEvents(parameters, resultCallback)
@@ -60,6 +63,9 @@ public object PatientApiDispatcher {
     "encrypted.initializeConfidentialSecretId" -> encrypted_initializeConfidentialSecretId(parameters, resultCallback)
     "encrypted.filterPatientsBy" -> encrypted_filterPatientsBy(parameters, resultCallback)
     "encrypted.filterPatientsBySorted" -> encrypted_filterPatientsBySorted(parameters, resultCallback)
+    "encrypted.createPatient" -> encrypted_createPatient(parameters, resultCallback)
+    "encrypted.createPatientsMinimal" -> encrypted_createPatientsMinimal(parameters, resultCallback)
+    "encrypted.createPatients" -> encrypted_createPatients(parameters, resultCallback)
     "encrypted.undeletePatient" -> encrypted_undeletePatient(parameters, resultCallback)
     "encrypted.modifyPatient" -> encrypted_modifyPatient(parameters, resultCallback)
     "encrypted.undeletePatientById" -> encrypted_undeletePatientById(parameters, resultCallback)
@@ -67,6 +73,7 @@ public object PatientApiDispatcher {
     "encrypted.getPatient" -> encrypted_getPatient(parameters, resultCallback)
     "encrypted.getPatientResolvingMerges" -> encrypted_getPatientResolvingMerges(parameters, resultCallback)
     "encrypted.getPatients" -> encrypted_getPatients(parameters, resultCallback)
+    "encrypted.modifyPatientsMinimal" -> encrypted_modifyPatientsMinimal(parameters, resultCallback)
     "encrypted.modifyPatients" -> encrypted_modifyPatients(parameters, resultCallback)
     "encrypted.mergePatients" -> encrypted_mergePatients(parameters, resultCallback)
     "tryAndRecover.shareWith" -> tryAndRecover_shareWith(parameters, resultCallback)
@@ -74,6 +81,9 @@ public object PatientApiDispatcher {
     "tryAndRecover.initializeConfidentialSecretId" -> tryAndRecover_initializeConfidentialSecretId(parameters, resultCallback)
     "tryAndRecover.filterPatientsBy" -> tryAndRecover_filterPatientsBy(parameters, resultCallback)
     "tryAndRecover.filterPatientsBySorted" -> tryAndRecover_filterPatientsBySorted(parameters, resultCallback)
+    "tryAndRecover.createPatient" -> tryAndRecover_createPatient(parameters, resultCallback)
+    "tryAndRecover.createPatientsMinimal" -> tryAndRecover_createPatientsMinimal(parameters, resultCallback)
+    "tryAndRecover.createPatients" -> tryAndRecover_createPatients(parameters, resultCallback)
     "tryAndRecover.undeletePatient" -> tryAndRecover_undeletePatient(parameters, resultCallback)
     "tryAndRecover.modifyPatient" -> tryAndRecover_modifyPatient(parameters, resultCallback)
     "tryAndRecover.undeletePatientById" -> tryAndRecover_undeletePatientById(parameters, resultCallback)
@@ -81,10 +91,100 @@ public object PatientApiDispatcher {
     "tryAndRecover.getPatient" -> tryAndRecover_getPatient(parameters, resultCallback)
     "tryAndRecover.getPatientResolvingMerges" -> tryAndRecover_getPatientResolvingMerges(parameters, resultCallback)
     "tryAndRecover.getPatients" -> tryAndRecover_getPatients(parameters, resultCallback)
+    "tryAndRecover.modifyPatientsMinimal" -> tryAndRecover_modifyPatientsMinimal(parameters, resultCallback)
     "tryAndRecover.modifyPatients" -> tryAndRecover_modifyPatients(parameters, resultCallback)
     "tryAndRecover.mergePatients" -> tryAndRecover_mergePatients(parameters, resultCallback)
+    "inGroup.decrypt" -> inGroup_decrypt(parameters, resultCallback)
+    "inGroup.tryDecrypt" -> inGroup_tryDecrypt(parameters, resultCallback)
+    "inGroup.encryptOrValidate" -> inGroup_encryptOrValidate(parameters, resultCallback)
+    "inGroup.getSecretIdsOf" -> inGroup_getSecretIdsOf(parameters, resultCallback)
+    "inGroup.getEncryptionKeysOf" -> inGroup_getEncryptionKeysOf(parameters, resultCallback)
+    "inGroup.withEncryptionMetadata" -> inGroup_withEncryptionMetadata(parameters, resultCallback)
+    "inGroup.hasWriteAccess" -> inGroup_hasWriteAccess(parameters, resultCallback)
+    "inGroup.createDelegationDeAnonymizationMetadata" -> inGroup_createDelegationDeAnonymizationMetadata(parameters, resultCallback)
+    "inGroup.matchPatientsBy" -> inGroup_matchPatientsBy(parameters, resultCallback)
+    "inGroup.matchPatientsBySorted" -> inGroup_matchPatientsBySorted(parameters, resultCallback)
+    "inGroup.getDataOwnersWithAccessTo" -> inGroup_getDataOwnersWithAccessTo(parameters, resultCallback)
+    "inGroup.shareWith" -> inGroup_shareWith(parameters, resultCallback)
+    "inGroup.shareWithMany" -> inGroup_shareWithMany(parameters, resultCallback)
+    "inGroup.initializeConfidentialSecretId" -> inGroup_initializeConfidentialSecretId(parameters, resultCallback)
+    "inGroup.filterPatientsBy" -> inGroup_filterPatientsBy(parameters, resultCallback)
+    "inGroup.filterPatientsBySorted" -> inGroup_filterPatientsBySorted(parameters, resultCallback)
+    "inGroup.createPatient" -> inGroup_createPatient(parameters, resultCallback)
+    "inGroup.createPatientsMinimal" -> inGroup_createPatientsMinimal(parameters, resultCallback)
+    "inGroup.createPatients" -> inGroup_createPatients(parameters, resultCallback)
+    "inGroup.getPatient" -> inGroup_getPatient(parameters, resultCallback)
+    "inGroup.getPatientResolvingMerges" -> inGroup_getPatientResolvingMerges(parameters, resultCallback)
+    "inGroup.getPatients" -> inGroup_getPatients(parameters, resultCallback)
+    "inGroup.modifyPatientsMinimal" -> inGroup_modifyPatientsMinimal(parameters, resultCallback)
+    "inGroup.modifyPatients" -> inGroup_modifyPatients(parameters, resultCallback)
+    "inGroup.encrypted.shareWith" -> inGroup_encrypted_shareWith(parameters, resultCallback)
+    "inGroup.encrypted.shareWithMany" -> inGroup_encrypted_shareWithMany(parameters, resultCallback)
+    "inGroup.encrypted.initializeConfidentialSecretId" -> inGroup_encrypted_initializeConfidentialSecretId(parameters, resultCallback)
+    "inGroup.encrypted.filterPatientsBy" -> inGroup_encrypted_filterPatientsBy(parameters, resultCallback)
+    "inGroup.encrypted.filterPatientsBySorted" -> inGroup_encrypted_filterPatientsBySorted(parameters, resultCallback)
+    "inGroup.encrypted.createPatient" -> inGroup_encrypted_createPatient(parameters, resultCallback)
+    "inGroup.encrypted.createPatientsMinimal" -> inGroup_encrypted_createPatientsMinimal(parameters, resultCallback)
+    "inGroup.encrypted.createPatients" -> inGroup_encrypted_createPatients(parameters, resultCallback)
+    "inGroup.encrypted.getPatient" -> inGroup_encrypted_getPatient(parameters, resultCallback)
+    "inGroup.encrypted.getPatientResolvingMerges" -> inGroup_encrypted_getPatientResolvingMerges(parameters, resultCallback)
+    "inGroup.encrypted.getPatients" -> inGroup_encrypted_getPatients(parameters, resultCallback)
+    "inGroup.encrypted.modifyPatientsMinimal" -> inGroup_encrypted_modifyPatientsMinimal(parameters, resultCallback)
+    "inGroup.encrypted.modifyPatients" -> inGroup_encrypted_modifyPatients(parameters, resultCallback)
+    "inGroup.tryAndRecover.shareWith" -> inGroup_tryAndRecover_shareWith(parameters, resultCallback)
+    "inGroup.tryAndRecover.shareWithMany" -> inGroup_tryAndRecover_shareWithMany(parameters, resultCallback)
+    "inGroup.tryAndRecover.initializeConfidentialSecretId" -> inGroup_tryAndRecover_initializeConfidentialSecretId(parameters, resultCallback)
+    "inGroup.tryAndRecover.filterPatientsBy" -> inGroup_tryAndRecover_filterPatientsBy(parameters, resultCallback)
+    "inGroup.tryAndRecover.filterPatientsBySorted" -> inGroup_tryAndRecover_filterPatientsBySorted(parameters, resultCallback)
+    "inGroup.tryAndRecover.createPatient" -> inGroup_tryAndRecover_createPatient(parameters, resultCallback)
+    "inGroup.tryAndRecover.createPatientsMinimal" -> inGroup_tryAndRecover_createPatientsMinimal(parameters, resultCallback)
+    "inGroup.tryAndRecover.createPatients" -> inGroup_tryAndRecover_createPatients(parameters, resultCallback)
+    "inGroup.tryAndRecover.getPatient" -> inGroup_tryAndRecover_getPatient(parameters, resultCallback)
+    "inGroup.tryAndRecover.getPatientResolvingMerges" -> inGroup_tryAndRecover_getPatientResolvingMerges(parameters, resultCallback)
+    "inGroup.tryAndRecover.getPatients" -> inGroup_tryAndRecover_getPatients(parameters, resultCallback)
+    "inGroup.tryAndRecover.modifyPatientsMinimal" -> inGroup_tryAndRecover_modifyPatientsMinimal(parameters, resultCallback)
+    "inGroup.tryAndRecover.modifyPatients" -> inGroup_tryAndRecover_modifyPatients(parameters, resultCallback)
     else -> null
   }?.let { true } ?: false
+
+  private fun decrypt(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    PatientApi.decrypt(
+      resultCallback,
+      parameters.getValue("sdkId"),
+      parameters.getValue("patients"),
+    )
+  }
+
+  private fun tryDecrypt(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    PatientApi.tryDecrypt(
+      resultCallback,
+      parameters.getValue("sdkId"),
+      parameters.getValue("patients"),
+    )
+  }
+
+  private fun encryptOrValidate(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    PatientApi.encryptOrValidate(
+      resultCallback,
+      parameters.getValue("sdkId"),
+      parameters.getValue("patients"),
+    )
+  }
 
   private fun getSecretIdsOf(parameters: Map<String, String>, resultCallback: (
     String?,
@@ -106,19 +206,6 @@ public object PatientApiDispatcher {
     String?,
   ) -> Unit) {
     PatientApi.getEncryptionKeysOf(
-      resultCallback,
-      parameters.getValue("sdkId"),
-      parameters.getValue("patient"),
-    )
-  }
-
-  private fun createPatient(parameters: Map<String, String>, resultCallback: (
-    String?,
-    String?,
-    String?,
-    String?,
-  ) -> Unit) {
-    PatientApi.createPatient(
       resultCallback,
       parameters.getValue("sdkId"),
       parameters.getValue("patient"),
@@ -165,45 +252,6 @@ public object PatientApiDispatcher {
       parameters.getValue("sdkId"),
       parameters.getValue("entity"),
       parameters.getValue("delegates"),
-    )
-  }
-
-  private fun decrypt(parameters: Map<String, String>, resultCallback: (
-    String?,
-    String?,
-    String?,
-    String?,
-  ) -> Unit) {
-    PatientApi.decrypt(
-      resultCallback,
-      parameters.getValue("sdkId"),
-      parameters.getValue("patient"),
-    )
-  }
-
-  private fun tryDecrypt(parameters: Map<String, String>, resultCallback: (
-    String?,
-    String?,
-    String?,
-    String?,
-  ) -> Unit) {
-    PatientApi.tryDecrypt(
-      resultCallback,
-      parameters.getValue("sdkId"),
-      parameters.getValue("patient"),
-    )
-  }
-
-  private fun createPatients(parameters: Map<String, String>, resultCallback: (
-    String?,
-    String?,
-    String?,
-    String?,
-  ) -> Unit) {
-    PatientApi.createPatients(
-      resultCallback,
-      parameters.getValue("sdkId"),
-      parameters.getValue("patientDtos"),
     )
   }
 
@@ -449,6 +497,45 @@ public object PatientApiDispatcher {
     )
   }
 
+  private fun createPatient(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    PatientApi.createPatient(
+      resultCallback,
+      parameters.getValue("sdkId"),
+      parameters.getValue("patient"),
+    )
+  }
+
+  private fun createPatientsMinimal(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    PatientApi.createPatientsMinimal(
+      resultCallback,
+      parameters.getValue("sdkId"),
+      parameters.getValue("patients"),
+    )
+  }
+
+  private fun createPatients(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    PatientApi.createPatients(
+      resultCallback,
+      parameters.getValue("sdkId"),
+      parameters.getValue("patients"),
+    )
+  }
+
   private fun undeletePatient(parameters: Map<String, String>, resultCallback: (
     String?,
     String?,
@@ -542,6 +629,19 @@ public object PatientApiDispatcher {
     )
   }
 
+  private fun modifyPatientsMinimal(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    PatientApi.modifyPatientsMinimal(
+      resultCallback,
+      parameters.getValue("sdkId"),
+      parameters.getValue("patients"),
+    )
+  }
+
   private fun modifyPatients(parameters: Map<String, String>, resultCallback: (
     String?,
     String?,
@@ -551,7 +651,7 @@ public object PatientApiDispatcher {
     PatientApi.modifyPatients(
       resultCallback,
       parameters.getValue("sdkId"),
-      parameters.getValue("patientDtos"),
+      parameters.getValue("patients"),
     )
   }
 
@@ -653,6 +753,45 @@ public object PatientApiDispatcher {
     )
   }
 
+  private fun encrypted_createPatient(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    PatientApi.encrypted.createPatient(
+      resultCallback,
+      parameters.getValue("sdkId"),
+      parameters.getValue("patient"),
+    )
+  }
+
+  private fun encrypted_createPatientsMinimal(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    PatientApi.encrypted.createPatientsMinimal(
+      resultCallback,
+      parameters.getValue("sdkId"),
+      parameters.getValue("patients"),
+    )
+  }
+
+  private fun encrypted_createPatients(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    PatientApi.encrypted.createPatients(
+      resultCallback,
+      parameters.getValue("sdkId"),
+      parameters.getValue("patients"),
+    )
+  }
+
   private fun encrypted_undeletePatient(parameters: Map<String, String>, resultCallback: (
     String?,
     String?,
@@ -746,6 +885,19 @@ public object PatientApiDispatcher {
     )
   }
 
+  private fun encrypted_modifyPatientsMinimal(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    PatientApi.encrypted.modifyPatientsMinimal(
+      resultCallback,
+      parameters.getValue("sdkId"),
+      parameters.getValue("patients"),
+    )
+  }
+
   private fun encrypted_modifyPatients(parameters: Map<String, String>, resultCallback: (
     String?,
     String?,
@@ -755,7 +907,7 @@ public object PatientApiDispatcher {
     PatientApi.encrypted.modifyPatients(
       resultCallback,
       parameters.getValue("sdkId"),
-      parameters.getValue("patientDtos"),
+      parameters.getValue("patients"),
     )
   }
 
@@ -840,6 +992,45 @@ public object PatientApiDispatcher {
       resultCallback,
       parameters.getValue("sdkId"),
       parameters.getValue("filter"),
+    )
+  }
+
+  private fun tryAndRecover_createPatient(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    PatientApi.tryAndRecover.createPatient(
+      resultCallback,
+      parameters.getValue("sdkId"),
+      parameters.getValue("patient"),
+    )
+  }
+
+  private fun tryAndRecover_createPatientsMinimal(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    PatientApi.tryAndRecover.createPatientsMinimal(
+      resultCallback,
+      parameters.getValue("sdkId"),
+      parameters.getValue("patients"),
+    )
+  }
+
+  private fun tryAndRecover_createPatients(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    PatientApi.tryAndRecover.createPatients(
+      resultCallback,
+      parameters.getValue("sdkId"),
+      parameters.getValue("patients"),
     )
   }
 
@@ -937,6 +1128,19 @@ public object PatientApiDispatcher {
     )
   }
 
+  private fun tryAndRecover_modifyPatientsMinimal(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    PatientApi.tryAndRecover.modifyPatientsMinimal(
+      resultCallback,
+      parameters.getValue("sdkId"),
+      parameters.getValue("patients"),
+    )
+  }
+
   private fun tryAndRecover_modifyPatients(parameters: Map<String, String>, resultCallback: (
     String?,
     String?,
@@ -946,7 +1150,7 @@ public object PatientApiDispatcher {
     PatientApi.tryAndRecover.modifyPatients(
       resultCallback,
       parameters.getValue("sdkId"),
-      parameters.getValue("patientDtos"),
+      parameters.getValue("patients"),
     )
   }
 
@@ -961,6 +1165,704 @@ public object PatientApiDispatcher {
       parameters.getValue("sdkId"),
       parameters.getValue("from"),
       parameters.getValue("mergedInto"),
+    )
+  }
+
+  private fun inGroup_decrypt(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    PatientApi.inGroup.decrypt(
+      resultCallback,
+      parameters.getValue("sdkId"),
+      parameters.getValue("patients"),
+    )
+  }
+
+  private fun inGroup_tryDecrypt(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    PatientApi.inGroup.tryDecrypt(
+      resultCallback,
+      parameters.getValue("sdkId"),
+      parameters.getValue("patients"),
+    )
+  }
+
+  private fun inGroup_encryptOrValidate(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    PatientApi.inGroup.encryptOrValidate(
+      resultCallback,
+      parameters.getValue("sdkId"),
+      parameters.getValue("patients"),
+    )
+  }
+
+  private fun inGroup_getSecretIdsOf(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    PatientApi.inGroup.getSecretIdsOf(
+      resultCallback,
+      parameters.getValue("sdkId"),
+      parameters.getValue("patient"),
+    )
+  }
+
+  private fun inGroup_getEncryptionKeysOf(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    PatientApi.inGroup.getEncryptionKeysOf(
+      resultCallback,
+      parameters.getValue("sdkId"),
+      parameters.getValue("patient"),
+    )
+  }
+
+  private fun inGroup_withEncryptionMetadata(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    PatientApi.inGroup.withEncryptionMetadata(
+      resultCallback,
+      parameters.getValue("sdkId"),
+      parameters.getValue("entityGroupId"),
+      parameters.getValue("base"),
+      parameters.getValue("user"),
+      parameters.getValue("delegates"),
+    )
+  }
+
+  private fun inGroup_hasWriteAccess(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    PatientApi.inGroup.hasWriteAccess(
+      resultCallback,
+      parameters.getValue("sdkId"),
+      parameters.getValue("patient"),
+    )
+  }
+
+  private fun inGroup_createDelegationDeAnonymizationMetadata(parameters: Map<String, String>,
+      resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    PatientApi.inGroup.createDelegationDeAnonymizationMetadata(
+      resultCallback,
+      parameters.getValue("sdkId"),
+      parameters.getValue("entity"),
+      parameters.getValue("delegates"),
+    )
+  }
+
+  private fun inGroup_matchPatientsBy(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    PatientApi.inGroup.matchPatientsBy(
+      resultCallback,
+      parameters.getValue("sdkId"),
+      parameters.getValue("groupId"),
+      parameters.getValue("filter"),
+    )
+  }
+
+  private fun inGroup_matchPatientsBySorted(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    PatientApi.inGroup.matchPatientsBySorted(
+      resultCallback,
+      parameters.getValue("sdkId"),
+      parameters.getValue("groupId"),
+      parameters.getValue("filter"),
+    )
+  }
+
+  private fun inGroup_getDataOwnersWithAccessTo(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    PatientApi.inGroup.getDataOwnersWithAccessTo(
+      resultCallback,
+      parameters.getValue("sdkId"),
+      parameters.getValue("patient"),
+    )
+  }
+
+  private fun inGroup_shareWith(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    PatientApi.inGroup.shareWith(
+      resultCallback,
+      parameters.getValue("sdkId"),
+      parameters.getValue("delegate"),
+      parameters.getValue("patient"),
+      parameters.getValue("options"),
+    )
+  }
+
+  private fun inGroup_shareWithMany(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    PatientApi.inGroup.shareWithMany(
+      resultCallback,
+      parameters.getValue("sdkId"),
+      parameters.getValue("patient"),
+      parameters.getValue("delegates"),
+    )
+  }
+
+  private fun inGroup_initializeConfidentialSecretId(parameters: Map<String, String>,
+      resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    PatientApi.inGroup.initializeConfidentialSecretId(
+      resultCallback,
+      parameters.getValue("sdkId"),
+      parameters.getValue("patient"),
+    )
+  }
+
+  private fun inGroup_filterPatientsBy(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    PatientApi.inGroup.filterPatientsBy(
+      resultCallback,
+      parameters.getValue("sdkId"),
+      parameters.getValue("groupId"),
+      parameters.getValue("filter"),
+    )
+  }
+
+  private fun inGroup_filterPatientsBySorted(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    PatientApi.inGroup.filterPatientsBySorted(
+      resultCallback,
+      parameters.getValue("sdkId"),
+      parameters.getValue("groupId"),
+      parameters.getValue("filter"),
+    )
+  }
+
+  private fun inGroup_createPatient(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    PatientApi.inGroup.createPatient(
+      resultCallback,
+      parameters.getValue("sdkId"),
+      parameters.getValue("patient"),
+    )
+  }
+
+  private fun inGroup_createPatientsMinimal(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    PatientApi.inGroup.createPatientsMinimal(
+      resultCallback,
+      parameters.getValue("sdkId"),
+      parameters.getValue("patients"),
+    )
+  }
+
+  private fun inGroup_createPatients(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    PatientApi.inGroup.createPatients(
+      resultCallback,
+      parameters.getValue("sdkId"),
+      parameters.getValue("patients"),
+    )
+  }
+
+  private fun inGroup_getPatient(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    PatientApi.inGroup.getPatient(
+      resultCallback,
+      parameters.getValue("sdkId"),
+      parameters.getValue("groupId"),
+      parameters.getValue("entityId"),
+    )
+  }
+
+  private fun inGroup_getPatientResolvingMerges(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    PatientApi.inGroup.getPatientResolvingMerges(
+      resultCallback,
+      parameters.getValue("sdkId"),
+      parameters.getValue("groupId"),
+      parameters.getValue("patientId"),
+      parameters.getValue("maxMergeDepth"),
+    )
+  }
+
+  private fun inGroup_getPatients(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    PatientApi.inGroup.getPatients(
+      resultCallback,
+      parameters.getValue("sdkId"),
+      parameters.getValue("groupId"),
+      parameters.getValue("patientIds"),
+    )
+  }
+
+  private fun inGroup_modifyPatientsMinimal(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    PatientApi.inGroup.modifyPatientsMinimal(
+      resultCallback,
+      parameters.getValue("sdkId"),
+      parameters.getValue("patients"),
+    )
+  }
+
+  private fun inGroup_modifyPatients(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    PatientApi.inGroup.modifyPatients(
+      resultCallback,
+      parameters.getValue("sdkId"),
+      parameters.getValue("patients"),
+    )
+  }
+
+  private fun inGroup_encrypted_shareWith(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    PatientApi.inGroup.encrypted.shareWith(
+      resultCallback,
+      parameters.getValue("sdkId"),
+      parameters.getValue("delegate"),
+      parameters.getValue("patient"),
+      parameters.getValue("options"),
+    )
+  }
+
+  private fun inGroup_encrypted_shareWithMany(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    PatientApi.inGroup.encrypted.shareWithMany(
+      resultCallback,
+      parameters.getValue("sdkId"),
+      parameters.getValue("patient"),
+      parameters.getValue("delegates"),
+    )
+  }
+
+  private fun inGroup_encrypted_initializeConfidentialSecretId(parameters: Map<String, String>,
+      resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    PatientApi.inGroup.encrypted.initializeConfidentialSecretId(
+      resultCallback,
+      parameters.getValue("sdkId"),
+      parameters.getValue("patient"),
+    )
+  }
+
+  private fun inGroup_encrypted_filterPatientsBy(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    PatientApi.inGroup.encrypted.filterPatientsBy(
+      resultCallback,
+      parameters.getValue("sdkId"),
+      parameters.getValue("groupId"),
+      parameters.getValue("filter"),
+    )
+  }
+
+  private fun inGroup_encrypted_filterPatientsBySorted(parameters: Map<String, String>,
+      resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    PatientApi.inGroup.encrypted.filterPatientsBySorted(
+      resultCallback,
+      parameters.getValue("sdkId"),
+      parameters.getValue("groupId"),
+      parameters.getValue("filter"),
+    )
+  }
+
+  private fun inGroup_encrypted_createPatient(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    PatientApi.inGroup.encrypted.createPatient(
+      resultCallback,
+      parameters.getValue("sdkId"),
+      parameters.getValue("patient"),
+    )
+  }
+
+  private fun inGroup_encrypted_createPatientsMinimal(parameters: Map<String, String>,
+      resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    PatientApi.inGroup.encrypted.createPatientsMinimal(
+      resultCallback,
+      parameters.getValue("sdkId"),
+      parameters.getValue("patients"),
+    )
+  }
+
+  private fun inGroup_encrypted_createPatients(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    PatientApi.inGroup.encrypted.createPatients(
+      resultCallback,
+      parameters.getValue("sdkId"),
+      parameters.getValue("patients"),
+    )
+  }
+
+  private fun inGroup_encrypted_getPatient(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    PatientApi.inGroup.encrypted.getPatient(
+      resultCallback,
+      parameters.getValue("sdkId"),
+      parameters.getValue("groupId"),
+      parameters.getValue("entityId"),
+    )
+  }
+
+  private fun inGroup_encrypted_getPatientResolvingMerges(parameters: Map<String, String>,
+      resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    PatientApi.inGroup.encrypted.getPatientResolvingMerges(
+      resultCallback,
+      parameters.getValue("sdkId"),
+      parameters.getValue("groupId"),
+      parameters.getValue("patientId"),
+      parameters.getValue("maxMergeDepth"),
+    )
+  }
+
+  private fun inGroup_encrypted_getPatients(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    PatientApi.inGroup.encrypted.getPatients(
+      resultCallback,
+      parameters.getValue("sdkId"),
+      parameters.getValue("groupId"),
+      parameters.getValue("patientIds"),
+    )
+  }
+
+  private fun inGroup_encrypted_modifyPatientsMinimal(parameters: Map<String, String>,
+      resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    PatientApi.inGroup.encrypted.modifyPatientsMinimal(
+      resultCallback,
+      parameters.getValue("sdkId"),
+      parameters.getValue("patients"),
+    )
+  }
+
+  private fun inGroup_encrypted_modifyPatients(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    PatientApi.inGroup.encrypted.modifyPatients(
+      resultCallback,
+      parameters.getValue("sdkId"),
+      parameters.getValue("patients"),
+    )
+  }
+
+  private fun inGroup_tryAndRecover_shareWith(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    PatientApi.inGroup.tryAndRecover.shareWith(
+      resultCallback,
+      parameters.getValue("sdkId"),
+      parameters.getValue("delegate"),
+      parameters.getValue("patient"),
+      parameters.getValue("options"),
+    )
+  }
+
+  private fun inGroup_tryAndRecover_shareWithMany(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    PatientApi.inGroup.tryAndRecover.shareWithMany(
+      resultCallback,
+      parameters.getValue("sdkId"),
+      parameters.getValue("patient"),
+      parameters.getValue("delegates"),
+    )
+  }
+
+  private fun inGroup_tryAndRecover_initializeConfidentialSecretId(parameters: Map<String, String>,
+      resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    PatientApi.inGroup.tryAndRecover.initializeConfidentialSecretId(
+      resultCallback,
+      parameters.getValue("sdkId"),
+      parameters.getValue("patient"),
+    )
+  }
+
+  private fun inGroup_tryAndRecover_filterPatientsBy(parameters: Map<String, String>,
+      resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    PatientApi.inGroup.tryAndRecover.filterPatientsBy(
+      resultCallback,
+      parameters.getValue("sdkId"),
+      parameters.getValue("groupId"),
+      parameters.getValue("filter"),
+    )
+  }
+
+  private fun inGroup_tryAndRecover_filterPatientsBySorted(parameters: Map<String, String>,
+      resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    PatientApi.inGroup.tryAndRecover.filterPatientsBySorted(
+      resultCallback,
+      parameters.getValue("sdkId"),
+      parameters.getValue("groupId"),
+      parameters.getValue("filter"),
+    )
+  }
+
+  private fun inGroup_tryAndRecover_createPatient(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    PatientApi.inGroup.tryAndRecover.createPatient(
+      resultCallback,
+      parameters.getValue("sdkId"),
+      parameters.getValue("patient"),
+    )
+  }
+
+  private fun inGroup_tryAndRecover_createPatientsMinimal(parameters: Map<String, String>,
+      resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    PatientApi.inGroup.tryAndRecover.createPatientsMinimal(
+      resultCallback,
+      parameters.getValue("sdkId"),
+      parameters.getValue("patients"),
+    )
+  }
+
+  private fun inGroup_tryAndRecover_createPatients(parameters: Map<String, String>,
+      resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    PatientApi.inGroup.tryAndRecover.createPatients(
+      resultCallback,
+      parameters.getValue("sdkId"),
+      parameters.getValue("patients"),
+    )
+  }
+
+  private fun inGroup_tryAndRecover_getPatient(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    PatientApi.inGroup.tryAndRecover.getPatient(
+      resultCallback,
+      parameters.getValue("sdkId"),
+      parameters.getValue("groupId"),
+      parameters.getValue("entityId"),
+    )
+  }
+
+  private fun inGroup_tryAndRecover_getPatientResolvingMerges(parameters: Map<String, String>,
+      resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    PatientApi.inGroup.tryAndRecover.getPatientResolvingMerges(
+      resultCallback,
+      parameters.getValue("sdkId"),
+      parameters.getValue("groupId"),
+      parameters.getValue("patientId"),
+      parameters.getValue("maxMergeDepth"),
+    )
+  }
+
+  private fun inGroup_tryAndRecover_getPatients(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    PatientApi.inGroup.tryAndRecover.getPatients(
+      resultCallback,
+      parameters.getValue("sdkId"),
+      parameters.getValue("groupId"),
+      parameters.getValue("patientIds"),
+    )
+  }
+
+  private fun inGroup_tryAndRecover_modifyPatientsMinimal(parameters: Map<String, String>,
+      resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    PatientApi.inGroup.tryAndRecover.modifyPatientsMinimal(
+      resultCallback,
+      parameters.getValue("sdkId"),
+      parameters.getValue("patients"),
+    )
+  }
+
+  private fun inGroup_tryAndRecover_modifyPatients(parameters: Map<String, String>,
+      resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    PatientApi.inGroup.tryAndRecover.modifyPatients(
+      resultCallback,
+      parameters.getValue("sdkId"),
+      parameters.getValue("patients"),
     )
   }
 }

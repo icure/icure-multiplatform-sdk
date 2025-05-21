@@ -1,16 +1,16 @@
 // auto-generated file
 import 'package:flutter/services.dart';
 import 'package:cardinal_sdk/model/topic.dart';
-import 'dart:convert';
-import 'package:cardinal_sdk/utils/internal/platform_exception_convertion.dart';
 import 'package:cardinal_sdk/model/patient.dart';
 import 'package:cardinal_sdk/model/user.dart';
 import 'package:cardinal_sdk/model/embed/access_level.dart';
 import 'package:cardinal_sdk/crypto/entities/secret_id_use_option.dart';
+import 'dart:convert';
+import 'package:cardinal_sdk/utils/internal/platform_exception_convertion.dart';
 import 'package:cardinal_sdk/model/specializations/hex_string.dart';
 import 'package:cardinal_sdk/filters/filter_options.dart';
 import 'package:cardinal_sdk/model/couchdb/doc_identifier.dart';
-import 'package:cardinal_sdk/model/id_with_mandatory_rev.dart';
+import 'package:cardinal_sdk/model/stored_document_identifier.dart';
 import 'package:cardinal_sdk/crypto/entities/topic_share_options.dart';
 import 'package:cardinal_sdk/utils/pagination/paginated_list_iterator.dart';
 import 'package:cardinal_sdk/model/topic_role.dart';
@@ -21,25 +21,12 @@ import 'package:cardinal_sdk/subscription/entity_subscription.dart';
 
 class TopicPlatformApi {
 	MethodChannel _methodChannel;
-	TryAndRecoverTopicPlatformApi tryAndRecover;
-	EncryptedTopicPlatformApi encrypted;
+	TopicEncryptedPlatformApi encrypted;
+	TopicTryAndRecoverPlatformApi tryAndRecover;
 	TopicPlatformApi(
 		this._methodChannel
-		) : tryAndRecover = TryAndRecoverTopicPlatformApi(_methodChannel),
-		encrypted = EncryptedTopicPlatformApi(_methodChannel);
-
-	Future<DecryptedTopic> createTopic(String sdkId, DecryptedTopic entity) async {
-		final res = await _methodChannel.invokeMethod<String>(
-			'TopicApi.createTopic',
-			{
-				"sdkId": sdkId,
-				"entity": jsonEncode(DecryptedTopic.encode(entity)),
-			}
-		).catchError(convertPlatformException);
-		if (res == null) throw AssertionError("received null result from platform method createTopic");
-		final parsedResJson = jsonDecode(res);
-		return DecryptedTopic.fromJSON(parsedResJson);
-	}
+		) : encrypted = TopicEncryptedPlatformApi(_methodChannel),
+		tryAndRecover = TopicTryAndRecoverPlatformApi(_methodChannel);
 
 	Future<DecryptedTopic> withEncryptionMetadata(String sdkId, DecryptedTopic? base, Patient? patient, User? user, Map<String, AccessLevel> delegates, SecretIdUseOption secretId) async {
 		final res = await _methodChannel.invokeMethod<String>(
@@ -174,12 +161,12 @@ class TopicPlatformApi {
 		return DocIdentifier.fromJSON(parsedResJson);
 	}
 
-	Future<List<DocIdentifier>> deleteTopicsByIds(String sdkId, List<IdWithMandatoryRev> entityIds) async {
+	Future<List<DocIdentifier>> deleteTopicsByIds(String sdkId, List<StoredDocumentIdentifier> entityIds) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'TopicApi.deleteTopicsByIds',
 			{
 				"sdkId": sdkId,
-				"entityIds": jsonEncode(entityIds.map((x0) => IdWithMandatoryRev.encode(x0)).toList()),
+				"entityIds": jsonEncode(entityIds.map((x0) => StoredDocumentIdentifier.encode(x0)).toList()),
 			}
 		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method deleteTopicsByIds");
@@ -289,6 +276,19 @@ class TopicPlatformApi {
 		return PaginatedListIterator(parsedResJson, (x0) => DecryptedTopic.fromJSON(x0));
 	}
 
+	Future<DecryptedTopic> createTopic(String sdkId, DecryptedTopic entity) async {
+		final res = await _methodChannel.invokeMethod<String>(
+			'TopicApi.createTopic',
+			{
+				"sdkId": sdkId,
+				"entity": jsonEncode(DecryptedTopic.encode(entity)),
+			}
+		).catchError(convertPlatformException);
+		if (res == null) throw AssertionError("received null result from platform method createTopic");
+		final parsedResJson = jsonDecode(res);
+		return DecryptedTopic.fromJSON(parsedResJson);
+	}
+
 	Future<Topic> undeleteTopic(String sdkId, Topic topic) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'TopicApi.undeleteTopic',
@@ -329,7 +329,7 @@ class TopicPlatformApi {
 		return DecryptedTopic.fromJSON(parsedResJson);
 	}
 
-	Future<DecryptedTopic> getTopic(String sdkId, String entityId) async {
+	Future<DecryptedTopic?> getTopic(String sdkId, String entityId) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'TopicApi.getTopic',
 			{
@@ -339,7 +339,7 @@ class TopicPlatformApi {
 		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getTopic");
 		final parsedResJson = jsonDecode(res);
-		return DecryptedTopic.fromJSON(parsedResJson);
+		return parsedResJson == null ? null : DecryptedTopic.fromJSON(parsedResJson);
 	}
 
 	Future<List<DecryptedTopic>> getTopics(String sdkId, List<String> entityIds) async {
@@ -400,9 +400,9 @@ class TopicPlatformApi {
 	}
 }
 
-class TryAndRecoverTopicPlatformApi {
+class TopicTryAndRecoverPlatformApi {
 	MethodChannel _methodChannel;
-	TryAndRecoverTopicPlatformApi(this._methodChannel);
+	TopicTryAndRecoverPlatformApi(this._methodChannel);
 
 	Future<Topic> shareWith(String sdkId, String delegateId, Topic topic, TopicShareOptions? options) async {
 		final res = await _methodChannel.invokeMethod<String>(
@@ -459,6 +459,19 @@ class TryAndRecoverTopicPlatformApi {
 		return PaginatedListIterator(parsedResJson, (x0) => Topic.fromJSON(x0));
 	}
 
+	Future<Topic> createTopic(String sdkId, Topic entity) async {
+		final res = await _methodChannel.invokeMethod<String>(
+			'TopicApi.tryAndRecover.createTopic',
+			{
+				"sdkId": sdkId,
+				"entity": jsonEncode(Topic.encode(entity)),
+			}
+		).catchError(convertPlatformException);
+		if (res == null) throw AssertionError("received null result from platform method createTopic");
+		final parsedResJson = jsonDecode(res);
+		return Topic.fromJSON(parsedResJson);
+	}
+
 	Future<Topic> undeleteTopic(String sdkId, Topic topic) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'TopicApi.tryAndRecover.undeleteTopic',
@@ -499,7 +512,7 @@ class TryAndRecoverTopicPlatformApi {
 		return Topic.fromJSON(parsedResJson);
 	}
 
-	Future<Topic> getTopic(String sdkId, String entityId) async {
+	Future<Topic?> getTopic(String sdkId, String entityId) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'TopicApi.tryAndRecover.getTopic',
 			{
@@ -509,7 +522,7 @@ class TryAndRecoverTopicPlatformApi {
 		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getTopic");
 		final parsedResJson = jsonDecode(res);
-		return Topic.fromJSON(parsedResJson);
+		return parsedResJson == null ? null : Topic.fromJSON(parsedResJson);
 	}
 
 	Future<List<Topic>> getTopics(String sdkId, List<String> entityIds) async {
@@ -555,9 +568,9 @@ class TryAndRecoverTopicPlatformApi {
 	}
 }
 
-class EncryptedTopicPlatformApi {
+class TopicEncryptedPlatformApi {
 	MethodChannel _methodChannel;
-	EncryptedTopicPlatformApi(this._methodChannel);
+	TopicEncryptedPlatformApi(this._methodChannel);
 
 	Future<EncryptedTopic> shareWith(String sdkId, String delegateId, EncryptedTopic topic, TopicShareOptions? options) async {
 		final res = await _methodChannel.invokeMethod<String>(
@@ -614,6 +627,19 @@ class EncryptedTopicPlatformApi {
 		return PaginatedListIterator(parsedResJson, (x0) => EncryptedTopic.fromJSON(x0));
 	}
 
+	Future<EncryptedTopic> createTopic(String sdkId, EncryptedTopic entity) async {
+		final res = await _methodChannel.invokeMethod<String>(
+			'TopicApi.encrypted.createTopic',
+			{
+				"sdkId": sdkId,
+				"entity": jsonEncode(EncryptedTopic.encode(entity)),
+			}
+		).catchError(convertPlatformException);
+		if (res == null) throw AssertionError("received null result from platform method createTopic");
+		final parsedResJson = jsonDecode(res);
+		return EncryptedTopic.fromJSON(parsedResJson);
+	}
+
 	Future<Topic> undeleteTopic(String sdkId, Topic topic) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'TopicApi.encrypted.undeleteTopic',
@@ -654,7 +680,7 @@ class EncryptedTopicPlatformApi {
 		return EncryptedTopic.fromJSON(parsedResJson);
 	}
 
-	Future<EncryptedTopic> getTopic(String sdkId, String entityId) async {
+	Future<EncryptedTopic?> getTopic(String sdkId, String entityId) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'TopicApi.encrypted.getTopic',
 			{
@@ -664,7 +690,7 @@ class EncryptedTopicPlatformApi {
 		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getTopic");
 		final parsedResJson = jsonDecode(res);
-		return EncryptedTopic.fromJSON(parsedResJson);
+		return parsedResJson == null ? null : EncryptedTopic.fromJSON(parsedResJson);
 	}
 
 	Future<List<EncryptedTopic>> getTopics(String sdkId, List<String> entityIds) async {

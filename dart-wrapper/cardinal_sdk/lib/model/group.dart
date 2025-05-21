@@ -3,60 +3,36 @@ import 'package:cardinal_sdk/model/base/code_stub.dart';
 import 'package:cardinal_sdk/model/property_stub.dart';
 import 'package:cardinal_sdk/model/embed/user_type.dart';
 import 'package:cardinal_sdk/model/security/operation_token.dart';
+import 'package:cardinal_sdk/model/security/external_jwt_config.dart';
 import 'package:cardinal_sdk/model/embed/authentication_class.dart';
 import 'package:cardinal_sdk/model/base/stored_document.dart';
 import 'package:cardinal_sdk/model/base/has_tags.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+part "group.freezed.dart";
 
 
-class Group implements StoredDocument, HasTags {
-	@override String id;
-	@override String? rev = null;
-	@override int? deletionDate = null;
-	@override Set<CodeStub> tags = {};
-	String? name = null;
-	String? password = null;
-	List<String>? servers = null;
-	bool superAdmin = false;
-	Set<DecryptedPropertyStub> properties = {};
-	Map<UserType, Set<String>> defaultUserRoles = {};
-	Map<String, OperationToken> operationTokens = {};
-	Map<String, String> sharedEntities = {};
-	String? minimumKrakenVersion = null;
-	AuthenticationClass minimumAuthenticationClassForElevatedPrivileges;
-	String? superGroup = null;
-	String? applicationId = null;
-	Group(
-		this.id,
-		this.minimumAuthenticationClassForElevatedPrivileges,
-		{
-			String? rev,
-			int? deletionDate,
-			Set<CodeStub>? tags,
-			String? name,
-			String? password,
-			List<String>? servers,
-			bool? superAdmin,
-			Set<DecryptedPropertyStub>? properties,
-			Map<UserType, Set<String>>? defaultUserRoles,
-			Map<String, OperationToken>? operationTokens,
-			Map<String, String>? sharedEntities,
-			String? minimumKrakenVersion,
-			String? superGroup,
-			String? applicationId
-		}) : rev = rev ?? null,
-		deletionDate = deletionDate ?? null,
-		tags = tags ?? {},
-		name = name ?? null,
-		password = password ?? null,
-		servers = servers ?? null,
-		superAdmin = superAdmin ?? false,
-		properties = properties ?? {},
-		defaultUserRoles = defaultUserRoles ?? {},
-		operationTokens = operationTokens ?? {},
-		sharedEntities = sharedEntities ?? {},
-		minimumKrakenVersion = minimumKrakenVersion ?? null,
-		superGroup = superGroup ?? null,
-		applicationId = applicationId ?? null;
+@freezed
+abstract class Group with _$Group implements StoredDocument, HasTags {
+	const factory Group({
+		required String id,
+		@Default(null) String? rev,
+		@Default(null) int? deletionDate,
+		@Default({}) Set<CodeStub> tags,
+		@Default(null) String? name,
+		@Default(null) String? password,
+		@Default(null) List<String>? servers,
+		@Default(false) bool superAdmin,
+		@Default({}) Set<DecryptedPropertyStub> properties,
+		@Default({}) Map<UserType, Set<String>> defaultUserRoles,
+		@Default({}) Map<String, OperationToken> operationTokens,
+		@Default({}) Map<String, String> sharedEntities,
+		@Default(null) String? minimumKrakenVersion,
+		@Default({}) Map<String, ExternalJwtConfig> externalJwtConfig,
+		required AuthenticationClass minimumAuthenticationClassForElevatedPrivileges,
+		@Default(null) String? superGroup,
+		@Default(null) String? applicationId,
+	}) = _Group;
+
 
 	static Map<String, dynamic> encode(Group value) {
 		Map<String, dynamic> entityAsMap = {
@@ -73,6 +49,7 @@ class Group implements StoredDocument, HasTags {
 			"operationTokens" : value.operationTokens.map((k0, v0) => MapEntry(k0, OperationToken.encode(v0))),
 			"sharedEntities" : value.sharedEntities.map((k0, v0) => MapEntry(k0, v0)),
 			"minimumKrakenVersion" : value.minimumKrakenVersion,
+			"externalJwtConfig" : value.externalJwtConfig.map((k0, v0) => MapEntry(k0, ExternalJwtConfig.encode(v0))),
 			"minimumAuthenticationClassForElevatedPrivileges" : AuthenticationClass.encode(value.minimumAuthenticationClassForElevatedPrivileges),
 			"superGroup" : value.superGroup,
 			"applicationId" : value.applicationId
@@ -82,8 +59,8 @@ class Group implements StoredDocument, HasTags {
 
 	static Group fromJSON(Map<String, dynamic> data) {
 		return Group(
-			(data["id"] as String),
-			AuthenticationClass.fromJSON(data["minimumAuthenticationClassForElevatedPrivileges"]),
+			id: (data["id"] as String),
+			minimumAuthenticationClassForElevatedPrivileges: AuthenticationClass.fromJSON(data["minimumAuthenticationClassForElevatedPrivileges"]),
 			rev: (data["rev"] as String?),
 			deletionDate: (data["deletionDate"] as int?),
 			tags: (data["tags"] as List<dynamic>).map((x0) => CodeStub.fromJSON(x0) ).toSet(),
@@ -96,6 +73,7 @@ class Group implements StoredDocument, HasTags {
 			operationTokens: (data["operationTokens"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), OperationToken.fromJSON(v0))),
 			sharedEntities: (data["sharedEntities"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as String))),
 			minimumKrakenVersion: (data["minimumKrakenVersion"] as String?),
+			externalJwtConfig: (data["externalJwtConfig"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), ExternalJwtConfig.fromJSON(v0))),
 			superGroup: (data["superGroup"] as String?),
 			applicationId: (data["applicationId"] as String?),
 		);

@@ -34,6 +34,7 @@ public object DocumentBasicApiDispatcher {
     "setRawSecondaryAttachment" -> setRawSecondaryAttachment(parameters, resultCallback)
     "deleteMainAttachment" -> deleteMainAttachment(parameters, resultCallback)
     "deleteSecondaryAttachment" -> deleteSecondaryAttachment(parameters, resultCallback)
+    "createDocument" -> createDocument(parameters, resultCallback)
     "undeleteDocumentById" -> undeleteDocumentById(parameters, resultCallback)
     "undeleteDocument" -> undeleteDocument(parameters, resultCallback)
     "modifyDocument" -> modifyDocument(parameters, resultCallback)
@@ -263,6 +264,19 @@ public object DocumentBasicApiDispatcher {
       parameters.getValue("documentId"),
       parameters.getValue("key"),
       parameters.getValue("rev"),
+    )
+  }
+
+  private fun createDocument(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    DocumentBasicApi.createDocument(
+      resultCallback,
+      parameters.getValue("sdkId"),
+      parameters.getValue("entity"),
     )
   }
 

@@ -18,7 +18,6 @@ public object DocumentApiDispatcher {
       String?,
     ) -> Unit,
   ): Boolean = when(methodName) {
-    "createDocument" -> createDocument(parameters, resultCallback)
     "withEncryptionMetadata" -> withEncryptionMetadata(parameters, resultCallback)
     "getAndTryDecryptMainAttachment" -> getAndTryDecryptMainAttachment(parameters, resultCallback)
     "getAndDecryptMainAttachment" -> getAndDecryptMainAttachment(parameters, resultCallback)
@@ -50,6 +49,7 @@ public object DocumentApiDispatcher {
     "shareWithMany" -> shareWithMany(parameters, resultCallback)
     "filterDocumentsBy" -> filterDocumentsBy(parameters, resultCallback)
     "filterDocumentsBySorted" -> filterDocumentsBySorted(parameters, resultCallback)
+    "createDocument" -> createDocument(parameters, resultCallback)
     "undeleteDocumentById" -> undeleteDocumentById(parameters, resultCallback)
     "undeleteDocument" -> undeleteDocument(parameters, resultCallback)
     "modifyDocument" -> modifyDocument(parameters, resultCallback)
@@ -60,6 +60,7 @@ public object DocumentApiDispatcher {
     "encrypted.shareWithMany" -> encrypted_shareWithMany(parameters, resultCallback)
     "encrypted.filterDocumentsBy" -> encrypted_filterDocumentsBy(parameters, resultCallback)
     "encrypted.filterDocumentsBySorted" -> encrypted_filterDocumentsBySorted(parameters, resultCallback)
+    "encrypted.createDocument" -> encrypted_createDocument(parameters, resultCallback)
     "encrypted.undeleteDocumentById" -> encrypted_undeleteDocumentById(parameters, resultCallback)
     "encrypted.undeleteDocument" -> encrypted_undeleteDocument(parameters, resultCallback)
     "encrypted.modifyDocument" -> encrypted_modifyDocument(parameters, resultCallback)
@@ -70,6 +71,7 @@ public object DocumentApiDispatcher {
     "tryAndRecover.shareWithMany" -> tryAndRecover_shareWithMany(parameters, resultCallback)
     "tryAndRecover.filterDocumentsBy" -> tryAndRecover_filterDocumentsBy(parameters, resultCallback)
     "tryAndRecover.filterDocumentsBySorted" -> tryAndRecover_filterDocumentsBySorted(parameters, resultCallback)
+    "tryAndRecover.createDocument" -> tryAndRecover_createDocument(parameters, resultCallback)
     "tryAndRecover.undeleteDocumentById" -> tryAndRecover_undeleteDocumentById(parameters, resultCallback)
     "tryAndRecover.undeleteDocument" -> tryAndRecover_undeleteDocument(parameters, resultCallback)
     "tryAndRecover.modifyDocument" -> tryAndRecover_modifyDocument(parameters, resultCallback)
@@ -78,19 +80,6 @@ public object DocumentApiDispatcher {
     "tryAndRecover.modifyDocuments" -> tryAndRecover_modifyDocuments(parameters, resultCallback)
     else -> null
   }?.let { true } ?: false
-
-  private fun createDocument(parameters: Map<String, String>, resultCallback: (
-    String?,
-    String?,
-    String?,
-    String?,
-  ) -> Unit) {
-    DocumentApi.createDocument(
-      resultCallback,
-      parameters.getValue("sdkId"),
-      parameters.getValue("entity"),
-    )
-  }
 
   private fun withEncryptionMetadata(parameters: Map<String, String>, resultCallback: (
     String?,
@@ -530,6 +519,19 @@ public object DocumentApiDispatcher {
     )
   }
 
+  private fun createDocument(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    DocumentApi.createDocument(
+      resultCallback,
+      parameters.getValue("sdkId"),
+      parameters.getValue("entity"),
+    )
+  }
+
   private fun undeleteDocumentById(parameters: Map<String, String>, resultCallback: (
     String?,
     String?,
@@ -661,6 +663,19 @@ public object DocumentApiDispatcher {
       resultCallback,
       parameters.getValue("sdkId"),
       parameters.getValue("filter"),
+    )
+  }
+
+  private fun encrypted_createDocument(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    DocumentApi.encrypted.createDocument(
+      resultCallback,
+      parameters.getValue("sdkId"),
+      parameters.getValue("entity"),
     )
   }
 
@@ -796,6 +811,19 @@ public object DocumentApiDispatcher {
       resultCallback,
       parameters.getValue("sdkId"),
       parameters.getValue("filter"),
+    )
+  }
+
+  private fun tryAndRecover_createDocument(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    DocumentApi.tryAndRecover.createDocument(
+      resultCallback,
+      parameters.getValue("sdkId"),
+      parameters.getValue("entity"),
     )
   }
 

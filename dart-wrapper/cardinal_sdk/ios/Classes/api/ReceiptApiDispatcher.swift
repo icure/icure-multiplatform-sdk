@@ -14,7 +14,6 @@ class ReceiptApiDispatcher {
     ) -> Void
   ) -> Bool {
     switch methodName {
-    case "createReceipt": createReceipt(parameters: parameters, resultCallback: resultCallback)
     case "withEncryptionMetadata": withEncryptionMetadata(parameters: parameters, resultCallback: resultCallback)
     case "getAndDecryptReceiptAttachment": getAndDecryptReceiptAttachment(parameters: parameters, resultCallback: resultCallback)
     case "encryptAndSetReceiptAttachment": encryptAndSetReceiptAttachment(parameters: parameters, resultCallback: resultCallback)
@@ -31,35 +30,25 @@ class ReceiptApiDispatcher {
     case "setRawReceiptAttachment": setRawReceiptAttachment(parameters: parameters, resultCallback: resultCallback)
     case "shareWith": shareWith(parameters: parameters, resultCallback: resultCallback)
     case "shareWithMany": shareWithMany(parameters: parameters, resultCallback: resultCallback)
+    case "createReceipt": createReceipt(parameters: parameters, resultCallback: resultCallback)
     case "modifyReceipt": modifyReceipt(parameters: parameters, resultCallback: resultCallback)
     case "getReceipt": getReceipt(parameters: parameters, resultCallback: resultCallback)
     case "listByReference": listByReference(parameters: parameters, resultCallback: resultCallback)
     case "encrypted.shareWith": encrypted_shareWith(parameters: parameters, resultCallback: resultCallback)
     case "encrypted.shareWithMany": encrypted_shareWithMany(parameters: parameters, resultCallback: resultCallback)
+    case "encrypted.createReceipt": encrypted_createReceipt(parameters: parameters, resultCallback: resultCallback)
     case "encrypted.modifyReceipt": encrypted_modifyReceipt(parameters: parameters, resultCallback: resultCallback)
     case "encrypted.getReceipt": encrypted_getReceipt(parameters: parameters, resultCallback: resultCallback)
     case "encrypted.listByReference": encrypted_listByReference(parameters: parameters, resultCallback: resultCallback)
     case "tryAndRecover.shareWith": tryAndRecover_shareWith(parameters: parameters, resultCallback: resultCallback)
     case "tryAndRecover.shareWithMany": tryAndRecover_shareWithMany(parameters: parameters, resultCallback: resultCallback)
+    case "tryAndRecover.createReceipt": tryAndRecover_createReceipt(parameters: parameters, resultCallback: resultCallback)
     case "tryAndRecover.modifyReceipt": tryAndRecover_modifyReceipt(parameters: parameters, resultCallback: resultCallback)
     case "tryAndRecover.getReceipt": tryAndRecover_getReceipt(parameters: parameters, resultCallback: resultCallback)
     case "tryAndRecover.listByReference": tryAndRecover_listByReference(parameters: parameters, resultCallback: resultCallback)
     default: return false
     }
     return true
-  }
-
-  private static func createReceipt(parameters: [String : String], resultCallback: @escaping (
-    String?,
-    String?,
-    String?,
-    String?
-  ) -> Void) {
-    ReceiptApi.shared.createReceipt(
-    	dartResultCallback: resultCallback,
-    	sdkId: parameters["sdkId"]!,
-    	entityString: parameters["entity"]!
-    )
   }
 
   private static func withEncryptionMetadata(parameters: [String : String], resultCallback: @escaping (
@@ -289,6 +278,19 @@ class ReceiptApiDispatcher {
     )
   }
 
+  private static func createReceipt(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    ReceiptApi.shared.createReceipt(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	entityString: parameters["entity"]!
+    )
+  }
+
   private static func modifyReceipt(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
@@ -357,6 +359,19 @@ class ReceiptApiDispatcher {
     )
   }
 
+  private static func encrypted_createReceipt(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    ReceiptApi.encrypted.shared.createReceipt(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	entityString: parameters["entity"]!
+    )
+  }
+
   private static func encrypted_modifyReceipt(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
@@ -422,6 +437,19 @@ class ReceiptApiDispatcher {
     	sdkId: parameters["sdkId"]!,
     	receiptString: parameters["receipt"]!,
     	delegatesString: parameters["delegates"]!
+    )
+  }
+
+  private static func tryAndRecover_createReceipt(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    ReceiptApi.tryAndRecover.shared.createReceipt(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	entityString: parameters["entity"]!
     )
   }
 

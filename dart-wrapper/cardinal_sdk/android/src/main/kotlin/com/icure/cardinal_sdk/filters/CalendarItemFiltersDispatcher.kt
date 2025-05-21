@@ -19,13 +19,19 @@ public object CalendarItemFiltersDispatcher {
     ) -> Unit,
   ): Boolean = when(methodName) {
     "byPatientsStartTimeForDataOwner" -> byPatientsStartTimeForDataOwner(parameters, resultCallback)
+    "byPatientsStartTimeForDataOwnerInGroup" -> byPatientsStartTimeForDataOwnerInGroup(parameters, resultCallback)
     "byPatientsStartTimeForSelf" -> byPatientsStartTimeForSelf(parameters, resultCallback)
     "byPatientSecretIdsStartTimeForDataOwner" -> byPatientSecretIdsStartTimeForDataOwner(parameters, resultCallback)
+    "byPatientSecretIdsStartTimeForDataOwnerInGroup" -> byPatientSecretIdsStartTimeForDataOwnerInGroup(parameters, resultCallback)
     "byPatientSecretIdsStartTimeForSelf" -> byPatientSecretIdsStartTimeForSelf(parameters, resultCallback)
     "byPeriodAndAgenda" -> byPeriodAndAgenda(parameters, resultCallback)
     "byPeriodForDataOwner" -> byPeriodForDataOwner(parameters, resultCallback)
+    "byPeriodForDataOwnerInGroup" -> byPeriodForDataOwnerInGroup(parameters, resultCallback)
     "byPeriodForSelf" -> byPeriodForSelf(parameters, resultCallback)
     "byRecurrenceId" -> byRecurrenceId(parameters, resultCallback)
+    "lifecycleBetweenForDataOwner" -> lifecycleBetweenForDataOwner(parameters, resultCallback)
+    "lifecycleBetweenForDataOwnerInGroup" -> lifecycleBetweenForDataOwnerInGroup(parameters, resultCallback)
+    "lifecycleBetweenForSelf" -> lifecycleBetweenForSelf(parameters, resultCallback)
     else -> null
   }?.let { true } ?: false
 
@@ -38,6 +44,23 @@ public object CalendarItemFiltersDispatcher {
     CalendarItemFilters.byPatientsStartTimeForDataOwner(
       resultCallback,
       parameters.getValue("dataOwnerId"),
+      parameters.getValue("patients"),
+      parameters.getValue("from"),
+      parameters.getValue("to"),
+      parameters.getValue("descending"),
+    )
+  }
+
+  private fun byPatientsStartTimeForDataOwnerInGroup(parameters: Map<String, String>,
+      resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    CalendarItemFilters.byPatientsStartTimeForDataOwnerInGroup(
+      resultCallback,
+      parameters.getValue("dataOwner"),
       parameters.getValue("patients"),
       parameters.getValue("from"),
       parameters.getValue("to"),
@@ -70,6 +93,23 @@ public object CalendarItemFiltersDispatcher {
     CalendarItemFilters.byPatientSecretIdsStartTimeForDataOwner(
       resultCallback,
       parameters.getValue("dataOwnerId"),
+      parameters.getValue("secretIds"),
+      parameters.getValue("from"),
+      parameters.getValue("to"),
+      parameters.getValue("descending"),
+    )
+  }
+
+  private fun byPatientSecretIdsStartTimeForDataOwnerInGroup(parameters: Map<String, String>,
+      resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    CalendarItemFilters.byPatientSecretIdsStartTimeForDataOwnerInGroup(
+      resultCallback,
+      parameters.getValue("dataOwner"),
       parameters.getValue("secretIds"),
       parameters.getValue("from"),
       parameters.getValue("to"),
@@ -121,6 +161,20 @@ public object CalendarItemFiltersDispatcher {
     )
   }
 
+  private fun byPeriodForDataOwnerInGroup(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    CalendarItemFilters.byPeriodForDataOwnerInGroup(
+      resultCallback,
+      parameters.getValue("dataOwner"),
+      parameters.getValue("from"),
+      parameters.getValue("to"),
+    )
+  }
+
   private fun byPeriodForSelf(parameters: Map<String, String>, resultCallback: (
     String?,
     String?,
@@ -143,6 +197,50 @@ public object CalendarItemFiltersDispatcher {
     CalendarItemFilters.byRecurrenceId(
       resultCallback,
       parameters.getValue("recurrenceId"),
+    )
+  }
+
+  private fun lifecycleBetweenForDataOwner(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    CalendarItemFilters.lifecycleBetweenForDataOwner(
+      resultCallback,
+      parameters.getValue("dataOwnerId"),
+      parameters.getValue("startTimestamp"),
+      parameters.getValue("endTimestamp"),
+      parameters.getValue("descending"),
+    )
+  }
+
+  private fun lifecycleBetweenForDataOwnerInGroup(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    CalendarItemFilters.lifecycleBetweenForDataOwnerInGroup(
+      resultCallback,
+      parameters.getValue("dataOwner"),
+      parameters.getValue("startTimestamp"),
+      parameters.getValue("endTimestamp"),
+      parameters.getValue("descending"),
+    )
+  }
+
+  private fun lifecycleBetweenForSelf(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    CalendarItemFilters.lifecycleBetweenForSelf(
+      resultCallback,
+      parameters.getValue("startTimestamp"),
+      parameters.getValue("endTimestamp"),
+      parameters.getValue("descending"),
     )
   }
 }

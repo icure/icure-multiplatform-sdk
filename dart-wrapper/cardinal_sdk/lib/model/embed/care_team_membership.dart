@@ -3,14 +3,16 @@ import 'package:cardinal_sdk/model/embed/membership_type.dart';
 import 'package:cardinal_sdk/model/specializations/base64string.dart';
 import 'package:cardinal_sdk/model/embed/care_team_membership.dart';
 import 'package:cardinal_sdk/model/embed/encryptable.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+part "care_team_membership.freezed.dart";
 
 
 sealed class CareTeamMembership implements Encryptable {
-	abstract int? startDate;
-	abstract int? endDate;
-	abstract String? careTeamMemberId;
-	abstract MembershipType? membershipType;
-	@override abstract Base64String? encryptedSelf;
+	abstract final int? startDate;
+	abstract final int? endDate;
+	abstract final String? careTeamMemberId;
+	abstract final MembershipType? membershipType;
+	@override abstract final Base64String? encryptedSelf;
 
 	static Map<String, dynamic> encode(CareTeamMembership value) {
 		switch (value) {
@@ -41,23 +43,16 @@ sealed class CareTeamMembership implements Encryptable {
 	}
 }
 
-class DecryptedCareTeamMembership implements CareTeamMembership {
-	@override int? startDate = null;
-	@override int? endDate = null;
-	@override String? careTeamMemberId = null;
-	@override MembershipType? membershipType = null;
-	@override Base64String? encryptedSelf = null;
-	DecryptedCareTeamMembership({
-			int? startDate,
-			int? endDate,
-			String? careTeamMemberId,
-			MembershipType? membershipType,
-			Base64String? encryptedSelf
-		}) : startDate = startDate ?? null,
-		endDate = endDate ?? null,
-		careTeamMemberId = careTeamMemberId ?? null,
-		membershipType = membershipType ?? null,
-		encryptedSelf = encryptedSelf ?? null;
+@freezed
+abstract class DecryptedCareTeamMembership with _$DecryptedCareTeamMembership implements CareTeamMembership {
+	const factory DecryptedCareTeamMembership({
+		@Default(null) int? startDate,
+		@Default(null) int? endDate,
+		@Default(null) String? careTeamMemberId,
+		@Default(null) MembershipType? membershipType,
+		@Default(null) Base64String? encryptedSelf,
+	}) = _DecryptedCareTeamMembership;
+
 
 	static Map<String, dynamic> encode(DecryptedCareTeamMembership value) {
 		Map<String, dynamic> entityAsMap = {
@@ -81,23 +76,16 @@ class DecryptedCareTeamMembership implements CareTeamMembership {
 	}
 }
 
-class EncryptedCareTeamMembership implements CareTeamMembership {
-	@override int? startDate = null;
-	@override int? endDate = null;
-	@override String? careTeamMemberId = null;
-	@override MembershipType? membershipType = null;
-	@override Base64String? encryptedSelf = null;
-	EncryptedCareTeamMembership({
-			int? startDate,
-			int? endDate,
-			String? careTeamMemberId,
-			MembershipType? membershipType,
-			Base64String? encryptedSelf
-		}) : startDate = startDate ?? null,
-		endDate = endDate ?? null,
-		careTeamMemberId = careTeamMemberId ?? null,
-		membershipType = membershipType ?? null,
-		encryptedSelf = encryptedSelf ?? null;
+@freezed
+abstract class EncryptedCareTeamMembership with _$EncryptedCareTeamMembership implements CareTeamMembership {
+	const factory EncryptedCareTeamMembership({
+		@Default(null) int? startDate,
+		@Default(null) int? endDate,
+		@Default(null) String? careTeamMemberId,
+		@Default(null) MembershipType? membershipType,
+		@Default(null) Base64String? encryptedSelf,
+	}) = _EncryptedCareTeamMembership;
+
 
 	static Map<String, dynamic> encode(EncryptedCareTeamMembership value) {
 		Map<String, dynamic> entityAsMap = {

@@ -1,15 +1,16 @@
 // auto-generated file
 import 'package:cardinal_sdk/model/base/code_stub.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+part "periodicity.freezed.dart";
 
 
-class Periodicity {
-	CodeStub? relatedCode = null;
-	CodeStub? relatedPeriodicity = null;
-	Periodicity({
-			CodeStub? relatedCode,
-			CodeStub? relatedPeriodicity
-		}) : relatedCode = relatedCode ?? null,
-		relatedPeriodicity = relatedPeriodicity ?? null;
+@freezed
+abstract class Periodicity with _$Periodicity {
+	const factory Periodicity({
+		@Default(null) CodeStub? relatedCode,
+		@Default(null) CodeStub? relatedPeriodicity,
+	}) = _Periodicity;
+
 
 	static Map<String, dynamic> encode(Periodicity value) {
 		Map<String, dynamic> entityAsMap = {

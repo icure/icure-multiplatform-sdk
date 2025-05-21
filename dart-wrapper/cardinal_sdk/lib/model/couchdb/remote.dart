@@ -1,15 +1,16 @@
 // auto-generated file
 import 'package:cardinal_sdk/model/couchdb/remote_authentication.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+part "remote.freezed.dart";
 
 
-class Remote {
-	String url;
-	RemoteAuthentication? auth = null;
-	Remote(
-		this.url,
-		{
-			RemoteAuthentication? auth
-		}) : auth = auth ?? null;
+@freezed
+abstract class Remote with _$Remote {
+	const factory Remote({
+		required String url,
+		@Default(null) RemoteAuthentication? auth,
+	}) = _Remote;
+
 
 	static Map<String, dynamic> encode(Remote value) {
 		Map<String, dynamic> entityAsMap = {
@@ -21,7 +22,7 @@ class Remote {
 
 	static Remote fromJSON(Map<String, dynamic> data) {
 		return Remote(
-			(data["url"] as String),
+			url: (data["url"] as String),
 			auth: data["auth"] == null ? null : RemoteAuthentication.fromJSON(data["auth"]),
 		);
 	}

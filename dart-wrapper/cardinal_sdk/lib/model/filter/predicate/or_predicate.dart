@@ -1,11 +1,15 @@
 // auto-generated file
 import 'package:cardinal_sdk/model/filter/predicate/predicate.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+part "or_predicate.freezed.dart";
 
 
-class OrPredicate implements Predicate {
-	List<Predicate> predicates = [];
-	OrPredicate({
-			List<Predicate>? predicates}) : predicates = predicates ?? [];
+@freezed
+abstract class OrPredicate with _$OrPredicate implements Predicate {
+	const factory OrPredicate({
+		@Default([]) List<Predicate> predicates,
+	}) = _OrPredicate;
+
 
 	static Map<String, dynamic> encode(OrPredicate value) {
 		Map<String, dynamic> entityAsMap = {

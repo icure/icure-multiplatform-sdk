@@ -17,9 +17,12 @@ class DataOwnerApiDispatcher {
     case "getCurrentDataOwner": getCurrentDataOwner(parameters: parameters, resultCallback: resultCallback)
     case "getCurrentDataOwnerStub": getCurrentDataOwnerStub(parameters: parameters, resultCallback: resultCallback)
     case "getCurrentDataOwnerId": getCurrentDataOwnerId(parameters: parameters, resultCallback: resultCallback)
+    case "getCurrentDataOwnerReference": getCurrentDataOwnerReference(parameters: parameters, resultCallback: resultCallback)
     case "getCurrentDataOwnerHierarchyIds": getCurrentDataOwnerHierarchyIds(parameters: parameters, resultCallback: resultCallback)
+    case "getCurrentDataOwnerHierarchyIdsReference": getCurrentDataOwnerHierarchyIdsReference(parameters: parameters, resultCallback: resultCallback)
     case "getDataOwner": getDataOwner(parameters: parameters, resultCallback: resultCallback)
     case "getCryptoActorStub": getCryptoActorStub(parameters: parameters, resultCallback: resultCallback)
+    case "getCryptoActorStubInGroup": getCryptoActorStubInGroup(parameters: parameters, resultCallback: resultCallback)
     case "getCurrentDataOwnerHierarchyIdsFrom": getCurrentDataOwnerHierarchyIdsFrom(parameters: parameters, resultCallback: resultCallback)
     case "getCurrentDataOwnerHierarchy": getCurrentDataOwnerHierarchy(parameters: parameters, resultCallback: resultCallback)
     case "modifyDataOwnerStub": modifyDataOwnerStub(parameters: parameters, resultCallback: resultCallback)
@@ -66,6 +69,18 @@ class DataOwnerApiDispatcher {
     )
   }
 
+  private static func getCurrentDataOwnerReference(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    DataOwnerApi.shared.getCurrentDataOwnerReference(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!
+    )
+  }
+
   private static func getCurrentDataOwnerHierarchyIds(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
@@ -73,6 +88,18 @@ class DataOwnerApiDispatcher {
     String?
   ) -> Void) {
     DataOwnerApi.shared.getCurrentDataOwnerHierarchyIds(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!
+    )
+  }
+
+  private static func getCurrentDataOwnerHierarchyIdsReference(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    DataOwnerApi.shared.getCurrentDataOwnerHierarchyIdsReference(
     	dartResultCallback: resultCallback,
     	sdkId: parameters["sdkId"]!
     )
@@ -101,6 +128,19 @@ class DataOwnerApiDispatcher {
     	dartResultCallback: resultCallback,
     	sdkId: parameters["sdkId"]!,
     	ownerIdString: parameters["ownerId"]!
+    )
+  }
+
+  private static func getCryptoActorStubInGroup(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    DataOwnerApi.shared.getCryptoActorStubInGroup(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	entityReferenceInGroupString: parameters["entityReferenceInGroup"]!
     )
   }
 

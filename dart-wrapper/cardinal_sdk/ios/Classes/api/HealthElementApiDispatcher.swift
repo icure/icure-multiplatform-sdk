@@ -14,8 +14,6 @@ class HealthElementApiDispatcher {
     ) -> Void
   ) -> Bool {
     switch methodName {
-    case "createHealthElement": createHealthElement(parameters: parameters, resultCallback: resultCallback)
-    case "createHealthElements": createHealthElements(parameters: parameters, resultCallback: resultCallback)
     case "withEncryptionMetadata": withEncryptionMetadata(parameters: parameters, resultCallback: resultCallback)
     case "getEncryptionKeysOf": getEncryptionKeysOf(parameters: parameters, resultCallback: resultCallback)
     case "hasWriteAccess": hasWriteAccess(parameters: parameters, resultCallback: resultCallback)
@@ -23,6 +21,7 @@ class HealthElementApiDispatcher {
     case "createDelegationDeAnonymizationMetadata": createDelegationDeAnonymizationMetadata(parameters: parameters, resultCallback: resultCallback)
     case "decrypt": decrypt(parameters: parameters, resultCallback: resultCallback)
     case "tryDecrypt": tryDecrypt(parameters: parameters, resultCallback: resultCallback)
+    case "encryptOrValidate": encryptOrValidate(parameters: parameters, resultCallback: resultCallback)
     case "matchHealthElementsBy": matchHealthElementsBy(parameters: parameters, resultCallback: resultCallback)
     case "matchHealthElementsBySorted": matchHealthElementsBySorted(parameters: parameters, resultCallback: resultCallback)
     case "deleteHealthElementById": deleteHealthElementById(parameters: parameters, resultCallback: resultCallback)
@@ -35,6 +34,8 @@ class HealthElementApiDispatcher {
     case "shareWithMany": shareWithMany(parameters: parameters, resultCallback: resultCallback)
     case "filterHealthElementsBy": filterHealthElementsBy(parameters: parameters, resultCallback: resultCallback)
     case "filterHealthElementsBySorted": filterHealthElementsBySorted(parameters: parameters, resultCallback: resultCallback)
+    case "createHealthElement": createHealthElement(parameters: parameters, resultCallback: resultCallback)
+    case "createHealthElements": createHealthElements(parameters: parameters, resultCallback: resultCallback)
     case "undeleteHealthElementById": undeleteHealthElementById(parameters: parameters, resultCallback: resultCallback)
     case "undeleteHealthElement": undeleteHealthElement(parameters: parameters, resultCallback: resultCallback)
     case "modifyHealthElement": modifyHealthElement(parameters: parameters, resultCallback: resultCallback)
@@ -46,6 +47,8 @@ class HealthElementApiDispatcher {
     case "encrypted.shareWithMany": encrypted_shareWithMany(parameters: parameters, resultCallback: resultCallback)
     case "encrypted.filterHealthElementsBy": encrypted_filterHealthElementsBy(parameters: parameters, resultCallback: resultCallback)
     case "encrypted.filterHealthElementsBySorted": encrypted_filterHealthElementsBySorted(parameters: parameters, resultCallback: resultCallback)
+    case "encrypted.createHealthElement": encrypted_createHealthElement(parameters: parameters, resultCallback: resultCallback)
+    case "encrypted.createHealthElements": encrypted_createHealthElements(parameters: parameters, resultCallback: resultCallback)
     case "encrypted.undeleteHealthElementById": encrypted_undeleteHealthElementById(parameters: parameters, resultCallback: resultCallback)
     case "encrypted.undeleteHealthElement": encrypted_undeleteHealthElement(parameters: parameters, resultCallback: resultCallback)
     case "encrypted.modifyHealthElement": encrypted_modifyHealthElement(parameters: parameters, resultCallback: resultCallback)
@@ -56,41 +59,40 @@ class HealthElementApiDispatcher {
     case "tryAndRecover.shareWithMany": tryAndRecover_shareWithMany(parameters: parameters, resultCallback: resultCallback)
     case "tryAndRecover.filterHealthElementsBy": tryAndRecover_filterHealthElementsBy(parameters: parameters, resultCallback: resultCallback)
     case "tryAndRecover.filterHealthElementsBySorted": tryAndRecover_filterHealthElementsBySorted(parameters: parameters, resultCallback: resultCallback)
+    case "tryAndRecover.createHealthElement": tryAndRecover_createHealthElement(parameters: parameters, resultCallback: resultCallback)
+    case "tryAndRecover.createHealthElements": tryAndRecover_createHealthElements(parameters: parameters, resultCallback: resultCallback)
     case "tryAndRecover.undeleteHealthElementById": tryAndRecover_undeleteHealthElementById(parameters: parameters, resultCallback: resultCallback)
     case "tryAndRecover.undeleteHealthElement": tryAndRecover_undeleteHealthElement(parameters: parameters, resultCallback: resultCallback)
     case "tryAndRecover.modifyHealthElement": tryAndRecover_modifyHealthElement(parameters: parameters, resultCallback: resultCallback)
     case "tryAndRecover.modifyHealthElements": tryAndRecover_modifyHealthElements(parameters: parameters, resultCallback: resultCallback)
     case "tryAndRecover.getHealthElement": tryAndRecover_getHealthElement(parameters: parameters, resultCallback: resultCallback)
     case "tryAndRecover.getHealthElements": tryAndRecover_getHealthElements(parameters: parameters, resultCallback: resultCallback)
+    case "inGroup.withEncryptionMetadata": inGroup_withEncryptionMetadata(parameters: parameters, resultCallback: resultCallback)
+    case "inGroup.getEncryptionKeysOf": inGroup_getEncryptionKeysOf(parameters: parameters, resultCallback: resultCallback)
+    case "inGroup.hasWriteAccess": inGroup_hasWriteAccess(parameters: parameters, resultCallback: resultCallback)
+    case "inGroup.decryptPatientIdOf": inGroup_decryptPatientIdOf(parameters: parameters, resultCallback: resultCallback)
+    case "inGroup.createDelegationDeAnonymizationMetadata": inGroup_createDelegationDeAnonymizationMetadata(parameters: parameters, resultCallback: resultCallback)
+    case "inGroup.decrypt": inGroup_decrypt(parameters: parameters, resultCallback: resultCallback)
+    case "inGroup.tryDecrypt": inGroup_tryDecrypt(parameters: parameters, resultCallback: resultCallback)
+    case "inGroup.encryptOrValidate": inGroup_encryptOrValidate(parameters: parameters, resultCallback: resultCallback)
+    case "inGroup.shareWith": inGroup_shareWith(parameters: parameters, resultCallback: resultCallback)
+    case "inGroup.shareWithMany": inGroup_shareWithMany(parameters: parameters, resultCallback: resultCallback)
+    case "inGroup.createHealthElement": inGroup_createHealthElement(parameters: parameters, resultCallback: resultCallback)
+    case "inGroup.modifyHealthElement": inGroup_modifyHealthElement(parameters: parameters, resultCallback: resultCallback)
+    case "inGroup.getHealthElement": inGroup_getHealthElement(parameters: parameters, resultCallback: resultCallback)
+    case "inGroup.encrypted.shareWith": inGroup_encrypted_shareWith(parameters: parameters, resultCallback: resultCallback)
+    case "inGroup.encrypted.shareWithMany": inGroup_encrypted_shareWithMany(parameters: parameters, resultCallback: resultCallback)
+    case "inGroup.encrypted.createHealthElement": inGroup_encrypted_createHealthElement(parameters: parameters, resultCallback: resultCallback)
+    case "inGroup.encrypted.modifyHealthElement": inGroup_encrypted_modifyHealthElement(parameters: parameters, resultCallback: resultCallback)
+    case "inGroup.encrypted.getHealthElement": inGroup_encrypted_getHealthElement(parameters: parameters, resultCallback: resultCallback)
+    case "inGroup.tryAndRecover.shareWith": inGroup_tryAndRecover_shareWith(parameters: parameters, resultCallback: resultCallback)
+    case "inGroup.tryAndRecover.shareWithMany": inGroup_tryAndRecover_shareWithMany(parameters: parameters, resultCallback: resultCallback)
+    case "inGroup.tryAndRecover.createHealthElement": inGroup_tryAndRecover_createHealthElement(parameters: parameters, resultCallback: resultCallback)
+    case "inGroup.tryAndRecover.modifyHealthElement": inGroup_tryAndRecover_modifyHealthElement(parameters: parameters, resultCallback: resultCallback)
+    case "inGroup.tryAndRecover.getHealthElement": inGroup_tryAndRecover_getHealthElement(parameters: parameters, resultCallback: resultCallback)
     default: return false
     }
     return true
-  }
-
-  private static func createHealthElement(parameters: [String : String], resultCallback: @escaping (
-    String?,
-    String?,
-    String?,
-    String?
-  ) -> Void) {
-    HealthElementApi.shared.createHealthElement(
-    	dartResultCallback: resultCallback,
-    	sdkId: parameters["sdkId"]!,
-    	entityString: parameters["entity"]!
-    )
-  }
-
-  private static func createHealthElements(parameters: [String : String], resultCallback: @escaping (
-    String?,
-    String?,
-    String?,
-    String?
-  ) -> Void) {
-    HealthElementApi.shared.createHealthElements(
-    	dartResultCallback: resultCallback,
-    	sdkId: parameters["sdkId"]!,
-    	entitiesString: parameters["entities"]!
-    )
   }
 
   private static func withEncryptionMetadata(parameters: [String : String], resultCallback: @escaping (
@@ -172,7 +174,7 @@ class HealthElementApiDispatcher {
     HealthElementApi.shared.decrypt(
     	dartResultCallback: resultCallback,
     	sdkId: parameters["sdkId"]!,
-    	healthElementString: parameters["healthElement"]!
+    	healthElementsString: parameters["healthElements"]!
     )
   }
 
@@ -185,7 +187,20 @@ class HealthElementApiDispatcher {
     HealthElementApi.shared.tryDecrypt(
     	dartResultCallback: resultCallback,
     	sdkId: parameters["sdkId"]!,
-    	healthElementString: parameters["healthElement"]!
+    	healthElementsString: parameters["healthElements"]!
+    )
+  }
+
+  private static func encryptOrValidate(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    HealthElementApi.shared.encryptOrValidate(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	healthElementsString: parameters["healthElements"]!
     )
   }
 
@@ -350,6 +365,32 @@ class HealthElementApiDispatcher {
     )
   }
 
+  private static func createHealthElement(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    HealthElementApi.shared.createHealthElement(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	entityString: parameters["entity"]!
+    )
+  }
+
+  private static func createHealthElements(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    HealthElementApi.shared.createHealthElements(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	entitiesString: parameters["entities"]!
+    )
+  }
+
   private static func undeleteHealthElementById(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
@@ -499,6 +540,32 @@ class HealthElementApiDispatcher {
     )
   }
 
+  private static func encrypted_createHealthElement(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    HealthElementApi.encrypted.shared.createHealthElement(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	entityString: parameters["entity"]!
+    )
+  }
+
+  private static func encrypted_createHealthElements(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    HealthElementApi.encrypted.shared.createHealthElements(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	entitiesString: parameters["entities"]!
+    )
+  }
+
   private static func encrypted_undeleteHealthElementById(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
@@ -633,6 +700,32 @@ class HealthElementApiDispatcher {
     )
   }
 
+  private static func tryAndRecover_createHealthElement(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    HealthElementApi.tryAndRecover.shared.createHealthElement(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	entityString: parameters["entity"]!
+    )
+  }
+
+  private static func tryAndRecover_createHealthElements(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    HealthElementApi.tryAndRecover.shared.createHealthElements(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	entitiesString: parameters["entities"]!
+    )
+  }
+
   private static func tryAndRecover_undeleteHealthElementById(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
@@ -709,6 +802,323 @@ class HealthElementApiDispatcher {
     	dartResultCallback: resultCallback,
     	sdkId: parameters["sdkId"]!,
     	entityIdsString: parameters["entityIds"]!
+    )
+  }
+
+  private static func inGroup_withEncryptionMetadata(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    HealthElementApi.inGroup.shared.withEncryptionMetadata(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	entityGroupIdString: parameters["entityGroupId"]!,
+    	baseString: parameters["base"]!,
+    	patientString: parameters["patient"]!,
+    	userString: parameters["user"]!,
+    	delegatesString: parameters["delegates"]!,
+    	secretIdString: parameters["secretId"]!
+    )
+  }
+
+  private static func inGroup_getEncryptionKeysOf(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    HealthElementApi.inGroup.shared.getEncryptionKeysOf(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	healthElementString: parameters["healthElement"]!
+    )
+  }
+
+  private static func inGroup_hasWriteAccess(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    HealthElementApi.inGroup.shared.hasWriteAccess(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	healthElementString: parameters["healthElement"]!
+    )
+  }
+
+  private static func inGroup_decryptPatientIdOf(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    HealthElementApi.inGroup.shared.decryptPatientIdOf(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	healthElementString: parameters["healthElement"]!
+    )
+  }
+
+  private static func inGroup_createDelegationDeAnonymizationMetadata(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    HealthElementApi.inGroup.shared.createDelegationDeAnonymizationMetadata(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	entityString: parameters["entity"]!,
+    	delegatesString: parameters["delegates"]!
+    )
+  }
+
+  private static func inGroup_decrypt(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    HealthElementApi.inGroup.shared.decrypt(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	healthElementsString: parameters["healthElements"]!
+    )
+  }
+
+  private static func inGroup_tryDecrypt(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    HealthElementApi.inGroup.shared.tryDecrypt(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	healthElementsString: parameters["healthElements"]!
+    )
+  }
+
+  private static func inGroup_encryptOrValidate(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    HealthElementApi.inGroup.shared.encryptOrValidate(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	healthElementsString: parameters["healthElements"]!
+    )
+  }
+
+  private static func inGroup_shareWith(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    HealthElementApi.inGroup.shared.shareWith(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	delegateString: parameters["delegate"]!,
+    	healthElementString: parameters["healthElement"]!,
+    	optionsString: parameters["options"]!
+    )
+  }
+
+  private static func inGroup_shareWithMany(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    HealthElementApi.inGroup.shared.shareWithMany(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	healthElementString: parameters["healthElement"]!,
+    	delegatesString: parameters["delegates"]!
+    )
+  }
+
+  private static func inGroup_createHealthElement(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    HealthElementApi.inGroup.shared.createHealthElement(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	entityString: parameters["entity"]!
+    )
+  }
+
+  private static func inGroup_modifyHealthElement(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    HealthElementApi.inGroup.shared.modifyHealthElement(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	entityString: parameters["entity"]!
+    )
+  }
+
+  private static func inGroup_getHealthElement(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    HealthElementApi.inGroup.shared.getHealthElement(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	groupIdString: parameters["groupId"]!,
+    	entityIdString: parameters["entityId"]!
+    )
+  }
+
+  private static func inGroup_encrypted_shareWith(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    HealthElementApi.inGroup.encrypted.shared.shareWith(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	delegateString: parameters["delegate"]!,
+    	healthElementString: parameters["healthElement"]!,
+    	optionsString: parameters["options"]!
+    )
+  }
+
+  private static func inGroup_encrypted_shareWithMany(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    HealthElementApi.inGroup.encrypted.shared.shareWithMany(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	healthElementString: parameters["healthElement"]!,
+    	delegatesString: parameters["delegates"]!
+    )
+  }
+
+  private static func inGroup_encrypted_createHealthElement(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    HealthElementApi.inGroup.encrypted.shared.createHealthElement(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	entityString: parameters["entity"]!
+    )
+  }
+
+  private static func inGroup_encrypted_modifyHealthElement(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    HealthElementApi.inGroup.encrypted.shared.modifyHealthElement(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	entityString: parameters["entity"]!
+    )
+  }
+
+  private static func inGroup_encrypted_getHealthElement(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    HealthElementApi.inGroup.encrypted.shared.getHealthElement(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	groupIdString: parameters["groupId"]!,
+    	entityIdString: parameters["entityId"]!
+    )
+  }
+
+  private static func inGroup_tryAndRecover_shareWith(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    HealthElementApi.inGroup.tryAndRecover.shared.shareWith(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	delegateString: parameters["delegate"]!,
+    	healthElementString: parameters["healthElement"]!,
+    	optionsString: parameters["options"]!
+    )
+  }
+
+  private static func inGroup_tryAndRecover_shareWithMany(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    HealthElementApi.inGroup.tryAndRecover.shared.shareWithMany(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	healthElementString: parameters["healthElement"]!,
+    	delegatesString: parameters["delegates"]!
+    )
+  }
+
+  private static func inGroup_tryAndRecover_createHealthElement(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    HealthElementApi.inGroup.tryAndRecover.shared.createHealthElement(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	entityString: parameters["entity"]!
+    )
+  }
+
+  private static func inGroup_tryAndRecover_modifyHealthElement(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    HealthElementApi.inGroup.tryAndRecover.shared.modifyHealthElement(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	entityString: parameters["entity"]!
+    )
+  }
+
+  private static func inGroup_tryAndRecover_getHealthElement(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    HealthElementApi.inGroup.tryAndRecover.shared.getHealthElement(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	groupIdString: parameters["groupId"]!,
+    	entityIdString: parameters["entityId"]!
     )
   }
 

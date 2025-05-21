@@ -6,11 +6,9 @@ import com.icure.cardinal.sdk.dart.utils.ApiScope
 import com.icure.cardinal.sdk.dart.utils.NativeReferences
 import com.icure.cardinal.sdk.model.CalendarItemType
 import com.icure.cardinal.sdk.model.ListOfIds
-import com.icure.cardinal.sdk.model.PaginatedList
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.utils.Serialization.fullLanguageInteropJson
 import com.icure.utils.InternalIcureApi
-import kotlin.Int
 import kotlin.OptIn
 import kotlin.String
 import kotlin.Unit
@@ -20,70 +18,6 @@ import kotlinx.serialization.builtins.serializer
 
 @OptIn(InternalIcureApi::class)
 public object CalendarItemTypeApi {
-  public fun getCalendarItemTypes(
-    dartResultCallback: (
-      String?,
-      String?,
-      String?,
-      String?,
-    ) -> Unit,
-    sdkId: String,
-    startDocumentIdString: String,
-    limitString: String,
-  ) {
-    val startDocumentId = fullLanguageInteropJson.decodeFromString(
-      String.serializer().nullable,
-      startDocumentIdString
-    )
-    val limit = fullLanguageInteropJson.decodeFromString(
-      Int.serializer().nullable,
-      limitString
-    )
-    ApiScope.execute(
-      dartResultCallback,
-      PaginatedList.serializer(CalendarItemType.serializer())) {
-      NativeReferences.get<CardinalApis>(sdkId).calendarItemType.getCalendarItemTypes(
-        startDocumentId,
-        limit,
-      )
-    }
-  }
-
-  public fun getCalendarItemTypesIncludingDeleted(
-    dartResultCallback: (
-      String?,
-      String?,
-      String?,
-      String?,
-    ) -> Unit,
-    sdkId: String,
-    startKeyString: String,
-    startDocumentIdString: String,
-    limitString: String,
-  ) {
-    val startKey = fullLanguageInteropJson.decodeFromString(
-      String.serializer().nullable,
-      startKeyString
-    )
-    val startDocumentId = fullLanguageInteropJson.decodeFromString(
-      String.serializer().nullable,
-      startDocumentIdString
-    )
-    val limit = fullLanguageInteropJson.decodeFromString(
-      Int.serializer().nullable,
-      limitString
-    )
-    ApiScope.execute(
-      dartResultCallback,
-      PaginatedList.serializer(CalendarItemType.serializer())) {
-      NativeReferences.get<CardinalApis>(sdkId).calendarItemType.getCalendarItemTypesIncludingDeleted(
-        startKey,
-        startDocumentId,
-        limit,
-      )
-    }
-  }
-
   public fun createCalendarItemType(
     dartResultCallback: (
       String?,

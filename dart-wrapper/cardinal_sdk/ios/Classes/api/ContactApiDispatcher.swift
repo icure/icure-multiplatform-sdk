@@ -18,8 +18,6 @@ class ContactApiDispatcher {
     case "matchServicesBy": matchServicesBy(parameters: parameters, resultCallback: resultCallback)
     case "matchContactsBySorted": matchContactsBySorted(parameters: parameters, resultCallback: resultCallback)
     case "matchServicesBySorted": matchServicesBySorted(parameters: parameters, resultCallback: resultCallback)
-    case "createContact": createContact(parameters: parameters, resultCallback: resultCallback)
-    case "createContacts": createContacts(parameters: parameters, resultCallback: resultCallback)
     case "withEncryptionMetadata": withEncryptionMetadata(parameters: parameters, resultCallback: resultCallback)
     case "getEncryptionKeysOf": getEncryptionKeysOf(parameters: parameters, resultCallback: resultCallback)
     case "hasWriteAccess": hasWriteAccess(parameters: parameters, resultCallback: resultCallback)
@@ -43,6 +41,8 @@ class ContactApiDispatcher {
     case "filterServicesBy": filterServicesBy(parameters: parameters, resultCallback: resultCallback)
     case "filterContactsBySorted": filterContactsBySorted(parameters: parameters, resultCallback: resultCallback)
     case "filterServicesBySorted": filterServicesBySorted(parameters: parameters, resultCallback: resultCallback)
+    case "createContact": createContact(parameters: parameters, resultCallback: resultCallback)
+    case "createContacts": createContacts(parameters: parameters, resultCallback: resultCallback)
     case "undeleteContactById": undeleteContactById(parameters: parameters, resultCallback: resultCallback)
     case "undeleteContact": undeleteContact(parameters: parameters, resultCallback: resultCallback)
     case "modifyContact": modifyContact(parameters: parameters, resultCallback: resultCallback)
@@ -58,6 +58,8 @@ class ContactApiDispatcher {
     case "encrypted.filterServicesBy": encrypted_filterServicesBy(parameters: parameters, resultCallback: resultCallback)
     case "encrypted.filterContactsBySorted": encrypted_filterContactsBySorted(parameters: parameters, resultCallback: resultCallback)
     case "encrypted.filterServicesBySorted": encrypted_filterServicesBySorted(parameters: parameters, resultCallback: resultCallback)
+    case "encrypted.createContact": encrypted_createContact(parameters: parameters, resultCallback: resultCallback)
+    case "encrypted.createContacts": encrypted_createContacts(parameters: parameters, resultCallback: resultCallback)
     case "encrypted.undeleteContactById": encrypted_undeleteContactById(parameters: parameters, resultCallback: resultCallback)
     case "encrypted.undeleteContact": encrypted_undeleteContact(parameters: parameters, resultCallback: resultCallback)
     case "encrypted.modifyContact": encrypted_modifyContact(parameters: parameters, resultCallback: resultCallback)
@@ -72,6 +74,8 @@ class ContactApiDispatcher {
     case "tryAndRecover.filterServicesBy": tryAndRecover_filterServicesBy(parameters: parameters, resultCallback: resultCallback)
     case "tryAndRecover.filterContactsBySorted": tryAndRecover_filterContactsBySorted(parameters: parameters, resultCallback: resultCallback)
     case "tryAndRecover.filterServicesBySorted": tryAndRecover_filterServicesBySorted(parameters: parameters, resultCallback: resultCallback)
+    case "tryAndRecover.createContact": tryAndRecover_createContact(parameters: parameters, resultCallback: resultCallback)
+    case "tryAndRecover.createContacts": tryAndRecover_createContacts(parameters: parameters, resultCallback: resultCallback)
     case "tryAndRecover.undeleteContactById": tryAndRecover_undeleteContactById(parameters: parameters, resultCallback: resultCallback)
     case "tryAndRecover.undeleteContact": tryAndRecover_undeleteContact(parameters: parameters, resultCallback: resultCallback)
     case "tryAndRecover.modifyContact": tryAndRecover_modifyContact(parameters: parameters, resultCallback: resultCallback)
@@ -134,32 +138,6 @@ class ContactApiDispatcher {
     	dartResultCallback: resultCallback,
     	sdkId: parameters["sdkId"]!,
     	filterString: parameters["filter"]!
-    )
-  }
-
-  private static func createContact(parameters: [String : String], resultCallback: @escaping (
-    String?,
-    String?,
-    String?,
-    String?
-  ) -> Void) {
-    ContactApi.shared.createContact(
-    	dartResultCallback: resultCallback,
-    	sdkId: parameters["sdkId"]!,
-    	entityString: parameters["entity"]!
-    )
-  }
-
-  private static func createContacts(parameters: [String : String], resultCallback: @escaping (
-    String?,
-    String?,
-    String?,
-    String?
-  ) -> Void) {
-    ContactApi.shared.createContacts(
-    	dartResultCallback: resultCallback,
-    	sdkId: parameters["sdkId"]!,
-    	entitiesString: parameters["entities"]!
     )
   }
 
@@ -474,6 +452,32 @@ class ContactApiDispatcher {
     )
   }
 
+  private static func createContact(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    ContactApi.shared.createContact(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	entityString: parameters["entity"]!
+    )
+  }
+
+  private static func createContacts(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    ContactApi.shared.createContacts(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	entitiesString: parameters["entities"]!
+    )
+  }
+
   private static func undeleteContactById(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
@@ -675,6 +679,32 @@ class ContactApiDispatcher {
     )
   }
 
+  private static func encrypted_createContact(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    ContactApi.encrypted.shared.createContact(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	entityString: parameters["entity"]!
+    )
+  }
+
+  private static func encrypted_createContacts(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    ContactApi.encrypted.shared.createContacts(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	entitiesString: parameters["entities"]!
+    )
+  }
+
   private static func encrypted_undeleteContactById(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
@@ -858,6 +888,32 @@ class ContactApiDispatcher {
     	dartResultCallback: resultCallback,
     	sdkId: parameters["sdkId"]!,
     	filterString: parameters["filter"]!
+    )
+  }
+
+  private static func tryAndRecover_createContact(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    ContactApi.tryAndRecover.shared.createContact(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	entityString: parameters["entity"]!
+    )
+  }
+
+  private static func tryAndRecover_createContacts(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    ContactApi.tryAndRecover.shared.createContacts(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	entitiesString: parameters["entities"]!
     )
   }
 

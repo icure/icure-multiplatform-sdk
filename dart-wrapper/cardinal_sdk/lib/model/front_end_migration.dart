@@ -2,49 +2,28 @@
 import 'package:cardinal_sdk/model/embed/front_end_migration_status.dart';
 import 'package:cardinal_sdk/model/property_stub.dart';
 import 'package:cardinal_sdk/model/base/stored_document.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+part "front_end_migration.freezed.dart";
 
 
-class FrontEndMigration implements StoredDocument {
-	@override String id;
-	@override String? rev = null;
-	@override int? deletionDate = null;
-	String? name = null;
-	int? startDate = null;
-	int? endDate = null;
-	FrontEndMigrationStatus? status = null;
-	String? logs = null;
-	String? userId = null;
-	String? startKey = null;
-	String? startKeyDocId = null;
-	int? processCount = null;
-	Set<DecryptedPropertyStub> properties = {};
-	FrontEndMigration(
-		this.id,
-		{
-			String? rev,
-			int? deletionDate,
-			String? name,
-			int? startDate,
-			int? endDate,
-			FrontEndMigrationStatus? status,
-			String? logs,
-			String? userId,
-			String? startKey,
-			String? startKeyDocId,
-			int? processCount,
-			Set<DecryptedPropertyStub>? properties
-		}) : rev = rev ?? null,
-		deletionDate = deletionDate ?? null,
-		name = name ?? null,
-		startDate = startDate ?? null,
-		endDate = endDate ?? null,
-		status = status ?? null,
-		logs = logs ?? null,
-		userId = userId ?? null,
-		startKey = startKey ?? null,
-		startKeyDocId = startKeyDocId ?? null,
-		processCount = processCount ?? null,
-		properties = properties ?? {};
+@freezed
+abstract class FrontEndMigration with _$FrontEndMigration implements StoredDocument {
+	const factory FrontEndMigration({
+		required String id,
+		@Default(null) String? rev,
+		@Default(null) int? deletionDate,
+		@Default(null) String? name,
+		@Default(null) int? startDate,
+		@Default(null) int? endDate,
+		@Default(null) FrontEndMigrationStatus? status,
+		@Default(null) String? logs,
+		@Default(null) String? userId,
+		@Default(null) String? startKey,
+		@Default(null) String? startKeyDocId,
+		@Default(null) int? processCount,
+		@Default({}) Set<DecryptedPropertyStub> properties,
+	}) = _FrontEndMigration;
+
 
 	static Map<String, dynamic> encode(FrontEndMigration value) {
 		Map<String, dynamic> entityAsMap = {
@@ -67,7 +46,7 @@ class FrontEndMigration implements StoredDocument {
 
 	static FrontEndMigration fromJSON(Map<String, dynamic> data) {
 		return FrontEndMigration(
-			(data["id"] as String),
+			id: (data["id"] as String),
 			rev: (data["rev"] as String?),
 			deletionDate: (data["deletionDate"] as int?),
 			name: (data["name"] as String?),

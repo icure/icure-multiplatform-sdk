@@ -45,7 +45,7 @@ class UserPlatformApi {
 		return User.fromJSON(parsedResJson);
 	}
 
-	Future<User> getUser(String sdkId, String userId) async {
+	Future<User?> getUser(String sdkId, String userId) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'UserApi.getUser',
 			{
@@ -55,7 +55,7 @@ class UserPlatformApi {
 		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getUser");
 		final parsedResJson = jsonDecode(res);
-		return User.fromJSON(parsedResJson);
+		return parsedResJson == null ? null : User.fromJSON(parsedResJson);
 	}
 
 	Future<List<User>> getUsers(String sdkId, List<String> userIds) async {
@@ -71,7 +71,7 @@ class UserPlatformApi {
 		return (parsedResJson as List<dynamic>).map((x1) => User.fromJSON(x1) ).toList();
 	}
 
-	Future<User> getUserByEmail(String sdkId, String email) async {
+	Future<User?> getUserByEmail(String sdkId, String email) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'UserApi.getUserByEmail',
 			{
@@ -81,10 +81,10 @@ class UserPlatformApi {
 		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getUserByEmail");
 		final parsedResJson = jsonDecode(res);
-		return User.fromJSON(parsedResJson);
+		return parsedResJson == null ? null : User.fromJSON(parsedResJson);
 	}
 
-	Future<User> getUserByPhoneNumber(String sdkId, String phoneNumber) async {
+	Future<User?> getUserByPhoneNumber(String sdkId, String phoneNumber) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'UserApi.getUserByPhoneNumber',
 			{
@@ -94,7 +94,7 @@ class UserPlatformApi {
 		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getUserByPhoneNumber");
 		final parsedResJson = jsonDecode(res);
-		return User.fromJSON(parsedResJson);
+		return parsedResJson == null ? null : User.fromJSON(parsedResJson);
 	}
 
 	Future<List<String>> findByHcpartyId(String sdkId, String id) async {
@@ -603,6 +603,21 @@ class UserPlatformApi {
 		if (res == null) throw AssertionError("received null result from platform method undeleteUser");
 		final parsedResJson = jsonDecode(res);
 		return User.fromJSON(parsedResJson);
+	}
+
+	Future<String> setUserInheritsPermissions(String sdkId, String userId, String groupId, bool value) async {
+		final res = await _methodChannel.invokeMethod<String>(
+			'UserApi.setUserInheritsPermissions',
+			{
+				"sdkId": sdkId,
+				"userId": jsonEncode(userId),
+				"groupId": jsonEncode(groupId),
+				"value": jsonEncode(value),
+			}
+		).catchError(convertPlatformException);
+		if (res == null) throw AssertionError("received null result from platform method setUserInheritsPermissions");
+		final parsedResJson = jsonDecode(res);
+		return (parsedResJson as String);
 	}
 
 	Future<EntitySubscription<User>> subscribeToEvents(String sdkId, Set<SubscriptionEventType> events, FilterOptions<User> filter, EntitySubscriptionConfiguration? subscriptionConfig) async {

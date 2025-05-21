@@ -19,18 +19,29 @@ public object PatientFiltersDispatcher {
     ) -> Unit,
   ): Boolean = when(methodName) {
     "allPatientsForDataOwner" -> allPatientsForDataOwner(parameters, resultCallback)
+    "allPatientsForDataOwnerInGroup" -> allPatientsForDataOwnerInGroup(parameters, resultCallback)
     "allPatientsForSelf" -> allPatientsForSelf(parameters, resultCallback)
     "byIds" -> byIds(parameters, resultCallback)
     "byIdentifiersForDataOwner" -> byIdentifiersForDataOwner(parameters, resultCallback)
+    "byIdentifiersForDataOwnerInGroup" -> byIdentifiersForDataOwnerInGroup(parameters, resultCallback)
     "bySsinsForDataOwner" -> bySsinsForDataOwner(parameters, resultCallback)
+    "bySsinsForDataOwnerInGroup" -> bySsinsForDataOwnerInGroup(parameters, resultCallback)
     "byDateOfBirthBetweenForDataOwner" -> byDateOfBirthBetweenForDataOwner(parameters, resultCallback)
+    "byDateOfBirthBetweenForDataOwnerInGroup" -> byDateOfBirthBetweenForDataOwnerInGroup(parameters, resultCallback)
     "byFuzzyNameForDataOwner" -> byFuzzyNameForDataOwner(parameters, resultCallback)
+    "byFuzzyNameForDataOwnerInGroup" -> byFuzzyNameForDataOwnerInGroup(parameters, resultCallback)
     "byGenderEducationProfessionForDataOwner" -> byGenderEducationProfessionForDataOwner(parameters, resultCallback)
+    "byGenderEducationProfessionForDataOwnerInGroup" -> byGenderEducationProfessionForDataOwnerInGroup(parameters, resultCallback)
     "byActiveForDataOwner" -> byActiveForDataOwner(parameters, resultCallback)
+    "byActiveForDataOwnerInGroup" -> byActiveForDataOwnerInGroup(parameters, resultCallback)
     "byTelecomForDataOwner" -> byTelecomForDataOwner(parameters, resultCallback)
+    "byTelecomForDataOwnerInGroup" -> byTelecomForDataOwnerInGroup(parameters, resultCallback)
     "byAddressPostalCodeHouseNumberForDataOwner" -> byAddressPostalCodeHouseNumberForDataOwner(parameters, resultCallback)
+    "byAddressPostalCodeHouseNumberForDataOwnerInGroup" -> byAddressPostalCodeHouseNumberForDataOwnerInGroup(parameters, resultCallback)
     "byAddressForDataOwner" -> byAddressForDataOwner(parameters, resultCallback)
+    "byAddressForDataOwnerInGroup" -> byAddressForDataOwnerInGroup(parameters, resultCallback)
     "byExternalIdForDataOwner" -> byExternalIdForDataOwner(parameters, resultCallback)
+    "byExternalIdForDataOwnerInGroup" -> byExternalIdForDataOwnerInGroup(parameters, resultCallback)
     "byIdentifiersForSelf" -> byIdentifiersForSelf(parameters, resultCallback)
     "bySsinsForSelf" -> bySsinsForSelf(parameters, resultCallback)
     "byDateOfBirthBetweenForSelf" -> byDateOfBirthBetweenForSelf(parameters, resultCallback)
@@ -41,6 +52,9 @@ public object PatientFiltersDispatcher {
     "byAddressPostalCodeHouseNumberForSelf" -> byAddressPostalCodeHouseNumberForSelf(parameters, resultCallback)
     "byAddressForSelf" -> byAddressForSelf(parameters, resultCallback)
     "byExternalIdForSelf" -> byExternalIdForSelf(parameters, resultCallback)
+    "byTagForSelf" -> byTagForSelf(parameters, resultCallback)
+    "byTagForDataOwner" -> byTagForDataOwner(parameters, resultCallback)
+    "byTagForDataOwnerInGroup" -> byTagForDataOwnerInGroup(parameters, resultCallback)
     else -> null
   }?.let { true } ?: false
 
@@ -53,6 +67,18 @@ public object PatientFiltersDispatcher {
     PatientFilters.allPatientsForDataOwner(
       resultCallback,
       parameters.getValue("dataOwnerId"),
+    )
+  }
+
+  private fun allPatientsForDataOwnerInGroup(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    PatientFilters.allPatientsForDataOwnerInGroup(
+      resultCallback,
+      parameters.getValue("dataOwner"),
     )
   }
 
@@ -92,6 +118,19 @@ public object PatientFiltersDispatcher {
     )
   }
 
+  private fun byIdentifiersForDataOwnerInGroup(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    PatientFilters.byIdentifiersForDataOwnerInGroup(
+      resultCallback,
+      parameters.getValue("dataOwner"),
+      parameters.getValue("identifiers"),
+    )
+  }
+
   private fun bySsinsForDataOwner(parameters: Map<String, String>, resultCallback: (
     String?,
     String?,
@@ -101,6 +140,19 @@ public object PatientFiltersDispatcher {
     PatientFilters.bySsinsForDataOwner(
       resultCallback,
       parameters.getValue("dataOwnerId"),
+      parameters.getValue("ssins"),
+    )
+  }
+
+  private fun bySsinsForDataOwnerInGroup(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    PatientFilters.bySsinsForDataOwnerInGroup(
+      resultCallback,
+      parameters.getValue("dataOwner"),
       parameters.getValue("ssins"),
     )
   }
@@ -119,6 +171,21 @@ public object PatientFiltersDispatcher {
     )
   }
 
+  private fun byDateOfBirthBetweenForDataOwnerInGroup(parameters: Map<String, String>,
+      resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    PatientFilters.byDateOfBirthBetweenForDataOwnerInGroup(
+      resultCallback,
+      parameters.getValue("dataOwner"),
+      parameters.getValue("fromDate"),
+      parameters.getValue("toDate"),
+    )
+  }
+
   private fun byFuzzyNameForDataOwner(parameters: Map<String, String>, resultCallback: (
     String?,
     String?,
@@ -128,6 +195,19 @@ public object PatientFiltersDispatcher {
     PatientFilters.byFuzzyNameForDataOwner(
       resultCallback,
       parameters.getValue("dataOwnerId"),
+      parameters.getValue("searchString"),
+    )
+  }
+
+  private fun byFuzzyNameForDataOwnerInGroup(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    PatientFilters.byFuzzyNameForDataOwnerInGroup(
+      resultCallback,
+      parameters.getValue("dataOwner"),
       parameters.getValue("searchString"),
     )
   }
@@ -148,6 +228,22 @@ public object PatientFiltersDispatcher {
     )
   }
 
+  private fun byGenderEducationProfessionForDataOwnerInGroup(parameters: Map<String, String>,
+      resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    PatientFilters.byGenderEducationProfessionForDataOwnerInGroup(
+      resultCallback,
+      parameters.getValue("dataOwner"),
+      parameters.getValue("gender"),
+      parameters.getValue("education"),
+      parameters.getValue("profession"),
+    )
+  }
+
   private fun byActiveForDataOwner(parameters: Map<String, String>, resultCallback: (
     String?,
     String?,
@@ -161,6 +257,19 @@ public object PatientFiltersDispatcher {
     )
   }
 
+  private fun byActiveForDataOwnerInGroup(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    PatientFilters.byActiveForDataOwnerInGroup(
+      resultCallback,
+      parameters.getValue("dataOwner"),
+      parameters.getValue("active"),
+    )
+  }
+
   private fun byTelecomForDataOwner(parameters: Map<String, String>, resultCallback: (
     String?,
     String?,
@@ -170,6 +279,19 @@ public object PatientFiltersDispatcher {
     PatientFilters.byTelecomForDataOwner(
       resultCallback,
       parameters.getValue("dataOwnerId"),
+      parameters.getValue("searchString"),
+    )
+  }
+
+  private fun byTelecomForDataOwnerInGroup(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    PatientFilters.byTelecomForDataOwnerInGroup(
+      resultCallback,
+      parameters.getValue("dataOwner"),
       parameters.getValue("searchString"),
     )
   }
@@ -190,6 +312,22 @@ public object PatientFiltersDispatcher {
     )
   }
 
+  private fun byAddressPostalCodeHouseNumberForDataOwnerInGroup(parameters: Map<String, String>,
+      resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    PatientFilters.byAddressPostalCodeHouseNumberForDataOwnerInGroup(
+      resultCallback,
+      parameters.getValue("dataOwner"),
+      parameters.getValue("searchString"),
+      parameters.getValue("postalCode"),
+      parameters.getValue("houseNumber"),
+    )
+  }
+
   private fun byAddressForDataOwner(parameters: Map<String, String>, resultCallback: (
     String?,
     String?,
@@ -203,6 +341,19 @@ public object PatientFiltersDispatcher {
     )
   }
 
+  private fun byAddressForDataOwnerInGroup(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    PatientFilters.byAddressForDataOwnerInGroup(
+      resultCallback,
+      parameters.getValue("dataOwner"),
+      parameters.getValue("searchString"),
+    )
+  }
+
   private fun byExternalIdForDataOwner(parameters: Map<String, String>, resultCallback: (
     String?,
     String?,
@@ -212,6 +363,19 @@ public object PatientFiltersDispatcher {
     PatientFilters.byExternalIdForDataOwner(
       resultCallback,
       parameters.getValue("dataOwnerId"),
+      parameters.getValue("externalIdPrefix"),
+    )
+  }
+
+  private fun byExternalIdForDataOwnerInGroup(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    PatientFilters.byExternalIdForDataOwnerInGroup(
+      resultCallback,
+      parameters.getValue("dataOwner"),
       parameters.getValue("externalIdPrefix"),
     )
   }
@@ -339,6 +503,47 @@ public object PatientFiltersDispatcher {
     PatientFilters.byExternalIdForSelf(
       resultCallback,
       parameters.getValue("externalIdPrefix"),
+    )
+  }
+
+  private fun byTagForSelf(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    PatientFilters.byTagForSelf(
+      resultCallback,
+      parameters.getValue("tagType"),
+      parameters.getValue("tagCode"),
+    )
+  }
+
+  private fun byTagForDataOwner(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    PatientFilters.byTagForDataOwner(
+      resultCallback,
+      parameters.getValue("dataOwnerId"),
+      parameters.getValue("tagType"),
+      parameters.getValue("tagCode"),
+    )
+  }
+
+  private fun byTagForDataOwnerInGroup(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    PatientFilters.byTagForDataOwnerInGroup(
+      resultCallback,
+      parameters.getValue("dataOwner"),
+      parameters.getValue("tagType"),
+      parameters.getValue("tagCode"),
     )
   }
 }

@@ -28,6 +28,8 @@ public object HealthElementBasicApiDispatcher {
     "deleteHealthElement" -> deleteHealthElement(parameters, resultCallback)
     "deleteHealthElements" -> deleteHealthElements(parameters, resultCallback)
     "purgeHealthElement" -> purgeHealthElement(parameters, resultCallback)
+    "createHealthElement" -> createHealthElement(parameters, resultCallback)
+    "createHealthElements" -> createHealthElements(parameters, resultCallback)
     "undeleteHealthElementById" -> undeleteHealthElementById(parameters, resultCallback)
     "undeleteHealthElement" -> undeleteHealthElement(parameters, resultCallback)
     "modifyHealthElement" -> modifyHealthElement(parameters, resultCallback)
@@ -35,6 +37,9 @@ public object HealthElementBasicApiDispatcher {
     "getHealthElement" -> getHealthElement(parameters, resultCallback)
     "getHealthElements" -> getHealthElements(parameters, resultCallback)
     "subscribeToEvents" -> subscribeToEvents(parameters, resultCallback)
+    "inGroup.createHealthElement" -> inGroup_createHealthElement(parameters, resultCallback)
+    "inGroup.modifyHealthElement" -> inGroup_modifyHealthElement(parameters, resultCallback)
+    "inGroup.getHealthElement" -> inGroup_getHealthElement(parameters, resultCallback)
     else -> null
   }?.let { true } ?: false
 
@@ -170,6 +175,32 @@ public object HealthElementBasicApiDispatcher {
     )
   }
 
+  private fun createHealthElement(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    HealthElementBasicApi.createHealthElement(
+      resultCallback,
+      parameters.getValue("sdkId"),
+      parameters.getValue("entity"),
+    )
+  }
+
+  private fun createHealthElements(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    HealthElementBasicApi.createHealthElements(
+      resultCallback,
+      parameters.getValue("sdkId"),
+      parameters.getValue("entities"),
+    )
+  }
+
   private fun undeleteHealthElementById(parameters: Map<String, String>, resultCallback: (
     String?,
     String?,
@@ -261,6 +292,46 @@ public object HealthElementBasicApiDispatcher {
       parameters.getValue("events"),
       parameters.getValue("filter"),
       parameters.getValue("subscriptionConfig"),
+    )
+  }
+
+  private fun inGroup_createHealthElement(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    HealthElementBasicApi.inGroup.createHealthElement(
+      resultCallback,
+      parameters.getValue("sdkId"),
+      parameters.getValue("entity"),
+    )
+  }
+
+  private fun inGroup_modifyHealthElement(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    HealthElementBasicApi.inGroup.modifyHealthElement(
+      resultCallback,
+      parameters.getValue("sdkId"),
+      parameters.getValue("entity"),
+    )
+  }
+
+  private fun inGroup_getHealthElement(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    HealthElementBasicApi.inGroup.getHealthElement(
+      resultCallback,
+      parameters.getValue("sdkId"),
+      parameters.getValue("groupId"),
+      parameters.getValue("entityId"),
     )
   }
 }

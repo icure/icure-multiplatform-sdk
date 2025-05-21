@@ -18,6 +18,7 @@ class ReceiptBasicApiDispatcher {
     case "deleteReceipts": deleteReceipts(parameters: parameters, resultCallback: resultCallback)
     case "getRawReceiptAttachment": getRawReceiptAttachment(parameters: parameters, resultCallback: resultCallback)
     case "setRawReceiptAttachment": setRawReceiptAttachment(parameters: parameters, resultCallback: resultCallback)
+    case "createReceipt": createReceipt(parameters: parameters, resultCallback: resultCallback)
     case "modifyReceipt": modifyReceipt(parameters: parameters, resultCallback: resultCallback)
     case "getReceipt": getReceipt(parameters: parameters, resultCallback: resultCallback)
     case "listByReference": listByReference(parameters: parameters, resultCallback: resultCallback)
@@ -79,6 +80,19 @@ class ReceiptBasicApiDispatcher {
     	revString: parameters["rev"]!,
     	blobTypeString: parameters["blobType"]!,
     	attachmentString: parameters["attachment"]!
+    )
+  }
+
+  private static func createReceipt(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    ReceiptBasicApi.shared.createReceipt(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	entityString: parameters["entity"]!
     )
   }
 

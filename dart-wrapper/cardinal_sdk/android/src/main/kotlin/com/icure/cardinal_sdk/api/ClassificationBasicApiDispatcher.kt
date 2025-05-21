@@ -24,6 +24,7 @@ public object ClassificationBasicApiDispatcher {
     "filterClassificationsBySorted" -> filterClassificationsBySorted(parameters, resultCallback)
     "deleteClassification" -> deleteClassification(parameters, resultCallback)
     "deleteClassifications" -> deleteClassifications(parameters, resultCallback)
+    "createClassification" -> createClassification(parameters, resultCallback)
     "modifyClassification" -> modifyClassification(parameters, resultCallback)
     "getClassification" -> getClassification(parameters, resultCallback)
     "getClassifications" -> getClassifications(parameters, resultCallback)
@@ -105,6 +106,19 @@ public object ClassificationBasicApiDispatcher {
       resultCallback,
       parameters.getValue("sdkId"),
       parameters.getValue("entityIds"),
+    )
+  }
+
+  private fun createClassification(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    ClassificationBasicApi.createClassification(
+      resultCallback,
+      parameters.getValue("sdkId"),
+      parameters.getValue("entity"),
     )
   }
 

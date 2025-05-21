@@ -28,6 +28,7 @@ public object TopicBasicApiDispatcher {
     "deleteTopic" -> deleteTopic(parameters, resultCallback)
     "deleteTopics" -> deleteTopics(parameters, resultCallback)
     "purgeTopic" -> purgeTopic(parameters, resultCallback)
+    "createTopic" -> createTopic(parameters, resultCallback)
     "undeleteTopic" -> undeleteTopic(parameters, resultCallback)
     "modifyTopic" -> modifyTopic(parameters, resultCallback)
     "undeleteTopicById" -> undeleteTopicById(parameters, resultCallback)
@@ -168,6 +169,19 @@ public object TopicBasicApiDispatcher {
       resultCallback,
       parameters.getValue("sdkId"),
       parameters.getValue("topic"),
+    )
+  }
+
+  private fun createTopic(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    TopicBasicApi.createTopic(
+      resultCallback,
+      parameters.getValue("sdkId"),
+      parameters.getValue("entity"),
     )
   }
 

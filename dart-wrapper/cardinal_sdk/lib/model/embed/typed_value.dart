@@ -3,16 +3,18 @@ import 'package:cardinal_sdk/model/embed/typed_values_type.dart';
 import 'package:cardinal_sdk/model/specializations/base64string.dart';
 import 'package:cardinal_sdk/model/embed/typed_value.dart';
 import 'package:cardinal_sdk/model/embed/encryptable.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+part "typed_value.freezed.dart";
 
 
 sealed class TypedValue implements Encryptable {
-	abstract TypedValuesType? type;
-	abstract bool? booleanValue;
-	abstract int? integerValue;
-	abstract double? doubleValue;
-	abstract String? stringValue;
-	abstract DateTime? dateValue;
-	@override abstract Base64String? encryptedSelf;
+	abstract final TypedValuesType? type;
+	abstract final bool? booleanValue;
+	abstract final int? integerValue;
+	abstract final double? doubleValue;
+	abstract final String? stringValue;
+	abstract final DateTime? dateValue;
+	@override abstract final Base64String? encryptedSelf;
 
 	static Map<String, dynamic> encode(TypedValue value) {
 		switch (value) {
@@ -43,29 +45,18 @@ sealed class TypedValue implements Encryptable {
 	}
 }
 
-class DecryptedTypedValue implements TypedValue {
-	@override TypedValuesType? type = null;
-	@override bool? booleanValue = null;
-	@override int? integerValue = null;
-	@override double? doubleValue = null;
-	@override String? stringValue = null;
-	@override DateTime? dateValue = null;
-	@override Base64String? encryptedSelf = null;
-	DecryptedTypedValue({
-			TypedValuesType? type,
-			bool? booleanValue,
-			int? integerValue,
-			double? doubleValue,
-			String? stringValue,
-			DateTime? dateValue,
-			Base64String? encryptedSelf
-		}) : type = type ?? null,
-		booleanValue = booleanValue ?? null,
-		integerValue = integerValue ?? null,
-		doubleValue = doubleValue ?? null,
-		stringValue = stringValue ?? null,
-		dateValue = dateValue ?? null,
-		encryptedSelf = encryptedSelf ?? null;
+@freezed
+abstract class DecryptedTypedValue with _$DecryptedTypedValue implements TypedValue {
+	const factory DecryptedTypedValue({
+		@Default(null) TypedValuesType? type,
+		@Default(null) bool? booleanValue,
+		@Default(null) int? integerValue,
+		@Default(null) double? doubleValue,
+		@Default(null) String? stringValue,
+		@Default(null) DateTime? dateValue,
+		@Default(null) Base64String? encryptedSelf,
+	}) = _DecryptedTypedValue;
+
 
 	static Map<String, dynamic> encode(DecryptedTypedValue value) {
 		Map<String, dynamic> entityAsMap = {
@@ -93,29 +84,18 @@ class DecryptedTypedValue implements TypedValue {
 	}
 }
 
-class EncryptedTypedValue implements TypedValue {
-	@override TypedValuesType? type = null;
-	@override bool? booleanValue = null;
-	@override int? integerValue = null;
-	@override double? doubleValue = null;
-	@override String? stringValue = null;
-	@override DateTime? dateValue = null;
-	@override Base64String? encryptedSelf = null;
-	EncryptedTypedValue({
-			TypedValuesType? type,
-			bool? booleanValue,
-			int? integerValue,
-			double? doubleValue,
-			String? stringValue,
-			DateTime? dateValue,
-			Base64String? encryptedSelf
-		}) : type = type ?? null,
-		booleanValue = booleanValue ?? null,
-		integerValue = integerValue ?? null,
-		doubleValue = doubleValue ?? null,
-		stringValue = stringValue ?? null,
-		dateValue = dateValue ?? null,
-		encryptedSelf = encryptedSelf ?? null;
+@freezed
+abstract class EncryptedTypedValue with _$EncryptedTypedValue implements TypedValue {
+	const factory EncryptedTypedValue({
+		@Default(null) TypedValuesType? type,
+		@Default(null) bool? booleanValue,
+		@Default(null) int? integerValue,
+		@Default(null) double? doubleValue,
+		@Default(null) String? stringValue,
+		@Default(null) DateTime? dateValue,
+		@Default(null) Base64String? encryptedSelf,
+	}) = _EncryptedTypedValue;
+
 
 	static Map<String, dynamic> encode(EncryptedTypedValue value) {
 		Map<String, dynamic> entityAsMap = {

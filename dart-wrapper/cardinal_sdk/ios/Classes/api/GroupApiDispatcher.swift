@@ -37,6 +37,8 @@ class GroupApiDispatcher {
     case "getReplicationInfo": getReplicationInfo(parameters: parameters, resultCallback: resultCallback)
     case "getHierarchy": getHierarchy(parameters: parameters, resultCallback: resultCallback)
     case "listAllGroupsIds": listAllGroupsIds(parameters: parameters, resultCallback: resultCallback)
+    case "createOrUpdateExternalJwtConfig": createOrUpdateExternalJwtConfig(parameters: parameters, resultCallback: resultCallback)
+    case "removeExternalJwtConfig": removeExternalJwtConfig(parameters: parameters, resultCallback: resultCallback)
     default: return false
     }
     return true
@@ -362,6 +364,35 @@ class GroupApiDispatcher {
     GroupApi.shared.listAllGroupsIds(
     	dartResultCallback: resultCallback,
     	sdkId: parameters["sdkId"]!
+    )
+  }
+
+  private static func createOrUpdateExternalJwtConfig(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    GroupApi.shared.createOrUpdateExternalJwtConfig(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	groupIdString: parameters["groupId"]!,
+    	keyString: parameters["key"]!,
+    	configString: parameters["config"]!
+    )
+  }
+
+  private static func removeExternalJwtConfig(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    GroupApi.shared.removeExternalJwtConfig(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	groupIdString: parameters["groupId"]!,
+    	keyString: parameters["key"]!
     )
   }
 

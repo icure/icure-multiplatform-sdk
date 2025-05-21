@@ -1,15 +1,20 @@
 // auto-generated file
-import 'package:cardinal_sdk/model/security/permission_type.dart';
 import 'package:cardinal_sdk/model/filter/predicate/always_predicate.dart';
+import 'package:cardinal_sdk/model/security/permission_type.dart';
 import 'package:cardinal_sdk/model/security/permission_item.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+part "always_permission_item.freezed.dart";
 
 
-class AlwaysPermissionItem implements PermissionItem {
-	@override PermissionType type;
-	@override AlwaysPredicate predicate;
-	AlwaysPermissionItem(
-		this.type
-		) : predicate = AlwaysPredicate();
+@freezed
+abstract class AlwaysPermissionItem with _$AlwaysPermissionItem implements PermissionItem {
+
+	@override AlwaysPredicate get predicate => AlwaysPredicate();
+	const factory AlwaysPermissionItem({
+		required PermissionType type,
+	}) = _AlwaysPermissionItem;
+
+	const AlwaysPermissionItem._();
 
 	static Map<String, dynamic> encode(AlwaysPermissionItem value) {
 		Map<String, dynamic> entityAsMap = {
@@ -20,7 +25,7 @@ class AlwaysPermissionItem implements PermissionItem {
 
 	static AlwaysPermissionItem fromJSON(Map<String, dynamic> data) {
 		return AlwaysPermissionItem(
-			PermissionType.fromJSON(data["type"])
+			type: PermissionType.fromJSON(data["type"])
 		);
 	}
 }

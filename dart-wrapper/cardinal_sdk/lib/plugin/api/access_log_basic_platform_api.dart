@@ -6,7 +6,7 @@ import 'dart:convert';
 import 'package:cardinal_sdk/utils/internal/platform_exception_convertion.dart';
 import 'package:cardinal_sdk/utils/pagination/paginated_list_iterator.dart';
 import 'package:cardinal_sdk/model/couchdb/doc_identifier.dart';
-import 'package:cardinal_sdk/model/id_with_mandatory_rev.dart';
+import 'package:cardinal_sdk/model/stored_document_identifier.dart';
 
 
 class AccessLogBasicPlatformApi {
@@ -79,12 +79,12 @@ class AccessLogBasicPlatformApi {
 		return DocIdentifier.fromJSON(parsedResJson);
 	}
 
-	Future<List<DocIdentifier>> deleteAccessLogsByIds(String sdkId, List<IdWithMandatoryRev> entityIds) async {
+	Future<List<DocIdentifier>> deleteAccessLogsByIds(String sdkId, List<StoredDocumentIdentifier> entityIds) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'AccessLogBasicApi.deleteAccessLogsByIds',
 			{
 				"sdkId": sdkId,
-				"entityIds": jsonEncode(entityIds.map((x0) => IdWithMandatoryRev.encode(x0)).toList()),
+				"entityIds": jsonEncode(entityIds.map((x0) => StoredDocumentIdentifier.encode(x0)).toList()),
 			}
 		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method deleteAccessLogsByIds");
@@ -139,6 +139,19 @@ class AccessLogBasicPlatformApi {
 		).catchError(convertPlatformException);
 	}
 
+	Future<EncryptedAccessLog> createAccessLog(String sdkId, EncryptedAccessLog entity) async {
+		final res = await _methodChannel.invokeMethod<String>(
+			'AccessLogBasicApi.createAccessLog',
+			{
+				"sdkId": sdkId,
+				"entity": jsonEncode(EncryptedAccessLog.encode(entity)),
+			}
+		).catchError(convertPlatformException);
+		if (res == null) throw AssertionError("received null result from platform method createAccessLog");
+		final parsedResJson = jsonDecode(res);
+		return EncryptedAccessLog.fromJSON(parsedResJson);
+	}
+
 	Future<EncryptedAccessLog> undeleteAccessLogById(String sdkId, String id, String rev) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'AccessLogBasicApi.undeleteAccessLogById',
@@ -179,7 +192,7 @@ class AccessLogBasicPlatformApi {
 		return EncryptedAccessLog.fromJSON(parsedResJson);
 	}
 
-	Future<EncryptedAccessLog> getAccessLog(String sdkId, String entityId) async {
+	Future<EncryptedAccessLog?> getAccessLog(String sdkId, String entityId) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'AccessLogBasicApi.getAccessLog',
 			{
@@ -189,7 +202,7 @@ class AccessLogBasicPlatformApi {
 		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getAccessLog");
 		final parsedResJson = jsonDecode(res);
-		return EncryptedAccessLog.fromJSON(parsedResJson);
+		return parsedResJson == null ? null : EncryptedAccessLog.fromJSON(parsedResJson);
 	}
 
 	Future<List<EncryptedAccessLog>> getAccessLogs(String sdkId, List<String> entityIds) async {

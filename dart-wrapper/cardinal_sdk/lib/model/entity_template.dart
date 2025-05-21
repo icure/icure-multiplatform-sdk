@@ -1,39 +1,24 @@
 // auto-generated file
 import 'package:cardinal_sdk/model/base/stored_document.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+part "entity_template.freezed.dart";
 
 
-class EntityTemplate implements StoredDocument {
-	@override String id;
-	@override String? rev = null;
-	@override int? deletionDate = null;
-	String? userId = null;
-	String? descr = null;
-	Set<String>? keywords = null;
-	String? entityType = null;
-	String? subType = null;
-	bool? defaultTemplate = null;
-	List<Map<String, dynamic>> entity = [];
-	EntityTemplate(
-		this.id,
-		{
-			String? rev,
-			int? deletionDate,
-			String? userId,
-			String? descr,
-			Set<String>? keywords,
-			String? entityType,
-			String? subType,
-			bool? defaultTemplate,
-			List<Map<String, dynamic>>? entity
-		}) : rev = rev ?? null,
-		deletionDate = deletionDate ?? null,
-		userId = userId ?? null,
-		descr = descr ?? null,
-		keywords = keywords ?? null,
-		entityType = entityType ?? null,
-		subType = subType ?? null,
-		defaultTemplate = defaultTemplate ?? null,
-		entity = entity ?? [];
+@freezed
+abstract class EntityTemplate with _$EntityTemplate implements StoredDocument {
+	const factory EntityTemplate({
+		required String id,
+		@Default(null) String? rev,
+		@Default(null) int? deletionDate,
+		@Default(null) String? userId,
+		@Default(null) String? descr,
+		@Default(null) Set<String>? keywords,
+		@Default(null) String? entityType,
+		@Default(null) String? subType,
+		@Default(null) bool? defaultTemplate,
+		@Default([]) List<Map<String, dynamic>> entity,
+	}) = _EntityTemplate;
+
 
 	static Map<String, dynamic> encode(EntityTemplate value) {
 		Map<String, dynamic> entityAsMap = {
@@ -53,7 +38,7 @@ class EntityTemplate implements StoredDocument {
 
 	static EntityTemplate fromJSON(Map<String, dynamic> data) {
 		return EntityTemplate(
-			(data["id"] as String),
+			id: (data["id"] as String),
 			rev: (data["rev"] as String?),
 			deletionDate: (data["deletionDate"] as int?),
 			userId: (data["userId"] as String?),

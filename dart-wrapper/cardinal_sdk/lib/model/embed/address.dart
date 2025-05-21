@@ -9,25 +9,27 @@ import 'package:cardinal_sdk/model/embed/address.dart';
 import 'package:cardinal_sdk/model/embed/encryptable.dart';
 import 'package:cardinal_sdk/model/base/has_tags.dart';
 import 'package:cardinal_sdk/model/base/has_codes.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+part "address.freezed.dart";
 
 
 sealed class Address implements Encryptable, HasTags, HasCodes {
-	@override abstract Set<CodeStub> tags;
-	@override abstract Set<CodeStub> codes;
-	abstract List<Identifier> identifier;
-	abstract AddressType? addressType;
-	abstract String? descr;
-	abstract String? street;
-	abstract String? houseNumber;
-	abstract String? postboxNumber;
-	abstract String? postalCode;
-	abstract String? city;
-	abstract String? state;
-	abstract String? country;
-	abstract String? note;
-	abstract List<Annotation> notes;
+	@override abstract final Set<CodeStub> tags;
+	@override abstract final Set<CodeStub> codes;
+	abstract final List<Identifier> identifier;
+	abstract final AddressType? addressType;
+	abstract final String? descr;
+	abstract final String? street;
+	abstract final String? houseNumber;
+	abstract final String? postboxNumber;
+	abstract final String? postalCode;
+	abstract final String? city;
+	abstract final String? state;
+	abstract final String? country;
+	abstract final String? note;
+	abstract final List<Annotation> notes;
 	List<Telecom> get telecoms;
-	@override abstract Base64String? encryptedSelf;
+	@override abstract final Base64String? encryptedSelf;
 
 	static Map<String, dynamic> encode(Address value) {
 		switch (value) {
@@ -58,56 +60,27 @@ sealed class Address implements Encryptable, HasTags, HasCodes {
 	}
 }
 
-class EncryptedAddress implements Address {
-	@override Set<CodeStub> tags = {};
-	@override Set<CodeStub> codes = {};
-	@override List<Identifier> identifier = [];
-	@override AddressType? addressType = null;
-	@override String? descr = null;
-	@override String? street = null;
-	@override String? houseNumber = null;
-	@override String? postboxNumber = null;
-	@override String? postalCode = null;
-	@override String? city = null;
-	@override String? state = null;
-	@override String? country = null;
-	@override String? note = null;
-	@override List<Annotation> notes = [];
-	@override List<EncryptedTelecom> telecoms = [];
-	@override Base64String? encryptedSelf = null;
-	EncryptedAddress({
-			Set<CodeStub>? tags,
-			Set<CodeStub>? codes,
-			List<Identifier>? identifier,
-			AddressType? addressType,
-			String? descr,
-			String? street,
-			String? houseNumber,
-			String? postboxNumber,
-			String? postalCode,
-			String? city,
-			String? state,
-			String? country,
-			String? note,
-			List<Annotation>? notes,
-			List<EncryptedTelecom>? telecoms,
-			Base64String? encryptedSelf
-		}) : tags = tags ?? {},
-		codes = codes ?? {},
-		identifier = identifier ?? [],
-		addressType = addressType ?? null,
-		descr = descr ?? null,
-		street = street ?? null,
-		houseNumber = houseNumber ?? null,
-		postboxNumber = postboxNumber ?? null,
-		postalCode = postalCode ?? null,
-		city = city ?? null,
-		state = state ?? null,
-		country = country ?? null,
-		note = note ?? null,
-		notes = notes ?? [],
-		telecoms = telecoms ?? [],
-		encryptedSelf = encryptedSelf ?? null;
+@freezed
+abstract class EncryptedAddress with _$EncryptedAddress implements Address {
+	const factory EncryptedAddress({
+		@Default({}) Set<CodeStub> tags,
+		@Default({}) Set<CodeStub> codes,
+		@Default([]) List<Identifier> identifier,
+		@Default(null) AddressType? addressType,
+		@Default(null) String? descr,
+		@Default(null) String? street,
+		@Default(null) String? houseNumber,
+		@Default(null) String? postboxNumber,
+		@Default(null) String? postalCode,
+		@Default(null) String? city,
+		@Default(null) String? state,
+		@Default(null) String? country,
+		@Default(null) String? note,
+		@Default([]) List<Annotation> notes,
+		@Default([]) List<EncryptedTelecom> telecoms,
+		@Default(null) Base64String? encryptedSelf,
+	}) = _EncryptedAddress;
+
 
 	static Map<String, dynamic> encode(EncryptedAddress value) {
 		Map<String, dynamic> entityAsMap = {
@@ -153,56 +126,27 @@ class EncryptedAddress implements Address {
 	}
 }
 
-class DecryptedAddress implements Address {
-	@override Set<CodeStub> tags = {};
-	@override Set<CodeStub> codes = {};
-	@override List<Identifier> identifier = [];
-	@override AddressType? addressType = null;
-	@override String? descr = null;
-	@override String? street = null;
-	@override String? houseNumber = null;
-	@override String? postboxNumber = null;
-	@override String? postalCode = null;
-	@override String? city = null;
-	@override String? state = null;
-	@override String? country = null;
-	@override String? note = null;
-	@override List<Annotation> notes = [];
-	@override List<DecryptedTelecom> telecoms = [];
-	@override Base64String? encryptedSelf = null;
-	DecryptedAddress({
-			Set<CodeStub>? tags,
-			Set<CodeStub>? codes,
-			List<Identifier>? identifier,
-			AddressType? addressType,
-			String? descr,
-			String? street,
-			String? houseNumber,
-			String? postboxNumber,
-			String? postalCode,
-			String? city,
-			String? state,
-			String? country,
-			String? note,
-			List<Annotation>? notes,
-			List<DecryptedTelecom>? telecoms,
-			Base64String? encryptedSelf
-		}) : tags = tags ?? {},
-		codes = codes ?? {},
-		identifier = identifier ?? [],
-		addressType = addressType ?? null,
-		descr = descr ?? null,
-		street = street ?? null,
-		houseNumber = houseNumber ?? null,
-		postboxNumber = postboxNumber ?? null,
-		postalCode = postalCode ?? null,
-		city = city ?? null,
-		state = state ?? null,
-		country = country ?? null,
-		note = note ?? null,
-		notes = notes ?? [],
-		telecoms = telecoms ?? [],
-		encryptedSelf = encryptedSelf ?? null;
+@freezed
+abstract class DecryptedAddress with _$DecryptedAddress implements Address {
+	const factory DecryptedAddress({
+		@Default({}) Set<CodeStub> tags,
+		@Default({}) Set<CodeStub> codes,
+		@Default([]) List<Identifier> identifier,
+		@Default(null) AddressType? addressType,
+		@Default(null) String? descr,
+		@Default(null) String? street,
+		@Default(null) String? houseNumber,
+		@Default(null) String? postboxNumber,
+		@Default(null) String? postalCode,
+		@Default(null) String? city,
+		@Default(null) String? state,
+		@Default(null) String? country,
+		@Default(null) String? note,
+		@Default([]) List<Annotation> notes,
+		@Default([]) List<DecryptedTelecom> telecoms,
+		@Default(null) Base64String? encryptedSelf,
+	}) = _DecryptedAddress;
+
 
 	static Map<String, dynamic> encode(DecryptedAddress value) {
 		Map<String, dynamic> entityAsMap = {

@@ -1,24 +1,19 @@
 // auto-generated file
 import 'package:cardinal_sdk/model/base/code_stub.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+part "substanceproduct.freezed.dart";
 
 
-class Substanceproduct {
-	List<CodeStub> intendedcds = [];
-	List<CodeStub> deliveredcds = [];
-	String? intendedname = null;
-	String? deliveredname = null;
-	String? productId = null;
-	Substanceproduct({
-			List<CodeStub>? intendedcds,
-			List<CodeStub>? deliveredcds,
-			String? intendedname,
-			String? deliveredname,
-			String? productId
-		}) : intendedcds = intendedcds ?? [],
-		deliveredcds = deliveredcds ?? [],
-		intendedname = intendedname ?? null,
-		deliveredname = deliveredname ?? null,
-		productId = productId ?? null;
+@freezed
+abstract class Substanceproduct with _$Substanceproduct {
+	const factory Substanceproduct({
+		@Default([]) List<CodeStub> intendedcds,
+		@Default([]) List<CodeStub> deliveredcds,
+		@Default(null) String? intendedname,
+		@Default(null) String? deliveredname,
+		@Default(null) String? productId,
+	}) = _Substanceproduct;
+
 
 	static Map<String, dynamic> encode(Substanceproduct value) {
 		Map<String, dynamic> entityAsMap = {

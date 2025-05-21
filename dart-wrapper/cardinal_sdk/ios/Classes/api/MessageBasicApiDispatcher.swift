@@ -24,6 +24,8 @@ class MessageBasicApiDispatcher {
     case "deleteMessage": deleteMessage(parameters: parameters, resultCallback: resultCallback)
     case "deleteMessages": deleteMessages(parameters: parameters, resultCallback: resultCallback)
     case "purgeMessage": purgeMessage(parameters: parameters, resultCallback: resultCallback)
+    case "createMessage": createMessage(parameters: parameters, resultCallback: resultCallback)
+    case "createMessageInTopic": createMessageInTopic(parameters: parameters, resultCallback: resultCallback)
     case "undeleteMessage": undeleteMessage(parameters: parameters, resultCallback: resultCallback)
     case "modifyMessage": modifyMessage(parameters: parameters, resultCallback: resultCallback)
     case "undeleteMessageById": undeleteMessageById(parameters: parameters, resultCallback: resultCallback)
@@ -165,6 +167,32 @@ class MessageBasicApiDispatcher {
     	dartResultCallback: resultCallback,
     	sdkId: parameters["sdkId"]!,
     	messageString: parameters["message"]!
+    )
+  }
+
+  private static func createMessage(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    MessageBasicApi.shared.createMessage(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	entityString: parameters["entity"]!
+    )
+  }
+
+  private static func createMessageInTopic(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    MessageBasicApi.shared.createMessageInTopic(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	entityString: parameters["entity"]!
     )
   }
 

@@ -2,31 +2,22 @@
 import 'package:cardinal_sdk/model/base/code_stub.dart';
 import 'package:cardinal_sdk/model/embed/annotation.dart';
 import 'package:cardinal_sdk/model/embed/range.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+part "reference_range.freezed.dart";
 
 
-class ReferenceRange {
-	double? low = null;
-	double? high = null;
-	String? stringValue = null;
-	List<CodeStub> tags = [];
-	List<CodeStub> codes = [];
-	List<Annotation> notes = [];
-	Range? age = null;
-	ReferenceRange({
-			double? low,
-			double? high,
-			String? stringValue,
-			List<CodeStub>? tags,
-			List<CodeStub>? codes,
-			List<Annotation>? notes,
-			Range? age
-		}) : low = low ?? null,
-		high = high ?? null,
-		stringValue = stringValue ?? null,
-		tags = tags ?? [],
-		codes = codes ?? [],
-		notes = notes ?? [],
-		age = age ?? null;
+@freezed
+abstract class ReferenceRange with _$ReferenceRange {
+	const factory ReferenceRange({
+		@Default(null) double? low,
+		@Default(null) double? high,
+		@Default(null) String? stringValue,
+		@Default([]) List<CodeStub> tags,
+		@Default([]) List<CodeStub> codes,
+		@Default([]) List<Annotation> notes,
+		@Default(null) Range? age,
+	}) = _ReferenceRange;
+
 
 	static Map<String, dynamic> encode(ReferenceRange value) {
 		Map<String, dynamic> entityAsMap = {

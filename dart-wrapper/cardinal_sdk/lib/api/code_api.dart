@@ -96,14 +96,14 @@ class CodeApi {
 		);
 	}
 
-	Future<Code> getCode(String codeId) async {
+	Future<Code?> getCode(String codeId) async {
 		return await CardinalSdkPlatformInterface.instance.apis.code.getCode(
 			_sdkId,
 			codeId,
 		);
 	}
 
-	Future<Code> getCodeWithParts(String type, String code, String version) async {
+	Future<Code?> getCodeWithParts(String type, String code, String version) async {
 		return await CardinalSdkPlatformInterface.instance.apis.code.getCodeWithParts(
 			_sdkId,
 			type,

@@ -18,8 +18,6 @@ public object FormApiDispatcher {
       String?,
     ) -> Unit,
   ): Boolean = when(methodName) {
-    "createForm" -> createForm(parameters, resultCallback)
-    "createForms" -> createForms(parameters, resultCallback)
     "withEncryptionMetadata" -> withEncryptionMetadata(parameters, resultCallback)
     "getEncryptionKeysOf" -> getEncryptionKeysOf(parameters, resultCallback)
     "hasWriteAccess" -> hasWriteAccess(parameters, resultCallback)
@@ -44,6 +42,8 @@ public object FormApiDispatcher {
     "shareWithMany" -> shareWithMany(parameters, resultCallback)
     "filterFormsBy" -> filterFormsBy(parameters, resultCallback)
     "filterFormsBySorted" -> filterFormsBySorted(parameters, resultCallback)
+    "createForm" -> createForm(parameters, resultCallback)
+    "createForms" -> createForms(parameters, resultCallback)
     "modifyForm" -> modifyForm(parameters, resultCallback)
     "undeleteFormById" -> undeleteFormById(parameters, resultCallback)
     "undeleteForm" -> undeleteForm(parameters, resultCallback)
@@ -56,6 +56,8 @@ public object FormApiDispatcher {
     "encrypted.shareWithMany" -> encrypted_shareWithMany(parameters, resultCallback)
     "encrypted.filterFormsBy" -> encrypted_filterFormsBy(parameters, resultCallback)
     "encrypted.filterFormsBySorted" -> encrypted_filterFormsBySorted(parameters, resultCallback)
+    "encrypted.createForm" -> encrypted_createForm(parameters, resultCallback)
+    "encrypted.createForms" -> encrypted_createForms(parameters, resultCallback)
     "encrypted.modifyForm" -> encrypted_modifyForm(parameters, resultCallback)
     "encrypted.undeleteFormById" -> encrypted_undeleteFormById(parameters, resultCallback)
     "encrypted.undeleteForm" -> encrypted_undeleteForm(parameters, resultCallback)
@@ -68,6 +70,8 @@ public object FormApiDispatcher {
     "tryAndRecover.shareWithMany" -> tryAndRecover_shareWithMany(parameters, resultCallback)
     "tryAndRecover.filterFormsBy" -> tryAndRecover_filterFormsBy(parameters, resultCallback)
     "tryAndRecover.filterFormsBySorted" -> tryAndRecover_filterFormsBySorted(parameters, resultCallback)
+    "tryAndRecover.createForm" -> tryAndRecover_createForm(parameters, resultCallback)
+    "tryAndRecover.createForms" -> tryAndRecover_createForms(parameters, resultCallback)
     "tryAndRecover.modifyForm" -> tryAndRecover_modifyForm(parameters, resultCallback)
     "tryAndRecover.undeleteFormById" -> tryAndRecover_undeleteFormById(parameters, resultCallback)
     "tryAndRecover.undeleteForm" -> tryAndRecover_undeleteForm(parameters, resultCallback)
@@ -78,32 +82,6 @@ public object FormApiDispatcher {
     "tryAndRecover.getLatestFormByUniqueId" -> tryAndRecover_getLatestFormByUniqueId(parameters, resultCallback)
     else -> null
   }?.let { true } ?: false
-
-  private fun createForm(parameters: Map<String, String>, resultCallback: (
-    String?,
-    String?,
-    String?,
-    String?,
-  ) -> Unit) {
-    FormApi.createForm(
-      resultCallback,
-      parameters.getValue("sdkId"),
-      parameters.getValue("entity"),
-    )
-  }
-
-  private fun createForms(parameters: Map<String, String>, resultCallback: (
-    String?,
-    String?,
-    String?,
-    String?,
-  ) -> Unit) {
-    FormApi.createForms(
-      resultCallback,
-      parameters.getValue("sdkId"),
-      parameters.getValue("entities"),
-    )
-  }
 
   private fun withEncryptionMetadata(parameters: Map<String, String>, resultCallback: (
     String?,
@@ -430,6 +408,32 @@ public object FormApiDispatcher {
     )
   }
 
+  private fun createForm(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    FormApi.createForm(
+      resultCallback,
+      parameters.getValue("sdkId"),
+      parameters.getValue("entity"),
+    )
+  }
+
+  private fun createForms(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    FormApi.createForms(
+      resultCallback,
+      parameters.getValue("sdkId"),
+      parameters.getValue("entities"),
+    )
+  }
+
   private fun modifyForm(parameters: Map<String, String>, resultCallback: (
     String?,
     String?,
@@ -587,6 +591,32 @@ public object FormApiDispatcher {
       resultCallback,
       parameters.getValue("sdkId"),
       parameters.getValue("filter"),
+    )
+  }
+
+  private fun encrypted_createForm(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    FormApi.encrypted.createForm(
+      resultCallback,
+      parameters.getValue("sdkId"),
+      parameters.getValue("entity"),
+    )
+  }
+
+  private fun encrypted_createForms(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    FormApi.encrypted.createForms(
+      resultCallback,
+      parameters.getValue("sdkId"),
+      parameters.getValue("entities"),
     )
   }
 
@@ -748,6 +778,32 @@ public object FormApiDispatcher {
       resultCallback,
       parameters.getValue("sdkId"),
       parameters.getValue("filter"),
+    )
+  }
+
+  private fun tryAndRecover_createForm(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    FormApi.tryAndRecover.createForm(
+      resultCallback,
+      parameters.getValue("sdkId"),
+      parameters.getValue("entity"),
+    )
+  }
+
+  private fun tryAndRecover_createForms(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    FormApi.tryAndRecover.createForms(
+      resultCallback,
+      parameters.getValue("sdkId"),
+      parameters.getValue("entities"),
     )
   }
 

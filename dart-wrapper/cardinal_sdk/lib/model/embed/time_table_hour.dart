@@ -1,14 +1,15 @@
 // auto-generated file
+import 'package:freezed_annotation/freezed_annotation.dart';
+part "time_table_hour.freezed.dart";
 
 
-class TimeTableHour {
-	int? startHour = null;
-	int? endHour = null;
-	TimeTableHour({
-			int? startHour,
-			int? endHour
-		}) : startHour = startHour ?? null,
-		endHour = endHour ?? null;
+@freezed
+abstract class TimeTableHour with _$TimeTableHour {
+	const factory TimeTableHour({
+		@Default(null) int? startHour,
+		@Default(null) int? endHour,
+	}) = _TimeTableHour;
+
 
 	static Map<String, dynamic> encode(TimeTableHour value) {
 		Map<String, dynamic> entityAsMap = {

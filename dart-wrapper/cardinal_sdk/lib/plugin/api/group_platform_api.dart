@@ -18,6 +18,7 @@ import 'package:cardinal_sdk/model/id_with_rev.dart';
 import 'package:cardinal_sdk/model/couchdb/group_databases_info.dart';
 import 'package:cardinal_sdk/model/replication_info.dart';
 import 'package:cardinal_sdk/model/couchdb/doc_identifier.dart';
+import 'package:cardinal_sdk/model/security/external_jwt_config.dart';
 
 
 class GroupPlatformApi {
@@ -339,5 +340,34 @@ class GroupPlatformApi {
 		if (res == null) throw AssertionError("received null result from platform method listAllGroupsIds");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => DocIdentifier.fromJSON(x1) ).toList();
+	}
+
+	Future<Group> createOrUpdateExternalJwtConfig(String sdkId, String groupId, String key, ExternalJwtConfig config) async {
+		final res = await _methodChannel.invokeMethod<String>(
+			'GroupApi.createOrUpdateExternalJwtConfig',
+			{
+				"sdkId": sdkId,
+				"groupId": jsonEncode(groupId),
+				"key": jsonEncode(key),
+				"config": jsonEncode(ExternalJwtConfig.encode(config)),
+			}
+		).catchError(convertPlatformException);
+		if (res == null) throw AssertionError("received null result from platform method createOrUpdateExternalJwtConfig");
+		final parsedResJson = jsonDecode(res);
+		return Group.fromJSON(parsedResJson);
+	}
+
+	Future<Group> removeExternalJwtConfig(String sdkId, String groupId, String key) async {
+		final res = await _methodChannel.invokeMethod<String>(
+			'GroupApi.removeExternalJwtConfig',
+			{
+				"sdkId": sdkId,
+				"groupId": jsonEncode(groupId),
+				"key": jsonEncode(key),
+			}
+		).catchError(convertPlatformException);
+		if (res == null) throw AssertionError("received null result from platform method removeExternalJwtConfig");
+		final parsedResJson = jsonDecode(res);
+		return Group.fromJSON(parsedResJson);
 	}
 }

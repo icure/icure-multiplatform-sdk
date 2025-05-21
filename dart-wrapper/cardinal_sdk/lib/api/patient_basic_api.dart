@@ -3,22 +3,22 @@ import 'package:cardinal_sdk/filters/filter_options.dart';
 import 'package:cardinal_sdk/model/patient.dart';
 import 'package:cardinal_sdk/plugin/cardinal_sdk_platform_interface.dart';
 import 'package:cardinal_sdk/utils/pagination/paginated_list_iterator.dart';
-import 'package:cardinal_sdk/model/couchdb/doc_identifier.dart';
-import 'package:cardinal_sdk/model/id_with_mandatory_rev.dart';
+import 'package:cardinal_sdk/model/stored_document_identifier.dart';
 import 'package:cardinal_sdk/crypto/entities/entity_access_information.dart';
-import 'package:cardinal_sdk/model/id_with_rev.dart';
 import 'package:cardinal_sdk/subscription/subscription_event_type.dart';
 import 'package:cardinal_sdk/subscription/entity_subscription_configuration.dart';
 import 'package:cardinal_sdk/subscription/entity_subscription.dart';
+import 'package:cardinal_sdk/model/group_scoped.dart';
 
 
 class PatientBasicApi {
 	final String _sdkId;
 	final Object _dartSdk;
+	final PatientBasicInGroupApi inGroup;
 	PatientBasicApi(
 		this._sdkId,
 		this._dartSdk
-		);
+		) : inGroup = PatientBasicInGroupApi(_sdkId, _dartSdk);
 
 	Future<List<String>> matchPatientsBy(BaseFilterOptions<Patient> filter) async {
 		return await CardinalSdkPlatformInterface.instance.apis.patientBasic.matchPatientsBy(
@@ -48,7 +48,7 @@ class PatientBasicApi {
 		);
 	}
 
-	Future<DocIdentifier> deletePatientById(String entityId, String rev) async {
+	Future<StoredDocumentIdentifier> deletePatientById(String entityId, String rev) async {
 		return await CardinalSdkPlatformInterface.instance.apis.patientBasic.deletePatientById(
 			_sdkId,
 			entityId,
@@ -56,7 +56,7 @@ class PatientBasicApi {
 		);
 	}
 
-	Future<List<DocIdentifier>> deletePatientsByIds(List<IdWithMandatoryRev> entityIds) async {
+	Future<List<StoredDocumentIdentifier>> deletePatientsByIds(List<StoredDocumentIdentifier> entityIds) async {
 		return await CardinalSdkPlatformInterface.instance.apis.patientBasic.deletePatientsByIds(
 			_sdkId,
 			entityIds,
@@ -71,14 +71,14 @@ class PatientBasicApi {
 		);
 	}
 
-	Future<DocIdentifier> deletePatient(Patient patient) async {
+	Future<StoredDocumentIdentifier> deletePatient(Patient patient) async {
 		return await CardinalSdkPlatformInterface.instance.apis.patientBasic.deletePatient(
 			_sdkId,
 			patient,
 		);
 	}
 
-	Future<List<DocIdentifier>> deletePatients(List<Patient> patients) async {
+	Future<List<StoredDocumentIdentifier>> deletePatients(List<Patient> patients) async {
 		return await CardinalSdkPlatformInterface.instance.apis.patientBasic.deletePatients(
 			_sdkId,
 			patients,
@@ -96,6 +96,27 @@ class PatientBasicApi {
 		return await CardinalSdkPlatformInterface.instance.apis.patientBasic.getDataOwnersWithAccessTo(
 			_sdkId,
 			patient,
+		);
+	}
+
+	Future<EncryptedPatient> createPatient(EncryptedPatient patient) async {
+		return await CardinalSdkPlatformInterface.instance.apis.patientBasic.createPatient(
+			_sdkId,
+			patient,
+		);
+	}
+
+	Future<List<StoredDocumentIdentifier>> createPatientsMinimal(List<EncryptedPatient> patients) async {
+		return await CardinalSdkPlatformInterface.instance.apis.patientBasic.createPatientsMinimal(
+			_sdkId,
+			patients,
+		);
+	}
+
+	Future<List<EncryptedPatient>> createPatients(List<EncryptedPatient> patients) async {
+		return await CardinalSdkPlatformInterface.instance.apis.patientBasic.createPatients(
+			_sdkId,
+			patients,
 		);
 	}
 
@@ -121,14 +142,14 @@ class PatientBasicApi {
 		);
 	}
 
-	Future<List<EncryptedPatient>> undeletePatients(List<IdWithMandatoryRev> ids) async {
+	Future<List<EncryptedPatient>> undeletePatients(List<StoredDocumentIdentifier> ids) async {
 		return await CardinalSdkPlatformInterface.instance.apis.patientBasic.undeletePatients(
 			_sdkId,
 			ids,
 		);
 	}
 
-	Future<EncryptedPatient> getPatient(String entityId) async {
+	Future<EncryptedPatient?> getPatient(String entityId) async {
 		return await CardinalSdkPlatformInterface.instance.apis.patientBasic.getPatient(
 			_sdkId,
 			entityId,
@@ -150,10 +171,17 @@ class PatientBasicApi {
 		);
 	}
 
-	Future<List<IdWithRev>> modifyPatients(List<EncryptedPatient> patientDtos) async {
+	Future<List<StoredDocumentIdentifier>> modifyPatientsMinimal(List<EncryptedPatient> patients) async {
+		return await CardinalSdkPlatformInterface.instance.apis.patientBasic.modifyPatientsMinimal(
+			_sdkId,
+			patients,
+		);
+	}
+
+	Future<List<EncryptedPatient>> modifyPatients(List<EncryptedPatient> patients) async {
 		return await CardinalSdkPlatformInterface.instance.apis.patientBasic.modifyPatients(
 			_sdkId,
-			patientDtos,
+			patients,
 		);
 	}
 
@@ -171,6 +199,114 @@ class PatientBasicApi {
 			events,
 			filter,
 			subscriptionConfig,
+		);
+	}
+}
+
+class PatientBasicInGroupApi {
+	final String _sdkId;
+	final Object _dartSdk;
+	PatientBasicInGroupApi(
+		this._sdkId,
+		this._dartSdk
+		);
+
+	Future<List<String>> matchPatientsBy(String groupId, BaseFilterOptions<Patient> filter) async {
+		return await CardinalSdkPlatformInterface.instance.apis.patientBasic.inGroup.matchPatientsBy(
+			_sdkId,
+			groupId,
+			filter,
+		);
+	}
+
+	Future<List<String>> matchPatientsBySorted(String groupId, BaseSortableFilterOptions<Patient> filter) async {
+		return await CardinalSdkPlatformInterface.instance.apis.patientBasic.inGroup.matchPatientsBySorted(
+			_sdkId,
+			groupId,
+			filter,
+		);
+	}
+
+	Future<PaginatedListIterator<GroupScoped<EncryptedPatient>>> filterPatientsBy(String groupId, BaseFilterOptions<Patient> filter) async {
+		return await CardinalSdkPlatformInterface.instance.apis.patientBasic.inGroup.filterPatientsBy(
+			_sdkId,
+			groupId,
+			filter,
+		);
+	}
+
+	Future<PaginatedListIterator<GroupScoped<EncryptedPatient>>> filterPatientsBySorted(String groupId, BaseSortableFilterOptions<Patient> filter) async {
+		return await CardinalSdkPlatformInterface.instance.apis.patientBasic.inGroup.filterPatientsBySorted(
+			_sdkId,
+			groupId,
+			filter,
+		);
+	}
+
+	Future<EntityAccessInformation> getDataOwnersWithAccessTo(GroupScoped<Patient> patient) async {
+		return await CardinalSdkPlatformInterface.instance.apis.patientBasic.inGroup.getDataOwnersWithAccessTo(
+			_sdkId,
+			patient,
+		);
+	}
+
+	Future<GroupScoped<EncryptedPatient>> createPatient(GroupScoped<EncryptedPatient> patient) async {
+		return await CardinalSdkPlatformInterface.instance.apis.patientBasic.inGroup.createPatient(
+			_sdkId,
+			patient,
+		);
+	}
+
+	Future<List<GroupScoped<StoredDocumentIdentifier>>> createPatientsMinimal(List<GroupScoped<EncryptedPatient>> patients) async {
+		return await CardinalSdkPlatformInterface.instance.apis.patientBasic.inGroup.createPatientsMinimal(
+			_sdkId,
+			patients,
+		);
+	}
+
+	Future<List<GroupScoped<EncryptedPatient>>> createPatients(List<GroupScoped<EncryptedPatient>> patients) async {
+		return await CardinalSdkPlatformInterface.instance.apis.patientBasic.inGroup.createPatients(
+			_sdkId,
+			patients,
+		);
+	}
+
+	Future<GroupScoped<EncryptedPatient>?> getPatient(String groupId, String entityId) async {
+		return await CardinalSdkPlatformInterface.instance.apis.patientBasic.inGroup.getPatient(
+			_sdkId,
+			groupId,
+			entityId,
+		);
+	}
+
+	Future<GroupScoped<EncryptedPatient>> getPatientResolvingMerges(String groupId, String patientId, int? maxMergeDepth) async {
+		return await CardinalSdkPlatformInterface.instance.apis.patientBasic.inGroup.getPatientResolvingMerges(
+			_sdkId,
+			groupId,
+			patientId,
+			maxMergeDepth,
+		);
+	}
+
+	Future<List<GroupScoped<EncryptedPatient>>> getPatients(String groupId, List<String> patientIds) async {
+		return await CardinalSdkPlatformInterface.instance.apis.patientBasic.inGroup.getPatients(
+			_sdkId,
+			groupId,
+			patientIds,
+		);
+	}
+
+	Future<List<GroupScoped<StoredDocumentIdentifier>>> modifyPatientsMinimal(List<GroupScoped<EncryptedPatient>> patients) async {
+		return await CardinalSdkPlatformInterface.instance.apis.patientBasic.inGroup.modifyPatientsMinimal(
+			_sdkId,
+			patients,
+		);
+	}
+
+	Future<List<GroupScoped<EncryptedPatient>>> modifyPatients(List<GroupScoped<EncryptedPatient>> patients) async {
+		return await CardinalSdkPlatformInterface.instance.apis.patientBasic.inGroup.modifyPatients(
+			_sdkId,
+			patients,
 		);
 	}
 }

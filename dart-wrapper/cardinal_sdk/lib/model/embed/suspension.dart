@@ -1,20 +1,17 @@
 // auto-generated file
+import 'package:freezed_annotation/freezed_annotation.dart';
+part "suspension.freezed.dart";
 
 
-class Suspension {
-	int? beginMoment = null;
-	int? endMoment = null;
-	String? suspensionReason = null;
-	String? lifecycle = null;
-	Suspension({
-			int? beginMoment,
-			int? endMoment,
-			String? suspensionReason,
-			String? lifecycle
-		}) : beginMoment = beginMoment ?? null,
-		endMoment = endMoment ?? null,
-		suspensionReason = suspensionReason ?? null,
-		lifecycle = lifecycle ?? null;
+@freezed
+abstract class Suspension with _$Suspension {
+	const factory Suspension({
+		@Default(null) int? beginMoment,
+		@Default(null) int? endMoment,
+		@Default(null) String? suspensionReason,
+		@Default(null) String? lifecycle,
+	}) = _Suspension;
+
 
 	static Map<String, dynamic> encode(Suspension value) {
 		Map<String, dynamic> entityAsMap = {
