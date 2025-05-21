@@ -10,15 +10,15 @@ interface AgendaFiltersFactory {
 
 	byUser(userId: string): BaseFilterOptions<Agenda>;
 
-	byUser(userReference: EntityReferenceInGroup): BaseFilterOptions<Agenda>;
+	byUserInGroup(userReference: EntityReferenceInGroup): BaseFilterOptions<Agenda>;
 
 	readableByUser(userId: string): BaseFilterOptions<Agenda>;
 
-	readableByUser(userReference: EntityReferenceInGroup): BaseFilterOptions<Agenda>;
+	readableByUserInGroup(userReference: EntityReferenceInGroup): BaseFilterOptions<Agenda>;
 
 	readableByUserRights(userId: string): BaseFilterOptions<Agenda>;
 
-	readableByUserRights(userReference: EntityReferenceInGroup): BaseFilterOptions<Agenda>;
+	readableByUserRightsInGroup(userReference: EntityReferenceInGroup): BaseFilterOptions<Agenda>;
 
 	byStringProperty(propertyId: string, propertyValue: string): BaseFilterOptions<Agenda>;
 
@@ -35,11 +35,11 @@ interface AgendaFiltersFactory {
 export const AgendaFilters: AgendaFiltersFactory = {
 			all: () => InternalAgendaFiltersObj.getInstance().all(),
 			byUser: (userId) => InternalAgendaFiltersObj.getInstance().byUser(userId),
-			byUser: (userReference) => InternalAgendaFiltersObj.getInstance().byUser(userReference),
+			byUserInGroup: (userReference) => InternalAgendaFiltersObj.getInstance().byUserInGroup(userReference),
 			readableByUser: (userId) => InternalAgendaFiltersObj.getInstance().readableByUser(userId),
-			readableByUser: (userReference) => InternalAgendaFiltersObj.getInstance().readableByUser(userReference),
+			readableByUserInGroup: (userReference) => InternalAgendaFiltersObj.getInstance().readableByUserInGroup(userReference),
 			readableByUserRights: (userId) => InternalAgendaFiltersObj.getInstance().readableByUserRights(userId),
-			readableByUserRights: (userReference) => InternalAgendaFiltersObj.getInstance().readableByUserRights(userReference),
+			readableByUserRightsInGroup: (userReference) => InternalAgendaFiltersObj.getInstance().readableByUserRightsInGroup(userReference),
 			byStringProperty: (propertyId, propertyValue) => InternalAgendaFiltersObj.getInstance().byStringProperty(propertyId, propertyValue),
 			byBooleanProperty: (propertyId, propertyValue) => InternalAgendaFiltersObj.getInstance().byBooleanProperty(propertyId, propertyValue),
 			byLongProperty: (propertyId, propertyValue) => InternalAgendaFiltersObj.getInstance().byLongProperty(propertyId, propertyValue),

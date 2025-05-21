@@ -29,9 +29,9 @@ public object InternalAgendaFiltersObj {
 		return BaseFilterOptionsJsImpl(result)
 	}
 
-	public fun byUser(userReference: EntityReferenceInGroupJs): BaseFilterOptionsJs<AgendaJs> {
+	public fun byUserInGroup(userReference: EntityReferenceInGroupJs): BaseFilterOptionsJs<AgendaJs> {
 		val userReferenceConverted: EntityReferenceInGroup = entityReferenceInGroup_fromJs(userReference)
-		val result = AgendaFilters.byUser(
+		val result = AgendaFilters.byUserInGroup(
 			userReferenceConverted,
 		)
 		return BaseFilterOptionsJsImpl(result)
@@ -45,9 +45,10 @@ public object InternalAgendaFiltersObj {
 		return BaseFilterOptionsJsImpl(result)
 	}
 
-	public fun readableByUser(userReference: EntityReferenceInGroupJs): BaseFilterOptionsJs<AgendaJs> {
+	public fun readableByUserInGroup(userReference: EntityReferenceInGroupJs):
+			BaseFilterOptionsJs<AgendaJs> {
 		val userReferenceConverted: EntityReferenceInGroup = entityReferenceInGroup_fromJs(userReference)
-		val result = AgendaFilters.readableByUser(
+		val result = AgendaFilters.readableByUserInGroup(
 			userReferenceConverted,
 		)
 		return BaseFilterOptionsJsImpl(result)
@@ -61,10 +62,10 @@ public object InternalAgendaFiltersObj {
 		return BaseFilterOptionsJsImpl(result)
 	}
 
-	public fun readableByUserRights(userReference: EntityReferenceInGroupJs):
+	public fun readableByUserRightsInGroup(userReference: EntityReferenceInGroupJs):
 			BaseFilterOptionsJs<AgendaJs> {
 		val userReferenceConverted: EntityReferenceInGroup = entityReferenceInGroup_fromJs(userReference)
-		val result = AgendaFilters.readableByUserRights(
+		val result = AgendaFilters.readableByUserRightsInGroup(
 			userReferenceConverted,
 		)
 		return BaseFilterOptionsJsImpl(result)

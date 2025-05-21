@@ -198,16 +198,16 @@ mavenPublishing {
 
 	publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL, automaticRelease = true)
 
-//	if (projectHasSignatureProperties()) {
+	if (projectHasSignatureProperties()) {
 		signAllPublications()
-//	}
+	}
 }
 
 // Configure all publishing tasks
-//if (!projectHasSignatureProperties()) {
+if (!projectHasSignatureProperties()) {
 	tasks.withType<PublishToMavenRepository> {
 		doFirst {
 			throw IllegalStateException("Cannot publish to Maven Central without signing properties")
 		}
 	}
-//}
+}
