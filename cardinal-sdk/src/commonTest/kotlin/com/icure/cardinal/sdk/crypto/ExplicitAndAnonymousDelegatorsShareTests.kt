@@ -77,7 +77,7 @@ class ExplicitAndAnonymousDelegatorsShareTests : StringSpec({
 				)
 			)
 		).shouldNotBeNull()
-		val sfk = delegatorApi.patient.getSecretIdsOf(patient).also { it shouldHaveSize 1 }
+		val sfk = delegatorApi.patient.getSecretIdsOf(patient).keys.also { it shouldHaveSize 1 }
 		val he = delegatorApi.healthElement.createHealthElement(
 			delegatorApi.healthElement.withEncryptionMetadata(
 				base = DecryptedHealthElement(

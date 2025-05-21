@@ -15,6 +15,7 @@ import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.model.filter.AbstractFilter
 import com.icure.cardinal.sdk.model.filter.chain.FilterChain
 import com.icure.cardinal.sdk.model.security.Enable2faRequest
+import com.icure.cardinal.sdk.model.security.LoginIdentifier
 import com.icure.cardinal.sdk.model.security.TokenWithGroup
 import com.icure.cardinal.sdk.serialization.FilterChainSerializer
 import com.icure.cardinal.sdk.serialization.UserAbstractFilterSerializer
@@ -566,7 +567,7 @@ class RawUserApiImpl(
 			accept(Application.Json)
 		}.wrap()
 
-	override suspend fun enableFasAuthenticationForUser(fasJwtToken: String): HttpResponse<User> =
+	override suspend fun enableFasAuthenticationForUser(fasJwtToken: String): HttpResponse<Boolean> =
 		post(authProvider) {
 			url {
 				takeFrom(apiUrl)
@@ -575,6 +576,37 @@ class RawUserApiImpl(
 			contentType(Application.Json)
 			accept(Application.Json)
 			`header`("fasJwtToken", fasJwtToken)
+		}.wrap()
+
+	override suspend fun setExternalJwtAuthByIdentifiersForCurrentUser(
+		externalJwtConfigId: String,
+		externalAuthenticationToken: String,
+	): HttpResponse<Boolean> =
+		put(authProvider) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "user", "current", "externalJwtAuth", externalJwtConfigId, "identifiers")
+			}
+			contentType(Application.Json)
+			accept(Application.Json)
+			`header`("externalAuthenticationToken", externalAuthenticationToken)
+		}.wrap()
+
+	override suspend fun setLoginIdentifiers(
+		userId: String,
+		groupId: String,
+		replaceExisting: Boolean,
+		identifier: LoginIdentifier,
+	): HttpResponse<Boolean> =
+		put(authProvider) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "user", userId, "inGroup", groupId, "identifiers")
+				parameter("replaceExisting", replaceExisting)
+			}
+			contentType(Application.Json)
+			accept(Application.Json)
+			setBody(identifier)
 		}.wrap()
 
 	override suspend fun createAdminUser(userDto: User): HttpResponse<User> =

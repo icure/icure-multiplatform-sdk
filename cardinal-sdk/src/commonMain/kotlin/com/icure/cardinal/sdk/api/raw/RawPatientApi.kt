@@ -209,6 +209,7 @@ public interface RawPatientApi {
 		fromId: String,
 		expectedFromRev: String,
 		updatedInto: EncryptedPatient,
+		omitEncryptionKeysOfFrom: Boolean? = null,
 	): HttpResponse<EncryptedPatient>
 	// endregion
 

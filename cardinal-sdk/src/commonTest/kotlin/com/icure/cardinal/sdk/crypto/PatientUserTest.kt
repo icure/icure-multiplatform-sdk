@@ -79,9 +79,9 @@ class PatientUserTest : StringSpec({
 			HealthElementFilters.byPatientsForSelf(listOf(initializedPatient))
 		).next(5).shouldHaveSize(1).first().note.shouldNotBeNull() shouldBe createdData.note
 		// Hcp 2 should find the secret ids created both by hcp1 and the patient
-		hcp2Api.patient.getSecretIdsOf(initializedPatient).shouldHaveSize(2).shouldContainAll(createdData.secretForeignKeys)
+		hcp2Api.patient.getSecretIdsOf(initializedPatient).keys.shouldHaveSize(2).shouldContainAll(createdData.secretForeignKeys)
 		// Hcp 1 shouldn't find the secret id created by patient
-		hcp1Api.patient.getSecretIdsOf(initializedPatient).shouldHaveSize(1).shouldNotContainAnyOf(createdData.secretForeignKeys)
+		hcp1Api.patient.getSecretIdsOf(initializedPatient).keys.shouldHaveSize(1).shouldNotContainAnyOf(createdData.secretForeignKeys)
 	}
 
 	"A new patient user should be able to initialize his encryption metadata" {

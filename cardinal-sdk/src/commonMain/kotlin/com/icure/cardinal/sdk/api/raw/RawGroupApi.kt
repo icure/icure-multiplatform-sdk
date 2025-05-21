@@ -95,6 +95,13 @@ public interface RawGroupApi {
 		description: String? = null,
 	): HttpResponse<String>
 
+	suspend fun getOperationTokenForGroup(
+		groupId: String,
+		operation: Operation,
+		duration: Long?,
+		description: String? = null,
+	): HttpResponse<String>
+
 	suspend fun deleteOperationToken(tokenId: String): HttpResponse<Unit>
 
 	suspend fun setDefaultRoles(

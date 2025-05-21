@@ -155,6 +155,28 @@ class EntityEncryptionServiceImpl(
 			SecurityMetadataType.SecretId
 		).mapValues { (_, v) -> v.mapTo(mutableSetOf()) { it.value } }
 
+	override suspend fun secretIdsWithDataOwnersInfo(
+		entityGroupId: String?,
+		entities: List<HasEncryptionMetadata>,
+		entitiesType: EntityWithEncryptionMetadataTypeName
+	): Map<String, Map<String, Set<EntityReferenceInGroup>>> =
+		baseSecurityMetadataDecryptor.decryptAll(
+			entityGroupId,
+			entities,
+			entitiesType,
+			dataOwnersForDecryption(null).toSet(),
+			SecurityMetadataType.SecretId
+		).mapValues { (_, v) ->
+			v.groupingBy {
+				it.value
+			}.aggregate { key, accumulator, element, _ ->
+				if (accumulator != null)
+					accumulator + element.dataOwnersWithAccess
+				else
+					element.dataOwnersWithAccess
+			}
+		}
+
 	override suspend fun encryptionKeysForHcpHierarchyOf(
 		entityGroupId: String?,
 		entity: HasEncryptionMetadata,
@@ -191,9 +213,10 @@ class EntityEncryptionServiceImpl(
 			securityMetadataType
 		).values.single()
 		return hierarchyIds.map { currDataOwner ->
+			val currentDataOwnerReference = EntityReferenceInGroup(currDataOwner, null)
 			HierarchicallyDecryptedMetadata(
 				allDecryptedData
-					.filter { currDataOwner in it.dataOwnersWithAccess }
+					.filter { currentDataOwnerReference in it.dataOwnersWithAccess }
 					.map { it.value }
 					.toSet(),
 				currDataOwner
@@ -813,9 +836,10 @@ class EntityEncryptionServiceImpl(
 				entityType,
 				subHierarchySet
 			) != AccessLevel.Write
-		val delegateLegacySecretIds = legacySecretIds.valuesAvailableToDataOwners(subHierarchySet)
-		val delegateLegacyOwningEntityIds = legacyOwningEntityIds.valuesAvailableToDataOwners(subHierarchySet)
-		val delegateLegacyEncryptionKeys = legacyEncryptionKeys.valuesAvailableToDataOwners(subHierarchySet)
+		val subHierarchyReferenceSet = subHierarchySet.mapTo(mutableSetOf()) { EntityReferenceInGroup(it, null) }
+		val delegateLegacySecretIds = legacySecretIds.valuesAvailableToDataOwners(subHierarchyReferenceSet)
+		val delegateLegacyOwningEntityIds = legacyOwningEntityIds.valuesAvailableToDataOwners(subHierarchyReferenceSet)
+		val delegateLegacyEncryptionKeys = legacyEncryptionKeys.valuesAvailableToDataOwners(subHierarchyReferenceSet)
 		val missingLegacySecretIds =
 			if (delegateLegacySecretIds.isEmpty())
 				delegateLegacySecretIds
@@ -1009,7 +1033,7 @@ class EntityEncryptionServiceImpl(
 			SecretIdUseOption.UseNone -> emptySet()
 		}
 
-	private fun <T : Any> Iterable<DecryptedMetadataDetails<T>>.valuesAvailableToDataOwners(dataOwners: Set<String>): Set<T> =
+	private fun <T : Any> Iterable<DecryptedMetadataDetails<T>>.valuesAvailableToDataOwners(dataOwners: Set<EntityReferenceInGroup>): Set<T> =
 		mapNotNullTo(mutableSetOf()) { decryptedDataDetails -> if (dataOwners.any { it in decryptedDataDetails.dataOwnersWithAccess }) decryptedDataDetails.value else null }
 
 	private suspend fun SecretIdShareOptions.resolve(

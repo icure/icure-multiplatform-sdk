@@ -1,14 +1,14 @@
 import com.github.jk1.license.render.CsvReportRenderer
 import com.github.jk1.license.render.ReportRenderer
+import jdk.tools.jlink.resources.plugins
 
-@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
 	kotlinMultiplatform(false)
 	kotlinSerialization(false)
 	kotestMultiplatform(false)
 	androidLibrary(false)
 	licenseReportPlugin(true)
-	id("com.vanniktech.maven.publish") version "0.30.0" apply false
+	id("com.vanniktech.maven.publish") version "0.31.0" apply false
 }
 
 licenseReport {
