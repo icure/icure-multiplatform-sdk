@@ -1,3 +1,3 @@
-## 0.0.1
+## 2.0.0-PREVIEW-3
 
-* TODO: Describe initial release.
+* Initial release of cardinal sdk dart wrapper matching multiplatform version 2.0.0-PREVIEW-3 
