@@ -18,7 +18,6 @@ public object AccessLogApiDispatcher {
       String?,
     ) -> Unit,
   ): Boolean = when(methodName) {
-    "createAccessLog" -> createAccessLog(parameters, resultCallback)
     "withEncryptionMetadata" -> withEncryptionMetadata(parameters, resultCallback)
     "getEncryptionKeysOf" -> getEncryptionKeysOf(parameters, resultCallback)
     "hasWriteAccess" -> hasWriteAccess(parameters, resultCallback)
@@ -38,6 +37,7 @@ public object AccessLogApiDispatcher {
     "shareWithMany" -> shareWithMany(parameters, resultCallback)
     "filterAccessLogsBy" -> filterAccessLogsBy(parameters, resultCallback)
     "filterAccessLogsBySorted" -> filterAccessLogsBySorted(parameters, resultCallback)
+    "createAccessLog" -> createAccessLog(parameters, resultCallback)
     "undeleteAccessLogById" -> undeleteAccessLogById(parameters, resultCallback)
     "undeleteAccessLog" -> undeleteAccessLog(parameters, resultCallback)
     "modifyAccessLog" -> modifyAccessLog(parameters, resultCallback)
@@ -47,6 +47,7 @@ public object AccessLogApiDispatcher {
     "encrypted.shareWithMany" -> encrypted_shareWithMany(parameters, resultCallback)
     "encrypted.filterAccessLogsBy" -> encrypted_filterAccessLogsBy(parameters, resultCallback)
     "encrypted.filterAccessLogsBySorted" -> encrypted_filterAccessLogsBySorted(parameters, resultCallback)
+    "encrypted.createAccessLog" -> encrypted_createAccessLog(parameters, resultCallback)
     "encrypted.undeleteAccessLogById" -> encrypted_undeleteAccessLogById(parameters, resultCallback)
     "encrypted.undeleteAccessLog" -> encrypted_undeleteAccessLog(parameters, resultCallback)
     "encrypted.modifyAccessLog" -> encrypted_modifyAccessLog(parameters, resultCallback)
@@ -56,6 +57,7 @@ public object AccessLogApiDispatcher {
     "tryAndRecover.shareWithMany" -> tryAndRecover_shareWithMany(parameters, resultCallback)
     "tryAndRecover.filterAccessLogsBy" -> tryAndRecover_filterAccessLogsBy(parameters, resultCallback)
     "tryAndRecover.filterAccessLogsBySorted" -> tryAndRecover_filterAccessLogsBySorted(parameters, resultCallback)
+    "tryAndRecover.createAccessLog" -> tryAndRecover_createAccessLog(parameters, resultCallback)
     "tryAndRecover.undeleteAccessLogById" -> tryAndRecover_undeleteAccessLogById(parameters, resultCallback)
     "tryAndRecover.undeleteAccessLog" -> tryAndRecover_undeleteAccessLog(parameters, resultCallback)
     "tryAndRecover.modifyAccessLog" -> tryAndRecover_modifyAccessLog(parameters, resultCallback)
@@ -63,19 +65,6 @@ public object AccessLogApiDispatcher {
     "tryAndRecover.getAccessLogs" -> tryAndRecover_getAccessLogs(parameters, resultCallback)
     else -> null
   }?.let { true } ?: false
-
-  private fun createAccessLog(parameters: Map<String, String>, resultCallback: (
-    String?,
-    String?,
-    String?,
-    String?,
-  ) -> Unit) {
-    AccessLogApi.createAccessLog(
-      resultCallback,
-      parameters.getValue("sdkId"),
-      parameters.getValue("entity"),
-    )
-  }
 
   private fun withEncryptionMetadata(parameters: Map<String, String>, resultCallback: (
     String?,
@@ -335,6 +324,19 @@ public object AccessLogApiDispatcher {
     )
   }
 
+  private fun createAccessLog(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    AccessLogApi.createAccessLog(
+      resultCallback,
+      parameters.getValue("sdkId"),
+      parameters.getValue("entity"),
+    )
+  }
+
   private fun undeleteAccessLogById(parameters: Map<String, String>, resultCallback: (
     String?,
     String?,
@@ -453,6 +455,19 @@ public object AccessLogApiDispatcher {
       resultCallback,
       parameters.getValue("sdkId"),
       parameters.getValue("filter"),
+    )
+  }
+
+  private fun encrypted_createAccessLog(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    AccessLogApi.encrypted.createAccessLog(
+      resultCallback,
+      parameters.getValue("sdkId"),
+      parameters.getValue("entity"),
     )
   }
 
@@ -575,6 +590,19 @@ public object AccessLogApiDispatcher {
       resultCallback,
       parameters.getValue("sdkId"),
       parameters.getValue("filter"),
+    )
+  }
+
+  private fun tryAndRecover_createAccessLog(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    AccessLogApi.tryAndRecover.createAccessLog(
+      resultCallback,
+      parameters.getValue("sdkId"),
+      parameters.getValue("entity"),
     )
   }
 

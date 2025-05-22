@@ -32,6 +32,8 @@ export class TimeTableItem {
 
 	unavailable: boolean = false;
 
+	reservingRights: Array<string> = [];
+
 	constructor(partial: Partial<TimeTableItem>) {
 		if ('rruleStartDate' in partial) this.rruleStartDate = partial.rruleStartDate;
 		if ('rrule' in partial) this.rrule = partial.rrule;
@@ -47,6 +49,7 @@ export class TimeTableItem {
 		if ('publicTimeTableItem' in partial && partial.publicTimeTableItem !== undefined) this.publicTimeTableItem = partial.publicTimeTableItem;
 		if ('acceptsNewPatient' in partial && partial.acceptsNewPatient !== undefined) this.acceptsNewPatient = partial.acceptsNewPatient;
 		if ('unavailable' in partial && partial.unavailable !== undefined) this.unavailable = partial.unavailable;
+		if ('reservingRights' in partial && partial.reservingRights !== undefined) this.reservingRights = partial.reservingRights;
 	}
 
 }

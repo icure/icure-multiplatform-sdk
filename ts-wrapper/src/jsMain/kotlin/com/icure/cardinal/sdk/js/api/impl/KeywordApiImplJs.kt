@@ -6,6 +6,7 @@ import com.icure.cardinal.sdk.js.api.DefaultParametersSupport.convertingOptionOr
 import com.icure.cardinal.sdk.js.api.KeywordApiJs
 import com.icure.cardinal.sdk.js.model.CheckedConverters.arrayToList
 import com.icure.cardinal.sdk.js.model.CheckedConverters.listToArray
+import com.icure.cardinal.sdk.js.model.CheckedConverters.nullToUndefined
 import com.icure.cardinal.sdk.js.model.CheckedConverters.numberToInt
 import com.icure.cardinal.sdk.js.model.CheckedConverters.undefinedToNull
 import com.icure.cardinal.sdk.js.model.KeywordJs
@@ -32,19 +33,22 @@ import kotlinx.coroutines.promise
 internal class KeywordApiImplJs(
 	private val keywordApi: KeywordApi,
 ) : KeywordApiJs {
-	override fun getKeyword(frontEndMigrationId: String): Promise<KeywordJs> = GlobalScope.promise {
-		val frontEndMigrationIdConverted: String = frontEndMigrationId
+	override fun getKeyword(keywordId: String): Promise<KeywordJs?> = GlobalScope.promise {
+		val keywordIdConverted: String = keywordId
 		val result = keywordApi.getKeyword(
-			frontEndMigrationIdConverted,
+			keywordIdConverted,
 		)
-		keyword_toJs(result)
+		nullToUndefined(
+			result?.let { nonNull1 ->
+				keyword_toJs(nonNull1)
+			}
+		)
 	}
 
-	override fun createKeyword(frontEndMigration: KeywordJs): Promise<KeywordJs> =
-			GlobalScope.promise {
-		val frontEndMigrationConverted: Keyword = keyword_fromJs(frontEndMigration)
+	override fun createKeyword(keyword: KeywordJs): Promise<KeywordJs> = GlobalScope.promise {
+		val keywordConverted: Keyword = keyword_fromJs(keyword)
 		val result = keywordApi.createKeyword(
-			frontEndMigrationConverted,
+			keywordConverted,
 		)
 		keyword_toJs(result)
 	}

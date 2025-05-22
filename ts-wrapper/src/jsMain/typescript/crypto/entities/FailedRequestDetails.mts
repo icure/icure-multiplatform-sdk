@@ -1,4 +1,5 @@
 // auto-generated file
+import {EntityReferenceInGroup} from '../../model/EntityReferenceInGroup.mjs';
 import {DelegateShareOptions} from './DelegateShareOptions.mjs';
 
 
@@ -6,7 +7,7 @@ export class FailedRequestDetails {
 
 	entityId: string;
 
-	delegateId: string;
+	delegateReference: EntityReferenceInGroup;
 
 	updatedForMigration: boolean;
 
@@ -18,9 +19,9 @@ export class FailedRequestDetails {
 
 	shouldRetry: boolean;
 
-	constructor(partial: Partial<FailedRequestDetails> & Pick<FailedRequestDetails, "entityId" | "delegateId" | "updatedForMigration" | "code" | "reason" | "request" | "shouldRetry">) {
+	constructor(partial: Partial<FailedRequestDetails> & Pick<FailedRequestDetails, "entityId" | "delegateReference" | "updatedForMigration" | "code" | "reason" | "request" | "shouldRetry">) {
 		this.entityId = partial.entityId;
-		this.delegateId = partial.delegateId;
+		this.delegateReference = partial.delegateReference;
 		this.updatedForMigration = partial.updatedForMigration;
 		this.code = partial.code;
 		this.reason = partial.reason;

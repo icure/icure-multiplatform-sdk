@@ -1,14 +1,14 @@
 // auto-generated file
 import 'package:cardinal_sdk/model/topic.dart';
-import 'package:cardinal_sdk/plugin/cardinal_sdk_platform_interface.dart';
 import 'package:cardinal_sdk/model/patient.dart';
 import 'package:cardinal_sdk/model/user.dart';
 import 'package:cardinal_sdk/model/embed/access_level.dart';
 import 'package:cardinal_sdk/crypto/entities/secret_id_use_option.dart';
+import 'package:cardinal_sdk/plugin/cardinal_sdk_platform_interface.dart';
 import 'package:cardinal_sdk/model/specializations/hex_string.dart';
 import 'package:cardinal_sdk/filters/filter_options.dart';
 import 'package:cardinal_sdk/model/couchdb/doc_identifier.dart';
-import 'package:cardinal_sdk/model/id_with_mandatory_rev.dart';
+import 'package:cardinal_sdk/model/stored_document_identifier.dart';
 import 'package:cardinal_sdk/crypto/entities/topic_share_options.dart';
 import 'package:cardinal_sdk/utils/pagination/paginated_list_iterator.dart';
 import 'package:cardinal_sdk/model/topic_role.dart';
@@ -20,20 +20,13 @@ import 'package:cardinal_sdk/subscription/entity_subscription.dart';
 class TopicApi {
 	final String _sdkId;
 	final Object _dartSdk;
-	final TryAndRecoverTopicApi tryAndRecover;
-	final EncryptedTopicApi encrypted;
+	final TopicEncryptedApi encrypted;
+	final TopicTryAndRecoverApi tryAndRecover;
 	TopicApi(
 		this._sdkId,
 		this._dartSdk
-		) : tryAndRecover = TryAndRecoverTopicApi(_sdkId, _dartSdk),
-		encrypted = EncryptedTopicApi(_sdkId, _dartSdk);
-
-	Future<DecryptedTopic> createTopic(DecryptedTopic entity) async {
-		return await CardinalSdkPlatformInterface.instance.apis.topic.createTopic(
-			_sdkId,
-			entity,
-		);
-	}
+		) : encrypted = TopicEncryptedApi(_sdkId, _dartSdk),
+		tryAndRecover = TopicTryAndRecoverApi(_sdkId, _dartSdk);
 
 	Future<DecryptedTopic> withEncryptionMetadata(DecryptedTopic? base, Patient? patient, { User? user, Map<String, AccessLevel> delegates = const {}, SecretIdUseOption secretId = SecretIdUseOption.UseAnySharedWithParent }) async {
 		return await CardinalSdkPlatformInterface.instance.apis.topic.withEncryptionMetadata(
@@ -111,7 +104,7 @@ class TopicApi {
 		);
 	}
 
-	Future<List<DocIdentifier>> deleteTopicsByIds(List<IdWithMandatoryRev> entityIds) async {
+	Future<List<DocIdentifier>> deleteTopicsByIds(List<StoredDocumentIdentifier> entityIds) async {
 		return await CardinalSdkPlatformInterface.instance.apis.topic.deleteTopicsByIds(
 			_sdkId,
 			entityIds,
@@ -178,6 +171,13 @@ class TopicApi {
 		);
 	}
 
+	Future<DecryptedTopic> createTopic(DecryptedTopic entity) async {
+		return await CardinalSdkPlatformInterface.instance.apis.topic.createTopic(
+			_sdkId,
+			entity,
+		);
+	}
+
 	Future<Topic> undeleteTopic(Topic topic) async {
 		return await CardinalSdkPlatformInterface.instance.apis.topic.undeleteTopic(
 			_sdkId,
@@ -200,7 +200,7 @@ class TopicApi {
 		);
 	}
 
-	Future<DecryptedTopic> getTopic(String entityId) async {
+	Future<DecryptedTopic?> getTopic(String entityId) async {
 		return await CardinalSdkPlatformInterface.instance.apis.topic.getTopic(
 			_sdkId,
 			entityId,
@@ -241,10 +241,10 @@ class TopicApi {
 	}
 }
 
-class TryAndRecoverTopicApi {
+class TopicTryAndRecoverApi {
 	final String _sdkId;
 	final Object _dartSdk;
-	TryAndRecoverTopicApi(
+	TopicTryAndRecoverApi(
 		this._sdkId,
 		this._dartSdk
 		);
@@ -280,6 +280,13 @@ class TryAndRecoverTopicApi {
 		);
 	}
 
+	Future<Topic> createTopic(Topic entity) async {
+		return await CardinalSdkPlatformInterface.instance.apis.topic.tryAndRecover.createTopic(
+			_sdkId,
+			entity,
+		);
+	}
+
 	Future<Topic> undeleteTopic(Topic topic) async {
 		return await CardinalSdkPlatformInterface.instance.apis.topic.tryAndRecover.undeleteTopic(
 			_sdkId,
@@ -302,7 +309,7 @@ class TryAndRecoverTopicApi {
 		);
 	}
 
-	Future<Topic> getTopic(String entityId) async {
+	Future<Topic?> getTopic(String entityId) async {
 		return await CardinalSdkPlatformInterface.instance.apis.topic.tryAndRecover.getTopic(
 			_sdkId,
 			entityId,
@@ -334,10 +341,10 @@ class TryAndRecoverTopicApi {
 	}
 }
 
-class EncryptedTopicApi {
+class TopicEncryptedApi {
 	final String _sdkId;
 	final Object _dartSdk;
-	EncryptedTopicApi(
+	TopicEncryptedApi(
 		this._sdkId,
 		this._dartSdk
 		);
@@ -373,6 +380,13 @@ class EncryptedTopicApi {
 		);
 	}
 
+	Future<EncryptedTopic> createTopic(EncryptedTopic entity) async {
+		return await CardinalSdkPlatformInterface.instance.apis.topic.encrypted.createTopic(
+			_sdkId,
+			entity,
+		);
+	}
+
 	Future<Topic> undeleteTopic(Topic topic) async {
 		return await CardinalSdkPlatformInterface.instance.apis.topic.encrypted.undeleteTopic(
 			_sdkId,
@@ -395,7 +409,7 @@ class EncryptedTopicApi {
 		);
 	}
 
-	Future<EncryptedTopic> getTopic(String entityId) async {
+	Future<EncryptedTopic?> getTopic(String entityId) async {
 		return await CardinalSdkPlatformInterface.instance.apis.topic.encrypted.getTopic(
 			_sdkId,
 			entityId,

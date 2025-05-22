@@ -4,7 +4,7 @@ import 'package:cardinal_sdk/model/form.dart';
 import 'package:cardinal_sdk/plugin/cardinal_sdk_platform_interface.dart';
 import 'package:cardinal_sdk/utils/pagination/paginated_list_iterator.dart';
 import 'package:cardinal_sdk/model/couchdb/doc_identifier.dart';
-import 'package:cardinal_sdk/model/id_with_mandatory_rev.dart';
+import 'package:cardinal_sdk/model/stored_document_identifier.dart';
 import 'package:cardinal_sdk/model/form_template.dart';
 import 'dart:typed_data';
 
@@ -53,7 +53,7 @@ class FormBasicApi {
 		);
 	}
 
-	Future<List<DocIdentifier>> deleteFormsByIds(List<IdWithMandatoryRev> entityIds) async {
+	Future<List<DocIdentifier>> deleteFormsByIds(List<StoredDocumentIdentifier> entityIds) async {
 		return await CardinalSdkPlatformInterface.instance.apis.formBasic.deleteFormsByIds(
 			_sdkId,
 			entityIds,
@@ -126,6 +126,20 @@ class FormBasicApi {
 		);
 	}
 
+	Future<EncryptedForm> createForm(EncryptedForm entity) async {
+		return await CardinalSdkPlatformInterface.instance.apis.formBasic.createForm(
+			_sdkId,
+			entity,
+		);
+	}
+
+	Future<List<EncryptedForm>> createForms(List<EncryptedForm> entities) async {
+		return await CardinalSdkPlatformInterface.instance.apis.formBasic.createForms(
+			_sdkId,
+			entities,
+		);
+	}
+
 	Future<EncryptedForm> modifyForm(EncryptedForm entity) async {
 		return await CardinalSdkPlatformInterface.instance.apis.formBasic.modifyForm(
 			_sdkId,
@@ -155,7 +169,7 @@ class FormBasicApi {
 		);
 	}
 
-	Future<EncryptedForm> getForm(String entityId) async {
+	Future<EncryptedForm?> getForm(String entityId) async {
 		return await CardinalSdkPlatformInterface.instance.apis.formBasic.getForm(
 			_sdkId,
 			entityId,

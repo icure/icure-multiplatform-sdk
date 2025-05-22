@@ -22,7 +22,7 @@ class PaginatedListIterator<T> {
     return CardinalSdkPlatformInterface.instance.pagination.hasNext(_instanceId);
   }
 
-  Future<List<T>> next(@ActualInt32() int limit) async {
+  Future<List<T>> next(@actualInt32 int limit) async {
     final nextJson = await CardinalSdkPlatformInterface.instance
         .pagination
         .next(_instanceId, limit);

@@ -62,7 +62,7 @@ export class CryptoStrategies {
    */
   generateNewKeyForDataOwner(
     self: DataOwnerWithType,
-    cryptoPrimitives: XCryptoService
+    cryptoPrimitives: XCryptoService,
   ): Promise<boolean | XRsaKeypair> {
     return Promise.resolve(true)
   }
@@ -79,12 +79,14 @@ export class CryptoStrategies {
    * @param delegate the potential data owner delegate.
    * @param publicKeys public keys requiring verification, in spki hex-encoded format.
    * @param cryptoPrimitives cryptographic primitives you can use to support the process.
+   * @param groupId the id of the data owner's group, or null if the data owner is in the same group as the current user
    * @return all verified public keys, in spki hex-encoded format.
    */
   verifyDelegatePublicKeys(
     delegate: CryptoActorStubWithType,
     publicKeys: Array<SpkiHexString>,
-    cryptoPrimitives: XCryptoService
+    cryptoPrimitives: XCryptoService,
+    groupId: string | undefined
   ): Promise<Array<SpkiHexString>> {
     return Promise.resolve(publicKeys)
   }
@@ -94,10 +96,12 @@ export class CryptoStrategies {
    * delegations.
    * This should always be the case for patient data owners.
    * @param dataOwner a data owner.
+   * @param groupId the id of the data owner's group, or null if the data owner is in the same group as the current user
    * @return true if the delegations for the provided data owner should be anonymous.
    */
   dataOwnerRequiresAnonymousDelegation(
-      dataOwner: CryptoActorStubWithType
+      dataOwner: CryptoActorStubWithType,
+      groupId: string | undefined
   ): Promise<boolean> {
     return Promise.resolve(dataOwner.type != DataOwnerType.Hcp)
   }

@@ -7,8 +7,14 @@ import com.icure.cardinal.sdk.js.api.DefaultParametersSupport.convertingOptionOr
 import com.icure.cardinal.sdk.js.model.CalendarItemJs
 import com.icure.cardinal.sdk.js.model.CheckedConverters.arrayToList
 import com.icure.cardinal.sdk.js.model.CheckedConverters.numberToLong
+import com.icure.cardinal.sdk.js.model.EntityReferenceInGroupJs
+import com.icure.cardinal.sdk.js.model.GroupScopedJs
 import com.icure.cardinal.sdk.js.model.PatientJs
+import com.icure.cardinal.sdk.js.model.entityReferenceInGroup_fromJs
+import com.icure.cardinal.sdk.js.model.groupScoped_fromJs
 import com.icure.cardinal.sdk.js.model.patient_fromJs
+import com.icure.cardinal.sdk.model.EntityReferenceInGroup
+import com.icure.cardinal.sdk.model.GroupScoped
 import com.icure.cardinal.sdk.model.Patient
 import kotlin.Array
 import kotlin.Boolean
@@ -57,6 +63,56 @@ public object InternalCalendarItemFiltersObj {
 		}
 		val result = CalendarItemFilters.byPatientsStartTimeForDataOwner(
 			dataOwnerIdConverted,
+			patientsConverted,
+			fromConverted,
+			toConverted,
+			descendingConverted,
+		)
+		return SortableFilterOptionsJsImpl(result)
+	}
+
+	public fun byPatientsStartTimeForDataOwnerInGroup(
+		dataOwner: EntityReferenceInGroupJs,
+		patients: Array<GroupScopedJs<PatientJs>>,
+		options: dynamic,
+	): SortableFilterOptionsJs<CalendarItemJs> {
+		val _options = options ?: js("{}")
+		val dataOwnerConverted: EntityReferenceInGroup = entityReferenceInGroup_fromJs(dataOwner)
+		val patientsConverted: List<GroupScoped<Patient>> = arrayToList(
+			patients,
+			"patients",
+			{ x1: GroupScopedJs<PatientJs> ->
+				groupScoped_fromJs(
+					x1,
+					{ x2: PatientJs ->
+						patient_fromJs(x2)
+					},
+				)
+			},
+		)
+		val fromConverted: Long? = convertingOptionOrDefaultNullable(
+			_options,
+			"from",
+			null
+		) { from: Double? ->
+			numberToLong(from, "from")
+		}
+		val toConverted: Long? = convertingOptionOrDefaultNullable(
+			_options,
+			"to",
+			null
+		) { to: Double? ->
+			numberToLong(to, "to")
+		}
+		val descendingConverted: Boolean = convertingOptionOrDefaultNonNull(
+			_options,
+			"descending",
+			false
+		) { descending: Boolean ->
+			descending
+		}
+		val result = CalendarItemFilters.byPatientsStartTimeForDataOwnerInGroup(
+			dataOwnerConverted,
 			patientsConverted,
 			fromConverted,
 			toConverted,
@@ -150,6 +206,51 @@ public object InternalCalendarItemFiltersObj {
 		return BaseSortableFilterOptionsJsImpl(result)
 	}
 
+	public fun byPatientSecretIdsStartTimeForDataOwnerInGroup(
+		dataOwner: EntityReferenceInGroupJs,
+		secretIds: Array<String>,
+		options: dynamic,
+	): BaseSortableFilterOptionsJs<CalendarItemJs> {
+		val _options = options ?: js("{}")
+		val dataOwnerConverted: EntityReferenceInGroup = entityReferenceInGroup_fromJs(dataOwner)
+		val secretIdsConverted: List<String> = arrayToList(
+			secretIds,
+			"secretIds",
+			{ x1: String ->
+				x1
+			},
+		)
+		val fromConverted: Long? = convertingOptionOrDefaultNullable(
+			_options,
+			"from",
+			null
+		) { from: Double? ->
+			numberToLong(from, "from")
+		}
+		val toConverted: Long? = convertingOptionOrDefaultNullable(
+			_options,
+			"to",
+			null
+		) { to: Double? ->
+			numberToLong(to, "to")
+		}
+		val descendingConverted: Boolean = convertingOptionOrDefaultNonNull(
+			_options,
+			"descending",
+			false
+		) { descending: Boolean ->
+			descending
+		}
+		val result = CalendarItemFilters.byPatientSecretIdsStartTimeForDataOwnerInGroup(
+			dataOwnerConverted,
+			secretIdsConverted,
+			fromConverted,
+			toConverted,
+			descendingConverted,
+		)
+		return BaseSortableFilterOptionsJsImpl(result)
+	}
+
 	public fun byPatientSecretIdsStartTimeForSelf(secretIds: Array<String>, options: dynamic):
 			SortableFilterOptionsJs<CalendarItemJs> {
 		val _options = options ?: js("{}")
@@ -232,6 +333,22 @@ public object InternalCalendarItemFiltersObj {
 		return BaseFilterOptionsJsImpl(result)
 	}
 
+	public fun byPeriodForDataOwnerInGroup(
+		dataOwner: EntityReferenceInGroupJs,
+		from: Double,
+		to: Double,
+	): BaseFilterOptionsJs<CalendarItemJs> {
+		val dataOwnerConverted: EntityReferenceInGroup = entityReferenceInGroup_fromJs(dataOwner)
+		val fromConverted: Long = numberToLong(from, "from")
+		val toConverted: Long = numberToLong(to, "to")
+		val result = CalendarItemFilters.byPeriodForDataOwnerInGroup(
+			dataOwnerConverted,
+			fromConverted,
+			toConverted,
+		)
+		return BaseFilterOptionsJsImpl(result)
+	}
+
 	public fun byPeriodForSelf(from: Double, to: Double): FilterOptionsJs<CalendarItemJs> {
 		val fromConverted: Long = numberToLong(from, "from")
 		val toConverted: Long = numberToLong(to, "to")
@@ -262,6 +379,25 @@ public object InternalCalendarItemFiltersObj {
 		val descendingConverted: Boolean = descending
 		val result = CalendarItemFilters.lifecycleBetweenForDataOwner(
 			dataOwnerIdConverted,
+			startTimestampConverted,
+			endTimestampConverted,
+			descendingConverted,
+		)
+		return BaseFilterOptionsJsImpl(result)
+	}
+
+	public fun lifecycleBetweenForDataOwnerInGroup(
+		dataOwner: EntityReferenceInGroupJs,
+		startTimestamp: Double?,
+		endTimestamp: Double?,
+		descending: Boolean,
+	): BaseFilterOptionsJs<CalendarItemJs> {
+		val dataOwnerConverted: EntityReferenceInGroup = entityReferenceInGroup_fromJs(dataOwner)
+		val startTimestampConverted: Long? = numberToLong(startTimestamp, "startTimestamp")
+		val endTimestampConverted: Long? = numberToLong(endTimestamp, "endTimestamp")
+		val descendingConverted: Boolean = descending
+		val result = CalendarItemFilters.lifecycleBetweenForDataOwnerInGroup(
+			dataOwnerConverted,
 			startTimestampConverted,
 			endTimestampConverted,
 			descendingConverted,

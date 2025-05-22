@@ -12,7 +12,7 @@ export class TopicShareOptions {
 
 	sharePatientId: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable;
 
-	shareSecretIds: SecretIdShareOptions = new SecretIdShareOptions.AllAvailable({ requireAtLeastOne: false });
+	shareSecretIds: SecretIdShareOptions = new SecretIdShareOptions.AllAvailable();
 
 	constructor(partial: Partial<TopicShareOptions>) {
 		if ('requestedPermissions' in partial && partial.requestedPermissions !== undefined) this.requestedPermissions = partial.requestedPermissions;

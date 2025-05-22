@@ -6,11 +6,9 @@ package com.icure.cardinal.sdk.js.api
 import com.icure.cardinal.sdk.js.crypto.entities.PatientShareOptionsJs
 import com.icure.cardinal.sdk.js.filters.FilterOptionsJs
 import com.icure.cardinal.sdk.js.filters.SortableFilterOptionsJs
-import com.icure.cardinal.sdk.js.model.EncryptedPatientJs
-import com.icure.cardinal.sdk.js.model.IdWithMandatoryRevJs
-import com.icure.cardinal.sdk.js.model.IdWithRevJs
 import com.icure.cardinal.sdk.js.model.PaginatedListJs
 import com.icure.cardinal.sdk.js.model.PatientJs
+import com.icure.cardinal.sdk.js.model.StoredDocumentIdentifierJs
 import com.icure.cardinal.sdk.js.utils.Record
 import com.icure.cardinal.sdk.js.utils.pagination.PaginatedListIteratorJs
 import kotlin.Array
@@ -38,15 +36,21 @@ public external interface PatientFlavouredApiJs<E : PatientJs> {
 	public fun filterPatientsBySorted(filter: SortableFilterOptionsJs<PatientJs>):
 			Promise<PaginatedListIteratorJs<E>>
 
+	public fun createPatient(patient: E): Promise<E>
+
+	public fun createPatientsMinimal(patients: Array<E>): Promise<Array<StoredDocumentIdentifierJs>>
+
+	public fun createPatients(patients: Array<E>): Promise<Array<E>>
+
 	public fun undeletePatient(patient: PatientJs): Promise<PatientJs>
 
 	public fun modifyPatient(entity: E): Promise<E>
 
 	public fun undeletePatientById(id: String, rev: String): Promise<E>
 
-	public fun undeletePatients(ids: Array<IdWithMandatoryRevJs>): Promise<Array<E>>
+	public fun undeletePatients(ids: Array<StoredDocumentIdentifierJs>): Promise<Array<E>>
 
-	public fun getPatient(entityId: String): Promise<E>
+	public fun getPatient(entityId: String): Promise<E?>
 
 	public fun getPatientResolvingMerges(patientId: String, maxMergeDepth: Double?): Promise<E>
 
@@ -86,7 +90,9 @@ public external interface PatientFlavouredApiJs<E : PatientJs> {
 		options: dynamic,
 	): Promise<E>
 
-	public fun modifyPatients(patientDtos: Array<EncryptedPatientJs>): Promise<Array<IdWithRevJs>>
+	public fun modifyPatientsMinimal(patients: Array<E>): Promise<Array<StoredDocumentIdentifierJs>>
+
+	public fun modifyPatients(patients: Array<E>): Promise<Array<E>>
 
 	public fun findDuplicatesBySsin(hcPartyId: String, options: dynamic): Promise<PaginatedListJs<E>>
 

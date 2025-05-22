@@ -11,8 +11,8 @@ import com.icure.cardinal.sdk.filters.SortableFilterOptions
 import com.icure.cardinal.sdk.model.AccessLog
 import com.icure.cardinal.sdk.model.DecryptedAccessLog
 import com.icure.cardinal.sdk.model.EncryptedAccessLog
-import com.icure.cardinal.sdk.model.IdWithMandatoryRev
 import com.icure.cardinal.sdk.model.Patient
+import com.icure.cardinal.sdk.model.StoredDocumentIdentifier
 import com.icure.cardinal.sdk.model.User
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.model.embed.AccessLevel
@@ -33,29 +33,6 @@ import kotlinx.serialization.builtins.serializer
 
 @OptIn(InternalIcureApi::class)
 public object AccessLogApi {
-  public fun createAccessLog(
-    dartResultCallback: (
-      String?,
-      String?,
-      String?,
-      String?,
-    ) -> Unit,
-    sdkId: String,
-    entityString: String,
-  ) {
-    val entity = fullLanguageInteropJson.decodeFromString(
-      DecryptedAccessLog.serializer(),
-      entityString
-    )
-    ApiScope.execute(
-      dartResultCallback,
-      DecryptedAccessLog.serializer()) {
-      NativeReferences.get<CardinalApis>(sdkId).accessLog.createAccessLog(
-        entity,
-      )
-    }
-  }
-
   public fun withEncryptionMetadata(
     dartResultCallback: (
       String?,
@@ -333,7 +310,7 @@ public object AccessLogApi {
     entityIdsString: String,
   ) {
     val entityIds = fullLanguageInteropJson.decodeFromString(
-      ListSerializer(IdWithMandatoryRev.serializer()),
+      ListSerializer(StoredDocumentIdentifier.serializer()),
       entityIdsString
     )
     ApiScope.execute(
@@ -561,6 +538,29 @@ public object AccessLogApi {
     }
   }
 
+  public fun createAccessLog(
+    dartResultCallback: (
+      String?,
+      String?,
+      String?,
+      String?,
+    ) -> Unit,
+    sdkId: String,
+    entityString: String,
+  ) {
+    val entity = fullLanguageInteropJson.decodeFromString(
+      DecryptedAccessLog.serializer(),
+      entityString
+    )
+    ApiScope.execute(
+      dartResultCallback,
+      DecryptedAccessLog.serializer()) {
+      NativeReferences.get<CardinalApis>(sdkId).accessLog.createAccessLog(
+        entity,
+      )
+    }
+  }
+
   public fun undeleteAccessLogById(
     dartResultCallback: (
       String?,
@@ -652,7 +652,7 @@ public object AccessLogApi {
     )
     ApiScope.execute(
       dartResultCallback,
-      DecryptedAccessLog.serializer()) {
+      DecryptedAccessLog.serializer().nullable) {
       NativeReferences.get<CardinalApis>(sdkId).accessLog.getAccessLog(
         entityId,
       )
@@ -804,6 +804,29 @@ public object AccessLogApi {
       }
     }
 
+    public fun createAccessLog(
+      dartResultCallback: (
+        String?,
+        String?,
+        String?,
+        String?,
+      ) -> Unit,
+      sdkId: String,
+      entityString: String,
+    ) {
+      val entity = fullLanguageInteropJson.decodeFromString(
+        EncryptedAccessLog.serializer(),
+        entityString
+      )
+      ApiScope.execute(
+        dartResultCallback,
+        EncryptedAccessLog.serializer()) {
+        NativeReferences.get<CardinalApis>(sdkId).accessLog.encrypted.createAccessLog(
+          entity,
+        )
+      }
+    }
+
     public fun undeleteAccessLogById(
       dartResultCallback: (
         String?,
@@ -895,7 +918,7 @@ public object AccessLogApi {
       )
       ApiScope.execute(
         dartResultCallback,
-        EncryptedAccessLog.serializer()) {
+        EncryptedAccessLog.serializer().nullable) {
         NativeReferences.get<CardinalApis>(sdkId).accessLog.encrypted.getAccessLog(
           entityId,
         )
@@ -1048,6 +1071,29 @@ public object AccessLogApi {
       }
     }
 
+    public fun createAccessLog(
+      dartResultCallback: (
+        String?,
+        String?,
+        String?,
+        String?,
+      ) -> Unit,
+      sdkId: String,
+      entityString: String,
+    ) {
+      val entity = fullLanguageInteropJson.decodeFromString(
+        PolymorphicSerializer(AccessLog::class),
+        entityString
+      )
+      ApiScope.execute(
+        dartResultCallback,
+        PolymorphicSerializer(AccessLog::class)) {
+        NativeReferences.get<CardinalApis>(sdkId).accessLog.tryAndRecover.createAccessLog(
+          entity,
+        )
+      }
+    }
+
     public fun undeleteAccessLogById(
       dartResultCallback: (
         String?,
@@ -1139,7 +1185,7 @@ public object AccessLogApi {
       )
       ApiScope.execute(
         dartResultCallback,
-        PolymorphicSerializer(AccessLog::class)) {
+        PolymorphicSerializer(AccessLog::class).nullable) {
         NativeReferences.get<CardinalApis>(sdkId).accessLog.tryAndRecover.getAccessLog(
           entityId,
         )

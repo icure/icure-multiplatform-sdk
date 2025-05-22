@@ -44,7 +44,7 @@ class InvoiceBasicApi {
 		);
 	}
 
-	Future<EncryptedInvoice> getInvoice(String entityId) async {
+	Future<EncryptedInvoice?> getInvoice(String entityId) async {
 		return await CardinalSdkPlatformInterface.instance.apis.invoiceBasic.getInvoice(
 			_sdkId,
 			entityId,

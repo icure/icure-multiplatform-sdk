@@ -22,8 +22,6 @@ public object ContactApiDispatcher {
     "matchServicesBy" -> matchServicesBy(parameters, resultCallback)
     "matchContactsBySorted" -> matchContactsBySorted(parameters, resultCallback)
     "matchServicesBySorted" -> matchServicesBySorted(parameters, resultCallback)
-    "createContact" -> createContact(parameters, resultCallback)
-    "createContacts" -> createContacts(parameters, resultCallback)
     "withEncryptionMetadata" -> withEncryptionMetadata(parameters, resultCallback)
     "getEncryptionKeysOf" -> getEncryptionKeysOf(parameters, resultCallback)
     "hasWriteAccess" -> hasWriteAccess(parameters, resultCallback)
@@ -47,6 +45,8 @@ public object ContactApiDispatcher {
     "filterServicesBy" -> filterServicesBy(parameters, resultCallback)
     "filterContactsBySorted" -> filterContactsBySorted(parameters, resultCallback)
     "filterServicesBySorted" -> filterServicesBySorted(parameters, resultCallback)
+    "createContact" -> createContact(parameters, resultCallback)
+    "createContacts" -> createContacts(parameters, resultCallback)
     "undeleteContactById" -> undeleteContactById(parameters, resultCallback)
     "undeleteContact" -> undeleteContact(parameters, resultCallback)
     "modifyContact" -> modifyContact(parameters, resultCallback)
@@ -62,6 +62,8 @@ public object ContactApiDispatcher {
     "encrypted.filterServicesBy" -> encrypted_filterServicesBy(parameters, resultCallback)
     "encrypted.filterContactsBySorted" -> encrypted_filterContactsBySorted(parameters, resultCallback)
     "encrypted.filterServicesBySorted" -> encrypted_filterServicesBySorted(parameters, resultCallback)
+    "encrypted.createContact" -> encrypted_createContact(parameters, resultCallback)
+    "encrypted.createContacts" -> encrypted_createContacts(parameters, resultCallback)
     "encrypted.undeleteContactById" -> encrypted_undeleteContactById(parameters, resultCallback)
     "encrypted.undeleteContact" -> encrypted_undeleteContact(parameters, resultCallback)
     "encrypted.modifyContact" -> encrypted_modifyContact(parameters, resultCallback)
@@ -76,6 +78,8 @@ public object ContactApiDispatcher {
     "tryAndRecover.filterServicesBy" -> tryAndRecover_filterServicesBy(parameters, resultCallback)
     "tryAndRecover.filterContactsBySorted" -> tryAndRecover_filterContactsBySorted(parameters, resultCallback)
     "tryAndRecover.filterServicesBySorted" -> tryAndRecover_filterServicesBySorted(parameters, resultCallback)
+    "tryAndRecover.createContact" -> tryAndRecover_createContact(parameters, resultCallback)
+    "tryAndRecover.createContacts" -> tryAndRecover_createContacts(parameters, resultCallback)
     "tryAndRecover.undeleteContactById" -> tryAndRecover_undeleteContactById(parameters, resultCallback)
     "tryAndRecover.undeleteContact" -> tryAndRecover_undeleteContact(parameters, resultCallback)
     "tryAndRecover.modifyContact" -> tryAndRecover_modifyContact(parameters, resultCallback)
@@ -136,32 +140,6 @@ public object ContactApiDispatcher {
       resultCallback,
       parameters.getValue("sdkId"),
       parameters.getValue("filter"),
-    )
-  }
-
-  private fun createContact(parameters: Map<String, String>, resultCallback: (
-    String?,
-    String?,
-    String?,
-    String?,
-  ) -> Unit) {
-    ContactApi.createContact(
-      resultCallback,
-      parameters.getValue("sdkId"),
-      parameters.getValue("entity"),
-    )
-  }
-
-  private fun createContacts(parameters: Map<String, String>, resultCallback: (
-    String?,
-    String?,
-    String?,
-    String?,
-  ) -> Unit) {
-    ContactApi.createContacts(
-      resultCallback,
-      parameters.getValue("sdkId"),
-      parameters.getValue("entities"),
     )
   }
 
@@ -478,6 +456,32 @@ public object ContactApiDispatcher {
     )
   }
 
+  private fun createContact(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    ContactApi.createContact(
+      resultCallback,
+      parameters.getValue("sdkId"),
+      parameters.getValue("entity"),
+    )
+  }
+
+  private fun createContacts(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    ContactApi.createContacts(
+      resultCallback,
+      parameters.getValue("sdkId"),
+      parameters.getValue("entities"),
+    )
+  }
+
   private fun undeleteContactById(parameters: Map<String, String>, resultCallback: (
     String?,
     String?,
@@ -679,6 +683,32 @@ public object ContactApiDispatcher {
     )
   }
 
+  private fun encrypted_createContact(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    ContactApi.encrypted.createContact(
+      resultCallback,
+      parameters.getValue("sdkId"),
+      parameters.getValue("entity"),
+    )
+  }
+
+  private fun encrypted_createContacts(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    ContactApi.encrypted.createContacts(
+      resultCallback,
+      parameters.getValue("sdkId"),
+      parameters.getValue("entities"),
+    )
+  }
+
   private fun encrypted_undeleteContactById(parameters: Map<String, String>, resultCallback: (
     String?,
     String?,
@@ -864,6 +894,32 @@ public object ContactApiDispatcher {
       resultCallback,
       parameters.getValue("sdkId"),
       parameters.getValue("filter"),
+    )
+  }
+
+  private fun tryAndRecover_createContact(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    ContactApi.tryAndRecover.createContact(
+      resultCallback,
+      parameters.getValue("sdkId"),
+      parameters.getValue("entity"),
+    )
+  }
+
+  private fun tryAndRecover_createContacts(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    ContactApi.tryAndRecover.createContacts(
+      resultCallback,
+      parameters.getValue("sdkId"),
+      parameters.getValue("entities"),
     )
   }
 

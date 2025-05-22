@@ -1,10 +1,15 @@
 // auto-generated file
 import 'package:cardinal_sdk/model/filter/predicate/predicate.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+part "not_predicate.freezed.dart";
 
 
-class NotPredicate implements Predicate {
-	Predicate predicate;
-	NotPredicate(this.predicate);
+@freezed
+abstract class NotPredicate with _$NotPredicate implements Predicate {
+	const factory NotPredicate({
+		required Predicate predicate,
+	}) = _NotPredicate;
+
 
 	static Map<String, dynamic> encode(NotPredicate value) {
 		Map<String, dynamic> entityAsMap = {
@@ -15,7 +20,7 @@ class NotPredicate implements Predicate {
 
 	static NotPredicate fromJSON(Map<String, dynamic> data) {
 		return NotPredicate(
-			Predicate.fromJSON(data["predicate"])
+			predicate: Predicate.fromJSON(data["predicate"])
 		);
 	}
 }

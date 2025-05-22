@@ -1,33 +1,22 @@
 // auto-generated file
 import 'package:cardinal_sdk/model/base/code_stub.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+part "identifier.freezed.dart";
 
 
-class Identifier {
-	String? id = null;
-	String? assigner = null;
-	String? start = null;
-	String? end = null;
-	String? system = null;
-	CodeStub? type = null;
-	String? use = null;
-	String? value = null;
-	Identifier({
-			String? id,
-			String? assigner,
-			String? start,
-			String? end,
-			String? system,
-			CodeStub? type,
-			String? use,
-			String? value
-		}) : id = id ?? null,
-		assigner = assigner ?? null,
-		start = start ?? null,
-		end = end ?? null,
-		system = system ?? null,
-		type = type ?? null,
-		use = use ?? null,
-		value = value ?? null;
+@freezed
+abstract class Identifier with _$Identifier {
+	const factory Identifier({
+		@Default(null) String? id,
+		@Default(null) String? assigner,
+		@Default(null) String? start,
+		@Default(null) String? end,
+		@Default(null) String? system,
+		@Default(null) CodeStub? type,
+		@Default(null) String? use,
+		@Default(null) String? value,
+	}) = _Identifier;
+
 
 	static Map<String, dynamic> encode(Identifier value) {
 		Map<String, dynamic> entityAsMap = {

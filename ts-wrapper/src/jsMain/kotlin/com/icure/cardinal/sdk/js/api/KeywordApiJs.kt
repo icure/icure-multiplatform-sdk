@@ -14,9 +14,9 @@ import kotlin.js.Promise
 
 @JsName("KeywordApi")
 public external interface KeywordApiJs {
-	public fun getKeyword(frontEndMigrationId: String): Promise<KeywordJs>
+	public fun getKeyword(keywordId: String): Promise<KeywordJs?>
 
-	public fun createKeyword(frontEndMigration: KeywordJs): Promise<KeywordJs>
+	public fun createKeyword(keyword: KeywordJs): Promise<KeywordJs>
 
 	public fun getKeywords(options: dynamic): Promise<PaginatedListJs<KeywordJs>>
 

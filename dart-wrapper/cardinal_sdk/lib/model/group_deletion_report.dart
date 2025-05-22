@@ -1,15 +1,16 @@
 // auto-generated file
+import 'package:freezed_annotation/freezed_annotation.dart';
+part "group_deletion_report.freezed.dart";
 
 
-class GroupDeletionReport {
-	String type;
-	String id;
-	String server;
-	GroupDeletionReport(
-		this.type,
-		this.id,
-		this.server
-		);
+@freezed
+abstract class GroupDeletionReport with _$GroupDeletionReport {
+	const factory GroupDeletionReport({
+		required String type,
+		required String id,
+		required String server,
+	}) = _GroupDeletionReport;
+
 
 	static Map<String, dynamic> encode(GroupDeletionReport value) {
 		Map<String, dynamic> entityAsMap = {
@@ -22,9 +23,9 @@ class GroupDeletionReport {
 
 	static GroupDeletionReport fromJSON(Map<String, dynamic> data) {
 		return GroupDeletionReport(
-			(data["type"] as String),
-			(data["id"] as String),
-			(data["server"] as String)
+			type: (data["type"] as String),
+			id: (data["id"] as String),
+			server: (data["server"] as String)
 		);
 	}
 }

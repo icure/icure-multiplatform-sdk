@@ -1,10 +1,14 @@
 // auto-generated file
+import 'package:freezed_annotation/freezed_annotation.dart';
+part "service_link.freezed.dart";
 
 
-class ServiceLink {
-	String? serviceId = null;
-	ServiceLink({
-			String? serviceId}) : serviceId = serviceId ?? null;
+@freezed
+abstract class ServiceLink with _$ServiceLink {
+	const factory ServiceLink({
+		@Default(null) String? serviceId,
+	}) = _ServiceLink;
+
 
 	static Map<String, dynamic> encode(ServiceLink value) {
 		Map<String, dynamic> entityAsMap = {

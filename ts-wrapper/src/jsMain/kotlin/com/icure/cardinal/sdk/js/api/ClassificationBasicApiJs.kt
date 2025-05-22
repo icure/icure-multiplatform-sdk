@@ -33,10 +33,13 @@ public external interface ClassificationBasicApiJs {
 
 	public fun deleteClassifications(entityIds: Array<String>): Promise<Array<DocIdentifierJs>>
 
+	public fun createClassification(entity: EncryptedClassificationJs):
+			Promise<EncryptedClassificationJs>
+
 	public fun modifyClassification(entity: EncryptedClassificationJs):
 			Promise<EncryptedClassificationJs>
 
-	public fun getClassification(entityId: String): Promise<EncryptedClassificationJs>
+	public fun getClassification(entityId: String): Promise<EncryptedClassificationJs?>
 
 	public fun getClassifications(entityIds: Array<String>): Promise<Array<EncryptedClassificationJs>>
 }

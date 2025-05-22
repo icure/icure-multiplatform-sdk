@@ -8,10 +8,10 @@ import com.icure.cardinal.sdk.js.filters.FilterOptionsJs
 import com.icure.cardinal.sdk.js.filters.SortableFilterOptionsJs
 import com.icure.cardinal.sdk.js.model.DecryptedHealthElementJs
 import com.icure.cardinal.sdk.js.model.EncryptedHealthElementJs
+import com.icure.cardinal.sdk.js.model.EntityReferenceInGroupJs
 import com.icure.cardinal.sdk.js.model.HealthElementJs
-import com.icure.cardinal.sdk.js.model.IdWithMandatoryRevJs
 import com.icure.cardinal.sdk.js.model.PatientJs
-import com.icure.cardinal.sdk.js.model.couchdb.DocIdentifierJs
+import com.icure.cardinal.sdk.js.model.StoredDocumentIdentifierJs
 import com.icure.cardinal.sdk.js.subscription.EntitySubscriptionJs
 import com.icure.cardinal.sdk.js.utils.Record
 import com.icure.cardinal.sdk.js.utils.pagination.PaginatedListIteratorJs
@@ -29,10 +29,7 @@ public external interface HealthElementApiJs {
 
 	public val tryAndRecover: HealthElementFlavouredApiJs<HealthElementJs>
 
-	public fun createHealthElement(entity: DecryptedHealthElementJs): Promise<DecryptedHealthElementJs>
-
-	public fun createHealthElements(entities: Array<DecryptedHealthElementJs>):
-			Promise<Array<DecryptedHealthElementJs>>
+	public val inGroup: HealthElementInGroupApiJs
 
 	public fun withEncryptionMetadata(
 		base: DecryptedHealthElementJs?,
@@ -44,35 +41,43 @@ public external interface HealthElementApiJs {
 
 	public fun hasWriteAccess(healthElement: HealthElementJs): Promise<Boolean>
 
-	public fun decryptPatientIdOf(healthElement: HealthElementJs): Promise<Array<String>>
+	public fun decryptPatientIdOf(healthElement: HealthElementJs):
+			Promise<Array<EntityReferenceInGroupJs>>
 
 	public fun createDelegationDeAnonymizationMetadata(entity: HealthElementJs,
 			delegates: Array<String>): Promise<Unit>
 
-	public fun decrypt(healthElement: EncryptedHealthElementJs): Promise<DecryptedHealthElementJs>
+	public fun decrypt(healthElements: Array<EncryptedHealthElementJs>):
+			Promise<Array<DecryptedHealthElementJs>>
 
-	public fun tryDecrypt(healthElement: EncryptedHealthElementJs): Promise<HealthElementJs>
+	public fun tryDecrypt(healthElements: Array<EncryptedHealthElementJs>):
+			Promise<Array<HealthElementJs>>
+
+	public fun encryptOrValidate(healthElements: Array<HealthElementJs>):
+			Promise<Array<EncryptedHealthElementJs>>
 
 	public fun matchHealthElementsBy(filter: FilterOptionsJs<HealthElementJs>): Promise<Array<String>>
 
 	public fun matchHealthElementsBySorted(filter: SortableFilterOptionsJs<HealthElementJs>):
 			Promise<Array<String>>
 
-	public fun deleteHealthElementUnsafe(entityId: String): Promise<DocIdentifierJs>
+	public fun deleteHealthElementUnsafe(entityId: String): Promise<StoredDocumentIdentifierJs>
 
-	public fun deleteHealthElementsUnsafe(entityIds: Array<String>): Promise<Array<DocIdentifierJs>>
+	public fun deleteHealthElementsUnsafe(entityIds: Array<String>):
+			Promise<Array<StoredDocumentIdentifierJs>>
 
-	public fun deleteHealthElementById(entityId: String, rev: String?): Promise<DocIdentifierJs>
+	public fun deleteHealthElementById(entityId: String, rev: String):
+			Promise<StoredDocumentIdentifierJs>
 
-	public fun deleteHealthElementsByIds(entityIds: Array<IdWithMandatoryRevJs>):
-			Promise<Array<DocIdentifierJs>>
+	public fun deleteHealthElementsByIds(entityIds: Array<StoredDocumentIdentifierJs>):
+			Promise<Array<StoredDocumentIdentifierJs>>
 
 	public fun purgeHealthElementById(id: String, rev: String): Promise<Unit>
 
-	public fun deleteHealthElement(healthElement: HealthElementJs): Promise<DocIdentifierJs>
+	public fun deleteHealthElement(healthElement: HealthElementJs): Promise<StoredDocumentIdentifierJs>
 
 	public fun deleteHealthElements(healthElements: Array<HealthElementJs>):
-			Promise<Array<DocIdentifierJs>>
+			Promise<Array<StoredDocumentIdentifierJs>>
 
 	public fun purgeHealthElement(healthElement: HealthElementJs): Promise<Unit>
 
@@ -97,6 +102,11 @@ public external interface HealthElementApiJs {
 	public fun filterHealthElementsBySorted(filter: SortableFilterOptionsJs<HealthElementJs>):
 			Promise<PaginatedListIteratorJs<DecryptedHealthElementJs>>
 
+	public fun createHealthElement(entity: DecryptedHealthElementJs): Promise<DecryptedHealthElementJs>
+
+	public fun createHealthElements(entities: Array<DecryptedHealthElementJs>):
+			Promise<Array<DecryptedHealthElementJs>>
+
 	public fun undeleteHealthElementById(id: String, rev: String): Promise<DecryptedHealthElementJs>
 
 	public fun undeleteHealthElement(healthElement: HealthElementJs): Promise<DecryptedHealthElementJs>
@@ -106,7 +116,7 @@ public external interface HealthElementApiJs {
 	public fun modifyHealthElements(entities: Array<DecryptedHealthElementJs>):
 			Promise<Array<DecryptedHealthElementJs>>
 
-	public fun getHealthElement(entityId: String): Promise<DecryptedHealthElementJs>
+	public fun getHealthElement(entityId: String): Promise<DecryptedHealthElementJs?>
 
 	public fun getHealthElements(entityIds: Array<String>): Promise<Array<DecryptedHealthElementJs>>
 

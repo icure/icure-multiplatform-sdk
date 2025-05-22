@@ -1,75 +1,36 @@
 // auto-generated file
 import 'package:cardinal_sdk/model/embed/agreement_appendix.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+part "paragraph_agreement.freezed.dart";
 
 
-class ParagraphAgreement {
-	int? timestamp = null;
-	String? paragraph = null;
-	bool? accepted = null;
-	bool? inTreatment = null;
-	bool? canceled = null;
-	String? careProviderReference = null;
-	String? decisionReference = null;
-	int? start = null;
-	int? end = null;
-	int? cancelationDate = null;
-	double? quantityValue = null;
-	String? quantityUnit = null;
-	String? ioRequestReference = null;
-	String? responseType = null;
-	Map<String, String>? refusalJustification = null;
-	Set<int>? verses = null;
-	String? coverageType = null;
-	double? unitNumber = null;
-	double? strength = null;
-	String? strengthUnit = null;
-	List<AgreementAppendix>? agreementAppendices = null;
-	String? documentId = null;
-	ParagraphAgreement({
-			int? timestamp,
-			String? paragraph,
-			bool? accepted,
-			bool? inTreatment,
-			bool? canceled,
-			String? careProviderReference,
-			String? decisionReference,
-			int? start,
-			int? end,
-			int? cancelationDate,
-			double? quantityValue,
-			String? quantityUnit,
-			String? ioRequestReference,
-			String? responseType,
-			Map<String, String>? refusalJustification,
-			Set<int>? verses,
-			String? coverageType,
-			double? unitNumber,
-			double? strength,
-			String? strengthUnit,
-			List<AgreementAppendix>? agreementAppendices,
-			String? documentId
-		}) : timestamp = timestamp ?? null,
-		paragraph = paragraph ?? null,
-		accepted = accepted ?? null,
-		inTreatment = inTreatment ?? null,
-		canceled = canceled ?? null,
-		careProviderReference = careProviderReference ?? null,
-		decisionReference = decisionReference ?? null,
-		start = start ?? null,
-		end = end ?? null,
-		cancelationDate = cancelationDate ?? null,
-		quantityValue = quantityValue ?? null,
-		quantityUnit = quantityUnit ?? null,
-		ioRequestReference = ioRequestReference ?? null,
-		responseType = responseType ?? null,
-		refusalJustification = refusalJustification ?? null,
-		verses = verses ?? null,
-		coverageType = coverageType ?? null,
-		unitNumber = unitNumber ?? null,
-		strength = strength ?? null,
-		strengthUnit = strengthUnit ?? null,
-		agreementAppendices = agreementAppendices ?? null,
-		documentId = documentId ?? null;
+@freezed
+abstract class ParagraphAgreement with _$ParagraphAgreement {
+	const factory ParagraphAgreement({
+		@Default(null) int? timestamp,
+		@Default(null) String? paragraph,
+		@Default(null) bool? accepted,
+		@Default(null) bool? inTreatment,
+		@Default(null) bool? canceled,
+		@Default(null) String? careProviderReference,
+		@Default(null) String? decisionReference,
+		@Default(null) int? start,
+		@Default(null) int? end,
+		@Default(null) int? cancelationDate,
+		@Default(null) double? quantityValue,
+		@Default(null) String? quantityUnit,
+		@Default(null) String? ioRequestReference,
+		@Default(null) String? responseType,
+		@Default(null) Map<String, String>? refusalJustification,
+		@Default(null) Set<int>? verses,
+		@Default(null) String? coverageType,
+		@Default(null) double? unitNumber,
+		@Default(null) double? strength,
+		@Default(null) String? strengthUnit,
+		@Default(null) List<AgreementAppendix>? agreementAppendices,
+		@Default(null) String? documentId,
+	}) = _ParagraphAgreement;
+
 
 	static Map<String, dynamic> encode(ParagraphAgreement value) {
 		Map<String, dynamic> entityAsMap = {

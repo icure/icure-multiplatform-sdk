@@ -5,14 +5,16 @@ import 'package:cardinal_sdk/model/specializations/base64string.dart';
 import 'package:cardinal_sdk/model/embed/care_team_member.dart';
 import 'package:cardinal_sdk/model/embed/encryptable.dart';
 import 'package:cardinal_sdk/model/base/identifiable.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+part "care_team_member.freezed.dart";
 
 
 sealed class CareTeamMember implements Encryptable, Identifiable<String> {
-	@override abstract String id;
-	abstract CareTeamMemberType? careTeamMemberType;
-	abstract String? healthcarePartyId;
-	abstract CodeStub? quality;
-	@override abstract Base64String? encryptedSelf;
+	@override abstract final String id;
+	abstract final CareTeamMemberType? careTeamMemberType;
+	abstract final String? healthcarePartyId;
+	abstract final CodeStub? quality;
+	@override abstract final Base64String? encryptedSelf;
 
 	static Map<String, dynamic> encode(CareTeamMember value) {
 		switch (value) {
@@ -43,23 +45,16 @@ sealed class CareTeamMember implements Encryptable, Identifiable<String> {
 	}
 }
 
-class EncryptedCareTeamMember implements CareTeamMember {
-	@override String id;
-	@override CareTeamMemberType? careTeamMemberType = null;
-	@override String? healthcarePartyId = null;
-	@override CodeStub? quality = null;
-	@override Base64String? encryptedSelf = null;
-	EncryptedCareTeamMember(
-		this.id,
-		{
-			CareTeamMemberType? careTeamMemberType,
-			String? healthcarePartyId,
-			CodeStub? quality,
-			Base64String? encryptedSelf
-		}) : careTeamMemberType = careTeamMemberType ?? null,
-		healthcarePartyId = healthcarePartyId ?? null,
-		quality = quality ?? null,
-		encryptedSelf = encryptedSelf ?? null;
+@freezed
+abstract class EncryptedCareTeamMember with _$EncryptedCareTeamMember implements CareTeamMember {
+	const factory EncryptedCareTeamMember({
+		required String id,
+		@Default(null) CareTeamMemberType? careTeamMemberType,
+		@Default(null) String? healthcarePartyId,
+		@Default(null) CodeStub? quality,
+		@Default(null) Base64String? encryptedSelf,
+	}) = _EncryptedCareTeamMember;
+
 
 	static Map<String, dynamic> encode(EncryptedCareTeamMember value) {
 		Map<String, dynamic> entityAsMap = {
@@ -74,7 +69,7 @@ class EncryptedCareTeamMember implements CareTeamMember {
 
 	static EncryptedCareTeamMember fromJSON(Map<String, dynamic> data) {
 		return EncryptedCareTeamMember(
-			(data["id"] as String),
+			id: (data["id"] as String),
 			careTeamMemberType: data["careTeamMemberType"] == null ? null : CareTeamMemberType.fromJSON(data["careTeamMemberType"]),
 			healthcarePartyId: (data["healthcarePartyId"] as String?),
 			quality: data["quality"] == null ? null : CodeStub.fromJSON(data["quality"]),
@@ -83,23 +78,16 @@ class EncryptedCareTeamMember implements CareTeamMember {
 	}
 }
 
-class DecryptedCareTeamMember implements CareTeamMember {
-	@override String id;
-	@override CareTeamMemberType? careTeamMemberType = null;
-	@override String? healthcarePartyId = null;
-	@override CodeStub? quality = null;
-	@override Base64String? encryptedSelf = null;
-	DecryptedCareTeamMember(
-		this.id,
-		{
-			CareTeamMemberType? careTeamMemberType,
-			String? healthcarePartyId,
-			CodeStub? quality,
-			Base64String? encryptedSelf
-		}) : careTeamMemberType = careTeamMemberType ?? null,
-		healthcarePartyId = healthcarePartyId ?? null,
-		quality = quality ?? null,
-		encryptedSelf = encryptedSelf ?? null;
+@freezed
+abstract class DecryptedCareTeamMember with _$DecryptedCareTeamMember implements CareTeamMember {
+	const factory DecryptedCareTeamMember({
+		required String id,
+		@Default(null) CareTeamMemberType? careTeamMemberType,
+		@Default(null) String? healthcarePartyId,
+		@Default(null) CodeStub? quality,
+		@Default(null) Base64String? encryptedSelf,
+	}) = _DecryptedCareTeamMember;
+
 
 	static Map<String, dynamic> encode(DecryptedCareTeamMember value) {
 		Map<String, dynamic> entityAsMap = {
@@ -114,7 +102,7 @@ class DecryptedCareTeamMember implements CareTeamMember {
 
 	static DecryptedCareTeamMember fromJSON(Map<String, dynamic> data) {
 		return DecryptedCareTeamMember(
-			(data["id"] as String),
+			id: (data["id"] as String),
 			careTeamMemberType: data["careTeamMemberType"] == null ? null : CareTeamMemberType.fromJSON(data["careTeamMemberType"]),
 			healthcarePartyId: (data["healthcarePartyId"] as String?),
 			quality: data["quality"] == null ? null : CodeStub.fromJSON(data["quality"]),

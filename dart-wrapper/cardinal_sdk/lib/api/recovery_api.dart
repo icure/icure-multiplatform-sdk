@@ -44,7 +44,7 @@ class RecoveryApi {
 				recoveryKey,
 				autoDelete,
 				waitSeconds,
-				),
+			),
 			cancellationToken
 		);
 	}

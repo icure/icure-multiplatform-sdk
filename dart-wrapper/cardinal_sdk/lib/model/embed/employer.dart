@@ -1,16 +1,17 @@
 // auto-generated file
 import 'package:cardinal_sdk/model/embed/address.dart';
 import 'package:cardinal_sdk/model/base/named.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+part "employer.freezed.dart";
 
 
-class Employer implements Named {
-	@override String? name = null;
-	DecryptedAddress? addresse = null;
-	Employer({
-			String? name,
-			DecryptedAddress? addresse
-		}) : name = name ?? null,
-		addresse = addresse ?? null;
+@freezed
+abstract class Employer with _$Employer implements Named {
+	const factory Employer({
+		@Default(null) String? name,
+		@Default(null) DecryptedAddress? addresse,
+	}) = _Employer;
+
 
 	static Map<String, dynamic> encode(Employer value) {
 		Map<String, dynamic> entityAsMap = {

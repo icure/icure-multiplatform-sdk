@@ -1,42 +1,26 @@
 // auto-generated file
 import 'package:cardinal_sdk/model/embed/address.dart';
 import 'package:cardinal_sdk/model/base/stored_document.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+part "insurance.freezed.dart";
 
 
-class Insurance implements StoredDocument {
-	@override String id;
-	@override String? rev = null;
-	@override int? deletionDate = null;
-	Map<String, String> name = {};
-	bool privateInsurance = false;
-	bool hospitalisationInsurance = false;
-	bool ambulatoryInsurance = false;
-	String? code = null;
-	String? agreementNumber = null;
-	String? parent = null;
-	DecryptedAddress address;
-	Insurance(
-		this.id,
-		this.address,
-		{
-			String? rev,
-			int? deletionDate,
-			Map<String, String>? name,
-			bool? privateInsurance,
-			bool? hospitalisationInsurance,
-			bool? ambulatoryInsurance,
-			String? code,
-			String? agreementNumber,
-			String? parent
-		}) : rev = rev ?? null,
-		deletionDate = deletionDate ?? null,
-		name = name ?? {},
-		privateInsurance = privateInsurance ?? false,
-		hospitalisationInsurance = hospitalisationInsurance ?? false,
-		ambulatoryInsurance = ambulatoryInsurance ?? false,
-		code = code ?? null,
-		agreementNumber = agreementNumber ?? null,
-		parent = parent ?? null;
+@freezed
+abstract class Insurance with _$Insurance implements StoredDocument {
+	const factory Insurance({
+		required String id,
+		@Default(null) String? rev,
+		@Default(null) int? deletionDate,
+		@Default({}) Map<String, String> name,
+		@Default(false) bool privateInsurance,
+		@Default(false) bool hospitalisationInsurance,
+		@Default(false) bool ambulatoryInsurance,
+		@Default(null) String? code,
+		@Default(null) String? agreementNumber,
+		@Default(null) String? parent,
+		required DecryptedAddress address,
+	}) = _Insurance;
+
 
 	static Map<String, dynamic> encode(Insurance value) {
 		Map<String, dynamic> entityAsMap = {
@@ -57,8 +41,8 @@ class Insurance implements StoredDocument {
 
 	static Insurance fromJSON(Map<String, dynamic> data) {
 		return Insurance(
-			(data["id"] as String),
-			DecryptedAddress.fromJSON(data["address"]),
+			id: (data["id"] as String),
+			address: DecryptedAddress.fromJSON(data["address"]),
 			rev: (data["rev"] as String?),
 			deletionDate: (data["deletionDate"] as int?),
 			name: (data["name"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as String))),

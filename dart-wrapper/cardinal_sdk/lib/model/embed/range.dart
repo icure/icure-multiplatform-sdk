@@ -1,14 +1,15 @@
 // auto-generated file
+import 'package:freezed_annotation/freezed_annotation.dart';
+part "range.freezed.dart";
 
 
-class Range {
-	double? low = null;
-	double? high = null;
-	Range({
-			double? low,
-			double? high
-		}) : low = low ?? null,
-		high = high ?? null;
+@freezed
+abstract class Range with _$Range {
+	const factory Range({
+		@Default(null) double? low,
+		@Default(null) double? high,
+	}) = _Range;
+
 
 	static Map<String, dynamic> encode(Range value) {
 		Map<String, dynamic> entityAsMap = {

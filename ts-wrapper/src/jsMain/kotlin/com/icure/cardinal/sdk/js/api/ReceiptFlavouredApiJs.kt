@@ -22,9 +22,11 @@ public external interface ReceiptFlavouredApiJs<E : ReceiptJs> {
 
 	public fun shareWithMany(receipt: E, delegates: Record<String, ReceiptShareOptionsJs>): Promise<E>
 
+	public fun createReceipt(entity: E): Promise<E>
+
 	public fun modifyReceipt(entity: E): Promise<E>
 
-	public fun getReceipt(entityId: String): Promise<E>
+	public fun getReceipt(entityId: String): Promise<E?>
 
 	public fun listByReference(reference: String): Promise<Array<E>>
 }

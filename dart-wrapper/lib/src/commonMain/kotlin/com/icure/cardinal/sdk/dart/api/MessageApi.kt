@@ -10,9 +10,9 @@ import com.icure.cardinal.sdk.filters.FilterOptions
 import com.icure.cardinal.sdk.filters.SortableFilterOptions
 import com.icure.cardinal.sdk.model.DecryptedMessage
 import com.icure.cardinal.sdk.model.EncryptedMessage
-import com.icure.cardinal.sdk.model.IdWithMandatoryRev
 import com.icure.cardinal.sdk.model.Message
 import com.icure.cardinal.sdk.model.Patient
+import com.icure.cardinal.sdk.model.StoredDocumentIdentifier
 import com.icure.cardinal.sdk.model.User
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.model.embed.AccessLevel
@@ -37,52 +37,6 @@ import kotlinx.serialization.builtins.serializer
 
 @OptIn(InternalIcureApi::class)
 public object MessageApi {
-  public fun createMessage(
-    dartResultCallback: (
-      String?,
-      String?,
-      String?,
-      String?,
-    ) -> Unit,
-    sdkId: String,
-    entityString: String,
-  ) {
-    val entity = fullLanguageInteropJson.decodeFromString(
-      DecryptedMessage.serializer(),
-      entityString
-    )
-    ApiScope.execute(
-      dartResultCallback,
-      DecryptedMessage.serializer()) {
-      NativeReferences.get<CardinalApis>(sdkId).message.createMessage(
-        entity,
-      )
-    }
-  }
-
-  public fun createMessageInTopic(
-    dartResultCallback: (
-      String?,
-      String?,
-      String?,
-      String?,
-    ) -> Unit,
-    sdkId: String,
-    entityString: String,
-  ) {
-    val entity = fullLanguageInteropJson.decodeFromString(
-      DecryptedMessage.serializer(),
-      entityString
-    )
-    ApiScope.execute(
-      dartResultCallback,
-      DecryptedMessage.serializer()) {
-      NativeReferences.get<CardinalApis>(sdkId).message.createMessageInTopic(
-        entity,
-      )
-    }
-  }
-
   public fun withEncryptionMetadata(
     dartResultCallback: (
       String?,
@@ -360,7 +314,7 @@ public object MessageApi {
     entityIdsString: String,
   ) {
     val entityIds = fullLanguageInteropJson.decodeFromString(
-      ListSerializer(IdWithMandatoryRev.serializer()),
+      ListSerializer(StoredDocumentIdentifier.serializer()),
       entityIdsString
     )
     ApiScope.execute(
@@ -588,6 +542,52 @@ public object MessageApi {
     }
   }
 
+  public fun createMessage(
+    dartResultCallback: (
+      String?,
+      String?,
+      String?,
+      String?,
+    ) -> Unit,
+    sdkId: String,
+    entityString: String,
+  ) {
+    val entity = fullLanguageInteropJson.decodeFromString(
+      DecryptedMessage.serializer(),
+      entityString
+    )
+    ApiScope.execute(
+      dartResultCallback,
+      DecryptedMessage.serializer()) {
+      NativeReferences.get<CardinalApis>(sdkId).message.createMessage(
+        entity,
+      )
+    }
+  }
+
+  public fun createMessageInTopic(
+    dartResultCallback: (
+      String?,
+      String?,
+      String?,
+      String?,
+    ) -> Unit,
+    sdkId: String,
+    entityString: String,
+  ) {
+    val entity = fullLanguageInteropJson.decodeFromString(
+      DecryptedMessage.serializer(),
+      entityString
+    )
+    ApiScope.execute(
+      dartResultCallback,
+      DecryptedMessage.serializer()) {
+      NativeReferences.get<CardinalApis>(sdkId).message.createMessageInTopic(
+        entity,
+      )
+    }
+  }
+
   public fun undeleteMessage(
     dartResultCallback: (
       String?,
@@ -679,7 +679,7 @@ public object MessageApi {
     )
     ApiScope.execute(
       dartResultCallback,
-      DecryptedMessage.serializer()) {
+      DecryptedMessage.serializer().nullable) {
       NativeReferences.get<CardinalApis>(sdkId).message.getMessage(
         entityId,
       )
@@ -911,6 +911,52 @@ public object MessageApi {
       }
     }
 
+    public fun createMessage(
+      dartResultCallback: (
+        String?,
+        String?,
+        String?,
+        String?,
+      ) -> Unit,
+      sdkId: String,
+      entityString: String,
+    ) {
+      val entity = fullLanguageInteropJson.decodeFromString(
+        EncryptedMessage.serializer(),
+        entityString
+      )
+      ApiScope.execute(
+        dartResultCallback,
+        EncryptedMessage.serializer()) {
+        NativeReferences.get<CardinalApis>(sdkId).message.encrypted.createMessage(
+          entity,
+        )
+      }
+    }
+
+    public fun createMessageInTopic(
+      dartResultCallback: (
+        String?,
+        String?,
+        String?,
+        String?,
+      ) -> Unit,
+      sdkId: String,
+      entityString: String,
+    ) {
+      val entity = fullLanguageInteropJson.decodeFromString(
+        EncryptedMessage.serializer(),
+        entityString
+      )
+      ApiScope.execute(
+        dartResultCallback,
+        EncryptedMessage.serializer()) {
+        NativeReferences.get<CardinalApis>(sdkId).message.encrypted.createMessageInTopic(
+          entity,
+        )
+      }
+    }
+
     public fun undeleteMessage(
       dartResultCallback: (
         String?,
@@ -1002,7 +1048,7 @@ public object MessageApi {
       )
       ApiScope.execute(
         dartResultCallback,
-        EncryptedMessage.serializer()) {
+        EncryptedMessage.serializer().nullable) {
         NativeReferences.get<CardinalApis>(sdkId).message.encrypted.getMessage(
           entityId,
         )
@@ -1196,6 +1242,52 @@ public object MessageApi {
       }
     }
 
+    public fun createMessage(
+      dartResultCallback: (
+        String?,
+        String?,
+        String?,
+        String?,
+      ) -> Unit,
+      sdkId: String,
+      entityString: String,
+    ) {
+      val entity = fullLanguageInteropJson.decodeFromString(
+        PolymorphicSerializer(Message::class),
+        entityString
+      )
+      ApiScope.execute(
+        dartResultCallback,
+        PolymorphicSerializer(Message::class)) {
+        NativeReferences.get<CardinalApis>(sdkId).message.tryAndRecover.createMessage(
+          entity,
+        )
+      }
+    }
+
+    public fun createMessageInTopic(
+      dartResultCallback: (
+        String?,
+        String?,
+        String?,
+        String?,
+      ) -> Unit,
+      sdkId: String,
+      entityString: String,
+    ) {
+      val entity = fullLanguageInteropJson.decodeFromString(
+        PolymorphicSerializer(Message::class),
+        entityString
+      )
+      ApiScope.execute(
+        dartResultCallback,
+        PolymorphicSerializer(Message::class)) {
+        NativeReferences.get<CardinalApis>(sdkId).message.tryAndRecover.createMessageInTopic(
+          entity,
+        )
+      }
+    }
+
     public fun undeleteMessage(
       dartResultCallback: (
         String?,
@@ -1287,7 +1379,7 @@ public object MessageApi {
       )
       ApiScope.execute(
         dartResultCallback,
-        PolymorphicSerializer(Message::class)) {
+        PolymorphicSerializer(Message::class).nullable) {
         NativeReferences.get<CardinalApis>(sdkId).message.tryAndRecover.getMessage(
           entityId,
         )

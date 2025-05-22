@@ -35,7 +35,7 @@ public object KeywordApiDispatcher {
     KeywordApi.getKeyword(
       resultCallback,
       parameters.getValue("sdkId"),
-      parameters.getValue("frontEndMigrationId"),
+      parameters.getValue("keywordId"),
     )
   }
 
@@ -48,7 +48,7 @@ public object KeywordApiDispatcher {
     KeywordApi.createKeyword(
       resultCallback,
       parameters.getValue("sdkId"),
-      parameters.getValue("frontEndMigration"),
+      parameters.getValue("keyword"),
     )
   }
 

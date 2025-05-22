@@ -6,7 +6,7 @@ package com.icure.cardinal.sdk.js.api
 import com.icure.cardinal.sdk.js.filters.BaseFilterOptionsJs
 import com.icure.cardinal.sdk.js.filters.BaseSortableFilterOptionsJs
 import com.icure.cardinal.sdk.js.model.EncryptedTopicJs
-import com.icure.cardinal.sdk.js.model.IdWithMandatoryRevJs
+import com.icure.cardinal.sdk.js.model.StoredDocumentIdentifierJs
 import com.icure.cardinal.sdk.js.model.TopicJs
 import com.icure.cardinal.sdk.js.model.couchdb.DocIdentifierJs
 import com.icure.cardinal.sdk.js.subscription.EntitySubscriptionJs
@@ -37,7 +37,7 @@ public external interface TopicBasicApiJs {
 
 	public fun deleteTopicById(entityId: String, rev: String): Promise<DocIdentifierJs>
 
-	public fun deleteTopicsByIds(entityIds: Array<IdWithMandatoryRevJs>):
+	public fun deleteTopicsByIds(entityIds: Array<StoredDocumentIdentifierJs>):
 			Promise<Array<DocIdentifierJs>>
 
 	public fun purgeTopicById(id: String, rev: String): Promise<Unit>
@@ -48,13 +48,15 @@ public external interface TopicBasicApiJs {
 
 	public fun purgeTopic(topic: TopicJs): Promise<Unit>
 
+	public fun createTopic(entity: EncryptedTopicJs): Promise<EncryptedTopicJs>
+
 	public fun undeleteTopic(topic: TopicJs): Promise<TopicJs>
 
 	public fun modifyTopic(entity: EncryptedTopicJs): Promise<EncryptedTopicJs>
 
 	public fun undeleteTopicById(id: String, rev: String): Promise<EncryptedTopicJs>
 
-	public fun getTopic(entityId: String): Promise<EncryptedTopicJs>
+	public fun getTopic(entityId: String): Promise<EncryptedTopicJs?>
 
 	public fun getTopics(entityIds: Array<String>): Promise<Array<EncryptedTopicJs>>
 

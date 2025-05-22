@@ -3,17 +3,18 @@ import {FilterOptions, PaginatedListIterator, SortableFilterOptions} from '../ca
 import {CalendarItemShareOptions} from '../crypto/entities/CalendarItemShareOptions.mjs';
 import {SecretIdUseOption} from '../crypto/entities/SecretIdUseOption.mjs';
 import {CalendarItem, DecryptedCalendarItem, EncryptedCalendarItem} from '../model/CalendarItem.mjs';
-import {IdWithMandatoryRev} from '../model/IdWithMandatoryRev.mjs';
+import {EntityReferenceInGroup} from '../model/EntityReferenceInGroup.mjs';
 import {PaginatedList} from '../model/PaginatedList.mjs';
 import {Patient} from '../model/Patient.mjs';
+import {StoredDocumentIdentifier} from '../model/StoredDocumentIdentifier.mjs';
 import {User} from '../model/User.mjs';
-import {DocIdentifier} from '../model/couchdb/DocIdentifier.mjs';
 import {AccessLevel} from '../model/embed/AccessLevel.mjs';
 import {HexString} from '../model/specializations/HexString.mjs';
 import {EntitySubscription} from '../subscription/EntitySubscription.mjs';
 import {EntitySubscriptionConfiguration} from '../subscription/EntitySubscriptionConfiguration.mjs';
 import {SubscriptionEventType} from '../subscription/SubscriptionEventType.mjs';
 import {CalendarItemFlavouredApi} from './CalendarItemFlavouredApi.mjs';
+import {CalendarItemInGroupApi} from './CalendarItemInGroupApi.mjs';
 
 
 export interface CalendarItemApi {
@@ -22,7 +23,7 @@ export interface CalendarItemApi {
 
 	tryAndRecover: CalendarItemFlavouredApi<CalendarItem>;
 
-	createCalendarItem(entity: DecryptedCalendarItem): Promise<DecryptedCalendarItem>;
+	inGroup: CalendarItemInGroupApi;
 
 	withEncryptionMetadata(base: DecryptedCalendarItem | undefined, patient: Patient | undefined,
 			options?: { user?: User | undefined, delegates?: { [ key: string ]: AccessLevel }, secretId?: SecretIdUseOption }): Promise<DecryptedCalendarItem>;
@@ -31,32 +32,34 @@ export interface CalendarItemApi {
 
 	hasWriteAccess(calendarItem: CalendarItem): Promise<boolean>;
 
-	decryptPatientIdOf(calendarItem: CalendarItem): Promise<Array<string>>;
+	decryptPatientIdOf(calendarItem: CalendarItem): Promise<Array<EntityReferenceInGroup>>;
 
 	createDelegationDeAnonymizationMetadata(entity: CalendarItem,
 			delegates: Array<string>): Promise<void>;
 
-	decrypt(calendarItem: EncryptedCalendarItem): Promise<DecryptedCalendarItem>;
+	decrypt(calendarItems: Array<EncryptedCalendarItem>): Promise<Array<DecryptedCalendarItem>>;
 
-	tryDecrypt(calendarItem: EncryptedCalendarItem): Promise<CalendarItem>;
+	tryDecrypt(calendarItems: Array<EncryptedCalendarItem>): Promise<Array<CalendarItem>>;
+
+	encryptOrValidate(calendarItems: Array<CalendarItem>): Promise<Array<EncryptedCalendarItem>>;
 
 	matchCalendarItemsBy(filter: FilterOptions<CalendarItem>): Promise<Array<string>>;
 
 	matchCalendarItemsBySorted(filter: SortableFilterOptions<CalendarItem>): Promise<Array<string>>;
 
-	deleteCalendarItemUnsafe(entityId: string): Promise<DocIdentifier>;
+	deleteCalendarItemUnsafe(entityId: string): Promise<StoredDocumentIdentifier>;
 
-	deleteCalendarItemsUnsafe(entityIds: Array<string>): Promise<Array<DocIdentifier>>;
+	deleteCalendarItemsUnsafe(entityIds: Array<string>): Promise<Array<StoredDocumentIdentifier>>;
 
-	deleteCalendarItemById(entityId: string, rev: string): Promise<DocIdentifier>;
+	deleteCalendarItemById(entityId: string, rev: string): Promise<StoredDocumentIdentifier>;
 
-	deleteCalendarItemsByIds(entityIds: Array<IdWithMandatoryRev>): Promise<Array<DocIdentifier>>;
+	deleteCalendarItemsByIds(entityIds: Array<StoredDocumentIdentifier>): Promise<Array<StoredDocumentIdentifier>>;
 
 	purgeCalendarItemById(id: string, rev: string): Promise<void>;
 
-	deleteCalendarItem(calendarItem: CalendarItem): Promise<DocIdentifier>;
+	deleteCalendarItem(calendarItem: CalendarItem): Promise<StoredDocumentIdentifier>;
 
-	deleteCalendarItems(calendarItems: Array<CalendarItem>): Promise<Array<DocIdentifier>>;
+	deleteCalendarItems(calendarItems: Array<CalendarItem>): Promise<Array<StoredDocumentIdentifier>>;
 
 	purgeCalendarItem(calendarItem: CalendarItem): Promise<void>;
 
@@ -76,13 +79,15 @@ export interface CalendarItemApi {
 
 	filterCalendarItemsBySorted(filter: SortableFilterOptions<CalendarItem>): Promise<PaginatedListIterator<DecryptedCalendarItem>>;
 
+	createCalendarItem(entity: DecryptedCalendarItem): Promise<DecryptedCalendarItem>;
+
 	undeleteCalendarItemById(id: string, rev: string): Promise<DecryptedCalendarItem>;
 
 	undeleteCalendarItem(calendarItem: CalendarItem): Promise<DecryptedCalendarItem>;
 
 	modifyCalendarItem(entity: DecryptedCalendarItem): Promise<DecryptedCalendarItem>;
 
-	getCalendarItem(entityId: string): Promise<DecryptedCalendarItem>;
+	getCalendarItem(entityId: string): Promise<DecryptedCalendarItem | undefined>;
 
 	getCalendarItems(entityIds: Array<string>): Promise<Array<DecryptedCalendarItem>>;
 

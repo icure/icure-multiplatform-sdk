@@ -62,13 +62,13 @@ public external interface CodeApiJs {
 	@JsName("getCodesInGroup")
 	public fun getCodes(groupId: String, codeIds: Array<String>): Promise<Array<CodeJs>>
 
-	public fun getCode(codeId: String): Promise<CodeJs>
+	public fun getCode(codeId: String): Promise<CodeJs?>
 
 	public fun getCodeWithParts(
 		type: String,
 		code: String,
 		version: String,
-	): Promise<CodeJs>
+	): Promise<CodeJs?>
 
 	public fun modifyCode(codeDto: CodeJs): Promise<CodeJs>
 

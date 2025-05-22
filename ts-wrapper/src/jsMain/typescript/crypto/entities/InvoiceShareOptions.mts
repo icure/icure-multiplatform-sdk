@@ -12,7 +12,7 @@ export class InvoiceShareOptions {
 
 	sharePatientId: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable;
 
-	shareSecretIds: SecretIdShareOptions = new SecretIdShareOptions.AllAvailable({ requireAtLeastOne: false });
+	shareSecretIds: SecretIdShareOptions = new SecretIdShareOptions.AllAvailable();
 
 	constructor(partial: Partial<InvoiceShareOptions>) {
 		if ('requestedPermissions' in partial && partial.requestedPermissions !== undefined) this.requestedPermissions = partial.requestedPermissions;

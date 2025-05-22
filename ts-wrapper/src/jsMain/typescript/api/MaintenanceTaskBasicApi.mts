@@ -1,7 +1,7 @@
 // auto-generated file
 import {BaseFilterOptions, BaseSortableFilterOptions, PaginatedListIterator} from '../cardinal-sdk-ts.mjs';
-import {IdWithMandatoryRev} from '../model/IdWithMandatoryRev.mjs';
 import {EncryptedMaintenanceTask, MaintenanceTask} from '../model/MaintenanceTask.mjs';
+import {StoredDocumentIdentifier} from '../model/StoredDocumentIdentifier.mjs';
 import {DocIdentifier} from '../model/couchdb/DocIdentifier.mjs';
 import {EntitySubscription} from '../subscription/EntitySubscription.mjs';
 import {EntitySubscriptionConfiguration} from '../subscription/EntitySubscriptionConfiguration.mjs';
@@ -24,7 +24,7 @@ export interface MaintenanceTaskBasicApi {
 
 	deleteMaintenanceTaskById(entityId: string, rev: string): Promise<DocIdentifier>;
 
-	deleteMaintenanceTasksByIds(entityIds: Array<IdWithMandatoryRev>): Promise<Array<DocIdentifier>>;
+	deleteMaintenanceTasksByIds(entityIds: Array<StoredDocumentIdentifier>): Promise<Array<DocIdentifier>>;
 
 	purgeMaintenanceTaskById(id: string, rev: string): Promise<void>;
 
@@ -34,13 +34,15 @@ export interface MaintenanceTaskBasicApi {
 
 	purgeMaintenanceTask(maintenanceTask: MaintenanceTask): Promise<void>;
 
+	createMaintenanceTask(entity: EncryptedMaintenanceTask): Promise<EncryptedMaintenanceTask>;
+
 	undeleteMaintenanceTask(maintenanceTask: MaintenanceTask): Promise<MaintenanceTask>;
 
 	undeleteMaintenanceTaskById(id: string, rev: string): Promise<EncryptedMaintenanceTask>;
 
 	modifyMaintenanceTask(entity: EncryptedMaintenanceTask): Promise<EncryptedMaintenanceTask>;
 
-	getMaintenanceTask(entityId: string): Promise<EncryptedMaintenanceTask>;
+	getMaintenanceTask(entityId: string): Promise<EncryptedMaintenanceTask | undefined>;
 
 	getMaintenanceTasks(entityIds: Array<string>): Promise<Array<EncryptedMaintenanceTask>>;
 

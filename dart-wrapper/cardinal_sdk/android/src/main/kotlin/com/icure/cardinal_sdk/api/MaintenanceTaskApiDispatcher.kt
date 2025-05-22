@@ -18,7 +18,6 @@ public object MaintenanceTaskApiDispatcher {
       String?,
     ) -> Unit,
   ): Boolean = when(methodName) {
-    "createMaintenanceTask" -> createMaintenanceTask(parameters, resultCallback)
     "withEncryptionMetadata" -> withEncryptionMetadata(parameters, resultCallback)
     "getEncryptionKeysOf" -> getEncryptionKeysOf(parameters, resultCallback)
     "hasWriteAccess" -> hasWriteAccess(parameters, resultCallback)
@@ -38,6 +37,7 @@ public object MaintenanceTaskApiDispatcher {
     "shareWithMany" -> shareWithMany(parameters, resultCallback)
     "filterMaintenanceTasksBy" -> filterMaintenanceTasksBy(parameters, resultCallback)
     "filterMaintenanceTasksBySorted" -> filterMaintenanceTasksBySorted(parameters, resultCallback)
+    "createMaintenanceTask" -> createMaintenanceTask(parameters, resultCallback)
     "undeleteMaintenanceTask" -> undeleteMaintenanceTask(parameters, resultCallback)
     "undeleteMaintenanceTaskById" -> undeleteMaintenanceTaskById(parameters, resultCallback)
     "modifyMaintenanceTask" -> modifyMaintenanceTask(parameters, resultCallback)
@@ -48,6 +48,7 @@ public object MaintenanceTaskApiDispatcher {
     "encrypted.shareWithMany" -> encrypted_shareWithMany(parameters, resultCallback)
     "encrypted.filterMaintenanceTasksBy" -> encrypted_filterMaintenanceTasksBy(parameters, resultCallback)
     "encrypted.filterMaintenanceTasksBySorted" -> encrypted_filterMaintenanceTasksBySorted(parameters, resultCallback)
+    "encrypted.createMaintenanceTask" -> encrypted_createMaintenanceTask(parameters, resultCallback)
     "encrypted.undeleteMaintenanceTask" -> encrypted_undeleteMaintenanceTask(parameters, resultCallback)
     "encrypted.undeleteMaintenanceTaskById" -> encrypted_undeleteMaintenanceTaskById(parameters, resultCallback)
     "encrypted.modifyMaintenanceTask" -> encrypted_modifyMaintenanceTask(parameters, resultCallback)
@@ -57,6 +58,7 @@ public object MaintenanceTaskApiDispatcher {
     "tryAndRecover.shareWithMany" -> tryAndRecover_shareWithMany(parameters, resultCallback)
     "tryAndRecover.filterMaintenanceTasksBy" -> tryAndRecover_filterMaintenanceTasksBy(parameters, resultCallback)
     "tryAndRecover.filterMaintenanceTasksBySorted" -> tryAndRecover_filterMaintenanceTasksBySorted(parameters, resultCallback)
+    "tryAndRecover.createMaintenanceTask" -> tryAndRecover_createMaintenanceTask(parameters, resultCallback)
     "tryAndRecover.undeleteMaintenanceTask" -> tryAndRecover_undeleteMaintenanceTask(parameters, resultCallback)
     "tryAndRecover.undeleteMaintenanceTaskById" -> tryAndRecover_undeleteMaintenanceTaskById(parameters, resultCallback)
     "tryAndRecover.modifyMaintenanceTask" -> tryAndRecover_modifyMaintenanceTask(parameters, resultCallback)
@@ -64,19 +66,6 @@ public object MaintenanceTaskApiDispatcher {
     "tryAndRecover.getMaintenanceTasks" -> tryAndRecover_getMaintenanceTasks(parameters, resultCallback)
     else -> null
   }?.let { true } ?: false
-
-  private fun createMaintenanceTask(parameters: Map<String, String>, resultCallback: (
-    String?,
-    String?,
-    String?,
-    String?,
-  ) -> Unit) {
-    MaintenanceTaskApi.createMaintenanceTask(
-      resultCallback,
-      parameters.getValue("sdkId"),
-      parameters.getValue("entity"),
-    )
-  }
 
   private fun withEncryptionMetadata(parameters: Map<String, String>, resultCallback: (
     String?,
@@ -334,6 +323,19 @@ public object MaintenanceTaskApiDispatcher {
     )
   }
 
+  private fun createMaintenanceTask(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    MaintenanceTaskApi.createMaintenanceTask(
+      resultCallback,
+      parameters.getValue("sdkId"),
+      parameters.getValue("entity"),
+    )
+  }
+
   private fun undeleteMaintenanceTask(parameters: Map<String, String>, resultCallback: (
     String?,
     String?,
@@ -471,6 +473,19 @@ public object MaintenanceTaskApiDispatcher {
     )
   }
 
+  private fun encrypted_createMaintenanceTask(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    MaintenanceTaskApi.encrypted.createMaintenanceTask(
+      resultCallback,
+      parameters.getValue("sdkId"),
+      parameters.getValue("entity"),
+    )
+  }
+
   private fun encrypted_undeleteMaintenanceTask(parameters: Map<String, String>, resultCallback: (
     String?,
     String?,
@@ -592,6 +607,19 @@ public object MaintenanceTaskApiDispatcher {
       resultCallback,
       parameters.getValue("sdkId"),
       parameters.getValue("filter"),
+    )
+  }
+
+  private fun tryAndRecover_createMaintenanceTask(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    MaintenanceTaskApi.tryAndRecover.createMaintenanceTask(
+      resultCallback,
+      parameters.getValue("sdkId"),
+      parameters.getValue("entity"),
     )
   }
 

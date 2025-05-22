@@ -23,7 +23,7 @@ export interface InvoiceFlavouredApi<E extends Invoice> {
 
 	modifyInvoices(entities: Array<E>): Promise<Array<E>>;
 
-	getInvoice(entityId: string): Promise<E>;
+	getInvoice(entityId: string): Promise<E | undefined>;
 
 	getInvoices(entityIds: Array<string>): Promise<Array<E>>;
 

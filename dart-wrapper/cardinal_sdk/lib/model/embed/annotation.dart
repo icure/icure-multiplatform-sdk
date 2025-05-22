@@ -1,40 +1,25 @@
 // auto-generated file
 import 'package:cardinal_sdk/model/base/code_stub.dart';
 import 'package:cardinal_sdk/model/base/identifiable.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+part "annotation.freezed.dart";
 
 
-class Annotation implements Identifiable<String> {
-	@override String id;
-	String? author = null;
-	int? created = null;
-	int? modified = null;
-	String? text = null;
-	Map<String, String> markdown = {};
-	String? location = null;
-	bool? confidential = null;
-	Set<CodeStub> tags = {};
-	String? encryptedSelf = null;
-	Annotation(
-		this.id,
-		{
-			String? author,
-			int? created,
-			int? modified,
-			String? text,
-			Map<String, String>? markdown,
-			String? location,
-			bool? confidential,
-			Set<CodeStub>? tags,
-			String? encryptedSelf
-		}) : author = author ?? null,
-		created = created ?? null,
-		modified = modified ?? null,
-		text = text ?? null,
-		markdown = markdown ?? {},
-		location = location ?? null,
-		confidential = confidential ?? null,
-		tags = tags ?? {},
-		encryptedSelf = encryptedSelf ?? null;
+@freezed
+abstract class Annotation with _$Annotation implements Identifiable<String> {
+	const factory Annotation({
+		required String id,
+		@Default(null) String? author,
+		@Default(null) int? created,
+		@Default(null) int? modified,
+		@Default(null) String? text,
+		@Default({}) Map<String, String> markdown,
+		@Default(null) String? location,
+		@Default(null) bool? confidential,
+		@Default({}) Set<CodeStub> tags,
+		@Default(null) String? encryptedSelf,
+	}) = _Annotation;
+
 
 	static Map<String, dynamic> encode(Annotation value) {
 		Map<String, dynamic> entityAsMap = {
@@ -54,7 +39,7 @@ class Annotation implements Identifiable<String> {
 
 	static Annotation fromJSON(Map<String, dynamic> data) {
 		return Annotation(
-			(data["id"] as String),
+			id: (data["id"] as String),
 			author: (data["author"] as String?),
 			created: (data["created"] as int?),
 			modified: (data["modified"] as int?),

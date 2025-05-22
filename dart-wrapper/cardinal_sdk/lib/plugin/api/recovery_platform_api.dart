@@ -41,7 +41,7 @@ class RecoveryPlatformApi {
 		if (res == null) throw AssertionError("received null result from platform method recoverKeyPairs");
 		final parsedResJson = jsonDecode(res);
 		return RecoveryResult.fromJSON(
-				parsedResJson,
+			parsedResJson,
 			(x1) {
 				return (x1 as Map<String, dynamic>).map((k2, v2) => MapEntry((k2 as String), (v2 as Map<String, dynamic>).map((k3, v3) => MapEntry(CardinalRsaPublicKey.fromSpkiHex(k3), CardinalRsaPrivateKey.fromPkcs8Base64(v3)))));
 			},
@@ -62,7 +62,7 @@ class RecoveryPlatformApi {
 		if (res == null) throw AssertionError("received null result from platform method recoverKeyPairsWaitingForCreation");
 		final parsedResJson = jsonDecode(res);
 		return RecoveryResult.fromJSON(
-				parsedResJson,
+			parsedResJson,
 			(x1) {
 				return (x1 as Map<String, dynamic>).map((k2, v2) => MapEntry((k2 as String), (v2 as Map<String, dynamic>).map((k3, v3) => MapEntry(CardinalRsaPublicKey.fromSpkiHex(k3), CardinalRsaPrivateKey.fromPkcs8Base64(v3)))));
 			},

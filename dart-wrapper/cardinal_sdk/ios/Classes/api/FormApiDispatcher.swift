@@ -14,8 +14,6 @@ class FormApiDispatcher {
     ) -> Void
   ) -> Bool {
     switch methodName {
-    case "createForm": createForm(parameters: parameters, resultCallback: resultCallback)
-    case "createForms": createForms(parameters: parameters, resultCallback: resultCallback)
     case "withEncryptionMetadata": withEncryptionMetadata(parameters: parameters, resultCallback: resultCallback)
     case "getEncryptionKeysOf": getEncryptionKeysOf(parameters: parameters, resultCallback: resultCallback)
     case "hasWriteAccess": hasWriteAccess(parameters: parameters, resultCallback: resultCallback)
@@ -40,6 +38,8 @@ class FormApiDispatcher {
     case "shareWithMany": shareWithMany(parameters: parameters, resultCallback: resultCallback)
     case "filterFormsBy": filterFormsBy(parameters: parameters, resultCallback: resultCallback)
     case "filterFormsBySorted": filterFormsBySorted(parameters: parameters, resultCallback: resultCallback)
+    case "createForm": createForm(parameters: parameters, resultCallback: resultCallback)
+    case "createForms": createForms(parameters: parameters, resultCallback: resultCallback)
     case "modifyForm": modifyForm(parameters: parameters, resultCallback: resultCallback)
     case "undeleteFormById": undeleteFormById(parameters: parameters, resultCallback: resultCallback)
     case "undeleteForm": undeleteForm(parameters: parameters, resultCallback: resultCallback)
@@ -52,6 +52,8 @@ class FormApiDispatcher {
     case "encrypted.shareWithMany": encrypted_shareWithMany(parameters: parameters, resultCallback: resultCallback)
     case "encrypted.filterFormsBy": encrypted_filterFormsBy(parameters: parameters, resultCallback: resultCallback)
     case "encrypted.filterFormsBySorted": encrypted_filterFormsBySorted(parameters: parameters, resultCallback: resultCallback)
+    case "encrypted.createForm": encrypted_createForm(parameters: parameters, resultCallback: resultCallback)
+    case "encrypted.createForms": encrypted_createForms(parameters: parameters, resultCallback: resultCallback)
     case "encrypted.modifyForm": encrypted_modifyForm(parameters: parameters, resultCallback: resultCallback)
     case "encrypted.undeleteFormById": encrypted_undeleteFormById(parameters: parameters, resultCallback: resultCallback)
     case "encrypted.undeleteForm": encrypted_undeleteForm(parameters: parameters, resultCallback: resultCallback)
@@ -64,6 +66,8 @@ class FormApiDispatcher {
     case "tryAndRecover.shareWithMany": tryAndRecover_shareWithMany(parameters: parameters, resultCallback: resultCallback)
     case "tryAndRecover.filterFormsBy": tryAndRecover_filterFormsBy(parameters: parameters, resultCallback: resultCallback)
     case "tryAndRecover.filterFormsBySorted": tryAndRecover_filterFormsBySorted(parameters: parameters, resultCallback: resultCallback)
+    case "tryAndRecover.createForm": tryAndRecover_createForm(parameters: parameters, resultCallback: resultCallback)
+    case "tryAndRecover.createForms": tryAndRecover_createForms(parameters: parameters, resultCallback: resultCallback)
     case "tryAndRecover.modifyForm": tryAndRecover_modifyForm(parameters: parameters, resultCallback: resultCallback)
     case "tryAndRecover.undeleteFormById": tryAndRecover_undeleteFormById(parameters: parameters, resultCallback: resultCallback)
     case "tryAndRecover.undeleteForm": tryAndRecover_undeleteForm(parameters: parameters, resultCallback: resultCallback)
@@ -75,32 +79,6 @@ class FormApiDispatcher {
     default: return false
     }
     return true
-  }
-
-  private static func createForm(parameters: [String : String], resultCallback: @escaping (
-    String?,
-    String?,
-    String?,
-    String?
-  ) -> Void) {
-    FormApi.shared.createForm(
-    	dartResultCallback: resultCallback,
-    	sdkId: parameters["sdkId"]!,
-    	entityString: parameters["entity"]!
-    )
-  }
-
-  private static func createForms(parameters: [String : String], resultCallback: @escaping (
-    String?,
-    String?,
-    String?,
-    String?
-  ) -> Void) {
-    FormApi.shared.createForms(
-    	dartResultCallback: resultCallback,
-    	sdkId: parameters["sdkId"]!,
-    	entitiesString: parameters["entities"]!
-    )
   }
 
   private static func withEncryptionMetadata(parameters: [String : String], resultCallback: @escaping (
@@ -427,6 +405,32 @@ class FormApiDispatcher {
     )
   }
 
+  private static func createForm(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    FormApi.shared.createForm(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	entityString: parameters["entity"]!
+    )
+  }
+
+  private static func createForms(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    FormApi.shared.createForms(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	entitiesString: parameters["entities"]!
+    )
+  }
+
   private static func modifyForm(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
@@ -587,6 +591,32 @@ class FormApiDispatcher {
     )
   }
 
+  private static func encrypted_createForm(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    FormApi.encrypted.shared.createForm(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	entityString: parameters["entity"]!
+    )
+  }
+
+  private static func encrypted_createForms(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    FormApi.encrypted.shared.createForms(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	entitiesString: parameters["entities"]!
+    )
+  }
+
   private static func encrypted_modifyForm(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
@@ -744,6 +774,32 @@ class FormApiDispatcher {
     	dartResultCallback: resultCallback,
     	sdkId: parameters["sdkId"]!,
     	filterString: parameters["filter"]!
+    )
+  }
+
+  private static func tryAndRecover_createForm(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    FormApi.tryAndRecover.shared.createForm(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	entityString: parameters["entity"]!
+    )
+  }
+
+  private static func tryAndRecover_createForms(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    FormApi.tryAndRecover.shared.createForms(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	entitiesString: parameters["entities"]!
     )
   }
 

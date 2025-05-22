@@ -1,16 +1,17 @@
 // auto-generated file
 import 'package:cardinal_sdk/model/couchdb/database_info.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+part "group_databases_info.freezed.dart";
 
 
-class GroupDatabasesInfo {
-	String groupId;
-	List<DatabaseInfo> databasesInfo;
-	int gcpStorageSize;
-	GroupDatabasesInfo(
-		this.groupId,
-		this.databasesInfo,
-		this.gcpStorageSize
-		);
+@freezed
+abstract class GroupDatabasesInfo with _$GroupDatabasesInfo {
+	const factory GroupDatabasesInfo({
+		required String groupId,
+		required List<DatabaseInfo> databasesInfo,
+		required int gcpStorageSize,
+	}) = _GroupDatabasesInfo;
+
 
 	static Map<String, dynamic> encode(GroupDatabasesInfo value) {
 		Map<String, dynamic> entityAsMap = {
@@ -23,9 +24,9 @@ class GroupDatabasesInfo {
 
 	static GroupDatabasesInfo fromJSON(Map<String, dynamic> data) {
 		return GroupDatabasesInfo(
-			(data["groupId"] as String),
-			(data["databasesInfo"] as List<dynamic>).map((x0) => DatabaseInfo.fromJSON(x0) ).toList(),
-			(data["gcpStorageSize"] as int)
+			groupId: (data["groupId"] as String),
+			databasesInfo: (data["databasesInfo"] as List<dynamic>).map((x0) => DatabaseInfo.fromJSON(x0) ).toList(),
+			gcpStorageSize: (data["gcpStorageSize"] as int)
 		);
 	}
 }

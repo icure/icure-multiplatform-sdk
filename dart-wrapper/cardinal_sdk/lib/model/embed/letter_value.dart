@@ -1,20 +1,17 @@
 // auto-generated file
+import 'package:freezed_annotation/freezed_annotation.dart';
+part "letter_value.freezed.dart";
 
 
-class LetterValue {
-	String? letter = null;
-	String? index = null;
-	double? coefficient = null;
-	double? value = null;
-	LetterValue({
-			String? letter,
-			String? index,
-			double? coefficient,
-			double? value
-		}) : letter = letter ?? null,
-		index = index ?? null,
-		coefficient = coefficient ?? null,
-		value = value ?? null;
+@freezed
+abstract class LetterValue with _$LetterValue {
+	const factory LetterValue({
+		@Default(null) String? letter,
+		@Default(null) String? index,
+		@Default(null) double? coefficient,
+		@Default(null) double? value,
+	}) = _LetterValue;
+
 
 	static Map<String, dynamic> encode(LetterValue value) {
 		Map<String, dynamic> entityAsMap = {

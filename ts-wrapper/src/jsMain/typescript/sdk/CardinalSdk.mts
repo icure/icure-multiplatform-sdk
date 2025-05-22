@@ -105,6 +105,8 @@ export interface CardinalApis {
 /**
  * Main entry point to use iCure, provides access to the various apis with encryption capabilities.
  * Only data owner users with a valid keypair can use these apis.
+ *
+ * The SDK should be explicitly closed when not needed anymore.
  */
 export interface CardinalSdk extends CardinalApis {
   /**
@@ -116,6 +118,12 @@ export interface CardinalSdk extends CardinalApis {
    * @return a new sdk for executing requests in the provided group
    */
   switchGroup(groupId: String): Promise<CardinalSdk>
+
+  /**
+   * Closes the SDK instance freeing any held resources and canceling ongoing tasks.
+   * A closed SDK instance can't be reused.
+   */
+  close(): void
 }
 
 export interface CardinalBaseApis {
@@ -160,6 +168,8 @@ export interface CardinalBaseApis {
  * A stripped down version of the iCure SDK that can be used also by users that aren't data owners.
  * This could be useful, for example, if you want to perform some system maintenance using an admin user, or compile
  * some statistics without using any encrypted information
+ *
+ * The base SDK doesn't need explicit closing
  */
 export interface CardinalBaseSdk extends CardinalBaseApis {
   /**

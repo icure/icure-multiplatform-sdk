@@ -9,9 +9,9 @@ import com.icure.cardinal.sdk.js.filters.SortableFilterOptionsJs
 import com.icure.cardinal.sdk.js.model.AccessLogJs
 import com.icure.cardinal.sdk.js.model.DecryptedAccessLogJs
 import com.icure.cardinal.sdk.js.model.EncryptedAccessLogJs
-import com.icure.cardinal.sdk.js.model.IdWithMandatoryRevJs
 import com.icure.cardinal.sdk.js.model.PaginatedListJs
 import com.icure.cardinal.sdk.js.model.PatientJs
+import com.icure.cardinal.sdk.js.model.StoredDocumentIdentifierJs
 import com.icure.cardinal.sdk.js.model.couchdb.DocIdentifierJs
 import com.icure.cardinal.sdk.js.utils.Record
 import com.icure.cardinal.sdk.js.utils.pagination.PaginatedListIteratorJs
@@ -29,8 +29,6 @@ public external interface AccessLogApiJs {
 	public val encrypted: AccessLogFlavouredApiJs<EncryptedAccessLogJs>
 
 	public val tryAndRecover: AccessLogFlavouredApiJs<AccessLogJs>
-
-	public fun createAccessLog(entity: DecryptedAccessLogJs): Promise<DecryptedAccessLogJs>
 
 	public fun withEncryptionMetadata(
 		base: DecryptedAccessLogJs?,
@@ -62,7 +60,7 @@ public external interface AccessLogApiJs {
 
 	public fun deleteAccessLogById(entityId: String, rev: String): Promise<DocIdentifierJs>
 
-	public fun deleteAccessLogsByIds(entityIds: Array<IdWithMandatoryRevJs>):
+	public fun deleteAccessLogsByIds(entityIds: Array<StoredDocumentIdentifierJs>):
 			Promise<Array<DocIdentifierJs>>
 
 	public fun purgeAccessLogById(id: String, rev: String): Promise<Unit>
@@ -94,13 +92,15 @@ public external interface AccessLogApiJs {
 	public fun filterAccessLogsBySorted(filter: SortableFilterOptionsJs<AccessLogJs>):
 			Promise<PaginatedListIteratorJs<DecryptedAccessLogJs>>
 
+	public fun createAccessLog(entity: DecryptedAccessLogJs): Promise<DecryptedAccessLogJs>
+
 	public fun undeleteAccessLogById(id: String, rev: String): Promise<DecryptedAccessLogJs>
 
 	public fun undeleteAccessLog(accessLog: AccessLogJs): Promise<DecryptedAccessLogJs>
 
 	public fun modifyAccessLog(entity: DecryptedAccessLogJs): Promise<DecryptedAccessLogJs>
 
-	public fun getAccessLog(entityId: String): Promise<DecryptedAccessLogJs>
+	public fun getAccessLog(entityId: String): Promise<DecryptedAccessLogJs?>
 
 	public fun getAccessLogs(entityIds: Array<String>): Promise<Array<DecryptedAccessLogJs>>
 

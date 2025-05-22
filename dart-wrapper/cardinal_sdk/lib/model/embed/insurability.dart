@@ -2,19 +2,21 @@
 import 'package:cardinal_sdk/model/specializations/base64string.dart';
 import 'package:cardinal_sdk/model/embed/insurability.dart';
 import 'package:cardinal_sdk/model/embed/encryptable.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+part "insurability.freezed.dart";
 
 
 sealed class Insurability implements Encryptable {
-	abstract Map<String, String> parameters;
-	abstract bool? hospitalisation;
-	abstract bool? ambulatory;
-	abstract bool? dental;
-	abstract String? identificationNumber;
-	abstract String? insuranceId;
-	abstract int? startDate;
-	abstract int? endDate;
-	abstract String? titularyId;
-	@override abstract Base64String? encryptedSelf;
+	abstract final Map<String, String> parameters;
+	abstract final bool? hospitalisation;
+	abstract final bool? ambulatory;
+	abstract final bool? dental;
+	abstract final String? identificationNumber;
+	abstract final String? insuranceId;
+	abstract final int? startDate;
+	abstract final int? endDate;
+	abstract final String? titularyId;
+	@override abstract final Base64String? encryptedSelf;
 
 	static Map<String, dynamic> encode(Insurability value) {
 		switch (value) {
@@ -45,38 +47,21 @@ sealed class Insurability implements Encryptable {
 	}
 }
 
-class DecryptedInsurability implements Insurability {
-	@override Map<String, String> parameters = {};
-	@override bool? hospitalisation = null;
-	@override bool? ambulatory = null;
-	@override bool? dental = null;
-	@override String? identificationNumber = null;
-	@override String? insuranceId = null;
-	@override int? startDate = null;
-	@override int? endDate = null;
-	@override String? titularyId = null;
-	@override Base64String? encryptedSelf = null;
-	DecryptedInsurability({
-			Map<String, String>? parameters,
-			bool? hospitalisation,
-			bool? ambulatory,
-			bool? dental,
-			String? identificationNumber,
-			String? insuranceId,
-			int? startDate,
-			int? endDate,
-			String? titularyId,
-			Base64String? encryptedSelf
-		}) : parameters = parameters ?? {},
-		hospitalisation = hospitalisation ?? null,
-		ambulatory = ambulatory ?? null,
-		dental = dental ?? null,
-		identificationNumber = identificationNumber ?? null,
-		insuranceId = insuranceId ?? null,
-		startDate = startDate ?? null,
-		endDate = endDate ?? null,
-		titularyId = titularyId ?? null,
-		encryptedSelf = encryptedSelf ?? null;
+@freezed
+abstract class DecryptedInsurability with _$DecryptedInsurability implements Insurability {
+	const factory DecryptedInsurability({
+		@Default({}) Map<String, String> parameters,
+		@Default(null) bool? hospitalisation,
+		@Default(null) bool? ambulatory,
+		@Default(null) bool? dental,
+		@Default(null) String? identificationNumber,
+		@Default(null) String? insuranceId,
+		@Default(null) int? startDate,
+		@Default(null) int? endDate,
+		@Default(null) String? titularyId,
+		@Default(null) Base64String? encryptedSelf,
+	}) = _DecryptedInsurability;
+
 
 	static Map<String, dynamic> encode(DecryptedInsurability value) {
 		Map<String, dynamic> entityAsMap = {
@@ -110,38 +95,21 @@ class DecryptedInsurability implements Insurability {
 	}
 }
 
-class EncryptedInsurability implements Insurability {
-	@override Map<String, String> parameters = {};
-	@override bool? hospitalisation = null;
-	@override bool? ambulatory = null;
-	@override bool? dental = null;
-	@override String? identificationNumber = null;
-	@override String? insuranceId = null;
-	@override int? startDate = null;
-	@override int? endDate = null;
-	@override String? titularyId = null;
-	@override Base64String? encryptedSelf = null;
-	EncryptedInsurability({
-			Map<String, String>? parameters,
-			bool? hospitalisation,
-			bool? ambulatory,
-			bool? dental,
-			String? identificationNumber,
-			String? insuranceId,
-			int? startDate,
-			int? endDate,
-			String? titularyId,
-			Base64String? encryptedSelf
-		}) : parameters = parameters ?? {},
-		hospitalisation = hospitalisation ?? null,
-		ambulatory = ambulatory ?? null,
-		dental = dental ?? null,
-		identificationNumber = identificationNumber ?? null,
-		insuranceId = insuranceId ?? null,
-		startDate = startDate ?? null,
-		endDate = endDate ?? null,
-		titularyId = titularyId ?? null,
-		encryptedSelf = encryptedSelf ?? null;
+@freezed
+abstract class EncryptedInsurability with _$EncryptedInsurability implements Insurability {
+	const factory EncryptedInsurability({
+		@Default({}) Map<String, String> parameters,
+		@Default(null) bool? hospitalisation,
+		@Default(null) bool? ambulatory,
+		@Default(null) bool? dental,
+		@Default(null) String? identificationNumber,
+		@Default(null) String? insuranceId,
+		@Default(null) int? startDate,
+		@Default(null) int? endDate,
+		@Default(null) String? titularyId,
+		@Default(null) Base64String? encryptedSelf,
+	}) = _EncryptedInsurability;
+
 
 	static Map<String, dynamic> encode(EncryptedInsurability value) {
 		Map<String, dynamic> entityAsMap = {

@@ -6,6 +6,7 @@ import com.icure.cardinal.sdk.js.api.DefaultParametersSupport.convertingOptionOr
 import com.icure.cardinal.sdk.js.api.InsuranceApiJs
 import com.icure.cardinal.sdk.js.model.CheckedConverters.arrayToList
 import com.icure.cardinal.sdk.js.model.CheckedConverters.listToArray
+import com.icure.cardinal.sdk.js.model.CheckedConverters.nullToUndefined
 import com.icure.cardinal.sdk.js.model.CheckedConverters.numberToInt
 import com.icure.cardinal.sdk.js.model.CheckedConverters.undefinedToNull
 import com.icure.cardinal.sdk.js.model.InsuranceJs
@@ -31,12 +32,16 @@ import kotlinx.coroutines.promise
 internal class InsuranceApiImplJs(
 	private val insuranceApi: InsuranceApi,
 ) : InsuranceApiJs {
-	override fun getInsurance(insuranceId: String): Promise<InsuranceJs> = GlobalScope.promise {
+	override fun getInsurance(insuranceId: String): Promise<InsuranceJs?> = GlobalScope.promise {
 		val insuranceIdConverted: String = insuranceId
 		val result = insuranceApi.getInsurance(
 			insuranceIdConverted,
 		)
-		insurance_toJs(result)
+		nullToUndefined(
+			result?.let { nonNull1 ->
+				insurance_toJs(nonNull1)
+			}
+		)
 	}
 
 	override fun getInsurances(insuranceIds: Array<String>): Promise<Array<InsuranceJs>> =

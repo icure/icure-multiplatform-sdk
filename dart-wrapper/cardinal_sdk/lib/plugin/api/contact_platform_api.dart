@@ -13,7 +13,7 @@ import 'package:cardinal_sdk/model/specializations/hex_string.dart';
 import 'package:cardinal_sdk/subscription/entity_subscription_configuration.dart';
 import 'package:cardinal_sdk/subscription/entity_subscription.dart';
 import 'package:cardinal_sdk/model/couchdb/doc_identifier.dart';
-import 'package:cardinal_sdk/model/id_with_mandatory_rev.dart';
+import 'package:cardinal_sdk/model/stored_document_identifier.dart';
 import 'package:cardinal_sdk/model/data/labelled_occurence.dart';
 import 'package:cardinal_sdk/crypto/entities/contact_share_options.dart';
 import 'package:cardinal_sdk/utils/pagination/paginated_list_iterator.dart';
@@ -22,12 +22,12 @@ import 'package:cardinal_sdk/subscription/subscription_event_type.dart';
 
 class ContactPlatformApi {
 	MethodChannel _methodChannel;
-	TryAndRecoverContactPlatformApi tryAndRecover;
-	EncryptedContactPlatformApi encrypted;
+	ContactEncryptedPlatformApi encrypted;
+	ContactTryAndRecoverPlatformApi tryAndRecover;
 	ContactPlatformApi(
 		this._methodChannel
-		) : tryAndRecover = TryAndRecoverContactPlatformApi(_methodChannel),
-		encrypted = EncryptedContactPlatformApi(_methodChannel);
+		) : encrypted = ContactEncryptedPlatformApi(_methodChannel),
+		tryAndRecover = ContactTryAndRecoverPlatformApi(_methodChannel);
 
 	Future<List<String>> matchContactsBy(String sdkId, FilterOptions<Contact> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
@@ -79,32 +79,6 @@ class ContactPlatformApi {
 		if (res == null) throw AssertionError("received null result from platform method matchServicesBySorted");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toList();
-	}
-
-	Future<DecryptedContact> createContact(String sdkId, DecryptedContact entity) async {
-		final res = await _methodChannel.invokeMethod<String>(
-			'ContactApi.createContact',
-			{
-				"sdkId": sdkId,
-				"entity": jsonEncode(DecryptedContact.encode(entity)),
-			}
-		).catchError(convertPlatformException);
-		if (res == null) throw AssertionError("received null result from platform method createContact");
-		final parsedResJson = jsonDecode(res);
-		return DecryptedContact.fromJSON(parsedResJson);
-	}
-
-	Future<List<DecryptedContact>> createContacts(String sdkId, List<DecryptedContact> entities) async {
-		final res = await _methodChannel.invokeMethod<String>(
-			'ContactApi.createContacts',
-			{
-				"sdkId": sdkId,
-				"entities": jsonEncode(entities.map((x0) => DecryptedContact.encode(x0)).toList()),
-			}
-		).catchError(convertPlatformException);
-		if (res == null) throw AssertionError("received null result from platform method createContacts");
-		final parsedResJson = jsonDecode(res);
-		return (parsedResJson as List<dynamic>).map((x1) => DecryptedContact.fromJSON(x1) ).toList();
 	}
 
 	Future<DecryptedContact> withEncryptionMetadata(String sdkId, DecryptedContact? base, Patient patient, User? user, Map<String, AccessLevel> delegates, SecretIdUseOption secretId) async {
@@ -254,12 +228,12 @@ class ContactPlatformApi {
 		return DocIdentifier.fromJSON(parsedResJson);
 	}
 
-	Future<List<DocIdentifier>> deleteContactsByIds(String sdkId, List<IdWithMandatoryRev> entityIds) async {
+	Future<List<DocIdentifier>> deleteContactsByIds(String sdkId, List<StoredDocumentIdentifier> entityIds) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'ContactApi.deleteContactsByIds',
 			{
 				"sdkId": sdkId,
-				"entityIds": jsonEncode(entityIds.map((x0) => IdWithMandatoryRev.encode(x0)).toList()),
+				"entityIds": jsonEncode(entityIds.map((x0) => StoredDocumentIdentifier.encode(x0)).toList()),
 			}
 		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method deleteContactsByIds");
@@ -409,6 +383,32 @@ class ContactPlatformApi {
 		return PaginatedListIterator(parsedResJson, (x0) => DecryptedService.fromJSON(x0));
 	}
 
+	Future<DecryptedContact> createContact(String sdkId, DecryptedContact entity) async {
+		final res = await _methodChannel.invokeMethod<String>(
+			'ContactApi.createContact',
+			{
+				"sdkId": sdkId,
+				"entity": jsonEncode(DecryptedContact.encode(entity)),
+			}
+		).catchError(convertPlatformException);
+		if (res == null) throw AssertionError("received null result from platform method createContact");
+		final parsedResJson = jsonDecode(res);
+		return DecryptedContact.fromJSON(parsedResJson);
+	}
+
+	Future<List<DecryptedContact>> createContacts(String sdkId, List<DecryptedContact> entities) async {
+		final res = await _methodChannel.invokeMethod<String>(
+			'ContactApi.createContacts',
+			{
+				"sdkId": sdkId,
+				"entities": jsonEncode(entities.map((x0) => DecryptedContact.encode(x0)).toList()),
+			}
+		).catchError(convertPlatformException);
+		if (res == null) throw AssertionError("received null result from platform method createContacts");
+		final parsedResJson = jsonDecode(res);
+		return (parsedResJson as List<dynamic>).map((x1) => DecryptedContact.fromJSON(x1) ).toList();
+	}
+
 	Future<DecryptedContact> undeleteContactById(String sdkId, String id, String rev) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'ContactApi.undeleteContactById',
@@ -462,7 +462,7 @@ class ContactPlatformApi {
 		return (parsedResJson as List<dynamic>).map((x1) => DecryptedContact.fromJSON(x1) ).toList();
 	}
 
-	Future<DecryptedContact> getContact(String sdkId, String entityId) async {
+	Future<DecryptedContact?> getContact(String sdkId, String entityId) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'ContactApi.getContact',
 			{
@@ -472,7 +472,7 @@ class ContactPlatformApi {
 		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getContact");
 		final parsedResJson = jsonDecode(res);
-		return DecryptedContact.fromJSON(parsedResJson);
+		return parsedResJson == null ? null : DecryptedContact.fromJSON(parsedResJson);
 	}
 
 	Future<List<DecryptedContact>> getContacts(String sdkId, List<String> entityIds) async {
@@ -530,9 +530,9 @@ class ContactPlatformApi {
 	}
 }
 
-class TryAndRecoverContactPlatformApi {
+class ContactTryAndRecoverPlatformApi {
 	MethodChannel _methodChannel;
-	TryAndRecoverContactPlatformApi(this._methodChannel);
+	ContactTryAndRecoverPlatformApi(this._methodChannel);
 
 	Future<Contact> shareWith(String sdkId, String delegateId, Contact contact, ContactShareOptions? options) async {
 		final res = await _methodChannel.invokeMethod<String>(
@@ -615,6 +615,32 @@ class TryAndRecoverContactPlatformApi {
 		return PaginatedListIterator(parsedResJson, (x0) => Service.fromJSON(x0));
 	}
 
+	Future<Contact> createContact(String sdkId, Contact entity) async {
+		final res = await _methodChannel.invokeMethod<String>(
+			'ContactApi.tryAndRecover.createContact',
+			{
+				"sdkId": sdkId,
+				"entity": jsonEncode(Contact.encode(entity)),
+			}
+		).catchError(convertPlatformException);
+		if (res == null) throw AssertionError("received null result from platform method createContact");
+		final parsedResJson = jsonDecode(res);
+		return Contact.fromJSON(parsedResJson);
+	}
+
+	Future<List<Contact>> createContacts(String sdkId, List<Contact> entities) async {
+		final res = await _methodChannel.invokeMethod<String>(
+			'ContactApi.tryAndRecover.createContacts',
+			{
+				"sdkId": sdkId,
+				"entities": jsonEncode(entities.map((x0) => Contact.encode(x0)).toList()),
+			}
+		).catchError(convertPlatformException);
+		if (res == null) throw AssertionError("received null result from platform method createContacts");
+		final parsedResJson = jsonDecode(res);
+		return (parsedResJson as List<dynamic>).map((x1) => Contact.fromJSON(x1) ).toList();
+	}
+
 	Future<Contact> undeleteContactById(String sdkId, String id, String rev) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'ContactApi.tryAndRecover.undeleteContactById',
@@ -668,7 +694,7 @@ class TryAndRecoverContactPlatformApi {
 		return (parsedResJson as List<dynamic>).map((x1) => Contact.fromJSON(x1) ).toList();
 	}
 
-	Future<Contact> getContact(String sdkId, String entityId) async {
+	Future<Contact?> getContact(String sdkId, String entityId) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'ContactApi.tryAndRecover.getContact',
 			{
@@ -678,7 +704,7 @@ class TryAndRecoverContactPlatformApi {
 		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getContact");
 		final parsedResJson = jsonDecode(res);
-		return Contact.fromJSON(parsedResJson);
+		return parsedResJson == null ? null : Contact.fromJSON(parsedResJson);
 	}
 
 	Future<List<Contact>> getContacts(String sdkId, List<String> entityIds) async {
@@ -721,9 +747,9 @@ class TryAndRecoverContactPlatformApi {
 	}
 }
 
-class EncryptedContactPlatformApi {
+class ContactEncryptedPlatformApi {
 	MethodChannel _methodChannel;
-	EncryptedContactPlatformApi(this._methodChannel);
+	ContactEncryptedPlatformApi(this._methodChannel);
 
 	Future<EncryptedContact> shareWith(String sdkId, String delegateId, EncryptedContact contact, ContactShareOptions? options) async {
 		final res = await _methodChannel.invokeMethod<String>(
@@ -806,6 +832,32 @@ class EncryptedContactPlatformApi {
 		return PaginatedListIterator(parsedResJson, (x0) => EncryptedService.fromJSON(x0));
 	}
 
+	Future<EncryptedContact> createContact(String sdkId, EncryptedContact entity) async {
+		final res = await _methodChannel.invokeMethod<String>(
+			'ContactApi.encrypted.createContact',
+			{
+				"sdkId": sdkId,
+				"entity": jsonEncode(EncryptedContact.encode(entity)),
+			}
+		).catchError(convertPlatformException);
+		if (res == null) throw AssertionError("received null result from platform method createContact");
+		final parsedResJson = jsonDecode(res);
+		return EncryptedContact.fromJSON(parsedResJson);
+	}
+
+	Future<List<EncryptedContact>> createContacts(String sdkId, List<EncryptedContact> entities) async {
+		final res = await _methodChannel.invokeMethod<String>(
+			'ContactApi.encrypted.createContacts',
+			{
+				"sdkId": sdkId,
+				"entities": jsonEncode(entities.map((x0) => EncryptedContact.encode(x0)).toList()),
+			}
+		).catchError(convertPlatformException);
+		if (res == null) throw AssertionError("received null result from platform method createContacts");
+		final parsedResJson = jsonDecode(res);
+		return (parsedResJson as List<dynamic>).map((x1) => EncryptedContact.fromJSON(x1) ).toList();
+	}
+
 	Future<EncryptedContact> undeleteContactById(String sdkId, String id, String rev) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'ContactApi.encrypted.undeleteContactById',
@@ -859,7 +911,7 @@ class EncryptedContactPlatformApi {
 		return (parsedResJson as List<dynamic>).map((x1) => EncryptedContact.fromJSON(x1) ).toList();
 	}
 
-	Future<EncryptedContact> getContact(String sdkId, String entityId) async {
+	Future<EncryptedContact?> getContact(String sdkId, String entityId) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'ContactApi.encrypted.getContact',
 			{
@@ -869,7 +921,7 @@ class EncryptedContactPlatformApi {
 		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getContact");
 		final parsedResJson = jsonDecode(res);
-		return EncryptedContact.fromJSON(parsedResJson);
+		return parsedResJson == null ? null : EncryptedContact.fromJSON(parsedResJson);
 	}
 
 	Future<List<EncryptedContact>> getContacts(String sdkId, List<String> entityIds) async {

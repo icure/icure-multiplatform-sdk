@@ -16,6 +16,7 @@ import kotlin.OptIn
 import kotlin.String
 import kotlin.Unit
 import kotlinx.serialization.builtins.ListSerializer
+import kotlinx.serialization.builtins.nullable
 import kotlinx.serialization.builtins.serializer
 
 @OptIn(InternalIcureApi::class)
@@ -82,7 +83,7 @@ public object MedicalLocationApi {
     )
     ApiScope.execute(
       dartResultCallback,
-      MedicalLocation.serializer()) {
+      MedicalLocation.serializer().nullable) {
       NativeReferences.get<CardinalNonCryptoApis>(sdkId).medicalLocation.getMedicalLocation(
         locationId,
       )

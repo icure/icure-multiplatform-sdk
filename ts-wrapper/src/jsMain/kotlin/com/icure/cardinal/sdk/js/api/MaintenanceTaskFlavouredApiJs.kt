@@ -32,13 +32,15 @@ public external interface MaintenanceTaskFlavouredApiJs<E : MaintenanceTaskJs> {
 	public fun filterMaintenanceTasksBySorted(filter: SortableFilterOptionsJs<MaintenanceTaskJs>):
 			Promise<PaginatedListIteratorJs<E>>
 
+	public fun createMaintenanceTask(entity: E): Promise<E>
+
 	public fun undeleteMaintenanceTask(maintenanceTask: MaintenanceTaskJs): Promise<MaintenanceTaskJs>
 
 	public fun undeleteMaintenanceTaskById(id: String, rev: String): Promise<E>
 
 	public fun modifyMaintenanceTask(entity: E): Promise<E>
 
-	public fun getMaintenanceTask(entityId: String): Promise<E>
+	public fun getMaintenanceTask(entityId: String): Promise<E?>
 
 	public fun getMaintenanceTasks(entityIds: Array<String>): Promise<Array<E>>
 }

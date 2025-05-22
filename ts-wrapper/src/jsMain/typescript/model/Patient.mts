@@ -129,6 +129,8 @@ export interface Patient extends StoredDocument, ICureDocument<string>, Person, 
 
 	employementInfos: Array<EmploymentInfo>;
 
+	parentId: undefined;
+
 	readonly isEncrypted: boolean;
 
 }
@@ -297,7 +299,7 @@ export class DecryptedPatient {
 
 	employementInfos: Array<DecryptedEmploymentInfo> = [];
 
-	parentId: never | undefined = undefined;
+	parentId: undefined = undefined;
 
 	readonly isEncrypted: false = false;
 
@@ -555,7 +557,7 @@ export class EncryptedPatient {
 
 	employementInfos: Array<EncryptedEmploymentInfo> = [];
 
-	parentId: never | undefined = undefined;
+	parentId: undefined = undefined;
 
 	readonly isEncrypted: true = true;
 

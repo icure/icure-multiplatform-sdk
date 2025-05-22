@@ -2,6 +2,7 @@ package com.icure.cardinal.sdk.crypto.entities
 
 import com.icure.cardinal.sdk.model.EntityReferenceInGroup
 import com.icure.cardinal.sdk.model.embed.AccessLevel
+import com.icure.cardinal.sdk.utils.generation.JsMapAsObjectArray
 import kotlinx.serialization.Serializable
 
 /**
@@ -20,7 +21,7 @@ data class EntityAccessInformation(
 	 * `groupB` the keys will be `EntityReferenceInGroup(dataOwnerA, null)` and
 	 * `EntityReferenceInGroup(dataOwnerB, groupE)`.
 	 */
-	val permissionsByDataOwnerId: Map<EntityReferenceInGroup, AccessLevel>,
+	val permissionsByDataOwnerId: @JsMapAsObjectArray(keyEntryName = "delegate", valueEntryName = "accessLevel") Map<EntityReferenceInGroup, AccessLevel>,
 	/**
 	 * True if the entity has been shared with anonymous data owners which couldn't be identified using the information
 	 * available to the instance of SDK used.

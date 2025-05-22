@@ -1,20 +1,17 @@
 // auto-generated file
+import 'package:freezed_annotation/freezed_annotation.dart';
+part "right.freezed.dart";
 
 
-class Right {
-	String? userId = null;
-	bool read = false;
-	bool write = false;
-	bool administration = false;
-	Right({
-			String? userId,
-			bool? read,
-			bool? write,
-			bool? administration
-		}) : userId = userId ?? null,
-		read = read ?? false,
-		write = write ?? false,
-		administration = administration ?? false;
+@freezed
+abstract class Right with _$Right {
+	const factory Right({
+		@Default(null) String? userId,
+		@Default(false) bool read,
+		@Default(false) bool write,
+		@Default(false) bool administration,
+	}) = _Right;
+
 
 	static Map<String, dynamic> encode(Right value) {
 		Map<String, dynamic> entityAsMap = {

@@ -20,9 +20,11 @@ export interface ClassificationFlavouredApi<E extends Classification> {
 
 	filterClassificationsBySorted(filter: SortableFilterOptions<Classification>): Promise<PaginatedListIterator<E>>;
 
+	createClassification(entity: E): Promise<E>;
+
 	modifyClassification(entity: E): Promise<E>;
 
-	getClassification(entityId: string): Promise<E>;
+	getClassification(entityId: string): Promise<E | undefined>;
 
 	getClassifications(entityIds: Array<string>): Promise<Array<E>>;
 

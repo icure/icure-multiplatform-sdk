@@ -6,6 +6,7 @@ import com.icure.cardinal.sdk.js.api.DefaultParametersSupport.convertingOptionOr
 import com.icure.cardinal.sdk.js.api.TarificationApiJs
 import com.icure.cardinal.sdk.js.model.CheckedConverters.arrayToList
 import com.icure.cardinal.sdk.js.model.CheckedConverters.listToArray
+import com.icure.cardinal.sdk.js.model.CheckedConverters.nullToUndefined
 import com.icure.cardinal.sdk.js.model.CheckedConverters.numberToInt
 import com.icure.cardinal.sdk.js.model.CheckedConverters.undefinedToNull
 import com.icure.cardinal.sdk.js.model.PaginatedListJs
@@ -29,13 +30,17 @@ import kotlinx.coroutines.promise
 internal class TarificationApiImplJs(
 	private val tarificationApi: TarificationApi,
 ) : TarificationApiJs {
-	override fun getTarification(tarificationId: String): Promise<TarificationJs> =
+	override fun getTarification(tarificationId: String): Promise<TarificationJs?> =
 			GlobalScope.promise {
 		val tarificationIdConverted: String = tarificationId
 		val result = tarificationApi.getTarification(
 			tarificationIdConverted,
 		)
-		tarification_toJs(result)
+		nullToUndefined(
+			result?.let { nonNull1 ->
+				tarification_toJs(nonNull1)
+			}
+		)
 	}
 
 	override fun createTarification(tarification: TarificationJs): Promise<TarificationJs> =

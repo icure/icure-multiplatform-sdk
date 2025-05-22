@@ -47,13 +47,15 @@ public external interface CalendarItemFlavouredApiJs<E : CalendarItemJs> {
 	public fun filterCalendarItemsBySorted(filter: SortableFilterOptionsJs<CalendarItemJs>):
 			Promise<PaginatedListIteratorJs<E>>
 
+	public fun createCalendarItem(entity: E): Promise<E>
+
 	public fun undeleteCalendarItemById(id: String, rev: String): Promise<E>
 
 	public fun undeleteCalendarItem(calendarItem: CalendarItemJs): Promise<E>
 
 	public fun modifyCalendarItem(entity: E): Promise<E>
 
-	public fun getCalendarItem(entityId: String): Promise<E>
+	public fun getCalendarItem(entityId: String): Promise<E?>
 
 	public fun getCalendarItems(entityIds: Array<String>): Promise<Array<E>>
 

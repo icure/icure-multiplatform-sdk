@@ -1,7 +1,7 @@
 // auto-generated file
 import {BaseFilterOptions, BaseSortableFilterOptions, PaginatedListIterator} from '../cardinal-sdk-ts.mjs';
 import {Document, EncryptedDocument} from '../model/Document.mjs';
-import {IdWithMandatoryRev} from '../model/IdWithMandatoryRev.mjs';
+import {StoredDocumentIdentifier} from '../model/StoredDocumentIdentifier.mjs';
 import {DocIdentifier} from '../model/couchdb/DocIdentifier.mjs';
 
 
@@ -21,7 +21,7 @@ export interface DocumentBasicApi {
 
 	deleteDocumentById(entityId: string, rev: string): Promise<DocIdentifier>;
 
-	deleteDocumentsByIds(entityIds: Array<IdWithMandatoryRev>): Promise<Array<DocIdentifier>>;
+	deleteDocumentsByIds(entityIds: Array<StoredDocumentIdentifier>): Promise<Array<DocIdentifier>>;
 
 	purgeDocumentById(id: string, rev: string): Promise<void>;
 
@@ -61,13 +61,15 @@ export interface DocumentBasicApi {
 	deleteSecondaryAttachment(documentId: string, key: string,
 			rev: string): Promise<EncryptedDocument>;
 
+	createDocument(entity: EncryptedDocument): Promise<EncryptedDocument>;
+
 	undeleteDocumentById(id: string, rev: string): Promise<EncryptedDocument>;
 
 	undeleteDocument(document: Document): Promise<EncryptedDocument>;
 
 	modifyDocument(entity: EncryptedDocument): Promise<EncryptedDocument>;
 
-	getDocument(entityId: string): Promise<EncryptedDocument>;
+	getDocument(entityId: string): Promise<EncryptedDocument | undefined>;
 
 	getDocumentByExternalUuid(externalUuid: string): Promise<EncryptedDocument>;
 

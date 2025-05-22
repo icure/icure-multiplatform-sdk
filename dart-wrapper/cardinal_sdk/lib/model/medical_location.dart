@@ -2,58 +2,31 @@
 import 'package:cardinal_sdk/model/embed/address.dart';
 import 'package:cardinal_sdk/model/base/stored_document.dart';
 import 'package:cardinal_sdk/model/base/named.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+part "medical_location.freezed.dart";
 
 
-class MedicalLocation implements StoredDocument, Named {
-	@override String id;
-	@override String? rev = null;
-	@override int? deletionDate = null;
-	@override String? name = null;
-	String? description = null;
-	String? responsible = null;
-	bool? guardPost = null;
-	String? cbe = null;
-	String? bic = null;
-	String? bankAccount = null;
-	String? nihii = null;
-	String? ssin = null;
-	DecryptedAddress? address = null;
-	Set<String> agendaIds = {};
-	Map<String, String> options = {};
-	Map<String, String> publicInformations = {};
-	MedicalLocation(
-		this.id,
-		{
-			String? rev,
-			int? deletionDate,
-			String? name,
-			String? description,
-			String? responsible,
-			bool? guardPost,
-			String? cbe,
-			String? bic,
-			String? bankAccount,
-			String? nihii,
-			String? ssin,
-			DecryptedAddress? address,
-			Set<String>? agendaIds,
-			Map<String, String>? options,
-			Map<String, String>? publicInformations
-		}) : rev = rev ?? null,
-		deletionDate = deletionDate ?? null,
-		name = name ?? null,
-		description = description ?? null,
-		responsible = responsible ?? null,
-		guardPost = guardPost ?? null,
-		cbe = cbe ?? null,
-		bic = bic ?? null,
-		bankAccount = bankAccount ?? null,
-		nihii = nihii ?? null,
-		ssin = ssin ?? null,
-		address = address ?? null,
-		agendaIds = agendaIds ?? {},
-		options = options ?? {},
-		publicInformations = publicInformations ?? {};
+@freezed
+abstract class MedicalLocation with _$MedicalLocation implements StoredDocument, Named {
+	const factory MedicalLocation({
+		required String id,
+		@Default(null) String? rev,
+		@Default(null) int? deletionDate,
+		@Default(null) String? name,
+		@Default(null) String? description,
+		@Default(null) String? responsible,
+		@Default(null) bool? guardPost,
+		@Default(null) String? cbe,
+		@Default(null) String? bic,
+		@Default(null) String? bankAccount,
+		@Default(null) String? nihii,
+		@Default(null) String? ssin,
+		@Default(null) DecryptedAddress? address,
+		@Default({}) Set<String> agendaIds,
+		@Default({}) Map<String, String> options,
+		@Default({}) Map<String, String> publicInformations,
+	}) = _MedicalLocation;
+
 
 	static Map<String, dynamic> encode(MedicalLocation value) {
 		Map<String, dynamic> entityAsMap = {
@@ -79,7 +52,7 @@ class MedicalLocation implements StoredDocument, Named {
 
 	static MedicalLocation fromJSON(Map<String, dynamic> data) {
 		return MedicalLocation(
-			(data["id"] as String),
+			id: (data["id"] as String),
 			rev: (data["rev"] as String?),
 			deletionDate: (data["deletionDate"] as int?),
 			name: (data["name"] as String?),

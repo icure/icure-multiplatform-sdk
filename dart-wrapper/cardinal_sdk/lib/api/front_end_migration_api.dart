@@ -12,7 +12,7 @@ class FrontEndMigrationApi {
 		this._dartSdk
 		);
 
-	Future<FrontEndMigration> getFrontEndMigration(String frontEndMigrationId) async {
+	Future<FrontEndMigration?> getFrontEndMigration(String frontEndMigrationId) async {
 		return await CardinalSdkPlatformInterface.instance.apis.frontEndMigration.getFrontEndMigration(
 			_sdkId,
 			frontEndMigrationId,

@@ -12,7 +12,7 @@ class PlaceApi {
 		this._dartSdk
 		);
 
-	Future<Place> getPlace(String placeId) async {
+	Future<Place?> getPlace(String placeId) async {
 		return await CardinalSdkPlatformInterface.instance.apis.place.getPlace(
 			_sdkId,
 			placeId,

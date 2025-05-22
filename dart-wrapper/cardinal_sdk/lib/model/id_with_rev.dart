@@ -1,14 +1,15 @@
 // auto-generated file
+import 'package:freezed_annotation/freezed_annotation.dart';
+part "id_with_rev.freezed.dart";
 
 
-class IdWithRev {
-	String id;
-	String? rev = null;
-	IdWithRev(
-		this.id,
-		{
-			String? rev
-		}) : rev = rev ?? null;
+@freezed
+abstract class IdWithRev with _$IdWithRev {
+	const factory IdWithRev({
+		required String id,
+		@Default(null) String? rev,
+	}) = _IdWithRev;
+
 
 	static Map<String, dynamic> encode(IdWithRev value) {
 		Map<String, dynamic> entityAsMap = {
@@ -20,7 +21,7 @@ class IdWithRev {
 
 	static IdWithRev fromJSON(Map<String, dynamic> data) {
 		return IdWithRev(
-			(data["id"] as String),
+			id: (data["id"] as String),
 			rev: (data["rev"] as String?),
 		);
 	}

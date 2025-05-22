@@ -12,7 +12,6 @@ import kotlin.Long
 import kotlin.OptIn
 import kotlin.String
 import kotlin.Unit
-import kotlinx.serialization.PolymorphicSerializer
 import kotlinx.serialization.builtins.nullable
 import kotlinx.serialization.builtins.serializer
 
@@ -30,7 +29,7 @@ public object TimeTableFilters {
     )
     DartResult.resolve(
       dartResultCallback,
-      BaseFilterOptions.serializer(PolymorphicSerializer(TimeTable::class))
+      BaseFilterOptions.serializer(TimeTable.serializer())
     ) {
       com.icure.cardinal.sdk.filters.TimeTableFilters.byAgendaId(
         agendaId,
@@ -68,7 +67,7 @@ public object TimeTableFilters {
     )
     DartResult.resolve(
       dartResultCallback,
-      BaseSortableFilterOptions.serializer(PolymorphicSerializer(TimeTable::class))
+      BaseSortableFilterOptions.serializer(TimeTable.serializer())
     ) {
       com.icure.cardinal.sdk.filters.TimeTableFilters.byPeriodAndAgendaId(
         agendaId,

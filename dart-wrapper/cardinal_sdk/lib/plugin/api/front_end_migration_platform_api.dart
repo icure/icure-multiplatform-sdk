@@ -10,7 +10,7 @@ class FrontEndMigrationPlatformApi {
 	MethodChannel _methodChannel;
 	FrontEndMigrationPlatformApi(this._methodChannel);
 
-	Future<FrontEndMigration> getFrontEndMigration(String sdkId, String frontEndMigrationId) async {
+	Future<FrontEndMigration?> getFrontEndMigration(String sdkId, String frontEndMigrationId) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'FrontEndMigrationApi.getFrontEndMigration',
 			{
@@ -20,7 +20,7 @@ class FrontEndMigrationPlatformApi {
 		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getFrontEndMigration");
 		final parsedResJson = jsonDecode(res);
-		return FrontEndMigration.fromJSON(parsedResJson);
+		return parsedResJson == null ? null : FrontEndMigration.fromJSON(parsedResJson);
 	}
 
 	Future<FrontEndMigration> createFrontEndMigration(String sdkId, FrontEndMigration frontEndMigration) async {

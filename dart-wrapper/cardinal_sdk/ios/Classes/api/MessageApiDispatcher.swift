@@ -14,8 +14,6 @@ class MessageApiDispatcher {
     ) -> Void
   ) -> Bool {
     switch methodName {
-    case "createMessage": createMessage(parameters: parameters, resultCallback: resultCallback)
-    case "createMessageInTopic": createMessageInTopic(parameters: parameters, resultCallback: resultCallback)
     case "withEncryptionMetadata": withEncryptionMetadata(parameters: parameters, resultCallback: resultCallback)
     case "getEncryptionKeysOf": getEncryptionKeysOf(parameters: parameters, resultCallback: resultCallback)
     case "hasWriteAccess": hasWriteAccess(parameters: parameters, resultCallback: resultCallback)
@@ -35,6 +33,8 @@ class MessageApiDispatcher {
     case "shareWithMany": shareWithMany(parameters: parameters, resultCallback: resultCallback)
     case "filterMessagesBy": filterMessagesBy(parameters: parameters, resultCallback: resultCallback)
     case "filterMessagesBySorted": filterMessagesBySorted(parameters: parameters, resultCallback: resultCallback)
+    case "createMessage": createMessage(parameters: parameters, resultCallback: resultCallback)
+    case "createMessageInTopic": createMessageInTopic(parameters: parameters, resultCallback: resultCallback)
     case "undeleteMessage": undeleteMessage(parameters: parameters, resultCallback: resultCallback)
     case "modifyMessage": modifyMessage(parameters: parameters, resultCallback: resultCallback)
     case "undeleteMessageById": undeleteMessageById(parameters: parameters, resultCallback: resultCallback)
@@ -46,6 +46,8 @@ class MessageApiDispatcher {
     case "encrypted.shareWithMany": encrypted_shareWithMany(parameters: parameters, resultCallback: resultCallback)
     case "encrypted.filterMessagesBy": encrypted_filterMessagesBy(parameters: parameters, resultCallback: resultCallback)
     case "encrypted.filterMessagesBySorted": encrypted_filterMessagesBySorted(parameters: parameters, resultCallback: resultCallback)
+    case "encrypted.createMessage": encrypted_createMessage(parameters: parameters, resultCallback: resultCallback)
+    case "encrypted.createMessageInTopic": encrypted_createMessageInTopic(parameters: parameters, resultCallback: resultCallback)
     case "encrypted.undeleteMessage": encrypted_undeleteMessage(parameters: parameters, resultCallback: resultCallback)
     case "encrypted.modifyMessage": encrypted_modifyMessage(parameters: parameters, resultCallback: resultCallback)
     case "encrypted.undeleteMessageById": encrypted_undeleteMessageById(parameters: parameters, resultCallback: resultCallback)
@@ -56,6 +58,8 @@ class MessageApiDispatcher {
     case "tryAndRecover.shareWithMany": tryAndRecover_shareWithMany(parameters: parameters, resultCallback: resultCallback)
     case "tryAndRecover.filterMessagesBy": tryAndRecover_filterMessagesBy(parameters: parameters, resultCallback: resultCallback)
     case "tryAndRecover.filterMessagesBySorted": tryAndRecover_filterMessagesBySorted(parameters: parameters, resultCallback: resultCallback)
+    case "tryAndRecover.createMessage": tryAndRecover_createMessage(parameters: parameters, resultCallback: resultCallback)
+    case "tryAndRecover.createMessageInTopic": tryAndRecover_createMessageInTopic(parameters: parameters, resultCallback: resultCallback)
     case "tryAndRecover.undeleteMessage": tryAndRecover_undeleteMessage(parameters: parameters, resultCallback: resultCallback)
     case "tryAndRecover.modifyMessage": tryAndRecover_modifyMessage(parameters: parameters, resultCallback: resultCallback)
     case "tryAndRecover.undeleteMessageById": tryAndRecover_undeleteMessageById(parameters: parameters, resultCallback: resultCallback)
@@ -65,32 +69,6 @@ class MessageApiDispatcher {
     default: return false
     }
     return true
-  }
-
-  private static func createMessage(parameters: [String : String], resultCallback: @escaping (
-    String?,
-    String?,
-    String?,
-    String?
-  ) -> Void) {
-    MessageApi.shared.createMessage(
-    	dartResultCallback: resultCallback,
-    	sdkId: parameters["sdkId"]!,
-    	entityString: parameters["entity"]!
-    )
-  }
-
-  private static func createMessageInTopic(parameters: [String : String], resultCallback: @escaping (
-    String?,
-    String?,
-    String?,
-    String?
-  ) -> Void) {
-    MessageApi.shared.createMessageInTopic(
-    	dartResultCallback: resultCallback,
-    	sdkId: parameters["sdkId"]!,
-    	entityString: parameters["entity"]!
-    )
   }
 
   private static func withEncryptionMetadata(parameters: [String : String], resultCallback: @escaping (
@@ -350,6 +328,32 @@ class MessageApiDispatcher {
     )
   }
 
+  private static func createMessage(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    MessageApi.shared.createMessage(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	entityString: parameters["entity"]!
+    )
+  }
+
+  private static func createMessageInTopic(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    MessageApi.shared.createMessageInTopic(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	entityString: parameters["entity"]!
+    )
+  }
+
   private static func undeleteMessage(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
@@ -502,6 +506,32 @@ class MessageApiDispatcher {
     )
   }
 
+  private static func encrypted_createMessage(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    MessageApi.encrypted.shared.createMessage(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	entityString: parameters["entity"]!
+    )
+  }
+
+  private static func encrypted_createMessageInTopic(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    MessageApi.encrypted.shared.createMessageInTopic(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	entityString: parameters["entity"]!
+    )
+  }
+
   private static func encrypted_undeleteMessage(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
@@ -636,6 +666,32 @@ class MessageApiDispatcher {
     	dartResultCallback: resultCallback,
     	sdkId: parameters["sdkId"]!,
     	filterString: parameters["filter"]!
+    )
+  }
+
+  private static func tryAndRecover_createMessage(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    MessageApi.tryAndRecover.shared.createMessage(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	entityString: parameters["entity"]!
+    )
+  }
+
+  private static func tryAndRecover_createMessageInTopic(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    MessageApi.tryAndRecover.shared.createMessageInTopic(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	entityString: parameters["entity"]!
     )
   }
 

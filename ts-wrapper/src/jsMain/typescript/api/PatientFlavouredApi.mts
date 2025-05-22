@@ -1,10 +1,9 @@
 // auto-generated file
 import {FilterOptions, PaginatedListIterator, SortableFilterOptions} from '../cardinal-sdk-ts.mjs';
 import {PatientShareOptions} from '../crypto/entities/PatientShareOptions.mjs';
-import {IdWithMandatoryRev} from '../model/IdWithMandatoryRev.mjs';
-import {IdWithRev} from '../model/IdWithRev.mjs';
 import {PaginatedList} from '../model/PaginatedList.mjs';
-import {EncryptedPatient, Patient} from '../model/Patient.mjs';
+import {Patient} from '../model/Patient.mjs';
+import {StoredDocumentIdentifier} from '../model/StoredDocumentIdentifier.mjs';
 import {SortDirection} from '../model/couchdb/SortDirection.mjs';
 
 
@@ -21,15 +20,21 @@ export interface PatientFlavouredApi<E extends Patient> {
 
 	filterPatientsBySorted(filter: SortableFilterOptions<Patient>): Promise<PaginatedListIterator<E>>;
 
+	createPatient(patient: E): Promise<E>;
+
+	createPatientsMinimal(patients: Array<E>): Promise<Array<StoredDocumentIdentifier>>;
+
+	createPatients(patients: Array<E>): Promise<Array<E>>;
+
 	undeletePatient(patient: Patient): Promise<Patient>;
 
 	modifyPatient(entity: E): Promise<E>;
 
 	undeletePatientById(id: string, rev: string): Promise<E>;
 
-	undeletePatients(ids: Array<IdWithMandatoryRev>): Promise<Array<E>>;
+	undeletePatients(ids: Array<StoredDocumentIdentifier>): Promise<Array<E>>;
 
-	getPatient(entityId: string): Promise<E>;
+	getPatient(entityId: string): Promise<E | undefined>;
 
 	getPatientResolvingMerges(patientId: string, maxMergeDepth: number | undefined): Promise<E>;
 
@@ -67,7 +72,9 @@ export interface PatientFlavouredApi<E extends Patient> {
 	getPatientByHealthcarePartyAndIdentifier(hcPartyId: string, id: string,
 			options?: { system?: string | undefined }): Promise<E>;
 
-	modifyPatients(patientDtos: Array<EncryptedPatient>): Promise<Array<IdWithRev>>;
+	modifyPatientsMinimal(patients: Array<E>): Promise<Array<StoredDocumentIdentifier>>;
+
+	modifyPatients(patients: Array<E>): Promise<Array<E>>;
 
 	findDuplicatesBySsin(hcPartyId: string,
 			options?: { startKey?: string | undefined, startDocumentId?: string | undefined, limit?: number | undefined }): Promise<PaginatedList<E>>;

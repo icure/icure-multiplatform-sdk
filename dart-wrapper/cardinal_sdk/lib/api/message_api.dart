@@ -1,14 +1,14 @@
 // auto-generated file
 import 'package:cardinal_sdk/model/message.dart';
-import 'package:cardinal_sdk/plugin/cardinal_sdk_platform_interface.dart';
 import 'package:cardinal_sdk/model/patient.dart';
 import 'package:cardinal_sdk/model/user.dart';
 import 'package:cardinal_sdk/model/embed/access_level.dart';
 import 'package:cardinal_sdk/crypto/entities/secret_id_use_option.dart';
+import 'package:cardinal_sdk/plugin/cardinal_sdk_platform_interface.dart';
 import 'package:cardinal_sdk/model/specializations/hex_string.dart';
 import 'package:cardinal_sdk/filters/filter_options.dart';
 import 'package:cardinal_sdk/model/couchdb/doc_identifier.dart';
-import 'package:cardinal_sdk/model/id_with_mandatory_rev.dart';
+import 'package:cardinal_sdk/model/stored_document_identifier.dart';
 import 'package:cardinal_sdk/crypto/entities/message_share_options.dart';
 import 'package:cardinal_sdk/utils/pagination/paginated_list_iterator.dart';
 import 'package:cardinal_sdk/subscription/subscription_event_type.dart';
@@ -19,27 +19,13 @@ import 'package:cardinal_sdk/subscription/entity_subscription.dart';
 class MessageApi {
 	final String _sdkId;
 	final Object _dartSdk;
-	final TryAndRecoverMessageApi tryAndRecover;
-	final EncryptedMessageApi encrypted;
+	final MessageEncryptedApi encrypted;
+	final MessageTryAndRecoverApi tryAndRecover;
 	MessageApi(
 		this._sdkId,
 		this._dartSdk
-		) : tryAndRecover = TryAndRecoverMessageApi(_sdkId, _dartSdk),
-		encrypted = EncryptedMessageApi(_sdkId, _dartSdk);
-
-	Future<DecryptedMessage> createMessage(DecryptedMessage entity) async {
-		return await CardinalSdkPlatformInterface.instance.apis.message.createMessage(
-			_sdkId,
-			entity,
-		);
-	}
-
-	Future<DecryptedMessage> createMessageInTopic(DecryptedMessage entity) async {
-		return await CardinalSdkPlatformInterface.instance.apis.message.createMessageInTopic(
-			_sdkId,
-			entity,
-		);
-	}
+		) : encrypted = MessageEncryptedApi(_sdkId, _dartSdk),
+		tryAndRecover = MessageTryAndRecoverApi(_sdkId, _dartSdk);
 
 	Future<DecryptedMessage> withEncryptionMetadata(DecryptedMessage? base, Patient? patient, { User? user, Map<String, AccessLevel> delegates = const {}, SecretIdUseOption secretId = SecretIdUseOption.UseAnySharedWithParent }) async {
 		return await CardinalSdkPlatformInterface.instance.apis.message.withEncryptionMetadata(
@@ -117,7 +103,7 @@ class MessageApi {
 		);
 	}
 
-	Future<List<DocIdentifier>> deleteMessagesByIds(List<IdWithMandatoryRev> entityIds) async {
+	Future<List<DocIdentifier>> deleteMessagesByIds(List<StoredDocumentIdentifier> entityIds) async {
 		return await CardinalSdkPlatformInterface.instance.apis.message.deleteMessagesByIds(
 			_sdkId,
 			entityIds,
@@ -184,6 +170,20 @@ class MessageApi {
 		);
 	}
 
+	Future<DecryptedMessage> createMessage(DecryptedMessage entity) async {
+		return await CardinalSdkPlatformInterface.instance.apis.message.createMessage(
+			_sdkId,
+			entity,
+		);
+	}
+
+	Future<DecryptedMessage> createMessageInTopic(DecryptedMessage entity) async {
+		return await CardinalSdkPlatformInterface.instance.apis.message.createMessageInTopic(
+			_sdkId,
+			entity,
+		);
+	}
+
 	Future<Message> undeleteMessage(Message message) async {
 		return await CardinalSdkPlatformInterface.instance.apis.message.undeleteMessage(
 			_sdkId,
@@ -206,7 +206,7 @@ class MessageApi {
 		);
 	}
 
-	Future<DecryptedMessage> getMessage(String entityId) async {
+	Future<DecryptedMessage?> getMessage(String entityId) async {
 		return await CardinalSdkPlatformInterface.instance.apis.message.getMessage(
 			_sdkId,
 			entityId,
@@ -240,10 +240,10 @@ class MessageApi {
 	}
 }
 
-class TryAndRecoverMessageApi {
+class MessageTryAndRecoverApi {
 	final String _sdkId;
 	final Object _dartSdk;
-	TryAndRecoverMessageApi(
+	MessageTryAndRecoverApi(
 		this._sdkId,
 		this._dartSdk
 		);
@@ -279,6 +279,20 @@ class TryAndRecoverMessageApi {
 		);
 	}
 
+	Future<Message> createMessage(Message entity) async {
+		return await CardinalSdkPlatformInterface.instance.apis.message.tryAndRecover.createMessage(
+			_sdkId,
+			entity,
+		);
+	}
+
+	Future<Message> createMessageInTopic(Message entity) async {
+		return await CardinalSdkPlatformInterface.instance.apis.message.tryAndRecover.createMessageInTopic(
+			_sdkId,
+			entity,
+		);
+	}
+
 	Future<Message> undeleteMessage(Message message) async {
 		return await CardinalSdkPlatformInterface.instance.apis.message.tryAndRecover.undeleteMessage(
 			_sdkId,
@@ -301,7 +315,7 @@ class TryAndRecoverMessageApi {
 		);
 	}
 
-	Future<Message> getMessage(String entityId) async {
+	Future<Message?> getMessage(String entityId) async {
 		return await CardinalSdkPlatformInterface.instance.apis.message.tryAndRecover.getMessage(
 			_sdkId,
 			entityId,
@@ -326,10 +340,10 @@ class TryAndRecoverMessageApi {
 	}
 }
 
-class EncryptedMessageApi {
+class MessageEncryptedApi {
 	final String _sdkId;
 	final Object _dartSdk;
-	EncryptedMessageApi(
+	MessageEncryptedApi(
 		this._sdkId,
 		this._dartSdk
 		);
@@ -365,6 +379,20 @@ class EncryptedMessageApi {
 		);
 	}
 
+	Future<EncryptedMessage> createMessage(EncryptedMessage entity) async {
+		return await CardinalSdkPlatformInterface.instance.apis.message.encrypted.createMessage(
+			_sdkId,
+			entity,
+		);
+	}
+
+	Future<EncryptedMessage> createMessageInTopic(EncryptedMessage entity) async {
+		return await CardinalSdkPlatformInterface.instance.apis.message.encrypted.createMessageInTopic(
+			_sdkId,
+			entity,
+		);
+	}
+
 	Future<Message> undeleteMessage(Message message) async {
 		return await CardinalSdkPlatformInterface.instance.apis.message.encrypted.undeleteMessage(
 			_sdkId,
@@ -387,7 +415,7 @@ class EncryptedMessageApi {
 		);
 	}
 
-	Future<EncryptedMessage> getMessage(String entityId) async {
+	Future<EncryptedMessage?> getMessage(String entityId) async {
 		return await CardinalSdkPlatformInterface.instance.apis.message.encrypted.getMessage(
 			_sdkId,
 			entityId,

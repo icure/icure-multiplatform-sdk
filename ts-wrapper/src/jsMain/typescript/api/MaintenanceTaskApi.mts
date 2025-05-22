@@ -1,8 +1,8 @@
 // auto-generated file
 import {FilterOptions, PaginatedListIterator, SortableFilterOptions} from '../cardinal-sdk-ts.mjs';
 import {MaintenanceTaskShareOptions} from '../crypto/entities/MaintenanceTaskShareOptions.mjs';
-import {IdWithMandatoryRev} from '../model/IdWithMandatoryRev.mjs';
 import {DecryptedMaintenanceTask, EncryptedMaintenanceTask, MaintenanceTask} from '../model/MaintenanceTask.mjs';
+import {StoredDocumentIdentifier} from '../model/StoredDocumentIdentifier.mjs';
 import {User} from '../model/User.mjs';
 import {DocIdentifier} from '../model/couchdb/DocIdentifier.mjs';
 import {AccessLevel} from '../model/embed/AccessLevel.mjs';
@@ -18,8 +18,6 @@ export interface MaintenanceTaskApi {
 	encrypted: MaintenanceTaskFlavouredApi<EncryptedMaintenanceTask>;
 
 	tryAndRecover: MaintenanceTaskFlavouredApi<MaintenanceTask>;
-
-	createMaintenanceTask(entity: DecryptedMaintenanceTask): Promise<DecryptedMaintenanceTask>;
 
 	withEncryptionMetadata(maintenanceTask: DecryptedMaintenanceTask | undefined,
 			options?: { user?: User | undefined, delegates?: { [ key: string ]: AccessLevel } }): Promise<DecryptedMaintenanceTask>;
@@ -47,7 +45,7 @@ export interface MaintenanceTaskApi {
 
 	deleteMaintenanceTaskById(entityId: string, rev: string): Promise<DocIdentifier>;
 
-	deleteMaintenanceTasksByIds(entityIds: Array<IdWithMandatoryRev>): Promise<Array<DocIdentifier>>;
+	deleteMaintenanceTasksByIds(entityIds: Array<StoredDocumentIdentifier>): Promise<Array<DocIdentifier>>;
 
 	purgeMaintenanceTaskById(id: string, rev: string): Promise<void>;
 
@@ -67,13 +65,15 @@ export interface MaintenanceTaskApi {
 
 	filterMaintenanceTasksBySorted(filter: SortableFilterOptions<MaintenanceTask>): Promise<PaginatedListIterator<DecryptedMaintenanceTask>>;
 
+	createMaintenanceTask(entity: DecryptedMaintenanceTask): Promise<DecryptedMaintenanceTask>;
+
 	undeleteMaintenanceTask(maintenanceTask: MaintenanceTask): Promise<MaintenanceTask>;
 
 	undeleteMaintenanceTaskById(id: string, rev: string): Promise<DecryptedMaintenanceTask>;
 
 	modifyMaintenanceTask(entity: DecryptedMaintenanceTask): Promise<DecryptedMaintenanceTask>;
 
-	getMaintenanceTask(entityId: string): Promise<DecryptedMaintenanceTask>;
+	getMaintenanceTask(entityId: string): Promise<DecryptedMaintenanceTask | undefined>;
 
 	getMaintenanceTasks(entityIds: Array<string>): Promise<Array<DecryptedMaintenanceTask>>;
 

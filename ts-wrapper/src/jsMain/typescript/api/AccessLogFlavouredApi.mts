@@ -20,13 +20,15 @@ export interface AccessLogFlavouredApi<E extends AccessLog> {
 
 	filterAccessLogsBySorted(filter: SortableFilterOptions<AccessLog>): Promise<PaginatedListIterator<E>>;
 
+	createAccessLog(entity: E): Promise<E>;
+
 	undeleteAccessLogById(id: string, rev: string): Promise<E>;
 
 	undeleteAccessLog(accessLog: AccessLog): Promise<E>;
 
 	modifyAccessLog(entity: E): Promise<E>;
 
-	getAccessLog(entityId: string): Promise<E>;
+	getAccessLog(entityId: string): Promise<E | undefined>;
 
 	getAccessLogs(entityIds: Array<string>): Promise<Array<E>>;
 

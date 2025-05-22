@@ -17,13 +17,13 @@ import 'package:cardinal_sdk/model/embed/invoice_type.dart';
 class InvoiceApi {
 	final String _sdkId;
 	final Object _dartSdk;
-	final TryAndRecoverInvoiceApi tryAndRecover;
-	final EncryptedInvoiceApi encrypted;
+	final InvoiceEncryptedApi encrypted;
+	final InvoiceTryAndRecoverApi tryAndRecover;
 	InvoiceApi(
 		this._sdkId,
 		this._dartSdk
-		) : tryAndRecover = TryAndRecoverInvoiceApi(_sdkId, _dartSdk),
-		encrypted = EncryptedInvoiceApi(_sdkId, _dartSdk);
+		) : encrypted = InvoiceEncryptedApi(_sdkId, _dartSdk),
+		tryAndRecover = InvoiceTryAndRecoverApi(_sdkId, _dartSdk);
 
 	Future<DecryptedInvoice> createInvoice(DecryptedInvoice entity, String? prefix) async {
 		return await CardinalSdkPlatformInterface.instance.apis.invoice.createInvoice(
@@ -139,7 +139,7 @@ class InvoiceApi {
 		);
 	}
 
-	Future<DecryptedInvoice> getInvoice(String entityId) async {
+	Future<DecryptedInvoice?> getInvoice(String entityId) async {
 		return await CardinalSdkPlatformInterface.instance.apis.invoice.getInvoice(
 			_sdkId,
 			entityId,
@@ -282,10 +282,10 @@ class InvoiceApi {
 	}
 }
 
-class TryAndRecoverInvoiceApi {
+class InvoiceTryAndRecoverApi {
 	final String _sdkId;
 	final Object _dartSdk;
-	TryAndRecoverInvoiceApi(
+	InvoiceTryAndRecoverApi(
 		this._sdkId,
 		this._dartSdk
 		);
@@ -321,7 +321,7 @@ class TryAndRecoverInvoiceApi {
 		);
 	}
 
-	Future<Invoice> getInvoice(String entityId) async {
+	Future<Invoice?> getInvoice(String entityId) async {
 		return await CardinalSdkPlatformInterface.instance.apis.invoice.tryAndRecover.getInvoice(
 			_sdkId,
 			entityId,
@@ -464,10 +464,10 @@ class TryAndRecoverInvoiceApi {
 	}
 }
 
-class EncryptedInvoiceApi {
+class InvoiceEncryptedApi {
 	final String _sdkId;
 	final Object _dartSdk;
-	EncryptedInvoiceApi(
+	InvoiceEncryptedApi(
 		this._sdkId,
 		this._dartSdk
 		);
@@ -503,7 +503,7 @@ class EncryptedInvoiceApi {
 		);
 	}
 
-	Future<EncryptedInvoice> getInvoice(String entityId) async {
+	Future<EncryptedInvoice?> getInvoice(String entityId) async {
 		return await CardinalSdkPlatformInterface.instance.apis.invoice.encrypted.getInvoice(
 			_sdkId,
 			entityId,

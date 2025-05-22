@@ -31,7 +31,7 @@ public external interface CalendarItemTypeApiJs {
 	public fun deleteCalendarItemTypes(calendarItemTypeIds: ListOfIdsJs):
 			Promise<Array<DocIdentifierJs>>
 
-	public fun getCalendarItemType(calendarItemTypeId: String): Promise<CalendarItemTypeJs>
+	public fun getCalendarItemType(calendarItemTypeId: String): Promise<CalendarItemTypeJs?>
 
 	public fun modifyCalendarItemType(calendarItemTypeDto: CalendarItemTypeJs):
 			Promise<CalendarItemTypeJs>

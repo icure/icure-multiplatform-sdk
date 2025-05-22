@@ -2,19 +2,18 @@
 import 'package:cardinal_sdk/model/requests/requested_permission.dart';
 import 'package:cardinal_sdk/crypto/entities/share_metadata_behaviour.dart';
 import 'package:cardinal_sdk/crypto/entities/secret_id_share_options.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+part "patient_share_options.freezed.dart";
 
 
-class PatientShareOptions {
-	RequestedPermission requestedPermissions = RequestedPermission.maxWrite;
-	ShareMetadataBehaviour shareEncryptionKey = ShareMetadataBehaviour.ifAvailable;
-	SecretIdShareOptions shareSecretIds = SecretIdShareOptionsAllAvailable(false);
-	PatientShareOptions({
-			RequestedPermission? requestedPermissions,
-			ShareMetadataBehaviour? shareEncryptionKey,
-			SecretIdShareOptions? shareSecretIds
-		}) : requestedPermissions = requestedPermissions ?? RequestedPermission.maxWrite,
-		shareEncryptionKey = shareEncryptionKey ?? ShareMetadataBehaviour.ifAvailable,
-		shareSecretIds = shareSecretIds ?? SecretIdShareOptionsAllAvailable(false);
+@freezed
+abstract class PatientShareOptions with _$PatientShareOptions {
+	const factory PatientShareOptions({
+		@Default(RequestedPermission.maxWrite) RequestedPermission requestedPermissions,
+		@Default(ShareMetadataBehaviour.ifAvailable) ShareMetadataBehaviour shareEncryptionKey,
+		@Default(SecretIdShareOptionsAllAvailable()) SecretIdShareOptions shareSecretIds,
+	}) = _PatientShareOptions;
+
 
 	static Map<String, dynamic> encode(PatientShareOptions value) {
 		Map<String, dynamic> entityAsMap = {

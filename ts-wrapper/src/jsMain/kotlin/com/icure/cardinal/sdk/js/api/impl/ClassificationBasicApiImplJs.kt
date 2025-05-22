@@ -11,6 +11,7 @@ import com.icure.cardinal.sdk.js.filters.baseFilterOptions_fromJs
 import com.icure.cardinal.sdk.js.filters.baseSortableFilterOptions_fromJs
 import com.icure.cardinal.sdk.js.model.CheckedConverters.arrayToList
 import com.icure.cardinal.sdk.js.model.CheckedConverters.listToArray
+import com.icure.cardinal.sdk.js.model.CheckedConverters.nullToUndefined
 import com.icure.cardinal.sdk.js.model.ClassificationJs
 import com.icure.cardinal.sdk.js.model.EncryptedClassificationJs
 import com.icure.cardinal.sdk.js.model.classification_fromJs
@@ -122,6 +123,15 @@ internal class ClassificationBasicApiImplJs(
 		)
 	}
 
+	override fun createClassification(entity: EncryptedClassificationJs):
+			Promise<EncryptedClassificationJs> = GlobalScope.promise {
+		val entityConverted: EncryptedClassification = classification_fromJs(entity)
+		val result = classificationBasicApi.createClassification(
+			entityConverted,
+		)
+		classification_toJs(result)
+	}
+
 	override fun modifyClassification(entity: EncryptedClassificationJs):
 			Promise<EncryptedClassificationJs> = GlobalScope.promise {
 		val entityConverted: EncryptedClassification = classification_fromJs(entity)
@@ -131,13 +141,17 @@ internal class ClassificationBasicApiImplJs(
 		classification_toJs(result)
 	}
 
-	override fun getClassification(entityId: String): Promise<EncryptedClassificationJs> =
+	override fun getClassification(entityId: String): Promise<EncryptedClassificationJs?> =
 			GlobalScope.promise {
 		val entityIdConverted: String = entityId
 		val result = classificationBasicApi.getClassification(
 			entityIdConverted,
 		)
-		classification_toJs(result)
+		nullToUndefined(
+			result?.let { nonNull1 ->
+				classification_toJs(nonNull1)
+			}
+		)
 	}
 
 	override fun getClassifications(entityIds: Array<String>):

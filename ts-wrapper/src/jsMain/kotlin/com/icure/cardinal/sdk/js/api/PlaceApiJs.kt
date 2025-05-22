@@ -14,7 +14,7 @@ import kotlin.js.Promise
 
 @JsName("PlaceApi")
 public external interface PlaceApiJs {
-	public fun getPlace(placeId: String): Promise<PlaceJs>
+	public fun getPlace(placeId: String): Promise<PlaceJs?>
 
 	public fun createPlace(place: PlaceJs): Promise<PlaceJs>
 

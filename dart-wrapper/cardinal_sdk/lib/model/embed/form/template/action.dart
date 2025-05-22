@@ -1,19 +1,18 @@
 // auto-generated file
 import 'package:cardinal_sdk/model/embed/form/template/launcher.dart';
 import 'package:cardinal_sdk/model/embed/form/template/state.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+part "action.freezed.dart";
 
 
-class Action {
-	List<Launcher>? launchers = [];
-	String? expression = null;
-	List<State>? states = [];
-	Action({
-			List<Launcher>? launchers,
-			String? expression,
-			List<State>? states
-		}) : launchers = launchers ?? [],
-		expression = expression ?? null,
-		states = states ?? [];
+@freezed
+abstract class Action with _$Action {
+	const factory Action({
+		@Default([]) List<Launcher>? launchers,
+		@Default(null) String? expression,
+		@Default([]) List<State>? states,
+	}) = _Action;
+
 
 	static Map<String, dynamic> encode(Action value) {
 		Map<String, dynamic> entityAsMap = {

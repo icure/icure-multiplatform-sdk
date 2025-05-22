@@ -8,10 +8,10 @@ import com.icure.cardinal.sdk.js.model.embed.DelegationJs
 import com.icure.cardinal.sdk.js.model.embed.delegation_fromJs
 import com.icure.cardinal.sdk.js.model.embed.securityMetadata_fromJs
 import com.icure.cardinal.sdk.js.utils.Record
-import com.icure.utils.InternalIcureApi
 import com.icure.cardinal.sdk.utils.ensure
 import com.icure.cardinal.sdk.utils.isJsSafe
 import com.icure.cardinal.sdk.utils.time.ZonedDateTime
+import com.icure.utils.InternalIcureApi
 import kotlinx.datetime.Instant
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
@@ -329,4 +329,23 @@ object CheckedConverters {
 	@Suppress("USELESS_ELVIS_RIGHT_IS_NULL") // This is a lie when using kotlin js
 	fun <T : Any> undefinedToNull(obj: T?): T? =
 		obj ?: null
+
+	/**
+	 * Converter from js for kotlin maps where the key is not a valid object key and have been annotated with
+	 * JsMapAsObjectArray.
+	 * The non-common part of the converter to js is trivial and is inlined in the synthetic converters.
+	 */
+	fun <O, K, V> objectArrayToMap(
+		objectArray: Array<O>,
+		extractKey: (O) -> K,
+		extractValue: (O) -> V,
+	): Map<K, V> =
+		objectArray.groupBy {
+			extractKey(it)
+		}.mapValues {
+			require(it.value.size == 1) {
+				"Duplicate values for ArrayWithUniqueKeys: ${it.key}"
+			}
+			extractValue(it.value.single())
+		}
 }

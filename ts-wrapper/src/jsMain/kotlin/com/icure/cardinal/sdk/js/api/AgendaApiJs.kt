@@ -6,8 +6,8 @@ package com.icure.cardinal.sdk.js.api
 import com.icure.cardinal.sdk.js.filters.BaseFilterOptionsJs
 import com.icure.cardinal.sdk.js.filters.BaseSortableFilterOptionsJs
 import com.icure.cardinal.sdk.js.model.AgendaJs
-import com.icure.cardinal.sdk.js.model.IdWithMandatoryRevJs
 import com.icure.cardinal.sdk.js.model.PaginatedListJs
+import com.icure.cardinal.sdk.js.model.StoredDocumentIdentifierJs
 import com.icure.cardinal.sdk.js.model.couchdb.DocIdentifierJs
 import com.icure.cardinal.sdk.js.utils.pagination.PaginatedListIteratorJs
 import kotlin.Array
@@ -20,6 +20,8 @@ import kotlin.js.Promise
 
 @JsName("AgendaApi")
 public external interface AgendaApiJs {
+	public val inGroup: AgendaInGroupApiJs
+
 	public fun getAllAgendas(startDocumentId: String?, limit: Double?):
 			Promise<PaginatedListJs<AgendaJs>>
 
@@ -31,7 +33,7 @@ public external interface AgendaApiJs {
 
 	public fun deleteAgendaById(entityId: String, rev: String): Promise<DocIdentifierJs>
 
-	public fun deleteAgendasByIds(entityIds: Array<IdWithMandatoryRevJs>):
+	public fun deleteAgendasByIds(entityIds: Array<StoredDocumentIdentifierJs>):
 			Promise<Array<DocIdentifierJs>>
 
 	public fun purgeAgendaById(id: String, rev: String): Promise<Unit>
@@ -46,13 +48,11 @@ public external interface AgendaApiJs {
 
 	public fun undeleteAgenda(agenda: AgendaJs): Promise<AgendaJs>
 
-	public fun getAgenda(agendaId: String): Promise<AgendaJs>
+	public fun getAgenda(agendaId: String): Promise<AgendaJs?>
 
 	public fun getAgendas(agendaIds: Array<String>): Promise<Array<AgendaJs>>
 
 	public fun getAgendasForUser(userId: String): Promise<AgendaJs>
-
-	public fun getReadableAgendasForUser(userId: String): Promise<Array<AgendaJs>>
 
 	public fun modifyAgenda(agendaDto: AgendaJs): Promise<AgendaJs>
 

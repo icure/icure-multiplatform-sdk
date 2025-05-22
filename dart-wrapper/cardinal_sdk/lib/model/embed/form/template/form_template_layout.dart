@@ -1,25 +1,20 @@
 // auto-generated file
 import 'package:cardinal_sdk/model/embed/form/template/action.dart';
 import 'package:cardinal_sdk/model/embed/form/template/section.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+part "form_template_layout.freezed.dart";
 
 
-class FormTemplateLayout {
-	String form;
-	List<Action> actions = [];
-	List<Section> sections = [];
-	String? description = null;
-	List<String>? keywords = null;
-	FormTemplateLayout(
-		this.form,
-		{
-			List<Action>? actions,
-			List<Section>? sections,
-			String? description,
-			List<String>? keywords
-		}) : actions = actions ?? [],
-		sections = sections ?? [],
-		description = description ?? null,
-		keywords = keywords ?? null;
+@freezed
+abstract class FormTemplateLayout with _$FormTemplateLayout {
+	const factory FormTemplateLayout({
+		required String form,
+		@Default([]) List<Action> actions,
+		@Default([]) List<Section> sections,
+		@Default(null) String? description,
+		@Default(null) List<String>? keywords,
+	}) = _FormTemplateLayout;
+
 
 	static Map<String, dynamic> encode(FormTemplateLayout value) {
 		Map<String, dynamic> entityAsMap = {
@@ -34,7 +29,7 @@ class FormTemplateLayout {
 
 	static FormTemplateLayout fromJSON(Map<String, dynamic> data) {
 		return FormTemplateLayout(
-			(data["form"] as String),
+			form: (data["form"] as String),
 			actions: (data["actions"] as List<dynamic>).map((x0) => Action.fromJSON(x0) ).toList(),
 			sections: (data["sections"] as List<dynamic>).map((x0) => Section.fromJSON(x0) ).toList(),
 			description: (data["description"] as String?),

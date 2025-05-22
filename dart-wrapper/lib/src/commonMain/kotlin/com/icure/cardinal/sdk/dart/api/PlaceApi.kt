@@ -12,6 +12,7 @@ import kotlin.OptIn
 import kotlin.String
 import kotlin.Unit
 import kotlinx.serialization.builtins.ListSerializer
+import kotlinx.serialization.builtins.nullable
 import kotlinx.serialization.builtins.serializer
 
 @OptIn(InternalIcureApi::class)
@@ -32,7 +33,7 @@ public object PlaceApi {
     )
     ApiScope.execute(
       dartResultCallback,
-      Place.serializer()) {
+      Place.serializer().nullable) {
       NativeReferences.get<CardinalNonCryptoApis>(sdkId).place.getPlace(
         placeId,
       )

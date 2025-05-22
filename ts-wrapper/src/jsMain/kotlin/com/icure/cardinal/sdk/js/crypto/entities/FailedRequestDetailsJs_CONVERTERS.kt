@@ -6,12 +6,14 @@ import com.icure.cardinal.sdk.js.model.CheckedConverters.intToNumber
 import com.icure.cardinal.sdk.js.model.CheckedConverters.nullToUndefined
 import com.icure.cardinal.sdk.js.model.CheckedConverters.numberToInt
 import com.icure.cardinal.sdk.js.model.CheckedConverters.undefinedToNull
+import com.icure.cardinal.sdk.js.model.entityReferenceInGroup_fromJs
+import com.icure.cardinal.sdk.js.model.entityReferenceInGroup_toJs
 import kotlin.Suppress
 
 @Suppress("UNUSED_VARIABLE")
 public fun failedRequestDetails_toJs(obj: FailedRequestDetails): FailedRequestDetailsJs {
 	val entityId = obj.entityId
-	val delegateId = obj.delegateId
+	val delegateReference = entityReferenceInGroup_toJs(obj.delegateReference)
 	val updatedForMigration = obj.updatedForMigration
 	val code = nullToUndefined(
 		intToNumber(obj.code)
@@ -27,7 +29,7 @@ public fun failedRequestDetails_toJs(obj: FailedRequestDetails): FailedRequestDe
 	val shouldRetry = obj.shouldRetry
 	return FailedRequestDetailsJs(js("{" +
 		"entityId:entityId," +
-		"delegateId:delegateId," +
+		"delegateReference:delegateReference," +
 		"updatedForMigration:updatedForMigration," +
 		"code:code," +
 		"reason:reason," +
@@ -38,7 +40,7 @@ public fun failedRequestDetails_toJs(obj: FailedRequestDetails): FailedRequestDe
 
 public fun failedRequestDetails_fromJs(obj: FailedRequestDetailsJs): FailedRequestDetails {
 	val entityId = obj.entityId
-	val delegateId = obj.delegateId
+	val delegateReference = entityReferenceInGroup_fromJs(obj.delegateReference)
 	val updatedForMigration = obj.updatedForMigration
 	val code = numberToInt(obj.code, "obj.code")
 	val reason = undefinedToNull(obj.reason)
@@ -48,7 +50,7 @@ public fun failedRequestDetails_fromJs(obj: FailedRequestDetailsJs): FailedReque
 	val shouldRetry = obj.shouldRetry
 	return FailedRequestDetails(
 		entityId = entityId,
-		delegateId = delegateId,
+		delegateReference = delegateReference,
 		updatedForMigration = updatedForMigration,
 		code = code,
 		reason = reason,

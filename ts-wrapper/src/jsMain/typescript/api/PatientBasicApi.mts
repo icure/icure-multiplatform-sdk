@@ -1,18 +1,19 @@
 // auto-generated file
 import {BaseFilterOptions, BaseSortableFilterOptions, PaginatedListIterator} from '../cardinal-sdk-ts.mjs';
 import {EntityAccessInformation} from '../crypto/entities/EntityAccessInformation.mjs';
-import {IdWithMandatoryRev} from '../model/IdWithMandatoryRev.mjs';
-import {IdWithRev} from '../model/IdWithRev.mjs';
 import {PaginatedList} from '../model/PaginatedList.mjs';
 import {EncryptedPatient, Patient} from '../model/Patient.mjs';
-import {DocIdentifier} from '../model/couchdb/DocIdentifier.mjs';
+import {StoredDocumentIdentifier} from '../model/StoredDocumentIdentifier.mjs';
 import {SortDirection} from '../model/couchdb/SortDirection.mjs';
 import {EntitySubscription} from '../subscription/EntitySubscription.mjs';
 import {EntitySubscriptionConfiguration} from '../subscription/EntitySubscriptionConfiguration.mjs';
 import {SubscriptionEventType} from '../subscription/SubscriptionEventType.mjs';
+import {PatientBasicInGroupApi} from './PatientBasicInGroupApi.mjs';
 
 
 export interface PatientBasicApi {
+
+	inGroup: PatientBasicInGroupApi;
 
 	matchPatientsBy(filter: BaseFilterOptions<Patient>): Promise<Array<string>>;
 
@@ -22,19 +23,19 @@ export interface PatientBasicApi {
 
 	filterPatientsBySorted(filter: BaseSortableFilterOptions<Patient>): Promise<PaginatedListIterator<EncryptedPatient>>;
 
-	deletePatientUnsafe(entityId: string): Promise<DocIdentifier>;
+	deletePatientUnsafe(entityId: string): Promise<StoredDocumentIdentifier>;
 
-	deletePatientsUnsafe(entityIds: Array<string>): Promise<Array<DocIdentifier>>;
+	deletePatientsUnsafe(entityIds: Array<string>): Promise<Array<StoredDocumentIdentifier>>;
 
-	deletePatientById(entityId: string, rev: string): Promise<DocIdentifier>;
+	deletePatientById(entityId: string, rev: string): Promise<StoredDocumentIdentifier>;
 
-	deletePatientsByIds(entityIds: Array<IdWithMandatoryRev>): Promise<Array<DocIdentifier>>;
+	deletePatientsByIds(entityIds: Array<StoredDocumentIdentifier>): Promise<Array<StoredDocumentIdentifier>>;
 
 	purgePatientById(id: string, rev: string): Promise<void>;
 
-	deletePatient(patient: Patient): Promise<DocIdentifier>;
+	deletePatient(patient: Patient): Promise<StoredDocumentIdentifier>;
 
-	deletePatients(patients: Array<Patient>): Promise<Array<DocIdentifier>>;
+	deletePatients(patients: Array<Patient>): Promise<Array<StoredDocumentIdentifier>>;
 
 	purgePatient(patient: Patient): Promise<void>;
 
@@ -42,15 +43,21 @@ export interface PatientBasicApi {
 
 	countOfPatients(hcPartyId: string): Promise<number>;
 
+	createPatient(patient: EncryptedPatient): Promise<EncryptedPatient>;
+
+	createPatientsMinimal(patients: Array<EncryptedPatient>): Promise<Array<StoredDocumentIdentifier>>;
+
+	createPatients(patients: Array<EncryptedPatient>): Promise<Array<EncryptedPatient>>;
+
 	undeletePatient(patient: Patient): Promise<Patient>;
 
 	modifyPatient(entity: EncryptedPatient): Promise<EncryptedPatient>;
 
 	undeletePatientById(id: string, rev: string): Promise<EncryptedPatient>;
 
-	undeletePatients(ids: Array<IdWithMandatoryRev>): Promise<Array<EncryptedPatient>>;
+	undeletePatients(ids: Array<StoredDocumentIdentifier>): Promise<Array<EncryptedPatient>>;
 
-	getPatient(entityId: string): Promise<EncryptedPatient>;
+	getPatient(entityId: string): Promise<EncryptedPatient | undefined>;
 
 	getPatientResolvingMerges(patientId: string,
 			maxMergeDepth: number | undefined): Promise<EncryptedPatient>;
@@ -89,7 +96,9 @@ export interface PatientBasicApi {
 	getPatientByHealthcarePartyAndIdentifier(hcPartyId: string, id: string,
 			options?: { system?: string | undefined }): Promise<EncryptedPatient>;
 
-	modifyPatients(patientDtos: Array<EncryptedPatient>): Promise<Array<IdWithRev>>;
+	modifyPatientsMinimal(patients: Array<EncryptedPatient>): Promise<Array<StoredDocumentIdentifier>>;
+
+	modifyPatients(patients: Array<EncryptedPatient>): Promise<Array<EncryptedPatient>>;
 
 	findDuplicatesBySsin(hcPartyId: string,
 			options?: { startKey?: string | undefined, startDocumentId?: string | undefined, limit?: number | undefined }): Promise<PaginatedList<EncryptedPatient>>;

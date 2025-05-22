@@ -3,9 +3,9 @@ import {FilterOptions, PaginatedListIterator, SortableFilterOptions} from '../ca
 import {AccessLogShareOptions} from '../crypto/entities/AccessLogShareOptions.mjs';
 import {SecretIdUseOption} from '../crypto/entities/SecretIdUseOption.mjs';
 import {AccessLog, DecryptedAccessLog, EncryptedAccessLog} from '../model/AccessLog.mjs';
-import {IdWithMandatoryRev} from '../model/IdWithMandatoryRev.mjs';
 import {PaginatedList} from '../model/PaginatedList.mjs';
 import {Patient} from '../model/Patient.mjs';
+import {StoredDocumentIdentifier} from '../model/StoredDocumentIdentifier.mjs';
 import {User} from '../model/User.mjs';
 import {DocIdentifier} from '../model/couchdb/DocIdentifier.mjs';
 import {AccessLevel} from '../model/embed/AccessLevel.mjs';
@@ -18,8 +18,6 @@ export interface AccessLogApi {
 	encrypted: AccessLogFlavouredApi<EncryptedAccessLog>;
 
 	tryAndRecover: AccessLogFlavouredApi<AccessLog>;
-
-	createAccessLog(entity: DecryptedAccessLog): Promise<DecryptedAccessLog>;
 
 	withEncryptionMetadata(base: DecryptedAccessLog | undefined, patient: Patient,
 			options?: { user?: User | undefined, delegates?: { [ key: string ]: AccessLevel }, secretId?: SecretIdUseOption }): Promise<DecryptedAccessLog>;
@@ -47,7 +45,7 @@ export interface AccessLogApi {
 
 	deleteAccessLogById(entityId: string, rev: string): Promise<DocIdentifier>;
 
-	deleteAccessLogsByIds(entityIds: Array<IdWithMandatoryRev>): Promise<Array<DocIdentifier>>;
+	deleteAccessLogsByIds(entityIds: Array<StoredDocumentIdentifier>): Promise<Array<DocIdentifier>>;
 
 	purgeAccessLogById(id: string, rev: string): Promise<void>;
 
@@ -70,13 +68,15 @@ export interface AccessLogApi {
 
 	filterAccessLogsBySorted(filter: SortableFilterOptions<AccessLog>): Promise<PaginatedListIterator<DecryptedAccessLog>>;
 
+	createAccessLog(entity: DecryptedAccessLog): Promise<DecryptedAccessLog>;
+
 	undeleteAccessLogById(id: string, rev: string): Promise<DecryptedAccessLog>;
 
 	undeleteAccessLog(accessLog: AccessLog): Promise<DecryptedAccessLog>;
 
 	modifyAccessLog(entity: DecryptedAccessLog): Promise<DecryptedAccessLog>;
 
-	getAccessLog(entityId: string): Promise<DecryptedAccessLog>;
+	getAccessLog(entityId: string): Promise<DecryptedAccessLog | undefined>;
 
 	getAccessLogs(entityIds: Array<string>): Promise<Array<DecryptedAccessLog>>;
 

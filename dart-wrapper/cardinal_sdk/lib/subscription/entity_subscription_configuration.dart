@@ -1,38 +1,18 @@
 // auto-generated file
-import 'package:cardinal_sdk/annotations/actual_int32.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+part "entity_subscription_configuration.freezed.dart";
 
 
-class EntitySubscriptionConfiguration {
-	int _channelBufferCapacity = 100;
-	@ActualInt32() int get channelBufferCapacity => _channelBufferCapacity;
-	@ActualInt32() set channelBufferCapacity(int value) {
-		if (value > 2147483647) {
-			throw ArgumentError('channelBufferCapacity value cannot exceed 2147483647');
-		}
-		_channelBufferCapacity = value;
-	}
-	EntitySubscriptionConfigurationFullBufferBehaviour onBufferFull = EntitySubscriptionConfigurationFullBufferBehaviour.close;
-	Duration reconnectionDelay = Duration(seconds: 2);
-	double retryDelayExponentFactor = 2.0;
-	int _connectionMaxRetries = 5;
-	@ActualInt32() int get connectionMaxRetries => _connectionMaxRetries;
-	@ActualInt32() set connectionMaxRetries(int value) {
-		if (value > 2147483647) {
-			throw ArgumentError('connectionMaxRetries value cannot exceed 2147483647');
-		}
-		_connectionMaxRetries = value;
-	}
-	EntitySubscriptionConfiguration({
-			int? channelBufferCapacity,
-			int? connectionMaxRetries,
-			EntitySubscriptionConfigurationFullBufferBehaviour? onBufferFull,
-			Duration? reconnectionDelay,
-			double? retryDelayExponentFactor
-		}) : onBufferFull = onBufferFull ?? EntitySubscriptionConfigurationFullBufferBehaviour.close,
-		reconnectionDelay = reconnectionDelay ?? Duration(seconds: 2),
-		retryDelayExponentFactor = retryDelayExponentFactor ?? 2.0,
-		_channelBufferCapacity = channelBufferCapacity ?? 100,
-		_connectionMaxRetries = connectionMaxRetries ?? 5;
+@freezed
+abstract class EntitySubscriptionConfiguration with _$EntitySubscriptionConfiguration {
+	const factory EntitySubscriptionConfiguration({
+		@Default(100) int channelBufferCapacity,
+		@Default(EntitySubscriptionConfigurationFullBufferBehaviour.close) EntitySubscriptionConfigurationFullBufferBehaviour onBufferFull,
+		@Default(Duration(seconds: 2)) Duration reconnectionDelay,
+		@Default(2.0) double retryDelayExponentFactor,
+		@Default(5) int connectionMaxRetries,
+	}) = _EntitySubscriptionConfiguration;
+
 
 	static Map<String, dynamic> encode(EntitySubscriptionConfiguration value) {
 		Map<String, dynamic> entityAsMap = {

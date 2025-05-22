@@ -1,16 +1,16 @@
 // auto-generated file
 import 'package:flutter/services.dart';
 import 'package:cardinal_sdk/model/message.dart';
-import 'dart:convert';
-import 'package:cardinal_sdk/utils/internal/platform_exception_convertion.dart';
 import 'package:cardinal_sdk/model/patient.dart';
 import 'package:cardinal_sdk/model/user.dart';
 import 'package:cardinal_sdk/model/embed/access_level.dart';
 import 'package:cardinal_sdk/crypto/entities/secret_id_use_option.dart';
+import 'dart:convert';
+import 'package:cardinal_sdk/utils/internal/platform_exception_convertion.dart';
 import 'package:cardinal_sdk/model/specializations/hex_string.dart';
 import 'package:cardinal_sdk/filters/filter_options.dart';
 import 'package:cardinal_sdk/model/couchdb/doc_identifier.dart';
-import 'package:cardinal_sdk/model/id_with_mandatory_rev.dart';
+import 'package:cardinal_sdk/model/stored_document_identifier.dart';
 import 'package:cardinal_sdk/crypto/entities/message_share_options.dart';
 import 'package:cardinal_sdk/utils/pagination/paginated_list_iterator.dart';
 import 'package:cardinal_sdk/subscription/subscription_event_type.dart';
@@ -20,38 +20,12 @@ import 'package:cardinal_sdk/subscription/entity_subscription.dart';
 
 class MessagePlatformApi {
 	MethodChannel _methodChannel;
-	TryAndRecoverMessagePlatformApi tryAndRecover;
-	EncryptedMessagePlatformApi encrypted;
+	MessageEncryptedPlatformApi encrypted;
+	MessageTryAndRecoverPlatformApi tryAndRecover;
 	MessagePlatformApi(
 		this._methodChannel
-		) : tryAndRecover = TryAndRecoverMessagePlatformApi(_methodChannel),
-		encrypted = EncryptedMessagePlatformApi(_methodChannel);
-
-	Future<DecryptedMessage> createMessage(String sdkId, DecryptedMessage entity) async {
-		final res = await _methodChannel.invokeMethod<String>(
-			'MessageApi.createMessage',
-			{
-				"sdkId": sdkId,
-				"entity": jsonEncode(DecryptedMessage.encode(entity)),
-			}
-		).catchError(convertPlatformException);
-		if (res == null) throw AssertionError("received null result from platform method createMessage");
-		final parsedResJson = jsonDecode(res);
-		return DecryptedMessage.fromJSON(parsedResJson);
-	}
-
-	Future<DecryptedMessage> createMessageInTopic(String sdkId, DecryptedMessage entity) async {
-		final res = await _methodChannel.invokeMethod<String>(
-			'MessageApi.createMessageInTopic',
-			{
-				"sdkId": sdkId,
-				"entity": jsonEncode(DecryptedMessage.encode(entity)),
-			}
-		).catchError(convertPlatformException);
-		if (res == null) throw AssertionError("received null result from platform method createMessageInTopic");
-		final parsedResJson = jsonDecode(res);
-		return DecryptedMessage.fromJSON(parsedResJson);
-	}
+		) : encrypted = MessageEncryptedPlatformApi(_methodChannel),
+		tryAndRecover = MessageTryAndRecoverPlatformApi(_methodChannel);
 
 	Future<DecryptedMessage> withEncryptionMetadata(String sdkId, DecryptedMessage? base, Patient? patient, User? user, Map<String, AccessLevel> delegates, SecretIdUseOption secretId) async {
 		final res = await _methodChannel.invokeMethod<String>(
@@ -186,12 +160,12 @@ class MessagePlatformApi {
 		return DocIdentifier.fromJSON(parsedResJson);
 	}
 
-	Future<List<DocIdentifier>> deleteMessagesByIds(String sdkId, List<IdWithMandatoryRev> entityIds) async {
+	Future<List<DocIdentifier>> deleteMessagesByIds(String sdkId, List<StoredDocumentIdentifier> entityIds) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'MessageApi.deleteMessagesByIds',
 			{
 				"sdkId": sdkId,
-				"entityIds": jsonEncode(entityIds.map((x0) => IdWithMandatoryRev.encode(x0)).toList()),
+				"entityIds": jsonEncode(entityIds.map((x0) => StoredDocumentIdentifier.encode(x0)).toList()),
 			}
 		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method deleteMessagesByIds");
@@ -301,6 +275,32 @@ class MessagePlatformApi {
 		return PaginatedListIterator(parsedResJson, (x0) => DecryptedMessage.fromJSON(x0));
 	}
 
+	Future<DecryptedMessage> createMessage(String sdkId, DecryptedMessage entity) async {
+		final res = await _methodChannel.invokeMethod<String>(
+			'MessageApi.createMessage',
+			{
+				"sdkId": sdkId,
+				"entity": jsonEncode(DecryptedMessage.encode(entity)),
+			}
+		).catchError(convertPlatformException);
+		if (res == null) throw AssertionError("received null result from platform method createMessage");
+		final parsedResJson = jsonDecode(res);
+		return DecryptedMessage.fromJSON(parsedResJson);
+	}
+
+	Future<DecryptedMessage> createMessageInTopic(String sdkId, DecryptedMessage entity) async {
+		final res = await _methodChannel.invokeMethod<String>(
+			'MessageApi.createMessageInTopic',
+			{
+				"sdkId": sdkId,
+				"entity": jsonEncode(DecryptedMessage.encode(entity)),
+			}
+		).catchError(convertPlatformException);
+		if (res == null) throw AssertionError("received null result from platform method createMessageInTopic");
+		final parsedResJson = jsonDecode(res);
+		return DecryptedMessage.fromJSON(parsedResJson);
+	}
+
 	Future<Message> undeleteMessage(String sdkId, Message message) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'MessageApi.undeleteMessage',
@@ -341,7 +341,7 @@ class MessagePlatformApi {
 		return DecryptedMessage.fromJSON(parsedResJson);
 	}
 
-	Future<DecryptedMessage> getMessage(String sdkId, String entityId) async {
+	Future<DecryptedMessage?> getMessage(String sdkId, String entityId) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'MessageApi.getMessage',
 			{
@@ -351,7 +351,7 @@ class MessagePlatformApi {
 		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getMessage");
 		final parsedResJson = jsonDecode(res);
-		return DecryptedMessage.fromJSON(parsedResJson);
+		return parsedResJson == null ? null : DecryptedMessage.fromJSON(parsedResJson);
 	}
 
 	Future<List<DecryptedMessage>> getMessages(String sdkId, List<String> entityIds) async {
@@ -399,9 +399,9 @@ class MessagePlatformApi {
 	}
 }
 
-class TryAndRecoverMessagePlatformApi {
+class MessageTryAndRecoverPlatformApi {
 	MethodChannel _methodChannel;
-	TryAndRecoverMessagePlatformApi(this._methodChannel);
+	MessageTryAndRecoverPlatformApi(this._methodChannel);
 
 	Future<Message> shareWith(String sdkId, String delegateId, Message message, MessageShareOptions? options) async {
 		final res = await _methodChannel.invokeMethod<String>(
@@ -458,6 +458,32 @@ class TryAndRecoverMessagePlatformApi {
 		return PaginatedListIterator(parsedResJson, (x0) => Message.fromJSON(x0));
 	}
 
+	Future<Message> createMessage(String sdkId, Message entity) async {
+		final res = await _methodChannel.invokeMethod<String>(
+			'MessageApi.tryAndRecover.createMessage',
+			{
+				"sdkId": sdkId,
+				"entity": jsonEncode(Message.encode(entity)),
+			}
+		).catchError(convertPlatformException);
+		if (res == null) throw AssertionError("received null result from platform method createMessage");
+		final parsedResJson = jsonDecode(res);
+		return Message.fromJSON(parsedResJson);
+	}
+
+	Future<Message> createMessageInTopic(String sdkId, Message entity) async {
+		final res = await _methodChannel.invokeMethod<String>(
+			'MessageApi.tryAndRecover.createMessageInTopic',
+			{
+				"sdkId": sdkId,
+				"entity": jsonEncode(Message.encode(entity)),
+			}
+		).catchError(convertPlatformException);
+		if (res == null) throw AssertionError("received null result from platform method createMessageInTopic");
+		final parsedResJson = jsonDecode(res);
+		return Message.fromJSON(parsedResJson);
+	}
+
 	Future<Message> undeleteMessage(String sdkId, Message message) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'MessageApi.tryAndRecover.undeleteMessage',
@@ -498,7 +524,7 @@ class TryAndRecoverMessagePlatformApi {
 		return Message.fromJSON(parsedResJson);
 	}
 
-	Future<Message> getMessage(String sdkId, String entityId) async {
+	Future<Message?> getMessage(String sdkId, String entityId) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'MessageApi.tryAndRecover.getMessage',
 			{
@@ -508,7 +534,7 @@ class TryAndRecoverMessagePlatformApi {
 		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getMessage");
 		final parsedResJson = jsonDecode(res);
-		return Message.fromJSON(parsedResJson);
+		return parsedResJson == null ? null : Message.fromJSON(parsedResJson);
 	}
 
 	Future<List<Message>> getMessages(String sdkId, List<String> entityIds) async {
@@ -541,9 +567,9 @@ class TryAndRecoverMessagePlatformApi {
 	}
 }
 
-class EncryptedMessagePlatformApi {
+class MessageEncryptedPlatformApi {
 	MethodChannel _methodChannel;
-	EncryptedMessagePlatformApi(this._methodChannel);
+	MessageEncryptedPlatformApi(this._methodChannel);
 
 	Future<EncryptedMessage> shareWith(String sdkId, String delegateId, EncryptedMessage message, MessageShareOptions? options) async {
 		final res = await _methodChannel.invokeMethod<String>(
@@ -600,6 +626,32 @@ class EncryptedMessagePlatformApi {
 		return PaginatedListIterator(parsedResJson, (x0) => EncryptedMessage.fromJSON(x0));
 	}
 
+	Future<EncryptedMessage> createMessage(String sdkId, EncryptedMessage entity) async {
+		final res = await _methodChannel.invokeMethod<String>(
+			'MessageApi.encrypted.createMessage',
+			{
+				"sdkId": sdkId,
+				"entity": jsonEncode(EncryptedMessage.encode(entity)),
+			}
+		).catchError(convertPlatformException);
+		if (res == null) throw AssertionError("received null result from platform method createMessage");
+		final parsedResJson = jsonDecode(res);
+		return EncryptedMessage.fromJSON(parsedResJson);
+	}
+
+	Future<EncryptedMessage> createMessageInTopic(String sdkId, EncryptedMessage entity) async {
+		final res = await _methodChannel.invokeMethod<String>(
+			'MessageApi.encrypted.createMessageInTopic',
+			{
+				"sdkId": sdkId,
+				"entity": jsonEncode(EncryptedMessage.encode(entity)),
+			}
+		).catchError(convertPlatformException);
+		if (res == null) throw AssertionError("received null result from platform method createMessageInTopic");
+		final parsedResJson = jsonDecode(res);
+		return EncryptedMessage.fromJSON(parsedResJson);
+	}
+
 	Future<Message> undeleteMessage(String sdkId, Message message) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'MessageApi.encrypted.undeleteMessage',
@@ -640,7 +692,7 @@ class EncryptedMessagePlatformApi {
 		return EncryptedMessage.fromJSON(parsedResJson);
 	}
 
-	Future<EncryptedMessage> getMessage(String sdkId, String entityId) async {
+	Future<EncryptedMessage?> getMessage(String sdkId, String entityId) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'MessageApi.encrypted.getMessage',
 			{
@@ -650,7 +702,7 @@ class EncryptedMessagePlatformApi {
 		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getMessage");
 		final parsedResJson = jsonDecode(res);
-		return EncryptedMessage.fromJSON(parsedResJson);
+		return parsedResJson == null ? null : EncryptedMessage.fromJSON(parsedResJson);
 	}
 
 	Future<List<EncryptedMessage>> getMessages(String sdkId, List<String> entityIds) async {

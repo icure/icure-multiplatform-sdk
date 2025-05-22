@@ -1,16 +1,16 @@
 // auto-generated file
 import 'package:flutter/services.dart';
 import 'package:cardinal_sdk/model/form.dart';
-import 'dart:convert';
-import 'package:cardinal_sdk/utils/internal/platform_exception_convertion.dart';
 import 'package:cardinal_sdk/model/patient.dart';
 import 'package:cardinal_sdk/model/user.dart';
 import 'package:cardinal_sdk/model/embed/access_level.dart';
 import 'package:cardinal_sdk/crypto/entities/secret_id_use_option.dart';
+import 'dart:convert';
+import 'package:cardinal_sdk/utils/internal/platform_exception_convertion.dart';
 import 'package:cardinal_sdk/model/specializations/hex_string.dart';
 import 'package:cardinal_sdk/filters/filter_options.dart';
 import 'package:cardinal_sdk/model/couchdb/doc_identifier.dart';
-import 'package:cardinal_sdk/model/id_with_mandatory_rev.dart';
+import 'package:cardinal_sdk/model/stored_document_identifier.dart';
 import 'package:cardinal_sdk/model/form_template.dart';
 import 'dart:typed_data';
 import 'package:cardinal_sdk/crypto/entities/form_share_options.dart';
@@ -19,38 +19,12 @@ import 'package:cardinal_sdk/utils/pagination/paginated_list_iterator.dart';
 
 class FormPlatformApi {
 	MethodChannel _methodChannel;
-	TryAndRecoverFormPlatformApi tryAndRecover;
-	EncryptedFormPlatformApi encrypted;
+	FormEncryptedPlatformApi encrypted;
+	FormTryAndRecoverPlatformApi tryAndRecover;
 	FormPlatformApi(
 		this._methodChannel
-		) : tryAndRecover = TryAndRecoverFormPlatformApi(_methodChannel),
-		encrypted = EncryptedFormPlatformApi(_methodChannel);
-
-	Future<DecryptedForm> createForm(String sdkId, DecryptedForm entity) async {
-		final res = await _methodChannel.invokeMethod<String>(
-			'FormApi.createForm',
-			{
-				"sdkId": sdkId,
-				"entity": jsonEncode(DecryptedForm.encode(entity)),
-			}
-		).catchError(convertPlatformException);
-		if (res == null) throw AssertionError("received null result from platform method createForm");
-		final parsedResJson = jsonDecode(res);
-		return DecryptedForm.fromJSON(parsedResJson);
-	}
-
-	Future<List<DecryptedForm>> createForms(String sdkId, List<DecryptedForm> entities) async {
-		final res = await _methodChannel.invokeMethod<String>(
-			'FormApi.createForms',
-			{
-				"sdkId": sdkId,
-				"entities": jsonEncode(entities.map((x0) => DecryptedForm.encode(x0)).toList()),
-			}
-		).catchError(convertPlatformException);
-		if (res == null) throw AssertionError("received null result from platform method createForms");
-		final parsedResJson = jsonDecode(res);
-		return (parsedResJson as List<dynamic>).map((x1) => DecryptedForm.fromJSON(x1) ).toList();
-	}
+		) : encrypted = FormEncryptedPlatformApi(_methodChannel),
+		tryAndRecover = FormTryAndRecoverPlatformApi(_methodChannel);
 
 	Future<DecryptedForm> withEncryptionMetadata(String sdkId, DecryptedForm? base, Patient patient, User? user, Map<String, AccessLevel> delegates, SecretIdUseOption secretId) async {
 		final res = await _methodChannel.invokeMethod<String>(
@@ -185,12 +159,12 @@ class FormPlatformApi {
 		return DocIdentifier.fromJSON(parsedResJson);
 	}
 
-	Future<List<DocIdentifier>> deleteFormsByIds(String sdkId, List<IdWithMandatoryRev> entityIds) async {
+	Future<List<DocIdentifier>> deleteFormsByIds(String sdkId, List<StoredDocumentIdentifier> entityIds) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'FormApi.deleteFormsByIds',
 			{
 				"sdkId": sdkId,
-				"entityIds": jsonEncode(entityIds.map((x0) => IdWithMandatoryRev.encode(x0)).toList()),
+				"entityIds": jsonEncode(entityIds.map((x0) => StoredDocumentIdentifier.encode(x0)).toList()),
 			}
 		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method deleteFormsByIds");
@@ -367,6 +341,32 @@ class FormPlatformApi {
 		return PaginatedListIterator(parsedResJson, (x0) => DecryptedForm.fromJSON(x0));
 	}
 
+	Future<DecryptedForm> createForm(String sdkId, DecryptedForm entity) async {
+		final res = await _methodChannel.invokeMethod<String>(
+			'FormApi.createForm',
+			{
+				"sdkId": sdkId,
+				"entity": jsonEncode(DecryptedForm.encode(entity)),
+			}
+		).catchError(convertPlatformException);
+		if (res == null) throw AssertionError("received null result from platform method createForm");
+		final parsedResJson = jsonDecode(res);
+		return DecryptedForm.fromJSON(parsedResJson);
+	}
+
+	Future<List<DecryptedForm>> createForms(String sdkId, List<DecryptedForm> entities) async {
+		final res = await _methodChannel.invokeMethod<String>(
+			'FormApi.createForms',
+			{
+				"sdkId": sdkId,
+				"entities": jsonEncode(entities.map((x0) => DecryptedForm.encode(x0)).toList()),
+			}
+		).catchError(convertPlatformException);
+		if (res == null) throw AssertionError("received null result from platform method createForms");
+		final parsedResJson = jsonDecode(res);
+		return (parsedResJson as List<dynamic>).map((x1) => DecryptedForm.fromJSON(x1) ).toList();
+	}
+
 	Future<DecryptedForm> modifyForm(String sdkId, DecryptedForm entity) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'FormApi.modifyForm',
@@ -420,7 +420,7 @@ class FormPlatformApi {
 		return (parsedResJson as List<dynamic>).map((x1) => DecryptedForm.fromJSON(x1) ).toList();
 	}
 
-	Future<DecryptedForm> getForm(String sdkId, String entityId) async {
+	Future<DecryptedForm?> getForm(String sdkId, String entityId) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'FormApi.getForm',
 			{
@@ -430,7 +430,7 @@ class FormPlatformApi {
 		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getForm");
 		final parsedResJson = jsonDecode(res);
-		return DecryptedForm.fromJSON(parsedResJson);
+		return parsedResJson == null ? null : DecryptedForm.fromJSON(parsedResJson);
 	}
 
 	Future<List<DecryptedForm>> getForms(String sdkId, List<String> entityIds) async {
@@ -473,9 +473,9 @@ class FormPlatformApi {
 	}
 }
 
-class TryAndRecoverFormPlatformApi {
+class FormTryAndRecoverPlatformApi {
 	MethodChannel _methodChannel;
-	TryAndRecoverFormPlatformApi(this._methodChannel);
+	FormTryAndRecoverPlatformApi(this._methodChannel);
 
 	Future<Form> shareWith(String sdkId, String delegateId, Form form, FormShareOptions? options) async {
 		final res = await _methodChannel.invokeMethod<String>(
@@ -532,6 +532,32 @@ class TryAndRecoverFormPlatformApi {
 		return PaginatedListIterator(parsedResJson, (x0) => Form.fromJSON(x0));
 	}
 
+	Future<Form> createForm(String sdkId, Form entity) async {
+		final res = await _methodChannel.invokeMethod<String>(
+			'FormApi.tryAndRecover.createForm',
+			{
+				"sdkId": sdkId,
+				"entity": jsonEncode(Form.encode(entity)),
+			}
+		).catchError(convertPlatformException);
+		if (res == null) throw AssertionError("received null result from platform method createForm");
+		final parsedResJson = jsonDecode(res);
+		return Form.fromJSON(parsedResJson);
+	}
+
+	Future<List<Form>> createForms(String sdkId, List<Form> entities) async {
+		final res = await _methodChannel.invokeMethod<String>(
+			'FormApi.tryAndRecover.createForms',
+			{
+				"sdkId": sdkId,
+				"entities": jsonEncode(entities.map((x0) => Form.encode(x0)).toList()),
+			}
+		).catchError(convertPlatformException);
+		if (res == null) throw AssertionError("received null result from platform method createForms");
+		final parsedResJson = jsonDecode(res);
+		return (parsedResJson as List<dynamic>).map((x1) => Form.fromJSON(x1) ).toList();
+	}
+
 	Future<Form> modifyForm(String sdkId, Form entity) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'FormApi.tryAndRecover.modifyForm',
@@ -585,7 +611,7 @@ class TryAndRecoverFormPlatformApi {
 		return (parsedResJson as List<dynamic>).map((x1) => Form.fromJSON(x1) ).toList();
 	}
 
-	Future<Form> getForm(String sdkId, String entityId) async {
+	Future<Form?> getForm(String sdkId, String entityId) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'FormApi.tryAndRecover.getForm',
 			{
@@ -595,7 +621,7 @@ class TryAndRecoverFormPlatformApi {
 		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getForm");
 		final parsedResJson = jsonDecode(res);
-		return Form.fromJSON(parsedResJson);
+		return parsedResJson == null ? null : Form.fromJSON(parsedResJson);
 	}
 
 	Future<List<Form>> getForms(String sdkId, List<String> entityIds) async {
@@ -638,9 +664,9 @@ class TryAndRecoverFormPlatformApi {
 	}
 }
 
-class EncryptedFormPlatformApi {
+class FormEncryptedPlatformApi {
 	MethodChannel _methodChannel;
-	EncryptedFormPlatformApi(this._methodChannel);
+	FormEncryptedPlatformApi(this._methodChannel);
 
 	Future<EncryptedForm> shareWith(String sdkId, String delegateId, EncryptedForm form, FormShareOptions? options) async {
 		final res = await _methodChannel.invokeMethod<String>(
@@ -697,6 +723,32 @@ class EncryptedFormPlatformApi {
 		return PaginatedListIterator(parsedResJson, (x0) => EncryptedForm.fromJSON(x0));
 	}
 
+	Future<EncryptedForm> createForm(String sdkId, EncryptedForm entity) async {
+		final res = await _methodChannel.invokeMethod<String>(
+			'FormApi.encrypted.createForm',
+			{
+				"sdkId": sdkId,
+				"entity": jsonEncode(EncryptedForm.encode(entity)),
+			}
+		).catchError(convertPlatformException);
+		if (res == null) throw AssertionError("received null result from platform method createForm");
+		final parsedResJson = jsonDecode(res);
+		return EncryptedForm.fromJSON(parsedResJson);
+	}
+
+	Future<List<EncryptedForm>> createForms(String sdkId, List<EncryptedForm> entities) async {
+		final res = await _methodChannel.invokeMethod<String>(
+			'FormApi.encrypted.createForms',
+			{
+				"sdkId": sdkId,
+				"entities": jsonEncode(entities.map((x0) => EncryptedForm.encode(x0)).toList()),
+			}
+		).catchError(convertPlatformException);
+		if (res == null) throw AssertionError("received null result from platform method createForms");
+		final parsedResJson = jsonDecode(res);
+		return (parsedResJson as List<dynamic>).map((x1) => EncryptedForm.fromJSON(x1) ).toList();
+	}
+
 	Future<EncryptedForm> modifyForm(String sdkId, EncryptedForm entity) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'FormApi.encrypted.modifyForm',
@@ -750,7 +802,7 @@ class EncryptedFormPlatformApi {
 		return (parsedResJson as List<dynamic>).map((x1) => EncryptedForm.fromJSON(x1) ).toList();
 	}
 
-	Future<EncryptedForm> getForm(String sdkId, String entityId) async {
+	Future<EncryptedForm?> getForm(String sdkId, String entityId) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'FormApi.encrypted.getForm',
 			{
@@ -760,7 +812,7 @@ class EncryptedFormPlatformApi {
 		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getForm");
 		final parsedResJson = jsonDecode(res);
-		return EncryptedForm.fromJSON(parsedResJson);
+		return parsedResJson == null ? null : EncryptedForm.fromJSON(parsedResJson);
 	}
 
 	Future<List<EncryptedForm>> getForms(String sdkId, List<String> entityIds) async {

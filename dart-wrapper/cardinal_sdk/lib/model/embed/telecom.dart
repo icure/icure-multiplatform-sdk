@@ -3,13 +3,15 @@ import 'package:cardinal_sdk/model/embed/telecom_type.dart';
 import 'package:cardinal_sdk/model/specializations/base64string.dart';
 import 'package:cardinal_sdk/model/embed/telecom.dart';
 import 'package:cardinal_sdk/model/embed/encryptable.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+part "telecom.freezed.dart";
 
 
 sealed class Telecom implements Encryptable {
-	abstract TelecomType? telecomType;
-	abstract String? telecomNumber;
-	abstract String? telecomDescription;
-	@override abstract Base64String? encryptedSelf;
+	abstract final TelecomType? telecomType;
+	abstract final String? telecomNumber;
+	abstract final String? telecomDescription;
+	@override abstract final Base64String? encryptedSelf;
 
 	static Map<String, dynamic> encode(Telecom value) {
 		switch (value) {
@@ -40,20 +42,15 @@ sealed class Telecom implements Encryptable {
 	}
 }
 
-class EncryptedTelecom implements Telecom {
-	@override TelecomType? telecomType = null;
-	@override String? telecomNumber = null;
-	@override String? telecomDescription = null;
-	@override Base64String? encryptedSelf = null;
-	EncryptedTelecom({
-			TelecomType? telecomType,
-			String? telecomNumber,
-			String? telecomDescription,
-			Base64String? encryptedSelf
-		}) : telecomType = telecomType ?? null,
-		telecomNumber = telecomNumber ?? null,
-		telecomDescription = telecomDescription ?? null,
-		encryptedSelf = encryptedSelf ?? null;
+@freezed
+abstract class EncryptedTelecom with _$EncryptedTelecom implements Telecom {
+	const factory EncryptedTelecom({
+		@Default(null) TelecomType? telecomType,
+		@Default(null) String? telecomNumber,
+		@Default(null) String? telecomDescription,
+		@Default(null) Base64String? encryptedSelf,
+	}) = _EncryptedTelecom;
+
 
 	static Map<String, dynamic> encode(EncryptedTelecom value) {
 		Map<String, dynamic> entityAsMap = {
@@ -75,20 +72,15 @@ class EncryptedTelecom implements Telecom {
 	}
 }
 
-class DecryptedTelecom implements Telecom {
-	@override TelecomType? telecomType = null;
-	@override String? telecomNumber = null;
-	@override String? telecomDescription = null;
-	@override Base64String? encryptedSelf = null;
-	DecryptedTelecom({
-			TelecomType? telecomType,
-			String? telecomNumber,
-			String? telecomDescription,
-			Base64String? encryptedSelf
-		}) : telecomType = telecomType ?? null,
-		telecomNumber = telecomNumber ?? null,
-		telecomDescription = telecomDescription ?? null,
-		encryptedSelf = encryptedSelf ?? null;
+@freezed
+abstract class DecryptedTelecom with _$DecryptedTelecom implements Telecom {
+	const factory DecryptedTelecom({
+		@Default(null) TelecomType? telecomType,
+		@Default(null) String? telecomNumber,
+		@Default(null) String? telecomDescription,
+		@Default(null) Base64String? encryptedSelf,
+	}) = _DecryptedTelecom;
+
 
 	static Map<String, dynamic> encode(DecryptedTelecom value) {
 		Map<String, dynamic> entityAsMap = {

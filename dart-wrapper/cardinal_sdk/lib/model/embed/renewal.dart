@@ -1,23 +1,16 @@
 // auto-generated file
-import 'package:cardinal_sdk/annotations/actual_int32.dart';
 import 'package:cardinal_sdk/model/embed/duration.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+part "renewal.freezed.dart";
 
 
-class Renewal {
-	int? _decimal = null;
-	@ActualInt32() int? get decimal => _decimal;
-	@ActualInt32() set decimal(int? value) {
-		if (value != null && value > 2147483647) {
-			throw ArgumentError('decimal value cannot exceed 2147483647');
-		}
-		_decimal = value;
-	}
-	Duration? duration = null;
-	Renewal({
-			int? decimal,
-			Duration? duration
-		}) : duration = duration ?? null,
-		_decimal = decimal ?? null;
+@freezed
+abstract class Renewal with _$Renewal {
+	const factory Renewal({
+		@Default(null) int? decimal,
+		@Default(null) Duration? duration,
+	}) = _Renewal;
+
 
 	static Map<String, dynamic> encode(Renewal value) {
 		Map<String, dynamic> entityAsMap = {

@@ -2,7 +2,7 @@
 import {BaseFilterOptions, BaseSortableFilterOptions, PaginatedListIterator} from '../cardinal-sdk-ts.mjs';
 import {EncryptedForm, Form} from '../model/Form.mjs';
 import {FormTemplate} from '../model/FormTemplate.mjs';
-import {IdWithMandatoryRev} from '../model/IdWithMandatoryRev.mjs';
+import {StoredDocumentIdentifier} from '../model/StoredDocumentIdentifier.mjs';
 import {DocIdentifier} from '../model/couchdb/DocIdentifier.mjs';
 
 
@@ -22,7 +22,7 @@ export interface FormBasicApi {
 
 	deleteFormById(entityId: string, rev: string): Promise<DocIdentifier>;
 
-	deleteFormsByIds(entityIds: Array<IdWithMandatoryRev>): Promise<Array<DocIdentifier>>;
+	deleteFormsByIds(entityIds: Array<StoredDocumentIdentifier>): Promise<Array<DocIdentifier>>;
 
 	purgeFormById(id: string, rev: string): Promise<void>;
 
@@ -51,6 +51,10 @@ export interface FormBasicApi {
 
 	setTemplateAttachment(formTemplateId: string, payload: Int8Array): Promise<string>;
 
+	createForm(entity: EncryptedForm): Promise<EncryptedForm>;
+
+	createForms(entities: Array<EncryptedForm>): Promise<Array<EncryptedForm>>;
+
 	modifyForm(entity: EncryptedForm): Promise<EncryptedForm>;
 
 	undeleteFormById(id: string, rev: string): Promise<EncryptedForm>;
@@ -59,7 +63,7 @@ export interface FormBasicApi {
 
 	modifyForms(entities: Array<EncryptedForm>): Promise<Array<EncryptedForm>>;
 
-	getForm(entityId: string): Promise<EncryptedForm>;
+	getForm(entityId: string): Promise<EncryptedForm | undefined>;
 
 	getForms(entityIds: Array<string>): Promise<Array<EncryptedForm>>;
 

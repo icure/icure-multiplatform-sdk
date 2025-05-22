@@ -1,15 +1,16 @@
 // auto-generated file
 import 'package:cardinal_sdk/model/embed/form/template/structure_element.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+part "fields_group.freezed.dart";
 
 
-class FieldsGroup implements StructureElement {
-	String group;
-	List<StructureElement>? fields = null;
-	FieldsGroup(
-		this.group,
-		{
-			List<StructureElement>? fields
-		}) : fields = fields ?? null;
+@freezed
+abstract class FieldsGroup with _$FieldsGroup implements StructureElement {
+	const factory FieldsGroup({
+		required String group,
+		@Default(null) List<StructureElement>? fields,
+	}) = _FieldsGroup;
+
 
 	static Map<String, dynamic> encode(FieldsGroup value) {
 		Map<String, dynamic> entityAsMap = {
@@ -21,7 +22,7 @@ class FieldsGroup implements StructureElement {
 
 	static FieldsGroup fromJSON(Map<String, dynamic> data) {
 		return FieldsGroup(
-			(data["group"] as String),
+			group: (data["group"] as String),
 			fields: (data["fields"] as List<dynamic>?)?.map((x0) => StructureElement.fromJSON(x0) ).toList(),
 		);
 	}

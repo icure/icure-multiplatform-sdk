@@ -22,6 +22,7 @@ import com.icure.cardinal.sdk.js.model.CheckedConverters.arrayToList
 import com.icure.cardinal.sdk.js.model.CheckedConverters.arrayToSet
 import com.icure.cardinal.sdk.js.model.CheckedConverters.dynamicToJsonNullsafe
 import com.icure.cardinal.sdk.js.model.CheckedConverters.listToArray
+import com.icure.cardinal.sdk.js.model.CheckedConverters.nullToUndefined
 import com.icure.cardinal.sdk.js.model.CheckedConverters.numberToInt
 import com.icure.cardinal.sdk.js.model.CheckedConverters.numberToLong
 import com.icure.cardinal.sdk.js.model.CheckedConverters.objectToMap
@@ -29,19 +30,19 @@ import com.icure.cardinal.sdk.js.model.CheckedConverters.setToArray
 import com.icure.cardinal.sdk.js.model.CheckedConverters.undefinedToNull
 import com.icure.cardinal.sdk.js.model.DecryptedMessageJs
 import com.icure.cardinal.sdk.js.model.EncryptedMessageJs
-import com.icure.cardinal.sdk.js.model.IdWithMandatoryRevJs
 import com.icure.cardinal.sdk.js.model.MessageJs
 import com.icure.cardinal.sdk.js.model.PaginatedListJs
 import com.icure.cardinal.sdk.js.model.PatientJs
+import com.icure.cardinal.sdk.js.model.StoredDocumentIdentifierJs
 import com.icure.cardinal.sdk.js.model.UserJs
 import com.icure.cardinal.sdk.js.model.couchdb.DocIdentifierJs
 import com.icure.cardinal.sdk.js.model.couchdb.docIdentifier_toJs
-import com.icure.cardinal.sdk.js.model.idWithMandatoryRev_fromJs
 import com.icure.cardinal.sdk.js.model.message_fromJs
 import com.icure.cardinal.sdk.js.model.message_toJs
 import com.icure.cardinal.sdk.js.model.paginatedList_toJs
 import com.icure.cardinal.sdk.js.model.patient_fromJs
 import com.icure.cardinal.sdk.js.model.specializations.hexString_toJs
+import com.icure.cardinal.sdk.js.model.storedDocumentIdentifier_fromJs
 import com.icure.cardinal.sdk.js.model.user_fromJs
 import com.icure.cardinal.sdk.js.subscription.EntitySubscriptionConfigurationJs
 import com.icure.cardinal.sdk.js.subscription.EntitySubscriptionJs
@@ -52,9 +53,9 @@ import com.icure.cardinal.sdk.js.utils.pagination.PaginatedListIteratorJs
 import com.icure.cardinal.sdk.js.utils.pagination.paginatedListIterator_toJs
 import com.icure.cardinal.sdk.model.DecryptedMessage
 import com.icure.cardinal.sdk.model.EncryptedMessage
-import com.icure.cardinal.sdk.model.StoredDocumentIdentifier
 import com.icure.cardinal.sdk.model.Message
 import com.icure.cardinal.sdk.model.Patient
+import com.icure.cardinal.sdk.model.StoredDocumentIdentifier
 import com.icure.cardinal.sdk.model.User
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.model.embed.AccessLevel
@@ -206,6 +207,24 @@ internal class MessageApiImplJs(
 			)
 		}
 
+		override fun createMessage(entity: EncryptedMessageJs): Promise<EncryptedMessageJs> =
+				GlobalScope.promise {
+			val entityConverted: EncryptedMessage = message_fromJs(entity)
+			val result = messageApi.encrypted.createMessage(
+				entityConverted,
+			)
+			message_toJs(result)
+		}
+
+		override fun createMessageInTopic(entity: EncryptedMessageJs): Promise<EncryptedMessageJs> =
+				GlobalScope.promise {
+			val entityConverted: EncryptedMessage = message_fromJs(entity)
+			val result = messageApi.encrypted.createMessageInTopic(
+				entityConverted,
+			)
+			message_toJs(result)
+		}
+
 		override fun undeleteMessage(message: MessageJs): Promise<MessageJs> = GlobalScope.promise {
 			val messageConverted: Message = message_fromJs(message)
 			val result = messageApi.encrypted.undeleteMessage(
@@ -234,12 +253,16 @@ internal class MessageApiImplJs(
 			message_toJs(result)
 		}
 
-		override fun getMessage(entityId: String): Promise<EncryptedMessageJs> = GlobalScope.promise {
+		override fun getMessage(entityId: String): Promise<EncryptedMessageJs?> = GlobalScope.promise {
 			val entityIdConverted: String = entityId
 			val result = messageApi.encrypted.getMessage(
 				entityIdConverted,
 			)
-			message_toJs(result)
+			nullToUndefined(
+				result?.let { nonNull1 ->
+					message_toJs(nonNull1)
+				}
+			)
 		}
 
 		override fun getMessages(entityIds: Array<String>): Promise<Array<EncryptedMessageJs>> =
@@ -654,6 +677,22 @@ internal class MessageApiImplJs(
 			)
 		}
 
+		override fun createMessage(entity: MessageJs): Promise<MessageJs> = GlobalScope.promise {
+			val entityConverted: Message = message_fromJs(entity)
+			val result = messageApi.tryAndRecover.createMessage(
+				entityConverted,
+			)
+			message_toJs(result)
+		}
+
+		override fun createMessageInTopic(entity: MessageJs): Promise<MessageJs> = GlobalScope.promise {
+			val entityConverted: Message = message_fromJs(entity)
+			val result = messageApi.tryAndRecover.createMessageInTopic(
+				entityConverted,
+			)
+			message_toJs(result)
+		}
+
 		override fun undeleteMessage(message: MessageJs): Promise<MessageJs> = GlobalScope.promise {
 			val messageConverted: Message = message_fromJs(message)
 			val result = messageApi.tryAndRecover.undeleteMessage(
@@ -681,12 +720,16 @@ internal class MessageApiImplJs(
 			message_toJs(result)
 		}
 
-		override fun getMessage(entityId: String): Promise<MessageJs> = GlobalScope.promise {
+		override fun getMessage(entityId: String): Promise<MessageJs?> = GlobalScope.promise {
 			val entityIdConverted: String = entityId
 			val result = messageApi.tryAndRecover.getMessage(
 				entityIdConverted,
 			)
-			message_toJs(result)
+			nullToUndefined(
+				result?.let { nonNull1 ->
+					message_toJs(nonNull1)
+				}
+			)
 		}
 
 		override fun getMessages(entityIds: Array<String>): Promise<Array<MessageJs>> =
@@ -978,24 +1021,6 @@ internal class MessageApiImplJs(
 		}
 	}
 
-	override fun createMessage(entity: DecryptedMessageJs): Promise<DecryptedMessageJs> =
-			GlobalScope.promise {
-		val entityConverted: DecryptedMessage = message_fromJs(entity)
-		val result = messageApi.createMessage(
-			entityConverted,
-		)
-		message_toJs(result)
-	}
-
-	override fun createMessageInTopic(entity: DecryptedMessageJs): Promise<DecryptedMessageJs> =
-			GlobalScope.promise {
-		val entityConverted: DecryptedMessage = message_fromJs(entity)
-		val result = messageApi.createMessageInTopic(
-			entityConverted,
-		)
-		message_toJs(result)
-	}
-
 	override fun withEncryptionMetadata(
 		base: DecryptedMessageJs?,
 		patient: PatientJs?,
@@ -1189,13 +1214,13 @@ internal class MessageApiImplJs(
 		docIdentifier_toJs(result)
 	}
 
-	override fun deleteMessagesByIds(entityIds: Array<IdWithMandatoryRevJs>):
+	override fun deleteMessagesByIds(entityIds: Array<StoredDocumentIdentifierJs>):
 			Promise<Array<DocIdentifierJs>> = GlobalScope.promise {
 		val entityIdsConverted: List<StoredDocumentIdentifier> = arrayToList(
 			entityIds,
 			"entityIds",
-			{ x1: IdWithMandatoryRevJs ->
-				idWithMandatoryRev_fromJs(x1)
+			{ x1: StoredDocumentIdentifierJs ->
+				storedDocumentIdentifier_fromJs(x1)
 			},
 		)
 		val result = messageApi.deleteMessagesByIds(
@@ -1377,6 +1402,24 @@ internal class MessageApiImplJs(
 		)
 	}
 
+	override fun createMessage(entity: DecryptedMessageJs): Promise<DecryptedMessageJs> =
+			GlobalScope.promise {
+		val entityConverted: DecryptedMessage = message_fromJs(entity)
+		val result = messageApi.createMessage(
+			entityConverted,
+		)
+		message_toJs(result)
+	}
+
+	override fun createMessageInTopic(entity: DecryptedMessageJs): Promise<DecryptedMessageJs> =
+			GlobalScope.promise {
+		val entityConverted: DecryptedMessage = message_fromJs(entity)
+		val result = messageApi.createMessageInTopic(
+			entityConverted,
+		)
+		message_toJs(result)
+	}
+
 	override fun undeleteMessage(message: MessageJs): Promise<MessageJs> = GlobalScope.promise {
 		val messageConverted: Message = message_fromJs(message)
 		val result = messageApi.undeleteMessage(
@@ -1405,12 +1448,16 @@ internal class MessageApiImplJs(
 		message_toJs(result)
 	}
 
-	override fun getMessage(entityId: String): Promise<DecryptedMessageJs> = GlobalScope.promise {
+	override fun getMessage(entityId: String): Promise<DecryptedMessageJs?> = GlobalScope.promise {
 		val entityIdConverted: String = entityId
 		val result = messageApi.getMessage(
 			entityIdConverted,
 		)
-		message_toJs(result)
+		nullToUndefined(
+			result?.let { nonNull1 ->
+				message_toJs(nonNull1)
+			}
+		)
 	}
 
 	override fun getMessages(entityIds: Array<String>): Promise<Array<DecryptedMessageJs>> =

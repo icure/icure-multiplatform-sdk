@@ -6,11 +6,15 @@ import com.icure.cardinal.sdk.js.api.DataOwnerApiJs
 import com.icure.cardinal.sdk.js.model.CheckedConverters.listToArray
 import com.icure.cardinal.sdk.js.model.CryptoActorStubWithTypeJs
 import com.icure.cardinal.sdk.js.model.DataOwnerWithTypeJs
+import com.icure.cardinal.sdk.js.model.EntityReferenceInGroupJs
 import com.icure.cardinal.sdk.js.model.cryptoActorStubWithType_fromJs
 import com.icure.cardinal.sdk.js.model.cryptoActorStubWithType_toJs
 import com.icure.cardinal.sdk.js.model.dataOwnerWithType_toJs
+import com.icure.cardinal.sdk.js.model.entityReferenceInGroup_fromJs
+import com.icure.cardinal.sdk.js.model.entityReferenceInGroup_toJs
 import com.icure.cardinal.sdk.model.CryptoActorStubWithType
 import com.icure.cardinal.sdk.model.DataOwnerWithType
+import com.icure.cardinal.sdk.model.EntityReferenceInGroup
 import kotlin.Array
 import kotlin.OptIn
 import kotlin.String
@@ -42,6 +46,13 @@ internal class DataOwnerApiImplJs(
 		result
 	}
 
+	override fun getCurrentDataOwnerReference(): Promise<EntityReferenceInGroupJs> =
+			GlobalScope.promise {
+		val result = dataOwnerApi.getCurrentDataOwnerReference(
+		)
+		entityReferenceInGroup_toJs(result)
+	}
+
 	override fun getCurrentDataOwnerHierarchyIds(): Promise<Array<String>> = GlobalScope.promise {
 		val result = dataOwnerApi.getCurrentDataOwnerHierarchyIds(
 		)
@@ -49,6 +60,18 @@ internal class DataOwnerApiImplJs(
 			result,
 			{ x1: String ->
 				x1
+			},
+		)
+	}
+
+	override fun getCurrentDataOwnerHierarchyIdsReference(): Promise<Array<EntityReferenceInGroupJs>> =
+			GlobalScope.promise {
+		val result = dataOwnerApi.getCurrentDataOwnerHierarchyIdsReference(
+		)
+		listToArray(
+			result,
+			{ x1: EntityReferenceInGroup ->
+				entityReferenceInGroup_toJs(x1)
 			},
 		)
 	}
@@ -66,6 +89,16 @@ internal class DataOwnerApiImplJs(
 		val ownerIdConverted: String = ownerId
 		val result = dataOwnerApi.getCryptoActorStub(
 			ownerIdConverted,
+		)
+		cryptoActorStubWithType_toJs(result)
+	}
+
+	override fun getCryptoActorStubInGroup(entityReferenceInGroup: EntityReferenceInGroupJs):
+			Promise<CryptoActorStubWithTypeJs> = GlobalScope.promise {
+		val entityReferenceInGroupConverted: EntityReferenceInGroup =
+				entityReferenceInGroup_fromJs(entityReferenceInGroup)
+		val result = dataOwnerApi.getCryptoActorStubInGroup(
+			entityReferenceInGroupConverted,
 		)
 		cryptoActorStubWithType_toJs(result)
 	}

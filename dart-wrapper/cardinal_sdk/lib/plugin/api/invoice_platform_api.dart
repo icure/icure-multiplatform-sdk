@@ -18,12 +18,12 @@ import 'package:cardinal_sdk/model/embed/invoice_type.dart';
 
 class InvoicePlatformApi {
 	MethodChannel _methodChannel;
-	TryAndRecoverInvoicePlatformApi tryAndRecover;
-	EncryptedInvoicePlatformApi encrypted;
+	InvoiceEncryptedPlatformApi encrypted;
+	InvoiceTryAndRecoverPlatformApi tryAndRecover;
 	InvoicePlatformApi(
 		this._methodChannel
-		) : tryAndRecover = TryAndRecoverInvoicePlatformApi(_methodChannel),
-		encrypted = EncryptedInvoicePlatformApi(_methodChannel);
+		) : encrypted = InvoiceEncryptedPlatformApi(_methodChannel),
+		tryAndRecover = InvoiceTryAndRecoverPlatformApi(_methodChannel);
 
 	Future<DecryptedInvoice> createInvoice(String sdkId, DecryptedInvoice entity, String? prefix) async {
 		final res = await _methodChannel.invokeMethod<String>(
@@ -226,7 +226,7 @@ class InvoicePlatformApi {
 		return (parsedResJson as List<dynamic>).map((x1) => DecryptedInvoice.fromJSON(x1) ).toList();
 	}
 
-	Future<DecryptedInvoice> getInvoice(String sdkId, String entityId) async {
+	Future<DecryptedInvoice?> getInvoice(String sdkId, String entityId) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'InvoiceApi.getInvoice',
 			{
@@ -236,7 +236,7 @@ class InvoicePlatformApi {
 		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getInvoice");
 		final parsedResJson = jsonDecode(res);
-		return DecryptedInvoice.fromJSON(parsedResJson);
+		return parsedResJson == null ? null : DecryptedInvoice.fromJSON(parsedResJson);
 	}
 
 	Future<List<DecryptedInvoice>> getInvoices(String sdkId, List<String> entityIds) async {
@@ -471,9 +471,9 @@ class InvoicePlatformApi {
 	}
 }
 
-class TryAndRecoverInvoicePlatformApi {
+class InvoiceTryAndRecoverPlatformApi {
 	MethodChannel _methodChannel;
-	TryAndRecoverInvoicePlatformApi(this._methodChannel);
+	InvoiceTryAndRecoverPlatformApi(this._methodChannel);
 
 	Future<Invoice> shareWith(String sdkId, String delegateId, Invoice invoice, InvoiceShareOptions? options) async {
 		final res = await _methodChannel.invokeMethod<String>(
@@ -530,7 +530,7 @@ class TryAndRecoverInvoicePlatformApi {
 		return (parsedResJson as List<dynamic>).map((x1) => Invoice.fromJSON(x1) ).toList();
 	}
 
-	Future<Invoice> getInvoice(String sdkId, String entityId) async {
+	Future<Invoice?> getInvoice(String sdkId, String entityId) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'InvoiceApi.tryAndRecover.getInvoice',
 			{
@@ -540,7 +540,7 @@ class TryAndRecoverInvoicePlatformApi {
 		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getInvoice");
 		final parsedResJson = jsonDecode(res);
-		return Invoice.fromJSON(parsedResJson);
+		return parsedResJson == null ? null : Invoice.fromJSON(parsedResJson);
 	}
 
 	Future<List<Invoice>> getInvoices(String sdkId, List<String> entityIds) async {
@@ -775,9 +775,9 @@ class TryAndRecoverInvoicePlatformApi {
 	}
 }
 
-class EncryptedInvoicePlatformApi {
+class InvoiceEncryptedPlatformApi {
 	MethodChannel _methodChannel;
-	EncryptedInvoicePlatformApi(this._methodChannel);
+	InvoiceEncryptedPlatformApi(this._methodChannel);
 
 	Future<EncryptedInvoice> shareWith(String sdkId, String delegateId, EncryptedInvoice invoice, InvoiceShareOptions? options) async {
 		final res = await _methodChannel.invokeMethod<String>(
@@ -834,7 +834,7 @@ class EncryptedInvoicePlatformApi {
 		return (parsedResJson as List<dynamic>).map((x1) => EncryptedInvoice.fromJSON(x1) ).toList();
 	}
 
-	Future<EncryptedInvoice> getInvoice(String sdkId, String entityId) async {
+	Future<EncryptedInvoice?> getInvoice(String sdkId, String entityId) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'InvoiceApi.encrypted.getInvoice',
 			{
@@ -844,7 +844,7 @@ class EncryptedInvoicePlatformApi {
 		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getInvoice");
 		final parsedResJson = jsonDecode(res);
-		return EncryptedInvoice.fromJSON(parsedResJson);
+		return parsedResJson == null ? null : EncryptedInvoice.fromJSON(parsedResJson);
 	}
 
 	Future<List<EncryptedInvoice>> getInvoices(String sdkId, List<String> entityIds) async {

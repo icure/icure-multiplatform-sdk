@@ -14,7 +14,6 @@ class AccessLogApiDispatcher {
     ) -> Void
   ) -> Bool {
     switch methodName {
-    case "createAccessLog": createAccessLog(parameters: parameters, resultCallback: resultCallback)
     case "withEncryptionMetadata": withEncryptionMetadata(parameters: parameters, resultCallback: resultCallback)
     case "getEncryptionKeysOf": getEncryptionKeysOf(parameters: parameters, resultCallback: resultCallback)
     case "hasWriteAccess": hasWriteAccess(parameters: parameters, resultCallback: resultCallback)
@@ -34,6 +33,7 @@ class AccessLogApiDispatcher {
     case "shareWithMany": shareWithMany(parameters: parameters, resultCallback: resultCallback)
     case "filterAccessLogsBy": filterAccessLogsBy(parameters: parameters, resultCallback: resultCallback)
     case "filterAccessLogsBySorted": filterAccessLogsBySorted(parameters: parameters, resultCallback: resultCallback)
+    case "createAccessLog": createAccessLog(parameters: parameters, resultCallback: resultCallback)
     case "undeleteAccessLogById": undeleteAccessLogById(parameters: parameters, resultCallback: resultCallback)
     case "undeleteAccessLog": undeleteAccessLog(parameters: parameters, resultCallback: resultCallback)
     case "modifyAccessLog": modifyAccessLog(parameters: parameters, resultCallback: resultCallback)
@@ -43,6 +43,7 @@ class AccessLogApiDispatcher {
     case "encrypted.shareWithMany": encrypted_shareWithMany(parameters: parameters, resultCallback: resultCallback)
     case "encrypted.filterAccessLogsBy": encrypted_filterAccessLogsBy(parameters: parameters, resultCallback: resultCallback)
     case "encrypted.filterAccessLogsBySorted": encrypted_filterAccessLogsBySorted(parameters: parameters, resultCallback: resultCallback)
+    case "encrypted.createAccessLog": encrypted_createAccessLog(parameters: parameters, resultCallback: resultCallback)
     case "encrypted.undeleteAccessLogById": encrypted_undeleteAccessLogById(parameters: parameters, resultCallback: resultCallback)
     case "encrypted.undeleteAccessLog": encrypted_undeleteAccessLog(parameters: parameters, resultCallback: resultCallback)
     case "encrypted.modifyAccessLog": encrypted_modifyAccessLog(parameters: parameters, resultCallback: resultCallback)
@@ -52,6 +53,7 @@ class AccessLogApiDispatcher {
     case "tryAndRecover.shareWithMany": tryAndRecover_shareWithMany(parameters: parameters, resultCallback: resultCallback)
     case "tryAndRecover.filterAccessLogsBy": tryAndRecover_filterAccessLogsBy(parameters: parameters, resultCallback: resultCallback)
     case "tryAndRecover.filterAccessLogsBySorted": tryAndRecover_filterAccessLogsBySorted(parameters: parameters, resultCallback: resultCallback)
+    case "tryAndRecover.createAccessLog": tryAndRecover_createAccessLog(parameters: parameters, resultCallback: resultCallback)
     case "tryAndRecover.undeleteAccessLogById": tryAndRecover_undeleteAccessLogById(parameters: parameters, resultCallback: resultCallback)
     case "tryAndRecover.undeleteAccessLog": tryAndRecover_undeleteAccessLog(parameters: parameters, resultCallback: resultCallback)
     case "tryAndRecover.modifyAccessLog": tryAndRecover_modifyAccessLog(parameters: parameters, resultCallback: resultCallback)
@@ -60,19 +62,6 @@ class AccessLogApiDispatcher {
     default: return false
     }
     return true
-  }
-
-  private static func createAccessLog(parameters: [String : String], resultCallback: @escaping (
-    String?,
-    String?,
-    String?,
-    String?
-  ) -> Void) {
-    AccessLogApi.shared.createAccessLog(
-    	dartResultCallback: resultCallback,
-    	sdkId: parameters["sdkId"]!,
-    	entityString: parameters["entity"]!
-    )
   }
 
   private static func withEncryptionMetadata(parameters: [String : String], resultCallback: @escaping (
@@ -332,6 +321,19 @@ class AccessLogApiDispatcher {
     )
   }
 
+  private static func createAccessLog(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    AccessLogApi.shared.createAccessLog(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	entityString: parameters["entity"]!
+    )
+  }
+
   private static func undeleteAccessLogById(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
@@ -453,6 +455,19 @@ class AccessLogApiDispatcher {
     )
   }
 
+  private static func encrypted_createAccessLog(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    AccessLogApi.encrypted.shared.createAccessLog(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	entityString: parameters["entity"]!
+    )
+  }
+
   private static func encrypted_undeleteAccessLogById(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
@@ -571,6 +586,19 @@ class AccessLogApiDispatcher {
     	dartResultCallback: resultCallback,
     	sdkId: parameters["sdkId"]!,
     	filterString: parameters["filter"]!
+    )
+  }
+
+  private static func tryAndRecover_createAccessLog(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    AccessLogApi.tryAndRecover.shared.createAccessLog(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	entityString: parameters["entity"]!
     )
   }
 

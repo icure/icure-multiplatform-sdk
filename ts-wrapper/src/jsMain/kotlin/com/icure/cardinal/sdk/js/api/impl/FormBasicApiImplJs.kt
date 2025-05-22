@@ -12,18 +12,19 @@ import com.icure.cardinal.sdk.js.filters.baseFilterOptions_fromJs
 import com.icure.cardinal.sdk.js.filters.baseSortableFilterOptions_fromJs
 import com.icure.cardinal.sdk.js.model.CheckedConverters.arrayToList
 import com.icure.cardinal.sdk.js.model.CheckedConverters.listToArray
+import com.icure.cardinal.sdk.js.model.CheckedConverters.nullToUndefined
 import com.icure.cardinal.sdk.js.model.CheckedConverters.undefinedToNull
 import com.icure.cardinal.sdk.js.model.EncryptedFormJs
 import com.icure.cardinal.sdk.js.model.FormJs
 import com.icure.cardinal.sdk.js.model.FormTemplateJs
-import com.icure.cardinal.sdk.js.model.IdWithMandatoryRevJs
+import com.icure.cardinal.sdk.js.model.StoredDocumentIdentifierJs
 import com.icure.cardinal.sdk.js.model.couchdb.DocIdentifierJs
 import com.icure.cardinal.sdk.js.model.couchdb.docIdentifier_toJs
 import com.icure.cardinal.sdk.js.model.formTemplate_fromJs
 import com.icure.cardinal.sdk.js.model.formTemplate_toJs
 import com.icure.cardinal.sdk.js.model.form_fromJs
 import com.icure.cardinal.sdk.js.model.form_toJs
-import com.icure.cardinal.sdk.js.model.idWithMandatoryRev_fromJs
+import com.icure.cardinal.sdk.js.model.storedDocumentIdentifier_fromJs
 import com.icure.cardinal.sdk.js.utils.pagination.PaginatedListIteratorJs
 import com.icure.cardinal.sdk.js.utils.pagination.paginatedListIterator_toJs
 import com.icure.cardinal.sdk.model.EncryptedForm
@@ -142,13 +143,13 @@ internal class FormBasicApiImplJs(
 		docIdentifier_toJs(result)
 	}
 
-	override fun deleteFormsByIds(entityIds: Array<IdWithMandatoryRevJs>):
+	override fun deleteFormsByIds(entityIds: Array<StoredDocumentIdentifierJs>):
 			Promise<Array<DocIdentifierJs>> = GlobalScope.promise {
 		val entityIdsConverted: List<StoredDocumentIdentifier> = arrayToList(
 			entityIds,
 			"entityIds",
-			{ x1: IdWithMandatoryRevJs ->
-				idWithMandatoryRev_fromJs(x1)
+			{ x1: StoredDocumentIdentifierJs ->
+				storedDocumentIdentifier_fromJs(x1)
 			},
 		)
 		val result = formBasicApi.deleteFormsByIds(
@@ -341,6 +342,34 @@ internal class FormBasicApiImplJs(
 		result
 	}
 
+	override fun createForm(entity: EncryptedFormJs): Promise<EncryptedFormJs> = GlobalScope.promise {
+		val entityConverted: EncryptedForm = form_fromJs(entity)
+		val result = formBasicApi.createForm(
+			entityConverted,
+		)
+		form_toJs(result)
+	}
+
+	override fun createForms(entities: Array<EncryptedFormJs>): Promise<Array<EncryptedFormJs>> =
+			GlobalScope.promise {
+		val entitiesConverted: List<EncryptedForm> = arrayToList(
+			entities,
+			"entities",
+			{ x1: EncryptedFormJs ->
+				form_fromJs(x1)
+			},
+		)
+		val result = formBasicApi.createForms(
+			entitiesConverted,
+		)
+		listToArray(
+			result,
+			{ x1: EncryptedForm ->
+				form_toJs(x1)
+			},
+		)
+	}
+
 	override fun modifyForm(entity: EncryptedFormJs): Promise<EncryptedFormJs> = GlobalScope.promise {
 		val entityConverted: EncryptedForm = form_fromJs(entity)
 		val result = formBasicApi.modifyForm(
@@ -388,12 +417,16 @@ internal class FormBasicApiImplJs(
 		)
 	}
 
-	override fun getForm(entityId: String): Promise<EncryptedFormJs> = GlobalScope.promise {
+	override fun getForm(entityId: String): Promise<EncryptedFormJs?> = GlobalScope.promise {
 		val entityIdConverted: String = entityId
 		val result = formBasicApi.getForm(
 			entityIdConverted,
 		)
-		form_toJs(result)
+		nullToUndefined(
+			result?.let { nonNull1 ->
+				form_toJs(nonNull1)
+			}
+		)
 	}
 
 	override fun getForms(entityIds: Array<String>): Promise<Array<EncryptedFormJs>> =

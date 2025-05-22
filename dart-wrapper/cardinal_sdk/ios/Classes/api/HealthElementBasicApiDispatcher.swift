@@ -24,6 +24,8 @@ class HealthElementBasicApiDispatcher {
     case "deleteHealthElement": deleteHealthElement(parameters: parameters, resultCallback: resultCallback)
     case "deleteHealthElements": deleteHealthElements(parameters: parameters, resultCallback: resultCallback)
     case "purgeHealthElement": purgeHealthElement(parameters: parameters, resultCallback: resultCallback)
+    case "createHealthElement": createHealthElement(parameters: parameters, resultCallback: resultCallback)
+    case "createHealthElements": createHealthElements(parameters: parameters, resultCallback: resultCallback)
     case "undeleteHealthElementById": undeleteHealthElementById(parameters: parameters, resultCallback: resultCallback)
     case "undeleteHealthElement": undeleteHealthElement(parameters: parameters, resultCallback: resultCallback)
     case "modifyHealthElement": modifyHealthElement(parameters: parameters, resultCallback: resultCallback)
@@ -31,6 +33,9 @@ class HealthElementBasicApiDispatcher {
     case "getHealthElement": getHealthElement(parameters: parameters, resultCallback: resultCallback)
     case "getHealthElements": getHealthElements(parameters: parameters, resultCallback: resultCallback)
     case "subscribeToEvents": subscribeToEvents(parameters: parameters, resultCallback: resultCallback)
+    case "inGroup.createHealthElement": inGroup_createHealthElement(parameters: parameters, resultCallback: resultCallback)
+    case "inGroup.modifyHealthElement": inGroup_modifyHealthElement(parameters: parameters, resultCallback: resultCallback)
+    case "inGroup.getHealthElement": inGroup_getHealthElement(parameters: parameters, resultCallback: resultCallback)
     default: return false
     }
     return true
@@ -168,6 +173,32 @@ class HealthElementBasicApiDispatcher {
     )
   }
 
+  private static func createHealthElement(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    HealthElementBasicApi.shared.createHealthElement(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	entityString: parameters["entity"]!
+    )
+  }
+
+  private static func createHealthElements(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    HealthElementBasicApi.shared.createHealthElements(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	entitiesString: parameters["entities"]!
+    )
+  }
+
   private static func undeleteHealthElementById(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
@@ -259,6 +290,46 @@ class HealthElementBasicApiDispatcher {
     	eventsString: parameters["events"]!,
     	filterString: parameters["filter"]!,
     	subscriptionConfigString: parameters["subscriptionConfig"]!
+    )
+  }
+
+  private static func inGroup_createHealthElement(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    HealthElementBasicApi.inGroup.shared.createHealthElement(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	entityString: parameters["entity"]!
+    )
+  }
+
+  private static func inGroup_modifyHealthElement(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    HealthElementBasicApi.inGroup.shared.modifyHealthElement(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	entityString: parameters["entity"]!
+    )
+  }
+
+  private static func inGroup_getHealthElement(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    HealthElementBasicApi.inGroup.shared.getHealthElement(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	groupIdString: parameters["groupId"]!,
+    	entityIdString: parameters["entityId"]!
     )
   }
 

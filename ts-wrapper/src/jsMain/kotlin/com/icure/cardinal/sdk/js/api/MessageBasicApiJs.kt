@@ -6,9 +6,9 @@ package com.icure.cardinal.sdk.js.api
 import com.icure.cardinal.sdk.js.filters.BaseFilterOptionsJs
 import com.icure.cardinal.sdk.js.filters.BaseSortableFilterOptionsJs
 import com.icure.cardinal.sdk.js.model.EncryptedMessageJs
-import com.icure.cardinal.sdk.js.model.IdWithMandatoryRevJs
 import com.icure.cardinal.sdk.js.model.MessageJs
 import com.icure.cardinal.sdk.js.model.PaginatedListJs
+import com.icure.cardinal.sdk.js.model.StoredDocumentIdentifierJs
 import com.icure.cardinal.sdk.js.model.couchdb.DocIdentifierJs
 import com.icure.cardinal.sdk.js.subscription.EntitySubscriptionJs
 import com.icure.cardinal.sdk.js.utils.pagination.PaginatedListIteratorJs
@@ -40,7 +40,7 @@ public external interface MessageBasicApiJs {
 
 	public fun deleteMessageById(entityId: String, rev: String): Promise<DocIdentifierJs>
 
-	public fun deleteMessagesByIds(entityIds: Array<IdWithMandatoryRevJs>):
+	public fun deleteMessagesByIds(entityIds: Array<StoredDocumentIdentifierJs>):
 			Promise<Array<DocIdentifierJs>>
 
 	public fun purgeMessageById(id: String, rev: String): Promise<Unit>
@@ -51,13 +51,17 @@ public external interface MessageBasicApiJs {
 
 	public fun purgeMessage(message: MessageJs): Promise<Unit>
 
+	public fun createMessage(entity: EncryptedMessageJs): Promise<EncryptedMessageJs>
+
+	public fun createMessageInTopic(entity: EncryptedMessageJs): Promise<EncryptedMessageJs>
+
 	public fun undeleteMessage(message: MessageJs): Promise<MessageJs>
 
 	public fun modifyMessage(entity: EncryptedMessageJs): Promise<EncryptedMessageJs>
 
 	public fun undeleteMessageById(id: String, rev: String): Promise<EncryptedMessageJs>
 
-	public fun getMessage(entityId: String): Promise<EncryptedMessageJs>
+	public fun getMessage(entityId: String): Promise<EncryptedMessageJs?>
 
 	public fun getMessages(entityIds: Array<String>): Promise<Array<EncryptedMessageJs>>
 

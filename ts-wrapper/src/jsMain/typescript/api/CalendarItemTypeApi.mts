@@ -18,7 +18,7 @@ export interface CalendarItemTypeApi {
 
 	deleteCalendarItemTypes(calendarItemTypeIds: ListOfIds): Promise<Array<DocIdentifier>>;
 
-	getCalendarItemType(calendarItemTypeId: string): Promise<CalendarItemType>;
+	getCalendarItemType(calendarItemTypeId: string): Promise<CalendarItemType | undefined>;
 
 	modifyCalendarItemType(calendarItemTypeDto: CalendarItemType): Promise<CalendarItemType>;
 

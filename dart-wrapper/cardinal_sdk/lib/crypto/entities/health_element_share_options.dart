@@ -2,22 +2,19 @@
 import 'package:cardinal_sdk/model/requests/requested_permission.dart';
 import 'package:cardinal_sdk/crypto/entities/share_metadata_behaviour.dart';
 import 'package:cardinal_sdk/crypto/entities/secret_id_share_options.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+part "health_element_share_options.freezed.dart";
 
 
-class HealthElementShareOptions {
-	RequestedPermission requestedPermissions = RequestedPermission.maxWrite;
-	ShareMetadataBehaviour shareEncryptionKey = ShareMetadataBehaviour.ifAvailable;
-	ShareMetadataBehaviour sharePatientId = ShareMetadataBehaviour.ifAvailable;
-	SecretIdShareOptions shareSecretIds = SecretIdShareOptionsAllAvailable(false);
-	HealthElementShareOptions({
-			RequestedPermission? requestedPermissions,
-			ShareMetadataBehaviour? shareEncryptionKey,
-			ShareMetadataBehaviour? sharePatientId,
-			SecretIdShareOptions? shareSecretIds
-		}) : requestedPermissions = requestedPermissions ?? RequestedPermission.maxWrite,
-		shareEncryptionKey = shareEncryptionKey ?? ShareMetadataBehaviour.ifAvailable,
-		sharePatientId = sharePatientId ?? ShareMetadataBehaviour.ifAvailable,
-		shareSecretIds = shareSecretIds ?? SecretIdShareOptionsAllAvailable(false);
+@freezed
+abstract class HealthElementShareOptions with _$HealthElementShareOptions {
+	const factory HealthElementShareOptions({
+		@Default(RequestedPermission.maxWrite) RequestedPermission requestedPermissions,
+		@Default(ShareMetadataBehaviour.ifAvailable) ShareMetadataBehaviour shareEncryptionKey,
+		@Default(ShareMetadataBehaviour.ifAvailable) ShareMetadataBehaviour sharePatientId,
+		@Default(SecretIdShareOptionsAllAvailable()) SecretIdShareOptions shareSecretIds,
+	}) = _HealthElementShareOptions;
+
 
 	static Map<String, dynamic> encode(HealthElementShareOptions value) {
 		Map<String, dynamic> entityAsMap = {

@@ -8,10 +8,9 @@ import com.icure.cardinal.sdk.dart.utils.NativeReferences
 import com.icure.cardinal.sdk.filters.BaseFilterOptions
 import com.icure.cardinal.sdk.filters.BaseSortableFilterOptions
 import com.icure.cardinal.sdk.model.EncryptedPatient
-import com.icure.cardinal.sdk.model.IdWithMandatoryRev
-import com.icure.cardinal.sdk.model.IdWithRev
+import com.icure.cardinal.sdk.model.GroupScoped
 import com.icure.cardinal.sdk.model.Patient
-import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
+import com.icure.cardinal.sdk.model.StoredDocumentIdentifier
 import com.icure.cardinal.sdk.serialization.EntitySubscriptionWithSerializer
 import com.icure.cardinal.sdk.serialization.PaginatedListIteratorWithSerializer
 import com.icure.cardinal.sdk.subscription.EntitySubscriptionConfiguration
@@ -151,7 +150,7 @@ public object PatientBasicApi {
     )
     ApiScope.execute(
       dartResultCallback,
-      DocIdentifier.serializer()) {
+      StoredDocumentIdentifier.serializer()) {
       NativeReferences.get<CardinalBaseApis>(sdkId).patient.deletePatientById(
         entityId,
         rev,
@@ -170,12 +169,12 @@ public object PatientBasicApi {
     entityIdsString: String,
   ) {
     val entityIds = fullLanguageInteropJson.decodeFromString(
-      ListSerializer(IdWithMandatoryRev.serializer()),
+      ListSerializer(StoredDocumentIdentifier.serializer()),
       entityIdsString
     )
     ApiScope.execute(
       dartResultCallback,
-      ListSerializer(DocIdentifier.serializer())) {
+      ListSerializer(StoredDocumentIdentifier.serializer())) {
       NativeReferences.get<CardinalBaseApis>(sdkId).patient.deletePatientsByIds(
         entityIds,
       )
@@ -227,7 +226,7 @@ public object PatientBasicApi {
     )
     ApiScope.execute(
       dartResultCallback,
-      DocIdentifier.serializer()) {
+      StoredDocumentIdentifier.serializer()) {
       NativeReferences.get<CardinalBaseApis>(sdkId).patient.deletePatient(
         patient,
       )
@@ -250,7 +249,7 @@ public object PatientBasicApi {
     )
     ApiScope.execute(
       dartResultCallback,
-      ListSerializer(DocIdentifier.serializer())) {
+      ListSerializer(StoredDocumentIdentifier.serializer())) {
       NativeReferences.get<CardinalBaseApis>(sdkId).patient.deletePatients(
         patients,
       )
@@ -299,6 +298,75 @@ public object PatientBasicApi {
       EntityAccessInformation.serializer()) {
       NativeReferences.get<CardinalBaseApis>(sdkId).patient.getDataOwnersWithAccessTo(
         patient,
+      )
+    }
+  }
+
+  public fun createPatient(
+    dartResultCallback: (
+      String?,
+      String?,
+      String?,
+      String?,
+    ) -> Unit,
+    sdkId: String,
+    patientString: String,
+  ) {
+    val patient = fullLanguageInteropJson.decodeFromString(
+      EncryptedPatient.serializer(),
+      patientString
+    )
+    ApiScope.execute(
+      dartResultCallback,
+      EncryptedPatient.serializer()) {
+      NativeReferences.get<CardinalBaseApis>(sdkId).patient.createPatient(
+        patient,
+      )
+    }
+  }
+
+  public fun createPatientsMinimal(
+    dartResultCallback: (
+      String?,
+      String?,
+      String?,
+      String?,
+    ) -> Unit,
+    sdkId: String,
+    patientsString: String,
+  ) {
+    val patients = fullLanguageInteropJson.decodeFromString(
+      ListSerializer(EncryptedPatient.serializer()),
+      patientsString
+    )
+    ApiScope.execute(
+      dartResultCallback,
+      ListSerializer(StoredDocumentIdentifier.serializer())) {
+      NativeReferences.get<CardinalBaseApis>(sdkId).patient.createPatientsMinimal(
+        patients,
+      )
+    }
+  }
+
+  public fun createPatients(
+    dartResultCallback: (
+      String?,
+      String?,
+      String?,
+      String?,
+    ) -> Unit,
+    sdkId: String,
+    patientsString: String,
+  ) {
+    val patients = fullLanguageInteropJson.decodeFromString(
+      ListSerializer(EncryptedPatient.serializer()),
+      patientsString
+    )
+    ApiScope.execute(
+      dartResultCallback,
+      ListSerializer(EncryptedPatient.serializer())) {
+      NativeReferences.get<CardinalBaseApis>(sdkId).patient.createPatients(
+        patients,
       )
     }
   }
@@ -389,7 +457,7 @@ public object PatientBasicApi {
     idsString: String,
   ) {
     val ids = fullLanguageInteropJson.decodeFromString(
-      ListSerializer(IdWithMandatoryRev.serializer()),
+      ListSerializer(StoredDocumentIdentifier.serializer()),
       idsString
     )
     ApiScope.execute(
@@ -417,7 +485,7 @@ public object PatientBasicApi {
     )
     ApiScope.execute(
       dartResultCallback,
-      EncryptedPatient.serializer()) {
+      EncryptedPatient.serializer().nullable) {
       NativeReferences.get<CardinalBaseApis>(sdkId).patient.getPatient(
         entityId,
       )
@@ -476,6 +544,29 @@ public object PatientBasicApi {
     }
   }
 
+  public fun modifyPatientsMinimal(
+    dartResultCallback: (
+      String?,
+      String?,
+      String?,
+      String?,
+    ) -> Unit,
+    sdkId: String,
+    patientsString: String,
+  ) {
+    val patients = fullLanguageInteropJson.decodeFromString(
+      ListSerializer(EncryptedPatient.serializer()),
+      patientsString
+    )
+    ApiScope.execute(
+      dartResultCallback,
+      ListSerializer(StoredDocumentIdentifier.serializer())) {
+      NativeReferences.get<CardinalBaseApis>(sdkId).patient.modifyPatientsMinimal(
+        patients,
+      )
+    }
+  }
+
   public fun modifyPatients(
     dartResultCallback: (
       String?,
@@ -484,17 +575,17 @@ public object PatientBasicApi {
       String?,
     ) -> Unit,
     sdkId: String,
-    patientDtosString: String,
+    patientsString: String,
   ) {
-    val patientDtos = fullLanguageInteropJson.decodeFromString(
+    val patients = fullLanguageInteropJson.decodeFromString(
       ListSerializer(EncryptedPatient.serializer()),
-      patientDtosString
+      patientsString
     )
     ApiScope.execute(
       dartResultCallback,
-      ListSerializer(IdWithRev.serializer())) {
+      ListSerializer(EncryptedPatient.serializer())) {
       NativeReferences.get<CardinalBaseApis>(sdkId).patient.modifyPatients(
-        patientDtos,
+        patients,
       )
     }
   }
@@ -564,6 +655,366 @@ public object PatientBasicApi {
         richResult,
         EncryptedPatient.serializer()
       ))
+    }
+  }
+
+  @OptIn(InternalIcureApi::class)
+  public object inGroup {
+    public fun matchPatientsBy(
+      dartResultCallback: (
+        String?,
+        String?,
+        String?,
+        String?,
+      ) -> Unit,
+      sdkId: String,
+      groupIdString: String,
+      filterString: String,
+    ) {
+      val groupId = fullLanguageInteropJson.decodeFromString(
+        String.serializer(),
+        groupIdString
+      )
+      val filter = fullLanguageInteropJson.decodeFromString(
+        BaseFilterOptions.serializer(PolymorphicSerializer(Patient::class)),
+        filterString
+      )
+      ApiScope.execute(
+        dartResultCallback,
+        ListSerializer(String.serializer())) {
+        NativeReferences.get<CardinalBaseApis>(sdkId).patient.inGroup.matchPatientsBy(
+          groupId,
+          filter,
+        )
+      }
+    }
+
+    public fun matchPatientsBySorted(
+      dartResultCallback: (
+        String?,
+        String?,
+        String?,
+        String?,
+      ) -> Unit,
+      sdkId: String,
+      groupIdString: String,
+      filterString: String,
+    ) {
+      val groupId = fullLanguageInteropJson.decodeFromString(
+        String.serializer(),
+        groupIdString
+      )
+      val filter = fullLanguageInteropJson.decodeFromString(
+        BaseSortableFilterOptions.serializer(PolymorphicSerializer(Patient::class)),
+        filterString
+      )
+      ApiScope.execute(
+        dartResultCallback,
+        ListSerializer(String.serializer())) {
+        NativeReferences.get<CardinalBaseApis>(sdkId).patient.inGroup.matchPatientsBySorted(
+          groupId,
+          filter,
+        )
+      }
+    }
+
+    public fun filterPatientsBy(
+      dartResultCallback: (
+        String?,
+        String?,
+        String?,
+        String?,
+      ) -> Unit,
+      sdkId: String,
+      groupIdString: String,
+      filterString: String,
+    ) {
+      val groupId = fullLanguageInteropJson.decodeFromString(
+        String.serializer(),
+        groupIdString
+      )
+      val filter = fullLanguageInteropJson.decodeFromString(
+        BaseFilterOptions.serializer(PolymorphicSerializer(Patient::class)),
+        filterString
+      )
+      ApiScope.execute(
+        dartResultCallback,
+        String.serializer()) {
+        val richResult =
+            NativeReferences.get<CardinalBaseApis>(sdkId).patient.inGroup.filterPatientsBy(
+          groupId,
+          filter,
+        )
+        NativeReferences.create(PaginatedListIteratorWithSerializer(
+          richResult,
+          GroupScoped.serializer(EncryptedPatient.serializer())
+        ))
+      }
+    }
+
+    public fun filterPatientsBySorted(
+      dartResultCallback: (
+        String?,
+        String?,
+        String?,
+        String?,
+      ) -> Unit,
+      sdkId: String,
+      groupIdString: String,
+      filterString: String,
+    ) {
+      val groupId = fullLanguageInteropJson.decodeFromString(
+        String.serializer(),
+        groupIdString
+      )
+      val filter = fullLanguageInteropJson.decodeFromString(
+        BaseSortableFilterOptions.serializer(PolymorphicSerializer(Patient::class)),
+        filterString
+      )
+      ApiScope.execute(
+        dartResultCallback,
+        String.serializer()) {
+        val richResult =
+            NativeReferences.get<CardinalBaseApis>(sdkId).patient.inGroup.filterPatientsBySorted(
+          groupId,
+          filter,
+        )
+        NativeReferences.create(PaginatedListIteratorWithSerializer(
+          richResult,
+          GroupScoped.serializer(EncryptedPatient.serializer())
+        ))
+      }
+    }
+
+    public fun getDataOwnersWithAccessTo(
+      dartResultCallback: (
+        String?,
+        String?,
+        String?,
+        String?,
+      ) -> Unit,
+      sdkId: String,
+      patientString: String,
+    ) {
+      val patient = fullLanguageInteropJson.decodeFromString(
+        GroupScoped.serializer(PolymorphicSerializer(Patient::class)),
+        patientString
+      )
+      ApiScope.execute(
+        dartResultCallback,
+        EntityAccessInformation.serializer()) {
+        NativeReferences.get<CardinalBaseApis>(sdkId).patient.inGroup.getDataOwnersWithAccessTo(
+          patient,
+        )
+      }
+    }
+
+    public fun createPatient(
+      dartResultCallback: (
+        String?,
+        String?,
+        String?,
+        String?,
+      ) -> Unit,
+      sdkId: String,
+      patientString: String,
+    ) {
+      val patient = fullLanguageInteropJson.decodeFromString(
+        GroupScoped.serializer(EncryptedPatient.serializer()),
+        patientString
+      )
+      ApiScope.execute(
+        dartResultCallback,
+        GroupScoped.serializer(EncryptedPatient.serializer())) {
+        NativeReferences.get<CardinalBaseApis>(sdkId).patient.inGroup.createPatient(
+          patient,
+        )
+      }
+    }
+
+    public fun createPatientsMinimal(
+      dartResultCallback: (
+        String?,
+        String?,
+        String?,
+        String?,
+      ) -> Unit,
+      sdkId: String,
+      patientsString: String,
+    ) {
+      val patients = fullLanguageInteropJson.decodeFromString(
+        ListSerializer(GroupScoped.serializer(EncryptedPatient.serializer())),
+        patientsString
+      )
+      ApiScope.execute(
+        dartResultCallback,
+        ListSerializer(GroupScoped.serializer(StoredDocumentIdentifier.serializer()))) {
+        NativeReferences.get<CardinalBaseApis>(sdkId).patient.inGroup.createPatientsMinimal(
+          patients,
+        )
+      }
+    }
+
+    public fun createPatients(
+      dartResultCallback: (
+        String?,
+        String?,
+        String?,
+        String?,
+      ) -> Unit,
+      sdkId: String,
+      patientsString: String,
+    ) {
+      val patients = fullLanguageInteropJson.decodeFromString(
+        ListSerializer(GroupScoped.serializer(EncryptedPatient.serializer())),
+        patientsString
+      )
+      ApiScope.execute(
+        dartResultCallback,
+        ListSerializer(GroupScoped.serializer(EncryptedPatient.serializer()))) {
+        NativeReferences.get<CardinalBaseApis>(sdkId).patient.inGroup.createPatients(
+          patients,
+        )
+      }
+    }
+
+    public fun getPatient(
+      dartResultCallback: (
+        String?,
+        String?,
+        String?,
+        String?,
+      ) -> Unit,
+      sdkId: String,
+      groupIdString: String,
+      entityIdString: String,
+    ) {
+      val groupId = fullLanguageInteropJson.decodeFromString(
+        String.serializer(),
+        groupIdString
+      )
+      val entityId = fullLanguageInteropJson.decodeFromString(
+        String.serializer(),
+        entityIdString
+      )
+      ApiScope.execute(
+        dartResultCallback,
+        GroupScoped.serializer(EncryptedPatient.serializer()).nullable) {
+        NativeReferences.get<CardinalBaseApis>(sdkId).patient.inGroup.getPatient(
+          groupId,
+          entityId,
+        )
+      }
+    }
+
+    public fun getPatientResolvingMerges(
+      dartResultCallback: (
+        String?,
+        String?,
+        String?,
+        String?,
+      ) -> Unit,
+      sdkId: String,
+      groupIdString: String,
+      patientIdString: String,
+      maxMergeDepthString: String,
+    ) {
+      val groupId = fullLanguageInteropJson.decodeFromString(
+        String.serializer(),
+        groupIdString
+      )
+      val patientId = fullLanguageInteropJson.decodeFromString(
+        String.serializer(),
+        patientIdString
+      )
+      val maxMergeDepth = fullLanguageInteropJson.decodeFromString(
+        Int.serializer().nullable,
+        maxMergeDepthString
+      )
+      ApiScope.execute(
+        dartResultCallback,
+        GroupScoped.serializer(EncryptedPatient.serializer())) {
+        NativeReferences.get<CardinalBaseApis>(sdkId).patient.inGroup.getPatientResolvingMerges(
+          groupId,
+          patientId,
+          maxMergeDepth,
+        )
+      }
+    }
+
+    public fun getPatients(
+      dartResultCallback: (
+        String?,
+        String?,
+        String?,
+        String?,
+      ) -> Unit,
+      sdkId: String,
+      groupIdString: String,
+      patientIdsString: String,
+    ) {
+      val groupId = fullLanguageInteropJson.decodeFromString(
+        String.serializer(),
+        groupIdString
+      )
+      val patientIds = fullLanguageInteropJson.decodeFromString(
+        ListSerializer(String.serializer()),
+        patientIdsString
+      )
+      ApiScope.execute(
+        dartResultCallback,
+        ListSerializer(GroupScoped.serializer(EncryptedPatient.serializer()))) {
+        NativeReferences.get<CardinalBaseApis>(sdkId).patient.inGroup.getPatients(
+          groupId,
+          patientIds,
+        )
+      }
+    }
+
+    public fun modifyPatientsMinimal(
+      dartResultCallback: (
+        String?,
+        String?,
+        String?,
+        String?,
+      ) -> Unit,
+      sdkId: String,
+      patientsString: String,
+    ) {
+      val patients = fullLanguageInteropJson.decodeFromString(
+        ListSerializer(GroupScoped.serializer(EncryptedPatient.serializer())),
+        patientsString
+      )
+      ApiScope.execute(
+        dartResultCallback,
+        ListSerializer(GroupScoped.serializer(StoredDocumentIdentifier.serializer()))) {
+        NativeReferences.get<CardinalBaseApis>(sdkId).patient.inGroup.modifyPatientsMinimal(
+          patients,
+        )
+      }
+    }
+
+    public fun modifyPatients(
+      dartResultCallback: (
+        String?,
+        String?,
+        String?,
+        String?,
+      ) -> Unit,
+      sdkId: String,
+      patientsString: String,
+    ) {
+      val patients = fullLanguageInteropJson.decodeFromString(
+        ListSerializer(GroupScoped.serializer(EncryptedPatient.serializer())),
+        patientsString
+      )
+      ApiScope.execute(
+        dartResultCallback,
+        ListSerializer(GroupScoped.serializer(EncryptedPatient.serializer()))) {
+        NativeReferences.get<CardinalBaseApis>(sdkId).patient.inGroup.modifyPatients(
+          patients,
+        )
+      }
     }
   }
 }

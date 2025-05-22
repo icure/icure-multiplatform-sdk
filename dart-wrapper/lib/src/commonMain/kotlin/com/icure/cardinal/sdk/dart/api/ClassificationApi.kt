@@ -32,29 +32,6 @@ import kotlinx.serialization.builtins.serializer
 
 @OptIn(InternalIcureApi::class)
 public object ClassificationApi {
-  public fun createClassification(
-    dartResultCallback: (
-      String?,
-      String?,
-      String?,
-      String?,
-    ) -> Unit,
-    sdkId: String,
-    entityString: String,
-  ) {
-    val entity = fullLanguageInteropJson.decodeFromString(
-      DecryptedClassification.serializer(),
-      entityString
-    )
-    ApiScope.execute(
-      dartResultCallback,
-      DecryptedClassification.serializer()) {
-      NativeReferences.get<CardinalApis>(sdkId).classification.createClassification(
-        entity,
-      )
-    }
-  }
-
   public fun withEncryptionMetadata(
     dartResultCallback: (
       String?,
@@ -458,6 +435,29 @@ public object ClassificationApi {
     }
   }
 
+  public fun createClassification(
+    dartResultCallback: (
+      String?,
+      String?,
+      String?,
+      String?,
+    ) -> Unit,
+    sdkId: String,
+    entityString: String,
+  ) {
+    val entity = fullLanguageInteropJson.decodeFromString(
+      DecryptedClassification.serializer(),
+      entityString
+    )
+    ApiScope.execute(
+      dartResultCallback,
+      DecryptedClassification.serializer()) {
+      NativeReferences.get<CardinalApis>(sdkId).classification.createClassification(
+        entity,
+      )
+    }
+  }
+
   public fun modifyClassification(
     dartResultCallback: (
       String?,
@@ -497,7 +497,7 @@ public object ClassificationApi {
     )
     ApiScope.execute(
       dartResultCallback,
-      DecryptedClassification.serializer()) {
+      DecryptedClassification.serializer().nullable) {
       NativeReferences.get<CardinalApis>(sdkId).classification.getClassification(
         entityId,
       )
@@ -649,6 +649,29 @@ public object ClassificationApi {
       }
     }
 
+    public fun createClassification(
+      dartResultCallback: (
+        String?,
+        String?,
+        String?,
+        String?,
+      ) -> Unit,
+      sdkId: String,
+      entityString: String,
+    ) {
+      val entity = fullLanguageInteropJson.decodeFromString(
+        EncryptedClassification.serializer(),
+        entityString
+      )
+      ApiScope.execute(
+        dartResultCallback,
+        EncryptedClassification.serializer()) {
+        NativeReferences.get<CardinalApis>(sdkId).classification.encrypted.createClassification(
+          entity,
+        )
+      }
+    }
+
     public fun modifyClassification(
       dartResultCallback: (
         String?,
@@ -688,7 +711,7 @@ public object ClassificationApi {
       )
       ApiScope.execute(
         dartResultCallback,
-        EncryptedClassification.serializer()) {
+        EncryptedClassification.serializer().nullable) {
         NativeReferences.get<CardinalApis>(sdkId).classification.encrypted.getClassification(
           entityId,
         )
@@ -841,6 +864,29 @@ public object ClassificationApi {
       }
     }
 
+    public fun createClassification(
+      dartResultCallback: (
+        String?,
+        String?,
+        String?,
+        String?,
+      ) -> Unit,
+      sdkId: String,
+      entityString: String,
+    ) {
+      val entity = fullLanguageInteropJson.decodeFromString(
+        PolymorphicSerializer(Classification::class),
+        entityString
+      )
+      ApiScope.execute(
+        dartResultCallback,
+        PolymorphicSerializer(Classification::class)) {
+        NativeReferences.get<CardinalApis>(sdkId).classification.tryAndRecover.createClassification(
+          entity,
+        )
+      }
+    }
+
     public fun modifyClassification(
       dartResultCallback: (
         String?,
@@ -880,7 +926,7 @@ public object ClassificationApi {
       )
       ApiScope.execute(
         dartResultCallback,
-        PolymorphicSerializer(Classification::class)) {
+        PolymorphicSerializer(Classification::class).nullable) {
         NativeReferences.get<CardinalApis>(sdkId).classification.tryAndRecover.getClassification(
           entityId,
         )

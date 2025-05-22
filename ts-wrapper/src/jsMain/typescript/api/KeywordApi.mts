@@ -6,9 +6,9 @@ import {DocIdentifier} from '../model/couchdb/DocIdentifier.mjs';
 
 export interface KeywordApi {
 
-	getKeyword(frontEndMigrationId: string): Promise<Keyword>;
+	getKeyword(keywordId: string): Promise<Keyword | undefined>;
 
-	createKeyword(frontEndMigration: Keyword): Promise<Keyword>;
+	createKeyword(keyword: Keyword): Promise<Keyword>;
 
 	getKeywords(options?: { startDocumentId?: string | undefined, limit?: number | undefined }): Promise<PaginatedList<Keyword>>;
 

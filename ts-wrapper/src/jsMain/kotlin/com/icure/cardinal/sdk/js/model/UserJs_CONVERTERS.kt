@@ -17,9 +17,12 @@ import com.icure.cardinal.sdk.js.model.base.IdentifierJs
 import com.icure.cardinal.sdk.js.model.base.identifier_fromJs
 import com.icure.cardinal.sdk.js.model.base.identifier_toJs
 import com.icure.cardinal.sdk.js.model.security.AuthenticationTokenJs
+import com.icure.cardinal.sdk.js.model.security.LoginIdentifierJs
 import com.icure.cardinal.sdk.js.model.security.PermissionJs
 import com.icure.cardinal.sdk.js.model.security.authenticationToken_fromJs
 import com.icure.cardinal.sdk.js.model.security.authenticationToken_toJs
+import com.icure.cardinal.sdk.js.model.security.loginIdentifier_fromJs
+import com.icure.cardinal.sdk.js.model.security.loginIdentifier_toJs
 import com.icure.cardinal.sdk.js.model.security.permission_fromJs
 import com.icure.cardinal.sdk.js.model.security.permission_toJs
 import com.icure.cardinal.sdk.model.DecryptedPropertyStub
@@ -29,6 +32,7 @@ import com.icure.cardinal.sdk.model.embed.DelegationTag
 import com.icure.cardinal.sdk.model.enums.UsersStatus
 import com.icure.cardinal.sdk.model.enums.UsersType
 import com.icure.cardinal.sdk.model.security.AuthenticationToken
+import com.icure.cardinal.sdk.model.security.LoginIdentifier
 import com.icure.cardinal.sdk.model.security.Permission
 import kotlin.Array
 import kotlin.String
@@ -308,10 +312,17 @@ public fun user_SystemMetadata_toJs(obj: User.SystemMetadata): UserJs_SystemMeta
 	)
 	val isAdmin = obj.isAdmin
 	val inheritsRoles = obj.inheritsRoles
+	val loginIdentifiers = listToArray(
+		obj.loginIdentifiers,
+		{ x1: LoginIdentifier ->
+			loginIdentifier_toJs(x1)
+		},
+	)
 	return UserJs_SystemMetadataJs(js("{" +
 		"roles:roles," +
 		"isAdmin:isAdmin," +
-		"inheritsRoles:inheritsRoles" +
+		"inheritsRoles:inheritsRoles," +
+		"loginIdentifiers:loginIdentifiers" +
 	"}"))
 }
 
@@ -325,9 +336,17 @@ public fun user_SystemMetadata_fromJs(obj: UserJs_SystemMetadataJs): User.System
 	)
 	val isAdmin = obj.isAdmin
 	val inheritsRoles = obj.inheritsRoles
+	val loginIdentifiers = arrayToList(
+		obj.loginIdentifiers,
+		"obj.loginIdentifiers",
+		{ x1: LoginIdentifierJs ->
+			loginIdentifier_fromJs(x1)
+		},
+	)
 	return User.SystemMetadata(
 		roles = roles,
 		isAdmin = isAdmin,
 		inheritsRoles = inheritsRoles,
+		loginIdentifiers = loginIdentifiers,
 	)
 }

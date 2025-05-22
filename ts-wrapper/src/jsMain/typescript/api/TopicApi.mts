@@ -2,8 +2,8 @@
 import {FilterOptions, PaginatedListIterator, SortableFilterOptions} from '../cardinal-sdk-ts.mjs';
 import {SecretIdUseOption} from '../crypto/entities/SecretIdUseOption.mjs';
 import {TopicShareOptions} from '../crypto/entities/TopicShareOptions.mjs';
-import {IdWithMandatoryRev} from '../model/IdWithMandatoryRev.mjs';
 import {Patient} from '../model/Patient.mjs';
+import {StoredDocumentIdentifier} from '../model/StoredDocumentIdentifier.mjs';
 import {DecryptedTopic, EncryptedTopic, Topic} from '../model/Topic.mjs';
 import {TopicRole} from '../model/TopicRole.mjs';
 import {User} from '../model/User.mjs';
@@ -21,8 +21,6 @@ export interface TopicApi {
 	encrypted: TopicFlavouredApi<EncryptedTopic>;
 
 	tryAndRecover: TopicFlavouredApi<Topic>;
-
-	createTopic(entity: DecryptedTopic): Promise<DecryptedTopic>;
 
 	withEncryptionMetadata(base: DecryptedTopic | undefined, patient: Patient | undefined,
 			options?: { user?: User | undefined, delegates?: { [ key: string ]: AccessLevel }, secretId?: SecretIdUseOption }): Promise<DecryptedTopic>;
@@ -49,7 +47,7 @@ export interface TopicApi {
 
 	deleteTopicById(entityId: string, rev: string): Promise<DocIdentifier>;
 
-	deleteTopicsByIds(entityIds: Array<IdWithMandatoryRev>): Promise<Array<DocIdentifier>>;
+	deleteTopicsByIds(entityIds: Array<StoredDocumentIdentifier>): Promise<Array<DocIdentifier>>;
 
 	purgeTopicById(id: string, rev: string): Promise<void>;
 
@@ -69,13 +67,15 @@ export interface TopicApi {
 
 	filterTopicsBySorted(filter: SortableFilterOptions<Topic>): Promise<PaginatedListIterator<DecryptedTopic>>;
 
+	createTopic(entity: DecryptedTopic): Promise<DecryptedTopic>;
+
 	undeleteTopic(topic: Topic): Promise<Topic>;
 
 	modifyTopic(entity: DecryptedTopic): Promise<DecryptedTopic>;
 
 	undeleteTopicById(id: string, rev: string): Promise<DecryptedTopic>;
 
-	getTopic(entityId: string): Promise<DecryptedTopic>;
+	getTopic(entityId: string): Promise<DecryptedTopic | undefined>;
 
 	getTopics(entityIds: Array<string>): Promise<Array<DecryptedTopic>>;
 

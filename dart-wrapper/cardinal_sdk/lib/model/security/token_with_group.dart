@@ -1,16 +1,16 @@
 // auto-generated file
+import 'package:freezed_annotation/freezed_annotation.dart';
+part "token_with_group.freezed.dart";
 
 
-class TokenWithGroup {
-	String token;
-	String groupId;
-	String? groupName = null;
-	TokenWithGroup(
-		this.token,
-		this.groupId,
-		{
-			String? groupName
-		}) : groupName = groupName ?? null;
+@freezed
+abstract class TokenWithGroup with _$TokenWithGroup {
+	const factory TokenWithGroup({
+		required String token,
+		required String groupId,
+		@Default(null) String? groupName,
+	}) = _TokenWithGroup;
+
 
 	static Map<String, dynamic> encode(TokenWithGroup value) {
 		Map<String, dynamic> entityAsMap = {
@@ -23,8 +23,8 @@ class TokenWithGroup {
 
 	static TokenWithGroup fromJSON(Map<String, dynamic> data) {
 		return TokenWithGroup(
-			(data["token"] as String),
-			(data["groupId"] as String),
+			token: (data["token"] as String),
+			groupId: (data["groupId"] as String),
 			groupName: (data["groupName"] as String?),
 		);
 	}

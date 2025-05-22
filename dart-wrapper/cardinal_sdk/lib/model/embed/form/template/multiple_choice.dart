@@ -1,75 +1,31 @@
 // auto-generated file
-import 'package:cardinal_sdk/annotations/actual_int32.dart';
 import 'package:cardinal_sdk/model/embed/form/template/field.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+part "multiple_choice.freezed.dart";
 
 
-class MultipleChoice implements Field {
-	@override String field;
-	@override String? shortLabel = null;
-	int? _rows = null;
-	@ActualInt32() @override int? get rows => _rows;
-	@ActualInt32() @override set rows(int? value) {
-		if (value != null && value > 2147483647) {
-			throw ArgumentError('rows value cannot exceed 2147483647');
-		}
-		_rows = value;
-	}
-	int? _columns = null;
-	@ActualInt32() @override int? get columns => _columns;
-	@ActualInt32() @override set columns(int? value) {
-		if (value != null && value > 2147483647) {
-			throw ArgumentError('columns value cannot exceed 2147483647');
-		}
-		_columns = value;
-	}
-	@override bool? grows = null;
-	@override bool? multiline = null;
-	@override String? schema = null;
-	@override List<String>? tags = null;
-	@override List<String>? codifications = null;
-	@override Map<String, String>? options = null;
-	@override Map<String, String>? labels = null;
-	@override String? value = null;
-	@override String? unit = null;
-	@override bool? required = null;
-	@override String? hideCondition = null;
-	@override bool? now = null;
-	@override bool? translate = null;
-	MultipleChoice(
-		this.field,
-		{
-			int? rows,
-			int? columns,
-			String? shortLabel,
-			bool? grows,
-			bool? multiline,
-			String? schema,
-			List<String>? tags,
-			List<String>? codifications,
-			Map<String, String>? options,
-			Map<String, String>? labels,
-			String? value,
-			String? unit,
-			bool? required,
-			String? hideCondition,
-			bool? now,
-			bool? translate
-		}) : shortLabel = shortLabel ?? null,
-		grows = grows ?? null,
-		multiline = multiline ?? null,
-		schema = schema ?? null,
-		tags = tags ?? null,
-		codifications = codifications ?? null,
-		options = options ?? null,
-		labels = labels ?? null,
-		value = value ?? null,
-		unit = unit ?? null,
-		required = required ?? null,
-		hideCondition = hideCondition ?? null,
-		now = now ?? null,
-		translate = translate ?? null,
-		_rows = rows ?? null,
-		_columns = columns ?? null;
+@freezed
+abstract class MultipleChoice with _$MultipleChoice implements Field {
+	const factory MultipleChoice({
+		required String field,
+		@Default(null) String? shortLabel,
+		@Default(null) int? rows,
+		@Default(null) int? columns,
+		@Default(null) bool? grows,
+		@Default(null) bool? multiline,
+		@Default(null) String? schema,
+		@Default(null) List<String>? tags,
+		@Default(null) List<String>? codifications,
+		@Default(null) Map<String, String>? options,
+		@Default(null) Map<String, String>? labels,
+		@Default(null) String? value,
+		@Default(null) String? unit,
+		@Default(null) bool? required,
+		@Default(null) String? hideCondition,
+		@Default(null) bool? now,
+		@Default(null) bool? translate,
+	}) = _MultipleChoice;
+
 
 	static Map<String, dynamic> encode(MultipleChoice value) {
 		Map<String, dynamic> entityAsMap = {
@@ -96,7 +52,7 @@ class MultipleChoice implements Field {
 
 	static MultipleChoice fromJSON(Map<String, dynamic> data) {
 		return MultipleChoice(
-			(data["field"] as String),
+			field: (data["field"] as String),
 			rows: (data["rows"] as int?),
 			columns: (data["columns"] as int?),
 			shortLabel: (data["shortLabel"] as String?),

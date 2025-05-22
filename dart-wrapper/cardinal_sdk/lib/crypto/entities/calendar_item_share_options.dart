@@ -2,22 +2,19 @@
 import 'package:cardinal_sdk/model/requests/requested_permission.dart';
 import 'package:cardinal_sdk/crypto/entities/share_metadata_behaviour.dart';
 import 'package:cardinal_sdk/crypto/entities/secret_id_share_options.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+part "calendar_item_share_options.freezed.dart";
 
 
-class CalendarItemShareOptions {
-	RequestedPermission requestedPermissions = RequestedPermission.maxWrite;
-	ShareMetadataBehaviour shareEncryptionKey = ShareMetadataBehaviour.ifAvailable;
-	ShareMetadataBehaviour sharePatientId = ShareMetadataBehaviour.ifAvailable;
-	SecretIdShareOptions shareSecretIds = SecretIdShareOptionsAllAvailable(false);
-	CalendarItemShareOptions({
-			RequestedPermission? requestedPermissions,
-			ShareMetadataBehaviour? shareEncryptionKey,
-			ShareMetadataBehaviour? sharePatientId,
-			SecretIdShareOptions? shareSecretIds
-		}) : requestedPermissions = requestedPermissions ?? RequestedPermission.maxWrite,
-		shareEncryptionKey = shareEncryptionKey ?? ShareMetadataBehaviour.ifAvailable,
-		sharePatientId = sharePatientId ?? ShareMetadataBehaviour.ifAvailable,
-		shareSecretIds = shareSecretIds ?? SecretIdShareOptionsAllAvailable(false);
+@freezed
+abstract class CalendarItemShareOptions with _$CalendarItemShareOptions {
+	const factory CalendarItemShareOptions({
+		@Default(RequestedPermission.maxWrite) RequestedPermission requestedPermissions,
+		@Default(ShareMetadataBehaviour.ifAvailable) ShareMetadataBehaviour shareEncryptionKey,
+		@Default(ShareMetadataBehaviour.ifAvailable) ShareMetadataBehaviour sharePatientId,
+		@Default(SecretIdShareOptionsAllAvailable()) SecretIdShareOptions shareSecretIds,
+	}) = _CalendarItemShareOptions;
+
 
 	static Map<String, dynamic> encode(CalendarItemShareOptions value) {
 		Map<String, dynamic> entityAsMap = {

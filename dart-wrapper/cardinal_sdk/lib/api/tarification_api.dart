@@ -11,7 +11,7 @@ class TarificationApi {
 		this._dartSdk
 		);
 
-	Future<Tarification> getTarification(String tarificationId) async {
+	Future<Tarification?> getTarification(String tarificationId) async {
 		return await CardinalSdkPlatformInterface.instance.apis.tarification.getTarification(
 			_sdkId,
 			tarificationId,

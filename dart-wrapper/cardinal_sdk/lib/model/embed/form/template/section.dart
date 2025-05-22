@@ -1,20 +1,18 @@
 // auto-generated file
 import 'package:cardinal_sdk/model/embed/form/template/structure_element.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+part "section.freezed.dart";
 
 
-class Section {
-	String section;
-	List<StructureElement> fields;
-	String? description = null;
-	List<String>? keywords = null;
-	Section(
-		this.section,
-		this.fields,
-		{
-			String? description,
-			List<String>? keywords
-		}) : description = description ?? null,
-		keywords = keywords ?? null;
+@freezed
+abstract class Section with _$Section {
+	const factory Section({
+		required String section,
+		required List<StructureElement> fields,
+		@Default(null) String? description,
+		@Default(null) List<String>? keywords,
+	}) = _Section;
+
 
 	static Map<String, dynamic> encode(Section value) {
 		Map<String, dynamic> entityAsMap = {
@@ -28,8 +26,8 @@ class Section {
 
 	static Section fromJSON(Map<String, dynamic> data) {
 		return Section(
-			(data["section"] as String),
-			(data["fields"] as List<dynamic>).map((x0) => StructureElement.fromJSON(x0) ).toList(),
+			section: (data["section"] as String),
+			fields: (data["fields"] as List<dynamic>).map((x0) => StructureElement.fromJSON(x0) ).toList(),
 			description: (data["description"] as String?),
 			keywords: (data["keywords"] as List<dynamic>?)?.map((x0) => (x0 as String) ).toList(),
 		);

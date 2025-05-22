@@ -450,7 +450,7 @@ public object InvoiceApi {
     )
     ApiScope.execute(
       dartResultCallback,
-      DecryptedInvoice.serializer()) {
+      DecryptedInvoice.serializer().nullable) {
       NativeReferences.get<CardinalApis>(sdkId).invoice.getInvoice(
         entityId,
       )
@@ -1091,7 +1091,7 @@ public object InvoiceApi {
       )
       ApiScope.execute(
         dartResultCallback,
-        EncryptedInvoice.serializer()) {
+        EncryptedInvoice.serializer().nullable) {
         NativeReferences.get<CardinalApis>(sdkId).invoice.encrypted.getInvoice(
           entityId,
         )
@@ -1733,7 +1733,7 @@ public object InvoiceApi {
       )
       ApiScope.execute(
         dartResultCallback,
-        PolymorphicSerializer(Invoice::class)) {
+        PolymorphicSerializer(Invoice::class).nullable) {
         NativeReferences.get<CardinalApis>(sdkId).invoice.tryAndRecover.getInvoice(
           entityId,
         )

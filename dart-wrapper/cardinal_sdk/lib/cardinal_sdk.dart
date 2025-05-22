@@ -43,7 +43,6 @@ import 'package:cardinal_sdk/api/role_api.dart';
 import 'package:cardinal_sdk/api/system_api.dart';
 import 'package:cardinal_sdk/api/tarification_api.dart';
 import 'package:cardinal_sdk/api/time_table_api.dart';
-import 'package:cardinal_sdk/api/time_table_basic_api.dart';
 import 'package:cardinal_sdk/api/topic_api.dart';
 import 'package:cardinal_sdk/api/topic_basic_api.dart';
 import 'package:cardinal_sdk/api/user_api.dart';
@@ -355,7 +354,7 @@ abstract interface class CardinalBaseApis {
   MaintenanceTaskBasicApi get maintenanceTask;
   MessageBasicApi get message;
   PatientBasicApi get patient;
-  TimeTableBasicApi get timeTable;
+  TimeTableApi get timeTable;
   TopicBasicApi get topic;
 }
 
@@ -394,7 +393,7 @@ class CardinalBaseSdk extends CardinalBaseApis {
   late final MaintenanceTaskBasicApi _maintenanceTask;
   late final MessageBasicApi _message;
   late final PatientBasicApi _patient;
-  late final TimeTableBasicApi _timeTable;
+  late final TimeTableApi _timeTable;
   late final TopicBasicApi _topic;
 
   CardinalBaseSdk._(
@@ -429,7 +428,7 @@ class CardinalBaseSdk extends CardinalBaseApis {
     _maintenanceTask = MaintenanceTaskBasicApi(_sdkId, this);
     _message = MessageBasicApi(_sdkId, this);
     _patient = PatientBasicApi(_sdkId, this);
-    _timeTable = TimeTableBasicApi(_sdkId, this);
+    _timeTable = TimeTableApi(_sdkId, this);
     _topic = TopicBasicApi(_sdkId, this);
   }
 
@@ -512,7 +511,7 @@ class CardinalBaseSdk extends CardinalBaseApis {
   @override
   PatientBasicApi get patient => _patient;
   @override
-  TimeTableBasicApi get timeTable => _timeTable;
+  TimeTableApi get timeTable => _timeTable;
   @override
   TopicBasicApi get topic => _topic;
 

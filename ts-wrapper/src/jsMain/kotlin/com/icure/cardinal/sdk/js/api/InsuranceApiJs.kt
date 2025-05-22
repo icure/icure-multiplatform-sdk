@@ -14,7 +14,7 @@ import kotlin.js.Promise
 
 @JsName("InsuranceApi")
 public external interface InsuranceApiJs {
-	public fun getInsurance(insuranceId: String): Promise<InsuranceJs>
+	public fun getInsurance(insuranceId: String): Promise<InsuranceJs?>
 
 	public fun getInsurances(insuranceIds: Array<String>): Promise<Array<InsuranceJs>>
 

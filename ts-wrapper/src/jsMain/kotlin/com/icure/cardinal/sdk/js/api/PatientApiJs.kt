@@ -11,11 +11,10 @@ import com.icure.cardinal.sdk.js.filters.FilterOptionsJs
 import com.icure.cardinal.sdk.js.filters.SortableFilterOptionsJs
 import com.icure.cardinal.sdk.js.model.DecryptedPatientJs
 import com.icure.cardinal.sdk.js.model.EncryptedPatientJs
-import com.icure.cardinal.sdk.js.model.IdWithMandatoryRevJs
-import com.icure.cardinal.sdk.js.model.IdWithRevJs
+import com.icure.cardinal.sdk.js.model.EntityReferenceInGroupJs
 import com.icure.cardinal.sdk.js.model.PaginatedListJs
 import com.icure.cardinal.sdk.js.model.PatientJs
-import com.icure.cardinal.sdk.js.model.couchdb.DocIdentifierJs
+import com.icure.cardinal.sdk.js.model.StoredDocumentIdentifierJs
 import com.icure.cardinal.sdk.js.subscription.EntitySubscriptionJs
 import com.icure.cardinal.sdk.js.utils.Record
 import com.icure.cardinal.sdk.js.utils.pagination.PaginatedListIteratorJs
@@ -34,11 +33,18 @@ public external interface PatientApiJs {
 
 	public val tryAndRecover: PatientFlavouredApiJs<PatientJs>
 
-	public fun getSecretIdsOf(patient: PatientJs): Promise<Array<String>>
+	public val inGroup: PatientInGroupApiJs
+
+	public fun decrypt(patients: Array<EncryptedPatientJs>): Promise<Array<DecryptedPatientJs>>
+
+	public fun tryDecrypt(patients: Array<EncryptedPatientJs>): Promise<Array<PatientJs>>
+
+	public fun encryptOrValidate(patients: Array<PatientJs>): Promise<Array<EncryptedPatientJs>>
+
+	public fun getSecretIdsOf(patient: PatientJs):
+			Promise<Record<String, Array<EntityReferenceInGroupJs>>>
 
 	public fun getEncryptionKeysOf(patient: PatientJs): Promise<Array<String>>
-
-	public fun createPatient(patient: DecryptedPatientJs): Promise<DecryptedPatientJs>
 
 	public fun withEncryptionMetadata(base: DecryptedPatientJs?, options: dynamic):
 			Promise<DecryptedPatientJs>
@@ -47,12 +53,6 @@ public external interface PatientApiJs {
 
 	public fun createDelegationDeAnonymizationMetadata(entity: PatientJs, delegates: Array<String>):
 			Promise<Unit>
-
-	public fun decrypt(patient: EncryptedPatientJs): Promise<DecryptedPatientJs>
-
-	public fun tryDecrypt(patient: EncryptedPatientJs): Promise<PatientJs>
-
-	public fun createPatients(patientDtos: Array<DecryptedPatientJs>): Promise<Array<IdWithRevJs>>
 
 	public fun shareAllDataOfPatient(patientId: String,
 			delegatesWithShareType: Record<String, Array<String>>):
@@ -73,20 +73,21 @@ public external interface PatientApiJs {
 	public fun ensureEncryptionMetadataForSelfIsInitialized(options: dynamic):
 			Promise<EncryptedPatientJs>
 
-	public fun deletePatientUnsafe(entityId: String): Promise<DocIdentifierJs>
+	public fun deletePatientUnsafe(entityId: String): Promise<StoredDocumentIdentifierJs>
 
-	public fun deletePatientsUnsafe(entityIds: Array<String>): Promise<Array<DocIdentifierJs>>
+	public fun deletePatientsUnsafe(entityIds: Array<String>):
+			Promise<Array<StoredDocumentIdentifierJs>>
 
-	public fun deletePatientById(entityId: String, rev: String): Promise<DocIdentifierJs>
+	public fun deletePatientById(entityId: String, rev: String): Promise<StoredDocumentIdentifierJs>
 
-	public fun deletePatientsByIds(entityIds: Array<IdWithMandatoryRevJs>):
-			Promise<Array<DocIdentifierJs>>
+	public fun deletePatientsByIds(entityIds: Array<StoredDocumentIdentifierJs>):
+			Promise<Array<StoredDocumentIdentifierJs>>
 
 	public fun purgePatientById(id: String, rev: String): Promise<Unit>
 
-	public fun deletePatient(patient: PatientJs): Promise<DocIdentifierJs>
+	public fun deletePatient(patient: PatientJs): Promise<StoredDocumentIdentifierJs>
 
-	public fun deletePatients(patients: Array<PatientJs>): Promise<Array<DocIdentifierJs>>
+	public fun deletePatients(patients: Array<PatientJs>): Promise<Array<StoredDocumentIdentifierJs>>
 
 	public fun purgePatient(patient: PatientJs): Promise<Unit>
 
@@ -111,15 +112,23 @@ public external interface PatientApiJs {
 	public fun filterPatientsBySorted(filter: SortableFilterOptionsJs<PatientJs>):
 			Promise<PaginatedListIteratorJs<DecryptedPatientJs>>
 
+	public fun createPatient(patient: DecryptedPatientJs): Promise<DecryptedPatientJs>
+
+	public fun createPatientsMinimal(patients: Array<DecryptedPatientJs>):
+			Promise<Array<StoredDocumentIdentifierJs>>
+
+	public fun createPatients(patients: Array<DecryptedPatientJs>): Promise<Array<DecryptedPatientJs>>
+
 	public fun undeletePatient(patient: PatientJs): Promise<PatientJs>
 
 	public fun modifyPatient(entity: DecryptedPatientJs): Promise<DecryptedPatientJs>
 
 	public fun undeletePatientById(id: String, rev: String): Promise<DecryptedPatientJs>
 
-	public fun undeletePatients(ids: Array<IdWithMandatoryRevJs>): Promise<Array<DecryptedPatientJs>>
+	public fun undeletePatients(ids: Array<StoredDocumentIdentifierJs>):
+			Promise<Array<DecryptedPatientJs>>
 
-	public fun getPatient(entityId: String): Promise<DecryptedPatientJs>
+	public fun getPatient(entityId: String): Promise<DecryptedPatientJs?>
 
 	public fun getPatientResolvingMerges(patientId: String, maxMergeDepth: Double?):
 			Promise<DecryptedPatientJs>
@@ -165,7 +174,10 @@ public external interface PatientApiJs {
 		options: dynamic,
 	): Promise<DecryptedPatientJs>
 
-	public fun modifyPatients(patientDtos: Array<EncryptedPatientJs>): Promise<Array<IdWithRevJs>>
+	public fun modifyPatientsMinimal(patients: Array<DecryptedPatientJs>):
+			Promise<Array<StoredDocumentIdentifierJs>>
+
+	public fun modifyPatients(patients: Array<DecryptedPatientJs>): Promise<Array<DecryptedPatientJs>>
 
 	public fun findDuplicatesBySsin(hcPartyId: String, options: dynamic):
 			Promise<PaginatedListJs<DecryptedPatientJs>>

@@ -1,9 +1,12 @@
 // auto-generated file
 import {randomUuid} from '../utils/Id.mjs';
+import {DecryptedPropertyStub} from './PropertyStub.mjs';
 import {CodeStub} from './base/CodeStub.mjs';
 import {ICureDocument} from './base/ICureDocument.mjs';
 import {StoredDocument} from './base/StoredDocument.mjs';
+import {EmbeddedTimeTable} from './embed/EmbeddedTimeTable.mjs';
 import {Right} from './embed/Right.mjs';
+import {UserAccessLevel} from './embed/UserAccessLevel.mjs';
 
 
 export class Agenda implements StoredDocument, ICureDocument<string> {
@@ -36,6 +39,12 @@ export class Agenda implements StoredDocument, ICureDocument<string> {
 
 	rights: Array<Right> = [];
 
+	userRights: { [ key: string ]: UserAccessLevel } = {};
+
+	properties: Array<DecryptedPropertyStub> = [];
+
+	timeTables: Array<EmbeddedTimeTable> = [];
+
 	constructor(partial: Partial<Agenda>) {
 		this.id = partial.id ?? randomUuid();
 		if ('rev' in partial) this.rev = partial.rev;
@@ -51,6 +60,9 @@ export class Agenda implements StoredDocument, ICureDocument<string> {
 		if ('name' in partial) this.name = partial.name;
 		if ('userId' in partial) this.userId = partial.userId;
 		if ('rights' in partial && partial.rights !== undefined) this.rights = partial.rights;
+		if ('userRights' in partial && partial.userRights !== undefined) this.userRights = partial.userRights;
+		if ('properties' in partial && partial.properties !== undefined) this.properties = partial.properties;
+		if ('timeTables' in partial && partial.timeTables !== undefined) this.timeTables = partial.timeTables;
 	}
 
 }

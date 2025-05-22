@@ -28,12 +28,25 @@ public object CalendarItemBasicApiDispatcher {
     "deleteCalendarItem" -> deleteCalendarItem(parameters, resultCallback)
     "deleteCalendarItems" -> deleteCalendarItems(parameters, resultCallback)
     "purgeCalendarItem" -> purgeCalendarItem(parameters, resultCallback)
+    "createCalendarItem" -> createCalendarItem(parameters, resultCallback)
     "undeleteCalendarItemById" -> undeleteCalendarItemById(parameters, resultCallback)
     "undeleteCalendarItem" -> undeleteCalendarItem(parameters, resultCallback)
     "modifyCalendarItem" -> modifyCalendarItem(parameters, resultCallback)
     "getCalendarItem" -> getCalendarItem(parameters, resultCallback)
     "getCalendarItems" -> getCalendarItems(parameters, resultCallback)
     "subscribeToEvents" -> subscribeToEvents(parameters, resultCallback)
+    "inGroup.matchCalendarItemsBy" -> inGroup_matchCalendarItemsBy(parameters, resultCallback)
+    "inGroup.matchCalendarItemsBySorted" -> inGroup_matchCalendarItemsBySorted(parameters, resultCallback)
+    "inGroup.filterCalendarItemsBy" -> inGroup_filterCalendarItemsBy(parameters, resultCallback)
+    "inGroup.filterCalendarItemsBySorted" -> inGroup_filterCalendarItemsBySorted(parameters, resultCallback)
+    "inGroup.deleteCalendarItemById" -> inGroup_deleteCalendarItemById(parameters, resultCallback)
+    "inGroup.deleteCalendarItemsByIds" -> inGroup_deleteCalendarItemsByIds(parameters, resultCallback)
+    "inGroup.deleteCalendarItem" -> inGroup_deleteCalendarItem(parameters, resultCallback)
+    "inGroup.deleteCalendarItems" -> inGroup_deleteCalendarItems(parameters, resultCallback)
+    "inGroup.createCalendarItem" -> inGroup_createCalendarItem(parameters, resultCallback)
+    "inGroup.modifyCalendarItem" -> inGroup_modifyCalendarItem(parameters, resultCallback)
+    "inGroup.getCalendarItem" -> inGroup_getCalendarItem(parameters, resultCallback)
+    "inGroup.getCalendarItems" -> inGroup_getCalendarItems(parameters, resultCallback)
     else -> null
   }?.let { true } ?: false
 
@@ -169,6 +182,19 @@ public object CalendarItemBasicApiDispatcher {
     )
   }
 
+  private fun createCalendarItem(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    CalendarItemBasicApi.createCalendarItem(
+      resultCallback,
+      parameters.getValue("sdkId"),
+      parameters.getValue("entity"),
+    )
+  }
+
   private fun undeleteCalendarItemById(parameters: Map<String, String>, resultCallback: (
     String?,
     String?,
@@ -247,6 +273,168 @@ public object CalendarItemBasicApiDispatcher {
       parameters.getValue("events"),
       parameters.getValue("filter"),
       parameters.getValue("subscriptionConfig"),
+    )
+  }
+
+  private fun inGroup_matchCalendarItemsBy(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    CalendarItemBasicApi.inGroup.matchCalendarItemsBy(
+      resultCallback,
+      parameters.getValue("sdkId"),
+      parameters.getValue("groupId"),
+      parameters.getValue("filter"),
+    )
+  }
+
+  private fun inGroup_matchCalendarItemsBySorted(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    CalendarItemBasicApi.inGroup.matchCalendarItemsBySorted(
+      resultCallback,
+      parameters.getValue("sdkId"),
+      parameters.getValue("groupId"),
+      parameters.getValue("filter"),
+    )
+  }
+
+  private fun inGroup_filterCalendarItemsBy(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    CalendarItemBasicApi.inGroup.filterCalendarItemsBy(
+      resultCallback,
+      parameters.getValue("sdkId"),
+      parameters.getValue("groupId"),
+      parameters.getValue("filter"),
+    )
+  }
+
+  private fun inGroup_filterCalendarItemsBySorted(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    CalendarItemBasicApi.inGroup.filterCalendarItemsBySorted(
+      resultCallback,
+      parameters.getValue("sdkId"),
+      parameters.getValue("groupId"),
+      parameters.getValue("filter"),
+    )
+  }
+
+  private fun inGroup_deleteCalendarItemById(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    CalendarItemBasicApi.inGroup.deleteCalendarItemById(
+      resultCallback,
+      parameters.getValue("sdkId"),
+      parameters.getValue("entityId"),
+    )
+  }
+
+  private fun inGroup_deleteCalendarItemsByIds(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    CalendarItemBasicApi.inGroup.deleteCalendarItemsByIds(
+      resultCallback,
+      parameters.getValue("sdkId"),
+      parameters.getValue("entityIds"),
+    )
+  }
+
+  private fun inGroup_deleteCalendarItem(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    CalendarItemBasicApi.inGroup.deleteCalendarItem(
+      resultCallback,
+      parameters.getValue("sdkId"),
+      parameters.getValue("calendarItem"),
+    )
+  }
+
+  private fun inGroup_deleteCalendarItems(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    CalendarItemBasicApi.inGroup.deleteCalendarItems(
+      resultCallback,
+      parameters.getValue("sdkId"),
+      parameters.getValue("calendarItems"),
+    )
+  }
+
+  private fun inGroup_createCalendarItem(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    CalendarItemBasicApi.inGroup.createCalendarItem(
+      resultCallback,
+      parameters.getValue("sdkId"),
+      parameters.getValue("entity"),
+    )
+  }
+
+  private fun inGroup_modifyCalendarItem(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    CalendarItemBasicApi.inGroup.modifyCalendarItem(
+      resultCallback,
+      parameters.getValue("sdkId"),
+      parameters.getValue("entity"),
+    )
+  }
+
+  private fun inGroup_getCalendarItem(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    CalendarItemBasicApi.inGroup.getCalendarItem(
+      resultCallback,
+      parameters.getValue("sdkId"),
+      parameters.getValue("groupId"),
+      parameters.getValue("entityId"),
+    )
+  }
+
+  private fun inGroup_getCalendarItems(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    CalendarItemBasicApi.inGroup.getCalendarItems(
+      resultCallback,
+      parameters.getValue("sdkId"),
+      parameters.getValue("groupId"),
+      parameters.getValue("entityIds"),
     )
   }
 }

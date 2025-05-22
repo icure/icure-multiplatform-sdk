@@ -2,26 +2,22 @@
 import 'package:cardinal_sdk/model/embed/delegation.dart';
 import 'package:cardinal_sdk/model/embed/security_metadata.dart';
 import 'package:cardinal_sdk/model/base/has_encryption_metadata.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+part "entity_with_encryption_metadata_stub.freezed.dart";
 
 
-class EntityWithEncryptionMetadataStub implements HasEncryptionMetadata {
-	@override String id;
-	@override String? rev;
-	@override Set<String> secretForeignKeys;
-	@override Map<String, Set<Delegation>> cryptedForeignKeys;
-	@override Map<String, Set<Delegation>> delegations;
-	@override Map<String, Set<Delegation>> encryptionKeys;
-	@override SecurityMetadata? securityMetadata;
-	EntityWithEncryptionMetadataStub(
-		this.id,
-		this.secretForeignKeys,
-		this.cryptedForeignKeys,
-		this.delegations,
-		this.encryptionKeys,
-		{
-			this.rev,
-			this.securityMetadata
-		});
+@freezed
+abstract class EntityWithEncryptionMetadataStub with _$EntityWithEncryptionMetadataStub implements HasEncryptionMetadata {
+	const factory EntityWithEncryptionMetadataStub({
+		required String id,
+		required String? rev,
+		required Set<String> secretForeignKeys,
+		required Map<String, Set<Delegation>> cryptedForeignKeys,
+		required Map<String, Set<Delegation>> delegations,
+		required Map<String, Set<Delegation>> encryptionKeys,
+		required SecurityMetadata? securityMetadata,
+	}) = _EntityWithEncryptionMetadataStub;
+
 
 	static Map<String, dynamic> encode(EntityWithEncryptionMetadataStub value) {
 		Map<String, dynamic> entityAsMap = {
@@ -38,11 +34,11 @@ class EntityWithEncryptionMetadataStub implements HasEncryptionMetadata {
 
 	static EntityWithEncryptionMetadataStub fromJSON(Map<String, dynamic> data) {
 		return EntityWithEncryptionMetadataStub(
-			(data["id"] as String),
-			(data["secretForeignKeys"] as List<dynamic>).map((x0) => (x0 as String) ).toSet(),
-			(data["cryptedForeignKeys"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as List<dynamic>).map((x1) => Delegation.fromJSON(x1) ).toSet())),
-			(data["delegations"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as List<dynamic>).map((x1) => Delegation.fromJSON(x1) ).toSet())),
-			(data["encryptionKeys"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as List<dynamic>).map((x1) => Delegation.fromJSON(x1) ).toSet())),
+			id: (data["id"] as String),
+			secretForeignKeys: (data["secretForeignKeys"] as List<dynamic>).map((x0) => (x0 as String) ).toSet(),
+			cryptedForeignKeys: (data["cryptedForeignKeys"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as List<dynamic>).map((x1) => Delegation.fromJSON(x1) ).toSet())),
+			delegations: (data["delegations"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as List<dynamic>).map((x1) => Delegation.fromJSON(x1) ).toSet())),
+			encryptionKeys: (data["encryptionKeys"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as List<dynamic>).map((x1) => Delegation.fromJSON(x1) ).toSet())),
 			rev: (data["rev"] as String?),
 			securityMetadata: data["securityMetadata"] == null ? null : SecurityMetadata.fromJSON(data["securityMetadata"]),
 		);

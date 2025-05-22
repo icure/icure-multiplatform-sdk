@@ -12,7 +12,7 @@ class InsuranceApi {
 		this._dartSdk
 		);
 
-	Future<Insurance> getInsurance(String insuranceId) async {
+	Future<Insurance?> getInsurance(String insuranceId) async {
 		return await CardinalSdkPlatformInterface.instance.apis.insurance.getInsurance(
 			_sdkId,
 			insuranceId,

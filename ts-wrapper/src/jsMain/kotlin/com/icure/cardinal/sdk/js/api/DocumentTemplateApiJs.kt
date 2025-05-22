@@ -15,7 +15,7 @@ import kotlin.js.Promise
 
 @JsName("DocumentTemplateApi")
 public external interface DocumentTemplateApiJs {
-	public fun getDocumentTemplate(documentTemplateId: String): Promise<DocumentTemplateJs>
+	public fun getDocumentTemplate(documentTemplateId: String): Promise<DocumentTemplateJs?>
 
 	public fun createDocumentTemplate(documentTemplate: DocumentTemplateJs):
 			Promise<DocumentTemplateJs>

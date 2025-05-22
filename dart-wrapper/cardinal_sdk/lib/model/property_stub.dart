@@ -4,14 +4,16 @@ import 'package:cardinal_sdk/model/embed/typed_value.dart';
 import 'package:cardinal_sdk/model/specializations/base64string.dart';
 import 'package:cardinal_sdk/model/property_stub.dart';
 import 'package:cardinal_sdk/model/embed/encryptable.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+part "property_stub.freezed.dart";
 
 
 sealed class PropertyStub implements Encryptable {
-	abstract String? id;
-	abstract PropertyTypeStub? type;
+	abstract final String? id;
+	abstract final PropertyTypeStub? type;
 	TypedValue? get typedValue;
-	@Deprecated('Remove from list instead') abstract int? deletionDate;
-	@override abstract Base64String? encryptedSelf;
+	@Deprecated('Remove from list instead') abstract final int? deletionDate;
+	@override abstract final Base64String? encryptedSelf;
 
 	static Map<String, dynamic> encode(PropertyStub value) {
 		switch (value) {
@@ -42,23 +44,16 @@ sealed class PropertyStub implements Encryptable {
 	}
 }
 
-class EncryptedPropertyStub implements PropertyStub {
-	@override String? id = null;
-	@override PropertyTypeStub? type = null;
-	@override EncryptedTypedValue? typedValue = null;
-	@override @Deprecated('Remove from list instead') int? deletionDate = null;
-	@override Base64String? encryptedSelf = null;
-	EncryptedPropertyStub({
-			String? id,
-			PropertyTypeStub? type,
-			EncryptedTypedValue? typedValue,
-			int? deletionDate,
-			Base64String? encryptedSelf
-		}) : id = id ?? null,
-		type = type ?? null,
-		typedValue = typedValue ?? null,
-		deletionDate = deletionDate ?? null,
-		encryptedSelf = encryptedSelf ?? null;
+@freezed
+abstract class EncryptedPropertyStub with _$EncryptedPropertyStub implements PropertyStub {
+	const factory EncryptedPropertyStub({
+		@Default(null) String? id,
+		@Default(null) PropertyTypeStub? type,
+		@Default(null) EncryptedTypedValue? typedValue,
+		@Default(null) int? deletionDate,
+		@Default(null) Base64String? encryptedSelf,
+	}) = _EncryptedPropertyStub;
+
 
 	static Map<String, dynamic> encode(EncryptedPropertyStub value) {
 		Map<String, dynamic> entityAsMap = {
@@ -82,23 +77,16 @@ class EncryptedPropertyStub implements PropertyStub {
 	}
 }
 
-class DecryptedPropertyStub implements PropertyStub {
-	@override String? id = null;
-	@override PropertyTypeStub? type = null;
-	@override DecryptedTypedValue? typedValue = null;
-	@override @Deprecated('Remove from list instead') int? deletionDate = null;
-	@override Base64String? encryptedSelf = null;
-	DecryptedPropertyStub({
-			String? id,
-			PropertyTypeStub? type,
-			DecryptedTypedValue? typedValue,
-			int? deletionDate,
-			Base64String? encryptedSelf
-		}) : id = id ?? null,
-		type = type ?? null,
-		typedValue = typedValue ?? null,
-		deletionDate = deletionDate ?? null,
-		encryptedSelf = encryptedSelf ?? null;
+@freezed
+abstract class DecryptedPropertyStub with _$DecryptedPropertyStub implements PropertyStub {
+	const factory DecryptedPropertyStub({
+		@Default(null) String? id,
+		@Default(null) PropertyTypeStub? type,
+		@Default(null) DecryptedTypedValue? typedValue,
+		@Default(null) int? deletionDate,
+		@Default(null) Base64String? encryptedSelf,
+	}) = _DecryptedPropertyStub;
+
 
 	static Map<String, dynamic> encode(DecryptedPropertyStub value) {
 		Map<String, dynamic> entityAsMap = {

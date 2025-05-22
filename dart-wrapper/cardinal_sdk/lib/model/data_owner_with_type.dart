@@ -1,8 +1,10 @@
 // auto-generated file
 import 'package:cardinal_sdk/model/base/crypto_actor.dart';
 import 'package:cardinal_sdk/model/healthcare_party.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:cardinal_sdk/model/patient.dart';
 import 'package:cardinal_sdk/model/device.dart';
+part "data_owner_with_type.freezed.dart";
 
 
 sealed class DataOwnerWithType {
@@ -43,9 +45,12 @@ sealed class DataOwnerWithType {
 	}
 }
 
-class DataOwnerWithTypeHcpDataOwner implements DataOwnerWithType {
-	@override HealthcareParty dataOwner;
-	DataOwnerWithTypeHcpDataOwner(this.dataOwner);
+@freezed
+abstract class DataOwnerWithTypeHcpDataOwner with _$DataOwnerWithTypeHcpDataOwner implements DataOwnerWithType {
+	const factory DataOwnerWithTypeHcpDataOwner({
+		required HealthcareParty dataOwner,
+	}) = _DataOwnerWithTypeHcpDataOwner;
+
 
 	static Map<String, dynamic> encode(DataOwnerWithTypeHcpDataOwner value) {
 		Map<String, dynamic> entityAsMap = {
@@ -56,14 +61,17 @@ class DataOwnerWithTypeHcpDataOwner implements DataOwnerWithType {
 
 	static DataOwnerWithTypeHcpDataOwner fromJSON(Map<String, dynamic> data) {
 		return DataOwnerWithTypeHcpDataOwner(
-			HealthcareParty.fromJSON(data["dataOwner"])
+			dataOwner: HealthcareParty.fromJSON(data["dataOwner"])
 		);
 	}
 }
 
-class DataOwnerWithTypePatientDataOwner implements DataOwnerWithType {
-	@override EncryptedPatient dataOwner;
-	DataOwnerWithTypePatientDataOwner(this.dataOwner);
+@freezed
+abstract class DataOwnerWithTypePatientDataOwner with _$DataOwnerWithTypePatientDataOwner implements DataOwnerWithType {
+	const factory DataOwnerWithTypePatientDataOwner({
+		required EncryptedPatient dataOwner,
+	}) = _DataOwnerWithTypePatientDataOwner;
+
 
 	static Map<String, dynamic> encode(DataOwnerWithTypePatientDataOwner value) {
 		Map<String, dynamic> entityAsMap = {
@@ -74,14 +82,17 @@ class DataOwnerWithTypePatientDataOwner implements DataOwnerWithType {
 
 	static DataOwnerWithTypePatientDataOwner fromJSON(Map<String, dynamic> data) {
 		return DataOwnerWithTypePatientDataOwner(
-			EncryptedPatient.fromJSON(data["dataOwner"])
+			dataOwner: EncryptedPatient.fromJSON(data["dataOwner"])
 		);
 	}
 }
 
-class DataOwnerWithTypeDeviceDataOwner implements DataOwnerWithType {
-	@override Device dataOwner;
-	DataOwnerWithTypeDeviceDataOwner(this.dataOwner);
+@freezed
+abstract class DataOwnerWithTypeDeviceDataOwner with _$DataOwnerWithTypeDeviceDataOwner implements DataOwnerWithType {
+	const factory DataOwnerWithTypeDeviceDataOwner({
+		required Device dataOwner,
+	}) = _DataOwnerWithTypeDeviceDataOwner;
+
 
 	static Map<String, dynamic> encode(DataOwnerWithTypeDeviceDataOwner value) {
 		Map<String, dynamic> entityAsMap = {
@@ -92,7 +103,7 @@ class DataOwnerWithTypeDeviceDataOwner implements DataOwnerWithType {
 
 	static DataOwnerWithTypeDeviceDataOwner fromJSON(Map<String, dynamic> data) {
 		return DataOwnerWithTypeDeviceDataOwner(
-			Device.fromJSON(data["dataOwner"])
+			dataOwner: Device.fromJSON(data["dataOwner"])
 		);
 	}
 }

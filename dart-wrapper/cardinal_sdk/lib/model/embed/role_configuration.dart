@@ -1,14 +1,15 @@
 // auto-generated file
+import 'package:freezed_annotation/freezed_annotation.dart';
+part "role_configuration.freezed.dart";
 
 
-class RoleConfiguration {
-	RoleConfigurationSource source;
-	Set<String> roles = {};
-	RoleConfiguration(
-		this.source,
-		{
-			Set<String>? roles
-		}) : roles = roles ?? {};
+@freezed
+abstract class RoleConfiguration with _$RoleConfiguration {
+	const factory RoleConfiguration({
+		required RoleConfigurationSource source,
+		@Default({}) Set<String> roles,
+	}) = _RoleConfiguration;
+
 
 	static Map<String, dynamic> encode(RoleConfiguration value) {
 		Map<String, dynamic> entityAsMap = {
@@ -20,7 +21,7 @@ class RoleConfiguration {
 
 	static RoleConfiguration fromJSON(Map<String, dynamic> data) {
 		return RoleConfiguration(
-			RoleConfigurationSource.fromJSON(data["source"]),
+			source: RoleConfigurationSource.fromJSON(data["source"]),
 			roles: (data["roles"] as List<dynamic>).map((x0) => (x0 as String) ).toSet(),
 		);
 	}

@@ -6,7 +6,7 @@ import 'dart:convert';
 import 'package:cardinal_sdk/utils/internal/platform_exception_convertion.dart';
 import 'package:cardinal_sdk/utils/pagination/paginated_list_iterator.dart';
 import 'package:cardinal_sdk/model/couchdb/doc_identifier.dart';
-import 'package:cardinal_sdk/model/id_with_mandatory_rev.dart';
+import 'package:cardinal_sdk/model/stored_document_identifier.dart';
 import 'package:cardinal_sdk/subscription/subscription_event_type.dart';
 import 'package:cardinal_sdk/subscription/entity_subscription_configuration.dart';
 import 'package:cardinal_sdk/subscription/entity_subscription.dart';
@@ -82,12 +82,12 @@ class MaintenanceTaskBasicPlatformApi {
 		return DocIdentifier.fromJSON(parsedResJson);
 	}
 
-	Future<List<DocIdentifier>> deleteMaintenanceTasksByIds(String sdkId, List<IdWithMandatoryRev> entityIds) async {
+	Future<List<DocIdentifier>> deleteMaintenanceTasksByIds(String sdkId, List<StoredDocumentIdentifier> entityIds) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'MaintenanceTaskBasicApi.deleteMaintenanceTasksByIds',
 			{
 				"sdkId": sdkId,
-				"entityIds": jsonEncode(entityIds.map((x0) => IdWithMandatoryRev.encode(x0)).toList()),
+				"entityIds": jsonEncode(entityIds.map((x0) => StoredDocumentIdentifier.encode(x0)).toList()),
 			}
 		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method deleteMaintenanceTasksByIds");
@@ -142,6 +142,19 @@ class MaintenanceTaskBasicPlatformApi {
 		).catchError(convertPlatformException);
 	}
 
+	Future<EncryptedMaintenanceTask> createMaintenanceTask(String sdkId, EncryptedMaintenanceTask entity) async {
+		final res = await _methodChannel.invokeMethod<String>(
+			'MaintenanceTaskBasicApi.createMaintenanceTask',
+			{
+				"sdkId": sdkId,
+				"entity": jsonEncode(EncryptedMaintenanceTask.encode(entity)),
+			}
+		).catchError(convertPlatformException);
+		if (res == null) throw AssertionError("received null result from platform method createMaintenanceTask");
+		final parsedResJson = jsonDecode(res);
+		return EncryptedMaintenanceTask.fromJSON(parsedResJson);
+	}
+
 	Future<MaintenanceTask> undeleteMaintenanceTask(String sdkId, MaintenanceTask maintenanceTask) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'MaintenanceTaskBasicApi.undeleteMaintenanceTask',
@@ -182,7 +195,7 @@ class MaintenanceTaskBasicPlatformApi {
 		return EncryptedMaintenanceTask.fromJSON(parsedResJson);
 	}
 
-	Future<EncryptedMaintenanceTask> getMaintenanceTask(String sdkId, String entityId) async {
+	Future<EncryptedMaintenanceTask?> getMaintenanceTask(String sdkId, String entityId) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'MaintenanceTaskBasicApi.getMaintenanceTask',
 			{
@@ -192,7 +205,7 @@ class MaintenanceTaskBasicPlatformApi {
 		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getMaintenanceTask");
 		final parsedResJson = jsonDecode(res);
-		return EncryptedMaintenanceTask.fromJSON(parsedResJson);
+		return parsedResJson == null ? null : EncryptedMaintenanceTask.fromJSON(parsedResJson);
 	}
 
 	Future<List<EncryptedMaintenanceTask>> getMaintenanceTasks(String sdkId, List<String> entityIds) async {

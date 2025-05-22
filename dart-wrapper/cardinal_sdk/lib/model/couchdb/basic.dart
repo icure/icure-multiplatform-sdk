@@ -1,13 +1,15 @@
 // auto-generated file
+import 'package:freezed_annotation/freezed_annotation.dart';
+part "basic.freezed.dart";
 
 
-class Basic {
-	String username;
-	String password;
-	Basic(
-		this.username,
-		this.password
-		);
+@freezed
+abstract class Basic with _$Basic {
+	const factory Basic({
+		required String username,
+		required String password,
+	}) = _Basic;
+
 
 	static Map<String, dynamic> encode(Basic value) {
 		Map<String, dynamic> entityAsMap = {
@@ -19,8 +21,8 @@ class Basic {
 
 	static Basic fromJSON(Map<String, dynamic> data) {
 		return Basic(
-			(data["username"] as String),
-			(data["password"] as String)
+			username: (data["username"] as String),
+			password: (data["password"] as String)
 		);
 	}
 }

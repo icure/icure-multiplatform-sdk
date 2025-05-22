@@ -90,6 +90,19 @@ class ClassificationBasicPlatformApi {
 		return (parsedResJson as List<dynamic>).map((x1) => DocIdentifier.fromJSON(x1) ).toList();
 	}
 
+	Future<EncryptedClassification> createClassification(String sdkId, EncryptedClassification entity) async {
+		final res = await _methodChannel.invokeMethod<String>(
+			'ClassificationBasicApi.createClassification',
+			{
+				"sdkId": sdkId,
+				"entity": jsonEncode(EncryptedClassification.encode(entity)),
+			}
+		).catchError(convertPlatformException);
+		if (res == null) throw AssertionError("received null result from platform method createClassification");
+		final parsedResJson = jsonDecode(res);
+		return EncryptedClassification.fromJSON(parsedResJson);
+	}
+
 	Future<EncryptedClassification> modifyClassification(String sdkId, EncryptedClassification entity) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'ClassificationBasicApi.modifyClassification',
@@ -103,7 +116,7 @@ class ClassificationBasicPlatformApi {
 		return EncryptedClassification.fromJSON(parsedResJson);
 	}
 
-	Future<EncryptedClassification> getClassification(String sdkId, String entityId) async {
+	Future<EncryptedClassification?> getClassification(String sdkId, String entityId) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'ClassificationBasicApi.getClassification',
 			{
@@ -113,7 +126,7 @@ class ClassificationBasicPlatformApi {
 		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getClassification");
 		final parsedResJson = jsonDecode(res);
-		return EncryptedClassification.fromJSON(parsedResJson);
+		return parsedResJson == null ? null : EncryptedClassification.fromJSON(parsedResJson);
 	}
 
 	Future<List<EncryptedClassification>> getClassifications(String sdkId, List<String> entityIds) async {

@@ -22,6 +22,7 @@ import com.icure.cardinal.sdk.js.model.CheckedConverters.arrayToList
 import com.icure.cardinal.sdk.js.model.CheckedConverters.arrayToSet
 import com.icure.cardinal.sdk.js.model.CheckedConverters.dynamicToJsonNullsafe
 import com.icure.cardinal.sdk.js.model.CheckedConverters.listToArray
+import com.icure.cardinal.sdk.js.model.CheckedConverters.nullToUndefined
 import com.icure.cardinal.sdk.js.model.CheckedConverters.numberToInt
 import com.icure.cardinal.sdk.js.model.CheckedConverters.numberToLong
 import com.icure.cardinal.sdk.js.model.CheckedConverters.objectToMap
@@ -30,9 +31,9 @@ import com.icure.cardinal.sdk.js.model.CheckedConverters.undefinedToNull
 import com.icure.cardinal.sdk.js.model.ContactJs
 import com.icure.cardinal.sdk.js.model.DecryptedContactJs
 import com.icure.cardinal.sdk.js.model.EncryptedContactJs
-import com.icure.cardinal.sdk.js.model.IdWithMandatoryRevJs
 import com.icure.cardinal.sdk.js.model.PaginatedListJs
 import com.icure.cardinal.sdk.js.model.PatientJs
+import com.icure.cardinal.sdk.js.model.StoredDocumentIdentifierJs
 import com.icure.cardinal.sdk.js.model.UserJs
 import com.icure.cardinal.sdk.js.model.`data`.LabelledOccurenceJs
 import com.icure.cardinal.sdk.js.model.`data`.labelledOccurence_toJs
@@ -45,10 +46,10 @@ import com.icure.cardinal.sdk.js.model.embed.EncryptedServiceJs
 import com.icure.cardinal.sdk.js.model.embed.ServiceJs
 import com.icure.cardinal.sdk.js.model.embed.service_fromJs
 import com.icure.cardinal.sdk.js.model.embed.service_toJs
-import com.icure.cardinal.sdk.js.model.idWithMandatoryRev_fromJs
 import com.icure.cardinal.sdk.js.model.paginatedList_toJs
 import com.icure.cardinal.sdk.js.model.patient_fromJs
 import com.icure.cardinal.sdk.js.model.specializations.hexString_toJs
+import com.icure.cardinal.sdk.js.model.storedDocumentIdentifier_fromJs
 import com.icure.cardinal.sdk.js.model.user_fromJs
 import com.icure.cardinal.sdk.js.subscription.EntitySubscriptionConfigurationJs
 import com.icure.cardinal.sdk.js.subscription.EntitySubscriptionJs
@@ -60,8 +61,8 @@ import com.icure.cardinal.sdk.js.utils.pagination.paginatedListIterator_toJs
 import com.icure.cardinal.sdk.model.Contact
 import com.icure.cardinal.sdk.model.DecryptedContact
 import com.icure.cardinal.sdk.model.EncryptedContact
-import com.icure.cardinal.sdk.model.StoredDocumentIdentifier
 import com.icure.cardinal.sdk.model.Patient
+import com.icure.cardinal.sdk.model.StoredDocumentIdentifier
 import com.icure.cardinal.sdk.model.User
 import com.icure.cardinal.sdk.model.`data`.LabelledOccurence
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
@@ -245,6 +246,35 @@ internal class ContactApiImplJs(
 			)
 		}
 
+		override fun createContact(entity: EncryptedContactJs): Promise<EncryptedContactJs> =
+				GlobalScope.promise {
+			val entityConverted: EncryptedContact = contact_fromJs(entity)
+			val result = contactApi.encrypted.createContact(
+				entityConverted,
+			)
+			contact_toJs(result)
+		}
+
+		override fun createContacts(entities: Array<EncryptedContactJs>):
+				Promise<Array<EncryptedContactJs>> = GlobalScope.promise {
+			val entitiesConverted: List<EncryptedContact> = arrayToList(
+				entities,
+				"entities",
+				{ x1: EncryptedContactJs ->
+					contact_fromJs(x1)
+				},
+			)
+			val result = contactApi.encrypted.createContacts(
+				entitiesConverted,
+			)
+			listToArray(
+				result,
+				{ x1: EncryptedContact ->
+					contact_toJs(x1)
+				},
+			)
+		}
+
 		override fun undeleteContactById(id: String, rev: String): Promise<EncryptedContactJs> =
 				GlobalScope.promise {
 			val idConverted: String = id
@@ -294,12 +324,16 @@ internal class ContactApiImplJs(
 			)
 		}
 
-		override fun getContact(entityId: String): Promise<EncryptedContactJs> = GlobalScope.promise {
+		override fun getContact(entityId: String): Promise<EncryptedContactJs?> = GlobalScope.promise {
 			val entityIdConverted: String = entityId
 			val result = contactApi.encrypted.getContact(
 				entityIdConverted,
 			)
-			contact_toJs(result)
+			nullToUndefined(
+				result?.let { nonNull1 ->
+					contact_toJs(nonNull1)
+				}
+			)
 		}
 
 		override fun getContacts(entityIds: Array<String>): Promise<Array<EncryptedContactJs>> =
@@ -671,6 +705,34 @@ internal class ContactApiImplJs(
 			)
 		}
 
+		override fun createContact(entity: ContactJs): Promise<ContactJs> = GlobalScope.promise {
+			val entityConverted: Contact = contact_fromJs(entity)
+			val result = contactApi.tryAndRecover.createContact(
+				entityConverted,
+			)
+			contact_toJs(result)
+		}
+
+		override fun createContacts(entities: Array<ContactJs>): Promise<Array<ContactJs>> =
+				GlobalScope.promise {
+			val entitiesConverted: List<Contact> = arrayToList(
+				entities,
+				"entities",
+				{ x1: ContactJs ->
+					contact_fromJs(x1)
+				},
+			)
+			val result = contactApi.tryAndRecover.createContacts(
+				entitiesConverted,
+			)
+			listToArray(
+				result,
+				{ x1: Contact ->
+					contact_toJs(x1)
+				},
+			)
+		}
+
 		override fun undeleteContactById(id: String, rev: String): Promise<ContactJs> =
 				GlobalScope.promise {
 			val idConverted: String = id
@@ -718,12 +780,16 @@ internal class ContactApiImplJs(
 			)
 		}
 
-		override fun getContact(entityId: String): Promise<ContactJs> = GlobalScope.promise {
+		override fun getContact(entityId: String): Promise<ContactJs?> = GlobalScope.promise {
 			val entityIdConverted: String = entityId
 			val result = contactApi.tryAndRecover.getContact(
 				entityIdConverted,
 			)
-			contact_toJs(result)
+			nullToUndefined(
+				result?.let { nonNull1 ->
+					contact_toJs(nonNull1)
+				}
+			)
 		}
 
 		override fun getContacts(entityIds: Array<String>): Promise<Array<ContactJs>> =
@@ -1000,35 +1066,6 @@ internal class ContactApiImplJs(
 		)
 	}
 
-	override fun createContact(entity: DecryptedContactJs): Promise<DecryptedContactJs> =
-			GlobalScope.promise {
-		val entityConverted: DecryptedContact = contact_fromJs(entity)
-		val result = contactApi.createContact(
-			entityConverted,
-		)
-		contact_toJs(result)
-	}
-
-	override fun createContacts(entities: Array<DecryptedContactJs>):
-			Promise<Array<DecryptedContactJs>> = GlobalScope.promise {
-		val entitiesConverted: List<DecryptedContact> = arrayToList(
-			entities,
-			"entities",
-			{ x1: DecryptedContactJs ->
-				contact_fromJs(x1)
-			},
-		)
-		val result = contactApi.createContacts(
-			entitiesConverted,
-		)
-		listToArray(
-			result,
-			{ x1: DecryptedContact ->
-				contact_toJs(x1)
-			},
-		)
-	}
-
 	override fun withEncryptionMetadata(
 		base: DecryptedContactJs?,
 		patient: PatientJs,
@@ -1238,13 +1275,13 @@ internal class ContactApiImplJs(
 		docIdentifier_toJs(result)
 	}
 
-	override fun deleteContactsByIds(entityIds: Array<IdWithMandatoryRevJs>):
+	override fun deleteContactsByIds(entityIds: Array<StoredDocumentIdentifierJs>):
 			Promise<Array<DocIdentifierJs>> = GlobalScope.promise {
 		val entityIdsConverted: List<StoredDocumentIdentifier> = arrayToList(
 			entityIds,
 			"entityIds",
-			{ x1: IdWithMandatoryRevJs ->
-				idWithMandatoryRev_fromJs(x1)
+			{ x1: StoredDocumentIdentifierJs ->
+				storedDocumentIdentifier_fromJs(x1)
 			},
 		)
 		val result = contactApi.deleteContactsByIds(
@@ -1470,6 +1507,35 @@ internal class ContactApiImplJs(
 		)
 	}
 
+	override fun createContact(entity: DecryptedContactJs): Promise<DecryptedContactJs> =
+			GlobalScope.promise {
+		val entityConverted: DecryptedContact = contact_fromJs(entity)
+		val result = contactApi.createContact(
+			entityConverted,
+		)
+		contact_toJs(result)
+	}
+
+	override fun createContacts(entities: Array<DecryptedContactJs>):
+			Promise<Array<DecryptedContactJs>> = GlobalScope.promise {
+		val entitiesConverted: List<DecryptedContact> = arrayToList(
+			entities,
+			"entities",
+			{ x1: DecryptedContactJs ->
+				contact_fromJs(x1)
+			},
+		)
+		val result = contactApi.createContacts(
+			entitiesConverted,
+		)
+		listToArray(
+			result,
+			{ x1: DecryptedContact ->
+				contact_toJs(x1)
+			},
+		)
+	}
+
 	override fun undeleteContactById(id: String, rev: String): Promise<DecryptedContactJs> =
 			GlobalScope.promise {
 		val idConverted: String = id
@@ -1519,12 +1585,16 @@ internal class ContactApiImplJs(
 		)
 	}
 
-	override fun getContact(entityId: String): Promise<DecryptedContactJs> = GlobalScope.promise {
+	override fun getContact(entityId: String): Promise<DecryptedContactJs?> = GlobalScope.promise {
 		val entityIdConverted: String = entityId
 		val result = contactApi.getContact(
 			entityIdConverted,
 		)
-		contact_toJs(result)
+		nullToUndefined(
+			result?.let { nonNull1 ->
+				contact_toJs(nonNull1)
+			}
+		)
 	}
 
 	override fun getContacts(entityIds: Array<String>): Promise<Array<DecryptedContactJs>> =

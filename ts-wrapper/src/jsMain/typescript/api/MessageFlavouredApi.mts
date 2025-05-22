@@ -20,13 +20,17 @@ export interface MessageFlavouredApi<E extends Message> {
 
 	filterMessagesBySorted(filter: SortableFilterOptions<Message>): Promise<PaginatedListIterator<E>>;
 
+	createMessage(entity: E): Promise<E>;
+
+	createMessageInTopic(entity: E): Promise<E>;
+
 	undeleteMessage(message: Message): Promise<Message>;
 
 	modifyMessage(entity: E): Promise<E>;
 
 	undeleteMessageById(id: string, rev: string): Promise<E>;
 
-	getMessage(entityId: string): Promise<E>;
+	getMessage(entityId: string): Promise<E | undefined>;
 
 	getMessages(entityIds: Array<string>): Promise<Array<E>>;
 

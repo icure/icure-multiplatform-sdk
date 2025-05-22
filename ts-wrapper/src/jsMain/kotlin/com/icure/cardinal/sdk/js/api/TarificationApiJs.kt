@@ -13,7 +13,7 @@ import kotlin.js.Promise
 
 @JsName("TarificationApi")
 public external interface TarificationApiJs {
-	public fun getTarification(tarificationId: String): Promise<TarificationJs>
+	public fun getTarification(tarificationId: String): Promise<TarificationJs?>
 
 	public fun createTarification(tarification: TarificationJs): Promise<TarificationJs>
 

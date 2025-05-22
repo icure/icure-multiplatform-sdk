@@ -27,7 +27,7 @@ public external interface InvoiceBasicApiJs {
 
 	public fun modifyInvoices(entities: Array<EncryptedInvoiceJs>): Promise<Array<EncryptedInvoiceJs>>
 
-	public fun getInvoice(entityId: String): Promise<EncryptedInvoiceJs>
+	public fun getInvoice(entityId: String): Promise<EncryptedInvoiceJs?>
 
 	public fun getInvoices(entityIds: Array<String>): Promise<Array<EncryptedInvoiceJs>>
 

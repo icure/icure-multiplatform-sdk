@@ -16,6 +16,7 @@ import 'package:cardinal_sdk/model/id_with_rev.dart';
 import 'package:cardinal_sdk/model/couchdb/group_databases_info.dart';
 import 'package:cardinal_sdk/model/replication_info.dart';
 import 'package:cardinal_sdk/model/couchdb/doc_identifier.dart';
+import 'package:cardinal_sdk/model/security/external_jwt_config.dart';
 
 
 class GroupApi {
@@ -208,6 +209,33 @@ class GroupApi {
 	Future<List<DocIdentifier>> listAllGroupsIds() async {
 		return await CardinalSdkPlatformInterface.instance.apis.group.listAllGroupsIds(
 			_sdkId,
+		);
+	}
+
+	Future<Group> createOrUpdateExternalJwtConfig(String groupId, String key, ExternalJwtConfig config) async {
+		return await CardinalSdkPlatformInterface.instance.apis.group.createOrUpdateExternalJwtConfig(
+			_sdkId,
+			groupId,
+			key,
+			config,
+		);
+	}
+
+	Future<Group> removeExternalJwtConfig(String groupId, String key) async {
+		return await CardinalSdkPlatformInterface.instance.apis.group.removeExternalJwtConfig(
+			_sdkId,
+			groupId,
+			key,
+		);
+	}
+
+	Future<String> getOperationTokenForGroup(String groupId, Operation operation, int? duration, String? description) async {
+		return await CardinalSdkPlatformInterface.instance.apis.group.getOperationTokenForGroup(
+			_sdkId,
+			groupId,
+			operation,
+			duration,
+			description,
 		);
 	}
 }

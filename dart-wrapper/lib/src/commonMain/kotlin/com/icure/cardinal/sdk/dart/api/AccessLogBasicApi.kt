@@ -8,7 +8,7 @@ import com.icure.cardinal.sdk.filters.BaseFilterOptions
 import com.icure.cardinal.sdk.filters.BaseSortableFilterOptions
 import com.icure.cardinal.sdk.model.AccessLog
 import com.icure.cardinal.sdk.model.EncryptedAccessLog
-import com.icure.cardinal.sdk.model.IdWithMandatoryRev
+import com.icure.cardinal.sdk.model.StoredDocumentIdentifier
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.serialization.PaginatedListIteratorWithSerializer
 import com.icure.cardinal.sdk.utils.Serialization.fullLanguageInteropJson
@@ -18,6 +18,7 @@ import kotlin.String
 import kotlin.Unit
 import kotlinx.serialization.PolymorphicSerializer
 import kotlinx.serialization.builtins.ListSerializer
+import kotlinx.serialization.builtins.nullable
 import kotlinx.serialization.builtins.serializer
 
 @OptIn(InternalIcureApi::class)
@@ -163,7 +164,7 @@ public object AccessLogBasicApi {
     entityIdsString: String,
   ) {
     val entityIds = fullLanguageInteropJson.decodeFromString(
-      ListSerializer(IdWithMandatoryRev.serializer()),
+      ListSerializer(StoredDocumentIdentifier.serializer()),
       entityIdsString
     )
     ApiScope.execute(
@@ -273,6 +274,29 @@ public object AccessLogBasicApi {
     }
   }
 
+  public fun createAccessLog(
+    dartResultCallback: (
+      String?,
+      String?,
+      String?,
+      String?,
+    ) -> Unit,
+    sdkId: String,
+    entityString: String,
+  ) {
+    val entity = fullLanguageInteropJson.decodeFromString(
+      EncryptedAccessLog.serializer(),
+      entityString
+    )
+    ApiScope.execute(
+      dartResultCallback,
+      EncryptedAccessLog.serializer()) {
+      NativeReferences.get<CardinalBaseApis>(sdkId).accessLog.createAccessLog(
+        entity,
+      )
+    }
+  }
+
   public fun undeleteAccessLogById(
     dartResultCallback: (
       String?,
@@ -364,7 +388,7 @@ public object AccessLogBasicApi {
     )
     ApiScope.execute(
       dartResultCallback,
-      EncryptedAccessLog.serializer()) {
+      EncryptedAccessLog.serializer().nullable) {
       NativeReferences.get<CardinalBaseApis>(sdkId).accessLog.getAccessLog(
         entityId,
       )

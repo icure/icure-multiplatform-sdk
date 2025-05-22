@@ -2,17 +2,19 @@
 import 'package:cardinal_sdk/model/specializations/base64string.dart';
 import 'package:cardinal_sdk/model/embed/financial_institution_information.dart';
 import 'package:cardinal_sdk/model/embed/encryptable.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+part "financial_institution_information.freezed.dart";
 
 
 sealed class FinancialInstitutionInformation implements Encryptable {
-	abstract String? name;
-	abstract String? key;
-	abstract String? bankAccount;
-	abstract String? bic;
-	abstract String? proxyBankAccount;
-	abstract String? proxyBic;
-	abstract Set<String> preferredFiiForPartners;
-	@override abstract Base64String? encryptedSelf;
+	abstract final String? name;
+	abstract final String? key;
+	abstract final String? bankAccount;
+	abstract final String? bic;
+	abstract final String? proxyBankAccount;
+	abstract final String? proxyBic;
+	abstract final Set<String> preferredFiiForPartners;
+	@override abstract final Base64String? encryptedSelf;
 
 	static Map<String, dynamic> encode(FinancialInstitutionInformation value) {
 		switch (value) {
@@ -43,32 +45,19 @@ sealed class FinancialInstitutionInformation implements Encryptable {
 	}
 }
 
-class EncryptedFinancialInstitutionInformation implements FinancialInstitutionInformation {
-	@override String? name = null;
-	@override String? key = null;
-	@override String? bankAccount = null;
-	@override String? bic = null;
-	@override String? proxyBankAccount = null;
-	@override String? proxyBic = null;
-	@override Set<String> preferredFiiForPartners = {};
-	@override Base64String? encryptedSelf = null;
-	EncryptedFinancialInstitutionInformation({
-			String? name,
-			String? key,
-			String? bankAccount,
-			String? bic,
-			String? proxyBankAccount,
-			String? proxyBic,
-			Set<String>? preferredFiiForPartners,
-			Base64String? encryptedSelf
-		}) : name = name ?? null,
-		key = key ?? null,
-		bankAccount = bankAccount ?? null,
-		bic = bic ?? null,
-		proxyBankAccount = proxyBankAccount ?? null,
-		proxyBic = proxyBic ?? null,
-		preferredFiiForPartners = preferredFiiForPartners ?? {},
-		encryptedSelf = encryptedSelf ?? null;
+@freezed
+abstract class EncryptedFinancialInstitutionInformation with _$EncryptedFinancialInstitutionInformation implements FinancialInstitutionInformation {
+	const factory EncryptedFinancialInstitutionInformation({
+		@Default(null) String? name,
+		@Default(null) String? key,
+		@Default(null) String? bankAccount,
+		@Default(null) String? bic,
+		@Default(null) String? proxyBankAccount,
+		@Default(null) String? proxyBic,
+		@Default({}) Set<String> preferredFiiForPartners,
+		@Default(null) Base64String? encryptedSelf,
+	}) = _EncryptedFinancialInstitutionInformation;
+
 
 	static Map<String, dynamic> encode(EncryptedFinancialInstitutionInformation value) {
 		Map<String, dynamic> entityAsMap = {
@@ -98,32 +87,19 @@ class EncryptedFinancialInstitutionInformation implements FinancialInstitutionIn
 	}
 }
 
-class DecryptedFinancialInstitutionInformation implements FinancialInstitutionInformation {
-	@override String? name = null;
-	@override String? key = null;
-	@override String? bankAccount = null;
-	@override String? bic = null;
-	@override String? proxyBankAccount = null;
-	@override String? proxyBic = null;
-	@override Set<String> preferredFiiForPartners = {};
-	@override Base64String? encryptedSelf = null;
-	DecryptedFinancialInstitutionInformation({
-			String? name,
-			String? key,
-			String? bankAccount,
-			String? bic,
-			String? proxyBankAccount,
-			String? proxyBic,
-			Set<String>? preferredFiiForPartners,
-			Base64String? encryptedSelf
-		}) : name = name ?? null,
-		key = key ?? null,
-		bankAccount = bankAccount ?? null,
-		bic = bic ?? null,
-		proxyBankAccount = proxyBankAccount ?? null,
-		proxyBic = proxyBic ?? null,
-		preferredFiiForPartners = preferredFiiForPartners ?? {},
-		encryptedSelf = encryptedSelf ?? null;
+@freezed
+abstract class DecryptedFinancialInstitutionInformation with _$DecryptedFinancialInstitutionInformation implements FinancialInstitutionInformation {
+	const factory DecryptedFinancialInstitutionInformation({
+		@Default(null) String? name,
+		@Default(null) String? key,
+		@Default(null) String? bankAccount,
+		@Default(null) String? bic,
+		@Default(null) String? proxyBankAccount,
+		@Default(null) String? proxyBic,
+		@Default({}) Set<String> preferredFiiForPartners,
+		@Default(null) Base64String? encryptedSelf,
+	}) = _DecryptedFinancialInstitutionInformation;
+
 
 	static Map<String, dynamic> encode(DecryptedFinancialInstitutionInformation value) {
 		Map<String, dynamic> entityAsMap = {

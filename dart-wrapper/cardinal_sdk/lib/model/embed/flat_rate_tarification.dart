@@ -4,14 +4,16 @@ import 'package:cardinal_sdk/model/embed/valorisation.dart';
 import 'package:cardinal_sdk/model/specializations/base64string.dart';
 import 'package:cardinal_sdk/model/embed/flat_rate_tarification.dart';
 import 'package:cardinal_sdk/model/embed/encryptable.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+part "flat_rate_tarification.freezed.dart";
 
 
 sealed class FlatRateTarification implements Encryptable {
-	abstract String? code;
-	abstract FlatRateType? flatRateType;
-	abstract Map<String, String>? label;
+	abstract final String? code;
+	abstract final FlatRateType? flatRateType;
+	abstract final Map<String, String>? label;
 	List<Valorisation> get valorisations;
-	@override abstract Base64String? encryptedSelf;
+	@override abstract final Base64String? encryptedSelf;
 
 	static Map<String, dynamic> encode(FlatRateTarification value) {
 		switch (value) {
@@ -42,23 +44,16 @@ sealed class FlatRateTarification implements Encryptable {
 	}
 }
 
-class EncryptedFlatRateTarification implements FlatRateTarification {
-	@override String? code = null;
-	@override FlatRateType? flatRateType = null;
-	@override Map<String, String>? label = null;
-	@override List<EncryptedValorisation> valorisations = [];
-	@override Base64String? encryptedSelf = null;
-	EncryptedFlatRateTarification({
-			String? code,
-			FlatRateType? flatRateType,
-			Map<String, String>? label,
-			List<EncryptedValorisation>? valorisations,
-			Base64String? encryptedSelf
-		}) : code = code ?? null,
-		flatRateType = flatRateType ?? null,
-		label = label ?? null,
-		valorisations = valorisations ?? [],
-		encryptedSelf = encryptedSelf ?? null;
+@freezed
+abstract class EncryptedFlatRateTarification with _$EncryptedFlatRateTarification implements FlatRateTarification {
+	const factory EncryptedFlatRateTarification({
+		@Default(null) String? code,
+		@Default(null) FlatRateType? flatRateType,
+		@Default(null) Map<String, String>? label,
+		@Default([]) List<EncryptedValorisation> valorisations,
+		@Default(null) Base64String? encryptedSelf,
+	}) = _EncryptedFlatRateTarification;
+
 
 	static Map<String, dynamic> encode(EncryptedFlatRateTarification value) {
 		Map<String, dynamic> entityAsMap = {
@@ -82,23 +77,16 @@ class EncryptedFlatRateTarification implements FlatRateTarification {
 	}
 }
 
-class DecryptedFlatRateTarification implements FlatRateTarification {
-	@override String? code = null;
-	@override FlatRateType? flatRateType = null;
-	@override Map<String, String>? label = null;
-	@override List<DecryptedValorisation> valorisations = [];
-	@override Base64String? encryptedSelf = null;
-	DecryptedFlatRateTarification({
-			String? code,
-			FlatRateType? flatRateType,
-			Map<String, String>? label,
-			List<DecryptedValorisation>? valorisations,
-			Base64String? encryptedSelf
-		}) : code = code ?? null,
-		flatRateType = flatRateType ?? null,
-		label = label ?? null,
-		valorisations = valorisations ?? [],
-		encryptedSelf = encryptedSelf ?? null;
+@freezed
+abstract class DecryptedFlatRateTarification with _$DecryptedFlatRateTarification implements FlatRateTarification {
+	const factory DecryptedFlatRateTarification({
+		@Default(null) String? code,
+		@Default(null) FlatRateType? flatRateType,
+		@Default(null) Map<String, String>? label,
+		@Default([]) List<DecryptedValorisation> valorisations,
+		@Default(null) Base64String? encryptedSelf,
+	}) = _DecryptedFlatRateTarification;
+
 
 	static Map<String, dynamic> encode(DecryptedFlatRateTarification value) {
 		Map<String, dynamic> entityAsMap = {

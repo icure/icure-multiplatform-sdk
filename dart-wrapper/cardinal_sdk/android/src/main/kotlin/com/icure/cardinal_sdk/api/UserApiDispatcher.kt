@@ -62,6 +62,9 @@ public object UserApiDispatcher {
     "deleteUserInGroup" -> deleteUserInGroup(parameters, resultCallback)
     "purgeUser" -> purgeUser(parameters, resultCallback)
     "undeleteUser" -> undeleteUser(parameters, resultCallback)
+    "setUserInheritsPermissions" -> setUserInheritsPermissions(parameters, resultCallback)
+    "setLoginIdentifiers" -> setLoginIdentifiers(parameters, resultCallback)
+    "setExternalJwtAuthByIdentifiersForCurrentUser" -> setExternalJwtAuthByIdentifiersForCurrentUser(parameters, resultCallback)
     "subscribeToEvents" -> subscribeToEvents(parameters, resultCallback)
     else -> null
   }?.let { true } ?: false
@@ -666,6 +669,52 @@ public object UserApiDispatcher {
       resultCallback,
       parameters.getValue("sdkId"),
       parameters.getValue("user"),
+    )
+  }
+
+  private fun setUserInheritsPermissions(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    UserApi.setUserInheritsPermissions(
+      resultCallback,
+      parameters.getValue("sdkId"),
+      parameters.getValue("userId"),
+      parameters.getValue("groupId"),
+      parameters.getValue("value"),
+    )
+  }
+
+  private fun setLoginIdentifiers(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    UserApi.setLoginIdentifiers(
+      resultCallback,
+      parameters.getValue("sdkId"),
+      parameters.getValue("userId"),
+      parameters.getValue("groupId"),
+      parameters.getValue("identifier"),
+      parameters.getValue("replaceExisting"),
+    )
+  }
+
+  private fun setExternalJwtAuthByIdentifiersForCurrentUser(parameters: Map<String, String>,
+      resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    UserApi.setExternalJwtAuthByIdentifiersForCurrentUser(
+      resultCallback,
+      parameters.getValue("sdkId"),
+      parameters.getValue("externalJwtConfigId"),
+      parameters.getValue("externalAuthenticationToken"),
     )
   }
 

@@ -16,6 +16,7 @@ import com.icure.cardinal.sdk.js.model.couchdb.DesignDocumentJs
 import com.icure.cardinal.sdk.js.model.couchdb.DocIdentifierJs
 import com.icure.cardinal.sdk.js.model.couchdb.GroupDatabasesInfoJs
 import com.icure.cardinal.sdk.js.model.embed.RoleConfigurationJs
+import com.icure.cardinal.sdk.js.model.security.ExternalJwtConfigJs
 import com.icure.cardinal.sdk.js.utils.Record
 import kotlin.Array
 import kotlin.Boolean
@@ -109,4 +110,19 @@ public external interface GroupApiJs {
 	public fun getHierarchy(id: String): Promise<Array<String>>
 
 	public fun listAllGroupsIds(): Promise<Array<DocIdentifierJs>>
+
+	public fun createOrUpdateExternalJwtConfig(
+		groupId: String,
+		key: String,
+		config: ExternalJwtConfigJs,
+	): Promise<GroupJs>
+
+	public fun removeExternalJwtConfig(groupId: String, key: String): Promise<GroupJs>
+
+	public fun getOperationTokenForGroup(
+		groupId: String,
+		operation: String,
+		duration: Double?,
+		description: String?,
+	): Promise<String>
 }

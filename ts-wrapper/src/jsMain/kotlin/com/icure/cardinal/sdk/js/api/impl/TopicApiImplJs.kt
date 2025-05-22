@@ -21,19 +21,20 @@ import com.icure.cardinal.sdk.js.filters.sortableFilterOptions_fromJs
 import com.icure.cardinal.sdk.js.model.CheckedConverters.arrayToList
 import com.icure.cardinal.sdk.js.model.CheckedConverters.arrayToSet
 import com.icure.cardinal.sdk.js.model.CheckedConverters.listToArray
+import com.icure.cardinal.sdk.js.model.CheckedConverters.nullToUndefined
 import com.icure.cardinal.sdk.js.model.CheckedConverters.objectToMap
 import com.icure.cardinal.sdk.js.model.CheckedConverters.setToArray
 import com.icure.cardinal.sdk.js.model.DecryptedTopicJs
 import com.icure.cardinal.sdk.js.model.EncryptedTopicJs
-import com.icure.cardinal.sdk.js.model.IdWithMandatoryRevJs
 import com.icure.cardinal.sdk.js.model.PatientJs
+import com.icure.cardinal.sdk.js.model.StoredDocumentIdentifierJs
 import com.icure.cardinal.sdk.js.model.TopicJs
 import com.icure.cardinal.sdk.js.model.UserJs
 import com.icure.cardinal.sdk.js.model.couchdb.DocIdentifierJs
 import com.icure.cardinal.sdk.js.model.couchdb.docIdentifier_toJs
-import com.icure.cardinal.sdk.js.model.idWithMandatoryRev_fromJs
 import com.icure.cardinal.sdk.js.model.patient_fromJs
 import com.icure.cardinal.sdk.js.model.specializations.hexString_toJs
+import com.icure.cardinal.sdk.js.model.storedDocumentIdentifier_fromJs
 import com.icure.cardinal.sdk.js.model.topic_fromJs
 import com.icure.cardinal.sdk.js.model.topic_toJs
 import com.icure.cardinal.sdk.js.model.user_fromJs
@@ -46,8 +47,8 @@ import com.icure.cardinal.sdk.js.utils.pagination.PaginatedListIteratorJs
 import com.icure.cardinal.sdk.js.utils.pagination.paginatedListIterator_toJs
 import com.icure.cardinal.sdk.model.DecryptedTopic
 import com.icure.cardinal.sdk.model.EncryptedTopic
-import com.icure.cardinal.sdk.model.StoredDocumentIdentifier
 import com.icure.cardinal.sdk.model.Patient
+import com.icure.cardinal.sdk.model.StoredDocumentIdentifier
 import com.icure.cardinal.sdk.model.Topic
 import com.icure.cardinal.sdk.model.TopicRole
 import com.icure.cardinal.sdk.model.User
@@ -151,6 +152,15 @@ internal class TopicApiImplJs(
 			)
 		}
 
+		override fun createTopic(entity: EncryptedTopicJs): Promise<EncryptedTopicJs> =
+				GlobalScope.promise {
+			val entityConverted: EncryptedTopic = topic_fromJs(entity)
+			val result = topicApi.encrypted.createTopic(
+				entityConverted,
+			)
+			topic_toJs(result)
+		}
+
 		override fun undeleteTopic(topic: TopicJs): Promise<TopicJs> = GlobalScope.promise {
 			val topicConverted: Topic = topic_fromJs(topic)
 			val result = topicApi.encrypted.undeleteTopic(
@@ -179,12 +189,16 @@ internal class TopicApiImplJs(
 			topic_toJs(result)
 		}
 
-		override fun getTopic(entityId: String): Promise<EncryptedTopicJs> = GlobalScope.promise {
+		override fun getTopic(entityId: String): Promise<EncryptedTopicJs?> = GlobalScope.promise {
 			val entityIdConverted: String = entityId
 			val result = topicApi.encrypted.getTopic(
 				entityIdConverted,
 			)
-			topic_toJs(result)
+			nullToUndefined(
+				result?.let { nonNull1 ->
+					topic_toJs(nonNull1)
+				}
+			)
 		}
 
 		override fun getTopics(entityIds: Array<String>): Promise<Array<EncryptedTopicJs>> =
@@ -311,6 +325,14 @@ internal class TopicApiImplJs(
 			)
 		}
 
+		override fun createTopic(entity: TopicJs): Promise<TopicJs> = GlobalScope.promise {
+			val entityConverted: Topic = topic_fromJs(entity)
+			val result = topicApi.tryAndRecover.createTopic(
+				entityConverted,
+			)
+			topic_toJs(result)
+		}
+
 		override fun undeleteTopic(topic: TopicJs): Promise<TopicJs> = GlobalScope.promise {
 			val topicConverted: Topic = topic_fromJs(topic)
 			val result = topicApi.tryAndRecover.undeleteTopic(
@@ -337,12 +359,16 @@ internal class TopicApiImplJs(
 			topic_toJs(result)
 		}
 
-		override fun getTopic(entityId: String): Promise<TopicJs> = GlobalScope.promise {
+		override fun getTopic(entityId: String): Promise<TopicJs?> = GlobalScope.promise {
 			val entityIdConverted: String = entityId
 			val result = topicApi.tryAndRecover.getTopic(
 				entityIdConverted,
 			)
-			topic_toJs(result)
+			nullToUndefined(
+				result?.let { nonNull1 ->
+					topic_toJs(nonNull1)
+				}
+			)
 		}
 
 		override fun getTopics(entityIds: Array<String>): Promise<Array<TopicJs>> = GlobalScope.promise {
@@ -390,15 +416,6 @@ internal class TopicApiImplJs(
 			)
 			topic_toJs(result)
 		}
-	}
-
-	override fun createTopic(entity: DecryptedTopicJs): Promise<DecryptedTopicJs> =
-			GlobalScope.promise {
-		val entityConverted: DecryptedTopic = topic_fromJs(entity)
-		val result = topicApi.createTopic(
-			entityConverted,
-		)
-		topic_toJs(result)
 	}
 
 	override fun withEncryptionMetadata(
@@ -591,13 +608,13 @@ internal class TopicApiImplJs(
 		docIdentifier_toJs(result)
 	}
 
-	override fun deleteTopicsByIds(entityIds: Array<IdWithMandatoryRevJs>):
+	override fun deleteTopicsByIds(entityIds: Array<StoredDocumentIdentifierJs>):
 			Promise<Array<DocIdentifierJs>> = GlobalScope.promise {
 		val entityIdsConverted: List<StoredDocumentIdentifier> = arrayToList(
 			entityIds,
 			"entityIds",
-			{ x1: IdWithMandatoryRevJs ->
-				idWithMandatoryRev_fromJs(x1)
+			{ x1: StoredDocumentIdentifierJs ->
+				storedDocumentIdentifier_fromJs(x1)
 			},
 		)
 		val result = topicApi.deleteTopicsByIds(
@@ -733,6 +750,15 @@ internal class TopicApiImplJs(
 		)
 	}
 
+	override fun createTopic(entity: DecryptedTopicJs): Promise<DecryptedTopicJs> =
+			GlobalScope.promise {
+		val entityConverted: DecryptedTopic = topic_fromJs(entity)
+		val result = topicApi.createTopic(
+			entityConverted,
+		)
+		topic_toJs(result)
+	}
+
 	override fun undeleteTopic(topic: TopicJs): Promise<TopicJs> = GlobalScope.promise {
 		val topicConverted: Topic = topic_fromJs(topic)
 		val result = topicApi.undeleteTopic(
@@ -761,12 +787,16 @@ internal class TopicApiImplJs(
 		topic_toJs(result)
 	}
 
-	override fun getTopic(entityId: String): Promise<DecryptedTopicJs> = GlobalScope.promise {
+	override fun getTopic(entityId: String): Promise<DecryptedTopicJs?> = GlobalScope.promise {
 		val entityIdConverted: String = entityId
 		val result = topicApi.getTopic(
 			entityIdConverted,
 		)
-		topic_toJs(result)
+		nullToUndefined(
+			result?.let { nonNull1 ->
+				topic_toJs(nonNull1)
+			}
+		)
 	}
 
 	override fun getTopics(entityIds: Array<String>): Promise<Array<DecryptedTopicJs>> =

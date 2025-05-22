@@ -4,7 +4,7 @@ import 'package:cardinal_sdk/model/topic.dart';
 import 'package:cardinal_sdk/plugin/cardinal_sdk_platform_interface.dart';
 import 'package:cardinal_sdk/utils/pagination/paginated_list_iterator.dart';
 import 'package:cardinal_sdk/model/couchdb/doc_identifier.dart';
-import 'package:cardinal_sdk/model/id_with_mandatory_rev.dart';
+import 'package:cardinal_sdk/model/stored_document_identifier.dart';
 import 'package:cardinal_sdk/model/topic_role.dart';
 import 'package:cardinal_sdk/subscription/subscription_event_type.dart';
 import 'package:cardinal_sdk/subscription/entity_subscription_configuration.dart';
@@ -55,7 +55,7 @@ class TopicBasicApi {
 		);
 	}
 
-	Future<List<DocIdentifier>> deleteTopicsByIds(List<IdWithMandatoryRev> entityIds) async {
+	Future<List<DocIdentifier>> deleteTopicsByIds(List<StoredDocumentIdentifier> entityIds) async {
 		return await CardinalSdkPlatformInterface.instance.apis.topicBasic.deleteTopicsByIds(
 			_sdkId,
 			entityIds,
@@ -91,6 +91,13 @@ class TopicBasicApi {
 		);
 	}
 
+	Future<EncryptedTopic> createTopic(EncryptedTopic entity) async {
+		return await CardinalSdkPlatformInterface.instance.apis.topicBasic.createTopic(
+			_sdkId,
+			entity,
+		);
+	}
+
 	Future<Topic> undeleteTopic(Topic topic) async {
 		return await CardinalSdkPlatformInterface.instance.apis.topicBasic.undeleteTopic(
 			_sdkId,
@@ -113,7 +120,7 @@ class TopicBasicApi {
 		);
 	}
 
-	Future<EncryptedTopic> getTopic(String entityId) async {
+	Future<EncryptedTopic?> getTopic(String entityId) async {
 		return await CardinalSdkPlatformInterface.instance.apis.topicBasic.getTopic(
 			_sdkId,
 			entityId,

@@ -8,9 +8,9 @@ import com.icure.cardinal.sdk.js.filters.BaseSortableFilterOptionsJs
 import com.icure.cardinal.sdk.js.filters.FilterOptionsJs
 import com.icure.cardinal.sdk.js.model.DataOwnerRegistrationSuccessJs
 import com.icure.cardinal.sdk.js.model.HealthcarePartyJs
-import com.icure.cardinal.sdk.js.model.IdWithMandatoryRevJs
 import com.icure.cardinal.sdk.js.model.PaginatedListJs
 import com.icure.cardinal.sdk.js.model.PublicKeyJs
+import com.icure.cardinal.sdk.js.model.StoredDocumentIdentifierJs
 import com.icure.cardinal.sdk.js.model.couchdb.DocIdentifierJs
 import com.icure.cardinal.sdk.js.subscription.EntitySubscriptionJs
 import com.icure.cardinal.sdk.js.utils.pagination.PaginatedListIteratorJs
@@ -27,7 +27,7 @@ public external interface HealthcarePartyApiJs {
 
 	public fun deleteHealthcarePartiesUnsafe(entityIds: Array<String>): Promise<Array<DocIdentifierJs>>
 
-	public fun getHealthcareParty(healthcarePartyId: String): Promise<HealthcarePartyJs>
+	public fun getHealthcareParty(healthcarePartyId: String): Promise<HealthcarePartyJs?>
 
 	public fun createHealthcareParty(p: HealthcarePartyJs): Promise<HealthcarePartyJs>
 
@@ -89,7 +89,7 @@ public external interface HealthcarePartyApiJs {
 
 	public fun deleteHealthcarePartyById(entityId: String, rev: String): Promise<DocIdentifierJs>
 
-	public fun deleteHealthcarePartiesByIds(entityIds: Array<IdWithMandatoryRevJs>):
+	public fun deleteHealthcarePartiesByIds(entityIds: Array<StoredDocumentIdentifierJs>):
 			Promise<Array<DocIdentifierJs>>
 
 	public fun deleteHealthcarePartyInGroupById(
@@ -99,7 +99,7 @@ public external interface HealthcarePartyApiJs {
 	): Promise<DocIdentifierJs>
 
 	public fun deleteHealthcarePartiesInGroupByIds(groupId: String,
-			entityIds: Array<IdWithMandatoryRevJs>): Promise<Array<DocIdentifierJs>>
+			entityIds: Array<StoredDocumentIdentifierJs>): Promise<Array<DocIdentifierJs>>
 
 	public fun purgeHealthcarePartyById(id: String, rev: String): Promise<Unit>
 

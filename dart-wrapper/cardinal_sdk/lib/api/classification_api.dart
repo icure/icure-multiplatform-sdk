@@ -1,10 +1,10 @@
 // auto-generated file
 import 'package:cardinal_sdk/model/classification.dart';
-import 'package:cardinal_sdk/plugin/cardinal_sdk_platform_interface.dart';
 import 'package:cardinal_sdk/model/patient.dart';
 import 'package:cardinal_sdk/model/user.dart';
 import 'package:cardinal_sdk/model/embed/access_level.dart';
 import 'package:cardinal_sdk/crypto/entities/secret_id_use_option.dart';
+import 'package:cardinal_sdk/plugin/cardinal_sdk_platform_interface.dart';
 import 'package:cardinal_sdk/model/specializations/hex_string.dart';
 import 'package:cardinal_sdk/filters/filter_options.dart';
 import 'package:cardinal_sdk/model/couchdb/doc_identifier.dart';
@@ -15,20 +15,13 @@ import 'package:cardinal_sdk/utils/pagination/paginated_list_iterator.dart';
 class ClassificationApi {
 	final String _sdkId;
 	final Object _dartSdk;
-	final TryAndRecoverClassificationApi tryAndRecover;
-	final EncryptedClassificationApi encrypted;
+	final ClassificationEncryptedApi encrypted;
+	final ClassificationTryAndRecoverApi tryAndRecover;
 	ClassificationApi(
 		this._sdkId,
 		this._dartSdk
-		) : tryAndRecover = TryAndRecoverClassificationApi(_sdkId, _dartSdk),
-		encrypted = EncryptedClassificationApi(_sdkId, _dartSdk);
-
-	Future<DecryptedClassification> createClassification(DecryptedClassification entity) async {
-		return await CardinalSdkPlatformInterface.instance.apis.classification.createClassification(
-			_sdkId,
-			entity,
-		);
-	}
+		) : encrypted = ClassificationEncryptedApi(_sdkId, _dartSdk),
+		tryAndRecover = ClassificationTryAndRecoverApi(_sdkId, _dartSdk);
 
 	Future<DecryptedClassification> withEncryptionMetadata(DecryptedClassification? base, Patient patient, { User? user, Map<String, AccessLevel> delegates = const {}, SecretIdUseOption secretId = SecretIdUseOption.UseAnySharedWithParent }) async {
 		return await CardinalSdkPlatformInterface.instance.apis.classification.withEncryptionMetadata(
@@ -143,6 +136,13 @@ class ClassificationApi {
 		);
 	}
 
+	Future<DecryptedClassification> createClassification(DecryptedClassification entity) async {
+		return await CardinalSdkPlatformInterface.instance.apis.classification.createClassification(
+			_sdkId,
+			entity,
+		);
+	}
+
 	Future<DecryptedClassification> modifyClassification(DecryptedClassification entity) async {
 		return await CardinalSdkPlatformInterface.instance.apis.classification.modifyClassification(
 			_sdkId,
@@ -150,7 +150,7 @@ class ClassificationApi {
 		);
 	}
 
-	Future<DecryptedClassification> getClassification(String entityId) async {
+	Future<DecryptedClassification?> getClassification(String entityId) async {
 		return await CardinalSdkPlatformInterface.instance.apis.classification.getClassification(
 			_sdkId,
 			entityId,
@@ -165,10 +165,10 @@ class ClassificationApi {
 	}
 }
 
-class TryAndRecoverClassificationApi {
+class ClassificationTryAndRecoverApi {
 	final String _sdkId;
 	final Object _dartSdk;
-	TryAndRecoverClassificationApi(
+	ClassificationTryAndRecoverApi(
 		this._sdkId,
 		this._dartSdk
 		);
@@ -204,6 +204,13 @@ class TryAndRecoverClassificationApi {
 		);
 	}
 
+	Future<Classification> createClassification(Classification entity) async {
+		return await CardinalSdkPlatformInterface.instance.apis.classification.tryAndRecover.createClassification(
+			_sdkId,
+			entity,
+		);
+	}
+
 	Future<Classification> modifyClassification(Classification entity) async {
 		return await CardinalSdkPlatformInterface.instance.apis.classification.tryAndRecover.modifyClassification(
 			_sdkId,
@@ -211,7 +218,7 @@ class TryAndRecoverClassificationApi {
 		);
 	}
 
-	Future<Classification> getClassification(String entityId) async {
+	Future<Classification?> getClassification(String entityId) async {
 		return await CardinalSdkPlatformInterface.instance.apis.classification.tryAndRecover.getClassification(
 			_sdkId,
 			entityId,
@@ -226,10 +233,10 @@ class TryAndRecoverClassificationApi {
 	}
 }
 
-class EncryptedClassificationApi {
+class ClassificationEncryptedApi {
 	final String _sdkId;
 	final Object _dartSdk;
-	EncryptedClassificationApi(
+	ClassificationEncryptedApi(
 		this._sdkId,
 		this._dartSdk
 		);
@@ -265,6 +272,13 @@ class EncryptedClassificationApi {
 		);
 	}
 
+	Future<EncryptedClassification> createClassification(EncryptedClassification entity) async {
+		return await CardinalSdkPlatformInterface.instance.apis.classification.encrypted.createClassification(
+			_sdkId,
+			entity,
+		);
+	}
+
 	Future<EncryptedClassification> modifyClassification(EncryptedClassification entity) async {
 		return await CardinalSdkPlatformInterface.instance.apis.classification.encrypted.modifyClassification(
 			_sdkId,
@@ -272,7 +286,7 @@ class EncryptedClassificationApi {
 		);
 	}
 
-	Future<EncryptedClassification> getClassification(String entityId) async {
+	Future<EncryptedClassification?> getClassification(String entityId) async {
 		return await CardinalSdkPlatformInterface.instance.apis.classification.encrypted.getClassification(
 			_sdkId,
 			entityId,

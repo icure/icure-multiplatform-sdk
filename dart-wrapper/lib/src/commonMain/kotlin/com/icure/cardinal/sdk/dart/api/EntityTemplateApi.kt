@@ -5,7 +5,7 @@ import com.icure.cardinal.sdk.CardinalNonCryptoApis
 import com.icure.cardinal.sdk.dart.utils.ApiScope
 import com.icure.cardinal.sdk.dart.utils.NativeReferences
 import com.icure.cardinal.sdk.model.EntityTemplate
-import com.icure.cardinal.sdk.model.IdWithMandatoryRev
+import com.icure.cardinal.sdk.model.StoredDocumentIdentifier
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.utils.Serialization.fullLanguageInteropJson
 import com.icure.utils.InternalIcureApi
@@ -35,7 +35,7 @@ public object EntityTemplateApi {
     )
     ApiScope.execute(
       dartResultCallback,
-      EntityTemplate.serializer()) {
+      EntityTemplate.serializer().nullable) {
       NativeReferences.get<CardinalNonCryptoApis>(sdkId).entityTemplate.getEntityTemplate(
         documentTemplateId,
       )
@@ -320,7 +320,7 @@ public object EntityTemplateApi {
     entityTemplateIdsString: String,
   ) {
     val entityTemplateIds = fullLanguageInteropJson.decodeFromString(
-      ListSerializer(IdWithMandatoryRev.serializer()),
+      ListSerializer(StoredDocumentIdentifier.serializer()),
       entityTemplateIdsString
     )
     ApiScope.execute(

@@ -5,16 +5,19 @@ import 'package:cardinal_sdk/model/health_element.dart';
 import 'dart:convert';
 import 'package:cardinal_sdk/utils/internal/platform_exception_convertion.dart';
 import 'package:cardinal_sdk/utils/pagination/paginated_list_iterator.dart';
-import 'package:cardinal_sdk/model/couchdb/doc_identifier.dart';
-import 'package:cardinal_sdk/model/id_with_mandatory_rev.dart';
+import 'package:cardinal_sdk/model/stored_document_identifier.dart';
 import 'package:cardinal_sdk/subscription/subscription_event_type.dart';
 import 'package:cardinal_sdk/subscription/entity_subscription_configuration.dart';
 import 'package:cardinal_sdk/subscription/entity_subscription.dart';
+import 'package:cardinal_sdk/model/group_scoped.dart';
 
 
 class HealthElementBasicPlatformApi {
 	MethodChannel _methodChannel;
-	HealthElementBasicPlatformApi(this._methodChannel);
+	HealthElementBasicInGroupPlatformApi inGroup;
+	HealthElementBasicPlatformApi(
+		this._methodChannel
+		) : inGroup = HealthElementBasicInGroupPlatformApi(_methodChannel);
 
 	Future<List<String>> matchHealthElementsBy(String sdkId, BaseFilterOptions<HealthElement> filter) async {
 		final res = await _methodChannel.invokeMethod<String>(
@@ -68,7 +71,7 @@ class HealthElementBasicPlatformApi {
 		return PaginatedListIterator(parsedResJson, (x0) => EncryptedHealthElement.fromJSON(x0));
 	}
 
-	Future<DocIdentifier> deleteHealthElementById(String sdkId, String entityId, String? rev) async {
+	Future<StoredDocumentIdentifier> deleteHealthElementById(String sdkId, String entityId, String rev) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'HealthElementBasicApi.deleteHealthElementById',
 			{
@@ -79,20 +82,20 @@ class HealthElementBasicPlatformApi {
 		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method deleteHealthElementById");
 		final parsedResJson = jsonDecode(res);
-		return DocIdentifier.fromJSON(parsedResJson);
+		return StoredDocumentIdentifier.fromJSON(parsedResJson);
 	}
 
-	Future<List<DocIdentifier>> deleteHealthElementsByIds(String sdkId, List<IdWithMandatoryRev> entityIds) async {
+	Future<List<StoredDocumentIdentifier>> deleteHealthElementsByIds(String sdkId, List<StoredDocumentIdentifier> entityIds) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'HealthElementBasicApi.deleteHealthElementsByIds',
 			{
 				"sdkId": sdkId,
-				"entityIds": jsonEncode(entityIds.map((x0) => IdWithMandatoryRev.encode(x0)).toList()),
+				"entityIds": jsonEncode(entityIds.map((x0) => StoredDocumentIdentifier.encode(x0)).toList()),
 			}
 		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method deleteHealthElementsByIds");
 		final parsedResJson = jsonDecode(res);
-		return (parsedResJson as List<dynamic>).map((x1) => DocIdentifier.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => StoredDocumentIdentifier.fromJSON(x1) ).toList();
 	}
 
 	Future<void> purgeHealthElementById(String sdkId, String id, String rev) async {
@@ -106,7 +109,7 @@ class HealthElementBasicPlatformApi {
 		).catchError(convertPlatformException);
 	}
 
-	Future<DocIdentifier> deleteHealthElement(String sdkId, HealthElement healthElement) async {
+	Future<StoredDocumentIdentifier> deleteHealthElement(String sdkId, HealthElement healthElement) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'HealthElementBasicApi.deleteHealthElement',
 			{
@@ -116,10 +119,10 @@ class HealthElementBasicPlatformApi {
 		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method deleteHealthElement");
 		final parsedResJson = jsonDecode(res);
-		return DocIdentifier.fromJSON(parsedResJson);
+		return StoredDocumentIdentifier.fromJSON(parsedResJson);
 	}
 
-	Future<List<DocIdentifier>> deleteHealthElements(String sdkId, List<HealthElement> healthElements) async {
+	Future<List<StoredDocumentIdentifier>> deleteHealthElements(String sdkId, List<HealthElement> healthElements) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'HealthElementBasicApi.deleteHealthElements',
 			{
@@ -129,7 +132,7 @@ class HealthElementBasicPlatformApi {
 		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method deleteHealthElements");
 		final parsedResJson = jsonDecode(res);
-		return (parsedResJson as List<dynamic>).map((x1) => DocIdentifier.fromJSON(x1) ).toList();
+		return (parsedResJson as List<dynamic>).map((x1) => StoredDocumentIdentifier.fromJSON(x1) ).toList();
 	}
 
 	Future<void> purgeHealthElement(String sdkId, HealthElement healthElement) async {
@@ -140,6 +143,32 @@ class HealthElementBasicPlatformApi {
 				"healthElement": jsonEncode(HealthElement.encode(healthElement)),
 			}
 		).catchError(convertPlatformException);
+	}
+
+	Future<EncryptedHealthElement> createHealthElement(String sdkId, EncryptedHealthElement entity) async {
+		final res = await _methodChannel.invokeMethod<String>(
+			'HealthElementBasicApi.createHealthElement',
+			{
+				"sdkId": sdkId,
+				"entity": jsonEncode(EncryptedHealthElement.encode(entity)),
+			}
+		).catchError(convertPlatformException);
+		if (res == null) throw AssertionError("received null result from platform method createHealthElement");
+		final parsedResJson = jsonDecode(res);
+		return EncryptedHealthElement.fromJSON(parsedResJson);
+	}
+
+	Future<List<EncryptedHealthElement>> createHealthElements(String sdkId, List<EncryptedHealthElement> entities) async {
+		final res = await _methodChannel.invokeMethod<String>(
+			'HealthElementBasicApi.createHealthElements',
+			{
+				"sdkId": sdkId,
+				"entities": jsonEncode(entities.map((x0) => EncryptedHealthElement.encode(x0)).toList()),
+			}
+		).catchError(convertPlatformException);
+		if (res == null) throw AssertionError("received null result from platform method createHealthElements");
+		final parsedResJson = jsonDecode(res);
+		return (parsedResJson as List<dynamic>).map((x1) => EncryptedHealthElement.fromJSON(x1) ).toList();
 	}
 
 	Future<EncryptedHealthElement> undeleteHealthElementById(String sdkId, String id, String rev) async {
@@ -195,7 +224,7 @@ class HealthElementBasicPlatformApi {
 		return (parsedResJson as List<dynamic>).map((x1) => EncryptedHealthElement.fromJSON(x1) ).toList();
 	}
 
-	Future<EncryptedHealthElement> getHealthElement(String sdkId, String entityId) async {
+	Future<EncryptedHealthElement?> getHealthElement(String sdkId, String entityId) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'HealthElementBasicApi.getHealthElement',
 			{
@@ -205,7 +234,7 @@ class HealthElementBasicPlatformApi {
 		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getHealthElement");
 		final parsedResJson = jsonDecode(res);
-		return EncryptedHealthElement.fromJSON(parsedResJson);
+		return parsedResJson == null ? null : EncryptedHealthElement.fromJSON(parsedResJson);
 	}
 
 	Future<List<EncryptedHealthElement>> getHealthElements(String sdkId, List<String> entityIds) async {
@@ -234,5 +263,75 @@ class HealthElementBasicPlatformApi {
 		if (res == null) throw AssertionError("received null result from platform method subscribeToEvents");
 		final parsedResJson = jsonDecode(res);
 		return EntitySubscription(parsedResJson, (x0) => EncryptedHealthElement.fromJSON(x0));
+	}
+}
+
+class HealthElementBasicInGroupPlatformApi {
+	MethodChannel _methodChannel;
+	HealthElementBasicInGroupPlatformApi(this._methodChannel);
+
+	Future<GroupScoped<EncryptedHealthElement>> createHealthElement(String sdkId, GroupScoped<EncryptedHealthElement> entity) async {
+		final res = await _methodChannel.invokeMethod<String>(
+			'HealthElementBasicApi.inGroup.createHealthElement',
+			{
+				"sdkId": sdkId,
+				"entity": jsonEncode(GroupScoped.encode(
+					entity,
+					(x0) {
+						return EncryptedHealthElement.encode(x0);
+					},
+				)),
+			}
+		).catchError(convertPlatformException);
+		if (res == null) throw AssertionError("received null result from platform method createHealthElement");
+		final parsedResJson = jsonDecode(res);
+		return GroupScoped.fromJSON(
+			parsedResJson,
+			(x1) {
+				return EncryptedHealthElement.fromJSON(x1);
+			},
+		);
+	}
+
+	Future<GroupScoped<EncryptedHealthElement>> modifyHealthElement(String sdkId, GroupScoped<EncryptedHealthElement> entity) async {
+		final res = await _methodChannel.invokeMethod<String>(
+			'HealthElementBasicApi.inGroup.modifyHealthElement',
+			{
+				"sdkId": sdkId,
+				"entity": jsonEncode(GroupScoped.encode(
+					entity,
+					(x0) {
+						return EncryptedHealthElement.encode(x0);
+					},
+				)),
+			}
+		).catchError(convertPlatformException);
+		if (res == null) throw AssertionError("received null result from platform method modifyHealthElement");
+		final parsedResJson = jsonDecode(res);
+		return GroupScoped.fromJSON(
+			parsedResJson,
+			(x1) {
+				return EncryptedHealthElement.fromJSON(x1);
+			},
+		);
+	}
+
+	Future<GroupScoped<EncryptedHealthElement>?> getHealthElement(String sdkId, String groupId, String entityId) async {
+		final res = await _methodChannel.invokeMethod<String>(
+			'HealthElementBasicApi.inGroup.getHealthElement',
+			{
+				"sdkId": sdkId,
+				"groupId": jsonEncode(groupId),
+				"entityId": jsonEncode(entityId),
+			}
+		).catchError(convertPlatformException);
+		if (res == null) throw AssertionError("received null result from platform method getHealthElement");
+		final parsedResJson = jsonDecode(res);
+		return parsedResJson == null ? null : GroupScoped.fromJSON(
+			parsedResJson,
+			(x1) {
+				return EncryptedHealthElement.fromJSON(x1);
+			},
+		);
 	}
 }

@@ -6,7 +6,9 @@ package com.icure.cardinal.sdk.js.model
 import com.icure.cardinal.sdk.js.model.base.CodeStubJs
 import com.icure.cardinal.sdk.js.model.base.ICureDocumentJs
 import com.icure.cardinal.sdk.js.model.base.StoredDocumentJs
+import com.icure.cardinal.sdk.js.model.embed.EmbeddedTimeTableJs
 import com.icure.cardinal.sdk.js.model.embed.RightJs
+import com.icure.cardinal.sdk.js.utils.Record
 import kotlin.Array
 import kotlin.Double
 import kotlin.String
@@ -44,4 +46,10 @@ public external class AgendaJs(
 	public val userId: String?
 
 	public val rights: Array<RightJs>
+
+	public val userRights: Record<String, String>
+
+	public val properties: Array<DecryptedPropertyStubJs>
+
+	public val timeTables: Array<EmbeddedTimeTableJs>
 }

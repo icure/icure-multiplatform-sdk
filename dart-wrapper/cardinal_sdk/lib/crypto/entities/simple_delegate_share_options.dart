@@ -5,8 +5,8 @@ import 'package:cardinal_sdk/model/requests/requested_permission.dart';
 
 
 abstract interface class SimpleDelegateShareOptions {
-	abstract SecretIdShareOptions shareSecretIds;
-	abstract ShareMetadataBehaviour shareEncryptionKey;
-	abstract ShareMetadataBehaviour shareOwningEntityIds;
-	abstract RequestedPermission requestedPermissions;
+	abstract final SecretIdShareOptions shareSecretIds;
+	abstract final ShareMetadataBehaviour shareEncryptionKey;
+	abstract final ShareMetadataBehaviour shareOwningEntityIds;
+	abstract final RequestedPermission requestedPermissions;
 }

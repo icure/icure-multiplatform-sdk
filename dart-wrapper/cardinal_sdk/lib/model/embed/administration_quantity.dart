@@ -1,18 +1,17 @@
 // auto-generated file
 import 'package:cardinal_sdk/model/base/code_stub.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+part "administration_quantity.freezed.dart";
 
 
-class AdministrationQuantity {
-	double? quantity = null;
-	CodeStub? administrationUnit = null;
-	String? unit = null;
-	AdministrationQuantity({
-			double? quantity,
-			CodeStub? administrationUnit,
-			String? unit
-		}) : quantity = quantity ?? null,
-		administrationUnit = administrationUnit ?? null,
-		unit = unit ?? null;
+@freezed
+abstract class AdministrationQuantity with _$AdministrationQuantity {
+	const factory AdministrationQuantity({
+		@Default(null) double? quantity,
+		@Default(null) CodeStub? administrationUnit,
+		@Default(null) String? unit,
+	}) = _AdministrationQuantity;
+
 
 	static Map<String, dynamic> encode(AdministrationQuantity value) {
 		Map<String, dynamic> entityAsMap = {

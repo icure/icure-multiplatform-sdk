@@ -1,14 +1,14 @@
 // auto-generated file
 import 'package:cardinal_sdk/model/access_log.dart';
-import 'package:cardinal_sdk/plugin/cardinal_sdk_platform_interface.dart';
 import 'package:cardinal_sdk/model/patient.dart';
 import 'package:cardinal_sdk/model/user.dart';
 import 'package:cardinal_sdk/model/embed/access_level.dart';
 import 'package:cardinal_sdk/crypto/entities/secret_id_use_option.dart';
+import 'package:cardinal_sdk/plugin/cardinal_sdk_platform_interface.dart';
 import 'package:cardinal_sdk/model/specializations/hex_string.dart';
 import 'package:cardinal_sdk/filters/filter_options.dart';
 import 'package:cardinal_sdk/model/couchdb/doc_identifier.dart';
-import 'package:cardinal_sdk/model/id_with_mandatory_rev.dart';
+import 'package:cardinal_sdk/model/stored_document_identifier.dart';
 import 'package:cardinal_sdk/crypto/entities/access_log_share_options.dart';
 import 'package:cardinal_sdk/utils/pagination/paginated_list_iterator.dart';
 
@@ -16,20 +16,13 @@ import 'package:cardinal_sdk/utils/pagination/paginated_list_iterator.dart';
 class AccessLogApi {
 	final String _sdkId;
 	final Object _dartSdk;
-	final TryAndRecoverAccessLogApi tryAndRecover;
-	final EncryptedAccessLogApi encrypted;
+	final AccessLogEncryptedApi encrypted;
+	final AccessLogTryAndRecoverApi tryAndRecover;
 	AccessLogApi(
 		this._sdkId,
 		this._dartSdk
-		) : tryAndRecover = TryAndRecoverAccessLogApi(_sdkId, _dartSdk),
-		encrypted = EncryptedAccessLogApi(_sdkId, _dartSdk);
-
-	Future<DecryptedAccessLog> createAccessLog(DecryptedAccessLog entity) async {
-		return await CardinalSdkPlatformInterface.instance.apis.accessLog.createAccessLog(
-			_sdkId,
-			entity,
-		);
-	}
+		) : encrypted = AccessLogEncryptedApi(_sdkId, _dartSdk),
+		tryAndRecover = AccessLogTryAndRecoverApi(_sdkId, _dartSdk);
 
 	Future<DecryptedAccessLog> withEncryptionMetadata(DecryptedAccessLog? base, Patient patient, { User? user, Map<String, AccessLevel> delegates = const {}, SecretIdUseOption secretId = SecretIdUseOption.UseAnySharedWithParent }) async {
 		return await CardinalSdkPlatformInterface.instance.apis.accessLog.withEncryptionMetadata(
@@ -107,7 +100,7 @@ class AccessLogApi {
 		);
 	}
 
-	Future<List<DocIdentifier>> deleteAccessLogsByIds(List<IdWithMandatoryRev> entityIds) async {
+	Future<List<DocIdentifier>> deleteAccessLogsByIds(List<StoredDocumentIdentifier> entityIds) async {
 		return await CardinalSdkPlatformInterface.instance.apis.accessLog.deleteAccessLogsByIds(
 			_sdkId,
 			entityIds,
@@ -174,6 +167,13 @@ class AccessLogApi {
 		);
 	}
 
+	Future<DecryptedAccessLog> createAccessLog(DecryptedAccessLog entity) async {
+		return await CardinalSdkPlatformInterface.instance.apis.accessLog.createAccessLog(
+			_sdkId,
+			entity,
+		);
+	}
+
 	Future<DecryptedAccessLog> undeleteAccessLogById(String id, String rev) async {
 		return await CardinalSdkPlatformInterface.instance.apis.accessLog.undeleteAccessLogById(
 			_sdkId,
@@ -196,7 +196,7 @@ class AccessLogApi {
 		);
 	}
 
-	Future<DecryptedAccessLog> getAccessLog(String entityId) async {
+	Future<DecryptedAccessLog?> getAccessLog(String entityId) async {
 		return await CardinalSdkPlatformInterface.instance.apis.accessLog.getAccessLog(
 			_sdkId,
 			entityId,
@@ -211,10 +211,10 @@ class AccessLogApi {
 	}
 }
 
-class TryAndRecoverAccessLogApi {
+class AccessLogTryAndRecoverApi {
 	final String _sdkId;
 	final Object _dartSdk;
-	TryAndRecoverAccessLogApi(
+	AccessLogTryAndRecoverApi(
 		this._sdkId,
 		this._dartSdk
 		);
@@ -250,6 +250,13 @@ class TryAndRecoverAccessLogApi {
 		);
 	}
 
+	Future<AccessLog> createAccessLog(AccessLog entity) async {
+		return await CardinalSdkPlatformInterface.instance.apis.accessLog.tryAndRecover.createAccessLog(
+			_sdkId,
+			entity,
+		);
+	}
+
 	Future<AccessLog> undeleteAccessLogById(String id, String rev) async {
 		return await CardinalSdkPlatformInterface.instance.apis.accessLog.tryAndRecover.undeleteAccessLogById(
 			_sdkId,
@@ -272,7 +279,7 @@ class TryAndRecoverAccessLogApi {
 		);
 	}
 
-	Future<AccessLog> getAccessLog(String entityId) async {
+	Future<AccessLog?> getAccessLog(String entityId) async {
 		return await CardinalSdkPlatformInterface.instance.apis.accessLog.tryAndRecover.getAccessLog(
 			_sdkId,
 			entityId,
@@ -287,10 +294,10 @@ class TryAndRecoverAccessLogApi {
 	}
 }
 
-class EncryptedAccessLogApi {
+class AccessLogEncryptedApi {
 	final String _sdkId;
 	final Object _dartSdk;
-	EncryptedAccessLogApi(
+	AccessLogEncryptedApi(
 		this._sdkId,
 		this._dartSdk
 		);
@@ -326,6 +333,13 @@ class EncryptedAccessLogApi {
 		);
 	}
 
+	Future<EncryptedAccessLog> createAccessLog(EncryptedAccessLog entity) async {
+		return await CardinalSdkPlatformInterface.instance.apis.accessLog.encrypted.createAccessLog(
+			_sdkId,
+			entity,
+		);
+	}
+
 	Future<EncryptedAccessLog> undeleteAccessLogById(String id, String rev) async {
 		return await CardinalSdkPlatformInterface.instance.apis.accessLog.encrypted.undeleteAccessLogById(
 			_sdkId,
@@ -348,7 +362,7 @@ class EncryptedAccessLogApi {
 		);
 	}
 
-	Future<EncryptedAccessLog> getAccessLog(String entityId) async {
+	Future<EncryptedAccessLog?> getAccessLog(String entityId) async {
 		return await CardinalSdkPlatformInterface.instance.apis.accessLog.encrypted.getAccessLog(
 			_sdkId,
 			entityId,

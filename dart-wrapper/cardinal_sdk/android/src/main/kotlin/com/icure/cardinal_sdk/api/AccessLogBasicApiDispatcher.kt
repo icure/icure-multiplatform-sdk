@@ -28,6 +28,7 @@ public object AccessLogBasicApiDispatcher {
     "deleteAccessLog" -> deleteAccessLog(parameters, resultCallback)
     "deleteAccessLogs" -> deleteAccessLogs(parameters, resultCallback)
     "purgeAccessLog" -> purgeAccessLog(parameters, resultCallback)
+    "createAccessLog" -> createAccessLog(parameters, resultCallback)
     "undeleteAccessLogById" -> undeleteAccessLogById(parameters, resultCallback)
     "undeleteAccessLog" -> undeleteAccessLog(parameters, resultCallback)
     "modifyAccessLog" -> modifyAccessLog(parameters, resultCallback)
@@ -165,6 +166,19 @@ public object AccessLogBasicApiDispatcher {
       resultCallback,
       parameters.getValue("sdkId"),
       parameters.getValue("accessLog"),
+    )
+  }
+
+  private fun createAccessLog(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    AccessLogBasicApi.createAccessLog(
+      resultCallback,
+      parameters.getValue("sdkId"),
+      parameters.getValue("entity"),
     )
   }
 

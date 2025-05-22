@@ -6,7 +6,7 @@ import {HasTags} from './base/HasTags.mjs';
 import {StoredDocument} from './base/StoredDocument.mjs';
 import {AuthenticationClass} from './embed/AuthenticationClass.mjs';
 import {UserType} from './embed/UserType.mjs';
-import {ExternalJwtSelector} from './security/ExternalJwtSelector.mjs';
+import {ExternalJwtConfig} from './security/ExternalJwtConfig.mjs';
 import {OperationToken} from './security/OperationToken.mjs';
 
 
@@ -38,7 +38,7 @@ export class Group implements StoredDocument, HasTags {
 
 	minimumKrakenVersion: string | undefined = undefined;
 
-	externalJwtPublicKeys: { [ key: string ]: ExternalJwtSelector } = {};
+	externalJwtConfig: { [ key: string ]: ExternalJwtConfig } = {};
 
 	minimumAuthenticationClassForElevatedPrivileges: AuthenticationClass;
 
@@ -60,7 +60,7 @@ export class Group implements StoredDocument, HasTags {
 		if ('operationTokens' in partial && partial.operationTokens !== undefined) this.operationTokens = partial.operationTokens;
 		if ('sharedEntities' in partial && partial.sharedEntities !== undefined) this.sharedEntities = partial.sharedEntities;
 		if ('minimumKrakenVersion' in partial) this.minimumKrakenVersion = partial.minimumKrakenVersion;
-		if ('externalJwtPublicKeys' in partial && partial.externalJwtPublicKeys !== undefined) this.externalJwtPublicKeys = partial.externalJwtPublicKeys;
+		if ('externalJwtConfig' in partial && partial.externalJwtConfig !== undefined) this.externalJwtConfig = partial.externalJwtConfig;
 		this.minimumAuthenticationClassForElevatedPrivileges = partial.minimumAuthenticationClassForElevatedPrivileges;
 		if ('superGroup' in partial) this.superGroup = partial.superGroup;
 		if ('applicationId' in partial) this.applicationId = partial.applicationId;

@@ -2,6 +2,7 @@
 import {CryptoActorStubWithType} from '../model/CryptoActorStubWithType.mjs';
 import {DataOwnerType} from '../model/DataOwnerType.mjs';
 import {DataOwnerWithType} from '../model/DataOwnerWithType.mjs';
+import {EntityReferenceInGroup} from '../model/EntityReferenceInGroup.mjs';
 
 
 export interface DataOwnerApi {
@@ -12,11 +13,17 @@ export interface DataOwnerApi {
 
 	getCurrentDataOwnerId(): Promise<string>;
 
+	getCurrentDataOwnerReference(): Promise<EntityReferenceInGroup>;
+
 	getCurrentDataOwnerHierarchyIds(): Promise<Array<string>>;
+
+	getCurrentDataOwnerHierarchyIdsReference(): Promise<Array<EntityReferenceInGroup>>;
 
 	getDataOwner(ownerId: string): Promise<DataOwnerWithType>;
 
 	getCryptoActorStub(ownerId: string): Promise<CryptoActorStubWithType>;
+
+	getCryptoActorStubInGroup(entityReferenceInGroup: EntityReferenceInGroup): Promise<CryptoActorStubWithType>;
 
 	getCurrentDataOwnerHierarchyIdsFrom(parentId: string): Promise<Array<string>>;
 

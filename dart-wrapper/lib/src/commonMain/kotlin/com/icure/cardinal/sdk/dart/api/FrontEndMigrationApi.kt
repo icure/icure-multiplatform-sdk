@@ -12,6 +12,7 @@ import kotlin.OptIn
 import kotlin.String
 import kotlin.Unit
 import kotlinx.serialization.builtins.ListSerializer
+import kotlinx.serialization.builtins.nullable
 import kotlinx.serialization.builtins.serializer
 
 @OptIn(InternalIcureApi::class)
@@ -32,7 +33,7 @@ public object FrontEndMigrationApi {
     )
     ApiScope.execute(
       dartResultCallback,
-      FrontEndMigration.serializer()) {
+      FrontEndMigration.serializer().nullable) {
       NativeReferences.get<CardinalNonCryptoApis>(sdkId).frontEndMigration.getFrontEndMigration(
         frontEndMigrationId,
       )

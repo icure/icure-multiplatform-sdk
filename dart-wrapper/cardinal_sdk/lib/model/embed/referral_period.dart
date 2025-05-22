@@ -1,17 +1,16 @@
 // auto-generated file
+import 'package:freezed_annotation/freezed_annotation.dart';
+part "referral_period.freezed.dart";
 
 
-class ReferralPeriod {
-	DateTime? startDate = null;
-	DateTime? endDate = null;
-	String? comment = null;
-	ReferralPeriod({
-			DateTime? startDate,
-			DateTime? endDate,
-			String? comment
-		}) : startDate = startDate ?? null,
-		endDate = endDate ?? null,
-		comment = comment ?? null;
+@freezed
+abstract class ReferralPeriod with _$ReferralPeriod {
+	const factory ReferralPeriod({
+		@Default(null) DateTime? startDate,
+		@Default(null) DateTime? endDate,
+		@Default(null) String? comment,
+	}) = _ReferralPeriod;
+
 
 	static Map<String, dynamic> encode(ReferralPeriod value) {
 		Map<String, dynamic> entityAsMap = {

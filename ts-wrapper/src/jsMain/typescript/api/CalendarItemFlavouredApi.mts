@@ -24,13 +24,15 @@ export interface CalendarItemFlavouredApi<E extends CalendarItem> {
 
 	filterCalendarItemsBySorted(filter: SortableFilterOptions<CalendarItem>): Promise<PaginatedListIterator<E>>;
 
+	createCalendarItem(entity: E): Promise<E>;
+
 	undeleteCalendarItemById(id: string, rev: string): Promise<E>;
 
 	undeleteCalendarItem(calendarItem: CalendarItem): Promise<E>;
 
 	modifyCalendarItem(entity: E): Promise<E>;
 
-	getCalendarItem(entityId: string): Promise<E>;
+	getCalendarItem(entityId: string): Promise<E | undefined>;
 
 	getCalendarItems(entityIds: Array<string>): Promise<Array<E>>;
 

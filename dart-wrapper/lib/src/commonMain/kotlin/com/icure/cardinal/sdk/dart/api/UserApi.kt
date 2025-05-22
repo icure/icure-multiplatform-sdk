@@ -13,6 +13,7 @@ import com.icure.cardinal.sdk.model.User
 import com.icure.cardinal.sdk.model.UserGroup
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.model.security.Enable2faRequest
+import com.icure.cardinal.sdk.model.security.LoginIdentifier
 import com.icure.cardinal.sdk.model.security.TokenWithGroup
 import com.icure.cardinal.sdk.serialization.EntitySubscriptionWithSerializer
 import com.icure.cardinal.sdk.serialization.PaginatedListIteratorWithSerializer
@@ -20,6 +21,7 @@ import com.icure.cardinal.sdk.subscription.EntitySubscriptionConfiguration
 import com.icure.cardinal.sdk.subscription.SubscriptionEventType
 import com.icure.cardinal.sdk.utils.Serialization.fullLanguageInteropJson
 import com.icure.utils.InternalIcureApi
+import kotlin.Boolean
 import kotlin.Long
 import kotlin.OptIn
 import kotlin.String
@@ -83,7 +85,7 @@ public object UserApi {
     )
     ApiScope.execute(
       dartResultCallback,
-      User.serializer()) {
+      User.serializer().nullable) {
       NativeReferences.get<CardinalNonCryptoApis>(sdkId).user.getUser(
         userId,
       )
@@ -129,7 +131,7 @@ public object UserApi {
     )
     ApiScope.execute(
       dartResultCallback,
-      User.serializer()) {
+      User.serializer().nullable) {
       NativeReferences.get<CardinalNonCryptoApis>(sdkId).user.getUserByEmail(
         email,
       )
@@ -152,7 +154,7 @@ public object UserApi {
     )
     ApiScope.execute(
       dartResultCallback,
-      User.serializer()) {
+      User.serializer().nullable) {
       NativeReferences.get<CardinalNonCryptoApis>(sdkId).user.getUserByPhoneNumber(
         phoneNumber,
       )
@@ -1234,6 +1236,111 @@ public object UserApi {
       User.serializer()) {
       NativeReferences.get<CardinalNonCryptoApis>(sdkId).user.undeleteUser(
         user,
+      )
+    }
+  }
+
+  public fun setUserInheritsPermissions(
+    dartResultCallback: (
+      String?,
+      String?,
+      String?,
+      String?,
+    ) -> Unit,
+    sdkId: String,
+    userIdString: String,
+    groupIdString: String,
+    valueString: String,
+  ) {
+    val userId = fullLanguageInteropJson.decodeFromString(
+      String.serializer(),
+      userIdString
+    )
+    val groupId = fullLanguageInteropJson.decodeFromString(
+      String.serializer(),
+      groupIdString
+    )
+    val value = fullLanguageInteropJson.decodeFromString(
+      Boolean.serializer(),
+      valueString
+    )
+    ApiScope.execute(
+      dartResultCallback,
+      String.serializer()) {
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).user.setUserInheritsPermissions(
+        userId,
+        groupId,
+        value,
+      )
+    }
+  }
+
+  public fun setLoginIdentifiers(
+    dartResultCallback: (
+      String?,
+      String?,
+      String?,
+      String?,
+    ) -> Unit,
+    sdkId: String,
+    userIdString: String,
+    groupIdString: String,
+    identifierString: String,
+    replaceExistingString: String,
+  ) {
+    val userId = fullLanguageInteropJson.decodeFromString(
+      String.serializer(),
+      userIdString
+    )
+    val groupId = fullLanguageInteropJson.decodeFromString(
+      String.serializer(),
+      groupIdString
+    )
+    val identifier = fullLanguageInteropJson.decodeFromString(
+      LoginIdentifier.serializer(),
+      identifierString
+    )
+    val replaceExisting = fullLanguageInteropJson.decodeFromString(
+      Boolean.serializer(),
+      replaceExistingString
+    )
+    ApiScope.execute(
+      dartResultCallback,
+      Boolean.serializer()) {
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).user.setLoginIdentifiers(
+        userId,
+        groupId,
+        identifier,
+        replaceExisting,
+      )
+    }
+  }
+
+  public fun setExternalJwtAuthByIdentifiersForCurrentUser(
+    dartResultCallback: (
+      String?,
+      String?,
+      String?,
+      String?,
+    ) -> Unit,
+    sdkId: String,
+    externalJwtConfigIdString: String,
+    externalAuthenticationTokenString: String,
+  ) {
+    val externalJwtConfigId = fullLanguageInteropJson.decodeFromString(
+      String.serializer(),
+      externalJwtConfigIdString
+    )
+    val externalAuthenticationToken = fullLanguageInteropJson.decodeFromString(
+      String.serializer(),
+      externalAuthenticationTokenString
+    )
+    ApiScope.execute(
+      dartResultCallback,
+      Boolean.serializer()) {
+      NativeReferences.get<CardinalNonCryptoApis>(sdkId).user.setExternalJwtAuthByIdentifiersForCurrentUser(
+        externalJwtConfigId,
+        externalAuthenticationToken,
       )
     }
   }

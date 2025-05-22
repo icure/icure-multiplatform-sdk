@@ -12,7 +12,7 @@ export class FormShareOptions {
 
 	sharePatientId: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable;
 
-	shareSecretIds: SecretIdShareOptions = new SecretIdShareOptions.AllAvailable({ requireAtLeastOne: false });
+	shareSecretIds: SecretIdShareOptions = new SecretIdShareOptions.AllAvailable();
 
 	constructor(partial: Partial<FormShareOptions>) {
 		if ('requestedPermissions' in partial && partial.requestedPermissions !== undefined) this.requestedPermissions = partial.requestedPermissions;

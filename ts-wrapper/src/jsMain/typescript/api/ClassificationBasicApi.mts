@@ -18,9 +18,11 @@ export interface ClassificationBasicApi {
 
 	deleteClassifications(entityIds: Array<string>): Promise<Array<DocIdentifier>>;
 
+	createClassification(entity: EncryptedClassification): Promise<EncryptedClassification>;
+
 	modifyClassification(entity: EncryptedClassification): Promise<EncryptedClassification>;
 
-	getClassification(entityId: string): Promise<EncryptedClassification>;
+	getClassification(entityId: string): Promise<EncryptedClassification | undefined>;
 
 	getClassifications(entityIds: Array<string>): Promise<Array<EncryptedClassification>>;
 

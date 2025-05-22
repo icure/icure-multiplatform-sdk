@@ -7,8 +7,8 @@ import com.icure.cardinal.sdk.js.filters.BaseFilterOptionsJs
 import com.icure.cardinal.sdk.js.filters.BaseSortableFilterOptionsJs
 import com.icure.cardinal.sdk.js.filters.FilterOptionsJs
 import com.icure.cardinal.sdk.js.model.DeviceJs
-import com.icure.cardinal.sdk.js.model.IdWithMandatoryRevJs
 import com.icure.cardinal.sdk.js.model.IdWithRevJs
+import com.icure.cardinal.sdk.js.model.StoredDocumentIdentifierJs
 import com.icure.cardinal.sdk.js.model.couchdb.DocIdentifierJs
 import com.icure.cardinal.sdk.js.subscription.EntitySubscriptionJs
 import com.icure.cardinal.sdk.js.utils.pagination.PaginatedListIteratorJs
@@ -25,7 +25,7 @@ public external interface DeviceApiJs {
 
 	public fun deleteDevicesUnsafe(entityIds: Array<String>): Promise<Array<DocIdentifierJs>>
 
-	public fun getDevice(deviceId: String): Promise<DeviceJs>
+	public fun getDevice(deviceId: String): Promise<DeviceJs?>
 
 	public fun getDevices(deviceIds: Array<String>): Promise<Array<DeviceJs>>
 
@@ -50,7 +50,7 @@ public external interface DeviceApiJs {
 
 	public fun deleteDeviceById(entityId: String, rev: String): Promise<DocIdentifierJs>
 
-	public fun deleteDevicesByIds(entityIds: Array<IdWithMandatoryRevJs>):
+	public fun deleteDevicesByIds(entityIds: Array<StoredDocumentIdentifierJs>):
 			Promise<Array<DocIdentifierJs>>
 
 	public fun purgeDeviceById(id: String, rev: String): Promise<Unit>

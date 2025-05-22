@@ -21,6 +21,7 @@ import com.icure.cardinal.sdk.js.filters.sortableFilterOptions_fromJs
 import com.icure.cardinal.sdk.js.model.CheckedConverters.arrayToList
 import com.icure.cardinal.sdk.js.model.CheckedConverters.arrayToSet
 import com.icure.cardinal.sdk.js.model.CheckedConverters.listToArray
+import com.icure.cardinal.sdk.js.model.CheckedConverters.nullToUndefined
 import com.icure.cardinal.sdk.js.model.CheckedConverters.numberToLong
 import com.icure.cardinal.sdk.js.model.CheckedConverters.objectToMap
 import com.icure.cardinal.sdk.js.model.CheckedConverters.setToArray
@@ -29,8 +30,8 @@ import com.icure.cardinal.sdk.js.model.DecryptedFormJs
 import com.icure.cardinal.sdk.js.model.EncryptedFormJs
 import com.icure.cardinal.sdk.js.model.FormJs
 import com.icure.cardinal.sdk.js.model.FormTemplateJs
-import com.icure.cardinal.sdk.js.model.IdWithMandatoryRevJs
 import com.icure.cardinal.sdk.js.model.PatientJs
+import com.icure.cardinal.sdk.js.model.StoredDocumentIdentifierJs
 import com.icure.cardinal.sdk.js.model.UserJs
 import com.icure.cardinal.sdk.js.model.couchdb.DocIdentifierJs
 import com.icure.cardinal.sdk.js.model.couchdb.docIdentifier_toJs
@@ -38,9 +39,9 @@ import com.icure.cardinal.sdk.js.model.formTemplate_fromJs
 import com.icure.cardinal.sdk.js.model.formTemplate_toJs
 import com.icure.cardinal.sdk.js.model.form_fromJs
 import com.icure.cardinal.sdk.js.model.form_toJs
-import com.icure.cardinal.sdk.js.model.idWithMandatoryRev_fromJs
 import com.icure.cardinal.sdk.js.model.patient_fromJs
 import com.icure.cardinal.sdk.js.model.specializations.hexString_toJs
+import com.icure.cardinal.sdk.js.model.storedDocumentIdentifier_fromJs
 import com.icure.cardinal.sdk.js.model.user_fromJs
 import com.icure.cardinal.sdk.js.utils.Record
 import com.icure.cardinal.sdk.js.utils.pagination.PaginatedListIteratorJs
@@ -49,8 +50,8 @@ import com.icure.cardinal.sdk.model.DecryptedForm
 import com.icure.cardinal.sdk.model.EncryptedForm
 import com.icure.cardinal.sdk.model.Form
 import com.icure.cardinal.sdk.model.FormTemplate
-import com.icure.cardinal.sdk.model.StoredDocumentIdentifier
 import com.icure.cardinal.sdk.model.Patient
+import com.icure.cardinal.sdk.model.StoredDocumentIdentifier
 import com.icure.cardinal.sdk.model.User
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.model.embed.AccessLevel
@@ -198,6 +199,34 @@ internal class FormApiImplJs(
 			)
 		}
 
+		override fun createForm(entity: EncryptedFormJs): Promise<EncryptedFormJs> = GlobalScope.promise {
+			val entityConverted: EncryptedForm = form_fromJs(entity)
+			val result = formApi.encrypted.createForm(
+				entityConverted,
+			)
+			form_toJs(result)
+		}
+
+		override fun createForms(entities: Array<EncryptedFormJs>): Promise<Array<EncryptedFormJs>> =
+				GlobalScope.promise {
+			val entitiesConverted: List<EncryptedForm> = arrayToList(
+				entities,
+				"entities",
+				{ x1: EncryptedFormJs ->
+					form_fromJs(x1)
+				},
+			)
+			val result = formApi.encrypted.createForms(
+				entitiesConverted,
+			)
+			listToArray(
+				result,
+				{ x1: EncryptedForm ->
+					form_toJs(x1)
+				},
+			)
+		}
+
 		override fun modifyForm(entity: EncryptedFormJs): Promise<EncryptedFormJs> = GlobalScope.promise {
 			val entityConverted: EncryptedForm = form_fromJs(entity)
 			val result = formApi.encrypted.modifyForm(
@@ -245,12 +274,16 @@ internal class FormApiImplJs(
 			)
 		}
 
-		override fun getForm(entityId: String): Promise<EncryptedFormJs> = GlobalScope.promise {
+		override fun getForm(entityId: String): Promise<EncryptedFormJs?> = GlobalScope.promise {
 			val entityIdConverted: String = entityId
 			val result = formApi.encrypted.getForm(
 				entityIdConverted,
 			)
-			form_toJs(result)
+			nullToUndefined(
+				result?.let { nonNull1 ->
+					form_toJs(nonNull1)
+				}
+			)
 		}
 
 		override fun getForms(entityIds: Array<String>): Promise<Array<EncryptedFormJs>> =
@@ -458,6 +491,33 @@ internal class FormApiImplJs(
 			)
 		}
 
+		override fun createForm(entity: FormJs): Promise<FormJs> = GlobalScope.promise {
+			val entityConverted: Form = form_fromJs(entity)
+			val result = formApi.tryAndRecover.createForm(
+				entityConverted,
+			)
+			form_toJs(result)
+		}
+
+		override fun createForms(entities: Array<FormJs>): Promise<Array<FormJs>> = GlobalScope.promise {
+			val entitiesConverted: List<Form> = arrayToList(
+				entities,
+				"entities",
+				{ x1: FormJs ->
+					form_fromJs(x1)
+				},
+			)
+			val result = formApi.tryAndRecover.createForms(
+				entitiesConverted,
+			)
+			listToArray(
+				result,
+				{ x1: Form ->
+					form_toJs(x1)
+				},
+			)
+		}
+
 		override fun modifyForm(entity: FormJs): Promise<FormJs> = GlobalScope.promise {
 			val entityConverted: Form = form_fromJs(entity)
 			val result = formApi.tryAndRecover.modifyForm(
@@ -503,12 +563,16 @@ internal class FormApiImplJs(
 			)
 		}
 
-		override fun getForm(entityId: String): Promise<FormJs> = GlobalScope.promise {
+		override fun getForm(entityId: String): Promise<FormJs?> = GlobalScope.promise {
 			val entityIdConverted: String = entityId
 			val result = formApi.tryAndRecover.getForm(
 				entityIdConverted,
 			)
-			form_toJs(result)
+			nullToUndefined(
+				result?.let { nonNull1 ->
+					form_toJs(nonNull1)
+				}
+			)
 		}
 
 		override fun getForms(entityIds: Array<String>): Promise<Array<FormJs>> = GlobalScope.promise {
@@ -589,34 +653,6 @@ internal class FormApiImplJs(
 				},
 			)
 		}
-	}
-
-	override fun createForm(entity: DecryptedFormJs): Promise<DecryptedFormJs> = GlobalScope.promise {
-		val entityConverted: DecryptedForm = form_fromJs(entity)
-		val result = formApi.createForm(
-			entityConverted,
-		)
-		form_toJs(result)
-	}
-
-	override fun createForms(entities: Array<DecryptedFormJs>): Promise<Array<DecryptedFormJs>> =
-			GlobalScope.promise {
-		val entitiesConverted: List<DecryptedForm> = arrayToList(
-			entities,
-			"entities",
-			{ x1: DecryptedFormJs ->
-				form_fromJs(x1)
-			},
-		)
-		val result = formApi.createForms(
-			entitiesConverted,
-		)
-		listToArray(
-			result,
-			{ x1: DecryptedForm ->
-				form_toJs(x1)
-			},
-		)
 	}
 
 	override fun withEncryptionMetadata(
@@ -807,13 +843,13 @@ internal class FormApiImplJs(
 		docIdentifier_toJs(result)
 	}
 
-	override fun deleteFormsByIds(entityIds: Array<IdWithMandatoryRevJs>):
+	override fun deleteFormsByIds(entityIds: Array<StoredDocumentIdentifierJs>):
 			Promise<Array<DocIdentifierJs>> = GlobalScope.promise {
 		val entityIdsConverted: List<StoredDocumentIdentifier> = arrayToList(
 			entityIds,
 			"entityIds",
-			{ x1: IdWithMandatoryRevJs ->
-				idWithMandatoryRev_fromJs(x1)
+			{ x1: StoredDocumentIdentifierJs ->
+				storedDocumentIdentifier_fromJs(x1)
 			},
 		)
 		val result = formApi.deleteFormsByIds(
@@ -1127,6 +1163,34 @@ internal class FormApiImplJs(
 		)
 	}
 
+	override fun createForm(entity: DecryptedFormJs): Promise<DecryptedFormJs> = GlobalScope.promise {
+		val entityConverted: DecryptedForm = form_fromJs(entity)
+		val result = formApi.createForm(
+			entityConverted,
+		)
+		form_toJs(result)
+	}
+
+	override fun createForms(entities: Array<DecryptedFormJs>): Promise<Array<DecryptedFormJs>> =
+			GlobalScope.promise {
+		val entitiesConverted: List<DecryptedForm> = arrayToList(
+			entities,
+			"entities",
+			{ x1: DecryptedFormJs ->
+				form_fromJs(x1)
+			},
+		)
+		val result = formApi.createForms(
+			entitiesConverted,
+		)
+		listToArray(
+			result,
+			{ x1: DecryptedForm ->
+				form_toJs(x1)
+			},
+		)
+	}
+
 	override fun modifyForm(entity: DecryptedFormJs): Promise<DecryptedFormJs> = GlobalScope.promise {
 		val entityConverted: DecryptedForm = form_fromJs(entity)
 		val result = formApi.modifyForm(
@@ -1174,12 +1238,16 @@ internal class FormApiImplJs(
 		)
 	}
 
-	override fun getForm(entityId: String): Promise<DecryptedFormJs> = GlobalScope.promise {
+	override fun getForm(entityId: String): Promise<DecryptedFormJs?> = GlobalScope.promise {
 		val entityIdConverted: String = entityId
 		val result = formApi.getForm(
 			entityIdConverted,
 		)
-		form_toJs(result)
+		nullToUndefined(
+			result?.let { nonNull1 ->
+				form_toJs(nonNull1)
+			}
+		)
 	}
 
 	override fun getForms(entityIds: Array<String>): Promise<Array<DecryptedFormJs>> =

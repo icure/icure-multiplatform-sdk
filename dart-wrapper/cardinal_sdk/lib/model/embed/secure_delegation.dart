@@ -1,35 +1,24 @@
 // auto-generated file
+import 'package:cardinal_sdk/model/embed/access_level.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:cardinal_sdk/model/specializations/base64string.dart';
 import 'package:cardinal_sdk/model/specializations/secure_delegation_key_string.dart';
-import 'package:cardinal_sdk/model/embed/access_level.dart';
+part "secure_delegation.freezed.dart";
 
 
-class SecureDelegation {
-	String? delegator = null;
-	String? delegate = null;
-	Set<Base64String> secretIds = {};
-	Set<Base64String> encryptionKeys = {};
-	Set<Base64String> owningEntityIds = {};
-	Set<SecureDelegationKeyString> parentDelegations = {};
-	String? exchangeDataId = null;
-	AccessLevel permissions;
-	SecureDelegation(
-		this.permissions,
-		{
-			String? delegator,
-			String? delegate,
-			Set<Base64String>? secretIds,
-			Set<Base64String>? encryptionKeys,
-			Set<Base64String>? owningEntityIds,
-			Set<SecureDelegationKeyString>? parentDelegations,
-			String? exchangeDataId
-		}) : delegator = delegator ?? null,
-		delegate = delegate ?? null,
-		secretIds = secretIds ?? {},
-		encryptionKeys = encryptionKeys ?? {},
-		owningEntityIds = owningEntityIds ?? {},
-		parentDelegations = parentDelegations ?? {},
-		exchangeDataId = exchangeDataId ?? null;
+@freezed
+abstract class SecureDelegation with _$SecureDelegation {
+	const factory SecureDelegation({
+		@Default(null) String? delegator,
+		@Default(null) String? delegate,
+		@Default({}) Set<Base64String> secretIds,
+		@Default({}) Set<Base64String> encryptionKeys,
+		@Default({}) Set<Base64String> owningEntityIds,
+		@Default({}) Set<SecureDelegationKeyString> parentDelegations,
+		@Default(null) String? exchangeDataId,
+		required AccessLevel permissions,
+	}) = _SecureDelegation;
+
 
 	static Map<String, dynamic> encode(SecureDelegation value) {
 		Map<String, dynamic> entityAsMap = {
@@ -47,7 +36,7 @@ class SecureDelegation {
 
 	static SecureDelegation fromJSON(Map<String, dynamic> data) {
 		return SecureDelegation(
-			AccessLevel.fromJSON(data["permissions"]),
+			permissions: AccessLevel.fromJSON(data["permissions"]),
 			delegator: (data["delegator"] as String?),
 			delegate: (data["delegate"] as String?),
 			secretIds: (data["secretIds"] as List<dynamic>).map((x0) => (x0 as Base64String) ).toSet(),

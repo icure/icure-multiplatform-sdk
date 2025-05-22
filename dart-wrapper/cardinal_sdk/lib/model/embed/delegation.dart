@@ -1,21 +1,18 @@
 // auto-generated file
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:cardinal_sdk/model/specializations/hex_string.dart';
+part "delegation.freezed.dart";
 
 
-class Delegation {
-	String? owner = null;
-	String? delegatedTo = null;
-	HexString? key = null;
-	List<String> tags = [];
-	Delegation({
-			String? owner,
-			String? delegatedTo,
-			HexString? key,
-			List<String>? tags
-		}) : owner = owner ?? null,
-		delegatedTo = delegatedTo ?? null,
-		key = key ?? null,
-		tags = tags ?? [];
+@freezed
+abstract class Delegation with _$Delegation {
+	const factory Delegation({
+		@Default(null) String? owner,
+		@Default(null) String? delegatedTo,
+		@Default(null) HexString? key,
+		@Default([]) List<String> tags,
+	}) = _Delegation;
+
 
 	static Map<String, dynamic> encode(Delegation value) {
 		Map<String, dynamic> entityAsMap = {

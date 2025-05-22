@@ -6,12 +6,12 @@ export namespace SecretIdShareOptions {
 
 	export class AllAvailable {
 
-		requireAtLeastOne: boolean;
+		requireAtLeastOne: boolean = false;
 
 		readonly $ktClass: 'com.icure.cardinal.sdk.crypto.entities.SecretIdShareOptions.AllAvailable' = 'com.icure.cardinal.sdk.crypto.entities.SecretIdShareOptions.AllAvailable';
 
-		constructor(partial: Partial<AllAvailable> & Pick<AllAvailable, "requireAtLeastOne">) {
-			this.requireAtLeastOne = partial.requireAtLeastOne;
+		constructor(partial: Partial<AllAvailable>) {
+			if ('requireAtLeastOne' in partial && partial.requireAtLeastOne !== undefined) this.requireAtLeastOne = partial.requireAtLeastOne;
 		}
 
 	}

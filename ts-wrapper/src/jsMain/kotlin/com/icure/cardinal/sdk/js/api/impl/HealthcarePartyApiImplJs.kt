@@ -17,21 +17,22 @@ import com.icure.cardinal.sdk.js.filters.filterOptions_fromJs
 import com.icure.cardinal.sdk.js.model.CheckedConverters.arrayToList
 import com.icure.cardinal.sdk.js.model.CheckedConverters.arrayToSet
 import com.icure.cardinal.sdk.js.model.CheckedConverters.listToArray
+import com.icure.cardinal.sdk.js.model.CheckedConverters.nullToUndefined
 import com.icure.cardinal.sdk.js.model.CheckedConverters.numberToInt
 import com.icure.cardinal.sdk.js.model.CheckedConverters.undefinedToNull
 import com.icure.cardinal.sdk.js.model.DataOwnerRegistrationSuccessJs
 import com.icure.cardinal.sdk.js.model.HealthcarePartyJs
-import com.icure.cardinal.sdk.js.model.IdWithMandatoryRevJs
 import com.icure.cardinal.sdk.js.model.PaginatedListJs
 import com.icure.cardinal.sdk.js.model.PublicKeyJs
+import com.icure.cardinal.sdk.js.model.StoredDocumentIdentifierJs
 import com.icure.cardinal.sdk.js.model.couchdb.DocIdentifierJs
 import com.icure.cardinal.sdk.js.model.couchdb.docIdentifier_toJs
 import com.icure.cardinal.sdk.js.model.dataOwnerRegistrationSuccess_toJs
 import com.icure.cardinal.sdk.js.model.healthcareParty_fromJs
 import com.icure.cardinal.sdk.js.model.healthcareParty_toJs
-import com.icure.cardinal.sdk.js.model.idWithMandatoryRev_fromJs
 import com.icure.cardinal.sdk.js.model.paginatedList_toJs
 import com.icure.cardinal.sdk.js.model.publicKey_toJs
+import com.icure.cardinal.sdk.js.model.storedDocumentIdentifier_fromJs
 import com.icure.cardinal.sdk.js.subscription.EntitySubscriptionConfigurationJs
 import com.icure.cardinal.sdk.js.subscription.EntitySubscriptionJs
 import com.icure.cardinal.sdk.js.subscription.entitySubscriptionConfiguration_fromJs
@@ -90,13 +91,17 @@ internal class HealthcarePartyApiImplJs(
 		)
 	}
 
-	override fun getHealthcareParty(healthcarePartyId: String): Promise<HealthcarePartyJs> =
+	override fun getHealthcareParty(healthcarePartyId: String): Promise<HealthcarePartyJs?> =
 			GlobalScope.promise {
 		val healthcarePartyIdConverted: String = healthcarePartyId
 		val result = healthcarePartyApi.getHealthcareParty(
 			healthcarePartyIdConverted,
 		)
-		healthcareParty_toJs(result)
+		nullToUndefined(
+			result?.let { nonNull1 ->
+				healthcareParty_toJs(nonNull1)
+			}
+		)
 	}
 
 	override fun createHealthcareParty(p: HealthcarePartyJs): Promise<HealthcarePartyJs> =
@@ -546,13 +551,13 @@ internal class HealthcarePartyApiImplJs(
 		docIdentifier_toJs(result)
 	}
 
-	override fun deleteHealthcarePartiesByIds(entityIds: Array<IdWithMandatoryRevJs>):
+	override fun deleteHealthcarePartiesByIds(entityIds: Array<StoredDocumentIdentifierJs>):
 			Promise<Array<DocIdentifierJs>> = GlobalScope.promise {
 		val entityIdsConverted: List<StoredDocumentIdentifier> = arrayToList(
 			entityIds,
 			"entityIds",
-			{ x1: IdWithMandatoryRevJs ->
-				idWithMandatoryRev_fromJs(x1)
+			{ x1: StoredDocumentIdentifierJs ->
+				storedDocumentIdentifier_fromJs(x1)
 			},
 		)
 		val result = healthcarePartyApi.deleteHealthcarePartiesByIds(
@@ -583,13 +588,14 @@ internal class HealthcarePartyApiImplJs(
 	}
 
 	override fun deleteHealthcarePartiesInGroupByIds(groupId: String,
-			entityIds: Array<IdWithMandatoryRevJs>): Promise<Array<DocIdentifierJs>> = GlobalScope.promise {
+			entityIds: Array<StoredDocumentIdentifierJs>): Promise<Array<DocIdentifierJs>> =
+			GlobalScope.promise {
 		val groupIdConverted: String = groupId
 		val entityIdsConverted: List<StoredDocumentIdentifier> = arrayToList(
 			entityIds,
 			"entityIds",
-			{ x1: IdWithMandatoryRevJs ->
-				idWithMandatoryRev_fromJs(x1)
+			{ x1: StoredDocumentIdentifierJs ->
+				storedDocumentIdentifier_fromJs(x1)
 			},
 		)
 		val result = healthcarePartyApi.deleteHealthcarePartiesInGroupByIds(

@@ -37,6 +37,8 @@ import com.icure.cardinal.sdk.js.model.paginatedList_toJs
 import com.icure.cardinal.sdk.js.model.registrationInformation_fromJs
 import com.icure.cardinal.sdk.js.model.registrationSuccess_toJs
 import com.icure.cardinal.sdk.js.model.replicationInfo_toJs
+import com.icure.cardinal.sdk.js.model.security.ExternalJwtConfigJs
+import com.icure.cardinal.sdk.js.model.security.externalJwtConfig_fromJs
 import com.icure.cardinal.sdk.js.utils.Record
 import com.icure.cardinal.sdk.model.DatabaseInitialisation
 import com.icure.cardinal.sdk.model.Group
@@ -50,6 +52,7 @@ import com.icure.cardinal.sdk.model.couchdb.GroupDatabasesInfo
 import com.icure.cardinal.sdk.model.embed.GroupType
 import com.icure.cardinal.sdk.model.embed.RoleConfiguration
 import com.icure.cardinal.sdk.model.embed.UserType
+import com.icure.cardinal.sdk.model.security.ExternalJwtConfig
 import com.icure.cardinal.sdk.model.security.Operation
 import com.icure.cardinal.sdk.model.security.PermissionType
 import kotlin.Array
@@ -579,5 +582,51 @@ internal class GroupApiImplJs(
 				docIdentifier_toJs(x1)
 			},
 		)
+	}
+
+	override fun createOrUpdateExternalJwtConfig(
+		groupId: String,
+		key: String,
+		config: ExternalJwtConfigJs,
+	): Promise<GroupJs> = GlobalScope.promise {
+		val groupIdConverted: String = groupId
+		val keyConverted: String = key
+		val configConverted: ExternalJwtConfig = externalJwtConfig_fromJs(config)
+		val result = groupApi.createOrUpdateExternalJwtConfig(
+			groupIdConverted,
+			keyConverted,
+			configConverted,
+		)
+		group_toJs(result)
+	}
+
+	override fun removeExternalJwtConfig(groupId: String, key: String): Promise<GroupJs> =
+			GlobalScope.promise {
+		val groupIdConverted: String = groupId
+		val keyConverted: String = key
+		val result = groupApi.removeExternalJwtConfig(
+			groupIdConverted,
+			keyConverted,
+		)
+		group_toJs(result)
+	}
+
+	override fun getOperationTokenForGroup(
+		groupId: String,
+		operation: String,
+		duration: Double?,
+		description: String?,
+	): Promise<String> = GlobalScope.promise {
+		val groupIdConverted: String = groupId
+		val operationConverted: Operation = Operation.valueOf(operation)
+		val durationConverted: Long? = numberToLong(duration, "duration")
+		val descriptionConverted: String? = undefinedToNull(description)
+		val result = groupApi.getOperationTokenForGroup(
+			groupIdConverted,
+			operationConverted,
+			durationConverted,
+			descriptionConverted,
+		)
+		result
 	}
 }

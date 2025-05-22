@@ -6,27 +6,29 @@ import 'package:cardinal_sdk/model/specializations/base64string.dart';
 import 'package:cardinal_sdk/model/embed/sub_contact.dart';
 import 'package:cardinal_sdk/model/embed/encryptable.dart';
 import 'package:cardinal_sdk/model/base/icure_document.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+part "sub_contact.freezed.dart";
 
 
 sealed class SubContact implements Encryptable, ICureDocument<String?> {
-	@override abstract String? id;
-	@override abstract int? created;
-	@override abstract int? modified;
-	@override abstract String? author;
-	@override abstract String? responsible;
-	@override abstract String? medicalLocationId;
-	@override abstract Set<CodeStub> tags;
-	@override abstract Set<CodeStub> codes;
-	@override abstract int? endOfLife;
-	abstract String? descr;
-	abstract String? protocol;
-	@ActualInt32() abstract int? status;
-	abstract String? formId;
-	abstract String? planOfActionId;
-	abstract String? healthElementId;
-	abstract String? classificationId;
-	abstract List<ServiceLink> services;
-	@override abstract Base64String? encryptedSelf;
+	@override abstract final String? id;
+	@override abstract final int? created;
+	@override abstract final int? modified;
+	@override abstract final String? author;
+	@override abstract final String? responsible;
+	@override abstract final String? medicalLocationId;
+	@override abstract final Set<CodeStub> tags;
+	@override abstract final Set<CodeStub> codes;
+	@override abstract final int? endOfLife;
+	abstract final String? descr;
+	abstract final String? protocol;
+	@actualInt32 abstract final int? status;
+	abstract final String? formId;
+	abstract final String? planOfActionId;
+	abstract final String? healthElementId;
+	abstract final String? classificationId;
+	abstract final List<ServiceLink> services;
+	@override abstract final Base64String? encryptedSelf;
 
 	static Map<String, dynamic> encode(SubContact value) {
 		switch (value) {
@@ -57,69 +59,29 @@ sealed class SubContact implements Encryptable, ICureDocument<String?> {
 	}
 }
 
-class EncryptedSubContact implements SubContact {
-	@override String? id = null;
-	@override int? created = null;
-	@override int? modified = null;
-	@override String? author = null;
-	@override String? responsible = null;
-	@override String? medicalLocationId = null;
-	@override Set<CodeStub> tags = {};
-	@override Set<CodeStub> codes = {};
-	@override int? endOfLife = null;
-	@override String? descr = null;
-	@override String? protocol = null;
-	int? _status = null;
-	@ActualInt32() @override int? get status => _status;
-	@ActualInt32() @override set status(int? value) {
-		if (value != null && value > 2147483647) {
-			throw ArgumentError('status value cannot exceed 2147483647');
-		}
-		_status = value;
-	}
-	@override String? formId = null;
-	@override String? planOfActionId = null;
-	@override String? healthElementId = null;
-	@override String? classificationId = null;
-	@override List<ServiceLink> services = [];
-	@override Base64String? encryptedSelf = null;
-	EncryptedSubContact({
-			int? status,
-			String? id,
-			int? created,
-			int? modified,
-			String? author,
-			String? responsible,
-			String? medicalLocationId,
-			Set<CodeStub>? tags,
-			Set<CodeStub>? codes,
-			int? endOfLife,
-			String? descr,
-			String? protocol,
-			String? formId,
-			String? planOfActionId,
-			String? healthElementId,
-			String? classificationId,
-			List<ServiceLink>? services,
-			Base64String? encryptedSelf
-		}) : id = id ?? null,
-		created = created ?? null,
-		modified = modified ?? null,
-		author = author ?? null,
-		responsible = responsible ?? null,
-		medicalLocationId = medicalLocationId ?? null,
-		tags = tags ?? {},
-		codes = codes ?? {},
-		endOfLife = endOfLife ?? null,
-		descr = descr ?? null,
-		protocol = protocol ?? null,
-		formId = formId ?? null,
-		planOfActionId = planOfActionId ?? null,
-		healthElementId = healthElementId ?? null,
-		classificationId = classificationId ?? null,
-		services = services ?? [],
-		encryptedSelf = encryptedSelf ?? null,
-		_status = status ?? null;
+@freezed
+abstract class EncryptedSubContact with _$EncryptedSubContact implements SubContact {
+	const factory EncryptedSubContact({
+		@Default(null) String? id,
+		@Default(null) int? created,
+		@Default(null) int? modified,
+		@Default(null) String? author,
+		@Default(null) String? responsible,
+		@Default(null) String? medicalLocationId,
+		@Default({}) Set<CodeStub> tags,
+		@Default({}) Set<CodeStub> codes,
+		@Default(null) int? endOfLife,
+		@Default(null) String? descr,
+		@Default(null) String? protocol,
+		@Default(null) int? status,
+		@Default(null) String? formId,
+		@Default(null) String? planOfActionId,
+		@Default(null) String? healthElementId,
+		@Default(null) String? classificationId,
+		@Default([]) List<ServiceLink> services,
+		@Default(null) Base64String? encryptedSelf,
+	}) = _EncryptedSubContact;
+
 
 	static Map<String, dynamic> encode(EncryptedSubContact value) {
 		Map<String, dynamic> entityAsMap = {
@@ -169,69 +131,29 @@ class EncryptedSubContact implements SubContact {
 	}
 }
 
-class DecryptedSubContact implements SubContact {
-	@override String? id = null;
-	@override int? created = null;
-	@override int? modified = null;
-	@override String? author = null;
-	@override String? responsible = null;
-	@override String? medicalLocationId = null;
-	@override Set<CodeStub> tags = {};
-	@override Set<CodeStub> codes = {};
-	@override int? endOfLife = null;
-	@override String? descr = null;
-	@override String? protocol = null;
-	int? _status = null;
-	@ActualInt32() @override int? get status => _status;
-	@ActualInt32() @override set status(int? value) {
-		if (value != null && value > 2147483647) {
-			throw ArgumentError('status value cannot exceed 2147483647');
-		}
-		_status = value;
-	}
-	@override String? formId = null;
-	@override String? planOfActionId = null;
-	@override String? healthElementId = null;
-	@override String? classificationId = null;
-	@override List<ServiceLink> services = [];
-	@override Base64String? encryptedSelf = null;
-	DecryptedSubContact({
-			int? status,
-			String? id,
-			int? created,
-			int? modified,
-			String? author,
-			String? responsible,
-			String? medicalLocationId,
-			Set<CodeStub>? tags,
-			Set<CodeStub>? codes,
-			int? endOfLife,
-			String? descr,
-			String? protocol,
-			String? formId,
-			String? planOfActionId,
-			String? healthElementId,
-			String? classificationId,
-			List<ServiceLink>? services,
-			Base64String? encryptedSelf
-		}) : id = id ?? null,
-		created = created ?? null,
-		modified = modified ?? null,
-		author = author ?? null,
-		responsible = responsible ?? null,
-		medicalLocationId = medicalLocationId ?? null,
-		tags = tags ?? {},
-		codes = codes ?? {},
-		endOfLife = endOfLife ?? null,
-		descr = descr ?? null,
-		protocol = protocol ?? null,
-		formId = formId ?? null,
-		planOfActionId = planOfActionId ?? null,
-		healthElementId = healthElementId ?? null,
-		classificationId = classificationId ?? null,
-		services = services ?? [],
-		encryptedSelf = encryptedSelf ?? null,
-		_status = status ?? null;
+@freezed
+abstract class DecryptedSubContact with _$DecryptedSubContact implements SubContact {
+	const factory DecryptedSubContact({
+		@Default(null) String? id,
+		@Default(null) int? created,
+		@Default(null) int? modified,
+		@Default(null) String? author,
+		@Default(null) String? responsible,
+		@Default(null) String? medicalLocationId,
+		@Default({}) Set<CodeStub> tags,
+		@Default({}) Set<CodeStub> codes,
+		@Default(null) int? endOfLife,
+		@Default(null) String? descr,
+		@Default(null) String? protocol,
+		@Default(null) int? status,
+		@Default(null) String? formId,
+		@Default(null) String? planOfActionId,
+		@Default(null) String? healthElementId,
+		@Default(null) String? classificationId,
+		@Default([]) List<ServiceLink> services,
+		@Default(null) Base64String? encryptedSelf,
+	}) = _DecryptedSubContact;
+
 
 	static Map<String, dynamic> encode(DecryptedSubContact value) {
 		Map<String, dynamic> entityAsMap = {

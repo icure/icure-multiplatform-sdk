@@ -16,6 +16,7 @@ import com.icure.cardinal.sdk.js.filters.filterOptions_fromJs
 import com.icure.cardinal.sdk.js.model.CheckedConverters.arrayToList
 import com.icure.cardinal.sdk.js.model.CheckedConverters.arrayToSet
 import com.icure.cardinal.sdk.js.model.CheckedConverters.listToArray
+import com.icure.cardinal.sdk.js.model.CheckedConverters.nullToUndefined
 import com.icure.cardinal.sdk.js.model.CheckedConverters.numberToInt
 import com.icure.cardinal.sdk.js.model.CheckedConverters.numberToLong
 import com.icure.cardinal.sdk.js.model.CheckedConverters.undefinedToNull
@@ -30,8 +31,10 @@ import com.icure.cardinal.sdk.js.model.listOfIds_fromJs
 import com.icure.cardinal.sdk.js.model.paginatedList_toJs
 import com.icure.cardinal.sdk.js.model.propertyStub_fromJs
 import com.icure.cardinal.sdk.js.model.security.Enable2faRequestJs
+import com.icure.cardinal.sdk.js.model.security.LoginIdentifierJs
 import com.icure.cardinal.sdk.js.model.security.TokenWithGroupJs
 import com.icure.cardinal.sdk.js.model.security.enable2faRequest_fromJs
+import com.icure.cardinal.sdk.js.model.security.loginIdentifier_fromJs
 import com.icure.cardinal.sdk.js.model.security.tokenWithGroup_toJs
 import com.icure.cardinal.sdk.js.model.userGroup_toJs
 import com.icure.cardinal.sdk.js.model.user_fromJs
@@ -47,6 +50,7 @@ import com.icure.cardinal.sdk.model.ListOfIds
 import com.icure.cardinal.sdk.model.User
 import com.icure.cardinal.sdk.model.UserGroup
 import com.icure.cardinal.sdk.model.security.Enable2faRequest
+import com.icure.cardinal.sdk.model.security.LoginIdentifier
 import com.icure.cardinal.sdk.model.security.TokenWithGroup
 import com.icure.cardinal.sdk.subscription.EntitySubscriptionConfiguration
 import com.icure.cardinal.sdk.subscription.SubscriptionEventType
@@ -137,12 +141,16 @@ internal class UserApiImplJs(
 		user_toJs(result)
 	}
 
-	override fun getUser(userId: String): Promise<UserJs> = GlobalScope.promise {
+	override fun getUser(userId: String): Promise<UserJs?> = GlobalScope.promise {
 		val userIdConverted: String = userId
 		val result = userApi.getUser(
 			userIdConverted,
 		)
-		user_toJs(result)
+		nullToUndefined(
+			result?.let { nonNull1 ->
+				user_toJs(nonNull1)
+			}
+		)
 	}
 
 	override fun getUsers(userIds: Array<String>): Promise<Array<UserJs>> = GlobalScope.promise {
@@ -164,20 +172,28 @@ internal class UserApiImplJs(
 		)
 	}
 
-	override fun getUserByEmail(email: String): Promise<UserJs> = GlobalScope.promise {
+	override fun getUserByEmail(email: String): Promise<UserJs?> = GlobalScope.promise {
 		val emailConverted: String = email
 		val result = userApi.getUserByEmail(
 			emailConverted,
 		)
-		user_toJs(result)
+		nullToUndefined(
+			result?.let { nonNull1 ->
+				user_toJs(nonNull1)
+			}
+		)
 	}
 
-	override fun getUserByPhoneNumber(phoneNumber: String): Promise<UserJs> = GlobalScope.promise {
+	override fun getUserByPhoneNumber(phoneNumber: String): Promise<UserJs?> = GlobalScope.promise {
 		val phoneNumberConverted: String = phoneNumber
 		val result = userApi.getUserByPhoneNumber(
 			phoneNumberConverted,
 		)
-		user_toJs(result)
+		nullToUndefined(
+			result?.let { nonNull1 ->
+				user_toJs(nonNull1)
+			}
+		)
 	}
 
 	override fun findByHcpartyId(id: String): Promise<Array<String>> = GlobalScope.promise {
@@ -755,6 +771,52 @@ internal class UserApiImplJs(
 			userConverted,
 		)
 		user_toJs(result)
+	}
+
+	override fun setUserInheritsPermissions(
+		userId: String,
+		groupId: String,
+		`value`: Boolean,
+	): Promise<String> = GlobalScope.promise {
+		val userIdConverted: String = userId
+		val groupIdConverted: String = groupId
+		val valueConverted: Boolean = value
+		val result = userApi.setUserInheritsPermissions(
+			userIdConverted,
+			groupIdConverted,
+			valueConverted,
+		)
+		result
+	}
+
+	override fun setLoginIdentifiers(
+		userId: String,
+		groupId: String,
+		identifier: LoginIdentifierJs,
+		replaceExisting: Boolean,
+	): Promise<Boolean> = GlobalScope.promise {
+		val userIdConverted: String = userId
+		val groupIdConverted: String = groupId
+		val identifierConverted: LoginIdentifier = loginIdentifier_fromJs(identifier)
+		val replaceExistingConverted: Boolean = replaceExisting
+		val result = userApi.setLoginIdentifiers(
+			userIdConverted,
+			groupIdConverted,
+			identifierConverted,
+			replaceExistingConverted,
+		)
+		result
+	}
+
+	override fun setExternalJwtAuthByIdentifiersForCurrentUser(externalJwtConfigId: String,
+			externalAuthenticationToken: String): Promise<Boolean> = GlobalScope.promise {
+		val externalJwtConfigIdConverted: String = externalJwtConfigId
+		val externalAuthenticationTokenConverted: String = externalAuthenticationToken
+		val result = userApi.setExternalJwtAuthByIdentifiersForCurrentUser(
+			externalJwtConfigIdConverted,
+			externalAuthenticationTokenConverted,
+		)
+		result
 	}
 
 	override fun subscribeToEvents(

@@ -18,8 +18,6 @@ public object MessageApiDispatcher {
       String?,
     ) -> Unit,
   ): Boolean = when(methodName) {
-    "createMessage" -> createMessage(parameters, resultCallback)
-    "createMessageInTopic" -> createMessageInTopic(parameters, resultCallback)
     "withEncryptionMetadata" -> withEncryptionMetadata(parameters, resultCallback)
     "getEncryptionKeysOf" -> getEncryptionKeysOf(parameters, resultCallback)
     "hasWriteAccess" -> hasWriteAccess(parameters, resultCallback)
@@ -39,6 +37,8 @@ public object MessageApiDispatcher {
     "shareWithMany" -> shareWithMany(parameters, resultCallback)
     "filterMessagesBy" -> filterMessagesBy(parameters, resultCallback)
     "filterMessagesBySorted" -> filterMessagesBySorted(parameters, resultCallback)
+    "createMessage" -> createMessage(parameters, resultCallback)
+    "createMessageInTopic" -> createMessageInTopic(parameters, resultCallback)
     "undeleteMessage" -> undeleteMessage(parameters, resultCallback)
     "modifyMessage" -> modifyMessage(parameters, resultCallback)
     "undeleteMessageById" -> undeleteMessageById(parameters, resultCallback)
@@ -50,6 +50,8 @@ public object MessageApiDispatcher {
     "encrypted.shareWithMany" -> encrypted_shareWithMany(parameters, resultCallback)
     "encrypted.filterMessagesBy" -> encrypted_filterMessagesBy(parameters, resultCallback)
     "encrypted.filterMessagesBySorted" -> encrypted_filterMessagesBySorted(parameters, resultCallback)
+    "encrypted.createMessage" -> encrypted_createMessage(parameters, resultCallback)
+    "encrypted.createMessageInTopic" -> encrypted_createMessageInTopic(parameters, resultCallback)
     "encrypted.undeleteMessage" -> encrypted_undeleteMessage(parameters, resultCallback)
     "encrypted.modifyMessage" -> encrypted_modifyMessage(parameters, resultCallback)
     "encrypted.undeleteMessageById" -> encrypted_undeleteMessageById(parameters, resultCallback)
@@ -60,6 +62,8 @@ public object MessageApiDispatcher {
     "tryAndRecover.shareWithMany" -> tryAndRecover_shareWithMany(parameters, resultCallback)
     "tryAndRecover.filterMessagesBy" -> tryAndRecover_filterMessagesBy(parameters, resultCallback)
     "tryAndRecover.filterMessagesBySorted" -> tryAndRecover_filterMessagesBySorted(parameters, resultCallback)
+    "tryAndRecover.createMessage" -> tryAndRecover_createMessage(parameters, resultCallback)
+    "tryAndRecover.createMessageInTopic" -> tryAndRecover_createMessageInTopic(parameters, resultCallback)
     "tryAndRecover.undeleteMessage" -> tryAndRecover_undeleteMessage(parameters, resultCallback)
     "tryAndRecover.modifyMessage" -> tryAndRecover_modifyMessage(parameters, resultCallback)
     "tryAndRecover.undeleteMessageById" -> tryAndRecover_undeleteMessageById(parameters, resultCallback)
@@ -68,32 +72,6 @@ public object MessageApiDispatcher {
     "tryAndRecover.setMessagesReadStatus" -> tryAndRecover_setMessagesReadStatus(parameters, resultCallback)
     else -> null
   }?.let { true } ?: false
-
-  private fun createMessage(parameters: Map<String, String>, resultCallback: (
-    String?,
-    String?,
-    String?,
-    String?,
-  ) -> Unit) {
-    MessageApi.createMessage(
-      resultCallback,
-      parameters.getValue("sdkId"),
-      parameters.getValue("entity"),
-    )
-  }
-
-  private fun createMessageInTopic(parameters: Map<String, String>, resultCallback: (
-    String?,
-    String?,
-    String?,
-    String?,
-  ) -> Unit) {
-    MessageApi.createMessageInTopic(
-      resultCallback,
-      parameters.getValue("sdkId"),
-      parameters.getValue("entity"),
-    )
-  }
 
   private fun withEncryptionMetadata(parameters: Map<String, String>, resultCallback: (
     String?,
@@ -353,6 +331,32 @@ public object MessageApiDispatcher {
     )
   }
 
+  private fun createMessage(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    MessageApi.createMessage(
+      resultCallback,
+      parameters.getValue("sdkId"),
+      parameters.getValue("entity"),
+    )
+  }
+
+  private fun createMessageInTopic(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    MessageApi.createMessageInTopic(
+      resultCallback,
+      parameters.getValue("sdkId"),
+      parameters.getValue("entity"),
+    )
+  }
+
   private fun undeleteMessage(parameters: Map<String, String>, resultCallback: (
     String?,
     String?,
@@ -505,6 +509,32 @@ public object MessageApiDispatcher {
     )
   }
 
+  private fun encrypted_createMessage(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    MessageApi.encrypted.createMessage(
+      resultCallback,
+      parameters.getValue("sdkId"),
+      parameters.getValue("entity"),
+    )
+  }
+
+  private fun encrypted_createMessageInTopic(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    MessageApi.encrypted.createMessageInTopic(
+      resultCallback,
+      parameters.getValue("sdkId"),
+      parameters.getValue("entity"),
+    )
+  }
+
   private fun encrypted_undeleteMessage(parameters: Map<String, String>, resultCallback: (
     String?,
     String?,
@@ -640,6 +670,32 @@ public object MessageApiDispatcher {
       resultCallback,
       parameters.getValue("sdkId"),
       parameters.getValue("filter"),
+    )
+  }
+
+  private fun tryAndRecover_createMessage(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    MessageApi.tryAndRecover.createMessage(
+      resultCallback,
+      parameters.getValue("sdkId"),
+      parameters.getValue("entity"),
+    )
+  }
+
+  private fun tryAndRecover_createMessageInTopic(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    MessageApi.tryAndRecover.createMessageInTopic(
+      resultCallback,
+      parameters.getValue("sdkId"),
+      parameters.getValue("entity"),
     )
   }
 

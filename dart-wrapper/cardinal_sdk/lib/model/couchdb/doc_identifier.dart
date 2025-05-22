@@ -1,14 +1,15 @@
 // auto-generated file
+import 'package:freezed_annotation/freezed_annotation.dart';
+part "doc_identifier.freezed.dart";
 
 
-class DocIdentifier {
-	String? id = null;
-	String? rev = null;
-	DocIdentifier({
-			String? id,
-			String? rev
-		}) : id = id ?? null,
-		rev = rev ?? null;
+@freezed
+abstract class DocIdentifier with _$DocIdentifier {
+	const factory DocIdentifier({
+		@Default(null) String? id,
+		@Default(null) String? rev,
+	}) = _DocIdentifier;
+
 
 	static Map<String, dynamic> encode(DocIdentifier value) {
 		Map<String, dynamic> entityAsMap = {

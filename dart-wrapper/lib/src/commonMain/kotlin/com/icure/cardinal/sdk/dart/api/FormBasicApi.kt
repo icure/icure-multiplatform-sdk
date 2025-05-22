@@ -9,7 +9,7 @@ import com.icure.cardinal.sdk.filters.BaseSortableFilterOptions
 import com.icure.cardinal.sdk.model.EncryptedForm
 import com.icure.cardinal.sdk.model.Form
 import com.icure.cardinal.sdk.model.FormTemplate
-import com.icure.cardinal.sdk.model.IdWithMandatoryRev
+import com.icure.cardinal.sdk.model.StoredDocumentIdentifier
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.serialization.ByteArraySerializer
 import com.icure.cardinal.sdk.serialization.PaginatedListIteratorWithSerializer
@@ -166,7 +166,7 @@ public object FormBasicApi {
     entityIdsString: String,
   ) {
     val entityIds = fullLanguageInteropJson.decodeFromString(
-      ListSerializer(IdWithMandatoryRev.serializer()),
+      ListSerializer(StoredDocumentIdentifier.serializer()),
       entityIdsString
     )
     ApiScope.execute(
@@ -403,6 +403,52 @@ public object FormBasicApi {
     }
   }
 
+  public fun createForm(
+    dartResultCallback: (
+      String?,
+      String?,
+      String?,
+      String?,
+    ) -> Unit,
+    sdkId: String,
+    entityString: String,
+  ) {
+    val entity = fullLanguageInteropJson.decodeFromString(
+      EncryptedForm.serializer(),
+      entityString
+    )
+    ApiScope.execute(
+      dartResultCallback,
+      EncryptedForm.serializer()) {
+      NativeReferences.get<CardinalBaseApis>(sdkId).form.createForm(
+        entity,
+      )
+    }
+  }
+
+  public fun createForms(
+    dartResultCallback: (
+      String?,
+      String?,
+      String?,
+      String?,
+    ) -> Unit,
+    sdkId: String,
+    entitiesString: String,
+  ) {
+    val entities = fullLanguageInteropJson.decodeFromString(
+      ListSerializer(EncryptedForm.serializer()),
+      entitiesString
+    )
+    ApiScope.execute(
+      dartResultCallback,
+      ListSerializer(EncryptedForm.serializer())) {
+      NativeReferences.get<CardinalBaseApis>(sdkId).form.createForms(
+        entities,
+      )
+    }
+  }
+
   public fun modifyForm(
     dartResultCallback: (
       String?,
@@ -517,7 +563,7 @@ public object FormBasicApi {
     )
     ApiScope.execute(
       dartResultCallback,
-      EncryptedForm.serializer()) {
+      EncryptedForm.serializer().nullable) {
       NativeReferences.get<CardinalBaseApis>(sdkId).form.getForm(
         entityId,
       )

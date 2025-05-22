@@ -14,41 +14,43 @@ import 'package:cardinal_sdk/model/base/stored_document.dart';
 import 'package:cardinal_sdk/model/base/icure_document.dart';
 import 'package:cardinal_sdk/model/base/has_encryption_metadata.dart';
 import 'package:cardinal_sdk/model/embed/encryptable.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+part "contact.freezed.dart";
 
 
 sealed class Contact implements StoredDocument, ICureDocument<String>, HasEncryptionMetadata, Encryptable {
-	@override abstract String id;
-	@override abstract String? rev;
-	@override abstract int? created;
-	@override abstract int? modified;
-	@override abstract String? author;
-	@override abstract String? responsible;
-	@override abstract String? medicalLocationId;
-	@override abstract Set<CodeStub> tags;
-	@override abstract Set<CodeStub> codes;
-	abstract List<Identifier> identifier;
-	@override abstract int? endOfLife;
-	@override abstract int? deletionDate;
-	abstract String? groupId;
-	abstract int? openingDate;
-	abstract int? closingDate;
-	abstract String? descr;
-	abstract String? location;
-	abstract String? externalId;
-	abstract CodeStub? encounterType;
+	@override abstract final String id;
+	@override abstract final String? rev;
+	@override abstract final int? created;
+	@override abstract final int? modified;
+	@override abstract final String? author;
+	@override abstract final String? responsible;
+	@override abstract final String? medicalLocationId;
+	@override abstract final Set<CodeStub> tags;
+	@override abstract final Set<CodeStub> codes;
+	abstract final List<Identifier> identifier;
+	@override abstract final int? endOfLife;
+	@override abstract final int? deletionDate;
+	abstract final String? groupId;
+	abstract final int? openingDate;
+	abstract final int? closingDate;
+	abstract final String? descr;
+	abstract final String? location;
+	abstract final String? externalId;
+	abstract final CodeStub? encounterType;
 	Address? get encounterLocation;
 	Set<SubContact> get subContacts;
 	Set<Service> get services;
-	abstract Map<ParticipantType, String> participants;
-	abstract String? healthcarePartyId;
-	abstract String? modifiedContactId;
-	@override abstract Set<String> secretForeignKeys;
-	@override abstract Map<String, Set<Delegation>> cryptedForeignKeys;
-	@override abstract Map<String, Set<Delegation>> delegations;
-	@override abstract Map<String, Set<Delegation>> encryptionKeys;
-	@override abstract Base64String? encryptedSelf;
-	@override abstract SecurityMetadata? securityMetadata;
-	abstract List<Annotation> notes;
+	abstract final Map<ParticipantType, String> participants;
+	abstract final String? healthcarePartyId;
+	abstract final String? modifiedContactId;
+	@override abstract final Set<String> secretForeignKeys;
+	@override abstract final Map<String, Set<Delegation>> cryptedForeignKeys;
+	@override abstract final Map<String, Set<Delegation>> delegations;
+	@override abstract final Map<String, Set<Delegation>> encryptionKeys;
+	@override abstract final Base64String? encryptedSelf;
+	@override abstract final SecurityMetadata? securityMetadata;
+	abstract final List<Annotation> notes;
 
 	static Map<String, dynamic> encode(Contact value) {
 		switch (value) {
@@ -79,104 +81,43 @@ sealed class Contact implements StoredDocument, ICureDocument<String>, HasEncryp
 	}
 }
 
-class DecryptedContact implements Contact {
-	@override String id;
-	@override String? rev = null;
-	@override int? created = null;
-	@override int? modified = null;
-	@override String? author = null;
-	@override String? responsible = null;
-	@override String? medicalLocationId = null;
-	@override Set<CodeStub> tags = {};
-	@override Set<CodeStub> codes = {};
-	@override List<Identifier> identifier = [];
-	@override int? endOfLife = null;
-	@override int? deletionDate = null;
-	@override String? groupId = null;
-	@override int? openingDate = null;
-	@override int? closingDate = null;
-	@override String? descr = null;
-	@override String? location = null;
-	@override String? externalId = null;
-	@override CodeStub? encounterType = null;
-	@override DecryptedAddress? encounterLocation = null;
-	@override Set<DecryptedSubContact> subContacts = {};
-	@override Set<DecryptedService> services = {};
-	@override Map<ParticipantType, String> participants = {};
-	@override String? healthcarePartyId = null;
-	@override String? modifiedContactId = null;
-	@override Set<String> secretForeignKeys = {};
-	@override Map<String, Set<Delegation>> cryptedForeignKeys = {};
-	@override Map<String, Set<Delegation>> delegations = {};
-	@override Map<String, Set<Delegation>> encryptionKeys = {};
-	@override Base64String? encryptedSelf = null;
-	@override SecurityMetadata? securityMetadata = null;
-	@override List<Annotation> notes = [];
-	DecryptedContact(
-		this.id,
-		{
-			String? rev,
-			int? created,
-			int? modified,
-			String? author,
-			String? responsible,
-			String? medicalLocationId,
-			Set<CodeStub>? tags,
-			Set<CodeStub>? codes,
-			List<Identifier>? identifier,
-			int? endOfLife,
-			int? deletionDate,
-			String? groupId,
-			int? openingDate,
-			int? closingDate,
-			String? descr,
-			String? location,
-			String? externalId,
-			CodeStub? encounterType,
-			DecryptedAddress? encounterLocation,
-			Set<DecryptedSubContact>? subContacts,
-			Set<DecryptedService>? services,
-			Map<ParticipantType, String>? participants,
-			String? healthcarePartyId,
-			String? modifiedContactId,
-			Set<String>? secretForeignKeys,
-			Map<String, Set<Delegation>>? cryptedForeignKeys,
-			Map<String, Set<Delegation>>? delegations,
-			Map<String, Set<Delegation>>? encryptionKeys,
-			Base64String? encryptedSelf,
-			SecurityMetadata? securityMetadata,
-			List<Annotation>? notes
-		}) : rev = rev ?? null,
-		created = created ?? null,
-		modified = modified ?? null,
-		author = author ?? null,
-		responsible = responsible ?? null,
-		medicalLocationId = medicalLocationId ?? null,
-		tags = tags ?? {},
-		codes = codes ?? {},
-		identifier = identifier ?? [],
-		endOfLife = endOfLife ?? null,
-		deletionDate = deletionDate ?? null,
-		groupId = groupId ?? null,
-		openingDate = openingDate ?? null,
-		closingDate = closingDate ?? null,
-		descr = descr ?? null,
-		location = location ?? null,
-		externalId = externalId ?? null,
-		encounterType = encounterType ?? null,
-		encounterLocation = encounterLocation ?? null,
-		subContacts = subContacts ?? {},
-		services = services ?? {},
-		participants = participants ?? {},
-		healthcarePartyId = healthcarePartyId ?? null,
-		modifiedContactId = modifiedContactId ?? null,
-		secretForeignKeys = secretForeignKeys ?? {},
-		cryptedForeignKeys = cryptedForeignKeys ?? {},
-		delegations = delegations ?? {},
-		encryptionKeys = encryptionKeys ?? {},
-		encryptedSelf = encryptedSelf ?? null,
-		securityMetadata = securityMetadata ?? null,
-		notes = notes ?? [];
+@freezed
+abstract class DecryptedContact with _$DecryptedContact implements Contact {
+	const factory DecryptedContact({
+		required String id,
+		@Default(null) String? rev,
+		@Default(null) int? created,
+		@Default(null) int? modified,
+		@Default(null) String? author,
+		@Default(null) String? responsible,
+		@Default(null) String? medicalLocationId,
+		@Default({}) Set<CodeStub> tags,
+		@Default({}) Set<CodeStub> codes,
+		@Default([]) List<Identifier> identifier,
+		@Default(null) int? endOfLife,
+		@Default(null) int? deletionDate,
+		@Default(null) String? groupId,
+		@Default(null) int? openingDate,
+		@Default(null) int? closingDate,
+		@Default(null) String? descr,
+		@Default(null) String? location,
+		@Default(null) String? externalId,
+		@Default(null) CodeStub? encounterType,
+		@Default(null) DecryptedAddress? encounterLocation,
+		@Default({}) Set<DecryptedSubContact> subContacts,
+		@Default({}) Set<DecryptedService> services,
+		@Default({}) Map<ParticipantType, String> participants,
+		@Default(null) String? healthcarePartyId,
+		@Default(null) String? modifiedContactId,
+		@Default({}) Set<String> secretForeignKeys,
+		@Default({}) Map<String, Set<Delegation>> cryptedForeignKeys,
+		@Default({}) Map<String, Set<Delegation>> delegations,
+		@Default({}) Map<String, Set<Delegation>> encryptionKeys,
+		@Default(null) Base64String? encryptedSelf,
+		@Default(null) SecurityMetadata? securityMetadata,
+		@Default([]) List<Annotation> notes,
+	}) = _DecryptedContact;
+
 
 	static Map<String, dynamic> encode(DecryptedContact value) {
 		Map<String, dynamic> entityAsMap = {
@@ -218,7 +159,7 @@ class DecryptedContact implements Contact {
 
 	static DecryptedContact fromJSON(Map<String, dynamic> data) {
 		return DecryptedContact(
-			(data["id"] as String),
+			id: (data["id"] as String),
 			rev: (data["rev"] as String?),
 			created: (data["created"] as int?),
 			modified: (data["modified"] as int?),
@@ -254,104 +195,43 @@ class DecryptedContact implements Contact {
 	}
 }
 
-class EncryptedContact implements Contact {
-	@override String id;
-	@override String? rev = null;
-	@override int? created = null;
-	@override int? modified = null;
-	@override String? author = null;
-	@override String? responsible = null;
-	@override String? medicalLocationId = null;
-	@override Set<CodeStub> tags = {};
-	@override Set<CodeStub> codes = {};
-	@override List<Identifier> identifier = [];
-	@override int? endOfLife = null;
-	@override int? deletionDate = null;
-	@override String? groupId = null;
-	@override int? openingDate = null;
-	@override int? closingDate = null;
-	@override String? descr = null;
-	@override String? location = null;
-	@override String? externalId = null;
-	@override CodeStub? encounterType = null;
-	@override EncryptedAddress? encounterLocation = null;
-	@override Set<EncryptedSubContact> subContacts = {};
-	@override Set<EncryptedService> services = {};
-	@override Map<ParticipantType, String> participants = {};
-	@override String? healthcarePartyId = null;
-	@override String? modifiedContactId = null;
-	@override Set<String> secretForeignKeys = {};
-	@override Map<String, Set<Delegation>> cryptedForeignKeys = {};
-	@override Map<String, Set<Delegation>> delegations = {};
-	@override Map<String, Set<Delegation>> encryptionKeys = {};
-	@override Base64String? encryptedSelf = null;
-	@override SecurityMetadata? securityMetadata = null;
-	@override List<Annotation> notes = [];
-	EncryptedContact(
-		this.id,
-		{
-			String? rev,
-			int? created,
-			int? modified,
-			String? author,
-			String? responsible,
-			String? medicalLocationId,
-			Set<CodeStub>? tags,
-			Set<CodeStub>? codes,
-			List<Identifier>? identifier,
-			int? endOfLife,
-			int? deletionDate,
-			String? groupId,
-			int? openingDate,
-			int? closingDate,
-			String? descr,
-			String? location,
-			String? externalId,
-			CodeStub? encounterType,
-			EncryptedAddress? encounterLocation,
-			Set<EncryptedSubContact>? subContacts,
-			Set<EncryptedService>? services,
-			Map<ParticipantType, String>? participants,
-			String? healthcarePartyId,
-			String? modifiedContactId,
-			Set<String>? secretForeignKeys,
-			Map<String, Set<Delegation>>? cryptedForeignKeys,
-			Map<String, Set<Delegation>>? delegations,
-			Map<String, Set<Delegation>>? encryptionKeys,
-			Base64String? encryptedSelf,
-			SecurityMetadata? securityMetadata,
-			List<Annotation>? notes
-		}) : rev = rev ?? null,
-		created = created ?? null,
-		modified = modified ?? null,
-		author = author ?? null,
-		responsible = responsible ?? null,
-		medicalLocationId = medicalLocationId ?? null,
-		tags = tags ?? {},
-		codes = codes ?? {},
-		identifier = identifier ?? [],
-		endOfLife = endOfLife ?? null,
-		deletionDate = deletionDate ?? null,
-		groupId = groupId ?? null,
-		openingDate = openingDate ?? null,
-		closingDate = closingDate ?? null,
-		descr = descr ?? null,
-		location = location ?? null,
-		externalId = externalId ?? null,
-		encounterType = encounterType ?? null,
-		encounterLocation = encounterLocation ?? null,
-		subContacts = subContacts ?? {},
-		services = services ?? {},
-		participants = participants ?? {},
-		healthcarePartyId = healthcarePartyId ?? null,
-		modifiedContactId = modifiedContactId ?? null,
-		secretForeignKeys = secretForeignKeys ?? {},
-		cryptedForeignKeys = cryptedForeignKeys ?? {},
-		delegations = delegations ?? {},
-		encryptionKeys = encryptionKeys ?? {},
-		encryptedSelf = encryptedSelf ?? null,
-		securityMetadata = securityMetadata ?? null,
-		notes = notes ?? [];
+@freezed
+abstract class EncryptedContact with _$EncryptedContact implements Contact {
+	const factory EncryptedContact({
+		required String id,
+		@Default(null) String? rev,
+		@Default(null) int? created,
+		@Default(null) int? modified,
+		@Default(null) String? author,
+		@Default(null) String? responsible,
+		@Default(null) String? medicalLocationId,
+		@Default({}) Set<CodeStub> tags,
+		@Default({}) Set<CodeStub> codes,
+		@Default([]) List<Identifier> identifier,
+		@Default(null) int? endOfLife,
+		@Default(null) int? deletionDate,
+		@Default(null) String? groupId,
+		@Default(null) int? openingDate,
+		@Default(null) int? closingDate,
+		@Default(null) String? descr,
+		@Default(null) String? location,
+		@Default(null) String? externalId,
+		@Default(null) CodeStub? encounterType,
+		@Default(null) EncryptedAddress? encounterLocation,
+		@Default({}) Set<EncryptedSubContact> subContacts,
+		@Default({}) Set<EncryptedService> services,
+		@Default({}) Map<ParticipantType, String> participants,
+		@Default(null) String? healthcarePartyId,
+		@Default(null) String? modifiedContactId,
+		@Default({}) Set<String> secretForeignKeys,
+		@Default({}) Map<String, Set<Delegation>> cryptedForeignKeys,
+		@Default({}) Map<String, Set<Delegation>> delegations,
+		@Default({}) Map<String, Set<Delegation>> encryptionKeys,
+		@Default(null) Base64String? encryptedSelf,
+		@Default(null) SecurityMetadata? securityMetadata,
+		@Default([]) List<Annotation> notes,
+	}) = _EncryptedContact;
+
 
 	static Map<String, dynamic> encode(EncryptedContact value) {
 		Map<String, dynamic> entityAsMap = {
@@ -393,7 +273,7 @@ class EncryptedContact implements Contact {
 
 	static EncryptedContact fromJSON(Map<String, dynamic> data) {
 		return EncryptedContact(
-			(data["id"] as String),
+			id: (data["id"] as String),
 			rev: (data["rev"] as String?),
 			created: (data["created"] as int?),
 			modified: (data["modified"] as int?),

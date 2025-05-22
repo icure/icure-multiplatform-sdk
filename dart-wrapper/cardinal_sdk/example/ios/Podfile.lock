@@ -1,5 +1,5 @@
 PODS:
-  - cardinal_sdk (1.0.0-RC.5):
+  - cardinal_sdk (2.0.0-PREVIEW-3):
     - Flutter
   - Flutter (1.0.0)
   - integration_test (0.0.1):
@@ -19,10 +19,10 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/integration_test/ios"
 
 SPEC CHECKSUMS:
-  cardinal_sdk: b7f39a5fe59b26bc70c789a13ae8ff17bd596992
+  cardinal_sdk: 68791d2abc27278970e18377c845f4a4830dee96
   Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
   integration_test: 252f60fa39af5e17c3aa9899d35d908a0721b573
 
-PODFILE CHECKSUM: f99957a8ce06ca211d55a2181ca40fdc3bdc9120
+PODFILE CHECKSUM: 4305caec6b40dde0ae97be1573c53de1882a07e5
 
-COCOAPODS: 1.15.2
+COCOAPODS: 1.16.2

@@ -6,6 +6,7 @@ import com.icure.cardinal.sdk.filters.BaseFilterOptions
 import com.icure.cardinal.sdk.filters.BaseSortableFilterOptions
 import com.icure.cardinal.sdk.filters.FilterOptions
 import com.icure.cardinal.sdk.filters.SortableFilterOptions
+import com.icure.cardinal.sdk.model.EntityReferenceInGroup
 import com.icure.cardinal.sdk.model.Patient
 import com.icure.cardinal.sdk.model.base.Identifier
 import com.icure.cardinal.sdk.model.embed.Gender
@@ -39,6 +40,26 @@ public object PatientFilters {
     ) {
       com.icure.cardinal.sdk.filters.PatientFilters.allPatientsForDataOwner(
         dataOwnerId,
+      )
+    }
+  }
+
+  public fun allPatientsForDataOwnerInGroup(dartResultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit, dataOwnerString: String) {
+    val dataOwner = fullLanguageInteropJson.decodeFromString(
+      EntityReferenceInGroup.serializer(),
+      dataOwnerString
+    )
+    DartResult.resolve(
+      dartResultCallback,
+      BaseFilterOptions.serializer(PolymorphicSerializer(Patient::class))
+    ) {
+      com.icure.cardinal.sdk.filters.PatientFilters.allPatientsForDataOwnerInGroup(
+        dataOwner,
       )
     }
   }
@@ -107,6 +128,35 @@ public object PatientFilters {
     }
   }
 
+  public fun byIdentifiersForDataOwnerInGroup(
+    dartResultCallback: (
+      String?,
+      String?,
+      String?,
+      String?,
+    ) -> Unit,
+    dataOwnerString: String,
+    identifiersString: String,
+  ) {
+    val dataOwner = fullLanguageInteropJson.decodeFromString(
+      EntityReferenceInGroup.serializer(),
+      dataOwnerString
+    )
+    val identifiers = fullLanguageInteropJson.decodeFromString(
+      ListSerializer(Identifier.serializer()),
+      identifiersString
+    )
+    DartResult.resolve(
+      dartResultCallback,
+      BaseSortableFilterOptions.serializer(PolymorphicSerializer(Patient::class))
+    ) {
+      com.icure.cardinal.sdk.filters.PatientFilters.byIdentifiersForDataOwnerInGroup(
+        dataOwner,
+        identifiers,
+      )
+    }
+  }
+
   public fun bySsinsForDataOwner(
     dartResultCallback: (
       String?,
@@ -131,6 +181,35 @@ public object PatientFilters {
     ) {
       com.icure.cardinal.sdk.filters.PatientFilters.bySsinsForDataOwner(
         dataOwnerId,
+        ssins,
+      )
+    }
+  }
+
+  public fun bySsinsForDataOwnerInGroup(
+    dartResultCallback: (
+      String?,
+      String?,
+      String?,
+      String?,
+    ) -> Unit,
+    dataOwnerString: String,
+    ssinsString: String,
+  ) {
+    val dataOwner = fullLanguageInteropJson.decodeFromString(
+      EntityReferenceInGroup.serializer(),
+      dataOwnerString
+    )
+    val ssins = fullLanguageInteropJson.decodeFromString(
+      ListSerializer(String.serializer()),
+      ssinsString
+    )
+    DartResult.resolve(
+      dartResultCallback,
+      BaseSortableFilterOptions.serializer(PolymorphicSerializer(Patient::class))
+    ) {
+      com.icure.cardinal.sdk.filters.PatientFilters.bySsinsForDataOwnerInGroup(
+        dataOwner,
         ssins,
       )
     }
@@ -171,6 +250,41 @@ public object PatientFilters {
     }
   }
 
+  public fun byDateOfBirthBetweenForDataOwnerInGroup(
+    dartResultCallback: (
+      String?,
+      String?,
+      String?,
+      String?,
+    ) -> Unit,
+    dataOwnerString: String,
+    fromDateString: String,
+    toDateString: String,
+  ) {
+    val dataOwner = fullLanguageInteropJson.decodeFromString(
+      EntityReferenceInGroup.serializer(),
+      dataOwnerString
+    )
+    val fromDate = fullLanguageInteropJson.decodeFromString(
+      Int.serializer(),
+      fromDateString
+    )
+    val toDate = fullLanguageInteropJson.decodeFromString(
+      Int.serializer(),
+      toDateString
+    )
+    DartResult.resolve(
+      dartResultCallback,
+      BaseSortableFilterOptions.serializer(PolymorphicSerializer(Patient::class))
+    ) {
+      com.icure.cardinal.sdk.filters.PatientFilters.byDateOfBirthBetweenForDataOwnerInGroup(
+        dataOwner,
+        fromDate,
+        toDate,
+      )
+    }
+  }
+
   public fun byFuzzyNameForDataOwner(
     dartResultCallback: (
       String?,
@@ -195,6 +309,35 @@ public object PatientFilters {
     ) {
       com.icure.cardinal.sdk.filters.PatientFilters.byFuzzyNameForDataOwner(
         dataOwnerId,
+        searchString,
+      )
+    }
+  }
+
+  public fun byFuzzyNameForDataOwnerInGroup(
+    dartResultCallback: (
+      String?,
+      String?,
+      String?,
+      String?,
+    ) -> Unit,
+    dataOwnerString: String,
+    searchStringString: String,
+  ) {
+    val dataOwner = fullLanguageInteropJson.decodeFromString(
+      EntityReferenceInGroup.serializer(),
+      dataOwnerString
+    )
+    val searchString = fullLanguageInteropJson.decodeFromString(
+      String.serializer(),
+      searchStringString
+    )
+    DartResult.resolve(
+      dartResultCallback,
+      BaseFilterOptions.serializer(PolymorphicSerializer(Patient::class))
+    ) {
+      com.icure.cardinal.sdk.filters.PatientFilters.byFuzzyNameForDataOwnerInGroup(
+        dataOwner,
         searchString,
       )
     }
@@ -241,6 +384,47 @@ public object PatientFilters {
     }
   }
 
+  public fun byGenderEducationProfessionForDataOwnerInGroup(
+    dartResultCallback: (
+      String?,
+      String?,
+      String?,
+      String?,
+    ) -> Unit,
+    dataOwnerString: String,
+    genderString: String,
+    educationString: String,
+    professionString: String,
+  ) {
+    val dataOwner = fullLanguageInteropJson.decodeFromString(
+      EntityReferenceInGroup.serializer(),
+      dataOwnerString
+    )
+    val gender = fullLanguageInteropJson.decodeFromString(
+      Gender.serializer(),
+      genderString
+    )
+    val education = fullLanguageInteropJson.decodeFromString(
+      String.serializer().nullable,
+      educationString
+    )
+    val profession = fullLanguageInteropJson.decodeFromString(
+      String.serializer().nullable,
+      professionString
+    )
+    DartResult.resolve(
+      dartResultCallback,
+      BaseSortableFilterOptions.serializer(PolymorphicSerializer(Patient::class))
+    ) {
+      com.icure.cardinal.sdk.filters.PatientFilters.byGenderEducationProfessionForDataOwnerInGroup(
+        dataOwner,
+        gender,
+        education,
+        profession,
+      )
+    }
+  }
+
   public fun byActiveForDataOwner(
     dartResultCallback: (
       String?,
@@ -270,6 +454,35 @@ public object PatientFilters {
     }
   }
 
+  public fun byActiveForDataOwnerInGroup(
+    dartResultCallback: (
+      String?,
+      String?,
+      String?,
+      String?,
+    ) -> Unit,
+    dataOwnerString: String,
+    activeString: String,
+  ) {
+    val dataOwner = fullLanguageInteropJson.decodeFromString(
+      EntityReferenceInGroup.serializer(),
+      dataOwnerString
+    )
+    val active = fullLanguageInteropJson.decodeFromString(
+      Boolean.serializer(),
+      activeString
+    )
+    DartResult.resolve(
+      dartResultCallback,
+      BaseFilterOptions.serializer(PolymorphicSerializer(Patient::class))
+    ) {
+      com.icure.cardinal.sdk.filters.PatientFilters.byActiveForDataOwnerInGroup(
+        dataOwner,
+        active,
+      )
+    }
+  }
+
   public fun byTelecomForDataOwner(
     dartResultCallback: (
       String?,
@@ -294,6 +507,35 @@ public object PatientFilters {
     ) {
       com.icure.cardinal.sdk.filters.PatientFilters.byTelecomForDataOwner(
         dataOwnerId,
+        searchString,
+      )
+    }
+  }
+
+  public fun byTelecomForDataOwnerInGroup(
+    dartResultCallback: (
+      String?,
+      String?,
+      String?,
+      String?,
+    ) -> Unit,
+    dataOwnerString: String,
+    searchStringString: String,
+  ) {
+    val dataOwner = fullLanguageInteropJson.decodeFromString(
+      EntityReferenceInGroup.serializer(),
+      dataOwnerString
+    )
+    val searchString = fullLanguageInteropJson.decodeFromString(
+      String.serializer(),
+      searchStringString
+    )
+    DartResult.resolve(
+      dartResultCallback,
+      BaseSortableFilterOptions.serializer(PolymorphicSerializer(Patient::class))
+    ) {
+      com.icure.cardinal.sdk.filters.PatientFilters.byTelecomForDataOwnerInGroup(
+        dataOwner,
         searchString,
       )
     }
@@ -340,6 +582,47 @@ public object PatientFilters {
     }
   }
 
+  public fun byAddressPostalCodeHouseNumberForDataOwnerInGroup(
+    dartResultCallback: (
+      String?,
+      String?,
+      String?,
+      String?,
+    ) -> Unit,
+    dataOwnerString: String,
+    searchStringString: String,
+    postalCodeString: String,
+    houseNumberString: String,
+  ) {
+    val dataOwner = fullLanguageInteropJson.decodeFromString(
+      EntityReferenceInGroup.serializer(),
+      dataOwnerString
+    )
+    val searchString = fullLanguageInteropJson.decodeFromString(
+      String.serializer(),
+      searchStringString
+    )
+    val postalCode = fullLanguageInteropJson.decodeFromString(
+      String.serializer(),
+      postalCodeString
+    )
+    val houseNumber = fullLanguageInteropJson.decodeFromString(
+      String.serializer().nullable,
+      houseNumberString
+    )
+    DartResult.resolve(
+      dartResultCallback,
+      BaseSortableFilterOptions.serializer(PolymorphicSerializer(Patient::class))
+    ) {
+      com.icure.cardinal.sdk.filters.PatientFilters.byAddressPostalCodeHouseNumberForDataOwnerInGroup(
+        dataOwner,
+        searchString,
+        postalCode,
+        houseNumber,
+      )
+    }
+  }
+
   public fun byAddressForDataOwner(
     dartResultCallback: (
       String?,
@@ -369,6 +652,35 @@ public object PatientFilters {
     }
   }
 
+  public fun byAddressForDataOwnerInGroup(
+    dartResultCallback: (
+      String?,
+      String?,
+      String?,
+      String?,
+    ) -> Unit,
+    dataOwnerString: String,
+    searchStringString: String,
+  ) {
+    val dataOwner = fullLanguageInteropJson.decodeFromString(
+      EntityReferenceInGroup.serializer(),
+      dataOwnerString
+    )
+    val searchString = fullLanguageInteropJson.decodeFromString(
+      String.serializer(),
+      searchStringString
+    )
+    DartResult.resolve(
+      dartResultCallback,
+      BaseSortableFilterOptions.serializer(PolymorphicSerializer(Patient::class))
+    ) {
+      com.icure.cardinal.sdk.filters.PatientFilters.byAddressForDataOwnerInGroup(
+        dataOwner,
+        searchString,
+      )
+    }
+  }
+
   public fun byExternalIdForDataOwner(
     dartResultCallback: (
       String?,
@@ -393,6 +705,35 @@ public object PatientFilters {
     ) {
       com.icure.cardinal.sdk.filters.PatientFilters.byExternalIdForDataOwner(
         dataOwnerId,
+        externalIdPrefix,
+      )
+    }
+  }
+
+  public fun byExternalIdForDataOwnerInGroup(
+    dartResultCallback: (
+      String?,
+      String?,
+      String?,
+      String?,
+    ) -> Unit,
+    dataOwnerString: String,
+    externalIdPrefixString: String,
+  ) {
+    val dataOwner = fullLanguageInteropJson.decodeFromString(
+      EntityReferenceInGroup.serializer(),
+      dataOwnerString
+    )
+    val externalIdPrefix = fullLanguageInteropJson.decodeFromString(
+      String.serializer(),
+      externalIdPrefixString
+    )
+    DartResult.resolve(
+      dartResultCallback,
+      BaseSortableFilterOptions.serializer(PolymorphicSerializer(Patient::class))
+    ) {
+      com.icure.cardinal.sdk.filters.PatientFilters.byExternalIdForDataOwnerInGroup(
+        dataOwner,
         externalIdPrefix,
       )
     }
@@ -633,6 +974,105 @@ public object PatientFilters {
     ) {
       com.icure.cardinal.sdk.filters.PatientFilters.byExternalIdForSelf(
         externalIdPrefix,
+      )
+    }
+  }
+
+  public fun byTagForSelf(
+    dartResultCallback: (
+      String?,
+      String?,
+      String?,
+      String?,
+    ) -> Unit,
+    tagTypeString: String,
+    tagCodeString: String,
+  ) {
+    val tagType = fullLanguageInteropJson.decodeFromString(
+      String.serializer(),
+      tagTypeString
+    )
+    val tagCode = fullLanguageInteropJson.decodeFromString(
+      String.serializer().nullable,
+      tagCodeString
+    )
+    DartResult.resolve(
+      dartResultCallback,
+      FilterOptions.serializer(PolymorphicSerializer(Patient::class))
+    ) {
+      com.icure.cardinal.sdk.filters.PatientFilters.byTagForSelf(
+        tagType,
+        tagCode,
+      )
+    }
+  }
+
+  public fun byTagForDataOwner(
+    dartResultCallback: (
+      String?,
+      String?,
+      String?,
+      String?,
+    ) -> Unit,
+    dataOwnerIdString: String,
+    tagTypeString: String,
+    tagCodeString: String,
+  ) {
+    val dataOwnerId = fullLanguageInteropJson.decodeFromString(
+      String.serializer(),
+      dataOwnerIdString
+    )
+    val tagType = fullLanguageInteropJson.decodeFromString(
+      String.serializer(),
+      tagTypeString
+    )
+    val tagCode = fullLanguageInteropJson.decodeFromString(
+      String.serializer().nullable,
+      tagCodeString
+    )
+    DartResult.resolve(
+      dartResultCallback,
+      BaseFilterOptions.serializer(PolymorphicSerializer(Patient::class))
+    ) {
+      com.icure.cardinal.sdk.filters.PatientFilters.byTagForDataOwner(
+        dataOwnerId,
+        tagType,
+        tagCode,
+      )
+    }
+  }
+
+  public fun byTagForDataOwnerInGroup(
+    dartResultCallback: (
+      String?,
+      String?,
+      String?,
+      String?,
+    ) -> Unit,
+    dataOwnerString: String,
+    tagTypeString: String,
+    tagCodeString: String,
+  ) {
+    val dataOwner = fullLanguageInteropJson.decodeFromString(
+      EntityReferenceInGroup.serializer(),
+      dataOwnerString
+    )
+    val tagType = fullLanguageInteropJson.decodeFromString(
+      String.serializer(),
+      tagTypeString
+    )
+    val tagCode = fullLanguageInteropJson.decodeFromString(
+      String.serializer().nullable,
+      tagCodeString
+    )
+    DartResult.resolve(
+      dartResultCallback,
+      BaseFilterOptions.serializer(PolymorphicSerializer(Patient::class))
+    ) {
+      com.icure.cardinal.sdk.filters.PatientFilters.byTagForDataOwnerInGroup(
+        dataOwner,
+        tagType,
+        tagCode,
       )
     }
   }

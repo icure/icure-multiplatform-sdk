@@ -10,7 +10,7 @@ class InsurancePlatformApi {
 	MethodChannel _methodChannel;
 	InsurancePlatformApi(this._methodChannel);
 
-	Future<Insurance> getInsurance(String sdkId, String insuranceId) async {
+	Future<Insurance?> getInsurance(String sdkId, String insuranceId) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'InsuranceApi.getInsurance',
 			{
@@ -20,7 +20,7 @@ class InsurancePlatformApi {
 		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getInsurance");
 		final parsedResJson = jsonDecode(res);
-		return Insurance.fromJSON(parsedResJson);
+		return parsedResJson == null ? null : Insurance.fromJSON(parsedResJson);
 	}
 
 	Future<List<Insurance>> getInsurances(String sdkId, List<String> insuranceIds) async {
