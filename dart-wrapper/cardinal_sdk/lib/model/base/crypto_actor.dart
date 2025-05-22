@@ -1,22 +1,25 @@
 // auto-generated file
 import 'package:cardinal_sdk/model/specializations/hex_string.dart';
-import 'package:cardinal_sdk/crypto/entities/cardinal_keys.dart';
+import 'package:cardinal_sdk/model/specializations/aes_exchange_key_entry_key_string.dart';
 import 'package:cardinal_sdk/model/specializations/aes_exchange_key_encryption_keypair_identifier.dart';
+import 'package:cardinal_sdk/crypto/entities/cardinal_keys.dart';
+import 'package:cardinal_sdk/model/property_stub.dart';
 import 'package:cardinal_sdk/model/crypto_actor_stub.dart';
 import 'package:cardinal_sdk/model/patient.dart';
 import 'package:cardinal_sdk/model/device.dart';
 import 'package:cardinal_sdk/model/healthcare_party.dart';
 import 'package:cardinal_sdk/model/base/versionable.dart';
-import 'package:cardinal_sdk/model/base/has_tags.dart';
 
 
-abstract interface class CryptoActor implements Versionable<String>, HasTags {
-	abstract Map<String, List<HexString>> hcPartyKeys;
-	abstract Map<CardinalRsaPublicKey, Map<String, Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>>> aesExchangeKeys;
-	abstract Map<AesExchangeKeyEncryptionKeypairIdentifier, Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>> transferKeys;
-	abstract Map<String, HexString> privateKeyShamirPartitions;
-	abstract CardinalRsaPublicKey? publicKey;
-	abstract Set<CardinalRsaPublicKey> publicKeysForOaepWithSha256;
+abstract interface class CryptoActor implements Versionable<String> {
+	abstract final Map<String, List<HexString>> hcPartyKeys;
+	abstract final Map<AesExchangeKeyEntryKeyString, Map<String, Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>>> aesExchangeKeys;
+	abstract final Map<AesExchangeKeyEncryptionKeypairIdentifier, Map<AesExchangeKeyEncryptionKeypairIdentifier, HexString>> transferKeys;
+	abstract final Map<String, HexString> privateKeyShamirPartitions;
+	abstract final CardinalRsaPublicKey? publicKey;
+	abstract final Set<CardinalRsaPublicKey> publicKeysForOaepWithSha256;
+	String? get parentId;
+	abstract final Set<DecryptedPropertyStub>? cryptoActorProperties;
 
 	static Map<String, dynamic> encode(CryptoActor value) {
 		switch (value) {

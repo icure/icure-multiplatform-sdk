@@ -14,7 +14,6 @@ class DocumentApiDispatcher {
     ) -> Void
   ) -> Bool {
     switch methodName {
-    case "createDocument": createDocument(parameters: parameters, resultCallback: resultCallback)
     case "withEncryptionMetadata": withEncryptionMetadata(parameters: parameters, resultCallback: resultCallback)
     case "getAndTryDecryptMainAttachment": getAndTryDecryptMainAttachment(parameters: parameters, resultCallback: resultCallback)
     case "getAndDecryptMainAttachment": getAndDecryptMainAttachment(parameters: parameters, resultCallback: resultCallback)
@@ -46,6 +45,7 @@ class DocumentApiDispatcher {
     case "shareWithMany": shareWithMany(parameters: parameters, resultCallback: resultCallback)
     case "filterDocumentsBy": filterDocumentsBy(parameters: parameters, resultCallback: resultCallback)
     case "filterDocumentsBySorted": filterDocumentsBySorted(parameters: parameters, resultCallback: resultCallback)
+    case "createDocument": createDocument(parameters: parameters, resultCallback: resultCallback)
     case "undeleteDocumentById": undeleteDocumentById(parameters: parameters, resultCallback: resultCallback)
     case "undeleteDocument": undeleteDocument(parameters: parameters, resultCallback: resultCallback)
     case "modifyDocument": modifyDocument(parameters: parameters, resultCallback: resultCallback)
@@ -56,6 +56,7 @@ class DocumentApiDispatcher {
     case "encrypted.shareWithMany": encrypted_shareWithMany(parameters: parameters, resultCallback: resultCallback)
     case "encrypted.filterDocumentsBy": encrypted_filterDocumentsBy(parameters: parameters, resultCallback: resultCallback)
     case "encrypted.filterDocumentsBySorted": encrypted_filterDocumentsBySorted(parameters: parameters, resultCallback: resultCallback)
+    case "encrypted.createDocument": encrypted_createDocument(parameters: parameters, resultCallback: resultCallback)
     case "encrypted.undeleteDocumentById": encrypted_undeleteDocumentById(parameters: parameters, resultCallback: resultCallback)
     case "encrypted.undeleteDocument": encrypted_undeleteDocument(parameters: parameters, resultCallback: resultCallback)
     case "encrypted.modifyDocument": encrypted_modifyDocument(parameters: parameters, resultCallback: resultCallback)
@@ -66,6 +67,7 @@ class DocumentApiDispatcher {
     case "tryAndRecover.shareWithMany": tryAndRecover_shareWithMany(parameters: parameters, resultCallback: resultCallback)
     case "tryAndRecover.filterDocumentsBy": tryAndRecover_filterDocumentsBy(parameters: parameters, resultCallback: resultCallback)
     case "tryAndRecover.filterDocumentsBySorted": tryAndRecover_filterDocumentsBySorted(parameters: parameters, resultCallback: resultCallback)
+    case "tryAndRecover.createDocument": tryAndRecover_createDocument(parameters: parameters, resultCallback: resultCallback)
     case "tryAndRecover.undeleteDocumentById": tryAndRecover_undeleteDocumentById(parameters: parameters, resultCallback: resultCallback)
     case "tryAndRecover.undeleteDocument": tryAndRecover_undeleteDocument(parameters: parameters, resultCallback: resultCallback)
     case "tryAndRecover.modifyDocument": tryAndRecover_modifyDocument(parameters: parameters, resultCallback: resultCallback)
@@ -75,19 +77,6 @@ class DocumentApiDispatcher {
     default: return false
     }
     return true
-  }
-
-  private static func createDocument(parameters: [String : String], resultCallback: @escaping (
-    String?,
-    String?,
-    String?,
-    String?
-  ) -> Void) {
-    DocumentApi.shared.createDocument(
-    	dartResultCallback: resultCallback,
-    	sdkId: parameters["sdkId"]!,
-    	entityString: parameters["entity"]!
-    )
   }
 
   private static func withEncryptionMetadata(parameters: [String : String], resultCallback: @escaping (
@@ -527,6 +516,19 @@ class DocumentApiDispatcher {
     )
   }
 
+  private static func createDocument(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    DocumentApi.shared.createDocument(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	entityString: parameters["entity"]!
+    )
+  }
+
   private static func undeleteDocumentById(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
@@ -661,6 +663,19 @@ class DocumentApiDispatcher {
     )
   }
 
+  private static func encrypted_createDocument(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    DocumentApi.encrypted.shared.createDocument(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	entityString: parameters["entity"]!
+    )
+  }
+
   private static func encrypted_undeleteDocumentById(parameters: [String : String], resultCallback: @escaping (
     String?,
     String?,
@@ -792,6 +807,19 @@ class DocumentApiDispatcher {
     	dartResultCallback: resultCallback,
     	sdkId: parameters["sdkId"]!,
     	filterString: parameters["filter"]!
+    )
+  }
+
+  private static func tryAndRecover_createDocument(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    DocumentApi.tryAndRecover.shared.createDocument(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	entityString: parameters["entity"]!
     )
   }
 

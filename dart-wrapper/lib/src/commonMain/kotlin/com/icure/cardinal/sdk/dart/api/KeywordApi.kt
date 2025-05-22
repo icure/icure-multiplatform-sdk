@@ -12,6 +12,7 @@ import kotlin.OptIn
 import kotlin.String
 import kotlin.Unit
 import kotlinx.serialization.builtins.ListSerializer
+import kotlinx.serialization.builtins.nullable
 import kotlinx.serialization.builtins.serializer
 
 @OptIn(InternalIcureApi::class)
@@ -24,17 +25,17 @@ public object KeywordApi {
       String?,
     ) -> Unit,
     sdkId: String,
-    frontEndMigrationIdString: String,
+    keywordIdString: String,
   ) {
-    val frontEndMigrationId = fullLanguageInteropJson.decodeFromString(
+    val keywordId = fullLanguageInteropJson.decodeFromString(
       String.serializer(),
-      frontEndMigrationIdString
+      keywordIdString
     )
     ApiScope.execute(
       dartResultCallback,
-      Keyword.serializer()) {
+      Keyword.serializer().nullable) {
       NativeReferences.get<CardinalNonCryptoApis>(sdkId).keyword.getKeyword(
-        frontEndMigrationId,
+        keywordId,
       )
     }
   }
@@ -47,17 +48,17 @@ public object KeywordApi {
       String?,
     ) -> Unit,
     sdkId: String,
-    frontEndMigrationString: String,
+    keywordString: String,
   ) {
-    val frontEndMigration = fullLanguageInteropJson.decodeFromString(
+    val keyword = fullLanguageInteropJson.decodeFromString(
       Keyword.serializer(),
-      frontEndMigrationString
+      keywordString
     )
     ApiScope.execute(
       dartResultCallback,
       Keyword.serializer()) {
       NativeReferences.get<CardinalNonCryptoApis>(sdkId).keyword.createKeyword(
-        frontEndMigration,
+        keyword,
       )
     }
   }

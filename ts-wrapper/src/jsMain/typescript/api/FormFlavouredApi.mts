@@ -19,6 +19,10 @@ export interface FormFlavouredApi<E extends Form> {
 
 	filterFormsBySorted(filter: SortableFilterOptions<Form>): Promise<PaginatedListIterator<E>>;
 
+	createForm(entity: E): Promise<E>;
+
+	createForms(entities: Array<E>): Promise<Array<E>>;
+
 	modifyForm(entity: E): Promise<E>;
 
 	undeleteFormById(id: string, rev: string): Promise<E>;
@@ -27,7 +31,7 @@ export interface FormFlavouredApi<E extends Form> {
 
 	modifyForms(entities: Array<E>): Promise<Array<E>>;
 
-	getForm(entityId: string): Promise<E>;
+	getForm(entityId: string): Promise<E | undefined>;
 
 	getForms(entityIds: Array<string>): Promise<Array<E>>;
 

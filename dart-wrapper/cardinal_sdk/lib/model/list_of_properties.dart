@@ -1,11 +1,15 @@
 // auto-generated file
 import 'package:cardinal_sdk/model/property_stub.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+part "list_of_properties.freezed.dart";
 
 
-class ListOfProperties {
-	Set<DecryptedPropertyStub> properties = {};
-	ListOfProperties({
-			Set<DecryptedPropertyStub>? properties}) : properties = properties ?? {};
+@freezed
+abstract class ListOfProperties with _$ListOfProperties {
+	const factory ListOfProperties({
+		@Default({}) Set<DecryptedPropertyStub> properties,
+	}) = _ListOfProperties;
+
 
 	static Map<String, dynamic> encode(ListOfProperties value) {
 		Map<String, dynamic> entityAsMap = {

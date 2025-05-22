@@ -3,28 +3,21 @@ import 'package:cardinal_sdk/model/embed/database_synchronization.dart';
 import 'package:cardinal_sdk/model/base/stored_document.dart';
 import 'package:cardinal_sdk/model/base/identifiable.dart';
 import 'package:cardinal_sdk/model/base/named.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+part "replication.freezed.dart";
 
 
-class Replication implements StoredDocument, Identifiable<String>, Named {
-	@override String id;
-	@override String? rev = null;
-	@override int? deletionDate = null;
-	@override String? name = null;
-	String? context = null;
-	List<DatabaseSynchronization> databaseSynchronizations = [];
-	Replication(
-		this.id,
-		{
-			String? rev,
-			int? deletionDate,
-			String? name,
-			String? context,
-			List<DatabaseSynchronization>? databaseSynchronizations
-		}) : rev = rev ?? null,
-		deletionDate = deletionDate ?? null,
-		name = name ?? null,
-		context = context ?? null,
-		databaseSynchronizations = databaseSynchronizations ?? [];
+@freezed
+abstract class Replication with _$Replication implements StoredDocument, Identifiable<String>, Named {
+	const factory Replication({
+		required String id,
+		@Default(null) String? rev,
+		@Default(null) int? deletionDate,
+		@Default(null) String? name,
+		@Default(null) String? context,
+		@Default([]) List<DatabaseSynchronization> databaseSynchronizations,
+	}) = _Replication;
+
 
 	static Map<String, dynamic> encode(Replication value) {
 		Map<String, dynamic> entityAsMap = {
@@ -40,7 +33,7 @@ class Replication implements StoredDocument, Identifiable<String>, Named {
 
 	static Replication fromJSON(Map<String, dynamic> data) {
 		return Replication(
-			(data["id"] as String),
+			id: (data["id"] as String),
 			rev: (data["rev"] as String?),
 			deletionDate: (data["deletionDate"] as int?),
 			name: (data["name"] as String?),

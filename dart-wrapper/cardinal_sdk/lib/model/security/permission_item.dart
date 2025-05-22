@@ -5,7 +5,7 @@ import 'package:cardinal_sdk/model/security/always_permission_item.dart';
 
 
 abstract interface class PermissionItem {
-	abstract PermissionType type;
+	abstract final PermissionType type;
 	Predicate get predicate;
 
 	static Map<String, dynamic> encode(PermissionItem value) {

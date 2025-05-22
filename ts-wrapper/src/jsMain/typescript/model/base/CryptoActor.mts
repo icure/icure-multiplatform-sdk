@@ -2,11 +2,10 @@
 import {DecryptedPropertyStub} from '../PropertyStub.mjs';
 import {HexString} from '../specializations/HexString.mjs';
 import {SpkiHexString} from '../specializations/SpkiHexString.mjs';
-import {HasTags} from './HasTags.mjs';
 import {Versionable} from './Versionable.mjs';
 
 
-export interface CryptoActor extends Versionable<string>, HasTags {
+export interface CryptoActor extends Versionable<string> {
 
 	hcPartyKeys: { [ key: string ]: Array<HexString> };
 

@@ -1,18 +1,17 @@
 // auto-generated file
 import 'package:cardinal_sdk/model/embed/payment_type.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+part "payment.freezed.dart";
 
 
-class Payment {
-	int paymentDate = 0;
-	PaymentType? paymentType = null;
-	double? paid = null;
-	Payment({
-			int? paymentDate,
-			PaymentType? paymentType,
-			double? paid
-		}) : paymentDate = paymentDate ?? 0,
-		paymentType = paymentType ?? null,
-		paid = paid ?? null;
+@freezed
+abstract class Payment with _$Payment {
+	const factory Payment({
+		@Default(0) int paymentDate,
+		@Default(null) PaymentType? paymentType,
+		@Default(null) double? paid,
+	}) = _Payment;
+
 
 	static Map<String, dynamic> encode(Payment value) {
 		Map<String, dynamic> entityAsMap = {

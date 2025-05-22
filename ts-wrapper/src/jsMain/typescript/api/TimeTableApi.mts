@@ -1,6 +1,6 @@
 // auto-generated file
 import {BaseFilterOptions, BaseSortableFilterOptions, PaginatedListIterator} from '../cardinal-sdk-ts.mjs';
-import {IdWithMandatoryRev} from '../model/IdWithMandatoryRev.mjs';
+import {StoredDocumentIdentifier} from '../model/StoredDocumentIdentifier.mjs';
 import {TimeTable} from '../model/TimeTable.mjs';
 import {DocIdentifier} from '../model/couchdb/DocIdentifier.mjs';
 
@@ -13,7 +13,7 @@ export interface TimeTableApi {
 
 	deleteTimeTableById(entityId: string, rev: string): Promise<DocIdentifier>;
 
-	deleteTimeTablesByIds(entityIds: Array<IdWithMandatoryRev>): Promise<Array<DocIdentifier>>;
+	deleteTimeTablesByIds(entityIds: Array<StoredDocumentIdentifier>): Promise<Array<DocIdentifier>>;
 
 	purgeTimeTableById(id: string, rev: string): Promise<void>;
 
@@ -29,7 +29,7 @@ export interface TimeTableApi {
 
 	undeleteTimeTableById(id: string, rev: string): Promise<TimeTable>;
 
-	getTimeTable(entityId: string): Promise<TimeTable>;
+	getTimeTable(entityId: string): Promise<TimeTable | undefined>;
 
 	getTimeTables(timeTableIds: Array<string>): Promise<Array<TimeTable>>;
 

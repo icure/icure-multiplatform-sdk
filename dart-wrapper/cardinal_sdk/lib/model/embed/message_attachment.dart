@@ -1,15 +1,16 @@
 // auto-generated file
 import 'package:cardinal_sdk/model/embed/document_location.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+part "message_attachment.freezed.dart";
 
 
-class MessageAttachment {
-	DocumentLocation? type = null;
-	List<String> ids = [];
-	MessageAttachment({
-			DocumentLocation? type,
-			List<String>? ids
-		}) : type = type ?? null,
-		ids = ids ?? [];
+@freezed
+abstract class MessageAttachment with _$MessageAttachment {
+	const factory MessageAttachment({
+		@Default(null) DocumentLocation? type,
+		@Default([]) List<String> ids,
+	}) = _MessageAttachment;
+
 
 	static Map<String, dynamic> encode(MessageAttachment value) {
 		Map<String, dynamic> entityAsMap = {

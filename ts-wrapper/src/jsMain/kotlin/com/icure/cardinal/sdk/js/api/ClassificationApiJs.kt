@@ -27,9 +27,6 @@ public external interface ClassificationApiJs {
 
 	public val tryAndRecover: ClassificationFlavouredApiJs<ClassificationJs>
 
-	public fun createClassification(entity: DecryptedClassificationJs):
-			Promise<DecryptedClassificationJs>
-
 	public fun withEncryptionMetadata(
 		base: DecryptedClassificationJs?,
 		patient: PatientJs,
@@ -80,10 +77,13 @@ public external interface ClassificationApiJs {
 	public fun filterClassificationsBySorted(filter: SortableFilterOptionsJs<ClassificationJs>):
 			Promise<PaginatedListIteratorJs<DecryptedClassificationJs>>
 
+	public fun createClassification(entity: DecryptedClassificationJs):
+			Promise<DecryptedClassificationJs>
+
 	public fun modifyClassification(entity: DecryptedClassificationJs):
 			Promise<DecryptedClassificationJs>
 
-	public fun getClassification(entityId: String): Promise<DecryptedClassificationJs>
+	public fun getClassification(entityId: String): Promise<DecryptedClassificationJs?>
 
 	public fun getClassifications(entityIds: Array<String>): Promise<Array<DecryptedClassificationJs>>
 }

@@ -1,12 +1,12 @@
 // auto-generated file
 import 'package:flutter/services.dart';
 import 'package:cardinal_sdk/model/receipt.dart';
-import 'dart:convert';
-import 'package:cardinal_sdk/utils/internal/platform_exception_convertion.dart';
 import 'package:cardinal_sdk/model/patient.dart';
 import 'package:cardinal_sdk/model/user.dart';
 import 'package:cardinal_sdk/model/embed/access_level.dart';
 import 'package:cardinal_sdk/crypto/entities/secret_id_use_option.dart';
+import 'dart:convert';
+import 'package:cardinal_sdk/utils/internal/platform_exception_convertion.dart';
 import 'dart:typed_data';
 import 'package:cardinal_sdk/model/specializations/hex_string.dart';
 import 'package:cardinal_sdk/model/couchdb/doc_identifier.dart';
@@ -15,25 +15,12 @@ import 'package:cardinal_sdk/crypto/entities/receipt_share_options.dart';
 
 class ReceiptPlatformApi {
 	MethodChannel _methodChannel;
-	TryAndRecoverReceiptPlatformApi tryAndRecover;
-	EncryptedReceiptPlatformApi encrypted;
+	ReceiptEncryptedPlatformApi encrypted;
+	ReceiptTryAndRecoverPlatformApi tryAndRecover;
 	ReceiptPlatformApi(
 		this._methodChannel
-		) : tryAndRecover = TryAndRecoverReceiptPlatformApi(_methodChannel),
-		encrypted = EncryptedReceiptPlatformApi(_methodChannel);
-
-	Future<DecryptedReceipt> createReceipt(String sdkId, DecryptedReceipt entity) async {
-		final res = await _methodChannel.invokeMethod<String>(
-			'ReceiptApi.createReceipt',
-			{
-				"sdkId": sdkId,
-				"entity": jsonEncode(DecryptedReceipt.encode(entity)),
-			}
-		).catchError(convertPlatformException);
-		if (res == null) throw AssertionError("received null result from platform method createReceipt");
-		final parsedResJson = jsonDecode(res);
-		return DecryptedReceipt.fromJSON(parsedResJson);
-	}
+		) : encrypted = ReceiptEncryptedPlatformApi(_methodChannel),
+		tryAndRecover = ReceiptTryAndRecoverPlatformApi(_methodChannel);
 
 	Future<DecryptedReceipt> withEncryptionMetadata(String sdkId, DecryptedReceipt? base, Patient? patient, User? user, Map<String, AccessLevel> delegates, SecretIdUseOption secretId) async {
 		final res = await _methodChannel.invokeMethod<String>(
@@ -259,6 +246,19 @@ class ReceiptPlatformApi {
 		return DecryptedReceipt.fromJSON(parsedResJson);
 	}
 
+	Future<DecryptedReceipt> createReceipt(String sdkId, DecryptedReceipt entity) async {
+		final res = await _methodChannel.invokeMethod<String>(
+			'ReceiptApi.createReceipt',
+			{
+				"sdkId": sdkId,
+				"entity": jsonEncode(DecryptedReceipt.encode(entity)),
+			}
+		).catchError(convertPlatformException);
+		if (res == null) throw AssertionError("received null result from platform method createReceipt");
+		final parsedResJson = jsonDecode(res);
+		return DecryptedReceipt.fromJSON(parsedResJson);
+	}
+
 	Future<DecryptedReceipt> modifyReceipt(String sdkId, DecryptedReceipt entity) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'ReceiptApi.modifyReceipt',
@@ -272,7 +272,7 @@ class ReceiptPlatformApi {
 		return DecryptedReceipt.fromJSON(parsedResJson);
 	}
 
-	Future<DecryptedReceipt> getReceipt(String sdkId, String entityId) async {
+	Future<DecryptedReceipt?> getReceipt(String sdkId, String entityId) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'ReceiptApi.getReceipt',
 			{
@@ -282,7 +282,7 @@ class ReceiptPlatformApi {
 		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getReceipt");
 		final parsedResJson = jsonDecode(res);
-		return DecryptedReceipt.fromJSON(parsedResJson);
+		return parsedResJson == null ? null : DecryptedReceipt.fromJSON(parsedResJson);
 	}
 
 	Future<List<DecryptedReceipt>> listByReference(String sdkId, String reference) async {
@@ -299,9 +299,9 @@ class ReceiptPlatformApi {
 	}
 }
 
-class TryAndRecoverReceiptPlatformApi {
+class ReceiptTryAndRecoverPlatformApi {
 	MethodChannel _methodChannel;
-	TryAndRecoverReceiptPlatformApi(this._methodChannel);
+	ReceiptTryAndRecoverPlatformApi(this._methodChannel);
 
 	Future<Receipt> shareWith(String sdkId, String delegateId, Receipt receipt, ReceiptShareOptions? options) async {
 		final res = await _methodChannel.invokeMethod<String>(
@@ -332,6 +332,19 @@ class TryAndRecoverReceiptPlatformApi {
 		return Receipt.fromJSON(parsedResJson);
 	}
 
+	Future<Receipt> createReceipt(String sdkId, Receipt entity) async {
+		final res = await _methodChannel.invokeMethod<String>(
+			'ReceiptApi.tryAndRecover.createReceipt',
+			{
+				"sdkId": sdkId,
+				"entity": jsonEncode(Receipt.encode(entity)),
+			}
+		).catchError(convertPlatformException);
+		if (res == null) throw AssertionError("received null result from platform method createReceipt");
+		final parsedResJson = jsonDecode(res);
+		return Receipt.fromJSON(parsedResJson);
+	}
+
 	Future<Receipt> modifyReceipt(String sdkId, Receipt entity) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'ReceiptApi.tryAndRecover.modifyReceipt',
@@ -345,7 +358,7 @@ class TryAndRecoverReceiptPlatformApi {
 		return Receipt.fromJSON(parsedResJson);
 	}
 
-	Future<Receipt> getReceipt(String sdkId, String entityId) async {
+	Future<Receipt?> getReceipt(String sdkId, String entityId) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'ReceiptApi.tryAndRecover.getReceipt',
 			{
@@ -355,7 +368,7 @@ class TryAndRecoverReceiptPlatformApi {
 		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getReceipt");
 		final parsedResJson = jsonDecode(res);
-		return Receipt.fromJSON(parsedResJson);
+		return parsedResJson == null ? null : Receipt.fromJSON(parsedResJson);
 	}
 
 	Future<List<Receipt>> listByReference(String sdkId, String reference) async {
@@ -372,9 +385,9 @@ class TryAndRecoverReceiptPlatformApi {
 	}
 }
 
-class EncryptedReceiptPlatformApi {
+class ReceiptEncryptedPlatformApi {
 	MethodChannel _methodChannel;
-	EncryptedReceiptPlatformApi(this._methodChannel);
+	ReceiptEncryptedPlatformApi(this._methodChannel);
 
 	Future<EncryptedReceipt> shareWith(String sdkId, String delegateId, EncryptedReceipt receipt, ReceiptShareOptions? options) async {
 		final res = await _methodChannel.invokeMethod<String>(
@@ -405,6 +418,19 @@ class EncryptedReceiptPlatformApi {
 		return EncryptedReceipt.fromJSON(parsedResJson);
 	}
 
+	Future<EncryptedReceipt> createReceipt(String sdkId, EncryptedReceipt entity) async {
+		final res = await _methodChannel.invokeMethod<String>(
+			'ReceiptApi.encrypted.createReceipt',
+			{
+				"sdkId": sdkId,
+				"entity": jsonEncode(EncryptedReceipt.encode(entity)),
+			}
+		).catchError(convertPlatformException);
+		if (res == null) throw AssertionError("received null result from platform method createReceipt");
+		final parsedResJson = jsonDecode(res);
+		return EncryptedReceipt.fromJSON(parsedResJson);
+	}
+
 	Future<EncryptedReceipt> modifyReceipt(String sdkId, EncryptedReceipt entity) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'ReceiptApi.encrypted.modifyReceipt',
@@ -418,7 +444,7 @@ class EncryptedReceiptPlatformApi {
 		return EncryptedReceipt.fromJSON(parsedResJson);
 	}
 
-	Future<EncryptedReceipt> getReceipt(String sdkId, String entityId) async {
+	Future<EncryptedReceipt?> getReceipt(String sdkId, String entityId) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'ReceiptApi.encrypted.getReceipt',
 			{
@@ -428,7 +454,7 @@ class EncryptedReceiptPlatformApi {
 		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getReceipt");
 		final parsedResJson = jsonDecode(res);
-		return EncryptedReceipt.fromJSON(parsedResJson);
+		return parsedResJson == null ? null : EncryptedReceipt.fromJSON(parsedResJson);
 	}
 
 	Future<List<EncryptedReceipt>> listByReference(String sdkId, String reference) async {

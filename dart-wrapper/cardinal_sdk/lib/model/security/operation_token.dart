@@ -1,21 +1,19 @@
 // auto-generated file
 import 'package:cardinal_sdk/model/security/operation.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+part "operation_token.freezed.dart";
 
 
-class OperationToken {
-	String tokenHash;
-	int creationTime;
-	int validity;
-	Operation operation;
-	String? description = null;
-	OperationToken(
-		this.tokenHash,
-		this.creationTime,
-		this.validity,
-		this.operation,
-		{
-			String? description
-		}) : description = description ?? null;
+@freezed
+abstract class OperationToken with _$OperationToken {
+	const factory OperationToken({
+		required String tokenHash,
+		required int creationTime,
+		required int validity,
+		required Operation operation,
+		@Default(null) String? description,
+	}) = _OperationToken;
+
 
 	static Map<String, dynamic> encode(OperationToken value) {
 		Map<String, dynamic> entityAsMap = {
@@ -30,10 +28,10 @@ class OperationToken {
 
 	static OperationToken fromJSON(Map<String, dynamic> data) {
 		return OperationToken(
-			(data["tokenHash"] as String),
-			(data["creationTime"] as int),
-			(data["validity"] as int),
-			Operation.fromJSON(data["operation"]),
+			tokenHash: (data["tokenHash"] as String),
+			creationTime: (data["creationTime"] as int),
+			validity: (data["validity"] as int),
+			operation: Operation.fromJSON(data["operation"]),
 			description: (data["description"] as String?),
 		);
 	}

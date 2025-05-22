@@ -2,14 +2,14 @@ group = "com.icure.cardinal_sdk"
 version = "1.0-SNAPSHOT"
 
 buildscript {
-    ext.kotlin_version = "1.8.22"
+    ext.kotlin_version = "2.1.0"
     repositories {
         google()
         mavenCentral()
     }
 
     dependencies {
-        classpath("com.android.tools.build:gradle:8.1.0")
+        classpath("com.android.tools.build:gradle:8.7.3")
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version")
     }
 }
@@ -18,7 +18,6 @@ allprojects {
     repositories {
         google()
         mavenCentral()
-        mavenLocal()
     }
 }
 
@@ -26,19 +25,18 @@ apply plugin: "com.android.library"
 apply plugin: "kotlin-android"
 
 android {
-    if (project.android.hasProperty("namespace")) {
-        namespace = "com.icure.cardinal_sdk"
-    }
+    namespace = "com.icure.cardinal_sdk"
+    ndkVersion = "27.0.12077973"
 
-    compileSdk = 34
+    compileSdk = 35
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
     }
 
     kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_1_8
+        jvmTarget = JavaVersion.VERSION_11
     }
 
     sourceSets {
@@ -47,7 +45,7 @@ android {
     }
 
     defaultConfig {
-        minSdk = 26
+        minSdk = 27
     }
 
     dependencies {
@@ -68,7 +66,8 @@ android {
     }
 }
 
+
 dependencies {
 //    implementation files('localLibs/flutter.jar')
-    implementation 'com.icure:cardinal-dart-sdk-support-lib:1.0.0-RC.3'
+    implementation 'com.icure:cardinal-dart-sdk-support-lib:2.0.0-PREVIEW-3'
 }

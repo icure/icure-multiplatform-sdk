@@ -12,8 +12,8 @@ import com.icure.cardinal.sdk.filters.SortableFilterOptions
 import com.icure.cardinal.sdk.model.DecryptedDocument
 import com.icure.cardinal.sdk.model.Document
 import com.icure.cardinal.sdk.model.EncryptedDocument
-import com.icure.cardinal.sdk.model.IdWithMandatoryRev
 import com.icure.cardinal.sdk.model.Message
+import com.icure.cardinal.sdk.model.StoredDocumentIdentifier
 import com.icure.cardinal.sdk.model.User
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.model.embed.AccessLevel
@@ -36,29 +36,6 @@ import kotlinx.serialization.json.JsonObject
 
 @OptIn(InternalIcureApi::class)
 public object DocumentApi {
-  public fun createDocument(
-    dartResultCallback: (
-      String?,
-      String?,
-      String?,
-      String?,
-    ) -> Unit,
-    sdkId: String,
-    entityString: String,
-  ) {
-    val entity = fullLanguageInteropJson.decodeFromString(
-      DecryptedDocument.serializer(),
-      entityString
-    )
-    ApiScope.execute(
-      dartResultCallback,
-      DecryptedDocument.serializer()) {
-      NativeReferences.get<CardinalApis>(sdkId).document.createDocument(
-        entity,
-      )
-    }
-  }
-
   public fun withEncryptionMetadata(
     dartResultCallback: (
       String?,
@@ -612,7 +589,7 @@ public object DocumentApi {
     entityIdsString: String,
   ) {
     val entityIds = fullLanguageInteropJson.decodeFromString(
-      ListSerializer(IdWithMandatoryRev.serializer()),
+      ListSerializer(StoredDocumentIdentifier.serializer()),
       entityIdsString
     )
     ApiScope.execute(
@@ -1056,6 +1033,29 @@ public object DocumentApi {
     }
   }
 
+  public fun createDocument(
+    dartResultCallback: (
+      String?,
+      String?,
+      String?,
+      String?,
+    ) -> Unit,
+    sdkId: String,
+    entityString: String,
+  ) {
+    val entity = fullLanguageInteropJson.decodeFromString(
+      DecryptedDocument.serializer(),
+      entityString
+    )
+    ApiScope.execute(
+      dartResultCallback,
+      DecryptedDocument.serializer()) {
+      NativeReferences.get<CardinalApis>(sdkId).document.createDocument(
+        entity,
+      )
+    }
+  }
+
   public fun undeleteDocumentById(
     dartResultCallback: (
       String?,
@@ -1147,7 +1147,7 @@ public object DocumentApi {
     )
     ApiScope.execute(
       dartResultCallback,
-      DecryptedDocument.serializer()) {
+      DecryptedDocument.serializer().nullable) {
       NativeReferences.get<CardinalApis>(sdkId).document.getDocument(
         entityId,
       )
@@ -1322,6 +1322,29 @@ public object DocumentApi {
       }
     }
 
+    public fun createDocument(
+      dartResultCallback: (
+        String?,
+        String?,
+        String?,
+        String?,
+      ) -> Unit,
+      sdkId: String,
+      entityString: String,
+    ) {
+      val entity = fullLanguageInteropJson.decodeFromString(
+        EncryptedDocument.serializer(),
+        entityString
+      )
+      ApiScope.execute(
+        dartResultCallback,
+        EncryptedDocument.serializer()) {
+        NativeReferences.get<CardinalApis>(sdkId).document.encrypted.createDocument(
+          entity,
+        )
+      }
+    }
+
     public fun undeleteDocumentById(
       dartResultCallback: (
         String?,
@@ -1413,7 +1436,7 @@ public object DocumentApi {
       )
       ApiScope.execute(
         dartResultCallback,
-        EncryptedDocument.serializer()) {
+        EncryptedDocument.serializer().nullable) {
         NativeReferences.get<CardinalApis>(sdkId).document.encrypted.getDocument(
           entityId,
         )
@@ -1589,6 +1612,29 @@ public object DocumentApi {
       }
     }
 
+    public fun createDocument(
+      dartResultCallback: (
+        String?,
+        String?,
+        String?,
+        String?,
+      ) -> Unit,
+      sdkId: String,
+      entityString: String,
+    ) {
+      val entity = fullLanguageInteropJson.decodeFromString(
+        PolymorphicSerializer(Document::class),
+        entityString
+      )
+      ApiScope.execute(
+        dartResultCallback,
+        PolymorphicSerializer(Document::class)) {
+        NativeReferences.get<CardinalApis>(sdkId).document.tryAndRecover.createDocument(
+          entity,
+        )
+      }
+    }
+
     public fun undeleteDocumentById(
       dartResultCallback: (
         String?,
@@ -1680,7 +1726,7 @@ public object DocumentApi {
       )
       ApiScope.execute(
         dartResultCallback,
-        PolymorphicSerializer(Document::class)) {
+        PolymorphicSerializer(Document::class).nullable) {
         NativeReferences.get<CardinalApis>(sdkId).document.tryAndRecover.getDocument(
           entityId,
         )

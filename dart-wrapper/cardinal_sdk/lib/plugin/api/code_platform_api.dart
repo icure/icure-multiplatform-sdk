@@ -154,7 +154,7 @@ class CodePlatformApi {
 		return (parsedResJson as List<dynamic>).map((x1) => Code.fromJSON(x1) ).toList();
 	}
 
-	Future<Code> getCode(String sdkId, String codeId) async {
+	Future<Code?> getCode(String sdkId, String codeId) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'CodeApi.getCode',
 			{
@@ -164,10 +164,10 @@ class CodePlatformApi {
 		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getCode");
 		final parsedResJson = jsonDecode(res);
-		return Code.fromJSON(parsedResJson);
+		return parsedResJson == null ? null : Code.fromJSON(parsedResJson);
 	}
 
-	Future<Code> getCodeWithParts(String sdkId, String type, String code, String version) async {
+	Future<Code?> getCodeWithParts(String sdkId, String type, String code, String version) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'CodeApi.getCodeWithParts',
 			{
@@ -179,7 +179,7 @@ class CodePlatformApi {
 		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getCodeWithParts");
 		final parsedResJson = jsonDecode(res);
-		return Code.fromJSON(parsedResJson);
+		return parsedResJson == null ? null : Code.fromJSON(parsedResJson);
 	}
 
 	Future<Code> modifyCode(String sdkId, Code codeDto) async {

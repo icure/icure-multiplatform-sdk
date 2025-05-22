@@ -1,61 +1,30 @@
 // auto-generated file
 import 'package:cardinal_sdk/model/couchdb/remote.dart';
 import 'package:cardinal_sdk/model/couchdb/replication_stats.dart';
-import 'package:cardinal_sdk/annotations/actual_int32.dart';
 import 'package:cardinal_sdk/model/base/versionable.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+part "replicator_document.freezed.dart";
 
 
-class ReplicatorDocument implements Versionable<String> {
-	@override String id;
-	@override String? rev = null;
-	Remote? source = null;
-	Remote? target = null;
-	String? owner = null;
-	bool? create_target = null;
-	bool? continuous = null;
-	List<String>? doc_ids = null;
-	String? replicationState = null;
-	String? replicationStateTime = null;
-	ReplicationStats? replicationStats = null;
-	int? _errorCount = null;
-	@ActualInt32() int? get errorCount => _errorCount;
-	@ActualInt32() set errorCount(int? value) {
-		if (value != null && value > 2147483647) {
-			throw ArgumentError('errorCount value cannot exceed 2147483647');
-		}
-		_errorCount = value;
-	}
-	List<Map<String, String>>? revsInfo = null;
-	Map<String, String>? revHistory = null;
-	ReplicatorDocument(
-		this.id,
-		{
-			int? errorCount,
-			String? rev,
-			Remote? source,
-			Remote? target,
-			String? owner,
-			bool? create_target,
-			bool? continuous,
-			List<String>? doc_ids,
-			String? replicationState,
-			String? replicationStateTime,
-			ReplicationStats? replicationStats,
-			List<Map<String, String>>? revsInfo,
-			Map<String, String>? revHistory
-		}) : rev = rev ?? null,
-		source = source ?? null,
-		target = target ?? null,
-		owner = owner ?? null,
-		create_target = create_target ?? null,
-		continuous = continuous ?? null,
-		doc_ids = doc_ids ?? null,
-		replicationState = replicationState ?? null,
-		replicationStateTime = replicationStateTime ?? null,
-		replicationStats = replicationStats ?? null,
-		revsInfo = revsInfo ?? null,
-		revHistory = revHistory ?? null,
-		_errorCount = errorCount ?? null;
+@freezed
+abstract class ReplicatorDocument with _$ReplicatorDocument implements Versionable<String> {
+	const factory ReplicatorDocument({
+		required String id,
+		@Default(null) String? rev,
+		@Default(null) Remote? source,
+		@Default(null) Remote? target,
+		@Default(null) String? owner,
+		@Default(null) bool? create_target,
+		@Default(null) bool? continuous,
+		@Default(null) List<String>? doc_ids,
+		@Default(null) String? replicationState,
+		@Default(null) String? replicationStateTime,
+		@Default(null) ReplicationStats? replicationStats,
+		@Default(null) int? errorCount,
+		@Default(null) List<Map<String, String>>? revsInfo,
+		@Default(null) Map<String, String>? revHistory,
+	}) = _ReplicatorDocument;
+
 
 	static Map<String, dynamic> encode(ReplicatorDocument value) {
 		Map<String, dynamic> entityAsMap = {
@@ -79,7 +48,7 @@ class ReplicatorDocument implements Versionable<String> {
 
 	static ReplicatorDocument fromJSON(Map<String, dynamic> data) {
 		return ReplicatorDocument(
-			(data["id"] as String),
+			id: (data["id"] as String),
 			errorCount: (data["errorCount"] as int?),
 			rev: (data["rev"] as String?),
 			source: data["source"] == null ? null : Remote.fromJSON(data["source"]),

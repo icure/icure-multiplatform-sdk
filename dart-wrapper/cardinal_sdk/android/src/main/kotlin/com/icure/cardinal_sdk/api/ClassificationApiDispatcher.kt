@@ -18,7 +18,6 @@ public object ClassificationApiDispatcher {
       String?,
     ) -> Unit,
   ): Boolean = when(methodName) {
-    "createClassification" -> createClassification(parameters, resultCallback)
     "withEncryptionMetadata" -> withEncryptionMetadata(parameters, resultCallback)
     "getEncryptionKeysOf" -> getEncryptionKeysOf(parameters, resultCallback)
     "hasWriteAccess" -> hasWriteAccess(parameters, resultCallback)
@@ -34,6 +33,7 @@ public object ClassificationApiDispatcher {
     "shareWithMany" -> shareWithMany(parameters, resultCallback)
     "filterClassificationsBy" -> filterClassificationsBy(parameters, resultCallback)
     "filterClassificationsBySorted" -> filterClassificationsBySorted(parameters, resultCallback)
+    "createClassification" -> createClassification(parameters, resultCallback)
     "modifyClassification" -> modifyClassification(parameters, resultCallback)
     "getClassification" -> getClassification(parameters, resultCallback)
     "getClassifications" -> getClassifications(parameters, resultCallback)
@@ -41,6 +41,7 @@ public object ClassificationApiDispatcher {
     "encrypted.shareWithMany" -> encrypted_shareWithMany(parameters, resultCallback)
     "encrypted.filterClassificationsBy" -> encrypted_filterClassificationsBy(parameters, resultCallback)
     "encrypted.filterClassificationsBySorted" -> encrypted_filterClassificationsBySorted(parameters, resultCallback)
+    "encrypted.createClassification" -> encrypted_createClassification(parameters, resultCallback)
     "encrypted.modifyClassification" -> encrypted_modifyClassification(parameters, resultCallback)
     "encrypted.getClassification" -> encrypted_getClassification(parameters, resultCallback)
     "encrypted.getClassifications" -> encrypted_getClassifications(parameters, resultCallback)
@@ -48,24 +49,12 @@ public object ClassificationApiDispatcher {
     "tryAndRecover.shareWithMany" -> tryAndRecover_shareWithMany(parameters, resultCallback)
     "tryAndRecover.filterClassificationsBy" -> tryAndRecover_filterClassificationsBy(parameters, resultCallback)
     "tryAndRecover.filterClassificationsBySorted" -> tryAndRecover_filterClassificationsBySorted(parameters, resultCallback)
+    "tryAndRecover.createClassification" -> tryAndRecover_createClassification(parameters, resultCallback)
     "tryAndRecover.modifyClassification" -> tryAndRecover_modifyClassification(parameters, resultCallback)
     "tryAndRecover.getClassification" -> tryAndRecover_getClassification(parameters, resultCallback)
     "tryAndRecover.getClassifications" -> tryAndRecover_getClassifications(parameters, resultCallback)
     else -> null
   }?.let { true } ?: false
-
-  private fun createClassification(parameters: Map<String, String>, resultCallback: (
-    String?,
-    String?,
-    String?,
-    String?,
-  ) -> Unit) {
-    ClassificationApi.createClassification(
-      resultCallback,
-      parameters.getValue("sdkId"),
-      parameters.getValue("entity"),
-    )
-  }
 
   private fun withEncryptionMetadata(parameters: Map<String, String>, resultCallback: (
     String?,
@@ -271,6 +260,19 @@ public object ClassificationApiDispatcher {
     )
   }
 
+  private fun createClassification(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    ClassificationApi.createClassification(
+      resultCallback,
+      parameters.getValue("sdkId"),
+      parameters.getValue("entity"),
+    )
+  }
+
   private fun modifyClassification(parameters: Map<String, String>, resultCallback: (
     String?,
     String?,
@@ -363,6 +365,19 @@ public object ClassificationApiDispatcher {
       resultCallback,
       parameters.getValue("sdkId"),
       parameters.getValue("filter"),
+    )
+  }
+
+  private fun encrypted_createClassification(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    ClassificationApi.encrypted.createClassification(
+      resultCallback,
+      parameters.getValue("sdkId"),
+      parameters.getValue("entity"),
     )
   }
 
@@ -459,6 +474,19 @@ public object ClassificationApiDispatcher {
       resultCallback,
       parameters.getValue("sdkId"),
       parameters.getValue("filter"),
+    )
+  }
+
+  private fun tryAndRecover_createClassification(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    ClassificationApi.tryAndRecover.createClassification(
+      resultCallback,
+      parameters.getValue("sdkId"),
+      parameters.getValue("entity"),
     )
   }
 

@@ -18,6 +18,7 @@ import com.icure.kryptom.crypto.RsaKeypair
 import com.icure.utils.InternalIcureApi
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.MapSerializer
+import kotlinx.serialization.builtins.nullable
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
@@ -30,9 +31,12 @@ class CryptoStrategiesBridge(
 	private val dataOwnerRequiresAnonymousDelegationCallback: String?,
 	private val notifyNewKeyCreatedCallback: String?,
 ): CryptoStrategies {
-	override suspend fun dataOwnerRequiresAnonymousDelegation(dataOwner: CryptoActorStubWithType): Boolean {
+	override suspend fun dataOwnerRequiresAnonymousDelegation(
+		dataOwner: CryptoActorStubWithType,
+		groupId: String?
+	): Boolean {
 		if (dataOwnerRequiresAnonymousDelegationCallback == null) {
-			return super.dataOwnerRequiresAnonymousDelegation(dataOwner)
+			return super.dataOwnerRequiresAnonymousDelegation(dataOwner, groupId)
 		} else {
 			val res = DartCallbacksHandler.registered.invoke(
 				dataOwnerRequiresAnonymousDelegationCallback,
@@ -40,6 +44,10 @@ class CryptoStrategiesBridge(
 					"dataOwner" to Serialization.fullLanguageInteropJson.encodeToJsonElement(
 						CryptoActorStubWithType.serializer(),
 						dataOwner
+					),
+					"groupId" to Serialization.fullLanguageInteropJson.encodeToJsonElement(
+						String.serializer().nullable,
+						groupId
 					)
 				))
 			)
@@ -146,10 +154,11 @@ class CryptoStrategiesBridge(
 	override suspend fun verifyDelegatePublicKeys(
 		delegate: CryptoActorStubWithType,
 		publicKeys: List<SpkiHexString>,
-		cryptoPrimitives: CryptoService
+		cryptoPrimitives: CryptoService,
+		groupId: String?
 	): List<SpkiHexString> {
 		if (verifyDelegatePublicKeysCallback == null) {
-			return super.verifyDelegatePublicKeys(delegate, publicKeys, cryptoPrimitives)
+			return super.verifyDelegatePublicKeys(delegate, publicKeys, cryptoPrimitives, groupId)
 		} else {
 			val res = DartCallbacksHandler.registered.invoke(
 				verifyDelegatePublicKeysCallback,
@@ -161,6 +170,10 @@ class CryptoStrategiesBridge(
 					"publicKeys" to Serialization.fullLanguageInteropJson.encodeToJsonElement(
 						ListSerializer(SpkiHexString.serializer()),
 						publicKeys
+					),
+					"groupId" to Serialization.fullLanguageInteropJson.encodeToJsonElement(
+						String.serializer().nullable,
+						groupId
 					)
 				))
 			)

@@ -8,8 +8,8 @@ import com.icure.cardinal.sdk.filters.BaseFilterOptions
 import com.icure.cardinal.sdk.filters.BaseSortableFilterOptions
 import com.icure.cardinal.sdk.filters.FilterOptions
 import com.icure.cardinal.sdk.model.Device
-import com.icure.cardinal.sdk.model.IdWithMandatoryRev
 import com.icure.cardinal.sdk.model.IdWithRev
+import com.icure.cardinal.sdk.model.StoredDocumentIdentifier
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.serialization.EntitySubscriptionWithSerializer
 import com.icure.cardinal.sdk.serialization.PaginatedListIteratorWithSerializer
@@ -43,7 +43,7 @@ public object DeviceApi {
     )
     ApiScope.execute(
       dartResultCallback,
-      Device.serializer()) {
+      Device.serializer().nullable) {
       NativeReferences.get<CardinalNonCryptoApis>(sdkId).device.getDevice(
         deviceId,
       )
@@ -306,7 +306,7 @@ public object DeviceApi {
     entityIdsString: String,
   ) {
     val entityIds = fullLanguageInteropJson.decodeFromString(
-      ListSerializer(IdWithMandatoryRev.serializer()),
+      ListSerializer(StoredDocumentIdentifier.serializer()),
       entityIdsString
     )
     ApiScope.execute(

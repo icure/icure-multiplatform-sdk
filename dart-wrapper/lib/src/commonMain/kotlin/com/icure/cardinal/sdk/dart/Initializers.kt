@@ -14,6 +14,7 @@ import com.icure.cardinal.sdk.dart.utils.NativeReferences
 import com.icure.cardinal.sdk.storage.StorageFacade
 import com.icure.cardinal.sdk.utils.Serialization.fullLanguageInteropJson
 import com.icure.utils.InternalIcureApi
+import kotlinx.coroutines.cancel
 import kotlinx.serialization.builtins.nullable
 import kotlinx.serialization.builtins.serializer
 
@@ -299,11 +300,12 @@ object Initializers {
 }
 
 private class DartCardinalSdkReference(
-	sdk: CardinalSdk,
+	private val sdk: CardinalSdk,
 	val cryptoStrategiesOptions: DartCryptoStrategiesOptions?,
 ) : CardinalSdk by sdk, DisposableNativeReference {
 	override suspend fun dispose() {
 		cryptoStrategiesOptions?.release(null)
+		sdk.scope.cancel()
 	}
 }
 

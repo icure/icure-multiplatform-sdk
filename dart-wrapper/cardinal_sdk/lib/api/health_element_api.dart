@@ -1,45 +1,34 @@
 // auto-generated file
 import 'package:cardinal_sdk/model/health_element.dart';
-import 'package:cardinal_sdk/plugin/cardinal_sdk_platform_interface.dart';
 import 'package:cardinal_sdk/model/patient.dart';
 import 'package:cardinal_sdk/model/user.dart';
 import 'package:cardinal_sdk/model/embed/access_level.dart';
 import 'package:cardinal_sdk/crypto/entities/secret_id_use_option.dart';
+import 'package:cardinal_sdk/plugin/cardinal_sdk_platform_interface.dart';
 import 'package:cardinal_sdk/model/specializations/hex_string.dart';
+import 'package:cardinal_sdk/model/entity_reference_in_group.dart';
 import 'package:cardinal_sdk/filters/filter_options.dart';
-import 'package:cardinal_sdk/model/couchdb/doc_identifier.dart';
-import 'package:cardinal_sdk/model/id_with_mandatory_rev.dart';
+import 'package:cardinal_sdk/model/stored_document_identifier.dart';
 import 'package:cardinal_sdk/crypto/entities/health_element_share_options.dart';
 import 'package:cardinal_sdk/utils/pagination/paginated_list_iterator.dart';
 import 'package:cardinal_sdk/subscription/subscription_event_type.dart';
 import 'package:cardinal_sdk/subscription/entity_subscription_configuration.dart';
 import 'package:cardinal_sdk/subscription/entity_subscription.dart';
+import 'package:cardinal_sdk/model/group_scoped.dart';
 
 
 class HealthElementApi {
 	final String _sdkId;
 	final Object _dartSdk;
-	final TryAndRecoverHealthElementApi tryAndRecover;
-	final EncryptedHealthElementApi encrypted;
+	final HealthElementEncryptedApi encrypted;
+	final HealthElementTryAndRecoverApi tryAndRecover;
+	final HealthElementInGroupApi inGroup;
 	HealthElementApi(
 		this._sdkId,
 		this._dartSdk
-		) : tryAndRecover = TryAndRecoverHealthElementApi(_sdkId, _dartSdk),
-		encrypted = EncryptedHealthElementApi(_sdkId, _dartSdk);
-
-	Future<DecryptedHealthElement> createHealthElement(DecryptedHealthElement entity) async {
-		return await CardinalSdkPlatformInterface.instance.apis.healthElement.createHealthElement(
-			_sdkId,
-			entity,
-		);
-	}
-
-	Future<List<DecryptedHealthElement>> createHealthElements(List<DecryptedHealthElement> entities) async {
-		return await CardinalSdkPlatformInterface.instance.apis.healthElement.createHealthElements(
-			_sdkId,
-			entities,
-		);
-	}
+		) : encrypted = HealthElementEncryptedApi(_sdkId, _dartSdk),
+		tryAndRecover = HealthElementTryAndRecoverApi(_sdkId, _dartSdk),
+		inGroup = HealthElementInGroupApi(_sdkId, _dartSdk);
 
 	Future<DecryptedHealthElement> withEncryptionMetadata(DecryptedHealthElement? base, Patient patient, { User? user, Map<String, AccessLevel> delegates = const {}, SecretIdUseOption secretId = SecretIdUseOption.UseAnySharedWithParent }) async {
 		return await CardinalSdkPlatformInterface.instance.apis.healthElement.withEncryptionMetadata(
@@ -66,7 +55,7 @@ class HealthElementApi {
 		);
 	}
 
-	Future<Set<String>> decryptPatientIdOf(HealthElement healthElement) async {
+	Future<Set<EntityReferenceInGroup>> decryptPatientIdOf(HealthElement healthElement) async {
 		return await CardinalSdkPlatformInterface.instance.apis.healthElement.decryptPatientIdOf(
 			_sdkId,
 			healthElement,
@@ -81,17 +70,24 @@ class HealthElementApi {
 		);
 	}
 
-	Future<DecryptedHealthElement> decrypt(EncryptedHealthElement healthElement) async {
+	Future<List<DecryptedHealthElement>> decrypt(List<EncryptedHealthElement> healthElements) async {
 		return await CardinalSdkPlatformInterface.instance.apis.healthElement.decrypt(
 			_sdkId,
-			healthElement,
+			healthElements,
 		);
 	}
 
-	Future<HealthElement> tryDecrypt(EncryptedHealthElement healthElement) async {
+	Future<List<HealthElement>> tryDecrypt(List<EncryptedHealthElement> healthElements) async {
 		return await CardinalSdkPlatformInterface.instance.apis.healthElement.tryDecrypt(
 			_sdkId,
-			healthElement,
+			healthElements,
+		);
+	}
+
+	Future<List<EncryptedHealthElement>> encryptOrValidate(List<HealthElement> healthElements) async {
+		return await CardinalSdkPlatformInterface.instance.apis.healthElement.encryptOrValidate(
+			_sdkId,
+			healthElements,
 		);
 	}
 
@@ -109,7 +105,7 @@ class HealthElementApi {
 		);
 	}
 
-	Future<DocIdentifier> deleteHealthElementById(String entityId, String? rev) async {
+	Future<StoredDocumentIdentifier> deleteHealthElementById(String entityId, String rev) async {
 		return await CardinalSdkPlatformInterface.instance.apis.healthElement.deleteHealthElementById(
 			_sdkId,
 			entityId,
@@ -117,7 +113,7 @@ class HealthElementApi {
 		);
 	}
 
-	Future<List<DocIdentifier>> deleteHealthElementsByIds(List<IdWithMandatoryRev> entityIds) async {
+	Future<List<StoredDocumentIdentifier>> deleteHealthElementsByIds(List<StoredDocumentIdentifier> entityIds) async {
 		return await CardinalSdkPlatformInterface.instance.apis.healthElement.deleteHealthElementsByIds(
 			_sdkId,
 			entityIds,
@@ -132,14 +128,14 @@ class HealthElementApi {
 		);
 	}
 
-	Future<DocIdentifier> deleteHealthElement(HealthElement healthElement) async {
+	Future<StoredDocumentIdentifier> deleteHealthElement(HealthElement healthElement) async {
 		return await CardinalSdkPlatformInterface.instance.apis.healthElement.deleteHealthElement(
 			_sdkId,
 			healthElement,
 		);
 	}
 
-	Future<List<DocIdentifier>> deleteHealthElements(List<HealthElement> healthElements) async {
+	Future<List<StoredDocumentIdentifier>> deleteHealthElements(List<HealthElement> healthElements) async {
 		return await CardinalSdkPlatformInterface.instance.apis.healthElement.deleteHealthElements(
 			_sdkId,
 			healthElements,
@@ -184,6 +180,20 @@ class HealthElementApi {
 		);
 	}
 
+	Future<DecryptedHealthElement> createHealthElement(DecryptedHealthElement entity) async {
+		return await CardinalSdkPlatformInterface.instance.apis.healthElement.createHealthElement(
+			_sdkId,
+			entity,
+		);
+	}
+
+	Future<List<DecryptedHealthElement>> createHealthElements(List<DecryptedHealthElement> entities) async {
+		return await CardinalSdkPlatformInterface.instance.apis.healthElement.createHealthElements(
+			_sdkId,
+			entities,
+		);
+	}
+
 	Future<DecryptedHealthElement> undeleteHealthElementById(String id, String rev) async {
 		return await CardinalSdkPlatformInterface.instance.apis.healthElement.undeleteHealthElementById(
 			_sdkId,
@@ -213,7 +223,7 @@ class HealthElementApi {
 		);
 	}
 
-	Future<DecryptedHealthElement> getHealthElement(String entityId) async {
+	Future<DecryptedHealthElement?> getHealthElement(String entityId) async {
 		return await CardinalSdkPlatformInterface.instance.apis.healthElement.getHealthElement(
 			_sdkId,
 			entityId,
@@ -237,10 +247,10 @@ class HealthElementApi {
 	}
 }
 
-class TryAndRecoverHealthElementApi {
+class HealthElementTryAndRecoverApi {
 	final String _sdkId;
 	final Object _dartSdk;
-	TryAndRecoverHealthElementApi(
+	HealthElementTryAndRecoverApi(
 		this._sdkId,
 		this._dartSdk
 		);
@@ -276,6 +286,20 @@ class TryAndRecoverHealthElementApi {
 		);
 	}
 
+	Future<HealthElement> createHealthElement(HealthElement entity) async {
+		return await CardinalSdkPlatformInterface.instance.apis.healthElement.tryAndRecover.createHealthElement(
+			_sdkId,
+			entity,
+		);
+	}
+
+	Future<List<HealthElement>> createHealthElements(List<HealthElement> entities) async {
+		return await CardinalSdkPlatformInterface.instance.apis.healthElement.tryAndRecover.createHealthElements(
+			_sdkId,
+			entities,
+		);
+	}
+
 	Future<HealthElement> undeleteHealthElementById(String id, String rev) async {
 		return await CardinalSdkPlatformInterface.instance.apis.healthElement.tryAndRecover.undeleteHealthElementById(
 			_sdkId,
@@ -305,7 +329,7 @@ class TryAndRecoverHealthElementApi {
 		);
 	}
 
-	Future<HealthElement> getHealthElement(String entityId) async {
+	Future<HealthElement?> getHealthElement(String entityId) async {
 		return await CardinalSdkPlatformInterface.instance.apis.healthElement.tryAndRecover.getHealthElement(
 			_sdkId,
 			entityId,
@@ -320,10 +344,10 @@ class TryAndRecoverHealthElementApi {
 	}
 }
 
-class EncryptedHealthElementApi {
+class HealthElementEncryptedApi {
 	final String _sdkId;
 	final Object _dartSdk;
-	EncryptedHealthElementApi(
+	HealthElementEncryptedApi(
 		this._sdkId,
 		this._dartSdk
 		);
@@ -359,6 +383,20 @@ class EncryptedHealthElementApi {
 		);
 	}
 
+	Future<EncryptedHealthElement> createHealthElement(EncryptedHealthElement entity) async {
+		return await CardinalSdkPlatformInterface.instance.apis.healthElement.encrypted.createHealthElement(
+			_sdkId,
+			entity,
+		);
+	}
+
+	Future<List<EncryptedHealthElement>> createHealthElements(List<EncryptedHealthElement> entities) async {
+		return await CardinalSdkPlatformInterface.instance.apis.healthElement.encrypted.createHealthElements(
+			_sdkId,
+			entities,
+		);
+	}
+
 	Future<EncryptedHealthElement> undeleteHealthElementById(String id, String rev) async {
 		return await CardinalSdkPlatformInterface.instance.apis.healthElement.encrypted.undeleteHealthElementById(
 			_sdkId,
@@ -388,7 +426,7 @@ class EncryptedHealthElementApi {
 		);
 	}
 
-	Future<EncryptedHealthElement> getHealthElement(String entityId) async {
+	Future<EncryptedHealthElement?> getHealthElement(String entityId) async {
 		return await CardinalSdkPlatformInterface.instance.apis.healthElement.encrypted.getHealthElement(
 			_sdkId,
 			entityId,
@@ -399,6 +437,215 @@ class EncryptedHealthElementApi {
 		return await CardinalSdkPlatformInterface.instance.apis.healthElement.encrypted.getHealthElements(
 			_sdkId,
 			entityIds,
+		);
+	}
+}
+
+class HealthElementInGroupApi {
+	final String _sdkId;
+	final Object _dartSdk;
+	final HealthElementInGroupEncryptedApi encrypted;
+	final HealthElementInGroupTryAndRecoverApi tryAndRecover;
+	HealthElementInGroupApi(
+		this._sdkId,
+		this._dartSdk
+		) : encrypted = HealthElementInGroupEncryptedApi(_sdkId, _dartSdk),
+		tryAndRecover = HealthElementInGroupTryAndRecoverApi(_sdkId, _dartSdk);
+
+	Future<GroupScoped<DecryptedHealthElement>> withEncryptionMetadata(String entityGroupId, DecryptedHealthElement? base, GroupScoped<Patient> patient, { User? user, Map<EntityReferenceInGroup, AccessLevel> delegates = const {}, SecretIdUseOption secretId = SecretIdUseOption.UseAnySharedWithParent }) async {
+		return await CardinalSdkPlatformInterface.instance.apis.healthElement.inGroup.withEncryptionMetadata(
+			_sdkId,
+			entityGroupId,
+			base,
+			patient,
+			user,
+			delegates,
+			secretId,
+		);
+	}
+
+	Future<Set<HexString>> getEncryptionKeysOf(GroupScoped<HealthElement> healthElement) async {
+		return await CardinalSdkPlatformInterface.instance.apis.healthElement.inGroup.getEncryptionKeysOf(
+			_sdkId,
+			healthElement,
+		);
+	}
+
+	Future<bool> hasWriteAccess(GroupScoped<HealthElement> healthElement) async {
+		return await CardinalSdkPlatformInterface.instance.apis.healthElement.inGroup.hasWriteAccess(
+			_sdkId,
+			healthElement,
+		);
+	}
+
+	Future<Set<EntityReferenceInGroup>> decryptPatientIdOf(GroupScoped<HealthElement> healthElement) async {
+		return await CardinalSdkPlatformInterface.instance.apis.healthElement.inGroup.decryptPatientIdOf(
+			_sdkId,
+			healthElement,
+		);
+	}
+
+	Future<void> createDelegationDeAnonymizationMetadata(GroupScoped<HealthElement> entity, Set<EntityReferenceInGroup> delegates) async {
+		return await CardinalSdkPlatformInterface.instance.apis.healthElement.inGroup.createDelegationDeAnonymizationMetadata(
+			_sdkId,
+			entity,
+			delegates,
+		);
+	}
+
+	Future<List<GroupScoped<DecryptedHealthElement>>> decrypt(List<GroupScoped<EncryptedHealthElement>> healthElements) async {
+		return await CardinalSdkPlatformInterface.instance.apis.healthElement.inGroup.decrypt(
+			_sdkId,
+			healthElements,
+		);
+	}
+
+	Future<List<GroupScoped<HealthElement>>> tryDecrypt(List<GroupScoped<EncryptedHealthElement>> healthElements) async {
+		return await CardinalSdkPlatformInterface.instance.apis.healthElement.inGroup.tryDecrypt(
+			_sdkId,
+			healthElements,
+		);
+	}
+
+	Future<List<GroupScoped<EncryptedHealthElement>>> encryptOrValidate(List<GroupScoped<HealthElement>> healthElements) async {
+		return await CardinalSdkPlatformInterface.instance.apis.healthElement.inGroup.encryptOrValidate(
+			_sdkId,
+			healthElements,
+		);
+	}
+
+	Future<GroupScoped<DecryptedHealthElement>> shareWith(EntityReferenceInGroup delegate, GroupScoped<DecryptedHealthElement> healthElement, { HealthElementShareOptions? options }) async {
+		return await CardinalSdkPlatformInterface.instance.apis.healthElement.inGroup.shareWith(
+			_sdkId,
+			delegate,
+			healthElement,
+			options,
+		);
+	}
+
+	Future<GroupScoped<DecryptedHealthElement>> shareWithMany(GroupScoped<DecryptedHealthElement> healthElement, Map<EntityReferenceInGroup, HealthElementShareOptions> delegates) async {
+		return await CardinalSdkPlatformInterface.instance.apis.healthElement.inGroup.shareWithMany(
+			_sdkId,
+			healthElement,
+			delegates,
+		);
+	}
+
+	Future<GroupScoped<DecryptedHealthElement>> createHealthElement(GroupScoped<DecryptedHealthElement> entity) async {
+		return await CardinalSdkPlatformInterface.instance.apis.healthElement.inGroup.createHealthElement(
+			_sdkId,
+			entity,
+		);
+	}
+
+	Future<GroupScoped<DecryptedHealthElement>> modifyHealthElement(GroupScoped<DecryptedHealthElement> entity) async {
+		return await CardinalSdkPlatformInterface.instance.apis.healthElement.inGroup.modifyHealthElement(
+			_sdkId,
+			entity,
+		);
+	}
+
+	Future<GroupScoped<DecryptedHealthElement>?> getHealthElement(String groupId, String entityId) async {
+		return await CardinalSdkPlatformInterface.instance.apis.healthElement.inGroup.getHealthElement(
+			_sdkId,
+			groupId,
+			entityId,
+		);
+	}
+}
+
+class HealthElementInGroupEncryptedApi {
+	final String _sdkId;
+	final Object _dartSdk;
+	HealthElementInGroupEncryptedApi(
+		this._sdkId,
+		this._dartSdk
+		);
+
+	Future<GroupScoped<EncryptedHealthElement>> shareWith(EntityReferenceInGroup delegate, GroupScoped<EncryptedHealthElement> healthElement, { HealthElementShareOptions? options }) async {
+		return await CardinalSdkPlatformInterface.instance.apis.healthElement.inGroup.encrypted.shareWith(
+			_sdkId,
+			delegate,
+			healthElement,
+			options,
+		);
+	}
+
+	Future<GroupScoped<EncryptedHealthElement>> shareWithMany(GroupScoped<EncryptedHealthElement> healthElement, Map<EntityReferenceInGroup, HealthElementShareOptions> delegates) async {
+		return await CardinalSdkPlatformInterface.instance.apis.healthElement.inGroup.encrypted.shareWithMany(
+			_sdkId,
+			healthElement,
+			delegates,
+		);
+	}
+
+	Future<GroupScoped<EncryptedHealthElement>> createHealthElement(GroupScoped<EncryptedHealthElement> entity) async {
+		return await CardinalSdkPlatformInterface.instance.apis.healthElement.inGroup.encrypted.createHealthElement(
+			_sdkId,
+			entity,
+		);
+	}
+
+	Future<GroupScoped<EncryptedHealthElement>> modifyHealthElement(GroupScoped<EncryptedHealthElement> entity) async {
+		return await CardinalSdkPlatformInterface.instance.apis.healthElement.inGroup.encrypted.modifyHealthElement(
+			_sdkId,
+			entity,
+		);
+	}
+
+	Future<GroupScoped<EncryptedHealthElement>?> getHealthElement(String groupId, String entityId) async {
+		return await CardinalSdkPlatformInterface.instance.apis.healthElement.inGroup.encrypted.getHealthElement(
+			_sdkId,
+			groupId,
+			entityId,
+		);
+	}
+}
+
+class HealthElementInGroupTryAndRecoverApi {
+	final String _sdkId;
+	final Object _dartSdk;
+	HealthElementInGroupTryAndRecoverApi(
+		this._sdkId,
+		this._dartSdk
+		);
+
+	Future<GroupScoped<HealthElement>> shareWith(EntityReferenceInGroup delegate, GroupScoped<HealthElement> healthElement, { HealthElementShareOptions? options }) async {
+		return await CardinalSdkPlatformInterface.instance.apis.healthElement.inGroup.tryAndRecover.shareWith(
+			_sdkId,
+			delegate,
+			healthElement,
+			options,
+		);
+	}
+
+	Future<GroupScoped<HealthElement>> shareWithMany(GroupScoped<HealthElement> healthElement, Map<EntityReferenceInGroup, HealthElementShareOptions> delegates) async {
+		return await CardinalSdkPlatformInterface.instance.apis.healthElement.inGroup.tryAndRecover.shareWithMany(
+			_sdkId,
+			healthElement,
+			delegates,
+		);
+	}
+
+	Future<GroupScoped<HealthElement>> createHealthElement(GroupScoped<HealthElement> entity) async {
+		return await CardinalSdkPlatformInterface.instance.apis.healthElement.inGroup.tryAndRecover.createHealthElement(
+			_sdkId,
+			entity,
+		);
+	}
+
+	Future<GroupScoped<HealthElement>> modifyHealthElement(GroupScoped<HealthElement> entity) async {
+		return await CardinalSdkPlatformInterface.instance.apis.healthElement.inGroup.tryAndRecover.modifyHealthElement(
+			_sdkId,
+			entity,
+		);
+	}
+
+	Future<GroupScoped<HealthElement>?> getHealthElement(String groupId, String entityId) async {
+		return await CardinalSdkPlatformInterface.instance.apis.healthElement.inGroup.tryAndRecover.getHealthElement(
+			_sdkId,
+			groupId,
+			entityId,
 		);
 	}
 }

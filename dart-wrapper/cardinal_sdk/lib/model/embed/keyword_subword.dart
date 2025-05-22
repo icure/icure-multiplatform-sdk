@@ -1,15 +1,16 @@
 // auto-generated file
 import 'package:cardinal_sdk/model/embed/keyword_subword.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+part "keyword_subword.freezed.dart";
 
 
-class KeywordSubword {
-	String? value = null;
-	List<KeywordSubword>? subWords = null;
-	KeywordSubword({
-			String? value,
-			List<KeywordSubword>? subWords
-		}) : value = value ?? null,
-		subWords = subWords ?? null;
+@freezed
+abstract class KeywordSubword with _$KeywordSubword {
+	const factory KeywordSubword({
+		@Default(null) String? value,
+		@Default(null) List<KeywordSubword>? subWords,
+	}) = _KeywordSubword;
+
 
 	static Map<String, dynamic> encode(KeywordSubword value) {
 		Map<String, dynamic> entityAsMap = {

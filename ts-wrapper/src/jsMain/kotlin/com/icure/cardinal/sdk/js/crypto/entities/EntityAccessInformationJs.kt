@@ -3,9 +3,9 @@
 
 package com.icure.cardinal.sdk.js.crypto.entities
 
-import com.icure.cardinal.sdk.js.utils.Record
+import com.icure.cardinal.sdk.js.synthetic.mapasobjectarray.EntityReferenceInGroupToAccessLevelMapObject_delegate_accessLevel
+import kotlin.Array
 import kotlin.Boolean
-import kotlin.String
 import kotlin.js.JsName
 import kotlin.js.JsQualifier
 
@@ -13,7 +13,8 @@ import kotlin.js.JsQualifier
 public external class EntityAccessInformationJs(
 	partial: dynamic,
 ) {
-	public val permissionsByDataOwnerId: Record<String, String>
+	public val permissionsByDataOwnerId:
+			Array<EntityReferenceInGroupToAccessLevelMapObject_delegate_accessLevel>
 
 	public val hasUnknownAnonymousDataOwners: Boolean
 }

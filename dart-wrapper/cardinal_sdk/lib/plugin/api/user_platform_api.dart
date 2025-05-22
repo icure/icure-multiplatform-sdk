@@ -11,6 +11,7 @@ import 'package:cardinal_sdk/model/list_of_ids.dart';
 import 'package:cardinal_sdk/model/security/token_with_group.dart';
 import 'package:cardinal_sdk/model/security/enable2fa_request.dart';
 import 'package:cardinal_sdk/model/couchdb/doc_identifier.dart';
+import 'package:cardinal_sdk/model/security/login_identifier.dart';
 import 'package:cardinal_sdk/subscription/subscription_event_type.dart';
 import 'package:cardinal_sdk/subscription/entity_subscription_configuration.dart';
 import 'package:cardinal_sdk/subscription/entity_subscription.dart';
@@ -45,7 +46,7 @@ class UserPlatformApi {
 		return User.fromJSON(parsedResJson);
 	}
 
-	Future<User> getUser(String sdkId, String userId) async {
+	Future<User?> getUser(String sdkId, String userId) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'UserApi.getUser',
 			{
@@ -55,7 +56,7 @@ class UserPlatformApi {
 		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getUser");
 		final parsedResJson = jsonDecode(res);
-		return User.fromJSON(parsedResJson);
+		return parsedResJson == null ? null : User.fromJSON(parsedResJson);
 	}
 
 	Future<List<User>> getUsers(String sdkId, List<String> userIds) async {
@@ -71,7 +72,7 @@ class UserPlatformApi {
 		return (parsedResJson as List<dynamic>).map((x1) => User.fromJSON(x1) ).toList();
 	}
 
-	Future<User> getUserByEmail(String sdkId, String email) async {
+	Future<User?> getUserByEmail(String sdkId, String email) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'UserApi.getUserByEmail',
 			{
@@ -81,10 +82,10 @@ class UserPlatformApi {
 		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getUserByEmail");
 		final parsedResJson = jsonDecode(res);
-		return User.fromJSON(parsedResJson);
+		return parsedResJson == null ? null : User.fromJSON(parsedResJson);
 	}
 
-	Future<User> getUserByPhoneNumber(String sdkId, String phoneNumber) async {
+	Future<User?> getUserByPhoneNumber(String sdkId, String phoneNumber) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'UserApi.getUserByPhoneNumber',
 			{
@@ -94,7 +95,7 @@ class UserPlatformApi {
 		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getUserByPhoneNumber");
 		final parsedResJson = jsonDecode(res);
-		return User.fromJSON(parsedResJson);
+		return parsedResJson == null ? null : User.fromJSON(parsedResJson);
 	}
 
 	Future<List<String>> findByHcpartyId(String sdkId, String id) async {
@@ -603,6 +604,51 @@ class UserPlatformApi {
 		if (res == null) throw AssertionError("received null result from platform method undeleteUser");
 		final parsedResJson = jsonDecode(res);
 		return User.fromJSON(parsedResJson);
+	}
+
+	Future<String> setUserInheritsPermissions(String sdkId, String userId, String groupId, bool value) async {
+		final res = await _methodChannel.invokeMethod<String>(
+			'UserApi.setUserInheritsPermissions',
+			{
+				"sdkId": sdkId,
+				"userId": jsonEncode(userId),
+				"groupId": jsonEncode(groupId),
+				"value": jsonEncode(value),
+			}
+		).catchError(convertPlatformException);
+		if (res == null) throw AssertionError("received null result from platform method setUserInheritsPermissions");
+		final parsedResJson = jsonDecode(res);
+		return (parsedResJson as String);
+	}
+
+	Future<bool> setLoginIdentifiers(String sdkId, String userId, String groupId, LoginIdentifier identifier, bool replaceExisting) async {
+		final res = await _methodChannel.invokeMethod<String>(
+			'UserApi.setLoginIdentifiers',
+			{
+				"sdkId": sdkId,
+				"userId": jsonEncode(userId),
+				"groupId": jsonEncode(groupId),
+				"identifier": jsonEncode(LoginIdentifier.encode(identifier)),
+				"replaceExisting": jsonEncode(replaceExisting),
+			}
+		).catchError(convertPlatformException);
+		if (res == null) throw AssertionError("received null result from platform method setLoginIdentifiers");
+		final parsedResJson = jsonDecode(res);
+		return (parsedResJson as bool);
+	}
+
+	Future<bool> setExternalJwtAuthByIdentifiersForCurrentUser(String sdkId, String externalJwtConfigId, String externalAuthenticationToken) async {
+		final res = await _methodChannel.invokeMethod<String>(
+			'UserApi.setExternalJwtAuthByIdentifiersForCurrentUser',
+			{
+				"sdkId": sdkId,
+				"externalJwtConfigId": jsonEncode(externalJwtConfigId),
+				"externalAuthenticationToken": jsonEncode(externalAuthenticationToken),
+			}
+		).catchError(convertPlatformException);
+		if (res == null) throw AssertionError("received null result from platform method setExternalJwtAuthByIdentifiersForCurrentUser");
+		final parsedResJson = jsonDecode(res);
+		return (parsedResJson as bool);
 	}
 
 	Future<EntitySubscription<User>> subscribeToEvents(String sdkId, Set<SubscriptionEventType> events, FilterOptions<User> filter, EntitySubscriptionConfiguration? subscriptionConfig) async {

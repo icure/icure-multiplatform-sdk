@@ -12,8 +12,8 @@ import com.icure.cardinal.sdk.model.DecryptedForm
 import com.icure.cardinal.sdk.model.EncryptedForm
 import com.icure.cardinal.sdk.model.Form
 import com.icure.cardinal.sdk.model.FormTemplate
-import com.icure.cardinal.sdk.model.IdWithMandatoryRev
 import com.icure.cardinal.sdk.model.Patient
+import com.icure.cardinal.sdk.model.StoredDocumentIdentifier
 import com.icure.cardinal.sdk.model.User
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.model.embed.AccessLevel
@@ -35,52 +35,6 @@ import kotlinx.serialization.builtins.serializer
 
 @OptIn(InternalIcureApi::class)
 public object FormApi {
-  public fun createForm(
-    dartResultCallback: (
-      String?,
-      String?,
-      String?,
-      String?,
-    ) -> Unit,
-    sdkId: String,
-    entityString: String,
-  ) {
-    val entity = fullLanguageInteropJson.decodeFromString(
-      DecryptedForm.serializer(),
-      entityString
-    )
-    ApiScope.execute(
-      dartResultCallback,
-      DecryptedForm.serializer()) {
-      NativeReferences.get<CardinalApis>(sdkId).form.createForm(
-        entity,
-      )
-    }
-  }
-
-  public fun createForms(
-    dartResultCallback: (
-      String?,
-      String?,
-      String?,
-      String?,
-    ) -> Unit,
-    sdkId: String,
-    entitiesString: String,
-  ) {
-    val entities = fullLanguageInteropJson.decodeFromString(
-      ListSerializer(DecryptedForm.serializer()),
-      entitiesString
-    )
-    ApiScope.execute(
-      dartResultCallback,
-      ListSerializer(DecryptedForm.serializer())) {
-      NativeReferences.get<CardinalApis>(sdkId).form.createForms(
-        entities,
-      )
-    }
-  }
-
   public fun withEncryptionMetadata(
     dartResultCallback: (
       String?,
@@ -358,7 +312,7 @@ public object FormApi {
     entityIdsString: String,
   ) {
     val entityIds = fullLanguageInteropJson.decodeFromString(
-      ListSerializer(IdWithMandatoryRev.serializer()),
+      ListSerializer(StoredDocumentIdentifier.serializer()),
       entityIdsString
     )
     ApiScope.execute(
@@ -713,6 +667,52 @@ public object FormApi {
     }
   }
 
+  public fun createForm(
+    dartResultCallback: (
+      String?,
+      String?,
+      String?,
+      String?,
+    ) -> Unit,
+    sdkId: String,
+    entityString: String,
+  ) {
+    val entity = fullLanguageInteropJson.decodeFromString(
+      DecryptedForm.serializer(),
+      entityString
+    )
+    ApiScope.execute(
+      dartResultCallback,
+      DecryptedForm.serializer()) {
+      NativeReferences.get<CardinalApis>(sdkId).form.createForm(
+        entity,
+      )
+    }
+  }
+
+  public fun createForms(
+    dartResultCallback: (
+      String?,
+      String?,
+      String?,
+      String?,
+    ) -> Unit,
+    sdkId: String,
+    entitiesString: String,
+  ) {
+    val entities = fullLanguageInteropJson.decodeFromString(
+      ListSerializer(DecryptedForm.serializer()),
+      entitiesString
+    )
+    ApiScope.execute(
+      dartResultCallback,
+      ListSerializer(DecryptedForm.serializer())) {
+      NativeReferences.get<CardinalApis>(sdkId).form.createForms(
+        entities,
+      )
+    }
+  }
+
   public fun modifyForm(
     dartResultCallback: (
       String?,
@@ -827,7 +827,7 @@ public object FormApi {
     )
     ApiScope.execute(
       dartResultCallback,
-      DecryptedForm.serializer()) {
+      DecryptedForm.serializer().nullable) {
       NativeReferences.get<CardinalApis>(sdkId).form.getForm(
         entityId,
       )
@@ -1024,6 +1024,52 @@ public object FormApi {
       }
     }
 
+    public fun createForm(
+      dartResultCallback: (
+        String?,
+        String?,
+        String?,
+        String?,
+      ) -> Unit,
+      sdkId: String,
+      entityString: String,
+    ) {
+      val entity = fullLanguageInteropJson.decodeFromString(
+        EncryptedForm.serializer(),
+        entityString
+      )
+      ApiScope.execute(
+        dartResultCallback,
+        EncryptedForm.serializer()) {
+        NativeReferences.get<CardinalApis>(sdkId).form.encrypted.createForm(
+          entity,
+        )
+      }
+    }
+
+    public fun createForms(
+      dartResultCallback: (
+        String?,
+        String?,
+        String?,
+        String?,
+      ) -> Unit,
+      sdkId: String,
+      entitiesString: String,
+    ) {
+      val entities = fullLanguageInteropJson.decodeFromString(
+        ListSerializer(EncryptedForm.serializer()),
+        entitiesString
+      )
+      ApiScope.execute(
+        dartResultCallback,
+        ListSerializer(EncryptedForm.serializer())) {
+        NativeReferences.get<CardinalApis>(sdkId).form.encrypted.createForms(
+          entities,
+        )
+      }
+    }
+
     public fun modifyForm(
       dartResultCallback: (
         String?,
@@ -1138,7 +1184,7 @@ public object FormApi {
       )
       ApiScope.execute(
         dartResultCallback,
-        EncryptedForm.serializer()) {
+        EncryptedForm.serializer().nullable) {
         NativeReferences.get<CardinalApis>(sdkId).form.encrypted.getForm(
           entityId,
         )
@@ -1336,6 +1382,52 @@ public object FormApi {
       }
     }
 
+    public fun createForm(
+      dartResultCallback: (
+        String?,
+        String?,
+        String?,
+        String?,
+      ) -> Unit,
+      sdkId: String,
+      entityString: String,
+    ) {
+      val entity = fullLanguageInteropJson.decodeFromString(
+        PolymorphicSerializer(Form::class),
+        entityString
+      )
+      ApiScope.execute(
+        dartResultCallback,
+        PolymorphicSerializer(Form::class)) {
+        NativeReferences.get<CardinalApis>(sdkId).form.tryAndRecover.createForm(
+          entity,
+        )
+      }
+    }
+
+    public fun createForms(
+      dartResultCallback: (
+        String?,
+        String?,
+        String?,
+        String?,
+      ) -> Unit,
+      sdkId: String,
+      entitiesString: String,
+    ) {
+      val entities = fullLanguageInteropJson.decodeFromString(
+        ListSerializer(PolymorphicSerializer(Form::class)),
+        entitiesString
+      )
+      ApiScope.execute(
+        dartResultCallback,
+        ListSerializer(PolymorphicSerializer(Form::class))) {
+        NativeReferences.get<CardinalApis>(sdkId).form.tryAndRecover.createForms(
+          entities,
+        )
+      }
+    }
+
     public fun modifyForm(
       dartResultCallback: (
         String?,
@@ -1450,7 +1542,7 @@ public object FormApi {
       )
       ApiScope.execute(
         dartResultCallback,
-        PolymorphicSerializer(Form::class)) {
+        PolymorphicSerializer(Form::class).nullable) {
         NativeReferences.get<CardinalApis>(sdkId).form.tryAndRecover.getForm(
           entityId,
         )

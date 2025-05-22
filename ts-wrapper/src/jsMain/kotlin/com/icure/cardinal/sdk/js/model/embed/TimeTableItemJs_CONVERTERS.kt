@@ -2,12 +2,14 @@
 package com.icure.cardinal.sdk.js.model.embed
 
 import com.icure.cardinal.sdk.js.model.CheckedConverters.arrayToList
+import com.icure.cardinal.sdk.js.model.CheckedConverters.arrayToSet
 import com.icure.cardinal.sdk.js.model.CheckedConverters.intToNumber
 import com.icure.cardinal.sdk.js.model.CheckedConverters.listToArray
 import com.icure.cardinal.sdk.js.model.CheckedConverters.longToNumber
 import com.icure.cardinal.sdk.js.model.CheckedConverters.nullToUndefined
 import com.icure.cardinal.sdk.js.model.CheckedConverters.numberToInt
 import com.icure.cardinal.sdk.js.model.CheckedConverters.numberToLong
+import com.icure.cardinal.sdk.js.model.CheckedConverters.setToArray
 import com.icure.cardinal.sdk.js.model.CheckedConverters.undefinedToNull
 import com.icure.cardinal.sdk.model.embed.TimeTableHour
 import com.icure.cardinal.sdk.model.embed.TimeTableItem
@@ -59,6 +61,12 @@ public fun timeTableItem_toJs(obj: TimeTableItem): TimeTableItemJs {
 	val publicTimeTableItem = obj.publicTimeTableItem
 	val acceptsNewPatient = obj.acceptsNewPatient
 	val unavailable = obj.unavailable
+	val reservingRights = setToArray(
+		obj.reservingRights,
+		{ x1: String ->
+			x1
+		},
+	)
 	return TimeTableItemJs(js("{" +
 		"rruleStartDate:rruleStartDate," +
 		"rrule:rrule," +
@@ -73,7 +81,8 @@ public fun timeTableItem_toJs(obj: TimeTableItem): TimeTableItemJs {
 		"placeId:placeId," +
 		"publicTimeTableItem:publicTimeTableItem," +
 		"acceptsNewPatient:acceptsNewPatient," +
-		"unavailable:unavailable" +
+		"unavailable:unavailable," +
+		"reservingRights:reservingRights" +
 	"}"))
 }
 
@@ -110,6 +119,13 @@ public fun timeTableItem_fromJs(obj: TimeTableItemJs): TimeTableItem {
 	val publicTimeTableItem = obj.publicTimeTableItem
 	val acceptsNewPatient = obj.acceptsNewPatient
 	val unavailable = obj.unavailable
+	val reservingRights = arrayToSet(
+		obj.reservingRights,
+		"obj.reservingRights",
+		{ x1: String ->
+			x1
+		},
+	)
 	return TimeTableItem(
 		rruleStartDate = rruleStartDate,
 		rrule = rrule,
@@ -125,5 +141,6 @@ public fun timeTableItem_fromJs(obj: TimeTableItemJs): TimeTableItem {
 		publicTimeTableItem = publicTimeTableItem,
 		acceptsNewPatient = acceptsNewPatient,
 		unavailable = unavailable,
+		reservingRights = reservingRights,
 	)
 }

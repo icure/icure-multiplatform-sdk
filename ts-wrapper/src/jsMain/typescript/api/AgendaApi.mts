@@ -1,12 +1,15 @@
 // auto-generated file
 import {BaseFilterOptions, BaseSortableFilterOptions, PaginatedListIterator} from '../cardinal-sdk-ts.mjs';
 import {Agenda} from '../model/Agenda.mjs';
-import {IdWithMandatoryRev} from '../model/IdWithMandatoryRev.mjs';
 import {PaginatedList} from '../model/PaginatedList.mjs';
+import {StoredDocumentIdentifier} from '../model/StoredDocumentIdentifier.mjs';
 import {DocIdentifier} from '../model/couchdb/DocIdentifier.mjs';
+import {AgendaInGroupApi} from './AgendaInGroupApi.mjs';
 
 
 export interface AgendaApi {
+
+	inGroup: AgendaInGroupApi;
 
 	getAllAgendas(startDocumentId: string | undefined,
 			limit: number | undefined): Promise<PaginatedList<Agenda>>;
@@ -19,7 +22,7 @@ export interface AgendaApi {
 
 	deleteAgendaById(entityId: string, rev: string): Promise<DocIdentifier>;
 
-	deleteAgendasByIds(entityIds: Array<IdWithMandatoryRev>): Promise<Array<DocIdentifier>>;
+	deleteAgendasByIds(entityIds: Array<StoredDocumentIdentifier>): Promise<Array<DocIdentifier>>;
 
 	purgeAgendaById(id: string, rev: string): Promise<void>;
 
@@ -33,13 +36,11 @@ export interface AgendaApi {
 
 	undeleteAgenda(agenda: Agenda): Promise<Agenda>;
 
-	getAgenda(agendaId: string): Promise<Agenda>;
+	getAgenda(agendaId: string): Promise<Agenda | undefined>;
 
 	getAgendas(agendaIds: Array<string>): Promise<Array<Agenda>>;
 
 	getAgendasForUser(userId: string): Promise<Agenda>;
-
-	getReadableAgendasForUser(userId: string): Promise<Array<Agenda>>;
 
 	modifyAgenda(agendaDto: Agenda): Promise<Agenda>;
 

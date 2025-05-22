@@ -4,6 +4,7 @@ import 'package:cardinal_sdk/model/data_owner_with_type.dart';
 import 'package:cardinal_sdk/utils/internal/platform_exception_convertion.dart';
 import 'dart:convert';
 import 'package:cardinal_sdk/model/crypto_actor_stub_with_type.dart';
+import 'package:cardinal_sdk/model/entity_reference_in_group.dart';
 import 'package:cardinal_sdk/model/data_owner_type.dart';
 
 
@@ -47,6 +48,18 @@ class DataOwnerPlatformApi {
 		return (parsedResJson as String);
 	}
 
+	Future<EntityReferenceInGroup> getCurrentDataOwnerReference(String sdkId) async {
+		final res = await _methodChannel.invokeMethod<String>(
+			'DataOwnerApi.getCurrentDataOwnerReference',
+			{
+				"sdkId": sdkId,
+			}
+		).catchError(convertPlatformException);
+		if (res == null) throw AssertionError("received null result from platform method getCurrentDataOwnerReference");
+		final parsedResJson = jsonDecode(res);
+		return EntityReferenceInGroup.fromJSON(parsedResJson);
+	}
+
 	Future<List<String>> getCurrentDataOwnerHierarchyIds(String sdkId) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'DataOwnerApi.getCurrentDataOwnerHierarchyIds',
@@ -57,6 +70,18 @@ class DataOwnerPlatformApi {
 		if (res == null) throw AssertionError("received null result from platform method getCurrentDataOwnerHierarchyIds");
 		final parsedResJson = jsonDecode(res);
 		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toList();
+	}
+
+	Future<List<EntityReferenceInGroup>> getCurrentDataOwnerHierarchyIdsReference(String sdkId) async {
+		final res = await _methodChannel.invokeMethod<String>(
+			'DataOwnerApi.getCurrentDataOwnerHierarchyIdsReference',
+			{
+				"sdkId": sdkId,
+			}
+		).catchError(convertPlatformException);
+		if (res == null) throw AssertionError("received null result from platform method getCurrentDataOwnerHierarchyIdsReference");
+		final parsedResJson = jsonDecode(res);
+		return (parsedResJson as List<dynamic>).map((x1) => EntityReferenceInGroup.fromJSON(x1) ).toList();
 	}
 
 	Future<DataOwnerWithType> getDataOwner(String sdkId, String ownerId) async {
@@ -81,6 +106,19 @@ class DataOwnerPlatformApi {
 			}
 		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getCryptoActorStub");
+		final parsedResJson = jsonDecode(res);
+		return CryptoActorStubWithType.fromJSON(parsedResJson);
+	}
+
+	Future<CryptoActorStubWithType> getCryptoActorStubInGroup(String sdkId, EntityReferenceInGroup entityReferenceInGroup) async {
+		final res = await _methodChannel.invokeMethod<String>(
+			'DataOwnerApi.getCryptoActorStubInGroup',
+			{
+				"sdkId": sdkId,
+				"entityReferenceInGroup": jsonEncode(EntityReferenceInGroup.encode(entityReferenceInGroup)),
+			}
+		).catchError(convertPlatformException);
+		if (res == null) throw AssertionError("received null result from platform method getCryptoActorStubInGroup");
 		final parsedResJson = jsonDecode(res);
 		return CryptoActorStubWithType.fromJSON(parsedResJson);
 	}

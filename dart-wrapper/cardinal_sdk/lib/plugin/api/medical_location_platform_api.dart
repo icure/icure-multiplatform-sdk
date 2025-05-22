@@ -39,7 +39,7 @@ class MedicalLocationPlatformApi {
 		return (parsedResJson as List<dynamic>).map((x1) => DocIdentifier.fromJSON(x1) ).toList();
 	}
 
-	Future<MedicalLocation> getMedicalLocation(String sdkId, String locationId) async {
+	Future<MedicalLocation?> getMedicalLocation(String sdkId, String locationId) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'MedicalLocationApi.getMedicalLocation',
 			{
@@ -49,7 +49,7 @@ class MedicalLocationPlatformApi {
 		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getMedicalLocation");
 		final parsedResJson = jsonDecode(res);
-		return MedicalLocation.fromJSON(parsedResJson);
+		return parsedResJson == null ? null : MedicalLocation.fromJSON(parsedResJson);
 	}
 
 	Future<MedicalLocation> modifyMedicalLocation(String sdkId, MedicalLocation medicalLocationDto) async {

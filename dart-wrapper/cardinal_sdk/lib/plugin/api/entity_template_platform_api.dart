@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:cardinal_sdk/model/entity_template.dart';
 import 'dart:convert';
 import 'package:cardinal_sdk/utils/internal/platform_exception_convertion.dart';
-import 'package:cardinal_sdk/model/id_with_mandatory_rev.dart';
+import 'package:cardinal_sdk/model/stored_document_identifier.dart';
 import 'package:cardinal_sdk/model/couchdb/doc_identifier.dart';
 
 
@@ -11,7 +11,7 @@ class EntityTemplatePlatformApi {
 	MethodChannel _methodChannel;
 	EntityTemplatePlatformApi(this._methodChannel);
 
-	Future<EntityTemplate> getEntityTemplate(String sdkId, String documentTemplateId) async {
+	Future<EntityTemplate?> getEntityTemplate(String sdkId, String documentTemplateId) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'EntityTemplateApi.getEntityTemplate',
 			{
@@ -21,7 +21,7 @@ class EntityTemplatePlatformApi {
 		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getEntityTemplate");
 		final parsedResJson = jsonDecode(res);
-		return EntityTemplate.fromJSON(parsedResJson);
+		return parsedResJson == null ? null : EntityTemplate.fromJSON(parsedResJson);
 	}
 
 	Future<EntityTemplate> createEntityTemplate(String sdkId, EntityTemplate applicationSettings) async {
@@ -151,12 +151,12 @@ class EntityTemplatePlatformApi {
 		return (parsedResJson as List<dynamic>).map((x1) => EntityTemplate.fromJSON(x1) ).toList();
 	}
 
-	Future<List<DocIdentifier>> deleteEntityTemplates(String sdkId, List<IdWithMandatoryRev> entityTemplateIds) async {
+	Future<List<DocIdentifier>> deleteEntityTemplates(String sdkId, List<StoredDocumentIdentifier> entityTemplateIds) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'EntityTemplateApi.deleteEntityTemplates',
 			{
 				"sdkId": sdkId,
-				"entityTemplateIds": jsonEncode(entityTemplateIds.map((x0) => IdWithMandatoryRev.encode(x0)).toList()),
+				"entityTemplateIds": jsonEncode(entityTemplateIds.map((x0) => StoredDocumentIdentifier.encode(x0)).toList()),
 			}
 		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method deleteEntityTemplates");

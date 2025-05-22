@@ -1,15 +1,15 @@
 // auto-generated file
 import 'package:cardinal_sdk/model/document.dart';
-import 'package:cardinal_sdk/plugin/cardinal_sdk_platform_interface.dart';
 import 'package:cardinal_sdk/model/message.dart';
 import 'package:cardinal_sdk/model/user.dart';
 import 'package:cardinal_sdk/model/embed/access_level.dart';
 import 'package:cardinal_sdk/crypto/entities/secret_id_use_option.dart';
+import 'package:cardinal_sdk/plugin/cardinal_sdk_platform_interface.dart';
 import 'dart:typed_data';
 import 'package:cardinal_sdk/model/specializations/hex_string.dart';
 import 'package:cardinal_sdk/filters/filter_options.dart';
 import 'package:cardinal_sdk/model/couchdb/doc_identifier.dart';
-import 'package:cardinal_sdk/model/id_with_mandatory_rev.dart';
+import 'package:cardinal_sdk/model/stored_document_identifier.dart';
 import 'package:cardinal_sdk/crypto/entities/document_share_options.dart';
 import 'package:cardinal_sdk/utils/pagination/paginated_list_iterator.dart';
 
@@ -17,20 +17,13 @@ import 'package:cardinal_sdk/utils/pagination/paginated_list_iterator.dart';
 class DocumentApi {
 	final String _sdkId;
 	final Object _dartSdk;
-	final TryAndRecoverDocumentApi tryAndRecover;
-	final EncryptedDocumentApi encrypted;
+	final DocumentEncryptedApi encrypted;
+	final DocumentTryAndRecoverApi tryAndRecover;
 	DocumentApi(
 		this._sdkId,
 		this._dartSdk
-		) : tryAndRecover = TryAndRecoverDocumentApi(_sdkId, _dartSdk),
-		encrypted = EncryptedDocumentApi(_sdkId, _dartSdk);
-
-	Future<DecryptedDocument> createDocument(DecryptedDocument entity) async {
-		return await CardinalSdkPlatformInterface.instance.apis.document.createDocument(
-			_sdkId,
-			entity,
-		);
-	}
+		) : encrypted = DocumentEncryptedApi(_sdkId, _dartSdk),
+		tryAndRecover = DocumentTryAndRecoverApi(_sdkId, _dartSdk);
 
 	Future<DecryptedDocument> withEncryptionMetadata(DecryptedDocument? base, Message? message, { User? user, Map<String, AccessLevel> delegates = const {}, SecretIdUseOption secretId = SecretIdUseOption.UseAnySharedWithParent }) async {
 		return await CardinalSdkPlatformInterface.instance.apis.document.withEncryptionMetadata(
@@ -161,7 +154,7 @@ class DocumentApi {
 		);
 	}
 
-	Future<List<DocIdentifier>> deleteDocumentsByIds(List<IdWithMandatoryRev> entityIds) async {
+	Future<List<DocIdentifier>> deleteDocumentsByIds(List<StoredDocumentIdentifier> entityIds) async {
 		return await CardinalSdkPlatformInterface.instance.apis.document.deleteDocumentsByIds(
 			_sdkId,
 			entityIds,
@@ -283,6 +276,13 @@ class DocumentApi {
 		);
 	}
 
+	Future<DecryptedDocument> createDocument(DecryptedDocument entity) async {
+		return await CardinalSdkPlatformInterface.instance.apis.document.createDocument(
+			_sdkId,
+			entity,
+		);
+	}
+
 	Future<DecryptedDocument> undeleteDocumentById(String id, String rev) async {
 		return await CardinalSdkPlatformInterface.instance.apis.document.undeleteDocumentById(
 			_sdkId,
@@ -305,7 +305,7 @@ class DocumentApi {
 		);
 	}
 
-	Future<DecryptedDocument> getDocument(String entityId) async {
+	Future<DecryptedDocument?> getDocument(String entityId) async {
 		return await CardinalSdkPlatformInterface.instance.apis.document.getDocument(
 			_sdkId,
 			entityId,
@@ -327,10 +327,10 @@ class DocumentApi {
 	}
 }
 
-class TryAndRecoverDocumentApi {
+class DocumentTryAndRecoverApi {
 	final String _sdkId;
 	final Object _dartSdk;
-	TryAndRecoverDocumentApi(
+	DocumentTryAndRecoverApi(
 		this._sdkId,
 		this._dartSdk
 		);
@@ -366,6 +366,13 @@ class TryAndRecoverDocumentApi {
 		);
 	}
 
+	Future<Document> createDocument(Document entity) async {
+		return await CardinalSdkPlatformInterface.instance.apis.document.tryAndRecover.createDocument(
+			_sdkId,
+			entity,
+		);
+	}
+
 	Future<Document> undeleteDocumentById(String id, String rev) async {
 		return await CardinalSdkPlatformInterface.instance.apis.document.tryAndRecover.undeleteDocumentById(
 			_sdkId,
@@ -388,7 +395,7 @@ class TryAndRecoverDocumentApi {
 		);
 	}
 
-	Future<Document> getDocument(String entityId) async {
+	Future<Document?> getDocument(String entityId) async {
 		return await CardinalSdkPlatformInterface.instance.apis.document.tryAndRecover.getDocument(
 			_sdkId,
 			entityId,
@@ -410,10 +417,10 @@ class TryAndRecoverDocumentApi {
 	}
 }
 
-class EncryptedDocumentApi {
+class DocumentEncryptedApi {
 	final String _sdkId;
 	final Object _dartSdk;
-	EncryptedDocumentApi(
+	DocumentEncryptedApi(
 		this._sdkId,
 		this._dartSdk
 		);
@@ -449,6 +456,13 @@ class EncryptedDocumentApi {
 		);
 	}
 
+	Future<EncryptedDocument> createDocument(EncryptedDocument entity) async {
+		return await CardinalSdkPlatformInterface.instance.apis.document.encrypted.createDocument(
+			_sdkId,
+			entity,
+		);
+	}
+
 	Future<EncryptedDocument> undeleteDocumentById(String id, String rev) async {
 		return await CardinalSdkPlatformInterface.instance.apis.document.encrypted.undeleteDocumentById(
 			_sdkId,
@@ -471,7 +485,7 @@ class EncryptedDocumentApi {
 		);
 	}
 
-	Future<EncryptedDocument> getDocument(String entityId) async {
+	Future<EncryptedDocument?> getDocument(String entityId) async {
 		return await CardinalSdkPlatformInterface.instance.apis.document.encrypted.getDocument(
 			_sdkId,
 			entityId,

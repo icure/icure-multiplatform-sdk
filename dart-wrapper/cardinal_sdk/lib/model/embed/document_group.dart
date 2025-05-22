@@ -1,14 +1,15 @@
 // auto-generated file
+import 'package:freezed_annotation/freezed_annotation.dart';
+part "document_group.freezed.dart";
 
 
-class DocumentGroup {
-	String? guid = null;
-	String? name = null;
-	DocumentGroup({
-			String? guid,
-			String? name
-		}) : guid = guid ?? null,
-		name = name ?? null;
+@freezed
+abstract class DocumentGroup with _$DocumentGroup {
+	const factory DocumentGroup({
+		@Default(null) String? guid,
+		@Default(null) String? name,
+	}) = _DocumentGroup;
+
 
 	static Map<String, dynamic> encode(DocumentGroup value) {
 		Map<String, dynamic> entityAsMap = {

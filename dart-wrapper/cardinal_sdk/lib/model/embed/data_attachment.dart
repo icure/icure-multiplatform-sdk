@@ -1,17 +1,16 @@
 // auto-generated file
+import 'package:freezed_annotation/freezed_annotation.dart';
+part "data_attachment.freezed.dart";
 
 
-class DataAttachment {
-	String? couchDbAttachmentId = null;
-	String? objectStoreAttachmentId = null;
-	List<String> utis = [];
-	DataAttachment({
-			String? couchDbAttachmentId,
-			String? objectStoreAttachmentId,
-			List<String>? utis
-		}) : couchDbAttachmentId = couchDbAttachmentId ?? null,
-		objectStoreAttachmentId = objectStoreAttachmentId ?? null,
-		utis = utis ?? [];
+@freezed
+abstract class DataAttachment with _$DataAttachment {
+	const factory DataAttachment({
+		@Default(null) String? couchDbAttachmentId,
+		@Default(null) String? objectStoreAttachmentId,
+		@Default([]) List<String> utis,
+	}) = _DataAttachment;
+
 
 	static Map<String, dynamic> encode(DataAttachment value) {
 		Map<String, dynamic> entityAsMap = {

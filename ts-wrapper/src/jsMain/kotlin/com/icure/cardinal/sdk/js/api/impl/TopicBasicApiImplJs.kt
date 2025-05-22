@@ -13,12 +13,13 @@ import com.icure.cardinal.sdk.js.filters.baseSortableFilterOptions_fromJs
 import com.icure.cardinal.sdk.js.model.CheckedConverters.arrayToList
 import com.icure.cardinal.sdk.js.model.CheckedConverters.arrayToSet
 import com.icure.cardinal.sdk.js.model.CheckedConverters.listToArray
+import com.icure.cardinal.sdk.js.model.CheckedConverters.nullToUndefined
 import com.icure.cardinal.sdk.js.model.EncryptedTopicJs
-import com.icure.cardinal.sdk.js.model.IdWithMandatoryRevJs
+import com.icure.cardinal.sdk.js.model.StoredDocumentIdentifierJs
 import com.icure.cardinal.sdk.js.model.TopicJs
 import com.icure.cardinal.sdk.js.model.couchdb.DocIdentifierJs
 import com.icure.cardinal.sdk.js.model.couchdb.docIdentifier_toJs
-import com.icure.cardinal.sdk.js.model.idWithMandatoryRev_fromJs
+import com.icure.cardinal.sdk.js.model.storedDocumentIdentifier_fromJs
 import com.icure.cardinal.sdk.js.model.topic_fromJs
 import com.icure.cardinal.sdk.js.model.topic_toJs
 import com.icure.cardinal.sdk.js.subscription.EntitySubscriptionConfigurationJs
@@ -144,13 +145,13 @@ internal class TopicBasicApiImplJs(
 		docIdentifier_toJs(result)
 	}
 
-	override fun deleteTopicsByIds(entityIds: Array<IdWithMandatoryRevJs>):
+	override fun deleteTopicsByIds(entityIds: Array<StoredDocumentIdentifierJs>):
 			Promise<Array<DocIdentifierJs>> = GlobalScope.promise {
 		val entityIdsConverted: List<StoredDocumentIdentifier> = arrayToList(
 			entityIds,
 			"entityIds",
-			{ x1: IdWithMandatoryRevJs ->
-				idWithMandatoryRev_fromJs(x1)
+			{ x1: StoredDocumentIdentifierJs ->
+				storedDocumentIdentifier_fromJs(x1)
 			},
 		)
 		val result = topicBasicApi.deleteTopicsByIds(
@@ -210,6 +211,15 @@ internal class TopicBasicApiImplJs(
 
 	}
 
+	override fun createTopic(entity: EncryptedTopicJs): Promise<EncryptedTopicJs> =
+			GlobalScope.promise {
+		val entityConverted: EncryptedTopic = topic_fromJs(entity)
+		val result = topicBasicApi.createTopic(
+			entityConverted,
+		)
+		topic_toJs(result)
+	}
+
 	override fun undeleteTopic(topic: TopicJs): Promise<TopicJs> = GlobalScope.promise {
 		val topicConverted: Topic = topic_fromJs(topic)
 		val result = topicBasicApi.undeleteTopic(
@@ -238,12 +248,16 @@ internal class TopicBasicApiImplJs(
 		topic_toJs(result)
 	}
 
-	override fun getTopic(entityId: String): Promise<EncryptedTopicJs> = GlobalScope.promise {
+	override fun getTopic(entityId: String): Promise<EncryptedTopicJs?> = GlobalScope.promise {
 		val entityIdConverted: String = entityId
 		val result = topicBasicApi.getTopic(
 			entityIdConverted,
 		)
-		topic_toJs(result)
+		nullToUndefined(
+			result?.let { nonNull1 ->
+				topic_toJs(nonNull1)
+			}
+		)
 	}
 
 	override fun getTopics(entityIds: Array<String>): Promise<Array<EncryptedTopicJs>> =

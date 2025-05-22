@@ -1,14 +1,15 @@
 // auto-generated file
+import 'package:freezed_annotation/freezed_annotation.dart';
+part "view.freezed.dart";
 
 
-class View {
-	String map;
-	String? reduce = null;
-	View(
-		this.map,
-		{
-			String? reduce
-		}) : reduce = reduce ?? null;
+@freezed
+abstract class View with _$View {
+	const factory View({
+		required String map,
+		@Default(null) String? reduce,
+	}) = _View;
+
 
 	static Map<String, dynamic> encode(View value) {
 		Map<String, dynamic> entityAsMap = {
@@ -20,7 +21,7 @@ class View {
 
 	static View fromJSON(Map<String, dynamic> data) {
 		return View(
-			(data["map"] as String),
+			map: (data["map"] as String),
 			reduce: (data["reduce"] as String?),
 		);
 	}

@@ -4,14 +4,18 @@ import 'package:cardinal_sdk/model/agenda.dart';
 import 'dart:convert';
 import 'package:cardinal_sdk/utils/internal/platform_exception_convertion.dart';
 import 'package:cardinal_sdk/model/couchdb/doc_identifier.dart';
-import 'package:cardinal_sdk/model/id_with_mandatory_rev.dart';
+import 'package:cardinal_sdk/model/stored_document_identifier.dart';
 import 'package:cardinal_sdk/filters/filter_options.dart';
 import 'package:cardinal_sdk/utils/pagination/paginated_list_iterator.dart';
+import 'package:cardinal_sdk/model/group_scoped.dart';
 
 
 class AgendaPlatformApi {
 	MethodChannel _methodChannel;
-	AgendaPlatformApi(this._methodChannel);
+	AgendaInGroupPlatformApi inGroup;
+	AgendaPlatformApi(
+		this._methodChannel
+		) : inGroup = AgendaInGroupPlatformApi(_methodChannel);
 
 	Future<Agenda> createAgenda(String sdkId, Agenda agendaDto) async {
 		final res = await _methodChannel.invokeMethod<String>(
@@ -40,12 +44,12 @@ class AgendaPlatformApi {
 		return DocIdentifier.fromJSON(parsedResJson);
 	}
 
-	Future<List<DocIdentifier>> deleteAgendasByIds(String sdkId, List<IdWithMandatoryRev> entityIds) async {
+	Future<List<DocIdentifier>> deleteAgendasByIds(String sdkId, List<StoredDocumentIdentifier> entityIds) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'AgendaApi.deleteAgendasByIds',
 			{
 				"sdkId": sdkId,
-				"entityIds": jsonEncode(entityIds.map((x0) => IdWithMandatoryRev.encode(x0)).toList()),
+				"entityIds": jsonEncode(entityIds.map((x0) => StoredDocumentIdentifier.encode(x0)).toList()),
 			}
 		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method deleteAgendasByIds");
@@ -127,7 +131,7 @@ class AgendaPlatformApi {
 		return Agenda.fromJSON(parsedResJson);
 	}
 
-	Future<Agenda> getAgenda(String sdkId, String agendaId) async {
+	Future<Agenda?> getAgenda(String sdkId, String agendaId) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'AgendaApi.getAgenda',
 			{
@@ -137,7 +141,7 @@ class AgendaPlatformApi {
 		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getAgenda");
 		final parsedResJson = jsonDecode(res);
-		return Agenda.fromJSON(parsedResJson);
+		return parsedResJson == null ? null : Agenda.fromJSON(parsedResJson);
 	}
 
 	Future<List<Agenda>> getAgendas(String sdkId, List<String> agendaIds) async {
@@ -216,5 +220,252 @@ class AgendaPlatformApi {
 		if (res == null) throw AssertionError("received null result from platform method filterAgendasBySorted");
 		final parsedResJson = jsonDecode(res);
 		return PaginatedListIterator(parsedResJson, (x0) => Agenda.fromJSON(x0));
+	}
+}
+
+class AgendaInGroupPlatformApi {
+	MethodChannel _methodChannel;
+	AgendaInGroupPlatformApi(this._methodChannel);
+
+	Future<GroupScoped<Agenda>?> getAgenda(String sdkId, String groupId, String entityId) async {
+		final res = await _methodChannel.invokeMethod<String>(
+			'AgendaApi.inGroup.getAgenda',
+			{
+				"sdkId": sdkId,
+				"groupId": jsonEncode(groupId),
+				"entityId": jsonEncode(entityId),
+			}
+		).catchError(convertPlatformException);
+		if (res == null) throw AssertionError("received null result from platform method getAgenda");
+		final parsedResJson = jsonDecode(res);
+		return parsedResJson == null ? null : GroupScoped.fromJSON(
+			parsedResJson,
+			(x1) {
+				return Agenda.fromJSON(x1);
+			},
+		);
+	}
+
+	Future<List<GroupScoped<Agenda>>> getAgendas(String sdkId, String groupId, List<String> entityIds) async {
+		final res = await _methodChannel.invokeMethod<String>(
+			'AgendaApi.inGroup.getAgendas',
+			{
+				"sdkId": sdkId,
+				"groupId": jsonEncode(groupId),
+				"entityIds": jsonEncode(entityIds.map((x0) => x0).toList()),
+			}
+		).catchError(convertPlatformException);
+		if (res == null) throw AssertionError("received null result from platform method getAgendas");
+		final parsedResJson = jsonDecode(res);
+		return (parsedResJson as List<dynamic>).map((x1) => GroupScoped.fromJSON(
+			x1,
+			(x2) {
+				return Agenda.fromJSON(x2);
+			},
+		) ).toList();
+	}
+
+	Future<GroupScoped<Agenda>> createAgenda(String sdkId, GroupScoped<Agenda> entity) async {
+		final res = await _methodChannel.invokeMethod<String>(
+			'AgendaApi.inGroup.createAgenda',
+			{
+				"sdkId": sdkId,
+				"entity": jsonEncode(GroupScoped.encode(
+					entity,
+					(x0) {
+						return Agenda.encode(x0);
+					},
+				)),
+			}
+		).catchError(convertPlatformException);
+		if (res == null) throw AssertionError("received null result from platform method createAgenda");
+		final parsedResJson = jsonDecode(res);
+		return GroupScoped.fromJSON(
+			parsedResJson,
+			(x1) {
+				return Agenda.fromJSON(x1);
+			},
+		);
+	}
+
+	Future<GroupScoped<Agenda>> modifyAgenda(String sdkId, GroupScoped<Agenda> entity) async {
+		final res = await _methodChannel.invokeMethod<String>(
+			'AgendaApi.inGroup.modifyAgenda',
+			{
+				"sdkId": sdkId,
+				"entity": jsonEncode(GroupScoped.encode(
+					entity,
+					(x0) {
+						return Agenda.encode(x0);
+					},
+				)),
+			}
+		).catchError(convertPlatformException);
+		if (res == null) throw AssertionError("received null result from platform method modifyAgenda");
+		final parsedResJson = jsonDecode(res);
+		return GroupScoped.fromJSON(
+			parsedResJson,
+			(x1) {
+				return Agenda.fromJSON(x1);
+			},
+		);
+	}
+
+	Future<List<GroupScoped<StoredDocumentIdentifier>>> deleteAgendas(String sdkId, List<GroupScoped<Agenda>> agendas) async {
+		final res = await _methodChannel.invokeMethod<String>(
+			'AgendaApi.inGroup.deleteAgendas',
+			{
+				"sdkId": sdkId,
+				"agendas": jsonEncode(agendas.map((x0) => GroupScoped.encode(
+					x0,
+					(x1) {
+						return Agenda.encode(x1);
+					},
+				)).toList()),
+			}
+		).catchError(convertPlatformException);
+		if (res == null) throw AssertionError("received null result from platform method deleteAgendas");
+		final parsedResJson = jsonDecode(res);
+		return (parsedResJson as List<dynamic>).map((x1) => GroupScoped.fromJSON(
+			x1,
+			(x2) {
+				return StoredDocumentIdentifier.fromJSON(x2);
+			},
+		) ).toList();
+	}
+
+	Future<GroupScoped<StoredDocumentIdentifier>> deleteAgenda(String sdkId, GroupScoped<Agenda> agenda) async {
+		final res = await _methodChannel.invokeMethod<String>(
+			'AgendaApi.inGroup.deleteAgenda',
+			{
+				"sdkId": sdkId,
+				"agenda": jsonEncode(GroupScoped.encode(
+					agenda,
+					(x0) {
+						return Agenda.encode(x0);
+					},
+				)),
+			}
+		).catchError(convertPlatformException);
+		if (res == null) throw AssertionError("received null result from platform method deleteAgenda");
+		final parsedResJson = jsonDecode(res);
+		return GroupScoped.fromJSON(
+			parsedResJson,
+			(x1) {
+				return StoredDocumentIdentifier.fromJSON(x1);
+			},
+		);
+	}
+
+	Future<List<GroupScoped<StoredDocumentIdentifier>>> deleteAgendasByIds(String sdkId, List<GroupScoped<StoredDocumentIdentifier>> entityIds) async {
+		final res = await _methodChannel.invokeMethod<String>(
+			'AgendaApi.inGroup.deleteAgendasByIds',
+			{
+				"sdkId": sdkId,
+				"entityIds": jsonEncode(entityIds.map((x0) => GroupScoped.encode(
+					x0,
+					(x1) {
+						return StoredDocumentIdentifier.encode(x1);
+					},
+				)).toList()),
+			}
+		).catchError(convertPlatformException);
+		if (res == null) throw AssertionError("received null result from platform method deleteAgendasByIds");
+		final parsedResJson = jsonDecode(res);
+		return (parsedResJson as List<dynamic>).map((x1) => GroupScoped.fromJSON(
+			x1,
+			(x2) {
+				return StoredDocumentIdentifier.fromJSON(x2);
+			},
+		) ).toList();
+	}
+
+	Future<GroupScoped<StoredDocumentIdentifier>> deleteAgendaById(String sdkId, GroupScoped<StoredDocumentIdentifier> entityId) async {
+		final res = await _methodChannel.invokeMethod<String>(
+			'AgendaApi.inGroup.deleteAgendaById',
+			{
+				"sdkId": sdkId,
+				"entityId": jsonEncode(GroupScoped.encode(
+					entityId,
+					(x0) {
+						return StoredDocumentIdentifier.encode(x0);
+					},
+				)),
+			}
+		).catchError(convertPlatformException);
+		if (res == null) throw AssertionError("received null result from platform method deleteAgendaById");
+		final parsedResJson = jsonDecode(res);
+		return GroupScoped.fromJSON(
+			parsedResJson,
+			(x1) {
+				return StoredDocumentIdentifier.fromJSON(x1);
+			},
+		);
+	}
+
+	Future<List<String>> matchAgendasBy(String sdkId, String groupId, BaseFilterOptions<Agenda> filter) async {
+		final res = await _methodChannel.invokeMethod<String>(
+			'AgendaApi.inGroup.matchAgendasBy',
+			{
+				"sdkId": sdkId,
+				"groupId": jsonEncode(groupId),
+				"filter": jsonEncode(BaseFilterOptions.encode(filter)),
+			}
+		).catchError(convertPlatformException);
+		if (res == null) throw AssertionError("received null result from platform method matchAgendasBy");
+		final parsedResJson = jsonDecode(res);
+		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toList();
+	}
+
+	Future<List<String>> matchAgendasBySorted(String sdkId, String groupId, BaseSortableFilterOptions<Agenda> filter) async {
+		final res = await _methodChannel.invokeMethod<String>(
+			'AgendaApi.inGroup.matchAgendasBySorted',
+			{
+				"sdkId": sdkId,
+				"groupId": jsonEncode(groupId),
+				"filter": jsonEncode(BaseSortableFilterOptions.encode(filter)),
+			}
+		).catchError(convertPlatformException);
+		if (res == null) throw AssertionError("received null result from platform method matchAgendasBySorted");
+		final parsedResJson = jsonDecode(res);
+		return (parsedResJson as List<dynamic>).map((x1) => (x1 as String) ).toList();
+	}
+
+	Future<PaginatedListIterator<GroupScoped<Agenda>>> filterAgendasBy(String sdkId, String groupId, BaseFilterOptions<Agenda> filter) async {
+		final res = await _methodChannel.invokeMethod<String>(
+			'AgendaApi.inGroup.filterAgendasBy',
+			{
+				"sdkId": sdkId,
+				"groupId": jsonEncode(groupId),
+				"filter": jsonEncode(BaseFilterOptions.encode(filter)),
+			}
+		).catchError(convertPlatformException);
+		if (res == null) throw AssertionError("received null result from platform method filterAgendasBy");
+		final parsedResJson = jsonDecode(res);
+		return PaginatedListIterator(parsedResJson, (x0) => GroupScoped.fromJSON(
+			x0,
+			(x1) {
+				return Agenda.fromJSON(x1);
+			},
+		));
+	}
+
+	Future<PaginatedListIterator<GroupScoped<Agenda>>> filterAgendasBySorted(String sdkId, String groupId, BaseSortableFilterOptions<Agenda> filter) async {
+		final res = await _methodChannel.invokeMethod<String>(
+			'AgendaApi.inGroup.filterAgendasBySorted',
+			{
+				"sdkId": sdkId,
+				"groupId": jsonEncode(groupId),
+				"filter": jsonEncode(BaseSortableFilterOptions.encode(filter)),
+			}
+		).catchError(convertPlatformException);
+		if (res == null) throw AssertionError("received null result from platform method filterAgendasBySorted");
+		final parsedResJson = jsonDecode(res);
+		return PaginatedListIterator(parsedResJson, (x0) => GroupScoped.fromJSON(
+			x0,
+			(x1) {
+				return Agenda.fromJSON(x1);
+			},
+		));
 	}
 }

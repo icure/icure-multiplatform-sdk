@@ -1,10 +1,14 @@
 // auto-generated file
+import 'package:freezed_annotation/freezed_annotation.dart';
+part "indexing_info.freezed.dart";
 
 
-class IndexingInfo {
-	Map<String, int>? statuses = null;
-	IndexingInfo({
-			Map<String, int>? statuses}) : statuses = statuses ?? null;
+@freezed
+abstract class IndexingInfo with _$IndexingInfo {
+	const factory IndexingInfo({
+		@Default(null) Map<String, int>? statuses,
+	}) = _IndexingInfo;
+
 
 	static Map<String, dynamic> encode(IndexingInfo value) {
 		Map<String, dynamic> entityAsMap = {

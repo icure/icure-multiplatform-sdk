@@ -7,8 +7,7 @@ plugins {
 	androidLibrary()
 	id("maven-publish")
 	signing
-	id("com.vanniktech.maven.publish") version "0.29.0"
-	id("com.google.devtools.ksp") version "2.1.20-RC-1.0.30"
+	id("com.vanniktech.maven.publish")
 }
 
 val repoUsername: String by project
@@ -17,7 +16,7 @@ val mavenReleasesRepository: String by project
 
 group = "com.icure"
 
-val version = "1.0.0-RC.3"
+val version = "2.0.0-PREVIEW-3"
 project.version = version
 
 kotlin {
@@ -36,7 +35,8 @@ kotlin {
 	sourceSets {
 		val commonMain by getting {
 			dependencies {
-				api("com.icure:cardinal-sdk:1.0.0")
+//				api(project(":cardinal-sdk"))
+				api("com.icure:cardinal-sdk:2.0.0-PREVIEW-3")
 				implementation(libs.coroutinesCore)
 				implementation(libs.kotlinSerialization)
 			}
@@ -71,16 +71,6 @@ android {
 
 fun projectHasSignatureProperties() =
 	project.hasProperty("signing.keyId") && project.hasProperty("signing.secretKeyRingFile") && project.hasProperty("signing.password")
-
-if (projectHasSignatureProperties()) {
-	signing {
-		useInMemoryPgpKeys(
-			file(project.property("signing.secretKeyRingFile") as String).readText(),
-			project.property("signing.password") as String
-		)
-		sign(publishing.publications)
-	}
-}
 
 mavenPublishing {
 	coordinates("com.icure", "cardinal-dart-sdk-support-lib", project.version as String)
@@ -119,7 +109,15 @@ mavenPublishing {
 }
 
 // Configure all publishing tasks
-if (!projectHasSignatureProperties()) {
+if (projectHasSignatureProperties()) {
+	signing {
+		useInMemoryPgpKeys(
+			file(project.property("signing.secretKeyRingFile") as String).readText(),
+			project.property("signing.password") as String
+		)
+		sign(publishing.publications)
+	}
+} else {
 	tasks.withType<PublishToMavenRepository> {
 		doFirst {
 			throw IllegalStateException("Cannot publish to Maven Central without signing properties")

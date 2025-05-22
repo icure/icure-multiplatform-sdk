@@ -1,8 +1,8 @@
 // auto-generated file
 import {BaseFilterOptions, BaseSortableFilterOptions, PaginatedListIterator} from '../cardinal-sdk-ts.mjs';
-import {IdWithMandatoryRev} from '../model/IdWithMandatoryRev.mjs';
 import {EncryptedMessage, Message} from '../model/Message.mjs';
 import {PaginatedList} from '../model/PaginatedList.mjs';
+import {StoredDocumentIdentifier} from '../model/StoredDocumentIdentifier.mjs';
 import {DocIdentifier} from '../model/couchdb/DocIdentifier.mjs';
 import {EntitySubscription} from '../subscription/EntitySubscription.mjs';
 import {EntitySubscriptionConfiguration} from '../subscription/EntitySubscriptionConfiguration.mjs';
@@ -25,7 +25,7 @@ export interface MessageBasicApi {
 
 	deleteMessageById(entityId: string, rev: string): Promise<DocIdentifier>;
 
-	deleteMessagesByIds(entityIds: Array<IdWithMandatoryRev>): Promise<Array<DocIdentifier>>;
+	deleteMessagesByIds(entityIds: Array<StoredDocumentIdentifier>): Promise<Array<DocIdentifier>>;
 
 	purgeMessageById(id: string, rev: string): Promise<void>;
 
@@ -35,13 +35,17 @@ export interface MessageBasicApi {
 
 	purgeMessage(message: Message): Promise<void>;
 
+	createMessage(entity: EncryptedMessage): Promise<EncryptedMessage>;
+
+	createMessageInTopic(entity: EncryptedMessage): Promise<EncryptedMessage>;
+
 	undeleteMessage(message: Message): Promise<Message>;
 
 	modifyMessage(entity: EncryptedMessage): Promise<EncryptedMessage>;
 
 	undeleteMessageById(id: string, rev: string): Promise<EncryptedMessage>;
 
-	getMessage(entityId: string): Promise<EncryptedMessage>;
+	getMessage(entityId: string): Promise<EncryptedMessage | undefined>;
 
 	getMessages(entityIds: Array<string>): Promise<Array<EncryptedMessage>>;
 

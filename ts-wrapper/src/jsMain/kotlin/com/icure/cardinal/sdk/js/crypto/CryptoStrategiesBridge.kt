@@ -82,16 +82,21 @@ internal class CryptoStrategiesBridge(
 	override suspend fun verifyDelegatePublicKeys(
 		delegate: CryptoActorStubWithType,
 		publicKeys: List<SpkiHexString>,
-		cryptoPrimitives: CryptoService
+		cryptoPrimitives: CryptoService,
+		groupId: String?
 	): List<SpkiHexString> =
 		cryptoStrategiesJs.verifyDelegatePublicKeys(
 			cryptoActorStubWithType_toJs(delegate),
 			publicKeys.map { it.s }.toTypedArray(),
-			xCryptoService
+			xCryptoService,
+			groupId
 		).await().map { SpkiHexString(it) }
 
-	override suspend fun dataOwnerRequiresAnonymousDelegation(dataOwner: CryptoActorStubWithType): Boolean =
-		cryptoStrategiesJs.dataOwnerRequiresAnonymousDelegation(cryptoActorStubWithType_toJs(dataOwner)).await()
+	override suspend fun dataOwnerRequiresAnonymousDelegation(
+		dataOwner: CryptoActorStubWithType,
+		groupId: String?
+	): Boolean =
+		cryptoStrategiesJs.dataOwnerRequiresAnonymousDelegation(cryptoActorStubWithType_toJs(dataOwner), groupId).await()
 
 	override suspend fun notifyNewKeyCreated(
 		apis: CardinalApis,

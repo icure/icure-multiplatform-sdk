@@ -13,6 +13,7 @@ import kotlin.OptIn
 import kotlin.String
 import kotlin.Unit
 import kotlinx.serialization.builtins.ListSerializer
+import kotlinx.serialization.builtins.nullable
 import kotlinx.serialization.builtins.serializer
 
 @OptIn(InternalIcureApi::class)
@@ -33,7 +34,7 @@ public object DocumentTemplateApi {
     )
     ApiScope.execute(
       dartResultCallback,
-      DocumentTemplate.serializer()) {
+      DocumentTemplate.serializer().nullable) {
       NativeReferences.get<CardinalNonCryptoApis>(sdkId).documentTemplate.getDocumentTemplate(
         documentTemplateId,
       )

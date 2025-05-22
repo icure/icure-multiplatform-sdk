@@ -1,15 +1,16 @@
 // auto-generated file
 import 'package:cardinal_sdk/model/base/code_stub.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+part "duration.freezed.dart";
 
 
-class Duration {
-	double? value = null;
-	CodeStub? unit = null;
-	Duration({
-			double? value,
-			CodeStub? unit
-		}) : value = value ?? null,
-		unit = unit ?? null;
+@freezed
+abstract class Duration with _$Duration {
+	const factory Duration({
+		@Default(null) double? value,
+		@Default(null) CodeStub? unit,
+	}) = _Duration;
+
 
 	static Map<String, dynamic> encode(Duration value) {
 		Map<String, dynamic> entityAsMap = {

@@ -6,21 +6,23 @@ import 'package:cardinal_sdk/model/secure_delegation_key_map.dart';
 import 'package:cardinal_sdk/model/base/stored_document.dart';
 import 'package:cardinal_sdk/model/base/has_encryption_metadata.dart';
 import 'package:cardinal_sdk/model/embed/encryptable.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+part "secure_delegation_key_map.freezed.dart";
 
 
 sealed class SecureDelegationKeyMap implements StoredDocument, HasEncryptionMetadata, Encryptable {
-	@override abstract String id;
-	@override abstract String? rev;
-	abstract String delegationKey;
-	abstract String? delegator;
-	abstract String? delegate;
-	@override abstract Set<String> secretForeignKeys;
-	@override abstract Map<String, Set<Delegation>> cryptedForeignKeys;
-	@override abstract Map<String, Set<Delegation>> delegations;
-	@override abstract Map<String, Set<Delegation>> encryptionKeys;
-	@override abstract Base64String? encryptedSelf;
-	@override abstract SecurityMetadata? securityMetadata;
-	@override abstract int? deletionDate;
+	@override abstract final String id;
+	@override abstract final String? rev;
+	abstract final String delegationKey;
+	abstract final String? delegator;
+	abstract final String? delegate;
+	@override abstract final Set<String> secretForeignKeys;
+	@override abstract final Map<String, Set<Delegation>> cryptedForeignKeys;
+	@override abstract final Map<String, Set<Delegation>> delegations;
+	@override abstract final Map<String, Set<Delegation>> encryptionKeys;
+	@override abstract final Base64String? encryptedSelf;
+	@override abstract final SecurityMetadata? securityMetadata;
+	@override abstract final int? deletionDate;
 
 	static Map<String, dynamic> encode(SecureDelegationKeyMap value) {
 		switch (value) {
@@ -51,43 +53,23 @@ sealed class SecureDelegationKeyMap implements StoredDocument, HasEncryptionMeta
 	}
 }
 
-class EncryptedSecureDelegationKeyMap implements SecureDelegationKeyMap {
-	@override String id;
-	@override String? rev = null;
-	@override String delegationKey;
-	@override String? delegator = null;
-	@override String? delegate = null;
-	@override Set<String> secretForeignKeys = {};
-	@override Map<String, Set<Delegation>> cryptedForeignKeys = {};
-	@override Map<String, Set<Delegation>> delegations = {};
-	@override Map<String, Set<Delegation>> encryptionKeys = {};
-	@override Base64String? encryptedSelf = null;
-	@override SecurityMetadata? securityMetadata = null;
-	@override int? deletionDate = null;
-	EncryptedSecureDelegationKeyMap(
-		this.id,
-		this.delegationKey,
-		{
-			String? rev,
-			String? delegator,
-			String? delegate,
-			Set<String>? secretForeignKeys,
-			Map<String, Set<Delegation>>? cryptedForeignKeys,
-			Map<String, Set<Delegation>>? delegations,
-			Map<String, Set<Delegation>>? encryptionKeys,
-			Base64String? encryptedSelf,
-			SecurityMetadata? securityMetadata,
-			int? deletionDate
-		}) : rev = rev ?? null,
-		delegator = delegator ?? null,
-		delegate = delegate ?? null,
-		secretForeignKeys = secretForeignKeys ?? {},
-		cryptedForeignKeys = cryptedForeignKeys ?? {},
-		delegations = delegations ?? {},
-		encryptionKeys = encryptionKeys ?? {},
-		encryptedSelf = encryptedSelf ?? null,
-		securityMetadata = securityMetadata ?? null,
-		deletionDate = deletionDate ?? null;
+@freezed
+abstract class EncryptedSecureDelegationKeyMap with _$EncryptedSecureDelegationKeyMap implements SecureDelegationKeyMap {
+	const factory EncryptedSecureDelegationKeyMap({
+		required String id,
+		@Default(null) String? rev,
+		required String delegationKey,
+		@Default(null) String? delegator,
+		@Default(null) String? delegate,
+		@Default({}) Set<String> secretForeignKeys,
+		@Default({}) Map<String, Set<Delegation>> cryptedForeignKeys,
+		@Default({}) Map<String, Set<Delegation>> delegations,
+		@Default({}) Map<String, Set<Delegation>> encryptionKeys,
+		@Default(null) Base64String? encryptedSelf,
+		@Default(null) SecurityMetadata? securityMetadata,
+		@Default(null) int? deletionDate,
+	}) = _EncryptedSecureDelegationKeyMap;
+
 
 	static Map<String, dynamic> encode(EncryptedSecureDelegationKeyMap value) {
 		Map<String, dynamic> entityAsMap = {
@@ -109,8 +91,8 @@ class EncryptedSecureDelegationKeyMap implements SecureDelegationKeyMap {
 
 	static EncryptedSecureDelegationKeyMap fromJSON(Map<String, dynamic> data) {
 		return EncryptedSecureDelegationKeyMap(
-			(data["id"] as String),
-			(data["delegationKey"] as String),
+			id: (data["id"] as String),
+			delegationKey: (data["delegationKey"] as String),
 			rev: (data["rev"] as String?),
 			delegator: (data["delegator"] as String?),
 			delegate: (data["delegate"] as String?),
@@ -125,43 +107,23 @@ class EncryptedSecureDelegationKeyMap implements SecureDelegationKeyMap {
 	}
 }
 
-class DecryptedSecureDelegationKeyMap implements SecureDelegationKeyMap {
-	@override String id;
-	@override String? rev = null;
-	@override String delegationKey;
-	@override String? delegator = null;
-	@override String? delegate = null;
-	@override Set<String> secretForeignKeys = {};
-	@override Map<String, Set<Delegation>> cryptedForeignKeys = {};
-	@override Map<String, Set<Delegation>> delegations = {};
-	@override Map<String, Set<Delegation>> encryptionKeys = {};
-	@override Base64String? encryptedSelf = null;
-	@override SecurityMetadata? securityMetadata = null;
-	@override int? deletionDate = null;
-	DecryptedSecureDelegationKeyMap(
-		this.id,
-		this.delegationKey,
-		{
-			String? rev,
-			String? delegator,
-			String? delegate,
-			Set<String>? secretForeignKeys,
-			Map<String, Set<Delegation>>? cryptedForeignKeys,
-			Map<String, Set<Delegation>>? delegations,
-			Map<String, Set<Delegation>>? encryptionKeys,
-			Base64String? encryptedSelf,
-			SecurityMetadata? securityMetadata,
-			int? deletionDate
-		}) : rev = rev ?? null,
-		delegator = delegator ?? null,
-		delegate = delegate ?? null,
-		secretForeignKeys = secretForeignKeys ?? {},
-		cryptedForeignKeys = cryptedForeignKeys ?? {},
-		delegations = delegations ?? {},
-		encryptionKeys = encryptionKeys ?? {},
-		encryptedSelf = encryptedSelf ?? null,
-		securityMetadata = securityMetadata ?? null,
-		deletionDate = deletionDate ?? null;
+@freezed
+abstract class DecryptedSecureDelegationKeyMap with _$DecryptedSecureDelegationKeyMap implements SecureDelegationKeyMap {
+	const factory DecryptedSecureDelegationKeyMap({
+		required String id,
+		@Default(null) String? rev,
+		required String delegationKey,
+		@Default(null) String? delegator,
+		@Default(null) String? delegate,
+		@Default({}) Set<String> secretForeignKeys,
+		@Default({}) Map<String, Set<Delegation>> cryptedForeignKeys,
+		@Default({}) Map<String, Set<Delegation>> delegations,
+		@Default({}) Map<String, Set<Delegation>> encryptionKeys,
+		@Default(null) Base64String? encryptedSelf,
+		@Default(null) SecurityMetadata? securityMetadata,
+		@Default(null) int? deletionDate,
+	}) = _DecryptedSecureDelegationKeyMap;
+
 
 	static Map<String, dynamic> encode(DecryptedSecureDelegationKeyMap value) {
 		Map<String, dynamic> entityAsMap = {
@@ -183,8 +145,8 @@ class DecryptedSecureDelegationKeyMap implements SecureDelegationKeyMap {
 
 	static DecryptedSecureDelegationKeyMap fromJSON(Map<String, dynamic> data) {
 		return DecryptedSecureDelegationKeyMap(
-			(data["id"] as String),
-			(data["delegationKey"] as String),
+			id: (data["id"] as String),
+			delegationKey: (data["delegationKey"] as String),
 			rev: (data["rev"] as String?),
 			delegator: (data["delegator"] as String?),
 			delegate: (data["delegate"] as String?),

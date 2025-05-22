@@ -12,6 +12,7 @@ import kotlin.OptIn
 import kotlin.String
 import kotlin.Unit
 import kotlinx.serialization.builtins.ListSerializer
+import kotlinx.serialization.builtins.nullable
 import kotlinx.serialization.builtins.serializer
 
 @OptIn(InternalIcureApi::class)
@@ -32,7 +33,7 @@ public object InsuranceApi {
     )
     ApiScope.execute(
       dartResultCallback,
-      Insurance.serializer()) {
+      Insurance.serializer().nullable) {
       NativeReferences.get<CardinalNonCryptoApis>(sdkId).insurance.getInsurance(
         insuranceId,
       )

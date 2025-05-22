@@ -13,18 +13,19 @@ import com.icure.cardinal.sdk.js.filters.baseSortableFilterOptions_fromJs
 import com.icure.cardinal.sdk.js.model.AccessLogJs
 import com.icure.cardinal.sdk.js.model.CheckedConverters.arrayToList
 import com.icure.cardinal.sdk.js.model.CheckedConverters.listToArray
+import com.icure.cardinal.sdk.js.model.CheckedConverters.nullToUndefined
 import com.icure.cardinal.sdk.js.model.CheckedConverters.numberToInt
 import com.icure.cardinal.sdk.js.model.CheckedConverters.numberToLong
 import com.icure.cardinal.sdk.js.model.CheckedConverters.undefinedToNull
 import com.icure.cardinal.sdk.js.model.EncryptedAccessLogJs
-import com.icure.cardinal.sdk.js.model.IdWithMandatoryRevJs
 import com.icure.cardinal.sdk.js.model.PaginatedListJs
+import com.icure.cardinal.sdk.js.model.StoredDocumentIdentifierJs
 import com.icure.cardinal.sdk.js.model.accessLog_fromJs
 import com.icure.cardinal.sdk.js.model.accessLog_toJs
 import com.icure.cardinal.sdk.js.model.couchdb.DocIdentifierJs
 import com.icure.cardinal.sdk.js.model.couchdb.docIdentifier_toJs
-import com.icure.cardinal.sdk.js.model.idWithMandatoryRev_fromJs
 import com.icure.cardinal.sdk.js.model.paginatedList_toJs
+import com.icure.cardinal.sdk.js.model.storedDocumentIdentifier_fromJs
 import com.icure.cardinal.sdk.js.utils.pagination.PaginatedListIteratorJs
 import com.icure.cardinal.sdk.js.utils.pagination.paginatedListIterator_toJs
 import com.icure.cardinal.sdk.model.AccessLog
@@ -147,13 +148,13 @@ internal class AccessLogBasicApiImplJs(
 		docIdentifier_toJs(result)
 	}
 
-	override fun deleteAccessLogsByIds(entityIds: Array<IdWithMandatoryRevJs>):
+	override fun deleteAccessLogsByIds(entityIds: Array<StoredDocumentIdentifierJs>):
 			Promise<Array<DocIdentifierJs>> = GlobalScope.promise {
 		val entityIdsConverted: List<StoredDocumentIdentifier> = arrayToList(
 			entityIds,
 			"entityIds",
-			{ x1: IdWithMandatoryRevJs ->
-				idWithMandatoryRev_fromJs(x1)
+			{ x1: StoredDocumentIdentifierJs ->
+				storedDocumentIdentifier_fromJs(x1)
 			},
 		)
 		val result = accessLogBasicApi.deleteAccessLogsByIds(
@@ -214,6 +215,15 @@ internal class AccessLogBasicApiImplJs(
 
 	}
 
+	override fun createAccessLog(entity: EncryptedAccessLogJs): Promise<EncryptedAccessLogJs> =
+			GlobalScope.promise {
+		val entityConverted: EncryptedAccessLog = accessLog_fromJs(entity)
+		val result = accessLogBasicApi.createAccessLog(
+			entityConverted,
+		)
+		accessLog_toJs(result)
+	}
+
 	override fun undeleteAccessLogById(id: String, rev: String): Promise<EncryptedAccessLogJs> =
 			GlobalScope.promise {
 		val idConverted: String = id
@@ -243,12 +253,16 @@ internal class AccessLogBasicApiImplJs(
 		accessLog_toJs(result)
 	}
 
-	override fun getAccessLog(entityId: String): Promise<EncryptedAccessLogJs> = GlobalScope.promise {
+	override fun getAccessLog(entityId: String): Promise<EncryptedAccessLogJs?> = GlobalScope.promise {
 		val entityIdConverted: String = entityId
 		val result = accessLogBasicApi.getAccessLog(
 			entityIdConverted,
 		)
-		accessLog_toJs(result)
+		nullToUndefined(
+			result?.let { nonNull1 ->
+				accessLog_toJs(nonNull1)
+			}
+		)
 	}
 
 	override fun getAccessLogs(entityIds: Array<String>): Promise<Array<EncryptedAccessLogJs>> =

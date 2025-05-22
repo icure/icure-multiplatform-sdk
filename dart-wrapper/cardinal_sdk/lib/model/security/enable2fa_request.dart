@@ -1,21 +1,15 @@
 // auto-generated file
-import 'package:cardinal_sdk/annotations/actual_int32.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+part "enable2fa_request.freezed.dart";
 
 
-class Enable2faRequest {
-	String secret;
-	int _otpLength;
-	@ActualInt32() int get otpLength => _otpLength;
-	@ActualInt32() set otpLength(int value) {
-		if (value > 2147483647) {
-			throw ArgumentError('otpLength value cannot exceed 2147483647');
-		}
-		_otpLength = value;
-	}
-	Enable2faRequest(
-		this.secret,
-		int otpLength
-		) : _otpLength = otpLength;
+@freezed
+abstract class Enable2faRequest with _$Enable2faRequest {
+	const factory Enable2faRequest({
+		required String secret,
+		required int otpLength,
+	}) = _Enable2faRequest;
+
 
 	static Map<String, dynamic> encode(Enable2faRequest value) {
 		Map<String, dynamic> entityAsMap = {
@@ -27,8 +21,8 @@ class Enable2faRequest {
 
 	static Enable2faRequest fromJSON(Map<String, dynamic> data) {
 		return Enable2faRequest(
-			(data["secret"] as String),
-			(data["otpLength"] as int)
+			secret: (data["secret"] as String),
+			otpLength: (data["otpLength"] as int)
 		);
 	}
 }

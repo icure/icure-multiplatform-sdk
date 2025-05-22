@@ -6,7 +6,7 @@ import 'dart:convert';
 import 'package:cardinal_sdk/utils/internal/platform_exception_convertion.dart';
 import 'package:cardinal_sdk/utils/pagination/paginated_list_iterator.dart';
 import 'package:cardinal_sdk/model/couchdb/doc_identifier.dart';
-import 'package:cardinal_sdk/model/id_with_mandatory_rev.dart';
+import 'package:cardinal_sdk/model/stored_document_identifier.dart';
 import 'package:cardinal_sdk/model/topic_role.dart';
 import 'package:cardinal_sdk/subscription/subscription_event_type.dart';
 import 'package:cardinal_sdk/subscription/entity_subscription_configuration.dart';
@@ -83,12 +83,12 @@ class TopicBasicPlatformApi {
 		return DocIdentifier.fromJSON(parsedResJson);
 	}
 
-	Future<List<DocIdentifier>> deleteTopicsByIds(String sdkId, List<IdWithMandatoryRev> entityIds) async {
+	Future<List<DocIdentifier>> deleteTopicsByIds(String sdkId, List<StoredDocumentIdentifier> entityIds) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'TopicBasicApi.deleteTopicsByIds',
 			{
 				"sdkId": sdkId,
-				"entityIds": jsonEncode(entityIds.map((x0) => IdWithMandatoryRev.encode(x0)).toList()),
+				"entityIds": jsonEncode(entityIds.map((x0) => StoredDocumentIdentifier.encode(x0)).toList()),
 			}
 		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method deleteTopicsByIds");
@@ -143,6 +143,19 @@ class TopicBasicPlatformApi {
 		).catchError(convertPlatformException);
 	}
 
+	Future<EncryptedTopic> createTopic(String sdkId, EncryptedTopic entity) async {
+		final res = await _methodChannel.invokeMethod<String>(
+			'TopicBasicApi.createTopic',
+			{
+				"sdkId": sdkId,
+				"entity": jsonEncode(EncryptedTopic.encode(entity)),
+			}
+		).catchError(convertPlatformException);
+		if (res == null) throw AssertionError("received null result from platform method createTopic");
+		final parsedResJson = jsonDecode(res);
+		return EncryptedTopic.fromJSON(parsedResJson);
+	}
+
 	Future<Topic> undeleteTopic(String sdkId, Topic topic) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'TopicBasicApi.undeleteTopic',
@@ -183,7 +196,7 @@ class TopicBasicPlatformApi {
 		return EncryptedTopic.fromJSON(parsedResJson);
 	}
 
-	Future<EncryptedTopic> getTopic(String sdkId, String entityId) async {
+	Future<EncryptedTopic?> getTopic(String sdkId, String entityId) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'TopicBasicApi.getTopic',
 			{
@@ -193,7 +206,7 @@ class TopicBasicPlatformApi {
 		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getTopic");
 		final parsedResJson = jsonDecode(res);
-		return EncryptedTopic.fromJSON(parsedResJson);
+		return parsedResJson == null ? null : EncryptedTopic.fromJSON(parsedResJson);
 	}
 
 	Future<List<EncryptedTopic>> getTopics(String sdkId, List<String> entityIds) async {

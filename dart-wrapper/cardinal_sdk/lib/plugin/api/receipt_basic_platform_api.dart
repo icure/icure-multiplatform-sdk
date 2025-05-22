@@ -67,6 +67,19 @@ class ReceiptBasicPlatformApi {
 		return EncryptedReceipt.fromJSON(parsedResJson);
 	}
 
+	Future<EncryptedReceipt> createReceipt(String sdkId, EncryptedReceipt entity) async {
+		final res = await _methodChannel.invokeMethod<String>(
+			'ReceiptBasicApi.createReceipt',
+			{
+				"sdkId": sdkId,
+				"entity": jsonEncode(EncryptedReceipt.encode(entity)),
+			}
+		).catchError(convertPlatformException);
+		if (res == null) throw AssertionError("received null result from platform method createReceipt");
+		final parsedResJson = jsonDecode(res);
+		return EncryptedReceipt.fromJSON(parsedResJson);
+	}
+
 	Future<EncryptedReceipt> modifyReceipt(String sdkId, EncryptedReceipt entity) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'ReceiptBasicApi.modifyReceipt',
@@ -80,7 +93,7 @@ class ReceiptBasicPlatformApi {
 		return EncryptedReceipt.fromJSON(parsedResJson);
 	}
 
-	Future<EncryptedReceipt> getReceipt(String sdkId, String entityId) async {
+	Future<EncryptedReceipt?> getReceipt(String sdkId, String entityId) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'ReceiptBasicApi.getReceipt',
 			{
@@ -90,7 +103,7 @@ class ReceiptBasicPlatformApi {
 		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getReceipt");
 		final parsedResJson = jsonDecode(res);
-		return EncryptedReceipt.fromJSON(parsedResJson);
+		return parsedResJson == null ? null : EncryptedReceipt.fromJSON(parsedResJson);
 	}
 
 	Future<List<EncryptedReceipt>> listByReference(String sdkId, String reference) async {

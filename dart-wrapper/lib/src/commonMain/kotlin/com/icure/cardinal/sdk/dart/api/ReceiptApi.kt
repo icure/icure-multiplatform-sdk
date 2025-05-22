@@ -30,29 +30,6 @@ import kotlinx.serialization.builtins.serializer
 
 @OptIn(InternalIcureApi::class)
 public object ReceiptApi {
-  public fun createReceipt(
-    dartResultCallback: (
-      String?,
-      String?,
-      String?,
-      String?,
-    ) -> Unit,
-    sdkId: String,
-    entityString: String,
-  ) {
-    val entity = fullLanguageInteropJson.decodeFromString(
-      DecryptedReceipt.serializer(),
-      entityString
-    )
-    ApiScope.execute(
-      dartResultCallback,
-      DecryptedReceipt.serializer()) {
-      NativeReferences.get<CardinalApis>(sdkId).receipt.createReceipt(
-        entity,
-      )
-    }
-  }
-
   public fun withEncryptionMetadata(
     dartResultCallback: (
       String?,
@@ -535,6 +512,29 @@ public object ReceiptApi {
     }
   }
 
+  public fun createReceipt(
+    dartResultCallback: (
+      String?,
+      String?,
+      String?,
+      String?,
+    ) -> Unit,
+    sdkId: String,
+    entityString: String,
+  ) {
+    val entity = fullLanguageInteropJson.decodeFromString(
+      DecryptedReceipt.serializer(),
+      entityString
+    )
+    ApiScope.execute(
+      dartResultCallback,
+      DecryptedReceipt.serializer()) {
+      NativeReferences.get<CardinalApis>(sdkId).receipt.createReceipt(
+        entity,
+      )
+    }
+  }
+
   public fun modifyReceipt(
     dartResultCallback: (
       String?,
@@ -574,7 +574,7 @@ public object ReceiptApi {
     )
     ApiScope.execute(
       dartResultCallback,
-      DecryptedReceipt.serializer()) {
+      DecryptedReceipt.serializer().nullable) {
       NativeReferences.get<CardinalApis>(sdkId).receipt.getReceipt(
         entityId,
       )
@@ -670,6 +670,29 @@ public object ReceiptApi {
       }
     }
 
+    public fun createReceipt(
+      dartResultCallback: (
+        String?,
+        String?,
+        String?,
+        String?,
+      ) -> Unit,
+      sdkId: String,
+      entityString: String,
+    ) {
+      val entity = fullLanguageInteropJson.decodeFromString(
+        EncryptedReceipt.serializer(),
+        entityString
+      )
+      ApiScope.execute(
+        dartResultCallback,
+        EncryptedReceipt.serializer()) {
+        NativeReferences.get<CardinalApis>(sdkId).receipt.encrypted.createReceipt(
+          entity,
+        )
+      }
+    }
+
     public fun modifyReceipt(
       dartResultCallback: (
         String?,
@@ -709,7 +732,7 @@ public object ReceiptApi {
       )
       ApiScope.execute(
         dartResultCallback,
-        EncryptedReceipt.serializer()) {
+        EncryptedReceipt.serializer().nullable) {
         NativeReferences.get<CardinalApis>(sdkId).receipt.encrypted.getReceipt(
           entityId,
         )
@@ -806,6 +829,29 @@ public object ReceiptApi {
       }
     }
 
+    public fun createReceipt(
+      dartResultCallback: (
+        String?,
+        String?,
+        String?,
+        String?,
+      ) -> Unit,
+      sdkId: String,
+      entityString: String,
+    ) {
+      val entity = fullLanguageInteropJson.decodeFromString(
+        PolymorphicSerializer(Receipt::class),
+        entityString
+      )
+      ApiScope.execute(
+        dartResultCallback,
+        PolymorphicSerializer(Receipt::class)) {
+        NativeReferences.get<CardinalApis>(sdkId).receipt.tryAndRecover.createReceipt(
+          entity,
+        )
+      }
+    }
+
     public fun modifyReceipt(
       dartResultCallback: (
         String?,
@@ -845,7 +891,7 @@ public object ReceiptApi {
       )
       ApiScope.execute(
         dartResultCallback,
-        PolymorphicSerializer(Receipt::class)) {
+        PolymorphicSerializer(Receipt::class).nullable) {
         NativeReferences.get<CardinalApis>(sdkId).receipt.tryAndRecover.getReceipt(
           entityId,
         )

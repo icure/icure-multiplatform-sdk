@@ -4,7 +4,7 @@ import 'package:cardinal_sdk/model/message.dart';
 import 'package:cardinal_sdk/plugin/cardinal_sdk_platform_interface.dart';
 import 'package:cardinal_sdk/utils/pagination/paginated_list_iterator.dart';
 import 'package:cardinal_sdk/model/couchdb/doc_identifier.dart';
-import 'package:cardinal_sdk/model/id_with_mandatory_rev.dart';
+import 'package:cardinal_sdk/model/stored_document_identifier.dart';
 import 'package:cardinal_sdk/subscription/subscription_event_type.dart';
 import 'package:cardinal_sdk/subscription/entity_subscription_configuration.dart';
 import 'package:cardinal_sdk/subscription/entity_subscription.dart';
@@ -54,7 +54,7 @@ class MessageBasicApi {
 		);
 	}
 
-	Future<List<DocIdentifier>> deleteMessagesByIds(List<IdWithMandatoryRev> entityIds) async {
+	Future<List<DocIdentifier>> deleteMessagesByIds(List<StoredDocumentIdentifier> entityIds) async {
 		return await CardinalSdkPlatformInterface.instance.apis.messageBasic.deleteMessagesByIds(
 			_sdkId,
 			entityIds,
@@ -90,6 +90,20 @@ class MessageBasicApi {
 		);
 	}
 
+	Future<EncryptedMessage> createMessage(EncryptedMessage entity) async {
+		return await CardinalSdkPlatformInterface.instance.apis.messageBasic.createMessage(
+			_sdkId,
+			entity,
+		);
+	}
+
+	Future<EncryptedMessage> createMessageInTopic(EncryptedMessage entity) async {
+		return await CardinalSdkPlatformInterface.instance.apis.messageBasic.createMessageInTopic(
+			_sdkId,
+			entity,
+		);
+	}
+
 	Future<Message> undeleteMessage(Message message) async {
 		return await CardinalSdkPlatformInterface.instance.apis.messageBasic.undeleteMessage(
 			_sdkId,
@@ -112,7 +126,7 @@ class MessageBasicApi {
 		);
 	}
 
-	Future<EncryptedMessage> getMessage(String entityId) async {
+	Future<EncryptedMessage?> getMessage(String entityId) async {
 		return await CardinalSdkPlatformInterface.instance.apis.messageBasic.getMessage(
 			_sdkId,
 			entityId,

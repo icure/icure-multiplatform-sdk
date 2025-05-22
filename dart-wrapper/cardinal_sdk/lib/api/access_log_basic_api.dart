@@ -4,7 +4,7 @@ import 'package:cardinal_sdk/model/access_log.dart';
 import 'package:cardinal_sdk/plugin/cardinal_sdk_platform_interface.dart';
 import 'package:cardinal_sdk/utils/pagination/paginated_list_iterator.dart';
 import 'package:cardinal_sdk/model/couchdb/doc_identifier.dart';
-import 'package:cardinal_sdk/model/id_with_mandatory_rev.dart';
+import 'package:cardinal_sdk/model/stored_document_identifier.dart';
 
 
 class AccessLogBasicApi {
@@ -51,7 +51,7 @@ class AccessLogBasicApi {
 		);
 	}
 
-	Future<List<DocIdentifier>> deleteAccessLogsByIds(List<IdWithMandatoryRev> entityIds) async {
+	Future<List<DocIdentifier>> deleteAccessLogsByIds(List<StoredDocumentIdentifier> entityIds) async {
 		return await CardinalSdkPlatformInterface.instance.apis.accessLogBasic.deleteAccessLogsByIds(
 			_sdkId,
 			entityIds,
@@ -87,6 +87,13 @@ class AccessLogBasicApi {
 		);
 	}
 
+	Future<EncryptedAccessLog> createAccessLog(EncryptedAccessLog entity) async {
+		return await CardinalSdkPlatformInterface.instance.apis.accessLogBasic.createAccessLog(
+			_sdkId,
+			entity,
+		);
+	}
+
 	Future<EncryptedAccessLog> undeleteAccessLogById(String id, String rev) async {
 		return await CardinalSdkPlatformInterface.instance.apis.accessLogBasic.undeleteAccessLogById(
 			_sdkId,
@@ -109,7 +116,7 @@ class AccessLogBasicApi {
 		);
 	}
 
-	Future<EncryptedAccessLog> getAccessLog(String entityId) async {
+	Future<EncryptedAccessLog?> getAccessLog(String entityId) async {
 		return await CardinalSdkPlatformInterface.instance.apis.accessLogBasic.getAccessLog(
 			_sdkId,
 			entityId,

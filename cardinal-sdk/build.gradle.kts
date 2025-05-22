@@ -8,7 +8,7 @@ plugins {
 	androidLibrary()
 	id("maven-publish")
 	signing
-	id("com.vanniktech.maven.publish") version "0.31.0"
+	id("com.vanniktech.maven.publish") apply true
 	id("com.google.devtools.ksp") version "2.1.20-RC-1.0.30"
 }
 
@@ -18,7 +18,7 @@ val mavenReleasesRepository: String by project
 
 group = "com.icure"
 
-val version = "2.0.0-PREVIEW"
+val version = "2.0.0-PREVIEW-3"
 
 project.version = version
 
@@ -152,10 +152,10 @@ tasks.named("jvmTest") {
 //tasks.named("jsNodeDevelopmentRun") { dependsOn("jsProductionExecutableCompileSync") }
 //tasks.named("jsNodeProductionRun") { dependsOn("jsProductionExecutableCompileSync") }
 
-//fun projectHasSignatureProperties() =
-//	project.hasProperty("signing.keyId") && project.hasProperty("signing.secretKeyRingFile") && project.hasProperty("signing.password")
+fun projectHasSignatureProperties() =
+	project.hasProperty("signing.keyId") && project.hasProperty("signing.secretKeyRingFile") && project.hasProperty("signing.password")
 
-//if (projectHasSignatureProperties()) {
+if (projectHasSignatureProperties()) {
 	signing {
 		useInMemoryPgpKeys(
 			file(project.property("signing.secretKeyRingFile") as String).readText(),
@@ -163,7 +163,7 @@ tasks.named("jvmTest") {
 		)
 		sign(publishing.publications)
 	}
-//}
+}
 
 mavenPublishing {
 	coordinates(group as String, project.name, project.version as String)
@@ -198,16 +198,16 @@ mavenPublishing {
 
 	publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL, automaticRelease = true)
 
-//	if (projectHasSignatureProperties()) {
+	if (projectHasSignatureProperties()) {
 		signAllPublications()
-//	}
+	}
 }
 
 // Configure all publishing tasks
-//if (!projectHasSignatureProperties()) {
+if (!projectHasSignatureProperties()) {
 	tasks.withType<PublishToMavenRepository> {
 		doFirst {
 			throw IllegalStateException("Cannot publish to Maven Central without signing properties")
 		}
 	}
-//}
+}

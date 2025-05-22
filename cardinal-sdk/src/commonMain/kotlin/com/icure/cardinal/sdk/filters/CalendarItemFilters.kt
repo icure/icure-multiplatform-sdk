@@ -250,7 +250,7 @@ object CalendarItemFilters {
 	 * In-group version of [byPeriodForDataOwner].
 	 * The data owner can be from a different group than the group of the user executing the query.
 	 */
-	fun byPeriodForDataOwner(
+	fun byPeriodForDataOwnerInGroup(
 		dataOwner: EntityReferenceInGroup,
 		from: Long,
 		to: Long

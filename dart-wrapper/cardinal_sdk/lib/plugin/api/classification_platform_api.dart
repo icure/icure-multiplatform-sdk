@@ -1,12 +1,12 @@
 // auto-generated file
 import 'package:flutter/services.dart';
 import 'package:cardinal_sdk/model/classification.dart';
-import 'dart:convert';
-import 'package:cardinal_sdk/utils/internal/platform_exception_convertion.dart';
 import 'package:cardinal_sdk/model/patient.dart';
 import 'package:cardinal_sdk/model/user.dart';
 import 'package:cardinal_sdk/model/embed/access_level.dart';
 import 'package:cardinal_sdk/crypto/entities/secret_id_use_option.dart';
+import 'dart:convert';
+import 'package:cardinal_sdk/utils/internal/platform_exception_convertion.dart';
 import 'package:cardinal_sdk/model/specializations/hex_string.dart';
 import 'package:cardinal_sdk/filters/filter_options.dart';
 import 'package:cardinal_sdk/model/couchdb/doc_identifier.dart';
@@ -16,25 +16,12 @@ import 'package:cardinal_sdk/utils/pagination/paginated_list_iterator.dart';
 
 class ClassificationPlatformApi {
 	MethodChannel _methodChannel;
-	TryAndRecoverClassificationPlatformApi tryAndRecover;
-	EncryptedClassificationPlatformApi encrypted;
+	ClassificationEncryptedPlatformApi encrypted;
+	ClassificationTryAndRecoverPlatformApi tryAndRecover;
 	ClassificationPlatformApi(
 		this._methodChannel
-		) : tryAndRecover = TryAndRecoverClassificationPlatformApi(_methodChannel),
-		encrypted = EncryptedClassificationPlatformApi(_methodChannel);
-
-	Future<DecryptedClassification> createClassification(String sdkId, DecryptedClassification entity) async {
-		final res = await _methodChannel.invokeMethod<String>(
-			'ClassificationApi.createClassification',
-			{
-				"sdkId": sdkId,
-				"entity": jsonEncode(DecryptedClassification.encode(entity)),
-			}
-		).catchError(convertPlatformException);
-		if (res == null) throw AssertionError("received null result from platform method createClassification");
-		final parsedResJson = jsonDecode(res);
-		return DecryptedClassification.fromJSON(parsedResJson);
-	}
+		) : encrypted = ClassificationEncryptedPlatformApi(_methodChannel),
+		tryAndRecover = ClassificationTryAndRecoverPlatformApi(_methodChannel);
 
 	Future<DecryptedClassification> withEncryptionMetadata(String sdkId, DecryptedClassification? base, Patient patient, User? user, Map<String, AccessLevel> delegates, SecretIdUseOption secretId) async {
 		final res = await _methodChannel.invokeMethod<String>(
@@ -236,6 +223,19 @@ class ClassificationPlatformApi {
 		return PaginatedListIterator(parsedResJson, (x0) => DecryptedClassification.fromJSON(x0));
 	}
 
+	Future<DecryptedClassification> createClassification(String sdkId, DecryptedClassification entity) async {
+		final res = await _methodChannel.invokeMethod<String>(
+			'ClassificationApi.createClassification',
+			{
+				"sdkId": sdkId,
+				"entity": jsonEncode(DecryptedClassification.encode(entity)),
+			}
+		).catchError(convertPlatformException);
+		if (res == null) throw AssertionError("received null result from platform method createClassification");
+		final parsedResJson = jsonDecode(res);
+		return DecryptedClassification.fromJSON(parsedResJson);
+	}
+
 	Future<DecryptedClassification> modifyClassification(String sdkId, DecryptedClassification entity) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'ClassificationApi.modifyClassification',
@@ -249,7 +249,7 @@ class ClassificationPlatformApi {
 		return DecryptedClassification.fromJSON(parsedResJson);
 	}
 
-	Future<DecryptedClassification> getClassification(String sdkId, String entityId) async {
+	Future<DecryptedClassification?> getClassification(String sdkId, String entityId) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'ClassificationApi.getClassification',
 			{
@@ -259,7 +259,7 @@ class ClassificationPlatformApi {
 		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getClassification");
 		final parsedResJson = jsonDecode(res);
-		return DecryptedClassification.fromJSON(parsedResJson);
+		return parsedResJson == null ? null : DecryptedClassification.fromJSON(parsedResJson);
 	}
 
 	Future<List<DecryptedClassification>> getClassifications(String sdkId, List<String> entityIds) async {
@@ -276,9 +276,9 @@ class ClassificationPlatformApi {
 	}
 }
 
-class TryAndRecoverClassificationPlatformApi {
+class ClassificationTryAndRecoverPlatformApi {
 	MethodChannel _methodChannel;
-	TryAndRecoverClassificationPlatformApi(this._methodChannel);
+	ClassificationTryAndRecoverPlatformApi(this._methodChannel);
 
 	Future<Classification> shareWith(String sdkId, String delegateId, Classification classification, ClassificationShareOptions? options) async {
 		final res = await _methodChannel.invokeMethod<String>(
@@ -335,6 +335,19 @@ class TryAndRecoverClassificationPlatformApi {
 		return PaginatedListIterator(parsedResJson, (x0) => Classification.fromJSON(x0));
 	}
 
+	Future<Classification> createClassification(String sdkId, Classification entity) async {
+		final res = await _methodChannel.invokeMethod<String>(
+			'ClassificationApi.tryAndRecover.createClassification',
+			{
+				"sdkId": sdkId,
+				"entity": jsonEncode(Classification.encode(entity)),
+			}
+		).catchError(convertPlatformException);
+		if (res == null) throw AssertionError("received null result from platform method createClassification");
+		final parsedResJson = jsonDecode(res);
+		return Classification.fromJSON(parsedResJson);
+	}
+
 	Future<Classification> modifyClassification(String sdkId, Classification entity) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'ClassificationApi.tryAndRecover.modifyClassification',
@@ -348,7 +361,7 @@ class TryAndRecoverClassificationPlatformApi {
 		return Classification.fromJSON(parsedResJson);
 	}
 
-	Future<Classification> getClassification(String sdkId, String entityId) async {
+	Future<Classification?> getClassification(String sdkId, String entityId) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'ClassificationApi.tryAndRecover.getClassification',
 			{
@@ -358,7 +371,7 @@ class TryAndRecoverClassificationPlatformApi {
 		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getClassification");
 		final parsedResJson = jsonDecode(res);
-		return Classification.fromJSON(parsedResJson);
+		return parsedResJson == null ? null : Classification.fromJSON(parsedResJson);
 	}
 
 	Future<List<Classification>> getClassifications(String sdkId, List<String> entityIds) async {
@@ -375,9 +388,9 @@ class TryAndRecoverClassificationPlatformApi {
 	}
 }
 
-class EncryptedClassificationPlatformApi {
+class ClassificationEncryptedPlatformApi {
 	MethodChannel _methodChannel;
-	EncryptedClassificationPlatformApi(this._methodChannel);
+	ClassificationEncryptedPlatformApi(this._methodChannel);
 
 	Future<EncryptedClassification> shareWith(String sdkId, String delegateId, EncryptedClassification classification, ClassificationShareOptions? options) async {
 		final res = await _methodChannel.invokeMethod<String>(
@@ -434,6 +447,19 @@ class EncryptedClassificationPlatformApi {
 		return PaginatedListIterator(parsedResJson, (x0) => EncryptedClassification.fromJSON(x0));
 	}
 
+	Future<EncryptedClassification> createClassification(String sdkId, EncryptedClassification entity) async {
+		final res = await _methodChannel.invokeMethod<String>(
+			'ClassificationApi.encrypted.createClassification',
+			{
+				"sdkId": sdkId,
+				"entity": jsonEncode(EncryptedClassification.encode(entity)),
+			}
+		).catchError(convertPlatformException);
+		if (res == null) throw AssertionError("received null result from platform method createClassification");
+		final parsedResJson = jsonDecode(res);
+		return EncryptedClassification.fromJSON(parsedResJson);
+	}
+
 	Future<EncryptedClassification> modifyClassification(String sdkId, EncryptedClassification entity) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'ClassificationApi.encrypted.modifyClassification',
@@ -447,7 +473,7 @@ class EncryptedClassificationPlatformApi {
 		return EncryptedClassification.fromJSON(parsedResJson);
 	}
 
-	Future<EncryptedClassification> getClassification(String sdkId, String entityId) async {
+	Future<EncryptedClassification?> getClassification(String sdkId, String entityId) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'ClassificationApi.encrypted.getClassification',
 			{
@@ -457,7 +483,7 @@ class EncryptedClassificationPlatformApi {
 		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getClassification");
 		final parsedResJson = jsonDecode(res);
-		return EncryptedClassification.fromJSON(parsedResJson);
+		return parsedResJson == null ? null : EncryptedClassification.fromJSON(parsedResJson);
 	}
 
 	Future<List<EncryptedClassification>> getClassifications(String sdkId, List<String> entityIds) async {

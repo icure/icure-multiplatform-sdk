@@ -22,6 +22,7 @@ public object ReceiptBasicApiDispatcher {
     "deleteReceipts" -> deleteReceipts(parameters, resultCallback)
     "getRawReceiptAttachment" -> getRawReceiptAttachment(parameters, resultCallback)
     "setRawReceiptAttachment" -> setRawReceiptAttachment(parameters, resultCallback)
+    "createReceipt" -> createReceipt(parameters, resultCallback)
     "modifyReceipt" -> modifyReceipt(parameters, resultCallback)
     "getReceipt" -> getReceipt(parameters, resultCallback)
     "listByReference" -> listByReference(parameters, resultCallback)
@@ -81,6 +82,19 @@ public object ReceiptBasicApiDispatcher {
       parameters.getValue("rev"),
       parameters.getValue("blobType"),
       parameters.getValue("attachment"),
+    )
+  }
+
+  private fun createReceipt(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    ReceiptBasicApi.createReceipt(
+      resultCallback,
+      parameters.getValue("sdkId"),
+      parameters.getValue("entity"),
     )
   }
 

@@ -4,15 +4,17 @@ import 'package:cardinal_sdk/model/embed/episode.dart';
 import 'package:cardinal_sdk/model/embed/encryptable.dart';
 import 'package:cardinal_sdk/model/base/identifiable.dart';
 import 'package:cardinal_sdk/model/base/named.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+part "episode.freezed.dart";
 
 
 sealed class Episode implements Encryptable, Identifiable<String>, Named {
-	@override abstract String id;
-	@override abstract String? name;
-	abstract String? comment;
-	abstract int? startDate;
-	abstract int? endDate;
-	@override abstract Base64String? encryptedSelf;
+	@override abstract final String id;
+	@override abstract final String? name;
+	abstract final String? comment;
+	abstract final int? startDate;
+	abstract final int? endDate;
+	@override abstract final Base64String? encryptedSelf;
 
 	static Map<String, dynamic> encode(Episode value) {
 		switch (value) {
@@ -43,26 +45,17 @@ sealed class Episode implements Encryptable, Identifiable<String>, Named {
 	}
 }
 
-class DecryptedEpisode implements Episode {
-	@override String id;
-	@override String? name = null;
-	@override String? comment = null;
-	@override int? startDate = null;
-	@override int? endDate = null;
-	@override Base64String? encryptedSelf = null;
-	DecryptedEpisode(
-		this.id,
-		{
-			String? name,
-			String? comment,
-			int? startDate,
-			int? endDate,
-			Base64String? encryptedSelf
-		}) : name = name ?? null,
-		comment = comment ?? null,
-		startDate = startDate ?? null,
-		endDate = endDate ?? null,
-		encryptedSelf = encryptedSelf ?? null;
+@freezed
+abstract class DecryptedEpisode with _$DecryptedEpisode implements Episode {
+	const factory DecryptedEpisode({
+		required String id,
+		@Default(null) String? name,
+		@Default(null) String? comment,
+		@Default(null) int? startDate,
+		@Default(null) int? endDate,
+		@Default(null) Base64String? encryptedSelf,
+	}) = _DecryptedEpisode;
+
 
 	static Map<String, dynamic> encode(DecryptedEpisode value) {
 		Map<String, dynamic> entityAsMap = {
@@ -78,7 +71,7 @@ class DecryptedEpisode implements Episode {
 
 	static DecryptedEpisode fromJSON(Map<String, dynamic> data) {
 		return DecryptedEpisode(
-			(data["id"] as String),
+			id: (data["id"] as String),
 			name: (data["name"] as String?),
 			comment: (data["comment"] as String?),
 			startDate: (data["startDate"] as int?),
@@ -88,26 +81,17 @@ class DecryptedEpisode implements Episode {
 	}
 }
 
-class EncryptedEpisode implements Episode {
-	@override String id;
-	@override String? name = null;
-	@override String? comment = null;
-	@override int? startDate = null;
-	@override int? endDate = null;
-	@override Base64String? encryptedSelf = null;
-	EncryptedEpisode(
-		this.id,
-		{
-			String? name,
-			String? comment,
-			int? startDate,
-			int? endDate,
-			Base64String? encryptedSelf
-		}) : name = name ?? null,
-		comment = comment ?? null,
-		startDate = startDate ?? null,
-		endDate = endDate ?? null,
-		encryptedSelf = encryptedSelf ?? null;
+@freezed
+abstract class EncryptedEpisode with _$EncryptedEpisode implements Episode {
+	const factory EncryptedEpisode({
+		required String id,
+		@Default(null) String? name,
+		@Default(null) String? comment,
+		@Default(null) int? startDate,
+		@Default(null) int? endDate,
+		@Default(null) Base64String? encryptedSelf,
+	}) = _EncryptedEpisode;
+
 
 	static Map<String, dynamic> encode(EncryptedEpisode value) {
 		Map<String, dynamic> entityAsMap = {
@@ -123,7 +107,7 @@ class EncryptedEpisode implements Episode {
 
 	static EncryptedEpisode fromJSON(Map<String, dynamic> data) {
 		return EncryptedEpisode(
-			(data["id"] as String),
+			id: (data["id"] as String),
 			name: (data["name"] as String?),
 			comment: (data["comment"] as String?),
 			startDate: (data["startDate"] as int?),

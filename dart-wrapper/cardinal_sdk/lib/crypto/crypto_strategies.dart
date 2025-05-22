@@ -164,10 +164,12 @@ class CryptoStrategies {
   /// @param delegate the potential data owner delegate.
   /// @param publicKeys public keys requiring verification, in spki hex-encoded format.
   /// @param cryptoPrimitives cryptographic primitives you can use to support the process.
+  /// @param groupId the id of the data owner's group, or null if the data owner is in the same group as the current user
   /// @return all verified public keys, in spki hex-encoded format.
   Future<List<CardinalRsaPublicKey>> verifyDelegatePublicKeys(
     CryptoActorStubWithType delegate,
     List<CardinalRsaPublicKey> publicKeys,
+    String? groupId
   ) {
     return Future.value(publicKeys);
   }
@@ -175,8 +177,9 @@ class CryptoStrategies {
   /// Specifies if a data owner requires anonymous delegations, i.e. his id should not appear unencrypted in new secure delegations. This should always
   /// be the case for patient data owners.
   /// @param dataOwner a data owner.
+  /// @param groupId the id of the data owner's group, or null if the data owner is in the same group as the current user
   /// @return true if the delegations for the provided data owner should be anonymous.
-  Future<bool> dataOwnerRequiresAnonymousDelegation(CryptoActorStubWithType dataOwner) {
+  Future<bool> dataOwnerRequiresAnonymousDelegation(CryptoActorStubWithType dataOwner, String? groupId) {
     return Future.value(dataOwner.type != DataOwnerType.hcp);
   }
 

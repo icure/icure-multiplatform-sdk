@@ -20,6 +20,10 @@ export interface HealthElementFlavouredApi<E extends HealthElement> {
 
 	filterHealthElementsBySorted(filter: SortableFilterOptions<HealthElement>): Promise<PaginatedListIterator<E>>;
 
+	createHealthElement(entity: E): Promise<E>;
+
+	createHealthElements(entities: Array<E>): Promise<Array<E>>;
+
 	undeleteHealthElementById(id: string, rev: string): Promise<E>;
 
 	undeleteHealthElement(healthElement: HealthElement): Promise<E>;
@@ -28,7 +32,7 @@ export interface HealthElementFlavouredApi<E extends HealthElement> {
 
 	modifyHealthElements(entities: Array<E>): Promise<Array<E>>;
 
-	getHealthElement(entityId: string): Promise<E>;
+	getHealthElement(entityId: string): Promise<E | undefined>;
 
 	getHealthElements(entityIds: Array<string>): Promise<Array<E>>;
 

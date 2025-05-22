@@ -2,10 +2,10 @@
 import {FilterOptions, PaginatedListIterator, SortableFilterOptions} from '../cardinal-sdk-ts.mjs';
 import {MessageShareOptions} from '../crypto/entities/MessageShareOptions.mjs';
 import {SecretIdUseOption} from '../crypto/entities/SecretIdUseOption.mjs';
-import {IdWithMandatoryRev} from '../model/IdWithMandatoryRev.mjs';
 import {DecryptedMessage, EncryptedMessage, Message} from '../model/Message.mjs';
 import {PaginatedList} from '../model/PaginatedList.mjs';
 import {Patient} from '../model/Patient.mjs';
+import {StoredDocumentIdentifier} from '../model/StoredDocumentIdentifier.mjs';
 import {User} from '../model/User.mjs';
 import {DocIdentifier} from '../model/couchdb/DocIdentifier.mjs';
 import {AccessLevel} from '../model/embed/AccessLevel.mjs';
@@ -21,10 +21,6 @@ export interface MessageApi {
 	encrypted: MessageFlavouredApi<EncryptedMessage>;
 
 	tryAndRecover: MessageFlavouredApi<Message>;
-
-	createMessage(entity: DecryptedMessage): Promise<DecryptedMessage>;
-
-	createMessageInTopic(entity: DecryptedMessage): Promise<DecryptedMessage>;
 
 	withEncryptionMetadata(base: DecryptedMessage | undefined, patient: Patient | undefined,
 			options?: { user?: User | undefined, delegates?: { [ key: string ]: AccessLevel }, secretId?: SecretIdUseOption }): Promise<DecryptedMessage>;
@@ -51,7 +47,7 @@ export interface MessageApi {
 
 	deleteMessageById(entityId: string, rev: string): Promise<DocIdentifier>;
 
-	deleteMessagesByIds(entityIds: Array<IdWithMandatoryRev>): Promise<Array<DocIdentifier>>;
+	deleteMessagesByIds(entityIds: Array<StoredDocumentIdentifier>): Promise<Array<DocIdentifier>>;
 
 	purgeMessageById(id: string, rev: string): Promise<void>;
 
@@ -74,13 +70,17 @@ export interface MessageApi {
 
 	filterMessagesBySorted(filter: SortableFilterOptions<Message>): Promise<PaginatedListIterator<DecryptedMessage>>;
 
+	createMessage(entity: DecryptedMessage): Promise<DecryptedMessage>;
+
+	createMessageInTopic(entity: DecryptedMessage): Promise<DecryptedMessage>;
+
 	undeleteMessage(message: Message): Promise<Message>;
 
 	modifyMessage(entity: DecryptedMessage): Promise<DecryptedMessage>;
 
 	undeleteMessageById(id: string, rev: string): Promise<DecryptedMessage>;
 
-	getMessage(entityId: string): Promise<DecryptedMessage>;
+	getMessage(entityId: string): Promise<DecryptedMessage | undefined>;
 
 	getMessages(entityIds: Array<string>): Promise<Array<DecryptedMessage>>;
 

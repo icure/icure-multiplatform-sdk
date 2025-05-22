@@ -13,7 +13,7 @@ class DocumentTemplateApi {
 		this._dartSdk
 		);
 
-	Future<DocumentTemplate> getDocumentTemplate(String documentTemplateId) async {
+	Future<DocumentTemplate?> getDocumentTemplate(String documentTemplateId) async {
 		return await CardinalSdkPlatformInterface.instance.apis.documentTemplate.getDocumentTemplate(
 			_sdkId,
 			documentTemplateId,

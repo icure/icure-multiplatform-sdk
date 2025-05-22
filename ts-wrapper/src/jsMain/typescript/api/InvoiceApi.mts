@@ -58,7 +58,7 @@ export interface InvoiceApi {
 
 	modifyInvoices(entities: Array<DecryptedInvoice>): Promise<Array<DecryptedInvoice>>;
 
-	getInvoice(entityId: string): Promise<DecryptedInvoice>;
+	getInvoice(entityId: string): Promise<DecryptedInvoice | undefined>;
 
 	getInvoices(entityIds: Array<string>): Promise<Array<DecryptedInvoice>>;
 

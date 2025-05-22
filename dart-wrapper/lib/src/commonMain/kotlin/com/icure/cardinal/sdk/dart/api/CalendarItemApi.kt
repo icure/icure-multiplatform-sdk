@@ -11,13 +11,15 @@ import com.icure.cardinal.sdk.filters.SortableFilterOptions
 import com.icure.cardinal.sdk.model.CalendarItem
 import com.icure.cardinal.sdk.model.DecryptedCalendarItem
 import com.icure.cardinal.sdk.model.EncryptedCalendarItem
-import com.icure.cardinal.sdk.model.IdWithMandatoryRev
+import com.icure.cardinal.sdk.model.EntityReferenceInGroup
+import com.icure.cardinal.sdk.model.GroupScoped
 import com.icure.cardinal.sdk.model.Patient
+import com.icure.cardinal.sdk.model.StoredDocumentIdentifier
 import com.icure.cardinal.sdk.model.User
-import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.model.embed.AccessLevel
 import com.icure.cardinal.sdk.model.specializations.HexString
 import com.icure.cardinal.sdk.serialization.EntitySubscriptionWithSerializer
+import com.icure.cardinal.sdk.serialization.MapAsArraySerializer
 import com.icure.cardinal.sdk.serialization.PaginatedListIteratorWithSerializer
 import com.icure.cardinal.sdk.subscription.EntitySubscriptionConfiguration
 import com.icure.cardinal.sdk.subscription.SubscriptionEventType
@@ -36,29 +38,6 @@ import kotlinx.serialization.builtins.serializer
 
 @OptIn(InternalIcureApi::class)
 public object CalendarItemApi {
-  public fun createCalendarItem(
-    dartResultCallback: (
-      String?,
-      String?,
-      String?,
-      String?,
-    ) -> Unit,
-    sdkId: String,
-    entityString: String,
-  ) {
-    val entity = fullLanguageInteropJson.decodeFromString(
-      DecryptedCalendarItem.serializer(),
-      entityString
-    )
-    ApiScope.execute(
-      dartResultCallback,
-      DecryptedCalendarItem.serializer()) {
-      NativeReferences.get<CardinalApis>(sdkId).calendarItem.createCalendarItem(
-        entity,
-      )
-    }
-  }
-
   public fun withEncryptionMetadata(
     dartResultCallback: (
       String?,
@@ -78,7 +57,7 @@ public object CalendarItemApi {
       baseString
     )
     val patient = fullLanguageInteropJson.decodeFromString(
-      PolymorphicSerializer(Patient::class),
+      PolymorphicSerializer(Patient::class).nullable,
       patientString
     )
     val user = fullLanguageInteropJson.decodeFromString(
@@ -168,7 +147,7 @@ public object CalendarItemApi {
     )
     ApiScope.execute(
       dartResultCallback,
-      SetSerializer(String.serializer())) {
+      SetSerializer(EntityReferenceInGroup.serializer())) {
       NativeReferences.get<CardinalApis>(sdkId).calendarItem.decryptPatientIdOf(
         calendarItem,
       )
@@ -212,17 +191,17 @@ public object CalendarItemApi {
       String?,
     ) -> Unit,
     sdkId: String,
-    calendarItemString: String,
+    calendarItemsString: String,
   ) {
-    val calendarItem = fullLanguageInteropJson.decodeFromString(
-      EncryptedCalendarItem.serializer(),
-      calendarItemString
+    val calendarItems = fullLanguageInteropJson.decodeFromString(
+      ListSerializer(EncryptedCalendarItem.serializer()),
+      calendarItemsString
     )
     ApiScope.execute(
       dartResultCallback,
-      DecryptedCalendarItem.serializer()) {
+      ListSerializer(DecryptedCalendarItem.serializer())) {
       NativeReferences.get<CardinalApis>(sdkId).calendarItem.decrypt(
-        calendarItem,
+        calendarItems,
       )
     }
   }
@@ -235,17 +214,40 @@ public object CalendarItemApi {
       String?,
     ) -> Unit,
     sdkId: String,
-    calendarItemString: String,
+    calendarItemsString: String,
   ) {
-    val calendarItem = fullLanguageInteropJson.decodeFromString(
-      EncryptedCalendarItem.serializer(),
-      calendarItemString
+    val calendarItems = fullLanguageInteropJson.decodeFromString(
+      ListSerializer(EncryptedCalendarItem.serializer()),
+      calendarItemsString
     )
     ApiScope.execute(
       dartResultCallback,
-      PolymorphicSerializer(CalendarItem::class)) {
+      ListSerializer(PolymorphicSerializer(CalendarItem::class))) {
       NativeReferences.get<CardinalApis>(sdkId).calendarItem.tryDecrypt(
-        calendarItem,
+        calendarItems,
+      )
+    }
+  }
+
+  public fun encryptOrValidate(
+    dartResultCallback: (
+      String?,
+      String?,
+      String?,
+      String?,
+    ) -> Unit,
+    sdkId: String,
+    calendarItemsString: String,
+  ) {
+    val calendarItems = fullLanguageInteropJson.decodeFromString(
+      ListSerializer(PolymorphicSerializer(CalendarItem::class)),
+      calendarItemsString
+    )
+    ApiScope.execute(
+      dartResultCallback,
+      ListSerializer(EncryptedCalendarItem.serializer())) {
+      NativeReferences.get<CardinalApis>(sdkId).calendarItem.encryptOrValidate(
+        calendarItems,
       )
     }
   }
@@ -317,7 +319,7 @@ public object CalendarItemApi {
     )
     ApiScope.execute(
       dartResultCallback,
-      DocIdentifier.serializer()) {
+      StoredDocumentIdentifier.serializer()) {
       NativeReferences.get<CardinalApis>(sdkId).calendarItem.deleteCalendarItemById(
         entityId,
         rev,
@@ -336,12 +338,12 @@ public object CalendarItemApi {
     entityIdsString: String,
   ) {
     val entityIds = fullLanguageInteropJson.decodeFromString(
-      ListSerializer(IdWithMandatoryRev.serializer()),
+      ListSerializer(StoredDocumentIdentifier.serializer()),
       entityIdsString
     )
     ApiScope.execute(
       dartResultCallback,
-      ListSerializer(DocIdentifier.serializer())) {
+      ListSerializer(StoredDocumentIdentifier.serializer())) {
       NativeReferences.get<CardinalApis>(sdkId).calendarItem.deleteCalendarItemsByIds(
         entityIds,
       )
@@ -393,7 +395,7 @@ public object CalendarItemApi {
     )
     ApiScope.execute(
       dartResultCallback,
-      DocIdentifier.serializer()) {
+      StoredDocumentIdentifier.serializer()) {
       NativeReferences.get<CardinalApis>(sdkId).calendarItem.deleteCalendarItem(
         calendarItem,
       )
@@ -416,7 +418,7 @@ public object CalendarItemApi {
     )
     ApiScope.execute(
       dartResultCallback,
-      ListSerializer(DocIdentifier.serializer())) {
+      ListSerializer(StoredDocumentIdentifier.serializer())) {
       NativeReferences.get<CardinalApis>(sdkId).calendarItem.deleteCalendarItems(
         calendarItems,
       )
@@ -600,6 +602,29 @@ public object CalendarItemApi {
     }
   }
 
+  public fun createCalendarItem(
+    dartResultCallback: (
+      String?,
+      String?,
+      String?,
+      String?,
+    ) -> Unit,
+    sdkId: String,
+    entityString: String,
+  ) {
+    val entity = fullLanguageInteropJson.decodeFromString(
+      DecryptedCalendarItem.serializer(),
+      entityString
+    )
+    ApiScope.execute(
+      dartResultCallback,
+      DecryptedCalendarItem.serializer()) {
+      NativeReferences.get<CardinalApis>(sdkId).calendarItem.createCalendarItem(
+        entity,
+      )
+    }
+  }
+
   public fun undeleteCalendarItemById(
     dartResultCallback: (
       String?,
@@ -691,7 +716,7 @@ public object CalendarItemApi {
     )
     ApiScope.execute(
       dartResultCallback,
-      DecryptedCalendarItem.serializer()) {
+      DecryptedCalendarItem.serializer().nullable) {
       NativeReferences.get<CardinalApis>(sdkId).calendarItem.getCalendarItem(
         entityId,
       )
@@ -917,6 +942,29 @@ public object CalendarItemApi {
       }
     }
 
+    public fun createCalendarItem(
+      dartResultCallback: (
+        String?,
+        String?,
+        String?,
+        String?,
+      ) -> Unit,
+      sdkId: String,
+      entityString: String,
+    ) {
+      val entity = fullLanguageInteropJson.decodeFromString(
+        EncryptedCalendarItem.serializer(),
+        entityString
+      )
+      ApiScope.execute(
+        dartResultCallback,
+        EncryptedCalendarItem.serializer()) {
+        NativeReferences.get<CardinalApis>(sdkId).calendarItem.encrypted.createCalendarItem(
+          entity,
+        )
+      }
+    }
+
     public fun undeleteCalendarItemById(
       dartResultCallback: (
         String?,
@@ -1008,7 +1056,7 @@ public object CalendarItemApi {
       )
       ApiScope.execute(
         dartResultCallback,
-        EncryptedCalendarItem.serializer()) {
+        EncryptedCalendarItem.serializer().nullable) {
         NativeReferences.get<CardinalApis>(sdkId).calendarItem.encrypted.getCalendarItem(
           entityId,
         )
@@ -1196,6 +1244,29 @@ public object CalendarItemApi {
       }
     }
 
+    public fun createCalendarItem(
+      dartResultCallback: (
+        String?,
+        String?,
+        String?,
+        String?,
+      ) -> Unit,
+      sdkId: String,
+      entityString: String,
+    ) {
+      val entity = fullLanguageInteropJson.decodeFromString(
+        PolymorphicSerializer(CalendarItem::class),
+        entityString
+      )
+      ApiScope.execute(
+        dartResultCallback,
+        PolymorphicSerializer(CalendarItem::class)) {
+        NativeReferences.get<CardinalApis>(sdkId).calendarItem.tryAndRecover.createCalendarItem(
+          entity,
+        )
+      }
+    }
+
     public fun undeleteCalendarItemById(
       dartResultCallback: (
         String?,
@@ -1287,7 +1358,7 @@ public object CalendarItemApi {
       )
       ApiScope.execute(
         dartResultCallback,
-        PolymorphicSerializer(CalendarItem::class)) {
+        PolymorphicSerializer(CalendarItem::class).nullable) {
         NativeReferences.get<CardinalApis>(sdkId).calendarItem.tryAndRecover.getCalendarItem(
           entityId,
         )
@@ -1314,6 +1385,1096 @@ public object CalendarItemApi {
         NativeReferences.get<CardinalApis>(sdkId).calendarItem.tryAndRecover.getCalendarItems(
           entityIds,
         )
+      }
+    }
+  }
+
+  @OptIn(InternalIcureApi::class)
+  public object inGroup {
+    public fun withEncryptionMetadata(
+      dartResultCallback: (
+        String?,
+        String?,
+        String?,
+        String?,
+      ) -> Unit,
+      sdkId: String,
+      entityGroupIdString: String,
+      baseString: String,
+      patientString: String,
+      userString: String,
+      delegatesString: String,
+      secretIdString: String,
+    ) {
+      val entityGroupId = fullLanguageInteropJson.decodeFromString(
+        String.serializer(),
+        entityGroupIdString
+      )
+      val base = fullLanguageInteropJson.decodeFromString(
+        DecryptedCalendarItem.serializer().nullable,
+        baseString
+      )
+      val patient = fullLanguageInteropJson.decodeFromString(
+        GroupScoped.serializer(PolymorphicSerializer(Patient::class)).nullable,
+        patientString
+      )
+      val user = fullLanguageInteropJson.decodeFromString(
+        User.serializer().nullable,
+        userString
+      )
+      val delegates = fullLanguageInteropJson.decodeFromString(
+        MapAsArraySerializer(EntityReferenceInGroup.serializer(), AccessLevel.serializer()),
+        delegatesString
+      )
+      val secretId = fullLanguageInteropJson.decodeFromString(
+        SecretIdUseOption.serializer(),
+        secretIdString
+      )
+      ApiScope.execute(
+        dartResultCallback,
+        GroupScoped.serializer(DecryptedCalendarItem.serializer())) {
+        NativeReferences.get<CardinalApis>(sdkId).calendarItem.inGroup.withEncryptionMetadata(
+          entityGroupId,
+          base,
+          patient,
+          user,
+          delegates,
+          secretId,
+        )
+      }
+    }
+
+    public fun getEncryptionKeysOf(
+      dartResultCallback: (
+        String?,
+        String?,
+        String?,
+        String?,
+      ) -> Unit,
+      sdkId: String,
+      calendarItemString: String,
+    ) {
+      val calendarItem = fullLanguageInteropJson.decodeFromString(
+        GroupScoped.serializer(PolymorphicSerializer(CalendarItem::class)),
+        calendarItemString
+      )
+      ApiScope.execute(
+        dartResultCallback,
+        SetSerializer(HexString.serializer())) {
+        NativeReferences.get<CardinalApis>(sdkId).calendarItem.inGroup.getEncryptionKeysOf(
+          calendarItem,
+        )
+      }
+    }
+
+    public fun hasWriteAccess(
+      dartResultCallback: (
+        String?,
+        String?,
+        String?,
+        String?,
+      ) -> Unit,
+      sdkId: String,
+      calendarItemString: String,
+    ) {
+      val calendarItem = fullLanguageInteropJson.decodeFromString(
+        GroupScoped.serializer(PolymorphicSerializer(CalendarItem::class)),
+        calendarItemString
+      )
+      ApiScope.execute(
+        dartResultCallback,
+        Boolean.serializer()) {
+        NativeReferences.get<CardinalApis>(sdkId).calendarItem.inGroup.hasWriteAccess(
+          calendarItem,
+        )
+      }
+    }
+
+    public fun decryptPatientIdOf(
+      dartResultCallback: (
+        String?,
+        String?,
+        String?,
+        String?,
+      ) -> Unit,
+      sdkId: String,
+      calendarItemString: String,
+    ) {
+      val calendarItem = fullLanguageInteropJson.decodeFromString(
+        GroupScoped.serializer(PolymorphicSerializer(CalendarItem::class)),
+        calendarItemString
+      )
+      ApiScope.execute(
+        dartResultCallback,
+        SetSerializer(EntityReferenceInGroup.serializer())) {
+        NativeReferences.get<CardinalApis>(sdkId).calendarItem.inGroup.decryptPatientIdOf(
+          calendarItem,
+        )
+      }
+    }
+
+    public fun createDelegationDeAnonymizationMetadata(
+      dartResultCallback: (
+        String?,
+        String?,
+        String?,
+        String?,
+      ) -> Unit,
+      sdkId: String,
+      entityString: String,
+      delegatesString: String,
+    ) {
+      val entity = fullLanguageInteropJson.decodeFromString(
+        GroupScoped.serializer(PolymorphicSerializer(CalendarItem::class)),
+        entityString
+      )
+      val delegates = fullLanguageInteropJson.decodeFromString(
+        SetSerializer(EntityReferenceInGroup.serializer()),
+        delegatesString
+      )
+      ApiScope.execute(
+        dartResultCallback,
+        Unit.serializer()) {
+        NativeReferences.get<CardinalApis>(sdkId).calendarItem.inGroup.createDelegationDeAnonymizationMetadata(
+          entity,
+          delegates,
+        )
+      }
+    }
+
+    public fun decrypt(
+      dartResultCallback: (
+        String?,
+        String?,
+        String?,
+        String?,
+      ) -> Unit,
+      sdkId: String,
+      calendarItemsString: String,
+    ) {
+      val calendarItems = fullLanguageInteropJson.decodeFromString(
+        ListSerializer(GroupScoped.serializer(EncryptedCalendarItem.serializer())),
+        calendarItemsString
+      )
+      ApiScope.execute(
+        dartResultCallback,
+        ListSerializer(GroupScoped.serializer(DecryptedCalendarItem.serializer()))) {
+        NativeReferences.get<CardinalApis>(sdkId).calendarItem.inGroup.decrypt(
+          calendarItems,
+        )
+      }
+    }
+
+    public fun tryDecrypt(
+      dartResultCallback: (
+        String?,
+        String?,
+        String?,
+        String?,
+      ) -> Unit,
+      sdkId: String,
+      calendarItemsString: String,
+    ) {
+      val calendarItems = fullLanguageInteropJson.decodeFromString(
+        ListSerializer(GroupScoped.serializer(EncryptedCalendarItem.serializer())),
+        calendarItemsString
+      )
+      ApiScope.execute(
+        dartResultCallback,
+        ListSerializer(GroupScoped.serializer(PolymorphicSerializer(CalendarItem::class)))) {
+        NativeReferences.get<CardinalApis>(sdkId).calendarItem.inGroup.tryDecrypt(
+          calendarItems,
+        )
+      }
+    }
+
+    public fun encryptOrValidate(
+      dartResultCallback: (
+        String?,
+        String?,
+        String?,
+        String?,
+      ) -> Unit,
+      sdkId: String,
+      calendarItemsString: String,
+    ) {
+      val calendarItems = fullLanguageInteropJson.decodeFromString(
+        ListSerializer(GroupScoped.serializer(PolymorphicSerializer(CalendarItem::class))),
+        calendarItemsString
+      )
+      ApiScope.execute(
+        dartResultCallback,
+        ListSerializer(GroupScoped.serializer(EncryptedCalendarItem.serializer()))) {
+        NativeReferences.get<CardinalApis>(sdkId).calendarItem.inGroup.encryptOrValidate(
+          calendarItems,
+        )
+      }
+    }
+
+    public fun matchCalendarItemsBy(
+      dartResultCallback: (
+        String?,
+        String?,
+        String?,
+        String?,
+      ) -> Unit,
+      sdkId: String,
+      groupIdString: String,
+      filterString: String,
+    ) {
+      val groupId = fullLanguageInteropJson.decodeFromString(
+        String.serializer(),
+        groupIdString
+      )
+      val filter = fullLanguageInteropJson.decodeFromString(
+        FilterOptions.serializer(PolymorphicSerializer(CalendarItem::class)),
+        filterString
+      )
+      ApiScope.execute(
+        dartResultCallback,
+        ListSerializer(String.serializer())) {
+        NativeReferences.get<CardinalApis>(sdkId).calendarItem.inGroup.matchCalendarItemsBy(
+          groupId,
+          filter,
+        )
+      }
+    }
+
+    public fun matchCalendarItemsBySorted(
+      dartResultCallback: (
+        String?,
+        String?,
+        String?,
+        String?,
+      ) -> Unit,
+      sdkId: String,
+      groupIdString: String,
+      filterString: String,
+    ) {
+      val groupId = fullLanguageInteropJson.decodeFromString(
+        String.serializer(),
+        groupIdString
+      )
+      val filter = fullLanguageInteropJson.decodeFromString(
+        SortableFilterOptions.serializer(PolymorphicSerializer(CalendarItem::class)),
+        filterString
+      )
+      ApiScope.execute(
+        dartResultCallback,
+        ListSerializer(String.serializer())) {
+        NativeReferences.get<CardinalApis>(sdkId).calendarItem.inGroup.matchCalendarItemsBySorted(
+          groupId,
+          filter,
+        )
+      }
+    }
+
+    public fun deleteCalendarItemById(
+      dartResultCallback: (
+        String?,
+        String?,
+        String?,
+        String?,
+      ) -> Unit,
+      sdkId: String,
+      entityIdString: String,
+    ) {
+      val entityId = fullLanguageInteropJson.decodeFromString(
+        GroupScoped.serializer(StoredDocumentIdentifier.serializer()),
+        entityIdString
+      )
+      ApiScope.execute(
+        dartResultCallback,
+        GroupScoped.serializer(StoredDocumentIdentifier.serializer())) {
+        NativeReferences.get<CardinalApis>(sdkId).calendarItem.inGroup.deleteCalendarItemById(
+          entityId,
+        )
+      }
+    }
+
+    public fun deleteCalendarItemsByIds(
+      dartResultCallback: (
+        String?,
+        String?,
+        String?,
+        String?,
+      ) -> Unit,
+      sdkId: String,
+      entityIdsString: String,
+    ) {
+      val entityIds = fullLanguageInteropJson.decodeFromString(
+        ListSerializer(GroupScoped.serializer(StoredDocumentIdentifier.serializer())),
+        entityIdsString
+      )
+      ApiScope.execute(
+        dartResultCallback,
+        ListSerializer(GroupScoped.serializer(StoredDocumentIdentifier.serializer()))) {
+        NativeReferences.get<CardinalApis>(sdkId).calendarItem.inGroup.deleteCalendarItemsByIds(
+          entityIds,
+        )
+      }
+    }
+
+    public fun deleteCalendarItem(
+      dartResultCallback: (
+        String?,
+        String?,
+        String?,
+        String?,
+      ) -> Unit,
+      sdkId: String,
+      calendarItemString: String,
+    ) {
+      val calendarItem = fullLanguageInteropJson.decodeFromString(
+        GroupScoped.serializer(PolymorphicSerializer(CalendarItem::class)),
+        calendarItemString
+      )
+      ApiScope.execute(
+        dartResultCallback,
+        GroupScoped.serializer(StoredDocumentIdentifier.serializer())) {
+        NativeReferences.get<CardinalApis>(sdkId).calendarItem.inGroup.deleteCalendarItem(
+          calendarItem,
+        )
+      }
+    }
+
+    public fun deleteCalendarItems(
+      dartResultCallback: (
+        String?,
+        String?,
+        String?,
+        String?,
+      ) -> Unit,
+      sdkId: String,
+      calendarItemsString: String,
+    ) {
+      val calendarItems = fullLanguageInteropJson.decodeFromString(
+        ListSerializer(GroupScoped.serializer(PolymorphicSerializer(CalendarItem::class))),
+        calendarItemsString
+      )
+      ApiScope.execute(
+        dartResultCallback,
+        ListSerializer(GroupScoped.serializer(StoredDocumentIdentifier.serializer()))) {
+        NativeReferences.get<CardinalApis>(sdkId).calendarItem.inGroup.deleteCalendarItems(
+          calendarItems,
+        )
+      }
+    }
+
+    public fun shareWith(
+      dartResultCallback: (
+        String?,
+        String?,
+        String?,
+        String?,
+      ) -> Unit,
+      sdkId: String,
+      delegateString: String,
+      calendarItemString: String,
+      optionsString: String,
+    ) {
+      val delegate = fullLanguageInteropJson.decodeFromString(
+        EntityReferenceInGroup.serializer(),
+        delegateString
+      )
+      val calendarItem = fullLanguageInteropJson.decodeFromString(
+        GroupScoped.serializer(DecryptedCalendarItem.serializer()),
+        calendarItemString
+      )
+      val options = fullLanguageInteropJson.decodeFromString(
+        CalendarItemShareOptions.serializer().nullable,
+        optionsString
+      )
+      ApiScope.execute(
+        dartResultCallback,
+        GroupScoped.serializer(DecryptedCalendarItem.serializer())) {
+        NativeReferences.get<CardinalApis>(sdkId).calendarItem.inGroup.shareWith(
+          delegate,
+          calendarItem,
+          options,
+        )
+      }
+    }
+
+    public fun shareWithMany(
+      dartResultCallback: (
+        String?,
+        String?,
+        String?,
+        String?,
+      ) -> Unit,
+      sdkId: String,
+      calendarItemString: String,
+      delegatesString: String,
+    ) {
+      val calendarItem = fullLanguageInteropJson.decodeFromString(
+        GroupScoped.serializer(DecryptedCalendarItem.serializer()),
+        calendarItemString
+      )
+      val delegates = fullLanguageInteropJson.decodeFromString(
+        MapAsArraySerializer(EntityReferenceInGroup.serializer(),
+            CalendarItemShareOptions.serializer()),
+        delegatesString
+      )
+      ApiScope.execute(
+        dartResultCallback,
+        GroupScoped.serializer(DecryptedCalendarItem.serializer())) {
+        NativeReferences.get<CardinalApis>(sdkId).calendarItem.inGroup.shareWithMany(
+          calendarItem,
+          delegates,
+        )
+      }
+    }
+
+    public fun filterCalendarItemsBy(
+      dartResultCallback: (
+        String?,
+        String?,
+        String?,
+        String?,
+      ) -> Unit,
+      sdkId: String,
+      groupIdString: String,
+      filterString: String,
+    ) {
+      val groupId = fullLanguageInteropJson.decodeFromString(
+        String.serializer(),
+        groupIdString
+      )
+      val filter = fullLanguageInteropJson.decodeFromString(
+        FilterOptions.serializer(PolymorphicSerializer(CalendarItem::class)),
+        filterString
+      )
+      ApiScope.execute(
+        dartResultCallback,
+        String.serializer()) {
+        val richResult =
+            NativeReferences.get<CardinalApis>(sdkId).calendarItem.inGroup.filterCalendarItemsBy(
+          groupId,
+          filter,
+        )
+        NativeReferences.create(PaginatedListIteratorWithSerializer(
+          richResult,
+          GroupScoped.serializer(DecryptedCalendarItem.serializer())
+        ))
+      }
+    }
+
+    public fun filterCalendarItemsBySorted(
+      dartResultCallback: (
+        String?,
+        String?,
+        String?,
+        String?,
+      ) -> Unit,
+      sdkId: String,
+      groupIdString: String,
+      filterString: String,
+    ) {
+      val groupId = fullLanguageInteropJson.decodeFromString(
+        String.serializer(),
+        groupIdString
+      )
+      val filter = fullLanguageInteropJson.decodeFromString(
+        SortableFilterOptions.serializer(PolymorphicSerializer(CalendarItem::class)),
+        filterString
+      )
+      ApiScope.execute(
+        dartResultCallback,
+        String.serializer()) {
+        val richResult =
+            NativeReferences.get<CardinalApis>(sdkId).calendarItem.inGroup.filterCalendarItemsBySorted(
+          groupId,
+          filter,
+        )
+        NativeReferences.create(PaginatedListIteratorWithSerializer(
+          richResult,
+          GroupScoped.serializer(DecryptedCalendarItem.serializer())
+        ))
+      }
+    }
+
+    public fun createCalendarItem(
+      dartResultCallback: (
+        String?,
+        String?,
+        String?,
+        String?,
+      ) -> Unit,
+      sdkId: String,
+      entityString: String,
+    ) {
+      val entity = fullLanguageInteropJson.decodeFromString(
+        GroupScoped.serializer(DecryptedCalendarItem.serializer()),
+        entityString
+      )
+      ApiScope.execute(
+        dartResultCallback,
+        GroupScoped.serializer(DecryptedCalendarItem.serializer())) {
+        NativeReferences.get<CardinalApis>(sdkId).calendarItem.inGroup.createCalendarItem(
+          entity,
+        )
+      }
+    }
+
+    public fun modifyCalendarItem(
+      dartResultCallback: (
+        String?,
+        String?,
+        String?,
+        String?,
+      ) -> Unit,
+      sdkId: String,
+      entityString: String,
+    ) {
+      val entity = fullLanguageInteropJson.decodeFromString(
+        GroupScoped.serializer(DecryptedCalendarItem.serializer()),
+        entityString
+      )
+      ApiScope.execute(
+        dartResultCallback,
+        GroupScoped.serializer(DecryptedCalendarItem.serializer())) {
+        NativeReferences.get<CardinalApis>(sdkId).calendarItem.inGroup.modifyCalendarItem(
+          entity,
+        )
+      }
+    }
+
+    public fun getCalendarItem(
+      dartResultCallback: (
+        String?,
+        String?,
+        String?,
+        String?,
+      ) -> Unit,
+      sdkId: String,
+      groupIdString: String,
+      entityIdString: String,
+    ) {
+      val groupId = fullLanguageInteropJson.decodeFromString(
+        String.serializer(),
+        groupIdString
+      )
+      val entityId = fullLanguageInteropJson.decodeFromString(
+        String.serializer(),
+        entityIdString
+      )
+      ApiScope.execute(
+        dartResultCallback,
+        GroupScoped.serializer(DecryptedCalendarItem.serializer()).nullable) {
+        NativeReferences.get<CardinalApis>(sdkId).calendarItem.inGroup.getCalendarItem(
+          groupId,
+          entityId,
+        )
+      }
+    }
+
+    public fun getCalendarItems(
+      dartResultCallback: (
+        String?,
+        String?,
+        String?,
+        String?,
+      ) -> Unit,
+      sdkId: String,
+      groupIdString: String,
+      entityIdsString: String,
+    ) {
+      val groupId = fullLanguageInteropJson.decodeFromString(
+        String.serializer(),
+        groupIdString
+      )
+      val entityIds = fullLanguageInteropJson.decodeFromString(
+        ListSerializer(String.serializer()),
+        entityIdsString
+      )
+      ApiScope.execute(
+        dartResultCallback,
+        ListSerializer(GroupScoped.serializer(DecryptedCalendarItem.serializer()))) {
+        NativeReferences.get<CardinalApis>(sdkId).calendarItem.inGroup.getCalendarItems(
+          groupId,
+          entityIds,
+        )
+      }
+    }
+
+    @OptIn(InternalIcureApi::class)
+    public object encrypted {
+      public fun shareWith(
+        dartResultCallback: (
+          String?,
+          String?,
+          String?,
+          String?,
+        ) -> Unit,
+        sdkId: String,
+        delegateString: String,
+        calendarItemString: String,
+        optionsString: String,
+      ) {
+        val delegate = fullLanguageInteropJson.decodeFromString(
+          EntityReferenceInGroup.serializer(),
+          delegateString
+        )
+        val calendarItem = fullLanguageInteropJson.decodeFromString(
+          GroupScoped.serializer(EncryptedCalendarItem.serializer()),
+          calendarItemString
+        )
+        val options = fullLanguageInteropJson.decodeFromString(
+          CalendarItemShareOptions.serializer().nullable,
+          optionsString
+        )
+        ApiScope.execute(
+          dartResultCallback,
+          GroupScoped.serializer(EncryptedCalendarItem.serializer())) {
+          NativeReferences.get<CardinalApis>(sdkId).calendarItem.inGroup.encrypted.shareWith(
+            delegate,
+            calendarItem,
+            options,
+          )
+        }
+      }
+
+      public fun shareWithMany(
+        dartResultCallback: (
+          String?,
+          String?,
+          String?,
+          String?,
+        ) -> Unit,
+        sdkId: String,
+        calendarItemString: String,
+        delegatesString: String,
+      ) {
+        val calendarItem = fullLanguageInteropJson.decodeFromString(
+          GroupScoped.serializer(EncryptedCalendarItem.serializer()),
+          calendarItemString
+        )
+        val delegates = fullLanguageInteropJson.decodeFromString(
+          MapAsArraySerializer(EntityReferenceInGroup.serializer(),
+              CalendarItemShareOptions.serializer()),
+          delegatesString
+        )
+        ApiScope.execute(
+          dartResultCallback,
+          GroupScoped.serializer(EncryptedCalendarItem.serializer())) {
+          NativeReferences.get<CardinalApis>(sdkId).calendarItem.inGroup.encrypted.shareWithMany(
+            calendarItem,
+            delegates,
+          )
+        }
+      }
+
+      public fun filterCalendarItemsBy(
+        dartResultCallback: (
+          String?,
+          String?,
+          String?,
+          String?,
+        ) -> Unit,
+        sdkId: String,
+        groupIdString: String,
+        filterString: String,
+      ) {
+        val groupId = fullLanguageInteropJson.decodeFromString(
+          String.serializer(),
+          groupIdString
+        )
+        val filter = fullLanguageInteropJson.decodeFromString(
+          FilterOptions.serializer(PolymorphicSerializer(CalendarItem::class)),
+          filterString
+        )
+        ApiScope.execute(
+          dartResultCallback,
+          String.serializer()) {
+          val richResult =
+              NativeReferences.get<CardinalApis>(sdkId).calendarItem.inGroup.encrypted.filterCalendarItemsBy(
+            groupId,
+            filter,
+          )
+          NativeReferences.create(PaginatedListIteratorWithSerializer(
+            richResult,
+            GroupScoped.serializer(EncryptedCalendarItem.serializer())
+          ))
+        }
+      }
+
+      public fun filterCalendarItemsBySorted(
+        dartResultCallback: (
+          String?,
+          String?,
+          String?,
+          String?,
+        ) -> Unit,
+        sdkId: String,
+        groupIdString: String,
+        filterString: String,
+      ) {
+        val groupId = fullLanguageInteropJson.decodeFromString(
+          String.serializer(),
+          groupIdString
+        )
+        val filter = fullLanguageInteropJson.decodeFromString(
+          SortableFilterOptions.serializer(PolymorphicSerializer(CalendarItem::class)),
+          filterString
+        )
+        ApiScope.execute(
+          dartResultCallback,
+          String.serializer()) {
+          val richResult =
+              NativeReferences.get<CardinalApis>(sdkId).calendarItem.inGroup.encrypted.filterCalendarItemsBySorted(
+            groupId,
+            filter,
+          )
+          NativeReferences.create(PaginatedListIteratorWithSerializer(
+            richResult,
+            GroupScoped.serializer(EncryptedCalendarItem.serializer())
+          ))
+        }
+      }
+
+      public fun createCalendarItem(
+        dartResultCallback: (
+          String?,
+          String?,
+          String?,
+          String?,
+        ) -> Unit,
+        sdkId: String,
+        entityString: String,
+      ) {
+        val entity = fullLanguageInteropJson.decodeFromString(
+          GroupScoped.serializer(EncryptedCalendarItem.serializer()),
+          entityString
+        )
+        ApiScope.execute(
+          dartResultCallback,
+          GroupScoped.serializer(EncryptedCalendarItem.serializer())) {
+          NativeReferences.get<CardinalApis>(sdkId).calendarItem.inGroup.encrypted.createCalendarItem(
+            entity,
+          )
+        }
+      }
+
+      public fun modifyCalendarItem(
+        dartResultCallback: (
+          String?,
+          String?,
+          String?,
+          String?,
+        ) -> Unit,
+        sdkId: String,
+        entityString: String,
+      ) {
+        val entity = fullLanguageInteropJson.decodeFromString(
+          GroupScoped.serializer(EncryptedCalendarItem.serializer()),
+          entityString
+        )
+        ApiScope.execute(
+          dartResultCallback,
+          GroupScoped.serializer(EncryptedCalendarItem.serializer())) {
+          NativeReferences.get<CardinalApis>(sdkId).calendarItem.inGroup.encrypted.modifyCalendarItem(
+            entity,
+          )
+        }
+      }
+
+      public fun getCalendarItem(
+        dartResultCallback: (
+          String?,
+          String?,
+          String?,
+          String?,
+        ) -> Unit,
+        sdkId: String,
+        groupIdString: String,
+        entityIdString: String,
+      ) {
+        val groupId = fullLanguageInteropJson.decodeFromString(
+          String.serializer(),
+          groupIdString
+        )
+        val entityId = fullLanguageInteropJson.decodeFromString(
+          String.serializer(),
+          entityIdString
+        )
+        ApiScope.execute(
+          dartResultCallback,
+          GroupScoped.serializer(EncryptedCalendarItem.serializer()).nullable) {
+          NativeReferences.get<CardinalApis>(sdkId).calendarItem.inGroup.encrypted.getCalendarItem(
+            groupId,
+            entityId,
+          )
+        }
+      }
+
+      public fun getCalendarItems(
+        dartResultCallback: (
+          String?,
+          String?,
+          String?,
+          String?,
+        ) -> Unit,
+        sdkId: String,
+        groupIdString: String,
+        entityIdsString: String,
+      ) {
+        val groupId = fullLanguageInteropJson.decodeFromString(
+          String.serializer(),
+          groupIdString
+        )
+        val entityIds = fullLanguageInteropJson.decodeFromString(
+          ListSerializer(String.serializer()),
+          entityIdsString
+        )
+        ApiScope.execute(
+          dartResultCallback,
+          ListSerializer(GroupScoped.serializer(EncryptedCalendarItem.serializer()))) {
+          NativeReferences.get<CardinalApis>(sdkId).calendarItem.inGroup.encrypted.getCalendarItems(
+            groupId,
+            entityIds,
+          )
+        }
+      }
+    }
+
+    @OptIn(InternalIcureApi::class)
+    public object tryAndRecover {
+      public fun shareWith(
+        dartResultCallback: (
+          String?,
+          String?,
+          String?,
+          String?,
+        ) -> Unit,
+        sdkId: String,
+        delegateString: String,
+        calendarItemString: String,
+        optionsString: String,
+      ) {
+        val delegate = fullLanguageInteropJson.decodeFromString(
+          EntityReferenceInGroup.serializer(),
+          delegateString
+        )
+        val calendarItem = fullLanguageInteropJson.decodeFromString(
+          GroupScoped.serializer(PolymorphicSerializer(CalendarItem::class)),
+          calendarItemString
+        )
+        val options = fullLanguageInteropJson.decodeFromString(
+          CalendarItemShareOptions.serializer().nullable,
+          optionsString
+        )
+        ApiScope.execute(
+          dartResultCallback,
+          GroupScoped.serializer(PolymorphicSerializer(CalendarItem::class))) {
+          NativeReferences.get<CardinalApis>(sdkId).calendarItem.inGroup.tryAndRecover.shareWith(
+            delegate,
+            calendarItem,
+            options,
+          )
+        }
+      }
+
+      public fun shareWithMany(
+        dartResultCallback: (
+          String?,
+          String?,
+          String?,
+          String?,
+        ) -> Unit,
+        sdkId: String,
+        calendarItemString: String,
+        delegatesString: String,
+      ) {
+        val calendarItem = fullLanguageInteropJson.decodeFromString(
+          GroupScoped.serializer(PolymorphicSerializer(CalendarItem::class)),
+          calendarItemString
+        )
+        val delegates = fullLanguageInteropJson.decodeFromString(
+          MapAsArraySerializer(EntityReferenceInGroup.serializer(),
+              CalendarItemShareOptions.serializer()),
+          delegatesString
+        )
+        ApiScope.execute(
+          dartResultCallback,
+          GroupScoped.serializer(PolymorphicSerializer(CalendarItem::class))) {
+          NativeReferences.get<CardinalApis>(sdkId).calendarItem.inGroup.tryAndRecover.shareWithMany(
+            calendarItem,
+            delegates,
+          )
+        }
+      }
+
+      public fun filterCalendarItemsBy(
+        dartResultCallback: (
+          String?,
+          String?,
+          String?,
+          String?,
+        ) -> Unit,
+        sdkId: String,
+        groupIdString: String,
+        filterString: String,
+      ) {
+        val groupId = fullLanguageInteropJson.decodeFromString(
+          String.serializer(),
+          groupIdString
+        )
+        val filter = fullLanguageInteropJson.decodeFromString(
+          FilterOptions.serializer(PolymorphicSerializer(CalendarItem::class)),
+          filterString
+        )
+        ApiScope.execute(
+          dartResultCallback,
+          String.serializer()) {
+          val richResult =
+              NativeReferences.get<CardinalApis>(sdkId).calendarItem.inGroup.tryAndRecover.filterCalendarItemsBy(
+            groupId,
+            filter,
+          )
+          NativeReferences.create(PaginatedListIteratorWithSerializer(
+            richResult,
+            GroupScoped.serializer(PolymorphicSerializer(CalendarItem::class))
+          ))
+        }
+      }
+
+      public fun filterCalendarItemsBySorted(
+        dartResultCallback: (
+          String?,
+          String?,
+          String?,
+          String?,
+        ) -> Unit,
+        sdkId: String,
+        groupIdString: String,
+        filterString: String,
+      ) {
+        val groupId = fullLanguageInteropJson.decodeFromString(
+          String.serializer(),
+          groupIdString
+        )
+        val filter = fullLanguageInteropJson.decodeFromString(
+          SortableFilterOptions.serializer(PolymorphicSerializer(CalendarItem::class)),
+          filterString
+        )
+        ApiScope.execute(
+          dartResultCallback,
+          String.serializer()) {
+          val richResult =
+              NativeReferences.get<CardinalApis>(sdkId).calendarItem.inGroup.tryAndRecover.filterCalendarItemsBySorted(
+            groupId,
+            filter,
+          )
+          NativeReferences.create(PaginatedListIteratorWithSerializer(
+            richResult,
+            GroupScoped.serializer(PolymorphicSerializer(CalendarItem::class))
+          ))
+        }
+      }
+
+      public fun createCalendarItem(
+        dartResultCallback: (
+          String?,
+          String?,
+          String?,
+          String?,
+        ) -> Unit,
+        sdkId: String,
+        entityString: String,
+      ) {
+        val entity = fullLanguageInteropJson.decodeFromString(
+          GroupScoped.serializer(PolymorphicSerializer(CalendarItem::class)),
+          entityString
+        )
+        ApiScope.execute(
+          dartResultCallback,
+          GroupScoped.serializer(PolymorphicSerializer(CalendarItem::class))) {
+          NativeReferences.get<CardinalApis>(sdkId).calendarItem.inGroup.tryAndRecover.createCalendarItem(
+            entity,
+          )
+        }
+      }
+
+      public fun modifyCalendarItem(
+        dartResultCallback: (
+          String?,
+          String?,
+          String?,
+          String?,
+        ) -> Unit,
+        sdkId: String,
+        entityString: String,
+      ) {
+        val entity = fullLanguageInteropJson.decodeFromString(
+          GroupScoped.serializer(PolymorphicSerializer(CalendarItem::class)),
+          entityString
+        )
+        ApiScope.execute(
+          dartResultCallback,
+          GroupScoped.serializer(PolymorphicSerializer(CalendarItem::class))) {
+          NativeReferences.get<CardinalApis>(sdkId).calendarItem.inGroup.tryAndRecover.modifyCalendarItem(
+            entity,
+          )
+        }
+      }
+
+      public fun getCalendarItem(
+        dartResultCallback: (
+          String?,
+          String?,
+          String?,
+          String?,
+        ) -> Unit,
+        sdkId: String,
+        groupIdString: String,
+        entityIdString: String,
+      ) {
+        val groupId = fullLanguageInteropJson.decodeFromString(
+          String.serializer(),
+          groupIdString
+        )
+        val entityId = fullLanguageInteropJson.decodeFromString(
+          String.serializer(),
+          entityIdString
+        )
+        ApiScope.execute(
+          dartResultCallback,
+          GroupScoped.serializer(PolymorphicSerializer(CalendarItem::class)).nullable) {
+          NativeReferences.get<CardinalApis>(sdkId).calendarItem.inGroup.tryAndRecover.getCalendarItem(
+            groupId,
+            entityId,
+          )
+        }
+      }
+
+      public fun getCalendarItems(
+        dartResultCallback: (
+          String?,
+          String?,
+          String?,
+          String?,
+        ) -> Unit,
+        sdkId: String,
+        groupIdString: String,
+        entityIdsString: String,
+      ) {
+        val groupId = fullLanguageInteropJson.decodeFromString(
+          String.serializer(),
+          groupIdString
+        )
+        val entityIds = fullLanguageInteropJson.decodeFromString(
+          ListSerializer(String.serializer()),
+          entityIdsString
+        )
+        ApiScope.execute(
+          dartResultCallback,
+          ListSerializer(GroupScoped.serializer(PolymorphicSerializer(CalendarItem::class)))) {
+          NativeReferences.get<CardinalApis>(sdkId).calendarItem.inGroup.tryAndRecover.getCalendarItems(
+            groupId,
+            entityIds,
+          )
+        }
       }
     }
   }

@@ -7,8 +7,7 @@ import com.icure.cardinal.sdk.js.filters.BaseFilterOptionsJs
 import com.icure.cardinal.sdk.js.filters.BaseSortableFilterOptionsJs
 import com.icure.cardinal.sdk.js.model.EncryptedHealthElementJs
 import com.icure.cardinal.sdk.js.model.HealthElementJs
-import com.icure.cardinal.sdk.js.model.IdWithMandatoryRevJs
-import com.icure.cardinal.sdk.js.model.couchdb.DocIdentifierJs
+import com.icure.cardinal.sdk.js.model.StoredDocumentIdentifierJs
 import com.icure.cardinal.sdk.js.subscription.EntitySubscriptionJs
 import com.icure.cardinal.sdk.js.utils.pagination.PaginatedListIteratorJs
 import kotlin.Array
@@ -20,6 +19,8 @@ import kotlin.js.Promise
 
 @JsName("HealthElementBasicApi")
 public external interface HealthElementBasicApiJs {
+	public val inGroup: HealthElementBasicInGroupApiJs
+
 	public fun matchHealthElementsBy(filter: BaseFilterOptionsJs<HealthElementJs>):
 			Promise<Array<String>>
 
@@ -32,23 +33,30 @@ public external interface HealthElementBasicApiJs {
 	public fun filterHealthElementsBySorted(filter: BaseSortableFilterOptionsJs<HealthElementJs>):
 			Promise<PaginatedListIteratorJs<EncryptedHealthElementJs>>
 
-	public fun deleteHealthElementUnsafe(entityId: String): Promise<DocIdentifierJs>
+	public fun deleteHealthElementUnsafe(entityId: String): Promise<StoredDocumentIdentifierJs>
 
-	public fun deleteHealthElementsUnsafe(entityIds: Array<String>): Promise<Array<DocIdentifierJs>>
+	public fun deleteHealthElementsUnsafe(entityIds: Array<String>):
+			Promise<Array<StoredDocumentIdentifierJs>>
 
-	public fun deleteHealthElementById(entityId: String, rev: String?): Promise<DocIdentifierJs>
+	public fun deleteHealthElementById(entityId: String, rev: String):
+			Promise<StoredDocumentIdentifierJs>
 
-	public fun deleteHealthElementsByIds(entityIds: Array<IdWithMandatoryRevJs>):
-			Promise<Array<DocIdentifierJs>>
+	public fun deleteHealthElementsByIds(entityIds: Array<StoredDocumentIdentifierJs>):
+			Promise<Array<StoredDocumentIdentifierJs>>
 
 	public fun purgeHealthElementById(id: String, rev: String): Promise<Unit>
 
-	public fun deleteHealthElement(healthElement: HealthElementJs): Promise<DocIdentifierJs>
+	public fun deleteHealthElement(healthElement: HealthElementJs): Promise<StoredDocumentIdentifierJs>
 
 	public fun deleteHealthElements(healthElements: Array<HealthElementJs>):
-			Promise<Array<DocIdentifierJs>>
+			Promise<Array<StoredDocumentIdentifierJs>>
 
 	public fun purgeHealthElement(healthElement: HealthElementJs): Promise<Unit>
+
+	public fun createHealthElement(entity: EncryptedHealthElementJs): Promise<EncryptedHealthElementJs>
+
+	public fun createHealthElements(entities: Array<EncryptedHealthElementJs>):
+			Promise<Array<EncryptedHealthElementJs>>
 
 	public fun undeleteHealthElementById(id: String, rev: String): Promise<EncryptedHealthElementJs>
 
@@ -59,7 +67,7 @@ public external interface HealthElementBasicApiJs {
 	public fun modifyHealthElements(entities: Array<EncryptedHealthElementJs>):
 			Promise<Array<EncryptedHealthElementJs>>
 
-	public fun getHealthElement(entityId: String): Promise<EncryptedHealthElementJs>
+	public fun getHealthElement(entityId: String): Promise<EncryptedHealthElementJs?>
 
 	public fun getHealthElements(entityIds: Array<String>): Promise<Array<EncryptedHealthElementJs>>
 

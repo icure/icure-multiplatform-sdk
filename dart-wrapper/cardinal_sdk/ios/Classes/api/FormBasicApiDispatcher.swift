@@ -29,6 +29,8 @@ class FormBasicApiDispatcher {
     case "deleteFormTemplate": deleteFormTemplate(parameters: parameters, resultCallback: resultCallback)
     case "updateFormTemplate": updateFormTemplate(parameters: parameters, resultCallback: resultCallback)
     case "setTemplateAttachment": setTemplateAttachment(parameters: parameters, resultCallback: resultCallback)
+    case "createForm": createForm(parameters: parameters, resultCallback: resultCallback)
+    case "createForms": createForms(parameters: parameters, resultCallback: resultCallback)
     case "modifyForm": modifyForm(parameters: parameters, resultCallback: resultCallback)
     case "undeleteFormById": undeleteFormById(parameters: parameters, resultCallback: resultCallback)
     case "undeleteForm": undeleteForm(parameters: parameters, resultCallback: resultCallback)
@@ -238,6 +240,32 @@ class FormBasicApiDispatcher {
     	sdkId: parameters["sdkId"]!,
     	formTemplateIdString: parameters["formTemplateId"]!,
     	payloadString: parameters["payload"]!
+    )
+  }
+
+  private static func createForm(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    FormBasicApi.shared.createForm(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	entityString: parameters["entity"]!
+    )
+  }
+
+  private static func createForms(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    FormBasicApi.shared.createForms(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	entitiesString: parameters["entities"]!
     )
   }
 

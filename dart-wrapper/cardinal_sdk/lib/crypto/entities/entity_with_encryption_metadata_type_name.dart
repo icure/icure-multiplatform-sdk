@@ -17,7 +17,6 @@ enum EntityWithEncryptionMetadataTypeName {
 	message,
 	patient,
 	receipt,
-	timeTable,
 	topic;
 
 	static String encode(EntityWithEncryptionMetadataTypeName value) {
@@ -52,8 +51,6 @@ enum EntityWithEncryptionMetadataTypeName {
 				return 'Patient';
 			case EntityWithEncryptionMetadataTypeName.receipt:
 				return 'Receipt';
-			case EntityWithEncryptionMetadataTypeName.timeTable:
-				return 'TimeTable';
 			case EntityWithEncryptionMetadataTypeName.topic:
 				return 'Topic';
 			}
@@ -92,8 +89,6 @@ enum EntityWithEncryptionMetadataTypeName {
 				return EntityWithEncryptionMetadataTypeName.patient;
 			case "Receipt":
 				return EntityWithEncryptionMetadataTypeName.receipt;
-			case "TimeTable":
-				return EntityWithEncryptionMetadataTypeName.timeTable;
 			case "Topic":
 				return EntityWithEncryptionMetadataTypeName.topic;
 			default:

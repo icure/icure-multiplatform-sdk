@@ -1,24 +1,19 @@
 // auto-generated file
+import 'package:freezed_annotation/freezed_annotation.dart';
+part "registration_information.freezed.dart";
 
 
-class RegistrationInformation {
-	String firstName;
-	String lastName;
-	String emailAddress;
-	String? userOptions = null;
-	Set<String> userRoles = {};
-	String? minimumKrakenVersion = null;
-	RegistrationInformation(
-		this.firstName,
-		this.lastName,
-		this.emailAddress,
-		{
-			String? userOptions,
-			Set<String>? userRoles,
-			String? minimumKrakenVersion
-		}) : userOptions = userOptions ?? null,
-		userRoles = userRoles ?? {},
-		minimumKrakenVersion = minimumKrakenVersion ?? null;
+@freezed
+abstract class RegistrationInformation with _$RegistrationInformation {
+	const factory RegistrationInformation({
+		required String firstName,
+		required String lastName,
+		required String emailAddress,
+		@Default(null) String? userOptions,
+		@Default({}) Set<String> userRoles,
+		@Default(null) String? minimumKrakenVersion,
+	}) = _RegistrationInformation;
+
 
 	static Map<String, dynamic> encode(RegistrationInformation value) {
 		Map<String, dynamic> entityAsMap = {
@@ -34,9 +29,9 @@ class RegistrationInformation {
 
 	static RegistrationInformation fromJSON(Map<String, dynamic> data) {
 		return RegistrationInformation(
-			(data["firstName"] as String),
-			(data["lastName"] as String),
-			(data["emailAddress"] as String),
+			firstName: (data["firstName"] as String),
+			lastName: (data["lastName"] as String),
+			emailAddress: (data["emailAddress"] as String),
 			userOptions: (data["userOptions"] as String?),
 			userRoles: (data["userRoles"] as List<dynamic>).map((x0) => (x0 as String) ).toSet(),
 			minimumKrakenVersion: (data["minimumKrakenVersion"] as String?),

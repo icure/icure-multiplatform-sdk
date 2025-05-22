@@ -1,5 +1,6 @@
 package com.icure.cardinal.sdk.crypto.entities
 
+import com.icure.cardinal.sdk.utils.DefaultValue
 import kotlinx.serialization.Serializable
 
 /**
@@ -12,7 +13,7 @@ sealed interface SecretIdShareOptions {
 	 * @param requireAtLeastOne if true the sharing will fail if the current user can't access any secret id of the entity
 	 */
 	@Serializable
-	data class AllAvailable(val requireAtLeastOne: Boolean) : SecretIdShareOptions
+	data class AllAvailable(@DefaultValue("false") val requireAtLeastOne: Boolean = false) : SecretIdShareOptions
 
 	/**
 	 * Share exactly the provided secret ids.

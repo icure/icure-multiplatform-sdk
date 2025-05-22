@@ -11,7 +11,7 @@ import kotlin.js.JsName
 import kotlin.js.JsQualifier
 
 @JsName("CryptoActor")
-public external interface CryptoActorJs : VersionableJs<String>, HasTagsJs {
+public external interface CryptoActorJs : VersionableJs<String> {
 	public val hcPartyKeys: Record<String, out Array<out String>>
 
 	public val aesExchangeKeys: Record<String, out Record<String, out Record<String, out String>>>

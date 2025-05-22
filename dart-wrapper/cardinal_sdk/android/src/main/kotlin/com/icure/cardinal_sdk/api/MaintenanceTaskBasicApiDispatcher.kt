@@ -28,6 +28,7 @@ public object MaintenanceTaskBasicApiDispatcher {
     "deleteMaintenanceTask" -> deleteMaintenanceTask(parameters, resultCallback)
     "deleteMaintenanceTasks" -> deleteMaintenanceTasks(parameters, resultCallback)
     "purgeMaintenanceTask" -> purgeMaintenanceTask(parameters, resultCallback)
+    "createMaintenanceTask" -> createMaintenanceTask(parameters, resultCallback)
     "undeleteMaintenanceTask" -> undeleteMaintenanceTask(parameters, resultCallback)
     "undeleteMaintenanceTaskById" -> undeleteMaintenanceTaskById(parameters, resultCallback)
     "modifyMaintenanceTask" -> modifyMaintenanceTask(parameters, resultCallback)
@@ -166,6 +167,19 @@ public object MaintenanceTaskBasicApiDispatcher {
       resultCallback,
       parameters.getValue("sdkId"),
       parameters.getValue("maintenanceTask"),
+    )
+  }
+
+  private fun createMaintenanceTask(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    MaintenanceTaskBasicApi.createMaintenanceTask(
+      resultCallback,
+      parameters.getValue("sdkId"),
+      parameters.getValue("entity"),
     )
   }
 

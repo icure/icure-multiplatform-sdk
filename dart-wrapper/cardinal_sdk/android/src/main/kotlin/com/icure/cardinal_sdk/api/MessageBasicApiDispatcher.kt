@@ -28,6 +28,8 @@ public object MessageBasicApiDispatcher {
     "deleteMessage" -> deleteMessage(parameters, resultCallback)
     "deleteMessages" -> deleteMessages(parameters, resultCallback)
     "purgeMessage" -> purgeMessage(parameters, resultCallback)
+    "createMessage" -> createMessage(parameters, resultCallback)
+    "createMessageInTopic" -> createMessageInTopic(parameters, resultCallback)
     "undeleteMessage" -> undeleteMessage(parameters, resultCallback)
     "modifyMessage" -> modifyMessage(parameters, resultCallback)
     "undeleteMessageById" -> undeleteMessageById(parameters, resultCallback)
@@ -167,6 +169,32 @@ public object MessageBasicApiDispatcher {
       resultCallback,
       parameters.getValue("sdkId"),
       parameters.getValue("message"),
+    )
+  }
+
+  private fun createMessage(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    MessageBasicApi.createMessage(
+      resultCallback,
+      parameters.getValue("sdkId"),
+      parameters.getValue("entity"),
+    )
+  }
+
+  private fun createMessageInTopic(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    MessageBasicApi.createMessageInTopic(
+      resultCallback,
+      parameters.getValue("sdkId"),
+      parameters.getValue("entity"),
     )
   }
 

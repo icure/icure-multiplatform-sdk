@@ -29,7 +29,7 @@ class MedicalLocationApi {
 		);
 	}
 
-	Future<MedicalLocation> getMedicalLocation(String locationId) async {
+	Future<MedicalLocation?> getMedicalLocation(String locationId) async {
 		return await CardinalSdkPlatformInterface.instance.apis.medicalLocation.getMedicalLocation(
 			_sdkId,
 			locationId,

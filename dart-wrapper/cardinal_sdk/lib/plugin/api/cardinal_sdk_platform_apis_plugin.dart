@@ -7,7 +7,6 @@ import 'package:cardinal_sdk/plugin/api/medical_location_platform_api.dart';
 import 'package:cardinal_sdk/plugin/api/time_table_platform_api.dart';
 import 'package:cardinal_sdk/plugin/api/document_basic_platform_api.dart';
 import 'package:cardinal_sdk/plugin/api/patient_basic_platform_api.dart';
-import 'package:cardinal_sdk/plugin/api/time_table_basic_platform_api.dart';
 import 'package:cardinal_sdk/plugin/api/classification_platform_api.dart';
 import 'package:cardinal_sdk/plugin/api/calendar_item_basic_platform_api.dart';
 import 'package:cardinal_sdk/plugin/api/maintenance_task_platform_api.dart';
@@ -37,6 +36,7 @@ import 'package:cardinal_sdk/plugin/api/classification_basic_platform_api.dart';
 import 'package:cardinal_sdk/plugin/api/shamir_keys_manager_platform_api.dart';
 import 'package:cardinal_sdk/plugin/api/document_platform_api.dart';
 import 'package:cardinal_sdk/plugin/api/entity_template_platform_api.dart';
+import 'package:cardinal_sdk/plugin/api/auth_platform_api.dart';
 import 'package:cardinal_sdk/plugin/api/data_owner_platform_api.dart';
 import 'package:cardinal_sdk/plugin/api/user_platform_api.dart';
 import 'package:cardinal_sdk/plugin/api/role_platform_api.dart';
@@ -47,6 +47,7 @@ import 'package:cardinal_sdk/plugin/api/invoice_platform_api.dart';
 import 'package:cardinal_sdk/plugin/api/message_platform_api.dart';
 import 'package:cardinal_sdk/plugin/api/health_element_platform_api.dart';
 import 'package:cardinal_sdk/plugin/api/invoice_basic_platform_api.dart';
+import 'package:cardinal_sdk/plugin/api/calendar_item_type_platform_api.dart';
 import 'package:cardinal_sdk/plugin/api/topic_basic_platform_api.dart';
 import 'package:cardinal_sdk/plugin/api/insurance_platform_api.dart';
 import 'package:cardinal_sdk/plugin/api/agenda_platform_api.dart';
@@ -70,8 +71,6 @@ abstract class CardinalSdkPlatformApisPlugin {
 	DocumentBasicPlatformApi get documentBasic;
 
 	PatientBasicPlatformApi get patientBasic;
-
-	TimeTableBasicPlatformApi get timeTableBasic;
 
 	ClassificationPlatformApi get classification;
 
@@ -131,6 +130,8 @@ abstract class CardinalSdkPlatformApisPlugin {
 
 	EntityTemplatePlatformApi get entityTemplate;
 
+	AuthPlatformApi get auth;
+
 	DataOwnerPlatformApi get dataOwner;
 
 	UserPlatformApi get user;
@@ -150,6 +151,8 @@ abstract class CardinalSdkPlatformApisPlugin {
 	HealthElementPlatformApi get healthElement;
 
 	InvoiceBasicPlatformApi get invoiceBasic;
+
+	CalendarItemTypePlatformApi get calendarItemType;
 
 	TopicBasicPlatformApi get topicBasic;
 

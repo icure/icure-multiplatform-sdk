@@ -4,7 +4,7 @@ import 'package:cardinal_sdk/model/maintenance_task.dart';
 import 'package:cardinal_sdk/plugin/cardinal_sdk_platform_interface.dart';
 import 'package:cardinal_sdk/utils/pagination/paginated_list_iterator.dart';
 import 'package:cardinal_sdk/model/couchdb/doc_identifier.dart';
-import 'package:cardinal_sdk/model/id_with_mandatory_rev.dart';
+import 'package:cardinal_sdk/model/stored_document_identifier.dart';
 import 'package:cardinal_sdk/subscription/subscription_event_type.dart';
 import 'package:cardinal_sdk/subscription/entity_subscription_configuration.dart';
 import 'package:cardinal_sdk/subscription/entity_subscription.dart';
@@ -54,7 +54,7 @@ class MaintenanceTaskBasicApi {
 		);
 	}
 
-	Future<List<DocIdentifier>> deleteMaintenanceTasksByIds(List<IdWithMandatoryRev> entityIds) async {
+	Future<List<DocIdentifier>> deleteMaintenanceTasksByIds(List<StoredDocumentIdentifier> entityIds) async {
 		return await CardinalSdkPlatformInterface.instance.apis.maintenanceTaskBasic.deleteMaintenanceTasksByIds(
 			_sdkId,
 			entityIds,
@@ -90,6 +90,13 @@ class MaintenanceTaskBasicApi {
 		);
 	}
 
+	Future<EncryptedMaintenanceTask> createMaintenanceTask(EncryptedMaintenanceTask entity) async {
+		return await CardinalSdkPlatformInterface.instance.apis.maintenanceTaskBasic.createMaintenanceTask(
+			_sdkId,
+			entity,
+		);
+	}
+
 	Future<MaintenanceTask> undeleteMaintenanceTask(MaintenanceTask maintenanceTask) async {
 		return await CardinalSdkPlatformInterface.instance.apis.maintenanceTaskBasic.undeleteMaintenanceTask(
 			_sdkId,
@@ -112,7 +119,7 @@ class MaintenanceTaskBasicApi {
 		);
 	}
 
-	Future<EncryptedMaintenanceTask> getMaintenanceTask(String entityId) async {
+	Future<EncryptedMaintenanceTask?> getMaintenanceTask(String entityId) async {
 		return await CardinalSdkPlatformInterface.instance.apis.maintenanceTaskBasic.getMaintenanceTask(
 			_sdkId,
 			entityId,

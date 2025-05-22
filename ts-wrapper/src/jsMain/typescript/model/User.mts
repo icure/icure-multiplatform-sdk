@@ -7,6 +7,7 @@ import {DelegationTag} from './embed/DelegationTag.mjs';
 import {UsersStatus} from './enums/UsersStatus.mjs';
 import {UsersType} from './enums/UsersType.mjs';
 import {AuthenticationToken} from './security/AuthenticationToken.mjs';
+import {LoginIdentifier} from './security/LoginIdentifier.mjs';
 import {Permission} from './security/Permission.mjs';
 
 
@@ -102,10 +103,13 @@ export namespace User {
 
 		inheritsRoles: boolean;
 
+		loginIdentifiers: Array<LoginIdentifier> = [];
+
 		constructor(partial: Partial<SystemMetadata> & Pick<SystemMetadata, "roles" | "isAdmin" | "inheritsRoles">) {
 			this.roles = partial.roles;
 			this.isAdmin = partial.isAdmin;
 			this.inheritsRoles = partial.inheritsRoles;
+			if ('loginIdentifiers' in partial && partial.loginIdentifiers !== undefined) this.loginIdentifiers = partial.loginIdentifiers;
 		}
 
 	}

@@ -9,6 +9,7 @@ import 'package:cardinal_sdk/model/list_of_ids.dart';
 import 'package:cardinal_sdk/model/security/token_with_group.dart';
 import 'package:cardinal_sdk/model/security/enable2fa_request.dart';
 import 'package:cardinal_sdk/model/couchdb/doc_identifier.dart';
+import 'package:cardinal_sdk/model/security/login_identifier.dart';
 import 'package:cardinal_sdk/subscription/subscription_event_type.dart';
 import 'package:cardinal_sdk/subscription/entity_subscription_configuration.dart';
 import 'package:cardinal_sdk/subscription/entity_subscription.dart';
@@ -35,7 +36,7 @@ class UserApi {
 		);
 	}
 
-	Future<User> getUser(String userId) async {
+	Future<User?> getUser(String userId) async {
 		return await CardinalSdkPlatformInterface.instance.apis.user.getUser(
 			_sdkId,
 			userId,
@@ -49,14 +50,14 @@ class UserApi {
 		);
 	}
 
-	Future<User> getUserByEmail(String email) async {
+	Future<User?> getUserByEmail(String email) async {
 		return await CardinalSdkPlatformInterface.instance.apis.user.getUserByEmail(
 			_sdkId,
 			email,
 		);
 	}
 
-	Future<User> getUserByPhoneNumber(String phoneNumber) async {
+	Future<User?> getUserByPhoneNumber(String phoneNumber) async {
 		return await CardinalSdkPlatformInterface.instance.apis.user.getUserByPhoneNumber(
 			_sdkId,
 			phoneNumber,
@@ -358,6 +359,33 @@ class UserApi {
 		return await CardinalSdkPlatformInterface.instance.apis.user.undeleteUser(
 			_sdkId,
 			user,
+		);
+	}
+
+	Future<String> setUserInheritsPermissions(String userId, String groupId, bool value) async {
+		return await CardinalSdkPlatformInterface.instance.apis.user.setUserInheritsPermissions(
+			_sdkId,
+			userId,
+			groupId,
+			value,
+		);
+	}
+
+	Future<bool> setLoginIdentifiers(String userId, String groupId, LoginIdentifier identifier, bool replaceExisting) async {
+		return await CardinalSdkPlatformInterface.instance.apis.user.setLoginIdentifiers(
+			_sdkId,
+			userId,
+			groupId,
+			identifier,
+			replaceExisting,
+		);
+	}
+
+	Future<bool> setExternalJwtAuthByIdentifiersForCurrentUser(String externalJwtConfigId, String externalAuthenticationToken) async {
+		return await CardinalSdkPlatformInterface.instance.apis.user.setExternalJwtAuthByIdentifiersForCurrentUser(
+			_sdkId,
+			externalJwtConfigId,
+			externalAuthenticationToken,
 		);
 	}
 

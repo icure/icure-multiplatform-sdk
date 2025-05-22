@@ -446,19 +446,23 @@ internal class CodeApiImplJs(
 		)
 	}
 
-	override fun getCode(codeId: String): Promise<CodeJs> = GlobalScope.promise {
+	override fun getCode(codeId: String): Promise<CodeJs?> = GlobalScope.promise {
 		val codeIdConverted: String = codeId
 		val result = codeApi.getCode(
 			codeIdConverted,
 		)
-		code_toJs(result)
+		nullToUndefined(
+			result?.let { nonNull1 ->
+				code_toJs(nonNull1)
+			}
+		)
 	}
 
 	override fun getCodeWithParts(
 		type: String,
 		code: String,
 		version: String,
-	): Promise<CodeJs> = GlobalScope.promise {
+	): Promise<CodeJs?> = GlobalScope.promise {
 		val typeConverted: String = type
 		val codeConverted: String = code
 		val versionConverted: String = version
@@ -467,7 +471,11 @@ internal class CodeApiImplJs(
 			codeConverted,
 			versionConverted,
 		)
-		code_toJs(result)
+		nullToUndefined(
+			result?.let { nonNull1 ->
+				code_toJs(nonNull1)
+			}
+		)
 	}
 
 	override fun modifyCode(codeDto: CodeJs): Promise<CodeJs> = GlobalScope.promise {

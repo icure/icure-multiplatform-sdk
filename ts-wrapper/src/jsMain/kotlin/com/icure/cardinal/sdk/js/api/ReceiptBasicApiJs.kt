@@ -27,9 +27,11 @@ public external interface ReceiptBasicApiJs {
 		attachment: ByteArray,
 	): Promise<EncryptedReceiptJs>
 
+	public fun createReceipt(entity: EncryptedReceiptJs): Promise<EncryptedReceiptJs>
+
 	public fun modifyReceipt(entity: EncryptedReceiptJs): Promise<EncryptedReceiptJs>
 
-	public fun getReceipt(entityId: String): Promise<EncryptedReceiptJs>
+	public fun getReceipt(entityId: String): Promise<EncryptedReceiptJs?>
 
 	public fun listByReference(reference: String): Promise<Array<EncryptedReceiptJs>>
 }

@@ -7,11 +7,9 @@ import com.icure.cardinal.sdk.js.crypto.entities.EntityAccessInformationJs
 import com.icure.cardinal.sdk.js.filters.BaseFilterOptionsJs
 import com.icure.cardinal.sdk.js.filters.BaseSortableFilterOptionsJs
 import com.icure.cardinal.sdk.js.model.EncryptedPatientJs
-import com.icure.cardinal.sdk.js.model.IdWithMandatoryRevJs
-import com.icure.cardinal.sdk.js.model.IdWithRevJs
 import com.icure.cardinal.sdk.js.model.PaginatedListJs
 import com.icure.cardinal.sdk.js.model.PatientJs
-import com.icure.cardinal.sdk.js.model.couchdb.DocIdentifierJs
+import com.icure.cardinal.sdk.js.model.StoredDocumentIdentifierJs
 import com.icure.cardinal.sdk.js.subscription.EntitySubscriptionJs
 import com.icure.cardinal.sdk.js.utils.pagination.PaginatedListIteratorJs
 import kotlin.Array
@@ -24,6 +22,8 @@ import kotlin.js.Promise
 
 @JsName("PatientBasicApi")
 public external interface PatientBasicApiJs {
+	public val inGroup: PatientBasicInGroupApiJs
+
 	public fun matchPatientsBy(filter: BaseFilterOptionsJs<PatientJs>): Promise<Array<String>>
 
 	public fun matchPatientsBySorted(filter: BaseSortableFilterOptionsJs<PatientJs>):
@@ -35,20 +35,21 @@ public external interface PatientBasicApiJs {
 	public fun filterPatientsBySorted(filter: BaseSortableFilterOptionsJs<PatientJs>):
 			Promise<PaginatedListIteratorJs<EncryptedPatientJs>>
 
-	public fun deletePatientUnsafe(entityId: String): Promise<DocIdentifierJs>
+	public fun deletePatientUnsafe(entityId: String): Promise<StoredDocumentIdentifierJs>
 
-	public fun deletePatientsUnsafe(entityIds: Array<String>): Promise<Array<DocIdentifierJs>>
+	public fun deletePatientsUnsafe(entityIds: Array<String>):
+			Promise<Array<StoredDocumentIdentifierJs>>
 
-	public fun deletePatientById(entityId: String, rev: String): Promise<DocIdentifierJs>
+	public fun deletePatientById(entityId: String, rev: String): Promise<StoredDocumentIdentifierJs>
 
-	public fun deletePatientsByIds(entityIds: Array<IdWithMandatoryRevJs>):
-			Promise<Array<DocIdentifierJs>>
+	public fun deletePatientsByIds(entityIds: Array<StoredDocumentIdentifierJs>):
+			Promise<Array<StoredDocumentIdentifierJs>>
 
 	public fun purgePatientById(id: String, rev: String): Promise<Unit>
 
-	public fun deletePatient(patient: PatientJs): Promise<DocIdentifierJs>
+	public fun deletePatient(patient: PatientJs): Promise<StoredDocumentIdentifierJs>
 
-	public fun deletePatients(patients: Array<PatientJs>): Promise<Array<DocIdentifierJs>>
+	public fun deletePatients(patients: Array<PatientJs>): Promise<Array<StoredDocumentIdentifierJs>>
 
 	public fun purgePatient(patient: PatientJs): Promise<Unit>
 
@@ -56,15 +57,23 @@ public external interface PatientBasicApiJs {
 
 	public fun countOfPatients(hcPartyId: String): Promise<Double>
 
+	public fun createPatient(patient: EncryptedPatientJs): Promise<EncryptedPatientJs>
+
+	public fun createPatientsMinimal(patients: Array<EncryptedPatientJs>):
+			Promise<Array<StoredDocumentIdentifierJs>>
+
+	public fun createPatients(patients: Array<EncryptedPatientJs>): Promise<Array<EncryptedPatientJs>>
+
 	public fun undeletePatient(patient: PatientJs): Promise<PatientJs>
 
 	public fun modifyPatient(entity: EncryptedPatientJs): Promise<EncryptedPatientJs>
 
 	public fun undeletePatientById(id: String, rev: String): Promise<EncryptedPatientJs>
 
-	public fun undeletePatients(ids: Array<IdWithMandatoryRevJs>): Promise<Array<EncryptedPatientJs>>
+	public fun undeletePatients(ids: Array<StoredDocumentIdentifierJs>):
+			Promise<Array<EncryptedPatientJs>>
 
-	public fun getPatient(entityId: String): Promise<EncryptedPatientJs>
+	public fun getPatient(entityId: String): Promise<EncryptedPatientJs?>
 
 	public fun getPatientResolvingMerges(patientId: String, maxMergeDepth: Double?):
 			Promise<EncryptedPatientJs>
@@ -110,7 +119,10 @@ public external interface PatientBasicApiJs {
 		options: dynamic,
 	): Promise<EncryptedPatientJs>
 
-	public fun modifyPatients(patientDtos: Array<EncryptedPatientJs>): Promise<Array<IdWithRevJs>>
+	public fun modifyPatientsMinimal(patients: Array<EncryptedPatientJs>):
+			Promise<Array<StoredDocumentIdentifierJs>>
+
+	public fun modifyPatients(patients: Array<EncryptedPatientJs>): Promise<Array<EncryptedPatientJs>>
 
 	public fun findDuplicatesBySsin(hcPartyId: String, options: dynamic):
 			Promise<PaginatedListJs<EncryptedPatientJs>>

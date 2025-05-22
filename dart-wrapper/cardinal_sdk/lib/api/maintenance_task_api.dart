@@ -1,12 +1,12 @@
 // auto-generated file
 import 'package:cardinal_sdk/model/maintenance_task.dart';
-import 'package:cardinal_sdk/plugin/cardinal_sdk_platform_interface.dart';
 import 'package:cardinal_sdk/model/user.dart';
 import 'package:cardinal_sdk/model/embed/access_level.dart';
+import 'package:cardinal_sdk/plugin/cardinal_sdk_platform_interface.dart';
 import 'package:cardinal_sdk/model/specializations/hex_string.dart';
 import 'package:cardinal_sdk/filters/filter_options.dart';
 import 'package:cardinal_sdk/model/couchdb/doc_identifier.dart';
-import 'package:cardinal_sdk/model/id_with_mandatory_rev.dart';
+import 'package:cardinal_sdk/model/stored_document_identifier.dart';
 import 'package:cardinal_sdk/crypto/entities/maintenance_task_share_options.dart';
 import 'package:cardinal_sdk/utils/pagination/paginated_list_iterator.dart';
 import 'package:cardinal_sdk/subscription/subscription_event_type.dart';
@@ -17,20 +17,13 @@ import 'package:cardinal_sdk/subscription/entity_subscription.dart';
 class MaintenanceTaskApi {
 	final String _sdkId;
 	final Object _dartSdk;
-	final TryAndRecoverMaintenanceTaskApi tryAndRecover;
-	final EncryptedMaintenanceTaskApi encrypted;
+	final MaintenanceTaskEncryptedApi encrypted;
+	final MaintenanceTaskTryAndRecoverApi tryAndRecover;
 	MaintenanceTaskApi(
 		this._sdkId,
 		this._dartSdk
-		) : tryAndRecover = TryAndRecoverMaintenanceTaskApi(_sdkId, _dartSdk),
-		encrypted = EncryptedMaintenanceTaskApi(_sdkId, _dartSdk);
-
-	Future<DecryptedMaintenanceTask> createMaintenanceTask(DecryptedMaintenanceTask entity) async {
-		return await CardinalSdkPlatformInterface.instance.apis.maintenanceTask.createMaintenanceTask(
-			_sdkId,
-			entity,
-		);
-	}
+		) : encrypted = MaintenanceTaskEncryptedApi(_sdkId, _dartSdk),
+		tryAndRecover = MaintenanceTaskTryAndRecoverApi(_sdkId, _dartSdk);
 
 	Future<DecryptedMaintenanceTask> withEncryptionMetadata(DecryptedMaintenanceTask? maintenanceTask, { User? user, Map<String, AccessLevel> delegates = const {} }) async {
 		return await CardinalSdkPlatformInterface.instance.apis.maintenanceTask.withEncryptionMetadata(
@@ -106,7 +99,7 @@ class MaintenanceTaskApi {
 		);
 	}
 
-	Future<List<DocIdentifier>> deleteMaintenanceTasksByIds(List<IdWithMandatoryRev> entityIds) async {
+	Future<List<DocIdentifier>> deleteMaintenanceTasksByIds(List<StoredDocumentIdentifier> entityIds) async {
 		return await CardinalSdkPlatformInterface.instance.apis.maintenanceTask.deleteMaintenanceTasksByIds(
 			_sdkId,
 			entityIds,
@@ -173,6 +166,13 @@ class MaintenanceTaskApi {
 		);
 	}
 
+	Future<DecryptedMaintenanceTask> createMaintenanceTask(DecryptedMaintenanceTask entity) async {
+		return await CardinalSdkPlatformInterface.instance.apis.maintenanceTask.createMaintenanceTask(
+			_sdkId,
+			entity,
+		);
+	}
+
 	Future<MaintenanceTask> undeleteMaintenanceTask(MaintenanceTask maintenanceTask) async {
 		return await CardinalSdkPlatformInterface.instance.apis.maintenanceTask.undeleteMaintenanceTask(
 			_sdkId,
@@ -195,7 +195,7 @@ class MaintenanceTaskApi {
 		);
 	}
 
-	Future<DecryptedMaintenanceTask> getMaintenanceTask(String entityId) async {
+	Future<DecryptedMaintenanceTask?> getMaintenanceTask(String entityId) async {
 		return await CardinalSdkPlatformInterface.instance.apis.maintenanceTask.getMaintenanceTask(
 			_sdkId,
 			entityId,
@@ -219,10 +219,10 @@ class MaintenanceTaskApi {
 	}
 }
 
-class TryAndRecoverMaintenanceTaskApi {
+class MaintenanceTaskTryAndRecoverApi {
 	final String _sdkId;
 	final Object _dartSdk;
-	TryAndRecoverMaintenanceTaskApi(
+	MaintenanceTaskTryAndRecoverApi(
 		this._sdkId,
 		this._dartSdk
 		);
@@ -258,6 +258,13 @@ class TryAndRecoverMaintenanceTaskApi {
 		);
 	}
 
+	Future<MaintenanceTask> createMaintenanceTask(MaintenanceTask entity) async {
+		return await CardinalSdkPlatformInterface.instance.apis.maintenanceTask.tryAndRecover.createMaintenanceTask(
+			_sdkId,
+			entity,
+		);
+	}
+
 	Future<MaintenanceTask> undeleteMaintenanceTask(MaintenanceTask maintenanceTask) async {
 		return await CardinalSdkPlatformInterface.instance.apis.maintenanceTask.tryAndRecover.undeleteMaintenanceTask(
 			_sdkId,
@@ -280,7 +287,7 @@ class TryAndRecoverMaintenanceTaskApi {
 		);
 	}
 
-	Future<MaintenanceTask> getMaintenanceTask(String entityId) async {
+	Future<MaintenanceTask?> getMaintenanceTask(String entityId) async {
 		return await CardinalSdkPlatformInterface.instance.apis.maintenanceTask.tryAndRecover.getMaintenanceTask(
 			_sdkId,
 			entityId,
@@ -295,10 +302,10 @@ class TryAndRecoverMaintenanceTaskApi {
 	}
 }
 
-class EncryptedMaintenanceTaskApi {
+class MaintenanceTaskEncryptedApi {
 	final String _sdkId;
 	final Object _dartSdk;
-	EncryptedMaintenanceTaskApi(
+	MaintenanceTaskEncryptedApi(
 		this._sdkId,
 		this._dartSdk
 		);
@@ -334,6 +341,13 @@ class EncryptedMaintenanceTaskApi {
 		);
 	}
 
+	Future<EncryptedMaintenanceTask> createMaintenanceTask(EncryptedMaintenanceTask entity) async {
+		return await CardinalSdkPlatformInterface.instance.apis.maintenanceTask.encrypted.createMaintenanceTask(
+			_sdkId,
+			entity,
+		);
+	}
+
 	Future<MaintenanceTask> undeleteMaintenanceTask(MaintenanceTask maintenanceTask) async {
 		return await CardinalSdkPlatformInterface.instance.apis.maintenanceTask.encrypted.undeleteMaintenanceTask(
 			_sdkId,
@@ -356,7 +370,7 @@ class EncryptedMaintenanceTaskApi {
 		);
 	}
 
-	Future<EncryptedMaintenanceTask> getMaintenanceTask(String entityId) async {
+	Future<EncryptedMaintenanceTask?> getMaintenanceTask(String entityId) async {
 		return await CardinalSdkPlatformInterface.instance.apis.maintenanceTask.encrypted.getMaintenanceTask(
 			_sdkId,
 			entityId,

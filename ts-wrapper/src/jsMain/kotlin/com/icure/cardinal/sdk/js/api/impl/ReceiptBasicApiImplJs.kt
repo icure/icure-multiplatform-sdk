@@ -5,6 +5,7 @@ import com.icure.cardinal.sdk.api.ReceiptBasicApi
 import com.icure.cardinal.sdk.js.api.ReceiptBasicApiJs
 import com.icure.cardinal.sdk.js.model.CheckedConverters.arrayToList
 import com.icure.cardinal.sdk.js.model.CheckedConverters.listToArray
+import com.icure.cardinal.sdk.js.model.CheckedConverters.nullToUndefined
 import com.icure.cardinal.sdk.js.model.EncryptedReceiptJs
 import com.icure.cardinal.sdk.js.model.couchdb.DocIdentifierJs
 import com.icure.cardinal.sdk.js.model.couchdb.docIdentifier_toJs
@@ -84,6 +85,15 @@ internal class ReceiptBasicApiImplJs(
 		receipt_toJs(result)
 	}
 
+	override fun createReceipt(entity: EncryptedReceiptJs): Promise<EncryptedReceiptJs> =
+			GlobalScope.promise {
+		val entityConverted: EncryptedReceipt = receipt_fromJs(entity)
+		val result = receiptBasicApi.createReceipt(
+			entityConverted,
+		)
+		receipt_toJs(result)
+	}
+
 	override fun modifyReceipt(entity: EncryptedReceiptJs): Promise<EncryptedReceiptJs> =
 			GlobalScope.promise {
 		val entityConverted: EncryptedReceipt = receipt_fromJs(entity)
@@ -93,12 +103,16 @@ internal class ReceiptBasicApiImplJs(
 		receipt_toJs(result)
 	}
 
-	override fun getReceipt(entityId: String): Promise<EncryptedReceiptJs> = GlobalScope.promise {
+	override fun getReceipt(entityId: String): Promise<EncryptedReceiptJs?> = GlobalScope.promise {
 		val entityIdConverted: String = entityId
 		val result = receiptBasicApi.getReceipt(
 			entityIdConverted,
 		)
-		receipt_toJs(result)
+		nullToUndefined(
+			result?.let { nonNull1 ->
+				receipt_toJs(nonNull1)
+			}
+		)
 	}
 
 	override fun listByReference(reference: String): Promise<Array<EncryptedReceiptJs>> =

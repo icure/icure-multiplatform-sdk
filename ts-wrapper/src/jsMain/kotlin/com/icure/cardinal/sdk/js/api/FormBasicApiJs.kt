@@ -8,7 +8,7 @@ import com.icure.cardinal.sdk.js.filters.BaseSortableFilterOptionsJs
 import com.icure.cardinal.sdk.js.model.EncryptedFormJs
 import com.icure.cardinal.sdk.js.model.FormJs
 import com.icure.cardinal.sdk.js.model.FormTemplateJs
-import com.icure.cardinal.sdk.js.model.IdWithMandatoryRevJs
+import com.icure.cardinal.sdk.js.model.StoredDocumentIdentifierJs
 import com.icure.cardinal.sdk.js.model.couchdb.DocIdentifierJs
 import com.icure.cardinal.sdk.js.utils.pagination.PaginatedListIteratorJs
 import kotlin.Array
@@ -38,7 +38,7 @@ public external interface FormBasicApiJs {
 
 	public fun deleteFormById(entityId: String, rev: String): Promise<DocIdentifierJs>
 
-	public fun deleteFormsByIds(entityIds: Array<IdWithMandatoryRevJs>):
+	public fun deleteFormsByIds(entityIds: Array<StoredDocumentIdentifierJs>):
 			Promise<Array<DocIdentifierJs>>
 
 	public fun purgeFormById(id: String, rev: String): Promise<Unit>
@@ -70,6 +70,10 @@ public external interface FormBasicApiJs {
 
 	public fun setTemplateAttachment(formTemplateId: String, payload: ByteArray): Promise<String>
 
+	public fun createForm(entity: EncryptedFormJs): Promise<EncryptedFormJs>
+
+	public fun createForms(entities: Array<EncryptedFormJs>): Promise<Array<EncryptedFormJs>>
+
 	public fun modifyForm(entity: EncryptedFormJs): Promise<EncryptedFormJs>
 
 	public fun undeleteFormById(id: String, rev: String): Promise<EncryptedFormJs>
@@ -78,7 +82,7 @@ public external interface FormBasicApiJs {
 
 	public fun modifyForms(entities: Array<EncryptedFormJs>): Promise<Array<EncryptedFormJs>>
 
-	public fun getForm(entityId: String): Promise<EncryptedFormJs>
+	public fun getForm(entityId: String): Promise<EncryptedFormJs?>
 
 	public fun getForms(entityIds: Array<String>): Promise<Array<EncryptedFormJs>>
 

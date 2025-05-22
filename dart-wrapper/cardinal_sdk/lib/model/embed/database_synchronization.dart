@@ -1,20 +1,17 @@
 // auto-generated file
+import 'package:freezed_annotation/freezed_annotation.dart';
+part "database_synchronization.freezed.dart";
 
 
-class DatabaseSynchronization {
-	String? source = null;
-	String? target = null;
-	String? filter = null;
-	DatabaseSynchronizationTarget? localTarget = null;
-	DatabaseSynchronization({
-			String? source,
-			String? target,
-			String? filter,
-			DatabaseSynchronizationTarget? localTarget
-		}) : source = source ?? null,
-		target = target ?? null,
-		filter = filter ?? null,
-		localTarget = localTarget ?? null;
+@freezed
+abstract class DatabaseSynchronization with _$DatabaseSynchronization {
+	const factory DatabaseSynchronization({
+		@Default(null) String? source,
+		@Default(null) String? target,
+		@Default(null) String? filter,
+		@Default(null) DatabaseSynchronizationTarget? localTarget,
+	}) = _DatabaseSynchronization;
+
 
 	static Map<String, dynamic> encode(DatabaseSynchronization value) {
 		Map<String, dynamic> entityAsMap = {

@@ -33,7 +33,7 @@ class KeywordApiDispatcher {
     KeywordApi.shared.getKeyword(
     	dartResultCallback: resultCallback,
     	sdkId: parameters["sdkId"]!,
-    	frontEndMigrationIdString: parameters["frontEndMigrationId"]!
+    	keywordIdString: parameters["keywordId"]!
     )
   }
 
@@ -46,7 +46,7 @@ class KeywordApiDispatcher {
     KeywordApi.shared.createKeyword(
     	dartResultCallback: resultCallback,
     	sdkId: parameters["sdkId"]!,
-    	frontEndMigrationString: parameters["frontEndMigration"]!
+    	keywordString: parameters["keyword"]!
     )
   }
 

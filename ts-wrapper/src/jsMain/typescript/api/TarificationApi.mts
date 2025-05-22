@@ -5,7 +5,7 @@ import {Tarification} from '../model/Tarification.mjs';
 
 export interface TarificationApi {
 
-	getTarification(tarificationId: string): Promise<Tarification>;
+	getTarification(tarificationId: string): Promise<Tarification | undefined>;
 
 	createTarification(tarification: Tarification): Promise<Tarification>;
 

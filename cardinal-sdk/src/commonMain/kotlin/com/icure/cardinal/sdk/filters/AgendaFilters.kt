@@ -38,7 +38,7 @@ object AgendaFilters {
 	 *
 	 * @param userReference the id of the user associated to the agenda.
 	 */
-	fun byUser(
+	fun byUserInGroup(
 		userReference: EntityReferenceInGroup,
 	): BaseFilterOptions<Agenda> = ByUserId(userReference)
 
@@ -68,7 +68,7 @@ object AgendaFilters {
 			expression = "readableByUserRights(userReference)",
 		)
 	)
-	fun readableByUser(
+	fun readableByUserInGroup(
 		userReference: EntityReferenceInGroup
 	): BaseFilterOptions<Agenda> = ReadableByUserId(userReference)
 
@@ -86,7 +86,7 @@ object AgendaFilters {
 	 *
 	 * @param userReference the id of that can read the agenda.
 	 */
-	fun readableByUserRights(
+	fun readableByUserRightsInGroup(
 		userReference: EntityReferenceInGroup
 	): BaseFilterOptions<Agenda> = ReadableByUserRights(userReference)
 

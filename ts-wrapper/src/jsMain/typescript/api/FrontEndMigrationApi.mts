@@ -5,7 +5,7 @@ import {DocIdentifier} from '../model/couchdb/DocIdentifier.mjs';
 
 export interface FrontEndMigrationApi {
 
-	getFrontEndMigration(frontEndMigrationId: string): Promise<FrontEndMigration>;
+	getFrontEndMigration(frontEndMigrationId: string): Promise<FrontEndMigration | undefined>;
 
 	createFrontEndMigration(frontEndMigration: FrontEndMigration): Promise<FrontEndMigration>;
 

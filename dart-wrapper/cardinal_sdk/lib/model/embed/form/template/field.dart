@@ -14,23 +14,23 @@ import 'package:cardinal_sdk/model/embed/form/template/structure_element.dart';
 
 
 abstract interface class Field implements StructureElement {
-	abstract String field;
-	abstract String? shortLabel;
-	@ActualInt32() abstract int? rows;
-	@ActualInt32() abstract int? columns;
-	abstract bool? grows;
-	abstract String? schema;
-	abstract List<String>? tags;
-	abstract List<String>? codifications;
-	abstract Map<String, String>? options;
-	abstract String? hideCondition;
-	abstract bool? required;
-	abstract bool? multiline;
-	abstract String? value;
-	abstract Map<String, String>? labels;
-	abstract String? unit;
-	abstract bool? now;
-	abstract bool? translate;
+	abstract final String field;
+	abstract final String? shortLabel;
+	@actualInt32 abstract final int? rows;
+	@actualInt32 abstract final int? columns;
+	abstract final bool? grows;
+	abstract final String? schema;
+	abstract final List<String>? tags;
+	abstract final List<String>? codifications;
+	abstract final Map<String, String>? options;
+	abstract final String? hideCondition;
+	abstract final bool? required;
+	abstract final bool? multiline;
+	abstract final String? value;
+	abstract final Map<String, String>? labels;
+	abstract final String? unit;
+	abstract final bool? now;
+	abstract final bool? translate;
 
 	static Map<String, dynamic> encode(Field value) {
 		switch (value) {

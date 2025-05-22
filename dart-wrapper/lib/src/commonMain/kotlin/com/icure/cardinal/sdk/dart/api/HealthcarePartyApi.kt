@@ -9,8 +9,8 @@ import com.icure.cardinal.sdk.filters.BaseSortableFilterOptions
 import com.icure.cardinal.sdk.filters.FilterOptions
 import com.icure.cardinal.sdk.model.DataOwnerRegistrationSuccess
 import com.icure.cardinal.sdk.model.HealthcareParty
-import com.icure.cardinal.sdk.model.IdWithMandatoryRev
 import com.icure.cardinal.sdk.model.PublicKey
+import com.icure.cardinal.sdk.model.StoredDocumentIdentifier
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.serialization.EntitySubscriptionWithSerializer
 import com.icure.cardinal.sdk.serialization.PaginatedListIteratorWithSerializer
@@ -45,7 +45,7 @@ public object HealthcarePartyApi {
     )
     ApiScope.execute(
       dartResultCallback,
-      HealthcareParty.serializer()) {
+      HealthcareParty.serializer().nullable) {
       NativeReferences.get<CardinalNonCryptoApis>(sdkId).healthcareParty.getHealthcareParty(
         healthcarePartyId,
       )
@@ -479,7 +479,7 @@ public object HealthcarePartyApi {
     entityIdsString: String,
   ) {
     val entityIds = fullLanguageInteropJson.decodeFromString(
-      ListSerializer(IdWithMandatoryRev.serializer()),
+      ListSerializer(StoredDocumentIdentifier.serializer()),
       entityIdsString
     )
     ApiScope.execute(
@@ -542,7 +542,7 @@ public object HealthcarePartyApi {
       groupIdString
     )
     val entityIds = fullLanguageInteropJson.decodeFromString(
-      ListSerializer(IdWithMandatoryRev.serializer()),
+      ListSerializer(StoredDocumentIdentifier.serializer()),
       entityIdsString
     )
     ApiScope.execute(

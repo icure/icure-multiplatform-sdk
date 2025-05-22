@@ -4,6 +4,7 @@ package com.icure.cardinal.sdk.js.api.`impl`
 import com.icure.cardinal.sdk.api.FrontEndMigrationApi
 import com.icure.cardinal.sdk.js.api.FrontEndMigrationApiJs
 import com.icure.cardinal.sdk.js.model.CheckedConverters.listToArray
+import com.icure.cardinal.sdk.js.model.CheckedConverters.nullToUndefined
 import com.icure.cardinal.sdk.js.model.FrontEndMigrationJs
 import com.icure.cardinal.sdk.js.model.couchdb.DocIdentifierJs
 import com.icure.cardinal.sdk.js.model.couchdb.docIdentifier_toJs
@@ -22,13 +23,17 @@ import kotlinx.coroutines.promise
 internal class FrontEndMigrationApiImplJs(
 	private val frontEndMigrationApi: FrontEndMigrationApi,
 ) : FrontEndMigrationApiJs {
-	override fun getFrontEndMigration(frontEndMigrationId: String): Promise<FrontEndMigrationJs> =
+	override fun getFrontEndMigration(frontEndMigrationId: String): Promise<FrontEndMigrationJs?> =
 			GlobalScope.promise {
 		val frontEndMigrationIdConverted: String = frontEndMigrationId
 		val result = frontEndMigrationApi.getFrontEndMigration(
 			frontEndMigrationIdConverted,
 		)
-		frontEndMigration_toJs(result)
+		nullToUndefined(
+			result?.let { nonNull1 ->
+				frontEndMigration_toJs(nonNull1)
+			}
+		)
 	}
 
 	override fun createFrontEndMigration(frontEndMigration: FrontEndMigrationJs):

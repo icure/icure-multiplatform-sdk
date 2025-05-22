@@ -23,7 +23,7 @@ public external interface MedicalLocationApiJs {
 
 	public fun deleteMedicalLocations(locationIds: ListOfIdsJs): Promise<Array<DocIdentifierJs>>
 
-	public fun getMedicalLocation(locationId: String): Promise<MedicalLocationJs>
+	public fun getMedicalLocation(locationId: String): Promise<MedicalLocationJs?>
 
 	public fun getAllMedicalLocations(startDocumentId: String?, limit: Double?):
 			Promise<PaginatedListJs<MedicalLocationJs>>

@@ -11,7 +11,7 @@ class DocumentTemplatePlatformApi {
 	MethodChannel _methodChannel;
 	DocumentTemplatePlatformApi(this._methodChannel);
 
-	Future<DocumentTemplate> getDocumentTemplate(String sdkId, String documentTemplateId) async {
+	Future<DocumentTemplate?> getDocumentTemplate(String sdkId, String documentTemplateId) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'DocumentTemplateApi.getDocumentTemplate',
 			{
@@ -21,7 +21,7 @@ class DocumentTemplatePlatformApi {
 		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getDocumentTemplate");
 		final parsedResJson = jsonDecode(res);
-		return DocumentTemplate.fromJSON(parsedResJson);
+		return parsedResJson == null ? null : DocumentTemplate.fromJSON(parsedResJson);
 	}
 
 	Future<DocumentTemplate> createDocumentTemplate(String sdkId, DocumentTemplate documentTemplate) async {

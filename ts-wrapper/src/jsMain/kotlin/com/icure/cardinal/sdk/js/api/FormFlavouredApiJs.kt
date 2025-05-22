@@ -37,6 +37,10 @@ public external interface FormFlavouredApiJs<E : FormJs> {
 	public fun filterFormsBySorted(filter: SortableFilterOptionsJs<FormJs>):
 			Promise<PaginatedListIteratorJs<E>>
 
+	public fun createForm(entity: E): Promise<E>
+
+	public fun createForms(entities: Array<E>): Promise<Array<E>>
+
 	public fun modifyForm(entity: E): Promise<E>
 
 	public fun undeleteFormById(id: String, rev: String): Promise<E>
@@ -45,7 +49,7 @@ public external interface FormFlavouredApiJs<E : FormJs> {
 
 	public fun modifyForms(entities: Array<E>): Promise<Array<E>>
 
-	public fun getForm(entityId: String): Promise<E>
+	public fun getForm(entityId: String): Promise<E?>
 
 	public fun getForms(entityIds: Array<String>): Promise<Array<E>>
 

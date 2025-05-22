@@ -5,7 +5,7 @@ import 'package:cardinal_sdk/annotations/actual_int32.dart';
 
 abstract class CardinalSdkPlatformPaginationPlugin {
   Future<bool> hasNext(String sdkId);
-  Future<List<dynamic>> next(String sdkId, @ActualInt32() int limit);
+  Future<List<dynamic>> next(String sdkId, @actualInt32 int limit);
 }
 
 class CardinalSdkMethodChannelPagination extends CardinalSdkPlatformPaginationPlugin {
@@ -27,7 +27,7 @@ class CardinalSdkMethodChannelPagination extends CardinalSdkPlatformPaginationPl
   }
 
   @override
-  Future<List<dynamic>> next(String paginatedListIteratorId, @ActualInt32() int limit) async {
+  Future<List<dynamic>> next(String paginatedListIteratorId, @actualInt32 int limit) async {
     final res = await _methodChannel.invokeMethod<String>(
         'next',
         {

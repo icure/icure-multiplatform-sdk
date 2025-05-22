@@ -16,8 +16,6 @@ export interface ReceiptApi {
 
 	tryAndRecover: ReceiptFlavouredApi<Receipt>;
 
-	createReceipt(entity: DecryptedReceipt): Promise<DecryptedReceipt>;
-
 	withEncryptionMetadata(base: DecryptedReceipt | undefined, patient: Patient | undefined,
 			options?: { user?: User | undefined, delegates?: { [ key: string ]: AccessLevel }, secretId?: SecretIdUseOption }): Promise<DecryptedReceipt>;
 
@@ -61,9 +59,11 @@ export interface ReceiptApi {
 	shareWithMany(receipt: DecryptedReceipt,
 			delegates: { [ key: string ]: ReceiptShareOptions }): Promise<DecryptedReceipt>;
 
+	createReceipt(entity: DecryptedReceipt): Promise<DecryptedReceipt>;
+
 	modifyReceipt(entity: DecryptedReceipt): Promise<DecryptedReceipt>;
 
-	getReceipt(entityId: string): Promise<DecryptedReceipt>;
+	getReceipt(entityId: string): Promise<DecryptedReceipt | undefined>;
 
 	listByReference(reference: string): Promise<Array<DecryptedReceipt>>;
 

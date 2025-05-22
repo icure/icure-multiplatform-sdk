@@ -1,164 +1,63 @@
 // auto-generated file
 import 'package:cardinal_sdk/model/embed/substanceproduct.dart';
 import 'package:cardinal_sdk/model/embed/medicinalproduct.dart';
-import 'package:cardinal_sdk/annotations/actual_int32.dart';
 import 'package:cardinal_sdk/model/base/code_stub.dart';
 import 'package:cardinal_sdk/model/embed/duration.dart';
 import 'package:cardinal_sdk/model/embed/renewal.dart';
 import 'package:cardinal_sdk/model/embed/regimen_item.dart';
 import 'package:cardinal_sdk/model/embed/paragraph_agreement.dart';
 import 'package:cardinal_sdk/model/embed/suspension.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+part "medication.freezed.dart";
 
 
-class Medication {
-	String? compoundPrescription = null;
-	Substanceproduct? substanceProduct = null;
-	Medicinalproduct? medicinalProduct = null;
-	int? _numberOfPackages = null;
-	@ActualInt32() int? get numberOfPackages => _numberOfPackages;
-	@ActualInt32() set numberOfPackages(int? value) {
-		if (value != null && value > 2147483647) {
-			throw ArgumentError('numberOfPackages value cannot exceed 2147483647');
-		}
-		_numberOfPackages = value;
-	}
-	String? batch = null;
-	int? expirationDate = null;
-	String? instructionForPatient = null;
-	String? instructionForReimbursement = null;
-	String? commentForDelivery = null;
-	String? drugRoute = null;
-	String? temporality = null;
-	CodeStub? frequency = null;
-	CodeStub? reimbursementReason = null;
-	bool? substitutionAllowed = null;
-	int? beginMoment = null;
-	int? endMoment = null;
-	int? deliveryMoment = null;
-	int? endExecutionMoment = null;
-	Duration? duration = null;
-	Renewal? renewal = null;
-	bool? knownUsage = null;
-	List<RegimenItem>? regimen = null;
-	String? posology = null;
-	Map<String, ParagraphAgreement>? agreements = null;
-	String? medicationSchemeIdOnSafe = null;
-	int? _medicationSchemeSafeVersion = null;
-	@ActualInt32() int? get medicationSchemeSafeVersion => _medicationSchemeSafeVersion;
-	@ActualInt32() set medicationSchemeSafeVersion(int? value) {
-		if (value != null && value > 2147483647) {
-			throw ArgumentError('medicationSchemeSafeVersion value cannot exceed 2147483647');
-		}
-		_medicationSchemeSafeVersion = value;
-	}
-	int? medicationSchemeTimeStampOnSafe = null;
-	String? medicationSchemeDocumentId = null;
-	String? safeIdName = null;
-	String? idOnSafes = null;
-	int? timestampOnSafe = null;
-	bool? changeValidated = null;
-	bool? newSafeMedication = null;
-	String? medicationUse = null;
-	String? beginCondition = null;
-	String? endCondition = null;
-	String? origin = null;
-	bool? medicationChanged = null;
-	bool? posologyChanged = null;
-	List<Suspension>? suspension = null;
-	String? prescriptionRID = null;
-	int? _status = null;
-	@ActualInt32() int? get status => _status;
-	@ActualInt32() set status(int? value) {
-		if (value != null && value > 2147483647) {
-			throw ArgumentError('status value cannot exceed 2147483647');
-		}
-		_status = value;
-	}
-	Medication({
-			int? numberOfPackages,
-			int? medicationSchemeSafeVersion,
-			int? status,
-			String? compoundPrescription,
-			Substanceproduct? substanceProduct,
-			Medicinalproduct? medicinalProduct,
-			String? batch,
-			int? expirationDate,
-			String? instructionForPatient,
-			String? instructionForReimbursement,
-			String? commentForDelivery,
-			String? drugRoute,
-			String? temporality,
-			CodeStub? frequency,
-			CodeStub? reimbursementReason,
-			bool? substitutionAllowed,
-			int? beginMoment,
-			int? endMoment,
-			int? deliveryMoment,
-			int? endExecutionMoment,
-			Duration? duration,
-			Renewal? renewal,
-			bool? knownUsage,
-			List<RegimenItem>? regimen,
-			String? posology,
-			Map<String, ParagraphAgreement>? agreements,
-			String? medicationSchemeIdOnSafe,
-			int? medicationSchemeTimeStampOnSafe,
-			String? medicationSchemeDocumentId,
-			String? safeIdName,
-			String? idOnSafes,
-			int? timestampOnSafe,
-			bool? changeValidated,
-			bool? newSafeMedication,
-			String? medicationUse,
-			String? beginCondition,
-			String? endCondition,
-			String? origin,
-			bool? medicationChanged,
-			bool? posologyChanged,
-			List<Suspension>? suspension,
-			String? prescriptionRID
-		}) : compoundPrescription = compoundPrescription ?? null,
-		substanceProduct = substanceProduct ?? null,
-		medicinalProduct = medicinalProduct ?? null,
-		batch = batch ?? null,
-		expirationDate = expirationDate ?? null,
-		instructionForPatient = instructionForPatient ?? null,
-		instructionForReimbursement = instructionForReimbursement ?? null,
-		commentForDelivery = commentForDelivery ?? null,
-		drugRoute = drugRoute ?? null,
-		temporality = temporality ?? null,
-		frequency = frequency ?? null,
-		reimbursementReason = reimbursementReason ?? null,
-		substitutionAllowed = substitutionAllowed ?? null,
-		beginMoment = beginMoment ?? null,
-		endMoment = endMoment ?? null,
-		deliveryMoment = deliveryMoment ?? null,
-		endExecutionMoment = endExecutionMoment ?? null,
-		duration = duration ?? null,
-		renewal = renewal ?? null,
-		knownUsage = knownUsage ?? null,
-		regimen = regimen ?? null,
-		posology = posology ?? null,
-		agreements = agreements ?? null,
-		medicationSchemeIdOnSafe = medicationSchemeIdOnSafe ?? null,
-		medicationSchemeTimeStampOnSafe = medicationSchemeTimeStampOnSafe ?? null,
-		medicationSchemeDocumentId = medicationSchemeDocumentId ?? null,
-		safeIdName = safeIdName ?? null,
-		idOnSafes = idOnSafes ?? null,
-		timestampOnSafe = timestampOnSafe ?? null,
-		changeValidated = changeValidated ?? null,
-		newSafeMedication = newSafeMedication ?? null,
-		medicationUse = medicationUse ?? null,
-		beginCondition = beginCondition ?? null,
-		endCondition = endCondition ?? null,
-		origin = origin ?? null,
-		medicationChanged = medicationChanged ?? null,
-		posologyChanged = posologyChanged ?? null,
-		suspension = suspension ?? null,
-		prescriptionRID = prescriptionRID ?? null,
-		_numberOfPackages = numberOfPackages ?? null,
-		_medicationSchemeSafeVersion = medicationSchemeSafeVersion ?? null,
-		_status = status ?? null;
+@freezed
+abstract class Medication with _$Medication {
+	const factory Medication({
+		@Default(null) String? compoundPrescription,
+		@Default(null) Substanceproduct? substanceProduct,
+		@Default(null) Medicinalproduct? medicinalProduct,
+		@Default(null) int? numberOfPackages,
+		@Default(null) String? batch,
+		@Default(null) int? expirationDate,
+		@Default(null) String? instructionForPatient,
+		@Default(null) String? instructionForReimbursement,
+		@Default(null) String? commentForDelivery,
+		@Default(null) String? drugRoute,
+		@Default(null) String? temporality,
+		@Default(null) CodeStub? frequency,
+		@Default(null) CodeStub? reimbursementReason,
+		@Default(null) bool? substitutionAllowed,
+		@Default(null) int? beginMoment,
+		@Default(null) int? endMoment,
+		@Default(null) int? deliveryMoment,
+		@Default(null) int? endExecutionMoment,
+		@Default(null) Duration? duration,
+		@Default(null) Renewal? renewal,
+		@Default(null) bool? knownUsage,
+		@Default(null) List<RegimenItem>? regimen,
+		@Default(null) String? posology,
+		@Default(null) Map<String, ParagraphAgreement>? agreements,
+		@Default(null) String? medicationSchemeIdOnSafe,
+		@Default(null) int? medicationSchemeSafeVersion,
+		@Default(null) int? medicationSchemeTimeStampOnSafe,
+		@Default(null) String? medicationSchemeDocumentId,
+		@Default(null) String? safeIdName,
+		@Default(null) String? idOnSafes,
+		@Default(null) int? timestampOnSafe,
+		@Default(null) bool? changeValidated,
+		@Default(null) bool? newSafeMedication,
+		@Default(null) String? medicationUse,
+		@Default(null) String? beginCondition,
+		@Default(null) String? endCondition,
+		@Default(null) String? origin,
+		@Default(null) bool? medicationChanged,
+		@Default(null) bool? posologyChanged,
+		@Default(null) List<Suspension>? suspension,
+		@Default(null) String? prescriptionRID,
+		@Default(null) int? status,
+	}) = _Medication;
+
 
 	static Map<String, dynamic> encode(Medication value) {
 		Map<String, dynamic> entityAsMap = {

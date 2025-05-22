@@ -2,46 +2,27 @@
 import 'package:cardinal_sdk/model/base/code_stub.dart';
 import 'package:cardinal_sdk/model/base/stored_document.dart';
 import 'package:cardinal_sdk/model/base/icure_document.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+part "application_settings.freezed.dart";
 
 
-class ApplicationSettings implements StoredDocument, ICureDocument<String> {
-	@override String id;
-	@override String? rev = null;
-	@override int? created = null;
-	@override int? modified = null;
-	@override String? author = null;
-	@override String? responsible = null;
-	@override String? medicalLocationId = null;
-	@override Set<CodeStub> tags = {};
-	@override Set<CodeStub> codes = {};
-	@override int? endOfLife = null;
-	@override int? deletionDate = null;
-	Map<String, String> settings = {};
-	ApplicationSettings(
-		this.id,
-		{
-			String? rev,
-			int? created,
-			int? modified,
-			String? author,
-			String? responsible,
-			String? medicalLocationId,
-			Set<CodeStub>? tags,
-			Set<CodeStub>? codes,
-			int? endOfLife,
-			int? deletionDate,
-			Map<String, String>? settings
-		}) : rev = rev ?? null,
-		created = created ?? null,
-		modified = modified ?? null,
-		author = author ?? null,
-		responsible = responsible ?? null,
-		medicalLocationId = medicalLocationId ?? null,
-		tags = tags ?? {},
-		codes = codes ?? {},
-		endOfLife = endOfLife ?? null,
-		deletionDate = deletionDate ?? null,
-		settings = settings ?? {};
+@freezed
+abstract class ApplicationSettings with _$ApplicationSettings implements StoredDocument, ICureDocument<String> {
+	const factory ApplicationSettings({
+		required String id,
+		@Default(null) String? rev,
+		@Default(null) int? created,
+		@Default(null) int? modified,
+		@Default(null) String? author,
+		@Default(null) String? responsible,
+		@Default(null) String? medicalLocationId,
+		@Default({}) Set<CodeStub> tags,
+		@Default({}) Set<CodeStub> codes,
+		@Default(null) int? endOfLife,
+		@Default(null) int? deletionDate,
+		@Default({}) Map<String, String> settings,
+	}) = _ApplicationSettings;
+
 
 	static Map<String, dynamic> encode(ApplicationSettings value) {
 		Map<String, dynamic> entityAsMap = {
@@ -63,7 +44,7 @@ class ApplicationSettings implements StoredDocument, ICureDocument<String> {
 
 	static ApplicationSettings fromJSON(Map<String, dynamic> data) {
 		return ApplicationSettings(
-			(data["id"] as String),
+			id: (data["id"] as String),
 			rev: (data["rev"] as String?),
 			created: (data["created"] as int?),
 			modified: (data["modified"] as int?),

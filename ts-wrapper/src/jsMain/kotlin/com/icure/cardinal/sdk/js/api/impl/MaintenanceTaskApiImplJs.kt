@@ -18,19 +18,20 @@ import com.icure.cardinal.sdk.js.filters.sortableFilterOptions_fromJs
 import com.icure.cardinal.sdk.js.model.CheckedConverters.arrayToList
 import com.icure.cardinal.sdk.js.model.CheckedConverters.arrayToSet
 import com.icure.cardinal.sdk.js.model.CheckedConverters.listToArray
+import com.icure.cardinal.sdk.js.model.CheckedConverters.nullToUndefined
 import com.icure.cardinal.sdk.js.model.CheckedConverters.objectToMap
 import com.icure.cardinal.sdk.js.model.CheckedConverters.setToArray
 import com.icure.cardinal.sdk.js.model.DecryptedMaintenanceTaskJs
 import com.icure.cardinal.sdk.js.model.EncryptedMaintenanceTaskJs
-import com.icure.cardinal.sdk.js.model.IdWithMandatoryRevJs
 import com.icure.cardinal.sdk.js.model.MaintenanceTaskJs
+import com.icure.cardinal.sdk.js.model.StoredDocumentIdentifierJs
 import com.icure.cardinal.sdk.js.model.UserJs
 import com.icure.cardinal.sdk.js.model.couchdb.DocIdentifierJs
 import com.icure.cardinal.sdk.js.model.couchdb.docIdentifier_toJs
-import com.icure.cardinal.sdk.js.model.idWithMandatoryRev_fromJs
 import com.icure.cardinal.sdk.js.model.maintenanceTask_fromJs
 import com.icure.cardinal.sdk.js.model.maintenanceTask_toJs
 import com.icure.cardinal.sdk.js.model.specializations.hexString_toJs
+import com.icure.cardinal.sdk.js.model.storedDocumentIdentifier_fromJs
 import com.icure.cardinal.sdk.js.model.user_fromJs
 import com.icure.cardinal.sdk.js.subscription.EntitySubscriptionConfigurationJs
 import com.icure.cardinal.sdk.js.subscription.EntitySubscriptionJs
@@ -41,8 +42,8 @@ import com.icure.cardinal.sdk.js.utils.pagination.PaginatedListIteratorJs
 import com.icure.cardinal.sdk.js.utils.pagination.paginatedListIterator_toJs
 import com.icure.cardinal.sdk.model.DecryptedMaintenanceTask
 import com.icure.cardinal.sdk.model.EncryptedMaintenanceTask
-import com.icure.cardinal.sdk.model.StoredDocumentIdentifier
 import com.icure.cardinal.sdk.model.MaintenanceTask
+import com.icure.cardinal.sdk.model.StoredDocumentIdentifier
 import com.icure.cardinal.sdk.model.User
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.model.embed.AccessLevel
@@ -145,6 +146,15 @@ internal class MaintenanceTaskApiImplJs(
 			)
 		}
 
+		override fun createMaintenanceTask(entity: EncryptedMaintenanceTaskJs):
+				Promise<EncryptedMaintenanceTaskJs> = GlobalScope.promise {
+			val entityConverted: EncryptedMaintenanceTask = maintenanceTask_fromJs(entity)
+			val result = maintenanceTaskApi.encrypted.createMaintenanceTask(
+				entityConverted,
+			)
+			maintenanceTask_toJs(result)
+		}
+
 		override fun undeleteMaintenanceTask(maintenanceTask: MaintenanceTaskJs):
 				Promise<MaintenanceTaskJs> = GlobalScope.promise {
 			val maintenanceTaskConverted: MaintenanceTask = maintenanceTask_fromJs(maintenanceTask)
@@ -174,13 +184,17 @@ internal class MaintenanceTaskApiImplJs(
 			maintenanceTask_toJs(result)
 		}
 
-		override fun getMaintenanceTask(entityId: String): Promise<EncryptedMaintenanceTaskJs> =
+		override fun getMaintenanceTask(entityId: String): Promise<EncryptedMaintenanceTaskJs?> =
 				GlobalScope.promise {
 			val entityIdConverted: String = entityId
 			val result = maintenanceTaskApi.encrypted.getMaintenanceTask(
 				entityIdConverted,
 			)
-			maintenanceTask_toJs(result)
+			nullToUndefined(
+				result?.let { nonNull1 ->
+					maintenanceTask_toJs(nonNull1)
+				}
+			)
 		}
 
 		override fun getMaintenanceTasks(entityIds: Array<String>):
@@ -283,6 +297,15 @@ internal class MaintenanceTaskApiImplJs(
 			)
 		}
 
+		override fun createMaintenanceTask(entity: MaintenanceTaskJs): Promise<MaintenanceTaskJs> =
+				GlobalScope.promise {
+			val entityConverted: MaintenanceTask = maintenanceTask_fromJs(entity)
+			val result = maintenanceTaskApi.tryAndRecover.createMaintenanceTask(
+				entityConverted,
+			)
+			maintenanceTask_toJs(result)
+		}
+
 		override fun undeleteMaintenanceTask(maintenanceTask: MaintenanceTaskJs):
 				Promise<MaintenanceTaskJs> = GlobalScope.promise {
 			val maintenanceTaskConverted: MaintenanceTask = maintenanceTask_fromJs(maintenanceTask)
@@ -312,13 +335,17 @@ internal class MaintenanceTaskApiImplJs(
 			maintenanceTask_toJs(result)
 		}
 
-		override fun getMaintenanceTask(entityId: String): Promise<MaintenanceTaskJs> =
+		override fun getMaintenanceTask(entityId: String): Promise<MaintenanceTaskJs?> =
 				GlobalScope.promise {
 			val entityIdConverted: String = entityId
 			val result = maintenanceTaskApi.tryAndRecover.getMaintenanceTask(
 				entityIdConverted,
 			)
-			maintenanceTask_toJs(result)
+			nullToUndefined(
+				result?.let { nonNull1 ->
+					maintenanceTask_toJs(nonNull1)
+				}
+			)
 		}
 
 		override fun getMaintenanceTasks(entityIds: Array<String>): Promise<Array<MaintenanceTaskJs>> =
@@ -340,15 +367,6 @@ internal class MaintenanceTaskApiImplJs(
 				},
 			)
 		}
-	}
-
-	override fun createMaintenanceTask(entity: DecryptedMaintenanceTaskJs):
-			Promise<DecryptedMaintenanceTaskJs> = GlobalScope.promise {
-		val entityConverted: DecryptedMaintenanceTask = maintenanceTask_fromJs(entity)
-		val result = maintenanceTaskApi.createMaintenanceTask(
-			entityConverted,
-		)
-		maintenanceTask_toJs(result)
 	}
 
 	override fun withEncryptionMetadata(maintenanceTask: DecryptedMaintenanceTaskJs?,
@@ -532,13 +550,13 @@ internal class MaintenanceTaskApiImplJs(
 		docIdentifier_toJs(result)
 	}
 
-	override fun deleteMaintenanceTasksByIds(entityIds: Array<IdWithMandatoryRevJs>):
+	override fun deleteMaintenanceTasksByIds(entityIds: Array<StoredDocumentIdentifierJs>):
 			Promise<Array<DocIdentifierJs>> = GlobalScope.promise {
 		val entityIdsConverted: List<StoredDocumentIdentifier> = arrayToList(
 			entityIds,
 			"entityIds",
-			{ x1: IdWithMandatoryRevJs ->
-				idWithMandatoryRev_fromJs(x1)
+			{ x1: StoredDocumentIdentifierJs ->
+				storedDocumentIdentifier_fromJs(x1)
 			},
 		)
 		val result = maintenanceTaskApi.deleteMaintenanceTasksByIds(
@@ -677,6 +695,15 @@ internal class MaintenanceTaskApiImplJs(
 		)
 	}
 
+	override fun createMaintenanceTask(entity: DecryptedMaintenanceTaskJs):
+			Promise<DecryptedMaintenanceTaskJs> = GlobalScope.promise {
+		val entityConverted: DecryptedMaintenanceTask = maintenanceTask_fromJs(entity)
+		val result = maintenanceTaskApi.createMaintenanceTask(
+			entityConverted,
+		)
+		maintenanceTask_toJs(result)
+	}
+
 	override fun undeleteMaintenanceTask(maintenanceTask: MaintenanceTaskJs):
 			Promise<MaintenanceTaskJs> = GlobalScope.promise {
 		val maintenanceTaskConverted: MaintenanceTask = maintenanceTask_fromJs(maintenanceTask)
@@ -706,13 +733,17 @@ internal class MaintenanceTaskApiImplJs(
 		maintenanceTask_toJs(result)
 	}
 
-	override fun getMaintenanceTask(entityId: String): Promise<DecryptedMaintenanceTaskJs> =
+	override fun getMaintenanceTask(entityId: String): Promise<DecryptedMaintenanceTaskJs?> =
 			GlobalScope.promise {
 		val entityIdConverted: String = entityId
 		val result = maintenanceTaskApi.getMaintenanceTask(
 			entityIdConverted,
 		)
-		maintenanceTask_toJs(result)
+		nullToUndefined(
+			result?.let { nonNull1 ->
+				maintenanceTask_toJs(nonNull1)
+			}
+		)
 	}
 
 	override fun getMaintenanceTasks(entityIds: Array<String>):

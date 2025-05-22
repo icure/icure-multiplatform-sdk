@@ -8,7 +8,7 @@ import com.icure.cardinal.sdk.filters.BaseFilterOptions
 import com.icure.cardinal.sdk.filters.BaseSortableFilterOptions
 import com.icure.cardinal.sdk.model.Document
 import com.icure.cardinal.sdk.model.EncryptedDocument
-import com.icure.cardinal.sdk.model.IdWithMandatoryRev
+import com.icure.cardinal.sdk.model.StoredDocumentIdentifier
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.serialization.ByteArraySerializer
 import com.icure.cardinal.sdk.serialization.PaginatedListIteratorWithSerializer
@@ -166,7 +166,7 @@ public object DocumentBasicApi {
     entityIdsString: String,
   ) {
     val entityIds = fullLanguageInteropJson.decodeFromString(
-      ListSerializer(IdWithMandatoryRev.serializer()),
+      ListSerializer(StoredDocumentIdentifier.serializer()),
       entityIdsString
     )
     ApiScope.execute(
@@ -492,6 +492,29 @@ public object DocumentBasicApi {
     }
   }
 
+  public fun createDocument(
+    dartResultCallback: (
+      String?,
+      String?,
+      String?,
+      String?,
+    ) -> Unit,
+    sdkId: String,
+    entityString: String,
+  ) {
+    val entity = fullLanguageInteropJson.decodeFromString(
+      EncryptedDocument.serializer(),
+      entityString
+    )
+    ApiScope.execute(
+      dartResultCallback,
+      EncryptedDocument.serializer()) {
+      NativeReferences.get<CardinalBaseApis>(sdkId).document.createDocument(
+        entity,
+      )
+    }
+  }
+
   public fun undeleteDocumentById(
     dartResultCallback: (
       String?,
@@ -583,7 +606,7 @@ public object DocumentBasicApi {
     )
     ApiScope.execute(
       dartResultCallback,
-      EncryptedDocument.serializer()) {
+      EncryptedDocument.serializer().nullable) {
       NativeReferences.get<CardinalBaseApis>(sdkId).document.getDocument(
         entityId,
       )

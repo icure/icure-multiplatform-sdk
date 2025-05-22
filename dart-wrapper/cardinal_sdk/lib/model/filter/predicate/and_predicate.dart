@@ -1,11 +1,15 @@
 // auto-generated file
 import 'package:cardinal_sdk/model/filter/predicate/predicate.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+part "and_predicate.freezed.dart";
 
 
-class AndPredicate implements Predicate {
-	List<Predicate> predicates = [];
-	AndPredicate({
-			List<Predicate>? predicates}) : predicates = predicates ?? [];
+@freezed
+abstract class AndPredicate with _$AndPredicate implements Predicate {
+	const factory AndPredicate({
+		@Default([]) List<Predicate> predicates,
+	}) = _AndPredicate;
+
 
 	static Map<String, dynamic> encode(AndPredicate value) {
 		Map<String, dynamic> entityAsMap = {

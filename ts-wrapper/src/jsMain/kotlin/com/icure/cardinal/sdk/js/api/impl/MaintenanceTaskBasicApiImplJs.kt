@@ -13,14 +13,15 @@ import com.icure.cardinal.sdk.js.filters.baseSortableFilterOptions_fromJs
 import com.icure.cardinal.sdk.js.model.CheckedConverters.arrayToList
 import com.icure.cardinal.sdk.js.model.CheckedConverters.arrayToSet
 import com.icure.cardinal.sdk.js.model.CheckedConverters.listToArray
+import com.icure.cardinal.sdk.js.model.CheckedConverters.nullToUndefined
 import com.icure.cardinal.sdk.js.model.EncryptedMaintenanceTaskJs
-import com.icure.cardinal.sdk.js.model.IdWithMandatoryRevJs
 import com.icure.cardinal.sdk.js.model.MaintenanceTaskJs
+import com.icure.cardinal.sdk.js.model.StoredDocumentIdentifierJs
 import com.icure.cardinal.sdk.js.model.couchdb.DocIdentifierJs
 import com.icure.cardinal.sdk.js.model.couchdb.docIdentifier_toJs
-import com.icure.cardinal.sdk.js.model.idWithMandatoryRev_fromJs
 import com.icure.cardinal.sdk.js.model.maintenanceTask_fromJs
 import com.icure.cardinal.sdk.js.model.maintenanceTask_toJs
+import com.icure.cardinal.sdk.js.model.storedDocumentIdentifier_fromJs
 import com.icure.cardinal.sdk.js.subscription.EntitySubscriptionConfigurationJs
 import com.icure.cardinal.sdk.js.subscription.EntitySubscriptionJs
 import com.icure.cardinal.sdk.js.subscription.entitySubscriptionConfiguration_fromJs
@@ -28,8 +29,8 @@ import com.icure.cardinal.sdk.js.subscription.entitySubscription_toJs
 import com.icure.cardinal.sdk.js.utils.pagination.PaginatedListIteratorJs
 import com.icure.cardinal.sdk.js.utils.pagination.paginatedListIterator_toJs
 import com.icure.cardinal.sdk.model.EncryptedMaintenanceTask
-import com.icure.cardinal.sdk.model.StoredDocumentIdentifier
 import com.icure.cardinal.sdk.model.MaintenanceTask
+import com.icure.cardinal.sdk.model.StoredDocumentIdentifier
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.subscription.EntitySubscriptionConfiguration
 import com.icure.cardinal.sdk.subscription.SubscriptionEventType
@@ -147,13 +148,13 @@ internal class MaintenanceTaskBasicApiImplJs(
 		docIdentifier_toJs(result)
 	}
 
-	override fun deleteMaintenanceTasksByIds(entityIds: Array<IdWithMandatoryRevJs>):
+	override fun deleteMaintenanceTasksByIds(entityIds: Array<StoredDocumentIdentifierJs>):
 			Promise<Array<DocIdentifierJs>> = GlobalScope.promise {
 		val entityIdsConverted: List<StoredDocumentIdentifier> = arrayToList(
 			entityIds,
 			"entityIds",
-			{ x1: IdWithMandatoryRevJs ->
-				idWithMandatoryRev_fromJs(x1)
+			{ x1: StoredDocumentIdentifierJs ->
+				storedDocumentIdentifier_fromJs(x1)
 			},
 		)
 		val result = maintenanceTaskBasicApi.deleteMaintenanceTasksByIds(
@@ -216,6 +217,15 @@ internal class MaintenanceTaskBasicApiImplJs(
 
 	}
 
+	override fun createMaintenanceTask(entity: EncryptedMaintenanceTaskJs):
+			Promise<EncryptedMaintenanceTaskJs> = GlobalScope.promise {
+		val entityConverted: EncryptedMaintenanceTask = maintenanceTask_fromJs(entity)
+		val result = maintenanceTaskBasicApi.createMaintenanceTask(
+			entityConverted,
+		)
+		maintenanceTask_toJs(result)
+	}
+
 	override fun undeleteMaintenanceTask(maintenanceTask: MaintenanceTaskJs):
 			Promise<MaintenanceTaskJs> = GlobalScope.promise {
 		val maintenanceTaskConverted: MaintenanceTask = maintenanceTask_fromJs(maintenanceTask)
@@ -245,13 +255,17 @@ internal class MaintenanceTaskBasicApiImplJs(
 		maintenanceTask_toJs(result)
 	}
 
-	override fun getMaintenanceTask(entityId: String): Promise<EncryptedMaintenanceTaskJs> =
+	override fun getMaintenanceTask(entityId: String): Promise<EncryptedMaintenanceTaskJs?> =
 			GlobalScope.promise {
 		val entityIdConverted: String = entityId
 		val result = maintenanceTaskBasicApi.getMaintenanceTask(
 			entityIdConverted,
 		)
-		maintenanceTask_toJs(result)
+		nullToUndefined(
+			result?.let { nonNull1 ->
+				maintenanceTask_toJs(nonNull1)
+			}
+		)
 	}
 
 	override fun getMaintenanceTasks(entityIds: Array<String>):

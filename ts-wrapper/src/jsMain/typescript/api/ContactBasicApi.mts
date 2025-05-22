@@ -1,8 +1,8 @@
 // auto-generated file
 import {BaseFilterOptions, BaseSortableFilterOptions, PaginatedListIterator} from '../cardinal-sdk-ts.mjs';
 import {Contact, EncryptedContact} from '../model/Contact.mjs';
-import {IdWithMandatoryRev} from '../model/IdWithMandatoryRev.mjs';
 import {PaginatedList} from '../model/PaginatedList.mjs';
+import {StoredDocumentIdentifier} from '../model/StoredDocumentIdentifier.mjs';
 import {DocIdentifier} from '../model/couchdb/DocIdentifier.mjs';
 import {LabelledOccurence} from '../model/data/LabelledOccurence.mjs';
 import {EncryptedService, Service} from '../model/embed/Service.mjs';
@@ -38,7 +38,7 @@ export interface ContactBasicApi {
 
 	deleteContactById(entityId: string, rev: string): Promise<DocIdentifier>;
 
-	deleteContactsByIds(entityIds: Array<IdWithMandatoryRev>): Promise<Array<DocIdentifier>>;
+	deleteContactsByIds(entityIds: Array<StoredDocumentIdentifier>): Promise<Array<DocIdentifier>>;
 
 	purgeContactById(id: string, rev: string): Promise<void>;
 
@@ -51,6 +51,10 @@ export interface ContactBasicApi {
 	getServiceCodesOccurrences(codeType: string,
 			minOccurrences: number): Promise<Array<LabelledOccurence>>;
 
+	createContact(entity: EncryptedContact): Promise<EncryptedContact>;
+
+	createContacts(entities: Array<EncryptedContact>): Promise<Array<EncryptedContact>>;
+
 	undeleteContactById(id: string, rev: string): Promise<EncryptedContact>;
 
 	undeleteContact(contact: Contact): Promise<EncryptedContact>;
@@ -59,7 +63,7 @@ export interface ContactBasicApi {
 
 	modifyContacts(entities: Array<EncryptedContact>): Promise<Array<EncryptedContact>>;
 
-	getContact(entityId: string): Promise<EncryptedContact>;
+	getContact(entityId: string): Promise<EncryptedContact | undefined>;
 
 	getContacts(entityIds: Array<string>): Promise<Array<EncryptedContact>>;
 

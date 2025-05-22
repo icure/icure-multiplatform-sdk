@@ -8,7 +8,7 @@ import com.icure.cardinal.sdk.filters.BaseFilterOptions
 import com.icure.cardinal.sdk.filters.BaseSortableFilterOptions
 import com.icure.cardinal.sdk.model.Contact
 import com.icure.cardinal.sdk.model.EncryptedContact
-import com.icure.cardinal.sdk.model.IdWithMandatoryRev
+import com.icure.cardinal.sdk.model.StoredDocumentIdentifier
 import com.icure.cardinal.sdk.model.`data`.LabelledOccurence
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.model.embed.EncryptedService
@@ -305,7 +305,7 @@ public object ContactBasicApi {
     entityIdsString: String,
   ) {
     val entityIds = fullLanguageInteropJson.decodeFromString(
-      ListSerializer(IdWithMandatoryRev.serializer()),
+      ListSerializer(StoredDocumentIdentifier.serializer()),
       entityIdsString
     )
     ApiScope.execute(
@@ -444,6 +444,52 @@ public object ContactBasicApi {
     }
   }
 
+  public fun createContact(
+    dartResultCallback: (
+      String?,
+      String?,
+      String?,
+      String?,
+    ) -> Unit,
+    sdkId: String,
+    entityString: String,
+  ) {
+    val entity = fullLanguageInteropJson.decodeFromString(
+      EncryptedContact.serializer(),
+      entityString
+    )
+    ApiScope.execute(
+      dartResultCallback,
+      EncryptedContact.serializer()) {
+      NativeReferences.get<CardinalBaseApis>(sdkId).contact.createContact(
+        entity,
+      )
+    }
+  }
+
+  public fun createContacts(
+    dartResultCallback: (
+      String?,
+      String?,
+      String?,
+      String?,
+    ) -> Unit,
+    sdkId: String,
+    entitiesString: String,
+  ) {
+    val entities = fullLanguageInteropJson.decodeFromString(
+      ListSerializer(EncryptedContact.serializer()),
+      entitiesString
+    )
+    ApiScope.execute(
+      dartResultCallback,
+      ListSerializer(EncryptedContact.serializer())) {
+      NativeReferences.get<CardinalBaseApis>(sdkId).contact.createContacts(
+        entities,
+      )
+    }
+  }
+
   public fun undeleteContactById(
     dartResultCallback: (
       String?,
@@ -558,7 +604,7 @@ public object ContactBasicApi {
     )
     ApiScope.execute(
       dartResultCallback,
-      EncryptedContact.serializer()) {
+      EncryptedContact.serializer().nullable) {
       NativeReferences.get<CardinalBaseApis>(sdkId).contact.getContact(
         entityId,
       )

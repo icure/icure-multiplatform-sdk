@@ -8,7 +8,7 @@ import 'package:cardinal_sdk/filters/filter_options.dart';
 import 'package:cardinal_sdk/utils/pagination/paginated_list_iterator.dart';
 import 'package:cardinal_sdk/model/data_owner_registration_success.dart';
 import 'package:cardinal_sdk/model/couchdb/doc_identifier.dart';
-import 'package:cardinal_sdk/model/id_with_mandatory_rev.dart';
+import 'package:cardinal_sdk/model/stored_document_identifier.dart';
 import 'package:cardinal_sdk/subscription/subscription_event_type.dart';
 import 'package:cardinal_sdk/subscription/entity_subscription_configuration.dart';
 import 'package:cardinal_sdk/subscription/entity_subscription.dart';
@@ -18,7 +18,7 @@ class HealthcarePartyPlatformApi {
 	MethodChannel _methodChannel;
 	HealthcarePartyPlatformApi(this._methodChannel);
 
-	Future<HealthcareParty> getHealthcareParty(String sdkId, String healthcarePartyId) async {
+	Future<HealthcareParty?> getHealthcareParty(String sdkId, String healthcarePartyId) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'HealthcarePartyApi.getHealthcareParty',
 			{
@@ -28,7 +28,7 @@ class HealthcarePartyPlatformApi {
 		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getHealthcareParty");
 		final parsedResJson = jsonDecode(res);
-		return HealthcareParty.fromJSON(parsedResJson);
+		return parsedResJson == null ? null : HealthcareParty.fromJSON(parsedResJson);
 	}
 
 	Future<HealthcareParty> createHealthcareParty(String sdkId, HealthcareParty p) async {
@@ -246,12 +246,12 @@ class HealthcarePartyPlatformApi {
 		return DocIdentifier.fromJSON(parsedResJson);
 	}
 
-	Future<List<DocIdentifier>> deleteHealthcarePartiesByIds(String sdkId, List<IdWithMandatoryRev> entityIds) async {
+	Future<List<DocIdentifier>> deleteHealthcarePartiesByIds(String sdkId, List<StoredDocumentIdentifier> entityIds) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'HealthcarePartyApi.deleteHealthcarePartiesByIds',
 			{
 				"sdkId": sdkId,
-				"entityIds": jsonEncode(entityIds.map((x0) => IdWithMandatoryRev.encode(x0)).toList()),
+				"entityIds": jsonEncode(entityIds.map((x0) => StoredDocumentIdentifier.encode(x0)).toList()),
 			}
 		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method deleteHealthcarePartiesByIds");
@@ -274,13 +274,13 @@ class HealthcarePartyPlatformApi {
 		return DocIdentifier.fromJSON(parsedResJson);
 	}
 
-	Future<List<DocIdentifier>> deleteHealthcarePartiesInGroupByIds(String sdkId, String groupId, List<IdWithMandatoryRev> entityIds) async {
+	Future<List<DocIdentifier>> deleteHealthcarePartiesInGroupByIds(String sdkId, String groupId, List<StoredDocumentIdentifier> entityIds) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'HealthcarePartyApi.deleteHealthcarePartiesInGroupByIds',
 			{
 				"sdkId": sdkId,
 				"groupId": jsonEncode(groupId),
-				"entityIds": jsonEncode(entityIds.map((x0) => IdWithMandatoryRev.encode(x0)).toList()),
+				"entityIds": jsonEncode(entityIds.map((x0) => StoredDocumentIdentifier.encode(x0)).toList()),
 			}
 		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method deleteHealthcarePartiesInGroupByIds");

@@ -6,22 +6,24 @@ import 'package:cardinal_sdk/model/embed/time_series.dart';
 import 'package:cardinal_sdk/model/embed/service.dart';
 import 'package:cardinal_sdk/model/embed/content.dart';
 import 'dart:convert';
+import 'package:freezed_annotation/freezed_annotation.dart';
+part "content.freezed.dart";
 
 
 sealed class Content {
-	abstract String? stringValue;
-	abstract double? numberValue;
-	abstract bool? booleanValue;
-	abstract DateTime? instantValue;
-	abstract int? fuzzyDateValue;
-	abstract Uint8List? binaryValue;
-	abstract String? documentId;
-	abstract Measure? measureValue;
-	abstract Medication? medicationValue;
-	abstract TimeSeries? timeSeries;
+	abstract final String? stringValue;
+	abstract final double? numberValue;
+	abstract final bool? booleanValue;
+	abstract final DateTime? instantValue;
+	abstract final int? fuzzyDateValue;
+	abstract final Uint8List? binaryValue;
+	abstract final String? documentId;
+	abstract final Measure? measureValue;
+	abstract final Medication? medicationValue;
+	abstract final TimeSeries? timeSeries;
 	List<Service>? get compoundValue;
-	abstract List<Measure>? ratio;
-	abstract List<Measure>? range;
+	abstract final List<Measure>? ratio;
+	abstract final List<Measure>? range;
 
 	static Map<String, dynamic> encode(Content value) {
 		switch (value) {
@@ -52,47 +54,24 @@ sealed class Content {
 	}
 }
 
-class EncryptedContent implements Content {
-	@override String? stringValue = null;
-	@override double? numberValue = null;
-	@override bool? booleanValue = null;
-	@override DateTime? instantValue = null;
-	@override int? fuzzyDateValue = null;
-	@override Uint8List? binaryValue = null;
-	@override String? documentId = null;
-	@override Measure? measureValue = null;
-	@override Medication? medicationValue = null;
-	@override TimeSeries? timeSeries = null;
-	@override List<EncryptedService>? compoundValue = null;
-	@override List<Measure>? ratio = null;
-	@override List<Measure>? range = null;
-	EncryptedContent({
-			String? stringValue,
-			double? numberValue,
-			bool? booleanValue,
-			DateTime? instantValue,
-			int? fuzzyDateValue,
-			Uint8List? binaryValue,
-			String? documentId,
-			Measure? measureValue,
-			Medication? medicationValue,
-			TimeSeries? timeSeries,
-			List<EncryptedService>? compoundValue,
-			List<Measure>? ratio,
-			List<Measure>? range
-		}) : stringValue = stringValue ?? null,
-		numberValue = numberValue ?? null,
-		booleanValue = booleanValue ?? null,
-		instantValue = instantValue ?? null,
-		fuzzyDateValue = fuzzyDateValue ?? null,
-		binaryValue = binaryValue ?? null,
-		documentId = documentId ?? null,
-		measureValue = measureValue ?? null,
-		medicationValue = medicationValue ?? null,
-		timeSeries = timeSeries ?? null,
-		compoundValue = compoundValue ?? null,
-		ratio = ratio ?? null,
-		range = range ?? null;
+@freezed
+abstract class EncryptedContent with _$EncryptedContent implements Content {
+	const factory EncryptedContent({
+		@Default(null) String? stringValue,
+		@Default(null) double? numberValue,
+		@Default(null) bool? booleanValue,
+		@Default(null) DateTime? instantValue,
+		@Default(null) int? fuzzyDateValue,
+		@Default(null) Uint8List? binaryValue,
+		@Default(null) String? documentId,
+		@Default(null) Measure? measureValue,
+		@Default(null) Medication? medicationValue,
+		@Default(null) TimeSeries? timeSeries,
+		@Default(null) List<EncryptedService>? compoundValue,
+		@Default(null) List<Measure>? ratio,
+		@Default(null) List<Measure>? range,
+	}) = _EncryptedContent;
+
 
 	static Map<String, dynamic> encode(EncryptedContent value) {
 		Map<String, dynamic> entityAsMap = {
@@ -132,47 +111,24 @@ class EncryptedContent implements Content {
 	}
 }
 
-class DecryptedContent implements Content {
-	@override String? stringValue = null;
-	@override double? numberValue = null;
-	@override bool? booleanValue = null;
-	@override DateTime? instantValue = null;
-	@override int? fuzzyDateValue = null;
-	@override Uint8List? binaryValue = null;
-	@override String? documentId = null;
-	@override Measure? measureValue = null;
-	@override Medication? medicationValue = null;
-	@override TimeSeries? timeSeries = null;
-	@override List<DecryptedService>? compoundValue = null;
-	@override List<Measure>? ratio = null;
-	@override List<Measure>? range = null;
-	DecryptedContent({
-			String? stringValue,
-			double? numberValue,
-			bool? booleanValue,
-			DateTime? instantValue,
-			int? fuzzyDateValue,
-			Uint8List? binaryValue,
-			String? documentId,
-			Measure? measureValue,
-			Medication? medicationValue,
-			TimeSeries? timeSeries,
-			List<DecryptedService>? compoundValue,
-			List<Measure>? ratio,
-			List<Measure>? range
-		}) : stringValue = stringValue ?? null,
-		numberValue = numberValue ?? null,
-		booleanValue = booleanValue ?? null,
-		instantValue = instantValue ?? null,
-		fuzzyDateValue = fuzzyDateValue ?? null,
-		binaryValue = binaryValue ?? null,
-		documentId = documentId ?? null,
-		measureValue = measureValue ?? null,
-		medicationValue = medicationValue ?? null,
-		timeSeries = timeSeries ?? null,
-		compoundValue = compoundValue ?? null,
-		ratio = ratio ?? null,
-		range = range ?? null;
+@freezed
+abstract class DecryptedContent with _$DecryptedContent implements Content {
+	const factory DecryptedContent({
+		@Default(null) String? stringValue,
+		@Default(null) double? numberValue,
+		@Default(null) bool? booleanValue,
+		@Default(null) DateTime? instantValue,
+		@Default(null) int? fuzzyDateValue,
+		@Default(null) Uint8List? binaryValue,
+		@Default(null) String? documentId,
+		@Default(null) Measure? measureValue,
+		@Default(null) Medication? medicationValue,
+		@Default(null) TimeSeries? timeSeries,
+		@Default(null) List<DecryptedService>? compoundValue,
+		@Default(null) List<Measure>? ratio,
+		@Default(null) List<Measure>? range,
+	}) = _DecryptedContent;
+
 
 	static Map<String, dynamic> encode(DecryptedContent value) {
 		Map<String, dynamic> entityAsMap = {

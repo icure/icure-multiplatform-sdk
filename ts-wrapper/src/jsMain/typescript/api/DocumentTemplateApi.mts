@@ -6,7 +6,7 @@ import {DocIdentifier} from '../model/couchdb/DocIdentifier.mjs';
 
 export interface DocumentTemplateApi {
 
-	getDocumentTemplate(documentTemplateId: string): Promise<DocumentTemplate>;
+	getDocumentTemplate(documentTemplateId: string): Promise<DocumentTemplate | undefined>;
 
 	createDocumentTemplate(documentTemplate: DocumentTemplate): Promise<DocumentTemplate>;
 

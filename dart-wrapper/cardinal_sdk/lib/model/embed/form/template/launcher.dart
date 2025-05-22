@@ -1,17 +1,17 @@
 // auto-generated file
 import 'package:cardinal_sdk/model/embed/form/template/trigger.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+part "launcher.freezed.dart";
 
 
-class Launcher {
-	String name;
-	Trigger triggerer;
-	bool shouldPassValue = false;
-	Launcher(
-		this.name,
-		this.triggerer,
-		{
-			bool? shouldPassValue
-		}) : shouldPassValue = shouldPassValue ?? false;
+@freezed
+abstract class Launcher with _$Launcher {
+	const factory Launcher({
+		required String name,
+		required Trigger triggerer,
+		@Default(false) bool shouldPassValue,
+	}) = _Launcher;
+
 
 	static Map<String, dynamic> encode(Launcher value) {
 		Map<String, dynamic> entityAsMap = {
@@ -24,8 +24,8 @@ class Launcher {
 
 	static Launcher fromJSON(Map<String, dynamic> data) {
 		return Launcher(
-			(data["name"] as String),
-			Trigger.fromJSON(data["triggerer"]),
+			name: (data["name"] as String),
+			triggerer: Trigger.fromJSON(data["triggerer"]),
 			shouldPassValue: (data["shouldPassValue"] as bool),
 		);
 	}

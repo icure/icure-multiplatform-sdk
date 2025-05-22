@@ -1,14 +1,15 @@
 // auto-generated file
+import 'package:freezed_annotation/freezed_annotation.dart';
+part "message_read_status.freezed.dart";
 
 
-class MessageReadStatus {
-	int? time = null;
-	bool read = false;
-	MessageReadStatus({
-			int? time,
-			bool? read
-		}) : time = time ?? null,
-		read = read ?? false;
+@freezed
+abstract class MessageReadStatus with _$MessageReadStatus {
+	const factory MessageReadStatus({
+		@Default(null) int? time,
+		@Default(false) bool read,
+	}) = _MessageReadStatus;
+
 
 	static Map<String, dynamic> encode(MessageReadStatus value) {
 		Map<String, dynamic> entityAsMap = {

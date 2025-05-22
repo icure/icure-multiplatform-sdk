@@ -30,6 +30,7 @@ class DocumentBasicApiDispatcher {
     case "setRawSecondaryAttachment": setRawSecondaryAttachment(parameters: parameters, resultCallback: resultCallback)
     case "deleteMainAttachment": deleteMainAttachment(parameters: parameters, resultCallback: resultCallback)
     case "deleteSecondaryAttachment": deleteSecondaryAttachment(parameters: parameters, resultCallback: resultCallback)
+    case "createDocument": createDocument(parameters: parameters, resultCallback: resultCallback)
     case "undeleteDocumentById": undeleteDocumentById(parameters: parameters, resultCallback: resultCallback)
     case "undeleteDocument": undeleteDocument(parameters: parameters, resultCallback: resultCallback)
     case "modifyDocument": modifyDocument(parameters: parameters, resultCallback: resultCallback)
@@ -261,6 +262,19 @@ class DocumentBasicApiDispatcher {
     	documentIdString: parameters["documentId"]!,
     	keyString: parameters["key"]!,
     	revString: parameters["rev"]!
+    )
+  }
+
+  private static func createDocument(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    DocumentBasicApi.shared.createDocument(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	entityString: parameters["entity"]!
     )
   }
 

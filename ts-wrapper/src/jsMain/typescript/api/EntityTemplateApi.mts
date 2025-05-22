@@ -1,12 +1,12 @@
 // auto-generated file
 import {EntityTemplate} from '../model/EntityTemplate.mjs';
-import {IdWithMandatoryRev} from '../model/IdWithMandatoryRev.mjs';
+import {StoredDocumentIdentifier} from '../model/StoredDocumentIdentifier.mjs';
 import {DocIdentifier} from '../model/couchdb/DocIdentifier.mjs';
 
 
 export interface EntityTemplateApi {
 
-	getEntityTemplate(documentTemplateId: string): Promise<EntityTemplate>;
+	getEntityTemplate(documentTemplateId: string): Promise<EntityTemplate | undefined>;
 
 	createEntityTemplate(applicationSettings: EntityTemplate): Promise<EntityTemplate>;
 
@@ -30,6 +30,6 @@ export interface EntityTemplateApi {
 
 	createEntityTemplates(entityTemplates: Array<EntityTemplate>): Promise<Array<EntityTemplate>>;
 
-	deleteEntityTemplates(entityTemplateIds: Array<IdWithMandatoryRev>): Promise<Array<DocIdentifier>>;
+	deleteEntityTemplates(entityTemplateIds: Array<StoredDocumentIdentifier>): Promise<Array<DocIdentifier>>;
 
 }

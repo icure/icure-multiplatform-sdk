@@ -16,80 +16,83 @@ import 'package:cardinal_sdk/model/base/stored_document.dart';
 import 'package:cardinal_sdk/model/base/icure_document.dart';
 import 'package:cardinal_sdk/model/base/has_encryption_metadata.dart';
 import 'package:cardinal_sdk/model/embed/encryptable.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+part "invoice.freezed.dart";
 
 
 sealed class Invoice implements StoredDocument, ICureDocument<String>, HasEncryptionMetadata, Encryptable {
-	@override abstract String id;
-	@override abstract String? rev;
-	@override abstract int? created;
-	@override abstract int? modified;
-	@override abstract String? author;
-	@override abstract String? responsible;
-	@override abstract String? medicalLocationId;
-	@override abstract Set<CodeStub> tags;
-	@override abstract Set<CodeStub> codes;
-	@override abstract int? endOfLife;
-	@override abstract int? deletionDate;
-	abstract int? invoiceDate;
-	abstract int? sentDate;
-	abstract int? printedDate;
+	@override abstract final String id;
+	@override abstract final String? rev;
+	@override abstract final int? created;
+	@override abstract final int? modified;
+	@override abstract final String? author;
+	@override abstract final String? responsible;
+	@override abstract final String? medicalLocationId;
+	@override abstract final Set<CodeStub> tags;
+	@override abstract final Set<CodeStub> codes;
+	@override abstract final int? endOfLife;
+	@override abstract final int? deletionDate;
+	abstract final int? invoiceDate;
+	abstract final int? sentDate;
+	abstract final int? printedDate;
 	List<InvoicingCode> get invoicingCodes;
-	abstract Map<String, String> receipts;
-	abstract String? recipientType;
-	abstract String? recipientId;
-	abstract String? invoiceReference;
-	abstract String? thirdPartyReference;
-	abstract String? thirdPartyPaymentJustification;
-	abstract String? thirdPartyPaymentReason;
-	abstract String? reason;
-	abstract InvoiceType? invoiceType;
-	abstract MediumType? sentMediumType;
-	abstract InvoiceInterventionType? interventionType;
-	abstract String? groupId;
-	abstract PaymentType? paymentType;
-	abstract double? paid;
-	abstract List<Payment>? payments;
-	abstract String? gnotionNihii;
-	abstract String? gnotionSsin;
-	abstract String? gnotionLastName;
-	abstract String? gnotionFirstName;
-	abstract String? gnotionCdHcParty;
-	@ActualInt32() abstract int? invoicePeriod;
-	abstract String? careProviderType;
-	abstract String? internshipNihii;
-	abstract String? internshipSsin;
-	abstract String? internshipLastName;
-	abstract String? internshipFirstName;
-	abstract String? internshipCdHcParty;
-	abstract String? internshipCbe;
-	abstract String? supervisorNihii;
-	abstract String? supervisorSsin;
-	abstract String? supervisorLastName;
-	abstract String? supervisorFirstName;
-	abstract String? supervisorCdHcParty;
-	abstract String? supervisorCbe;
-	abstract String? error;
-	abstract String? encounterLocationName;
-	abstract String? encounterLocationNihii;
-	@ActualInt32() abstract int? encounterLocationNorm;
-	@ActualInt32() abstract int? longDelayJustification;
-	abstract String? correctiveInvoiceId;
-	abstract String? correctedInvoiceId;
-	abstract bool? creditNote;
-	abstract String? creditNoteRelatedInvoiceId;
-	abstract IdentityDocumentReader? idDocument;
-	abstract int? admissionDate;
-	abstract String? locationNihii;
-	@ActualInt32() abstract int? locationService;
-	abstract String? cancelReason;
-	abstract int? cancelDate;
-	abstract Map<String, String> options;
-	@override abstract Set<String> secretForeignKeys;
-	@override abstract Map<String, Set<Delegation>> cryptedForeignKeys;
-	@override abstract Map<String, Set<Delegation>> delegations;
-	@override abstract Map<String, Set<Delegation>> encryptionKeys;
-	@override abstract Base64String? encryptedSelf;
-	@override abstract SecurityMetadata? securityMetadata;
+	abstract final Map<String, String> receipts;
+	abstract final String? recipientType;
+	abstract final String? recipientId;
+	abstract final String? invoiceReference;
+	abstract final String? decisionReference;
+	abstract final String? thirdPartyReference;
+	abstract final String? thirdPartyPaymentJustification;
+	abstract final String? thirdPartyPaymentReason;
+	abstract final String? reason;
+	abstract final InvoiceType? invoiceType;
+	abstract final MediumType? sentMediumType;
+	abstract final InvoiceInterventionType? interventionType;
+	abstract final String? groupId;
+	abstract final PaymentType? paymentType;
+	abstract final double? paid;
+	abstract final List<Payment>? payments;
+	abstract final String? gnotionNihii;
+	abstract final String? gnotionSsin;
+	abstract final String? gnotionLastName;
+	abstract final String? gnotionFirstName;
+	abstract final String? gnotionCdHcParty;
+	@actualInt32 abstract final int? invoicePeriod;
+	abstract final String? careProviderType;
+	abstract final String? internshipNihii;
+	abstract final String? internshipSsin;
+	abstract final String? internshipLastName;
+	abstract final String? internshipFirstName;
+	abstract final String? internshipCdHcParty;
+	abstract final String? internshipCbe;
+	abstract final String? supervisorNihii;
+	abstract final String? supervisorSsin;
+	abstract final String? supervisorLastName;
+	abstract final String? supervisorFirstName;
+	abstract final String? supervisorCdHcParty;
+	abstract final String? supervisorCbe;
+	abstract final String? error;
+	abstract final String? encounterLocationName;
+	abstract final String? encounterLocationNihii;
+	@actualInt32 abstract final int? encounterLocationNorm;
+	@actualInt32 abstract final int? longDelayJustification;
+	abstract final String? correctiveInvoiceId;
+	abstract final String? correctedInvoiceId;
+	abstract final bool? creditNote;
+	abstract final String? creditNoteRelatedInvoiceId;
+	abstract final IdentityDocumentReader? idDocument;
+	abstract final int? admissionDate;
+	abstract final String? locationNihii;
+	@actualInt32 abstract final int? locationService;
+	abstract final String? cancelReason;
+	abstract final int? cancelDate;
+	abstract final Map<String, String> options;
+	@override abstract final Set<String> secretForeignKeys;
+	@override abstract final Map<String, Set<Delegation>> cryptedForeignKeys;
+	@override abstract final Map<String, Set<Delegation>> delegations;
+	@override abstract final Map<String, Set<Delegation>> encryptionKeys;
+	@override abstract final Base64String? encryptedSelf;
+	@override abstract final SecurityMetadata? securityMetadata;
 
 	static Map<String, dynamic> encode(Invoice value) {
 		switch (value) {
@@ -120,249 +123,83 @@ sealed class Invoice implements StoredDocument, ICureDocument<String>, HasEncryp
 	}
 }
 
-class DecryptedInvoice implements Invoice {
-	@override String id;
-	@override String? rev = null;
-	@override int? created = null;
-	@override int? modified = null;
-	@override String? author = null;
-	@override String? responsible = null;
-	@override String? medicalLocationId = null;
-	@override Set<CodeStub> tags = {};
-	@override Set<CodeStub> codes = {};
-	@override int? endOfLife = null;
-	@override int? deletionDate = null;
-	@override int? invoiceDate = null;
-	@override int? sentDate = null;
-	@override int? printedDate = null;
-	@override List<DecryptedInvoicingCode> invoicingCodes = [];
-	@override Map<String, String> receipts = {};
-	@override String? recipientType = null;
-	@override String? recipientId = null;
-	@override String? invoiceReference = null;
-	@override String? thirdPartyReference = null;
-	@override String? thirdPartyPaymentJustification = null;
-	@override String? thirdPartyPaymentReason = null;
-	@override String? reason = null;
-	@override InvoiceType? invoiceType = null;
-	@override MediumType? sentMediumType = null;
-	@override InvoiceInterventionType? interventionType = null;
-	@override String? groupId = null;
-	@override PaymentType? paymentType = null;
-	@override double? paid = null;
-	@override List<Payment>? payments = null;
-	@override String? gnotionNihii = null;
-	@override String? gnotionSsin = null;
-	@override String? gnotionLastName = null;
-	@override String? gnotionFirstName = null;
-	@override String? gnotionCdHcParty = null;
-	int? _invoicePeriod = null;
-	@ActualInt32() @override int? get invoicePeriod => _invoicePeriod;
-	@ActualInt32() @override set invoicePeriod(int? value) {
-		if (value != null && value > 2147483647) {
-			throw ArgumentError('invoicePeriod value cannot exceed 2147483647');
-		}
-		_invoicePeriod = value;
-	}
-	@override String? careProviderType = null;
-	@override String? internshipNihii = null;
-	@override String? internshipSsin = null;
-	@override String? internshipLastName = null;
-	@override String? internshipFirstName = null;
-	@override String? internshipCdHcParty = null;
-	@override String? internshipCbe = null;
-	@override String? supervisorNihii = null;
-	@override String? supervisorSsin = null;
-	@override String? supervisorLastName = null;
-	@override String? supervisorFirstName = null;
-	@override String? supervisorCdHcParty = null;
-	@override String? supervisorCbe = null;
-	@override String? error = null;
-	@override String? encounterLocationName = null;
-	@override String? encounterLocationNihii = null;
-	int? _encounterLocationNorm = null;
-	@ActualInt32() @override int? get encounterLocationNorm => _encounterLocationNorm;
-	@ActualInt32() @override set encounterLocationNorm(int? value) {
-		if (value != null && value > 2147483647) {
-			throw ArgumentError('encounterLocationNorm value cannot exceed 2147483647');
-		}
-		_encounterLocationNorm = value;
-	}
-	int? _longDelayJustification = null;
-	@ActualInt32() @override int? get longDelayJustification => _longDelayJustification;
-	@ActualInt32() @override set longDelayJustification(int? value) {
-		if (value != null && value > 2147483647) {
-			throw ArgumentError('longDelayJustification value cannot exceed 2147483647');
-		}
-		_longDelayJustification = value;
-	}
-	@override String? correctiveInvoiceId = null;
-	@override String? correctedInvoiceId = null;
-	@override bool? creditNote = null;
-	@override String? creditNoteRelatedInvoiceId = null;
-	@override IdentityDocumentReader? idDocument = null;
-	@override int? admissionDate = null;
-	@override String? locationNihii = null;
-	int? _locationService = null;
-	@ActualInt32() @override int? get locationService => _locationService;
-	@ActualInt32() @override set locationService(int? value) {
-		if (value != null && value > 2147483647) {
-			throw ArgumentError('locationService value cannot exceed 2147483647');
-		}
-		_locationService = value;
-	}
-	@override String? cancelReason = null;
-	@override int? cancelDate = null;
-	@override Map<String, String> options = {};
-	@override Set<String> secretForeignKeys = {};
-	@override Map<String, Set<Delegation>> cryptedForeignKeys = {};
-	@override Map<String, Set<Delegation>> delegations = {};
-	@override Map<String, Set<Delegation>> encryptionKeys = {};
-	@override Base64String? encryptedSelf = null;
-	@override SecurityMetadata? securityMetadata = null;
-	DecryptedInvoice(
-		this.id,
-		{
-			int? invoicePeriod,
-			int? encounterLocationNorm,
-			int? longDelayJustification,
-			int? locationService,
-			String? rev,
-			int? created,
-			int? modified,
-			String? author,
-			String? responsible,
-			String? medicalLocationId,
-			Set<CodeStub>? tags,
-			Set<CodeStub>? codes,
-			int? endOfLife,
-			int? deletionDate,
-			int? invoiceDate,
-			int? sentDate,
-			int? printedDate,
-			List<DecryptedInvoicingCode>? invoicingCodes,
-			Map<String, String>? receipts,
-			String? recipientType,
-			String? recipientId,
-			String? invoiceReference,
-			String? thirdPartyReference,
-			String? thirdPartyPaymentJustification,
-			String? thirdPartyPaymentReason,
-			String? reason,
-			InvoiceType? invoiceType,
-			MediumType? sentMediumType,
-			InvoiceInterventionType? interventionType,
-			String? groupId,
-			PaymentType? paymentType,
-			double? paid,
-			List<Payment>? payments,
-			String? gnotionNihii,
-			String? gnotionSsin,
-			String? gnotionLastName,
-			String? gnotionFirstName,
-			String? gnotionCdHcParty,
-			String? careProviderType,
-			String? internshipNihii,
-			String? internshipSsin,
-			String? internshipLastName,
-			String? internshipFirstName,
-			String? internshipCdHcParty,
-			String? internshipCbe,
-			String? supervisorNihii,
-			String? supervisorSsin,
-			String? supervisorLastName,
-			String? supervisorFirstName,
-			String? supervisorCdHcParty,
-			String? supervisorCbe,
-			String? error,
-			String? encounterLocationName,
-			String? encounterLocationNihii,
-			String? correctiveInvoiceId,
-			String? correctedInvoiceId,
-			bool? creditNote,
-			String? creditNoteRelatedInvoiceId,
-			IdentityDocumentReader? idDocument,
-			int? admissionDate,
-			String? locationNihii,
-			String? cancelReason,
-			int? cancelDate,
-			Map<String, String>? options,
-			Set<String>? secretForeignKeys,
-			Map<String, Set<Delegation>>? cryptedForeignKeys,
-			Map<String, Set<Delegation>>? delegations,
-			Map<String, Set<Delegation>>? encryptionKeys,
-			Base64String? encryptedSelf,
-			SecurityMetadata? securityMetadata
-		}) : rev = rev ?? null,
-		created = created ?? null,
-		modified = modified ?? null,
-		author = author ?? null,
-		responsible = responsible ?? null,
-		medicalLocationId = medicalLocationId ?? null,
-		tags = tags ?? {},
-		codes = codes ?? {},
-		endOfLife = endOfLife ?? null,
-		deletionDate = deletionDate ?? null,
-		invoiceDate = invoiceDate ?? null,
-		sentDate = sentDate ?? null,
-		printedDate = printedDate ?? null,
-		invoicingCodes = invoicingCodes ?? [],
-		receipts = receipts ?? {},
-		recipientType = recipientType ?? null,
-		recipientId = recipientId ?? null,
-		invoiceReference = invoiceReference ?? null,
-		thirdPartyReference = thirdPartyReference ?? null,
-		thirdPartyPaymentJustification = thirdPartyPaymentJustification ?? null,
-		thirdPartyPaymentReason = thirdPartyPaymentReason ?? null,
-		reason = reason ?? null,
-		invoiceType = invoiceType ?? null,
-		sentMediumType = sentMediumType ?? null,
-		interventionType = interventionType ?? null,
-		groupId = groupId ?? null,
-		paymentType = paymentType ?? null,
-		paid = paid ?? null,
-		payments = payments ?? null,
-		gnotionNihii = gnotionNihii ?? null,
-		gnotionSsin = gnotionSsin ?? null,
-		gnotionLastName = gnotionLastName ?? null,
-		gnotionFirstName = gnotionFirstName ?? null,
-		gnotionCdHcParty = gnotionCdHcParty ?? null,
-		careProviderType = careProviderType ?? null,
-		internshipNihii = internshipNihii ?? null,
-		internshipSsin = internshipSsin ?? null,
-		internshipLastName = internshipLastName ?? null,
-		internshipFirstName = internshipFirstName ?? null,
-		internshipCdHcParty = internshipCdHcParty ?? null,
-		internshipCbe = internshipCbe ?? null,
-		supervisorNihii = supervisorNihii ?? null,
-		supervisorSsin = supervisorSsin ?? null,
-		supervisorLastName = supervisorLastName ?? null,
-		supervisorFirstName = supervisorFirstName ?? null,
-		supervisorCdHcParty = supervisorCdHcParty ?? null,
-		supervisorCbe = supervisorCbe ?? null,
-		error = error ?? null,
-		encounterLocationName = encounterLocationName ?? null,
-		encounterLocationNihii = encounterLocationNihii ?? null,
-		correctiveInvoiceId = correctiveInvoiceId ?? null,
-		correctedInvoiceId = correctedInvoiceId ?? null,
-		creditNote = creditNote ?? null,
-		creditNoteRelatedInvoiceId = creditNoteRelatedInvoiceId ?? null,
-		idDocument = idDocument ?? null,
-		admissionDate = admissionDate ?? null,
-		locationNihii = locationNihii ?? null,
-		cancelReason = cancelReason ?? null,
-		cancelDate = cancelDate ?? null,
-		options = options ?? {},
-		secretForeignKeys = secretForeignKeys ?? {},
-		cryptedForeignKeys = cryptedForeignKeys ?? {},
-		delegations = delegations ?? {},
-		encryptionKeys = encryptionKeys ?? {},
-		encryptedSelf = encryptedSelf ?? null,
-		securityMetadata = securityMetadata ?? null,
-		_invoicePeriod = invoicePeriod ?? null,
-		_encounterLocationNorm = encounterLocationNorm ?? null,
-		_longDelayJustification = longDelayJustification ?? null,
-		_locationService = locationService ?? null;
+@freezed
+abstract class DecryptedInvoice with _$DecryptedInvoice implements Invoice {
+	const factory DecryptedInvoice({
+		required String id,
+		@Default(null) String? rev,
+		@Default(null) int? created,
+		@Default(null) int? modified,
+		@Default(null) String? author,
+		@Default(null) String? responsible,
+		@Default(null) String? medicalLocationId,
+		@Default({}) Set<CodeStub> tags,
+		@Default({}) Set<CodeStub> codes,
+		@Default(null) int? endOfLife,
+		@Default(null) int? deletionDate,
+		@Default(null) int? invoiceDate,
+		@Default(null) int? sentDate,
+		@Default(null) int? printedDate,
+		@Default([]) List<DecryptedInvoicingCode> invoicingCodes,
+		@Default({}) Map<String, String> receipts,
+		@Default(null) String? recipientType,
+		@Default(null) String? recipientId,
+		@Default(null) String? invoiceReference,
+		@Default(null) String? decisionReference,
+		@Default(null) String? thirdPartyReference,
+		@Default(null) String? thirdPartyPaymentJustification,
+		@Default(null) String? thirdPartyPaymentReason,
+		@Default(null) String? reason,
+		@Default(null) InvoiceType? invoiceType,
+		@Default(null) MediumType? sentMediumType,
+		@Default(null) InvoiceInterventionType? interventionType,
+		@Default(null) String? groupId,
+		@Default(null) PaymentType? paymentType,
+		@Default(null) double? paid,
+		@Default(null) List<Payment>? payments,
+		@Default(null) String? gnotionNihii,
+		@Default(null) String? gnotionSsin,
+		@Default(null) String? gnotionLastName,
+		@Default(null) String? gnotionFirstName,
+		@Default(null) String? gnotionCdHcParty,
+		@Default(null) int? invoicePeriod,
+		@Default(null) String? careProviderType,
+		@Default(null) String? internshipNihii,
+		@Default(null) String? internshipSsin,
+		@Default(null) String? internshipLastName,
+		@Default(null) String? internshipFirstName,
+		@Default(null) String? internshipCdHcParty,
+		@Default(null) String? internshipCbe,
+		@Default(null) String? supervisorNihii,
+		@Default(null) String? supervisorSsin,
+		@Default(null) String? supervisorLastName,
+		@Default(null) String? supervisorFirstName,
+		@Default(null) String? supervisorCdHcParty,
+		@Default(null) String? supervisorCbe,
+		@Default(null) String? error,
+		@Default(null) String? encounterLocationName,
+		@Default(null) String? encounterLocationNihii,
+		@Default(null) int? encounterLocationNorm,
+		@Default(null) int? longDelayJustification,
+		@Default(null) String? correctiveInvoiceId,
+		@Default(null) String? correctedInvoiceId,
+		@Default(null) bool? creditNote,
+		@Default(null) String? creditNoteRelatedInvoiceId,
+		@Default(null) IdentityDocumentReader? idDocument,
+		@Default(null) int? admissionDate,
+		@Default(null) String? locationNihii,
+		@Default(null) int? locationService,
+		@Default(null) String? cancelReason,
+		@Default(null) int? cancelDate,
+		@Default({}) Map<String, String> options,
+		@Default({}) Set<String> secretForeignKeys,
+		@Default({}) Map<String, Set<Delegation>> cryptedForeignKeys,
+		@Default({}) Map<String, Set<Delegation>> delegations,
+		@Default({}) Map<String, Set<Delegation>> encryptionKeys,
+		@Default(null) Base64String? encryptedSelf,
+		@Default(null) SecurityMetadata? securityMetadata,
+	}) = _DecryptedInvoice;
+
 
 	static Map<String, dynamic> encode(DecryptedInvoice value) {
 		Map<String, dynamic> entityAsMap = {
@@ -385,6 +222,7 @@ class DecryptedInvoice implements Invoice {
 			"recipientType" : value.recipientType,
 			"recipientId" : value.recipientId,
 			"invoiceReference" : value.invoiceReference,
+			"decisionReference" : value.decisionReference,
 			"thirdPartyReference" : value.thirdPartyReference,
 			"thirdPartyPaymentJustification" : value.thirdPartyPaymentJustification,
 			"thirdPartyPaymentReason" : value.thirdPartyPaymentReason,
@@ -443,7 +281,7 @@ class DecryptedInvoice implements Invoice {
 
 	static DecryptedInvoice fromJSON(Map<String, dynamic> data) {
 		return DecryptedInvoice(
-			(data["id"] as String),
+			id: (data["id"] as String),
 			invoicePeriod: (data["invoicePeriod"] as int?),
 			encounterLocationNorm: (data["encounterLocationNorm"] as int?),
 			longDelayJustification: (data["longDelayJustification"] as int?),
@@ -466,6 +304,7 @@ class DecryptedInvoice implements Invoice {
 			recipientType: (data["recipientType"] as String?),
 			recipientId: (data["recipientId"] as String?),
 			invoiceReference: (data["invoiceReference"] as String?),
+			decisionReference: (data["decisionReference"] as String?),
 			thirdPartyReference: (data["thirdPartyReference"] as String?),
 			thirdPartyPaymentJustification: (data["thirdPartyPaymentJustification"] as String?),
 			thirdPartyPaymentReason: (data["thirdPartyPaymentReason"] as String?),
@@ -518,249 +357,83 @@ class DecryptedInvoice implements Invoice {
 	}
 }
 
-class EncryptedInvoice implements Invoice {
-	@override String id;
-	@override String? rev = null;
-	@override int? created = null;
-	@override int? modified = null;
-	@override String? author = null;
-	@override String? responsible = null;
-	@override String? medicalLocationId = null;
-	@override Set<CodeStub> tags = {};
-	@override Set<CodeStub> codes = {};
-	@override int? endOfLife = null;
-	@override int? deletionDate = null;
-	@override int? invoiceDate = null;
-	@override int? sentDate = null;
-	@override int? printedDate = null;
-	@override List<EncryptedInvoicingCode> invoicingCodes = [];
-	@override Map<String, String> receipts = {};
-	@override String? recipientType = null;
-	@override String? recipientId = null;
-	@override String? invoiceReference = null;
-	@override String? thirdPartyReference = null;
-	@override String? thirdPartyPaymentJustification = null;
-	@override String? thirdPartyPaymentReason = null;
-	@override String? reason = null;
-	@override InvoiceType? invoiceType = null;
-	@override MediumType? sentMediumType = null;
-	@override InvoiceInterventionType? interventionType = null;
-	@override String? groupId = null;
-	@override PaymentType? paymentType = null;
-	@override double? paid = null;
-	@override List<Payment>? payments = null;
-	@override String? gnotionNihii = null;
-	@override String? gnotionSsin = null;
-	@override String? gnotionLastName = null;
-	@override String? gnotionFirstName = null;
-	@override String? gnotionCdHcParty = null;
-	int? _invoicePeriod = null;
-	@ActualInt32() @override int? get invoicePeriod => _invoicePeriod;
-	@ActualInt32() @override set invoicePeriod(int? value) {
-		if (value != null && value > 2147483647) {
-			throw ArgumentError('invoicePeriod value cannot exceed 2147483647');
-		}
-		_invoicePeriod = value;
-	}
-	@override String? careProviderType = null;
-	@override String? internshipNihii = null;
-	@override String? internshipSsin = null;
-	@override String? internshipLastName = null;
-	@override String? internshipFirstName = null;
-	@override String? internshipCdHcParty = null;
-	@override String? internshipCbe = null;
-	@override String? supervisorNihii = null;
-	@override String? supervisorSsin = null;
-	@override String? supervisorLastName = null;
-	@override String? supervisorFirstName = null;
-	@override String? supervisorCdHcParty = null;
-	@override String? supervisorCbe = null;
-	@override String? error = null;
-	@override String? encounterLocationName = null;
-	@override String? encounterLocationNihii = null;
-	int? _encounterLocationNorm = null;
-	@ActualInt32() @override int? get encounterLocationNorm => _encounterLocationNorm;
-	@ActualInt32() @override set encounterLocationNorm(int? value) {
-		if (value != null && value > 2147483647) {
-			throw ArgumentError('encounterLocationNorm value cannot exceed 2147483647');
-		}
-		_encounterLocationNorm = value;
-	}
-	int? _longDelayJustification = null;
-	@ActualInt32() @override int? get longDelayJustification => _longDelayJustification;
-	@ActualInt32() @override set longDelayJustification(int? value) {
-		if (value != null && value > 2147483647) {
-			throw ArgumentError('longDelayJustification value cannot exceed 2147483647');
-		}
-		_longDelayJustification = value;
-	}
-	@override String? correctiveInvoiceId = null;
-	@override String? correctedInvoiceId = null;
-	@override bool? creditNote = null;
-	@override String? creditNoteRelatedInvoiceId = null;
-	@override IdentityDocumentReader? idDocument = null;
-	@override int? admissionDate = null;
-	@override String? locationNihii = null;
-	int? _locationService = null;
-	@ActualInt32() @override int? get locationService => _locationService;
-	@ActualInt32() @override set locationService(int? value) {
-		if (value != null && value > 2147483647) {
-			throw ArgumentError('locationService value cannot exceed 2147483647');
-		}
-		_locationService = value;
-	}
-	@override String? cancelReason = null;
-	@override int? cancelDate = null;
-	@override Map<String, String> options = {};
-	@override Set<String> secretForeignKeys = {};
-	@override Map<String, Set<Delegation>> cryptedForeignKeys = {};
-	@override Map<String, Set<Delegation>> delegations = {};
-	@override Map<String, Set<Delegation>> encryptionKeys = {};
-	@override Base64String? encryptedSelf = null;
-	@override SecurityMetadata? securityMetadata = null;
-	EncryptedInvoice(
-		this.id,
-		{
-			int? invoicePeriod,
-			int? encounterLocationNorm,
-			int? longDelayJustification,
-			int? locationService,
-			String? rev,
-			int? created,
-			int? modified,
-			String? author,
-			String? responsible,
-			String? medicalLocationId,
-			Set<CodeStub>? tags,
-			Set<CodeStub>? codes,
-			int? endOfLife,
-			int? deletionDate,
-			int? invoiceDate,
-			int? sentDate,
-			int? printedDate,
-			List<EncryptedInvoicingCode>? invoicingCodes,
-			Map<String, String>? receipts,
-			String? recipientType,
-			String? recipientId,
-			String? invoiceReference,
-			String? thirdPartyReference,
-			String? thirdPartyPaymentJustification,
-			String? thirdPartyPaymentReason,
-			String? reason,
-			InvoiceType? invoiceType,
-			MediumType? sentMediumType,
-			InvoiceInterventionType? interventionType,
-			String? groupId,
-			PaymentType? paymentType,
-			double? paid,
-			List<Payment>? payments,
-			String? gnotionNihii,
-			String? gnotionSsin,
-			String? gnotionLastName,
-			String? gnotionFirstName,
-			String? gnotionCdHcParty,
-			String? careProviderType,
-			String? internshipNihii,
-			String? internshipSsin,
-			String? internshipLastName,
-			String? internshipFirstName,
-			String? internshipCdHcParty,
-			String? internshipCbe,
-			String? supervisorNihii,
-			String? supervisorSsin,
-			String? supervisorLastName,
-			String? supervisorFirstName,
-			String? supervisorCdHcParty,
-			String? supervisorCbe,
-			String? error,
-			String? encounterLocationName,
-			String? encounterLocationNihii,
-			String? correctiveInvoiceId,
-			String? correctedInvoiceId,
-			bool? creditNote,
-			String? creditNoteRelatedInvoiceId,
-			IdentityDocumentReader? idDocument,
-			int? admissionDate,
-			String? locationNihii,
-			String? cancelReason,
-			int? cancelDate,
-			Map<String, String>? options,
-			Set<String>? secretForeignKeys,
-			Map<String, Set<Delegation>>? cryptedForeignKeys,
-			Map<String, Set<Delegation>>? delegations,
-			Map<String, Set<Delegation>>? encryptionKeys,
-			Base64String? encryptedSelf,
-			SecurityMetadata? securityMetadata
-		}) : rev = rev ?? null,
-		created = created ?? null,
-		modified = modified ?? null,
-		author = author ?? null,
-		responsible = responsible ?? null,
-		medicalLocationId = medicalLocationId ?? null,
-		tags = tags ?? {},
-		codes = codes ?? {},
-		endOfLife = endOfLife ?? null,
-		deletionDate = deletionDate ?? null,
-		invoiceDate = invoiceDate ?? null,
-		sentDate = sentDate ?? null,
-		printedDate = printedDate ?? null,
-		invoicingCodes = invoicingCodes ?? [],
-		receipts = receipts ?? {},
-		recipientType = recipientType ?? null,
-		recipientId = recipientId ?? null,
-		invoiceReference = invoiceReference ?? null,
-		thirdPartyReference = thirdPartyReference ?? null,
-		thirdPartyPaymentJustification = thirdPartyPaymentJustification ?? null,
-		thirdPartyPaymentReason = thirdPartyPaymentReason ?? null,
-		reason = reason ?? null,
-		invoiceType = invoiceType ?? null,
-		sentMediumType = sentMediumType ?? null,
-		interventionType = interventionType ?? null,
-		groupId = groupId ?? null,
-		paymentType = paymentType ?? null,
-		paid = paid ?? null,
-		payments = payments ?? null,
-		gnotionNihii = gnotionNihii ?? null,
-		gnotionSsin = gnotionSsin ?? null,
-		gnotionLastName = gnotionLastName ?? null,
-		gnotionFirstName = gnotionFirstName ?? null,
-		gnotionCdHcParty = gnotionCdHcParty ?? null,
-		careProviderType = careProviderType ?? null,
-		internshipNihii = internshipNihii ?? null,
-		internshipSsin = internshipSsin ?? null,
-		internshipLastName = internshipLastName ?? null,
-		internshipFirstName = internshipFirstName ?? null,
-		internshipCdHcParty = internshipCdHcParty ?? null,
-		internshipCbe = internshipCbe ?? null,
-		supervisorNihii = supervisorNihii ?? null,
-		supervisorSsin = supervisorSsin ?? null,
-		supervisorLastName = supervisorLastName ?? null,
-		supervisorFirstName = supervisorFirstName ?? null,
-		supervisorCdHcParty = supervisorCdHcParty ?? null,
-		supervisorCbe = supervisorCbe ?? null,
-		error = error ?? null,
-		encounterLocationName = encounterLocationName ?? null,
-		encounterLocationNihii = encounterLocationNihii ?? null,
-		correctiveInvoiceId = correctiveInvoiceId ?? null,
-		correctedInvoiceId = correctedInvoiceId ?? null,
-		creditNote = creditNote ?? null,
-		creditNoteRelatedInvoiceId = creditNoteRelatedInvoiceId ?? null,
-		idDocument = idDocument ?? null,
-		admissionDate = admissionDate ?? null,
-		locationNihii = locationNihii ?? null,
-		cancelReason = cancelReason ?? null,
-		cancelDate = cancelDate ?? null,
-		options = options ?? {},
-		secretForeignKeys = secretForeignKeys ?? {},
-		cryptedForeignKeys = cryptedForeignKeys ?? {},
-		delegations = delegations ?? {},
-		encryptionKeys = encryptionKeys ?? {},
-		encryptedSelf = encryptedSelf ?? null,
-		securityMetadata = securityMetadata ?? null,
-		_invoicePeriod = invoicePeriod ?? null,
-		_encounterLocationNorm = encounterLocationNorm ?? null,
-		_longDelayJustification = longDelayJustification ?? null,
-		_locationService = locationService ?? null;
+@freezed
+abstract class EncryptedInvoice with _$EncryptedInvoice implements Invoice {
+	const factory EncryptedInvoice({
+		required String id,
+		@Default(null) String? rev,
+		@Default(null) int? created,
+		@Default(null) int? modified,
+		@Default(null) String? author,
+		@Default(null) String? responsible,
+		@Default(null) String? medicalLocationId,
+		@Default({}) Set<CodeStub> tags,
+		@Default({}) Set<CodeStub> codes,
+		@Default(null) int? endOfLife,
+		@Default(null) int? deletionDate,
+		@Default(null) int? invoiceDate,
+		@Default(null) int? sentDate,
+		@Default(null) int? printedDate,
+		@Default([]) List<EncryptedInvoicingCode> invoicingCodes,
+		@Default({}) Map<String, String> receipts,
+		@Default(null) String? recipientType,
+		@Default(null) String? recipientId,
+		@Default(null) String? invoiceReference,
+		@Default(null) String? decisionReference,
+		@Default(null) String? thirdPartyReference,
+		@Default(null) String? thirdPartyPaymentJustification,
+		@Default(null) String? thirdPartyPaymentReason,
+		@Default(null) String? reason,
+		@Default(null) InvoiceType? invoiceType,
+		@Default(null) MediumType? sentMediumType,
+		@Default(null) InvoiceInterventionType? interventionType,
+		@Default(null) String? groupId,
+		@Default(null) PaymentType? paymentType,
+		@Default(null) double? paid,
+		@Default(null) List<Payment>? payments,
+		@Default(null) String? gnotionNihii,
+		@Default(null) String? gnotionSsin,
+		@Default(null) String? gnotionLastName,
+		@Default(null) String? gnotionFirstName,
+		@Default(null) String? gnotionCdHcParty,
+		@Default(null) int? invoicePeriod,
+		@Default(null) String? careProviderType,
+		@Default(null) String? internshipNihii,
+		@Default(null) String? internshipSsin,
+		@Default(null) String? internshipLastName,
+		@Default(null) String? internshipFirstName,
+		@Default(null) String? internshipCdHcParty,
+		@Default(null) String? internshipCbe,
+		@Default(null) String? supervisorNihii,
+		@Default(null) String? supervisorSsin,
+		@Default(null) String? supervisorLastName,
+		@Default(null) String? supervisorFirstName,
+		@Default(null) String? supervisorCdHcParty,
+		@Default(null) String? supervisorCbe,
+		@Default(null) String? error,
+		@Default(null) String? encounterLocationName,
+		@Default(null) String? encounterLocationNihii,
+		@Default(null) int? encounterLocationNorm,
+		@Default(null) int? longDelayJustification,
+		@Default(null) String? correctiveInvoiceId,
+		@Default(null) String? correctedInvoiceId,
+		@Default(null) bool? creditNote,
+		@Default(null) String? creditNoteRelatedInvoiceId,
+		@Default(null) IdentityDocumentReader? idDocument,
+		@Default(null) int? admissionDate,
+		@Default(null) String? locationNihii,
+		@Default(null) int? locationService,
+		@Default(null) String? cancelReason,
+		@Default(null) int? cancelDate,
+		@Default({}) Map<String, String> options,
+		@Default({}) Set<String> secretForeignKeys,
+		@Default({}) Map<String, Set<Delegation>> cryptedForeignKeys,
+		@Default({}) Map<String, Set<Delegation>> delegations,
+		@Default({}) Map<String, Set<Delegation>> encryptionKeys,
+		@Default(null) Base64String? encryptedSelf,
+		@Default(null) SecurityMetadata? securityMetadata,
+	}) = _EncryptedInvoice;
+
 
 	static Map<String, dynamic> encode(EncryptedInvoice value) {
 		Map<String, dynamic> entityAsMap = {
@@ -783,6 +456,7 @@ class EncryptedInvoice implements Invoice {
 			"recipientType" : value.recipientType,
 			"recipientId" : value.recipientId,
 			"invoiceReference" : value.invoiceReference,
+			"decisionReference" : value.decisionReference,
 			"thirdPartyReference" : value.thirdPartyReference,
 			"thirdPartyPaymentJustification" : value.thirdPartyPaymentJustification,
 			"thirdPartyPaymentReason" : value.thirdPartyPaymentReason,
@@ -841,7 +515,7 @@ class EncryptedInvoice implements Invoice {
 
 	static EncryptedInvoice fromJSON(Map<String, dynamic> data) {
 		return EncryptedInvoice(
-			(data["id"] as String),
+			id: (data["id"] as String),
 			invoicePeriod: (data["invoicePeriod"] as int?),
 			encounterLocationNorm: (data["encounterLocationNorm"] as int?),
 			longDelayJustification: (data["longDelayJustification"] as int?),
@@ -864,6 +538,7 @@ class EncryptedInvoice implements Invoice {
 			recipientType: (data["recipientType"] as String?),
 			recipientId: (data["recipientId"] as String?),
 			invoiceReference: (data["invoiceReference"] as String?),
+			decisionReference: (data["decisionReference"] as String?),
 			thirdPartyReference: (data["thirdPartyReference"] as String?),
 			thirdPartyPaymentJustification: (data["thirdPartyPaymentJustification"] as String?),
 			thirdPartyPaymentReason: (data["thirdPartyPaymentReason"] as String?),

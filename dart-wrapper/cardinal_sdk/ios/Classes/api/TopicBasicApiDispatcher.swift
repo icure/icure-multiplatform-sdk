@@ -24,6 +24,7 @@ class TopicBasicApiDispatcher {
     case "deleteTopic": deleteTopic(parameters: parameters, resultCallback: resultCallback)
     case "deleteTopics": deleteTopics(parameters: parameters, resultCallback: resultCallback)
     case "purgeTopic": purgeTopic(parameters: parameters, resultCallback: resultCallback)
+    case "createTopic": createTopic(parameters: parameters, resultCallback: resultCallback)
     case "undeleteTopic": undeleteTopic(parameters: parameters, resultCallback: resultCallback)
     case "modifyTopic": modifyTopic(parameters: parameters, resultCallback: resultCallback)
     case "undeleteTopicById": undeleteTopicById(parameters: parameters, resultCallback: resultCallback)
@@ -166,6 +167,19 @@ class TopicBasicApiDispatcher {
     	dartResultCallback: resultCallback,
     	sdkId: parameters["sdkId"]!,
     	topicString: parameters["topic"]!
+    )
+  }
+
+  private static func createTopic(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    TopicBasicApi.shared.createTopic(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	entityString: parameters["entity"]!
     )
   }
 

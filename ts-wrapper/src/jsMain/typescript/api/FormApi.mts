@@ -4,8 +4,8 @@ import {FormShareOptions} from '../crypto/entities/FormShareOptions.mjs';
 import {SecretIdUseOption} from '../crypto/entities/SecretIdUseOption.mjs';
 import {DecryptedForm, EncryptedForm, Form} from '../model/Form.mjs';
 import {FormTemplate} from '../model/FormTemplate.mjs';
-import {IdWithMandatoryRev} from '../model/IdWithMandatoryRev.mjs';
 import {Patient} from '../model/Patient.mjs';
+import {StoredDocumentIdentifier} from '../model/StoredDocumentIdentifier.mjs';
 import {User} from '../model/User.mjs';
 import {DocIdentifier} from '../model/couchdb/DocIdentifier.mjs';
 import {AccessLevel} from '../model/embed/AccessLevel.mjs';
@@ -18,10 +18,6 @@ export interface FormApi {
 	encrypted: FormFlavouredApi<EncryptedForm>;
 
 	tryAndRecover: FormFlavouredApi<Form>;
-
-	createForm(entity: DecryptedForm): Promise<DecryptedForm>;
-
-	createForms(entities: Array<DecryptedForm>): Promise<Array<DecryptedForm>>;
 
 	withEncryptionMetadata(base: DecryptedForm | undefined, patient: Patient,
 			options?: { user?: User | undefined, delegates?: { [ key: string ]: AccessLevel }, secretId?: SecretIdUseOption }): Promise<DecryptedForm>;
@@ -48,7 +44,7 @@ export interface FormApi {
 
 	deleteFormById(entityId: string, rev: string): Promise<DocIdentifier>;
 
-	deleteFormsByIds(entityIds: Array<IdWithMandatoryRev>): Promise<Array<DocIdentifier>>;
+	deleteFormsByIds(entityIds: Array<StoredDocumentIdentifier>): Promise<Array<DocIdentifier>>;
 
 	purgeFormById(id: string, rev: string): Promise<void>;
 
@@ -90,6 +86,10 @@ export interface FormApi {
 
 	filterFormsBySorted(filter: SortableFilterOptions<Form>): Promise<PaginatedListIterator<DecryptedForm>>;
 
+	createForm(entity: DecryptedForm): Promise<DecryptedForm>;
+
+	createForms(entities: Array<DecryptedForm>): Promise<Array<DecryptedForm>>;
+
 	modifyForm(entity: DecryptedForm): Promise<DecryptedForm>;
 
 	undeleteFormById(id: string, rev: string): Promise<DecryptedForm>;
@@ -98,7 +98,7 @@ export interface FormApi {
 
 	modifyForms(entities: Array<DecryptedForm>): Promise<Array<DecryptedForm>>;
 
-	getForm(entityId: string): Promise<DecryptedForm>;
+	getForm(entityId: string): Promise<DecryptedForm | undefined>;
 
 	getForms(entityIds: Array<string>): Promise<Array<DecryptedForm>>;
 

@@ -12,7 +12,7 @@ export interface MedicalLocationApi {
 
 	deleteMedicalLocations(locationIds: ListOfIds): Promise<Array<DocIdentifier>>;
 
-	getMedicalLocation(locationId: string): Promise<MedicalLocation>;
+	getMedicalLocation(locationId: string): Promise<MedicalLocation | undefined>;
 
 	getAllMedicalLocations(startDocumentId: string | undefined,
 			limit: number | undefined): Promise<PaginatedList<MedicalLocation>>;

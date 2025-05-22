@@ -5,15 +5,17 @@ import 'package:cardinal_sdk/model/embed/referral_period.dart';
 import 'package:cardinal_sdk/model/specializations/base64string.dart';
 import 'package:cardinal_sdk/model/embed/patient_health_care_party.dart';
 import 'package:cardinal_sdk/model/embed/encryptable.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+part "patient_health_care_party.freezed.dart";
 
 
 sealed class PatientHealthCareParty implements Encryptable {
-	abstract PatientHealthCarePartyType? type;
-	abstract String? healthcarePartyId;
-	abstract Map<TelecomType, String> sendFormats;
-	abstract List<ReferralPeriod> referralPeriods;
-	abstract bool referral;
-	@override abstract Base64String? encryptedSelf;
+	abstract final PatientHealthCarePartyType? type;
+	abstract final String? healthcarePartyId;
+	abstract final Map<TelecomType, String> sendFormats;
+	abstract final List<ReferralPeriod> referralPeriods;
+	abstract final bool referral;
+	@override abstract final Base64String? encryptedSelf;
 
 	static Map<String, dynamic> encode(PatientHealthCareParty value) {
 		switch (value) {
@@ -44,26 +46,17 @@ sealed class PatientHealthCareParty implements Encryptable {
 	}
 }
 
-class EncryptedPatientHealthCareParty implements PatientHealthCareParty {
-	@override PatientHealthCarePartyType? type = null;
-	@override String? healthcarePartyId = null;
-	@override Map<TelecomType, String> sendFormats = {};
-	@override List<ReferralPeriod> referralPeriods = [];
-	@override bool referral = false;
-	@override Base64String? encryptedSelf = null;
-	EncryptedPatientHealthCareParty({
-			PatientHealthCarePartyType? type,
-			String? healthcarePartyId,
-			Map<TelecomType, String>? sendFormats,
-			List<ReferralPeriod>? referralPeriods,
-			bool? referral,
-			Base64String? encryptedSelf
-		}) : type = type ?? null,
-		healthcarePartyId = healthcarePartyId ?? null,
-		sendFormats = sendFormats ?? {},
-		referralPeriods = referralPeriods ?? [],
-		referral = referral ?? false,
-		encryptedSelf = encryptedSelf ?? null;
+@freezed
+abstract class EncryptedPatientHealthCareParty with _$EncryptedPatientHealthCareParty implements PatientHealthCareParty {
+	const factory EncryptedPatientHealthCareParty({
+		@Default(null) PatientHealthCarePartyType? type,
+		@Default(null) String? healthcarePartyId,
+		@Default({}) Map<TelecomType, String> sendFormats,
+		@Default([]) List<ReferralPeriod> referralPeriods,
+		@Default(false) bool referral,
+		@Default(null) Base64String? encryptedSelf,
+	}) = _EncryptedPatientHealthCareParty;
+
 
 	static Map<String, dynamic> encode(EncryptedPatientHealthCareParty value) {
 		Map<String, dynamic> entityAsMap = {
@@ -89,26 +82,17 @@ class EncryptedPatientHealthCareParty implements PatientHealthCareParty {
 	}
 }
 
-class DecryptedPatientHealthCareParty implements PatientHealthCareParty {
-	@override PatientHealthCarePartyType? type = null;
-	@override String? healthcarePartyId = null;
-	@override Map<TelecomType, String> sendFormats = {};
-	@override List<ReferralPeriod> referralPeriods = [];
-	@override bool referral = false;
-	@override Base64String? encryptedSelf = null;
-	DecryptedPatientHealthCareParty({
-			PatientHealthCarePartyType? type,
-			String? healthcarePartyId,
-			Map<TelecomType, String>? sendFormats,
-			List<ReferralPeriod>? referralPeriods,
-			bool? referral,
-			Base64String? encryptedSelf
-		}) : type = type ?? null,
-		healthcarePartyId = healthcarePartyId ?? null,
-		sendFormats = sendFormats ?? {},
-		referralPeriods = referralPeriods ?? [],
-		referral = referral ?? false,
-		encryptedSelf = encryptedSelf ?? null;
+@freezed
+abstract class DecryptedPatientHealthCareParty with _$DecryptedPatientHealthCareParty implements PatientHealthCareParty {
+	const factory DecryptedPatientHealthCareParty({
+		@Default(null) PatientHealthCarePartyType? type,
+		@Default(null) String? healthcarePartyId,
+		@Default({}) Map<TelecomType, String> sendFormats,
+		@Default([]) List<ReferralPeriod> referralPeriods,
+		@Default(false) bool referral,
+		@Default(null) Base64String? encryptedSelf,
+	}) = _DecryptedPatientHealthCareParty;
+
 
 	static Map<String, dynamic> encode(DecryptedPatientHealthCareParty value) {
 		Map<String, dynamic> entityAsMap = {

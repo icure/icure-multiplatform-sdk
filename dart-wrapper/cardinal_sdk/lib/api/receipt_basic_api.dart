@@ -45,6 +45,13 @@ class ReceiptBasicApi {
 		);
 	}
 
+	Future<EncryptedReceipt> createReceipt(EncryptedReceipt entity) async {
+		return await CardinalSdkPlatformInterface.instance.apis.receiptBasic.createReceipt(
+			_sdkId,
+			entity,
+		);
+	}
+
 	Future<EncryptedReceipt> modifyReceipt(EncryptedReceipt entity) async {
 		return await CardinalSdkPlatformInterface.instance.apis.receiptBasic.modifyReceipt(
 			_sdkId,
@@ -52,7 +59,7 @@ class ReceiptBasicApi {
 		);
 	}
 
-	Future<EncryptedReceipt> getReceipt(String entityId) async {
+	Future<EncryptedReceipt?> getReceipt(String entityId) async {
 		return await CardinalSdkPlatformInterface.instance.apis.receiptBasic.getReceipt(
 			_sdkId,
 			entityId,

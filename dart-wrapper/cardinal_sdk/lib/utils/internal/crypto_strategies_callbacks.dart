@@ -38,6 +38,7 @@ Future<String> Function(Map<String, dynamic>) verifyDelegatePublicKeysCallback(
     final result = await strategies.verifyDelegatePublicKeys(
       CryptoActorStubWithType.fromJSON(json["delegate"]! as Map<String, dynamic>),
       (json["publicKeys"]! as List<dynamic>).map((x) => CardinalRsaPublicKey.fromSpkiHex(x as String)).toList(),
+      (json["groupId"] as String?),
     );
     return jsonEncode(result.map((x) => x.spkiHex).toList());
   };
@@ -48,7 +49,8 @@ Future<String> Function(Map<String, dynamic>) dataOwnerRequiresAnonymousDelegati
 ) {
   return (Map<String, dynamic> json) async {
     final result = await strategies.dataOwnerRequiresAnonymousDelegation(
-        CryptoActorStubWithType.fromJSON(json["dataOwner"] as Map<String, dynamic>)
+      CryptoActorStubWithType.fromJSON(json["dataOwner"] as Map<String, dynamic>),
+      (json["groupId"] as String?),
     );
     return jsonEncode(result);
   };

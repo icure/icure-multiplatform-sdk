@@ -7,7 +7,7 @@ import 'package:cardinal_sdk/model/id_with_rev.dart';
 import 'package:cardinal_sdk/filters/filter_options.dart';
 import 'package:cardinal_sdk/utils/pagination/paginated_list_iterator.dart';
 import 'package:cardinal_sdk/model/couchdb/doc_identifier.dart';
-import 'package:cardinal_sdk/model/id_with_mandatory_rev.dart';
+import 'package:cardinal_sdk/model/stored_document_identifier.dart';
 import 'package:cardinal_sdk/subscription/subscription_event_type.dart';
 import 'package:cardinal_sdk/subscription/entity_subscription_configuration.dart';
 import 'package:cardinal_sdk/subscription/entity_subscription.dart';
@@ -17,7 +17,7 @@ class DevicePlatformApi {
 	MethodChannel _methodChannel;
 	DevicePlatformApi(this._methodChannel);
 
-	Future<Device> getDevice(String sdkId, String deviceId) async {
+	Future<Device?> getDevice(String sdkId, String deviceId) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'DeviceApi.getDevice',
 			{
@@ -27,7 +27,7 @@ class DevicePlatformApi {
 		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getDevice");
 		final parsedResJson = jsonDecode(res);
-		return Device.fromJSON(parsedResJson);
+		return parsedResJson == null ? null : Device.fromJSON(parsedResJson);
 	}
 
 	Future<List<Device>> getDevices(String sdkId, List<String> deviceIds) async {
@@ -161,12 +161,12 @@ class DevicePlatformApi {
 		return DocIdentifier.fromJSON(parsedResJson);
 	}
 
-	Future<List<DocIdentifier>> deleteDevicesByIds(String sdkId, List<IdWithMandatoryRev> entityIds) async {
+	Future<List<DocIdentifier>> deleteDevicesByIds(String sdkId, List<StoredDocumentIdentifier> entityIds) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'DeviceApi.deleteDevicesByIds',
 			{
 				"sdkId": sdkId,
-				"entityIds": jsonEncode(entityIds.map((x0) => IdWithMandatoryRev.encode(x0)).toList()),
+				"entityIds": jsonEncode(entityIds.map((x0) => StoredDocumentIdentifier.encode(x0)).toList()),
 			}
 		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method deleteDevicesByIds");

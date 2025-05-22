@@ -24,6 +24,7 @@ class AccessLogBasicApiDispatcher {
     case "deleteAccessLog": deleteAccessLog(parameters: parameters, resultCallback: resultCallback)
     case "deleteAccessLogs": deleteAccessLogs(parameters: parameters, resultCallback: resultCallback)
     case "purgeAccessLog": purgeAccessLog(parameters: parameters, resultCallback: resultCallback)
+    case "createAccessLog": createAccessLog(parameters: parameters, resultCallback: resultCallback)
     case "undeleteAccessLogById": undeleteAccessLogById(parameters: parameters, resultCallback: resultCallback)
     case "undeleteAccessLog": undeleteAccessLog(parameters: parameters, resultCallback: resultCallback)
     case "modifyAccessLog": modifyAccessLog(parameters: parameters, resultCallback: resultCallback)
@@ -163,6 +164,19 @@ class AccessLogBasicApiDispatcher {
     	dartResultCallback: resultCallback,
     	sdkId: parameters["sdkId"]!,
     	accessLogString: parameters["accessLog"]!
+    )
+  }
+
+  private static func createAccessLog(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    AccessLogBasicApi.shared.createAccessLog(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	entityString: parameters["entity"]!
     )
   }
 

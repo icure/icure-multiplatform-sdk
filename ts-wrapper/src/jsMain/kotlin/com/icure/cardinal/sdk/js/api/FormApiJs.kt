@@ -10,8 +10,8 @@ import com.icure.cardinal.sdk.js.model.DecryptedFormJs
 import com.icure.cardinal.sdk.js.model.EncryptedFormJs
 import com.icure.cardinal.sdk.js.model.FormJs
 import com.icure.cardinal.sdk.js.model.FormTemplateJs
-import com.icure.cardinal.sdk.js.model.IdWithMandatoryRevJs
 import com.icure.cardinal.sdk.js.model.PatientJs
+import com.icure.cardinal.sdk.js.model.StoredDocumentIdentifierJs
 import com.icure.cardinal.sdk.js.model.couchdb.DocIdentifierJs
 import com.icure.cardinal.sdk.js.utils.Record
 import com.icure.cardinal.sdk.js.utils.pagination.PaginatedListIteratorJs
@@ -29,10 +29,6 @@ public external interface FormApiJs {
 	public val encrypted: FormFlavouredApiJs<EncryptedFormJs>
 
 	public val tryAndRecover: FormFlavouredApiJs<FormJs>
-
-	public fun createForm(entity: DecryptedFormJs): Promise<DecryptedFormJs>
-
-	public fun createForms(entities: Array<DecryptedFormJs>): Promise<Array<DecryptedFormJs>>
 
 	public fun withEncryptionMetadata(
 		base: DecryptedFormJs?,
@@ -63,7 +59,7 @@ public external interface FormApiJs {
 
 	public fun deleteFormById(entityId: String, rev: String): Promise<DocIdentifierJs>
 
-	public fun deleteFormsByIds(entityIds: Array<IdWithMandatoryRevJs>):
+	public fun deleteFormsByIds(entityIds: Array<StoredDocumentIdentifierJs>):
 			Promise<Array<DocIdentifierJs>>
 
 	public fun purgeFormById(id: String, rev: String): Promise<Unit>
@@ -116,6 +112,10 @@ public external interface FormApiJs {
 	public fun filterFormsBySorted(filter: SortableFilterOptionsJs<FormJs>):
 			Promise<PaginatedListIteratorJs<DecryptedFormJs>>
 
+	public fun createForm(entity: DecryptedFormJs): Promise<DecryptedFormJs>
+
+	public fun createForms(entities: Array<DecryptedFormJs>): Promise<Array<DecryptedFormJs>>
+
 	public fun modifyForm(entity: DecryptedFormJs): Promise<DecryptedFormJs>
 
 	public fun undeleteFormById(id: String, rev: String): Promise<DecryptedFormJs>
@@ -124,7 +124,7 @@ public external interface FormApiJs {
 
 	public fun modifyForms(entities: Array<DecryptedFormJs>): Promise<Array<DecryptedFormJs>>
 
-	public fun getForm(entityId: String): Promise<DecryptedFormJs>
+	public fun getForm(entityId: String): Promise<DecryptedFormJs?>
 
 	public fun getForms(entityIds: Array<String>): Promise<Array<DecryptedFormJs>>
 

@@ -51,6 +51,7 @@ import com.icure.cardinal.sdk.subscription.SubscriptionEventType
 import com.icure.cardinal.sdk.subscription.WebSocketSubscription
 import com.icure.cardinal.sdk.utils.Serialization
 import com.icure.cardinal.sdk.utils.currentEpochMs
+import com.icure.cardinal.sdk.utils.generation.JsMapAsObjectArray
 import com.icure.cardinal.sdk.utils.pagination.IdsPageIterator
 import com.icure.cardinal.sdk.utils.pagination.PaginatedListIterator
 import com.icure.utils.InternalIcureApi
@@ -190,7 +191,7 @@ private class AbstractHealthElementFlavouredApi<E : HealthElement>(
 
 	override suspend fun shareWithMany(
 		healthElement: GroupScoped<E>,
-		delegates: Map<EntityReferenceInGroup, HealthElementShareOptions>
+		delegates: @JsMapAsObjectArray(keyEntryName = "delegate", valueEntryName = "shareOptions") Map<EntityReferenceInGroup, HealthElementShareOptions>
 	): GroupScoped<E> =
 		GroupScoped(
 			doShareWithMany(
@@ -204,7 +205,7 @@ private class AbstractHealthElementFlavouredApi<E : HealthElement>(
 	private suspend fun doShareWithMany(
 		entityGroupId: String?,
 		healthElement: E,
-		delegates: Map<EntityReferenceInGroup, HealthElementShareOptions>
+		delegates: @JsMapAsObjectArray(keyEntryName = "delegate", valueEntryName = "shareOptions") Map<EntityReferenceInGroup, HealthElementShareOptions>
 	): E =
 		config.crypto.entity.simpleShareOrUpdateEncryptedEntityMetadata(
 			entityGroupId,
@@ -347,7 +348,7 @@ private class HealthElementApiImpl(
 			base: DecryptedHealthElement?,
 			patient: GroupScoped<Patient>,
 			user: User?,
-			delegates: Map<EntityReferenceInGroup, AccessLevel>,
+			delegates: @JsMapAsObjectArray(keyEntryName = "delegate", valueEntryName = "accessLevel") Map<EntityReferenceInGroup, AccessLevel>,
 			secretId: SecretIdUseOption
 		): GroupScoped<DecryptedHealthElement> =
 			GroupScoped(
@@ -400,7 +401,7 @@ private class HealthElementApiImpl(
 		base: DecryptedHealthElement?,
 		patient: Pair<Patient, String?>,
 		user: User?,
-		delegates: Map<EntityReferenceInGroup, AccessLevel>,
+		delegates: @JsMapAsObjectArray(keyEntryName = "delegate", valueEntryName = "accessLevel") Map<EntityReferenceInGroup, AccessLevel>,
 		secretId: SecretIdUseOption
 	): DecryptedHealthElement =
 		config.crypto.entity.entityWithInitializedEncryptedMetadata(

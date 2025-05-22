@@ -20,6 +20,7 @@ class ClassificationBasicApiDispatcher {
     case "filterClassificationsBySorted": filterClassificationsBySorted(parameters: parameters, resultCallback: resultCallback)
     case "deleteClassification": deleteClassification(parameters: parameters, resultCallback: resultCallback)
     case "deleteClassifications": deleteClassifications(parameters: parameters, resultCallback: resultCallback)
+    case "createClassification": createClassification(parameters: parameters, resultCallback: resultCallback)
     case "modifyClassification": modifyClassification(parameters: parameters, resultCallback: resultCallback)
     case "getClassification": getClassification(parameters: parameters, resultCallback: resultCallback)
     case "getClassifications": getClassifications(parameters: parameters, resultCallback: resultCallback)
@@ -103,6 +104,19 @@ class ClassificationBasicApiDispatcher {
     	dartResultCallback: resultCallback,
     	sdkId: parameters["sdkId"]!,
     	entityIdsString: parameters["entityIds"]!
+    )
+  }
+
+  private static func createClassification(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    ClassificationBasicApi.shared.createClassification(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	entityString: parameters["entity"]!
     )
   }
 

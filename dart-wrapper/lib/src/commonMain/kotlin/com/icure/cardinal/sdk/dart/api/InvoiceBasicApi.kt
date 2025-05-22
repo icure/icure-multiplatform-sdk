@@ -132,7 +132,7 @@ public object InvoiceBasicApi {
     )
     ApiScope.execute(
       dartResultCallback,
-      EncryptedInvoice.serializer()) {
+      EncryptedInvoice.serializer().nullable) {
       NativeReferences.get<CardinalBaseApis>(sdkId).invoice.getInvoice(
         entityId,
       )

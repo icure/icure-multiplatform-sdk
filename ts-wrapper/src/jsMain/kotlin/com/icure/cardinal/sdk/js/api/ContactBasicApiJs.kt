@@ -7,8 +7,8 @@ import com.icure.cardinal.sdk.js.filters.BaseFilterOptionsJs
 import com.icure.cardinal.sdk.js.filters.BaseSortableFilterOptionsJs
 import com.icure.cardinal.sdk.js.model.ContactJs
 import com.icure.cardinal.sdk.js.model.EncryptedContactJs
-import com.icure.cardinal.sdk.js.model.IdWithMandatoryRevJs
 import com.icure.cardinal.sdk.js.model.PaginatedListJs
+import com.icure.cardinal.sdk.js.model.StoredDocumentIdentifierJs
 import com.icure.cardinal.sdk.js.model.`data`.LabelledOccurenceJs
 import com.icure.cardinal.sdk.js.model.couchdb.DocIdentifierJs
 import com.icure.cardinal.sdk.js.model.embed.EncryptedServiceJs
@@ -56,7 +56,7 @@ public external interface ContactBasicApiJs {
 
 	public fun deleteContactById(entityId: String, rev: String): Promise<DocIdentifierJs>
 
-	public fun deleteContactsByIds(entityIds: Array<IdWithMandatoryRevJs>):
+	public fun deleteContactsByIds(entityIds: Array<StoredDocumentIdentifierJs>):
 			Promise<Array<DocIdentifierJs>>
 
 	public fun purgeContactById(id: String, rev: String): Promise<Unit>
@@ -70,6 +70,10 @@ public external interface ContactBasicApiJs {
 	public fun getServiceCodesOccurrences(codeType: String, minOccurrences: Double):
 			Promise<Array<LabelledOccurenceJs>>
 
+	public fun createContact(entity: EncryptedContactJs): Promise<EncryptedContactJs>
+
+	public fun createContacts(entities: Array<EncryptedContactJs>): Promise<Array<EncryptedContactJs>>
+
 	public fun undeleteContactById(id: String, rev: String): Promise<EncryptedContactJs>
 
 	public fun undeleteContact(contact: ContactJs): Promise<EncryptedContactJs>
@@ -78,7 +82,7 @@ public external interface ContactBasicApiJs {
 
 	public fun modifyContacts(entities: Array<EncryptedContactJs>): Promise<Array<EncryptedContactJs>>
 
-	public fun getContact(entityId: String): Promise<EncryptedContactJs>
+	public fun getContact(entityId: String): Promise<EncryptedContactJs?>
 
 	public fun getContacts(entityIds: Array<String>): Promise<Array<EncryptedContactJs>>
 

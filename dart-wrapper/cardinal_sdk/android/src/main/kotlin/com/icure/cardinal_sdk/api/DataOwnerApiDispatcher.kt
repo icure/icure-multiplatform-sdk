@@ -21,9 +21,12 @@ public object DataOwnerApiDispatcher {
     "getCurrentDataOwner" -> getCurrentDataOwner(parameters, resultCallback)
     "getCurrentDataOwnerStub" -> getCurrentDataOwnerStub(parameters, resultCallback)
     "getCurrentDataOwnerId" -> getCurrentDataOwnerId(parameters, resultCallback)
+    "getCurrentDataOwnerReference" -> getCurrentDataOwnerReference(parameters, resultCallback)
     "getCurrentDataOwnerHierarchyIds" -> getCurrentDataOwnerHierarchyIds(parameters, resultCallback)
+    "getCurrentDataOwnerHierarchyIdsReference" -> getCurrentDataOwnerHierarchyIdsReference(parameters, resultCallback)
     "getDataOwner" -> getDataOwner(parameters, resultCallback)
     "getCryptoActorStub" -> getCryptoActorStub(parameters, resultCallback)
+    "getCryptoActorStubInGroup" -> getCryptoActorStubInGroup(parameters, resultCallback)
     "getCurrentDataOwnerHierarchyIdsFrom" -> getCurrentDataOwnerHierarchyIdsFrom(parameters, resultCallback)
     "getCurrentDataOwnerHierarchy" -> getCurrentDataOwnerHierarchy(parameters, resultCallback)
     "modifyDataOwnerStub" -> modifyDataOwnerStub(parameters, resultCallback)
@@ -68,6 +71,18 @@ public object DataOwnerApiDispatcher {
     )
   }
 
+  private fun getCurrentDataOwnerReference(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    DataOwnerApi.getCurrentDataOwnerReference(
+      resultCallback,
+      parameters.getValue("sdkId"),
+    )
+  }
+
   private fun getCurrentDataOwnerHierarchyIds(parameters: Map<String, String>, resultCallback: (
     String?,
     String?,
@@ -75,6 +90,19 @@ public object DataOwnerApiDispatcher {
     String?,
   ) -> Unit) {
     DataOwnerApi.getCurrentDataOwnerHierarchyIds(
+      resultCallback,
+      parameters.getValue("sdkId"),
+    )
+  }
+
+  private fun getCurrentDataOwnerHierarchyIdsReference(parameters: Map<String, String>,
+      resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    DataOwnerApi.getCurrentDataOwnerHierarchyIdsReference(
       resultCallback,
       parameters.getValue("sdkId"),
     )
@@ -103,6 +131,19 @@ public object DataOwnerApiDispatcher {
       resultCallback,
       parameters.getValue("sdkId"),
       parameters.getValue("ownerId"),
+    )
+  }
+
+  private fun getCryptoActorStubInGroup(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    DataOwnerApi.getCryptoActorStubInGroup(
+      resultCallback,
+      parameters.getValue("sdkId"),
+      parameters.getValue("entityReferenceInGroup"),
     )
   }
 

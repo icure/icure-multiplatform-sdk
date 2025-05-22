@@ -1,36 +1,23 @@
 // auto-generated file
 import 'package:cardinal_sdk/model/couchdb/view.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+part "design_document.freezed.dart";
 
 
-class DesignDocument {
-	String id;
-	String? rev = null;
-	Map<String, String> revHistory = {};
-	String? language = null;
-	Map<String, View> views = {};
-	Map<String, String> lists = {};
-	Map<String, String> shows = {};
-	Map<String, String>? updateHandlers = null;
-	Map<String, String> filters = {};
-	DesignDocument(
-		this.id,
-		{
-			String? rev,
-			Map<String, String>? revHistory,
-			String? language,
-			Map<String, View>? views,
-			Map<String, String>? lists,
-			Map<String, String>? shows,
-			Map<String, String>? updateHandlers,
-			Map<String, String>? filters
-		}) : rev = rev ?? null,
-		revHistory = revHistory ?? {},
-		language = language ?? null,
-		views = views ?? {},
-		lists = lists ?? {},
-		shows = shows ?? {},
-		updateHandlers = updateHandlers ?? null,
-		filters = filters ?? {};
+@freezed
+abstract class DesignDocument with _$DesignDocument {
+	const factory DesignDocument({
+		required String id,
+		@Default(null) String? rev,
+		@Default({}) Map<String, String> revHistory,
+		@Default(null) String? language,
+		@Default({}) Map<String, View> views,
+		@Default({}) Map<String, String> lists,
+		@Default({}) Map<String, String> shows,
+		@Default(null) Map<String, String>? updateHandlers,
+		@Default({}) Map<String, String> filters,
+	}) = _DesignDocument;
+
 
 	static Map<String, dynamic> encode(DesignDocument value) {
 		Map<String, dynamic> entityAsMap = {
@@ -49,7 +36,7 @@ class DesignDocument {
 
 	static DesignDocument fromJSON(Map<String, dynamic> data) {
 		return DesignDocument(
-			(data["id"] as String),
+			id: (data["id"] as String),
 			rev: (data["rev"] as String?),
 			revHistory: (data["revHistory"] as Map<String, dynamic>).map((k0, v0) => MapEntry((k0 as String), (v0 as String))),
 			language: (data["language"] as String?),

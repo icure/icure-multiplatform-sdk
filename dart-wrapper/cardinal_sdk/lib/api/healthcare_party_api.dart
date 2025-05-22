@@ -6,7 +6,7 @@ import 'package:cardinal_sdk/filters/filter_options.dart';
 import 'package:cardinal_sdk/utils/pagination/paginated_list_iterator.dart';
 import 'package:cardinal_sdk/model/data_owner_registration_success.dart';
 import 'package:cardinal_sdk/model/couchdb/doc_identifier.dart';
-import 'package:cardinal_sdk/model/id_with_mandatory_rev.dart';
+import 'package:cardinal_sdk/model/stored_document_identifier.dart';
 import 'package:cardinal_sdk/subscription/subscription_event_type.dart';
 import 'package:cardinal_sdk/subscription/entity_subscription_configuration.dart';
 import 'package:cardinal_sdk/subscription/entity_subscription.dart';
@@ -20,7 +20,7 @@ class HealthcarePartyApi {
 		this._dartSdk
 		);
 
-	Future<HealthcareParty> getHealthcareParty(String healthcarePartyId) async {
+	Future<HealthcareParty?> getHealthcareParty(String healthcarePartyId) async {
 		return await CardinalSdkPlatformInterface.instance.apis.healthcareParty.getHealthcareParty(
 			_sdkId,
 			healthcarePartyId,
@@ -146,7 +146,7 @@ class HealthcarePartyApi {
 		);
 	}
 
-	Future<List<DocIdentifier>> deleteHealthcarePartiesByIds(List<IdWithMandatoryRev> entityIds) async {
+	Future<List<DocIdentifier>> deleteHealthcarePartiesByIds(List<StoredDocumentIdentifier> entityIds) async {
 		return await CardinalSdkPlatformInterface.instance.apis.healthcareParty.deleteHealthcarePartiesByIds(
 			_sdkId,
 			entityIds,
@@ -162,7 +162,7 @@ class HealthcarePartyApi {
 		);
 	}
 
-	Future<List<DocIdentifier>> deleteHealthcarePartiesInGroupByIds(String groupId, List<IdWithMandatoryRev> entityIds) async {
+	Future<List<DocIdentifier>> deleteHealthcarePartiesInGroupByIds(String groupId, List<StoredDocumentIdentifier> entityIds) async {
 		return await CardinalSdkPlatformInterface.instance.apis.healthcareParty.deleteHealthcarePartiesInGroupByIds(
 			_sdkId,
 			groupId,

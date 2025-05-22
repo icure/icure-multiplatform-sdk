@@ -30,6 +30,18 @@ class AgendaApiDispatcher {
     case "matchAgendasBySorted": matchAgendasBySorted(parameters: parameters, resultCallback: resultCallback)
     case "filterAgendasBy": filterAgendasBy(parameters: parameters, resultCallback: resultCallback)
     case "filterAgendasBySorted": filterAgendasBySorted(parameters: parameters, resultCallback: resultCallback)
+    case "inGroup.getAgenda": inGroup_getAgenda(parameters: parameters, resultCallback: resultCallback)
+    case "inGroup.getAgendas": inGroup_getAgendas(parameters: parameters, resultCallback: resultCallback)
+    case "inGroup.createAgenda": inGroup_createAgenda(parameters: parameters, resultCallback: resultCallback)
+    case "inGroup.modifyAgenda": inGroup_modifyAgenda(parameters: parameters, resultCallback: resultCallback)
+    case "inGroup.deleteAgendas": inGroup_deleteAgendas(parameters: parameters, resultCallback: resultCallback)
+    case "inGroup.deleteAgenda": inGroup_deleteAgenda(parameters: parameters, resultCallback: resultCallback)
+    case "inGroup.deleteAgendasByIds": inGroup_deleteAgendasByIds(parameters: parameters, resultCallback: resultCallback)
+    case "inGroup.deleteAgendaById": inGroup_deleteAgendaById(parameters: parameters, resultCallback: resultCallback)
+    case "inGroup.matchAgendasBy": inGroup_matchAgendasBy(parameters: parameters, resultCallback: resultCallback)
+    case "inGroup.matchAgendasBySorted": inGroup_matchAgendasBySorted(parameters: parameters, resultCallback: resultCallback)
+    case "inGroup.filterAgendasBy": inGroup_filterAgendasBy(parameters: parameters, resultCallback: resultCallback)
+    case "inGroup.filterAgendasBySorted": inGroup_filterAgendasBySorted(parameters: parameters, resultCallback: resultCallback)
     default: return false
     }
     return true
@@ -242,6 +254,168 @@ class AgendaApiDispatcher {
     AgendaApi.shared.filterAgendasBySorted(
     	dartResultCallback: resultCallback,
     	sdkId: parameters["sdkId"]!,
+    	filterString: parameters["filter"]!
+    )
+  }
+
+  private static func inGroup_getAgenda(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    AgendaApi.inGroup.shared.getAgenda(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	groupIdString: parameters["groupId"]!,
+    	entityIdString: parameters["entityId"]!
+    )
+  }
+
+  private static func inGroup_getAgendas(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    AgendaApi.inGroup.shared.getAgendas(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	groupIdString: parameters["groupId"]!,
+    	entityIdsString: parameters["entityIds"]!
+    )
+  }
+
+  private static func inGroup_createAgenda(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    AgendaApi.inGroup.shared.createAgenda(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	entityString: parameters["entity"]!
+    )
+  }
+
+  private static func inGroup_modifyAgenda(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    AgendaApi.inGroup.shared.modifyAgenda(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	entityString: parameters["entity"]!
+    )
+  }
+
+  private static func inGroup_deleteAgendas(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    AgendaApi.inGroup.shared.deleteAgendas(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	agendasString: parameters["agendas"]!
+    )
+  }
+
+  private static func inGroup_deleteAgenda(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    AgendaApi.inGroup.shared.deleteAgenda(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	agendaString: parameters["agenda"]!
+    )
+  }
+
+  private static func inGroup_deleteAgendasByIds(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    AgendaApi.inGroup.shared.deleteAgendasByIds(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	entityIdsString: parameters["entityIds"]!
+    )
+  }
+
+  private static func inGroup_deleteAgendaById(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    AgendaApi.inGroup.shared.deleteAgendaById(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	entityIdString: parameters["entityId"]!
+    )
+  }
+
+  private static func inGroup_matchAgendasBy(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    AgendaApi.inGroup.shared.matchAgendasBy(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	groupIdString: parameters["groupId"]!,
+    	filterString: parameters["filter"]!
+    )
+  }
+
+  private static func inGroup_matchAgendasBySorted(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    AgendaApi.inGroup.shared.matchAgendasBySorted(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	groupIdString: parameters["groupId"]!,
+    	filterString: parameters["filter"]!
+    )
+  }
+
+  private static func inGroup_filterAgendasBy(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    AgendaApi.inGroup.shared.filterAgendasBy(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	groupIdString: parameters["groupId"]!,
+    	filterString: parameters["filter"]!
+    )
+  }
+
+  private static func inGroup_filterAgendasBySorted(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    AgendaApi.inGroup.shared.filterAgendasBySorted(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	groupIdString: parameters["groupId"]!,
     	filterString: parameters["filter"]!
     )
   }

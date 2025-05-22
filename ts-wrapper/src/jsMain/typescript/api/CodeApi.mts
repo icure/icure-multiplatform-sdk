@@ -43,9 +43,9 @@ export interface CodeApi {
 
 	getCodes(groupId: string, codeIds: Array<string>): Promise<Array<Code>>;
 
-	getCode(codeId: string): Promise<Code>;
+	getCode(codeId: string): Promise<Code | undefined>;
 
-	getCodeWithParts(type: string, code: string, version: string): Promise<Code>;
+	getCodeWithParts(type: string, code: string, version: string): Promise<Code | undefined>;
 
 	modifyCode(codeDto: Code): Promise<Code>;
 

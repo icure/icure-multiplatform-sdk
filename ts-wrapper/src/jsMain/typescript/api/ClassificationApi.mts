@@ -17,8 +17,6 @@ export interface ClassificationApi {
 
 	tryAndRecover: ClassificationFlavouredApi<Classification>;
 
-	createClassification(entity: DecryptedClassification): Promise<DecryptedClassification>;
-
 	withEncryptionMetadata(base: DecryptedClassification | undefined, patient: Patient,
 			options?: { user?: User | undefined, delegates?: { [ key: string ]: AccessLevel }, secretId?: SecretIdUseOption }): Promise<DecryptedClassification>;
 
@@ -56,9 +54,11 @@ export interface ClassificationApi {
 
 	filterClassificationsBySorted(filter: SortableFilterOptions<Classification>): Promise<PaginatedListIterator<DecryptedClassification>>;
 
+	createClassification(entity: DecryptedClassification): Promise<DecryptedClassification>;
+
 	modifyClassification(entity: DecryptedClassification): Promise<DecryptedClassification>;
 
-	getClassification(entityId: string): Promise<DecryptedClassification>;
+	getClassification(entityId: string): Promise<DecryptedClassification | undefined>;
 
 	getClassifications(entityIds: Array<string>): Promise<Array<DecryptedClassification>>;
 

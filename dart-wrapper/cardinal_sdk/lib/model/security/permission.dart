@@ -1,15 +1,16 @@
 // auto-generated file
 import 'package:cardinal_sdk/model/security/permission_item.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+part "permission.freezed.dart";
 
 
-class Permission {
-	Set<PermissionItem> grants = {};
-	Set<PermissionItem> revokes = {};
-	Permission({
-			Set<PermissionItem>? grants,
-			Set<PermissionItem>? revokes
-		}) : grants = grants ?? {},
-		revokes = revokes ?? {};
+@freezed
+abstract class Permission with _$Permission {
+	const factory Permission({
+		@Default({}) Set<PermissionItem> grants,
+		@Default({}) Set<PermissionItem> revokes,
+	}) = _Permission;
+
 
 	static Map<String, dynamic> encode(Permission value) {
 		Map<String, dynamic> entityAsMap = {

@@ -13,6 +13,7 @@ import kotlin.OptIn
 import kotlin.String
 import kotlin.Unit
 import kotlinx.serialization.builtins.ListSerializer
+import kotlinx.serialization.builtins.nullable
 import kotlinx.serialization.builtins.serializer
 
 @OptIn(InternalIcureApi::class)
@@ -133,6 +134,29 @@ public object ReceiptBasicApi {
     }
   }
 
+  public fun createReceipt(
+    dartResultCallback: (
+      String?,
+      String?,
+      String?,
+      String?,
+    ) -> Unit,
+    sdkId: String,
+    entityString: String,
+  ) {
+    val entity = fullLanguageInteropJson.decodeFromString(
+      EncryptedReceipt.serializer(),
+      entityString
+    )
+    ApiScope.execute(
+      dartResultCallback,
+      EncryptedReceipt.serializer()) {
+      NativeReferences.get<CardinalBaseApis>(sdkId).receipt.createReceipt(
+        entity,
+      )
+    }
+  }
+
   public fun modifyReceipt(
     dartResultCallback: (
       String?,
@@ -172,7 +196,7 @@ public object ReceiptBasicApi {
     )
     ApiScope.execute(
       dartResultCallback,
-      EncryptedReceipt.serializer()) {
+      EncryptedReceipt.serializer().nullable) {
       NativeReferences.get<CardinalBaseApis>(sdkId).receipt.getReceipt(
         entityId,
       )

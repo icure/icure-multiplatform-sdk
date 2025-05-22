@@ -1,8 +1,8 @@
 // auto-generated file
 import {BaseFilterOptions, BaseSortableFilterOptions, FilterOptions, PaginatedListIterator} from '../cardinal-sdk-ts.mjs';
 import {Device} from '../model/Device.mjs';
-import {IdWithMandatoryRev} from '../model/IdWithMandatoryRev.mjs';
 import {IdWithRev} from '../model/IdWithRev.mjs';
+import {StoredDocumentIdentifier} from '../model/StoredDocumentIdentifier.mjs';
 import {DocIdentifier} from '../model/couchdb/DocIdentifier.mjs';
 import {EntitySubscription} from '../subscription/EntitySubscription.mjs';
 import {EntitySubscriptionConfiguration} from '../subscription/EntitySubscriptionConfiguration.mjs';
@@ -15,7 +15,7 @@ export interface DeviceApi {
 
 	deleteDevicesUnsafe(entityIds: Array<string>): Promise<Array<DocIdentifier>>;
 
-	getDevice(deviceId: string): Promise<Device>;
+	getDevice(deviceId: string): Promise<Device | undefined>;
 
 	getDevices(deviceIds: Array<string>): Promise<Array<Device>>;
 
@@ -37,7 +37,7 @@ export interface DeviceApi {
 
 	deleteDeviceById(entityId: string, rev: string): Promise<DocIdentifier>;
 
-	deleteDevicesByIds(entityIds: Array<IdWithMandatoryRev>): Promise<Array<DocIdentifier>>;
+	deleteDevicesByIds(entityIds: Array<StoredDocumentIdentifier>): Promise<Array<DocIdentifier>>;
 
 	purgeDeviceById(id: string, rev: string): Promise<void>;
 

@@ -1,66 +1,29 @@
 // auto-generated file
-import 'package:cardinal_sdk/annotations/actual_int32.dart';
 import 'package:cardinal_sdk/model/embed/time_table_hour.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+part "time_table_item.freezed.dart";
 
 
-class TimeTableItem {
-	int? rruleStartDate = null;
-	String? rrule = null;
-	int? _notBeforeInMinutes = null;
-	@ActualInt32() int? get notBeforeInMinutes => _notBeforeInMinutes;
-	@ActualInt32() set notBeforeInMinutes(int? value) {
-		if (value != null && value > 2147483647) {
-			throw ArgumentError('notBeforeInMinutes value cannot exceed 2147483647');
-		}
-		_notBeforeInMinutes = value;
-	}
-	int? _notAfterInMinutes = null;
-	@ActualInt32() int? get notAfterInMinutes => _notAfterInMinutes;
-	@ActualInt32() set notAfterInMinutes(int? value) {
-		if (value != null && value > 2147483647) {
-			throw ArgumentError('notAfterInMinutes value cannot exceed 2147483647');
-		}
-		_notAfterInMinutes = value;
-	}
-	String? zoneId = null;
-	@Deprecated('Will be replaced by rrule') List<String> days = [];
-	@Deprecated('Will be replaced by rrule') List<String> recurrenceTypes = [];
-	List<TimeTableHour> hours = [];
-	String? calendarItemTypeId = null;
-	bool homeVisit = false;
-	String? placeId = null;
-	bool publicTimeTableItem = false;
-	bool acceptsNewPatient = true;
-	bool unavailable = false;
-	TimeTableItem({
-			int? notBeforeInMinutes,
-			int? notAfterInMinutes,
-			int? rruleStartDate,
-			String? rrule,
-			String? zoneId,
-			List<String>? days,
-			List<String>? recurrenceTypes,
-			List<TimeTableHour>? hours,
-			String? calendarItemTypeId,
-			bool? homeVisit,
-			String? placeId,
-			bool? publicTimeTableItem,
-			bool? acceptsNewPatient,
-			bool? unavailable
-		}) : rruleStartDate = rruleStartDate ?? null,
-		rrule = rrule ?? null,
-		zoneId = zoneId ?? null,
-		days = days ?? [],
-		recurrenceTypes = recurrenceTypes ?? [],
-		hours = hours ?? [],
-		calendarItemTypeId = calendarItemTypeId ?? null,
-		homeVisit = homeVisit ?? false,
-		placeId = placeId ?? null,
-		publicTimeTableItem = publicTimeTableItem ?? false,
-		acceptsNewPatient = acceptsNewPatient ?? true,
-		unavailable = unavailable ?? false,
-		_notBeforeInMinutes = notBeforeInMinutes ?? null,
-		_notAfterInMinutes = notAfterInMinutes ?? null;
+@freezed
+abstract class TimeTableItem with _$TimeTableItem {
+	const factory TimeTableItem({
+		@Default(null) int? rruleStartDate,
+		@Default(null) String? rrule,
+		@Default(null) int? notBeforeInMinutes,
+		@Default(null) int? notAfterInMinutes,
+		@Default(null) String? zoneId,
+		@Default([]) List<String> days,
+		@Default([]) List<String> recurrenceTypes,
+		@Default([]) List<TimeTableHour> hours,
+		@Default(null) String? calendarItemTypeId,
+		@Default(false) bool homeVisit,
+		@Default(null) String? placeId,
+		@Default(false) bool publicTimeTableItem,
+		@Default(true) bool acceptsNewPatient,
+		@Default(false) bool unavailable,
+		@Default({}) Set<String> reservingRights,
+	}) = _TimeTableItem;
+
 
 	static Map<String, dynamic> encode(TimeTableItem value) {
 		Map<String, dynamic> entityAsMap = {
@@ -77,7 +40,8 @@ class TimeTableItem {
 			"placeId" : value.placeId,
 			"publicTimeTableItem" : value.publicTimeTableItem,
 			"acceptsNewPatient" : value.acceptsNewPatient,
-			"unavailable" : value.unavailable
+			"unavailable" : value.unavailable,
+			"reservingRights" : value.reservingRights.map((x0) => x0).toList()
 		};
 		return entityAsMap;
 	}
@@ -97,7 +61,8 @@ class TimeTableItem {
 			placeId: (data["placeId"] as String?),
 			publicTimeTableItem: (data["publicTimeTableItem"] as bool),
 			acceptsNewPatient: (data["acceptsNewPatient"] as bool),
-			unavailable: (data["unavailable"] as bool)
+			unavailable: (data["unavailable"] as bool),
+			reservingRights: (data["reservingRights"] as List<dynamic>).map((x0) => (x0 as String) ).toSet()
 		);
 	}
 }

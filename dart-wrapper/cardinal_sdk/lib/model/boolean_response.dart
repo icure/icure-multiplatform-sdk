@@ -1,9 +1,14 @@
 // auto-generated file
+import 'package:freezed_annotation/freezed_annotation.dart';
+part "boolean_response.freezed.dart";
 
 
-class BooleanResponse {
-	bool response;
-	BooleanResponse(this.response);
+@freezed
+abstract class BooleanResponse with _$BooleanResponse {
+	const factory BooleanResponse({
+		required bool response,
+	}) = _BooleanResponse;
+
 
 	static Map<String, dynamic> encode(BooleanResponse value) {
 		Map<String, dynamic> entityAsMap = {
@@ -14,7 +19,7 @@ class BooleanResponse {
 
 	static BooleanResponse fromJSON(Map<String, dynamic> data) {
 		return BooleanResponse(
-			(data["response"] as bool)
+			response: (data["response"] as bool)
 		);
 	}
 }

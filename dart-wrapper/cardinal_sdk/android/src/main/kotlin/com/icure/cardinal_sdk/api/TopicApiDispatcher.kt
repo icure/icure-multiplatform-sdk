@@ -18,7 +18,6 @@ public object TopicApiDispatcher {
       String?,
     ) -> Unit,
   ): Boolean = when(methodName) {
-    "createTopic" -> createTopic(parameters, resultCallback)
     "withEncryptionMetadata" -> withEncryptionMetadata(parameters, resultCallback)
     "getEncryptionKeysOf" -> getEncryptionKeysOf(parameters, resultCallback)
     "hasWriteAccess" -> hasWriteAccess(parameters, resultCallback)
@@ -38,6 +37,7 @@ public object TopicApiDispatcher {
     "shareWithMany" -> shareWithMany(parameters, resultCallback)
     "filterTopicsBy" -> filterTopicsBy(parameters, resultCallback)
     "filterTopicsBySorted" -> filterTopicsBySorted(parameters, resultCallback)
+    "createTopic" -> createTopic(parameters, resultCallback)
     "undeleteTopic" -> undeleteTopic(parameters, resultCallback)
     "modifyTopic" -> modifyTopic(parameters, resultCallback)
     "undeleteTopicById" -> undeleteTopicById(parameters, resultCallback)
@@ -50,6 +50,7 @@ public object TopicApiDispatcher {
     "encrypted.shareWithMany" -> encrypted_shareWithMany(parameters, resultCallback)
     "encrypted.filterTopicsBy" -> encrypted_filterTopicsBy(parameters, resultCallback)
     "encrypted.filterTopicsBySorted" -> encrypted_filterTopicsBySorted(parameters, resultCallback)
+    "encrypted.createTopic" -> encrypted_createTopic(parameters, resultCallback)
     "encrypted.undeleteTopic" -> encrypted_undeleteTopic(parameters, resultCallback)
     "encrypted.modifyTopic" -> encrypted_modifyTopic(parameters, resultCallback)
     "encrypted.undeleteTopicById" -> encrypted_undeleteTopicById(parameters, resultCallback)
@@ -61,6 +62,7 @@ public object TopicApiDispatcher {
     "tryAndRecover.shareWithMany" -> tryAndRecover_shareWithMany(parameters, resultCallback)
     "tryAndRecover.filterTopicsBy" -> tryAndRecover_filterTopicsBy(parameters, resultCallback)
     "tryAndRecover.filterTopicsBySorted" -> tryAndRecover_filterTopicsBySorted(parameters, resultCallback)
+    "tryAndRecover.createTopic" -> tryAndRecover_createTopic(parameters, resultCallback)
     "tryAndRecover.undeleteTopic" -> tryAndRecover_undeleteTopic(parameters, resultCallback)
     "tryAndRecover.modifyTopic" -> tryAndRecover_modifyTopic(parameters, resultCallback)
     "tryAndRecover.undeleteTopicById" -> tryAndRecover_undeleteTopicById(parameters, resultCallback)
@@ -70,19 +72,6 @@ public object TopicApiDispatcher {
     "tryAndRecover.removeParticipant" -> tryAndRecover_removeParticipant(parameters, resultCallback)
     else -> null
   }?.let { true } ?: false
-
-  private fun createTopic(parameters: Map<String, String>, resultCallback: (
-    String?,
-    String?,
-    String?,
-    String?,
-  ) -> Unit) {
-    TopicApi.createTopic(
-      resultCallback,
-      parameters.getValue("sdkId"),
-      parameters.getValue("entity"),
-    )
-  }
 
   private fun withEncryptionMetadata(parameters: Map<String, String>, resultCallback: (
     String?,
@@ -342,6 +331,19 @@ public object TopicApiDispatcher {
     )
   }
 
+  private fun createTopic(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    TopicApi.createTopic(
+      resultCallback,
+      parameters.getValue("sdkId"),
+      parameters.getValue("entity"),
+    )
+  }
+
   private fun undeleteTopic(parameters: Map<String, String>, resultCallback: (
     String?,
     String?,
@@ -507,6 +509,19 @@ public object TopicApiDispatcher {
     )
   }
 
+  private fun encrypted_createTopic(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    TopicApi.encrypted.createTopic(
+      resultCallback,
+      parameters.getValue("sdkId"),
+      parameters.getValue("entity"),
+    )
+  }
+
   private fun encrypted_undeleteTopic(parameters: Map<String, String>, resultCallback: (
     String?,
     String?,
@@ -654,6 +669,19 @@ public object TopicApiDispatcher {
       resultCallback,
       parameters.getValue("sdkId"),
       parameters.getValue("filter"),
+    )
+  }
+
+  private fun tryAndRecover_createTopic(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    TopicApi.tryAndRecover.createTopic(
+      resultCallback,
+      parameters.getValue("sdkId"),
+      parameters.getValue("entity"),
     )
   }
 

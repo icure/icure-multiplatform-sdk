@@ -4,14 +4,16 @@ import 'package:cardinal_sdk/model/embed/employer.dart';
 import 'package:cardinal_sdk/model/specializations/base64string.dart';
 import 'package:cardinal_sdk/model/embed/employment_info.dart';
 import 'package:cardinal_sdk/model/embed/encryptable.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+part "employment_info.freezed.dart";
 
 
 sealed class EmploymentInfo implements Encryptable {
-	abstract int? startDate;
-	abstract int? endDate;
-	abstract CodeStub? professionType;
-	abstract Employer? employer;
-	@override abstract Base64String? encryptedSelf;
+	abstract final int? startDate;
+	abstract final int? endDate;
+	abstract final CodeStub? professionType;
+	abstract final Employer? employer;
+	@override abstract final Base64String? encryptedSelf;
 
 	static Map<String, dynamic> encode(EmploymentInfo value) {
 		switch (value) {
@@ -42,22 +44,16 @@ sealed class EmploymentInfo implements Encryptable {
 	}
 }
 
-class DecryptedEmploymentInfo implements EmploymentInfo {
-	@override int? startDate = null;
-	@override int? endDate = null;
-	@override CodeStub? professionType = null;
-	@override Employer? employer = null;
-	@override Base64String? encryptedSelf;
-	DecryptedEmploymentInfo({
-			this.encryptedSelf,
-			int? startDate,
-			int? endDate,
-			CodeStub? professionType,
-			Employer? employer
-		}) : startDate = startDate ?? null,
-		endDate = endDate ?? null,
-		professionType = professionType ?? null,
-		employer = employer ?? null;
+@freezed
+abstract class DecryptedEmploymentInfo with _$DecryptedEmploymentInfo implements EmploymentInfo {
+	const factory DecryptedEmploymentInfo({
+		@Default(null) int? startDate,
+		@Default(null) int? endDate,
+		@Default(null) CodeStub? professionType,
+		@Default(null) Employer? employer,
+		required Base64String? encryptedSelf,
+	}) = _DecryptedEmploymentInfo;
+
 
 	static Map<String, dynamic> encode(DecryptedEmploymentInfo value) {
 		Map<String, dynamic> entityAsMap = {
@@ -81,22 +77,16 @@ class DecryptedEmploymentInfo implements EmploymentInfo {
 	}
 }
 
-class EncryptedEmploymentInfo implements EmploymentInfo {
-	@override int? startDate = null;
-	@override int? endDate = null;
-	@override CodeStub? professionType = null;
-	@override Employer? employer = null;
-	@override Base64String? encryptedSelf;
-	EncryptedEmploymentInfo({
-			this.encryptedSelf,
-			int? startDate,
-			int? endDate,
-			CodeStub? professionType,
-			Employer? employer
-		}) : startDate = startDate ?? null,
-		endDate = endDate ?? null,
-		professionType = professionType ?? null,
-		employer = employer ?? null;
+@freezed
+abstract class EncryptedEmploymentInfo with _$EncryptedEmploymentInfo implements EmploymentInfo {
+	const factory EncryptedEmploymentInfo({
+		@Default(null) int? startDate,
+		@Default(null) int? endDate,
+		@Default(null) CodeStub? professionType,
+		@Default(null) Employer? employer,
+		required Base64String? encryptedSelf,
+	}) = _EncryptedEmploymentInfo;
+
 
 	static Map<String, dynamic> encode(EncryptedEmploymentInfo value) {
 		Map<String, dynamic> entityAsMap = {

@@ -101,6 +101,7 @@ external interface CardinalApisJs {
 @JsName("CardinalSdk")
 external interface CardinalSdkJs : CardinalApisJs {
 	fun switchGroup(groupId: String): Promise<CardinalSdkJs>
+	fun close()
 }
 
 @JsName("CardinalBaseApis")

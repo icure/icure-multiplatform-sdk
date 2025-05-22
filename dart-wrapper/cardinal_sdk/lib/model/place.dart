@@ -2,25 +2,20 @@
 import 'package:cardinal_sdk/model/embed/address.dart';
 import 'package:cardinal_sdk/model/base/stored_document.dart';
 import 'package:cardinal_sdk/model/base/named.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+part "place.freezed.dart";
 
 
-class Place implements StoredDocument, Named {
-	@override String id;
-	@override String? rev = null;
-	@override int? deletionDate = null;
-	@override String? name = null;
-	DecryptedAddress? address = null;
-	Place(
-		this.id,
-		{
-			String? rev,
-			int? deletionDate,
-			String? name,
-			DecryptedAddress? address
-		}) : rev = rev ?? null,
-		deletionDate = deletionDate ?? null,
-		name = name ?? null,
-		address = address ?? null;
+@freezed
+abstract class Place with _$Place implements StoredDocument, Named {
+	const factory Place({
+		required String id,
+		@Default(null) String? rev,
+		@Default(null) int? deletionDate,
+		@Default(null) String? name,
+		@Default(null) DecryptedAddress? address,
+	}) = _Place;
+
 
 	static Map<String, dynamic> encode(Place value) {
 		Map<String, dynamic> entityAsMap = {
@@ -35,7 +30,7 @@ class Place implements StoredDocument, Named {
 
 	static Place fromJSON(Map<String, dynamic> data) {
 		return Place(
-			(data["id"] as String),
+			id: (data["id"] as String),
 			rev: (data["rev"] as String?),
 			deletionDate: (data["deletionDate"] as int?),
 			name: (data["name"] as String?),

@@ -2,22 +2,19 @@
 import 'package:cardinal_sdk/model/user.dart';
 import 'package:cardinal_sdk/model/healthcare_party.dart';
 import 'package:cardinal_sdk/model/replication.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+part "database_initialisation.freezed.dart";
 
 
-class DatabaseInitialisation {
-	List<User>? users = [];
-	List<HealthcareParty>? healthcareParties = [];
-	Replication? replication = null;
-	String? minimumKrakenVersion = null;
-	DatabaseInitialisation({
-			List<User>? users,
-			List<HealthcareParty>? healthcareParties,
-			Replication? replication,
-			String? minimumKrakenVersion
-		}) : users = users ?? [],
-		healthcareParties = healthcareParties ?? [],
-		replication = replication ?? null,
-		minimumKrakenVersion = minimumKrakenVersion ?? null;
+@freezed
+abstract class DatabaseInitialisation with _$DatabaseInitialisation {
+	const factory DatabaseInitialisation({
+		@Default([]) List<User>? users,
+		@Default([]) List<HealthcareParty>? healthcareParties,
+		@Default(null) Replication? replication,
+		@Default(null) String? minimumKrakenVersion,
+	}) = _DatabaseInitialisation;
+
 
 	static Map<String, dynamic> encode(DatabaseInitialisation value) {
 		Map<String, dynamic> entityAsMap = {

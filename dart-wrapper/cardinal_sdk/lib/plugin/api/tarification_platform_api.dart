@@ -9,7 +9,7 @@ class TarificationPlatformApi {
 	MethodChannel _methodChannel;
 	TarificationPlatformApi(this._methodChannel);
 
-	Future<Tarification> getTarification(String sdkId, String tarificationId) async {
+	Future<Tarification?> getTarification(String sdkId, String tarificationId) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'TarificationApi.getTarification',
 			{
@@ -19,7 +19,7 @@ class TarificationPlatformApi {
 		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getTarification");
 		final parsedResJson = jsonDecode(res);
-		return Tarification.fromJSON(parsedResJson);
+		return parsedResJson == null ? null : Tarification.fromJSON(parsedResJson);
 	}
 
 	Future<Tarification> createTarification(String sdkId, Tarification tarification) async {

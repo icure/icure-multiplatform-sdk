@@ -7,6 +7,7 @@ import com.icure.cardinal.sdk.dart.utils.NativeReferences
 import com.icure.cardinal.sdk.model.CryptoActorStubWithType
 import com.icure.cardinal.sdk.model.DataOwnerType
 import com.icure.cardinal.sdk.model.DataOwnerWithType
+import com.icure.cardinal.sdk.model.EntityReferenceInGroup
 import com.icure.cardinal.sdk.utils.Serialization.fullLanguageInteropJson
 import com.icure.utils.InternalIcureApi
 import kotlin.OptIn
@@ -56,6 +57,19 @@ public object DataOwnerApi {
     }
   }
 
+  public fun getCurrentDataOwnerReference(dartResultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit, sdkId: String) {
+    ApiScope.execute(
+      dartResultCallback,
+      EntityReferenceInGroup.serializer()) {
+      NativeReferences.get<CardinalApis>(sdkId).dataOwner.getCurrentDataOwnerReference()
+    }
+  }
+
   public fun getCurrentDataOwnerHierarchyIds(dartResultCallback: (
     String?,
     String?,
@@ -66,6 +80,19 @@ public object DataOwnerApi {
       dartResultCallback,
       ListSerializer(String.serializer())) {
       NativeReferences.get<CardinalApis>(sdkId).dataOwner.getCurrentDataOwnerHierarchyIds()
+    }
+  }
+
+  public fun getCurrentDataOwnerHierarchyIdsReference(dartResultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit, sdkId: String) {
+    ApiScope.execute(
+      dartResultCallback,
+      ListSerializer(EntityReferenceInGroup.serializer())) {
+      NativeReferences.get<CardinalApis>(sdkId).dataOwner.getCurrentDataOwnerHierarchyIdsReference()
     }
   }
 
@@ -111,6 +138,29 @@ public object DataOwnerApi {
       CryptoActorStubWithType.serializer()) {
       NativeReferences.get<CardinalApis>(sdkId).dataOwner.getCryptoActorStub(
         ownerId,
+      )
+    }
+  }
+
+  public fun getCryptoActorStubInGroup(
+    dartResultCallback: (
+      String?,
+      String?,
+      String?,
+      String?,
+    ) -> Unit,
+    sdkId: String,
+    entityReferenceInGroupString: String,
+  ) {
+    val entityReferenceInGroup = fullLanguageInteropJson.decodeFromString(
+      EntityReferenceInGroup.serializer(),
+      entityReferenceInGroupString
+    )
+    ApiScope.execute(
+      dartResultCallback,
+      CryptoActorStubWithType.serializer()) {
+      NativeReferences.get<CardinalApis>(sdkId).dataOwner.getCryptoActorStubInGroup(
+        entityReferenceInGroup,
       )
     }
   }

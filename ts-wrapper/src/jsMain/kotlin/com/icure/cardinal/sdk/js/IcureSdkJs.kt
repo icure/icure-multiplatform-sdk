@@ -126,6 +126,7 @@ import com.icure.cardinal.sdk.js.storage.loadStorageOptions
 import com.icure.cardinal.sdk.options.BasicSdkOptions
 import com.icure.cardinal.sdk.options.SdkOptions
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.promise
 import kotlin.js.Promise
 
@@ -245,6 +246,10 @@ internal class CardinalSdkJsImpl(
 ) : CardinalSdkJs, CardinalApisJs by CardinalApisJsImpl(sdk) {
 	override fun switchGroup(groupId: String): Promise<CardinalSdkJs> = GlobalScope.promise {
 		CardinalSdkJsImpl(sdk.switchGroup(groupId))
+	}
+
+	override fun close() {
+		sdk.scope.cancel()
 	}
 }
 

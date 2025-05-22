@@ -2,22 +2,19 @@
 import 'package:cardinal_sdk/model/requests/requested_permission.dart';
 import 'package:cardinal_sdk/crypto/entities/share_metadata_behaviour.dart';
 import 'package:cardinal_sdk/crypto/entities/secret_id_share_options.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+part "document_share_options.freezed.dart";
 
 
-class DocumentShareOptions {
-	RequestedPermission requestedPermissions = RequestedPermission.maxWrite;
-	ShareMetadataBehaviour shareEncryptionKey = ShareMetadataBehaviour.ifAvailable;
-	ShareMetadataBehaviour shareMessageId = ShareMetadataBehaviour.ifAvailable;
-	SecretIdShareOptions shareSecretIds = SecretIdShareOptionsAllAvailable(false);
-	DocumentShareOptions({
-			RequestedPermission? requestedPermissions,
-			ShareMetadataBehaviour? shareEncryptionKey,
-			ShareMetadataBehaviour? shareMessageId,
-			SecretIdShareOptions? shareSecretIds
-		}) : requestedPermissions = requestedPermissions ?? RequestedPermission.maxWrite,
-		shareEncryptionKey = shareEncryptionKey ?? ShareMetadataBehaviour.ifAvailable,
-		shareMessageId = shareMessageId ?? ShareMetadataBehaviour.ifAvailable,
-		shareSecretIds = shareSecretIds ?? SecretIdShareOptionsAllAvailable(false);
+@freezed
+abstract class DocumentShareOptions with _$DocumentShareOptions {
+	const factory DocumentShareOptions({
+		@Default(RequestedPermission.maxWrite) RequestedPermission requestedPermissions,
+		@Default(ShareMetadataBehaviour.ifAvailable) ShareMetadataBehaviour shareEncryptionKey,
+		@Default(ShareMetadataBehaviour.ifAvailable) ShareMetadataBehaviour shareMessageId,
+		@Default(SecretIdShareOptionsAllAvailable()) SecretIdShareOptions shareSecretIds,
+	}) = _DocumentShareOptions;
+
 
 	static Map<String, dynamic> encode(DocumentShareOptions value) {
 		Map<String, dynamic> entityAsMap = {

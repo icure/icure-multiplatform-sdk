@@ -8,10 +8,10 @@ import com.icure.cardinal.sdk.js.filters.FilterOptionsJs
 import com.icure.cardinal.sdk.js.filters.SortableFilterOptionsJs
 import com.icure.cardinal.sdk.js.model.DecryptedMessageJs
 import com.icure.cardinal.sdk.js.model.EncryptedMessageJs
-import com.icure.cardinal.sdk.js.model.IdWithMandatoryRevJs
 import com.icure.cardinal.sdk.js.model.MessageJs
 import com.icure.cardinal.sdk.js.model.PaginatedListJs
 import com.icure.cardinal.sdk.js.model.PatientJs
+import com.icure.cardinal.sdk.js.model.StoredDocumentIdentifierJs
 import com.icure.cardinal.sdk.js.model.couchdb.DocIdentifierJs
 import com.icure.cardinal.sdk.js.subscription.EntitySubscriptionJs
 import com.icure.cardinal.sdk.js.utils.Record
@@ -30,10 +30,6 @@ public external interface MessageApiJs {
 	public val encrypted: MessageFlavouredApiJs<EncryptedMessageJs>
 
 	public val tryAndRecover: MessageFlavouredApiJs<MessageJs>
-
-	public fun createMessage(entity: DecryptedMessageJs): Promise<DecryptedMessageJs>
-
-	public fun createMessageInTopic(entity: DecryptedMessageJs): Promise<DecryptedMessageJs>
 
 	public fun withEncryptionMetadata(
 		base: DecryptedMessageJs?,
@@ -65,7 +61,7 @@ public external interface MessageApiJs {
 
 	public fun deleteMessageById(entityId: String, rev: String): Promise<DocIdentifierJs>
 
-	public fun deleteMessagesByIds(entityIds: Array<IdWithMandatoryRevJs>):
+	public fun deleteMessagesByIds(entityIds: Array<StoredDocumentIdentifierJs>):
 			Promise<Array<DocIdentifierJs>>
 
 	public fun purgeMessageById(id: String, rev: String): Promise<Unit>
@@ -97,13 +93,17 @@ public external interface MessageApiJs {
 	public fun filterMessagesBySorted(filter: SortableFilterOptionsJs<MessageJs>):
 			Promise<PaginatedListIteratorJs<DecryptedMessageJs>>
 
+	public fun createMessage(entity: DecryptedMessageJs): Promise<DecryptedMessageJs>
+
+	public fun createMessageInTopic(entity: DecryptedMessageJs): Promise<DecryptedMessageJs>
+
 	public fun undeleteMessage(message: MessageJs): Promise<MessageJs>
 
 	public fun modifyMessage(entity: DecryptedMessageJs): Promise<DecryptedMessageJs>
 
 	public fun undeleteMessageById(id: String, rev: String): Promise<DecryptedMessageJs>
 
-	public fun getMessage(entityId: String): Promise<DecryptedMessageJs>
+	public fun getMessage(entityId: String): Promise<DecryptedMessageJs?>
 
 	public fun getMessages(entityIds: Array<String>): Promise<Array<DecryptedMessageJs>>
 

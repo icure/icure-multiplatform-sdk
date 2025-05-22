@@ -14,9 +14,11 @@ export interface ReceiptBasicApi {
 	setRawReceiptAttachment(receiptId: string, rev: string, blobType: string,
 			attachment: Int8Array): Promise<EncryptedReceipt>;
 
+	createReceipt(entity: EncryptedReceipt): Promise<EncryptedReceipt>;
+
 	modifyReceipt(entity: EncryptedReceipt): Promise<EncryptedReceipt>;
 
-	getReceipt(entityId: string): Promise<EncryptedReceipt>;
+	getReceipt(entityId: string): Promise<EncryptedReceipt | undefined>;
 
 	listByReference(reference: string): Promise<Array<EncryptedReceipt>>;
 

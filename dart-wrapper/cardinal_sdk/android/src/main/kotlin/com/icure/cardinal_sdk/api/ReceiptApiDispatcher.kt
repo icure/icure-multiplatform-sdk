@@ -18,7 +18,6 @@ public object ReceiptApiDispatcher {
       String?,
     ) -> Unit,
   ): Boolean = when(methodName) {
-    "createReceipt" -> createReceipt(parameters, resultCallback)
     "withEncryptionMetadata" -> withEncryptionMetadata(parameters, resultCallback)
     "getAndDecryptReceiptAttachment" -> getAndDecryptReceiptAttachment(parameters, resultCallback)
     "encryptAndSetReceiptAttachment" -> encryptAndSetReceiptAttachment(parameters, resultCallback)
@@ -35,34 +34,24 @@ public object ReceiptApiDispatcher {
     "setRawReceiptAttachment" -> setRawReceiptAttachment(parameters, resultCallback)
     "shareWith" -> shareWith(parameters, resultCallback)
     "shareWithMany" -> shareWithMany(parameters, resultCallback)
+    "createReceipt" -> createReceipt(parameters, resultCallback)
     "modifyReceipt" -> modifyReceipt(parameters, resultCallback)
     "getReceipt" -> getReceipt(parameters, resultCallback)
     "listByReference" -> listByReference(parameters, resultCallback)
     "encrypted.shareWith" -> encrypted_shareWith(parameters, resultCallback)
     "encrypted.shareWithMany" -> encrypted_shareWithMany(parameters, resultCallback)
+    "encrypted.createReceipt" -> encrypted_createReceipt(parameters, resultCallback)
     "encrypted.modifyReceipt" -> encrypted_modifyReceipt(parameters, resultCallback)
     "encrypted.getReceipt" -> encrypted_getReceipt(parameters, resultCallback)
     "encrypted.listByReference" -> encrypted_listByReference(parameters, resultCallback)
     "tryAndRecover.shareWith" -> tryAndRecover_shareWith(parameters, resultCallback)
     "tryAndRecover.shareWithMany" -> tryAndRecover_shareWithMany(parameters, resultCallback)
+    "tryAndRecover.createReceipt" -> tryAndRecover_createReceipt(parameters, resultCallback)
     "tryAndRecover.modifyReceipt" -> tryAndRecover_modifyReceipt(parameters, resultCallback)
     "tryAndRecover.getReceipt" -> tryAndRecover_getReceipt(parameters, resultCallback)
     "tryAndRecover.listByReference" -> tryAndRecover_listByReference(parameters, resultCallback)
     else -> null
   }?.let { true } ?: false
-
-  private fun createReceipt(parameters: Map<String, String>, resultCallback: (
-    String?,
-    String?,
-    String?,
-    String?,
-  ) -> Unit) {
-    ReceiptApi.createReceipt(
-      resultCallback,
-      parameters.getValue("sdkId"),
-      parameters.getValue("entity"),
-    )
-  }
 
   private fun withEncryptionMetadata(parameters: Map<String, String>, resultCallback: (
     String?,
@@ -292,6 +281,19 @@ public object ReceiptApiDispatcher {
     )
   }
 
+  private fun createReceipt(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    ReceiptApi.createReceipt(
+      resultCallback,
+      parameters.getValue("sdkId"),
+      parameters.getValue("entity"),
+    )
+  }
+
   private fun modifyReceipt(parameters: Map<String, String>, resultCallback: (
     String?,
     String?,
@@ -360,6 +362,19 @@ public object ReceiptApiDispatcher {
     )
   }
 
+  private fun encrypted_createReceipt(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    ReceiptApi.encrypted.createReceipt(
+      resultCallback,
+      parameters.getValue("sdkId"),
+      parameters.getValue("entity"),
+    )
+  }
+
   private fun encrypted_modifyReceipt(parameters: Map<String, String>, resultCallback: (
     String?,
     String?,
@@ -425,6 +440,19 @@ public object ReceiptApiDispatcher {
       parameters.getValue("sdkId"),
       parameters.getValue("receipt"),
       parameters.getValue("delegates"),
+    )
+  }
+
+  private fun tryAndRecover_createReceipt(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    ReceiptApi.tryAndRecover.createReceipt(
+      resultCallback,
+      parameters.getValue("sdkId"),
+      parameters.getValue("entity"),
     )
   }
 

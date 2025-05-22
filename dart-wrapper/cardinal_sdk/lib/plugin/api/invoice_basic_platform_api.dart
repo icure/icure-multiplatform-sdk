@@ -66,7 +66,7 @@ class InvoiceBasicPlatformApi {
 		return (parsedResJson as List<dynamic>).map((x1) => EncryptedInvoice.fromJSON(x1) ).toList();
 	}
 
-	Future<EncryptedInvoice> getInvoice(String sdkId, String entityId) async {
+	Future<EncryptedInvoice?> getInvoice(String sdkId, String entityId) async {
 		final res = await _methodChannel.invokeMethod<String>(
 			'InvoiceBasicApi.getInvoice',
 			{
@@ -76,7 +76,7 @@ class InvoiceBasicPlatformApi {
 		).catchError(convertPlatformException);
 		if (res == null) throw AssertionError("received null result from platform method getInvoice");
 		final parsedResJson = jsonDecode(res);
-		return EncryptedInvoice.fromJSON(parsedResJson);
+		return parsedResJson == null ? null : EncryptedInvoice.fromJSON(parsedResJson);
 	}
 
 	Future<List<EncryptedInvoice>> getInvoices(String sdkId, List<String> entityIds) async {

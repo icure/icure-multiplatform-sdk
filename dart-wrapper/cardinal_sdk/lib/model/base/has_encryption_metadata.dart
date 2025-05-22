@@ -5,7 +5,6 @@ import 'package:cardinal_sdk/crypto/entities/entity_with_encryption_metadata_stu
 import 'package:cardinal_sdk/model/patient.dart';
 import 'package:cardinal_sdk/model/secure_delegation_key_map.dart';
 import 'package:cardinal_sdk/model/topic.dart';
-import 'package:cardinal_sdk/model/time_table.dart';
 import 'package:cardinal_sdk/model/document.dart';
 import 'package:cardinal_sdk/model/maintenance_task.dart';
 import 'package:cardinal_sdk/model/article.dart';
@@ -23,11 +22,11 @@ import 'package:cardinal_sdk/model/base/versionable.dart';
 
 
 abstract interface class HasEncryptionMetadata implements Versionable<String> {
-	abstract Set<String> secretForeignKeys;
-	abstract Map<String, Set<Delegation>> cryptedForeignKeys;
-	abstract Map<String, Set<Delegation>> delegations;
-	abstract Map<String, Set<Delegation>> encryptionKeys;
-	abstract SecurityMetadata? securityMetadata;
+	abstract final Set<String> secretForeignKeys;
+	abstract final Map<String, Set<Delegation>> cryptedForeignKeys;
+	abstract final Map<String, Set<Delegation>> delegations;
+	abstract final Map<String, Set<Delegation>> encryptionKeys;
+	abstract final SecurityMetadata? securityMetadata;
 
 	static Map<String, dynamic> encode(HasEncryptionMetadata value) {
 		switch (value) {
@@ -58,14 +57,6 @@ abstract interface class HasEncryptionMetadata implements Versionable<String> {
 			case EncryptedTopic entity:
 				Map<String, dynamic> entityJson = EncryptedTopic.encode(entity);
 				entityJson["kotlinType"] = "com.icure.cardinal.sdk.model.EncryptedTopic";
-				return entityJson;
-			case EncryptedTimeTable entity:
-				Map<String, dynamic> entityJson = EncryptedTimeTable.encode(entity);
-				entityJson["kotlinType"] = "com.icure.cardinal.sdk.model.EncryptedTimeTable";
-				return entityJson;
-			case DecryptedTimeTable entity:
-				Map<String, dynamic> entityJson = DecryptedTimeTable.encode(entity);
-				entityJson["kotlinType"] = "com.icure.cardinal.sdk.model.DecryptedTimeTable";
 				return entityJson;
 			case EncryptedDocument entity:
 				Map<String, dynamic> entityJson = EncryptedDocument.encode(entity);
@@ -192,10 +183,6 @@ abstract interface class HasEncryptionMetadata implements Versionable<String> {
 				return DecryptedTopic.fromJSON(data);
 			case "com.icure.cardinal.sdk.model.EncryptedTopic":
 				return EncryptedTopic.fromJSON(data);
-			case "com.icure.cardinal.sdk.model.EncryptedTimeTable":
-				return EncryptedTimeTable.fromJSON(data);
-			case "com.icure.cardinal.sdk.model.DecryptedTimeTable":
-				return DecryptedTimeTable.fromJSON(data);
 			case "com.icure.cardinal.sdk.model.EncryptedDocument":
 				return EncryptedDocument.fromJSON(data);
 			case "com.icure.cardinal.sdk.model.DecryptedDocument":

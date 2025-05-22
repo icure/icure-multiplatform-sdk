@@ -6,7 +6,7 @@ import {DocIdentifier} from '../model/couchdb/DocIdentifier.mjs';
 
 export interface InsuranceApi {
 
-	getInsurance(insuranceId: string): Promise<Insurance>;
+	getInsurance(insuranceId: string): Promise<Insurance | undefined>;
 
 	getInsurances(insuranceIds: Array<string>): Promise<Array<Insurance>>;
 

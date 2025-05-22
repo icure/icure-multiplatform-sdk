@@ -30,13 +30,15 @@ public external interface TopicFlavouredApiJs<E : TopicJs> {
 	public fun filterTopicsBySorted(filter: SortableFilterOptionsJs<TopicJs>):
 			Promise<PaginatedListIteratorJs<E>>
 
+	public fun createTopic(entity: E): Promise<E>
+
 	public fun undeleteTopic(topic: TopicJs): Promise<TopicJs>
 
 	public fun modifyTopic(entity: E): Promise<E>
 
 	public fun undeleteTopicById(id: String, rev: String): Promise<E>
 
-	public fun getTopic(entityId: String): Promise<E>
+	public fun getTopic(entityId: String): Promise<E?>
 
 	public fun getTopics(entityIds: Array<String>): Promise<Array<E>>
 

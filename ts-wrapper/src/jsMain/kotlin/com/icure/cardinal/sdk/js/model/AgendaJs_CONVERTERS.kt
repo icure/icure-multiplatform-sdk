@@ -5,19 +5,28 @@ import com.icure.cardinal.sdk.js.model.CheckedConverters.arrayToList
 import com.icure.cardinal.sdk.js.model.CheckedConverters.arrayToSet
 import com.icure.cardinal.sdk.js.model.CheckedConverters.listToArray
 import com.icure.cardinal.sdk.js.model.CheckedConverters.longToNumber
+import com.icure.cardinal.sdk.js.model.CheckedConverters.mapToObject
 import com.icure.cardinal.sdk.js.model.CheckedConverters.nullToUndefined
 import com.icure.cardinal.sdk.js.model.CheckedConverters.numberToLong
+import com.icure.cardinal.sdk.js.model.CheckedConverters.objectToMap
 import com.icure.cardinal.sdk.js.model.CheckedConverters.setToArray
 import com.icure.cardinal.sdk.js.model.CheckedConverters.undefinedToNull
 import com.icure.cardinal.sdk.js.model.base.CodeStubJs
 import com.icure.cardinal.sdk.js.model.base.codeStub_fromJs
 import com.icure.cardinal.sdk.js.model.base.codeStub_toJs
+import com.icure.cardinal.sdk.js.model.embed.EmbeddedTimeTableJs
 import com.icure.cardinal.sdk.js.model.embed.RightJs
+import com.icure.cardinal.sdk.js.model.embed.embeddedTimeTable_fromJs
+import com.icure.cardinal.sdk.js.model.embed.embeddedTimeTable_toJs
 import com.icure.cardinal.sdk.js.model.embed.right_fromJs
 import com.icure.cardinal.sdk.js.model.embed.right_toJs
 import com.icure.cardinal.sdk.model.Agenda
+import com.icure.cardinal.sdk.model.DecryptedPropertyStub
 import com.icure.cardinal.sdk.model.base.CodeStub
+import com.icure.cardinal.sdk.model.embed.EmbeddedTimeTable
 import com.icure.cardinal.sdk.model.embed.Right
+import com.icure.cardinal.sdk.model.embed.UserAccessLevel
+import kotlin.String
 import kotlin.Suppress
 
 @Suppress("UNUSED_VARIABLE")
@@ -71,6 +80,27 @@ public fun agenda_toJs(obj: Agenda): AgendaJs {
 			right_toJs(x1)
 		},
 	)
+	val userRights = mapToObject(
+		obj.userRights,
+		{ x1: String ->
+			x1
+		},
+		{ x1: UserAccessLevel ->
+			x1.name
+		},
+	)
+	val properties = setToArray(
+		obj.properties,
+		{ x1: DecryptedPropertyStub ->
+			propertyStub_toJs(x1)
+		},
+	)
+	val timeTables = listToArray(
+		obj.timeTables,
+		{ x1: EmbeddedTimeTable ->
+			embeddedTimeTable_toJs(x1)
+		},
+	)
 	return AgendaJs(js("{" +
 		"id:id," +
 		"rev:rev," +
@@ -85,7 +115,10 @@ public fun agenda_toJs(obj: Agenda): AgendaJs {
 		"deletionDate:deletionDate," +
 		"name:name," +
 		"userId:userId," +
-		"rights:rights" +
+		"rights:rights," +
+		"userRights:userRights," +
+		"properties:properties," +
+		"timeTables:timeTables" +
 	"}"))
 }
 
@@ -122,6 +155,30 @@ public fun agenda_fromJs(obj: AgendaJs): Agenda {
 			right_fromJs(x1)
 		},
 	)
+	val userRights = objectToMap(
+		obj.userRights,
+		"obj.userRights",
+		{ x1: String ->
+			x1
+		},
+		{ x1: String ->
+			UserAccessLevel.valueOf(x1)
+		},
+	)
+	val properties = arrayToSet(
+		obj.properties,
+		"obj.properties",
+		{ x1: DecryptedPropertyStubJs ->
+			propertyStub_fromJs(x1)
+		},
+	)
+	val timeTables = arrayToList(
+		obj.timeTables,
+		"obj.timeTables",
+		{ x1: EmbeddedTimeTableJs ->
+			embeddedTimeTable_fromJs(x1)
+		},
+	)
 	return Agenda(
 		id = id,
 		rev = rev,
@@ -137,5 +194,8 @@ public fun agenda_fromJs(obj: AgendaJs): Agenda {
 		name = name,
 		userId = userId,
 		rights = rights,
+		userRights = userRights,
+		properties = properties,
+		timeTables = timeTables,
 	)
 }

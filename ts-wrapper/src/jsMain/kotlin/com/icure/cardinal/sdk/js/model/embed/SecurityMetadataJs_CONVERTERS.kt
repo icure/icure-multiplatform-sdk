@@ -5,12 +5,9 @@ import com.icure.cardinal.sdk.js.model.CheckedConverters.mapToObject
 import com.icure.cardinal.sdk.js.model.CheckedConverters.objectToMap
 import com.icure.cardinal.sdk.js.model.specializations.secureDelegationKeyString_fromJs
 import com.icure.cardinal.sdk.js.model.specializations.secureDelegationKeyString_toJs
-import com.icure.cardinal.sdk.js.model.specializations.sha256HexString_fromJs
-import com.icure.cardinal.sdk.js.model.specializations.sha256HexString_toJs
 import com.icure.cardinal.sdk.model.embed.SecureDelegation
 import com.icure.cardinal.sdk.model.embed.SecurityMetadata
 import com.icure.cardinal.sdk.model.specializations.SecureDelegationKeyString
-import com.icure.cardinal.sdk.model.specializations.Sha256HexString
 import kotlin.String
 import kotlin.Suppress
 
@@ -25,18 +22,8 @@ public fun securityMetadata_toJs(obj: SecurityMetadata): SecurityMetadataJs {
 			secureDelegation_toJs(x1)
 		},
 	)
-	val keysEquivalences = mapToObject(
-		obj.keysEquivalences,
-		{ x1: Sha256HexString ->
-			sha256HexString_toJs(x1)
-		},
-		{ x1: Sha256HexString ->
-			sha256HexString_toJs(x1)
-		},
-	)
 	return SecurityMetadataJs(js("{" +
-		"secureDelegations:secureDelegations," +
-		"keysEquivalences:keysEquivalences" +
+		"secureDelegations:secureDelegations" +
 	"}"))
 }
 
@@ -51,18 +38,7 @@ public fun securityMetadata_fromJs(obj: SecurityMetadataJs): SecurityMetadata {
 			secureDelegation_fromJs(x1)
 		},
 	)
-	val keysEquivalences = objectToMap(
-		obj.keysEquivalences,
-		"obj.keysEquivalences",
-		{ x1: String ->
-			sha256HexString_fromJs(x1)
-		},
-		{ x1: String ->
-			sha256HexString_fromJs(x1)
-		},
-	)
 	return SecurityMetadata(
 		secureDelegations = secureDelegations,
-		keysEquivalences = keysEquivalences,
 	)
 }

@@ -1,20 +1,17 @@
 // auto-generated file
+import 'package:freezed_annotation/freezed_annotation.dart';
+part "deleted_attachment.freezed.dart";
 
 
-class DeletedAttachment {
-	String? couchDbAttachmentId = null;
-	String? objectStoreAttachmentId = null;
-	String? key = null;
-	int? deletionTime = null;
-	DeletedAttachment({
-			String? couchDbAttachmentId,
-			String? objectStoreAttachmentId,
-			String? key,
-			int? deletionTime
-		}) : couchDbAttachmentId = couchDbAttachmentId ?? null,
-		objectStoreAttachmentId = objectStoreAttachmentId ?? null,
-		key = key ?? null,
-		deletionTime = deletionTime ?? null;
+@freezed
+abstract class DeletedAttachment with _$DeletedAttachment {
+	const factory DeletedAttachment({
+		@Default(null) String? couchDbAttachmentId,
+		@Default(null) String? objectStoreAttachmentId,
+		@Default(null) String? key,
+		@Default(null) int? deletionTime,
+	}) = _DeletedAttachment;
+
 
 	static Map<String, dynamic> encode(DeletedAttachment value) {
 		Map<String, dynamic> entityAsMap = {

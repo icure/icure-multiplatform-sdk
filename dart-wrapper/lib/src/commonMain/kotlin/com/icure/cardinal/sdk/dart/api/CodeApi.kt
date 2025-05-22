@@ -338,7 +338,7 @@ public object CodeApi {
     )
     ApiScope.execute(
       dartResultCallback,
-      Code.serializer()) {
+      Code.serializer().nullable) {
       NativeReferences.get<CardinalNonCryptoApis>(sdkId).code.getCode(
         codeId,
       )
@@ -371,7 +371,7 @@ public object CodeApi {
     )
     ApiScope.execute(
       dartResultCallback,
-      Code.serializer()) {
+      Code.serializer().nullable) {
       NativeReferences.get<CardinalNonCryptoApis>(sdkId).code.getCodeWithParts(
         type,
         code,

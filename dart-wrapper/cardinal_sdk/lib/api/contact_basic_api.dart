@@ -7,7 +7,7 @@ import 'package:cardinal_sdk/utils/pagination/paginated_list_iterator.dart';
 import 'package:cardinal_sdk/subscription/entity_subscription_configuration.dart';
 import 'package:cardinal_sdk/subscription/entity_subscription.dart';
 import 'package:cardinal_sdk/model/couchdb/doc_identifier.dart';
-import 'package:cardinal_sdk/model/id_with_mandatory_rev.dart';
+import 'package:cardinal_sdk/model/stored_document_identifier.dart';
 import 'package:cardinal_sdk/model/data/labelled_occurence.dart';
 import 'package:cardinal_sdk/subscription/subscription_event_type.dart';
 
@@ -92,7 +92,7 @@ class ContactBasicApi {
 		);
 	}
 
-	Future<List<DocIdentifier>> deleteContactsByIds(List<IdWithMandatoryRev> entityIds) async {
+	Future<List<DocIdentifier>> deleteContactsByIds(List<StoredDocumentIdentifier> entityIds) async {
 		return await CardinalSdkPlatformInterface.instance.apis.contactBasic.deleteContactsByIds(
 			_sdkId,
 			entityIds,
@@ -136,6 +136,20 @@ class ContactBasicApi {
 		);
 	}
 
+	Future<EncryptedContact> createContact(EncryptedContact entity) async {
+		return await CardinalSdkPlatformInterface.instance.apis.contactBasic.createContact(
+			_sdkId,
+			entity,
+		);
+	}
+
+	Future<List<EncryptedContact>> createContacts(List<EncryptedContact> entities) async {
+		return await CardinalSdkPlatformInterface.instance.apis.contactBasic.createContacts(
+			_sdkId,
+			entities,
+		);
+	}
+
 	Future<EncryptedContact> undeleteContactById(String id, String rev) async {
 		return await CardinalSdkPlatformInterface.instance.apis.contactBasic.undeleteContactById(
 			_sdkId,
@@ -165,7 +179,7 @@ class ContactBasicApi {
 		);
 	}
 
-	Future<EncryptedContact> getContact(String entityId) async {
+	Future<EncryptedContact?> getContact(String entityId) async {
 		return await CardinalSdkPlatformInterface.instance.apis.contactBasic.getContact(
 			_sdkId,
 			entityId,

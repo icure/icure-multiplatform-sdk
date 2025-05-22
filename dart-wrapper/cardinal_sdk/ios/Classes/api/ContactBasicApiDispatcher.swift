@@ -30,6 +30,8 @@ class ContactBasicApiDispatcher {
     case "deleteContacts": deleteContacts(parameters: parameters, resultCallback: resultCallback)
     case "purgeContact": purgeContact(parameters: parameters, resultCallback: resultCallback)
     case "getServiceCodesOccurrences": getServiceCodesOccurrences(parameters: parameters, resultCallback: resultCallback)
+    case "createContact": createContact(parameters: parameters, resultCallback: resultCallback)
+    case "createContacts": createContacts(parameters: parameters, resultCallback: resultCallback)
     case "undeleteContactById": undeleteContactById(parameters: parameters, resultCallback: resultCallback)
     case "undeleteContact": undeleteContact(parameters: parameters, resultCallback: resultCallback)
     case "modifyContact": modifyContact(parameters: parameters, resultCallback: resultCallback)
@@ -253,6 +255,32 @@ class ContactBasicApiDispatcher {
     	sdkId: parameters["sdkId"]!,
     	codeTypeString: parameters["codeType"]!,
     	minOccurrencesString: parameters["minOccurrences"]!
+    )
+  }
+
+  private static func createContact(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    ContactBasicApi.shared.createContact(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	entityString: parameters["entity"]!
+    )
+  }
+
+  private static func createContacts(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    ContactBasicApi.shared.createContacts(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	entitiesString: parameters["entities"]!
     )
   }
 

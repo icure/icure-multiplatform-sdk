@@ -7,7 +7,7 @@ import com.icure.cardinal.sdk.dart.utils.NativeReferences
 import com.icure.cardinal.sdk.filters.BaseFilterOptions
 import com.icure.cardinal.sdk.filters.BaseSortableFilterOptions
 import com.icure.cardinal.sdk.model.EncryptedTopic
-import com.icure.cardinal.sdk.model.IdWithMandatoryRev
+import com.icure.cardinal.sdk.model.StoredDocumentIdentifier
 import com.icure.cardinal.sdk.model.Topic
 import com.icure.cardinal.sdk.model.TopicRole
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
@@ -168,7 +168,7 @@ public object TopicBasicApi {
     entityIdsString: String,
   ) {
     val entityIds = fullLanguageInteropJson.decodeFromString(
-      ListSerializer(IdWithMandatoryRev.serializer()),
+      ListSerializer(StoredDocumentIdentifier.serializer()),
       entityIdsString
     )
     ApiScope.execute(
@@ -278,6 +278,29 @@ public object TopicBasicApi {
     }
   }
 
+  public fun createTopic(
+    dartResultCallback: (
+      String?,
+      String?,
+      String?,
+      String?,
+    ) -> Unit,
+    sdkId: String,
+    entityString: String,
+  ) {
+    val entity = fullLanguageInteropJson.decodeFromString(
+      EncryptedTopic.serializer(),
+      entityString
+    )
+    ApiScope.execute(
+      dartResultCallback,
+      EncryptedTopic.serializer()) {
+      NativeReferences.get<CardinalBaseApis>(sdkId).topic.createTopic(
+        entity,
+      )
+    }
+  }
+
   public fun undeleteTopic(
     dartResultCallback: (
       String?,
@@ -369,7 +392,7 @@ public object TopicBasicApi {
     )
     ApiScope.execute(
       dartResultCallback,
-      EncryptedTopic.serializer()) {
+      EncryptedTopic.serializer().nullable) {
       NativeReferences.get<CardinalBaseApis>(sdkId).topic.getTopic(
         entityId,
       )

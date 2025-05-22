@@ -38,7 +38,7 @@ public external interface InvoiceFlavouredApiJs<E : InvoiceJs> {
 
 	public fun modifyInvoices(entities: Array<E>): Promise<Array<E>>
 
-	public fun getInvoice(entityId: String): Promise<E>
+	public fun getInvoice(entityId: String): Promise<E?>
 
 	public fun getInvoices(entityIds: Array<String>): Promise<Array<E>>
 

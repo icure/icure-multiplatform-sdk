@@ -3,9 +3,9 @@ import {FilterOptions, PaginatedListIterator, SortableFilterOptions} from '../ca
 import {DocumentShareOptions} from '../crypto/entities/DocumentShareOptions.mjs';
 import {SecretIdUseOption} from '../crypto/entities/SecretIdUseOption.mjs';
 import {DecryptedDocument, Document, EncryptedDocument} from '../model/Document.mjs';
-import {IdWithMandatoryRev} from '../model/IdWithMandatoryRev.mjs';
 import {Message} from '../model/Message.mjs';
 import {Patient} from '../model/Patient.mjs';
+import {StoredDocumentIdentifier} from '../model/StoredDocumentIdentifier.mjs';
 import {User} from '../model/User.mjs';
 import {DocIdentifier} from '../model/couchdb/DocIdentifier.mjs';
 import {AccessLevel} from '../model/embed/AccessLevel.mjs';
@@ -18,8 +18,6 @@ export interface DocumentApi {
 	encrypted: DocumentFlavouredApi<EncryptedDocument>;
 
 	tryAndRecover: DocumentFlavouredApi<Document>;
-
-	createDocument(entity: DecryptedDocument): Promise<DecryptedDocument>;
 
 	withEncryptionMetadata(base: DecryptedDocument | undefined, message: Message | undefined,
 			options?: { user?: User | undefined, delegates?: { [ key: string ]: AccessLevel }, secretId?: SecretIdUseOption }): Promise<DecryptedDocument>;
@@ -70,7 +68,7 @@ export interface DocumentApi {
 
 	deleteDocumentById(entityId: string, rev: string): Promise<DocIdentifier>;
 
-	deleteDocumentsByIds(entityIds: Array<IdWithMandatoryRev>): Promise<Array<DocIdentifier>>;
+	deleteDocumentsByIds(entityIds: Array<StoredDocumentIdentifier>): Promise<Array<DocIdentifier>>;
 
 	purgeDocumentById(id: string, rev: string): Promise<void>;
 
@@ -123,13 +121,15 @@ export interface DocumentApi {
 
 	filterDocumentsBySorted(filter: SortableFilterOptions<Document>): Promise<PaginatedListIterator<DecryptedDocument>>;
 
+	createDocument(entity: DecryptedDocument): Promise<DecryptedDocument>;
+
 	undeleteDocumentById(id: string, rev: string): Promise<DecryptedDocument>;
 
 	undeleteDocument(document: Document): Promise<DecryptedDocument>;
 
 	modifyDocument(entity: DecryptedDocument): Promise<DecryptedDocument>;
 
-	getDocument(entityId: string): Promise<DecryptedDocument>;
+	getDocument(entityId: string): Promise<DecryptedDocument | undefined>;
 
 	getDocumentByExternalUuid(externalUuid: string): Promise<DecryptedDocument>;
 

@@ -6,12 +6,12 @@ import 'package:cardinal_sdk/model/base/identifiable.dart';
 
 
 abstract interface class Person implements Identifiable<String> {
-	abstract String? civility;
-	abstract Gender? gender;
-	abstract String? firstName;
-	abstract String? lastName;
-	abstract String? companyName;
-	abstract List<PersonName> names;
+	abstract final String? civility;
+	abstract final Gender? gender;
+	abstract final String? firstName;
+	abstract final String? lastName;
+	abstract final String? companyName;
+	abstract final List<PersonName> names;
 	List<Address> get addresses;
-	abstract List<String> languages;
+	abstract final List<String> languages;
 }
