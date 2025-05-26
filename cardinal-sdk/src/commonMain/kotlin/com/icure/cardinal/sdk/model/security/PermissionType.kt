@@ -2,51 +2,54 @@ package com.icure.cardinal.sdk.model.security
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlin.String
 
 // WARNING: This file is auto-generated. If you change it manually, your changes will be lost.
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
 
 @Serializable
-enum class PermissionType() {
+enum class PermissionType(
+	internal val dtoSerialName: String,
+) {
 	@SerialName("AUTHENTICATE")
-	Authenticate,
+	Authenticate("AUTHENTICATE"),
 
 	@SerialName("HCP")
-	Hcp,
+	Hcp("HCP"),
 
 	@SerialName("PHYSICIAN")
-	Physician,
+	Physician("PHYSICIAN"),
 
 	@SerialName("ADMIN")
-	Admin,
+	Admin("ADMIN"),
 
 	@SerialName("PATIENT_VIEW")
-	PatientView,
+	PatientView("PATIENT_VIEW"),
 
 	@SerialName("PATIENT_CREATE")
-	PatientCreate,
+	PatientCreate("PATIENT_CREATE"),
 
 	@SerialName("PATIENT_CHANGE_DELETE")
-	PatientChangeDelete,
+	PatientChangeDelete("PATIENT_CHANGE_DELETE"),
 
 	@SerialName("MEDICAL_DATA_VIEW")
-	MedicalDataView,
+	MedicalDataView("MEDICAL_DATA_VIEW"),
 
 	@SerialName("MEDICAL_DATA_CREATE")
-	MedicalDataCreate,
+	MedicalDataCreate("MEDICAL_DATA_CREATE"),
 
 	@SerialName("MEDICAL_CHANGE_DELETE")
-	MedicalChangeDelete,
+	MedicalChangeDelete("MEDICAL_CHANGE_DELETE"),
 
 	@SerialName("FINANCIAL_DATA_VIEW")
-	FinancialDataView,
+	FinancialDataView("FINANCIAL_DATA_VIEW"),
 
 	@SerialName("FINANCIAL_DATA_CREATE")
-	FinancialDataCreate,
+	FinancialDataCreate("FINANCIAL_DATA_CREATE"),
 
 	@SerialName("FINANCIAL_CHANGE_DELETE")
-	FinancialChangeDelete,
+	FinancialChangeDelete("FINANCIAL_CHANGE_DELETE"),
 
 	@SerialName("LEGACY_DATA_VIEW")
-	LegacyDataView,
+	LegacyDataView("LEGACY_DATA_VIEW"),
 }

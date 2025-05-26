@@ -2,126 +2,129 @@ package com.icure.cardinal.sdk.model.embed
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlin.String
 
 // WARNING: This file is auto-generated. If you change it manually, your changes will be lost.
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
 
 @Serializable
-enum class DocumentType() {
+enum class DocumentType(
+	internal val dtoSerialName: String,
+) {
 	@SerialName("admission")
-	Admission,
+	Admission("admission"),
 
 	@SerialName("alert")
-	Alert,
+	Alert("alert"),
 
 	@SerialName("bvt_sample")
-	BvtSample,
+	BvtSample("bvt_sample"),
 
 	@SerialName("clinicalpath")
-	Clinicalpath,
+	Clinicalpath("clinicalpath"),
 
 	@SerialName("clinicalsummary")
-	Clinicalsummary,
+	Clinicalsummary("clinicalsummary"),
 
 	@SerialName("contactreport")
-	Contactreport,
+	Contactreport("contactreport"),
 
 	@SerialName("quote")
-	Quote,
+	Quote("quote"),
 
 	@SerialName("invoice")
-	Invoice,
+	Invoice("invoice"),
 
 	@SerialName("death")
-	Death,
+	Death("death"),
 
 	@SerialName("discharge")
-	Discharge,
+	Discharge("discharge"),
 
 	@SerialName("dischargereport")
-	Dischargereport,
+	Dischargereport("dischargereport"),
 
 	@SerialName("ebirth_baby_medicalform")
-	EbirthBabyMedicalform,
+	EbirthBabyMedicalform("ebirth_baby_medicalform"),
 
 	@SerialName("ebirth_baby_notification")
-	EbirthBabyNotification,
+	EbirthBabyNotification("ebirth_baby_notification"),
 
 	@SerialName("ebirth_mother_medicalform")
-	EbirthMotherMedicalform,
+	EbirthMotherMedicalform("ebirth_mother_medicalform"),
 
 	@SerialName("ebirth_mother_notification")
-	EbirthMotherNotification,
+	EbirthMotherNotification("ebirth_mother_notification"),
 
 	@SerialName("ecare_safe_consultation")
-	EcareSafeConsultation,
+	EcareSafeConsultation("ecare_safe_consultation"),
 
 	@SerialName("epidemiology")
-	Epidemiology,
+	Epidemiology("epidemiology"),
 
 	@SerialName("intervention")
-	Intervention,
+	Intervention("intervention"),
 
 	@SerialName("labrequest")
-	Labrequest,
+	Labrequest("labrequest"),
 
 	@SerialName("labresult")
-	Labresult,
+	Labresult("labresult"),
 
 	@SerialName("medicaladvisoragreement")
-	Medicaladvisoragreement,
+	Medicaladvisoragreement("medicaladvisoragreement"),
 
 	@SerialName("medicationschemeelement")
-	Medicationschemeelement,
+	Medicationschemeelement("medicationschemeelement"),
 
 	@SerialName("note")
-	Note,
+	Note("note"),
 
 	@SerialName("notification")
-	Notification,
+	Notification("notification"),
 
 	@SerialName("pharmaceuticalprescription")
-	Pharmaceuticalprescription,
+	Pharmaceuticalprescription("pharmaceuticalprescription"),
 
 	@SerialName("prescription")
-	Prescription,
+	Prescription("prescription"),
 
 	@SerialName("productdelivery")
-	Productdelivery,
+	Productdelivery("productdelivery"),
 
 	@SerialName("quickdischargereport")
-	Quickdischargereport,
+	Quickdischargereport("quickdischargereport"),
 
 	@SerialName("radiationexposuremonitoring")
-	Radiationexposuremonitoring,
+	Radiationexposuremonitoring("radiationexposuremonitoring"),
 
 	@SerialName("referral")
-	Referral,
+	Referral("referral"),
 
 	@SerialName("report")
-	Report,
+	Report("report"),
 
 	@SerialName("request")
-	Request,
+	Request("request"),
 
 	@SerialName("result")
-	Result,
+	Result("result"),
 
 	@SerialName("sumehr")
-	Sumehr,
+	Sumehr("sumehr"),
 
 	@SerialName("telemonitoring")
-	Telemonitoring,
+	Telemonitoring("telemonitoring"),
 
 	@SerialName("template")
-	Template,
+	Template("template"),
 
 	@SerialName("template_admin")
-	TemplateAdmin,
+	TemplateAdmin("template_admin"),
 
 	@SerialName("treatmentsuspension")
-	Treatmentsuspension,
+	Treatmentsuspension("treatmentsuspension"),
 
 	@SerialName("vaccination")
-	Vaccination,
+	Vaccination("vaccination"),
 }

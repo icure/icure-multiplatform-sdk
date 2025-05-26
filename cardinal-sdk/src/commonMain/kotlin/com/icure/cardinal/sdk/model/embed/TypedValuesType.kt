@@ -7,25 +7,27 @@ import kotlinx.serialization.Serializable
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
 
 @Serializable
-enum class TypedValuesType() {
+enum class TypedValuesType(
+	internal val dtoSerialName: kotlin.String,
+) {
 	@SerialName("BOOLEAN")
-	Boolean,
+	Boolean("BOOLEAN"),
 
 	@SerialName("INTEGER")
-	Integer,
+	Integer("INTEGER"),
 
 	@SerialName("DOUBLE")
-	Double,
+	Double("DOUBLE"),
 
 	@SerialName("STRING")
-	String,
+	String("STRING"),
 
 	@SerialName("DATE")
-	Date,
+	Date("DATE"),
 
 	@SerialName("CLOB")
-	Clob,
+	Clob("CLOB"),
 
 	@SerialName("JSON")
-	Json,
+	Json("JSON"),
 }
