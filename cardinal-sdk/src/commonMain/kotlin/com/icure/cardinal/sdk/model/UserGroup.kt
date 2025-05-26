@@ -23,6 +23,7 @@ data class UserGroup(
 	public val healthcarePartyId: String? = null,
 	public val deviceId: String? = null,
 	public val nameOfParentOfTopmostGroupInHierarchy: String? = null,
+	internal val dtoSerialName: String,
 ) {
 	// region UserGroup-UserGroup
 

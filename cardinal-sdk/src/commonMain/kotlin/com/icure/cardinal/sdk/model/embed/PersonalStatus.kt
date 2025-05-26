@@ -2,51 +2,54 @@ package com.icure.cardinal.sdk.model.embed
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlin.String
 
 // WARNING: This file is auto-generated. If you change it manually, your changes will be lost.
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
 
 @Serializable
-enum class PersonalStatus() {
+enum class PersonalStatus(
+	internal val dtoSerialName: String,
+) {
 	@SerialName("single")
-	Single,
+	Single("single"),
 
 	@SerialName("in_couple")
-	InCouple,
+	InCouple("in_couple"),
 
 	@SerialName("married")
-	Married,
+	Married("married"),
 
 	@SerialName("separated")
-	Separated,
+	Separated("separated"),
 
 	@SerialName("divorced")
-	Divorced,
+	Divorced("divorced"),
 
 	@SerialName("divorcing")
-	Divorcing,
+	Divorcing("divorcing"),
 
 	@SerialName("widowed")
-	Widowed,
+	Widowed("widowed"),
 
 	@SerialName("widower")
-	Widower,
+	Widower("widower"),
 
 	@SerialName("complicated")
-	Complicated,
+	Complicated("complicated"),
 
 	@SerialName("unknown")
-	Unknown,
+	Unknown("unknown"),
 
 	@SerialName("contract")
-	Contract,
+	Contract("contract"),
 
 	@SerialName("other")
-	Other,
+	Other("other"),
 
 	@SerialName("annulled")
-	Annulled,
+	Annulled("annulled"),
 
 	@SerialName("polygamous")
-	Polygamous,
+	Polygamous("polygamous"),
 }

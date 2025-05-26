@@ -10,6 +10,7 @@ import kotlin.String
 data class RevisionInfo(
 	public val rev: String? = null,
 	public val status: String? = null,
+	internal val dtoSerialName: String,
 ) {
 	// region RevisionInfo-RevisionInfo
 

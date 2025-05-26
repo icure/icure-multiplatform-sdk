@@ -13,6 +13,7 @@ data class GroupDatabasesInfo(
 	public val groupId: String,
 	public val databasesInfo: List<DatabaseInfo>,
 	public val gcpStorageSize: Long,
+	internal val dtoSerialName: String,
 ) {
 	// region GroupDatabasesInfo-GroupDatabasesInfo
 

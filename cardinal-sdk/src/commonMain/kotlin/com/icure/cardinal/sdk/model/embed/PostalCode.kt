@@ -13,6 +13,7 @@ data class PostalCode(
 	public val code: String? = null,
 	@DefaultValue("emptyMap()")
 	public val label: Map<String, String> = emptyMap(),
+	internal val dtoSerialName: String,
 ) {
 	// region PostalCode-PostalCode
 

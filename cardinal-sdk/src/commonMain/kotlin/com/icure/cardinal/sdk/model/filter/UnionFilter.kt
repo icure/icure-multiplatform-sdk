@@ -16,6 +16,7 @@ data class UnionFilter<O : Identifiable<String>>(
 	override val desc: String? = null,
 	@DefaultValue("emptyList()")
 	override val filters: List<AbstractFilter<O>> = emptyList(),
+	internal val dtoSerialName: String,
 ) : AbstractFilter<O>, Filter.UnionFilter<O> {
 	// region UnionFilter-UnionFilter
 

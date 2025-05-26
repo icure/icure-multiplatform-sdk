@@ -266,6 +266,7 @@ data class DecryptedInvoice(
 	override val encryptionKeys: Map<String, Set<Delegation>> = emptyMap(),
 	override val encryptedSelf: Base64String? = null,
 	override val securityMetadata: SecurityMetadata? = null,
+	internal val dtoSerialName: String,
 ) : Invoice {
 	// region Invoice-DecryptedInvoice
 override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): DecryptedInvoice =
@@ -356,6 +357,7 @@ data class EncryptedInvoice(
 	override val encryptionKeys: Map<String, Set<Delegation>> = emptyMap(),
 	override val encryptedSelf: Base64String? = null,
 	override val securityMetadata: SecurityMetadata? = null,
+	internal val dtoSerialName: String,
 ) : Invoice {
 	// region Invoice-EncryptedInvoice
 override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): EncryptedInvoice =

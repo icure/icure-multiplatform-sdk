@@ -18,6 +18,7 @@ data class PatientByHcPartyAndActiveFilter(
 	@DefaultValue("false")
 	public val active: Boolean = false,
 	public val healthcarePartyId: String? = null,
+	internal val dtoSerialName: String,
 ) : AbstractFilter<Patient> {
 	// region PatientByHcPartyAndActiveFilter-PatientByHcPartyAndActiveFilter
 

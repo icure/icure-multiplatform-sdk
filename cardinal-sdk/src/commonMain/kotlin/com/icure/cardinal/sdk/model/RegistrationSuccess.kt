@@ -11,6 +11,7 @@ data class RegistrationSuccess(
 	public val groupId: String,
 	public val userId: String,
 	public val token: String,
+	internal val dtoSerialName: String,
 ) {
 	// region RegistrationSuccess-RegistrationSuccess
 

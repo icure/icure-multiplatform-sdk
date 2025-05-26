@@ -29,6 +29,7 @@ data class Insurance(
 	public val agreementNumber: String? = null,
 	public val parent: String? = null,
 	public val address: DecryptedAddress,
+	internal val dtoSerialName: String,
 ) : StoredDocument {
 	// region Insurance-Insurance
 

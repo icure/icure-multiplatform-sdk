@@ -38,6 +38,7 @@ data class DecryptedPatientHealthCareParty(
 	@DefaultValue("false")
 	override val referral: Boolean = false,
 	override val encryptedSelf: Base64String? = null,
+	internal val dtoSerialName: String,
 ) : PatientHealthCareParty {
 	// region PatientHealthCareParty-DecryptedPatientHealthCareParty
 
@@ -55,6 +56,7 @@ data class EncryptedPatientHealthCareParty(
 	@DefaultValue("false")
 	override val referral: Boolean = false,
 	override val encryptedSelf: Base64String? = null,
+	internal val dtoSerialName: String,
 ) : PatientHealthCareParty {
 	// region PatientHealthCareParty-EncryptedPatientHealthCareParty
 

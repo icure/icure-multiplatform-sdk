@@ -5,6 +5,7 @@ import com.icure.cardinal.sdk.model.specializations.Base64String
 import com.icure.cardinal.sdk.model.specializations.KeypairFingerprintV2String
 import com.icure.cardinal.sdk.utils.DefaultValue
 import kotlinx.serialization.Serializable
+import kotlin.String
 import kotlin.collections.Map
 
 // WARNING: This file is auto-generated. If you change it manually, your changes will be lost.
@@ -15,6 +16,7 @@ data class ExchangeDataMapCreationBatch(
 	@DefaultValue("emptyMap()")
 	public val batch: Map<AccessControlKeyHexString, Map<KeypairFingerprintV2String, Base64String>> =
 		emptyMap(),
+	internal val dtoSerialName: String,
 ) {
     // region ExchangeDataMapCreationBatch-ExchangeDataMapCreationBatch
 

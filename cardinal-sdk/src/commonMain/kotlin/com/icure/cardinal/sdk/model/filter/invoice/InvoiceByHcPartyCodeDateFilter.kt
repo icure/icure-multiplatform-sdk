@@ -18,6 +18,7 @@ data class InvoiceByHcPartyCodeDateFilter(
 	public val code: String,
 	public val startInvoiceDate: Long? = null,
 	public val endInvoiceDate: Long? = null,
+	internal val dtoSerialName: String,
 ) : AbstractFilter<Invoice> {
 	// region InvoiceByHcPartyCodeDateFilter-InvoiceByHcPartyCodeDateFilter
 

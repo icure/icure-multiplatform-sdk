@@ -13,6 +13,7 @@ data class Suspension(
 	public val endMoment: Long? = null,
 	public val suspensionReason: String? = null,
 	public val lifecycle: String? = null,
+	internal val dtoSerialName: String,
 ) {
 	// region Suspension-Suspension
 

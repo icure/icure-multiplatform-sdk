@@ -9,6 +9,7 @@ import kotlin.String
 @Serializable
 data class JwtPayload(
 	public val jwt: String,
+	internal val dtoSerialName: String,
 ) {
 	// region JwtPayload-JwtPayload
 

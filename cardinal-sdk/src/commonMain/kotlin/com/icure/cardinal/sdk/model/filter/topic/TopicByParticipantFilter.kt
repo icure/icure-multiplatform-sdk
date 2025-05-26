@@ -14,6 +14,7 @@ import kotlin.String
 data class TopicByParticipantFilter(
 	public val participantId: String,
 	override val desc: String? = null,
+	internal val dtoSerialName: String,
 ) : AbstractFilter<Topic> {
 	// region TopicByParticipantFilter-TopicByParticipantFilter
 

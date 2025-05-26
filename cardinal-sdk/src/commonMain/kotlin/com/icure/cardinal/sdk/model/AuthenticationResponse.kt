@@ -15,6 +15,7 @@ class AuthenticationResponse(
 	@DefaultValue("false")
 	public val successful: Boolean = false,
 	public val username: String? = null,
+	internal val dtoSerialName: String,
 ) {
 	// region AuthenticationResponse-AuthenticationResponse
 

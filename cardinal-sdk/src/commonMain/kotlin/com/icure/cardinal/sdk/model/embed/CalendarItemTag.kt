@@ -29,6 +29,7 @@ data class DecryptedCalendarItemTag(
 	override val userId: String? = null,
 	override val userName: String? = null,
 	override val encryptedSelf: Base64String?,
+	internal val dtoSerialName: String,
 ) : CalendarItemTag {
 	// region CalendarItemTag-DecryptedCalendarItemTag
 
@@ -42,6 +43,7 @@ data class EncryptedCalendarItemTag(
 	override val userId: String? = null,
 	override val userName: String? = null,
 	override val encryptedSelf: Base64String?,
+	internal val dtoSerialName: String,
 ) : CalendarItemTag {
 	// region CalendarItemTag-EncryptedCalendarItemTag
 

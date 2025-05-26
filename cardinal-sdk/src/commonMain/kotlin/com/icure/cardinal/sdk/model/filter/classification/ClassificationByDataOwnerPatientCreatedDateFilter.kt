@@ -21,6 +21,7 @@ data class ClassificationByDataOwnerPatientCreatedDateFilter(
 	public val secretForeignKeys: Set<String>,
 	public val descending: Boolean?,
 	override val desc: String? = null,
+	internal val dtoSerialName: String,
 ) : AbstractFilter<Classification> {
 	// region ClassificationByDataOwnerPatientCreatedDateFilter-ClassificationByDataOwnerPatientCreatedDateFilter
 

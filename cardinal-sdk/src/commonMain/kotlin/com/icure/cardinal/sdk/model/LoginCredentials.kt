@@ -10,6 +10,7 @@ import kotlin.String
 data class LoginCredentials(
 	public val username: String? = null,
 	public val password: String? = null,
+	internal val dtoSerialName: String,
 ) {
 	// region LoginCredentials-LoginCredentials
 

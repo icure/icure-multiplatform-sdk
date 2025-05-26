@@ -64,6 +64,7 @@ data class Tarification(
 	public val ngroup: String? = null,
 	@DefaultValue("emptyList()")
 	public val letterValues: List<LetterValue> = emptyList(),
+	internal val dtoSerialName: String,
 ) : StoredDocument, CodeIdentification<String> {
 	// region Tarification-Tarification
 

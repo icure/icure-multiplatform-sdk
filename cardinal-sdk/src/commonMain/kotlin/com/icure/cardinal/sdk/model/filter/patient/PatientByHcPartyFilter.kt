@@ -14,6 +14,7 @@ import kotlin.String
 data class PatientByHcPartyFilter(
 	override val desc: String? = null,
 	public val healthcarePartyId: String? = null,
+	internal val dtoSerialName: String,
 ) : AbstractFilter<Patient> {
 	// region PatientByHcPartyFilter-PatientByHcPartyFilter
 

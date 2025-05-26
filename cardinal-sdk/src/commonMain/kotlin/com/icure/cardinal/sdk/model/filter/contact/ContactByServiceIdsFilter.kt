@@ -15,6 +15,7 @@ import kotlin.collections.List
 data class ContactByServiceIdsFilter(
 	override val desc: String? = null,
 	public val ids: List<String>? = null,
+	internal val dtoSerialName: String,
 ) : AbstractFilter<Contact> {
 	// region ContactByServiceIdsFilter-ContactByServiceIdsFilter
 

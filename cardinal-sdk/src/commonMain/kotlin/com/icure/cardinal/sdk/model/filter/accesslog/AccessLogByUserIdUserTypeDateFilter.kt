@@ -21,6 +21,7 @@ data class AccessLogByUserIdUserTypeDateFilter(
 	public val startDate: Instant?,
 	public val descending: Boolean?,
 	override val desc: String? = null,
+	internal val dtoSerialName: String,
 ) : AbstractFilter<AccessLog> {
 	// region AccessLogByUserIdUserTypeDateFilter-AccessLogByUserIdUserTypeDateFilter
 

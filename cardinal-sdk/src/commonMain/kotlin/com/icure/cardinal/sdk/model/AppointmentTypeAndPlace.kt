@@ -24,6 +24,7 @@ data class AppointmentTypeAndPlace(
 	public val address: DecryptedAddress? = null,
 	@DefaultValue("true")
 	public val acceptsNewPatients: Boolean = true,
+	internal val dtoSerialName: String,
 ) {
 	// region AppointmentTypeAndPlace-AppointmentTypeAndPlace
 

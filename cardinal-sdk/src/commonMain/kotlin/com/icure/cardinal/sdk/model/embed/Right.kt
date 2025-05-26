@@ -17,6 +17,7 @@ data class Right(
 	public val write: Boolean = false,
 	@DefaultValue("false")
 	public val administration: Boolean = false,
+	internal val dtoSerialName: String,
 ) {
 	// region Right-Right
 

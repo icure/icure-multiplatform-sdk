@@ -45,6 +45,7 @@ data class Group(
 	public val minimumAuthenticationClassForElevatedPrivileges: AuthenticationClass,
 	public val superGroup: String? = null,
 	public val applicationId: String? = null,
+	internal val dtoSerialName: String,
 ) : StoredDocument, HasTags {
 	// region Group-Group
 

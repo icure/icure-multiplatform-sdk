@@ -13,6 +13,7 @@ data class LetterValue(
 	public val index: String? = null,
 	public val coefficient: Double? = null,
 	public val `value`: Double? = null,
+	internal val dtoSerialName: String,
 ) {
 	// region LetterValue-LetterValue
 

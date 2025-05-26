@@ -119,6 +119,7 @@ data class HealthcareParty(
 	override val publicKey: SpkiHexString? = null,
 	@DefaultValue("emptySet()")
 	override val publicKeysForOaepWithSha256: Set<SpkiHexString> = emptySet(),
+	internal val dtoSerialName: String,
 ) : StoredDocument, Named, Person, CryptoActor, DataOwner, HasCodes, HasTags {
 	// region HealthcareParty-HealthcareParty
 	companion object {

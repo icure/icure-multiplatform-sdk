@@ -24,6 +24,7 @@ data class DocumentByDataOwnerPatientDateFilter(
 	public val endDate: Instant? = null,
 	public val descending: Boolean? = null,
 	override val desc: String? = null,
+	internal val dtoSerialName: String,
 ) : AbstractFilter<Document> {
 	// region DocumentByDataOwnerPatientDateFilter-DocumentByDataOwnerPatientDateFilter
 

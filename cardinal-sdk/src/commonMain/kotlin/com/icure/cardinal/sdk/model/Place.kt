@@ -17,6 +17,7 @@ data class Place(
 	override val deletionDate: Long? = null,
 	override val name: String? = null,
 	public val address: DecryptedAddress? = null,
+	internal val dtoSerialName: String,
 ) : StoredDocument, Named {
 	// region Place-Place
 

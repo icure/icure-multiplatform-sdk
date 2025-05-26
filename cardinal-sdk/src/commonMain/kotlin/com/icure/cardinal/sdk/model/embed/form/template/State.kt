@@ -14,6 +14,7 @@ class State(
 	public val stateToUpdate: StateToUpdate,
 	@DefaultValue("false")
 	public val canLaunchLauncher: Boolean = false,
+	internal val dtoSerialName: String,
 ) {
 	// region State-State
 

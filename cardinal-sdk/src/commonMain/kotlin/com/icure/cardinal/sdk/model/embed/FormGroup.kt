@@ -10,6 +10,7 @@ import kotlin.String
 data class FormGroup(
 	public val guid: String? = null,
 	public val name: String? = null,
+	internal val dtoSerialName: String,
 ) {
 	// region FormGroup-FormGroup
 

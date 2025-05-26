@@ -11,6 +11,7 @@ import kotlin.String
 data class PaginatedDocumentKeyIdPair(
 	public val startKey: JsonElement? = null,
 	public val startKeyDocId: String? = null,
+	internal val dtoSerialName: String,
 ) {
 	// region PaginatedDocumentKeyIdPair-PaginatedDocumentKeyIdPair
 

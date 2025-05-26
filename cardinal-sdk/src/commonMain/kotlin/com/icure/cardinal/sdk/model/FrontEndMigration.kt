@@ -27,6 +27,7 @@ data class FrontEndMigration(
 	public val processCount: Long? = null,
 	@DefaultValue("emptySet()")
 	public val properties: Set<DecryptedPropertyStub> = emptySet(),
+	internal val dtoSerialName: String,
 ) : StoredDocument {
 	// region FrontEndMigration-FrontEndMigration
 

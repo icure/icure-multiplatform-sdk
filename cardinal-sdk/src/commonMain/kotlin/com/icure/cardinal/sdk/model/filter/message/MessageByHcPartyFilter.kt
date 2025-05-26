@@ -15,6 +15,7 @@ import kotlin.String
 data class MessageByHcPartyFilter(
 	override val hcpId: String,
 	override val desc: String? = null,
+	internal val dtoSerialName: String,
 ) : AbstractFilter<Message>, Filter.ByHcpartyFilter<Message> {
 	// region MessageByHcPartyFilter-MessageByHcPartyFilter
 

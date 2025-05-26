@@ -73,6 +73,7 @@ data class DecryptedAddress(
 	@DefaultValue("emptyList()")
 	override val telecoms: List<DecryptedTelecom> = emptyList(),
 	override val encryptedSelf: Base64String? = null,
+	internal val dtoSerialName: String,
 ) : Address {
 	// region Address-DecryptedAddress
 
@@ -102,6 +103,7 @@ data class EncryptedAddress(
 	@DefaultValue("emptyList()")
 	override val telecoms: List<EncryptedTelecom> = emptyList(),
 	override val encryptedSelf: Base64String? = null,
+	internal val dtoSerialName: String,
 ) : Address {
 	// region Address-EncryptedAddress
 

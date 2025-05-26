@@ -20,6 +20,7 @@ data class IdentityDocumentReader(
 	public val reasonManualEncoding: Int = 0,
 	@DefaultValue("0")
 	public val reasonUsingVignette: Int = 0,
+	internal val dtoSerialName: String,
 ) {
 	// region IdentityDocumentReader-IdentityDocumentReader
 

@@ -11,6 +11,7 @@ import kotlin.collections.List
 data class KeywordSubword(
 	public val `value`: String? = null,
 	public val subWords: List<KeywordSubword>? = null,
+	internal val dtoSerialName: String,
 ) {
 	// region KeywordSubword-KeywordSubword
 

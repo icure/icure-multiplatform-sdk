@@ -10,6 +10,7 @@ import kotlin.String
 data class EmailTemplate(
 	public val subject: String? = null,
 	public val body: String? = null,
+	internal val dtoSerialName: String,
 ) {
 	// region EmailTemplate-EmailTemplate
 

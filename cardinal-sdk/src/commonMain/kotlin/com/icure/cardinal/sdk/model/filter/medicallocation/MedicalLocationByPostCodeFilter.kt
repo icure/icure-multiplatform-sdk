@@ -14,6 +14,7 @@ import kotlin.String
 data class MedicalLocationByPostCodeFilter(
 	public val postCode: String,
 	override val desc: String? = null,
+	internal val dtoSerialName: String,
 ) : AbstractFilter<MedicalLocation> {
 	// region MedicalLocationByPostCodeFilter-MedicalLocationByPostCodeFilter
 

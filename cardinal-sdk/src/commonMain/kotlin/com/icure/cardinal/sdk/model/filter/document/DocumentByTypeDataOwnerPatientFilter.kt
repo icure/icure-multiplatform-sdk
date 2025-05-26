@@ -18,6 +18,7 @@ data class DocumentByTypeDataOwnerPatientFilter(
 	public val documentType: DocumentType,
 	public val secretPatientKeys: Set<String>,
 	override val desc: String? = null,
+	internal val dtoSerialName: String,
 ) : AbstractFilter<Document> {
 	// region DocumentByTypeDataOwnerPatientFilter-DocumentByTypeDataOwnerPatientFilter
 

@@ -34,6 +34,7 @@ data class CalendarItemType(
 	public val otherInfos: Map<String, String> = emptyMap(),
 	@DefaultValue("emptyMap()")
 	public val subjectByLanguage: Map<String, String> = emptyMap(),
+	internal val dtoSerialName: String,
 ) : StoredDocument {
 	// region CalendarItemType-CalendarItemType
 

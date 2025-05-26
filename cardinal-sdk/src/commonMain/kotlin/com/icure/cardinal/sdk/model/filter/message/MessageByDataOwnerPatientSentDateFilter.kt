@@ -24,6 +24,7 @@ data class MessageByDataOwnerPatientSentDateFilter(
 	public val endDate: Instant? = null,
 	public val descending: Boolean?,
 	override val desc: String? = null,
+	internal val dtoSerialName: String,
 ) : AbstractFilter<Message> {
 	// region MessageByDataOwnerPatientSentDateFilter-MessageByDataOwnerPatientSentDateFilter
 

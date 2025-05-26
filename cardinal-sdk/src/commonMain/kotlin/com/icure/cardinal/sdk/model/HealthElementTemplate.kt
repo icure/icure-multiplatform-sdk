@@ -39,6 +39,7 @@ data class HealthElementTemplate(
 	public val relevant: Boolean = true,
 	@DefaultValue("emptyList()")
 	public val plansOfAction: List<PlanOfActionTemplate> = emptyList(),
+	internal val dtoSerialName: String,
 ) : StoredDocument, ICureDocument<String> {
 	// region HealthElementTemplate-HealthElementTemplate
 

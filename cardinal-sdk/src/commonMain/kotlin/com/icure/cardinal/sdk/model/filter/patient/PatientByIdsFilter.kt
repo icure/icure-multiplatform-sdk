@@ -16,6 +16,7 @@ import kotlin.collections.Set
 data class PatientByIdsFilter(
 	override val ids: Set<String>,
 	override val desc: String? = null,
+	internal val dtoSerialName: String,
 ) : AbstractFilter<Patient>, Filter.IdsFilter<String, Patient> {
 	// region PatientByIdsFilter-PatientByIdsFilter
 

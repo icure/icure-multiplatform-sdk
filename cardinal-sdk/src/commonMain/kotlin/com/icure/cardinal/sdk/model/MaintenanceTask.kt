@@ -105,6 +105,7 @@ data class DecryptedMaintenanceTask(
 	override val encryptionKeys: Map<String, Set<Delegation>> = emptyMap(),
 	override val encryptedSelf: Base64String? = null,
 	override val securityMetadata: SecurityMetadata? = null,
+	internal val dtoSerialName: String,
 ) : MaintenanceTask {
 	// region MaintenanceTask-DecryptedMaintenanceTask
 override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): DecryptedMaintenanceTask =
@@ -144,6 +145,7 @@ data class EncryptedMaintenanceTask(
 	override val encryptionKeys: Map<String, Set<Delegation>> = emptyMap(),
 	override val encryptedSelf: Base64String? = null,
 	override val securityMetadata: SecurityMetadata? = null,
+	internal val dtoSerialName: String,
 ) : MaintenanceTask {
 	// region MaintenanceTask-EncryptedMaintenanceTask
 override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): EncryptedMaintenanceTask =

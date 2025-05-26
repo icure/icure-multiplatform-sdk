@@ -19,6 +19,7 @@ data class CodeIdsByTypeCodeVersionIntervalFilter(
 	public val endType: String? = null,
 	public val endCode: String? = null,
 	public val endVersion: String? = null,
+	internal val dtoSerialName: String,
 ) : AbstractFilter<Code> {
 	// region CodeIdsByTypeCodeVersionIntervalFilter-CodeIdsByTypeCodeVersionIntervalFilter
 

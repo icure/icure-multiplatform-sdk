@@ -18,6 +18,7 @@ data class HealthcarePartyByIdentifiersFilter(
 	@DefaultValue("emptyList()")
 	public val identifiers: List<Identifier> = emptyList(),
 	override val desc: String? = null,
+	internal val dtoSerialName: String,
 ) : AbstractFilter<HealthcareParty> {
 	// region HealthcarePartyByIdentifiersFilter-HealthcarePartyByIdentifiersFilter
 

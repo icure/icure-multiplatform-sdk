@@ -25,6 +25,7 @@ data class DecryptedTelecom(
 	override val telecomNumber: String? = null,
 	override val telecomDescription: String? = null,
 	override val encryptedSelf: Base64String? = null,
+	internal val dtoSerialName: String,
 ) : Telecom {
 	// region Telecom-DecryptedTelecom
 
@@ -37,6 +38,7 @@ data class EncryptedTelecom(
 	override val telecomNumber: String? = null,
 	override val telecomDescription: String? = null,
 	override val encryptedSelf: Base64String? = null,
+	internal val dtoSerialName: String,
 ) : Telecom {
 	// region Telecom-EncryptedTelecom
 

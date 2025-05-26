@@ -14,6 +14,7 @@ import kotlin.String
 data class ServiceByHcPartyFilter(
 	public val hcpId: String,
 	override val desc: String? = null,
+	internal val dtoSerialName: String,
 ) : AbstractFilter<Service> {
 	// region ServiceByHcPartyFilter-ServiceByHcPartyFilter
 

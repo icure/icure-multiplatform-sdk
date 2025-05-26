@@ -22,6 +22,7 @@ data class ReferenceRange(
 	@DefaultValue("emptyList()")
 	public val notes: List<Annotation> = emptyList(),
 	public val age: Range? = null,
+	internal val dtoSerialName: String,
 ) {
 	// region ReferenceRange-ReferenceRange
 

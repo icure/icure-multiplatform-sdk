@@ -39,6 +39,7 @@ data class IcureStub(
 	@DefaultValue("emptyMap()")
 	override val encryptionKeys: Map<String, Set<Delegation>> = emptyMap(),
 	override val securityMetadata: SecurityMetadata? = null,
+	internal val dtoSerialName: String,
 ) : ICureDocument<String>, Versionable<String>, HasEncryptionMetadata {
 	// region IcureStub-IcureStub
 override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): IcureStub =

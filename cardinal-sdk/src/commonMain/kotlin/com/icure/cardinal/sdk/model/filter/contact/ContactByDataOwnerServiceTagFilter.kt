@@ -16,6 +16,7 @@ data class ContactByDataOwnerServiceTagFilter(
 	public val tagType: String,
 	public val tagCode: String?,
 	override val desc: String? = null,
+	internal val dtoSerialName: String,
 ) : AbstractFilter<Contact> {
 	// region ContactByDataOwnerServiceTagFilter-ContactByDataOwnerServiceTagFilter
 

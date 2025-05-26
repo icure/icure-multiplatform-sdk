@@ -249,7 +249,9 @@ class RawCalendarItemApiImpl(
 				appendPathSegments("rest", "v2", "calendarItem", "byHcPartySecretForeignKeys", "page", "$limit")
 				parameter("hcPartyId", hcPartyId)
 				parameter("secretFKeys", secretFKeys)
-				parameter("startKey", startKey)
+				startKey?.forEach {
+					parameter("startKey", it)
+				}
 				parameter("startDocumentId", startDocumentId)
 				parameter("ts", GMTDate().timestamp)
 			}
@@ -268,7 +270,9 @@ class RawCalendarItemApiImpl(
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "calendarItem", "byHcPartySecretForeignKeys", "page", "$limit")
 				parameter("hcPartyId", hcPartyId)
-				parameter("startKey", startKey)
+				startKey?.forEach {
+					parameter("startKey", it)
+				}
 				parameter("startDocumentId", startDocumentId)
 			}
 			contentType(Application.Json)

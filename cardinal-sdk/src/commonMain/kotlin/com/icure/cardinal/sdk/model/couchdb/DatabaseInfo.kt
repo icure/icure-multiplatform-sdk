@@ -20,6 +20,7 @@ data class DatabaseInfo(
 	public val n: Int? = null,
 	public val w: Int? = null,
 	public val r: Int? = null,
+	internal val dtoSerialName: String,
 ) {
 	// region DatabaseInfo-DatabaseInfo
 

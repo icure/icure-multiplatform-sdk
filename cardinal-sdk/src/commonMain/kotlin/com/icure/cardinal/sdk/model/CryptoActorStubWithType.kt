@@ -1,6 +1,7 @@
 package com.icure.cardinal.sdk.model
 
 import kotlinx.serialization.Serializable
+import kotlin.String
 
 // WARNING: This file is auto-generated. If you change it manually, your changes will be lost.
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
@@ -9,6 +10,7 @@ import kotlinx.serialization.Serializable
 data class CryptoActorStubWithType(
 	public val type: DataOwnerType,
 	public val stub: CryptoActorStub,
+	internal val dtoSerialName: String,
 ) {
 	// region CryptoActorStubWithType-CryptoActorStubWithType
 

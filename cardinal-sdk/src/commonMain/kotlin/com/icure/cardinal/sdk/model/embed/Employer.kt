@@ -11,6 +11,7 @@ import kotlin.String
 data class Employer(
 	override val name: String? = null,
 	public val addresse: DecryptedAddress? = null,
+	internal val dtoSerialName: String,
 ) : Named {
 	// region Employer-Employer
 

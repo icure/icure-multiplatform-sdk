@@ -41,6 +41,7 @@ data class FormTemplate(
 	public val tags: Set<CodeStub> = emptySet(),
 	public val layoutAttachmentId: String? = null,
 	public val templateLayoutAttachmentId: String? = null,
+	internal val dtoSerialName: String,
 ) : StoredDocument {
 	// region FormTemplate-FormTemplate
 

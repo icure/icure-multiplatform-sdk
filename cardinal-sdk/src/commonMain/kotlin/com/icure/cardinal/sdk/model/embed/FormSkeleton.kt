@@ -10,6 +10,7 @@ import kotlin.String
 data class FormSkeleton(
 	public val descr: String? = null,
 	public val formTemplateId: String? = null,
+	internal val dtoSerialName: String,
 ) {
 	// region FormSkeleton-FormSkeleton
 

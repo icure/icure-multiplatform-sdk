@@ -25,6 +25,7 @@ data class TimeSeries(
 	public val median: List<Double> = emptyList(),
 	@DefaultValue("emptyList()")
 	public val variance: List<Double> = emptyList(),
+	internal val dtoSerialName: String,
 ) {
 	// region TimeSeries-TimeSeries
 

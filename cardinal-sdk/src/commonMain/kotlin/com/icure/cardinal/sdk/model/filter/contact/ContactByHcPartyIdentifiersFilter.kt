@@ -19,6 +19,7 @@ data class ContactByHcPartyIdentifiersFilter(
 	override val desc: String? = null,
 	@DefaultValue("emptyList()")
 	public val identifiers: List<Identifier> = emptyList(),
+	internal val dtoSerialName: String,
 ) : AbstractFilter<Contact> {
 	// region ContactByHcPartyIdentifiersFilter-ContactByHcPartyIdentifiersFilter
 

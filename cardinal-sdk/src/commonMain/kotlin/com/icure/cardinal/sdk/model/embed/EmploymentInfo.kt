@@ -30,6 +30,7 @@ data class DecryptedEmploymentInfo(
 	override val professionType: CodeStub? = null,
 	override val employer: Employer? = null,
 	override val encryptedSelf: Base64String?,
+	internal val dtoSerialName: String,
 ) : EmploymentInfo {
 	// region EmploymentInfo-DecryptedEmploymentInfo
 
@@ -43,6 +44,7 @@ data class EncryptedEmploymentInfo(
 	override val professionType: CodeStub? = null,
 	override val employer: Employer? = null,
 	override val encryptedSelf: Base64String?,
+	internal val dtoSerialName: String,
 ) : EmploymentInfo {
 	// region EmploymentInfo-EncryptedEmploymentInfo
 

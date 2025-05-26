@@ -259,7 +259,9 @@ class RawInvoiceApiImpl(
 				appendPathSegments("rest", "v2", "invoice", "byauthor", hcPartyId)
 				parameter("fromDate", fromDate)
 				parameter("toDate", toDate)
-				parameter("startKey", startKey)
+				startKey?.forEach {
+					parameter("startKey", it)
+				}
 				parameter("startDocumentId", startDocumentId)
 				parameter("limit", limit)
 				parameter("ts", GMTDate().timestamp)

@@ -14,6 +14,7 @@ data class DataAttachment(
 	public val objectStoreAttachmentId: String? = null,
 	@DefaultValue("emptyList()")
 	public val utis: List<String> = emptyList(),
+	internal val dtoSerialName: String,
 ) {
 	// region DataAttachment-DataAttachment
 

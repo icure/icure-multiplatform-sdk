@@ -14,6 +14,7 @@ data class OperationToken(
 	public val validity: Long,
 	public val operation: Operation,
 	public val description: String? = null,
+	internal val dtoSerialName: String,
 ) {
 	// region OperationToken-OperationToken
 

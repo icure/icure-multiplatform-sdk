@@ -11,6 +11,7 @@ import kotlin.collections.Map
 @Serializable
 data class IndexingInfo(
 	public val statuses: Map<String, Int>? = null,
+	internal val dtoSerialName: String,
 ) {
 	// region IndexingInfo-IndexingInfo
 

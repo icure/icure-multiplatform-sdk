@@ -16,6 +16,7 @@ data class FormByLogicalUuidFilter(
 	public val logicalUuid: String,
 	public val descending: Boolean? = null,
 	override val desc: String? = null,
+	internal val dtoSerialName: String,
 ) : AbstractFilter<Form> {
 	// region FormByLogicalUuidFilter-FormByLogicalUuidFilter
 

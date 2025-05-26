@@ -108,6 +108,7 @@ data class DecryptedTopic(
 	override val linkedHealthElements: Set<String> = emptySet(),
 	@DefaultValue("emptySet()")
 	override val linkedServices: Set<String> = emptySet(),
+	internal val dtoSerialName: String,
 ) : Topic {
 	// region Topic-DecryptedTopic
 override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): DecryptedTopic =
@@ -149,6 +150,7 @@ data class EncryptedTopic(
 	override val linkedHealthElements: Set<String> = emptySet(),
 	@DefaultValue("emptySet()")
 	override val linkedServices: Set<String> = emptySet(),
+	internal val dtoSerialName: String,
 ) : Topic {
 	// region Topic-EncryptedTopic
 override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): EncryptedTopic =

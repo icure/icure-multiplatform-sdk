@@ -24,6 +24,7 @@ data class ReplicateCommand(
 	public val selector: String? = null,
 	public val source: Remote,
 	public val target: Remote,
+	internal val dtoSerialName: String,
 ) : Versionable<String> {
 	// region ReplicateCommand-ReplicateCommand
 

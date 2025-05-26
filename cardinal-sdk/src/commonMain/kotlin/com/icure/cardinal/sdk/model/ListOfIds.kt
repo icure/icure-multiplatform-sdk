@@ -12,6 +12,7 @@ import kotlin.collections.List
 data class ListOfIds(
 	@DefaultValue("emptyList()")
 	public val ids: List<String> = emptyList(),
+	internal val dtoSerialName: String,
 ) {
 	// region ListOfIds-ListOfIds
 

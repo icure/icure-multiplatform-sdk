@@ -16,6 +16,7 @@ data class PatientByDataOwnerTagFilter(
 	public val dataOwnerId: String,
 	public val tagType: String,
 	public val tagCode: String? = null,
+	internal val dtoSerialName: String,
 ) : AbstractFilter<Patient> {
 	// region PatientByDataOwnerTagFilter-PatientByDataOwnerTagFilter
 

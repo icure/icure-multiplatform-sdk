@@ -11,6 +11,7 @@ import kotlin.collections.Map
 data class Country(
 	public val code: String? = null,
 	public val name: Map<String, String>? = null,
+	internal val dtoSerialName: String,
 ) {
 	// region Country-Country
 

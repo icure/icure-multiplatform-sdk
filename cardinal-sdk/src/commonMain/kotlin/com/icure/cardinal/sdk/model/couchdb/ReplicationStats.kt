@@ -21,6 +21,7 @@ data class ReplicationStats(
 	@Serializable(with = ZonedDateTimeSerializer::class)
 	public val startTime: ZonedDateTime? = null,
 	public val error: String? = null,
+	internal val dtoSerialName: String,
 ) {
 	// region ReplicationStats-ReplicationStats
 

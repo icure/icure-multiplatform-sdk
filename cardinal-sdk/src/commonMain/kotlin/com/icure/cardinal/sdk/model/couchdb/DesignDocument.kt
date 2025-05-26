@@ -24,6 +24,7 @@ data class DesignDocument(
 	public val updateHandlers: Map<String, String>? = null,
 	@DefaultValue("emptyMap()")
 	public val filters: Map<String, String> = emptyMap(),
+	internal val dtoSerialName: String,
 ) {
 	// region DesignDocument-DesignDocument
 

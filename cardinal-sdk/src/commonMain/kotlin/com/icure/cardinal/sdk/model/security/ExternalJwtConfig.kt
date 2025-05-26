@@ -14,56 +14,57 @@ import kotlinx.serialization.SerialName
 data class ExternalJwtConfig(
 	public val validationMethod: ValidationMethod,
 	public val fieldSelector: FieldSelector,
-	@DefaultValue("AuthenticationClass.ExternalAuthentication")
+	@DefaultValue("AuthenticationClassDto.EXTERNAL_AUTHENTICATION")
 	public val authenticationClass: AuthenticationClass =
-		AuthenticationClass.ExternalAuthentication,
+		AuthenticationClassDto.EXTERNAL_AUTHENTICATION,
+	internal val dtoSerialName: String,
 ) {
 	@Serializable
 	public sealed interface ValidationMethod {
 		@Serializable
-		@SerialName("PublicKey")
 		public data class PublicKey(
 			public val key: String,
+			internal val dtoSerialName: String,
 		) : ValidationMethod
 
 		@Serializable
-		@SerialName("Oidc")
 		public data class Oidc(
 			public val issureLocation: String,
+			internal val dtoSerialName: String,
 		) : ValidationMethod
 	}
 
 	@Serializable
 	public sealed interface FieldSelector {
 		@Serializable
-		@SerialName("LocalId")
 		public data class LocalId(
 			public val fieldName: String,
+			internal val dtoSerialName: String,
 		) : FieldSelector
 
 		@Serializable
-		@SerialName("Email")
 		public data class Email(
 			public val fieldName: String,
+			internal val dtoSerialName: String,
 		) : FieldSelector
 
 		@Serializable
-		@SerialName("MobilePhone")
 		public data class MobilePhone(
 			public val fieldName: String,
+			internal val dtoSerialName: String,
 		) : FieldSelector
 
 		@Serializable
-		@SerialName("Username")
 		public data class Username(
 			public val fieldName: String,
+			internal val dtoSerialName: String,
 		) : FieldSelector
 
 		@Serializable
-		@SerialName("Identifier")
 		public data class Identifier(
 			public val identifierAssigner: String,
 			public val fieldName: String,
+			internal val dtoSerialName: String,
 		) : FieldSelector
 	}
 	// region ExternalJwtConfig-ExternalJwtConfig

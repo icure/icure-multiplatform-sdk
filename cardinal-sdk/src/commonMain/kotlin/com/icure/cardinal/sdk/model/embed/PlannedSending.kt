@@ -9,6 +9,7 @@ import kotlin.String
 @Serializable
 class PlannedSending(
 	public val cronExpression: String? = null,
+	internal val dtoSerialName: String,
 ) {
 	// region PlannedSending-PlannedSending
 

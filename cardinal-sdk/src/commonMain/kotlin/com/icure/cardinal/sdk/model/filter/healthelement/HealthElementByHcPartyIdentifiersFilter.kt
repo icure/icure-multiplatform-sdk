@@ -19,6 +19,7 @@ data class HealthElementByHcPartyIdentifiersFilter(
 	public val hcPartyId: String,
 	@DefaultValue("emptyList()")
 	public val identifiers: List<Identifier> = emptyList(),
+	internal val dtoSerialName: String,
 ) : AbstractFilter<HealthElement> {
 	// region HealthElementByHcPartyIdentifiersFilter-HealthElementByHcPartyIdentifiersFilter
 

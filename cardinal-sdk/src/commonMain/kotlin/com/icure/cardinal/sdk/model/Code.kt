@@ -47,6 +47,7 @@ data class Code(
 	public val appendices: Map<AppendixType, String> = emptyMap(),
 	@DefaultValue("false")
 	public val disabled: Boolean = false,
+	internal val dtoSerialName: String,
 ) : StoredDocument, CodeIdentification<String> {
 	// region Code-Code
 

@@ -36,6 +36,7 @@ data class ParagraphAgreement(
 	public val strengthUnit: String? = null,
 	public val agreementAppendices: List<AgreementAppendix>? = null,
 	public val documentId: String? = null,
+	internal val dtoSerialName: String,
 ) {
 	// region ParagraphAgreement-ParagraphAgreement
 

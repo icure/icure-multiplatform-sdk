@@ -10,6 +10,7 @@ import kotlin.String
 data class Remote(
 	public val url: String,
 	public val auth: RemoteAuthentication? = null,
+	internal val dtoSerialName: String,
 ) {
 	// region Remote-Remote
 

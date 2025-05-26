@@ -19,6 +19,7 @@ data class MaintenanceTaskByHcPartyAndIdentifiersFilter(
 	@DefaultValue("emptyList()")
 	public val identifiers: List<Identifier> = emptyList(),
 	override val desc: String? = null,
+	internal val dtoSerialName: String,
 ) : AbstractFilter<MaintenanceTask> {
 	// region MaintenanceTaskByHcPartyAndIdentifiersFilter-MaintenanceTaskByHcPartyAndIdentifiersFilter
 

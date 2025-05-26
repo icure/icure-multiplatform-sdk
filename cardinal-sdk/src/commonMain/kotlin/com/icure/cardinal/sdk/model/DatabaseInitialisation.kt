@@ -16,6 +16,7 @@ data class DatabaseInitialisation(
 	public val healthcareParties: List<HealthcareParty>? = emptyList(),
 	public val replication: Replication? = null,
 	public val minimumKrakenVersion: String? = null,
+	internal val dtoSerialName: String,
 ) {
 	// region DatabaseInitialisation-DatabaseInitialisation
 

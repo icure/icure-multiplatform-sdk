@@ -13,6 +13,7 @@ data class AuthenticationToken(
 	public val creationTime: Long,
 	public val validity: Long,
 	public val deletionDate: Long? = null,
+	internal val dtoSerialName: String,
 ) {
 	// region AuthenticationToken-AuthenticationToken
 

@@ -13,6 +13,7 @@ import kotlin.String
 @Serializable
 data class AllAgendasFilter(
 	override val desc: String? = null,
+	internal val dtoSerialName: String,
 ) : AbstractFilter<Agenda> {
 	// region AllAgendasFilter-AllAgendasFilter
 

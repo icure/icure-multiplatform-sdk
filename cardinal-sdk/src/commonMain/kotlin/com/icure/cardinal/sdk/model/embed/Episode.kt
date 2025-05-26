@@ -34,6 +34,7 @@ data class DecryptedEpisode(
 	override val startDate: Long? = null,
 	override val endDate: Long? = null,
 	override val encryptedSelf: Base64String? = null,
+	internal val dtoSerialName: String,
 ) : Episode {
 	// region Episode-DecryptedEpisode
 
@@ -48,6 +49,7 @@ data class EncryptedEpisode(
 	override val startDate: Long? = null,
 	override val endDate: Long? = null,
 	override val encryptedSelf: Base64String? = null,
+	internal val dtoSerialName: String,
 ) : Episode {
 	// region Episode-EncryptedEpisode
 

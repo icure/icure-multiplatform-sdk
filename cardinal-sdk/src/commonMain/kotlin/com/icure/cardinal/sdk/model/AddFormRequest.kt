@@ -11,6 +11,7 @@ data class AddFormRequest(
 	public val patientId: String? = null,
 	public val formId: String? = null,
 	public val formTemplateGuid: String? = null,
+	internal val dtoSerialName: String,
 ) {
 	// region AddFormRequest-AddFormRequest
 

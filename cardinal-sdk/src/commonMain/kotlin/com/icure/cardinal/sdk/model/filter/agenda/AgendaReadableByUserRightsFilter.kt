@@ -14,6 +14,7 @@ import kotlin.String
 data class AgendaReadableByUserRightsFilter(
 	public val userId: String,
 	override val desc: String?,
+	internal val dtoSerialName: String,
 ) : AbstractFilter<Agenda> {
 	// region AgendaReadableByUserRightsFilter-AgendaReadableByUserRightsFilter
 

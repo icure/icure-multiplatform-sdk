@@ -27,6 +27,7 @@ data class ServiceByHcPartyTagCodeDateFilter(
 	public val endValueDate: Long? = null,
 	@DefaultValue("false")
 	public val descending: Boolean = false,
+	internal val dtoSerialName: String,
 ) : AbstractFilter<Service> {
 	// region ServiceByHcPartyTagCodeDateFilter-ServiceByHcPartyTagCodeDateFilter
 

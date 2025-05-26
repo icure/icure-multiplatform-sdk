@@ -17,12 +17,14 @@ data class BulkAttachmentUpdateOptions(
 	public val updateAttachmentsMetadata: Map<String, AttachmentMetadata> = emptyMap(),
 	@DefaultValue("emptySet()")
 	public val deleteAttachments: Set<String> = emptySet(),
+	internal val dtoSerialName: String,
 ) {
 	@Serializable
 	public data class AttachmentMetadata(
 		@DefaultValue("emptyList()")
 		public val utis: List<String> = emptyList(),
 		public val dataIsEncrypted: Boolean? = null,
+		internal val dtoSerialName: String,
 	)
 	// region BulkAttachmentUpdateOptions-BulkAttachmentUpdateOptions
 

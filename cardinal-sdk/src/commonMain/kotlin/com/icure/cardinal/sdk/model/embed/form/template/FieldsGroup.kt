@@ -11,6 +11,7 @@ import kotlin.collections.List
 data class FieldsGroup(
 	public val group: String,
 	public val fields: List<StructureElement>? = null,
+	internal val dtoSerialName: String,
 ) : StructureElement {
 	// region FieldsGroup-FieldsGroup
 

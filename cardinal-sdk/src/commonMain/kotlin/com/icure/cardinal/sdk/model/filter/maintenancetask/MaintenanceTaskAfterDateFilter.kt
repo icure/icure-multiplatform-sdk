@@ -16,6 +16,7 @@ data class MaintenanceTaskAfterDateFilter(
 	override val desc: String? = null,
 	public val healthcarePartyId: String? = null,
 	public val date: Long,
+	internal val dtoSerialName: String,
 ) : AbstractFilter<MaintenanceTask> {
 	// region MaintenanceTaskAfterDateFilter-MaintenanceTaskAfterDateFilter
 

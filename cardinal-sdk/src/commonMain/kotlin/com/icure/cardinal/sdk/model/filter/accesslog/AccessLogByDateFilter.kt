@@ -21,6 +21,7 @@ data class AccessLogByDateFilter(
 	@Serializable(with = InstantSerializer::class)
 	public val endDate: Instant?,
 	public val descending: Boolean?,
+	internal val dtoSerialName: String,
 ) : AbstractFilter<AccessLog> {
 	// region AccessLogByDateFilter-AccessLogByDateFilter
 

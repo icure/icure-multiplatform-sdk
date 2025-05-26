@@ -11,6 +11,7 @@ import kotlin.String
 data class Enable2faRequest(
 	public val secret: String,
 	public val otpLength: Int,
+	internal val dtoSerialName: String,
 ) {
 	// region Enable2faRequest-Enable2faRequest
 

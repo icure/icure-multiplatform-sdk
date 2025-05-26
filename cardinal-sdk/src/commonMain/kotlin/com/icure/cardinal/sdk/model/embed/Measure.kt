@@ -26,6 +26,7 @@ data class Measure(
 	public val sign: String? = null,
 	@DefaultValue("emptyList()")
 	public val referenceRanges: List<ReferenceRange> = emptyList(),
+	internal val dtoSerialName: String,
 ) {
 	// region Measure-Measure
 

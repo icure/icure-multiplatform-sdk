@@ -18,18 +18,21 @@ sealed interface ExternalFilterKey {
 	@SerialName("string")
 	public data class ExternalFilterStringKey(
 		override val key: String,
+		internal val dtoSerialName: String,
 	) : ExternalFilterKey
 
 	@Serializable
 	@SerialName("long")
 	public data class ExternalFilterLongKey(
 		override val key: Long,
+		internal val dtoSerialName: String,
 	) : ExternalFilterKey
 
 	@Serializable
 	@SerialName("complexKey")
 	public data class ExternalFilterComplexKey(
 		override val key: JsonElement,
+		internal val dtoSerialName: String,
 	) : ExternalFilterKey
 	// region ExternalFilterKey-ExternalFilterKey
 

@@ -2,6 +2,7 @@ package com.icure.cardinal.sdk.model
 
 import com.icure.cardinal.sdk.utils.DefaultValue
 import kotlinx.serialization.Serializable
+import kotlin.String
 import kotlin.collections.Set
 
 // WARNING: This file is auto-generated. If you change it manually, your changes will be lost.
@@ -11,6 +12,7 @@ import kotlin.collections.Set
 data class ListOfProperties(
 	@DefaultValue("emptySet()")
 	public val properties: Set<DecryptedPropertyStub> = emptySet(),
+	internal val dtoSerialName: String,
 ) {
 	// region ListOfProperties-ListOfProperties
 

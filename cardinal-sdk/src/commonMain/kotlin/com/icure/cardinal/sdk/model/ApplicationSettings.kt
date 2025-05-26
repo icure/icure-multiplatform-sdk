@@ -30,6 +30,7 @@ data class ApplicationSettings(
 	override val deletionDate: Long? = null,
 	@DefaultValue("emptyMap()")
 	public val settings: Map<String, String> = emptyMap(),
+	internal val dtoSerialName: String,
 ) : StoredDocument, ICureDocument<String> {
 	// region ApplicationSettings-ApplicationSettings
 

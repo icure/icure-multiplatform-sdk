@@ -62,6 +62,7 @@ data class DecryptedSecureDelegationKeyMap(
 	override val encryptedSelf: Base64String? = null,
 	override val securityMetadata: SecurityMetadata? = null,
 	override val deletionDate: Long? = null,
+	internal val dtoSerialName: String,
 ) : SecureDelegationKeyMap {
 	// region SecureDelegationKeyMap-DecryptedSecureDelegationKeyMap
 override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): DecryptedSecureDelegationKeyMap =
@@ -87,6 +88,7 @@ data class EncryptedSecureDelegationKeyMap(
 	override val encryptedSelf: Base64String? = null,
 	override val securityMetadata: SecurityMetadata? = null,
 	override val deletionDate: Long? = null,
+	internal val dtoSerialName: String,
 ) : SecureDelegationKeyMap {
 	// region SecureDelegationKeyMap-EncryptedSecureDelegationKeyMap
 override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): EncryptedSecureDelegationKeyMap =

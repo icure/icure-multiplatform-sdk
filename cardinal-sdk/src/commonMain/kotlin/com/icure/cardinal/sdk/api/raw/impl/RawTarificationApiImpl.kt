@@ -49,7 +49,9 @@ class RawTarificationApiImpl(
 				parameter("types", types)
 				parameter("language", language)
 				parameter("label", label)
-				parameter("startKey", startKey)
+				startKey?.forEach {
+					parameter("startKey", it)
+				}
 				parameter("startDocumentId", startDocumentId)
 				parameter("limit", limit)
 				parameter("ts", GMTDate().timestamp)
@@ -75,7 +77,9 @@ class RawTarificationApiImpl(
 				parameter("tarification", tarification)
 				parameter("version", version)
 				parameter("startDocumentId", startDocumentId)
-				parameter("startKey", startKey)
+				startKey?.forEach {
+					parameter("startKey", it)
+				}
 				parameter("limit", limit)
 				parameter("ts", GMTDate().timestamp)
 			}

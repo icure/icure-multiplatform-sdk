@@ -13,6 +13,7 @@ data class AnonymousMedicalLocation(
 	public val id: String,
 	@DefaultValue("emptyMap()")
 	public val publicInformations: Map<String, String> = emptyMap(),
+	internal val dtoSerialName: String,
 ) {
 	// region AnonymousMedicalLocation-AnonymousMedicalLocation
 

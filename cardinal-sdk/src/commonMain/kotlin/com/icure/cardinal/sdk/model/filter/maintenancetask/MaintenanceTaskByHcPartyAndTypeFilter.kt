@@ -15,6 +15,7 @@ data class MaintenanceTaskByHcPartyAndTypeFilter(
 	override val desc: String? = null,
 	public val type: String,
 	public val healthcarePartyId: String? = null,
+	internal val dtoSerialName: String,
 ) : AbstractFilter<MaintenanceTask> {
 	// region MaintenanceTaskByHcPartyAndTypeFilter-MaintenanceTaskByHcPartyAndTypeFilter
 

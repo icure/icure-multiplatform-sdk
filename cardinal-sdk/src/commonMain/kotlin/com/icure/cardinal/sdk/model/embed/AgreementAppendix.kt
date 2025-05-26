@@ -13,6 +13,7 @@ data class AgreementAppendix(
 	public val verseSeq: Int? = null,
 	public val documentId: String? = null,
 	public val path: String? = null,
+	internal val dtoSerialName: String,
 ) {
 	// region AgreementAppendix-AgreementAppendix
 

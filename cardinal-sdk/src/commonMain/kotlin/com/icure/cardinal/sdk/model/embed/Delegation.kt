@@ -16,6 +16,7 @@ data class Delegation(
 	public val key: HexString? = null,
 	@DefaultValue("emptyList()")
 	public val tags: List<String> = emptyList(),
+	internal val dtoSerialName: String,
 ) {
   // region Delegation-Delegation
 

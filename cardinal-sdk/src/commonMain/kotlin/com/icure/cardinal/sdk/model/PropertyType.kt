@@ -25,6 +25,7 @@ data class PropertyType(
 	public val editor: String? = null,
 	@DefaultValue("false")
 	public val localized: Boolean = false,
+	internal val dtoSerialName: String,
 ) : StoredDocument {
 	// region PropertyType-PropertyType
 

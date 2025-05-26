@@ -75,6 +75,7 @@ data class DecryptedContent(
 	override val compoundValue: List<DecryptedService>? = null,
 	override val ratio: List<Measure>? = null,
 	override val range: List<Measure>? = null,
+	internal val dtoSerialName: String,
 ) : Content {
 	// region Content-DecryptedContent
 
@@ -98,6 +99,7 @@ data class EncryptedContent(
 	override val compoundValue: List<EncryptedService>? = null,
 	override val ratio: List<Measure>? = null,
 	override val range: List<Measure>? = null,
+	internal val dtoSerialName: String,
 ) : Content {
 	// region Content-EncryptedContent
 

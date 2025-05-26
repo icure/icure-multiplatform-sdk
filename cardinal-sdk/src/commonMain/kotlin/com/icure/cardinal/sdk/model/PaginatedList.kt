@@ -2,6 +2,7 @@ package com.icure.cardinal.sdk.model
 
 import com.icure.cardinal.sdk.utils.DefaultValue
 import kotlinx.serialization.Serializable
+import kotlin.String
 import kotlin.collections.List
 
 // WARNING: This file is auto-generated. If you change it manually, your changes will be lost.
@@ -12,6 +13,7 @@ data class PaginatedList<T>(
 	@DefaultValue("emptyList()")
 	public val rows: List<T> = emptyList(),
 	public val nextKeyPair: PaginatedDocumentKeyIdPair? = null,
+	internal val dtoSerialName: String,
 ) {
 	// region PaginatedList-PaginatedList
 inline fun <Q> map(mapper: (T) -> Q): PaginatedList<Q> = PaginatedList(

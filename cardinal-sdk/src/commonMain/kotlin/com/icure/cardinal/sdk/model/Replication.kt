@@ -22,6 +22,7 @@ data class Replication(
 	public val context: String? = null,
 	@DefaultValue("emptyList()")
 	public val databaseSynchronizations: List<DatabaseSynchronization> = emptyList(),
+	internal val dtoSerialName: String,
 ) : StoredDocument, Identifiable<String>, Named {
 	// region Replication-Replication
 

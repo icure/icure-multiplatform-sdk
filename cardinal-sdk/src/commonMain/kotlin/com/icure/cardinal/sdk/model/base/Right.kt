@@ -14,6 +14,7 @@ data class Right(
 	public val names: Set<String> = emptySet(),
 	@DefaultValue("emptySet()")
 	public val roles: Set<String> = emptySet(),
+	internal val dtoSerialName: String,
 ) {
 	// region Right-Right
 

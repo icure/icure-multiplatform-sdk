@@ -13,6 +13,7 @@ data class Section(
 	public val fields: List<StructureElement>,
 	public val description: String? = null,
 	public val keywords: List<String>? = null,
+	internal val dtoSerialName: String,
 ) {
 	// region Section-Section
 

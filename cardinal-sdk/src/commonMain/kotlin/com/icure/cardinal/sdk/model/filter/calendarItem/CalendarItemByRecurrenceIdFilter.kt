@@ -14,6 +14,7 @@ import kotlin.String
 data class CalendarItemByRecurrenceIdFilter(
 	public val recurrenceId: String,
 	override val desc: String? = null,
+	internal val dtoSerialName: String,
 ) : AbstractFilter<CalendarItem> {
 	// region CalendarItemByRecurrenceIdFilter-CalendarItemByRecurrenceIdFilter
 

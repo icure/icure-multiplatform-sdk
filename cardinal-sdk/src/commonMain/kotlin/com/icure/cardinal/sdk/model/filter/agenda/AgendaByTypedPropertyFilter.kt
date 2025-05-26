@@ -15,6 +15,7 @@ import kotlin.String
 data class AgendaByTypedPropertyFilter(
 	public val `property`: DecryptedPropertyStub,
 	override val desc: String?,
+	internal val dtoSerialName: String,
 ) : AbstractFilter<Agenda> {
 	// region AgendaByTypedPropertyFilter-AgendaByTypedPropertyFilter
 

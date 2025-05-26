@@ -23,6 +23,7 @@ data class MessageByDataOwnerTransportGuidSentDateFilter(
 	public val toDate: Instant,
 	public val descending: Boolean? = null,
 	override val desc: String? = null,
+	internal val dtoSerialName: String,
 ) : AbstractFilter<Message> {
 	// region MessageByDataOwnerTransportGuidSentDateFilter-MessageByDataOwnerTransportGuidSentDateFilter
 

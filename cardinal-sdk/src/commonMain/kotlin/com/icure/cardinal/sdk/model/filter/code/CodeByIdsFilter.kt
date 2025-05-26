@@ -16,6 +16,7 @@ import kotlin.collections.Set
 data class CodeByIdsFilter(
 	override val ids: Set<String>,
 	override val desc: String? = null,
+	internal val dtoSerialName: String,
 ) : AbstractFilter<Code>, Filter.IdsFilter<String, Code> {
 	// region CodeByIdsFilter-CodeByIdsFilter
 

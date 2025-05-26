@@ -16,6 +16,7 @@ import kotlin.collections.Set
 data class MaintenanceTaskByIdsFilter(
 	override val ids: Set<String>,
 	override val desc: String? = null,
+	internal val dtoSerialName: String,
 ) : AbstractFilter<MaintenanceTask>, Filter.IdsFilter<String, MaintenanceTask> {
 	// region MaintenanceTaskByIdsFilter-MaintenanceTaskByIdsFilter
 

@@ -1,6 +1,7 @@
 package com.icure.cardinal.sdk.model
 
 import kotlinx.serialization.Serializable
+import kotlin.String
 import kotlin.collections.List
 
 // WARNING: This file is auto-generated. If you change it manually, your changes will be lost.
@@ -9,6 +10,7 @@ import kotlin.collections.List
 @Serializable
 data class ListOfIdsAndRev(
 	public val ids: List<IdWithRev>,
+	internal val dtoSerialName: String,
 ) {
 	// region ListOfIdsAndRev-ListOfIdsAndRev
 

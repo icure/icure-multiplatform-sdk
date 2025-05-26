@@ -14,6 +14,7 @@ data class JwtResponse(
 	public val refreshToken: String? = null,
 	@DefaultValue("false")
 	public val successful: Boolean = false,
+	internal val dtoSerialName: String,
 ) {
 	// region JwtResponse-JwtResponse
 

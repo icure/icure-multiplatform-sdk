@@ -10,6 +10,7 @@ import kotlin.String
 data class DocumentGroup(
 	public val guid: String? = null,
 	public val name: String? = null,
+	internal val dtoSerialName: String,
 ) {
 	// region DocumentGroup-DocumentGroup
 

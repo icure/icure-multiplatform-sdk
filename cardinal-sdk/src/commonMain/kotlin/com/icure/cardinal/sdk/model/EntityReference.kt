@@ -14,6 +14,7 @@ data class EntityReference(
 	override val rev: String? = null,
 	override val deletionDate: Long? = null,
 	public val docId: String? = null,
+	internal val dtoSerialName: String,
 ) : StoredDocument {
 	// region EntityReference-EntityReference
 

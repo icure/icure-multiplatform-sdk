@@ -14,6 +14,7 @@ import kotlin.String
 @Serializable
 data class AllCodesFilter(
 	override val desc: String? = null,
+	internal val dtoSerialName: String,
 ) : AbstractFilter<Code>, Filter.AllFilter<Code> {
 	// region AllCodesFilter-AllCodesFilter
 

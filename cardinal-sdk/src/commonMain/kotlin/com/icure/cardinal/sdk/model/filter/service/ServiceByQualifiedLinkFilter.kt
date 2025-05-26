@@ -17,6 +17,7 @@ data class ServiceByQualifiedLinkFilter(
 	public val linkValues: List<String>,
 	public val linkQualification: LinkQualification? = null,
 	override val desc: String? = null,
+	internal val dtoSerialName: String,
 ) : AbstractFilter<Service> {
 	// region ServiceByQualifiedLinkFilter-ServiceByQualifiedLinkFilter
 

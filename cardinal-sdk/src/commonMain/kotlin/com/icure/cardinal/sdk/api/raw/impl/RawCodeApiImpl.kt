@@ -58,7 +58,9 @@ class RawCodeApiImpl(
 				parameter("language", language)
 				parameter("label", label)
 				parameter("version", version)
-				parameter("startKey", startKey)
+				startKey?.forEach {
+					parameter("startKey", it)
+				}
 				parameter("startDocumentId", startDocumentId)
 				parameter("limit", limit)
 				parameter("ts", GMTDate().timestamp)
@@ -83,7 +85,9 @@ class RawCodeApiImpl(
 				parameter("type", type)
 				parameter("code", code)
 				parameter("version", version)
-				parameter("startKey", startKey)
+				startKey?.forEach {
+					parameter("startKey", it)
+				}
 				parameter("startDocumentId", startDocumentId)
 				parameter("limit", limit)
 				parameter("ts", GMTDate().timestamp)
@@ -103,7 +107,9 @@ class RawCodeApiImpl(
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "code", "byLink", linkType)
 				parameter("linkedId", linkedId)
-				parameter("startKey", startKey)
+				startKey?.forEach {
+					parameter("startKey", it)
+				}
 				parameter("startDocumentId", startDocumentId)
 				parameter("limit", limit)
 				parameter("ts", GMTDate().timestamp)

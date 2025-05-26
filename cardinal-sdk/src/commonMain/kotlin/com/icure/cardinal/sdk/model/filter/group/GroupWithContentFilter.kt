@@ -15,6 +15,7 @@ data class GroupWithContentFilter(
 	public val superGroupId: String,
 	public val searchString: String,
 	override val desc: String? = null,
+	internal val dtoSerialName: String,
 ) : AbstractFilter<Group> {
 	// region GroupWithContentFilter-GroupWithContentFilter
 

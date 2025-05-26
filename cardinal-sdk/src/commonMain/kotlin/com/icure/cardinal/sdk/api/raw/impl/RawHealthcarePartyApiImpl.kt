@@ -137,7 +137,9 @@ class RawHealthcarePartyApiImpl(
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "hcparty", "bySpecialityAndPostCode", type, spec, firstCode, "to", lastCode)
-				parameter("startKey", startKey)
+				startKey?.forEach {
+					parameter("startKey", it)
+				}
 				parameter("startDocumentId", startDocumentId)
 				parameter("limit", limit)
 				parameter("ts", GMTDate().timestamp)

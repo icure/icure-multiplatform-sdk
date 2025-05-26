@@ -14,6 +14,7 @@ import kotlin.String
 data class AgendaWithPropertyFilter(
 	public val propertyId: String,
 	override val desc: String? = null,
+	internal val dtoSerialName: String,
 ) : AbstractFilter<Agenda> {
 	// region AgendaWithPropertyFilter-AgendaWithPropertyFilter
 

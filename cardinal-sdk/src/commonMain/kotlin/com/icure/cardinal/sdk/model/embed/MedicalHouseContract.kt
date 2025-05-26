@@ -127,6 +127,7 @@ data class DecryptedMedicalHouseContract(
 	@DefaultValue("emptyMap()")
 	override val receipts: Map<String, String> = emptyMap(),
 	override val encryptedSelf: Base64String? = null,
+	internal val dtoSerialName: String,
 ) : MedicalHouseContract {
 	// region MedicalHouseContract-DecryptedMedicalHouseContract
 
@@ -178,6 +179,7 @@ data class EncryptedMedicalHouseContract(
 	@DefaultValue("emptyMap()")
 	override val receipts: Map<String, String> = emptyMap(),
 	override val encryptedSelf: Base64String? = null,
+	internal val dtoSerialName: String,
 ) : MedicalHouseContract {
 	// region MedicalHouseContract-EncryptedMedicalHouseContract
 

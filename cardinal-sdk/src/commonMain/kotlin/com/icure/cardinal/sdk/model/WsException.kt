@@ -12,6 +12,7 @@ class WsException(
 	public val level: String,
 	public val error: String,
 	public val translations: Map<String, String>,
+	internal val dtoSerialName: String,
 ) {
 	// region WsException-WsException
 

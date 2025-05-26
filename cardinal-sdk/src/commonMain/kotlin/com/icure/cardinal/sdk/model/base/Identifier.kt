@@ -16,6 +16,7 @@ data class Identifier(
 	public val type: CodeStub? = null,
 	public val use: String? = null,
 	public val `value`: String? = null,
+	internal val dtoSerialName: String,
 ) {
 	// region Identifier-Identifier
 

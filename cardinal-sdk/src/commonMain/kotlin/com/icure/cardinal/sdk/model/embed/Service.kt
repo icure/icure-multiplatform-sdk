@@ -145,6 +145,7 @@ data class DecryptedService(
 	override val tags: Set<CodeStub> = emptySet(),
 	override val encryptedSelf: Base64String? = null,
 	override val securityMetadata: SecurityMetadata? = null,
+	internal val dtoSerialName: String,
 ) : Service {
 	// region Service-DecryptedService
 
@@ -201,6 +202,7 @@ data class EncryptedService(
 	override val tags: Set<CodeStub> = emptySet(),
 	override val encryptedSelf: Base64String? = null,
 	override val securityMetadata: SecurityMetadata? = null,
+	internal val dtoSerialName: String,
 ) : Service {
 	// region Service-EncryptedService
 

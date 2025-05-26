@@ -27,6 +27,7 @@ data class Annotation(
 	@DefaultValue("emptySet()")
 	public val tags: Set<CodeStub> = emptySet(),
 	public val encryptedSelf: String? = null,
+	internal val dtoSerialName: String,
 ) : Identifiable<String> {
 	// region Annotation-Annotation
 

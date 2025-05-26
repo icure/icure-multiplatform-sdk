@@ -58,6 +58,7 @@ data class User(
 	@DefaultValue("emptyMap()")
 	public val authenticationTokens: Map<String, AuthenticationToken> = emptyMap(),
 	public val systemMetadata: SystemMetadata? = null,
+	internal val dtoSerialName: String,
 ) : StoredDocument {
 	@Serializable
 	public data class SystemMetadata(
@@ -66,6 +67,7 @@ data class User(
 		public val inheritsRoles: Boolean,
 		@DefaultValue("emptyList()")
 		public val loginIdentifiers: List<LoginIdentifier> = emptyList(),
+		internal val dtoSerialName: String,
 	)
 	// region User-User
 

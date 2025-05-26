@@ -15,6 +15,7 @@ data class Action(
 	public val expression: String? = null,
 	@DefaultValue("emptyList()")
 	public val states: List<State>? = emptyList(),
+	internal val dtoSerialName: String,
 ) {
 	// region Action-Action
 

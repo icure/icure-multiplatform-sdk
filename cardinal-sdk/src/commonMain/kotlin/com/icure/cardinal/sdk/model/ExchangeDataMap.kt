@@ -19,6 +19,7 @@ data class ExchangeDataMap(
 	@DefaultValue("emptyMap()")
 	public val encryptedExchangeDataIds: Map<KeypairFingerprintV2String, Base64String> = emptyMap(),
 	override val deletionDate: Long? = null,
+	internal val dtoSerialName: String,
 ) : StoredDocument {
 	// region ExchangeDataMap-ExchangeDataMap
 

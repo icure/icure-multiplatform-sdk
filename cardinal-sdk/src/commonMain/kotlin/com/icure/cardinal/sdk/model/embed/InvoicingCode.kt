@@ -176,6 +176,7 @@ data class DecryptedInvoicingCode(
 	override val cancelPatientInterventionReason: Int? = null,
 	override val status: Long? = null,
 	override val encryptedSelf: Base64String? = null,
+	internal val dtoSerialName: String,
 ) : InvoicingCode {
 	// region InvoicingCode-DecryptedInvoicingCode
 
@@ -237,6 +238,7 @@ data class EncryptedInvoicingCode(
 	override val cancelPatientInterventionReason: Int? = null,
 	override val status: Long? = null,
 	override val encryptedSelf: Base64String? = null,
+	internal val dtoSerialName: String,
 ) : InvoicingCode {
 	// region InvoicingCode-EncryptedInvoicingCode
 

@@ -14,6 +14,7 @@ import kotlin.String
 data class ServiceByAssociationIdFilter(
 	public val associationId: String,
 	override val desc: String? = null,
+	internal val dtoSerialName: String,
 ) : AbstractFilter<Service> {
 	// region ServiceByAssociationIdFilter-ServiceByAssociationIdFilter
 

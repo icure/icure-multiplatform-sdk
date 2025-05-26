@@ -36,6 +36,7 @@ data class CryptoActorStub(
 	override val publicKeysForOaepWithSha256: Set<SpkiHexString>,
 	override val parentId: String? = null,
 	override val cryptoActorProperties: Set<DecryptedPropertyStub>? = null,
+	internal val dtoSerialName: String,
 ) : Versionable<String>, CryptoActor {
 	// region CryptoActorStub-CryptoActorStub
 

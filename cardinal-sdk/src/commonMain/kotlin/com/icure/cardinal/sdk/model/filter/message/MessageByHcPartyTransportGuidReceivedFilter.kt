@@ -17,6 +17,7 @@ data class MessageByHcPartyTransportGuidReceivedFilter(
 	public val transportGuid: String,
 	public val descending: Boolean? = null,
 	override val desc: String? = null,
+	internal val dtoSerialName: String,
 ) : AbstractFilter<Message> {
 	// region MessageByHcPartyTransportGuidReceivedFilter-MessageByHcPartyTransportGuidReceivedFilter
 

@@ -29,6 +29,7 @@ class ResultInfo(
 	@DefaultValue("emptySet()")
 	public val codes: Set<CodeStub> = emptySet(),
 	public val services: List<DecryptedService>? = null,
+	internal val dtoSerialName: String,
 ) {
 	// region ResultInfo-ResultInfo
 

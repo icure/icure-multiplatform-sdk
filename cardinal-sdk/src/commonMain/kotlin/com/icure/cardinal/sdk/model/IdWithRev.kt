@@ -10,6 +10,7 @@ import kotlin.String
 data class IdWithRev(
 	public val id: String,
 	public val rev: String? = null,
+	internal val dtoSerialName: String,
 ) {
 	// region IdWithRev-IdWithRev
 

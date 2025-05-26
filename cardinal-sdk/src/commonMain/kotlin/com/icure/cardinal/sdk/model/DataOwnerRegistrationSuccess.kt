@@ -11,6 +11,7 @@ data class DataOwnerRegistrationSuccess(
 	public val userLogin: String,
 	public val userId: String,
 	public val token: String,
+	internal val dtoSerialName: String,
 ) {
 	// region DataOwnerRegistrationSuccess-DataOwnerRegistrationSuccess
 

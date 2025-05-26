@@ -11,6 +11,7 @@ data class TokenWithGroup(
 	public val token: String,
 	public val groupId: String,
 	public val groupName: String? = null,
+	internal val dtoSerialName: String,
 ) {
 	// region TokenWithGroup-TokenWithGroup
 

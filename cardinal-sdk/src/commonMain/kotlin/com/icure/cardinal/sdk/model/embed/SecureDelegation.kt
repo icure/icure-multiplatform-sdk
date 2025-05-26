@@ -24,6 +24,7 @@ data class SecureDelegation(
 	public val parentDelegations: Set<SecureDelegationKeyString> = emptySet(),
 	public val exchangeDataId: String? = null,
 	public val permissions: AccessLevel,
+	internal val dtoSerialName: String,
 ) {
 	// region SecureDelegation-SecureDelegation
 

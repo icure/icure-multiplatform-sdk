@@ -14,6 +14,7 @@ import kotlin.String
 data class UserByNameEmailPhoneFilter(
 	public val searchString: String,
 	override val desc: String? = null,
+	internal val dtoSerialName: String,
 ) : AbstractFilter<User> {
 	// region UserByNameEmailPhoneFilter-UserByNameEmailPhoneFilter
 

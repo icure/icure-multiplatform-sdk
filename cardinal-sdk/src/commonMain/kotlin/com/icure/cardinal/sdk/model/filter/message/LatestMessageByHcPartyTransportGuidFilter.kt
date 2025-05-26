@@ -15,6 +15,7 @@ data class LatestMessageByHcPartyTransportGuidFilter(
 	public val healthcarePartyId: String,
 	public val transportGuid: String,
 	override val desc: String? = null,
+	internal val dtoSerialName: String,
 ) : AbstractFilter<Message> {
 	// region LatestMessageByHcPartyTransportGuidFilter-LatestMessageByHcPartyTransportGuidFilter
 

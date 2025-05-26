@@ -17,6 +17,7 @@ data class CalendarItemByPeriodAndDataOwnerIdFilter(
 	public val startTime: Long,
 	public val endTime: Long,
 	override val desc: String? = null,
+	internal val dtoSerialName: String,
 ) : AbstractFilter<CalendarItem> {
 	// region CalendarItemByPeriodAndDataOwnerIdFilter-CalendarItemByPeriodAndDataOwnerIdFilter
 

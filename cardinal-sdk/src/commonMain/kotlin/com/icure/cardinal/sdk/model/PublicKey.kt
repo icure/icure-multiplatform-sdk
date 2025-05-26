@@ -10,6 +10,7 @@ import kotlin.String
 data class PublicKey(
 	public val hcPartyId: String? = null,
 	public val hexString: String? = null,
+	internal val dtoSerialName: String,
 ) {
 	// region PublicKey-PublicKey
 

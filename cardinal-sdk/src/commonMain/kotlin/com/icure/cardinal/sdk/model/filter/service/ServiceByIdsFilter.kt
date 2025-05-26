@@ -16,6 +16,7 @@ import kotlin.collections.Set
 data class ServiceByIdsFilter(
 	override val ids: Set<String>,
 	override val desc: String? = null,
+	internal val dtoSerialName: String,
 ) : AbstractFilter<Service>, Filter.IdsFilter<String, Service> {
 	// region ServiceByIdsFilter-ServiceByIdsFilter
 

@@ -15,6 +15,7 @@ data class ReferralPeriod(
 	@Serializable(with = InstantSerializer::class)
 	public val endDate: Instant? = null,
 	public val comment: String? = null,
+	internal val dtoSerialName: String,
 ) {
 	// region ReferralPeriod-ReferralPeriod
 

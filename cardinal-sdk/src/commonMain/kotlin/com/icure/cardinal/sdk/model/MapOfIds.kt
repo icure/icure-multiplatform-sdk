@@ -13,6 +13,7 @@ import kotlin.collections.Map
 data class MapOfIds(
 	@DefaultValue("emptyMap()")
 	public val mapOfIds: Map<String, List<String>> = emptyMap(),
+	internal val dtoSerialName: String,
 ) {
 	// region MapOfIds-MapOfIds
 

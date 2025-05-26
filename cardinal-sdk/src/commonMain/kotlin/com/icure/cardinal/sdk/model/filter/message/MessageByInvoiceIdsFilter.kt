@@ -15,6 +15,7 @@ import kotlin.collections.Set
 data class MessageByInvoiceIdsFilter(
 	public val invoiceIds: Set<String>,
 	override val desc: String? = null,
+	internal val dtoSerialName: String,
 ) : AbstractFilter<Message> {
 	// region MessageByInvoiceIdsFilter-MessageByInvoiceIdsFilter
 

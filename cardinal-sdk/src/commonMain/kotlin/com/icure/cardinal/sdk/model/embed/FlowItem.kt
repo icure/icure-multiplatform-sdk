@@ -43,6 +43,7 @@ data class FlowItem(
 	public val patientFirstName: String? = null,
 	public val description: String? = null,
 	public val interventionCode: String? = null,
+	internal val dtoSerialName: String,
 ) {
 	// region FlowItem-FlowItem
 

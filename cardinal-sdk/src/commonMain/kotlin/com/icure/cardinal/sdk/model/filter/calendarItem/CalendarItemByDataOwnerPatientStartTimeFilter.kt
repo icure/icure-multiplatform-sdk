@@ -21,6 +21,7 @@ data class CalendarItemByDataOwnerPatientStartTimeFilter(
 	public val secretPatientIds: Set<String>,
 	public val descending: Boolean?,
 	override val desc: String? = null,
+	internal val dtoSerialName: String,
 ) : AbstractFilter<CalendarItem> {
 	// region CalendarItemByDataOwnerPatientStartTimeFilter-CalendarItemByDataOwnerPatientStartTimeFilter
 

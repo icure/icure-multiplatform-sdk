@@ -40,6 +40,7 @@ data class TimeTableItem(
 	public val unavailable: Boolean = false,
 	@DefaultValue("emptySet()")
 	public val reservingRights: Set<String> = emptySet(),
+	internal val dtoSerialName: String,
 ) {
 	// region TimeTableItem-TimeTableItem
 

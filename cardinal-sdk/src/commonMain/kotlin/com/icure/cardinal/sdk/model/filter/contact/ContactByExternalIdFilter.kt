@@ -14,6 +14,7 @@ import kotlin.String
 data class ContactByExternalIdFilter(
 	public val externalId: String,
 	override val desc: String? = null,
+	internal val dtoSerialName: String,
 ) : AbstractFilter<Contact> {
 	// region ContactByExternalIdFilter-ContactByExternalIdFilter
 

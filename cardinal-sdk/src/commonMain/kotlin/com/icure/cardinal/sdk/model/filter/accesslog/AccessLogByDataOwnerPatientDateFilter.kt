@@ -24,6 +24,7 @@ data class AccessLogByDataOwnerPatientDateFilter(
 	public val secretPatientIds: Set<String>,
 	public val descending: Boolean?,
 	override val desc: String? = null,
+	internal val dtoSerialName: String,
 ) : AbstractFilter<AccessLog> {
 	// region AccessLogByDataOwnerPatientDateFilter-AccessLogByDataOwnerPatientDateFilter
 

@@ -14,6 +14,7 @@ import kotlin.String
 @Serializable
 data class AllDevicesFilter(
 	override val desc: String? = null,
+	internal val dtoSerialName: String,
 ) : AbstractFilter<Device>, Filter.AllFilter<Device> {
 	// region AllDevicesFilter-AllDevicesFilter
 

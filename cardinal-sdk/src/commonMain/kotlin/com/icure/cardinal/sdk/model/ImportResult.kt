@@ -29,6 +29,7 @@ data class ImportResult(
 	public val documents: List<DecryptedDocument> = emptyList(),
 	@DefaultValue("emptyMap()")
 	public val attachments: Map<String, MimeAttachment> = emptyMap(),
+	internal val dtoSerialName: String,
 ) {
 	// region ImportResult-ImportResult
 

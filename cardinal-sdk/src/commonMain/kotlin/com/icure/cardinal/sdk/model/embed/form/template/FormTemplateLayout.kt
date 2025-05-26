@@ -17,6 +17,7 @@ data class FormTemplateLayout(
 	public val sections: List<Section> = emptyList(),
 	public val description: String? = null,
 	public val keywords: List<String>? = null,
+	internal val dtoSerialName: String,
 ) {
 	// region FormTemplateLayout-FormTemplateLayout
 

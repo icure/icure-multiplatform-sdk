@@ -74,10 +74,12 @@ class RawPatientApiImpl(
 				appendPathSegments("rest", "v2", "patient", "byNameBirthSsinAuto")
 				parameter("healthcarePartyId", healthcarePartyId)
 				parameter("filterValue", filterValue)
-				parameter("startKey", startKey)
+				startKey?.forEach {
+					parameter("startKey", it)
+				}
 				parameter("startDocumentId", startDocumentId)
 				parameter("limit", limit)
-				parameter("sortDirection", sortDirection)
+				parameter("sortDirection", sortDirection.dtoSerialName)
 				parameter("ts", GMTDate().timestamp)
 			}
 			accept(Application.Json)
@@ -96,10 +98,12 @@ class RawPatientApiImpl(
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "patient", "ofHcParty", hcPartyId)
 				parameter("sortField", sortField)
-				parameter("startKey", startKey)
+				startKey?.forEach {
+					parameter("startKey", it)
+				}
 				parameter("startDocumentId", startDocumentId)
 				parameter("limit", limit)
-				parameter("sortDirection", sortDirection)
+				parameter("sortDirection", sortDirection.dtoSerialName)
 				parameter("ts", GMTDate().timestamp)
 			}
 			accept(Application.Json)
@@ -149,7 +153,7 @@ class RawPatientApiImpl(
 				parameter("startKey", startKey)
 				parameter("startDocumentId", startDocumentId)
 				parameter("limit", limit)
-				parameter("sortDirection", sortDirection)
+				parameter("sortDirection", sortDirection.dtoSerialName)
 				parameter("ts", GMTDate().timestamp)
 			}
 			accept(Application.Json)
@@ -201,10 +205,12 @@ class RawPatientApiImpl(
 				appendPathSegments("rest", "v2", "patient")
 				parameter("hcPartyId", hcPartyId)
 				parameter("sortField", sortField)
-				parameter("startKey", startKey)
+				startKey?.forEach {
+					parameter("startKey", it)
+				}
 				parameter("startDocumentId", startDocumentId)
 				parameter("limit", limit)
-				parameter("sortDirection", sortDirection)
+				parameter("sortDirection", sortDirection.dtoSerialName)
 				parameter("ts", GMTDate().timestamp)
 			}
 			accept(Application.Json)
@@ -221,7 +227,9 @@ class RawPatientApiImpl(
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "patient", "byHcPartyId")
 				parameter("hcPartyId", hcPartyId)
-				parameter("startKey", startKey)
+				startKey?.forEach {
+					parameter("startKey", it)
+				}
 				parameter("startDocumentId", startDocumentId)
 				parameter("limit", limit)
 				parameter("ts", GMTDate().timestamp)
@@ -565,7 +573,9 @@ class RawPatientApiImpl(
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "patient", "duplicates", "ssin")
 				parameter("hcPartyId", hcPartyId)
-				parameter("startKey", startKey)
+				startKey?.forEach {
+					parameter("startKey", it)
+				}
 				parameter("startDocumentId", startDocumentId)
 				parameter("limit", limit)
 			}
@@ -584,7 +594,9 @@ class RawPatientApiImpl(
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "patient", "duplicates", "name")
 				parameter("hcPartyId", hcPartyId)
-				parameter("startKey", startKey)
+				startKey?.forEach {
+					parameter("startKey", it)
+				}
 				parameter("startDocumentId", startDocumentId)
 				parameter("limit", limit)
 			}

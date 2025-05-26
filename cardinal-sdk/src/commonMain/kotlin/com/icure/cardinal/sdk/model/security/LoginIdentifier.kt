@@ -10,6 +10,7 @@ import kotlin.String
 data class LoginIdentifier(
 	public val assigner: String,
 	public val `value`: String,
+	internal val dtoSerialName: String,
 ) {
 	// region LoginIdentifier-LoginIdentifier
 

@@ -10,25 +10,26 @@ import kotlin.String
 @Serializable
 enum class Gender(
 	public val code: String,
+	internal val dtoSerialName: String,
 ) {
 	@SerialName("male")
-	Male("M"),
+	Male("M", "male"),
 
 	@SerialName("female")
-	Female("F"),
+	Female("F", "female"),
 
 	@SerialName("indeterminate")
-	Indeterminate("I"),
+	Indeterminate("I", "indeterminate"),
 
 	@SerialName("changed")
-	Changed("C"),
+	Changed("C", "changed"),
 
 	@SerialName("changedToMale")
-	ChangedToMale("Y"),
+	ChangedToMale("Y", "changedToMale"),
 
 	@SerialName("changedToFemale")
-	ChangedToFemale("X"),
+	ChangedToFemale("X", "changedToFemale"),
 
 	@SerialName("unknown")
-	Unknown("U"),
+	Unknown("U", "unknown"),
 }

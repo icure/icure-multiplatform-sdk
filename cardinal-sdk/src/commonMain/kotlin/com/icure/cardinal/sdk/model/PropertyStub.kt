@@ -36,6 +36,7 @@ data class DecryptedPropertyStub(
 	@Deprecated("Remove from list instead")
 	override val deletionDate: Long? = null,
 	override val encryptedSelf: Base64String? = null,
+	internal val dtoSerialName: String,
 ) : PropertyStub {
 	// region PropertyStub-DecryptedPropertyStub
 
@@ -50,6 +51,7 @@ data class EncryptedPropertyStub(
 	@Deprecated("Remove from list instead")
 	override val deletionDate: Long? = null,
 	override val encryptedSelf: Base64String? = null,
+	internal val dtoSerialName: String,
 ) : PropertyStub {
 	// region PropertyStub-EncryptedPropertyStub
 

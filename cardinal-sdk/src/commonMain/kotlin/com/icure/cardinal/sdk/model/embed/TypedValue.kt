@@ -40,6 +40,7 @@ data class DecryptedTypedValue(
 	@Serializable(with = InstantSerializer::class)
 	override val dateValue: Instant? = null,
 	override val encryptedSelf: Base64String? = null,
+	internal val dtoSerialName: String,
 ) : TypedValue {
 	// region TypedValue-DecryptedTypedValue
 
@@ -56,6 +57,7 @@ data class EncryptedTypedValue(
 	@Serializable(with = InstantSerializer::class)
 	override val dateValue: Instant? = null,
 	override val encryptedSelf: Base64String? = null,
+	internal val dtoSerialName: String,
 ) : TypedValue {
 	// region TypedValue-EncryptedTypedValue
 

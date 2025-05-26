@@ -44,6 +44,7 @@ data class Agenda(
 	public val properties: Set<DecryptedPropertyStub> = emptySet(),
 	@DefaultValue("emptyList()")
 	public val timeTables: List<EmbeddedTimeTable> = emptyList(),
+	internal val dtoSerialName: String,
 ) : StoredDocument, ICureDocument<String> {
 	// region Agenda-Agenda
 

@@ -19,6 +19,7 @@ data class ServiceByHcPartyIdentifiersFilter(
 	@DefaultValue("emptyList()")
 	public val identifiers: List<Identifier> = emptyList(),
 	override val desc: String? = null,
+	internal val dtoSerialName: String,
 ) : AbstractFilter<Service> {
 	// region ServiceByHcPartyIdentifiersFilter-ServiceByHcPartyIdentifiersFilter
 

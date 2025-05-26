@@ -15,6 +15,7 @@ import kotlin.String
 data class ContactByHcPartyFilter(
 	override val hcpId: String,
 	override val desc: String? = null,
+	internal val dtoSerialName: String,
 ) : AbstractFilter<Contact>, Filter.ByHcpartyFilter<Contact> {
 	// region ContactByHcPartyFilter-ContactByHcPartyFilter
 

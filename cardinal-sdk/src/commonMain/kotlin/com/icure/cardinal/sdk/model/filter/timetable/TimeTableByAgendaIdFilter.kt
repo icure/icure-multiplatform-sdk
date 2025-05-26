@@ -14,6 +14,7 @@ import kotlin.String
 data class TimeTableByAgendaIdFilter(
 	public val agendaId: String,
 	override val desc: String? = null,
+	internal val dtoSerialName: String,
 ) : AbstractFilter<TimeTable> {
 	// region TimeTableByAgendaIdFilter-TimeTableByAgendaIdFilter
 

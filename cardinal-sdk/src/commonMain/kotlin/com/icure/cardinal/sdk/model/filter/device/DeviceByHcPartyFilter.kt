@@ -14,6 +14,7 @@ import kotlin.String
 data class DeviceByHcPartyFilter(
 	override val desc: String? = null,
 	public val responsibleId: String? = null,
+	internal val dtoSerialName: String,
 ) : AbstractFilter<Device> {
 	// region DeviceByHcPartyFilter-DeviceByHcPartyFilter
 

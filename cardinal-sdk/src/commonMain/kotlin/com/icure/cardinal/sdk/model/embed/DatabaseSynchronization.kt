@@ -13,17 +13,20 @@ data class DatabaseSynchronization(
 	public val target: String? = null,
 	public val filter: String? = null,
 	public val localTarget: Target? = null,
+	internal val dtoSerialName: String,
 ) {
 	@Serializable
-	public enum class Target() {
+	public enum class Target(
+		internal val dtoSerialName: String,
+	) {
 		@SerialName("base")
-		Base,
+		Base("base"),
 
 		@SerialName("healthdata")
-		Healthdata,
+		Healthdata("healthdata"),
 
 		@SerialName("patient")
-		Patient,
+		Patient("patient"),
 	}
   // region DatabaseSynchronization-DatabaseSynchronization
 

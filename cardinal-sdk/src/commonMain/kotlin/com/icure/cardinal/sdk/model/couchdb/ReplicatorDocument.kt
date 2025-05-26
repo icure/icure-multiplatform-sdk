@@ -30,6 +30,7 @@ data class ReplicatorDocument(
 	public val errorCount: Int? = null,
 	public val revsInfo: List<Map<String, String>>? = null,
 	public val revHistory: Map<String, String>? = null,
+	internal val dtoSerialName: String,
 ) : Versionable<String> {
 	// region ReplicatorDocument-ReplicatorDocument
 

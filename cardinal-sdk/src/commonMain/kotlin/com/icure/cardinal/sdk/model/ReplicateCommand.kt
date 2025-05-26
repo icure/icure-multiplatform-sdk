@@ -22,6 +22,7 @@ data class ReplicateCommand(
 	@SerialName("target_password")
 	public val targetPassword: String,
 	public val id: String? = null,
+	internal val dtoSerialName: String,
 ) {
 	// region ReplicateCommand-ReplicateCommand
 

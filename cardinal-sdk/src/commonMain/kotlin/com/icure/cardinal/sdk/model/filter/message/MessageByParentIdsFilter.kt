@@ -15,6 +15,7 @@ import kotlin.collections.List
 data class MessageByParentIdsFilter(
 	public val parentIds: List<String>,
 	override val desc: String? = null,
+	internal val dtoSerialName: String,
 ) : AbstractFilter<Message> {
 	// region MessageByParentIdsFilter-MessageByParentIdsFilter
 

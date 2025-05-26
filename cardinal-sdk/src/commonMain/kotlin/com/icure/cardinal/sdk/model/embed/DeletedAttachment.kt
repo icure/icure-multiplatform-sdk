@@ -13,6 +13,7 @@ data class DeletedAttachment(
 	public val objectStoreAttachmentId: String? = null,
 	public val key: String? = null,
 	public val deletionTime: Long? = null,
+	internal val dtoSerialName: String,
 ) {
 	// region DeletedAttachment-DeletedAttachment
 

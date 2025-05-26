@@ -15,6 +15,7 @@ data class MessageByDataOwnerFromAddressFilter(
 	public val dataOwnerId: String,
 	public val fromAddress: String,
 	override val desc: String? = null,
+	internal val dtoSerialName: String,
 ) : AbstractFilter<Message> {
 	// region MessageByDataOwnerFromAddressFilter-MessageByDataOwnerFromAddressFilter
 

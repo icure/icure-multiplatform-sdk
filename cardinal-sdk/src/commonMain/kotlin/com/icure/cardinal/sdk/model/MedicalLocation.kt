@@ -35,6 +35,7 @@ data class MedicalLocation(
 	public val options: Map<String, String> = emptyMap(),
 	@DefaultValue("emptyMap()")
 	public val publicInformations: Map<String, String> = emptyMap(),
+	internal val dtoSerialName: String,
 ) : StoredDocument, Named {
 	// region MedicalLocation-MedicalLocation
 

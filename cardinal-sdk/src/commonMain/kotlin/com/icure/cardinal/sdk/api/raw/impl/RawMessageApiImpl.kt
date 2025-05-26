@@ -192,7 +192,9 @@ class RawMessageApiImpl(
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "message")
-				parameter("startKey", startKey)
+				startKey?.forEach {
+					parameter("startKey", it)
+				}
 				parameter("startDocumentId", startDocumentId)
 				parameter("limit", limit)
 				parameter("ts", GMTDate().timestamp)
@@ -246,7 +248,9 @@ class RawMessageApiImpl(
 				appendPathSegments("rest", "v2", "message", "byTransportGuid")
 				parameter("transportGuid", transportGuid)
 				parameter("received", received)
-				parameter("startKey", startKey)
+				startKey?.forEach {
+					parameter("startKey", it)
+				}
 				parameter("startDocumentId", startDocumentId)
 				parameter("limit", limit)
 				parameter("hcpId", hcpId)
@@ -271,7 +275,9 @@ class RawMessageApiImpl(
 				parameter("transportGuid", transportGuid)
 				parameter("from", from)
 				parameter("to", to)
-				parameter("startKey", startKey)
+				startKey?.forEach {
+					parameter("startKey", it)
+				}
 				parameter("startDocumentId", startDocumentId)
 				parameter("limit", limit)
 				parameter("hcpId", hcpId)
@@ -293,7 +299,9 @@ class RawMessageApiImpl(
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "message", "byToAddress")
 				parameter("toAddress", toAddress)
-				parameter("startKey", startKey)
+				startKey?.forEach {
+					parameter("startKey", it)
+				}
 				parameter("startDocumentId", startDocumentId)
 				parameter("limit", limit)
 				parameter("reverse", reverse)
@@ -315,7 +323,9 @@ class RawMessageApiImpl(
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "message", "byFromAddress")
 				parameter("fromAddress", fromAddress)
-				parameter("startKey", startKey)
+				startKey?.forEach {
+					parameter("startKey", it)
+				}
 				parameter("startDocumentId", startDocumentId)
 				parameter("limit", limit)
 				parameter("hcpId", hcpId)

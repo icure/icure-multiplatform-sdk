@@ -11,6 +11,7 @@ import kotlin.String
 data class PropertyTypeStub(
 	public val identifier: String? = null,
 	public val type: TypedValuesType? = null,
+	internal val dtoSerialName: String,
 ) {
 	// region PropertyTypeStub-PropertyTypeStub
 

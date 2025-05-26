@@ -10,6 +10,7 @@ import kotlin.String
 data class FilterChain<O : Identifiable<String>>(
 	public val filter: AbstractFilter<O>,
 	public val predicate: Predicate? = null,
+	internal val dtoSerialName: String,
 ) {
 	// region FilterChain-FilterChain
 

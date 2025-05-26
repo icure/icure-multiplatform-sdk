@@ -433,7 +433,9 @@ class RawContactApiImpl(
 				parameter("startDate", startDate)
 				parameter("endDate", endDate)
 				parameter("hcPartyId", hcPartyId)
-				parameter("startKey", startKey)
+				startKey?.forEach {
+					parameter("startKey", it)
+				}
 				parameter("startDocumentId", startDocumentId)
 				parameter("limit", limit)
 				parameter("ts", GMTDate().timestamp)

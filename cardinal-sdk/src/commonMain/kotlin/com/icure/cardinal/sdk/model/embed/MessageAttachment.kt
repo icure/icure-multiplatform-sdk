@@ -13,6 +13,7 @@ data class MessageAttachment(
 	public val type: DocumentLocation? = null,
 	@DefaultValue("emptyList()")
 	public val ids: List<String> = emptyList(),
+	internal val dtoSerialName: String,
 ) {
 	// region MessageAttachment-MessageAttachment
 

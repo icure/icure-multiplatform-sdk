@@ -16,6 +16,7 @@ data class ServiceBySecretForeignKeys(
 	override val desc: String? = null,
 	public val healthcarePartyId: String? = null,
 	public val patientSecretForeignKeys: Set<String>,
+	internal val dtoSerialName: String,
 ) : AbstractFilter<Service> {
 	// region ServiceBySecretForeignKeys-ServiceBySecretForeignKeys
 

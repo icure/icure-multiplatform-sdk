@@ -14,6 +14,7 @@ sealed interface StoredObjectInformation {
 	@SerialName("Available")
 	public data class Available(
 		public val md5HashHexString: String,
+		internal val dtoSerialName: String,
 	) : StoredObjectInformation
 
 	@Serializable
@@ -21,6 +22,7 @@ sealed interface StoredObjectInformation {
 	public data class Storing(
 		public val nextByte: Long,
 		public val md5HashHexString: String?,
+		internal val dtoSerialName: String,
 	) : StoredObjectInformation
 
 	@Serializable

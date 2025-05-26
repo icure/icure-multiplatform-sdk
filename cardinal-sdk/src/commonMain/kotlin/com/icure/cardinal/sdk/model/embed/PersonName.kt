@@ -22,6 +22,7 @@ data class PersonName(
 	public val suffix: List<String> = emptyList(),
 	public val text: String? = null,
 	public val use: PersonNameUse? = null,
+	internal val dtoSerialName: String,
 ) {
 	// region PersonName-PersonName
 

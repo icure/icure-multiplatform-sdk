@@ -10,6 +10,7 @@ import kotlin.String
 data class View(
 	public val map: String,
 	public val reduce: String? = null,
+	internal val dtoSerialName: String,
 ) {
 	// region View-View
 

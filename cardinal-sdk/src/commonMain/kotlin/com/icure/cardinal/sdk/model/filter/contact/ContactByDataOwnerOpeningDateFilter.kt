@@ -19,6 +19,7 @@ data class ContactByDataOwnerOpeningDateFilter(
 	public val endDate: Long? = null,
 	public val descending: Boolean? = null,
 	override val desc: String? = null,
+	internal val dtoSerialName: String,
 ) : AbstractFilter<Contact> {
 	// region ContactByDataOwnerOpeningDateFilter-ContactByDataOwnerOpeningDateFilter
 

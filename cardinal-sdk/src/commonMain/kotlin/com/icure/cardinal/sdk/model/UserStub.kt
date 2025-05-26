@@ -23,6 +23,7 @@ data class UserStub(
 	public val healthcarePartyId: String? = null,
 	public val patientId: String? = null,
 	public val email: String? = null,
+	internal val dtoSerialName: String,
 ) : StoredDocument {
 	// region UserStub-UserStub
 

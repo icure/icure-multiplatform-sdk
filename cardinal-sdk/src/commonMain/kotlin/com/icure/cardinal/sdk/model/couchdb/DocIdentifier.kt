@@ -10,6 +10,7 @@ import kotlin.String
 data class DocIdentifier(
 	public val id: String? = null,
 	public val rev: String? = null,
+	internal val dtoSerialName: String,
 ) {
 	// region DocIdentifier-DocIdentifier
 

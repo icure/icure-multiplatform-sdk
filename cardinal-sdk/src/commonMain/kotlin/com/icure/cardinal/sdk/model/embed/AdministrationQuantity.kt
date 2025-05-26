@@ -13,6 +13,7 @@ data class AdministrationQuantity(
 	public val quantity: Double? = null,
 	public val administrationUnit: CodeStub? = null,
 	public val unit: String? = null,
+	internal val dtoSerialName: String,
 ) {
 	// region AdministrationQuantity-AdministrationQuantity
 

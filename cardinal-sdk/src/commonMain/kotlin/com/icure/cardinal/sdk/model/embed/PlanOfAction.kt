@@ -103,6 +103,7 @@ data class DecryptedPlanOfAction(
 	@DefaultValue("true")
 	override val relevant: Boolean = true,
 	override val encryptedSelf: Base64String? = null,
+	internal val dtoSerialName: String,
 ) : PlanOfAction {
 	// region PlanOfAction-DecryptedPlanOfAction
 
@@ -142,6 +143,7 @@ data class EncryptedPlanOfAction(
 	@DefaultValue("true")
 	override val relevant: Boolean = true,
 	override val encryptedSelf: Base64String? = null,
+	internal val dtoSerialName: String,
 ) : PlanOfAction {
 	// region PlanOfAction-EncryptedPlanOfAction
 

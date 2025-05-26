@@ -23,6 +23,7 @@ data class EmbeddedTimeTable(
 	public val endTime: Long? = null,
 	@DefaultValue("emptyList()")
 	public val items: List<TimeTableItem> = emptyList(),
+	internal val dtoSerialName: String,
 ) {
 	// region EmbeddedTimeTable-EmbeddedTimeTable
 

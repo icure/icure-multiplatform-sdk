@@ -10,6 +10,7 @@ import kotlin.String
 data class Basic(
 	public val username: String,
 	public val password: String,
+	internal val dtoSerialName: String,
 ) {
 	// region Basic-Basic
 

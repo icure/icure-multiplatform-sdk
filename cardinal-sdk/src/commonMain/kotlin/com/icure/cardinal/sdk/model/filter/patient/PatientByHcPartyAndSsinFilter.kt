@@ -15,6 +15,7 @@ data class PatientByHcPartyAndSsinFilter(
 	override val desc: String? = null,
 	public val ssin: String,
 	public val healthcarePartyId: String? = null,
+	internal val dtoSerialName: String,
 ) : AbstractFilter<Patient> {
 	// region PatientByHcPartyAndSsinFilter-PatientByHcPartyAndSsinFilter
 

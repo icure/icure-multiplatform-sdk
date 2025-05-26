@@ -14,6 +14,7 @@ import kotlin.String
 @Serializable
 data class AllDocumentsFilter(
 	override val desc: String? = null,
+	internal val dtoSerialName: String,
 ) : AbstractFilter<Document>, Filter.AllFilter<Document> {
 	// region AllDocumentsFilter-AllDocumentsFilter
 

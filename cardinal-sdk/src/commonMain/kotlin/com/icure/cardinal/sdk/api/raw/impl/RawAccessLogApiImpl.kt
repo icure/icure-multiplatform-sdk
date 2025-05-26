@@ -172,7 +172,9 @@ class RawAccessLogApiImpl(
 				parameter("userId", userId)
 				parameter("accessType", accessType)
 				parameter("startDate", startDate)
-				parameter("startKey", startKey)
+				startKey?.forEach {
+					parameter("startKey", it)
+				}
 				parameter("startDocumentId", startDocumentId)
 				parameter("limit", limit)
 				parameter("descending", descending)

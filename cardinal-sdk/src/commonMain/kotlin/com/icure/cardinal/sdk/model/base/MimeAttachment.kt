@@ -14,6 +14,7 @@ data class MimeAttachment(
 	public val `data`: ByteArray? = null,
 	public val fileName: String? = null,
 	public val mimeType: String? = null,
+	internal val dtoSerialName: String,
 ) {
 	// region MimeAttachment-MimeAttachment
 

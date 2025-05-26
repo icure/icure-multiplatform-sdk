@@ -9,6 +9,7 @@ import kotlin.String
 @Serializable
 data class RemoveParticipant(
 	public val dataOwnerId: String,
+	internal val dtoSerialName: String,
 ) {
 	// region RemoveParticipant-RemoveParticipant
 

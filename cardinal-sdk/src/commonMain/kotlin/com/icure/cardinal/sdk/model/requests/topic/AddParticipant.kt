@@ -11,6 +11,7 @@ import kotlin.String
 data class AddParticipant(
 	public val dataOwnerId: String,
 	public val topicRole: TopicRole,
+	internal val dtoSerialName: String,
 ) {
 	// region AddParticipant-AddParticipant
 

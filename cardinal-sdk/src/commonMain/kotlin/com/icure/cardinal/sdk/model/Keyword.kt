@@ -32,6 +32,7 @@ data class Keyword(
 	@DefaultValue("emptySet()")
 	public val subWords: Set<KeywordSubword> = emptySet(),
 	public val userId: String? = null,
+	internal val dtoSerialName: String,
 ) : StoredDocument, ICureDocument<String> {
 	// region Keyword-Keyword
 

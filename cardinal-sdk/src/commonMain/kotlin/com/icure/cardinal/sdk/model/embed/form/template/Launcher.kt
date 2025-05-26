@@ -14,6 +14,7 @@ class Launcher(
 	public val triggerer: Trigger,
 	@DefaultValue("false")
 	public val shouldPassValue: Boolean = false,
+	internal val dtoSerialName: String,
 ) {
 	// region Launcher-Launcher
 

@@ -14,6 +14,7 @@ import kotlin.String
 class GroupBySuperGroupFilter(
 	public val superGroupId: String,
 	override val desc: String? = null,
+	internal val dtoSerialName: String,
 ) : AbstractFilter<Group> {
 	// region GroupBySuperGroupFilter-GroupBySuperGroupFilter
 

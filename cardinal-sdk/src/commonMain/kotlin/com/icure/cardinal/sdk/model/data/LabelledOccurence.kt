@@ -11,6 +11,7 @@ import kotlin.String
 data class LabelledOccurence(
 	public val label: String,
 	public val occurence: Long,
+	internal val dtoSerialName: String,
 ) {
 	// region LabelledOccurence-LabelledOccurence
 
