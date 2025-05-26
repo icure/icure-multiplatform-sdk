@@ -432,7 +432,7 @@ internal class DocumentApiImpl(
 			mapDocumentFilterOptions(
 				filter,
 				config.crypto.dataOwnerApi.getCurrentDataOwnerId(),
-				null
+				config.crypto.entity
 			)
 		).successBody()
 
