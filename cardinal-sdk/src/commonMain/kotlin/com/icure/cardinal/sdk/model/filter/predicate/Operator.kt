@@ -10,28 +10,29 @@ import kotlin.String
 @Serializable
 enum class Operator(
 	public val code: String,
+	internal val dtoSerialName: String,
 ) {
 	@SerialName("EQUAL")
-	Equal("=="),
+	Equal("==", "EQUAL"),
 
 	@SerialName("NOTEQUAL")
-	Notequal("!="),
+	Notequal("!=", "NOTEQUAL"),
 
 	@SerialName("GREATERTHAN")
-	Greaterthan(">"),
+	Greaterthan(">", "GREATERTHAN"),
 
 	@SerialName("SMALLERTHAN")
-	Smallerthan("<"),
+	Smallerthan("<", "SMALLERTHAN"),
 
 	@SerialName("GREATERTHANOREQUAL")
-	Greaterthanorequal(">="),
+	Greaterthanorequal(">=", "GREATERTHANOREQUAL"),
 
 	@SerialName("SMALLERTHANOREQUAL")
-	Smallerthanorequal("<="),
+	Smallerthanorequal("<=", "SMALLERTHANOREQUAL"),
 
 	@SerialName("LIKE")
-	Like("%="),
+	Like("%=", "LIKE"),
 
 	@SerialName("ILIKE")
-	Ilike("%%="),
+	Ilike("%%=", "ILIKE"),
 }

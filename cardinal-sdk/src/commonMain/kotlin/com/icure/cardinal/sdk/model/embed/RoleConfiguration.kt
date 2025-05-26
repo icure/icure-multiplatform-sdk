@@ -16,15 +16,17 @@ data class RoleConfiguration(
 	public val roles: Set<String> = emptySet(),
 ) {
 	@Serializable
-	public enum class Source() {
+	public enum class Source(
+		internal val dtoSerialName: String,
+	) {
 		@SerialName("CONFIGURATION")
-		Configuration,
+		Configuration("CONFIGURATION"),
 
 		@SerialName("INHERITED")
-		Inherited,
+		Inherited("INHERITED"),
 
 		@SerialName("DEFAULT")
-		Default,
+		Default("DEFAULT"),
 	}
   // region RoleConfiguration-RoleConfiguration
 
