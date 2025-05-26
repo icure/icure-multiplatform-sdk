@@ -424,8 +424,8 @@ interface MessageApi : MessageBasicFlavourlessApi, MessageFlavouredApi<Decrypted
 	/**
 	 * Get all the secret ids that the current data owner can access from the provided message.
 	 * @param message a message
-	 * @return the secret ids of the provided message associated to the data owners which are known to have access
-	 * to that id.
+	 * @return a map where the keys are the secret ids of the patient and the value is a set of references
+	 * ([EntityReferenceInGroup]) to the data owners that the current user knows have access to that secret id.
 	 */
 	suspend fun getSecretIdsOf(message: Message): Map<String, Set<EntityReferenceInGroup>>
 	
