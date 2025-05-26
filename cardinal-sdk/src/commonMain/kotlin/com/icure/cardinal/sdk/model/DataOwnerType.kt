@@ -2,18 +2,18 @@ package com.icure.cardinal.sdk.model
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-
-// WARNING: This file is auto-generated. If you change it manually, your changes will be lost.
-// If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
+import kotlin.String
 
 @Serializable
-enum class DataOwnerType() {
+public enum class DataOwnerType(
+	internal val dtoSerialName: String,
+) {
 	@SerialName("hcp")
-	Hcp,
+	Hcp("hcp"),
 
 	@SerialName("device")
-	Device,
+	Device("device"),
 
 	@SerialName("patient")
-	Patient,
+	Patient("patient"),
 }
