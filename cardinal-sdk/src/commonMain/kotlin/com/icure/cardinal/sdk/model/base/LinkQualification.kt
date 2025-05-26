@@ -2,81 +2,81 @@ package com.icure.cardinal.sdk.model.base
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-
-// WARNING: This file is auto-generated. If you change it manually, your changes will be lost.
-// If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
+import kotlin.String
 
 @Serializable
-enum class LinkQualification() {
+public enum class LinkQualification(
+	internal val dtoSerialName: String,
+) {
 	@SerialName("exact")
-	Exact,
+	Exact("exact"),
 
 	@SerialName("narrower")
-	Narrower,
+	Narrower("narrower"),
 
 	@SerialName("broader")
-	Broader,
+	Broader("broader"),
 
 	@SerialName("approximate")
-	Approximate,
+	Approximate("approximate"),
 
 	@SerialName("sequence")
-	Sequence,
+	Sequence("sequence"),
 
 	@SerialName("parent")
-	Parent,
+	Parent("parent"),
 
 	@SerialName("child")
-	Child,
+	Child("child"),
 
 	@SerialName("relatedCode")
-	RelatedCode,
+	RelatedCode("relatedCode"),
 
 	@SerialName("linkedPackage")
-	LinkedPackage,
+	LinkedPackage("linkedPackage"),
 
 	@SerialName("relatedService")
-	RelatedService,
+	RelatedService("relatedService"),
 
 	@SerialName("inResponseTo")
-	InResponseTo,
+	InResponseTo("inResponseTo"),
 
 	@SerialName("replaces")
-	Replaces,
+	Replaces("replaces"),
 
 	@SerialName("transforms")
-	Transforms,
+	Transforms("transforms"),
 
 	@SerialName("transformsAndReplaces")
-	TransformsAndReplaces,
+	TransformsAndReplaces("transformsAndReplaces"),
 
 	@SerialName("appendsTo")
-	AppendsTo,
+	AppendsTo("appendsTo"),
 
 	@SerialName("basedOn")
-	BasedOn,
+	BasedOn("basedOn"),
 
 	@SerialName("derivedFrom")
-	DerivedFrom,
+	DerivedFrom("derivedFrom"),
 
 	@SerialName("device")
-	Device,
+	Device("device"),
 
 	@SerialName("focus")
-	Focus,
+	Focus("focus"),
 
 	@SerialName("hasMember")
-	HasMember,
+	HasMember("hasMember"),
 
 	@SerialName("performer")
-	Performer,
+	Performer("performer"),
 
 	@SerialName("specimen")
-	Specimen,
+	Specimen("specimen"),
 
 	@SerialName("resultInterpreter")
-	ResultInterpreter,
+	ResultInterpreter("resultInterpreter"),
 
 	@SerialName("request")
-	Request,
+	Request("request"),
 }

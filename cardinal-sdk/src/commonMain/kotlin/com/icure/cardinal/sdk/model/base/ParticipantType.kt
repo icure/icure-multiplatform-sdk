@@ -2,48 +2,48 @@ package com.icure.cardinal.sdk.model.base
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-
-// WARNING: This file is auto-generated. If you change it manually, your changes will be lost.
-// If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
+import kotlin.String
 
 @Serializable
-enum class ParticipantType() {
+public enum class ParticipantType(
+	internal val dtoSerialName: String,
+) {
 	@SerialName("admitter")
-	Admitter,
+	Admitter("admitter"),
 
 	@SerialName("attender")
-	Attender,
+	Attender("attender"),
 
 	@SerialName("callback")
-	CallbackContact,
+	CallbackContact("callback"),
 
 	@SerialName("consultant")
-	Consultant,
+	Consultant("consultant"),
 
 	@SerialName("discharger")
-	Discharger,
+	Discharger("discharger"),
 
 	@SerialName("escort")
-	Escort,
+	Escort("escort"),
 
 	@SerialName("referrer")
-	Referrer,
+	Referrer("referrer"),
 
 	@SerialName("secondaryPerformer")
-	SecondaryPerformer,
+	SecondaryPerformer("secondaryPerformer"),
 
 	@SerialName("primaryPerformer")
-	PrimaryPerformer,
+	PrimaryPerformer("primaryPerformer"),
 
 	@SerialName("participation")
-	Participation,
+	Participation("participation"),
 
 	@SerialName("translator")
-	Translator,
+	Translator("translator"),
 
 	@SerialName("emergency")
-	Emergency,
+	Emergency("emergency"),
 
 	@SerialName("location")
-	Location,
+	Location("location"),
 }

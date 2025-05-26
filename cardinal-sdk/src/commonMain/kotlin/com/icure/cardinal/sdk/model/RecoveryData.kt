@@ -7,11 +7,8 @@ import kotlinx.serialization.Serializable
 import kotlin.Long
 import kotlin.String
 
-// WARNING: This file is auto-generated. If you change it manually, your changes will be lost.
-// If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
-
 @Serializable
-data class RecoveryData(
+public data class RecoveryData(
 	override val id: String,
 	override val rev: String? = null,
 	public val recipient: String,
@@ -21,14 +18,13 @@ data class RecoveryData(
 	override val deletionDate: Long? = null,
 ) : StoredDocument {
 	@Serializable
-	public enum class Type() {
+	public enum class Type(
+		internal val dtoSerialName: String,
+	) {
 		@SerialName("KEYPAIR_RECOVERY")
-		KeypairRecovery,
+		KeypairRecovery("KEYPAIR_RECOVERY"),
 
 		@SerialName("EXCHANGE_KEY_RECOVERY")
-		ExchangeKeyRecovery,
+		ExchangeKeyRecovery("EXCHANGE_KEY_RECOVERY"),
 	}
-  // region RecoveryData-RecoveryData
-
-  // endregion
 }

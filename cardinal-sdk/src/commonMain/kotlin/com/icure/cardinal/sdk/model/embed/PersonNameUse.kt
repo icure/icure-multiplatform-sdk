@@ -2,33 +2,33 @@ package com.icure.cardinal.sdk.model.embed
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-
-// WARNING: This file is auto-generated. If you change it manually, your changes will be lost.
-// If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
+import kotlin.String
 
 @Serializable
-enum class PersonNameUse() {
+public enum class PersonNameUse(
+	internal val dtoSerialName: String,
+) {
 	@SerialName("usual")
-	Usual,
+	Usual("usual"),
 
 	@SerialName("official")
-	Official,
+	Official("official"),
 
 	@SerialName("temp")
-	Temp,
+	Temp("temp"),
 
 	@SerialName("nickname")
-	Nickname,
+	Nickname("nickname"),
 
 	@SerialName("anonymous")
-	Anonymous,
+	Anonymous("anonymous"),
 
 	@SerialName("maiden")
-	Maiden,
+	Maiden("maiden"),
 
 	@SerialName("old")
-	Old,
+	Old("old"),
 
 	@SerialName("other")
-	Other,
+	Other("other"),
 }
