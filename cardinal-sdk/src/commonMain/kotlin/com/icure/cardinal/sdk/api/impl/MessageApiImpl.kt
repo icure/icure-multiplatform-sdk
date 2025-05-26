@@ -382,7 +382,7 @@ internal class MessageApiImpl(
 
 	private suspend fun doGetSecretIdsOf(groupId: String?, message: Message): Map<String, Set<EntityReferenceInGroup>> =
 		ensureNonNull(config.crypto.entity.secretIdsWithDataOwnersInfo(groupId, listOf(message), EntityWithEncryptionMetadataTypeName.Patient).values.singleOrNull()) {
-			"Method secretIdsWithDataOwnersInfo should have returned single item for single patient"
+			"Method secretIdsWithDataOwnersInfo should have returned single item for single message"
 		}
 
 	override suspend fun subscribeToEvents(
