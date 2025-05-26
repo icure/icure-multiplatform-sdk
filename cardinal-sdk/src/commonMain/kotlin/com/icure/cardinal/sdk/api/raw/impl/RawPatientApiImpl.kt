@@ -77,7 +77,7 @@ class RawPatientApiImpl(
 				parameter("startKey", startKey)
 				parameter("startDocumentId", startDocumentId)
 				parameter("limit", limit)
-				parameter("sortDirection", sortDirection)
+				parameter("sortDirection", sortDirection.dtoSerialName)
 				parameter("ts", GMTDate().timestamp)
 			}
 			accept(Application.Json)
@@ -99,7 +99,7 @@ class RawPatientApiImpl(
 				parameter("startKey", startKey)
 				parameter("startDocumentId", startDocumentId)
 				parameter("limit", limit)
-				parameter("sortDirection", sortDirection)
+				parameter("sortDirection", sortDirection.dtoSerialName)
 				parameter("ts", GMTDate().timestamp)
 			}
 			accept(Application.Json)
@@ -149,7 +149,7 @@ class RawPatientApiImpl(
 				parameter("startKey", startKey)
 				parameter("startDocumentId", startDocumentId)
 				parameter("limit", limit)
-				parameter("sortDirection", sortDirection)
+				parameter("sortDirection", sortDirection.dtoSerialName)
 				parameter("ts", GMTDate().timestamp)
 			}
 			accept(Application.Json)
@@ -204,7 +204,7 @@ class RawPatientApiImpl(
 				parameter("startKey", startKey)
 				parameter("startDocumentId", startDocumentId)
 				parameter("limit", limit)
-				parameter("sortDirection", sortDirection)
+				parameter("sortDirection", sortDirection.dtoSerialName)
 				parameter("ts", GMTDate().timestamp)
 			}
 			accept(Application.Json)

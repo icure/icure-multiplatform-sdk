@@ -2,30 +2,30 @@ package com.icure.cardinal.sdk.model.embed
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-
-// WARNING: This file is auto-generated. If you change it manually, your changes will be lost.
-// If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
+import kotlin.String
 
 @Serializable
-enum class InsuranceParameter() {
+public enum class InsuranceParameter(
+	internal val dtoSerialName: String,
+) {
 	@SerialName("status")
-	Status,
+	Status("status"),
 
 	@SerialName("tc1")
-	Tc1,
+	Tc1("tc1"),
 
 	@SerialName("tc2")
-	Tc2,
+	Tc2("tc2"),
 
 	@SerialName("preferentialstatus")
-	Preferentialstatus,
+	Preferentialstatus("preferentialstatus"),
 
 	@SerialName("chronicaldisease")
-	Chronicaldisease,
+	Chronicaldisease("chronicaldisease"),
 
 	@SerialName("paymentapproval")
-	Paymentapproval,
+	Paymentapproval("paymentapproval"),
 
 	@SerialName("mdaInputReference")
-	MdaInputReference,
+	MdaInputReference("mdaInputReference"),
 }

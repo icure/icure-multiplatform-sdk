@@ -4,34 +4,32 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlin.String
 
-// WARNING: This file is auto-generated. If you change it manually, your changes will be lost.
-// If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
-
 @Serializable
-enum class Operator(
+public enum class Operator(
 	public val code: String,
+	internal val dtoSerialName: String,
 ) {
 	@SerialName("EQUAL")
-	Equal("=="),
+	Equal("==", "EQUAL"),
 
 	@SerialName("NOTEQUAL")
-	Notequal("!="),
+	Notequal("!=", "NOTEQUAL"),
 
 	@SerialName("GREATERTHAN")
-	Greaterthan(">"),
+	Greaterthan(">", "GREATERTHAN"),
 
 	@SerialName("SMALLERTHAN")
-	Smallerthan("<"),
+	Smallerthan("<", "SMALLERTHAN"),
 
 	@SerialName("GREATERTHANOREQUAL")
-	Greaterthanorequal(">="),
+	Greaterthanorequal(">=", "GREATERTHANOREQUAL"),
 
 	@SerialName("SMALLERTHANOREQUAL")
-	Smallerthanorequal("<="),
+	Smallerthanorequal("<=", "SMALLERTHANOREQUAL"),
 
 	@SerialName("LIKE")
-	Like("%="),
+	Like("%=", "LIKE"),
 
 	@SerialName("ILIKE")
-	Ilike("%%="),
+	Ilike("%%=", "ILIKE"),
 }
