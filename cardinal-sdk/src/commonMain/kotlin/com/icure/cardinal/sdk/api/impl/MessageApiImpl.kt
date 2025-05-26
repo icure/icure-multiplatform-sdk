@@ -20,6 +20,7 @@ import com.icure.cardinal.sdk.filters.SortableFilterOptions
 import com.icure.cardinal.sdk.filters.mapMessageFilterOptions
 import com.icure.cardinal.sdk.model.DecryptedMessage
 import com.icure.cardinal.sdk.model.EncryptedMessage
+import com.icure.cardinal.sdk.model.EntityReferenceInGroup
 import com.icure.cardinal.sdk.model.ListOfIds
 import com.icure.cardinal.sdk.model.ListOfIdsAndRev
 import com.icure.cardinal.sdk.model.Message
@@ -43,6 +44,7 @@ import com.icure.cardinal.sdk.subscription.SubscriptionEventType
 import com.icure.cardinal.sdk.subscription.WebSocketSubscription
 import com.icure.cardinal.sdk.utils.Serialization
 import com.icure.cardinal.sdk.utils.currentEpochMs
+import com.icure.cardinal.sdk.utils.ensureNonNull
 import com.icure.cardinal.sdk.utils.pagination.IdsPageIterator
 import com.icure.cardinal.sdk.utils.pagination.PaginatedListIterator
 import com.icure.cardinal.sdk.utils.pagination.encodeStartKey
@@ -374,6 +376,14 @@ internal class MessageApiImpl(
 			EntityWithEncryptionMetadataTypeName.Message,
 			EncryptedMessage.serializer(),
 		) { Serialization.json.decodeFromJsonElement<DecryptedMessage>(config.jsonPatcher.patchMessage(it)) }.single()
+
+	override suspend fun getSecretIdsOf(message: Message): Map<String, Set<EntityReferenceInGroup>> =
+		doGetSecretIdsOf(null, message)
+
+	private suspend fun doGetSecretIdsOf(groupId: String?, message: Message): Map<String, Set<EntityReferenceInGroup>> =
+		ensureNonNull(config.crypto.entity.secretIdsWithDataOwnersInfo(groupId, listOf(message), EntityWithEncryptionMetadataTypeName.Patient).values.singleOrNull()) {
+			"Method secretIdsWithDataOwnersInfo should have returned single item for single patient"
+		}
 
 	override suspend fun subscribeToEvents(
 		events: Set<SubscriptionEventType>,

@@ -9,6 +9,7 @@ import com.icure.cardinal.sdk.filters.FilterOptions
 import com.icure.cardinal.sdk.filters.SortableFilterOptions
 import com.icure.cardinal.sdk.model.DecryptedMessage
 import com.icure.cardinal.sdk.model.EncryptedMessage
+import com.icure.cardinal.sdk.model.EntityReferenceInGroup
 import com.icure.cardinal.sdk.model.Message
 import com.icure.cardinal.sdk.model.PaginatedList
 import com.icure.cardinal.sdk.model.Patient
@@ -419,6 +420,14 @@ interface MessageApi : MessageBasicFlavourlessApi, MessageFlavouredApi<Decrypted
 	 * @return the decrypted Message if the decryption was successful or the input if it was not.
 	 */
 	suspend fun tryDecrypt(message: EncryptedMessage): Message
+
+	/**
+	 * Get all the secret ids that the current data owner can access from the provided message.
+	 * @param message a message
+	 * @return the secret ids of the provided message associated to the data owners which are known to have access
+	 * to that id.
+	 */
+	suspend fun getSecretIdsOf(message: Message): Map<String, Set<EntityReferenceInGroup>>
 	
 	/**
 	 * Give access to the encrypted flavour of the api
