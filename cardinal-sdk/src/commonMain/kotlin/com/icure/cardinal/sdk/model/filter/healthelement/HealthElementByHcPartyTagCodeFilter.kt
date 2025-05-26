@@ -21,6 +21,7 @@ data class HealthElementByHcPartyTagCodeFilter(
 	public val tagCode: String? = null,
 	public val status: Int? = null,
 ) : AbstractFilter<HealthElement> {
+	public val dtoSerialName: String
 	// region HealthElementByHcPartyTagCodeFilter-HealthElementByHcPartyTagCodeFilter
 
 	// endregion

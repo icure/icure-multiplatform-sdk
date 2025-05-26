@@ -15,6 +15,7 @@ data class TimeTableByAgendaIdFilter(
 	public val agendaId: String,
 	override val desc: String? = null,
 ) : AbstractFilter<TimeTable> {
+	public val dtoSerialName: String
 	// region TimeTableByAgendaIdFilter-TimeTableByAgendaIdFilter
 
 	// endregion

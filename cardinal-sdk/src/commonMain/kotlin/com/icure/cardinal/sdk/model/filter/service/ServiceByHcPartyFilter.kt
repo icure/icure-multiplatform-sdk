@@ -15,6 +15,7 @@ data class ServiceByHcPartyFilter(
 	public val hcpId: String,
 	override val desc: String? = null,
 ) : AbstractFilter<Service> {
+	public val dtoSerialName: String
 	// region ServiceByHcPartyFilter-ServiceByHcPartyFilter
 
 	// endregion

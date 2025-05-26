@@ -20,6 +20,7 @@ data class CalendarItemByPeriodAndAgendaIdFilter(
 	public val descending: Boolean? = null,
 	override val desc: String? = null,
 ) : AbstractFilter<CalendarItem> {
+	public val dtoSerialName: String
 	// region CalendarItemByPeriodAndAgendaIdFilter-CalendarItemByPeriodAndAgendaIdFilter
 
 	// endregion

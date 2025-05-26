@@ -11,6 +11,7 @@ data class View(
 	public val map: String,
 	public val reduce: String? = null,
 ) {
+	public val dtoSerialName: String
 	// region View-View
 
 	// endregion

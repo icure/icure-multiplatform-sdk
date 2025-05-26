@@ -74,6 +74,7 @@ data class DecryptedAddress(
 	override val telecoms: List<DecryptedTelecom> = emptyList(),
 	override val encryptedSelf: Base64String? = null,
 ) : Address {
+	public val dtoSerialName: String
 	// region Address-DecryptedAddress
 
 	// endregion
@@ -103,6 +104,7 @@ data class EncryptedAddress(
 	override val telecoms: List<EncryptedTelecom> = emptyList(),
 	override val encryptedSelf: Base64String? = null,
 ) : Address {
+	public val dtoSerialName: String
 	// region Address-EncryptedAddress
 
 	// endregion

@@ -11,6 +11,7 @@ data class LoginCredentials(
 	public val username: String? = null,
 	public val password: String? = null,
 ) {
+	public val dtoSerialName: String
 	// region LoginCredentials-LoginCredentials
 
 	// endregion

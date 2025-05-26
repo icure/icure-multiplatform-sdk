@@ -20,6 +20,7 @@ data class ServiceByHcPartyIdentifiersFilter(
 	public val identifiers: List<Identifier> = emptyList(),
 	override val desc: String? = null,
 ) : AbstractFilter<Service> {
+	public val dtoSerialName: String
 	// region ServiceByHcPartyIdentifiersFilter-ServiceByHcPartyIdentifiersFilter
 
 	// endregion

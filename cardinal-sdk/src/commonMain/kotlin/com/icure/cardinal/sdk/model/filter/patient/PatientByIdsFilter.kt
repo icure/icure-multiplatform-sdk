@@ -17,6 +17,7 @@ data class PatientByIdsFilter(
 	override val ids: Set<String>,
 	override val desc: String? = null,
 ) : AbstractFilter<Patient>, Filter.IdsFilter<String, Patient> {
+	public val dtoSerialName: String
 	// region PatientByIdsFilter-PatientByIdsFilter
 
 	// endregion

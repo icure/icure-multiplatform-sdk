@@ -78,6 +78,7 @@ data class DecryptedSubContact(
 	override val services: List<ServiceLink> = emptyList(),
 	override val encryptedSelf: Base64String? = null,
 ) : SubContact {
+	public val dtoSerialName: String
 	// region SubContact-DecryptedSubContact
 
 	// endregion
@@ -107,6 +108,7 @@ data class EncryptedSubContact(
 	override val services: List<ServiceLink> = emptyList(),
 	override val encryptedSelf: Base64String? = null,
 ) : SubContact {
+	public val dtoSerialName: String
 	// region SubContact-EncryptedSubContact
 
 	// endregion

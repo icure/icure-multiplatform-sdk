@@ -12,6 +12,7 @@ data class Country(
 	public val code: String? = null,
 	public val name: Map<String, String>? = null,
 ) {
+	public val dtoSerialName: String
 	// region Country-Country
 
 	// endregion

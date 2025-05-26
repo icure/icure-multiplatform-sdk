@@ -13,11 +13,15 @@ import kotlin.collections.Set
 data class BulkShareOrUpdateMetadataParams(
 	public val requestsByEntityId: Map<String, EntityRequestInformation>,
 ) {
+	public val dtoSerialName: String
+
 	@Serializable
 	public data class EntityRequestInformation(
 		public val requests: Map<String, EntityShareOrMetadataUpdateRequest>,
 		public val potentialParentDelegations: Set<SecureDelegationKeyString>,
-	)
+	) {
+		public val dtoSerialName: String
+	}
   // region BulkShareOrUpdateMetadataParams-BulkShareOrUpdateMetadataParams
 
   // endregion

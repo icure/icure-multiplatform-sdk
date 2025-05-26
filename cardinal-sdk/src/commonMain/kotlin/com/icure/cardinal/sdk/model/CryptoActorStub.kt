@@ -37,6 +37,7 @@ data class CryptoActorStub(
 	override val parentId: String? = null,
 	override val cryptoActorProperties: Set<DecryptedPropertyStub>? = null,
 ) : Versionable<String>, CryptoActor {
+	public val dtoSerialName: String
 	// region CryptoActorStub-CryptoActorStub
 
 	// endregion

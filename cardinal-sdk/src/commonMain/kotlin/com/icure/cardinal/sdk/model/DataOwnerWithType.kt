@@ -3,6 +3,7 @@ package com.icure.cardinal.sdk.model
 import com.icure.cardinal.sdk.model.base.CryptoActor
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlin.String
 
 // WARNING: This file is auto-generated. If you change it manually, your changes will be lost.
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
@@ -15,19 +16,25 @@ sealed interface DataOwnerWithType {
 	@SerialName("hcp")
 	public data class HcpDataOwner(
 		override val dataOwner: HealthcareParty,
-	) : DataOwnerWithType
+	) : DataOwnerWithType {
+		public val dtoSerialName: String
+	}
 
 	@Serializable
 	@SerialName("patient")
 	public data class PatientDataOwner(
 		override val dataOwner: EncryptedPatient,
-	) : DataOwnerWithType
+	) : DataOwnerWithType {
+		public val dtoSerialName: String
+	}
 
 	@Serializable
 	@SerialName("device")
 	public data class DeviceDataOwner(
 		override val dataOwner: Device,
-	) : DataOwnerWithType
+	) : DataOwnerWithType {
+		public val dtoSerialName: String
+	}
 	// region DataOwnerWithType-DataOwnerWithType
 
 	// endregion

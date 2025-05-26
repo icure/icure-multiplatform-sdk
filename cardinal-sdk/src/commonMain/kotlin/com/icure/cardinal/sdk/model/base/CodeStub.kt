@@ -17,6 +17,7 @@ data class CodeStub(
 	public val contextLabel: String? = null,
 	override val label: Map<String, String>? = null,
 ) : CodeIdentification<String?> {
+	public val dtoSerialName: String
 	// region CodeStub-CodeStub
 
 	// endregion

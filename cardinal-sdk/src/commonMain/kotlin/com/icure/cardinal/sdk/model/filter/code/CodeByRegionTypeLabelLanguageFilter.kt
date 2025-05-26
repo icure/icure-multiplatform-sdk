@@ -18,6 +18,7 @@ data class CodeByRegionTypeLabelLanguageFilter(
 	public val language: String,
 	public val label: String? = null,
 ) : AbstractFilter<Code> {
+	public val dtoSerialName: String
 	// region CodeByRegionTypeLabelLanguageFilter-CodeByRegionTypeLabelLanguageFilter
 
 	// endregion

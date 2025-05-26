@@ -65,6 +65,7 @@ data class Tarification(
 	@DefaultValue("emptyList()")
 	public val letterValues: List<LetterValue> = emptyList(),
 ) : StoredDocument, CodeIdentification<String> {
+	public val dtoSerialName: String
 	// region Tarification-Tarification
 
 	// endregion

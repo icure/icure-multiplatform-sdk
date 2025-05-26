@@ -11,6 +11,7 @@ data class FilterChain<O : Identifiable<String>>(
 	public val filter: AbstractFilter<O>,
 	public val predicate: Predicate? = null,
 ) {
+	public val dtoSerialName: String
 	// region FilterChain-FilterChain
 
 	// endregion

@@ -16,6 +16,7 @@ data class AgendaByTypedPropertyFilter(
 	public val `property`: DecryptedPropertyStub,
 	override val desc: String?,
 ) : AbstractFilter<Agenda> {
+	public val dtoSerialName: String
 	// region AgendaByTypedPropertyFilter-AgendaByTypedPropertyFilter
 
 	// endregion

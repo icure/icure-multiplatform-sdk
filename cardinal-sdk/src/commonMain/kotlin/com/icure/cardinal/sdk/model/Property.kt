@@ -38,6 +38,7 @@ data class DecryptedProperty(
 	override val typedValue: DecryptedTypedValue? = null,
 	override val encryptedSelf: Base64String? = null,
 ) : Property {
+	public val dtoSerialName: String
 	// region Property-DecryptedProperty
 
 	// endregion
@@ -52,6 +53,7 @@ data class EncryptedProperty(
 	override val typedValue: EncryptedTypedValue? = null,
 	override val encryptedSelf: Base64String? = null,
 ) : Property {
+	public val dtoSerialName: String
 	// region Property-EncryptedProperty
 
 	// endregion

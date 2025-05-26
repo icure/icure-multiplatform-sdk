@@ -11,6 +11,7 @@ data class RevisionInfo(
 	public val rev: String? = null,
 	public val status: String? = null,
 ) {
+	public val dtoSerialName: String
 	// region RevisionInfo-RevisionInfo
 
 	// endregion

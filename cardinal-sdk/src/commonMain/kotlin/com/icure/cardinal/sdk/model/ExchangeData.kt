@@ -26,6 +26,7 @@ data class ExchangeData(
 	public val sharedSignature: Base64String,
 	override val deletionDate: Long? = null,
 ) : StoredDocument {
+	public val dtoSerialName: String
 	// region ExchangeData-ExchangeData
 
 	// endregion

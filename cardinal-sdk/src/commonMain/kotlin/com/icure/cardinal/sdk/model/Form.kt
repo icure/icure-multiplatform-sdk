@@ -123,6 +123,7 @@ data class DecryptedForm(
 	override val encryptedSelf: Base64String? = null,
 	override val securityMetadata: SecurityMetadata? = null,
 ) : Form {
+	public val dtoSerialName: String
 	// region Form-DecryptedForm
 override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): DecryptedForm =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)
@@ -167,6 +168,7 @@ data class EncryptedForm(
 	override val encryptedSelf: Base64String? = null,
 	override val securityMetadata: SecurityMetadata? = null,
 ) : Form {
+	public val dtoSerialName: String
 	// region Form-EncryptedForm
 override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): EncryptedForm =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)

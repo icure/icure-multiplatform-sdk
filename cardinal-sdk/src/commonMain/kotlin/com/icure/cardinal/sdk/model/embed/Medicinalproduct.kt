@@ -19,6 +19,7 @@ data class Medicinalproduct(
 	public val deliveredname: String? = null,
 	public val productId: String? = null,
 ) {
+	public val dtoSerialName: String
 	// region Medicinalproduct-Medicinalproduct
 
 	// endregion

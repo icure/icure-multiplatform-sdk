@@ -14,6 +14,7 @@ data class Partnership(
 	public val meToOtherRelationshipDescription: String? = null,
 	public val otherToMeRelationshipDescription: String? = null,
 ) {
+	public val dtoSerialName: String
 	// region Partnership-Partnership
 
 	// endregion

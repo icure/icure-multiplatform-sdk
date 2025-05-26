@@ -23,6 +23,7 @@ data class ReferenceRange(
 	public val notes: List<Annotation> = emptyList(),
 	public val age: Range? = null,
 ) {
+	public val dtoSerialName: String
 	// region ReferenceRange-ReferenceRange
 
 	// endregion

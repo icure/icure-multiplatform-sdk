@@ -2,6 +2,7 @@ package com.icure.cardinal.sdk.model.embed
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlin.String
 
 // WARNING: This file is auto-generated. If you change it manually, your changes will be lost.
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
@@ -9,23 +10,26 @@ import kotlinx.serialization.Serializable
 @Serializable
 enum class ReceiptBlobType() {
 	@SerialName("xades")
-	Xades,
+	Xades("xades"),
 
 	@SerialName("kmehrRequest")
-	KmehrRequest,
+	KmehrRequest("kmehrRequest"),
 
 	@SerialName("kmehrResponse")
-	KmehrResponse,
+	KmehrResponse("kmehrResponse"),
 
 	@SerialName("soapRequest")
-	SoapRequest,
+	SoapRequest("soapRequest"),
 
 	@SerialName("soapResponse")
-	SoapResponse,
+	SoapResponse("soapResponse"),
 
 	@SerialName("soapConversation")
-	SoapConversation,
+	SoapConversation("soapConversation"),
 
 	@SerialName("tack")
-	Tack,
+	Tack("tack"),
+	;
+
+	public val dtoSerialName: String
 }

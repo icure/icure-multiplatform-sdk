@@ -14,6 +14,7 @@ data class MapOfIds(
 	@DefaultValue("emptyMap()")
 	public val mapOfIds: Map<String, List<String>> = emptyMap(),
 ) {
+	public val dtoSerialName: String
 	// region MapOfIds-MapOfIds
 
 	// endregion

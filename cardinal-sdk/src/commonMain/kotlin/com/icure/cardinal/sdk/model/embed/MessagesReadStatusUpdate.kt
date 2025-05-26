@@ -16,6 +16,7 @@ data class MessagesReadStatusUpdate(
 	public val time: Long? = null,
 	public val status: Boolean? = null,
 ) {
+	public val dtoSerialName: String
 	// region MessagesReadStatusUpdate-MessagesReadStatusUpdate
 
 	// endregion

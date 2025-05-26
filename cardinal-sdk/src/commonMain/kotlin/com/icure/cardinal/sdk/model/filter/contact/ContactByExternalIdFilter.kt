@@ -15,6 +15,7 @@ data class ContactByExternalIdFilter(
 	public val externalId: String,
 	override val desc: String? = null,
 ) : AbstractFilter<Contact> {
+	public val dtoSerialName: String
 	// region ContactByExternalIdFilter-ContactByExternalIdFilter
 
 	// endregion

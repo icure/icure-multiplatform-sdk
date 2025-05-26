@@ -30,6 +30,7 @@ class ResultInfo(
 	public val codes: Set<CodeStub> = emptySet(),
 	public val services: List<DecryptedService>? = null,
 ) {
+	public val dtoSerialName: String
 	// region ResultInfo-ResultInfo
 
 	// endregion

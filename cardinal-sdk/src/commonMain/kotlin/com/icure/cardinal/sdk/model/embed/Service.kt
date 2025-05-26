@@ -146,6 +146,7 @@ data class DecryptedService(
 	override val encryptedSelf: Base64String? = null,
 	override val securityMetadata: SecurityMetadata? = null,
 ) : Service {
+	public val dtoSerialName: String
 	// region Service-DecryptedService
 
 	// endregion
@@ -202,6 +203,7 @@ data class EncryptedService(
 	override val encryptedSelf: Base64String? = null,
 	override val securityMetadata: SecurityMetadata? = null,
 ) : Service {
+	public val dtoSerialName: String
 	// region Service-EncryptedService
 
 	// endregion

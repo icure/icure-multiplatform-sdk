@@ -19,6 +19,7 @@ data class ServiceByHcPartyHealthElementIdsFilter(
 	@DefaultValue("emptyList()")
 	public val healthElementIds: List<String> = emptyList(),
 ) : AbstractFilter<Service> {
+	public val dtoSerialName: String
 	// region ServiceByHcPartyHealthElementIdsFilter-ServiceByHcPartyHealthElementIdsFilter
 
 	// endregion

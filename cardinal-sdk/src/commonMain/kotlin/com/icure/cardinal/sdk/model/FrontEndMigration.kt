@@ -28,6 +28,7 @@ data class FrontEndMigration(
 	@DefaultValue("emptySet()")
 	public val properties: Set<DecryptedPropertyStub> = emptySet(),
 ) : StoredDocument {
+	public val dtoSerialName: String
 	// region FrontEndMigration-FrontEndMigration
 
 	// endregion

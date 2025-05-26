@@ -12,6 +12,7 @@ data class PaginatedDocumentKeyIdPair(
 	public val startKey: JsonElement? = null,
 	public val startKeyDocId: String? = null,
 ) {
+	public val dtoSerialName: String
 	// region PaginatedDocumentKeyIdPair-PaginatedDocumentKeyIdPair
 
 	// endregion

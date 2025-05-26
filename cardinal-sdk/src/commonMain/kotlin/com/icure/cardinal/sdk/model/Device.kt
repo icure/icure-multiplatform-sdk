@@ -67,6 +67,7 @@ data class Device(
 	override val publicKeysForOaepWithSha256: Set<SpkiHexString> = emptySet(),
 	override val cryptoActorProperties: Set<DecryptedPropertyStub>? = null,
 ) : StoredDocument, ICureDocument<String>, Named, CryptoActor, DataOwner {
+	public val dtoSerialName: String
 	// region Device-Device
 	companion object {
 		const val KRAKEN_QUALIFIED_NAME = "org.taktik.icure.entities.Device"

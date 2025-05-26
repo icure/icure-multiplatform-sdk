@@ -17,6 +17,7 @@ data class Identifier(
 	public val use: String? = null,
 	public val `value`: String? = null,
 ) {
+	public val dtoSerialName: String
 	// region Identifier-Identifier
 
 	// endregion

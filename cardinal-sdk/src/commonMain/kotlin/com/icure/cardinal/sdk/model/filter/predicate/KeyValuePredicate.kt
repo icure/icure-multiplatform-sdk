@@ -15,6 +15,7 @@ data class KeyValuePredicate(
 	@Serializable(with = AnyPrimitiveSerializer::class)
 	public val `value`: AnyPrimitive? = null,
 ) : Predicate {
+	public val dtoSerialName: String
 	// region KeyValuePredicate-KeyValuePredicate
 
 	// endregion

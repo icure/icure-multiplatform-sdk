@@ -22,6 +22,7 @@ data class ClassificationByDataOwnerPatientCreatedDateFilter(
 	public val descending: Boolean?,
 	override val desc: String? = null,
 ) : AbstractFilter<Classification> {
+	public val dtoSerialName: String
 	// region ClassificationByDataOwnerPatientCreatedDateFilter-ClassificationByDataOwnerPatientCreatedDateFilter
 
 	// endregion

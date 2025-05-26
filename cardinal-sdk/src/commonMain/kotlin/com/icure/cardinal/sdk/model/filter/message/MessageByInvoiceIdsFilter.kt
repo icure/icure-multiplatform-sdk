@@ -16,6 +16,7 @@ data class MessageByInvoiceIdsFilter(
 	public val invoiceIds: Set<String>,
 	override val desc: String? = null,
 ) : AbstractFilter<Message> {
+	public val dtoSerialName: String
 	// region MessageByInvoiceIdsFilter-MessageByInvoiceIdsFilter
 
 	// endregion

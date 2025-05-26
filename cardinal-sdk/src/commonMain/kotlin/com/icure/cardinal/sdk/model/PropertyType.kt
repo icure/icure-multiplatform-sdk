@@ -26,6 +26,7 @@ data class PropertyType(
 	@DefaultValue("false")
 	public val localized: Boolean = false,
 ) : StoredDocument {
+	public val dtoSerialName: String
 	// region PropertyType-PropertyType
 
 	// endregion

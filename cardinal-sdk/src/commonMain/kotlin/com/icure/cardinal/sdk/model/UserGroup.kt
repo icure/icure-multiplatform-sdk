@@ -24,6 +24,7 @@ data class UserGroup(
 	public val deviceId: String? = null,
 	public val nameOfParentOfTopmostGroupInHierarchy: String? = null,
 ) {
+	public val dtoSerialName: String
 	// region UserGroup-UserGroup
 
 	// endregion

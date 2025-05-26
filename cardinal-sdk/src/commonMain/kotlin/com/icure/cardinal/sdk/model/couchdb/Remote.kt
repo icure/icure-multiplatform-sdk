@@ -11,6 +11,7 @@ data class Remote(
 	public val url: String,
 	public val auth: RemoteAuthentication? = null,
 ) {
+	public val dtoSerialName: String
 	// region Remote-Remote
 
 	// endregion

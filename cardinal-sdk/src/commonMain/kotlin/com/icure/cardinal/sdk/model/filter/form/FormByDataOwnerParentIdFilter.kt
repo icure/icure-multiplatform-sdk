@@ -16,6 +16,7 @@ data class FormByDataOwnerParentIdFilter(
 	public val parentId: String,
 	override val desc: String? = null,
 ) : AbstractFilter<Form> {
+	public val dtoSerialName: String
 	// region FormByDataOwnerParentIdFilter-FormByDataOwnerParentIdFilter
 
 	// endregion

@@ -2,6 +2,7 @@ package com.icure.cardinal.sdk.model.embed.form.template
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlin.String
 
 // WARNING: This file is auto-generated. If you change it manually, your changes will be lost.
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
@@ -9,23 +10,26 @@ import kotlinx.serialization.Serializable
 @Serializable
 enum class Trigger() {
 	@SerialName("INIT")
-	Init,
+	Init("INIT"),
 
 	@SerialName("CHANGE")
-	Change,
+	Change("CHANGE"),
 
 	@SerialName("CLICK")
-	Click,
+	Click("CLICK"),
 
 	@SerialName("VISIBLE")
-	Visible,
+	Visible("VISIBLE"),
 
 	@SerialName("ERROR")
-	Error,
+	Error("ERROR"),
 
 	@SerialName("VALID")
-	Valid,
+	Valid("VALID"),
 
 	@SerialName("EVENT")
-	Event,
+	Event("EVENT"),
+	;
+
+	public val dtoSerialName: String
 }

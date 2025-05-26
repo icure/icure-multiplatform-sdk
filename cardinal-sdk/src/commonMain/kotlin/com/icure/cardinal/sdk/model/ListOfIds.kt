@@ -13,6 +13,7 @@ data class ListOfIds(
 	@DefaultValue("emptyList()")
 	public val ids: List<String> = emptyList(),
 ) {
+	public val dtoSerialName: String
 	// region ListOfIds-ListOfIds
 
 	// endregion

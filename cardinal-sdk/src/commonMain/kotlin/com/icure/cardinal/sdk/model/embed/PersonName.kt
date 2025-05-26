@@ -23,6 +23,7 @@ data class PersonName(
 	public val text: String? = null,
 	public val use: PersonNameUse? = null,
 ) {
+	public val dtoSerialName: String
 	// region PersonName-PersonName
 
 	// endregion

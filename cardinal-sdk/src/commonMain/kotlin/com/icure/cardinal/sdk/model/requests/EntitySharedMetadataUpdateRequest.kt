@@ -4,6 +4,7 @@ import com.icure.cardinal.sdk.model.specializations.Base64String
 import com.icure.cardinal.sdk.model.specializations.SecureDelegationKeyString
 import com.icure.cardinal.sdk.utils.DefaultValue
 import kotlinx.serialization.Serializable
+import kotlin.String
 import kotlin.collections.Map
 import com.icure.utils.InternalIcureApi
 
@@ -20,6 +21,7 @@ data class EntitySharedMetadataUpdateRequest(
 	@DefaultValue("emptyMap()")
 	public val owningEntityIds: Map<Base64String, EntryUpdateType> = emptyMap(),
 ) {
+	public val dtoSerialName: String
 	// region EntitySharedMetadataUpdateRequest-EntitySharedMetadataUpdateRequest
 	@InternalIcureApi
 	fun wrap() = EntityShareOrMetadataUpdateRequest(update = this)

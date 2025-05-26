@@ -46,6 +46,7 @@ data class Group(
 	public val superGroup: String? = null,
 	public val applicationId: String? = null,
 ) : StoredDocument, HasTags {
+	public val dtoSerialName: String
 	// region Group-Group
 
 	// endregion

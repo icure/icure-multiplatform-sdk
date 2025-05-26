@@ -25,6 +25,7 @@ data class AppointmentTypeAndPlace(
 	@DefaultValue("true")
 	public val acceptsNewPatients: Boolean = true,
 ) {
+	public val dtoSerialName: String
 	// region AppointmentTypeAndPlace-AppointmentTypeAndPlace
 
 	// endregion

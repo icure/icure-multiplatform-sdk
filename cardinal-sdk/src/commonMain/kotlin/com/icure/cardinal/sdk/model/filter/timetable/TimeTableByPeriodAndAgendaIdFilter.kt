@@ -20,6 +20,7 @@ data class TimeTableByPeriodAndAgendaIdFilter(
 	public val descending: Boolean? = null,
 	override val desc: String? = null,
 ) : AbstractFilter<TimeTable> {
+	public val dtoSerialName: String
 	// region TimeTableByPeriodAndAgendaIdFilter-TimeTableByPeriodAndAgendaIdFilter
 
 	// endregion

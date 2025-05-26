@@ -20,6 +20,7 @@ data class PatientByDataOwnerModifiedAfterFilter(
 	public val descending: Boolean?,
 	override val desc: String?,
 ) : AbstractFilter<Patient> {
+	public val dtoSerialName: String
 	// region PatientByDataOwnerModifiedAfterFilter-PatientByDataOwnerModifiedAfterFilter
 
 	// endregion

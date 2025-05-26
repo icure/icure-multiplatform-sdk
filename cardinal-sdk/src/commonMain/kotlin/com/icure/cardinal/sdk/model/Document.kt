@@ -156,6 +156,7 @@ data class DecryptedDocument(
 	override val encryptedSelf: Base64String? = null,
 	override val securityMetadata: SecurityMetadata? = null,
 ) : Document {
+	public val dtoSerialName: String
 	// region Document-DecryptedDocument
 override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): DecryptedDocument =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)
@@ -212,6 +213,7 @@ data class EncryptedDocument(
 	override val encryptedSelf: Base64String? = null,
 	override val securityMetadata: SecurityMetadata? = null,
 ) : Document {
+	public val dtoSerialName: String
 	// region Document-EncryptedDocument
 override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): EncryptedDocument =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)

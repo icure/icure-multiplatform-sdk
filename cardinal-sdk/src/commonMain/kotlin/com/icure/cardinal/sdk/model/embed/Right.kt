@@ -18,6 +18,7 @@ data class Right(
 	@DefaultValue("false")
 	public val administration: Boolean = false,
 ) {
+	public val dtoSerialName: String
 	// region Right-Right
 
 	// endregion

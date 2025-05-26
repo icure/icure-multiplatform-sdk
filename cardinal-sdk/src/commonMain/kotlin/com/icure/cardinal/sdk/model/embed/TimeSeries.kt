@@ -26,6 +26,7 @@ data class TimeSeries(
 	@DefaultValue("emptyList()")
 	public val variance: List<Double> = emptyList(),
 ) {
+	public val dtoSerialName: String
 	// region TimeSeries-TimeSeries
 
 	// endregion

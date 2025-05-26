@@ -10,6 +10,7 @@ import kotlin.String
 data class RemoveParticipant(
 	public val dataOwnerId: String,
 ) {
+	public val dtoSerialName: String
 	// region RemoveParticipant-RemoveParticipant
 
 	// endregion

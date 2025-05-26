@@ -17,6 +17,7 @@ data class ServiceByIdsFilter(
 	override val ids: Set<String>,
 	override val desc: String? = null,
 ) : AbstractFilter<Service>, Filter.IdsFilter<String, Service> {
+	public val dtoSerialName: String
 	// region ServiceByIdsFilter-ServiceByIdsFilter
 
 	// endregion

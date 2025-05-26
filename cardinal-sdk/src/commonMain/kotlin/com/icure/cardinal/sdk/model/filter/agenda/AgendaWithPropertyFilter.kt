@@ -15,6 +15,7 @@ data class AgendaWithPropertyFilter(
 	public val propertyId: String,
 	override val desc: String? = null,
 ) : AbstractFilter<Agenda> {
+	public val dtoSerialName: String
 	// region AgendaWithPropertyFilter-AgendaWithPropertyFilter
 
 	// endregion

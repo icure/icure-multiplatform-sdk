@@ -15,6 +15,7 @@ class State(
 	@DefaultValue("false")
 	public val canLaunchLauncher: Boolean = false,
 ) {
+	public val dtoSerialName: String
 	// region State-State
 
 	// endregion

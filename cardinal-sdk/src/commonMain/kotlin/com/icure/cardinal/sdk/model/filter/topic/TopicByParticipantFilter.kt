@@ -15,6 +15,7 @@ data class TopicByParticipantFilter(
 	public val participantId: String,
 	override val desc: String? = null,
 ) : AbstractFilter<Topic> {
+	public val dtoSerialName: String
 	// region TopicByParticipantFilter-TopicByParticipantFilter
 
 	// endregion

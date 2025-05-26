@@ -41,6 +41,7 @@ data class DecryptedFinancialInstitutionInformation(
 	override val preferredFiiForPartners: Set<String> = emptySet(),
 	override val encryptedSelf: Base64String? = null,
 ) : FinancialInstitutionInformation {
+	public val dtoSerialName: String
 	// region FinancialInstitutionInformation-DecryptedFinancialInstitutionInformation
 
 	// endregion
@@ -58,6 +59,7 @@ data class EncryptedFinancialInstitutionInformation(
 	override val preferredFiiForPartners: Set<String> = emptySet(),
 	override val encryptedSelf: Base64String? = null,
 ) : FinancialInstitutionInformation {
+	public val dtoSerialName: String
 	// region FinancialInstitutionInformation-EncryptedFinancialInstitutionInformation
 
 	// endregion

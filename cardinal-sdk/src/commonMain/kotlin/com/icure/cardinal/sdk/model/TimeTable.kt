@@ -42,6 +42,7 @@ data class TimeTable(
 	@DefaultValue("emptyList()")
 	public val items: List<TimeTableItem> = emptyList(),
 ) : StoredDocument, ICureDocument<String> {
+	public val dtoSerialName: String
 	// region TimeTable-TimeTable
 
 	// endregion

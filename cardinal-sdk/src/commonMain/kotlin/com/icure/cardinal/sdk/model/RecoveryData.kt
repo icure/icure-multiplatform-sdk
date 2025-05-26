@@ -20,13 +20,18 @@ data class RecoveryData(
 	public val expirationInstant: Long? = null,
 	override val deletionDate: Long? = null,
 ) : StoredDocument {
+	public val dtoSerialName: String
+
 	@Serializable
 	public enum class Type() {
 		@SerialName("KEYPAIR_RECOVERY")
-		KeypairRecovery,
+		KeypairRecovery("KEYPAIR_RECOVERY"),
 
 		@SerialName("EXCHANGE_KEY_RECOVERY")
-		ExchangeKeyRecovery,
+		ExchangeKeyRecovery("EXCHANGE_KEY_RECOVERY"),
+		;
+
+		public val dtoSerialName: String
 	}
   // region RecoveryData-RecoveryData
 

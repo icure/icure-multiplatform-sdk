@@ -92,6 +92,7 @@ data class DecryptedArticle(
 	override val encryptedSelf: Base64String? = null,
 	override val securityMetadata: SecurityMetadata? = null,
 ) : Article {
+	public val dtoSerialName: String
 	// region Article-DecryptedArticle
 override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): DecryptedArticle =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)
@@ -126,6 +127,7 @@ data class EncryptedArticle(
 	override val encryptedSelf: Base64String? = null,
 	override val securityMetadata: SecurityMetadata? = null,
 ) : Article {
+	public val dtoSerialName: String
 	// region Article-EncryptedArticle
 override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): EncryptedArticle =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)

@@ -42,6 +42,7 @@ data class FormTemplate(
 	public val layoutAttachmentId: String? = null,
 	public val templateLayoutAttachmentId: String? = null,
 ) : StoredDocument {
+	public val dtoSerialName: String
 	// region FormTemplate-FormTemplate
 
 	// endregion

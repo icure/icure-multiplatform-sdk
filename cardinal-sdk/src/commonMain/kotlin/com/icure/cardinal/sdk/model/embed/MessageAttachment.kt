@@ -14,6 +14,7 @@ data class MessageAttachment(
 	@DefaultValue("emptyList()")
 	public val ids: List<String> = emptyList(),
 ) {
+	public val dtoSerialName: String
 	// region MessageAttachment-MessageAttachment
 
 	// endregion

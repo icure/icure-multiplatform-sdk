@@ -23,6 +23,7 @@ data class ReplicateCommand(
 	public val targetPassword: String,
 	public val id: String? = null,
 ) {
+	public val dtoSerialName: String
 	// region ReplicateCommand-ReplicateCommand
 
 	// endregion

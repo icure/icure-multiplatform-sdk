@@ -54,6 +54,7 @@ data class DecryptedValorisation(
 	override val label: Map<String, String>? = emptyMap(),
 	override val encryptedSelf: Base64String? = null,
 ) : Valorisation {
+	public val dtoSerialName: String
 	// region Valorisation-DecryptedValorisation
 
 	// endregion
@@ -74,6 +75,7 @@ data class EncryptedValorisation(
 	override val label: Map<String, String>? = emptyMap(),
 	override val encryptedSelf: Base64String? = null,
 ) : Valorisation {
+	public val dtoSerialName: String
 	// region Valorisation-EncryptedValorisation
 
 	// endregion

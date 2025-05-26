@@ -17,6 +17,7 @@ data class Delegation(
 	@DefaultValue("emptyList()")
 	public val tags: List<String> = emptyList(),
 ) {
+	public val dtoSerialName: String
   // region Delegation-Delegation
 
   // endregion

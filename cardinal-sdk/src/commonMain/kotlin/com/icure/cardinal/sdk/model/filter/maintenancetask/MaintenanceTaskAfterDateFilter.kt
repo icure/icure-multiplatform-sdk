@@ -17,6 +17,7 @@ data class MaintenanceTaskAfterDateFilter(
 	public val healthcarePartyId: String? = null,
 	public val date: Long,
 ) : AbstractFilter<MaintenanceTask> {
+	public val dtoSerialName: String
 	// region MaintenanceTaskAfterDateFilter-MaintenanceTaskAfterDateFilter
 
 	// endregion

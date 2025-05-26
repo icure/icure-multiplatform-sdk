@@ -33,6 +33,7 @@ data class DecryptedFlatRateTarification(
 	override val valorisations: List<DecryptedValorisation> = emptyList(),
 	override val encryptedSelf: Base64String? = null,
 ) : FlatRateTarification {
+	public val dtoSerialName: String
 	// region FlatRateTarification-DecryptedFlatRateTarification
 
 	// endregion
@@ -47,6 +48,7 @@ data class EncryptedFlatRateTarification(
 	override val valorisations: List<EncryptedValorisation> = emptyList(),
 	override val encryptedSelf: Base64String? = null,
 ) : FlatRateTarification {
+	public val dtoSerialName: String
 	// region FlatRateTarification-EncryptedFlatRateTarification
 
 	// endregion

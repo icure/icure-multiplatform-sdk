@@ -16,6 +16,7 @@ data class CodeByQualifiedLinkFilter(
 	public val linkedId: String? = null,
 	override val desc: String? = null,
 ) : AbstractFilter<Code> {
+	public val dtoSerialName: String
 	// region CodeByQualifiedLinkFilter-CodeByQualifiedLinkFilter
 
 	// endregion

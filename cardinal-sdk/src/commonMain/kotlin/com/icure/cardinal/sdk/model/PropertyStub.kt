@@ -37,6 +37,7 @@ data class DecryptedPropertyStub(
 	override val deletionDate: Long? = null,
 	override val encryptedSelf: Base64String? = null,
 ) : PropertyStub {
+	public val dtoSerialName: String
 	// region PropertyStub-DecryptedPropertyStub
 
 	// endregion
@@ -51,6 +52,7 @@ data class EncryptedPropertyStub(
 	override val deletionDate: Long? = null,
 	override val encryptedSelf: Base64String? = null,
 ) : PropertyStub {
+	public val dtoSerialName: String
 	// region PropertyStub-EncryptedPropertyStub
 
 	// endregion

@@ -30,6 +30,7 @@ data class DecryptedCareTeamMembership(
 	override val membershipType: MembershipType? = null,
 	override val encryptedSelf: Base64String? = null,
 ) : CareTeamMembership {
+	public val dtoSerialName: String
 	// region CareTeamMembership-DecryptedCareTeamMembership
 
 	// endregion
@@ -43,6 +44,7 @@ data class EncryptedCareTeamMembership(
 	override val membershipType: MembershipType? = null,
 	override val encryptedSelf: Base64String? = null,
 ) : CareTeamMembership {
+	public val dtoSerialName: String
 	// region CareTeamMembership-EncryptedCareTeamMembership
 
 	// endregion

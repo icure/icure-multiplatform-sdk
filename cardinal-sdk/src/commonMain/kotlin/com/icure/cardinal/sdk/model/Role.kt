@@ -19,6 +19,7 @@ data class Role(
 	@DefaultValue("emptySet()")
 	public val permissions: Set<String> = emptySet(),
 ) : StoredDocument {
+	public val dtoSerialName: String
 	// region Role-Role
 
 	// endregion

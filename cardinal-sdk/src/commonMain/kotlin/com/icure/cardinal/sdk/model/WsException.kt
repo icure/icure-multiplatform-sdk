@@ -13,6 +13,7 @@ class WsException(
 	public val error: String,
 	public val translations: Map<String, String>,
 ) {
+	public val dtoSerialName: String
 	// region WsException-WsException
 
 	// endregion

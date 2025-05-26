@@ -15,6 +15,7 @@ class Launcher(
 	@DefaultValue("false")
 	public val shouldPassValue: Boolean = false,
 ) {
+	public val dtoSerialName: String
 	// region Launcher-Launcher
 
 	// endregion

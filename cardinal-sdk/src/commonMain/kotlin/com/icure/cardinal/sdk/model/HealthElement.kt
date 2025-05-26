@@ -162,6 +162,7 @@ data class DecryptedHealthElement(
 	override val encryptedSelf: Base64String? = null,
 	override val securityMetadata: SecurityMetadata? = null,
 ) : HealthElement {
+	public val dtoSerialName: String
 	// region HealthElement-DecryptedHealthElement
 override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): DecryptedHealthElement =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)
@@ -218,6 +219,7 @@ data class EncryptedHealthElement(
 	override val encryptedSelf: Base64String? = null,
 	override val securityMetadata: SecurityMetadata? = null,
 ) : HealthElement {
+	public val dtoSerialName: String
 	// region HealthElement-EncryptedHealthElement
 override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): EncryptedHealthElement =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)

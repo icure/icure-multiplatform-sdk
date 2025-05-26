@@ -12,6 +12,7 @@ data class AddParticipant(
 	public val dataOwnerId: String,
 	public val topicRole: TopicRole,
 ) {
+	public val dtoSerialName: String
 	// region AddParticipant-AddParticipant
 
 	// endregion

@@ -15,6 +15,7 @@ data class UserByNameEmailPhoneFilter(
 	public val searchString: String,
 	override val desc: String? = null,
 ) : AbstractFilter<User> {
+	public val dtoSerialName: String
 	// region UserByNameEmailPhoneFilter-UserByNameEmailPhoneFilter
 
 	// endregion

@@ -11,6 +11,7 @@ data class FormGroup(
 	public val guid: String? = null,
 	public val name: String? = null,
 ) {
+	public val dtoSerialName: String
 	// region FormGroup-FormGroup
 
 	// endregion

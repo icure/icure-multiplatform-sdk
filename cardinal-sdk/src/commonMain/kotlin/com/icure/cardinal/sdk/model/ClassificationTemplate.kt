@@ -30,6 +30,7 @@ data class ClassificationTemplate(
 	public val parentId: String? = null,
 	public val label: String,
 ) : StoredDocument, ICureDocument<String> {
+	public val dtoSerialName: String
 	// region ClassificationTemplate-ClassificationTemplate
 
 	// endregion

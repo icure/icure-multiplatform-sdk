@@ -19,6 +19,7 @@ data class ExternalViewFilter(
 	public val startKey: ExternalFilterKey?,
 	public val endKey: ExternalFilterKey?,
 ) : AbstractFilter<Identifiable<String>> {
+	public val dtoSerialName: String
 	// region ExternalViewFilter-ExternalViewFilter
 
 	// endregion

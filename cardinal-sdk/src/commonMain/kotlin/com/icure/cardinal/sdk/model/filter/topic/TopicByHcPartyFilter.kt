@@ -16,6 +16,7 @@ data class TopicByHcPartyFilter(
 	override val hcpId: String,
 	override val desc: String? = null,
 ) : AbstractFilter<Topic>, Filter.ByHcpartyFilter<Topic> {
+	public val dtoSerialName: String
 	// region TopicByHcPartyFilter-TopicByHcPartyFilter
 
 	// endregion

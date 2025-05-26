@@ -15,6 +15,7 @@ data class DataAttachment(
 	@DefaultValue("emptyList()")
 	public val utis: List<String> = emptyList(),
 ) {
+	public val dtoSerialName: String
 	// region DataAttachment-DataAttachment
 
 	// endregion

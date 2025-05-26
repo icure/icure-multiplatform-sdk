@@ -31,6 +31,7 @@ data class DecryptedCareTeamMember(
 	override val quality: CodeStub? = null,
 	override val encryptedSelf: Base64String? = null,
 ) : CareTeamMember {
+	public val dtoSerialName: String
 	// region CareTeamMember-DecryptedCareTeamMember
 
 	// endregion
@@ -44,6 +45,7 @@ data class EncryptedCareTeamMember(
 	override val quality: CodeStub? = null,
 	override val encryptedSelf: Base64String? = null,
 ) : CareTeamMember {
+	public val dtoSerialName: String
 	// region CareTeamMember-EncryptedCareTeamMember
 
 	// endregion

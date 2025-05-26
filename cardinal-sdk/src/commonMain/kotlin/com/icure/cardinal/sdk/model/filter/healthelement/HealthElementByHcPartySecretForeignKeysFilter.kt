@@ -25,6 +25,7 @@ data class HealthElementByHcPartySecretForeignKeysFilter(
 	@DefaultValue("false")
 	public val descending: Boolean = false,
 ) : AbstractFilter<HealthElement> {
+	public val dtoSerialName: String
 	// region HealthElementByHcPartySecretForeignKeysFilter-HealthElementByHcPartySecretForeignKeysFilter
 
 	// endregion

@@ -9,23 +9,26 @@ import kotlinx.serialization.Serializable
 @Serializable
 enum class TypedValuesType() {
 	@SerialName("BOOLEAN")
-	Boolean,
+	Boolean("BOOLEAN"),
 
 	@SerialName("INTEGER")
-	Integer,
+	Integer("INTEGER"),
 
 	@SerialName("DOUBLE")
-	Double,
+	Double("DOUBLE"),
 
 	@SerialName("STRING")
-	String,
+	String("STRING"),
 
 	@SerialName("DATE")
-	Date,
+	Date("DATE"),
 
 	@SerialName("CLOB")
-	Clob,
+	Clob("CLOB"),
 
 	@SerialName("JSON")
-	Json,
+	Json("JSON"),
+	;
+
+	public val dtoSerialName: kotlin.String
 }

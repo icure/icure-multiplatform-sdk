@@ -15,6 +15,7 @@ import kotlin.String
 data class AllUsersFilter(
 	override val desc: String? = null,
 ) : AbstractFilter<User>, Filter.AllFilter<User> {
+	public val dtoSerialName: String
 	// region AllUsersFilter-AllUsersFilter
 
 	// endregion

@@ -14,6 +14,7 @@ import kotlin.String
 data class AllGroupsFilter(
 	override val desc: String? = null,
 ) : AbstractFilter<Group> {
+	public val dtoSerialName: String
 	// region AllGroupsFilter-AllGroupsFilter
 
 	// endregion

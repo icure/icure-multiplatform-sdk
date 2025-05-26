@@ -2,6 +2,7 @@ package com.icure.cardinal.sdk.model.security
 
 import com.icure.cardinal.sdk.utils.DefaultValue
 import kotlinx.serialization.Serializable
+import kotlin.String
 import kotlin.collections.Set
 
 // WARNING: This file is auto-generated. If you change it manually, your changes will be lost.
@@ -14,6 +15,7 @@ data class Permission(
 	@DefaultValue("emptySet()")
 	public val revokes: Set<PermissionItem> = emptySet(),
 ) {
+	public val dtoSerialName: String
 	// region Permission-Permission
 
 	// endregion

@@ -15,6 +15,7 @@ data class HealthcarePartyHistoryStatus(
 	public val startDate: Long,
 	public val active: Boolean,
 ) {
+	public val dtoSerialName: String
 	// region HealthcarePartyHistoryStatus-HealthcarePartyHistoryStatus
 
 	// endregion

@@ -15,6 +15,7 @@ data class ServiceByAssociationIdFilter(
 	public val associationId: String,
 	override val desc: String? = null,
 ) : AbstractFilter<Service> {
+	public val dtoSerialName: String
 	// region ServiceByAssociationIdFilter-ServiceByAssociationIdFilter
 
 	// endregion

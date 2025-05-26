@@ -12,6 +12,7 @@ data class LabelledOccurence(
 	public val label: String,
 	public val occurence: Long,
 ) {
+	public val dtoSerialName: String
 	// region LabelledOccurence-LabelledOccurence
 
 	// endregion

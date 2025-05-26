@@ -48,6 +48,7 @@ data class Code(
 	@DefaultValue("false")
 	public val disabled: Boolean = false,
 ) : StoredDocument, CodeIdentification<String> {
+	public val dtoSerialName: String
 	// region Code-Code
 
 	// endregion

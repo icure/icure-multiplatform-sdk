@@ -167,6 +167,7 @@ data class DecryptedMessage(
 	override val encryptedSelf: Base64String? = null,
 	override val securityMetadata: SecurityMetadata? = null,
 ) : Message {
+	public val dtoSerialName: String
 	// region Message-DecryptedMessage
 override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): DecryptedMessage =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)
@@ -230,6 +231,7 @@ data class EncryptedMessage(
 	override val encryptedSelf: Base64String? = null,
 	override val securityMetadata: SecurityMetadata? = null,
 ) : Message {
+	public val dtoSerialName: String
 	// region Message-EncryptedMessage
 override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): EncryptedMessage =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)

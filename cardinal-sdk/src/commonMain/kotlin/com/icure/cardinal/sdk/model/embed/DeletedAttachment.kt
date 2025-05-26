@@ -14,6 +14,7 @@ data class DeletedAttachment(
 	public val key: String? = null,
 	public val deletionTime: Long? = null,
 ) {
+	public val dtoSerialName: String
 	// region DeletedAttachment-DeletedAttachment
 
 	// endregion

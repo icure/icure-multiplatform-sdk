@@ -19,6 +19,7 @@ data class HealthcarePartyByIdentifiersFilter(
 	public val identifiers: List<Identifier> = emptyList(),
 	override val desc: String? = null,
 ) : AbstractFilter<HealthcareParty> {
+	public val dtoSerialName: String
 	// region HealthcarePartyByIdentifiersFilter-HealthcarePartyByIdentifiersFilter
 
 	// endregion

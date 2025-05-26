@@ -11,6 +11,7 @@ data class EmailTemplate(
 	public val subject: String? = null,
 	public val body: String? = null,
 ) {
+	public val dtoSerialName: String
 	// region EmailTemplate-EmailTemplate
 
 	// endregion

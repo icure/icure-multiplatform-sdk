@@ -18,6 +18,7 @@ data class Place(
 	override val name: String? = null,
 	public val address: DecryptedAddress? = null,
 ) : StoredDocument, Named {
+	public val dtoSerialName: String
 	// region Place-Place
 
 	// endregion

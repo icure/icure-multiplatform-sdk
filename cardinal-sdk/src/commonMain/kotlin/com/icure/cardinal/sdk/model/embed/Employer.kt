@@ -12,6 +12,7 @@ data class Employer(
 	override val name: String? = null,
 	public val addresse: DecryptedAddress? = null,
 ) : Named {
+	public val dtoSerialName: String
 	// region Employer-Employer
 
 	// endregion

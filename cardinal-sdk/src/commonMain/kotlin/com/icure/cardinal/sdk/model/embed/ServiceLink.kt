@@ -10,6 +10,7 @@ import kotlin.String
 data class ServiceLink(
 	public val serviceId: String? = null,
 ) {
+	public val dtoSerialName: String
 	// region ServiceLink-ServiceLink
 
 	// endregion

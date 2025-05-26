@@ -12,6 +12,7 @@ data class PropertyTypeStub(
 	public val identifier: String? = null,
 	public val type: TypedValuesType? = null,
 ) {
+	public val dtoSerialName: String
 	// region PropertyTypeStub-PropertyTypeStub
 
 	// endregion

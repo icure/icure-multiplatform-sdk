@@ -16,6 +16,7 @@ data class MessageByParentIdsFilter(
 	public val parentIds: List<String>,
 	override val desc: String? = null,
 ) : AbstractFilter<Message> {
+	public val dtoSerialName: String
 	// region MessageByParentIdsFilter-MessageByParentIdsFilter
 
 	// endregion

@@ -37,6 +37,7 @@ data class ParagraphAgreement(
 	public val agreementAppendices: List<AgreementAppendix>? = null,
 	public val documentId: String? = null,
 ) {
+	public val dtoSerialName: String
 	// region ParagraphAgreement-ParagraphAgreement
 
 	// endregion

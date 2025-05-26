@@ -32,6 +32,7 @@ data class DateTimePicker(
 	override val now: Boolean? = null,
 	override val translate: Boolean? = null,
 ) : Field {
+	public val dtoSerialName: String
 	// region DateTimePicker-DateTimePicker
 
 	// endregion

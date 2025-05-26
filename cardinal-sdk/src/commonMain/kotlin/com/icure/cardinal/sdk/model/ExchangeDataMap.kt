@@ -20,6 +20,7 @@ data class ExchangeDataMap(
 	public val encryptedExchangeDataIds: Map<KeypairFingerprintV2String, Base64String> = emptyMap(),
 	override val deletionDate: Long? = null,
 ) : StoredDocument {
+	public val dtoSerialName: String
 	// region ExchangeDataMap-ExchangeDataMap
 
 	// endregion

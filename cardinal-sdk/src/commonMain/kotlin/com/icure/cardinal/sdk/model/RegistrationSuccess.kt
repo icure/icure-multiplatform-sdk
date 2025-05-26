@@ -12,6 +12,7 @@ data class RegistrationSuccess(
 	public val userId: String,
 	public val token: String,
 ) {
+	public val dtoSerialName: String
 	// region RegistrationSuccess-RegistrationSuccess
 
 	// endregion

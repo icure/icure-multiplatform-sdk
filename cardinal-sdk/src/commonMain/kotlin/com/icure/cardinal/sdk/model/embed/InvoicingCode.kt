@@ -177,6 +177,7 @@ data class DecryptedInvoicingCode(
 	override val status: Long? = null,
 	override val encryptedSelf: Base64String? = null,
 ) : InvoicingCode {
+	public val dtoSerialName: String
 	// region InvoicingCode-DecryptedInvoicingCode
 
 	// endregion
@@ -238,6 +239,7 @@ data class EncryptedInvoicingCode(
 	override val status: Long? = null,
 	override val encryptedSelf: Base64String? = null,
 ) : InvoicingCode {
+	public val dtoSerialName: String
 	// region InvoicingCode-EncryptedInvoicingCode
 
 	// endregion

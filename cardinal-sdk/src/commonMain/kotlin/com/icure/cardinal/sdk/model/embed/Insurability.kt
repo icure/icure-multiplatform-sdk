@@ -49,6 +49,7 @@ data class DecryptedInsurability(
 	override val titularyId: String? = null,
 	override val encryptedSelf: Base64String? = null,
 ) : Insurability {
+	public val dtoSerialName: String
 	// region Insurability-DecryptedInsurability
 
 	// endregion
@@ -68,6 +69,7 @@ data class EncryptedInsurability(
 	override val titularyId: String? = null,
 	override val encryptedSelf: Base64String? = null,
 ) : Insurability {
+	public val dtoSerialName: String
 	// region Insurability-EncryptedInsurability
 
 	// endregion

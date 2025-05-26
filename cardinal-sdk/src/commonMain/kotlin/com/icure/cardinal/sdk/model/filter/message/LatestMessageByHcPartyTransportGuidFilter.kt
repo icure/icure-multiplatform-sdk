@@ -16,6 +16,7 @@ data class LatestMessageByHcPartyTransportGuidFilter(
 	public val transportGuid: String,
 	override val desc: String? = null,
 ) : AbstractFilter<Message> {
+	public val dtoSerialName: String
 	// region LatestMessageByHcPartyTransportGuidFilter-LatestMessageByHcPartyTransportGuidFilter
 
 	// endregion

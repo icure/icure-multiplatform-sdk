@@ -44,6 +44,7 @@ data class FlowItem(
 	public val description: String? = null,
 	public val interventionCode: String? = null,
 ) {
+	public val dtoSerialName: String
 	// region FlowItem-FlowItem
 
 	// endregion

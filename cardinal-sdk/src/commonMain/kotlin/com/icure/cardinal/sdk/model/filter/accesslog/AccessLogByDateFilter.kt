@@ -22,6 +22,7 @@ data class AccessLogByDateFilter(
 	public val endDate: Instant?,
 	public val descending: Boolean?,
 ) : AbstractFilter<AccessLog> {
+	public val dtoSerialName: String
 	// region AccessLogByDateFilter-AccessLogByDateFilter
 
 	// endregion

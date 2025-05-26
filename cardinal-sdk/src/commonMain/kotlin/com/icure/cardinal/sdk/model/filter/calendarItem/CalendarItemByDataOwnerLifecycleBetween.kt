@@ -22,6 +22,7 @@ data class CalendarItemByDataOwnerLifecycleBetween(
 	public val descending: Boolean = false,
 	override val desc: String? = null,
 ) : AbstractFilter<CalendarItem> {
+	public val dtoSerialName: String
 	// region CalendarItemByDataOwnerLifecycleBetween-CalendarItemByDataOwnerLifecycleBetween
 
 	// endregion

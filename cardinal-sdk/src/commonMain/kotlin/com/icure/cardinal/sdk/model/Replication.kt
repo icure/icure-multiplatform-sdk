@@ -23,6 +23,7 @@ data class Replication(
 	@DefaultValue("emptyList()")
 	public val databaseSynchronizations: List<DatabaseSynchronization> = emptyList(),
 ) : StoredDocument, Identifiable<String>, Named {
+	public val dtoSerialName: String
 	// region Replication-Replication
 
 	// endregion

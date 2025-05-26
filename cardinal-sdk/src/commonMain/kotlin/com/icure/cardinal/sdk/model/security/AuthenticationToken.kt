@@ -14,6 +14,7 @@ data class AuthenticationToken(
 	public val validity: Long,
 	public val deletionDate: Long? = null,
 ) {
+	public val dtoSerialName: String
 	// region AuthenticationToken-AuthenticationToken
 
 	// endregion

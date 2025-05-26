@@ -2,6 +2,7 @@ package com.icure.cardinal.sdk.model.embed
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlin.String
 
 // WARNING: This file is auto-generated. If you change it manually, your changes will be lost.
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
@@ -9,62 +10,65 @@ import kotlinx.serialization.Serializable
 @Serializable
 enum class DelegationTag() {
 	@SerialName("all")
-	All,
+	All("all"),
 
 	@SerialName("administrativeData")
-	AdministrativeData,
+	AdministrativeData("administrativeData"),
 
 	@SerialName("anonymousMedicalInformation")
-	AnonymousMedicalInformation,
+	AnonymousMedicalInformation("anonymousMedicalInformation"),
 
 	@SerialName("generalInformation")
-	GeneralInformation,
+	GeneralInformation("generalInformation"),
 
 	@SerialName("financialInformation")
-	FinancialInformation,
+	FinancialInformation("financialInformation"),
 
 	@SerialName("medicalInformation")
-	MedicalInformation,
+	MedicalInformation("medicalInformation"),
 
 	@SerialName("sensitiveInformation")
-	SensitiveInformation,
+	SensitiveInformation("sensitiveInformation"),
 
 	@SerialName("confidentialInformation")
-	ConfidentialInformation,
+	ConfidentialInformation("confidentialInformation"),
 
 	@SerialName("cdItemRisk")
-	CdItemRisk,
+	CdItemRisk("cdItemRisk"),
 
 	@SerialName("cdItemFamilyRisk")
-	CdItemFamilyRisk,
+	CdItemFamilyRisk("cdItemFamilyRisk"),
 
 	@SerialName("cdItemHealthcareelement")
-	CdItemHealthcareelement,
+	CdItemHealthcareelement("cdItemHealthcareelement"),
 
 	@SerialName("cdItemHealthcareapproach")
-	CdItemHealthcareapproach,
+	CdItemHealthcareapproach("cdItemHealthcareapproach"),
 
 	@SerialName("cdItemAllergy")
-	CdItemAllergy,
+	CdItemAllergy("cdItemAllergy"),
 
 	@SerialName("cdItemDiagnosis")
-	CdItemDiagnosis,
+	CdItemDiagnosis("cdItemDiagnosis"),
 
 	@SerialName("cdItemLab")
-	CdItemLab,
+	CdItemLab("cdItemLab"),
 
 	@SerialName("cdItemResult")
-	CdItemResult,
+	CdItemResult("cdItemResult"),
 
 	@SerialName("cdItemParameter")
-	CdItemParameter,
+	CdItemParameter("cdItemParameter"),
 
 	@SerialName("cdItemMedication")
-	CdItemMedication,
+	CdItemMedication("cdItemMedication"),
 
 	@SerialName("cdItemTreatment")
-	CdItemTreatment,
+	CdItemTreatment("cdItemTreatment"),
 
 	@SerialName("cdItemVaccine")
-	CdItemVaccine,
+	CdItemVaccine("cdItemVaccine"),
+	;
+
+	public val dtoSerialName: String
 }

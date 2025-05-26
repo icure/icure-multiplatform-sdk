@@ -24,6 +24,7 @@ data class UserStub(
 	public val patientId: String? = null,
 	public val email: String? = null,
 ) : StoredDocument {
+	public val dtoSerialName: String
 	// region UserStub-UserStub
 
 	// endregion

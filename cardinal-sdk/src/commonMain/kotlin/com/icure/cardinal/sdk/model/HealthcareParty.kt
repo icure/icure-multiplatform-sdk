@@ -120,6 +120,7 @@ data class HealthcareParty(
 	@DefaultValue("emptySet()")
 	override val publicKeysForOaepWithSha256: Set<SpkiHexString> = emptySet(),
 ) : StoredDocument, Named, Person, CryptoActor, DataOwner, HasCodes, HasTags {
+	public val dtoSerialName: String
 	// region HealthcareParty-HealthcareParty
 	companion object {
 		const val KRAKEN_QUALIFIED_NAME = "org.taktik.icure.entities.HealthcareParty"

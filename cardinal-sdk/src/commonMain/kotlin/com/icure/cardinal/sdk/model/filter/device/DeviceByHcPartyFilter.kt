@@ -15,6 +15,7 @@ data class DeviceByHcPartyFilter(
 	override val desc: String? = null,
 	public val responsibleId: String? = null,
 ) : AbstractFilter<Device> {
+	public val dtoSerialName: String
 	// region DeviceByHcPartyFilter-DeviceByHcPartyFilter
 
 	// endregion

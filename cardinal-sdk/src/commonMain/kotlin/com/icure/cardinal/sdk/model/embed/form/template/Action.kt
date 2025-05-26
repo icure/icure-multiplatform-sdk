@@ -16,6 +16,7 @@ data class Action(
 	@DefaultValue("emptyList()")
 	public val states: List<State>? = emptyList(),
 ) {
+	public val dtoSerialName: String
 	// region Action-Action
 
 	// endregion

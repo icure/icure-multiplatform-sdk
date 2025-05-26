@@ -105,6 +105,7 @@ data class DecryptedReceipt(
 	override val encryptedSelf: Base64String? = null,
 	override val securityMetadata: SecurityMetadata? = null,
 ) : Receipt {
+	public val dtoSerialName: String
 	// region Receipt-DecryptedReceipt
 override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): DecryptedReceipt =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)
@@ -144,6 +145,7 @@ data class EncryptedReceipt(
 	override val encryptedSelf: Base64String? = null,
 	override val securityMetadata: SecurityMetadata? = null,
 ) : Receipt {
+	public val dtoSerialName: String
 	// region Receipt-EncryptedReceipt
 override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): EncryptedReceipt =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)

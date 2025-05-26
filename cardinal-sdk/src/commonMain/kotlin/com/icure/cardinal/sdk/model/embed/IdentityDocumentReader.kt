@@ -21,6 +21,7 @@ data class IdentityDocumentReader(
 	@DefaultValue("0")
 	public val reasonUsingVignette: Int = 0,
 ) {
+	public val dtoSerialName: String
 	// region IdentityDocumentReader-IdentityDocumentReader
 
 	// endregion

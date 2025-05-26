@@ -17,6 +17,7 @@ data class PatientByHcPartyDateOfBirthFilter(
 	public val dateOfBirth: Int,
 	public val healthcarePartyId: String? = null,
 ) : AbstractFilter<Patient> {
+	public val dtoSerialName: String
 	// region PatientByHcPartyDateOfBirthFilter-PatientByHcPartyDateOfBirthFilter
 
 	// endregion

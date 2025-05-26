@@ -41,6 +41,7 @@ data class TimeTableItem(
 	@DefaultValue("emptySet()")
 	public val reservingRights: Set<String> = emptySet(),
 ) {
+	public val dtoSerialName: String
 	// region TimeTableItem-TimeTableItem
 
 	// endregion

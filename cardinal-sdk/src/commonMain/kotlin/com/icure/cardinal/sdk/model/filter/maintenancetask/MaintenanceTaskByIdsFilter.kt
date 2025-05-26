@@ -17,6 +17,7 @@ data class MaintenanceTaskByIdsFilter(
 	override val ids: Set<String>,
 	override val desc: String? = null,
 ) : AbstractFilter<MaintenanceTask>, Filter.IdsFilter<String, MaintenanceTask> {
+	public val dtoSerialName: String
 	// region MaintenanceTaskByIdsFilter-MaintenanceTaskByIdsFilter
 
 	// endregion

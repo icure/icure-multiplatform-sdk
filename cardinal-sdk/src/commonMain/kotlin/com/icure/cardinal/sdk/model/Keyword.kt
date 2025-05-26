@@ -33,6 +33,7 @@ data class Keyword(
 	public val subWords: Set<KeywordSubword> = emptySet(),
 	public val userId: String? = null,
 ) : StoredDocument, ICureDocument<String> {
+	public val dtoSerialName: String
 	// region Keyword-Keyword
 
 	// endregion

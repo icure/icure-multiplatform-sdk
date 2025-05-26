@@ -22,6 +22,7 @@ data class ReplicationStats(
 	public val startTime: ZonedDateTime? = null,
 	public val error: String? = null,
 ) {
+	public val dtoSerialName: String
 	// region ReplicationStats-ReplicationStats
 
 	// endregion

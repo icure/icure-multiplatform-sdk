@@ -30,6 +30,7 @@ data class Insurance(
 	public val parent: String? = null,
 	public val address: DecryptedAddress,
 ) : StoredDocument {
+	public val dtoSerialName: String
 	// region Insurance-Insurance
 
 	// endregion

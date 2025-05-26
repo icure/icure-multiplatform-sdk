@@ -14,6 +14,7 @@ data class GroupDatabasesInfo(
 	public val databasesInfo: List<DatabaseInfo>,
 	public val gcpStorageSize: Long,
 ) {
+	public val dtoSerialName: String
 	// region GroupDatabasesInfo-GroupDatabasesInfo
 
 	// endregion

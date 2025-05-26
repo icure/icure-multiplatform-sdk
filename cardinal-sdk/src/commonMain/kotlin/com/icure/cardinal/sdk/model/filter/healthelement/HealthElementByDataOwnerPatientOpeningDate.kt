@@ -25,6 +25,7 @@ data class HealthElementByDataOwnerPatientOpeningDate(
 	@DefaultValue("false")
 	public val descending: Boolean = false,
 ) : AbstractFilter<HealthElement> {
+	public val dtoSerialName: String
 	// region HealthElementByDataOwnerPatientOpeningDate-HealthElementByDataOwnerPatientOpeningDate
 
 	// endregion

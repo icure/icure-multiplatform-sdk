@@ -28,6 +28,7 @@ data class Annotation(
 	public val tags: Set<CodeStub> = emptySet(),
 	public val encryptedSelf: String? = null,
 ) : Identifiable<String> {
+	public val dtoSerialName: String
 	// region Annotation-Annotation
 
 	// endregion

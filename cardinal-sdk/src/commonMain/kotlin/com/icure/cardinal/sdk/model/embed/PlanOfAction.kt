@@ -104,6 +104,7 @@ data class DecryptedPlanOfAction(
 	override val relevant: Boolean = true,
 	override val encryptedSelf: Base64String? = null,
 ) : PlanOfAction {
+	public val dtoSerialName: String
 	// region PlanOfAction-DecryptedPlanOfAction
 
 	// endregion
@@ -143,6 +144,7 @@ data class EncryptedPlanOfAction(
 	override val relevant: Boolean = true,
 	override val encryptedSelf: Base64String? = null,
 ) : PlanOfAction {
+	public val dtoSerialName: String
 	// region PlanOfAction-EncryptedPlanOfAction
 
 	// endregion

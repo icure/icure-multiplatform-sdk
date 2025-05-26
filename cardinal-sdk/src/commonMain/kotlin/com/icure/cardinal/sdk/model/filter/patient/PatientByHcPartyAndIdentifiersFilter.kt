@@ -20,6 +20,7 @@ data class PatientByHcPartyAndIdentifiersFilter(
 	public val identifiers: List<Identifier> = emptyList(),
 	override val desc: String? = null,
 ) : AbstractFilter<Patient> {
+	public val dtoSerialName: String
 	// region PatientByHcPartyAndIdentifiersFilter-PatientByHcPartyAndIdentifiersFilter
 
 	// endregion

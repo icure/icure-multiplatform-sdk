@@ -14,6 +14,7 @@ data class AdministrationQuantity(
 	public val administrationUnit: CodeStub? = null,
 	public val unit: String? = null,
 ) {
+	public val dtoSerialName: String
 	// region AdministrationQuantity-AdministrationQuantity
 
 	// endregion

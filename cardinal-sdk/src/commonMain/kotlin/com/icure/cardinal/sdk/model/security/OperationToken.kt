@@ -15,6 +15,7 @@ data class OperationToken(
 	public val operation: Operation,
 	public val description: String? = null,
 ) {
+	public val dtoSerialName: String
 	// region OperationToken-OperationToken
 
 	// endregion

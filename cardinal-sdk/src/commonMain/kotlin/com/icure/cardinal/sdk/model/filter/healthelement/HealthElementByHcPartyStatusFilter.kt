@@ -17,6 +17,7 @@ data class HealthElementByHcPartyStatusFilter(
 	public val hcPartyId: String,
 	public val status: Int,
 ) : AbstractFilter<HealthElement> {
+	public val dtoSerialName: String
 	// region HealthElementByHcPartyStatusFilter-HealthElementByHcPartyStatusFilter
 
 	// endregion

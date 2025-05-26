@@ -57,6 +57,7 @@ data class Medication(
 	public val prescriptionRID: String? = null,
 	public val status: Int? = null,
 ) {
+	public val dtoSerialName: String
 	// region Medication-Medication
 
 	// endregion

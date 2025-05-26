@@ -15,6 +15,7 @@ import kotlin.String
 data class AllDocumentsFilter(
 	override val desc: String? = null,
 ) : AbstractFilter<Document>, Filter.AllFilter<Document> {
+	public val dtoSerialName: String
 	// region AllDocumentsFilter-AllDocumentsFilter
 
 	// endregion

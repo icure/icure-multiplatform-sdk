@@ -76,6 +76,7 @@ data class DecryptedContent(
 	override val ratio: List<Measure>? = null,
 	override val range: List<Measure>? = null,
 ) : Content {
+	public val dtoSerialName: String
 	// region Content-DecryptedContent
 
 	// endregion
@@ -99,6 +100,7 @@ data class EncryptedContent(
 	override val ratio: List<Measure>? = null,
 	override val range: List<Measure>? = null,
 ) : Content {
+	public val dtoSerialName: String
 	// region Content-EncryptedContent
 
 	// endregion

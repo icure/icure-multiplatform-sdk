@@ -15,6 +15,7 @@ import kotlin.String
 data class AllDevicesFilter(
 	override val desc: String? = null,
 ) : AbstractFilter<Device>, Filter.AllFilter<Device> {
+	public val dtoSerialName: String
 	// region AllDevicesFilter-AllDevicesFilter
 
 	// endregion

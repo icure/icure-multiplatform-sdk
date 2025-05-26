@@ -2,6 +2,7 @@ package com.icure.cardinal.sdk.model.base
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlin.String
 
 // WARNING: This file is auto-generated. If you change it manually, your changes will be lost.
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
@@ -9,236 +10,239 @@ import kotlinx.serialization.Serializable
 @Serializable
 enum class CodeFlag() {
 	@SerialName("male_only")
-	MaleOnly,
+	MaleOnly("male_only"),
 
 	@SerialName("female_only")
-	FemaleOnly,
+	FemaleOnly("female_only"),
 
 	@SerialName("deptkinesitherapy")
-	Deptkinesitherapy,
+	Deptkinesitherapy("deptkinesitherapy"),
 
 	@SerialName("deptnursing")
-	Deptnursing,
+	Deptnursing("deptnursing"),
 
 	@SerialName("deptgeneralpractice")
-	Deptgeneralpractice,
+	Deptgeneralpractice("deptgeneralpractice"),
 
 	@SerialName("deptsocialworker")
-	Deptsocialworker,
+	Deptsocialworker("deptsocialworker"),
 
 	@SerialName("deptpsychology")
-	Deptpsychology,
+	Deptpsychology("deptpsychology"),
 
 	@SerialName("deptadministrative")
-	Deptadministrative,
+	Deptadministrative("deptadministrative"),
 
 	@SerialName("deptdietetics")
-	Deptdietetics,
+	Deptdietetics("deptdietetics"),
 
 	@SerialName("deptspeechtherapy")
-	Deptspeechtherapy,
+	Deptspeechtherapy("deptspeechtherapy"),
 
 	@SerialName("deptdentistry")
-	Deptdentistry,
+	Deptdentistry("deptdentistry"),
 
 	@SerialName("deptoccupationaltherapy")
-	Deptoccupationaltherapy,
+	Deptoccupationaltherapy("deptoccupationaltherapy"),
 
 	@SerialName("depthealthcare")
-	Depthealthcare,
+	Depthealthcare("depthealthcare"),
 
 	@SerialName("deptgynecology")
-	Deptgynecology,
+	Deptgynecology("deptgynecology"),
 
 	@SerialName("deptpediatry")
-	Deptpediatry,
+	Deptpediatry("deptpediatry"),
 
 	@SerialName("deptalgology")
-	Deptalgology,
+	Deptalgology("deptalgology"),
 
 	@SerialName("deptanatomopathology")
-	Deptanatomopathology,
+	Deptanatomopathology("deptanatomopathology"),
 
 	@SerialName("deptanesthesiology")
-	Deptanesthesiology,
+	Deptanesthesiology("deptanesthesiology"),
 
 	@SerialName("deptbacteriology")
-	Deptbacteriology,
+	Deptbacteriology("deptbacteriology"),
 
 	@SerialName("deptcardiacsurgery")
-	Deptcardiacsurgery,
+	Deptcardiacsurgery("deptcardiacsurgery"),
 
 	@SerialName("deptcardiology")
-	Deptcardiology,
+	Deptcardiology("deptcardiology"),
 
 	@SerialName("deptchildandadolescentpsychiatry")
-	Deptchildandadolescentpsychiatry,
+	Deptchildandadolescentpsychiatry("deptchildandadolescentpsychiatry"),
 
 	@SerialName("deptdermatology")
-	Deptdermatology,
+	Deptdermatology("deptdermatology"),
 
 	@SerialName("deptdiabetology")
-	Deptdiabetology,
+	Deptdiabetology("deptdiabetology"),
 
 	@SerialName("deptemergency")
-	Deptemergency,
+	Deptemergency("deptemergency"),
 
 	@SerialName("deptendocrinology")
-	Deptendocrinology,
+	Deptendocrinology("deptendocrinology"),
 
 	@SerialName("deptgastroenterology")
-	Deptgastroenterology,
+	Deptgastroenterology("deptgastroenterology"),
 
 	@SerialName("deptgenetics")
-	Deptgenetics,
+	Deptgenetics("deptgenetics"),
 
 	@SerialName("deptgeriatry")
-	Deptgeriatry,
+	Deptgeriatry("deptgeriatry"),
 
 	@SerialName("depthandsurgery")
-	Depthandsurgery,
+	Depthandsurgery("depthandsurgery"),
 
 	@SerialName("depthematology")
-	Depthematology,
+	Depthematology("depthematology"),
 
 	@SerialName("deptinfectiousdisease")
-	Deptinfectiousdisease,
+	Deptinfectiousdisease("deptinfectiousdisease"),
 
 	@SerialName("deptintensivecare")
-	Deptintensivecare,
+	Deptintensivecare("deptintensivecare"),
 
 	@SerialName("deptlaboratory")
-	Deptlaboratory,
+	Deptlaboratory("deptlaboratory"),
 
 	@SerialName("deptmajorburns")
-	Deptmajorburns,
+	Deptmajorburns("deptmajorburns"),
 
 	@SerialName("deptmaxillofacialsurgery")
-	Deptmaxillofacialsurgery,
+	Deptmaxillofacialsurgery("deptmaxillofacialsurgery"),
 
 	@SerialName("deptmedicine")
-	Deptmedicine,
+	Deptmedicine("deptmedicine"),
 
 	@SerialName("deptmolecularbiology")
-	Deptmolecularbiology,
+	Deptmolecularbiology("deptmolecularbiology"),
 
 	@SerialName("deptneonatalogy")
-	Deptneonatalogy,
+	Deptneonatalogy("deptneonatalogy"),
 
 	@SerialName("deptnephrology")
-	Deptnephrology,
+	Deptnephrology("deptnephrology"),
 
 	@SerialName("deptneurology")
-	Deptneurology,
+	Deptneurology("deptneurology"),
 
 	@SerialName("deptneurosurgery")
-	Deptneurosurgery,
+	Deptneurosurgery("deptneurosurgery"),
 
 	@SerialName("deptnte")
-	Deptnte,
+	Deptnte("deptnte"),
 
 	@SerialName("deptnuclear")
-	Deptnuclear,
+	Deptnuclear("deptnuclear"),
 
 	@SerialName("deptnutritiondietetics")
-	Deptnutritiondietetics,
+	Deptnutritiondietetics("deptnutritiondietetics"),
 
 	@SerialName("deptobstetrics")
-	Deptobstetrics,
+	Deptobstetrics("deptobstetrics"),
 
 	@SerialName("deptoncology")
-	Deptoncology,
+	Deptoncology("deptoncology"),
 
 	@SerialName("deptophtalmology")
-	Deptophtalmology,
+	Deptophtalmology("deptophtalmology"),
 
 	@SerialName("deptorthopedy")
-	Deptorthopedy,
+	Deptorthopedy("deptorthopedy"),
 
 	@SerialName("deptpalliativecare")
-	Deptpalliativecare,
+	Deptpalliativecare("deptpalliativecare"),
 
 	@SerialName("deptpediatricintensivecare")
-	Deptpediatricintensivecare,
+	Deptpediatricintensivecare("deptpediatricintensivecare"),
 
 	@SerialName("deptpediatricsurgery")
-	Deptpediatricsurgery,
+	Deptpediatricsurgery("deptpediatricsurgery"),
 
 	@SerialName("deptpharmacy")
-	Deptpharmacy,
+	Deptpharmacy("deptpharmacy"),
 
 	@SerialName("deptphysicalmedecine")
-	Deptphysicalmedecine,
+	Deptphysicalmedecine("deptphysicalmedecine"),
 
 	@SerialName("deptphysiotherapy")
-	Deptphysiotherapy,
+	Deptphysiotherapy("deptphysiotherapy"),
 
 	@SerialName("deptplasticandreparatorysurgery")
-	Deptplasticandreparatorysurgery,
+	Deptplasticandreparatorysurgery("deptplasticandreparatorysurgery"),
 
 	@SerialName("deptpneumology")
-	Deptpneumology,
+	Deptpneumology("deptpneumology"),
 
 	@SerialName("deptpodiatry")
-	Deptpodiatry,
+	Deptpodiatry("deptpodiatry"),
 
 	@SerialName("deptpsychiatry")
-	Deptpsychiatry,
+	Deptpsychiatry("deptpsychiatry"),
 
 	@SerialName("deptradiology")
-	Deptradiology,
+	Deptradiology("deptradiology"),
 
 	@SerialName("deptradiotherapy")
-	Deptradiotherapy,
+	Deptradiotherapy("deptradiotherapy"),
 
 	@SerialName("deptrevalidation")
-	Deptrevalidation,
+	Deptrevalidation("deptrevalidation"),
 
 	@SerialName("deptrheumatology")
-	Deptrheumatology,
+	Deptrheumatology("deptrheumatology"),
 
 	@SerialName("deptrhumatology")
-	Deptrhumatology,
+	Deptrhumatology("deptrhumatology"),
 
 	@SerialName("deptsenology")
-	Deptsenology,
+	Deptsenology("deptsenology"),
 
 	@SerialName("deptsocialservice")
-	Deptsocialservice,
+	Deptsocialservice("deptsocialservice"),
 
 	@SerialName("deptsportsmedecine")
-	Deptsportsmedecine,
+	Deptsportsmedecine("deptsportsmedecine"),
 
 	@SerialName("deptstomatology")
-	Deptstomatology,
+	Deptstomatology("deptstomatology"),
 
 	@SerialName("deptsurgery")
-	Deptsurgery,
+	Deptsurgery("deptsurgery"),
 
 	@SerialName("deptthoracicsurgery")
-	Deptthoracicsurgery,
+	Deptthoracicsurgery("deptthoracicsurgery"),
 
 	@SerialName("depttoxicology")
-	Depttoxicology,
+	Depttoxicology("depttoxicology"),
 
 	@SerialName("depttropicalmedecine")
-	Depttropicalmedecine,
+	Depttropicalmedecine("depttropicalmedecine"),
 
 	@SerialName("depturology")
-	Depturology,
+	Depturology("depturology"),
 
 	@SerialName("deptvascularsurgery")
-	Deptvascularsurgery,
+	Deptvascularsurgery("deptvascularsurgery"),
 
 	@SerialName("deptvisceraldigestiveabdominalsurgery")
-	Deptvisceraldigestiveabdominalsurgery,
+	Deptvisceraldigestiveabdominalsurgery("deptvisceraldigestiveabdominalsurgery"),
 
 	@SerialName("depttransplantsurgery")
-	Depttransplantsurgery,
+	Depttransplantsurgery("depttransplantsurgery"),
 
 	@SerialName("deptpercutaneous")
-	Deptpercutaneous,
+	Deptpercutaneous("deptpercutaneous"),
 
 	@SerialName("deptchildbirth")
-	Deptchildbirth,
+	Deptchildbirth("deptchildbirth"),
+	;
+
+	public val dtoSerialName: String
 }

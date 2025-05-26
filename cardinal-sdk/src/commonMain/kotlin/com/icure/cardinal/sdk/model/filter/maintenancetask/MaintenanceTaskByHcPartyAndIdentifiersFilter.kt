@@ -20,6 +20,7 @@ data class MaintenanceTaskByHcPartyAndIdentifiersFilter(
 	public val identifiers: List<Identifier> = emptyList(),
 	override val desc: String? = null,
 ) : AbstractFilter<MaintenanceTask> {
+	public val dtoSerialName: String
 	// region MaintenanceTaskByHcPartyAndIdentifiersFilter-MaintenanceTaskByHcPartyAndIdentifiersFilter
 
 	// endregion

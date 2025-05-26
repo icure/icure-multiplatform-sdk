@@ -22,6 +22,7 @@ data class ContactByDataOwnerPatientOpeningDateFilter(
 	public val descending: Boolean? = null,
 	override val desc: String? = null,
 ) : AbstractFilter<Contact> {
+	public val dtoSerialName: String
 	// region ContactByDataOwnerPatientOpeningDateFilter-ContactByDataOwnerPatientOpeningDateFilter
 
 	// endregion

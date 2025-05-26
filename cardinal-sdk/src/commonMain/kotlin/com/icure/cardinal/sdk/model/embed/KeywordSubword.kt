@@ -12,6 +12,7 @@ data class KeywordSubword(
 	public val `value`: String? = null,
 	public val subWords: List<KeywordSubword>? = null,
 ) {
+	public val dtoSerialName: String
 	// region KeywordSubword-KeywordSubword
 
 	// endregion

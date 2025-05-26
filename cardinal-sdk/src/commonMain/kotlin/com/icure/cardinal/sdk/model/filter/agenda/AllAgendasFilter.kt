@@ -14,6 +14,7 @@ import kotlin.String
 data class AllAgendasFilter(
 	override val desc: String? = null,
 ) : AbstractFilter<Agenda> {
+	public val dtoSerialName: String
 	// region AllAgendasFilter-AllAgendasFilter
 
 	// endregion

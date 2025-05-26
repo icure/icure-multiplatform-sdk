@@ -14,6 +14,7 @@ data class Section(
 	public val description: String? = null,
 	public val keywords: List<String>? = null,
 ) {
+	public val dtoSerialName: String
 	// region Section-Section
 
 	// endregion

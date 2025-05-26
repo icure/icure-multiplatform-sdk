@@ -45,6 +45,7 @@ data class Agenda(
 	@DefaultValue("emptyList()")
 	public val timeTables: List<EmbeddedTimeTable> = emptyList(),
 ) : StoredDocument, ICureDocument<String> {
+	public val dtoSerialName: String
 	// region Agenda-Agenda
 
 	// endregion

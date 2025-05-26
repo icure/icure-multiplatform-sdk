@@ -25,6 +25,7 @@ data class ReplicateCommand(
 	public val source: Remote,
 	public val target: Remote,
 ) : Versionable<String> {
+	public val dtoSerialName: String
 	// region ReplicateCommand-ReplicateCommand
 
 	// endregion

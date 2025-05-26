@@ -17,6 +17,7 @@ data class HealthcarePartyByNationalIdentifierFilter(
 	public val descending: Boolean? = null,
 	override val desc: String? = null,
 ) : AbstractFilter<HealthcareParty> {
+	public val dtoSerialName: String
 	// region HealthcarePartyByNationalIdentifierFilter-HealthcarePartyByNationalIdentifierFilter
 
 	// endregion

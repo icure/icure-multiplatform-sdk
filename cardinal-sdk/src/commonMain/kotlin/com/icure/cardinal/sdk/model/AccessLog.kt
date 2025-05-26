@@ -107,6 +107,7 @@ data class DecryptedAccessLog(
 	override val encryptedSelf: Base64String? = null,
 	override val securityMetadata: SecurityMetadata? = null,
 ) : AccessLog {
+	public val dtoSerialName: String
 	// region AccessLog-DecryptedAccessLog
 override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): DecryptedAccessLog =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)
@@ -146,6 +147,7 @@ data class EncryptedAccessLog(
 	override val encryptedSelf: Base64String? = null,
 	override val securityMetadata: SecurityMetadata? = null,
 ) : AccessLog {
+	public val dtoSerialName: String
 	// region AccessLog-EncryptedAccessLog
 override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): EncryptedAccessLog =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)

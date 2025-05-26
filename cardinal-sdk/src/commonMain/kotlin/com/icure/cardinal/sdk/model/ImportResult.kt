@@ -30,6 +30,7 @@ data class ImportResult(
 	@DefaultValue("emptyMap()")
 	public val attachments: Map<String, MimeAttachment> = emptyMap(),
 ) {
+	public val dtoSerialName: String
 	// region ImportResult-ImportResult
 
 	// endregion

@@ -12,6 +12,7 @@ import kotlin.collections.Map
 data class IndexingInfo(
 	public val statuses: Map<String, Int>? = null,
 ) {
+	public val dtoSerialName: String
 	// region IndexingInfo-IndexingInfo
 
 	// endregion

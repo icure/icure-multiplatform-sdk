@@ -19,6 +19,7 @@ data class PatientByHcPartyGenderEducationProfession(
 	public val education: String? = null,
 	public val profession: String? = null,
 ) : AbstractFilter<Patient> {
+	public val dtoSerialName: String
 	// region PatientByHcPartyGenderEducationProfession-PatientByHcPartyGenderEducationProfession
 
 	// endregion

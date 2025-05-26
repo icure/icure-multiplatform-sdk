@@ -24,6 +24,7 @@ data class EmbeddedTimeTable(
 	@DefaultValue("emptyList()")
 	public val items: List<TimeTableItem> = emptyList(),
 ) {
+	public val dtoSerialName: String
 	// region EmbeddedTimeTable-EmbeddedTimeTable
 
 	// endregion

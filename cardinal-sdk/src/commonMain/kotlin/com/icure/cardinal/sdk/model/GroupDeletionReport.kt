@@ -12,6 +12,7 @@ data class GroupDeletionReport(
 	public val id: String,
 	public val server: String,
 ) {
+	public val dtoSerialName: String
 	// region GroupDeletionReport-GroupDeletionReport
 
 	// endregion

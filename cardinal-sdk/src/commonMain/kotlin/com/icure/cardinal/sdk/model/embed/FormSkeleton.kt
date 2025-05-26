@@ -11,6 +11,7 @@ data class FormSkeleton(
 	public val descr: String? = null,
 	public val formTemplateId: String? = null,
 ) {
+	public val dtoSerialName: String
 	// region FormSkeleton-FormSkeleton
 
 	// endregion

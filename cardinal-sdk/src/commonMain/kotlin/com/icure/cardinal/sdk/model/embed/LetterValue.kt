@@ -14,6 +14,7 @@ data class LetterValue(
 	public val coefficient: Double? = null,
 	public val `value`: Double? = null,
 ) {
+	public val dtoSerialName: String
 	// region LetterValue-LetterValue
 
 	// endregion

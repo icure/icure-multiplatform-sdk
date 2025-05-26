@@ -17,6 +17,7 @@ data class ContactByDataOwnerFormIdsFilter(
 	public val formIds: Set<String>,
 	override val desc: String? = null,
 ) : AbstractFilter<Contact> {
+	public val dtoSerialName: String
 	// region ContactByDataOwnerFormIdsFilter-ContactByDataOwnerFormIdsFilter
 
 	// endregion

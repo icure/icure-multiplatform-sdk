@@ -2,6 +2,7 @@ package com.icure.cardinal.sdk.model.embed
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlin.String
 
 // WARNING: This file is auto-generated. If you change it manually, your changes will be lost.
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
@@ -9,26 +10,29 @@ import kotlinx.serialization.Serializable
 @Serializable
 enum class PatientHealthCarePartyType() {
 	@SerialName("doctor")
-	Doctor,
+	Doctor("doctor"),
 
 	@SerialName("referral")
-	Referral,
+	Referral("referral"),
 
 	@SerialName("medicalhouse")
-	Medicalhouse,
+	Medicalhouse("medicalhouse"),
 
 	@SerialName("retirementhome")
-	Retirementhome,
+	Retirementhome("retirementhome"),
 
 	@SerialName("hospital")
-	Hospital,
+	Hospital("hospital"),
 
 	@SerialName("other")
-	Other,
+	Other("other"),
 
 	@SerialName("referringphysician")
-	Referringphysician,
+	Referringphysician("referringphysician"),
 
 	@SerialName("managingorganization")
-	Managingorganization,
+	Managingorganization("managingorganization"),
+	;
+
+	public val dtoSerialName: String
 }

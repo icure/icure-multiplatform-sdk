@@ -15,6 +15,7 @@ data class AgendaReadableByUserIdFilter(
 	public val userId: String,
 	override val desc: String?,
 ) : AbstractFilter<Agenda> {
+	public val dtoSerialName: String
 	// region AgendaReadableByUserIdFilter-AgendaReadableByUserIdFilter
 
 	// endregion

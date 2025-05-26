@@ -18,6 +18,7 @@ data class RegistrationInformation(
 	public val userRoles: Set<String> = emptySet(),
 	public val minimumKrakenVersion: String? = null,
 ) {
+	public val dtoSerialName: String
 	// region RegistrationInformation-RegistrationInformation
 
 	// endregion

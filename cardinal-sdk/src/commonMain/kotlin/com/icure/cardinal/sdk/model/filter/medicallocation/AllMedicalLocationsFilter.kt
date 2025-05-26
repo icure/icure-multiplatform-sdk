@@ -14,6 +14,7 @@ import kotlin.String
 data class AllMedicalLocationsFilter(
 	override val desc: String? = null,
 ) : AbstractFilter<MedicalLocation> {
+	public val dtoSerialName: String
 	// region AllMedicalLocationsFilter-AllMedicalLocationsFilter
 
 	// endregion

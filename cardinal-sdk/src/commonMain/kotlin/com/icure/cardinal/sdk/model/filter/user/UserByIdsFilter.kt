@@ -17,6 +17,7 @@ data class UserByIdsFilter(
 	override val ids: Set<String>,
 	override val desc: String? = null,
 ) : AbstractFilter<User>, Filter.IdsFilter<String, User> {
+	public val dtoSerialName: String
 	// region UserByIdsFilter-UserByIdsFilter
 
 	// endregion

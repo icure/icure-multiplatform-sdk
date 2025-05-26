@@ -27,6 +27,7 @@ data class Measure(
 	@DefaultValue("emptyList()")
 	public val referenceRanges: List<ReferenceRange> = emptyList(),
 ) {
+	public val dtoSerialName: String
 	// region Measure-Measure
 
 	// endregion

@@ -15,6 +15,7 @@ data class Right(
 	@DefaultValue("emptySet()")
 	public val roles: Set<String> = emptySet(),
 ) {
+	public val dtoSerialName: String
 	// region Right-Right
 
 	// endregion

@@ -17,6 +17,7 @@ data class DatabaseInitialisation(
 	public val replication: Replication? = null,
 	public val minimumKrakenVersion: String? = null,
 ) {
+	public val dtoSerialName: String
 	// region DatabaseInitialisation-DatabaseInitialisation
 
 	// endregion

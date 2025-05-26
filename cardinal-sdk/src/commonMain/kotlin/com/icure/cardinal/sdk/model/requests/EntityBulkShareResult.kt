@@ -18,13 +18,17 @@ data class EntityBulkShareResult<T>(
 	@DefaultValue("emptyMap()")
 	public val rejectedRequests: Map<String, RejectedShareOrMetadataUpdateRequest> = emptyMap(),
 ) {
+	public val dtoSerialName: String
+
 	@Serializable
 	public data class RejectedShareOrMetadataUpdateRequest(
 		public val code: Int,
 		@DefaultValue("false")
 		public val shouldRetry: Boolean = false,
 		public val reason: String,
-	)
+	) {
+		public val dtoSerialName: String
+	}
 	// region EntityBulkShareResult-EntityBulkShareResult
 inline fun <O>map(mapper: (T) -> O): EntityBulkShareResult<O> = EntityBulkShareResult(
 		updatedEntity = updatedEntity?.let { mapper(it) },

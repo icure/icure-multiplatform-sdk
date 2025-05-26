@@ -14,6 +14,7 @@ data class Subscription<O : Identifiable<String>>(
 	public val filter: FilterChain<O>?,
 	public val accessControlKeys: List<AccessControlKeyHexString>?,
 ) {
+	public val dtoSerialName: String
   // region Subscription-Subscription
 
   // endregion

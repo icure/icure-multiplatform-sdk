@@ -12,6 +12,7 @@ data class FieldsGroup(
 	public val group: String,
 	public val fields: List<StructureElement>? = null,
 ) : StructureElement {
+	public val dtoSerialName: String
 	// region FieldsGroup-FieldsGroup
 
 	// endregion

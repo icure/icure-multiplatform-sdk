@@ -16,6 +16,7 @@ class AuthenticationResponse(
 	public val successful: Boolean = false,
 	public val username: String? = null,
 ) {
+	public val dtoSerialName: String
 	// region AuthenticationResponse-AuthenticationResponse
 
 	// endregion

@@ -16,6 +16,7 @@ data class ReferralPeriod(
 	public val endDate: Instant? = null,
 	public val comment: String? = null,
 ) {
+	public val dtoSerialName: String
 	// region ReferralPeriod-ReferralPeriod
 
 	// endregion

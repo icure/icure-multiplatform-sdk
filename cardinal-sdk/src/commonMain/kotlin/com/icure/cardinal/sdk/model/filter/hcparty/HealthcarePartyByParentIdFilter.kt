@@ -15,6 +15,7 @@ data class HealthcarePartyByParentIdFilter(
 	public val parentId: String,
 	override val desc: String? = null,
 ) : AbstractFilter<HealthcareParty> {
+	public val dtoSerialName: String
 	// region HealthcarePartyByParentIdFilter-HealthcarePartyByParentIdFilter
 
 	// endregion

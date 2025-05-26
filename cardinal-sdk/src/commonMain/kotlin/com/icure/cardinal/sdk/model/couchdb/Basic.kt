@@ -11,6 +11,7 @@ data class Basic(
 	public val username: String,
 	public val password: String,
 ) {
+	public val dtoSerialName: String
 	// region Basic-Basic
 
 	// endregion

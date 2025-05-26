@@ -14,6 +14,7 @@ data class Suspension(
 	public val suspensionReason: String? = null,
 	public val lifecycle: String? = null,
 ) {
+	public val dtoSerialName: String
 	// region Suspension-Suspension
 
 	// endregion

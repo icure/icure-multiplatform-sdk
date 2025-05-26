@@ -31,6 +31,7 @@ data class DecryptedSchoolingInfo(
 	override val typeOfEducation: CodeStub? = null,
 	override val encryptedSelf: Base64String?,
 ) : SchoolingInfo {
+	public val dtoSerialName: String
 	// region SchoolingInfo-DecryptedSchoolingInfo
 
 	// endregion
@@ -44,6 +45,7 @@ data class EncryptedSchoolingInfo(
 	override val typeOfEducation: CodeStub? = null,
 	override val encryptedSelf: Base64String?,
 ) : SchoolingInfo {
+	public val dtoSerialName: String
 	// region SchoolingInfo-EncryptedSchoolingInfo
 
 	// endregion

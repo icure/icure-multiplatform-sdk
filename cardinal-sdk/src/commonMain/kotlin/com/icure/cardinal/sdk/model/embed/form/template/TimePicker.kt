@@ -32,6 +32,7 @@ data class TimePicker(
 	override val now: Boolean? = null,
 	override val translate: Boolean? = null,
 ) : Field {
+	public val dtoSerialName: String
 	// region TimePicker-TimePicker
 
 	// endregion

@@ -151,6 +151,7 @@ data class DecryptedContact(
 	@DefaultValue("emptyList()")
 	override val notes: List<Annotation> = emptyList(),
 ) : Contact {
+	public val dtoSerialName: String
 	// region Contact-DecryptedContact
 override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): DecryptedContact =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)
@@ -203,6 +204,7 @@ data class EncryptedContact(
 	@DefaultValue("emptyList()")
 	override val notes: List<Annotation> = emptyList(),
 ) : Contact {
+	public val dtoSerialName: String
 	// region Contact-EncryptedContact
 override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): EncryptedContact =
 		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)

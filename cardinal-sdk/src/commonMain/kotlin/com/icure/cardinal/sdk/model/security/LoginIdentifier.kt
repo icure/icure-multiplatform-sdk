@@ -11,6 +11,7 @@ data class LoginIdentifier(
 	public val assigner: String,
 	public val `value`: String,
 ) {
+	public val dtoSerialName: String
 	// region LoginIdentifier-LoginIdentifier
 
 	// endregion

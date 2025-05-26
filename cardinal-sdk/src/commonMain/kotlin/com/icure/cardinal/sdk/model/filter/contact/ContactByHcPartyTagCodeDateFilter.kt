@@ -22,6 +22,7 @@ data class ContactByHcPartyTagCodeDateFilter(
 	public val startOfContactOpeningDate: Long? = null,
 	public val endOfContactOpeningDate: Long? = null,
 ) : AbstractFilter<Contact> {
+	public val dtoSerialName: String
 	// region ContactByHcPartyTagCodeDateFilter-ContactByHcPartyTagCodeDateFilter
 
 	// endregion

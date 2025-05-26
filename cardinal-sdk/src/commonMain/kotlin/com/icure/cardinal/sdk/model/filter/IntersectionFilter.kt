@@ -17,6 +17,7 @@ data class IntersectionFilter<O : Identifiable<String>>(
 	@DefaultValue("emptyList()")
 	override val filters: List<AbstractFilter<O>> = emptyList(),
 ) : AbstractFilter<O>, Filter.IntersectionFilter<O> {
+	public val dtoSerialName: String
 	// region IntersectionFilter-IntersectionFilter
 
 	// endregion

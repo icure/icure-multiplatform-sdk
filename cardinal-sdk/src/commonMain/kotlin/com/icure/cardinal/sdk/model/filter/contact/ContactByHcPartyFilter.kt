@@ -16,6 +16,7 @@ data class ContactByHcPartyFilter(
 	override val hcpId: String,
 	override val desc: String? = null,
 ) : AbstractFilter<Contact>, Filter.ByHcpartyFilter<Contact> {
+	public val dtoSerialName: String
 	// region ContactByHcPartyFilter-ContactByHcPartyFilter
 
 	// endregion

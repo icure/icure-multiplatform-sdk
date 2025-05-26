@@ -13,6 +13,7 @@ data class ComplementFilter<O : Identifiable<String>>(
 	override val superSet: AbstractFilter<O>,
 	override val subSet: AbstractFilter<O>,
 ) : AbstractFilter<O>, Filter.ComplementFilter<O> {
+	public val dtoSerialName: String
 	// region ComplementFilter-ComplementFilter
 
 	// endregion

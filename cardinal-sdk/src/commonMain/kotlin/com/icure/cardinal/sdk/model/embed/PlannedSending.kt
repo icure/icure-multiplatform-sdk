@@ -10,6 +10,7 @@ import kotlin.String
 class PlannedSending(
 	public val cronExpression: String? = null,
 ) {
+	public val dtoSerialName: String
 	// region PlannedSending-PlannedSending
 
 	// endregion

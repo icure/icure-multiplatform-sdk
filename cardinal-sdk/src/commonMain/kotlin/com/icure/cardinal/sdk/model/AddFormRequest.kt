@@ -12,6 +12,7 @@ data class AddFormRequest(
 	public val formId: String? = null,
 	public val formTemplateGuid: String? = null,
 ) {
+	public val dtoSerialName: String
 	// region AddFormRequest-AddFormRequest
 
 	// endregion

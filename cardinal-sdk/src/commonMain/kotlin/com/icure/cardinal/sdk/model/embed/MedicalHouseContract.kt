@@ -128,6 +128,7 @@ data class DecryptedMedicalHouseContract(
 	override val receipts: Map<String, String> = emptyMap(),
 	override val encryptedSelf: Base64String? = null,
 ) : MedicalHouseContract {
+	public val dtoSerialName: String
 	// region MedicalHouseContract-DecryptedMedicalHouseContract
 
 	// endregion
@@ -179,6 +180,7 @@ data class EncryptedMedicalHouseContract(
 	override val receipts: Map<String, String> = emptyMap(),
 	override val encryptedSelf: Base64String? = null,
 ) : MedicalHouseContract {
+	public val dtoSerialName: String
 	// region MedicalHouseContract-EncryptedMedicalHouseContract
 
 	// endregion

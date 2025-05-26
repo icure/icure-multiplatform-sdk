@@ -25,6 +25,7 @@ data class SecureDelegation(
 	public val exchangeDataId: String? = null,
 	public val permissions: AccessLevel,
 ) {
+	public val dtoSerialName: String
 	// region SecureDelegation-SecureDelegation
 
 	// endregion

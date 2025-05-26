@@ -21,6 +21,7 @@ data class DatabaseInfo(
 	public val w: Int? = null,
 	public val r: Int? = null,
 ) {
+	public val dtoSerialName: String
 	// region DatabaseInfo-DatabaseInfo
 
 	// endregion

@@ -29,6 +29,7 @@ data class EntityShareRequest(
 	public val encryptedExchangeDataId: Map<KeypairFingerprintV2String, Base64String> = emptyMap(),
 	public val requestedPermissions: RequestedPermission,
 ) {
+	public val dtoSerialName: String
 	// region EntityShareRequest-EntityShareRequest
 	@InternalIcureApi
 	fun wrap() = EntityShareOrMetadataUpdateRequest(share = this)

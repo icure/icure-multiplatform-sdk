@@ -38,6 +38,7 @@ data class PlanOfActionTemplate(
 	@DefaultValue("emptyList()")
 	public val forms: List<FormSkeleton> = emptyList(),
 ) : ICureDocument<String>, Named {
+	public val dtoSerialName: String
 	// region PlanOfActionTemplate-PlanOfActionTemplate
 
 	// endregion

@@ -31,6 +31,7 @@ data class ApplicationSettings(
 	@DefaultValue("emptyMap()")
 	public val settings: Map<String, String> = emptyMap(),
 ) : StoredDocument, ICureDocument<String> {
+	public val dtoSerialName: String
 	// region ApplicationSettings-ApplicationSettings
 
 	// endregion

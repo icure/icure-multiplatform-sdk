@@ -48,6 +48,7 @@ data class DocumentTemplate(
 	public val disabled: String? = null,
 	public val specialty: CodeStub? = null,
 ) : StoredDocument, ICureDocument<String> {
+	public val dtoSerialName: String
 	// region DocumentTemplate-DocumentTemplate
 
 	// endregion

@@ -15,6 +15,7 @@ data class JwtResponse(
 	@DefaultValue("false")
 	public val successful: Boolean = false,
 ) {
+	public val dtoSerialName: String
 	// region JwtResponse-JwtResponse
 
 	// endregion

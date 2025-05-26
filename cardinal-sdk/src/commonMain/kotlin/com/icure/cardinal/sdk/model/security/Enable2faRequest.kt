@@ -12,6 +12,7 @@ data class Enable2faRequest(
 	public val secret: String,
 	public val otpLength: Int,
 ) {
+	public val dtoSerialName: String
 	// region Enable2faRequest-Enable2faRequest
 
 	// endregion

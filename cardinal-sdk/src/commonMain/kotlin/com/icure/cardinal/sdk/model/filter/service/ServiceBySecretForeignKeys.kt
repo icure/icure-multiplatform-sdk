@@ -17,6 +17,7 @@ data class ServiceBySecretForeignKeys(
 	public val healthcarePartyId: String? = null,
 	public val patientSecretForeignKeys: Set<String>,
 ) : AbstractFilter<Service> {
+	public val dtoSerialName: String
 	// region ServiceBySecretForeignKeys-ServiceBySecretForeignKeys
 
 	// endregion

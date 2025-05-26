@@ -11,6 +11,7 @@ data class DocIdentifier(
 	public val id: String? = null,
 	public val rev: String? = null,
 ) {
+	public val dtoSerialName: String
 	// region DocIdentifier-DocIdentifier
 
 	// endregion

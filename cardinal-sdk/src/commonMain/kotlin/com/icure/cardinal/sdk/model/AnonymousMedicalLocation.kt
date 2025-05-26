@@ -14,6 +14,7 @@ data class AnonymousMedicalLocation(
 	@DefaultValue("emptyMap()")
 	public val publicInformations: Map<String, String> = emptyMap(),
 ) {
+	public val dtoSerialName: String
 	// region AnonymousMedicalLocation-AnonymousMedicalLocation
 
 	// endregion

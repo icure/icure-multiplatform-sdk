@@ -10,6 +10,7 @@ import kotlin.String
 data class JwtPayload(
 	public val jwt: String,
 ) {
+	public val dtoSerialName: String
 	// region JwtPayload-JwtPayload
 
 	// endregion

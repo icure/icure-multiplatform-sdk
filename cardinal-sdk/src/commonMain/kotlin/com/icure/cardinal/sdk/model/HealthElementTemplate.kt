@@ -40,6 +40,7 @@ data class HealthElementTemplate(
 	@DefaultValue("emptyList()")
 	public val plansOfAction: List<PlanOfActionTemplate> = emptyList(),
 ) : StoredDocument, ICureDocument<String> {
+	public val dtoSerialName: String
 	// region HealthElementTemplate-HealthElementTemplate
 
 	// endregion

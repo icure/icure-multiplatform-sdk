@@ -41,6 +41,7 @@ data class DecryptedTypedValue(
 	override val dateValue: Instant? = null,
 	override val encryptedSelf: Base64String? = null,
 ) : TypedValue {
+	public val dtoSerialName: String
 	// region TypedValue-DecryptedTypedValue
 
 	// endregion
@@ -57,6 +58,7 @@ data class EncryptedTypedValue(
 	override val dateValue: Instant? = null,
 	override val encryptedSelf: Base64String? = null,
 ) : TypedValue {
+	public val dtoSerialName: String
 	// region TypedValue-EncryptedTypedValue
 
 	// endregion
