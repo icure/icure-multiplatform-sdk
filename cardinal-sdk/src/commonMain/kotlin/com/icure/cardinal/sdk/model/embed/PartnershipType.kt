@@ -2,123 +2,126 @@ package com.icure.cardinal.sdk.model.embed
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlin.String
 
 // WARNING: This file is auto-generated. If you change it manually, your changes will be lost.
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
 
 @Serializable
-enum class PartnershipType() {
+enum class PartnershipType(
+	internal val dtoSerialName: String,
+) {
 	@SerialName("primary_contact")
-	PrimaryContact,
+	PrimaryContact("primary_contact"),
 
 	@SerialName("primary_contact_for")
-	PrimaryContactFor,
+	PrimaryContactFor("primary_contact_for"),
 
 	@SerialName("family")
-	Family,
+	Family("family"),
 
 	@SerialName("friend")
-	Friend,
+	Friend("friend"),
 
 	@SerialName("counselor")
-	Counselor,
+	Counselor("counselor"),
 
 	@SerialName("contact")
-	Contact,
+	Contact("contact"),
 
 	@SerialName("brother")
-	Brother,
+	Brother("brother"),
 
 	@SerialName("brotherinlaw")
-	Brotherinlaw,
+	Brotherinlaw("brotherinlaw"),
 
 	@SerialName("child")
-	Child,
+	Child("child"),
 
 	@SerialName("daughter")
-	Daughter,
+	Daughter("daughter"),
 
 	@SerialName("employer")
-	Employer,
+	Employer("employer"),
 
 	@SerialName("father")
-	Father,
+	Father("father"),
 
 	@SerialName("grandchild")
-	Grandchild,
+	Grandchild("grandchild"),
 
 	@SerialName("grandparent")
-	Grandparent,
+	Grandparent("grandparent"),
 
 	@SerialName("husband")
-	Husband,
+	Husband("husband"),
 
 	@SerialName("lawyer")
-	Lawyer,
+	Lawyer("lawyer"),
 
 	@SerialName("mother")
-	Mother,
+	Mother("mother"),
 
 	@SerialName("neighbour")
-	Neighbour,
+	Neighbour("neighbour"),
 
 	@SerialName("notary")
-	Notary,
+	Notary("notary"),
 
 	@SerialName("partner")
-	Partner,
+	Partner("partner"),
 
 	@SerialName("sister")
-	Sister,
+	Sister("sister"),
 
 	@SerialName("sisterinlaw")
-	Sisterinlaw,
+	Sisterinlaw("sisterinlaw"),
 
 	@SerialName("son")
-	Son,
+	Son("son"),
 
 	@SerialName("spouse")
-	Spouse,
+	Spouse("spouse"),
 
 	@SerialName("stepdaughter")
-	Stepdaughter,
+	Stepdaughter("stepdaughter"),
 
 	@SerialName("stepfather")
-	Stepfather,
+	Stepfather("stepfather"),
 
 	@SerialName("stepmother")
-	Stepmother,
+	Stepmother("stepmother"),
 
 	@SerialName("stepson")
-	Stepson,
+	Stepson("stepson"),
 
 	@SerialName("tutor")
-	Tutor,
+	Tutor("tutor"),
 
 	@SerialName("cohabiting")
-	Cohabiting,
+	Cohabiting("cohabiting"),
 
 	@SerialName("registered_partner")
-	RegisteredPartner,
+	RegisteredPartner("registered_partner"),
 
 	@SerialName("next_of_kin")
-	NextOfKin,
+	NextOfKin("next_of_kin"),
 
 	@SerialName("federal_agency")
-	FederalAgency,
+	FederalAgency("federal_agency"),
 
 	@SerialName("insurance_company")
-	InsuranceCompany,
+	InsuranceCompany("insurance_company"),
 
 	@SerialName("state_agency")
-	StateAgency,
+	StateAgency("state_agency"),
 
 	@SerialName("unknown")
-	Unknown,
+	Unknown("unknown"),
 
 	@SerialName("seealso")
-	Seealso,
+	Seealso("seealso"),
 
 	@SerialName("refer")
-	Refer,
+	Refer("refer"),
 }
