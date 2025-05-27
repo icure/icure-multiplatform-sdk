@@ -2,51 +2,54 @@ package com.icure.cardinal.sdk.model.embed
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlin.String
 
 // WARNING: This file is auto-generated. If you change it manually, your changes will be lost.
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
 
 @Serializable
-enum class TelecomType() {
+enum class TelecomType(
+	internal val dtoSerialName: String,
+) {
 	@SerialName("mobile")
-	Mobile,
+	Mobile("mobile"),
 
 	@SerialName("phone")
-	Phone,
+	Phone("phone"),
 
 	@SerialName("email")
-	Email,
+	Email("email"),
 
 	@SerialName("fax")
-	Fax,
+	Fax("fax"),
 
 	@SerialName("skype")
-	Skype,
+	Skype("skype"),
 
 	@SerialName("im")
-	Im,
+	Im("im"),
 
 	@SerialName("medibridge")
-	Medibridge,
+	Medibridge("medibridge"),
 
 	@SerialName("ehealthbox")
-	Ehealthbox,
+	Ehealthbox("ehealthbox"),
 
 	@SerialName("apicrypt")
-	Apicrypt,
+	Apicrypt("apicrypt"),
 
 	@SerialName("web")
-	Web,
+	Web("web"),
 
 	@SerialName("print")
-	Print,
+	Print("print"),
 
 	@SerialName("disk")
-	Disk,
+	Disk("disk"),
 
 	@SerialName("other")
-	Other,
+	Other("other"),
 
 	@SerialName("pager")
-	Pager,
+	Pager("pager"),
 }

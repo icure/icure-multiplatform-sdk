@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = 'cardinal_sdk'
-  s.version          = '2.0.0-PREVIEW-3'
+  s.version          = '2.0.0-PREVIEW-3-dart-1'
   s.summary          = 'Cardinal SDK is a multiplatform SDK for the iCure platform.'
   s.description      = <<-DESC
 Cardinal SDK is a multiplatform SDK for the iCure platform.
@@ -13,7 +13,7 @@ Cardinal SDK is a multiplatform SDK for the iCure platform.
   s.dependency 'Flutter'
   s.platform = :ios, '12.0'
   s.dependency 'CardinalDartSdkSupportLib', '~> 2.0.0-PREVIEW-3'
-  £ s.vendored_framework = "CardinalDartSdkSupportLib.xcframework"
+  # s.vendored_framework = "CardinalDartSdkSupportLib.xcframework"
 
   # Flutter.framework does not contain a i386 slice.
   s.pod_target_xcconfig = { 'DEFINES_MODULE' => 'YES', 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'i386' }

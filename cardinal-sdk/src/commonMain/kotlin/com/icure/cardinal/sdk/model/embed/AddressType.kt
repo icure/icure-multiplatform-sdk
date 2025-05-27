@@ -2,45 +2,48 @@ package com.icure.cardinal.sdk.model.embed
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlin.String
 
 // WARNING: This file is auto-generated. If you change it manually, your changes will be lost.
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
 
 @Serializable
-enum class AddressType() {
+enum class AddressType(
+	internal val dtoSerialName: String,
+) {
 	@SerialName("home")
-	Home,
+	Home("home"),
 
 	@SerialName("work")
-	Work,
+	Work("work"),
 
 	@SerialName("vacation")
-	Vacation,
+	Vacation("vacation"),
 
 	@SerialName("hospital")
-	Hospital,
+	Hospital("hospital"),
 
 	@SerialName("clinic")
-	Clinic,
+	Clinic("clinic"),
 
 	@SerialName("hq")
-	Hq,
+	Hq("hq"),
 
 	@SerialName("other")
-	Other,
+	Other("other"),
 
 	@SerialName("temporary")
-	Temporary,
+	Temporary("temporary"),
 
 	@SerialName("postal")
-	Postal,
+	Postal("postal"),
 
 	@SerialName("diplomatic")
-	Diplomatic,
+	Diplomatic("diplomatic"),
 
 	@SerialName("reference")
-	Reference,
+	Reference("reference"),
 
 	@SerialName("careaddress")
-	Careaddress,
+	Careaddress("careaddress"),
 }
