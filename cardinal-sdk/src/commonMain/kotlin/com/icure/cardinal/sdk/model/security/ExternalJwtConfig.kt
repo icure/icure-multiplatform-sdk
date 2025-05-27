@@ -16,7 +16,7 @@ data class ExternalJwtConfig(
 	public val fieldSelector: FieldSelector,
 	@DefaultValue("AuthenticationClassDto.EXTERNAL_AUTHENTICATION")
 	public val authenticationClass: AuthenticationClass =
-		AuthenticationClassDto.EXTERNAL_AUTHENTICATION,
+		AuthenticationClass.ExternalAuthentication,
 ) {
 	@Serializable
 	public sealed interface ValidationMethod {
