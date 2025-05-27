@@ -123,7 +123,7 @@ class BaseExchangeDataManagerImpl(
 	): Boolean {
 		if (
 			verifyAsDelegator && (
-				data.exchangeData.delegator !== dataOwnerApi.getCurrentDataOwnerId()
+				data.exchangeData.delegator != dataOwnerApi.getCurrentDataOwnerId()
 				|| !(verifyDelegatorSignature(data.exchangeData, data.unencryptedContent.sharedSignatureKey, delegatorSignatureKeys))
 			)
 		) return false
