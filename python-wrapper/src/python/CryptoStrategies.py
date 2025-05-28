@@ -127,6 +127,7 @@ class CryptoStrategies(ABC):
             self,
             delegate: CryptoActorStubWithType,
             public_keys: List[str],
+            group_id: Optional[str]
     ) -> List[str]:
         """
         Verifies if the public keys of a data owner which will be the delegate of a new exchange key do actually belong to the person the data owner
@@ -139,24 +140,26 @@ class CryptoStrategies(ABC):
         fail.
         :param delegate the potential data owner delegate.
         :param public_keys public keys requiring verification, in spki hex-encoded format.
+        :param group_id the id of the delegate's group
         :returns all verified public keys, in spki hex-encoded format.
         """
         pass
 
     @abstractmethod
-    def data_owner_requires_anonymous_delegation(self, data_owner: CryptoActorStubWithType) -> bool:
+    def data_owner_requires_anonymous_delegation(self, data_owner: CryptoActorStubWithType, group_id: Optional[str]) -> bool:
         """
         Specifies if a data owner requires anonymous delegations, i.e. his id should not appear unencrypted in new secure delegations. This should always
         be the case for patient data owners.
         :param data_owner a data owner.
+        :param group_id the id of the data owner's group
         :returns true if the delegations for the provided data owner should be anonymous.
         """
         pass
 
 _C_RecoverAndVerifySelfHierarchyKeys = CFUNCTYPE(None, c_void_p, c_char_p, c_void_p)
 _C_GenerateNewKeyForDataOwner = CFUNCTYPE(None, c_void_p, c_char_p)
-_C_VerifyDelegatePublicKeys = CFUNCTYPE(None, c_void_p, c_char_p, c_char_p)
-_C_DataOwnerRequiresAnonymousDelegation = CFUNCTYPE(None, c_void_p, c_char_p)
+_C_VerifyDelegatePublicKeys = CFUNCTYPE(None, c_void_p, c_char_p, c_char_p, c_char_p)
+_C_DataOwnerRequiresAnonymousDelegation = CFUNCTYPE(None, c_void_p, c_char_p, c_char_p)
 
 class _CryptoStrategiesBridge:
     __py_strategies: CryptoStrategies
@@ -184,20 +187,22 @@ class _CryptoStrategiesBridge:
         except:
             symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.setCallbackFailure(result_holder, traceback.format_exc().encode('utf-8'))
 
-    def verify_delegate_public_keys(self, result_holder, delegate, public_keys):
+    def verify_delegate_public_keys(self, result_holder, delegate, public_keys, group_id):
         try:
             result = self.__py_strategies.verify_delegate_public_keys(
                 CryptoActorStubWithType._deserialize(cast(delegate, c_char_p).value.decode('utf-8')),
-                json.loads(cast(public_keys, c_char_p).value.decode('utf-8'))
+                json.loads(cast(public_keys, c_char_p).value.decode('utf-8')),
+                json.loads(cast(group_id, c_char_p).value.decode('utf-8'))
             )
             symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.setCallbackResult(result_holder, json.dumps(result).encode('utf-8'))
         except:
             symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.setCallbackFailure(result_holder, traceback.format_exc())
 
-    def data_owner_requires_anonymous_delegation(self, result_holder, data_owner):
+    def data_owner_requires_anonymous_delegation(self, result_holder, data_owner, group_id):
         try:
             result = self.__py_strategies.data_owner_requires_anonymous_delegation(
-                CryptoActorStubWithType._deserialize(cast(data_owner, c_char_p).value.decode('utf-8'))
+                CryptoActorStubWithType._deserialize(cast(data_owner, c_char_p).value.decode('utf-8')),
+                json.loads(cast(group_id, c_char_p).value.decode('utf-8'))
             )
             symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.setCallbackResult(result_holder, json.dumps(result).encode('utf-8'))
         except:

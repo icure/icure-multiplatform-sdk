@@ -20,6 +20,7 @@ import com.icure.utils.InternalIcureApi
 import kotlinx.cinterop.COpaquePointer
 import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.cinterop.asStableRef
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.Serializable
 
@@ -170,4 +171,10 @@ fun initializeBaseSdk(
 		onSuccess = { BaseSdkInitializationResult(it, null) },
 		onFailure = { BaseSdkInitializationResult(null, it.stackTraceToString()) }
 	)
+}
+
+fun closeSdk(
+	sdk: CardinalSdk
+) {
+	sdk.scope.cancel()
 }

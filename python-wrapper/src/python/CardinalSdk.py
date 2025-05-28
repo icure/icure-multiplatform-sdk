@@ -107,6 +107,7 @@ class CardinalSdk:
     def __del__(self):
         if self.__dict__.get("_native") is not None:
             symbols.DisposeStablePointer(self._native.pinned)
+            symbols.kotlin.root.com.icure.cardinal.sdk.py.closeSdk(self._native)
 
     @property
     def health_element(self):

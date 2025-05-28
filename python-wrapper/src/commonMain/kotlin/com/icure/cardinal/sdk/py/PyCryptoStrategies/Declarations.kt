@@ -23,13 +23,14 @@ import kotlinx.cinterop.cstr
 import kotlinx.cinterop.invoke
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.builtins.ListSerializer
+import kotlinx.serialization.builtins.nullable
 import kotlinx.serialization.builtins.serializer
 
 @OptIn(ExperimentalForeignApi::class, InternalIcureApi::class)
 fun create(
 	pyGenerateNewKeyForDataOwner: CPointer<CFunction<(resultHolder: COpaquePointer, self: CValues<ByteVar>) -> Unit>>,
-	pyVerifyDelegatePublicKeys: CPointer<CFunction<(resultHolder: COpaquePointer, delegate: CValues<ByteVar>, publicKeys: CValues<ByteVar>) -> Unit>>,
-	pyDataOwnerRequiresAnonymousDelegation: CPointer<CFunction<(resultHolder: COpaquePointer, dataOwner: CValues<ByteVar>) -> Unit>>
+	pyVerifyDelegatePublicKeys: CPointer<CFunction<(resultHolder: COpaquePointer, delegate: CValues<ByteVar>, publicKeys: CValues<ByteVar>, groupId: CValues<ByteVar>) -> Unit>>,
+	pyDataOwnerRequiresAnonymousDelegation: CPointer<CFunction<(resultHolder: COpaquePointer, dataOwner: CValues<ByteVar>, groupId: CValues<ByteVar>) -> Unit>>
 ): COpaquePointer {
 	val strategies = object : CryptoStrategies {
 		override suspend fun generateNewKeyForDataOwner(
@@ -45,21 +46,25 @@ fun create(
 		override suspend fun verifyDelegatePublicKeys(
 			delegate: CryptoActorStubWithType,
 			publicKeys: List<SpkiHexString>,
-			cryptoPrimitives: CryptoService
+			cryptoPrimitives: CryptoService,
+			groupId: String?
 		): List<SpkiHexString> = withResultHolder(ListSerializer(SpkiHexString.serializer())) { resultHolder ->
 			pyVerifyDelegatePublicKeys.invoke(
 				resultHolder,
 				Serialization.fullLanguageInteropJson.encodeToString(CryptoActorStubWithType.serializer(), delegate).cstr,
 				Serialization.fullLanguageInteropJson.encodeToString(ListSerializer(SpkiHexString.serializer()), publicKeys).cstr,
+				Serialization.fullLanguageInteropJson.encodeToString(String.serializer().nullable, groupId).cstr,
 			)
 		}
 
 		override suspend fun dataOwnerRequiresAnonymousDelegation(
-			dataOwner: CryptoActorStubWithType
+			dataOwner: CryptoActorStubWithType,
+			groupId: String?
 		): Boolean = withResultHolder(Boolean.serializer()) { resultHolder ->
 			pyDataOwnerRequiresAnonymousDelegation.invoke(
 				resultHolder,
-				Serialization.fullLanguageInteropJson.encodeToString(CryptoActorStubWithType.serializer(), dataOwner).cstr
+				Serialization.fullLanguageInteropJson.encodeToString(CryptoActorStubWithType.serializer(), dataOwner).cstr,
+				Serialization.fullLanguageInteropJson.encodeToString(String.serializer().nullable, groupId).cstr,
 			)
 		}
 	}
