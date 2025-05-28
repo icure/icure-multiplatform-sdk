@@ -16,11 +16,7 @@ import kotlin.coroutines.CoroutineContext
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
 
-interface CommonSdkOptions {
-	/**
-	 * Configure which fields of entities should be encrypted
-	 */
-	val encryptedFields: EncryptedFieldsConfiguration
+interface HttpSdkOptions {
 	/**
 	 * Specify which client to use for performing http requests (rest).
 	 * You will be responsible for closing the client after you are done using the sdk.
@@ -34,20 +30,6 @@ interface CommonSdkOptions {
 	 * The instance of [Json] used by the provided [httpClient] (leave null if [httpClient] is null).
 	 */
 	val httpClientJson: Json?
-	/**
-	 * Service for encryption primitives
-	 */
-	val cryptoService: CryptoService
-	/**
-	 * If true (default) the password of the user will be salted together with the application id before sending it to
-	 * the iCure backend for login or when changing the user password.
-	 * This is done in addition to the server-side salting of the password before storing them.
-	 *
-	 * By enabling this option iCure never gets access to the plain text password of users.
-	 * Note that changing this value in a second moment requires also modifying the password of the user on the iCure
-	 * databases to reflect the change.
-	 */
-	val saltPasswordWithApplicationId: Boolean
 	/**
 	 * If true the SDK will use lenient deserialization of the entities coming from the backend.
 	 *
@@ -65,6 +47,27 @@ interface CommonSdkOptions {
 	 * Configures how requests should be retried in case of server errors or connection errors.
 	 */
 	val requestRetryConfiguration: RequestRetryConfiguration?
+}
+
+interface CommonSdkOptions : HttpSdkOptions {
+	/**
+	 * Configure which fields of entities should be encrypted
+	 */
+	val encryptedFields: EncryptedFieldsConfiguration
+	/**
+	 * Service for encryption primitives
+	 */
+	val cryptoService: CryptoService
+	/**
+	 * If true (default) the password of the user will be salted together with the application id before sending it to
+	 * the iCure backend for login or when changing the user password.
+	 * This is done in addition to the server-side salting of the password before storing them.
+	 *
+	 * By enabling this option iCure never gets access to the plain text password of users.
+	 * Note that changing this value in a second moment requires also modifying the password of the user on the iCure
+	 * databases to reflect the change.
+	 */
+	val saltPasswordWithApplicationId: Boolean
 }
 
 interface BoundSdkOptions : CommonSdkOptions {
@@ -85,6 +88,14 @@ interface BoundSdkOptions : CommonSdkOptions {
  * the group id of one of the input values.
  */
 typealias GroupSelector = suspend (availableGroups: List<UserGroup>) -> String
+
+data class AnonymousSdkOptions(
+	override val httpClient: HttpClient? = null,
+	override val httpClientJson: Json? = null,
+	override val lenientJson: Boolean = false,
+	override val requestTimeout: Duration? = null,
+	override val requestRetryConfiguration: RequestRetryConfiguration = RequestRetryConfiguration()
+): HttpSdkOptions
 
 data class SdkOptions(
 	override val encryptedFields: EncryptedFieldsConfiguration = EncryptedFieldsConfiguration(),
@@ -362,5 +373,5 @@ data class RequestRetryConfiguration(
 	}
 }
 
-internal fun CommonSdkOptions.configuredClientOrDefault() = this.httpClient ?: (if (this.lenientJson) CardinalSdk.sharedHttpClientUsingLenientJson else CardinalSdk.sharedHttpClient)
-internal fun CommonSdkOptions.configuredJsonOrDefault() = this.httpClientJson ?: (if (this.lenientJson) Serialization.lenientJson else Serialization.json)
+internal fun AnonymousSdkOptions.configuredClientOrDefault() = this.httpClient ?: (if (this.lenientJson) CardinalSdk.sharedHttpClientUsingLenientJson else CardinalSdk.sharedHttpClient)
+internal fun AnonymousSdkOptions.configuredJsonOrDefault() = this.httpClientJson ?: (if (this.lenientJson) Serialization.lenientJson else Serialization.json)

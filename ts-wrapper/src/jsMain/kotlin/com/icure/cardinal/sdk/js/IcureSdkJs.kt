@@ -1,5 +1,6 @@
 package com.icure.cardinal.sdk.js
 
+import com.icure.cardinal.sdk.CardinalAnonymousSdk
 import com.icure.cardinal.sdk.CardinalApis
 import com.icure.cardinal.sdk.CardinalBaseApis
 import com.icure.cardinal.sdk.CardinalBaseSdk
@@ -9,6 +10,7 @@ import com.icure.cardinal.sdk.auth.AuthenticationProcessTemplateParameters
 import com.icure.cardinal.sdk.js.api.AccessLogApiJs
 import com.icure.cardinal.sdk.js.api.AccessLogBasicApiJs
 import com.icure.cardinal.sdk.js.api.AgendaApiJs
+import com.icure.cardinal.sdk.js.api.AnonymousApiJs
 import com.icure.cardinal.sdk.js.api.ApplicationSettingsApiJs
 import com.icure.cardinal.sdk.js.api.AuthApiJs
 import com.icure.cardinal.sdk.js.api.CalendarItemApiJs
@@ -61,6 +63,7 @@ import com.icure.cardinal.sdk.js.api.UserApiJs
 import com.icure.cardinal.sdk.js.api.impl.AccessLogApiImplJs
 import com.icure.cardinal.sdk.js.api.impl.AccessLogBasicApiImplJs
 import com.icure.cardinal.sdk.js.api.impl.AgendaApiImplJs
+import com.icure.cardinal.sdk.js.api.impl.AnonymousApiImplJs
 import com.icure.cardinal.sdk.js.api.impl.ApplicationSettingsApiImplJs
 import com.icure.cardinal.sdk.js.api.impl.AuthApiImplJs
 import com.icure.cardinal.sdk.js.api.impl.CalendarItemApiImplJs
@@ -117,12 +120,14 @@ import com.icure.cardinal.sdk.js.externalsdk.CardinalApisJs
 import com.icure.cardinal.sdk.js.externalsdk.CardinalBaseApisJs
 import com.icure.cardinal.sdk.js.externalsdk.CardinalBaseSdkJs
 import com.icure.cardinal.sdk.js.externalsdk.CardinalSdkJs
+import com.icure.cardinal.sdk.js.options.external.AnonymousSdkOptionsJs
 import com.icure.cardinal.sdk.js.options.external.AuthenticationMethodJs
 import com.icure.cardinal.sdk.js.options.external.AuthenticationProcessTemplateParametersJs
 import com.icure.cardinal.sdk.js.options.external.BasicSdkOptionsJs
 import com.icure.cardinal.sdk.js.options.external.SdkOptionsJs
 import com.icure.cardinal.sdk.js.options.toKt
 import com.icure.cardinal.sdk.js.storage.loadStorageOptions
+import com.icure.cardinal.sdk.options.AnonymousSdkOptions
 import com.icure.cardinal.sdk.options.BasicSdkOptions
 import com.icure.cardinal.sdk.options.SdkOptions
 import kotlinx.coroutines.GlobalScope
@@ -195,6 +200,16 @@ object InternalSdkInitializers {
 			options?.toKt() ?: BasicSdkOptions()
 		))
 	}
+
+	fun initializeAnonymous(
+		baseUrl: String,
+		options: AnonymousSdkOptionsJs?
+	): AnonymousApiJs = AnonymousApiImplJs(
+		CardinalAnonymousSdk.initialize(
+			baseUrl,
+			options?.toKt() ?: AnonymousSdkOptions()
+		)
+	)
 }
 
 internal class CardinalApisJsImpl(

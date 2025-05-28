@@ -86,6 +86,11 @@ external interface BasicSdkOptionsJs {
 	val lenientJson: Boolean?
 }
 
+@JsName("AnonymousSdkOptions")
+external interface AnonymousSdkOptionsJs {
+	val lenientJson: Boolean?
+}
+
 @JsName("EncryptedFieldsConfiguration")
 external interface EncryptedFieldsConfigurationJs {
 	val accessLog: Array<String>?

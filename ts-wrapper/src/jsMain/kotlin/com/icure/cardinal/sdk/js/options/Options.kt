@@ -2,12 +2,14 @@ package com.icure.cardinal.sdk.js.options
 
  import com.icure.cardinal.sdk.js.crypto.CryptoStrategiesBridge
 import com.icure.cardinal.sdk.js.model.userGroup_toJs
-import com.icure.cardinal.sdk.js.options.external.BasicSdkOptionsJs
+ import com.icure.cardinal.sdk.js.options.external.AnonymousSdkOptionsJs
+ import com.icure.cardinal.sdk.js.options.external.BasicSdkOptionsJs
 import com.icure.cardinal.sdk.js.options.external.EncryptedFieldsConfigurationJs
 import com.icure.cardinal.sdk.js.options.external.JsonPatcherJs
 import com.icure.cardinal.sdk.js.options.external.SdkOptionsJs
 import com.icure.cardinal.sdk.js.storage.loadKeyStorageOptions
-import com.icure.cardinal.sdk.options.BasicSdkOptions
+ import com.icure.cardinal.sdk.options.AnonymousSdkOptions
+ import com.icure.cardinal.sdk.options.BasicSdkOptions
 import com.icure.cardinal.sdk.options.EncryptedFieldsConfiguration
 import com.icure.cardinal.sdk.options.JsonPatcher
 import com.icure.cardinal.sdk.options.SdkOptions
@@ -54,6 +56,13 @@ suspend fun BasicSdkOptionsJs.toKt(): BasicSdkOptions {
 				groupSelectorJs(ktGroups.map { userGroup_toJs(it) }.toTypedArray()).await()
 			}
 		} ?: defaultApiOptions.groupSelector,
+		lenientJson = this.lenientJson ?: defaultApiOptions.lenientJson
+	)
+}
+
+fun AnonymousSdkOptionsJs.toKt(): AnonymousSdkOptions {
+	val defaultApiOptions = AnonymousSdkOptions()
+	return AnonymousSdkOptions(
 		lenientJson = this.lenientJson ?: defaultApiOptions.lenientJson
 	)
 }
