@@ -266,7 +266,7 @@ class SecureDelegationsManagerImpl (
 		shareOwningEntityIds: Set<String>
 	): EncryptedExchangeDataInfo {
 		val selfReference = this.dataOwnerApi.getCurrentDataOwnerReference()
-		val exchangeDataIdInfo = if (delegate === selfReference) {
+		val exchangeDataIdInfo = if (delegate == selfReference) {
 			makeExchangeDataIdInfoForSelf(entityGroupId, selfReference, exchangeDataInfo)
 		} else {
 			makeExchangeDataIdInfoForDelegate(entityGroupId, selfReference, delegate, exchangeDataInfo)
