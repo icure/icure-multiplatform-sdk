@@ -244,6 +244,41 @@ public fun filterDocumentsBySortedAsync(
 }.failureToPyResultAsyncCallback(resultCallback)
 
 @Serializable
+private class CreateDocumentParams(
+	public val entity: Document,
+)
+
+@OptIn(InternalIcureApi::class)
+public fun createDocumentBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
+	val decodedParams = fullLanguageInteropJson.decodeFromString<CreateDocumentParams>(params)
+	runBlocking {
+		sdk.document.tryAndRecover.createDocument(
+			decodedParams.entity,
+		)
+	}
+}.toPyString(PolymorphicSerializer(Document::class))
+
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
+public fun createDocumentAsync(
+	sdk: CardinalApis,
+	params: String,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): COpaquePointer? = kotlin.runCatching {
+	val decodedParams = fullLanguageInteropJson.decodeFromString<CreateDocumentParams>(params)
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.document.tryAndRecover.createDocument(
+				decodedParams.entity,
+			)
+		}.toPyStringAsyncCallback(PolymorphicSerializer(Document::class), resultCallback)
+	}
+}.failureToPyStringAsyncCallback(resultCallback)
+
+@Serializable
 private class UndeleteDocumentByIdParams(
 	public val id: String,
 	public val rev: String,

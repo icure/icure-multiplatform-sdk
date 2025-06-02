@@ -5,7 +5,7 @@ from cardinal_sdk.model.CallResult import create_result_from_json, interpret_kt_
 from ctypes import cast, c_char_p
 from cardinal_sdk.filters.FilterOptions import BaseFilterOptions, FilterOptions, SortableFilterOptions, BaseSortableFilterOptions
 from cardinal_sdk.model import Form, Patient, serialize_patient
-from typing import List, Optional
+from typing import Optional
 
 
 class FormFilters:
@@ -44,7 +44,7 @@ class FormFilters:
 			return return_value
 
 	@classmethod
-	def by_patients_opening_date_for_data_owner(cls, data_owner_id: str, patients: List[Patient], from_: Optional[int] = None, to: Optional[int] = None, descending: bool = False) -> SortableFilterOptions[Form]:
+	def by_patients_opening_date_for_data_owner(cls, data_owner_id: str, patients: list[Patient], from_: Optional[int] = None, to: Optional[int] = None, descending: bool = False) -> SortableFilterOptions[Form]:
 		payload = {
 			"dataOwnerId": data_owner_id,
 			"patients": [serialize_patient(x0) for x0 in patients],
@@ -64,7 +64,7 @@ class FormFilters:
 			return return_value
 
 	@classmethod
-	def by_patients_opening_date_for_self(cls, patients: List[Patient], from_: Optional[int] = None, to: Optional[int] = None, descending: bool = False) -> SortableFilterOptions[Form]:
+	def by_patients_opening_date_for_self(cls, patients: list[Patient], from_: Optional[int] = None, to: Optional[int] = None, descending: bool = False) -> SortableFilterOptions[Form]:
 		payload = {
 			"patients": [serialize_patient(x0) for x0 in patients],
 			"from": from_,
@@ -83,7 +83,7 @@ class FormFilters:
 			return return_value
 
 	@classmethod
-	def by_patient_secret_ids_opening_date_for_data_owner(cls, data_owner_id: str, secret_ids: List[str], from_: Optional[int] = None, to: Optional[int] = None, descending: bool = False) -> BaseSortableFilterOptions[Form]:
+	def by_patient_secret_ids_opening_date_for_data_owner(cls, data_owner_id: str, secret_ids: list[str], from_: Optional[int] = None, to: Optional[int] = None, descending: bool = False) -> BaseSortableFilterOptions[Form]:
 		payload = {
 			"dataOwnerId": data_owner_id,
 			"secretIds": [x0 for x0 in secret_ids],
@@ -103,7 +103,7 @@ class FormFilters:
 			return return_value
 
 	@classmethod
-	def by_patient_secret_ids_opening_date_for_self(cls, secret_ids: List[str], from_: Optional[int] = None, to: Optional[int] = None, descending: bool = False) -> SortableFilterOptions[Form]:
+	def by_patient_secret_ids_opening_date_for_self(cls, secret_ids: list[str], from_: Optional[int] = None, to: Optional[int] = None, descending: bool = False) -> SortableFilterOptions[Form]:
 		payload = {
 			"secretIds": [x0 for x0 in secret_ids],
 			"from": from_,

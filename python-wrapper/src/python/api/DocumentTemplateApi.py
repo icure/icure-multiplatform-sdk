@@ -1,12 +1,12 @@
 # auto-generated file
 import json
 import base64
-from cardinal_sdk.model import DocumentTemplate, DocIdentifier
 from cardinal_sdk.async_utils import execute_async_method_job
 from cardinal_sdk.kotlin_types import symbols
+from typing import Optional
+from cardinal_sdk.model import DocumentTemplate, DocIdentifier
 from cardinal_sdk.model.CallResult import create_result_from_json, interpret_kt_error
 from ctypes import cast, c_char_p
-from typing import List
 
 
 class DocumentTemplateApi:
@@ -14,9 +14,9 @@ class DocumentTemplateApi:
 	def __init__(self, cardinal_sdk):
 		self.cardinal_sdk = cardinal_sdk
 
-	async def get_document_template_async(self, document_template_id: str) -> DocumentTemplate:
+	async def get_document_template_async(self, document_template_id: str) -> Optional[DocumentTemplate]:
 		def do_decode(raw_result):
-			return DocumentTemplate._deserialize(raw_result)
+			return DocumentTemplate._deserialize(raw_result) if raw_result is not None else None
 		payload = {
 			"documentTemplateId": document_template_id,
 		}
@@ -29,7 +29,7 @@ class DocumentTemplateApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def get_document_template_blocking(self, document_template_id: str) -> DocumentTemplate:
+	def get_document_template_blocking(self, document_template_id: str) -> Optional[DocumentTemplate]:
 		payload = {
 			"documentTemplateId": document_template_id,
 		}
@@ -42,7 +42,7 @@ class DocumentTemplateApi:
 		if result_info.failure is not None:
 			raise interpret_kt_error(result_info.failure)
 		else:
-			return_value = DocumentTemplate._deserialize(result_info.success)
+			return_value = DocumentTemplate._deserialize(result_info.success) if result_info.success is not None else None
 			return return_value
 
 	async def create_document_template_async(self, document_template: DocumentTemplate) -> DocumentTemplate:
@@ -107,7 +107,7 @@ class DocumentTemplateApi:
 			return_value = DocumentTemplate._deserialize(result_info.success)
 			return return_value
 
-	async def delete_document_templates_async(self, document_template_ids: List[str]) -> List[DocIdentifier]:
+	async def delete_document_templates_async(self, document_template_ids: list[str]) -> list[DocIdentifier]:
 		def do_decode(raw_result):
 			return [DocIdentifier._deserialize(x1) for x1 in raw_result]
 		payload = {
@@ -122,7 +122,7 @@ class DocumentTemplateApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def delete_document_templates_blocking(self, document_template_ids: List[str]) -> List[DocIdentifier]:
+	def delete_document_templates_blocking(self, document_template_ids: list[str]) -> list[DocIdentifier]:
 		payload = {
 			"documentTemplateIds": [x0 for x0 in document_template_ids],
 		}
@@ -138,7 +138,7 @@ class DocumentTemplateApi:
 			return_value = [DocIdentifier._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
-	async def list_document_templates_by_speciality_async(self, speciality_code: str) -> List[DocumentTemplate]:
+	async def list_document_templates_by_speciality_async(self, speciality_code: str) -> list[DocumentTemplate]:
 		def do_decode(raw_result):
 			return [DocumentTemplate._deserialize(x1) for x1 in raw_result]
 		payload = {
@@ -153,7 +153,7 @@ class DocumentTemplateApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def list_document_templates_by_speciality_blocking(self, speciality_code: str) -> List[DocumentTemplate]:
+	def list_document_templates_by_speciality_blocking(self, speciality_code: str) -> list[DocumentTemplate]:
 		payload = {
 			"specialityCode": speciality_code,
 		}
@@ -169,7 +169,7 @@ class DocumentTemplateApi:
 			return_value = [DocumentTemplate._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
-	async def list_document_templates_by_document_type_async(self, document_type_code: str) -> List[DocumentTemplate]:
+	async def list_document_templates_by_document_type_async(self, document_type_code: str) -> list[DocumentTemplate]:
 		def do_decode(raw_result):
 			return [DocumentTemplate._deserialize(x1) for x1 in raw_result]
 		payload = {
@@ -184,7 +184,7 @@ class DocumentTemplateApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def list_document_templates_by_document_type_blocking(self, document_type_code: str) -> List[DocumentTemplate]:
+	def list_document_templates_by_document_type_blocking(self, document_type_code: str) -> list[DocumentTemplate]:
 		payload = {
 			"documentTypeCode": document_type_code,
 		}
@@ -200,7 +200,7 @@ class DocumentTemplateApi:
 			return_value = [DocumentTemplate._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
-	async def list_document_templates_by_document_type_for_current_user_async(self, document_type_code: str) -> List[DocumentTemplate]:
+	async def list_document_templates_by_document_type_for_current_user_async(self, document_type_code: str) -> list[DocumentTemplate]:
 		def do_decode(raw_result):
 			return [DocumentTemplate._deserialize(x1) for x1 in raw_result]
 		payload = {
@@ -215,7 +215,7 @@ class DocumentTemplateApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def list_document_templates_by_document_type_for_current_user_blocking(self, document_type_code: str) -> List[DocumentTemplate]:
+	def list_document_templates_by_document_type_for_current_user_blocking(self, document_type_code: str) -> list[DocumentTemplate]:
 		payload = {
 			"documentTypeCode": document_type_code,
 		}
@@ -231,7 +231,7 @@ class DocumentTemplateApi:
 			return_value = [DocumentTemplate._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
-	async def list_document_templates_async(self) -> List[DocumentTemplate]:
+	async def list_document_templates_async(self) -> list[DocumentTemplate]:
 		def do_decode(raw_result):
 			return [DocumentTemplate._deserialize(x1) for x1 in raw_result]
 		return await execute_async_method_job(
@@ -242,7 +242,7 @@ class DocumentTemplateApi:
 			self.cardinal_sdk._native,
 		)
 
-	def list_document_templates_blocking(self) -> List[DocumentTemplate]:
+	def list_document_templates_blocking(self) -> list[DocumentTemplate]:
 		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentTemplateApi.listDocumentTemplatesBlocking(
 			self.cardinal_sdk._native,
 		)

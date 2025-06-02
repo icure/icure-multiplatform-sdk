@@ -1,9 +1,8 @@
 # auto-generated file
 import json
-from cardinal_sdk.model import ApplicationSettings
 from cardinal_sdk.async_utils import execute_async_method_job
 from cardinal_sdk.kotlin_types import symbols
-from typing import List
+from cardinal_sdk.model import ApplicationSettings
 from cardinal_sdk.model.CallResult import create_result_from_json, interpret_kt_error
 from ctypes import cast, c_char_p
 
@@ -13,7 +12,7 @@ class ApplicationSettingsApi:
 	def __init__(self, cardinal_sdk):
 		self.cardinal_sdk = cardinal_sdk
 
-	async def get_application_settings_async(self) -> List[ApplicationSettings]:
+	async def get_application_settings_async(self) -> list[ApplicationSettings]:
 		def do_decode(raw_result):
 			return [ApplicationSettings._deserialize(x1) for x1 in raw_result]
 		return await execute_async_method_job(
@@ -24,7 +23,7 @@ class ApplicationSettingsApi:
 			self.cardinal_sdk._native,
 		)
 
-	def get_application_settings_blocking(self) -> List[ApplicationSettings]:
+	def get_application_settings_blocking(self) -> list[ApplicationSettings]:
 		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ApplicationSettingsApi.getApplicationSettingsBlocking(
 			self.cardinal_sdk._native,
 		)

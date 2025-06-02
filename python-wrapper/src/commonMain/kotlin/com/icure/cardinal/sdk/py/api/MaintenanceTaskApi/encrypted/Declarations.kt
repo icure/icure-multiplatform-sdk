@@ -194,6 +194,42 @@ public fun filterMaintenanceTasksBySortedAsync(
 }.failureToPyResultAsyncCallback(resultCallback)
 
 @Serializable
+private class CreateMaintenanceTaskParams(
+	public val entity: EncryptedMaintenanceTask,
+)
+
+@OptIn(InternalIcureApi::class)
+public fun createMaintenanceTaskBlocking(sdk: CardinalApis, params: String): String =
+		kotlin.runCatching {
+	val decodedParams = fullLanguageInteropJson.decodeFromString<CreateMaintenanceTaskParams>(params)
+	runBlocking {
+		sdk.maintenanceTask.encrypted.createMaintenanceTask(
+			decodedParams.entity,
+		)
+	}
+}.toPyString(EncryptedMaintenanceTask.serializer())
+
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
+public fun createMaintenanceTaskAsync(
+	sdk: CardinalApis,
+	params: String,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): COpaquePointer? = kotlin.runCatching {
+	val decodedParams = fullLanguageInteropJson.decodeFromString<CreateMaintenanceTaskParams>(params)
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.maintenanceTask.encrypted.createMaintenanceTask(
+				decodedParams.entity,
+			)
+		}.toPyStringAsyncCallback(EncryptedMaintenanceTask.serializer(), resultCallback)
+	}
+}.failureToPyStringAsyncCallback(resultCallback)
+
+@Serializable
 private class UndeleteMaintenanceTaskParams(
 	public val maintenanceTask: MaintenanceTask,
 )

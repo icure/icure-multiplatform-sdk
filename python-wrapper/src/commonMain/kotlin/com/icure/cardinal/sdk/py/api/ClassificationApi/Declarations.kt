@@ -49,42 +49,6 @@ import kotlinx.serialization.builtins.SetSerializer
 import kotlinx.serialization.builtins.serializer
 
 @Serializable
-private class CreateClassificationParams(
-	public val entity: DecryptedClassification,
-)
-
-@OptIn(InternalIcureApi::class)
-public fun createClassificationBlocking(sdk: CardinalApis, params: String): String =
-		kotlin.runCatching {
-	val decodedParams = fullLanguageInteropJson.decodeFromString<CreateClassificationParams>(params)
-	runBlocking {
-		sdk.classification.createClassification(
-			decodedParams.entity,
-		)
-	}
-}.toPyString(DecryptedClassification.serializer())
-
-@OptIn(
-	ExperimentalForeignApi::class,
-	InternalIcureApi::class,
-)
-public fun createClassificationAsync(
-	sdk: CardinalApis,
-	params: String,
-	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
-			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): COpaquePointer? = kotlin.runCatching {
-	val decodedParams = fullLanguageInteropJson.decodeFromString<CreateClassificationParams>(params)
-	GlobalScope.launch {
-		kotlin.runCatching {
-			sdk.classification.createClassification(
-				decodedParams.entity,
-			)
-		}.toPyStringAsyncCallback(DecryptedClassification.serializer(), resultCallback)
-	}
-}.failureToPyStringAsyncCallback(resultCallback)
-
-@Serializable
 private class WithEncryptionMetadataParams(
 	public val base: DecryptedClassification?,
 	public val patient: Patient,
@@ -702,6 +666,42 @@ public fun filterClassificationsBySortedAsync(
 			PaginatedListIteratorWithSerializer(it, DecryptedClassification.serializer())}
 	}
 }.failureToPyResultAsyncCallback(resultCallback)
+
+@Serializable
+private class CreateClassificationParams(
+	public val entity: DecryptedClassification,
+)
+
+@OptIn(InternalIcureApi::class)
+public fun createClassificationBlocking(sdk: CardinalApis, params: String): String =
+		kotlin.runCatching {
+	val decodedParams = fullLanguageInteropJson.decodeFromString<CreateClassificationParams>(params)
+	runBlocking {
+		sdk.classification.createClassification(
+			decodedParams.entity,
+		)
+	}
+}.toPyString(DecryptedClassification.serializer())
+
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
+public fun createClassificationAsync(
+	sdk: CardinalApis,
+	params: String,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): COpaquePointer? = kotlin.runCatching {
+	val decodedParams = fullLanguageInteropJson.decodeFromString<CreateClassificationParams>(params)
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.classification.createClassification(
+				decodedParams.entity,
+			)
+		}.toPyStringAsyncCallback(DecryptedClassification.serializer(), resultCallback)
+	}
+}.failureToPyStringAsyncCallback(resultCallback)
 
 @Serializable
 private class ModifyClassificationParams(

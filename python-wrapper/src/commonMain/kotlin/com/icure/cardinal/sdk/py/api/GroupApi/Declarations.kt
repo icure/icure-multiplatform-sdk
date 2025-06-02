@@ -17,6 +17,7 @@ import com.icure.cardinal.sdk.model.couchdb.GroupDatabasesInfo
 import com.icure.cardinal.sdk.model.embed.GroupType
 import com.icure.cardinal.sdk.model.embed.RoleConfiguration
 import com.icure.cardinal.sdk.model.embed.UserType
+import com.icure.cardinal.sdk.model.security.ExternalJwtConfig
 import com.icure.cardinal.sdk.model.security.Operation
 import com.icure.cardinal.sdk.model.security.PermissionType
 import com.icure.cardinal.sdk.py.utils.failureToPyStringAsyncCallback
@@ -989,5 +990,135 @@ public fun listAllGroupsIdsAsync(sdk: CardinalNonCryptoApis,
 		kotlin.runCatching {
 			sdk.group.listAllGroupsIds()
 		}.toPyStringAsyncCallback(ListSerializer(DocIdentifier.serializer()), resultCallback)
+	}
+}.failureToPyStringAsyncCallback(resultCallback)
+
+@Serializable
+private class CreateOrUpdateExternalJwtConfigParams(
+	public val groupId: String,
+	public val key: String,
+	public val config: ExternalJwtConfig,
+)
+
+@OptIn(InternalIcureApi::class)
+public fun createOrUpdateExternalJwtConfigBlocking(sdk: CardinalNonCryptoApis, params: String):
+		String = kotlin.runCatching {
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<CreateOrUpdateExternalJwtConfigParams>(params)
+	runBlocking {
+		sdk.group.createOrUpdateExternalJwtConfig(
+			decodedParams.groupId,
+			decodedParams.key,
+			decodedParams.config,
+		)
+	}
+}.toPyString(Group.serializer())
+
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
+public fun createOrUpdateExternalJwtConfigAsync(
+	sdk: CardinalNonCryptoApis,
+	params: String,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): COpaquePointer? = kotlin.runCatching {
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<CreateOrUpdateExternalJwtConfigParams>(params)
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.group.createOrUpdateExternalJwtConfig(
+				decodedParams.groupId,
+				decodedParams.key,
+				decodedParams.config,
+			)
+		}.toPyStringAsyncCallback(Group.serializer(), resultCallback)
+	}
+}.failureToPyStringAsyncCallback(resultCallback)
+
+@Serializable
+private class RemoveExternalJwtConfigParams(
+	public val groupId: String,
+	public val key: String,
+)
+
+@OptIn(InternalIcureApi::class)
+public fun removeExternalJwtConfigBlocking(sdk: CardinalNonCryptoApis, params: String): String =
+		kotlin.runCatching {
+	val decodedParams = fullLanguageInteropJson.decodeFromString<RemoveExternalJwtConfigParams>(params)
+	runBlocking {
+		sdk.group.removeExternalJwtConfig(
+			decodedParams.groupId,
+			decodedParams.key,
+		)
+	}
+}.toPyString(Group.serializer())
+
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
+public fun removeExternalJwtConfigAsync(
+	sdk: CardinalNonCryptoApis,
+	params: String,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): COpaquePointer? = kotlin.runCatching {
+	val decodedParams = fullLanguageInteropJson.decodeFromString<RemoveExternalJwtConfigParams>(params)
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.group.removeExternalJwtConfig(
+				decodedParams.groupId,
+				decodedParams.key,
+			)
+		}.toPyStringAsyncCallback(Group.serializer(), resultCallback)
+	}
+}.failureToPyStringAsyncCallback(resultCallback)
+
+@Serializable
+private class GetOperationTokenForGroupParams(
+	public val groupId: String,
+	public val operation: Operation,
+	public val duration: Long?,
+	public val description: String?,
+)
+
+@OptIn(InternalIcureApi::class)
+public fun getOperationTokenForGroupBlocking(sdk: CardinalNonCryptoApis, params: String): String =
+		kotlin.runCatching {
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<GetOperationTokenForGroupParams>(params)
+	runBlocking {
+		sdk.group.getOperationTokenForGroup(
+			decodedParams.groupId,
+			decodedParams.operation,
+			decodedParams.duration,
+			decodedParams.description,
+		)
+	}
+}.toPyString(String.serializer())
+
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
+public fun getOperationTokenForGroupAsync(
+	sdk: CardinalNonCryptoApis,
+	params: String,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): COpaquePointer? = kotlin.runCatching {
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<GetOperationTokenForGroupParams>(params)
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.group.getOperationTokenForGroup(
+				decodedParams.groupId,
+				decodedParams.operation,
+				decodedParams.duration,
+				decodedParams.description,
+			)
+		}.toPyStringAsyncCallback(String.serializer(), resultCallback)
 	}
 }.failureToPyStringAsyncCallback(resultCallback)

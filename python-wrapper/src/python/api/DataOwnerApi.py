@@ -1,11 +1,10 @@
 # auto-generated file
 import json
-from cardinal_sdk.model import deserialize_data_owner_with_type, DataOwnerWithType, CryptoActorStubWithType, DataOwnerType
+from cardinal_sdk.model import deserialize_data_owner_with_type, DataOwnerWithType, CryptoActorStubWithType, EntityReferenceInGroup, DataOwnerType
 from cardinal_sdk.async_utils import execute_async_method_job
 from cardinal_sdk.kotlin_types import symbols
 from cardinal_sdk.model.CallResult import create_result_from_json, interpret_kt_error
 from ctypes import cast, c_char_p
-from typing import List
 
 
 class DataOwnerApi:
@@ -82,7 +81,30 @@ class DataOwnerApi:
 			return_value = result_info.success
 			return return_value
 
-	async def get_current_data_owner_hierarchy_ids_async(self) -> List[str]:
+	async def get_current_data_owner_reference_async(self) -> EntityReferenceInGroup:
+		def do_decode(raw_result):
+			return EntityReferenceInGroup._deserialize(raw_result)
+		return await execute_async_method_job(
+			self.cardinal_sdk._executor,
+			True,
+			do_decode,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DataOwnerApi.getCurrentDataOwnerReferenceAsync,
+			self.cardinal_sdk._native,
+		)
+
+	def get_current_data_owner_reference_blocking(self) -> EntityReferenceInGroup:
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DataOwnerApi.getCurrentDataOwnerReferenceBlocking(
+			self.cardinal_sdk._native,
+		)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
+		if result_info.failure is not None:
+			raise interpret_kt_error(result_info.failure)
+		else:
+			return_value = EntityReferenceInGroup._deserialize(result_info.success)
+			return return_value
+
+	async def get_current_data_owner_hierarchy_ids_async(self) -> list[str]:
 		def do_decode(raw_result):
 			return [x1 for x1 in raw_result]
 		return await execute_async_method_job(
@@ -93,7 +115,7 @@ class DataOwnerApi:
 			self.cardinal_sdk._native,
 		)
 
-	def get_current_data_owner_hierarchy_ids_blocking(self) -> List[str]:
+	def get_current_data_owner_hierarchy_ids_blocking(self) -> list[str]:
 		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DataOwnerApi.getCurrentDataOwnerHierarchyIdsBlocking(
 			self.cardinal_sdk._native,
 		)
@@ -103,6 +125,29 @@ class DataOwnerApi:
 			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = [x1 for x1 in result_info.success]
+			return return_value
+
+	async def get_current_data_owner_hierarchy_ids_reference_async(self) -> list[EntityReferenceInGroup]:
+		def do_decode(raw_result):
+			return [EntityReferenceInGroup._deserialize(x1) for x1 in raw_result]
+		return await execute_async_method_job(
+			self.cardinal_sdk._executor,
+			True,
+			do_decode,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DataOwnerApi.getCurrentDataOwnerHierarchyIdsReferenceAsync,
+			self.cardinal_sdk._native,
+		)
+
+	def get_current_data_owner_hierarchy_ids_reference_blocking(self) -> list[EntityReferenceInGroup]:
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DataOwnerApi.getCurrentDataOwnerHierarchyIdsReferenceBlocking(
+			self.cardinal_sdk._native,
+		)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
+		if result_info.failure is not None:
+			raise interpret_kt_error(result_info.failure)
+		else:
+			return_value = [EntityReferenceInGroup._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
 	async def get_data_owner_async(self, owner_id: str) -> DataOwnerWithType:
@@ -167,7 +212,38 @@ class DataOwnerApi:
 			return_value = CryptoActorStubWithType._deserialize(result_info.success)
 			return return_value
 
-	async def get_current_data_owner_hierarchy_ids_from_async(self, parent_id: str) -> List[str]:
+	async def get_crypto_actor_stub_in_group_async(self, entity_reference_in_group: EntityReferenceInGroup) -> CryptoActorStubWithType:
+		def do_decode(raw_result):
+			return CryptoActorStubWithType._deserialize(raw_result)
+		payload = {
+			"entityReferenceInGroup": entity_reference_in_group.__serialize__(),
+		}
+		return await execute_async_method_job(
+			self.cardinal_sdk._executor,
+			True,
+			do_decode,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DataOwnerApi.getCryptoActorStubInGroupAsync,
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+
+	def get_crypto_actor_stub_in_group_blocking(self, entity_reference_in_group: EntityReferenceInGroup) -> CryptoActorStubWithType:
+		payload = {
+			"entityReferenceInGroup": entity_reference_in_group.__serialize__(),
+		}
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DataOwnerApi.getCryptoActorStubInGroupBlocking(
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
+		if result_info.failure is not None:
+			raise interpret_kt_error(result_info.failure)
+		else:
+			return_value = CryptoActorStubWithType._deserialize(result_info.success)
+			return return_value
+
+	async def get_current_data_owner_hierarchy_ids_from_async(self, parent_id: str) -> list[str]:
 		def do_decode(raw_result):
 			return [x1 for x1 in raw_result]
 		payload = {
@@ -182,7 +258,7 @@ class DataOwnerApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def get_current_data_owner_hierarchy_ids_from_blocking(self, parent_id: str) -> List[str]:
+	def get_current_data_owner_hierarchy_ids_from_blocking(self, parent_id: str) -> list[str]:
 		payload = {
 			"parentId": parent_id,
 		}
@@ -198,7 +274,7 @@ class DataOwnerApi:
 			return_value = [x1 for x1 in result_info.success]
 			return return_value
 
-	async def get_current_data_owner_hierarchy_async(self) -> List[DataOwnerWithType]:
+	async def get_current_data_owner_hierarchy_async(self) -> list[DataOwnerWithType]:
 		def do_decode(raw_result):
 			return [deserialize_data_owner_with_type(x1) for x1 in raw_result]
 		return await execute_async_method_job(
@@ -209,7 +285,7 @@ class DataOwnerApi:
 			self.cardinal_sdk._native,
 		)
 
-	def get_current_data_owner_hierarchy_blocking(self) -> List[DataOwnerWithType]:
+	def get_current_data_owner_hierarchy_blocking(self) -> list[DataOwnerWithType]:
 		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DataOwnerApi.getCurrentDataOwnerHierarchyBlocking(
 			self.cardinal_sdk._native,
 		)

@@ -1,11 +1,11 @@
 # auto-generated file
 import json
-from cardinal_sdk.model import Keyword, DocIdentifier
 from cardinal_sdk.async_utils import execute_async_method_job
 from cardinal_sdk.kotlin_types import symbols
+from typing import Optional
+from cardinal_sdk.model import Keyword, DocIdentifier
 from cardinal_sdk.model.CallResult import create_result_from_json, interpret_kt_error
 from ctypes import cast, c_char_p
-from typing import List
 
 
 class KeywordApi:
@@ -13,11 +13,11 @@ class KeywordApi:
 	def __init__(self, cardinal_sdk):
 		self.cardinal_sdk = cardinal_sdk
 
-	async def get_keyword_async(self, front_end_migration_id: str) -> Keyword:
+	async def get_keyword_async(self, keyword_id: str) -> Optional[Keyword]:
 		def do_decode(raw_result):
-			return Keyword._deserialize(raw_result)
+			return Keyword._deserialize(raw_result) if raw_result is not None else None
 		payload = {
-			"frontEndMigrationId": front_end_migration_id,
+			"keywordId": keyword_id,
 		}
 		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
@@ -28,9 +28,9 @@ class KeywordApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def get_keyword_blocking(self, front_end_migration_id: str) -> Keyword:
+	def get_keyword_blocking(self, keyword_id: str) -> Optional[Keyword]:
 		payload = {
-			"frontEndMigrationId": front_end_migration_id,
+			"keywordId": keyword_id,
 		}
 		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.KeywordApi.getKeywordBlocking(
 			self.cardinal_sdk._native,
@@ -41,14 +41,14 @@ class KeywordApi:
 		if result_info.failure is not None:
 			raise interpret_kt_error(result_info.failure)
 		else:
-			return_value = Keyword._deserialize(result_info.success)
+			return_value = Keyword._deserialize(result_info.success) if result_info.success is not None else None
 			return return_value
 
-	async def create_keyword_async(self, front_end_migration: Keyword) -> Keyword:
+	async def create_keyword_async(self, keyword: Keyword) -> Keyword:
 		def do_decode(raw_result):
 			return Keyword._deserialize(raw_result)
 		payload = {
-			"frontEndMigration": front_end_migration.__serialize__(),
+			"keyword": keyword.__serialize__(),
 		}
 		return await execute_async_method_job(
 			self.cardinal_sdk._executor,
@@ -59,9 +59,9 @@ class KeywordApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def create_keyword_blocking(self, front_end_migration: Keyword) -> Keyword:
+	def create_keyword_blocking(self, keyword: Keyword) -> Keyword:
 		payload = {
-			"frontEndMigration": front_end_migration.__serialize__(),
+			"keyword": keyword.__serialize__(),
 		}
 		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.KeywordApi.createKeywordBlocking(
 			self.cardinal_sdk._native,
@@ -106,7 +106,7 @@ class KeywordApi:
 			return_value = Keyword._deserialize(result_info.success)
 			return return_value
 
-	async def get_keywords_by_user_async(self, user_id: str) -> List[Keyword]:
+	async def get_keywords_by_user_async(self, user_id: str) -> list[Keyword]:
 		def do_decode(raw_result):
 			return [Keyword._deserialize(x1) for x1 in raw_result]
 		payload = {
@@ -121,7 +121,7 @@ class KeywordApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def get_keywords_by_user_blocking(self, user_id: str) -> List[Keyword]:
+	def get_keywords_by_user_blocking(self, user_id: str) -> list[Keyword]:
 		payload = {
 			"userId": user_id,
 		}
@@ -137,7 +137,7 @@ class KeywordApi:
 			return_value = [Keyword._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
-	async def delete_keywords_async(self, keyword_ids: List[str]) -> List[DocIdentifier]:
+	async def delete_keywords_async(self, keyword_ids: list[str]) -> list[DocIdentifier]:
 		def do_decode(raw_result):
 			return [DocIdentifier._deserialize(x1) for x1 in raw_result]
 		payload = {
@@ -152,7 +152,7 @@ class KeywordApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def delete_keywords_blocking(self, keyword_ids: List[str]) -> List[DocIdentifier]:
+	def delete_keywords_blocking(self, keyword_ids: list[str]) -> list[DocIdentifier]:
 		payload = {
 			"keywordIds": [x0 for x0 in keyword_ids],
 		}

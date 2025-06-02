@@ -5,7 +5,7 @@ from cardinal_sdk.model.CallResult import create_result_from_json, interpret_kt_
 from ctypes import cast, c_char_p
 from cardinal_sdk.filters.FilterOptions import BaseFilterOptions, FilterOptions, BaseSortableFilterOptions, SortableFilterOptions
 from cardinal_sdk.model import Service, Identifier, Patient, serialize_patient, LinkQualification
-from typing import List, Optional
+from typing import Optional
 
 
 class ServiceFilters:
@@ -39,7 +39,7 @@ class ServiceFilters:
 			return return_value
 
 	@classmethod
-	def by_identifiers_for_data_owner(cls, data_owner_id: str, identifiers: List[Identifier]) -> BaseSortableFilterOptions[Service]:
+	def by_identifiers_for_data_owner(cls, data_owner_id: str, identifiers: list[Identifier]) -> BaseSortableFilterOptions[Service]:
 		payload = {
 			"dataOwnerId": data_owner_id,
 			"identifiers": [x0.__serialize__() for x0 in identifiers],
@@ -96,7 +96,7 @@ class ServiceFilters:
 			return return_value
 
 	@classmethod
-	def by_patients_for_data_owner(cls, data_owner_id: str, patients: List[Patient]) -> SortableFilterOptions[Service]:
+	def by_patients_for_data_owner(cls, data_owner_id: str, patients: list[Patient]) -> SortableFilterOptions[Service]:
 		payload = {
 			"dataOwnerId": data_owner_id,
 			"patients": [serialize_patient(x0) for x0 in patients],
@@ -113,7 +113,7 @@ class ServiceFilters:
 			return return_value
 
 	@classmethod
-	def by_patients_secret_ids_for_data_owner(cls, data_owner_id: str, secret_ids: List[str]) -> BaseSortableFilterOptions[Service]:
+	def by_patients_secret_ids_for_data_owner(cls, data_owner_id: str, secret_ids: list[str]) -> BaseSortableFilterOptions[Service]:
 		payload = {
 			"dataOwnerId": data_owner_id,
 			"secretIds": [x0 for x0 in secret_ids],
@@ -130,7 +130,7 @@ class ServiceFilters:
 			return return_value
 
 	@classmethod
-	def by_health_element_id_from_sub_contact_for_data_owner(cls, data_owner_id: str, health_element_ids: List[str]) -> BaseSortableFilterOptions[Service]:
+	def by_health_element_id_from_sub_contact_for_data_owner(cls, data_owner_id: str, health_element_ids: list[str]) -> BaseSortableFilterOptions[Service]:
 		payload = {
 			"dataOwnerId": data_owner_id,
 			"healthElementIds": [x0 for x0 in health_element_ids],
@@ -147,7 +147,7 @@ class ServiceFilters:
 			return return_value
 
 	@classmethod
-	def by_identifiers_for_self(cls, identifiers: List[Identifier]) -> SortableFilterOptions[Service]:
+	def by_identifiers_for_self(cls, identifiers: list[Identifier]) -> SortableFilterOptions[Service]:
 		payload = {
 			"identifiers": [x0.__serialize__() for x0 in identifiers],
 		}
@@ -201,7 +201,7 @@ class ServiceFilters:
 			return return_value
 
 	@classmethod
-	def by_patients_for_self(cls, patients: List[Patient]) -> SortableFilterOptions[Service]:
+	def by_patients_for_self(cls, patients: list[Patient]) -> SortableFilterOptions[Service]:
 		payload = {
 			"patients": [serialize_patient(x0) for x0 in patients],
 		}
@@ -217,7 +217,7 @@ class ServiceFilters:
 			return return_value
 
 	@classmethod
-	def by_patients_secret_ids_for_self(cls, secret_ids: List[str]) -> SortableFilterOptions[Service]:
+	def by_patients_secret_ids_for_self(cls, secret_ids: list[str]) -> SortableFilterOptions[Service]:
 		payload = {
 			"secretIds": [x0 for x0 in secret_ids],
 		}
@@ -233,7 +233,7 @@ class ServiceFilters:
 			return return_value
 
 	@classmethod
-	def by_health_element_id_from_sub_contact_for_self(cls, health_element_ids: List[str]) -> SortableFilterOptions[Service]:
+	def by_health_element_id_from_sub_contact_for_self(cls, health_element_ids: list[str]) -> SortableFilterOptions[Service]:
 		payload = {
 			"healthElementIds": [x0 for x0 in health_element_ids],
 		}
@@ -249,7 +249,7 @@ class ServiceFilters:
 			return return_value
 
 	@classmethod
-	def by_ids(cls, ids: List[str]) -> BaseSortableFilterOptions[Service]:
+	def by_ids(cls, ids: list[str]) -> BaseSortableFilterOptions[Service]:
 		payload = {
 			"ids": [x0 for x0 in ids],
 		}
@@ -281,7 +281,7 @@ class ServiceFilters:
 			return return_value
 
 	@classmethod
-	def by_qualified_link(cls, link_values: List[str], link_qualification: Optional[LinkQualification] = None) -> BaseFilterOptions[Service]:
+	def by_qualified_link(cls, link_values: list[str], link_qualification: Optional[LinkQualification] = None) -> BaseFilterOptions[Service]:
 		payload = {
 			"linkValues": [x0 for x0 in link_values],
 			"linkQualification": link_qualification.__serialize__() if link_qualification is not None else None,
@@ -298,7 +298,7 @@ class ServiceFilters:
 			return return_value
 
 	@classmethod
-	def by_patients_date_for_data_owner(cls, data_owner_id: str, patients: List[Patient], from_: Optional[int] = None, to: Optional[int] = None, descending: bool = False) -> SortableFilterOptions[Service]:
+	def by_patients_date_for_data_owner(cls, data_owner_id: str, patients: list[Patient], from_: Optional[int] = None, to: Optional[int] = None, descending: bool = False) -> SortableFilterOptions[Service]:
 		payload = {
 			"dataOwnerId": data_owner_id,
 			"patients": [serialize_patient(x0) for x0 in patients],
@@ -318,7 +318,7 @@ class ServiceFilters:
 			return return_value
 
 	@classmethod
-	def by_patients_date_for_self(cls, patients: List[Patient], from_: Optional[int] = None, to: Optional[int] = None, descending: bool = False) -> SortableFilterOptions[Service]:
+	def by_patients_date_for_self(cls, patients: list[Patient], from_: Optional[int] = None, to: Optional[int] = None, descending: bool = False) -> SortableFilterOptions[Service]:
 		payload = {
 			"patients": [serialize_patient(x0) for x0 in patients],
 			"from": from_,
@@ -337,7 +337,7 @@ class ServiceFilters:
 			return return_value
 
 	@classmethod
-	def by_patient_secret_ids_date_for_data_owner(cls, data_owner_id: str, secret_ids: List[str], from_: Optional[int] = None, to: Optional[int] = None, descending: bool = False) -> BaseSortableFilterOptions[Service]:
+	def by_patient_secret_ids_date_for_data_owner(cls, data_owner_id: str, secret_ids: list[str], from_: Optional[int] = None, to: Optional[int] = None, descending: bool = False) -> BaseSortableFilterOptions[Service]:
 		payload = {
 			"dataOwnerId": data_owner_id,
 			"secretIds": [x0 for x0 in secret_ids],
@@ -357,7 +357,7 @@ class ServiceFilters:
 			return return_value
 
 	@classmethod
-	def by_patient_secret_ids_date_for_self(cls, secret_ids: List[str], from_: Optional[int] = None, to: Optional[int] = None, descending: bool = False) -> SortableFilterOptions[Service]:
+	def by_patient_secret_ids_date_for_self(cls, secret_ids: list[str], from_: Optional[int] = None, to: Optional[int] = None, descending: bool = False) -> SortableFilterOptions[Service]:
 		payload = {
 			"secretIds": [x0 for x0 in secret_ids],
 			"from": from_,

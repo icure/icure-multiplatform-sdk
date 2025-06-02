@@ -1,13 +1,13 @@
 # auto-generated file
 import json
 from cardinal_sdk.filters.FilterOptions import BaseFilterOptions, BaseSortableFilterOptions
-from cardinal_sdk.model import HealthElement, EncryptedHealthElement, DocIdentifier, IdWithMandatoryRev, serialize_health_element, SubscriptionEventType, EntitySubscriptionConfiguration
+from cardinal_sdk.model import HealthElement, EncryptedHealthElement, StoredDocumentIdentifier, serialize_health_element, SubscriptionEventType, EntitySubscriptionConfiguration, GroupScoped
 from cardinal_sdk.async_utils import execute_async_method_job
 from cardinal_sdk.kotlin_types import symbols
-from typing import List, Optional
 from cardinal_sdk.model.CallResult import create_result_from_json, interpret_kt_error
 from ctypes import cast, c_char_p
 from cardinal_sdk.pagination.PaginatedListIterator import PaginatedListIterator
+from typing import Optional
 from cardinal_sdk.subscription.EntitySubscription import EntitySubscription
 
 
@@ -15,8 +15,9 @@ class HealthElementBasicApi:
 
 	def __init__(self, cardinal_sdk):
 		self.cardinal_sdk = cardinal_sdk
+		self.in_group = HealthElementBasicApiInGroup(self.cardinal_sdk)
 
-	async def match_health_elements_by_async(self, filter: BaseFilterOptions[HealthElement]) -> List[str]:
+	async def match_health_elements_by_async(self, filter: BaseFilterOptions[HealthElement]) -> list[str]:
 		def do_decode(raw_result):
 			return [x1 for x1 in raw_result]
 		payload = {
@@ -31,7 +32,7 @@ class HealthElementBasicApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def match_health_elements_by_blocking(self, filter: BaseFilterOptions[HealthElement]) -> List[str]:
+	def match_health_elements_by_blocking(self, filter: BaseFilterOptions[HealthElement]) -> list[str]:
 		payload = {
 			"filter": filter.__serialize__(),
 		}
@@ -47,7 +48,7 @@ class HealthElementBasicApi:
 			return_value = [x1 for x1 in result_info.success]
 			return return_value
 
-	async def match_health_elements_by_sorted_async(self, filter: BaseSortableFilterOptions[HealthElement]) -> List[str]:
+	async def match_health_elements_by_sorted_async(self, filter: BaseSortableFilterOptions[HealthElement]) -> list[str]:
 		def do_decode(raw_result):
 			return [x1 for x1 in raw_result]
 		payload = {
@@ -62,7 +63,7 @@ class HealthElementBasicApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def match_health_elements_by_sorted_blocking(self, filter: BaseSortableFilterOptions[HealthElement]) -> List[str]:
+	def match_health_elements_by_sorted_blocking(self, filter: BaseSortableFilterOptions[HealthElement]) -> list[str]:
 		payload = {
 			"filter": filter.__serialize__(),
 		}
@@ -162,9 +163,9 @@ class HealthElementBasicApi:
 				executor = self.cardinal_sdk._executor
 			)
 
-	async def delete_health_element_by_id_async(self, entity_id: str, rev: Optional[str]) -> DocIdentifier:
+	async def delete_health_element_by_id_async(self, entity_id: str, rev: str) -> StoredDocumentIdentifier:
 		def do_decode(raw_result):
-			return DocIdentifier._deserialize(raw_result)
+			return StoredDocumentIdentifier._deserialize(raw_result)
 		payload = {
 			"entityId": entity_id,
 			"rev": rev,
@@ -178,7 +179,7 @@ class HealthElementBasicApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def delete_health_element_by_id_blocking(self, entity_id: str, rev: Optional[str]) -> DocIdentifier:
+	def delete_health_element_by_id_blocking(self, entity_id: str, rev: str) -> StoredDocumentIdentifier:
 		payload = {
 			"entityId": entity_id,
 			"rev": rev,
@@ -192,12 +193,12 @@ class HealthElementBasicApi:
 		if result_info.failure is not None:
 			raise interpret_kt_error(result_info.failure)
 		else:
-			return_value = DocIdentifier._deserialize(result_info.success)
+			return_value = StoredDocumentIdentifier._deserialize(result_info.success)
 			return return_value
 
-	async def delete_health_elements_by_ids_async(self, entity_ids: List[IdWithMandatoryRev]) -> List[DocIdentifier]:
+	async def delete_health_elements_by_ids_async(self, entity_ids: list[StoredDocumentIdentifier]) -> list[StoredDocumentIdentifier]:
 		def do_decode(raw_result):
-			return [DocIdentifier._deserialize(x1) for x1 in raw_result]
+			return [StoredDocumentIdentifier._deserialize(x1) for x1 in raw_result]
 		payload = {
 			"entityIds": [x0.__serialize__() for x0 in entity_ids],
 		}
@@ -210,7 +211,7 @@ class HealthElementBasicApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def delete_health_elements_by_ids_blocking(self, entity_ids: List[IdWithMandatoryRev]) -> List[DocIdentifier]:
+	def delete_health_elements_by_ids_blocking(self, entity_ids: list[StoredDocumentIdentifier]) -> list[StoredDocumentIdentifier]:
 		payload = {
 			"entityIds": [x0.__serialize__() for x0 in entity_ids],
 		}
@@ -223,7 +224,7 @@ class HealthElementBasicApi:
 		if result_info.failure is not None:
 			raise interpret_kt_error(result_info.failure)
 		else:
-			return_value = [DocIdentifier._deserialize(x1) for x1 in result_info.success]
+			return_value = [StoredDocumentIdentifier._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
 	async def purge_health_element_by_id_async(self, id: str, rev: str) -> None:
@@ -256,9 +257,9 @@ class HealthElementBasicApi:
 		if result_info.failure is not None:
 			raise interpret_kt_error(result_info.failure)
 
-	async def delete_health_element_async(self, health_element: HealthElement) -> DocIdentifier:
+	async def delete_health_element_async(self, health_element: HealthElement) -> StoredDocumentIdentifier:
 		def do_decode(raw_result):
-			return DocIdentifier._deserialize(raw_result)
+			return StoredDocumentIdentifier._deserialize(raw_result)
 		payload = {
 			"healthElement": serialize_health_element(health_element),
 		}
@@ -271,7 +272,7 @@ class HealthElementBasicApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def delete_health_element_blocking(self, health_element: HealthElement) -> DocIdentifier:
+	def delete_health_element_blocking(self, health_element: HealthElement) -> StoredDocumentIdentifier:
 		payload = {
 			"healthElement": serialize_health_element(health_element),
 		}
@@ -284,12 +285,12 @@ class HealthElementBasicApi:
 		if result_info.failure is not None:
 			raise interpret_kt_error(result_info.failure)
 		else:
-			return_value = DocIdentifier._deserialize(result_info.success)
+			return_value = StoredDocumentIdentifier._deserialize(result_info.success)
 			return return_value
 
-	async def delete_health_elements_async(self, health_elements: List[HealthElement]) -> List[DocIdentifier]:
+	async def delete_health_elements_async(self, health_elements: list[HealthElement]) -> list[StoredDocumentIdentifier]:
 		def do_decode(raw_result):
-			return [DocIdentifier._deserialize(x1) for x1 in raw_result]
+			return [StoredDocumentIdentifier._deserialize(x1) for x1 in raw_result]
 		payload = {
 			"healthElements": [serialize_health_element(x0) for x0 in health_elements],
 		}
@@ -302,7 +303,7 @@ class HealthElementBasicApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def delete_health_elements_blocking(self, health_elements: List[HealthElement]) -> List[DocIdentifier]:
+	def delete_health_elements_blocking(self, health_elements: list[HealthElement]) -> list[StoredDocumentIdentifier]:
 		payload = {
 			"healthElements": [serialize_health_element(x0) for x0 in health_elements],
 		}
@@ -315,7 +316,7 @@ class HealthElementBasicApi:
 		if result_info.failure is not None:
 			raise interpret_kt_error(result_info.failure)
 		else:
-			return_value = [DocIdentifier._deserialize(x1) for x1 in result_info.success]
+			return_value = [StoredDocumentIdentifier._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
 	async def purge_health_element_async(self, health_element: HealthElement) -> None:
@@ -345,6 +346,68 @@ class HealthElementBasicApi:
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
 			raise interpret_kt_error(result_info.failure)
+
+	async def create_health_element_async(self, entity: EncryptedHealthElement) -> EncryptedHealthElement:
+		def do_decode(raw_result):
+			return EncryptedHealthElement._deserialize(raw_result)
+		payload = {
+			"entity": entity.__serialize__(),
+		}
+		return await execute_async_method_job(
+			self.cardinal_sdk._executor,
+			True,
+			do_decode,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.HealthElementBasicApi.createHealthElementAsync,
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+
+	def create_health_element_blocking(self, entity: EncryptedHealthElement) -> EncryptedHealthElement:
+		payload = {
+			"entity": entity.__serialize__(),
+		}
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.HealthElementBasicApi.createHealthElementBlocking(
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
+		if result_info.failure is not None:
+			raise interpret_kt_error(result_info.failure)
+		else:
+			return_value = EncryptedHealthElement._deserialize(result_info.success)
+			return return_value
+
+	async def create_health_elements_async(self, entities: list[EncryptedHealthElement]) -> list[EncryptedHealthElement]:
+		def do_decode(raw_result):
+			return [EncryptedHealthElement._deserialize(x1) for x1 in raw_result]
+		payload = {
+			"entities": [x0.__serialize__() for x0 in entities],
+		}
+		return await execute_async_method_job(
+			self.cardinal_sdk._executor,
+			True,
+			do_decode,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.HealthElementBasicApi.createHealthElementsAsync,
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+
+	def create_health_elements_blocking(self, entities: list[EncryptedHealthElement]) -> list[EncryptedHealthElement]:
+		payload = {
+			"entities": [x0.__serialize__() for x0 in entities],
+		}
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.HealthElementBasicApi.createHealthElementsBlocking(
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
+		if result_info.failure is not None:
+			raise interpret_kt_error(result_info.failure)
+		else:
+			return_value = [EncryptedHealthElement._deserialize(x1) for x1 in result_info.success]
+			return return_value
 
 	async def undelete_health_element_by_id_async(self, id: str, rev: str) -> EncryptedHealthElement:
 		def do_decode(raw_result):
@@ -441,7 +504,7 @@ class HealthElementBasicApi:
 			return_value = EncryptedHealthElement._deserialize(result_info.success)
 			return return_value
 
-	async def modify_health_elements_async(self, entities: List[EncryptedHealthElement]) -> List[EncryptedHealthElement]:
+	async def modify_health_elements_async(self, entities: list[EncryptedHealthElement]) -> list[EncryptedHealthElement]:
 		def do_decode(raw_result):
 			return [EncryptedHealthElement._deserialize(x1) for x1 in raw_result]
 		payload = {
@@ -456,7 +519,7 @@ class HealthElementBasicApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def modify_health_elements_blocking(self, entities: List[EncryptedHealthElement]) -> List[EncryptedHealthElement]:
+	def modify_health_elements_blocking(self, entities: list[EncryptedHealthElement]) -> list[EncryptedHealthElement]:
 		payload = {
 			"entities": [x0.__serialize__() for x0 in entities],
 		}
@@ -472,9 +535,9 @@ class HealthElementBasicApi:
 			return_value = [EncryptedHealthElement._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
-	async def get_health_element_async(self, entity_id: str) -> EncryptedHealthElement:
+	async def get_health_element_async(self, entity_id: str) -> Optional[EncryptedHealthElement]:
 		def do_decode(raw_result):
-			return EncryptedHealthElement._deserialize(raw_result)
+			return EncryptedHealthElement._deserialize(raw_result) if raw_result is not None else None
 		payload = {
 			"entityId": entity_id,
 		}
@@ -487,7 +550,7 @@ class HealthElementBasicApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def get_health_element_blocking(self, entity_id: str) -> EncryptedHealthElement:
+	def get_health_element_blocking(self, entity_id: str) -> Optional[EncryptedHealthElement]:
 		payload = {
 			"entityId": entity_id,
 		}
@@ -500,10 +563,10 @@ class HealthElementBasicApi:
 		if result_info.failure is not None:
 			raise interpret_kt_error(result_info.failure)
 		else:
-			return_value = EncryptedHealthElement._deserialize(result_info.success)
+			return_value = EncryptedHealthElement._deserialize(result_info.success) if result_info.success is not None else None
 			return return_value
 
-	async def get_health_elements_async(self, entity_ids: List[str]) -> List[EncryptedHealthElement]:
+	async def get_health_elements_async(self, entity_ids: list[str]) -> list[EncryptedHealthElement]:
 		def do_decode(raw_result):
 			return [EncryptedHealthElement._deserialize(x1) for x1 in raw_result]
 		payload = {
@@ -518,7 +581,7 @@ class HealthElementBasicApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def get_health_elements_blocking(self, entity_ids: List[str]) -> List[EncryptedHealthElement]:
+	def get_health_elements_blocking(self, entity_ids: list[str]) -> list[EncryptedHealthElement]:
 		payload = {
 			"entityIds": [x0 for x0 in entity_ids],
 		}
@@ -534,7 +597,7 @@ class HealthElementBasicApi:
 			return_value = [EncryptedHealthElement._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
-	async def subscribe_to_events_async(self, events: List[SubscriptionEventType], filter: BaseFilterOptions[HealthElement], subscription_config: Optional[EntitySubscriptionConfiguration] = None) -> EntitySubscription[EncryptedHealthElement]:
+	async def subscribe_to_events_async(self, events: set[SubscriptionEventType], filter: BaseFilterOptions[HealthElement], subscription_config: Optional[EntitySubscriptionConfiguration] = None) -> EntitySubscription[EncryptedHealthElement]:
 		def do_decode(raw_result):
 			return EntitySubscription[EncryptedHealthElement](
 				producer = raw_result,
@@ -555,7 +618,7 @@ class HealthElementBasicApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def subscribe_to_events_blocking(self, events: List[SubscriptionEventType], filter: BaseFilterOptions[HealthElement], subscription_config: Optional[EntitySubscriptionConfiguration] = None) -> EntitySubscription[EncryptedHealthElement]:
+	def subscribe_to_events_blocking(self, events: set[SubscriptionEventType], filter: BaseFilterOptions[HealthElement], subscription_config: Optional[EntitySubscriptionConfiguration] = None) -> EntitySubscription[EncryptedHealthElement]:
 		payload = {
 			"events": [x0.__serialize__() for x0 in events],
 			"filter": filter.__serialize__(),
@@ -579,3 +642,104 @@ class HealthElementBasicApi:
 				deserializer = lambda x: EncryptedHealthElement._deserialize(x),
 				executor = self.cardinal_sdk._executor
 			)
+
+
+class HealthElementBasicApiInGroup:
+
+	def __init__(self, cardinal_sdk):
+		self.cardinal_sdk = cardinal_sdk
+
+	async def create_health_element_async(self, entity: GroupScoped[EncryptedHealthElement]) -> GroupScoped[EncryptedHealthElement]:
+		def do_decode(raw_result):
+			return GroupScoped._deserialize(raw_result, lambda x1: EncryptedHealthElement._deserialize(x1))
+		payload = {
+			"entity": entity.__serialize__(lambda x0: x0.__serialize__()),
+		}
+		return await execute_async_method_job(
+			self.cardinal_sdk._executor,
+			True,
+			do_decode,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.HealthElementBasicApi.inGroup.createHealthElementAsync,
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+
+	def create_health_element_blocking(self, entity: GroupScoped[EncryptedHealthElement]) -> GroupScoped[EncryptedHealthElement]:
+		payload = {
+			"entity": entity.__serialize__(lambda x0: x0.__serialize__()),
+		}
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.HealthElementBasicApi.inGroup.createHealthElementBlocking(
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
+		if result_info.failure is not None:
+			raise interpret_kt_error(result_info.failure)
+		else:
+			return_value = GroupScoped._deserialize(result_info.success, lambda x1: EncryptedHealthElement._deserialize(x1))
+			return return_value
+
+	async def modify_health_element_async(self, entity: GroupScoped[EncryptedHealthElement]) -> GroupScoped[EncryptedHealthElement]:
+		def do_decode(raw_result):
+			return GroupScoped._deserialize(raw_result, lambda x1: EncryptedHealthElement._deserialize(x1))
+		payload = {
+			"entity": entity.__serialize__(lambda x0: x0.__serialize__()),
+		}
+		return await execute_async_method_job(
+			self.cardinal_sdk._executor,
+			True,
+			do_decode,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.HealthElementBasicApi.inGroup.modifyHealthElementAsync,
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+
+	def modify_health_element_blocking(self, entity: GroupScoped[EncryptedHealthElement]) -> GroupScoped[EncryptedHealthElement]:
+		payload = {
+			"entity": entity.__serialize__(lambda x0: x0.__serialize__()),
+		}
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.HealthElementBasicApi.inGroup.modifyHealthElementBlocking(
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
+		if result_info.failure is not None:
+			raise interpret_kt_error(result_info.failure)
+		else:
+			return_value = GroupScoped._deserialize(result_info.success, lambda x1: EncryptedHealthElement._deserialize(x1))
+			return return_value
+
+	async def get_health_element_async(self, group_id: str, entity_id: str) -> Optional[GroupScoped[EncryptedHealthElement]]:
+		def do_decode(raw_result):
+			return GroupScoped._deserialize(raw_result, lambda x1: EncryptedHealthElement._deserialize(x1)) if raw_result is not None else None
+		payload = {
+			"groupId": group_id,
+			"entityId": entity_id,
+		}
+		return await execute_async_method_job(
+			self.cardinal_sdk._executor,
+			True,
+			do_decode,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.HealthElementBasicApi.inGroup.getHealthElementAsync,
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+
+	def get_health_element_blocking(self, group_id: str, entity_id: str) -> Optional[GroupScoped[EncryptedHealthElement]]:
+		payload = {
+			"groupId": group_id,
+			"entityId": entity_id,
+		}
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.HealthElementBasicApi.inGroup.getHealthElementBlocking(
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
+		if result_info.failure is not None:
+			raise interpret_kt_error(result_info.failure)
+		else:
+			return_value = GroupScoped._deserialize(result_info.success, lambda x1: EncryptedHealthElement._deserialize(x1)) if result_info.success is not None else None
+			return return_value

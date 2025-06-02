@@ -1,8 +1,8 @@
 # auto-generated file
 import json
-from cardinal_sdk.model import EntityReference
 from cardinal_sdk.async_utils import execute_async_method_job
 from cardinal_sdk.kotlin_types import symbols
+from cardinal_sdk.model import EntityReference
 from cardinal_sdk.model.CallResult import create_result_from_json, interpret_kt_error
 from ctypes import cast, c_char_p
 

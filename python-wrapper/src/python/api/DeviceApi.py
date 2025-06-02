@@ -1,11 +1,11 @@
 # auto-generated file
 import json
-from cardinal_sdk.model import Device, IdWithRev, DocIdentifier, IdWithMandatoryRev, SubscriptionEventType, EntitySubscriptionConfiguration
 from cardinal_sdk.async_utils import execute_async_method_job
 from cardinal_sdk.kotlin_types import symbols
+from typing import Optional
+from cardinal_sdk.model import Device, IdWithRev, DocIdentifier, StoredDocumentIdentifier, SubscriptionEventType, EntitySubscriptionConfiguration
 from cardinal_sdk.model.CallResult import create_result_from_json, interpret_kt_error
 from ctypes import cast, c_char_p
-from typing import List, Optional
 from cardinal_sdk.filters.FilterOptions import BaseFilterOptions, BaseSortableFilterOptions, FilterOptions
 from cardinal_sdk.pagination.PaginatedListIterator import PaginatedListIterator
 from cardinal_sdk.subscription.EntitySubscription import EntitySubscription
@@ -16,9 +16,9 @@ class DeviceApi:
 	def __init__(self, cardinal_sdk):
 		self.cardinal_sdk = cardinal_sdk
 
-	async def get_device_async(self, device_id: str) -> Device:
+	async def get_device_async(self, device_id: str) -> Optional[Device]:
 		def do_decode(raw_result):
-			return Device._deserialize(raw_result)
+			return Device._deserialize(raw_result) if raw_result is not None else None
 		payload = {
 			"deviceId": device_id,
 		}
@@ -31,7 +31,7 @@ class DeviceApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def get_device_blocking(self, device_id: str) -> Device:
+	def get_device_blocking(self, device_id: str) -> Optional[Device]:
 		payload = {
 			"deviceId": device_id,
 		}
@@ -44,10 +44,10 @@ class DeviceApi:
 		if result_info.failure is not None:
 			raise interpret_kt_error(result_info.failure)
 		else:
-			return_value = Device._deserialize(result_info.success)
+			return_value = Device._deserialize(result_info.success) if result_info.success is not None else None
 			return return_value
 
-	async def get_devices_async(self, device_ids: List[str]) -> List[Device]:
+	async def get_devices_async(self, device_ids: list[str]) -> list[Device]:
 		def do_decode(raw_result):
 			return [Device._deserialize(x1) for x1 in raw_result]
 		payload = {
@@ -62,7 +62,7 @@ class DeviceApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def get_devices_blocking(self, device_ids: List[str]) -> List[Device]:
+	def get_devices_blocking(self, device_ids: list[str]) -> list[Device]:
 		payload = {
 			"deviceIds": [x0 for x0 in device_ids],
 		}
@@ -140,7 +140,7 @@ class DeviceApi:
 			return_value = Device._deserialize(result_info.success)
 			return return_value
 
-	async def create_devices_async(self, devices: List[Device]) -> List[IdWithRev]:
+	async def create_devices_async(self, devices: list[Device]) -> list[IdWithRev]:
 		def do_decode(raw_result):
 			return [IdWithRev._deserialize(x1) for x1 in raw_result]
 		payload = {
@@ -155,7 +155,7 @@ class DeviceApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def create_devices_blocking(self, devices: List[Device]) -> List[IdWithRev]:
+	def create_devices_blocking(self, devices: list[Device]) -> list[IdWithRev]:
 		payload = {
 			"devices": [x0.__serialize__() for x0 in devices],
 		}
@@ -171,7 +171,7 @@ class DeviceApi:
 			return_value = [IdWithRev._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
-	async def modify_devices_async(self, devices: List[Device]) -> List[IdWithRev]:
+	async def modify_devices_async(self, devices: list[Device]) -> list[IdWithRev]:
 		def do_decode(raw_result):
 			return [IdWithRev._deserialize(x1) for x1 in raw_result]
 		payload = {
@@ -186,7 +186,7 @@ class DeviceApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def modify_devices_blocking(self, devices: List[Device]) -> List[IdWithRev]:
+	def modify_devices_blocking(self, devices: list[Device]) -> list[IdWithRev]:
 		payload = {
 			"devices": [x0.__serialize__() for x0 in devices],
 		}
@@ -286,7 +286,7 @@ class DeviceApi:
 				executor = self.cardinal_sdk._executor
 			)
 
-	async def match_devices_by_async(self, filter: BaseFilterOptions[Device]) -> List[str]:
+	async def match_devices_by_async(self, filter: BaseFilterOptions[Device]) -> list[str]:
 		def do_decode(raw_result):
 			return [x1 for x1 in raw_result]
 		payload = {
@@ -301,7 +301,7 @@ class DeviceApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def match_devices_by_blocking(self, filter: BaseFilterOptions[Device]) -> List[str]:
+	def match_devices_by_blocking(self, filter: BaseFilterOptions[Device]) -> list[str]:
 		payload = {
 			"filter": filter.__serialize__(),
 		}
@@ -317,7 +317,7 @@ class DeviceApi:
 			return_value = [x1 for x1 in result_info.success]
 			return return_value
 
-	async def match_devices_by_sorted_async(self, filter: BaseSortableFilterOptions[Device]) -> List[str]:
+	async def match_devices_by_sorted_async(self, filter: BaseSortableFilterOptions[Device]) -> list[str]:
 		def do_decode(raw_result):
 			return [x1 for x1 in raw_result]
 		payload = {
@@ -332,7 +332,7 @@ class DeviceApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def match_devices_by_sorted_blocking(self, filter: BaseSortableFilterOptions[Device]) -> List[str]:
+	def match_devices_by_sorted_blocking(self, filter: BaseSortableFilterOptions[Device]) -> list[str]:
 		payload = {
 			"filter": filter.__serialize__(),
 		}
@@ -381,7 +381,7 @@ class DeviceApi:
 			return_value = DocIdentifier._deserialize(result_info.success)
 			return return_value
 
-	async def delete_devices_by_ids_async(self, entity_ids: List[IdWithMandatoryRev]) -> List[DocIdentifier]:
+	async def delete_devices_by_ids_async(self, entity_ids: list[StoredDocumentIdentifier]) -> list[DocIdentifier]:
 		def do_decode(raw_result):
 			return [DocIdentifier._deserialize(x1) for x1 in raw_result]
 		payload = {
@@ -396,7 +396,7 @@ class DeviceApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def delete_devices_by_ids_blocking(self, entity_ids: List[IdWithMandatoryRev]) -> List[DocIdentifier]:
+	def delete_devices_by_ids_blocking(self, entity_ids: list[StoredDocumentIdentifier]) -> list[DocIdentifier]:
 		payload = {
 			"entityIds": [x0.__serialize__() for x0 in entity_ids],
 		}
@@ -506,7 +506,7 @@ class DeviceApi:
 			return_value = DocIdentifier._deserialize(result_info.success)
 			return return_value
 
-	async def delete_devices_async(self, devices: List[Device]) -> List[DocIdentifier]:
+	async def delete_devices_async(self, devices: list[Device]) -> list[DocIdentifier]:
 		def do_decode(raw_result):
 			return [DocIdentifier._deserialize(x1) for x1 in raw_result]
 		payload = {
@@ -521,7 +521,7 @@ class DeviceApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def delete_devices_blocking(self, devices: List[Device]) -> List[DocIdentifier]:
+	def delete_devices_blocking(self, devices: list[Device]) -> list[DocIdentifier]:
 		payload = {
 			"devices": [x0.__serialize__() for x0 in devices],
 		}
@@ -596,7 +596,7 @@ class DeviceApi:
 			return_value = Device._deserialize(result_info.success)
 			return return_value
 
-	async def get_devices_in_group_async(self, group_id: str, device_ids: Optional[List[str]] = None) -> List[Device]:
+	async def get_devices_in_group_async(self, group_id: str, device_ids: Optional[list[str]] = None) -> list[Device]:
 		def do_decode(raw_result):
 			return [Device._deserialize(x1) for x1 in raw_result]
 		payload = {
@@ -612,7 +612,7 @@ class DeviceApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def get_devices_in_group_blocking(self, group_id: str, device_ids: Optional[List[str]] = None) -> List[Device]:
+	def get_devices_in_group_blocking(self, group_id: str, device_ids: Optional[list[str]] = None) -> list[Device]:
 		payload = {
 			"groupId": group_id,
 			"deviceIds": [x0 for x0 in device_ids] if device_ids is not None else None,
@@ -695,7 +695,7 @@ class DeviceApi:
 			return_value = Device._deserialize(result_info.success)
 			return return_value
 
-	async def delete_devices_in_group_async(self, group_id: str, device_ids: List[IdWithRev]) -> List[DocIdentifier]:
+	async def delete_devices_in_group_async(self, group_id: str, device_ids: list[IdWithRev]) -> list[DocIdentifier]:
 		def do_decode(raw_result):
 			return [DocIdentifier._deserialize(x1) for x1 in raw_result]
 		payload = {
@@ -711,7 +711,7 @@ class DeviceApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def delete_devices_in_group_blocking(self, group_id: str, device_ids: List[IdWithRev]) -> List[DocIdentifier]:
+	def delete_devices_in_group_blocking(self, group_id: str, device_ids: list[IdWithRev]) -> list[DocIdentifier]:
 		payload = {
 			"groupId": group_id,
 			"deviceIds": [x0.__serialize__() for x0 in device_ids],
@@ -728,7 +728,7 @@ class DeviceApi:
 			return_value = [DocIdentifier._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
-	async def subscribe_to_events_async(self, events: List[SubscriptionEventType], filter: FilterOptions[Device], subscription_config: Optional[EntitySubscriptionConfiguration] = None) -> EntitySubscription[Device]:
+	async def subscribe_to_events_async(self, events: set[SubscriptionEventType], filter: FilterOptions[Device], subscription_config: Optional[EntitySubscriptionConfiguration] = None) -> EntitySubscription[Device]:
 		def do_decode(raw_result):
 			return EntitySubscription[Device](
 				producer = raw_result,
@@ -749,7 +749,7 @@ class DeviceApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def subscribe_to_events_blocking(self, events: List[SubscriptionEventType], filter: FilterOptions[Device], subscription_config: Optional[EntitySubscriptionConfiguration] = None) -> EntitySubscription[Device]:
+	def subscribe_to_events_blocking(self, events: set[SubscriptionEventType], filter: FilterOptions[Device], subscription_config: Optional[EntitySubscriptionConfiguration] = None) -> EntitySubscription[Device]:
 		payload = {
 			"events": [x0.__serialize__() for x0 in events],
 			"filter": filter.__serialize__(),

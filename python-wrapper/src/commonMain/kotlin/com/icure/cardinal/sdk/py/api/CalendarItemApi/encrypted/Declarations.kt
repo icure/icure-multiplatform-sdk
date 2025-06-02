@@ -289,6 +289,42 @@ public fun filterCalendarItemsBySortedAsync(
 }.failureToPyResultAsyncCallback(resultCallback)
 
 @Serializable
+private class CreateCalendarItemParams(
+	public val entity: EncryptedCalendarItem,
+)
+
+@OptIn(InternalIcureApi::class)
+public fun createCalendarItemBlocking(sdk: CardinalApis, params: String): String =
+		kotlin.runCatching {
+	val decodedParams = fullLanguageInteropJson.decodeFromString<CreateCalendarItemParams>(params)
+	runBlocking {
+		sdk.calendarItem.encrypted.createCalendarItem(
+			decodedParams.entity,
+		)
+	}
+}.toPyString(EncryptedCalendarItem.serializer())
+
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
+public fun createCalendarItemAsync(
+	sdk: CardinalApis,
+	params: String,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): COpaquePointer? = kotlin.runCatching {
+	val decodedParams = fullLanguageInteropJson.decodeFromString<CreateCalendarItemParams>(params)
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.calendarItem.encrypted.createCalendarItem(
+				decodedParams.entity,
+			)
+		}.toPyStringAsyncCallback(EncryptedCalendarItem.serializer(), resultCallback)
+	}
+}.failureToPyStringAsyncCallback(resultCallback)
+
+@Serializable
 private class UndeleteCalendarItemByIdParams(
 	public val id: String,
 	public val rev: String,

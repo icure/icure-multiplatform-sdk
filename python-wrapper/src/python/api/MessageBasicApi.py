@@ -1,13 +1,13 @@
 # auto-generated file
 import json
 from cardinal_sdk.filters.FilterOptions import BaseFilterOptions, BaseSortableFilterOptions
-from cardinal_sdk.model import Message, EncryptedMessage, DocIdentifier, IdWithMandatoryRev, serialize_message, deserialize_message, SubscriptionEventType, EntitySubscriptionConfiguration
+from cardinal_sdk.model import Message, EncryptedMessage, DocIdentifier, StoredDocumentIdentifier, serialize_message, deserialize_message, SubscriptionEventType, EntitySubscriptionConfiguration
 from cardinal_sdk.async_utils import execute_async_method_job
 from cardinal_sdk.kotlin_types import symbols
-from typing import List, Optional
 from cardinal_sdk.model.CallResult import create_result_from_json, interpret_kt_error
 from ctypes import cast, c_char_p
 from cardinal_sdk.pagination.PaginatedListIterator import PaginatedListIterator
+from typing import Optional
 from cardinal_sdk.subscription.EntitySubscription import EntitySubscription
 
 
@@ -16,7 +16,7 @@ class MessageBasicApi:
 	def __init__(self, cardinal_sdk):
 		self.cardinal_sdk = cardinal_sdk
 
-	async def match_messages_by_async(self, filter: BaseFilterOptions[Message]) -> List[str]:
+	async def match_messages_by_async(self, filter: BaseFilterOptions[Message]) -> list[str]:
 		def do_decode(raw_result):
 			return [x1 for x1 in raw_result]
 		payload = {
@@ -31,7 +31,7 @@ class MessageBasicApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def match_messages_by_blocking(self, filter: BaseFilterOptions[Message]) -> List[str]:
+	def match_messages_by_blocking(self, filter: BaseFilterOptions[Message]) -> list[str]:
 		payload = {
 			"filter": filter.__serialize__(),
 		}
@@ -47,7 +47,7 @@ class MessageBasicApi:
 			return_value = [x1 for x1 in result_info.success]
 			return return_value
 
-	async def match_messages_by_sorted_async(self, filter: BaseSortableFilterOptions[Message]) -> List[str]:
+	async def match_messages_by_sorted_async(self, filter: BaseSortableFilterOptions[Message]) -> list[str]:
 		def do_decode(raw_result):
 			return [x1 for x1 in raw_result]
 		payload = {
@@ -62,7 +62,7 @@ class MessageBasicApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def match_messages_by_sorted_blocking(self, filter: BaseSortableFilterOptions[Message]) -> List[str]:
+	def match_messages_by_sorted_blocking(self, filter: BaseSortableFilterOptions[Message]) -> list[str]:
 		payload = {
 			"filter": filter.__serialize__(),
 		}
@@ -195,7 +195,7 @@ class MessageBasicApi:
 			return_value = DocIdentifier._deserialize(result_info.success)
 			return return_value
 
-	async def delete_messages_by_ids_async(self, entity_ids: List[IdWithMandatoryRev]) -> List[DocIdentifier]:
+	async def delete_messages_by_ids_async(self, entity_ids: list[StoredDocumentIdentifier]) -> list[DocIdentifier]:
 		def do_decode(raw_result):
 			return [DocIdentifier._deserialize(x1) for x1 in raw_result]
 		payload = {
@@ -210,7 +210,7 @@ class MessageBasicApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def delete_messages_by_ids_blocking(self, entity_ids: List[IdWithMandatoryRev]) -> List[DocIdentifier]:
+	def delete_messages_by_ids_blocking(self, entity_ids: list[StoredDocumentIdentifier]) -> list[DocIdentifier]:
 		payload = {
 			"entityIds": [x0.__serialize__() for x0 in entity_ids],
 		}
@@ -287,7 +287,7 @@ class MessageBasicApi:
 			return_value = DocIdentifier._deserialize(result_info.success)
 			return return_value
 
-	async def delete_messages_async(self, messages: List[Message]) -> List[DocIdentifier]:
+	async def delete_messages_async(self, messages: list[Message]) -> list[DocIdentifier]:
 		def do_decode(raw_result):
 			return [DocIdentifier._deserialize(x1) for x1 in raw_result]
 		payload = {
@@ -302,7 +302,7 @@ class MessageBasicApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def delete_messages_blocking(self, messages: List[Message]) -> List[DocIdentifier]:
+	def delete_messages_blocking(self, messages: list[Message]) -> list[DocIdentifier]:
 		payload = {
 			"messages": [serialize_message(x0) for x0 in messages],
 		}
@@ -345,6 +345,68 @@ class MessageBasicApi:
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
 			raise interpret_kt_error(result_info.failure)
+
+	async def create_message_async(self, entity: EncryptedMessage) -> EncryptedMessage:
+		def do_decode(raw_result):
+			return EncryptedMessage._deserialize(raw_result)
+		payload = {
+			"entity": entity.__serialize__(),
+		}
+		return await execute_async_method_job(
+			self.cardinal_sdk._executor,
+			True,
+			do_decode,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.MessageBasicApi.createMessageAsync,
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+
+	def create_message_blocking(self, entity: EncryptedMessage) -> EncryptedMessage:
+		payload = {
+			"entity": entity.__serialize__(),
+		}
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.MessageBasicApi.createMessageBlocking(
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
+		if result_info.failure is not None:
+			raise interpret_kt_error(result_info.failure)
+		else:
+			return_value = EncryptedMessage._deserialize(result_info.success)
+			return return_value
+
+	async def create_message_in_topic_async(self, entity: EncryptedMessage) -> EncryptedMessage:
+		def do_decode(raw_result):
+			return EncryptedMessage._deserialize(raw_result)
+		payload = {
+			"entity": entity.__serialize__(),
+		}
+		return await execute_async_method_job(
+			self.cardinal_sdk._executor,
+			True,
+			do_decode,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.MessageBasicApi.createMessageInTopicAsync,
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+
+	def create_message_in_topic_blocking(self, entity: EncryptedMessage) -> EncryptedMessage:
+		payload = {
+			"entity": entity.__serialize__(),
+		}
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.MessageBasicApi.createMessageInTopicBlocking(
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
+		if result_info.failure is not None:
+			raise interpret_kt_error(result_info.failure)
+		else:
+			return_value = EncryptedMessage._deserialize(result_info.success)
+			return return_value
 
 	async def undelete_message_async(self, message: Message) -> Message:
 		def do_decode(raw_result):
@@ -441,9 +503,9 @@ class MessageBasicApi:
 			return_value = EncryptedMessage._deserialize(result_info.success)
 			return return_value
 
-	async def get_message_async(self, entity_id: str) -> EncryptedMessage:
+	async def get_message_async(self, entity_id: str) -> Optional[EncryptedMessage]:
 		def do_decode(raw_result):
-			return EncryptedMessage._deserialize(raw_result)
+			return EncryptedMessage._deserialize(raw_result) if raw_result is not None else None
 		payload = {
 			"entityId": entity_id,
 		}
@@ -456,7 +518,7 @@ class MessageBasicApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def get_message_blocking(self, entity_id: str) -> EncryptedMessage:
+	def get_message_blocking(self, entity_id: str) -> Optional[EncryptedMessage]:
 		payload = {
 			"entityId": entity_id,
 		}
@@ -469,10 +531,10 @@ class MessageBasicApi:
 		if result_info.failure is not None:
 			raise interpret_kt_error(result_info.failure)
 		else:
-			return_value = EncryptedMessage._deserialize(result_info.success)
+			return_value = EncryptedMessage._deserialize(result_info.success) if result_info.success is not None else None
 			return return_value
 
-	async def get_messages_async(self, entity_ids: List[str]) -> List[EncryptedMessage]:
+	async def get_messages_async(self, entity_ids: list[str]) -> list[EncryptedMessage]:
 		def do_decode(raw_result):
 			return [EncryptedMessage._deserialize(x1) for x1 in raw_result]
 		payload = {
@@ -487,7 +549,7 @@ class MessageBasicApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def get_messages_blocking(self, entity_ids: List[str]) -> List[EncryptedMessage]:
+	def get_messages_blocking(self, entity_ids: list[str]) -> list[EncryptedMessage]:
 		payload = {
 			"entityIds": [x0 for x0 in entity_ids],
 		}
@@ -503,7 +565,7 @@ class MessageBasicApi:
 			return_value = [EncryptedMessage._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
-	async def set_messages_read_status_async(self, entity_ids: List[str], time: Optional[int], read_status: bool, user_id: Optional[str]) -> List[EncryptedMessage]:
+	async def set_messages_read_status_async(self, entity_ids: list[str], time: Optional[int], read_status: bool, user_id: Optional[str]) -> list[EncryptedMessage]:
 		def do_decode(raw_result):
 			return [EncryptedMessage._deserialize(x1) for x1 in raw_result]
 		payload = {
@@ -521,7 +583,7 @@ class MessageBasicApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def set_messages_read_status_blocking(self, entity_ids: List[str], time: Optional[int], read_status: bool, user_id: Optional[str]) -> List[EncryptedMessage]:
+	def set_messages_read_status_blocking(self, entity_ids: list[str], time: Optional[int], read_status: bool, user_id: Optional[str]) -> list[EncryptedMessage]:
 		payload = {
 			"entityIds": [x0 for x0 in entity_ids],
 			"time": time,
@@ -540,7 +602,7 @@ class MessageBasicApi:
 			return_value = [EncryptedMessage._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
-	async def subscribe_to_events_async(self, events: List[SubscriptionEventType], filter: BaseFilterOptions[Message], subscription_config: Optional[EntitySubscriptionConfiguration] = None) -> EntitySubscription[EncryptedMessage]:
+	async def subscribe_to_events_async(self, events: set[SubscriptionEventType], filter: BaseFilterOptions[Message], subscription_config: Optional[EntitySubscriptionConfiguration] = None) -> EntitySubscription[EncryptedMessage]:
 		def do_decode(raw_result):
 			return EntitySubscription[EncryptedMessage](
 				producer = raw_result,
@@ -561,7 +623,7 @@ class MessageBasicApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def subscribe_to_events_blocking(self, events: List[SubscriptionEventType], filter: BaseFilterOptions[Message], subscription_config: Optional[EntitySubscriptionConfiguration] = None) -> EntitySubscription[EncryptedMessage]:
+	def subscribe_to_events_blocking(self, events: set[SubscriptionEventType], filter: BaseFilterOptions[Message], subscription_config: Optional[EntitySubscriptionConfiguration] = None) -> EntitySubscription[EncryptedMessage]:
 		payload = {
 			"events": [x0.__serialize__() for x0 in events],
 			"filter": filter.__serialize__(),

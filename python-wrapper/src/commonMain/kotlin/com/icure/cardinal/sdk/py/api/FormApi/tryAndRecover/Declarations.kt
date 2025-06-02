@@ -242,6 +242,76 @@ public fun filterFormsBySortedAsync(
 }.failureToPyResultAsyncCallback(resultCallback)
 
 @Serializable
+private class CreateFormParams(
+	public val entity: Form,
+)
+
+@OptIn(InternalIcureApi::class)
+public fun createFormBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
+	val decodedParams = fullLanguageInteropJson.decodeFromString<CreateFormParams>(params)
+	runBlocking {
+		sdk.form.tryAndRecover.createForm(
+			decodedParams.entity,
+		)
+	}
+}.toPyString(PolymorphicSerializer(Form::class))
+
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
+public fun createFormAsync(
+	sdk: CardinalApis,
+	params: String,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): COpaquePointer? = kotlin.runCatching {
+	val decodedParams = fullLanguageInteropJson.decodeFromString<CreateFormParams>(params)
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.form.tryAndRecover.createForm(
+				decodedParams.entity,
+			)
+		}.toPyStringAsyncCallback(PolymorphicSerializer(Form::class), resultCallback)
+	}
+}.failureToPyStringAsyncCallback(resultCallback)
+
+@Serializable
+private class CreateFormsParams(
+	public val entities: List<Form>,
+)
+
+@OptIn(InternalIcureApi::class)
+public fun createFormsBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
+	val decodedParams = fullLanguageInteropJson.decodeFromString<CreateFormsParams>(params)
+	runBlocking {
+		sdk.form.tryAndRecover.createForms(
+			decodedParams.entities,
+		)
+	}
+}.toPyString(ListSerializer(PolymorphicSerializer(Form::class)))
+
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
+public fun createFormsAsync(
+	sdk: CardinalApis,
+	params: String,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): COpaquePointer? = kotlin.runCatching {
+	val decodedParams = fullLanguageInteropJson.decodeFromString<CreateFormsParams>(params)
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.form.tryAndRecover.createForms(
+				decodedParams.entities,
+			)
+		}.toPyStringAsyncCallback(ListSerializer(PolymorphicSerializer(Form::class)), resultCallback)
+	}
+}.failureToPyStringAsyncCallback(resultCallback)
+
+@Serializable
 private class ModifyFormParams(
 	public val entity: Form,
 )

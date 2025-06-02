@@ -5,7 +5,6 @@ from cardinal_sdk.model.CallResult import create_result_from_json, interpret_kt_
 from ctypes import cast, c_char_p
 from cardinal_sdk.filters.FilterOptions import BaseFilterOptions, BaseSortableFilterOptions
 from cardinal_sdk.model import User
-from typing import List
 
 
 class UserFilters:
@@ -23,7 +22,7 @@ class UserFilters:
 			return return_value
 
 	@classmethod
-	def by_ids(cls, ids: List[str]) -> BaseSortableFilterOptions[User]:
+	def by_ids(cls, ids: list[str]) -> BaseSortableFilterOptions[User]:
 		payload = {
 			"ids": [x0 for x0 in ids],
 		}

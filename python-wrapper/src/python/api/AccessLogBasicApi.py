@@ -1,13 +1,13 @@
 # auto-generated file
 import json
 from cardinal_sdk.filters.FilterOptions import BaseFilterOptions, BaseSortableFilterOptions
-from cardinal_sdk.model import AccessLog, EncryptedAccessLog, DocIdentifier, IdWithMandatoryRev, serialize_access_log
+from cardinal_sdk.model import AccessLog, EncryptedAccessLog, DocIdentifier, StoredDocumentIdentifier, serialize_access_log
 from cardinal_sdk.async_utils import execute_async_method_job
 from cardinal_sdk.kotlin_types import symbols
-from typing import List
 from cardinal_sdk.model.CallResult import create_result_from_json, interpret_kt_error
 from ctypes import cast, c_char_p
 from cardinal_sdk.pagination.PaginatedListIterator import PaginatedListIterator
+from typing import Optional
 
 
 class AccessLogBasicApi:
@@ -15,7 +15,7 @@ class AccessLogBasicApi:
 	def __init__(self, cardinal_sdk):
 		self.cardinal_sdk = cardinal_sdk
 
-	async def match_access_logs_by_async(self, filter: BaseFilterOptions[AccessLog]) -> List[str]:
+	async def match_access_logs_by_async(self, filter: BaseFilterOptions[AccessLog]) -> list[str]:
 		def do_decode(raw_result):
 			return [x1 for x1 in raw_result]
 		payload = {
@@ -30,7 +30,7 @@ class AccessLogBasicApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def match_access_logs_by_blocking(self, filter: BaseFilterOptions[AccessLog]) -> List[str]:
+	def match_access_logs_by_blocking(self, filter: BaseFilterOptions[AccessLog]) -> list[str]:
 		payload = {
 			"filter": filter.__serialize__(),
 		}
@@ -46,7 +46,7 @@ class AccessLogBasicApi:
 			return_value = [x1 for x1 in result_info.success]
 			return return_value
 
-	async def match_access_logs_by_sorted_async(self, filter: BaseSortableFilterOptions[AccessLog]) -> List[str]:
+	async def match_access_logs_by_sorted_async(self, filter: BaseSortableFilterOptions[AccessLog]) -> list[str]:
 		def do_decode(raw_result):
 			return [x1 for x1 in raw_result]
 		payload = {
@@ -61,7 +61,7 @@ class AccessLogBasicApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def match_access_logs_by_sorted_blocking(self, filter: BaseSortableFilterOptions[AccessLog]) -> List[str]:
+	def match_access_logs_by_sorted_blocking(self, filter: BaseSortableFilterOptions[AccessLog]) -> list[str]:
 		payload = {
 			"filter": filter.__serialize__(),
 		}
@@ -194,7 +194,7 @@ class AccessLogBasicApi:
 			return_value = DocIdentifier._deserialize(result_info.success)
 			return return_value
 
-	async def delete_access_logs_by_ids_async(self, entity_ids: List[IdWithMandatoryRev]) -> List[DocIdentifier]:
+	async def delete_access_logs_by_ids_async(self, entity_ids: list[StoredDocumentIdentifier]) -> list[DocIdentifier]:
 		def do_decode(raw_result):
 			return [DocIdentifier._deserialize(x1) for x1 in raw_result]
 		payload = {
@@ -209,7 +209,7 @@ class AccessLogBasicApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def delete_access_logs_by_ids_blocking(self, entity_ids: List[IdWithMandatoryRev]) -> List[DocIdentifier]:
+	def delete_access_logs_by_ids_blocking(self, entity_ids: list[StoredDocumentIdentifier]) -> list[DocIdentifier]:
 		payload = {
 			"entityIds": [x0.__serialize__() for x0 in entity_ids],
 		}
@@ -286,7 +286,7 @@ class AccessLogBasicApi:
 			return_value = DocIdentifier._deserialize(result_info.success)
 			return return_value
 
-	async def delete_access_logs_async(self, access_logs: List[AccessLog]) -> List[DocIdentifier]:
+	async def delete_access_logs_async(self, access_logs: list[AccessLog]) -> list[DocIdentifier]:
 		def do_decode(raw_result):
 			return [DocIdentifier._deserialize(x1) for x1 in raw_result]
 		payload = {
@@ -301,7 +301,7 @@ class AccessLogBasicApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def delete_access_logs_blocking(self, access_logs: List[AccessLog]) -> List[DocIdentifier]:
+	def delete_access_logs_blocking(self, access_logs: list[AccessLog]) -> list[DocIdentifier]:
 		payload = {
 			"accessLogs": [serialize_access_log(x0) for x0 in access_logs],
 		}
@@ -344,6 +344,37 @@ class AccessLogBasicApi:
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
 			raise interpret_kt_error(result_info.failure)
+
+	async def create_access_log_async(self, entity: EncryptedAccessLog) -> EncryptedAccessLog:
+		def do_decode(raw_result):
+			return EncryptedAccessLog._deserialize(raw_result)
+		payload = {
+			"entity": entity.__serialize__(),
+		}
+		return await execute_async_method_job(
+			self.cardinal_sdk._executor,
+			True,
+			do_decode,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.AccessLogBasicApi.createAccessLogAsync,
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+
+	def create_access_log_blocking(self, entity: EncryptedAccessLog) -> EncryptedAccessLog:
+		payload = {
+			"entity": entity.__serialize__(),
+		}
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.AccessLogBasicApi.createAccessLogBlocking(
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
+		if result_info.failure is not None:
+			raise interpret_kt_error(result_info.failure)
+		else:
+			return_value = EncryptedAccessLog._deserialize(result_info.success)
+			return return_value
 
 	async def undelete_access_log_by_id_async(self, id: str, rev: str) -> EncryptedAccessLog:
 		def do_decode(raw_result):
@@ -440,9 +471,9 @@ class AccessLogBasicApi:
 			return_value = EncryptedAccessLog._deserialize(result_info.success)
 			return return_value
 
-	async def get_access_log_async(self, entity_id: str) -> EncryptedAccessLog:
+	async def get_access_log_async(self, entity_id: str) -> Optional[EncryptedAccessLog]:
 		def do_decode(raw_result):
-			return EncryptedAccessLog._deserialize(raw_result)
+			return EncryptedAccessLog._deserialize(raw_result) if raw_result is not None else None
 		payload = {
 			"entityId": entity_id,
 		}
@@ -455,7 +486,7 @@ class AccessLogBasicApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def get_access_log_blocking(self, entity_id: str) -> EncryptedAccessLog:
+	def get_access_log_blocking(self, entity_id: str) -> Optional[EncryptedAccessLog]:
 		payload = {
 			"entityId": entity_id,
 		}
@@ -468,10 +499,10 @@ class AccessLogBasicApi:
 		if result_info.failure is not None:
 			raise interpret_kt_error(result_info.failure)
 		else:
-			return_value = EncryptedAccessLog._deserialize(result_info.success)
+			return_value = EncryptedAccessLog._deserialize(result_info.success) if result_info.success is not None else None
 			return return_value
 
-	async def get_access_logs_async(self, entity_ids: List[str]) -> List[EncryptedAccessLog]:
+	async def get_access_logs_async(self, entity_ids: list[str]) -> list[EncryptedAccessLog]:
 		def do_decode(raw_result):
 			return [EncryptedAccessLog._deserialize(x1) for x1 in raw_result]
 		payload = {
@@ -486,7 +517,7 @@ class AccessLogBasicApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def get_access_logs_blocking(self, entity_ids: List[str]) -> List[EncryptedAccessLog]:
+	def get_access_logs_blocking(self, entity_ids: list[str]) -> list[EncryptedAccessLog]:
 		payload = {
 			"entityIds": [x0 for x0 in entity_ids],
 		}

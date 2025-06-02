@@ -322,6 +322,76 @@ public fun filterServicesBySortedAsync(
 }.failureToPyResultAsyncCallback(resultCallback)
 
 @Serializable
+private class CreateContactParams(
+	public val entity: EncryptedContact,
+)
+
+@OptIn(InternalIcureApi::class)
+public fun createContactBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
+	val decodedParams = fullLanguageInteropJson.decodeFromString<CreateContactParams>(params)
+	runBlocking {
+		sdk.contact.encrypted.createContact(
+			decodedParams.entity,
+		)
+	}
+}.toPyString(EncryptedContact.serializer())
+
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
+public fun createContactAsync(
+	sdk: CardinalApis,
+	params: String,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): COpaquePointer? = kotlin.runCatching {
+	val decodedParams = fullLanguageInteropJson.decodeFromString<CreateContactParams>(params)
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.contact.encrypted.createContact(
+				decodedParams.entity,
+			)
+		}.toPyStringAsyncCallback(EncryptedContact.serializer(), resultCallback)
+	}
+}.failureToPyStringAsyncCallback(resultCallback)
+
+@Serializable
+private class CreateContactsParams(
+	public val entities: List<EncryptedContact>,
+)
+
+@OptIn(InternalIcureApi::class)
+public fun createContactsBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
+	val decodedParams = fullLanguageInteropJson.decodeFromString<CreateContactsParams>(params)
+	runBlocking {
+		sdk.contact.encrypted.createContacts(
+			decodedParams.entities,
+		)
+	}
+}.toPyString(ListSerializer(EncryptedContact.serializer()))
+
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
+public fun createContactsAsync(
+	sdk: CardinalApis,
+	params: String,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): COpaquePointer? = kotlin.runCatching {
+	val decodedParams = fullLanguageInteropJson.decodeFromString<CreateContactsParams>(params)
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.contact.encrypted.createContacts(
+				decodedParams.entities,
+			)
+		}.toPyStringAsyncCallback(ListSerializer(EncryptedContact.serializer()), resultCallback)
+	}
+}.failureToPyStringAsyncCallback(resultCallback)
+
+@Serializable
 private class UndeleteContactByIdParams(
 	public val id: String,
 	public val rev: String,

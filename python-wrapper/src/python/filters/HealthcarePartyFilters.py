@@ -5,7 +5,7 @@ from cardinal_sdk.model.CallResult import create_result_from_json, interpret_kt_
 from ctypes import cast, c_char_p
 from cardinal_sdk.filters.FilterOptions import BaseFilterOptions, BaseSortableFilterOptions, SortableFilterOptions
 from cardinal_sdk.model import HealthcareParty, Identifier
-from typing import List, Optional
+from typing import Optional
 
 
 class HealthcarePartyFilters:
@@ -23,7 +23,7 @@ class HealthcarePartyFilters:
 			return return_value
 
 	@classmethod
-	def by_identifiers(cls, identifiers: List[Identifier]) -> BaseFilterOptions[HealthcareParty]:
+	def by_identifiers(cls, identifiers: list[Identifier]) -> BaseFilterOptions[HealthcareParty]:
 		payload = {
 			"identifiers": [x0.__serialize__() for x0 in identifiers],
 		}
@@ -73,7 +73,7 @@ class HealthcarePartyFilters:
 			return return_value
 
 	@classmethod
-	def by_ids(cls, ids: List[str]) -> SortableFilterOptions[HealthcareParty]:
+	def by_ids(cls, ids: list[str]) -> SortableFilterOptions[HealthcareParty]:
 		payload = {
 			"ids": [x0 for x0 in ids],
 		}
