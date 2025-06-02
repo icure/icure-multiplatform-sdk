@@ -9,7 +9,6 @@ import kotlinx.serialization.Serializable
 
 @RequireHashable
 @Serializable
-@RequireHashable
 data class Periodicity(
 	public val relatedCode: CodeStub? = null,
 	public val relatedPeriodicity: CodeStub? = null,
