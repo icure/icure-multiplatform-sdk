@@ -73,7 +73,7 @@ class RawGroupApiImpl(
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "group", id)
 				parameter("name", name)
-				parameter("type", type?.dtoSerialName)
+				parameter("type", type.dtoSerialName)
 				parameter("server", server)
 				parameter("q", q)
 				parameter("n", n)
@@ -95,8 +95,8 @@ class RawGroupApiImpl(
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "group", "register", "trial")
-				parameter("type", type?.dtoSerialName)
-				parameter("role", role?.dtoSerialName)
+				parameter("type", type.dtoSerialName)
+				parameter("role", role.dtoSerialName)
 			}
 			contentType(Application.Json)
 			accept(Application.Json)
