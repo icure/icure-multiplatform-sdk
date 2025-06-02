@@ -8,6 +8,7 @@ import com.icure.cardinal.sdk.js.filters.FilterOptionsJs
 import com.icure.cardinal.sdk.js.filters.SortableFilterOptionsJs
 import com.icure.cardinal.sdk.js.model.DecryptedMessageJs
 import com.icure.cardinal.sdk.js.model.EncryptedMessageJs
+import com.icure.cardinal.sdk.js.model.EntityReferenceInGroupJs
 import com.icure.cardinal.sdk.js.model.MessageJs
 import com.icure.cardinal.sdk.js.model.PaginatedListJs
 import com.icure.cardinal.sdk.js.model.PatientJs
@@ -49,6 +50,9 @@ public external interface MessageApiJs {
 	public fun decrypt(message: EncryptedMessageJs): Promise<DecryptedMessageJs>
 
 	public fun tryDecrypt(message: EncryptedMessageJs): Promise<MessageJs>
+
+	public fun getSecretIdsOf(message: MessageJs):
+			Promise<Record<String, Array<EntityReferenceInGroupJs>>>
 
 	public fun matchMessagesBy(filter: FilterOptionsJs<MessageJs>): Promise<Array<String>>
 
