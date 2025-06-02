@@ -258,6 +258,42 @@ public fun deleteClassificationsAsync(
 }.failureToPyStringAsyncCallback(resultCallback)
 
 @Serializable
+private class CreateClassificationParams(
+	public val entity: EncryptedClassification,
+)
+
+@OptIn(InternalIcureApi::class)
+public fun createClassificationBlocking(sdk: CardinalBaseApis, params: String): String =
+		kotlin.runCatching {
+	val decodedParams = fullLanguageInteropJson.decodeFromString<CreateClassificationParams>(params)
+	runBlocking {
+		sdk.classification.createClassification(
+			decodedParams.entity,
+		)
+	}
+}.toPyString(EncryptedClassification.serializer())
+
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
+public fun createClassificationAsync(
+	sdk: CardinalBaseApis,
+	params: String,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): COpaquePointer? = kotlin.runCatching {
+	val decodedParams = fullLanguageInteropJson.decodeFromString<CreateClassificationParams>(params)
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.classification.createClassification(
+				decodedParams.entity,
+			)
+		}.toPyStringAsyncCallback(EncryptedClassification.serializer(), resultCallback)
+	}
+}.failureToPyStringAsyncCallback(resultCallback)
+
+@Serializable
 private class ModifyClassificationParams(
 	public val entity: EncryptedClassification,
 )

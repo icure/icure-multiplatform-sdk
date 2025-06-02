@@ -7,9 +7,8 @@ import com.icure.cardinal.sdk.filters.BaseSortableFilterOptions
 import com.icure.cardinal.sdk.filters.FilterOptions
 import com.icure.cardinal.sdk.model.CalendarItem
 import com.icure.cardinal.sdk.model.EncryptedCalendarItem
-import com.icure.cardinal.sdk.model.StoredDocumentIdentifier
 import com.icure.cardinal.sdk.model.PaginatedList
-import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
+import com.icure.cardinal.sdk.model.StoredDocumentIdentifier
 import com.icure.cardinal.sdk.py.utils.PyResult
 import com.icure.cardinal.sdk.py.utils.failureToPyResultAsyncCallback
 import com.icure.cardinal.sdk.py.utils.failureToPyStringAsyncCallback
@@ -209,7 +208,7 @@ public fun deleteCalendarItemUnsafeBlocking(sdk: CardinalBaseApis, params: Strin
 			decodedParams.entityId,
 		)
 	}
-}.toPyString(DocIdentifier.serializer())
+}.toPyString(StoredDocumentIdentifier.serializer())
 
 @OptIn(
 	ExperimentalForeignApi::class,
@@ -228,7 +227,7 @@ public fun deleteCalendarItemUnsafeAsync(
 			sdk.calendarItem.deleteCalendarItemUnsafe(
 				decodedParams.entityId,
 			)
-		}.toPyStringAsyncCallback(DocIdentifier.serializer(), resultCallback)
+		}.toPyStringAsyncCallback(StoredDocumentIdentifier.serializer(), resultCallback)
 	}
 }.failureToPyStringAsyncCallback(resultCallback)
 
@@ -247,7 +246,7 @@ public fun deleteCalendarItemsUnsafeBlocking(sdk: CardinalBaseApis, params: Stri
 			decodedParams.entityIds,
 		)
 	}
-}.toPyString(ListSerializer(DocIdentifier.serializer()))
+}.toPyString(ListSerializer(StoredDocumentIdentifier.serializer()))
 
 @OptIn(
 	ExperimentalForeignApi::class,
@@ -266,7 +265,7 @@ public fun deleteCalendarItemsUnsafeAsync(
 			sdk.calendarItem.deleteCalendarItemsUnsafe(
 				decodedParams.entityIds,
 			)
-		}.toPyStringAsyncCallback(ListSerializer(DocIdentifier.serializer()), resultCallback)
+		}.toPyStringAsyncCallback(ListSerializer(StoredDocumentIdentifier.serializer()), resultCallback)
 	}
 }.failureToPyStringAsyncCallback(resultCallback)
 
@@ -286,7 +285,7 @@ public fun deleteCalendarItemByIdBlocking(sdk: CardinalBaseApis, params: String)
 			decodedParams.rev,
 		)
 	}
-}.toPyString(DocIdentifier.serializer())
+}.toPyString(StoredDocumentIdentifier.serializer())
 
 @OptIn(
 	ExperimentalForeignApi::class,
@@ -305,7 +304,7 @@ public fun deleteCalendarItemByIdAsync(
 				decodedParams.entityId,
 				decodedParams.rev,
 			)
-		}.toPyStringAsyncCallback(DocIdentifier.serializer(), resultCallback)
+		}.toPyStringAsyncCallback(StoredDocumentIdentifier.serializer(), resultCallback)
 	}
 }.failureToPyStringAsyncCallback(resultCallback)
 
@@ -324,7 +323,7 @@ public fun deleteCalendarItemsByIdsBlocking(sdk: CardinalBaseApis, params: Strin
 			decodedParams.entityIds,
 		)
 	}
-}.toPyString(ListSerializer(DocIdentifier.serializer()))
+}.toPyString(ListSerializer(StoredDocumentIdentifier.serializer()))
 
 @OptIn(
 	ExperimentalForeignApi::class,
@@ -343,7 +342,7 @@ public fun deleteCalendarItemsByIdsAsync(
 			sdk.calendarItem.deleteCalendarItemsByIds(
 				decodedParams.entityIds,
 			)
-		}.toPyStringAsyncCallback(ListSerializer(DocIdentifier.serializer()), resultCallback)
+		}.toPyStringAsyncCallback(ListSerializer(StoredDocumentIdentifier.serializer()), resultCallback)
 	}
 }.failureToPyStringAsyncCallback(resultCallback)
 
@@ -400,7 +399,7 @@ public fun deleteCalendarItemBlocking(sdk: CardinalBaseApis, params: String): St
 			decodedParams.calendarItem,
 		)
 	}
-}.toPyString(DocIdentifier.serializer())
+}.toPyString(StoredDocumentIdentifier.serializer())
 
 @OptIn(
 	ExperimentalForeignApi::class,
@@ -418,7 +417,7 @@ public fun deleteCalendarItemAsync(
 			sdk.calendarItem.deleteCalendarItem(
 				decodedParams.calendarItem,
 			)
-		}.toPyStringAsyncCallback(DocIdentifier.serializer(), resultCallback)
+		}.toPyStringAsyncCallback(StoredDocumentIdentifier.serializer(), resultCallback)
 	}
 }.failureToPyStringAsyncCallback(resultCallback)
 
@@ -436,7 +435,7 @@ public fun deleteCalendarItemsBlocking(sdk: CardinalBaseApis, params: String): S
 			decodedParams.calendarItems,
 		)
 	}
-}.toPyString(ListSerializer(DocIdentifier.serializer()))
+}.toPyString(ListSerializer(StoredDocumentIdentifier.serializer()))
 
 @OptIn(
 	ExperimentalForeignApi::class,
@@ -454,7 +453,7 @@ public fun deleteCalendarItemsAsync(
 			sdk.calendarItem.deleteCalendarItems(
 				decodedParams.calendarItems,
 			)
-		}.toPyStringAsyncCallback(ListSerializer(DocIdentifier.serializer()), resultCallback)
+		}.toPyStringAsyncCallback(ListSerializer(StoredDocumentIdentifier.serializer()), resultCallback)
 	}
 }.failureToPyStringAsyncCallback(resultCallback)
 
@@ -491,6 +490,42 @@ public fun purgeCalendarItemAsync(
 				decodedParams.calendarItem,
 			)
 		}.toPyStringAsyncCallback(Unit.serializer(), resultCallback)
+	}
+}.failureToPyStringAsyncCallback(resultCallback)
+
+@Serializable
+private class CreateCalendarItemParams(
+	public val entity: EncryptedCalendarItem,
+)
+
+@OptIn(InternalIcureApi::class)
+public fun createCalendarItemBlocking(sdk: CardinalBaseApis, params: String): String =
+		kotlin.runCatching {
+	val decodedParams = fullLanguageInteropJson.decodeFromString<CreateCalendarItemParams>(params)
+	runBlocking {
+		sdk.calendarItem.createCalendarItem(
+			decodedParams.entity,
+		)
+	}
+}.toPyString(EncryptedCalendarItem.serializer())
+
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
+public fun createCalendarItemAsync(
+	sdk: CardinalBaseApis,
+	params: String,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): COpaquePointer? = kotlin.runCatching {
+	val decodedParams = fullLanguageInteropJson.decodeFromString<CreateCalendarItemParams>(params)
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.calendarItem.createCalendarItem(
+				decodedParams.entity,
+			)
+		}.toPyStringAsyncCallback(EncryptedCalendarItem.serializer(), resultCallback)
 	}
 }.failureToPyStringAsyncCallback(resultCallback)
 

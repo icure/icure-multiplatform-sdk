@@ -1,12 +1,12 @@
 # auto-generated file
 import json
 import base64
-from cardinal_sdk.model import DocIdentifier, EncryptedReceipt
 from cardinal_sdk.async_utils import execute_async_method_job
 from cardinal_sdk.kotlin_types import symbols
+from cardinal_sdk.model import DocIdentifier, EncryptedReceipt
 from cardinal_sdk.model.CallResult import create_result_from_json, interpret_kt_error
 from ctypes import cast, c_char_p
-from typing import List
+from typing import Optional
 
 
 class ReceiptBasicApi:
@@ -45,7 +45,7 @@ class ReceiptBasicApi:
 			return_value = DocIdentifier._deserialize(result_info.success)
 			return return_value
 
-	async def delete_receipts_async(self, entity_ids: List[str]) -> List[DocIdentifier]:
+	async def delete_receipts_async(self, entity_ids: list[str]) -> list[DocIdentifier]:
 		def do_decode(raw_result):
 			return [DocIdentifier._deserialize(x1) for x1 in raw_result]
 		payload = {
@@ -60,7 +60,7 @@ class ReceiptBasicApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def delete_receipts_blocking(self, entity_ids: List[str]) -> List[DocIdentifier]:
+	def delete_receipts_blocking(self, entity_ids: list[str]) -> list[DocIdentifier]:
 		payload = {
 			"entityIds": [x0 for x0 in entity_ids],
 		}
@@ -146,6 +146,37 @@ class ReceiptBasicApi:
 			return_value = EncryptedReceipt._deserialize(result_info.success)
 			return return_value
 
+	async def create_receipt_async(self, entity: EncryptedReceipt) -> EncryptedReceipt:
+		def do_decode(raw_result):
+			return EncryptedReceipt._deserialize(raw_result)
+		payload = {
+			"entity": entity.__serialize__(),
+		}
+		return await execute_async_method_job(
+			self.cardinal_sdk._executor,
+			True,
+			do_decode,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ReceiptBasicApi.createReceiptAsync,
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+
+	def create_receipt_blocking(self, entity: EncryptedReceipt) -> EncryptedReceipt:
+		payload = {
+			"entity": entity.__serialize__(),
+		}
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ReceiptBasicApi.createReceiptBlocking(
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
+		if result_info.failure is not None:
+			raise interpret_kt_error(result_info.failure)
+		else:
+			return_value = EncryptedReceipt._deserialize(result_info.success)
+			return return_value
+
 	async def modify_receipt_async(self, entity: EncryptedReceipt) -> EncryptedReceipt:
 		def do_decode(raw_result):
 			return EncryptedReceipt._deserialize(raw_result)
@@ -177,9 +208,9 @@ class ReceiptBasicApi:
 			return_value = EncryptedReceipt._deserialize(result_info.success)
 			return return_value
 
-	async def get_receipt_async(self, entity_id: str) -> EncryptedReceipt:
+	async def get_receipt_async(self, entity_id: str) -> Optional[EncryptedReceipt]:
 		def do_decode(raw_result):
-			return EncryptedReceipt._deserialize(raw_result)
+			return EncryptedReceipt._deserialize(raw_result) if raw_result is not None else None
 		payload = {
 			"entityId": entity_id,
 		}
@@ -192,7 +223,7 @@ class ReceiptBasicApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def get_receipt_blocking(self, entity_id: str) -> EncryptedReceipt:
+	def get_receipt_blocking(self, entity_id: str) -> Optional[EncryptedReceipt]:
 		payload = {
 			"entityId": entity_id,
 		}
@@ -205,10 +236,10 @@ class ReceiptBasicApi:
 		if result_info.failure is not None:
 			raise interpret_kt_error(result_info.failure)
 		else:
-			return_value = EncryptedReceipt._deserialize(result_info.success)
+			return_value = EncryptedReceipt._deserialize(result_info.success) if result_info.success is not None else None
 			return return_value
 
-	async def list_by_reference_async(self, reference: str) -> List[EncryptedReceipt]:
+	async def list_by_reference_async(self, reference: str) -> list[EncryptedReceipt]:
 		def do_decode(raw_result):
 			return [EncryptedReceipt._deserialize(x1) for x1 in raw_result]
 		payload = {
@@ -223,7 +254,7 @@ class ReceiptBasicApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def list_by_reference_blocking(self, reference: str) -> List[EncryptedReceipt]:
+	def list_by_reference_blocking(self, reference: str) -> list[EncryptedReceipt]:
 		payload = {
 			"reference": reference,
 		}

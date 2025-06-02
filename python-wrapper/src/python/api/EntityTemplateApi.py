@@ -1,11 +1,11 @@
 # auto-generated file
 import json
-from cardinal_sdk.model import EntityTemplate, IdWithMandatoryRev, DocIdentifier
 from cardinal_sdk.async_utils import execute_async_method_job
 from cardinal_sdk.kotlin_types import symbols
+from typing import Optional
+from cardinal_sdk.model import EntityTemplate, StoredDocumentIdentifier, DocIdentifier
 from cardinal_sdk.model.CallResult import create_result_from_json, interpret_kt_error
 from ctypes import cast, c_char_p
-from typing import Optional, List
 
 
 class EntityTemplateApi:
@@ -13,9 +13,9 @@ class EntityTemplateApi:
 	def __init__(self, cardinal_sdk):
 		self.cardinal_sdk = cardinal_sdk
 
-	async def get_entity_template_async(self, document_template_id: str) -> EntityTemplate:
+	async def get_entity_template_async(self, document_template_id: str) -> Optional[EntityTemplate]:
 		def do_decode(raw_result):
-			return EntityTemplate._deserialize(raw_result)
+			return EntityTemplate._deserialize(raw_result) if raw_result is not None else None
 		payload = {
 			"documentTemplateId": document_template_id,
 		}
@@ -28,7 +28,7 @@ class EntityTemplateApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def get_entity_template_blocking(self, document_template_id: str) -> EntityTemplate:
+	def get_entity_template_blocking(self, document_template_id: str) -> Optional[EntityTemplate]:
 		payload = {
 			"documentTemplateId": document_template_id,
 		}
@@ -41,7 +41,7 @@ class EntityTemplateApi:
 		if result_info.failure is not None:
 			raise interpret_kt_error(result_info.failure)
 		else:
-			return_value = EntityTemplate._deserialize(result_info.success)
+			return_value = EntityTemplate._deserialize(result_info.success) if result_info.success is not None else None
 			return return_value
 
 	async def create_entity_template_async(self, application_settings: EntityTemplate) -> EntityTemplate:
@@ -106,7 +106,7 @@ class EntityTemplateApi:
 			return_value = EntityTemplate._deserialize(result_info.success)
 			return return_value
 
-	async def list_entity_templates_by_async(self, user_id: str, type: str, search_string: Optional[str] = None, include_entities: Optional[bool] = None) -> List[EntityTemplate]:
+	async def list_entity_templates_by_async(self, user_id: str, type: str, search_string: Optional[str] = None, include_entities: Optional[bool] = None) -> list[EntityTemplate]:
 		def do_decode(raw_result):
 			return [EntityTemplate._deserialize(x1) for x1 in raw_result]
 		payload = {
@@ -124,7 +124,7 @@ class EntityTemplateApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def list_entity_templates_by_blocking(self, user_id: str, type: str, search_string: Optional[str] = None, include_entities: Optional[bool] = None) -> List[EntityTemplate]:
+	def list_entity_templates_by_blocking(self, user_id: str, type: str, search_string: Optional[str] = None, include_entities: Optional[bool] = None) -> list[EntityTemplate]:
 		payload = {
 			"userId": user_id,
 			"type": type,
@@ -143,7 +143,7 @@ class EntityTemplateApi:
 			return_value = [EntityTemplate._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
-	async def list_all_entity_templates_by_async(self, type: str, search_string: Optional[str] = None, include_entities: Optional[bool] = None) -> List[EntityTemplate]:
+	async def list_all_entity_templates_by_async(self, type: str, search_string: Optional[str] = None, include_entities: Optional[bool] = None) -> list[EntityTemplate]:
 		def do_decode(raw_result):
 			return [EntityTemplate._deserialize(x1) for x1 in raw_result]
 		payload = {
@@ -160,7 +160,7 @@ class EntityTemplateApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def list_all_entity_templates_by_blocking(self, type: str, search_string: Optional[str] = None, include_entities: Optional[bool] = None) -> List[EntityTemplate]:
+	def list_all_entity_templates_by_blocking(self, type: str, search_string: Optional[str] = None, include_entities: Optional[bool] = None) -> list[EntityTemplate]:
 		payload = {
 			"type": type,
 			"searchString": search_string,
@@ -178,7 +178,7 @@ class EntityTemplateApi:
 			return_value = [EntityTemplate._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
-	async def list_entity_templates_by_keyword_async(self, user_id: str, type: str, keyword: str, include_entities: Optional[bool] = None) -> List[EntityTemplate]:
+	async def list_entity_templates_by_keyword_async(self, user_id: str, type: str, keyword: str, include_entities: Optional[bool] = None) -> list[EntityTemplate]:
 		def do_decode(raw_result):
 			return [EntityTemplate._deserialize(x1) for x1 in raw_result]
 		payload = {
@@ -196,7 +196,7 @@ class EntityTemplateApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def list_entity_templates_by_keyword_blocking(self, user_id: str, type: str, keyword: str, include_entities: Optional[bool] = None) -> List[EntityTemplate]:
+	def list_entity_templates_by_keyword_blocking(self, user_id: str, type: str, keyword: str, include_entities: Optional[bool] = None) -> list[EntityTemplate]:
 		payload = {
 			"userId": user_id,
 			"type": type,
@@ -215,7 +215,7 @@ class EntityTemplateApi:
 			return_value = [EntityTemplate._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
-	async def find_all_entity_templates_by_keyword_async(self, type: str, keyword: str, include_entities: Optional[bool]) -> List[EntityTemplate]:
+	async def find_all_entity_templates_by_keyword_async(self, type: str, keyword: str, include_entities: Optional[bool]) -> list[EntityTemplate]:
 		def do_decode(raw_result):
 			return [EntityTemplate._deserialize(x1) for x1 in raw_result]
 		payload = {
@@ -232,7 +232,7 @@ class EntityTemplateApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def find_all_entity_templates_by_keyword_blocking(self, type: str, keyword: str, include_entities: Optional[bool]) -> List[EntityTemplate]:
+	def find_all_entity_templates_by_keyword_blocking(self, type: str, keyword: str, include_entities: Optional[bool]) -> list[EntityTemplate]:
 		payload = {
 			"type": type,
 			"keyword": keyword,
@@ -250,7 +250,7 @@ class EntityTemplateApi:
 			return_value = [EntityTemplate._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
-	async def get_entity_templates_async(self, entity_template_ids: List[str]) -> List[EntityTemplate]:
+	async def get_entity_templates_async(self, entity_template_ids: list[str]) -> list[EntityTemplate]:
 		def do_decode(raw_result):
 			return [EntityTemplate._deserialize(x1) for x1 in raw_result]
 		payload = {
@@ -265,7 +265,7 @@ class EntityTemplateApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def get_entity_templates_blocking(self, entity_template_ids: List[str]) -> List[EntityTemplate]:
+	def get_entity_templates_blocking(self, entity_template_ids: list[str]) -> list[EntityTemplate]:
 		payload = {
 			"entityTemplateIds": [x0 for x0 in entity_template_ids],
 		}
@@ -281,7 +281,7 @@ class EntityTemplateApi:
 			return_value = [EntityTemplate._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
-	async def modify_entity_templates_async(self, entity_templates: List[EntityTemplate]) -> List[EntityTemplate]:
+	async def modify_entity_templates_async(self, entity_templates: list[EntityTemplate]) -> list[EntityTemplate]:
 		def do_decode(raw_result):
 			return [EntityTemplate._deserialize(x1) for x1 in raw_result]
 		payload = {
@@ -296,7 +296,7 @@ class EntityTemplateApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def modify_entity_templates_blocking(self, entity_templates: List[EntityTemplate]) -> List[EntityTemplate]:
+	def modify_entity_templates_blocking(self, entity_templates: list[EntityTemplate]) -> list[EntityTemplate]:
 		payload = {
 			"entityTemplates": [x0.__serialize__() for x0 in entity_templates],
 		}
@@ -312,7 +312,7 @@ class EntityTemplateApi:
 			return_value = [EntityTemplate._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
-	async def create_entity_templates_async(self, entity_templates: List[EntityTemplate]) -> List[EntityTemplate]:
+	async def create_entity_templates_async(self, entity_templates: list[EntityTemplate]) -> list[EntityTemplate]:
 		def do_decode(raw_result):
 			return [EntityTemplate._deserialize(x1) for x1 in raw_result]
 		payload = {
@@ -327,7 +327,7 @@ class EntityTemplateApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def create_entity_templates_blocking(self, entity_templates: List[EntityTemplate]) -> List[EntityTemplate]:
+	def create_entity_templates_blocking(self, entity_templates: list[EntityTemplate]) -> list[EntityTemplate]:
 		payload = {
 			"entityTemplates": [x0.__serialize__() for x0 in entity_templates],
 		}
@@ -343,7 +343,7 @@ class EntityTemplateApi:
 			return_value = [EntityTemplate._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
-	async def delete_entity_templates_async(self, entity_template_ids: List[IdWithMandatoryRev]) -> List[DocIdentifier]:
+	async def delete_entity_templates_async(self, entity_template_ids: list[StoredDocumentIdentifier]) -> list[DocIdentifier]:
 		def do_decode(raw_result):
 			return [DocIdentifier._deserialize(x1) for x1 in raw_result]
 		payload = {
@@ -358,7 +358,7 @@ class EntityTemplateApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def delete_entity_templates_blocking(self, entity_template_ids: List[IdWithMandatoryRev]) -> List[DocIdentifier]:
+	def delete_entity_templates_blocking(self, entity_template_ids: list[StoredDocumentIdentifier]) -> list[DocIdentifier]:
 		payload = {
 			"entityTemplateIds": [x0.__serialize__() for x0 in entity_template_ids],
 		}

@@ -1,7 +1,7 @@
 # auto-generated file
 import json
-from typing import List, Optional
 from cardinal_sdk.model import Patient, serialize_patient, Document, DocumentType
+from typing import Optional
 from cardinal_sdk.kotlin_types import symbols
 from cardinal_sdk.model.CallResult import create_result_from_json, interpret_kt_error
 from ctypes import cast, c_char_p
@@ -11,7 +11,7 @@ from cardinal_sdk.filters.FilterOptions import SortableFilterOptions, BaseSortab
 class DocumentFilters:
 
 	@classmethod
-	def by_patients_created_for_data_owner(cls, data_owner_id: str, patients: List[Patient], from_: Optional[int] = None, to: Optional[int] = None, descending: bool = False) -> SortableFilterOptions[Document]:
+	def by_patients_created_for_data_owner(cls, data_owner_id: str, patients: list[Patient], from_: Optional[int] = None, to: Optional[int] = None, descending: bool = False) -> SortableFilterOptions[Document]:
 		payload = {
 			"dataOwnerId": data_owner_id,
 			"patients": [serialize_patient(x0) for x0 in patients],
@@ -31,7 +31,7 @@ class DocumentFilters:
 			return return_value
 
 	@classmethod
-	def by_patients_created_for_self(cls, patients: List[Patient], from_: Optional[int] = None, to: Optional[int] = None, descending: bool = False) -> SortableFilterOptions[Document]:
+	def by_patients_created_for_self(cls, patients: list[Patient], from_: Optional[int] = None, to: Optional[int] = None, descending: bool = False) -> SortableFilterOptions[Document]:
 		payload = {
 			"patients": [serialize_patient(x0) for x0 in patients],
 			"from": from_,
@@ -50,7 +50,7 @@ class DocumentFilters:
 			return return_value
 
 	@classmethod
-	def by_patient_secret_ids_created_for_data_owner(cls, data_owner_id: str, secret_ids: List[str], from_: Optional[int] = None, to: Optional[int] = None, descending: bool = False) -> BaseSortableFilterOptions[Document]:
+	def by_patient_secret_ids_created_for_data_owner(cls, data_owner_id: str, secret_ids: list[str], from_: Optional[int] = None, to: Optional[int] = None, descending: bool = False) -> BaseSortableFilterOptions[Document]:
 		payload = {
 			"dataOwnerId": data_owner_id,
 			"secretIds": [x0 for x0 in secret_ids],
@@ -70,7 +70,7 @@ class DocumentFilters:
 			return return_value
 
 	@classmethod
-	def by_patient_secret_ids_created_for_self(cls, secret_ids: List[str], from_: Optional[int] = None, to: Optional[int] = None, descending: bool = False) -> SortableFilterOptions[Document]:
+	def by_patient_secret_ids_created_for_self(cls, secret_ids: list[str], from_: Optional[int] = None, to: Optional[int] = None, descending: bool = False) -> SortableFilterOptions[Document]:
 		payload = {
 			"secretIds": [x0 for x0 in secret_ids],
 			"from": from_,
@@ -89,7 +89,7 @@ class DocumentFilters:
 			return return_value
 
 	@classmethod
-	def by_patients_and_type_for_data_owner(cls, data_owner_id: str, document_type: DocumentType, patients: List[Patient]) -> FilterOptions[Document]:
+	def by_patients_and_type_for_data_owner(cls, data_owner_id: str, document_type: DocumentType, patients: list[Patient]) -> FilterOptions[Document]:
 		payload = {
 			"dataOwnerId": data_owner_id,
 			"documentType": document_type.__serialize__(),
@@ -107,7 +107,7 @@ class DocumentFilters:
 			return return_value
 
 	@classmethod
-	def by_patients_and_type_for_self(cls, document_type: DocumentType, patients: List[Patient]) -> FilterOptions[Document]:
+	def by_patients_and_type_for_self(cls, document_type: DocumentType, patients: list[Patient]) -> FilterOptions[Document]:
 		payload = {
 			"documentType": document_type.__serialize__(),
 			"patients": [serialize_patient(x0) for x0 in patients],
@@ -124,7 +124,7 @@ class DocumentFilters:
 			return return_value
 
 	@classmethod
-	def by_patient_secret_ids_and_type_for_data_owner(cls, data_owner_id: str, document_type: DocumentType, secret_ids: List[str]) -> FilterOptions[Document]:
+	def by_patient_secret_ids_and_type_for_data_owner(cls, data_owner_id: str, document_type: DocumentType, secret_ids: list[str]) -> FilterOptions[Document]:
 		payload = {
 			"dataOwnerId": data_owner_id,
 			"documentType": document_type.__serialize__(),
@@ -142,7 +142,7 @@ class DocumentFilters:
 			return return_value
 
 	@classmethod
-	def by_patient_secret_ids_and_type_for_self(cls, document_type: DocumentType, secret_ids: List[str]) -> FilterOptions[Document]:
+	def by_patient_secret_ids_and_type_for_self(cls, document_type: DocumentType, secret_ids: list[str]) -> FilterOptions[Document]:
 		payload = {
 			"documentType": document_type.__serialize__(),
 			"secretIds": [x0 for x0 in secret_ids],

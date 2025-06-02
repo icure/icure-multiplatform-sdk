@@ -5,6 +5,7 @@ import com.icure.cardinal.sdk.CardinalApis
 import com.icure.cardinal.sdk.model.CryptoActorStubWithType
 import com.icure.cardinal.sdk.model.DataOwnerType
 import com.icure.cardinal.sdk.model.DataOwnerWithType
+import com.icure.cardinal.sdk.model.EntityReferenceInGroup
 import com.icure.cardinal.sdk.py.utils.failureToPyStringAsyncCallback
 import com.icure.cardinal.sdk.py.utils.toPyString
 import com.icure.cardinal.sdk.py.utils.toPyStringAsyncCallback
@@ -78,6 +79,23 @@ public fun getCurrentDataOwnerIdAsync(sdk: CardinalApis,
 	}
 }.failureToPyStringAsyncCallback(resultCallback)
 
+public fun getCurrentDataOwnerReferenceBlocking(sdk: CardinalApis): String = kotlin.runCatching {
+	runBlocking {
+		sdk.dataOwner.getCurrentDataOwnerReference()
+	}
+}.toPyString(EntityReferenceInGroup.serializer())
+
+@OptIn(ExperimentalForeignApi::class)
+public fun getCurrentDataOwnerReferenceAsync(sdk: CardinalApis,
+		resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+		CValues<ByteVarOf<Byte>>?) -> Unit>>): COpaquePointer? = kotlin.runCatching {
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.dataOwner.getCurrentDataOwnerReference()
+		}.toPyStringAsyncCallback(EntityReferenceInGroup.serializer(), resultCallback)
+	}
+}.failureToPyStringAsyncCallback(resultCallback)
+
 public fun getCurrentDataOwnerHierarchyIdsBlocking(sdk: CardinalApis): String = kotlin.runCatching {
 	runBlocking {
 		sdk.dataOwner.getCurrentDataOwnerHierarchyIds()
@@ -92,6 +110,24 @@ public fun getCurrentDataOwnerHierarchyIdsAsync(sdk: CardinalApis,
 		kotlin.runCatching {
 			sdk.dataOwner.getCurrentDataOwnerHierarchyIds()
 		}.toPyStringAsyncCallback(ListSerializer(String.serializer()), resultCallback)
+	}
+}.failureToPyStringAsyncCallback(resultCallback)
+
+public fun getCurrentDataOwnerHierarchyIdsReferenceBlocking(sdk: CardinalApis): String =
+		kotlin.runCatching {
+	runBlocking {
+		sdk.dataOwner.getCurrentDataOwnerHierarchyIdsReference()
+	}
+}.toPyString(ListSerializer(EntityReferenceInGroup.serializer()))
+
+@OptIn(ExperimentalForeignApi::class)
+public fun getCurrentDataOwnerHierarchyIdsReferenceAsync(sdk: CardinalApis,
+		resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+		CValues<ByteVarOf<Byte>>?) -> Unit>>): COpaquePointer? = kotlin.runCatching {
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.dataOwner.getCurrentDataOwnerHierarchyIdsReference()
+		}.toPyStringAsyncCallback(ListSerializer(EntityReferenceInGroup.serializer()), resultCallback)
 	}
 }.failureToPyStringAsyncCallback(resultCallback)
 
@@ -161,6 +197,44 @@ public fun getCryptoActorStubAsync(
 		kotlin.runCatching {
 			sdk.dataOwner.getCryptoActorStub(
 				decodedParams.ownerId,
+			)
+		}.toPyStringAsyncCallback(CryptoActorStubWithType.serializer(), resultCallback)
+	}
+}.failureToPyStringAsyncCallback(resultCallback)
+
+@Serializable
+private class GetCryptoActorStubInGroupParams(
+	public val entityReferenceInGroup: EntityReferenceInGroup,
+)
+
+@OptIn(InternalIcureApi::class)
+public fun getCryptoActorStubInGroupBlocking(sdk: CardinalApis, params: String): String =
+		kotlin.runCatching {
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<GetCryptoActorStubInGroupParams>(params)
+	runBlocking {
+		sdk.dataOwner.getCryptoActorStubInGroup(
+			decodedParams.entityReferenceInGroup,
+		)
+	}
+}.toPyString(CryptoActorStubWithType.serializer())
+
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
+public fun getCryptoActorStubInGroupAsync(
+	sdk: CardinalApis,
+	params: String,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): COpaquePointer? = kotlin.runCatching {
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<GetCryptoActorStubInGroupParams>(params)
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.dataOwner.getCryptoActorStubInGroup(
+				decodedParams.entityReferenceInGroup,
 			)
 		}.toPyStringAsyncCallback(CryptoActorStubWithType.serializer(), resultCallback)
 	}

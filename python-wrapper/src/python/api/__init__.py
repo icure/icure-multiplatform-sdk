@@ -1,3 +1,4 @@
+# auto-generated file
 from cardinal_sdk.api.KeywordApi import KeywordApi
 from cardinal_sdk.api.DeviceApi import DeviceApi
 from cardinal_sdk.api.AccessLogBasicApi import AccessLogBasicApi
@@ -35,6 +36,7 @@ from cardinal_sdk.api.ClassificationBasicApi import ClassificationBasicApi
 from cardinal_sdk.api.ShamirKeysManagerApi import ShamirKeysManagerApi
 from cardinal_sdk.api.DocumentApi import DocumentApi
 from cardinal_sdk.api.EntityTemplateApi import EntityTemplateApi
+from cardinal_sdk.api.AuthApi import AuthApi
 from cardinal_sdk.api.DataOwnerApi import DataOwnerApi
 from cardinal_sdk.api.UserApi import UserApi
 from cardinal_sdk.api.RoleApi import RoleApi

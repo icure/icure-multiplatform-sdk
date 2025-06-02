@@ -1,13 +1,13 @@
 # auto-generated file
 import json
 from cardinal_sdk.filters.FilterOptions import BaseFilterOptions, BaseSortableFilterOptions
-from cardinal_sdk.model import Contact, Service, EncryptedContact, EncryptedService, EntitySubscriptionConfiguration, DocIdentifier, IdWithMandatoryRev, serialize_contact, LabelledOccurence, SubscriptionEventType
+from cardinal_sdk.model import Contact, Service, EncryptedContact, EncryptedService, EntitySubscriptionConfiguration, DocIdentifier, StoredDocumentIdentifier, serialize_contact, LabelledOccurence, SubscriptionEventType
 from cardinal_sdk.async_utils import execute_async_method_job
 from cardinal_sdk.kotlin_types import symbols
-from typing import List, Optional
 from cardinal_sdk.model.CallResult import create_result_from_json, interpret_kt_error
 from ctypes import cast, c_char_p
 from cardinal_sdk.pagination.PaginatedListIterator import PaginatedListIterator
+from typing import Optional
 from cardinal_sdk.subscription.EntitySubscription import EntitySubscription
 
 
@@ -16,7 +16,7 @@ class ContactBasicApi:
 	def __init__(self, cardinal_sdk):
 		self.cardinal_sdk = cardinal_sdk
 
-	async def match_contacts_by_async(self, filter: BaseFilterOptions[Contact]) -> List[str]:
+	async def match_contacts_by_async(self, filter: BaseFilterOptions[Contact]) -> list[str]:
 		def do_decode(raw_result):
 			return [x1 for x1 in raw_result]
 		payload = {
@@ -31,7 +31,7 @@ class ContactBasicApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def match_contacts_by_blocking(self, filter: BaseFilterOptions[Contact]) -> List[str]:
+	def match_contacts_by_blocking(self, filter: BaseFilterOptions[Contact]) -> list[str]:
 		payload = {
 			"filter": filter.__serialize__(),
 		}
@@ -47,7 +47,7 @@ class ContactBasicApi:
 			return_value = [x1 for x1 in result_info.success]
 			return return_value
 
-	async def match_services_by_async(self, filter: BaseFilterOptions[Service]) -> List[str]:
+	async def match_services_by_async(self, filter: BaseFilterOptions[Service]) -> list[str]:
 		def do_decode(raw_result):
 			return [x1 for x1 in raw_result]
 		payload = {
@@ -62,7 +62,7 @@ class ContactBasicApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def match_services_by_blocking(self, filter: BaseFilterOptions[Service]) -> List[str]:
+	def match_services_by_blocking(self, filter: BaseFilterOptions[Service]) -> list[str]:
 		payload = {
 			"filter": filter.__serialize__(),
 		}
@@ -78,7 +78,7 @@ class ContactBasicApi:
 			return_value = [x1 for x1 in result_info.success]
 			return return_value
 
-	async def match_contacts_by_sorted_async(self, filter: BaseSortableFilterOptions[Contact]) -> List[str]:
+	async def match_contacts_by_sorted_async(self, filter: BaseSortableFilterOptions[Contact]) -> list[str]:
 		def do_decode(raw_result):
 			return [x1 for x1 in raw_result]
 		payload = {
@@ -93,7 +93,7 @@ class ContactBasicApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def match_contacts_by_sorted_blocking(self, filter: BaseSortableFilterOptions[Contact]) -> List[str]:
+	def match_contacts_by_sorted_blocking(self, filter: BaseSortableFilterOptions[Contact]) -> list[str]:
 		payload = {
 			"filter": filter.__serialize__(),
 		}
@@ -109,7 +109,7 @@ class ContactBasicApi:
 			return_value = [x1 for x1 in result_info.success]
 			return return_value
 
-	async def match_services_by_sorted_async(self, filter: BaseSortableFilterOptions[Service]) -> List[str]:
+	async def match_services_by_sorted_async(self, filter: BaseSortableFilterOptions[Service]) -> list[str]:
 		def do_decode(raw_result):
 			return [x1 for x1 in raw_result]
 		payload = {
@@ -124,7 +124,7 @@ class ContactBasicApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def match_services_by_sorted_blocking(self, filter: BaseSortableFilterOptions[Service]) -> List[str]:
+	def match_services_by_sorted_blocking(self, filter: BaseSortableFilterOptions[Service]) -> list[str]:
 		payload = {
 			"filter": filter.__serialize__(),
 		}
@@ -385,7 +385,7 @@ class ContactBasicApi:
 			return_value = DocIdentifier._deserialize(result_info.success)
 			return return_value
 
-	async def delete_contacts_by_ids_async(self, entity_ids: List[IdWithMandatoryRev]) -> List[DocIdentifier]:
+	async def delete_contacts_by_ids_async(self, entity_ids: list[StoredDocumentIdentifier]) -> list[DocIdentifier]:
 		def do_decode(raw_result):
 			return [DocIdentifier._deserialize(x1) for x1 in raw_result]
 		payload = {
@@ -400,7 +400,7 @@ class ContactBasicApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def delete_contacts_by_ids_blocking(self, entity_ids: List[IdWithMandatoryRev]) -> List[DocIdentifier]:
+	def delete_contacts_by_ids_blocking(self, entity_ids: list[StoredDocumentIdentifier]) -> list[DocIdentifier]:
 		payload = {
 			"entityIds": [x0.__serialize__() for x0 in entity_ids],
 		}
@@ -477,7 +477,7 @@ class ContactBasicApi:
 			return_value = DocIdentifier._deserialize(result_info.success)
 			return return_value
 
-	async def delete_contacts_async(self, contacts: List[Contact]) -> List[DocIdentifier]:
+	async def delete_contacts_async(self, contacts: list[Contact]) -> list[DocIdentifier]:
 		def do_decode(raw_result):
 			return [DocIdentifier._deserialize(x1) for x1 in raw_result]
 		payload = {
@@ -492,7 +492,7 @@ class ContactBasicApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def delete_contacts_blocking(self, contacts: List[Contact]) -> List[DocIdentifier]:
+	def delete_contacts_blocking(self, contacts: list[Contact]) -> list[DocIdentifier]:
 		payload = {
 			"contacts": [serialize_contact(x0) for x0 in contacts],
 		}
@@ -536,7 +536,7 @@ class ContactBasicApi:
 		if result_info.failure is not None:
 			raise interpret_kt_error(result_info.failure)
 
-	async def get_service_codes_occurrences_async(self, code_type: str, min_occurrences: int) -> List[LabelledOccurence]:
+	async def get_service_codes_occurrences_async(self, code_type: str, min_occurrences: int) -> list[LabelledOccurence]:
 		def do_decode(raw_result):
 			return [LabelledOccurence._deserialize(x1) for x1 in raw_result]
 		payload = {
@@ -552,7 +552,7 @@ class ContactBasicApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def get_service_codes_occurrences_blocking(self, code_type: str, min_occurrences: int) -> List[LabelledOccurence]:
+	def get_service_codes_occurrences_blocking(self, code_type: str, min_occurrences: int) -> list[LabelledOccurence]:
 		payload = {
 			"codeType": code_type,
 			"minOccurrences": min_occurrences,
@@ -567,6 +567,68 @@ class ContactBasicApi:
 			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = [LabelledOccurence._deserialize(x1) for x1 in result_info.success]
+			return return_value
+
+	async def create_contact_async(self, entity: EncryptedContact) -> EncryptedContact:
+		def do_decode(raw_result):
+			return EncryptedContact._deserialize(raw_result)
+		payload = {
+			"entity": entity.__serialize__(),
+		}
+		return await execute_async_method_job(
+			self.cardinal_sdk._executor,
+			True,
+			do_decode,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ContactBasicApi.createContactAsync,
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+
+	def create_contact_blocking(self, entity: EncryptedContact) -> EncryptedContact:
+		payload = {
+			"entity": entity.__serialize__(),
+		}
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ContactBasicApi.createContactBlocking(
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
+		if result_info.failure is not None:
+			raise interpret_kt_error(result_info.failure)
+		else:
+			return_value = EncryptedContact._deserialize(result_info.success)
+			return return_value
+
+	async def create_contacts_async(self, entities: list[EncryptedContact]) -> list[EncryptedContact]:
+		def do_decode(raw_result):
+			return [EncryptedContact._deserialize(x1) for x1 in raw_result]
+		payload = {
+			"entities": [x0.__serialize__() for x0 in entities],
+		}
+		return await execute_async_method_job(
+			self.cardinal_sdk._executor,
+			True,
+			do_decode,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ContactBasicApi.createContactsAsync,
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+
+	def create_contacts_blocking(self, entities: list[EncryptedContact]) -> list[EncryptedContact]:
+		payload = {
+			"entities": [x0.__serialize__() for x0 in entities],
+		}
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.ContactBasicApi.createContactsBlocking(
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
+		if result_info.failure is not None:
+			raise interpret_kt_error(result_info.failure)
+		else:
+			return_value = [EncryptedContact._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
 	async def undelete_contact_by_id_async(self, id: str, rev: str) -> EncryptedContact:
@@ -664,7 +726,7 @@ class ContactBasicApi:
 			return_value = EncryptedContact._deserialize(result_info.success)
 			return return_value
 
-	async def modify_contacts_async(self, entities: List[EncryptedContact]) -> List[EncryptedContact]:
+	async def modify_contacts_async(self, entities: list[EncryptedContact]) -> list[EncryptedContact]:
 		def do_decode(raw_result):
 			return [EncryptedContact._deserialize(x1) for x1 in raw_result]
 		payload = {
@@ -679,7 +741,7 @@ class ContactBasicApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def modify_contacts_blocking(self, entities: List[EncryptedContact]) -> List[EncryptedContact]:
+	def modify_contacts_blocking(self, entities: list[EncryptedContact]) -> list[EncryptedContact]:
 		payload = {
 			"entities": [x0.__serialize__() for x0 in entities],
 		}
@@ -695,9 +757,9 @@ class ContactBasicApi:
 			return_value = [EncryptedContact._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
-	async def get_contact_async(self, entity_id: str) -> EncryptedContact:
+	async def get_contact_async(self, entity_id: str) -> Optional[EncryptedContact]:
 		def do_decode(raw_result):
-			return EncryptedContact._deserialize(raw_result)
+			return EncryptedContact._deserialize(raw_result) if raw_result is not None else None
 		payload = {
 			"entityId": entity_id,
 		}
@@ -710,7 +772,7 @@ class ContactBasicApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def get_contact_blocking(self, entity_id: str) -> EncryptedContact:
+	def get_contact_blocking(self, entity_id: str) -> Optional[EncryptedContact]:
 		payload = {
 			"entityId": entity_id,
 		}
@@ -723,10 +785,10 @@ class ContactBasicApi:
 		if result_info.failure is not None:
 			raise interpret_kt_error(result_info.failure)
 		else:
-			return_value = EncryptedContact._deserialize(result_info.success)
+			return_value = EncryptedContact._deserialize(result_info.success) if result_info.success is not None else None
 			return return_value
 
-	async def get_contacts_async(self, entity_ids: List[str]) -> List[EncryptedContact]:
+	async def get_contacts_async(self, entity_ids: list[str]) -> list[EncryptedContact]:
 		def do_decode(raw_result):
 			return [EncryptedContact._deserialize(x1) for x1 in raw_result]
 		payload = {
@@ -741,7 +803,7 @@ class ContactBasicApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def get_contacts_blocking(self, entity_ids: List[str]) -> List[EncryptedContact]:
+	def get_contacts_blocking(self, entity_ids: list[str]) -> list[EncryptedContact]:
 		payload = {
 			"entityIds": [x0 for x0 in entity_ids],
 		}
@@ -788,7 +850,7 @@ class ContactBasicApi:
 			return_value = EncryptedService._deserialize(result_info.success)
 			return return_value
 
-	async def get_services_async(self, entity_ids: List[str]) -> List[EncryptedService]:
+	async def get_services_async(self, entity_ids: list[str]) -> list[EncryptedService]:
 		def do_decode(raw_result):
 			return [EncryptedService._deserialize(x1) for x1 in raw_result]
 		payload = {
@@ -803,7 +865,7 @@ class ContactBasicApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def get_services_blocking(self, entity_ids: List[str]) -> List[EncryptedService]:
+	def get_services_blocking(self, entity_ids: list[str]) -> list[EncryptedService]:
 		payload = {
 			"entityIds": [x0 for x0 in entity_ids],
 		}
@@ -819,7 +881,7 @@ class ContactBasicApi:
 			return_value = [EncryptedService._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
-	async def subscribe_to_events_async(self, events: List[SubscriptionEventType], filter: BaseFilterOptions[Contact], subscription_config: Optional[EntitySubscriptionConfiguration] = None) -> EntitySubscription[EncryptedContact]:
+	async def subscribe_to_events_async(self, events: set[SubscriptionEventType], filter: BaseFilterOptions[Contact], subscription_config: Optional[EntitySubscriptionConfiguration] = None) -> EntitySubscription[EncryptedContact]:
 		def do_decode(raw_result):
 			return EntitySubscription[EncryptedContact](
 				producer = raw_result,
@@ -840,7 +902,7 @@ class ContactBasicApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def subscribe_to_events_blocking(self, events: List[SubscriptionEventType], filter: BaseFilterOptions[Contact], subscription_config: Optional[EntitySubscriptionConfiguration] = None) -> EntitySubscription[EncryptedContact]:
+	def subscribe_to_events_blocking(self, events: set[SubscriptionEventType], filter: BaseFilterOptions[Contact], subscription_config: Optional[EntitySubscriptionConfiguration] = None) -> EntitySubscription[EncryptedContact]:
 		payload = {
 			"events": [x0.__serialize__() for x0 in events],
 			"filter": filter.__serialize__(),

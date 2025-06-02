@@ -5,7 +5,7 @@ from cardinal_sdk.model.CallResult import create_result_from_json, interpret_kt_
 from ctypes import cast, c_char_p
 from cardinal_sdk.filters.FilterOptions import BaseFilterOptions, FilterOptions, BaseSortableFilterOptions, SortableFilterOptions
 from cardinal_sdk.model import Message, Patient, serialize_patient
-from typing import List, Optional
+from typing import Optional
 
 
 class MessageFilters:
@@ -105,7 +105,7 @@ class MessageFilters:
 			return return_value
 
 	@classmethod
-	def by_patients_sent_date_for_data_owner(cls, data_owner_id: str, patients: List[Patient], from_: Optional[int] = None, to: Optional[int] = None, descending: bool = False) -> SortableFilterOptions[Message]:
+	def by_patients_sent_date_for_data_owner(cls, data_owner_id: str, patients: list[Patient], from_: Optional[int] = None, to: Optional[int] = None, descending: bool = False) -> SortableFilterOptions[Message]:
 		payload = {
 			"dataOwnerId": data_owner_id,
 			"patients": [serialize_patient(x0) for x0 in patients],
@@ -125,7 +125,7 @@ class MessageFilters:
 			return return_value
 
 	@classmethod
-	def by_patients_sent_date_for_self(cls, patients: List[Patient], from_: Optional[int] = None, to: Optional[int] = None, descending: bool = False) -> SortableFilterOptions[Message]:
+	def by_patients_sent_date_for_self(cls, patients: list[Patient], from_: Optional[int] = None, to: Optional[int] = None, descending: bool = False) -> SortableFilterOptions[Message]:
 		payload = {
 			"patients": [serialize_patient(x0) for x0 in patients],
 			"from": from_,
@@ -144,7 +144,7 @@ class MessageFilters:
 			return return_value
 
 	@classmethod
-	def by_patient_secret_ids_sent_date_for_data_owner(cls, data_owner_id: str, secret_ids: List[str], from_: Optional[int] = None, to: Optional[int] = None, descending: bool = False) -> BaseSortableFilterOptions[Message]:
+	def by_patient_secret_ids_sent_date_for_data_owner(cls, data_owner_id: str, secret_ids: list[str], from_: Optional[int] = None, to: Optional[int] = None, descending: bool = False) -> BaseSortableFilterOptions[Message]:
 		payload = {
 			"dataOwnerId": data_owner_id,
 			"secretIds": [x0 for x0 in secret_ids],
@@ -164,7 +164,7 @@ class MessageFilters:
 			return return_value
 
 	@classmethod
-	def by_patient_secret_ids_sent_date_for_self(cls, secret_ids: List[str], from_: Optional[int] = None, to: Optional[int] = None, descending: bool = False) -> SortableFilterOptions[Message]:
+	def by_patient_secret_ids_sent_date_for_self(cls, secret_ids: list[str], from_: Optional[int] = None, to: Optional[int] = None, descending: bool = False) -> SortableFilterOptions[Message]:
 		payload = {
 			"secretIds": [x0 for x0 in secret_ids],
 			"from": from_,
@@ -288,7 +288,7 @@ class MessageFilters:
 			return return_value
 
 	@classmethod
-	def by_invoice_ids(cls, invoice_ids: List[str]) -> BaseFilterOptions[Message]:
+	def by_invoice_ids(cls, invoice_ids: set[str]) -> BaseFilterOptions[Message]:
 		payload = {
 			"invoiceIds": [x0 for x0 in invoice_ids],
 		}
@@ -304,7 +304,7 @@ class MessageFilters:
 			return return_value
 
 	@classmethod
-	def by_parent_ids(cls, parent_ids: List[str]) -> BaseFilterOptions[Message]:
+	def by_parent_ids(cls, parent_ids: list[str]) -> BaseFilterOptions[Message]:
 		payload = {
 			"parentIds": [x0 for x0 in parent_ids],
 		}

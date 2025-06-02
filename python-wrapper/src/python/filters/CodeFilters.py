@@ -5,7 +5,7 @@ from cardinal_sdk.model.CallResult import create_result_from_json, interpret_kt_
 from ctypes import cast, c_char_p
 from cardinal_sdk.filters.FilterOptions import BaseFilterOptions, BaseSortableFilterOptions
 from cardinal_sdk.model import Code
-from typing import List, Optional
+from typing import Optional
 
 
 class CodeFilters:
@@ -23,7 +23,7 @@ class CodeFilters:
 			return return_value
 
 	@classmethod
-	def by_ids(cls, ids: List[str]) -> BaseSortableFilterOptions[Code]:
+	def by_ids(cls, ids: list[str]) -> BaseSortableFilterOptions[Code]:
 		payload = {
 			"ids": [x0 for x0 in ids],
 		}
@@ -94,7 +94,7 @@ class CodeFilters:
 			return return_value
 
 	@classmethod
-	def by_language_types_label_region_version(cls, language: str, types: List[str], label: str, region: Optional[str] = None, version: Optional[str] = None) -> BaseFilterOptions[Code]:
+	def by_language_types_label_region_version(cls, language: str, types: list[str], label: str, region: Optional[str] = None, version: Optional[str] = None) -> BaseFilterOptions[Code]:
 		payload = {
 			"language": language,
 			"types": [x0 for x0 in types],

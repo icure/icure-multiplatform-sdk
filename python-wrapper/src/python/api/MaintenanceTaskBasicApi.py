@@ -1,13 +1,13 @@
 # auto-generated file
 import json
 from cardinal_sdk.filters.FilterOptions import BaseFilterOptions, BaseSortableFilterOptions
-from cardinal_sdk.model import MaintenanceTask, EncryptedMaintenanceTask, DocIdentifier, IdWithMandatoryRev, serialize_maintenance_task, deserialize_maintenance_task, SubscriptionEventType, EntitySubscriptionConfiguration
+from cardinal_sdk.model import MaintenanceTask, EncryptedMaintenanceTask, DocIdentifier, StoredDocumentIdentifier, serialize_maintenance_task, deserialize_maintenance_task, SubscriptionEventType, EntitySubscriptionConfiguration
 from cardinal_sdk.async_utils import execute_async_method_job
 from cardinal_sdk.kotlin_types import symbols
-from typing import List, Optional
 from cardinal_sdk.model.CallResult import create_result_from_json, interpret_kt_error
 from ctypes import cast, c_char_p
 from cardinal_sdk.pagination.PaginatedListIterator import PaginatedListIterator
+from typing import Optional
 from cardinal_sdk.subscription.EntitySubscription import EntitySubscription
 
 
@@ -16,7 +16,7 @@ class MaintenanceTaskBasicApi:
 	def __init__(self, cardinal_sdk):
 		self.cardinal_sdk = cardinal_sdk
 
-	async def match_maintenance_tasks_by_async(self, filter: BaseFilterOptions[MaintenanceTask]) -> List[str]:
+	async def match_maintenance_tasks_by_async(self, filter: BaseFilterOptions[MaintenanceTask]) -> list[str]:
 		def do_decode(raw_result):
 			return [x1 for x1 in raw_result]
 		payload = {
@@ -31,7 +31,7 @@ class MaintenanceTaskBasicApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def match_maintenance_tasks_by_blocking(self, filter: BaseFilterOptions[MaintenanceTask]) -> List[str]:
+	def match_maintenance_tasks_by_blocking(self, filter: BaseFilterOptions[MaintenanceTask]) -> list[str]:
 		payload = {
 			"filter": filter.__serialize__(),
 		}
@@ -47,7 +47,7 @@ class MaintenanceTaskBasicApi:
 			return_value = [x1 for x1 in result_info.success]
 			return return_value
 
-	async def match_maintenance_tasks_by_sorted_async(self, filter: BaseSortableFilterOptions[MaintenanceTask]) -> List[str]:
+	async def match_maintenance_tasks_by_sorted_async(self, filter: BaseSortableFilterOptions[MaintenanceTask]) -> list[str]:
 		def do_decode(raw_result):
 			return [x1 for x1 in raw_result]
 		payload = {
@@ -62,7 +62,7 @@ class MaintenanceTaskBasicApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def match_maintenance_tasks_by_sorted_blocking(self, filter: BaseSortableFilterOptions[MaintenanceTask]) -> List[str]:
+	def match_maintenance_tasks_by_sorted_blocking(self, filter: BaseSortableFilterOptions[MaintenanceTask]) -> list[str]:
 		payload = {
 			"filter": filter.__serialize__(),
 		}
@@ -195,7 +195,7 @@ class MaintenanceTaskBasicApi:
 			return_value = DocIdentifier._deserialize(result_info.success)
 			return return_value
 
-	async def delete_maintenance_tasks_by_ids_async(self, entity_ids: List[IdWithMandatoryRev]) -> List[DocIdentifier]:
+	async def delete_maintenance_tasks_by_ids_async(self, entity_ids: list[StoredDocumentIdentifier]) -> list[DocIdentifier]:
 		def do_decode(raw_result):
 			return [DocIdentifier._deserialize(x1) for x1 in raw_result]
 		payload = {
@@ -210,7 +210,7 @@ class MaintenanceTaskBasicApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def delete_maintenance_tasks_by_ids_blocking(self, entity_ids: List[IdWithMandatoryRev]) -> List[DocIdentifier]:
+	def delete_maintenance_tasks_by_ids_blocking(self, entity_ids: list[StoredDocumentIdentifier]) -> list[DocIdentifier]:
 		payload = {
 			"entityIds": [x0.__serialize__() for x0 in entity_ids],
 		}
@@ -287,7 +287,7 @@ class MaintenanceTaskBasicApi:
 			return_value = DocIdentifier._deserialize(result_info.success)
 			return return_value
 
-	async def delete_maintenance_tasks_async(self, maintenance_tasks: List[MaintenanceTask]) -> List[DocIdentifier]:
+	async def delete_maintenance_tasks_async(self, maintenance_tasks: list[MaintenanceTask]) -> list[DocIdentifier]:
 		def do_decode(raw_result):
 			return [DocIdentifier._deserialize(x1) for x1 in raw_result]
 		payload = {
@@ -302,7 +302,7 @@ class MaintenanceTaskBasicApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def delete_maintenance_tasks_blocking(self, maintenance_tasks: List[MaintenanceTask]) -> List[DocIdentifier]:
+	def delete_maintenance_tasks_blocking(self, maintenance_tasks: list[MaintenanceTask]) -> list[DocIdentifier]:
 		payload = {
 			"maintenanceTasks": [serialize_maintenance_task(x0) for x0 in maintenance_tasks],
 		}
@@ -345,6 +345,37 @@ class MaintenanceTaskBasicApi:
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
 			raise interpret_kt_error(result_info.failure)
+
+	async def create_maintenance_task_async(self, entity: EncryptedMaintenanceTask) -> EncryptedMaintenanceTask:
+		def do_decode(raw_result):
+			return EncryptedMaintenanceTask._deserialize(raw_result)
+		payload = {
+			"entity": entity.__serialize__(),
+		}
+		return await execute_async_method_job(
+			self.cardinal_sdk._executor,
+			True,
+			do_decode,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.MaintenanceTaskBasicApi.createMaintenanceTaskAsync,
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+
+	def create_maintenance_task_blocking(self, entity: EncryptedMaintenanceTask) -> EncryptedMaintenanceTask:
+		payload = {
+			"entity": entity.__serialize__(),
+		}
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.MaintenanceTaskBasicApi.createMaintenanceTaskBlocking(
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
+		if result_info.failure is not None:
+			raise interpret_kt_error(result_info.failure)
+		else:
+			return_value = EncryptedMaintenanceTask._deserialize(result_info.success)
+			return return_value
 
 	async def undelete_maintenance_task_async(self, maintenance_task: MaintenanceTask) -> MaintenanceTask:
 		def do_decode(raw_result):
@@ -441,9 +472,9 @@ class MaintenanceTaskBasicApi:
 			return_value = EncryptedMaintenanceTask._deserialize(result_info.success)
 			return return_value
 
-	async def get_maintenance_task_async(self, entity_id: str) -> EncryptedMaintenanceTask:
+	async def get_maintenance_task_async(self, entity_id: str) -> Optional[EncryptedMaintenanceTask]:
 		def do_decode(raw_result):
-			return EncryptedMaintenanceTask._deserialize(raw_result)
+			return EncryptedMaintenanceTask._deserialize(raw_result) if raw_result is not None else None
 		payload = {
 			"entityId": entity_id,
 		}
@@ -456,7 +487,7 @@ class MaintenanceTaskBasicApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def get_maintenance_task_blocking(self, entity_id: str) -> EncryptedMaintenanceTask:
+	def get_maintenance_task_blocking(self, entity_id: str) -> Optional[EncryptedMaintenanceTask]:
 		payload = {
 			"entityId": entity_id,
 		}
@@ -469,10 +500,10 @@ class MaintenanceTaskBasicApi:
 		if result_info.failure is not None:
 			raise interpret_kt_error(result_info.failure)
 		else:
-			return_value = EncryptedMaintenanceTask._deserialize(result_info.success)
+			return_value = EncryptedMaintenanceTask._deserialize(result_info.success) if result_info.success is not None else None
 			return return_value
 
-	async def get_maintenance_tasks_async(self, entity_ids: List[str]) -> List[EncryptedMaintenanceTask]:
+	async def get_maintenance_tasks_async(self, entity_ids: list[str]) -> list[EncryptedMaintenanceTask]:
 		def do_decode(raw_result):
 			return [EncryptedMaintenanceTask._deserialize(x1) for x1 in raw_result]
 		payload = {
@@ -487,7 +518,7 @@ class MaintenanceTaskBasicApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def get_maintenance_tasks_blocking(self, entity_ids: List[str]) -> List[EncryptedMaintenanceTask]:
+	def get_maintenance_tasks_blocking(self, entity_ids: list[str]) -> list[EncryptedMaintenanceTask]:
 		payload = {
 			"entityIds": [x0 for x0 in entity_ids],
 		}
@@ -503,7 +534,7 @@ class MaintenanceTaskBasicApi:
 			return_value = [EncryptedMaintenanceTask._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
-	async def subscribe_to_events_async(self, events: List[SubscriptionEventType], filter: BaseFilterOptions[MaintenanceTask], subscription_config: Optional[EntitySubscriptionConfiguration] = None) -> EntitySubscription[EncryptedMaintenanceTask]:
+	async def subscribe_to_events_async(self, events: set[SubscriptionEventType], filter: BaseFilterOptions[MaintenanceTask], subscription_config: Optional[EntitySubscriptionConfiguration] = None) -> EntitySubscription[EncryptedMaintenanceTask]:
 		def do_decode(raw_result):
 			return EntitySubscription[EncryptedMaintenanceTask](
 				producer = raw_result,
@@ -524,7 +555,7 @@ class MaintenanceTaskBasicApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def subscribe_to_events_blocking(self, events: List[SubscriptionEventType], filter: BaseFilterOptions[MaintenanceTask], subscription_config: Optional[EntitySubscriptionConfiguration] = None) -> EntitySubscription[EncryptedMaintenanceTask]:
+	def subscribe_to_events_blocking(self, events: set[SubscriptionEventType], filter: BaseFilterOptions[MaintenanceTask], subscription_config: Optional[EntitySubscriptionConfiguration] = None) -> EntitySubscription[EncryptedMaintenanceTask]:
 		payload = {
 			"events": [x0.__serialize__() for x0 in events],
 			"filter": filter.__serialize__(),

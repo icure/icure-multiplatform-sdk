@@ -1,11 +1,11 @@
 # auto-generated file
 import json
-from cardinal_sdk.model import User, EncryptedPropertyStub, UserGroup, ListOfIds, TokenWithGroup, Enable2faRequest, DocIdentifier, SubscriptionEventType, EntitySubscriptionConfiguration
 from cardinal_sdk.async_utils import execute_async_method_job
 from cardinal_sdk.kotlin_types import symbols
+from cardinal_sdk.model import User, EncryptedPropertyStub, UserGroup, ListOfIds, TokenWithGroup, Enable2faRequest, DocIdentifier, LoginIdentifier, SubscriptionEventType, EntitySubscriptionConfiguration
 from cardinal_sdk.model.CallResult import create_result_from_json, interpret_kt_error
 from ctypes import cast, c_char_p
-from typing import List, Optional
+from typing import Optional
 from cardinal_sdk.filters.FilterOptions import BaseFilterOptions, BaseSortableFilterOptions, FilterOptions
 from cardinal_sdk.pagination.PaginatedListIterator import PaginatedListIterator
 from cardinal_sdk.subscription.EntitySubscription import EntitySubscription
@@ -70,9 +70,9 @@ class UserApi:
 			return_value = User._deserialize(result_info.success)
 			return return_value
 
-	async def get_user_async(self, user_id: str) -> User:
+	async def get_user_async(self, user_id: str) -> Optional[User]:
 		def do_decode(raw_result):
-			return User._deserialize(raw_result)
+			return User._deserialize(raw_result) if raw_result is not None else None
 		payload = {
 			"userId": user_id,
 		}
@@ -85,7 +85,7 @@ class UserApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def get_user_blocking(self, user_id: str) -> User:
+	def get_user_blocking(self, user_id: str) -> Optional[User]:
 		payload = {
 			"userId": user_id,
 		}
@@ -98,10 +98,10 @@ class UserApi:
 		if result_info.failure is not None:
 			raise interpret_kt_error(result_info.failure)
 		else:
-			return_value = User._deserialize(result_info.success)
+			return_value = User._deserialize(result_info.success) if result_info.success is not None else None
 			return return_value
 
-	async def get_users_async(self, user_ids: List[str]) -> List[User]:
+	async def get_users_async(self, user_ids: list[str]) -> list[User]:
 		def do_decode(raw_result):
 			return [User._deserialize(x1) for x1 in raw_result]
 		payload = {
@@ -116,7 +116,7 @@ class UserApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def get_users_blocking(self, user_ids: List[str]) -> List[User]:
+	def get_users_blocking(self, user_ids: list[str]) -> list[User]:
 		payload = {
 			"userIds": [x0 for x0 in user_ids],
 		}
@@ -132,9 +132,9 @@ class UserApi:
 			return_value = [User._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
-	async def get_user_by_email_async(self, email: str) -> User:
+	async def get_user_by_email_async(self, email: str) -> Optional[User]:
 		def do_decode(raw_result):
-			return User._deserialize(raw_result)
+			return User._deserialize(raw_result) if raw_result is not None else None
 		payload = {
 			"email": email,
 		}
@@ -147,7 +147,7 @@ class UserApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def get_user_by_email_blocking(self, email: str) -> User:
+	def get_user_by_email_blocking(self, email: str) -> Optional[User]:
 		payload = {
 			"email": email,
 		}
@@ -160,12 +160,12 @@ class UserApi:
 		if result_info.failure is not None:
 			raise interpret_kt_error(result_info.failure)
 		else:
-			return_value = User._deserialize(result_info.success)
+			return_value = User._deserialize(result_info.success) if result_info.success is not None else None
 			return return_value
 
-	async def get_user_by_phone_number_async(self, phone_number: str) -> User:
+	async def get_user_by_phone_number_async(self, phone_number: str) -> Optional[User]:
 		def do_decode(raw_result):
-			return User._deserialize(raw_result)
+			return User._deserialize(raw_result) if raw_result is not None else None
 		payload = {
 			"phoneNumber": phone_number,
 		}
@@ -178,7 +178,7 @@ class UserApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def get_user_by_phone_number_blocking(self, phone_number: str) -> User:
+	def get_user_by_phone_number_blocking(self, phone_number: str) -> Optional[User]:
 		payload = {
 			"phoneNumber": phone_number,
 		}
@@ -191,10 +191,10 @@ class UserApi:
 		if result_info.failure is not None:
 			raise interpret_kt_error(result_info.failure)
 		else:
-			return_value = User._deserialize(result_info.success)
+			return_value = User._deserialize(result_info.success) if result_info.success is not None else None
 			return return_value
 
-	async def find_by_hcparty_id_async(self, id: str) -> List[str]:
+	async def find_by_hcparty_id_async(self, id: str) -> list[str]:
 		def do_decode(raw_result):
 			return [x1 for x1 in raw_result]
 		payload = {
@@ -209,7 +209,7 @@ class UserApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def find_by_hcparty_id_blocking(self, id: str) -> List[str]:
+	def find_by_hcparty_id_blocking(self, id: str) -> list[str]:
 		payload = {
 			"id": id,
 		}
@@ -225,7 +225,7 @@ class UserApi:
 			return_value = [x1 for x1 in result_info.success]
 			return return_value
 
-	async def find_by_patient_id_async(self, id: str) -> List[str]:
+	async def find_by_patient_id_async(self, id: str) -> list[str]:
 		def do_decode(raw_result):
 			return [x1 for x1 in raw_result]
 		payload = {
@@ -240,7 +240,7 @@ class UserApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def find_by_patient_id_blocking(self, id: str) -> List[str]:
+	def find_by_patient_id_blocking(self, id: str) -> list[str]:
 		payload = {
 			"id": id,
 		}
@@ -318,7 +318,7 @@ class UserApi:
 			return_value = User._deserialize(result_info.success)
 			return return_value
 
-	async def modify_properties_async(self, user_id: str, properties: Optional[List[EncryptedPropertyStub]]) -> User:
+	async def modify_properties_async(self, user_id: str, properties: Optional[list[EncryptedPropertyStub]]) -> User:
 		def do_decode(raw_result):
 			return User._deserialize(raw_result)
 		payload = {
@@ -334,7 +334,7 @@ class UserApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def modify_properties_blocking(self, user_id: str, properties: Optional[List[EncryptedPropertyStub]]) -> User:
+	def modify_properties_blocking(self, user_id: str, properties: Optional[list[EncryptedPropertyStub]]) -> User:
 		payload = {
 			"userId": user_id,
 			"properties": [x0.__serialize__() for x0 in properties] if properties is not None else None,
@@ -430,7 +430,7 @@ class UserApi:
 				executor = self.cardinal_sdk._executor
 			)
 
-	async def match_users_by_async(self, filter: BaseFilterOptions[User]) -> List[str]:
+	async def match_users_by_async(self, filter: BaseFilterOptions[User]) -> list[str]:
 		def do_decode(raw_result):
 			return [x1 for x1 in raw_result]
 		payload = {
@@ -445,7 +445,7 @@ class UserApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def match_users_by_blocking(self, filter: BaseFilterOptions[User]) -> List[str]:
+	def match_users_by_blocking(self, filter: BaseFilterOptions[User]) -> list[str]:
 		payload = {
 			"filter": filter.__serialize__(),
 		}
@@ -503,7 +503,7 @@ class UserApi:
 				executor = self.cardinal_sdk._executor
 			)
 
-	async def match_users_by_sorted_async(self, filter: BaseSortableFilterOptions[User]) -> List[str]:
+	async def match_users_by_sorted_async(self, filter: BaseSortableFilterOptions[User]) -> list[str]:
 		def do_decode(raw_result):
 			return [x1 for x1 in raw_result]
 		payload = {
@@ -518,7 +518,7 @@ class UserApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def match_users_by_sorted_blocking(self, filter: BaseSortableFilterOptions[User]) -> List[str]:
+	def match_users_by_sorted_blocking(self, filter: BaseSortableFilterOptions[User]) -> list[str]:
 		payload = {
 			"filter": filter.__serialize__(),
 		}
@@ -534,7 +534,7 @@ class UserApi:
 			return_value = [x1 for x1 in result_info.success]
 			return return_value
 
-	async def get_matching_users_async(self) -> List[UserGroup]:
+	async def get_matching_users_async(self) -> list[UserGroup]:
 		def do_decode(raw_result):
 			return [UserGroup._deserialize(x1) for x1 in raw_result]
 		return await execute_async_method_job(
@@ -545,7 +545,7 @@ class UserApi:
 			self.cardinal_sdk._native,
 		)
 
-	def get_matching_users_blocking(self) -> List[UserGroup]:
+	def get_matching_users_blocking(self) -> list[UserGroup]:
 		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.UserApi.getMatchingUsersBlocking(
 			self.cardinal_sdk._native,
 		)
@@ -557,7 +557,7 @@ class UserApi:
 			return_value = [UserGroup._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
-	async def get_users_in_group_async(self, group_id: str, user_ids: List[str]) -> List[User]:
+	async def get_users_in_group_async(self, group_id: str, user_ids: list[str]) -> list[User]:
 		def do_decode(raw_result):
 			return [User._deserialize(x1) for x1 in raw_result]
 		payload = {
@@ -573,7 +573,7 @@ class UserApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def get_users_in_group_blocking(self, group_id: str, user_ids: List[str]) -> List[User]:
+	def get_users_in_group_blocking(self, group_id: str, user_ids: list[str]) -> list[User]:
 		payload = {
 			"groupId": group_id,
 			"userIds": [x0 for x0 in user_ids],
@@ -827,7 +827,7 @@ class UserApi:
 			return_value = result_info.success
 			return return_value
 
-	async def get_token_in_all_groups_async(self, user_identifier: str, key: str, token: Optional[str] = None, token_validity: Optional[int] = None) -> List[TokenWithGroup]:
+	async def get_token_in_all_groups_async(self, user_identifier: str, key: str, token: Optional[str] = None, token_validity: Optional[int] = None) -> list[TokenWithGroup]:
 		def do_decode(raw_result):
 			return [TokenWithGroup._deserialize(x1) for x1 in raw_result]
 		payload = {
@@ -845,7 +845,7 @@ class UserApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def get_token_in_all_groups_blocking(self, user_identifier: str, key: str, token: Optional[str] = None, token_validity: Optional[int] = None) -> List[TokenWithGroup]:
+	def get_token_in_all_groups_blocking(self, user_identifier: str, key: str, token: Optional[str] = None, token_validity: Optional[int] = None) -> list[TokenWithGroup]:
 		payload = {
 			"userIdentifier": user_identifier,
 			"key": key,
@@ -908,7 +908,7 @@ class UserApi:
 				executor = self.cardinal_sdk._executor
 			)
 
-	async def match_users_in_group_by_async(self, group_id: str, filter: BaseFilterOptions[User]) -> List[str]:
+	async def match_users_in_group_by_async(self, group_id: str, filter: BaseFilterOptions[User]) -> list[str]:
 		def do_decode(raw_result):
 			return [x1 for x1 in raw_result]
 		payload = {
@@ -924,7 +924,7 @@ class UserApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def match_users_in_group_by_blocking(self, group_id: str, filter: BaseFilterOptions[User]) -> List[str]:
+	def match_users_in_group_by_blocking(self, group_id: str, filter: BaseFilterOptions[User]) -> list[str]:
 		payload = {
 			"groupId": group_id,
 			"filter": filter.__serialize__(),
@@ -985,7 +985,7 @@ class UserApi:
 				executor = self.cardinal_sdk._executor
 			)
 
-	async def match_users_in_group_by_sorted_async(self, group_id: str, filter: BaseSortableFilterOptions[User]) -> List[str]:
+	async def match_users_in_group_by_sorted_async(self, group_id: str, filter: BaseSortableFilterOptions[User]) -> list[str]:
 		def do_decode(raw_result):
 			return [x1 for x1 in raw_result]
 		payload = {
@@ -1001,7 +1001,7 @@ class UserApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def match_users_in_group_by_sorted_blocking(self, group_id: str, filter: BaseSortableFilterOptions[User]) -> List[str]:
+	def match_users_in_group_by_sorted_blocking(self, group_id: str, filter: BaseSortableFilterOptions[User]) -> list[str]:
 		payload = {
 			"groupId": group_id,
 			"filter": filter.__serialize__(),
@@ -1456,7 +1456,112 @@ class UserApi:
 			return_value = User._deserialize(result_info.success)
 			return return_value
 
-	async def subscribe_to_events_async(self, events: List[SubscriptionEventType], filter: FilterOptions[User], subscription_config: Optional[EntitySubscriptionConfiguration] = None) -> EntitySubscription[User]:
+	async def set_user_inherits_permissions_async(self, user_id: str, group_id: str, value: bool) -> str:
+		def do_decode(raw_result):
+			return raw_result
+		payload = {
+			"userId": user_id,
+			"groupId": group_id,
+			"value": value,
+		}
+		return await execute_async_method_job(
+			self.cardinal_sdk._executor,
+			True,
+			do_decode,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.UserApi.setUserInheritsPermissionsAsync,
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+
+	def set_user_inherits_permissions_blocking(self, user_id: str, group_id: str, value: bool) -> str:
+		payload = {
+			"userId": user_id,
+			"groupId": group_id,
+			"value": value,
+		}
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.UserApi.setUserInheritsPermissionsBlocking(
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
+		if result_info.failure is not None:
+			raise interpret_kt_error(result_info.failure)
+		else:
+			return_value = result_info.success
+			return return_value
+
+	async def set_login_identifiers_async(self, user_id: str, group_id: str, identifier: LoginIdentifier, replace_existing: bool) -> bool:
+		def do_decode(raw_result):
+			return raw_result
+		payload = {
+			"userId": user_id,
+			"groupId": group_id,
+			"identifier": identifier.__serialize__(),
+			"replaceExisting": replace_existing,
+		}
+		return await execute_async_method_job(
+			self.cardinal_sdk._executor,
+			True,
+			do_decode,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.UserApi.setLoginIdentifiersAsync,
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+
+	def set_login_identifiers_blocking(self, user_id: str, group_id: str, identifier: LoginIdentifier, replace_existing: bool) -> bool:
+		payload = {
+			"userId": user_id,
+			"groupId": group_id,
+			"identifier": identifier.__serialize__(),
+			"replaceExisting": replace_existing,
+		}
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.UserApi.setLoginIdentifiersBlocking(
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
+		if result_info.failure is not None:
+			raise interpret_kt_error(result_info.failure)
+		else:
+			return_value = result_info.success
+			return return_value
+
+	async def set_external_jwt_auth_by_identifiers_for_current_user_async(self, external_jwt_config_id: str, external_authentication_token: str) -> bool:
+		def do_decode(raw_result):
+			return raw_result
+		payload = {
+			"externalJwtConfigId": external_jwt_config_id,
+			"externalAuthenticationToken": external_authentication_token,
+		}
+		return await execute_async_method_job(
+			self.cardinal_sdk._executor,
+			True,
+			do_decode,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.UserApi.setExternalJwtAuthByIdentifiersForCurrentUserAsync,
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+
+	def set_external_jwt_auth_by_identifiers_for_current_user_blocking(self, external_jwt_config_id: str, external_authentication_token: str) -> bool:
+		payload = {
+			"externalJwtConfigId": external_jwt_config_id,
+			"externalAuthenticationToken": external_authentication_token,
+		}
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.UserApi.setExternalJwtAuthByIdentifiersForCurrentUserBlocking(
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
+		if result_info.failure is not None:
+			raise interpret_kt_error(result_info.failure)
+		else:
+			return_value = result_info.success
+			return return_value
+
+	async def subscribe_to_events_async(self, events: set[SubscriptionEventType], filter: FilterOptions[User], subscription_config: Optional[EntitySubscriptionConfiguration] = None) -> EntitySubscription[User]:
 		def do_decode(raw_result):
 			return EntitySubscription[User](
 				producer = raw_result,
@@ -1477,7 +1582,7 @@ class UserApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def subscribe_to_events_blocking(self, events: List[SubscriptionEventType], filter: FilterOptions[User], subscription_config: Optional[EntitySubscriptionConfiguration] = None) -> EntitySubscription[User]:
+	def subscribe_to_events_blocking(self, events: set[SubscriptionEventType], filter: FilterOptions[User], subscription_config: Optional[EntitySubscriptionConfiguration] = None) -> EntitySubscription[User]:
 		payload = {
 			"events": [x0.__serialize__() for x0 in events],
 			"filter": filter.__serialize__(),

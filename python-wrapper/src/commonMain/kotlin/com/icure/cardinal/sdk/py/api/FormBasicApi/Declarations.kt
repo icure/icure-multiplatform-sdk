@@ -788,6 +788,76 @@ public fun setTemplateAttachmentAsync(
 }.failureToPyStringAsyncCallback(resultCallback)
 
 @Serializable
+private class CreateFormParams(
+	public val entity: EncryptedForm,
+)
+
+@OptIn(InternalIcureApi::class)
+public fun createFormBlocking(sdk: CardinalBaseApis, params: String): String = kotlin.runCatching {
+	val decodedParams = fullLanguageInteropJson.decodeFromString<CreateFormParams>(params)
+	runBlocking {
+		sdk.form.createForm(
+			decodedParams.entity,
+		)
+	}
+}.toPyString(EncryptedForm.serializer())
+
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
+public fun createFormAsync(
+	sdk: CardinalBaseApis,
+	params: String,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): COpaquePointer? = kotlin.runCatching {
+	val decodedParams = fullLanguageInteropJson.decodeFromString<CreateFormParams>(params)
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.form.createForm(
+				decodedParams.entity,
+			)
+		}.toPyStringAsyncCallback(EncryptedForm.serializer(), resultCallback)
+	}
+}.failureToPyStringAsyncCallback(resultCallback)
+
+@Serializable
+private class CreateFormsParams(
+	public val entities: List<EncryptedForm>,
+)
+
+@OptIn(InternalIcureApi::class)
+public fun createFormsBlocking(sdk: CardinalBaseApis, params: String): String = kotlin.runCatching {
+	val decodedParams = fullLanguageInteropJson.decodeFromString<CreateFormsParams>(params)
+	runBlocking {
+		sdk.form.createForms(
+			decodedParams.entities,
+		)
+	}
+}.toPyString(ListSerializer(EncryptedForm.serializer()))
+
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
+public fun createFormsAsync(
+	sdk: CardinalBaseApis,
+	params: String,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): COpaquePointer? = kotlin.runCatching {
+	val decodedParams = fullLanguageInteropJson.decodeFromString<CreateFormsParams>(params)
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.form.createForms(
+				decodedParams.entities,
+			)
+		}.toPyStringAsyncCallback(ListSerializer(EncryptedForm.serializer()), resultCallback)
+	}
+}.failureToPyStringAsyncCallback(resultCallback)
+
+@Serializable
 private class ModifyFormParams(
 	public val entity: EncryptedForm,
 )

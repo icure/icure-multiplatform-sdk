@@ -5,7 +5,7 @@ from cardinal_sdk.kotlin_types import symbols
 from cardinal_sdk.model.CallResult import create_result_from_json, interpret_kt_error
 from ctypes import cast, c_char_p
 from cardinal_sdk.model import IndexingInfo, ReplicationInfo, IdWithRev, ReplicatorDocument
-from typing import Optional, List
+from typing import Optional
 
 
 class SystemApi:
@@ -161,7 +161,7 @@ class SystemApi:
 			return_value = result_info.success
 			return return_value
 
-	async def resolve_patients_conflicts_async(self, limit: Optional[int] = None) -> List[IdWithRev]:
+	async def resolve_patients_conflicts_async(self, limit: Optional[int] = None) -> list[IdWithRev]:
 		def do_decode(raw_result):
 			return [IdWithRev._deserialize(x1) for x1 in raw_result]
 		payload = {
@@ -176,7 +176,7 @@ class SystemApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def resolve_patients_conflicts_blocking(self, limit: Optional[int] = None) -> List[IdWithRev]:
+	def resolve_patients_conflicts_blocking(self, limit: Optional[int] = None) -> list[IdWithRev]:
 		payload = {
 			"limit": limit,
 		}
@@ -192,7 +192,7 @@ class SystemApi:
 			return_value = [IdWithRev._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
-	async def resolve_contacts_conflicts_async(self, limit: Optional[int] = None) -> List[IdWithRev]:
+	async def resolve_contacts_conflicts_async(self, limit: Optional[int] = None) -> list[IdWithRev]:
 		def do_decode(raw_result):
 			return [IdWithRev._deserialize(x1) for x1 in raw_result]
 		payload = {
@@ -207,7 +207,7 @@ class SystemApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def resolve_contacts_conflicts_blocking(self, limit: Optional[int] = None) -> List[IdWithRev]:
+	def resolve_contacts_conflicts_blocking(self, limit: Optional[int] = None) -> list[IdWithRev]:
 		payload = {
 			"limit": limit,
 		}
@@ -223,7 +223,7 @@ class SystemApi:
 			return_value = [IdWithRev._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
-	async def resolve_forms_conflicts_async(self, limit: Optional[int] = None) -> List[IdWithRev]:
+	async def resolve_forms_conflicts_async(self, limit: Optional[int] = None) -> list[IdWithRev]:
 		def do_decode(raw_result):
 			return [IdWithRev._deserialize(x1) for x1 in raw_result]
 		payload = {
@@ -238,7 +238,7 @@ class SystemApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def resolve_forms_conflicts_blocking(self, limit: Optional[int] = None) -> List[IdWithRev]:
+	def resolve_forms_conflicts_blocking(self, limit: Optional[int] = None) -> list[IdWithRev]:
 		payload = {
 			"limit": limit,
 		}
@@ -254,7 +254,7 @@ class SystemApi:
 			return_value = [IdWithRev._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
-	async def resolve_health_elements_conflicts_async(self, limit: Optional[int] = None) -> List[IdWithRev]:
+	async def resolve_health_elements_conflicts_async(self, limit: Optional[int] = None) -> list[IdWithRev]:
 		def do_decode(raw_result):
 			return [IdWithRev._deserialize(x1) for x1 in raw_result]
 		payload = {
@@ -269,7 +269,7 @@ class SystemApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def resolve_health_elements_conflicts_blocking(self, limit: Optional[int] = None) -> List[IdWithRev]:
+	def resolve_health_elements_conflicts_blocking(self, limit: Optional[int] = None) -> list[IdWithRev]:
 		payload = {
 			"limit": limit,
 		}
@@ -285,7 +285,7 @@ class SystemApi:
 			return_value = [IdWithRev._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
-	async def resolve_invoices_conflicts_async(self, limit: Optional[int] = None) -> List[IdWithRev]:
+	async def resolve_invoices_conflicts_async(self, limit: Optional[int] = None) -> list[IdWithRev]:
 		def do_decode(raw_result):
 			return [IdWithRev._deserialize(x1) for x1 in raw_result]
 		payload = {
@@ -300,7 +300,7 @@ class SystemApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def resolve_invoices_conflicts_blocking(self, limit: Optional[int] = None) -> List[IdWithRev]:
+	def resolve_invoices_conflicts_blocking(self, limit: Optional[int] = None) -> list[IdWithRev]:
 		payload = {
 			"limit": limit,
 		}
@@ -316,7 +316,7 @@ class SystemApi:
 			return_value = [IdWithRev._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
-	async def resolve_messages_conflicts_async(self, limit: Optional[int] = None) -> List[IdWithRev]:
+	async def resolve_messages_conflicts_async(self, limit: Optional[int] = None) -> list[IdWithRev]:
 		def do_decode(raw_result):
 			return [IdWithRev._deserialize(x1) for x1 in raw_result]
 		payload = {
@@ -331,7 +331,7 @@ class SystemApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def resolve_messages_conflicts_blocking(self, limit: Optional[int] = None) -> List[IdWithRev]:
+	def resolve_messages_conflicts_blocking(self, limit: Optional[int] = None) -> list[IdWithRev]:
 		payload = {
 			"limit": limit,
 		}
@@ -347,7 +347,7 @@ class SystemApi:
 			return_value = [IdWithRev._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
-	async def resolve_documents_conflicts_async(self, ids: Optional[str] = None, limit: Optional[int] = None) -> List[IdWithRev]:
+	async def resolve_documents_conflicts_async(self, ids: Optional[str] = None, limit: Optional[int] = None) -> list[IdWithRev]:
 		def do_decode(raw_result):
 			return [IdWithRev._deserialize(x1) for x1 in raw_result]
 		payload = {
@@ -363,7 +363,7 @@ class SystemApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def resolve_documents_conflicts_blocking(self, ids: Optional[str] = None, limit: Optional[int] = None) -> List[IdWithRev]:
+	def resolve_documents_conflicts_blocking(self, ids: Optional[str] = None, limit: Optional[int] = None) -> list[IdWithRev]:
 		payload = {
 			"ids": ids,
 			"limit": limit,

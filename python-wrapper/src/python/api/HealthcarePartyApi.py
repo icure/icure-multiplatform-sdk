@@ -1,11 +1,11 @@
 # auto-generated file
 import json
-from cardinal_sdk.model import HealthcareParty, PublicKey, DataOwnerRegistrationSuccess, DocIdentifier, IdWithMandatoryRev, SubscriptionEventType, EntitySubscriptionConfiguration
 from cardinal_sdk.async_utils import execute_async_method_job
 from cardinal_sdk.kotlin_types import symbols
+from typing import Optional
+from cardinal_sdk.model import HealthcareParty, PublicKey, DataOwnerRegistrationSuccess, DocIdentifier, StoredDocumentIdentifier, SubscriptionEventType, EntitySubscriptionConfiguration
 from cardinal_sdk.model.CallResult import create_result_from_json, interpret_kt_error
 from ctypes import cast, c_char_p
-from typing import List, Optional
 from cardinal_sdk.filters.FilterOptions import BaseFilterOptions, BaseSortableFilterOptions, FilterOptions
 from cardinal_sdk.pagination.PaginatedListIterator import PaginatedListIterator
 from cardinal_sdk.subscription.EntitySubscription import EntitySubscription
@@ -16,9 +16,9 @@ class HealthcarePartyApi:
 	def __init__(self, cardinal_sdk):
 		self.cardinal_sdk = cardinal_sdk
 
-	async def get_healthcare_party_async(self, healthcare_party_id: str) -> HealthcareParty:
+	async def get_healthcare_party_async(self, healthcare_party_id: str) -> Optional[HealthcareParty]:
 		def do_decode(raw_result):
-			return HealthcareParty._deserialize(raw_result)
+			return HealthcareParty._deserialize(raw_result) if raw_result is not None else None
 		payload = {
 			"healthcarePartyId": healthcare_party_id,
 		}
@@ -31,7 +31,7 @@ class HealthcarePartyApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def get_healthcare_party_blocking(self, healthcare_party_id: str) -> HealthcareParty:
+	def get_healthcare_party_blocking(self, healthcare_party_id: str) -> Optional[HealthcareParty]:
 		payload = {
 			"healthcarePartyId": healthcare_party_id,
 		}
@@ -44,7 +44,7 @@ class HealthcarePartyApi:
 		if result_info.failure is not None:
 			raise interpret_kt_error(result_info.failure)
 		else:
-			return_value = HealthcareParty._deserialize(result_info.success)
+			return_value = HealthcareParty._deserialize(result_info.success) if result_info.success is not None else None
 			return return_value
 
 	async def create_healthcare_party_async(self, p: HealthcareParty) -> HealthcareParty:
@@ -167,7 +167,7 @@ class HealthcarePartyApi:
 			return_value = HealthcareParty._deserialize(result_info.success)
 			return return_value
 
-	async def list_healthcare_parties_by_name_async(self, name: str) -> List[HealthcareParty]:
+	async def list_healthcare_parties_by_name_async(self, name: str) -> list[HealthcareParty]:
 		def do_decode(raw_result):
 			return [HealthcareParty._deserialize(x1) for x1 in raw_result]
 		payload = {
@@ -182,7 +182,7 @@ class HealthcarePartyApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def list_healthcare_parties_by_name_blocking(self, name: str) -> List[HealthcareParty]:
+	def list_healthcare_parties_by_name_blocking(self, name: str) -> list[HealthcareParty]:
 		payload = {
 			"name": name,
 		}
@@ -198,7 +198,7 @@ class HealthcarePartyApi:
 			return_value = [HealthcareParty._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
-	async def get_healthcare_parties_async(self, healthcare_party_ids: List[str]) -> List[HealthcareParty]:
+	async def get_healthcare_parties_async(self, healthcare_party_ids: list[str]) -> list[HealthcareParty]:
 		def do_decode(raw_result):
 			return [HealthcareParty._deserialize(x1) for x1 in raw_result]
 		payload = {
@@ -213,7 +213,7 @@ class HealthcarePartyApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def get_healthcare_parties_blocking(self, healthcare_party_ids: List[str]) -> List[HealthcareParty]:
+	def get_healthcare_parties_blocking(self, healthcare_party_ids: list[str]) -> list[HealthcareParty]:
 		payload = {
 			"healthcarePartyIds": [x0 for x0 in healthcare_party_ids],
 		}
@@ -229,7 +229,7 @@ class HealthcarePartyApi:
 			return_value = [HealthcareParty._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
-	async def list_healthcare_parties_by_parent_id_async(self, parent_id: str) -> List[HealthcareParty]:
+	async def list_healthcare_parties_by_parent_id_async(self, parent_id: str) -> list[HealthcareParty]:
 		def do_decode(raw_result):
 			return [HealthcareParty._deserialize(x1) for x1 in raw_result]
 		payload = {
@@ -244,7 +244,7 @@ class HealthcarePartyApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def list_healthcare_parties_by_parent_id_blocking(self, parent_id: str) -> List[HealthcareParty]:
+	def list_healthcare_parties_by_parent_id_blocking(self, parent_id: str) -> list[HealthcareParty]:
 		payload = {
 			"parentId": parent_id,
 		}
@@ -322,7 +322,7 @@ class HealthcarePartyApi:
 			return_value = HealthcareParty._deserialize(result_info.success)
 			return return_value
 
-	async def match_healthcare_parties_by_async(self, filter: BaseFilterOptions[HealthcareParty]) -> List[str]:
+	async def match_healthcare_parties_by_async(self, filter: BaseFilterOptions[HealthcareParty]) -> list[str]:
 		def do_decode(raw_result):
 			return [x1 for x1 in raw_result]
 		payload = {
@@ -337,7 +337,7 @@ class HealthcarePartyApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def match_healthcare_parties_by_blocking(self, filter: BaseFilterOptions[HealthcareParty]) -> List[str]:
+	def match_healthcare_parties_by_blocking(self, filter: BaseFilterOptions[HealthcareParty]) -> list[str]:
 		payload = {
 			"filter": filter.__serialize__(),
 		}
@@ -395,7 +395,7 @@ class HealthcarePartyApi:
 				executor = self.cardinal_sdk._executor
 			)
 
-	async def match_healthcare_parties_by_sorted_async(self, filter: BaseSortableFilterOptions[HealthcareParty]) -> List[str]:
+	async def match_healthcare_parties_by_sorted_async(self, filter: BaseSortableFilterOptions[HealthcareParty]) -> list[str]:
 		def do_decode(raw_result):
 			return [x1 for x1 in raw_result]
 		payload = {
@@ -410,7 +410,7 @@ class HealthcarePartyApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def match_healthcare_parties_by_sorted_blocking(self, filter: BaseSortableFilterOptions[HealthcareParty]) -> List[str]:
+	def match_healthcare_parties_by_sorted_blocking(self, filter: BaseSortableFilterOptions[HealthcareParty]) -> list[str]:
 		payload = {
 			"filter": filter.__serialize__(),
 		}
@@ -468,7 +468,7 @@ class HealthcarePartyApi:
 				executor = self.cardinal_sdk._executor
 			)
 
-	async def get_healthcare_parties_in_group_async(self, group_id: str, healthcare_party_ids: Optional[List[str]] = None) -> List[HealthcareParty]:
+	async def get_healthcare_parties_in_group_async(self, group_id: str, healthcare_party_ids: Optional[list[str]] = None) -> list[HealthcareParty]:
 		def do_decode(raw_result):
 			return [HealthcareParty._deserialize(x1) for x1 in raw_result]
 		payload = {
@@ -484,7 +484,7 @@ class HealthcarePartyApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def get_healthcare_parties_in_group_blocking(self, group_id: str, healthcare_party_ids: Optional[List[str]] = None) -> List[HealthcareParty]:
+	def get_healthcare_parties_in_group_blocking(self, group_id: str, healthcare_party_ids: Optional[list[str]] = None) -> list[HealthcareParty]:
 		payload = {
 			"groupId": group_id,
 			"healthcarePartyIds": [x0 for x0 in healthcare_party_ids] if healthcare_party_ids is not None else None,
@@ -573,7 +573,7 @@ class HealthcarePartyApi:
 			return_value = DocIdentifier._deserialize(result_info.success)
 			return return_value
 
-	async def delete_healthcare_parties_by_ids_async(self, entity_ids: List[IdWithMandatoryRev]) -> List[DocIdentifier]:
+	async def delete_healthcare_parties_by_ids_async(self, entity_ids: list[StoredDocumentIdentifier]) -> list[DocIdentifier]:
 		def do_decode(raw_result):
 			return [DocIdentifier._deserialize(x1) for x1 in raw_result]
 		payload = {
@@ -588,7 +588,7 @@ class HealthcarePartyApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def delete_healthcare_parties_by_ids_blocking(self, entity_ids: List[IdWithMandatoryRev]) -> List[DocIdentifier]:
+	def delete_healthcare_parties_by_ids_blocking(self, entity_ids: list[StoredDocumentIdentifier]) -> list[DocIdentifier]:
 		payload = {
 			"entityIds": [x0.__serialize__() for x0 in entity_ids],
 		}
@@ -639,7 +639,7 @@ class HealthcarePartyApi:
 			return_value = DocIdentifier._deserialize(result_info.success)
 			return return_value
 
-	async def delete_healthcare_parties_in_group_by_ids_async(self, group_id: str, entity_ids: List[IdWithMandatoryRev]) -> List[DocIdentifier]:
+	async def delete_healthcare_parties_in_group_by_ids_async(self, group_id: str, entity_ids: list[StoredDocumentIdentifier]) -> list[DocIdentifier]:
 		def do_decode(raw_result):
 			return [DocIdentifier._deserialize(x1) for x1 in raw_result]
 		payload = {
@@ -655,7 +655,7 @@ class HealthcarePartyApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def delete_healthcare_parties_in_group_by_ids_blocking(self, group_id: str, entity_ids: List[IdWithMandatoryRev]) -> List[DocIdentifier]:
+	def delete_healthcare_parties_in_group_by_ids_blocking(self, group_id: str, entity_ids: list[StoredDocumentIdentifier]) -> list[DocIdentifier]:
 		payload = {
 			"groupId": group_id,
 			"entityIds": [x0.__serialize__() for x0 in entity_ids],
@@ -766,7 +766,7 @@ class HealthcarePartyApi:
 			return_value = DocIdentifier._deserialize(result_info.success)
 			return return_value
 
-	async def delete_healthcare_parties_async(self, healthcare_parties: List[HealthcareParty]) -> List[DocIdentifier]:
+	async def delete_healthcare_parties_async(self, healthcare_parties: list[HealthcareParty]) -> list[DocIdentifier]:
 		def do_decode(raw_result):
 			return [DocIdentifier._deserialize(x1) for x1 in raw_result]
 		payload = {
@@ -781,7 +781,7 @@ class HealthcarePartyApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def delete_healthcare_parties_blocking(self, healthcare_parties: List[HealthcareParty]) -> List[DocIdentifier]:
+	def delete_healthcare_parties_blocking(self, healthcare_parties: list[HealthcareParty]) -> list[DocIdentifier]:
 		payload = {
 			"healthcareParties": [x0.__serialize__() for x0 in healthcare_parties],
 		}
@@ -889,7 +889,7 @@ class HealthcarePartyApi:
 			return_value = DocIdentifier._deserialize(result_info.success)
 			return return_value
 
-	async def delete_healthcare_parties_in_group_async(self, group_id: str, healthcare_parties: List[HealthcareParty]) -> List[DocIdentifier]:
+	async def delete_healthcare_parties_in_group_async(self, group_id: str, healthcare_parties: list[HealthcareParty]) -> list[DocIdentifier]:
 		def do_decode(raw_result):
 			return [DocIdentifier._deserialize(x1) for x1 in raw_result]
 		payload = {
@@ -905,7 +905,7 @@ class HealthcarePartyApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def delete_healthcare_parties_in_group_blocking(self, group_id: str, healthcare_parties: List[HealthcareParty]) -> List[DocIdentifier]:
+	def delete_healthcare_parties_in_group_blocking(self, group_id: str, healthcare_parties: list[HealthcareParty]) -> list[DocIdentifier]:
 		payload = {
 			"groupId": group_id,
 			"healthcareParties": [x0.__serialize__() for x0 in healthcare_parties],
@@ -922,7 +922,7 @@ class HealthcarePartyApi:
 			return_value = [DocIdentifier._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
-	async def subscribe_to_events_async(self, events: List[SubscriptionEventType], filter: FilterOptions[HealthcareParty], subscription_config: Optional[EntitySubscriptionConfiguration] = None) -> EntitySubscription[HealthcareParty]:
+	async def subscribe_to_events_async(self, events: set[SubscriptionEventType], filter: FilterOptions[HealthcareParty], subscription_config: Optional[EntitySubscriptionConfiguration] = None) -> EntitySubscription[HealthcareParty]:
 		def do_decode(raw_result):
 			return EntitySubscription[HealthcareParty](
 				producer = raw_result,
@@ -943,7 +943,7 @@ class HealthcarePartyApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def subscribe_to_events_blocking(self, events: List[SubscriptionEventType], filter: FilterOptions[HealthcareParty], subscription_config: Optional[EntitySubscriptionConfiguration] = None) -> EntitySubscription[HealthcareParty]:
+	def subscribe_to_events_blocking(self, events: set[SubscriptionEventType], filter: FilterOptions[HealthcareParty], subscription_config: Optional[EntitySubscriptionConfiguration] = None) -> EntitySubscription[HealthcareParty]:
 		payload = {
 			"events": [x0.__serialize__() for x0 in events],
 			"filter": filter.__serialize__(),

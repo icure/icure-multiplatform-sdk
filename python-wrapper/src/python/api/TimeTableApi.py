@@ -1,11 +1,11 @@
 # auto-generated file
 import json
-from cardinal_sdk.model import DocIdentifier, IdWithMandatoryRev, TimeTable
 from cardinal_sdk.async_utils import execute_async_method_job
 from cardinal_sdk.kotlin_types import symbols
+from cardinal_sdk.model import DocIdentifier, StoredDocumentIdentifier, TimeTable
 from cardinal_sdk.model.CallResult import create_result_from_json, interpret_kt_error
 from ctypes import cast, c_char_p
-from typing import List
+from typing import Optional
 from cardinal_sdk.filters.FilterOptions import BaseFilterOptions, BaseSortableFilterOptions
 from cardinal_sdk.pagination.PaginatedListIterator import PaginatedListIterator
 
@@ -48,7 +48,7 @@ class TimeTableApi:
 			return_value = DocIdentifier._deserialize(result_info.success)
 			return return_value
 
-	async def delete_time_tables_by_ids_async(self, entity_ids: List[IdWithMandatoryRev]) -> List[DocIdentifier]:
+	async def delete_time_tables_by_ids_async(self, entity_ids: list[StoredDocumentIdentifier]) -> list[DocIdentifier]:
 		def do_decode(raw_result):
 			return [DocIdentifier._deserialize(x1) for x1 in raw_result]
 		payload = {
@@ -63,7 +63,7 @@ class TimeTableApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def delete_time_tables_by_ids_blocking(self, entity_ids: List[IdWithMandatoryRev]) -> List[DocIdentifier]:
+	def delete_time_tables_by_ids_blocking(self, entity_ids: list[StoredDocumentIdentifier]) -> list[DocIdentifier]:
 		payload = {
 			"entityIds": [x0.__serialize__() for x0 in entity_ids],
 		}
@@ -140,7 +140,7 @@ class TimeTableApi:
 			return_value = DocIdentifier._deserialize(result_info.success)
 			return return_value
 
-	async def delete_time_tables_async(self, time_tables: List[TimeTable]) -> List[DocIdentifier]:
+	async def delete_time_tables_async(self, time_tables: list[TimeTable]) -> list[DocIdentifier]:
 		def do_decode(raw_result):
 			return [DocIdentifier._deserialize(x1) for x1 in raw_result]
 		payload = {
@@ -155,7 +155,7 @@ class TimeTableApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def delete_time_tables_blocking(self, time_tables: List[TimeTable]) -> List[DocIdentifier]:
+	def delete_time_tables_blocking(self, time_tables: list[TimeTable]) -> list[DocIdentifier]:
 		payload = {
 			"timeTables": [x0.__serialize__() for x0 in time_tables],
 		}
@@ -294,9 +294,9 @@ class TimeTableApi:
 			return_value = TimeTable._deserialize(result_info.success)
 			return return_value
 
-	async def get_time_table_async(self, entity_id: str) -> TimeTable:
+	async def get_time_table_async(self, entity_id: str) -> Optional[TimeTable]:
 		def do_decode(raw_result):
-			return TimeTable._deserialize(raw_result)
+			return TimeTable._deserialize(raw_result) if raw_result is not None else None
 		payload = {
 			"entityId": entity_id,
 		}
@@ -309,7 +309,7 @@ class TimeTableApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def get_time_table_blocking(self, entity_id: str) -> TimeTable:
+	def get_time_table_blocking(self, entity_id: str) -> Optional[TimeTable]:
 		payload = {
 			"entityId": entity_id,
 		}
@@ -322,10 +322,10 @@ class TimeTableApi:
 		if result_info.failure is not None:
 			raise interpret_kt_error(result_info.failure)
 		else:
-			return_value = TimeTable._deserialize(result_info.success)
+			return_value = TimeTable._deserialize(result_info.success) if result_info.success is not None else None
 			return return_value
 
-	async def get_time_tables_async(self, time_table_ids: List[str]) -> List[TimeTable]:
+	async def get_time_tables_async(self, time_table_ids: list[str]) -> list[TimeTable]:
 		def do_decode(raw_result):
 			return [TimeTable._deserialize(x1) for x1 in raw_result]
 		payload = {
@@ -340,7 +340,7 @@ class TimeTableApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def get_time_tables_blocking(self, time_table_ids: List[str]) -> List[TimeTable]:
+	def get_time_tables_blocking(self, time_table_ids: list[str]) -> list[TimeTable]:
 		payload = {
 			"timeTableIds": [x0 for x0 in time_table_ids],
 		}
@@ -471,7 +471,7 @@ class TimeTableApi:
 			return_value = TimeTable._deserialize(result_info.success)
 			return return_value
 
-	async def match_time_tables_by_async(self, filter: BaseFilterOptions[TimeTable]) -> List[str]:
+	async def match_time_tables_by_async(self, filter: BaseFilterOptions[TimeTable]) -> list[str]:
 		def do_decode(raw_result):
 			return [x1 for x1 in raw_result]
 		payload = {
@@ -486,7 +486,7 @@ class TimeTableApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def match_time_tables_by_blocking(self, filter: BaseFilterOptions[TimeTable]) -> List[str]:
+	def match_time_tables_by_blocking(self, filter: BaseFilterOptions[TimeTable]) -> list[str]:
 		payload = {
 			"filter": filter.__serialize__(),
 		}
@@ -502,7 +502,7 @@ class TimeTableApi:
 			return_value = [x1 for x1 in result_info.success]
 			return return_value
 
-	async def match_time_tables_by_sorted_async(self, filter: BaseSortableFilterOptions[TimeTable]) -> List[str]:
+	async def match_time_tables_by_sorted_async(self, filter: BaseSortableFilterOptions[TimeTable]) -> list[str]:
 		def do_decode(raw_result):
 			return [x1 for x1 in raw_result]
 		payload = {
@@ -517,7 +517,7 @@ class TimeTableApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def match_time_tables_by_sorted_blocking(self, filter: BaseSortableFilterOptions[TimeTable]) -> List[str]:
+	def match_time_tables_by_sorted_blocking(self, filter: BaseSortableFilterOptions[TimeTable]) -> list[str]:
 		payload = {
 			"filter": filter.__serialize__(),
 		}

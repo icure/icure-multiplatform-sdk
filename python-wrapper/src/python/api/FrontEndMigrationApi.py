@@ -1,11 +1,11 @@
 # auto-generated file
 import json
-from cardinal_sdk.model import FrontEndMigration, DocIdentifier
 from cardinal_sdk.async_utils import execute_async_method_job
 from cardinal_sdk.kotlin_types import symbols
+from typing import Optional
+from cardinal_sdk.model import FrontEndMigration, DocIdentifier
 from cardinal_sdk.model.CallResult import create_result_from_json, interpret_kt_error
 from ctypes import cast, c_char_p
-from typing import List
 
 
 class FrontEndMigrationApi:
@@ -13,9 +13,9 @@ class FrontEndMigrationApi:
 	def __init__(self, cardinal_sdk):
 		self.cardinal_sdk = cardinal_sdk
 
-	async def get_front_end_migration_async(self, front_end_migration_id: str) -> FrontEndMigration:
+	async def get_front_end_migration_async(self, front_end_migration_id: str) -> Optional[FrontEndMigration]:
 		def do_decode(raw_result):
-			return FrontEndMigration._deserialize(raw_result)
+			return FrontEndMigration._deserialize(raw_result) if raw_result is not None else None
 		payload = {
 			"frontEndMigrationId": front_end_migration_id,
 		}
@@ -28,7 +28,7 @@ class FrontEndMigrationApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def get_front_end_migration_blocking(self, front_end_migration_id: str) -> FrontEndMigration:
+	def get_front_end_migration_blocking(self, front_end_migration_id: str) -> Optional[FrontEndMigration]:
 		payload = {
 			"frontEndMigrationId": front_end_migration_id,
 		}
@@ -41,7 +41,7 @@ class FrontEndMigrationApi:
 		if result_info.failure is not None:
 			raise interpret_kt_error(result_info.failure)
 		else:
-			return_value = FrontEndMigration._deserialize(result_info.success)
+			return_value = FrontEndMigration._deserialize(result_info.success) if result_info.success is not None else None
 			return return_value
 
 	async def create_front_end_migration_async(self, front_end_migration: FrontEndMigration) -> FrontEndMigration:
@@ -75,7 +75,7 @@ class FrontEndMigrationApi:
 			return_value = FrontEndMigration._deserialize(result_info.success)
 			return return_value
 
-	async def get_front_end_migrations_async(self) -> List[FrontEndMigration]:
+	async def get_front_end_migrations_async(self) -> list[FrontEndMigration]:
 		def do_decode(raw_result):
 			return [FrontEndMigration._deserialize(x1) for x1 in raw_result]
 		return await execute_async_method_job(
@@ -86,7 +86,7 @@ class FrontEndMigrationApi:
 			self.cardinal_sdk._native,
 		)
 
-	def get_front_end_migrations_blocking(self) -> List[FrontEndMigration]:
+	def get_front_end_migrations_blocking(self) -> list[FrontEndMigration]:
 		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FrontEndMigrationApi.getFrontEndMigrationsBlocking(
 			self.cardinal_sdk._native,
 		)
@@ -129,7 +129,7 @@ class FrontEndMigrationApi:
 			return_value = DocIdentifier._deserialize(result_info.success)
 			return return_value
 
-	async def get_front_end_migration_by_name_async(self, front_end_migration_name: str) -> List[FrontEndMigration]:
+	async def get_front_end_migration_by_name_async(self, front_end_migration_name: str) -> list[FrontEndMigration]:
 		def do_decode(raw_result):
 			return [FrontEndMigration._deserialize(x1) for x1 in raw_result]
 		payload = {
@@ -144,7 +144,7 @@ class FrontEndMigrationApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def get_front_end_migration_by_name_blocking(self, front_end_migration_name: str) -> List[FrontEndMigration]:
+	def get_front_end_migration_by_name_blocking(self, front_end_migration_name: str) -> list[FrontEndMigration]:
 		payload = {
 			"frontEndMigrationName": front_end_migration_name,
 		}

@@ -1,11 +1,11 @@
 # auto-generated file
 import json
-from cardinal_sdk.model import Group, DatabaseInitialisation, GroupType, RegistrationInformation, PermissionType, RegistrationSuccess, Operation, UserType, RoleConfiguration, GroupDeletionReport, ListOfProperties, DesignDocument, IdWithRev, GroupDatabasesInfo, ReplicationInfo, DocIdentifier
 from cardinal_sdk.async_utils import execute_async_method_job
 from cardinal_sdk.kotlin_types import symbols
-from typing import List, Optional, Dict
+from cardinal_sdk.model import Group, DatabaseInitialisation, GroupType, RegistrationInformation, PermissionType, RegistrationSuccess, Operation, UserType, RoleConfiguration, GroupDeletionReport, ListOfProperties, DesignDocument, IdWithRev, GroupDatabasesInfo, ReplicationInfo, DocIdentifier, ExternalJwtConfig
 from cardinal_sdk.model.CallResult import create_result_from_json, interpret_kt_error
 from ctypes import cast, c_char_p
+from typing import Optional
 
 
 class GroupApi:
@@ -13,7 +13,7 @@ class GroupApi:
 	def __init__(self, cardinal_sdk):
 		self.cardinal_sdk = cardinal_sdk
 
-	async def list_groups_async(self) -> List[Group]:
+	async def list_groups_async(self) -> list[Group]:
 		def do_decode(raw_result):
 			return [Group._deserialize(x1) for x1 in raw_result]
 		return await execute_async_method_job(
@@ -24,7 +24,7 @@ class GroupApi:
 			self.cardinal_sdk._native,
 		)
 
-	def list_groups_blocking(self) -> List[Group]:
+	def list_groups_blocking(self) -> list[Group]:
 		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.GroupApi.listGroupsBlocking(
 			self.cardinal_sdk._native,
 		)
@@ -151,7 +151,7 @@ class GroupApi:
 			return_value = RegistrationSuccess._deserialize(result_info.success)
 			return return_value
 
-	async def list_apps_async(self) -> List[Group]:
+	async def list_apps_async(self) -> list[Group]:
 		def do_decode(raw_result):
 			return [Group._deserialize(x1) for x1 in raw_result]
 		return await execute_async_method_job(
@@ -162,7 +162,7 @@ class GroupApi:
 			self.cardinal_sdk._native,
 		)
 
-	def list_apps_blocking(self) -> List[Group]:
+	def list_apps_blocking(self) -> list[Group]:
 		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.GroupApi.listAppsBlocking(
 			self.cardinal_sdk._native,
 		)
@@ -301,7 +301,7 @@ class GroupApi:
 		if result_info.failure is not None:
 			raise interpret_kt_error(result_info.failure)
 
-	async def set_default_roles_async(self, group_id: str, user_type: str, role_ids: List[str]) -> Group:
+	async def set_default_roles_async(self, group_id: str, user_type: str, role_ids: list[str]) -> Group:
 		def do_decode(raw_result):
 			return Group._deserialize(raw_result)
 		payload = {
@@ -318,7 +318,7 @@ class GroupApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def set_default_roles_blocking(self, group_id: str, user_type: str, role_ids: List[str]) -> Group:
+	def set_default_roles_blocking(self, group_id: str, user_type: str, role_ids: list[str]) -> Group:
 		payload = {
 			"groupId": group_id,
 			"userType": user_type,
@@ -336,7 +336,7 @@ class GroupApi:
 			return_value = Group._deserialize(result_info.success)
 			return return_value
 
-	async def get_default_roles_async(self, group_id: str) -> Dict[UserType, List[RoleConfiguration]]:
+	async def get_default_roles_async(self, group_id: str) -> dict[UserType, list[RoleConfiguration]]:
 		def do_decode(raw_result):
 			return dict(map(lambda kv1: (UserType._deserialize(kv1[0]), [RoleConfiguration._deserialize(x2) for x2 in kv1[1]]), raw_result.items()))
 		payload = {
@@ -351,7 +351,7 @@ class GroupApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def get_default_roles_blocking(self, group_id: str) -> Dict[UserType, List[RoleConfiguration]]:
+	def get_default_roles_blocking(self, group_id: str) -> dict[UserType, list[RoleConfiguration]]:
 		payload = {
 			"groupId": group_id,
 		}
@@ -431,7 +431,7 @@ class GroupApi:
 			return_value = Group._deserialize(result_info.success)
 			return return_value
 
-	async def hard_delete_group_async(self, id: str) -> List[GroupDeletionReport]:
+	async def hard_delete_group_async(self, id: str) -> list[GroupDeletionReport]:
 		def do_decode(raw_result):
 			return [GroupDeletionReport._deserialize(x1) for x1 in raw_result]
 		payload = {
@@ -446,7 +446,7 @@ class GroupApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def hard_delete_group_blocking(self, id: str) -> List[GroupDeletionReport]:
+	def hard_delete_group_blocking(self, id: str) -> list[GroupDeletionReport]:
 		payload = {
 			"id": id,
 		}
@@ -528,7 +528,7 @@ class GroupApi:
 			return_value = Group._deserialize(result_info.success)
 			return return_value
 
-	async def init_design_docs_async(self, id: str, warmup: Optional[bool], dry_run: Optional[bool], clazz: Optional[str] = None) -> List[DesignDocument]:
+	async def init_design_docs_async(self, id: str, warmup: Optional[bool], dry_run: Optional[bool], clazz: Optional[str] = None) -> list[DesignDocument]:
 		def do_decode(raw_result):
 			return [DesignDocument._deserialize(x1) for x1 in raw_result]
 		payload = {
@@ -546,7 +546,7 @@ class GroupApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def init_design_docs_blocking(self, id: str, warmup: Optional[bool], dry_run: Optional[bool], clazz: Optional[str] = None) -> List[DesignDocument]:
+	def init_design_docs_blocking(self, id: str, warmup: Optional[bool], dry_run: Optional[bool], clazz: Optional[str] = None) -> list[DesignDocument]:
 		payload = {
 			"id": id,
 			"clazz": clazz,
@@ -565,7 +565,7 @@ class GroupApi:
 			return_value = [DesignDocument._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
-	async def solve_conflicts_async(self, id: str, limit: Optional[int], warmup: Optional[bool]) -> List[IdWithRev]:
+	async def solve_conflicts_async(self, id: str, limit: Optional[int], warmup: Optional[bool]) -> list[IdWithRev]:
 		def do_decode(raw_result):
 			return [IdWithRev._deserialize(x1) for x1 in raw_result]
 		payload = {
@@ -582,7 +582,7 @@ class GroupApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def solve_conflicts_blocking(self, id: str, limit: Optional[int], warmup: Optional[bool]) -> List[IdWithRev]:
+	def solve_conflicts_blocking(self, id: str, limit: Optional[int], warmup: Optional[bool]) -> list[IdWithRev]:
 		payload = {
 			"id": id,
 			"limit": limit,
@@ -600,7 +600,7 @@ class GroupApi:
 			return_value = [IdWithRev._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
-	async def reset_storage_async(self, id: str, databases: List[str], q: Optional[int] = None, n: Optional[int] = None) -> None:
+	async def reset_storage_async(self, id: str, databases: list[str], q: Optional[int] = None, n: Optional[int] = None) -> None:
 		def do_decode(raw_result):
 			return raw_result
 		payload = {
@@ -618,7 +618,7 @@ class GroupApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def reset_storage_blocking(self, id: str, databases: List[str], q: Optional[int] = None, n: Optional[int] = None) -> None:
+	def reset_storage_blocking(self, id: str, databases: list[str], q: Optional[int] = None, n: Optional[int] = None) -> None:
 		payload = {
 			"id": id,
 			"q": q,
@@ -634,7 +634,7 @@ class GroupApi:
 		if result_info.failure is not None:
 			raise interpret_kt_error(result_info.failure)
 
-	async def get_groups_storage_infos_async(self, groups: List[str]) -> List[GroupDatabasesInfo]:
+	async def get_groups_storage_infos_async(self, groups: list[str]) -> list[GroupDatabasesInfo]:
 		def do_decode(raw_result):
 			return [GroupDatabasesInfo._deserialize(x1) for x1 in raw_result]
 		payload = {
@@ -649,7 +649,7 @@ class GroupApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def get_groups_storage_infos_blocking(self, groups: List[str]) -> List[GroupDatabasesInfo]:
+	def get_groups_storage_infos_blocking(self, groups: list[str]) -> list[GroupDatabasesInfo]:
 		payload = {
 			"groups": [x0 for x0 in groups],
 		}
@@ -696,7 +696,7 @@ class GroupApi:
 			return_value = ReplicationInfo._deserialize(result_info.success)
 			return return_value
 
-	async def get_hierarchy_async(self, id: str) -> List[str]:
+	async def get_hierarchy_async(self, id: str) -> list[str]:
 		def do_decode(raw_result):
 			return [x1 for x1 in raw_result]
 		payload = {
@@ -711,7 +711,7 @@ class GroupApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def get_hierarchy_blocking(self, id: str) -> List[str]:
+	def get_hierarchy_blocking(self, id: str) -> list[str]:
 		payload = {
 			"id": id,
 		}
@@ -727,7 +727,7 @@ class GroupApi:
 			return_value = [x1 for x1 in result_info.success]
 			return return_value
 
-	async def list_all_groups_ids_async(self) -> List[DocIdentifier]:
+	async def list_all_groups_ids_async(self) -> list[DocIdentifier]:
 		def do_decode(raw_result):
 			return [DocIdentifier._deserialize(x1) for x1 in raw_result]
 		return await execute_async_method_job(
@@ -738,7 +738,7 @@ class GroupApi:
 			self.cardinal_sdk._native,
 		)
 
-	def list_all_groups_ids_blocking(self) -> List[DocIdentifier]:
+	def list_all_groups_ids_blocking(self) -> list[DocIdentifier]:
 		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.GroupApi.listAllGroupsIdsBlocking(
 			self.cardinal_sdk._native,
 		)
@@ -748,4 +748,109 @@ class GroupApi:
 			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = [DocIdentifier._deserialize(x1) for x1 in result_info.success]
+			return return_value
+
+	async def create_or_update_external_jwt_config_async(self, group_id: str, key: str, config: ExternalJwtConfig) -> Group:
+		def do_decode(raw_result):
+			return Group._deserialize(raw_result)
+		payload = {
+			"groupId": group_id,
+			"key": key,
+			"config": config.__serialize__(),
+		}
+		return await execute_async_method_job(
+			self.cardinal_sdk._executor,
+			True,
+			do_decode,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.GroupApi.createOrUpdateExternalJwtConfigAsync,
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+
+	def create_or_update_external_jwt_config_blocking(self, group_id: str, key: str, config: ExternalJwtConfig) -> Group:
+		payload = {
+			"groupId": group_id,
+			"key": key,
+			"config": config.__serialize__(),
+		}
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.GroupApi.createOrUpdateExternalJwtConfigBlocking(
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
+		if result_info.failure is not None:
+			raise interpret_kt_error(result_info.failure)
+		else:
+			return_value = Group._deserialize(result_info.success)
+			return return_value
+
+	async def remove_external_jwt_config_async(self, group_id: str, key: str) -> Group:
+		def do_decode(raw_result):
+			return Group._deserialize(raw_result)
+		payload = {
+			"groupId": group_id,
+			"key": key,
+		}
+		return await execute_async_method_job(
+			self.cardinal_sdk._executor,
+			True,
+			do_decode,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.GroupApi.removeExternalJwtConfigAsync,
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+
+	def remove_external_jwt_config_blocking(self, group_id: str, key: str) -> Group:
+		payload = {
+			"groupId": group_id,
+			"key": key,
+		}
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.GroupApi.removeExternalJwtConfigBlocking(
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
+		if result_info.failure is not None:
+			raise interpret_kt_error(result_info.failure)
+		else:
+			return_value = Group._deserialize(result_info.success)
+			return return_value
+
+	async def get_operation_token_for_group_async(self, group_id: str, operation: Operation, duration: Optional[int], description: Optional[str]) -> str:
+		def do_decode(raw_result):
+			return raw_result
+		payload = {
+			"groupId": group_id,
+			"operation": operation.__serialize__(),
+			"duration": duration,
+			"description": description,
+		}
+		return await execute_async_method_job(
+			self.cardinal_sdk._executor,
+			True,
+			do_decode,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.GroupApi.getOperationTokenForGroupAsync,
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+
+	def get_operation_token_for_group_blocking(self, group_id: str, operation: Operation, duration: Optional[int], description: Optional[str]) -> str:
+		payload = {
+			"groupId": group_id,
+			"operation": operation.__serialize__(),
+			"duration": duration,
+			"description": description,
+		}
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.GroupApi.getOperationTokenForGroupBlocking(
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
+		if result_info.failure is not None:
+			raise interpret_kt_error(result_info.failure)
+		else:
+			return_value = result_info.success
 			return return_value

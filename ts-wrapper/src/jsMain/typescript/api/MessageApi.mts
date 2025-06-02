@@ -2,6 +2,7 @@
 import {FilterOptions, PaginatedListIterator, SortableFilterOptions} from '../cardinal-sdk-ts.mjs';
 import {MessageShareOptions} from '../crypto/entities/MessageShareOptions.mjs';
 import {SecretIdUseOption} from '../crypto/entities/SecretIdUseOption.mjs';
+import {EntityReferenceInGroup} from '../model/EntityReferenceInGroup.mjs';
 import {DecryptedMessage, EncryptedMessage, Message} from '../model/Message.mjs';
 import {PaginatedList} from '../model/PaginatedList.mjs';
 import {Patient} from '../model/Patient.mjs';
@@ -36,6 +37,8 @@ export interface MessageApi {
 	decrypt(message: EncryptedMessage): Promise<DecryptedMessage>;
 
 	tryDecrypt(message: EncryptedMessage): Promise<Message>;
+
+	getSecretIdsOf(message: Message): Promise<{ [ key: string ]: Array<EntityReferenceInGroup> }>;
 
 	matchMessagesBy(filter: FilterOptions<Message>): Promise<Array<string>>;
 

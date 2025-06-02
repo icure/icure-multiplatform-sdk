@@ -5,7 +5,7 @@ from cardinal_sdk.async_utils import execute_async_method_job
 from cardinal_sdk.kotlin_types import symbols
 from cardinal_sdk.model.CallResult import create_result_from_json, interpret_kt_error
 from ctypes import cast, c_char_p
-from typing import List
+from typing import Optional
 from cardinal_sdk.filters.FilterOptions import BaseFilterOptions, BaseSortableFilterOptions
 from cardinal_sdk.pagination.PaginatedListIterator import PaginatedListIterator
 
@@ -46,7 +46,7 @@ class MedicalLocationApi:
 			return_value = MedicalLocation._deserialize(result_info.success)
 			return return_value
 
-	async def delete_medical_locations_async(self, location_ids: ListOfIds) -> List[DocIdentifier]:
+	async def delete_medical_locations_async(self, location_ids: ListOfIds) -> list[DocIdentifier]:
 		def do_decode(raw_result):
 			return [DocIdentifier._deserialize(x1) for x1 in raw_result]
 		payload = {
@@ -61,7 +61,7 @@ class MedicalLocationApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def delete_medical_locations_blocking(self, location_ids: ListOfIds) -> List[DocIdentifier]:
+	def delete_medical_locations_blocking(self, location_ids: ListOfIds) -> list[DocIdentifier]:
 		payload = {
 			"locationIds": location_ids.__serialize__(),
 		}
@@ -77,9 +77,9 @@ class MedicalLocationApi:
 			return_value = [DocIdentifier._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
-	async def get_medical_location_async(self, location_id: str) -> MedicalLocation:
+	async def get_medical_location_async(self, location_id: str) -> Optional[MedicalLocation]:
 		def do_decode(raw_result):
-			return MedicalLocation._deserialize(raw_result)
+			return MedicalLocation._deserialize(raw_result) if raw_result is not None else None
 		payload = {
 			"locationId": location_id,
 		}
@@ -92,7 +92,7 @@ class MedicalLocationApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def get_medical_location_blocking(self, location_id: str) -> MedicalLocation:
+	def get_medical_location_blocking(self, location_id: str) -> Optional[MedicalLocation]:
 		payload = {
 			"locationId": location_id,
 		}
@@ -105,7 +105,7 @@ class MedicalLocationApi:
 		if result_info.failure is not None:
 			raise interpret_kt_error(result_info.failure)
 		else:
-			return_value = MedicalLocation._deserialize(result_info.success)
+			return_value = MedicalLocation._deserialize(result_info.success) if result_info.success is not None else None
 			return return_value
 
 	async def modify_medical_location_async(self, medical_location_dto: MedicalLocation) -> MedicalLocation:
@@ -139,7 +139,7 @@ class MedicalLocationApi:
 			return_value = MedicalLocation._deserialize(result_info.success)
 			return return_value
 
-	async def get_medical_locations_async(self, medical_location_ids: List[str]) -> List[MedicalLocation]:
+	async def get_medical_locations_async(self, medical_location_ids: list[str]) -> list[MedicalLocation]:
 		def do_decode(raw_result):
 			return [MedicalLocation._deserialize(x1) for x1 in raw_result]
 		payload = {
@@ -154,7 +154,7 @@ class MedicalLocationApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def get_medical_locations_blocking(self, medical_location_ids: List[str]) -> List[MedicalLocation]:
+	def get_medical_locations_blocking(self, medical_location_ids: list[str]) -> list[MedicalLocation]:
 		payload = {
 			"medicalLocationIds": [x0 for x0 in medical_location_ids],
 		}
@@ -170,7 +170,7 @@ class MedicalLocationApi:
 			return_value = [MedicalLocation._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
-	async def match_medical_locations_by_async(self, filter: BaseFilterOptions[MedicalLocation]) -> List[str]:
+	async def match_medical_locations_by_async(self, filter: BaseFilterOptions[MedicalLocation]) -> list[str]:
 		def do_decode(raw_result):
 			return [x1 for x1 in raw_result]
 		payload = {
@@ -185,7 +185,7 @@ class MedicalLocationApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def match_medical_locations_by_blocking(self, filter: BaseFilterOptions[MedicalLocation]) -> List[str]:
+	def match_medical_locations_by_blocking(self, filter: BaseFilterOptions[MedicalLocation]) -> list[str]:
 		payload = {
 			"filter": filter.__serialize__(),
 		}
@@ -201,7 +201,7 @@ class MedicalLocationApi:
 			return_value = [x1 for x1 in result_info.success]
 			return return_value
 
-	async def match_medical_locations_by_sorted_async(self, filter: BaseSortableFilterOptions[MedicalLocation]) -> List[str]:
+	async def match_medical_locations_by_sorted_async(self, filter: BaseSortableFilterOptions[MedicalLocation]) -> list[str]:
 		def do_decode(raw_result):
 			return [x1 for x1 in raw_result]
 		payload = {
@@ -216,7 +216,7 @@ class MedicalLocationApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def match_medical_locations_by_sorted_blocking(self, filter: BaseSortableFilterOptions[MedicalLocation]) -> List[str]:
+	def match_medical_locations_by_sorted_blocking(self, filter: BaseSortableFilterOptions[MedicalLocation]) -> list[str]:
 		payload = {
 			"filter": filter.__serialize__(),
 		}

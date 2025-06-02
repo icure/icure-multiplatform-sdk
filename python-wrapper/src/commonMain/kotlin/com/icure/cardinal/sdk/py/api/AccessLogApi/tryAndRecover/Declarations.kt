@@ -247,6 +247,41 @@ public fun filterAccessLogsBySortedAsync(
 }.failureToPyResultAsyncCallback(resultCallback)
 
 @Serializable
+private class CreateAccessLogParams(
+	public val entity: AccessLog,
+)
+
+@OptIn(InternalIcureApi::class)
+public fun createAccessLogBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
+	val decodedParams = fullLanguageInteropJson.decodeFromString<CreateAccessLogParams>(params)
+	runBlocking {
+		sdk.accessLog.tryAndRecover.createAccessLog(
+			decodedParams.entity,
+		)
+	}
+}.toPyString(PolymorphicSerializer(AccessLog::class))
+
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
+public fun createAccessLogAsync(
+	sdk: CardinalApis,
+	params: String,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): COpaquePointer? = kotlin.runCatching {
+	val decodedParams = fullLanguageInteropJson.decodeFromString<CreateAccessLogParams>(params)
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.accessLog.tryAndRecover.createAccessLog(
+				decodedParams.entity,
+			)
+		}.toPyStringAsyncCallback(PolymorphicSerializer(AccessLog::class), resultCallback)
+	}
+}.failureToPyStringAsyncCallback(resultCallback)
+
+@Serializable
 private class UndeleteAccessLogByIdParams(
 	public val id: String,
 	public val rev: String,
