@@ -12,7 +12,7 @@ export class AccessLogShareOptions {
 
 	sharePatientId: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable;
 
-	shareSecretIds: SecretIdShareOptions = new SecretIdShareOptions.AllAvailable();
+	shareSecretIds: SecretIdShareOptions = new SecretIdShareOptions.AllAvailable({});
 
 	constructor(partial: Partial<AccessLogShareOptions>) {
 		if ('requestedPermissions' in partial && partial.requestedPermissions !== undefined) this.requestedPermissions = partial.requestedPermissions;

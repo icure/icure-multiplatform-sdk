@@ -10,7 +10,7 @@ export class PatientShareOptions {
 
 	shareEncryptionKey: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable;
 
-	shareSecretIds: SecretIdShareOptions = new SecretIdShareOptions.AllAvailable();
+	shareSecretIds: SecretIdShareOptions = new SecretIdShareOptions.AllAvailable({});
 
 	constructor(partial: Partial<PatientShareOptions>) {
 		if ('requestedPermissions' in partial && partial.requestedPermissions !== undefined) this.requestedPermissions = partial.requestedPermissions;
