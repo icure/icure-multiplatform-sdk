@@ -121,4 +121,49 @@ class RawInsuranceApiImpl(
 		}.wrap()
 
 	// endregion
+
+	// region cloud endpoints
+
+	override suspend fun createInsurancesInGroup(
+		groupId: String,
+		insuranceBatch: List<Insurance>,
+	): HttpResponse<List<Insurance>> =
+		post(authProvider) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "insurance", "inGroup", groupId, "batch")
+			}
+			contentType(Application.Json)
+			accept(Application.Json)
+			setBody(insuranceBatch)
+		}.wrap()
+
+	override suspend fun getInsurancesInGroup(
+		groupId: String,
+		insuranceIds: String,
+	): HttpResponse<List<Insurance>> =
+		get(authProvider) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "insurance", "inGroup", groupId, "byIds", insuranceIds)
+				parameter("ts", GMTDate().timestamp)
+			}
+			accept(Application.Json)
+		}.wrap()
+
+	override suspend fun modifyInsurancesInGroup(
+		groupId: String,
+		insuranceBatch: List<Insurance>,
+	): HttpResponse<List<Insurance>> =
+		put(authProvider) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "insurance", "inGroup", groupId, "batch")
+			}
+			contentType(Application.Json)
+			accept(Application.Json)
+			setBody(insuranceBatch)
+		}.wrap()
+
+	// endregion
 }
