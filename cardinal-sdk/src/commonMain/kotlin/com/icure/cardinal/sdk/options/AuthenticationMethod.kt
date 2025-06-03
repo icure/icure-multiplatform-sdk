@@ -9,6 +9,7 @@ import com.icure.cardinal.sdk.auth.AuthSecretDetails
 import com.icure.cardinal.sdk.auth.AuthSecretProvider
 import com.icure.cardinal.sdk.auth.AuthenticationProcessApi
 import com.icure.cardinal.sdk.auth.Credentials
+import com.icure.cardinal.sdk.auth.ExternalToken
 import com.icure.cardinal.sdk.auth.JwtCredentials
 import com.icure.cardinal.sdk.auth.ThirdPartyAuthentication
 import com.icure.cardinal.sdk.auth.ThirdPartyProvider
@@ -164,6 +165,44 @@ fun AuthenticationMethod.getAuthProvider(
 			messageGatewayApi,
 			applicationId
 		)
+		is ExternalToken -> {
+			requireNotNull(applicationId) {
+				"applicationId cannot be null when using an external token"
+			}
+			SmartAuthProvider.initialize(
+				authApi = authApi,
+				loginUsername = null,
+				initialAuthToken = null,
+				initialRefreshToken = null,
+				secretProvider = object : AuthSecretProvider {
+					override suspend fun getSecret(
+						acceptedSecrets: Set<AuthenticationClass>,
+						previousAttempts: List<AuthSecretDetails>,
+						authProcessApi: AuthenticationProcessApi,
+					): AuthSecretDetails {
+						check(acceptedSecrets.contains(AuthenticationClass.ExternalAuthentication)) {
+							"Current method does not allow authentication with an external token"
+						}
+						val externalToken = this@getAuthProvider.credentials.tokenProvider()
+						return AuthSecretDetails.ExternalAuthenticationDetails(
+							secret = externalToken,
+							oauthType = ThirdPartyProvider.OTHER
+						)
+					}
+
+				},
+				initialSecret = this.credentials.initialBearer?.let {
+					AuthSecretDetails.ExternalAuthenticationDetails(secret = it, ThirdPartyProvider.OTHER)
+				},
+				groupId = null,
+				applicationId = applicationId,
+				passwordClientSideSalt = options.getPasswordClientSideSalt(applicationId),
+				cryptoService = cryptoService,
+				cacheSecrets = true,
+				allowSecretRetry = true,
+				messageGatewayApi = messageGatewayApi
+			)
+		}
 		is JwtCredentials -> JwtAuthProvider(authApi, this.credentials.initialBearer, this.credentials.refresh)
 	}
 	is AuthenticationMethod.UsingAuthProvider -> this.authProvider

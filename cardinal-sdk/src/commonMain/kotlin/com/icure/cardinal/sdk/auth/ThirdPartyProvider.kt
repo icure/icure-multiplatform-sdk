@@ -4,5 +4,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 enum class ThirdPartyProvider {
-	GOOGLE
+	GOOGLE,
+	OTHER
 }

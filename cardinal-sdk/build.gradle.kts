@@ -10,6 +10,7 @@ plugins {
 	signing
 	id("com.vanniktech.maven.publish") apply true
 	id("com.google.devtools.ksp") version "2.1.20-RC-1.0.30"
+	id("org.jetbrains.kotlinx.atomicfu") version "0.27.0"
 }
 
 val repoUsername: String by project
@@ -38,6 +39,7 @@ kotlin {
 				api(libs.kerberus)
 				implementation(libs.coroutinesCore)
 				implementation(libs.okio)
+				implementation(libs.atomicFU)
 				implementation(kotlin("reflect"))
 			}
 		}
