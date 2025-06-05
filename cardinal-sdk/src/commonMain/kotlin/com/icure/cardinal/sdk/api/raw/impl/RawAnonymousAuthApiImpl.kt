@@ -16,6 +16,7 @@ import io.ktor.http.ContentType.Application
 import io.ktor.http.appendPathSegments
 import io.ktor.http.contentType
 import io.ktor.http.takeFrom
+import io.ktor.util.date.GMTDate
 import kotlin.Long
 import kotlin.String
 import kotlin.Unit
@@ -72,6 +73,16 @@ class RawAnonymousAuthApiImpl(
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(loginCredentials)
+		}.wrap()
+
+	override suspend fun getAuthJwtPublicKey(): HttpResponse<String> =
+		get {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "auth", "publicKey", "authJwt")
+				parameter("ts", GMTDate().timestamp)
+			}
+			accept(Application.Json)
 		}.wrap()
 
 	// endregion
