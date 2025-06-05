@@ -17,6 +17,7 @@ data class RegistrationInformation(
 	@DefaultValue("emptySet()")
 	public val userRoles: Set<String> = emptySet(),
 	public val minimumKrakenVersion: String? = null,
+	public val cluster: String? = null,
 ) {
 	// region RegistrationInformation-RegistrationInformation
 

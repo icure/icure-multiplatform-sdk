@@ -26,6 +26,8 @@ data class Group(
 	override val deletionDate: Long? = null,
 	@DefaultValue("emptySet()")
 	override val tags: Set<CodeStub> = emptySet(),
+	@DefaultValue("emptySet()")
+	public val publicTags: Set<CodeStub> = emptySet(),
 	public val name: String? = null,
 	public val password: String? = null,
 	public val servers: List<String>? = null,
