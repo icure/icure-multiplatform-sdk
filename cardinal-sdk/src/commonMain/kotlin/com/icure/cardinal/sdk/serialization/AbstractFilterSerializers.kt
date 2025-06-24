@@ -97,6 +97,7 @@ import com.icure.cardinal.sdk.model.filter.medicallocation.AllMedicalLocationsFi
 import com.icure.cardinal.sdk.model.filter.medicallocation.MedicalLocationByPostCodeFilter
 import com.icure.cardinal.sdk.model.filter.message.LatestMessageByHcPartyTransportGuidFilter
 import com.icure.cardinal.sdk.model.filter.message.MessageByDataOwnerFromAddressFilter
+import com.icure.cardinal.sdk.model.filter.message.MessageByDataOwnerLifecycleBetween
 import com.icure.cardinal.sdk.model.filter.message.MessageByDataOwnerPatientSentDateFilter
 import com.icure.cardinal.sdk.model.filter.message.MessageByDataOwnerToAddressFilter
 import com.icure.cardinal.sdk.model.filter.message.MessageByDataOwnerTransportGuidSentDateFilter
@@ -762,6 +763,7 @@ internal object MessageAbstractFilterSerializer :
 			"LatestMessageByHcPartyTransportGuidFilter" ->
 				LatestMessageByHcPartyTransportGuidFilter.serializer()
 			"MessageByDataOwnerFromAddressFilter" -> MessageByDataOwnerFromAddressFilter.serializer()
+			"MessageByDataOwnerLifecycleBetween" -> MessageByDataOwnerLifecycleBetween.serializer()
 			"MessageByDataOwnerPatientSentDateFilter" -> MessageByDataOwnerPatientSentDateFilter.serializer()
 			"MessageByDataOwnerToAddressFilter" -> MessageByDataOwnerToAddressFilter.serializer()
 			"MessageByDataOwnerTransportGuidSentDateFilter" ->
@@ -782,6 +784,7 @@ internal object MessageAbstractFilterSerializer :
 			LatestMessageByHcPartyTransportGuidFilter::class ->
 				LatestMessageByHcPartyTransportGuidFilter.serializer()
 			MessageByDataOwnerFromAddressFilter::class -> MessageByDataOwnerFromAddressFilter.serializer()
+			MessageByDataOwnerLifecycleBetween::class -> MessageByDataOwnerLifecycleBetween.serializer()
 			MessageByDataOwnerPatientSentDateFilter::class ->
 				MessageByDataOwnerPatientSentDateFilter.serializer()
 			MessageByDataOwnerToAddressFilter::class -> MessageByDataOwnerToAddressFilter.serializer()
