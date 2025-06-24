@@ -20,10 +20,13 @@ import com.icure.cardinal.sdk.model.filter.message.MessageByHcPartyFilter
 import com.icure.cardinal.sdk.model.filter.message.MessageByHcPartyTransportGuidReceivedFilter
 import com.icure.cardinal.sdk.model.filter.message.MessageByInvoiceIdsFilter
 import com.icure.cardinal.sdk.model.filter.message.MessageByParentIdsFilter
+import com.icure.cardinal.sdk.options.ApiConfiguration
+import com.icure.cardinal.sdk.options.BasicApiConfiguration
 import com.icure.cardinal.sdk.utils.DefaultValue
 import com.icure.utils.InternalIcureApi
 import kotlinx.datetime.Instant
 import kotlinx.serialization.Serializable
+import kotlin.coroutines.coroutineContext
 
 object MessageFilters {
 	/**
@@ -523,6 +526,22 @@ object MessageFilters {
 
 @InternalIcureApi
 internal suspend fun mapMessageFilterOptions(
+	filterOptions: FilterOptions<Message>,
+	config: BasicApiConfiguration,
+	requestGroup: String?
+): AbstractFilter<Message> {
+	val nonBasicConfig = config as? ApiConfiguration
+	return mapMessageFilterOptions(
+		filterOptions,
+		nonBasicConfig?.crypto?.dataOwnerApi?.getCurrentDataOwnerReference(),
+		nonBasicConfig?.crypto?.entity,
+		config.getBoundGroup(coroutineContext),
+		requestGroup
+	)
+}
+
+@InternalIcureApi
+private suspend fun mapMessageFilterOptions(
 	filterOptions: FilterOptions<Message>,
 	selfDataOwner: EntityReferenceInGroup?,
 	entityEncryptionService: EntityEncryptionService?,

@@ -202,7 +202,11 @@ private abstract class AbstractMessageFlavouredApi<E : Message>(
 
 	override suspend fun filterMessagesBy(filter: FilterOptions<Message>): PaginatedListIterator<E> =
 		IdsPageIterator(rawApi.matchMessagesBy(
-			mapMessageFilterOptions(filter, config.crypto.dataOwnerApi.getCurrentDataOwnerId(), config.crypto.entity)
+			mapMessageFilterOptions(
+				filterOptions = filter,
+				config = config,
+				requestGroup = null
+			)
 		).successBody(), this::getMessages)
 
 	override suspend fun filterMessagesBySorted(filter: SortableFilterOptions<Message>): PaginatedListIterator<E> =
@@ -397,7 +401,11 @@ internal class MessageApiImpl(
 			clientJson = config.rawApiConfig.json,
 			entitySerializer = EncryptedMessage.serializer(),
 			events = events,
-			filter = mapMessageFilterOptions(filter, config.crypto.dataOwnerApi.getCurrentDataOwnerId(), config.crypto.entity),
+			filter = mapMessageFilterOptions(
+				filterOptions = filter,
+				config = config,
+				requestGroup = null
+			),
 			qualifiedName = Message.KRAKEN_QUALIFIED_NAME,
 			subscriptionRequestSerializer = {
 				Serialization.json.encodeToString(SubscriptionSerializer(MessageAbstractFilterSerializer), it)
@@ -408,7 +416,11 @@ internal class MessageApiImpl(
 	}
 
 	override suspend fun matchMessagesBy(filter: FilterOptions<Message>): List<String> =
-		rawApi.matchMessagesBy(mapMessageFilterOptions(filter, config.crypto.dataOwnerApi.getCurrentDataOwnerId(), config.crypto.entity)).successBody()
+		rawApi.matchMessagesBy(mapMessageFilterOptions(
+			filterOptions = filter,
+			config = config,
+			requestGroup = null
+		)).successBody()
 
 	override suspend fun matchMessagesBySorted(filter: SortableFilterOptions<Message>): List<String> =
 		matchMessagesBy(filter)
@@ -433,7 +445,13 @@ internal class MessageBasicApiImpl(
 		entities
 }, MessageBasicFlavourlessApi by AbstractMessageBasicFlavourlessApi(rawApi, config) {
 	override suspend fun matchMessagesBy(filter: BaseFilterOptions<Message>): List<String> =
-		rawApi.matchMessagesBy(mapMessageFilterOptions(filter, null, null)).successBody()
+		rawApi.matchMessagesBy(
+			mapMessageFilterOptions(
+				filterOptions = filter,
+				config = config,
+				requestGroup = null
+			)
+		).successBody()
 
 	override suspend fun matchMessagesBySorted(filter: BaseSortableFilterOptions<Message>): List<String> =
 		matchMessagesBy(filter)
@@ -456,7 +474,11 @@ internal class MessageBasicApiImpl(
 			clientJson = config.rawApiConfig.json,
 			entitySerializer = EncryptedMessage.serializer(),
 			events = events,
-			filter = mapMessageFilterOptions(filter, null, null),
+			filter = mapMessageFilterOptions(
+				filterOptions = filter,
+				config = config,
+				requestGroup = null
+			),
 			qualifiedName = Message.KRAKEN_QUALIFIED_NAME,
 			subscriptionRequestSerializer = {
 				Serialization.json.encodeToString(SubscriptionSerializer(MessageAbstractFilterSerializer), it)
