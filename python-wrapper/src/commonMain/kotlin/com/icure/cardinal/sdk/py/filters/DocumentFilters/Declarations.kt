@@ -74,7 +74,7 @@ private class ByPatientSecretIdsCreatedForDataOwnerParams(
 public fun byPatientSecretIdsCreatedForDataOwner(params: String): String = kotlin.runCatching {
 	val decodedParams =
 			fullLanguageInteropJson.decodeFromString<ByPatientSecretIdsCreatedForDataOwnerParams>(params)
-	DocumentFilters.byPatientSecretIdsCreatedForDataOwner(
+	DocumentFilters.byOwningEntitySecretIdsCreatedForDataOwner(
 		decodedParams.dataOwnerId,
 		decodedParams.secretIds,
 		decodedParams.from,
@@ -95,7 +95,7 @@ private class ByPatientSecretIdsCreatedForSelfParams(
 public fun byPatientSecretIdsCreatedForSelf(params: String): String = kotlin.runCatching {
 	val decodedParams =
 			fullLanguageInteropJson.decodeFromString<ByPatientSecretIdsCreatedForSelfParams>(params)
-	DocumentFilters.byPatientSecretIdsCreatedForSelf(
+	DocumentFilters.byOwningEntitySecretIdsCreatedForSelf(
 		decodedParams.secretIds,
 		decodedParams.from,
 		decodedParams.to,
@@ -148,7 +148,7 @@ private class ByPatientSecretIdsAndTypeForDataOwnerParams(
 public fun byPatientSecretIdsAndTypeForDataOwner(params: String): String = kotlin.runCatching {
 	val decodedParams =
 			fullLanguageInteropJson.decodeFromString<ByPatientSecretIdsAndTypeForDataOwnerParams>(params)
-	DocumentFilters.byPatientSecretIdsAndTypeForDataOwner(
+	DocumentFilters.byOwningEntitySecretIdsAndTypeForDataOwner(
 		decodedParams.dataOwnerId,
 		decodedParams.documentType,
 		decodedParams.secretIds,
@@ -165,7 +165,7 @@ private class ByPatientSecretIdsAndTypeForSelfParams(
 public fun byPatientSecretIdsAndTypeForSelf(params: String): String = kotlin.runCatching {
 	val decodedParams =
 			fullLanguageInteropJson.decodeFromString<ByPatientSecretIdsAndTypeForSelfParams>(params)
-	DocumentFilters.byPatientSecretIdsAndTypeForSelf(
+	DocumentFilters.byOwningEntitySecretIdsAndTypeForSelf(
 		decodedParams.documentType,
 		decodedParams.secretIds,
 	)

@@ -368,13 +368,54 @@ interface DocumentApi : DocumentBasicFlavourlessApi, DocumentFlavouredApi<Decryp
 	 */
 	suspend fun withEncryptionMetadata(
 		base: DecryptedDocument?,
-		message: Message?,
+		message: Message,
 		@DefaultValue("null")
 		user: User? = null,
 		@DefaultValue("emptyMap()")
 		delegates: Map<String, AccessLevel> = emptyMap(),
 		@DefaultValue("com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption.UseAnySharedWithParent")
 		secretId: SecretIdUseOption = SecretIdUseOption.UseAnySharedWithParent,
+	): DecryptedDocument
+
+	/**
+	 * Creates a new document with initialized encryption metadata
+	 * @param base a document with initialized content and uninitialized encryption metadata. The result of this
+	 * method takes the content from [base] if provided.
+	 * @param patient the patient linked to the patient, if any.
+	 * @param user the current user, will be used for the auto-delegations if provided.
+	 * @param delegates additional data owners that will have access to the newly created entity. You may choose the
+	 * permissions that the delegates will have on the entity, but they will have access to all encryption metadata.
+	 * @param secretId specifies which secret id of [message] to use for the new document
+	 * @return a document with initialized encryption metadata.
+	 * @throws IllegalArgumentException if base is not null and has a revision or has encryption metadata.
+	 */
+	suspend fun withEncryptionMetadata(
+		base: DecryptedDocument?,
+		patient: Patient,
+		@DefaultValue("null")
+		user: User? = null,
+		@DefaultValue("emptyMap()")
+		delegates: Map<String, AccessLevel> = emptyMap(),
+		@DefaultValue("com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption.UseAnySharedWithParent")
+		secretId: SecretIdUseOption = SecretIdUseOption.UseAnySharedWithParent,
+	): DecryptedDocument
+
+	/**
+	 * Creates a new document with initialized encryption metadata
+	 * @param base a document with initialized content and uninitialized encryption metadata. The result of this
+	 * method takes the content from [base] if provided.
+	 * @param user the current user, will be used for the auto-delegations if provided.
+	 * @param delegates additional data owners that will have access to the newly created entity. You may choose the
+	 * permissions that the delegates will have on the entity, but they will have access to all encryption metadata.
+	 * @return a document with initialized encryption metadata.
+	 * @throws IllegalArgumentException if base is not null and has a revision or has encryption metadata.
+	 */
+	suspend fun withEncryptionMetadata(
+		base: DecryptedDocument?,
+		@DefaultValue("null")
+		user: User? = null,
+		@DefaultValue("emptyMap()")
+		delegates: Map<String, AccessLevel> = emptyMap(),
 	): DecryptedDocument
 
 	/**
@@ -510,7 +551,7 @@ interface DocumentApi : DocumentBasicFlavourlessApi, DocumentFlavouredApi<Decryp
 	 * @return the id of the patient linked to the document, or empty if the current user can't access any patient id
 	 * of the document.
 	 */
-	suspend fun decryptPatientIdOf(document: Document): Set<String>
+	suspend fun decryptOwningEntityIdsOf(document: Document): Set<String>
 
 	/**
 	 * Create metadata to allow other users to identify the anonymous delegates of a document.

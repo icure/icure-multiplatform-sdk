@@ -295,28 +295,74 @@ internal class DocumentApiImpl(
 
 	override suspend fun withEncryptionMetadata(
 		base: DecryptedDocument?,
-		message: Message?,
+		patient: Patient,
+		user: User?,
+		delegates: Map<String, AccessLevel>,
+		secretId: SecretIdUseOption
+	): DecryptedDocument =
+		crypto.entity.entityWithInitializedEncryptedMetadata(
+			entityGroupId = null,
+			entity = (base ?: DecryptedDocument(crypto.primitives.strongRandom.randomUUID())).copy(
+				created = base?.created ?: currentEpochMs(),
+				modified = base?.modified ?: currentEpochMs(),
+				responsible = base?.responsible ?: user?.takeIf { config.autofillAuthor }?.dataOwnerId,
+				author = base?.author ?: user?.id?.takeIf { config.autofillAuthor },
+			),
+			entityType = EntityWithEncryptionMetadataTypeName.Document,
+			owningEntityDetails = patient.let {
+				OwningEntityDetails(
+					null,
+					it.id,
+					crypto.entity.resolveSecretIdOption(null, it, EntityWithEncryptionMetadataTypeName.Patient, secretId)
+				)
+			},
+			initializeEncryptionKey = true,
+			autoDelegations = (delegates + user?.autoDelegationsFor(DelegationTag.MedicalInformation).orEmpty()).keyAsLocalDataOwnerReferences(),
+		).updatedEntity
+
+	override suspend fun withEncryptionMetadata(
+		base: DecryptedDocument?,
+		message: Message,
 		user: User?,
 		delegates: Map<String, AccessLevel>,
 		secretId: SecretIdUseOption,
 		// Temporary, needs a lot more stuff to match typescript implementation
 	): DecryptedDocument =
 		crypto.entity.entityWithInitializedEncryptedMetadata(
-			null,
-			(base ?: DecryptedDocument(crypto.primitives.strongRandom.randomUUID())).copy(
+			entityGroupId = null,
+			entity = (base ?: DecryptedDocument(crypto.primitives.strongRandom.randomUUID())).copy(
 				created = base?.created ?: currentEpochMs(),
 				modified = base?.modified ?: currentEpochMs(),
 				responsible = base?.responsible ?: user?.takeIf { config.autofillAuthor }?.dataOwnerId,
 				author = base?.author ?: user?.id?.takeIf { config.autofillAuthor },
 			),
-			EntityWithEncryptionMetadataTypeName.Document,
-			message?.let {
+			entityType = EntityWithEncryptionMetadataTypeName.Document,
+			owningEntityDetails = message.let {
 				OwningEntityDetails(
 					null,
 					it.id,
 					crypto.entity.resolveSecretIdOption(null, it, EntityWithEncryptionMetadataTypeName.Message, secretId)
 				)
 			},
+			initializeEncryptionKey = true,
+			autoDelegations = (delegates + user?.autoDelegationsFor(DelegationTag.MedicalInformation).orEmpty()).keyAsLocalDataOwnerReferences(),
+		).updatedEntity
+
+	override suspend fun withEncryptionMetadata(
+		base: DecryptedDocument?,
+		user: User?,
+		delegates: Map<String, AccessLevel>
+	): DecryptedDocument =
+		crypto.entity.entityWithInitializedEncryptedMetadata(
+			entityGroupId = null,
+			entity = (base ?: DecryptedDocument(crypto.primitives.strongRandom.randomUUID())).copy(
+				created = base?.created ?: currentEpochMs(),
+				modified = base?.modified ?: currentEpochMs(),
+				responsible = base?.responsible ?: user?.takeIf { config.autofillAuthor }?.dataOwnerId,
+				author = base?.author ?: user?.id?.takeIf { config.autofillAuthor },
+			),
+			entityType = EntityWithEncryptionMetadataTypeName.Document,
+			owningEntityDetails = null,
 			initializeEncryptionKey = true,
 			autoDelegations = (delegates + user?.autoDelegationsFor(DelegationTag.MedicalInformation).orEmpty()).keyAsLocalDataOwnerReferences(),
 		).updatedEntity
@@ -398,7 +444,7 @@ internal class DocumentApiImpl(
 
 	override suspend fun hasWriteAccess(document: Document): Boolean = crypto.entity.hasWriteAccess(null, document, EntityWithEncryptionMetadataTypeName.Document)
 
-	override suspend fun decryptPatientIdOf(document: Document): Set<String> = crypto.entity.owningEntityIdsOf(null, document, EntityWithEncryptionMetadataTypeName.Document, null)
+	override suspend fun decryptOwningEntityIdsOf(document: Document): Set<String> = crypto.entity.owningEntityIdsOf(null, document, EntityWithEncryptionMetadataTypeName.Document, null)
 
 	override suspend fun createDelegationDeAnonymizationMetadata(entity: Document, delegates: Set<String>) {
 		crypto.delegationsDeAnonymization.createOrUpdateDeAnonymizationInfo(null, entity, EntityWithEncryptionMetadataTypeName.Document, delegates.asLocalDataOwnerReferences())
