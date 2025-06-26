@@ -97,7 +97,7 @@ public fun createDocumentAsync(
 @Serializable
 private class WithEncryptionMetadataParams(
 	public val base: DecryptedDocument?,
-	public val message: Message?,
+	public val message: Message,
 	public val user: User? = null,
 	public val delegates: Map<String, AccessLevel> = emptyMap(),
 	public val secretId: SecretIdUseOption =
@@ -109,7 +109,7 @@ public fun withEncryptionMetadataBlocking(sdk: CardinalApis, params: String): St
 		kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<WithEncryptionMetadataParams>(params)
 	runBlocking {
-		sdk.document.withEncryptionMetadata(
+		sdk.document.withEncryptionMetadataLinkedToMessage(
 			decodedParams.base,
 			decodedParams.message,
 			decodedParams.user,
@@ -132,7 +132,7 @@ public fun withEncryptionMetadataAsync(
 	val decodedParams = fullLanguageInteropJson.decodeFromString<WithEncryptionMetadataParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
-			sdk.document.withEncryptionMetadata(
+			sdk.document.withEncryptionMetadataLinkedToMessage(
 				decodedParams.base,
 				decodedParams.message,
 				decodedParams.user,
@@ -687,7 +687,7 @@ public fun decryptPatientIdOfBlocking(sdk: CardinalApis, params: String): String
 		kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<DecryptPatientIdOfParams>(params)
 	runBlocking {
-		sdk.document.decryptPatientIdOf(
+		sdk.document.decryptOwningEntityIdsOf(
 			decodedParams.document,
 		)
 	}
@@ -706,7 +706,7 @@ public fun decryptPatientIdOfAsync(
 	val decodedParams = fullLanguageInteropJson.decodeFromString<DecryptPatientIdOfParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
-			sdk.document.decryptPatientIdOf(
+			sdk.document.decryptOwningEntityIdsOf(
 				decodedParams.document,
 			)
 		}.toPyStringAsyncCallback(SetSerializer(String.serializer()), resultCallback)
