@@ -293,7 +293,7 @@ internal class DocumentApiImpl(
 	private val crypto get() = config.crypto
 	private val fieldsToEncrypt get() = config.encryption.document
 
-	override suspend fun withEncryptionMetadata(
+	override suspend fun withEncryptionMetadataLinkedToPatient(
 		base: DecryptedDocument?,
 		patient: Patient,
 		user: User?,
@@ -320,7 +320,7 @@ internal class DocumentApiImpl(
 			autoDelegations = (delegates + user?.autoDelegationsFor(DelegationTag.MedicalInformation).orEmpty()).keyAsLocalDataOwnerReferences(),
 		).updatedEntity
 
-	override suspend fun withEncryptionMetadata(
+	override suspend fun withEncryptionMetadataLinkedToMessage(
 		base: DecryptedDocument?,
 		message: Message,
 		user: User?,
@@ -348,7 +348,7 @@ internal class DocumentApiImpl(
 			autoDelegations = (delegates + user?.autoDelegationsFor(DelegationTag.MedicalInformation).orEmpty()).keyAsLocalDataOwnerReferences(),
 		).updatedEntity
 
-	override suspend fun withEncryptionMetadata(
+	override suspend fun withEncryptionMetadataUnlinked(
 		base: DecryptedDocument?,
 		user: User?,
 		delegates: Map<String, AccessLevel>

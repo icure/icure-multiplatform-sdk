@@ -366,7 +366,7 @@ interface DocumentApi : DocumentBasicFlavourlessApi, DocumentFlavouredApi<Decryp
 	 * @return a document with initialized encryption metadata.
 	 * @throws IllegalArgumentException if base is not null and has a revision or has encryption metadata.
 	 */
-	suspend fun withEncryptionMetadata(
+	suspend fun withEncryptionMetadataLinkedToMessage(
 		base: DecryptedDocument?,
 		message: Message,
 		@DefaultValue("null")
@@ -389,7 +389,7 @@ interface DocumentApi : DocumentBasicFlavourlessApi, DocumentFlavouredApi<Decryp
 	 * @return a document with initialized encryption metadata.
 	 * @throws IllegalArgumentException if base is not null and has a revision or has encryption metadata.
 	 */
-	suspend fun withEncryptionMetadata(
+	suspend fun withEncryptionMetadataLinkedToPatient(
 		base: DecryptedDocument?,
 		patient: Patient,
 		@DefaultValue("null")
@@ -410,7 +410,7 @@ interface DocumentApi : DocumentBasicFlavourlessApi, DocumentFlavouredApi<Decryp
 	 * @return a document with initialized encryption metadata.
 	 * @throws IllegalArgumentException if base is not null and has a revision or has encryption metadata.
 	 */
-	suspend fun withEncryptionMetadata(
+	suspend fun withEncryptionMetadataUnlinked(
 		base: DecryptedDocument?,
 		@DefaultValue("null")
 		user: User? = null,

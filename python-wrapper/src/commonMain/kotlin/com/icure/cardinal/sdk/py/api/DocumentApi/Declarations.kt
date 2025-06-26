@@ -109,7 +109,7 @@ public fun withEncryptionMetadataBlocking(sdk: CardinalApis, params: String): St
 		kotlin.runCatching {
 	val decodedParams = fullLanguageInteropJson.decodeFromString<WithEncryptionMetadataParams>(params)
 	runBlocking {
-		sdk.document.withEncryptionMetadata(
+		sdk.document.withEncryptionMetadataLinkedToMessage(
 			decodedParams.base,
 			decodedParams.message,
 			decodedParams.user,
@@ -132,7 +132,7 @@ public fun withEncryptionMetadataAsync(
 	val decodedParams = fullLanguageInteropJson.decodeFromString<WithEncryptionMetadataParams>(params)
 	GlobalScope.launch {
 		kotlin.runCatching {
-			sdk.document.withEncryptionMetadata(
+			sdk.document.withEncryptionMetadataLinkedToMessage(
 				decodedParams.base,
 				decodedParams.message,
 				decodedParams.user,
