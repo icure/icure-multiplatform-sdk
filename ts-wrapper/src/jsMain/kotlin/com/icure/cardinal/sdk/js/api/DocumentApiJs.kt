@@ -71,7 +71,7 @@ public external interface DocumentApiJs {
 
 	public fun hasWriteAccess(document: DocumentJs): Promise<Boolean>
 
-	public fun decryptPatientIdOf(document: DocumentJs): Promise<Array<String>>
+	public fun decryptOwningEntityIdsOf(document: DocumentJs): Promise<Array<String>>
 
 	public fun createDelegationDeAnonymizationMetadata(entity: DocumentJs, delegates: Array<String>):
 			Promise<Unit>

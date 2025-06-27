@@ -141,7 +141,7 @@ public object InternalDocumentFiltersObj {
 		) { descending: Boolean ->
 			descending
 		}
-		val result = DocumentFilters.byPatientSecretIdsCreatedForDataOwner(
+		val result = DocumentFilters.byOwningEntitySecretIdsCreatedForDataOwner(
 			dataOwnerIdConverted,
 			secretIdsConverted,
 			fromConverted,
@@ -182,7 +182,7 @@ public object InternalDocumentFiltersObj {
 		) { descending: Boolean ->
 			descending
 		}
-		val result = DocumentFilters.byPatientSecretIdsCreatedForSelf(
+		val result = DocumentFilters.byOwningEntitySecretIdsCreatedForSelf(
 			secretIdsConverted,
 			fromConverted,
 			toConverted,
@@ -244,7 +244,7 @@ public object InternalDocumentFiltersObj {
 				x1
 			},
 		)
-		val result = DocumentFilters.byPatientSecretIdsAndTypeForDataOwner(
+		val result = DocumentFilters.byOwningEntitySecretIdsAndTypeForDataOwner(
 			dataOwnerIdConverted,
 			documentTypeConverted,
 			secretIdsConverted,
@@ -262,7 +262,7 @@ public object InternalDocumentFiltersObj {
 				x1
 			},
 		)
-		val result = DocumentFilters.byPatientSecretIdsAndTypeForSelf(
+		val result = DocumentFilters.byOwningEntitySecretIdsAndTypeForSelf(
 			documentTypeConverted,
 			secretIdsConverted,
 		)

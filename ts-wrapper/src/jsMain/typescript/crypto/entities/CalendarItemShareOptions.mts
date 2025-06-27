@@ -12,7 +12,7 @@ export class CalendarItemShareOptions {
 
 	sharePatientId: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable;
 
-	shareSecretIds: SecretIdShareOptions = new SecretIdShareOptions.AllAvailable();
+	shareSecretIds: SecretIdShareOptions = new SecretIdShareOptions.AllAvailable({});
 
 	constructor(partial: Partial<CalendarItemShareOptions>) {
 		if ('requestedPermissions' in partial && partial.requestedPermissions !== undefined) this.requestedPermissions = partial.requestedPermissions;

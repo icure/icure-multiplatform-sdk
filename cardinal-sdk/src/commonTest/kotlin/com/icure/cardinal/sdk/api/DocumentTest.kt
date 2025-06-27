@@ -22,11 +22,10 @@ class DocumentTest : StringSpec({
 	"Should be able to create document and set attachment with chosen uti" {
 		val api = createHcpUser().api(specJob)
 		val doc = api.document.createDocument(
-			api.document.withEncryptionMetadata(
+			api.document.withEncryptionMetadataUnlinked(
 				base = DecryptedDocument(
 					id = defaultCryptoService.strongRandom.randomUUID()
 				),
-				message = null
 			)
 		)
 		val mainUti = "public.plain-text"
@@ -47,11 +46,10 @@ class DocumentTest : StringSpec({
 	"Modifying a document after setting the attachment should preserve the attachment" {
 		val api = createHcpUser().api(specJob)
 		val doc = api.document.createDocument(
-			api.document.withEncryptionMetadata(
+			api.document.withEncryptionMetadataUnlinked(
 				base = DecryptedDocument(
 					id = defaultCryptoService.strongRandom.randomUUID()
 				),
-				message = null
 			)
 		)
 		val textAttachment = Random.Default.nextBytes(32).toHexString()

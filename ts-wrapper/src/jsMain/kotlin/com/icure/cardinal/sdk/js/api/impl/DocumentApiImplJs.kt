@@ -624,7 +624,7 @@ internal class DocumentApiImplJs(
 			) { secretId: SecretIdUseOptionJs ->
 				secretIdUseOption_fromJs(secretId)
 			}
-			val result = documentApi.withEncryptionMetadata(
+			val result = documentApi.withEncryptionMetadataLinkedToMessage(
 				baseConverted,
 				messageConverted,
 				userConverted,
@@ -840,10 +840,10 @@ internal class DocumentApiImplJs(
 		result
 	}
 
-	override fun decryptPatientIdOf(document: DocumentJs): Promise<Array<String>> =
+	override fun decryptOwningEntityIdsOf(document: DocumentJs): Promise<Array<String>> =
 			GlobalScope.promise {
 		val documentConverted: Document = document_fromJs(document)
-		val result = documentApi.decryptPatientIdOf(
+		val result = documentApi.decryptOwningEntityIdsOf(
 			documentConverted,
 		)
 		setToArray(

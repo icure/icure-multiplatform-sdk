@@ -10,7 +10,7 @@ export class MaintenanceTaskShareOptions {
 
 	shareEncryptionKey: ShareMetadataBehaviour = ShareMetadataBehaviour.IfAvailable;
 
-	shareSecretIds: SecretIdShareOptions = new SecretIdShareOptions.AllAvailable();
+	shareSecretIds: SecretIdShareOptions = new SecretIdShareOptions.AllAvailable({});
 
 	constructor(partial: Partial<MaintenanceTaskShareOptions>) {
 		if ('requestedPermissions' in partial && partial.requestedPermissions !== undefined) this.requestedPermissions = partial.requestedPermissions;
