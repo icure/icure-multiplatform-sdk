@@ -8,11 +8,8 @@ import kotlin.String
 import kotlin.collections.List
 import kotlin.collections.Set
 
-// WARNING: This file is auto-generated. If you change it manually, your changes will be lost.
-// If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
-
 @Serializable
-data class EmbeddedTimeTable(
+public data class EmbeddedTimeTable(
 	public val id: String,
 	@DefaultValue("emptySet()")
 	public val codes: Set<CodeStub> = emptySet(),
@@ -23,8 +20,4 @@ data class EmbeddedTimeTable(
 	public val endTime: Long? = null,
 	@DefaultValue("emptyList()")
 	public val items: List<TimeTableItem> = emptyList(),
-) {
-	// region EmbeddedTimeTable-EmbeddedTimeTable
-
-	// endregion
-}
+)
