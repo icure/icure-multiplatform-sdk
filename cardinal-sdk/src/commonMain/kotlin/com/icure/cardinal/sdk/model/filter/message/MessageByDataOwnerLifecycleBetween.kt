@@ -23,5 +23,6 @@ data class MessageByDataOwnerLifecycleBetween(
 	override val desc: String? = null,
 ) : AbstractFilter<Message> {
 	// region MessageByDataOwnerLifecycleBetween-MessageByDataOwnerLifecycleBetween
+
 	// endregion
 }
