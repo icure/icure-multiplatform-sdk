@@ -699,11 +699,11 @@ internal class FormApiImplJs(
 				secretIdUseOption_fromJs(secretId)
 			}
 			val result = formApi.withEncryptionMetadata(
-				baseConverted,
-				patientConverted,
-				userConverted,
-				delegatesConverted,
-				secretIdConverted,
+                baseConverted,
+                patientConverted,
+                userConverted,
+                delegatesConverted,
+                secretIdConverted,
 			)
 			form_toJs(result)
 		}

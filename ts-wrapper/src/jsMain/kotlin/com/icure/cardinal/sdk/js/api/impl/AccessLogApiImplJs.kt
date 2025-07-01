@@ -806,11 +806,11 @@ internal class AccessLogApiImplJs(
 				secretIdUseOption_fromJs(secretId)
 			}
 			val result = accessLogApi.withEncryptionMetadata(
-				baseConverted,
-				patientConverted,
-				userConverted,
-				delegatesConverted,
-				secretIdConverted,
+                baseConverted,
+                patientConverted,
+                userConverted,
+                delegatesConverted,
+                secretIdConverted,
 			)
 			accessLog_toJs(result)
 		}

@@ -15,6 +15,7 @@ import com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption
 import com.icure.cardinal.sdk.exceptions.NotFoundException
 import com.icure.cardinal.sdk.model.DecryptedReceipt
 import com.icure.cardinal.sdk.model.EncryptedReceipt
+import com.icure.cardinal.sdk.model.EntityReferenceInGroup
 import com.icure.cardinal.sdk.model.ListOfIds
 import com.icure.cardinal.sdk.model.Patient
 import com.icure.cardinal.sdk.model.Receipt
@@ -172,6 +173,7 @@ internal class ReceiptApiImpl(
 		user: User?,
 		delegates: Map<String, AccessLevel>,
 		secretId: SecretIdUseOption,
+		alternateRootDataOwnerReference: EntityReferenceInGroup?,
 		// Temporary, needs a lot more stuff to match typescript implementation
 	): DecryptedReceipt =
 		config.crypto.entity.entityWithInitializedEncryptedMetadata(
@@ -198,6 +200,7 @@ internal class ReceiptApiImpl(
 			initializeEncryptionKey = true,
 			autoDelegations = (delegates + user?.autoDelegationsFor(DelegationTag.MedicalInformation)
 				.orEmpty()).keyAsLocalDataOwnerReferences(),
+			alternateRootDataOwnerReference = alternateRootDataOwnerReference,
 		).updatedEntity
 
 	override suspend fun getAndDecryptReceiptAttachment(receipt: Receipt, attachmentId: String) =
@@ -237,7 +240,8 @@ internal class ReceiptApiImpl(
 				references = refs
 			),
 			user = user,
-			patient = null
+			patient = null,
+			alternateRootDataOwnerReference = null
 		).let { createReceipt(it) }
 		checkNotNull(newReceipt.rev) {
 			"Receipt creation failed"

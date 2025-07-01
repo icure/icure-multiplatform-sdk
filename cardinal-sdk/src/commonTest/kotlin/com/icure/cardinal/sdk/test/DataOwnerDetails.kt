@@ -30,9 +30,9 @@ data class DataOwnerDetails private constructor (
 	val dataOwnerId: String,
 	val username: String,
 	val password: String,
-	val keypair: RsaKeypair<RsaAlgorithm.RsaEncryptionAlgorithm>,
+	val keypair: RsaKeypair<RsaAlgorithm.RsaEncryptionAlgorithm>?,
 	val parent: DataOwnerDetails?,
-	val publicKeySpki: SpkiHexString,
+	val publicKeySpki: SpkiHexString?,
 	val groupId: String
 ) {
 	companion object {
@@ -42,7 +42,7 @@ data class DataOwnerDetails private constructor (
 			dataOwnerId: String,
 			username: String,
 			password: String,
-			keypair: RsaKeypair<RsaAlgorithm.RsaEncryptionAlgorithm>,
+			keypair: RsaKeypair<RsaAlgorithm.RsaEncryptionAlgorithm>?,
 			parent: DataOwnerDetails?,
 			groupId: String
 		) = DataOwnerDetails(
@@ -51,7 +51,7 @@ data class DataOwnerDetails private constructor (
 			password = password,
 			keypair = keypair,
 			parent = parent,
-			publicKeySpki = SpkiHexString(defaultCryptoService.rsa.exportPublicKeySpki(keypair.public).toHexString()),
+			publicKeySpki = keypair?.let {SpkiHexString( defaultCryptoService.rsa.exportPublicKeySpki(it.public).toHexString())},
 			groupId = groupId
 		)
 	}
@@ -165,11 +165,13 @@ data class DataOwnerDetails private constructor (
 		)
 
 	private suspend fun addInitialKeysToStorage(storage: CardinalStorageFacade) {
-		storage.saveEncryptionKeypair(
-			dataOwnerId,
-			keypair,
-			true
-		)
+		keypair?.let {
+			storage.saveEncryptionKeypair(
+				dataOwnerId,
+				it,
+				true
+			)
+		}
 		parent?.addInitialKeysToStorage(storage)
 	}
 

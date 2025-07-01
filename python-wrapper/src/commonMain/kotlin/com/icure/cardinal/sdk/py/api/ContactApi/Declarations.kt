@@ -287,11 +287,11 @@ public fun withEncryptionMetadataBlocking(sdk: CardinalApis, params: String): St
 	val decodedParams = fullLanguageInteropJson.decodeFromString<WithEncryptionMetadataParams>(params)
 	runBlocking {
 		sdk.contact.withEncryptionMetadata(
-			decodedParams.base,
-			decodedParams.patient,
-			decodedParams.user,
-			decodedParams.delegates,
-			decodedParams.secretId,
+            decodedParams.base,
+            decodedParams.patient,
+            decodedParams.user,
+            decodedParams.delegates,
+            decodedParams.secretId,
 		)
 	}
 }.toPyString(DecryptedContact.serializer())
@@ -310,11 +310,11 @@ public fun withEncryptionMetadataAsync(
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.contact.withEncryptionMetadata(
-				decodedParams.base,
-				decodedParams.patient,
-				decodedParams.user,
-				decodedParams.delegates,
-				decodedParams.secretId,
+                decodedParams.base,
+                decodedParams.patient,
+                decodedParams.user,
+                decodedParams.delegates,
+                decodedParams.secretId,
 			)
 		}.toPyStringAsyncCallback(DecryptedContact.serializer(), resultCallback)
 	}

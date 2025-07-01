@@ -2,6 +2,7 @@ package com.icure.cardinal.sdk.crypto
 
 import com.icure.cardinal.sdk.model.EntityReferenceInGroup
 import com.icure.cardinal.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
+import com.icure.cardinal.sdk.crypto.entities.ExchangeDataInjectionDetails
 import com.icure.cardinal.sdk.crypto.entities.ExchangeDataWithPotentiallyDecryptedContent
 import com.icure.cardinal.sdk.crypto.entities.ExchangeDataWithUnencryptedContent
 import com.icure.cardinal.sdk.model.specializations.Base64String
@@ -40,6 +41,7 @@ interface ExchangeDataManager {
 		delegateReference: EntityReferenceInGroup,
 		allowCreationWithoutDelegateKey: Boolean,
 	): ExchangeDataWithUnencryptedContent
+
 
 	/**
 	 * Retrieve the cached decrypted exchange data key associated with any of the provided hashes/entry keys of secure delegations.
@@ -86,4 +88,19 @@ interface ExchangeDataManager {
 		groupId: String?,
 		entityType: EntityWithEncryptionMetadataTypeName
 	): List<Base64String>?
+
+	/**
+	 * Injects already decrypted exchange data, allowing it to be used by the sdk.
+	 * @param exchangeDataDetails the exchange data to inject, with the decrypted content and verified status.
+	 * Note that the SDK won't verify that the provided decrypted content actually matches what is stored in the exchange
+	 * data.
+	 * @param reEncryptWithOwnKeys if true all the provided exchange data that is not encrypted with any of the self
+	 * verified keys of the user will be re-encrypted with them. In case the user is also the delegator and the data is
+	 * verified the delegator signature will be updated.
+	 */
+	suspend fun injectDecryptedExchangeData(
+		groupId: String?,
+		exchangeDataDetails: List<ExchangeDataInjectionDetails>,
+		reEncryptWithOwnKeys: Boolean
+	)
 }

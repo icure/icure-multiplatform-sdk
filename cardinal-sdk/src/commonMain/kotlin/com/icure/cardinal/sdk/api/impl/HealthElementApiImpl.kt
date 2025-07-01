@@ -275,7 +275,7 @@ private class AbstractHealthElementBasicFlavourlessApi(
 	@Deprecated("Deletion without rev is unsafe")
 	override suspend fun deleteHealthElementsUnsafe(entityIds: List<String>): List<StoredDocumentIdentifier> =
 		rawApi.deleteHealthElements(ListOfIds(entityIds)).successBody().toStoredDocumentIdentifier()
-	
+
 	override suspend fun deleteHealthElementById(entityId: String, rev: String): StoredDocumentIdentifier =
 		rawApi.deleteHealthElement(entityId, rev).successBodyOrThrowRevisionConflict().toStoredDocumentIdentifier()
 
@@ -327,7 +327,7 @@ private class HealthElementApiImpl(
 		HealthElementBasicFlavourlessInGroupApi by base {
 		override val encrypted: HealthElementFlavouredInGroupApi<EncryptedHealthElement> = encryptedFlavour
 		override val tryAndRecover: HealthElementFlavouredInGroupApi<HealthElement> = tryAndRecoverFlavour
-		
+
 		override suspend fun decrypt(healthElements: List<GroupScoped<EncryptedHealthElement>>): List<GroupScoped<DecryptedHealthElement>> =
 			healthElements.mapExactlyChunkedByGroup { groupId, entities ->
 				decryptedFlavour.maybeDecrypt(groupId, entities)
@@ -348,8 +348,12 @@ private class HealthElementApiImpl(
 			base: DecryptedHealthElement?,
 			patient: GroupScoped<Patient>,
 			user: User?,
-			delegates: @JsMapAsObjectArray(keyEntryName = "delegate", valueEntryName = "accessLevel") Map<EntityReferenceInGroup, AccessLevel>,
-			secretId: SecretIdUseOption
+			delegates: @JsMapAsObjectArray(
+				keyEntryName = "delegate",
+				valueEntryName = "accessLevel"
+			) Map<EntityReferenceInGroup, AccessLevel>,
+			secretId: SecretIdUseOption,
+			alternateRootDataOwnerReference: EntityReferenceInGroup?
 		): GroupScoped<DecryptedHealthElement> =
 			GroupScoped(
 				doWithEncryptionMetadata(
@@ -358,7 +362,8 @@ private class HealthElementApiImpl(
 					patient.entity to patient.groupId,
 					user,
 					delegates,
-					secretId
+					secretId,
+					alternateRootDataOwnerReference
 				),
 				entityGroupId
 			)
@@ -385,6 +390,7 @@ private class HealthElementApiImpl(
 		user: User?,
 		delegates: Map<String, AccessLevel>,
 		secretId: SecretIdUseOption,
+		alternateRootDataOwnerReference: EntityReferenceInGroup?,
 		// Temporary, needs a lot more stuff to match typescript implementation
 	): DecryptedHealthElement =
 		doWithEncryptionMetadata(
@@ -393,7 +399,8 @@ private class HealthElementApiImpl(
 			patient to null,
 			user,
 			delegates.keyAsLocalDataOwnerReferences(),
-			secretId
+			secretId,
+			alternateRootDataOwnerReference
 		)
 
 	private suspend fun doWithEncryptionMetadata(
@@ -402,32 +409,34 @@ private class HealthElementApiImpl(
 		patient: Pair<Patient, String?>,
 		user: User?,
 		delegates: @JsMapAsObjectArray(keyEntryName = "delegate", valueEntryName = "accessLevel") Map<EntityReferenceInGroup, AccessLevel>,
-		secretId: SecretIdUseOption
+		secretId: SecretIdUseOption,
+		alternateRootDataOwnerReference: EntityReferenceInGroup?,
 	): DecryptedHealthElement =
 		config.crypto.entity.entityWithInitializedEncryptedMetadata(
-			entityGroupId,
-			(base ?: DecryptedHealthElement(config.crypto.primitives.strongRandom.randomUUID())).copy(
-				created = base?.created ?: currentEpochMs(),
-				modified = base?.modified ?: currentEpochMs(),
-				responsible = base?.responsible ?: user?.takeIf { config.autofillAuthor }?.dataOwnerId,
-				author = base?.author ?: user?.id?.takeIf { config.autofillAuthor },
-			),
-			EntityWithEncryptionMetadataTypeName.HealthElement,
-			owningEntityDetails = patient.let { (patient, patientGroup) ->
-				OwningEntityDetails(
-					patientGroup,
-					patient.id,
-					config.crypto.entity.resolveSecretIdOption(
-						entityGroupId,
-						patient,
-						EntityWithEncryptionMetadataTypeName.Patient,
-						secretId
-					)
-				)
-			},
-			initializeEncryptionKey = true,
-			autoDelegations = delegates + user?.autoDelegationsFor(DelegationTag.MedicalInformation)
-				.orEmpty().keyAsLocalDataOwnerReferences(),
+            entityGroupId,
+            (base ?: DecryptedHealthElement(config.crypto.primitives.strongRandom.randomUUID())).copy(
+                created = base?.created ?: currentEpochMs(),
+                modified = base?.modified ?: currentEpochMs(),
+                responsible = base?.responsible ?: user?.takeIf { config.autofillAuthor }?.dataOwnerId,
+                author = base?.author ?: user?.id?.takeIf { config.autofillAuthor },
+            ),
+            EntityWithEncryptionMetadataTypeName.HealthElement,
+            owningEntityDetails = patient.let { (patient, patientGroup) ->
+                OwningEntityDetails(
+                    patientGroup,
+                    patient.id,
+                    config.crypto.entity.resolveSecretIdOption(
+                        entityGroupId,
+                        patient,
+                        EntityWithEncryptionMetadataTypeName.Patient,
+                        secretId
+                    )
+                )
+            },
+            initializeEncryptionKey = true,
+            autoDelegations = delegates + user?.autoDelegationsFor(DelegationTag.MedicalInformation)
+                .orEmpty().keyAsLocalDataOwnerReferences(),
+			alternateRootDataOwnerReference = alternateRootDataOwnerReference,
 		).updatedEntity
 
 	override suspend fun getEncryptionKeysOf(healthElement: HealthElement): Set<HexString> =

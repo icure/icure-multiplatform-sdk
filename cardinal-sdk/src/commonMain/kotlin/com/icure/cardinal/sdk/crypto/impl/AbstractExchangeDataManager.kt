@@ -8,6 +8,7 @@ import com.icure.cardinal.sdk.crypto.UserEncryptionKeysManager
 import com.icure.cardinal.sdk.crypto.entities.CardinalKeyInfo
 import com.icure.cardinal.sdk.model.EntityReferenceInGroup
 import com.icure.cardinal.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
+import com.icure.cardinal.sdk.crypto.entities.ExchangeDataInjectionDetails
 import com.icure.cardinal.sdk.crypto.entities.ExchangeDataWithPotentiallyDecryptedContent
 import com.icure.cardinal.sdk.crypto.entities.ExchangeDataWithUnencryptedContent
 import com.icure.cardinal.sdk.crypto.entities.SdkBoundGroup
@@ -66,16 +67,17 @@ abstract class AbstractExchangeDataManager(
 				EntityReferenceInGroup(otherDataOwner)
 			) + base.getExchangeDataByDelegatorDelegatePair(
 				null,
-				EntityReferenceInGroup(otherDataOwner),
+			 EntityReferenceInGroup(otherDataOwner),
 				EntityReferenceInGroup(self)
 			)
 		}
 		// Can improve with batch but there should not be many anyway and it is a rare operation
 		allExchangeDataToUpdate.forEach {
 			base.tryUpdateExchangeData(
-				it,
-				decryptionKeys,
-				VerifiedRsaEncryptionKeysSet(listOf(CardinalKeyInfo(newDataOwnerPublicKey, importedNewKey)))
+				exchangeData = it,
+				decryptionKeys = decryptionKeys,
+				newEncryptionKeys = VerifiedRsaEncryptionKeysSet(listOf(CardinalKeyInfo(newDataOwnerPublicKey, importedNewKey))),
+				newDelegatorSignatureKeys = SelfVerifiedKeysSet(emptySet()),
 			)
 		}
 	}
@@ -116,6 +118,54 @@ abstract class AbstractExchangeDataManager(
 		entityType: EntityWithEncryptionMetadataTypeName
 	): List<Base64String>? =
 		getOrCreateManagerInGroup(groupId).getEncodedAccessControlKeysValue(entityType)
+
+	override suspend fun injectDecryptedExchangeData(
+		groupId: String?,
+		exchangeDataDetails: List<ExchangeDataInjectionDetails>,
+		reEncryptWithOwnKeys: Boolean,
+	) {
+		val self = dataOwnerApi.getCurrentDataOwnerId()
+		val retrievedExchangeData = base.getExchangeDataByIds(groupId, exchangeDataDetails.map { it.exchangeDataId }.toSet())
+		if (retrievedExchangeData.any { it.delegator != self && it.delegate != self }) {
+			throw IllegalArgumentException("Should only inject exchange data from/to the current user")
+		}
+		val exchangeDataById = retrievedExchangeData.associateBy { it.id }
+
+		if (reEncryptWithOwnKeys) {
+			val selfVerifiedKeys = userEncryptionKeys.getSelfVerifiedKeys()
+			if (selfVerifiedKeys.isEmpty()) throw IllegalStateException("Can't re-encrypt injected exchange data with own keys if in keyless mode")
+			val encryptionKeys = VerifiedRsaEncryptionKeysSet(selfVerifiedKeys.map { k -> CardinalKeyInfo(k.pubSpkiHexString, k.toPublicKeyInfo().key) })
+			val signatureKeys = SelfVerifiedKeysSet(selfVerifiedKeys.map { k -> CardinalKeyInfo(k.pubSpkiHexString, k.toPrivateKeyInfo().key) })
+			exchangeDataDetails.forEach { details ->
+				val exchangeData = exchangeDataById[details.exchangeDataId]
+				if (exchangeData != null) {
+					base.updateExchangeDataWithRawDecryptedContent(
+						exchangeData = exchangeData,
+						newEncryptionKeys = encryptionKeys,
+						newDelegatorSignatureKeys = if (exchangeData.delegator == self && details.verified) signatureKeys else SelfVerifiedKeysSet(emptySet()),
+						rawExchangeKey = details.exchangeKey,
+						rawAccessControlSecret = details.accessControlSecret,
+						rawSharedSignatureKey = details.sharedSignatureKey,
+					)
+				}
+			}
+		}
+
+		exchangeDataDetails.mapNotNull { details ->
+			exchangeDataById[details.exchangeDataId]?.let { exchangeData ->
+				ExchangeDataWithUnencryptedContent(
+					exchangeData = exchangeData,
+					unencryptedContent = UnencryptedExchangeDataContent(
+						accessControlSecret = base.importAccessControlSecret(details.accessControlSecret),
+						exchangeKey = base.importExchangeKey(details.exchangeKey),
+						sharedSignatureKey = base.importSharedSignatureKey(details.sharedSignatureKey)
+					)
+				) to details.verified
+			}
+		}.also { importedDetails ->
+			if (importedDetails.isNotEmpty()) { getOrCreateManagerInGroup(groupId).cacheInjectedExchangeData(importedDetails) }
+		}
+	}
 
 	private suspend fun getOrCreateManagerInGroup(groupId: String?): AbstractExchangeDataManagerInGroup {
 		val normalizedGroupId = sdkBoundGroup.resolve(groupId)
@@ -245,5 +295,8 @@ abstract class AbstractExchangeDataManagerInGroup(
 	abstract suspend fun getEncodedAccessControlKeysValue(
 		entityType: EntityWithEncryptionMetadataTypeName
 	): List<Base64String>?
+	abstract suspend fun cacheInjectedExchangeData(
+		exchangeDataDetails: List<Pair<ExchangeDataWithUnencryptedContent, Boolean>>
+	)
 	abstract fun dispose()
 }

@@ -21,6 +21,7 @@ import com.icure.cardinal.sdk.filters.mapAccessLogFilterOptions
 import com.icure.cardinal.sdk.model.AccessLog
 import com.icure.cardinal.sdk.model.DecryptedAccessLog
 import com.icure.cardinal.sdk.model.EncryptedAccessLog
+import com.icure.cardinal.sdk.model.EntityReferenceInGroup
 import com.icure.cardinal.sdk.model.ListOfIds
 import com.icure.cardinal.sdk.model.ListOfIdsAndRev
 import com.icure.cardinal.sdk.model.PaginatedList
@@ -55,7 +56,7 @@ private abstract class AbstractAccessLogBasicFlavouredApi<E : AccessLog>(
 			maybeDecrypt(null, it)
 		}
 	}
-	
+
 	override suspend fun undeleteAccessLogById(id: String, rev: String): E =
 		rawApi.undeleteAccessLog(id, rev).successBodyOrThrowRevisionConflict().let { maybeDecrypt(null, it) }
 
@@ -280,29 +281,31 @@ internal class AccessLogApiImpl(
 		user: User?,
 		delegates: Map<String, AccessLevel>,
 		secretId: SecretIdUseOption,
+		alternateRootDataOwnerReference: EntityReferenceInGroup?,
 	): DecryptedAccessLog =
 		crypto.entity.entityWithInitializedEncryptedMetadata(
-			entityGroupId = null,
-			entity = (base ?: DecryptedAccessLog(crypto.primitives.strongRandom.randomUUID())).copy(
-				created = base?.created ?: currentEpochMs(),
-				modified = base?.modified ?: currentEpochMs(),
-				date = base?.date ?: currentEpochInstant(),
-				responsible = base?.responsible ?: user?.takeIf { config.autofillAuthor }?.dataOwnerId,
-				author = base?.author ?: user?.id?.takeIf { config.autofillAuthor },
-			),
-			entityType = EntityWithEncryptionMetadataTypeName.AccessLog,
-			owningEntityDetails = OwningEntityDetails(
-				null,
-				patient.id,
-				crypto.entity.resolveSecretIdOption(
-					null,
-					patient,
-					EntityWithEncryptionMetadataTypeName.Patient,
-					secretId
-				)
-			),
-			initializeEncryptionKey = true,
-			autoDelegations = (delegates + user?.autoDelegationsFor(DelegationTag.AdministrativeData).orEmpty()).keyAsLocalDataOwnerReferences(),
+            entityGroupId = null,
+            entity = (base ?: DecryptedAccessLog(crypto.primitives.strongRandom.randomUUID())).copy(
+                created = base?.created ?: currentEpochMs(),
+                modified = base?.modified ?: currentEpochMs(),
+                date = base?.date ?: currentEpochInstant(),
+                responsible = base?.responsible ?: user?.takeIf { config.autofillAuthor }?.dataOwnerId,
+                author = base?.author ?: user?.id?.takeIf { config.autofillAuthor },
+            ),
+            entityType = EntityWithEncryptionMetadataTypeName.AccessLog,
+            owningEntityDetails = OwningEntityDetails(
+                null,
+                patient.id,
+                crypto.entity.resolveSecretIdOption(
+                    null,
+                    patient,
+                    EntityWithEncryptionMetadataTypeName.Patient,
+                    secretId
+                )
+            ),
+            initializeEncryptionKey = true,
+            autoDelegations = (delegates + user?.autoDelegationsFor(DelegationTag.AdministrativeData).orEmpty()).keyAsLocalDataOwnerReferences(),
+			alternateRootDataOwnerReference = alternateRootDataOwnerReference,
 		).updatedEntity
 
 	override suspend fun decrypt(accessLog: EncryptedAccessLog): DecryptedAccessLog =

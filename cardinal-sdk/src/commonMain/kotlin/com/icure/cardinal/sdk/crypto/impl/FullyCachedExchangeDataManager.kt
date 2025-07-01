@@ -259,6 +259,36 @@ private class FullyCachedExchangeDataManagerInGroup(
 	override suspend fun getEncodedAccessControlKeysValue(entityType: EntityWithEncryptionMetadataTypeName): List<Base64String> =
 		caches.await().entityTypeToAccessControlKeysValue.getValue(entityType)
 
+	override suspend fun cacheInjectedExchangeData(exchangeDataDetails: List<Pair<ExchangeDataWithUnencryptedContent, Boolean>>) {
+		creationAndCachesErrorReloadMutex.withLock {
+			val currCaches = caches
+			cacheUpdateAndNewDataCreationScope.async {
+				val awaited = currCaches.await()
+
+				val exchangeDataDetailsMap = exchangeDataDetails.associate { (data, isVerified) ->
+					val secureDelegationKeys = data.unencryptedContent.accessControlSecret.allAccessControlKeys(cryptoService)
+						.map { it.toSecureDelegationKeyString(cryptoService) }.toSet()
+
+					data.exchangeData.id to CachedExchangeDataDetails(
+						data.exchangeData,
+						CachedDecryptedDetails(
+							data.unencryptedContent, isVerified,
+							secureDelegationKeys
+						)
+					)
+				}
+
+				cachesFrom(
+					dataById = awaited.dataById + exchangeDataDetailsMap,
+					dataByDelegationKey = awaited.dataByDelegationKey + exchangeDataDetailsMap.values
+						.flatMap { it.decryptedDetails?.secureDelegationKeys?.map { k -> k to it } ?: emptyList() }.toSet()
+						.associate { it },
+					verifiedDataByDelegateId = awaited.verifiedDataByDelegateId + exchangeDataDetailsMap.values.filter { it.decryptedDetails?.verified == true }
+						.associateBy { it.exchangeData.delegate }
+				)
+			}.also { caches = it }
+		}.await()	}
+
 	override fun dispose() {
 		cacheUpdateAndNewDataCreationScope.cancel()
 	}

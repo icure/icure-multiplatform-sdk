@@ -717,14 +717,16 @@ private class PatientApiImpl(
 			entityGroupId: String,
 			base: DecryptedPatient?,
 			user: User?,
-			delegates: Map<EntityReferenceInGroup, AccessLevel>
+			delegates: Map<EntityReferenceInGroup, AccessLevel>,
+			alternateRootDataOwnerReference: EntityReferenceInGroup?,
 		): GroupScoped<DecryptedPatient> =
 			GroupScoped(
 				doWithEncryptionMetadata(
 					entityGroupId,
 					base,
 					user,
-					delegates
+					delegates,
+					alternateRootDataOwnerReference
 				),
 				entityGroupId
 			)
@@ -1007,15 +1009,17 @@ private class PatientApiImpl(
 		base: DecryptedPatient?,
 		user: User?,
 		delegates: Map<String, AccessLevel>,
+		alternateRootDataOwnerReference: EntityReferenceInGroup?,
 		// Temporary, needs a lot more stuff to match typescript implementation
 	): DecryptedPatient =
-		doWithEncryptionMetadata(null, base, user, delegates.keyAsLocalDataOwnerReferences())
+		doWithEncryptionMetadata(null, base, user, delegates.keyAsLocalDataOwnerReferences(), alternateRootDataOwnerReference)
 
 	private suspend fun doWithEncryptionMetadata(
 		entityGroupId: String?,
 		base: DecryptedPatient?,
 		user: User?,
-		delegates: Map<EntityReferenceInGroup, AccessLevel>
+		delegates: Map<EntityReferenceInGroup, AccessLevel>,
+		alternateRootDataOwnerReference: EntityReferenceInGroup?,
 	): DecryptedPatient =
 		config.crypto.entity.entityWithInitializedEncryptedMetadata(
 			entityGroupId,
@@ -1030,6 +1034,7 @@ private class PatientApiImpl(
 			initializeEncryptionKey = true,
 			autoDelegations = delegates + user?.autoDelegationsFor(DelegationTag.AdministrativeData)
 				.orEmpty().keyAsLocalDataOwnerReferences(),
+			alternateRootDataOwnerReference = alternateRootDataOwnerReference,
 		).updatedEntity
 
 	override suspend fun hasWriteAccess(patient: Patient): Boolean =
@@ -1239,7 +1244,7 @@ private class PatientBasicApiImpl(
 
 	override suspend fun matchPatientsBySorted(filter: BaseSortableFilterOptions<Patient>): List<String> =
 		matchPatientsBy(filter)
-	
+
 	private suspend fun doMatchPatientsBy(groupId: String?, filter: BaseFilterOptions<Patient>): List<String> =
 		rawApi.matchPatientsBy(mapPatientFilterOptions(filter, config, groupId)).successBody()
 
@@ -1248,7 +1253,7 @@ private class PatientBasicApiImpl(
 
 	override suspend fun filterPatientsBySorted(filter: BaseSortableFilterOptions<Patient>): PaginatedListIterator<EncryptedPatient> =
 		filterPatientsBy(filter)
-	
+
 	private suspend inline fun <T : Any> doFilterPatientsBy(
 		groupId: String?,
 		filter: BaseFilterOptions<Patient>,

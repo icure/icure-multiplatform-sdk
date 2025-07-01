@@ -486,8 +486,12 @@ private class CalendarItemApiImpl(
 			base: DecryptedCalendarItem?,
 			patient: GroupScoped<Patient>?,
 			user: User?,
-			delegates: @JsMapAsObjectArray(keyEntryName = "delegate", valueEntryName = "accessLevel") Map<EntityReferenceInGroup, AccessLevel>,
-			secretId: SecretIdUseOption
+			delegates: @JsMapAsObjectArray(
+				keyEntryName = "delegate",
+				valueEntryName = "accessLevel"
+			) Map<EntityReferenceInGroup, AccessLevel>,
+			secretId: SecretIdUseOption,
+			alternateRootDataOwnerReference: EntityReferenceInGroup?
 		): GroupScoped<DecryptedCalendarItem> =
 			GroupScoped(
 				doWithEncryptionMetadata(
@@ -496,7 +500,8 @@ private class CalendarItemApiImpl(
 					patient?.let { Pair(it.entity, it.groupId) },
 					user,
 					delegates,
-					secretId
+					secretId,
+					alternateRootDataOwnerReference
 				),
 				entityGroupId
 			)
@@ -533,6 +538,7 @@ private class CalendarItemApiImpl(
 		user: User?,
 		delegates: Map<String, AccessLevel>,
 		secretId: SecretIdUseOption,
+		alternateRootDataOwnerReference: EntityReferenceInGroup?,
 	) =
 		doWithEncryptionMetadata(
 			null,
@@ -540,7 +546,8 @@ private class CalendarItemApiImpl(
 			patient?.let { Pair(it, null) },
 			user,
 			delegates.keyAsLocalDataOwnerReferences(),
-			secretId
+			secretId,
+			alternateRootDataOwnerReference
 		)
 
 	private suspend fun doWithEncryptionMetadata(
@@ -549,31 +556,33 @@ private class CalendarItemApiImpl(
 		patientInGroup: Pair<Patient, String?>?,
 		user: User?,
 		delegates: @JsMapAsObjectArray(keyEntryName = "delegate", valueEntryName = "accessLevel") Map<EntityReferenceInGroup, AccessLevel>,
-		secretId: SecretIdUseOption
+		secretId: SecretIdUseOption,
+		alternateRootDataOwnerReference: EntityReferenceInGroup?
 	): DecryptedCalendarItem =
 		crypto.entity.entityWithInitializedEncryptedMetadata(
-			entityGroupId = entityGroupId,
-			entity = (base ?: DecryptedCalendarItem(crypto.primitives.strongRandom.randomUUID())).copy(
-				created = base?.created ?: currentEpochMs(),
-				modified = base?.modified ?: currentEpochMs(),
-				responsible = base?.responsible ?: user?.takeIf { config.autofillAuthor }?.dataOwnerId,
-				author = base?.author ?: user?.id?.takeIf { config.autofillAuthor },
-			),
-			entityType = EntityWithEncryptionMetadataTypeName.CalendarItem,
-			owningEntityDetails = patientInGroup?.let { (patient, patientGroup) ->
-				OwningEntityDetails(
-					patientGroup,
-					patient.id,
-					crypto.entity.resolveSecretIdOption(
-						entityGroupId,
-						patient,
-						EntityWithEncryptionMetadataTypeName.Patient,
-						secretId
-					)
-				)
-			},
-			initializeEncryptionKey = true,
-			autoDelegations = delegates + user?.autoDelegationsFor(DelegationTag.MedicalInformation).orEmpty().keyAsLocalDataOwnerReferences(),
+            entityGroupId = entityGroupId,
+            entity = (base ?: DecryptedCalendarItem(crypto.primitives.strongRandom.randomUUID())).copy(
+                created = base?.created ?: currentEpochMs(),
+                modified = base?.modified ?: currentEpochMs(),
+                responsible = base?.responsible ?: user?.takeIf { config.autofillAuthor }?.dataOwnerId,
+                author = base?.author ?: user?.id?.takeIf { config.autofillAuthor },
+            ),
+            entityType = EntityWithEncryptionMetadataTypeName.CalendarItem,
+            owningEntityDetails = patientInGroup?.let { (patient, patientGroup) ->
+                OwningEntityDetails(
+                    patientGroup,
+                    patient.id,
+                    crypto.entity.resolveSecretIdOption(
+                        entityGroupId,
+                        patient,
+                        EntityWithEncryptionMetadataTypeName.Patient,
+                        secretId
+                    )
+                )
+            },
+            initializeEncryptionKey = true,
+            autoDelegations = delegates + user?.autoDelegationsFor(DelegationTag.MedicalInformation).orEmpty().keyAsLocalDataOwnerReferences(),
+			alternateRootDataOwnerReference = alternateRootDataOwnerReference,
 		).updatedEntity
 
 	override suspend fun getEncryptionKeysOf(calendarItem: CalendarItem): Set<HexString> =

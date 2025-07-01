@@ -9,6 +9,7 @@ import com.icure.cardinal.sdk.filters.FilterOptions
 import com.icure.cardinal.sdk.filters.SortableFilterOptions
 import com.icure.cardinal.sdk.model.DecryptedForm
 import com.icure.cardinal.sdk.model.EncryptedForm
+import com.icure.cardinal.sdk.model.EntityReferenceInGroup
 import com.icure.cardinal.sdk.model.Form
 import com.icure.cardinal.sdk.model.FormTemplate
 import com.icure.cardinal.sdk.model.Patient
@@ -27,7 +28,7 @@ interface FormBasicFlavourlessApi {
 	suspend fun deleteFormUnsafe(entityId: String): DocIdentifier
 	@Deprecated("Deletion without rev is unsafe")
 	suspend fun deleteFormsUnsafe(entityIds: List<String>): List<DocIdentifier>
-	
+
 	/**
 	 * Deletes a form. If you don't have write access to the form the method will fail.
 	 * @param entityId id of the form.
@@ -346,6 +347,7 @@ interface FormApi : FormBasicFlavourlessApi, FormFlavouredApi<DecryptedForm> {
 		delegates: Map<String, AccessLevel> = emptyMap(),
 		@DefaultValue("com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption.UseAnySharedWithParent")
 		secretId: SecretIdUseOption = SecretIdUseOption.UseAnySharedWithParent,
+		alternateRootDataOwnerReference: EntityReferenceInGroup? = null,
 	): DecryptedForm
 
 	/**

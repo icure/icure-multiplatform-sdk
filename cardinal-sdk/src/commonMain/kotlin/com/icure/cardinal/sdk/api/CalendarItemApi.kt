@@ -31,7 +31,7 @@ interface CalendarItemBasicFlavourlessApi {
 	suspend fun deleteCalendarItemUnsafe(entityId: String): StoredDocumentIdentifier
 	@Deprecated("Deletion without rev is unsafe")
 	suspend fun deleteCalendarItemsUnsafe(entityIds: List<String>): List<StoredDocumentIdentifier>
-	
+
 	/**
 	 * Deletes a calendarItem. If you don't have write access to the calendarItem the method will fail.
 	 * @param entityId id of the calendarItem.
@@ -395,6 +395,7 @@ interface CalendarItemApi : CalendarItemBasicFlavourlessApi, CalendarItemFlavour
 		delegates: Map<String, AccessLevel> = emptyMap(),
 		@DefaultValue("com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption.UseAnySharedWithParent")
 		secretId: SecretIdUseOption = SecretIdUseOption.UseAnySharedWithParent,
+		alternateRootDataOwnerReference: EntityReferenceInGroup? = null,
 	): DecryptedCalendarItem
 
 	/**
@@ -535,6 +536,7 @@ interface CalendarItemInGroupApi : CalendarItemBasicFlavourlessInGroupApi, Calen
 		delegates: @JsMapAsObjectArray(keyEntryName = "delegate", valueEntryName = "accessLevel") Map<EntityReferenceInGroup, AccessLevel> = emptyMap(),
 		@DefaultValue("com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption.UseAnySharedWithParent")
 		secretId: SecretIdUseOption = SecretIdUseOption.UseAnySharedWithParent,
+		alternateRootDataOwnerReference: EntityReferenceInGroup? = null,
 	): GroupScoped<DecryptedCalendarItem>
 
 	/**

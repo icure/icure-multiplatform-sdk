@@ -432,13 +432,14 @@ class EntityEncryptionServiceImpl(
 		}
 
 	override suspend fun <T : HasEncryptionMetadata> entityWithInitializedEncryptedMetadata(
-		entityGroupId: String?,
-		entity: T,
-		entityType: EntityWithEncryptionMetadataTypeName,
-		owningEntityDetails: OwningEntityDetails?,
-		initializeEncryptionKey: Boolean,
-		autoDelegations: Map<EntityReferenceInGroup, AccessLevel>
-	): EntityEncryptionMetadataInitialisationResult<T> {
+        entityGroupId: String?,
+        entity: T,
+        entityType: EntityWithEncryptionMetadataTypeName,
+        owningEntityDetails: OwningEntityDetails?,
+        initializeEncryptionKey: Boolean,
+        autoDelegations: Map<EntityReferenceInGroup, AccessLevel>,
+        alternateRootDataOwnerReference: EntityReferenceInGroup?
+    ): EntityEncryptionMetadataInitialisationResult<T> {
 		hasEmptyEncryptionMetadata(entity, throwIfNonEmpty = true)
 		val normalizedAutoDelegations = autoDelegations.mapKeys { it.key.normalized(boundGroup) }
 		val newRawKey = if (initializeEncryptionKey)
@@ -459,9 +460,10 @@ class EntityEncryptionServiceImpl(
 					)
 				}
 			),
-			encryptionKeys = setOfNotNull(newRawKey),
 			owningEntitySecretIds = owningEntityDetails?.secretIds.orEmpty(),
+			encryptionKeys = setOfNotNull(newRawKey),
 			autoDelegations = normalizedAutoDelegations,
+			alternateRootDataOwnerReference = alternateRootDataOwnerReference,
 		)
 		return EntityEncryptionMetadataInitialisationResult(
 			updatedEntity = entityWitSecurityMetadata,
@@ -919,8 +921,8 @@ class EntityEncryptionServiceImpl(
 				entityType = entityType,
 				secretIds = emptySet(), // Will still be available through legacy delegations
 				owningEntityIds = emptySet(), // Will still be available through legacy delegations
-				encryptionKeys = setOf(HexString(cryptoService.aes.exportKey(newKey).toHexString())),
 				owningEntitySecretIds = entity.secretForeignKeys,
+				encryptionKeys = setOf(HexString(cryptoService.aes.exportKey(newKey).toHexString())),
 				autoDelegations = emptyMap(),
 			)
 		} else throw IllegalEntityException(

@@ -324,6 +324,23 @@ private class CachedLruExchangeDataManagerInGroup(
 		}
 	)
 
+	suspend fun cacheInjectedExchangeData(
+		exchangeDataDetails: List<Triple<ExchangeData, UnencryptedExchangeDataContent, Boolean>>
+	) {
+		for ((exchangeData, unencryptedContent, verified) in exchangeDataDetails) {
+			cacheData(
+				exchangeData,
+				true,
+				UnencryptedExchangeDataContent(
+					accessControlSecret = unencryptedContent.accessControlSecret,
+					exchangeKey = unencryptedContent.exchangeKey,
+					sharedSignatureKey = unencryptedContent.sharedSignatureKey
+				),
+				verified
+			)
+		}
+	}
+
 	override suspend fun getEncodedAccessControlKeysValue(entityType: EntityWithEncryptionMetadataTypeName): List<Base64String>? =
 		null
 
