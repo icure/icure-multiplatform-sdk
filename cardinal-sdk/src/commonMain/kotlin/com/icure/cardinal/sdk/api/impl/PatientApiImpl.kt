@@ -1087,7 +1087,8 @@ private class PatientApiImpl(
 		config.crypto.exchangeDataManager.getOrCreateEncryptionDataTo(
 			null,
 			EntityReferenceInGroup(patientId, null),
-			true
+			true,
+			false
 		)
 		return true
 	}

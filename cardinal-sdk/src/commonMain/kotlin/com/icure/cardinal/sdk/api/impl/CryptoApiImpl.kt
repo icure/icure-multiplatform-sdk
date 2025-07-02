@@ -2,7 +2,6 @@ package com.icure.cardinal.sdk.api.impl
 
 import com.icure.cardinal.sdk.api.CryptoApi
 import com.icure.cardinal.sdk.api.CryptoInGroupApi
-import com.icure.cardinal.sdk.api.DataOwnerApi
 import com.icure.cardinal.sdk.api.ShamirKeysManagerApi
 import com.icure.cardinal.sdk.crypto.InternalCryptoServices
 import com.icure.cardinal.sdk.crypto.entities.ExchangeDataInjectionDetails
@@ -60,7 +59,12 @@ internal class CryptoApiImpl(
 		require(delegate.groupId == null && delegate.entityId != this.internal.dataOwnerApi.getCurrentDataOwnerId()) { "Can't create exchange data to yourself in keyless mode." }
 		check(this.internal.userEncryptionKeysManager.getSelfVerifiedKeys().isEmpty()) { "This method can only be used in keyless mode." }
 
-		val created = this.internal.exchangeDataManager.getOrCreateEncryptionDataTo(groupId, delegate, true)
+		val created = this.internal.exchangeDataManager.getOrCreateEncryptionDataTo(
+			groupId = groupId,
+			delegateReference = delegate,
+			allowCreationWithoutDelegateKey = false,
+			allowCreationWithoutDelegatorKey = true
+		)
 		return RawDecryptedExchangeData(
 			exchangeDataId = created.exchangeData.id,
 			accessControlSecret = this.internal.exchangeDataManager.base.exportAccessControlSecret(created.unencryptedContent.accessControlSecret),
@@ -70,10 +74,15 @@ internal class CryptoApiImpl(
 	}
 
 	override suspend fun injectExchangeData(
+		groupId: String?,
 		details: List<ExchangeDataInjectionDetails>,
 		reEncryptWithOwnKeys: Boolean,
 	) {
-		TODO("Not yet implemented")
+		this.internal.exchangeDataManager.injectDecryptedExchangeData(
+			groupId = groupId,
+			exchangeDataDetails = details,
+			reEncryptWithOwnKeys = reEncryptWithOwnKeys
+		)
 	}
 
 }

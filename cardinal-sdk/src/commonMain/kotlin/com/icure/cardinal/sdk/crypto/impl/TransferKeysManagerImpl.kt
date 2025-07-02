@@ -6,7 +6,6 @@ import com.icure.cardinal.sdk.crypto.TransferKeysManager
 import com.icure.cardinal.sdk.crypto.UserEncryptionKeysManager
 import com.icure.cardinal.sdk.crypto.entities.CandidateTransferKey
 import com.icure.cardinal.sdk.crypto.entities.CardinalKeyInfo
-import com.icure.cardinal.sdk.crypto.entities.RsaKeysSet
 import com.icure.cardinal.sdk.crypto.entities.SelfVerifiedKeysSet
 import com.icure.cardinal.sdk.model.EntityReferenceInGroup
 import com.icure.cardinal.sdk.crypto.entities.VerifiedRsaEncryptionKeysSet
@@ -24,7 +23,6 @@ import com.icure.kryptom.crypto.AesAlgorithm
 import com.icure.kryptom.crypto.AesKey
 import com.icure.kryptom.crypto.CryptoService
 import com.icure.kryptom.crypto.RsaAlgorithm
-import com.icure.kryptom.crypto.RsaKey
 import com.icure.kryptom.crypto.RsaKeypair
 import com.icure.kryptom.utils.toHexString
 import com.icure.utils.InternalIcureApi
@@ -53,6 +51,7 @@ internal class TransferKeysManagerImpl(
 		val exchangeData = exchangeDataManager.getOrCreateEncryptionDataTo(
 			null,
 			EntityReferenceInGroup(selfId, null),
+			false,
 			false
 		)
 		// If the exchange data already existed ensure that it has all the necessary keys

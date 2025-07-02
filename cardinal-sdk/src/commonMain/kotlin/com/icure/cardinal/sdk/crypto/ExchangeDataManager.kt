@@ -40,6 +40,7 @@ interface ExchangeDataManager {
 		groupId: String?,
 		delegateReference: EntityReferenceInGroup,
 		allowCreationWithoutDelegateKey: Boolean,
+		allowCreationWithoutDelegatorKey: Boolean,
 	): ExchangeDataWithUnencryptedContent
 
 

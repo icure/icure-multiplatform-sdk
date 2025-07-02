@@ -23,6 +23,7 @@ import com.icure.cardinal.sdk.model.extensions.algorithmOfEncryptionKey
 import com.icure.cardinal.sdk.model.specializations.Base64String
 import com.icure.cardinal.sdk.model.specializations.SecureDelegationKeyString
 import com.icure.cardinal.sdk.model.specializations.SpkiHexString
+import com.icure.cardinal.sdk.utils.ensure
 import com.icure.kryptom.crypto.CryptoService
 import com.icure.utils.InternalIcureApi
 import kotlinx.coroutines.CoroutineScope
@@ -64,11 +65,11 @@ abstract class AbstractExchangeDataManager(
 			base.getExchangeDataByDelegatorDelegatePair(
 				null,
 				EntityReferenceInGroup(self),
-				EntityReferenceInGroup(otherDataOwner)
+				EntityReferenceInGroup(otherDataOwner),
 			) + base.getExchangeDataByDelegatorDelegatePair(
 				null,
-			 EntityReferenceInGroup(otherDataOwner),
-				EntityReferenceInGroup(self)
+				EntityReferenceInGroup(otherDataOwner),
+				EntityReferenceInGroup(self),
 			)
 		}
 		// Can improve with batch but there should not be many anyway and it is a rare operation
@@ -77,7 +78,7 @@ abstract class AbstractExchangeDataManager(
 				exchangeData = it,
 				decryptionKeys = decryptionKeys,
 				newEncryptionKeys = VerifiedRsaEncryptionKeysSet(listOf(CardinalKeyInfo(newDataOwnerPublicKey, importedNewKey))),
-				newDelegatorSignatureKeys = SelfVerifiedKeysSet(emptySet()),
+				newDelegatorSignatureKeys = SelfVerifiedKeysSet.empty,
 			)
 		}
 	}
@@ -93,11 +94,13 @@ abstract class AbstractExchangeDataManager(
 	override suspend fun getOrCreateEncryptionDataTo(
 		groupId: String?,
 		delegateReference: EntityReferenceInGroup,
-		allowCreationWithoutDelegateKey: Boolean
+		allowCreationWithoutDelegateKey: Boolean,
+		allowCreationWithoutDelegatorKey: Boolean
 	): ExchangeDataWithUnencryptedContent =
 		getOrCreateManagerInGroup(groupId).getOrCreateEncryptionDataTo(
 			delegateReference,
-			allowCreationWithoutDelegateKey
+			allowCreationWithoutDelegateKey,
+			allowCreationWithoutDelegatorKey
 		)
 
 	override suspend fun getCachedDecryptionDataKeyByAccessControlHash(
@@ -124,7 +127,7 @@ abstract class AbstractExchangeDataManager(
 		exchangeDataDetails: List<ExchangeDataInjectionDetails>,
 		reEncryptWithOwnKeys: Boolean,
 	) {
-		val self = dataOwnerApi.getCurrentDataOwnerId()
+		val self = dataOwnerApi.getCurrentDataOwnerReference().asReferenceStringInGroup(groupId, sdkBoundGroup)
 		val retrievedExchangeData = base.getExchangeDataByIds(groupId, exchangeDataDetails.map { it.exchangeDataId }.toSet())
 		if (retrievedExchangeData.any { it.delegator != self && it.delegate != self }) {
 			throw IllegalArgumentException("Should only inject exchange data from/to the current user")
@@ -133,7 +136,8 @@ abstract class AbstractExchangeDataManager(
 
 		if (reEncryptWithOwnKeys) {
 			val selfVerifiedKeys = userEncryptionKeys.getSelfVerifiedKeys()
-			if (selfVerifiedKeys.isEmpty()) throw IllegalStateException("Can't re-encrypt injected exchange data with own keys if in keyless mode")
+			check(!selfVerifiedKeys.isEmpty()) { "Can't re-encrypt injected exchange data with own keys if in keyless mode" }
+
 			val encryptionKeys = VerifiedRsaEncryptionKeysSet(selfVerifiedKeys.map { k -> CardinalKeyInfo(k.pubSpkiHexString, k.toPublicKeyInfo().key) })
 			val signatureKeys = SelfVerifiedKeysSet(selfVerifiedKeys.map { k -> CardinalKeyInfo(k.pubSpkiHexString, k.toPrivateKeyInfo().key) })
 			exchangeDataDetails.forEach { details ->
@@ -239,15 +243,20 @@ abstract class AbstractExchangeDataManagerInGroup(
 	protected suspend fun createNewExchangeData(
 		delegateReference: EntityReferenceInGroup,
 		newDataId: String?,
-		allowNoDelegateKeys: Boolean
+		allowCreationWithoutDelegateKey: Boolean,
+		allowCreationWithoutDelegatorKey: Boolean,
 	): ExchangeDataWithUnencryptedContent {
+		ensure(!allowCreationWithoutDelegateKey || !allowCreationWithoutDelegatorKey) { "Cannot allow creation of exchange data without both delegate and delegator keys." }
 		val selfEncryptionKeys = userEncryptionKeys.getSelfVerifiedKeys().map { it.toPublicKeyInfo() }
+		if (selfEncryptionKeys.isEmpty()) {
+			check(allowCreationWithoutDelegatorKey) { "If the sdk is initialized in keyless mode you must create exchange data explicitly. Please use CardinalSdk.crypto.keylessCreateExchangeDataTo or CardinalSdk.crypto.injectExchangeData." }
+		}
 		val verifiedDelegateKeys = if (delegateReference != dataOwnerApi.getCurrentDataOwnerReference()) {
 			val delegate =
 				dataOwnerApi.getCryptoActorStubInGroup(delegateReference)
 			val delegateKeys = cryptoService.loadEncryptionKeysForDataOwner(delegate.stub)
 			if (delegateKeys.isEmpty()) {
-				require(allowNoDelegateKeys) { "Delegate $delegateReference has no public keys and the current operation does not allow for creation of exchange data without any delegate keys." }
+				require(allowCreationWithoutDelegateKey) { "Delegate $delegateReference has no public keys and the current operation does not allow for creation of exchange data without any delegate keys." }
 				emptyList()
 			} else {
 				val delegateKeysBySpki = delegateKeys.associateBy { it.pubSpkiHexString }
@@ -261,7 +270,7 @@ abstract class AbstractExchangeDataManagerInGroup(
 						groupId = delegateReference.normalized(sdkBoundGroup).groupId
 					)
 				}
-				require (allowNoDelegateKeys || verifiedSpki.isNotEmpty()) {
+				require (allowCreationWithoutDelegateKey || verifiedSpki.isNotEmpty()) {
 					"Could not create exchange data to $delegateReference as no public key for the delegate could be verified."
 				}
 				verifiedSpki.map {
@@ -284,6 +293,7 @@ abstract class AbstractExchangeDataManagerInGroup(
 	abstract suspend fun getOrCreateEncryptionDataTo(
 		delegateReference: EntityReferenceInGroup,
 		allowCreationWithoutDelegateKey: Boolean,
+		allowCreationWithoutDelegatorKey: Boolean,
 	): ExchangeDataWithUnencryptedContent
 	abstract suspend fun getCachedDecryptionDataKeyByAccessControlHash(
 		hashes: Set<SecureDelegationKeyString>,

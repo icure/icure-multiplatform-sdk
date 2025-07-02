@@ -37,7 +37,7 @@ class FullyCachedExchangeDataManager(
 	cryptoService: CryptoService,
 	useParentKeys: Boolean,
 	sdkScope: CoroutineScope,
-	sdkBoundGroup: SdkBoundGroup?
+	sdkBoundGroup: SdkBoundGroup?,
 ) : AbstractExchangeDataManager(
 	base = base,
 	userEncryptionKeys = userEncryptionKeys,
@@ -46,7 +46,7 @@ class FullyCachedExchangeDataManager(
 	cryptoService = cryptoService,
 	useParentKeys = useParentKeys,
 	sdkScope = sdkScope,
-	sdkBoundGroup = sdkBoundGroup
+	sdkBoundGroup = sdkBoundGroup,
 ) {
 	override fun createManagerForGroup(groupId: String?): AbstractExchangeDataManagerInGroup =
 		FullyCachedExchangeDataManagerInGroup(
@@ -58,7 +58,7 @@ class FullyCachedExchangeDataManager(
 			useParentKeys = useParentKeys,
 			sdkBoundGroup = sdkBoundGroup,
 			sdkScope = sdkScope,
-			requestGroup = groupId
+			requestGroup = groupId,
 		)
 }
 
@@ -72,7 +72,7 @@ private class FullyCachedExchangeDataManagerInGroup(
 	useParentKeys: Boolean,
 	sdkBoundGroup: SdkBoundGroup?,
 	sdkScope: CoroutineScope,
-	requestGroup: String?
+	requestGroup: String?,
 ) : AbstractExchangeDataManagerInGroup(
 	base = base,
 	userEncryptionKeys = userEncryptionKeys,
@@ -81,13 +81,13 @@ private class FullyCachedExchangeDataManagerInGroup(
 	cryptoService = cryptoService,
 	useParentKeys = useParentKeys,
 	sdkBoundGroup = sdkBoundGroup,
-	requestGroup = requestGroup
+	requestGroup = requestGroup,
 ) {
 	private class Caches(
 		val dataById: Map<String, CachedExchangeDataDetails>,
 		val dataByDelegationKey: Map<SecureDelegationKeyString, CachedExchangeDataDetails>,
 		val verifiedDataByDelegateId: Map<String, CachedExchangeDataDetails>,
-		val entityTypeToAccessControlKeysValue: Map<EntityWithEncryptionMetadataTypeName, List<Base64String>>
+		val entityTypeToAccessControlKeysValue: Map<EntityWithEncryptionMetadataTypeName, List<Base64String>>,
 	) {
 		fun getEncryptionDataTo(delegateReferenceString: String): ExchangeDataWithUnencryptedContent? =
 			verifiedDataByDelegateId[delegateReferenceString]?.let { data ->
@@ -95,14 +95,17 @@ private class FullyCachedExchangeDataManagerInGroup(
 					data.exchangeData,
 					ensureNonNull(data.decryptedDetails) {
 						"Decrypted details of cached verified data can't be null"
-					}.decryptedContent
+					}.decryptedContent,
 				)
 			}
 	}
+
 	private val cacheUpdateAndNewDataCreationScope = CoroutineScope(Dispatchers.Default + SupervisorJob(sdkScope.coroutineContext.job))
+
 	@Volatile
 	private var caches: Deferred<Caches> = cacheUpdateAndNewDataCreationScope.async { getAllKeysInfo() }
 	private val creationJobs = mutableMapOf<String, Deferred<ExchangeDataWithUnencryptedContent>>()
+
 	// No need to keep two different mutexes for creation job and reload of caches in case of error.
 	// If caches is successful once then it can never become failed.
 	// If caches is failed or incomplete then we don't start any creation job until it completes successfully
@@ -125,28 +128,38 @@ private class FullyCachedExchangeDataManagerInGroup(
 
 	override suspend fun getOrCreateEncryptionDataTo(
 		delegateReference: EntityReferenceInGroup,
-		allowCreationWithoutDelegateKey: Boolean
+		allowCreationWithoutDelegateKey: Boolean,
+		allowCreationWithoutDelegatorKey: Boolean,
 	): ExchangeDataWithUnencryptedContent {
 		val delegateReferenceString = delegateReference.asReferenceStringInGroup(requestGroup, sdkBoundGroup)
 		val (currCachesDeferred, awaitedCaches) = getCachesAndAwaited()
 		return awaitedCaches.getEncryptionDataTo(delegateReferenceString)
-			?: awaitOrStartCreationJob(currCachesDeferred, delegateReference, delegateReferenceString)
+			?: awaitOrStartExchangeDataCreationJob(
+				checkedCachesDeferred = currCachesDeferred,
+				delegateReference = delegateReference,
+				delegateReferenceString = delegateReferenceString,
+				allowCreationWithoutDelegateKey = allowCreationWithoutDelegateKey,
+				allowCreationWithoutDelegatorKey = allowCreationWithoutDelegatorKey
+			)
 	}
 
-	private suspend fun awaitOrStartCreationJob(
+	private suspend fun awaitOrStartExchangeDataCreationJob(
 		checkedCachesDeferred: Deferred<Caches>,
 		delegateReference: EntityReferenceInGroup,
-		delegateReferenceString: String
-	): ExchangeDataWithUnencryptedContent {
+		delegateReferenceString: String,
+		allowCreationWithoutDelegateKey: Boolean,
+		allowCreationWithoutDelegatorKey: Boolean,
+		): ExchangeDataWithUnencryptedContent {
 		val (shouldRetryIfFailure, creationJob) = creationAndCachesErrorReloadMutex.withLock {
 			val existingJob = creationJobs[delegateReferenceString]
 			when {
 				existingJob == null -> Pair(
 					false,
-					startCreationJob(checkedCachesDeferred, delegateReference, delegateReferenceString).also {
+					startCreationJob(checkedCachesDeferred, delegateReference, delegateReferenceString, allowCreationWithoutDelegateKey, allowCreationWithoutDelegatorKey).also {
 						creationJobs[delegateReferenceString] = it
-					}
+					},
 				)
+
 				existingJob.isCompleted -> Pair(true, existingJob)
 				else -> Pair(false, existingJob)
 			}
@@ -160,7 +173,13 @@ private class FullyCachedExchangeDataManagerInGroup(
 					// If updated existing job became null it should mean someone will have updated the caches with the new encryption-to data
 					// We will start a very short-lived job that will just get the value from the updated caches without creating anything new
 					if (updatedExistingJob == null || updatedExistingJob === creationJob) { // only start job if no one else started it yet.
-						startCreationJob(checkedCachesDeferred, delegateReference, delegateReferenceString).also {
+						startCreationJob(
+							checkedCachesDeferred = checkedCachesDeferred,
+							delegateReference = delegateReference,
+							delegateReferenceString = delegateReferenceString,
+							allowCreationWithoutDelegateKey = allowCreationWithoutDelegateKey,
+							allowCreationWithoutDelegatorKey = allowCreationWithoutDelegatorKey
+						).also {
 							creationJobs[delegateReferenceString] = it
 						}
 					} else updatedExistingJob // Else wait on the job the others have just started. Ok to fail if that fails.
@@ -174,8 +193,10 @@ private class FullyCachedExchangeDataManagerInGroup(
 	private fun startCreationJob(
 		checkedCachesDeferred: Deferred<Caches>,
 		delegateReference: EntityReferenceInGroup,
-		delegateReferenceString: String
-	) = cacheUpdateAndNewDataCreationScope.async {
+		delegateReferenceString: String,
+		allowCreationWithoutDelegateKey: Boolean,
+		allowCreationWithoutDelegatorKey: Boolean,
+		) = cacheUpdateAndNewDataCreationScope.async {
 		// It could be possible that the caches have been updated between the last time we tried and the
 		// time we got the lock.
 		// In case they changed we need to check again.
@@ -184,16 +205,24 @@ private class FullyCachedExchangeDataManagerInGroup(
 				@Suppress("DeferredResultUnused")
 				creationJobs.remove(delegateReferenceString)
 			}
-		} ?: doCreateAndCacheEncryptionDataTo(delegateReference, delegateReferenceString)
+		} ?: doCreateAndCacheEncryptionDataTo(
+			delegateReference = delegateReference,
+			delegateReferenceString = delegateReferenceString,
+			allowCreationWithoutDelegateKey = allowCreationWithoutDelegateKey,
+			allowCreationWithoutDelegatorKey = allowCreationWithoutDelegatorKey,
+		)
 	}
 
 	private suspend fun doCreateAndCacheEncryptionDataTo(
 		delegateReference: EntityReferenceInGroup,
-		delegateReferenceString: String
+		delegateReferenceString: String,
+		allowCreationWithoutDelegateKey: Boolean,
+		allowCreationWithoutDelegatorKey: Boolean,
 	): ExchangeDataWithUnencryptedContent = createNewExchangeData(
 		delegateReference,
 		null,
-		false
+		allowCreationWithoutDelegateKey,
+		allowCreationWithoutDelegatorKey,
 	).also { created ->
 		creationAndCachesErrorReloadMutex.withLock {
 			val prevCaches = caches
@@ -207,13 +236,13 @@ private class FullyCachedExchangeDataManagerInGroup(
 					CachedDecryptedDetails(
 						created.unencryptedContent,
 						true,
-						secureDelegationKeys
-					)
+						secureDelegationKeys,
+					),
 				)
 				cachesFrom(
 					dataById = awaitedPrevCaches.dataById + (created.exchangeData.id to cachedDetails),
 					verifiedDataByDelegateId = awaitedPrevCaches.verifiedDataByDelegateId + (delegateReferenceString to cachedDetails),
-					dataByDelegationKey = awaitedPrevCaches.dataByDelegationKey + secureDelegationKeys.associateWith { cachedDetails }
+					dataByDelegationKey = awaitedPrevCaches.dataByDelegationKey + secureDelegationKeys.associateWith { cachedDetails },
 				)
 			}
 			@Suppress("DeferredResultUnused")
@@ -222,7 +251,7 @@ private class FullyCachedExchangeDataManagerInGroup(
 	}
 
 	override suspend fun getCachedDecryptionDataKeyByAccessControlHash(
-		hashes: Set<SecureDelegationKeyString>
+		hashes: Set<SecureDelegationKeyString>,
 	): Map<SecureDelegationKeyString, ExchangeDataWithUnencryptedContent> =
 		caches.await().let {
 			hashes.mapNotNull { hash ->
@@ -231,7 +260,7 @@ private class FullyCachedExchangeDataManagerInGroup(
 						data.exchangeData,
 						ensureNonNull(data.decryptedDetails) {
 							"Decrypted details of data cached by hash can't be null"
-						}.decryptedContent
+						}.decryptedContent,
 					)
 				}
 			}.toMap()
@@ -239,7 +268,7 @@ private class FullyCachedExchangeDataManagerInGroup(
 
 	override suspend fun getDecryptionDataByIds(
 		ids: Set<String>,
-		waitOrRetrieveUncached: Boolean
+		waitOrRetrieveUncached: Boolean,
 	): Map<String, ExchangeDataWithPotentiallyDecryptedContent> =
 		caches.await().let {
 			ids.mapNotNull { id ->
@@ -247,7 +276,7 @@ private class FullyCachedExchangeDataManagerInGroup(
 					if (data.decryptedDetails != null) {
 						id to ExchangeDataWithUnencryptedContent(
 							data.exchangeData,
-							data.decryptedDetails.decryptedContent
+							data.decryptedDetails.decryptedContent,
 						)
 					} else {
 						id to UndecryptableExchangeData(data.exchangeData)
@@ -257,37 +286,38 @@ private class FullyCachedExchangeDataManagerInGroup(
 		}
 
 	override suspend fun getEncodedAccessControlKeysValue(entityType: EntityWithEncryptionMetadataTypeName): List<Base64String> =
-		caches.await().entityTypeToAccessControlKeysValue.getValue(entityType)
+		caches.await().let { it.entityTypeToAccessControlKeysValue.getValue(entityType) }
 
 	override suspend fun cacheInjectedExchangeData(exchangeDataDetails: List<Pair<ExchangeDataWithUnencryptedContent, Boolean>>) {
+		val exchangeDataDetailsMap = exchangeDataDetails.associate { (data, isVerified) ->
+			val secureDelegationKeys = data.unencryptedContent.accessControlSecret.allAccessControlKeys(cryptoService)
+				.map { it.toSecureDelegationKeyString(cryptoService) }.toSet()
+
+			data.exchangeData.id to CachedExchangeDataDetails(
+				data.exchangeData,
+				CachedDecryptedDetails(
+					data.unencryptedContent, isVerified,
+					secureDelegationKeys,
+				),
+			)
+		}
+
 		creationAndCachesErrorReloadMutex.withLock {
 			val currCaches = caches
 			cacheUpdateAndNewDataCreationScope.async {
+				println("Updating caches with injected exchange data: ${exchangeDataDetailsMap.keys}")
 				val awaited = currCaches.await()
-
-				val exchangeDataDetailsMap = exchangeDataDetails.associate { (data, isVerified) ->
-					val secureDelegationKeys = data.unencryptedContent.accessControlSecret.allAccessControlKeys(cryptoService)
-						.map { it.toSecureDelegationKeyString(cryptoService) }.toSet()
-
-					data.exchangeData.id to CachedExchangeDataDetails(
-						data.exchangeData,
-						CachedDecryptedDetails(
-							data.unencryptedContent, isVerified,
-							secureDelegationKeys
-						)
-					)
-				}
-
 				cachesFrom(
 					dataById = awaited.dataById + exchangeDataDetailsMap,
 					dataByDelegationKey = awaited.dataByDelegationKey + exchangeDataDetailsMap.values
-						.flatMap { it.decryptedDetails?.secureDelegationKeys?.map { k -> k to it } ?: emptyList() }.toSet()
+						.flatMap { it.decryptedDetails?.secureDelegationKeys?.map { k -> k to it } ?: emptyList() }
 						.associate { it },
 					verifiedDataByDelegateId = awaited.verifiedDataByDelegateId + exchangeDataDetailsMap.values.filter { it.decryptedDetails?.verified == true }
-						.associateBy { it.exchangeData.delegate }
+						.associateBy { it.exchangeData.delegate },
 				)
 			}.also { caches = it }
-		}.await()	}
+		}.await()
+	}
 
 	override fun dispose() {
 		cacheUpdateAndNewDataCreationScope.cancel()
@@ -310,8 +340,8 @@ private class FullyCachedExchangeDataManagerInGroup(
 					CachedDecryptedDetails(
 						decryptedInfo.first,
 						decryptedInfo.second,
-						secureDelegationKeys
-					)
+						secureDelegationKeys,
+					),
 				)
 				cacheById[exchangeData.id] = cachedDetails
 				secureDelegationKeys.forEach {
@@ -339,6 +369,6 @@ private class FullyCachedExchangeDataManagerInGroup(
 			EntityWithEncryptionMetadataTypeName.entries.associateWith {
 				allAccessControlSecrets.map { s -> s.toAccessControlKeyStringFor(it, cryptoService) }.encodeAsAccessControlHeaders()
 			}
-		}
+		},
 	)
 }

@@ -51,6 +51,7 @@ interface CryptoApi {
 	 * having to re-inject it (as long as the instance has access to the current private key).
 	 */
 	suspend fun injectExchangeData(
+		groupId: String?,
 		details: List<ExchangeDataInjectionDetails>,
 		reEncryptWithOwnKeys: Boolean
 	)

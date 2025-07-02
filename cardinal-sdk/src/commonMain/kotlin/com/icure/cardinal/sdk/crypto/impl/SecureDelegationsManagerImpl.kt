@@ -117,6 +117,7 @@ class SecureDelegationsManagerImpl (
 		val exchangeData = exchangeDataManager.getOrCreateEncryptionDataTo(
 			entityGroupId,
 			delegate,
+			false,
 			false
 		)
 		val accessControlKey = exchangeData.unencryptedContent.accessControlSecret.toAccessControlKeyStringFor(
@@ -165,7 +166,8 @@ class SecureDelegationsManagerImpl (
 		val exchangeDataInfo = exchangeDataManager.getOrCreateEncryptionDataTo(
 			entityGroupId,
 			delegateReference,
-			selfNeedsAnonymousDelegations
+			selfNeedsAnonymousDelegations,
+			false
 		)
 		val accessControlKey = exchangeDataInfo.unencryptedContent.accessControlSecret.toAccessControlKeyStringFor(
 			entityType,
