@@ -18,6 +18,7 @@ import com.icure.kryptom.crypto.RsaAlgorithm
 import com.icure.kryptom.crypto.defaultCryptoService
 import com.icure.kryptom.utils.hexToByteArray
 import com.icure.utils.InternalIcureApi
+import io.kotest.core.spec.style.StringSpec
 
 private data class TestData(
 	val p: DataOwnerDetails,
@@ -223,3 +224,8 @@ private suspend fun createTestDataAndApis(): TestData {
 	)
 }
 
+class LegacyMetadataMigrationTest : StringSpec({
+	"TODO: actually implement this test" {
+		TODO("Adapt the ts test")
+	}
+})
