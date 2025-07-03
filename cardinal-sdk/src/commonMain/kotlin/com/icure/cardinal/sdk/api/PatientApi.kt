@@ -168,7 +168,7 @@ interface PatientBasicFlavouredApi<E : Patient> {
 	 */
 	suspend fun undeletePatient(patient: Patient): Patient =
 		undeletePatientById(patient.id, requireNotNull(patient.rev) { "Can't delete a patient that has no rev" })
-	
+
 	/**
 	 * Modifies a patient. You need to have write access to the entity.
 	 * Flavoured method.
@@ -713,7 +713,8 @@ interface PatientApi : PatientBasicFlavourlessApi, PatientFlavouredApi<Decrypted
 		@DefaultValue("null")
 		user: User? = null,
 		@DefaultValue("emptyMap()")
-		delegates: Map<String, AccessLevel> = emptyMap()
+		delegates: Map<String, AccessLevel> = emptyMap(),
+		alternateRootDataOwnerReference: EntityReferenceInGroup? = null,
 	): DecryptedPatient
 
 	/**
@@ -904,6 +905,7 @@ interface PatientInGroupApi : PatientBasicFlavourlessInGroupApi, PatientFlavoure
 		user: User? = null,
 		@DefaultValue("emptyMap()")
 		delegates: @JsMapAsObjectArray(keyEntryName = "delegate", valueEntryName = "accessLevel") Map<EntityReferenceInGroup, AccessLevel> = emptyMap(),
+		alternateRootDataOwnerReference: EntityReferenceInGroup? = null,
 	): GroupScoped<DecryptedPatient>
 
 	/**

@@ -1110,11 +1110,11 @@ internal class ContactApiImplJs(
 				secretIdUseOption_fromJs(secretId)
 			}
 			val result = contactApi.withEncryptionMetadata(
-				baseConverted,
-				patientConverted,
-				userConverted,
-				delegatesConverted,
-				secretIdConverted,
+                baseConverted,
+                patientConverted,
+                userConverted,
+                delegatesConverted,
+                secretIdConverted,
 			)
 			contact_toJs(result)
 		}

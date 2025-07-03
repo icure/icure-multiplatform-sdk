@@ -161,7 +161,8 @@ interface BaseExchangeDataManager {
 	suspend fun tryUpdateExchangeData(
 		exchangeData: ExchangeData,
 		decryptionKeys: RsaDecryptionKeysSet,
-		newEncryptionKeys: VerifiedRsaEncryptionKeysSet
+		newEncryptionKeys: VerifiedRsaEncryptionKeysSet,
+		newDelegatorSignatureKeys: SelfVerifiedKeysSet
 	): ExchangeDataWithUnencryptedContent?
 
 	/**
@@ -170,6 +171,7 @@ interface BaseExchangeDataManager {
 	suspend fun updateExchangeDataWithDecryptedContent(
 		exchangeData: ExchangeData,
 		newEncryptionKeys: VerifiedRsaEncryptionKeysSet,
+		newDelegatorSignatureKeys: SelfVerifiedKeysSet,
 		unencryptedExchangeDataContent: UnencryptedExchangeDataContent
 	): ExchangeDataWithUnencryptedContent
 
@@ -179,8 +181,16 @@ interface BaseExchangeDataManager {
 	suspend fun updateExchangeDataWithRawDecryptedContent(
 		exchangeData: ExchangeData,
 		newEncryptionKeys: VerifiedRsaEncryptionKeysSet,
+		newDelegatorSignatureKeys: SelfVerifiedKeysSet,
 		rawExchangeKey: ByteArray,
 		rawAccessControlSecret: ByteArray,
 		rawSharedSignatureKey: ByteArray
 	): ExchangeDataWithUnencryptedContent
+
+	suspend fun exportExchangeKey(decryptedExchangeKey: AesKey<AesAlgorithm.CbcWithPkcs7Padding>): ByteArray
+	suspend fun exportSharedSignatureKey(decryptedSharedSignatureKey: HmacKey<HmacAlgorithm>): ByteArray
+	fun exportAccessControlSecret(decryptedAccessControlSecret: AccessControlSecret): ByteArray
+	fun importAccessControlSecret(decryptedBytes: ByteArray): AccessControlSecret
+	suspend fun importSharedSignatureKey(decryptedBytes: ByteArray): HmacKey<HmacAlgorithm.HmacSha512>
+	suspend fun importExchangeKey(decryptedBytes: ByteArray): AesKey<AesAlgorithm.CbcWithPkcs7Padding>
 }

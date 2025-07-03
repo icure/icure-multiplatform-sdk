@@ -185,8 +185,8 @@ class BaseExchangeDataManagerImpl(
 		encryptionKeys: VerifiedRsaEncryptionKeysSet,
 		exchangeDataId: String?
 	): ExchangeDataWithUnencryptedContent {
-		ensure (signatureKeys.isNotEmpty() && encryptionKeys.isNotEmpty()) {
-			"At least one signature key and one encryption key should have been provided"
+		ensure (encryptionKeys.isNotEmpty()) {
+			"At least one encryption key should have been provided"
 		}
 		val (exchangeKey, rawExchangeKey) = generateExchangeKey()
 		val (sharedSignatureKey, rawSharedSignatureKey) = generateSharedSignatureKey()
@@ -244,6 +244,7 @@ class BaseExchangeDataManagerImpl(
 		val decryptedAccessControlSecret = tryDecrypt(exchangeData.accessControlSecret, decryptionKeys) ?: return null
 		val decryptedSharedSignatureKey = tryDecrypt(exchangeData.sharedSignatureKey, decryptionKeys) ?: return null
 		return RawDecryptedExchangeData(
+			exchangeDataId = exchangeData.id,
 			exchangeKey = decryptedExchangeKey,
 			accessControlSecret = decryptedAccessControlSecret,
 			sharedSignatureKey = decryptedSharedSignatureKey
@@ -253,11 +254,13 @@ class BaseExchangeDataManagerImpl(
 	override suspend fun tryUpdateExchangeData(
 		exchangeData: ExchangeData,
 		decryptionKeys: RsaDecryptionKeysSet,
-		newEncryptionKeys: VerifiedRsaEncryptionKeysSet
-	): ExchangeDataWithUnencryptedContent? = tryRawDecryptExchangeData(exchangeData, decryptionKeys)?.let {
+		newEncryptionKeys: VerifiedRsaEncryptionKeysSet,
+		newDelegatorSignatureKeys: SelfVerifiedKeysSet,
+		): ExchangeDataWithUnencryptedContent? = tryRawDecryptExchangeData(exchangeData, decryptionKeys)?.let {
 		updateExchangeDataWithRawDecryptedContent(
 			exchangeData = exchangeData,
 			newEncryptionKeys = newEncryptionKeys,
+			newDelegatorSignatureKeys =newDelegatorSignatureKeys,
 			rawExchangeKey = it.exchangeKey,
 			rawAccessControlSecret = it.accessControlSecret,
 			rawSharedSignatureKey = it.sharedSignatureKey
@@ -267,9 +270,10 @@ class BaseExchangeDataManagerImpl(
 	override suspend fun updateExchangeDataWithRawDecryptedContent(
 		exchangeData: ExchangeData,
 		newEncryptionKeys: VerifiedRsaEncryptionKeysSet,
+		newDelegatorSignatureKeys: SelfVerifiedKeysSet,
 		rawExchangeKey: ByteArray,
 		rawAccessControlSecret: ByteArray,
-		rawSharedSignatureKey: ByteArray
+		rawSharedSignatureKey: ByteArray,
 	): ExchangeDataWithUnencryptedContent {
 		val exchangeKey = importExchangeKey(rawExchangeKey)
 		val accessControlSecret = importAccessControlSecret(rawAccessControlSecret)
@@ -277,6 +281,7 @@ class BaseExchangeDataManagerImpl(
 		return updateExchangeDataWithDecryptedContent(
 			exchangeData = exchangeData,
 			newEncryptionKeys = newEncryptionKeys,
+			newDelegatorSignatureKeys = newDelegatorSignatureKeys,
 			unencryptedExchangeDataContent = UnencryptedExchangeDataContent(
 				exchangeKey = exchangeKey,
 				accessControlSecret = accessControlSecret,
@@ -288,19 +293,24 @@ class BaseExchangeDataManagerImpl(
 	override suspend fun updateExchangeDataWithDecryptedContent(
 		exchangeData: ExchangeData,
 		newEncryptionKeys: VerifiedRsaEncryptionKeysSet,
+		newDelegatorSignatureKeys: SelfVerifiedKeysSet,
 		unencryptedExchangeDataContent: UnencryptedExchangeDataContent
 	): ExchangeDataWithUnencryptedContent {
 		val existingExchangeKeyEntries = exchangeData.exchangeKey.keys.toSet()
 		val existingAcsEntries = exchangeData.accessControlSecret.keys.toSet()
 		val existingSharedSignatureKeyEntries = exchangeData.sharedSignatureKey.keys.toSet()
 
-		val missingEntries = newEncryptionKeys.allKeys.filter {
+		val missingEncryptionEntries = newEncryptionKeys.allKeys.filter {
 			!existingAcsEntries.contains(it.pubSpkiHexString.fingerprintV2()) ||
 				!existingExchangeKeyEntries.contains(it.pubSpkiHexString.fingerprintV2()) ||
 				!existingSharedSignatureKeyEntries.contains(it.pubSpkiHexString.fingerprintV2())
 		}
 
-		if (missingEntries.isEmpty()) {
+		val self = dataOwnerApi.getCurrentDataOwnerId()
+		val existingDelegatorSignatureKeys = exchangeData.delegatorSignature.keys
+		val missingDelegatorSignatureEntries = if (exchangeData.delegator == self) newDelegatorSignatureKeys.allKeys.filter { k -> !existingDelegatorSignatureKeys.contains(k.pubSpkiHexString.fingerprintV2()) } else emptySet()
+
+		if (missingEncryptionEntries.isEmpty() && missingDelegatorSignatureEntries.isEmpty()) {
 			return ExchangeDataWithUnencryptedContent(
 				exchangeData = exchangeData,
 				unencryptedContent = UnencryptedExchangeDataContent(
@@ -311,7 +321,7 @@ class BaseExchangeDataManagerImpl(
 			)
 		}
 
-		val encryptionKeysForMissingEntries = VerifiedRsaEncryptionKeysSet(missingEntries)
+		val encryptionKeysForMissingEntries = VerifiedRsaEncryptionKeysSet(missingEncryptionEntries)
 		val updatedExchangeData = exchangeData.copy(
 			exchangeKey = exchangeData.exchangeKey + cryptoService.encryptDataWithKeys(
 				exportExchangeKey(unencryptedExchangeDataContent.exchangeKey),
@@ -327,7 +337,13 @@ class BaseExchangeDataManagerImpl(
 				exportSharedSignatureKey(unencryptedExchangeDataContent.sharedSignatureKey),
 				encryptionKeysForMissingEntries,
 				KeyIdentifierFormat.FingerprintV2
-			)
+			),
+			delegatorSignature = exchangeData.delegatorSignature + missingDelegatorSignatureEntries.associate { keyInfo ->
+				keyInfo.pubSpkiHexString.fingerprintV2() to cryptoService.hmac.sign(
+					bytesToSignForDelegatorSignature(sharedSignatureKey = unencryptedExchangeDataContent.sharedSignatureKey),
+					selfEncryptionKeyToHmac(keyInfo.key)
+				).base64Encode()
+			}
 		).let {
 			val isVerified = verifyExchangeData(
 				data = ExchangeDataWithUnencryptedContent(
@@ -449,28 +465,28 @@ class BaseExchangeDataManagerImpl(
 	private suspend fun generateExchangeKey(): Pair<AesKey<AesAlgorithm.CbcWithPkcs7Padding>, ByteArray> =
 		cryptoService.aes.generateKey(AesAlgorithm.CbcWithPkcs7Padding).let { it to cryptoService.aes.exportKey(it) }
 
-	private suspend fun importExchangeKey(decryptedBytes: ByteArray): AesKey<AesAlgorithm.CbcWithPkcs7Padding> =
+	override suspend fun importExchangeKey(decryptedBytes: ByteArray): AesKey<AesAlgorithm.CbcWithPkcs7Padding> =
 		cryptoService.aes.loadKey(AesAlgorithm.CbcWithPkcs7Padding, decryptedBytes)
 
-	private suspend fun exportExchangeKey(decryptedExchangeKey: AesKey<AesAlgorithm.CbcWithPkcs7Padding>): ByteArray =
+	override suspend fun exportExchangeKey(decryptedExchangeKey: AesKey<AesAlgorithm.CbcWithPkcs7Padding>): ByteArray =
 		cryptoService.aes.exportKey(decryptedExchangeKey)
 
 	private suspend fun generateSharedSignatureKey(): Pair<HmacKey<HmacAlgorithm.HmacSha512>, ByteArray> =
 		cryptoService.hmac.generateKey(HmacAlgorithm.HmacSha512).let { it to cryptoService.hmac.exportKey(it) }
 
-	private suspend fun importSharedSignatureKey(decryptedBytes: ByteArray): HmacKey<HmacAlgorithm.HmacSha512> =
+	override suspend fun importSharedSignatureKey(decryptedBytes: ByteArray): HmacKey<HmacAlgorithm.HmacSha512> =
 		cryptoService.hmac.loadKey(HmacAlgorithm.HmacSha512, decryptedBytes)
 
-	private suspend fun exportSharedSignatureKey(decryptedSharedSignatureKey: HmacKey<HmacAlgorithm>): ByteArray =
+	override suspend fun exportSharedSignatureKey(decryptedSharedSignatureKey: HmacKey<HmacAlgorithm>): ByteArray =
 		cryptoService.hmac.exportKey(decryptedSharedSignatureKey)
 
 	// Generates a new access control secret
 	private fun generateAccessControlSecret(): Pair<AccessControlSecret, ByteArray> =
 		cryptoService.strongRandom.randomBytes(16).let { AccessControlSecret(it.toHexString()) to it }
 
-	private fun importAccessControlSecret(decryptedBytes: ByteArray): AccessControlSecret =
+	override fun importAccessControlSecret(decryptedBytes: ByteArray): AccessControlSecret =
 		AccessControlSecret(decryptedBytes.toHexString())
 
-	private fun exportAccessControlSecret(decryptedAccessControlSecret: AccessControlSecret): ByteArray =
+	override fun exportAccessControlSecret(decryptedAccessControlSecret: AccessControlSecret): ByteArray =
 		hexToByteArray(decryptedAccessControlSecret.s)
 }

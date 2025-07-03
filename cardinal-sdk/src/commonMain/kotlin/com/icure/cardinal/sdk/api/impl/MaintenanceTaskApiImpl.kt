@@ -18,6 +18,7 @@ import com.icure.cardinal.sdk.filters.SortableFilterOptions
 import com.icure.cardinal.sdk.filters.mapMaintenanceTaskFilterOptions
 import com.icure.cardinal.sdk.model.DecryptedMaintenanceTask
 import com.icure.cardinal.sdk.model.EncryptedMaintenanceTask
+import com.icure.cardinal.sdk.model.EntityReferenceInGroup
 import com.icure.cardinal.sdk.model.ListOfIds
 import com.icure.cardinal.sdk.model.ListOfIdsAndRev
 import com.icure.cardinal.sdk.model.MaintenanceTask
@@ -124,7 +125,7 @@ private class AbstractMaintenanceTaskBasicFlavourlessApi(val rawApi: RawMaintena
 	@Deprecated("Deletion without rev is unsafe")
 	override suspend fun deleteMaintenanceTasksUnsafe(entityIds: List<String>): List<DocIdentifier> =
 		rawApi.deleteMaintenanceTasks(ListOfIds(entityIds)).successBody()
-		
+
 	override suspend fun deleteMaintenanceTaskById(entityId: String, rev: String): DocIdentifier =
 		rawApi.deleteMaintenanceTask(entityId, rev).successBodyOrThrowRevisionConflict()
 
@@ -257,20 +258,22 @@ internal class MaintenanceTaskApiImpl(
 		maintenanceTask: DecryptedMaintenanceTask?,
 		user: User?,
 		delegates: Map<String, AccessLevel>,
+		alternateRootDataOwnerReference: EntityReferenceInGroup?
 	): DecryptedMaintenanceTask =
 		config.crypto.entity.entityWithInitializedEncryptedMetadata(
-			entityGroupId = null,
-			entity = (maintenanceTask ?: DecryptedMaintenanceTask(config.crypto.primitives.strongRandom.randomUUID())).copy(
-				created = maintenanceTask?.created ?: currentEpochMs(),
-				modified = maintenanceTask?.modified ?: currentEpochMs(),
-				responsible = maintenanceTask?.responsible ?: user?.takeIf { config.autofillAuthor }?.dataOwnerId,
-				author = maintenanceTask?.author ?: user?.id?.takeIf { config.autofillAuthor },
-			),
-			entityType = EntityWithEncryptionMetadataTypeName.MaintenanceTask,
-			owningEntityDetails = null,
-			initializeEncryptionKey = true,
-			autoDelegations = (delegates + (user?.autoDelegationsFor(DelegationTag.All)
-				?: emptyMap())).keyAsLocalDataOwnerReferences(),
+            entityGroupId = null,
+            entity = (maintenanceTask ?: DecryptedMaintenanceTask(config.crypto.primitives.strongRandom.randomUUID())).copy(
+                created = maintenanceTask?.created ?: currentEpochMs(),
+                modified = maintenanceTask?.modified ?: currentEpochMs(),
+                responsible = maintenanceTask?.responsible ?: user?.takeIf { config.autofillAuthor }?.dataOwnerId,
+                author = maintenanceTask?.author ?: user?.id?.takeIf { config.autofillAuthor },
+            ),
+            entityType = EntityWithEncryptionMetadataTypeName.MaintenanceTask,
+            owningEntityDetails = null,
+            initializeEncryptionKey = true,
+            autoDelegations = (delegates + (user?.autoDelegationsFor(DelegationTag.All)
+                ?: emptyMap())).keyAsLocalDataOwnerReferences(),
+			alternateRootDataOwnerReference = alternateRootDataOwnerReference,
 		).updatedEntity
 
 

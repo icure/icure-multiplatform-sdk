@@ -163,7 +163,8 @@ private class CachedLruExchangeDataManagerInGroup(
 	@OptIn(ExperimentalCoroutinesApi::class)
 	override suspend fun getOrCreateEncryptionDataTo(
 		delegateReference: EntityReferenceInGroup,
-		allowCreationWithoutDelegateKey: Boolean
+		allowCreationWithoutDelegateKey: Boolean,
+		allowCreationWithoutDelegatorKey: Boolean
 	): ExchangeDataWithUnencryptedContent {
 		// Using reference string as normalization
 		val delegateReferenceString = delegateReference.asReferenceStringInGroup(requestGroup, sdkBoundGroup)
@@ -186,9 +187,10 @@ private class CachedLruExchangeDataManagerInGroup(
 						}
 						// Don't cache data that is going to be unused, could actually evict interesting entries
 					} ?: createNewExchangeData(
-						delegateReference,
-						null,
-						allowCreationWithoutDelegateKey
+						delegateReference = delegateReference,
+						newDataId = null,
+						allowCreationWithoutDelegateKey = allowCreationWithoutDelegateKey,
+						allowCreationWithoutDelegatorKey = allowCreationWithoutDelegatorKey
 					).let {
 						Pair(it.exchangeData, Pair(it.unencryptedContent, true))
 					}
@@ -326,6 +328,10 @@ private class CachedLruExchangeDataManagerInGroup(
 
 	override suspend fun getEncodedAccessControlKeysValue(entityType: EntityWithEncryptionMetadataTypeName): List<Base64String>? =
 		null
+
+	override suspend fun cacheInjectedExchangeData(exchangeDataDetails: List<Pair<ExchangeDataWithUnencryptedContent, Boolean>>) {
+		TODO("Not yet implemented")
+	}
 
 	override fun dispose() =
 		cacheRequestsScope.cancel()

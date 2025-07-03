@@ -464,11 +464,11 @@ internal class ClassificationApiImplJs(
 				secretIdUseOption_fromJs(secretId)
 			}
 			val result = classificationApi.withEncryptionMetadata(
-				baseConverted,
-				patientConverted,
-				userConverted,
-				delegatesConverted,
-				secretIdConverted,
+                baseConverted,
+                patientConverted,
+                userConverted,
+                delegatesConverted,
+                secretIdConverted,
 			)
 			classification_toJs(result)
 		}

@@ -65,7 +65,7 @@ class TransferKeyRecoveryTest : StringSpec({
 
 	"Api should automatically create needed transfer keys and use them to recover missing keys" {
 		val hcp = createHcpUser()
-		val originalKeyIdentifier = hcp.publicKeySpki.fingerprintV1().asAmbiguousIdentifier()
+		val originalKeyIdentifier = hcp.publicKeySpki.shouldNotBeNull().fingerprintV1().asAmbiguousIdentifier()
 		val originalApi = hcp.api(specJob, VerifyEverythingStrategy(false))
 		val (secondApi, secondKey) = hcp.apiWithLostKeys(specJob, VerifyEverythingStrategy(true))
 		// Automatically creates the transfer key original->second

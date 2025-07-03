@@ -14,7 +14,7 @@ val baseUrl = "http://localhost:16044"
 val mockMessageGatewayUrl = "http://127.0.0.1:8081/msggtw"
 val mockSpecId = "ic"
 val testGroupName = "testgroup"
-val testGroupId = testGroupName
+val testGroupId = testGroupName + "-" + defaultCryptoService.strongRandom.randomUUID()
 val testGroupAdmin = "admin-{${uuid()}}@icure.com"
 val testGroupAdminPassword = "admin-${uuid()}"
 

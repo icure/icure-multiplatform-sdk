@@ -21,11 +21,31 @@ class ExchangeDataManagerTest : StringSpec({
 	"Exchange data created with different instances of the SDK should be reusable if still verifiable" {
 		val hcp = createHcpUser()
 		val patient = createPatientUser()
-		val createdHcp = hcp.api(specJob).crypto.internal.exchangeDataManager.getOrCreateEncryptionDataTo(null, EntityReferenceInGroup(patient.dataOwnerId, null), false)
-		val retrievedHcp = hcp.api(specJob).crypto.internal.exchangeDataManager.getOrCreateEncryptionDataTo(null, EntityReferenceInGroup(patient.dataOwnerId, null), false)
+		val createdHcp = hcp.api(specJob).crypto.internal.exchangeDataManager.getOrCreateEncryptionDataTo(
+            null,
+            EntityReferenceInGroup(patient.dataOwnerId, null),
+            false,
+            false
+        )
+		val retrievedHcp = hcp.api(specJob).crypto.internal.exchangeDataManager.getOrCreateEncryptionDataTo(
+            null,
+            EntityReferenceInGroup(patient.dataOwnerId, null),
+            false,
+            false
+        )
 		createdHcp.exchangeData.id shouldBe retrievedHcp.exchangeData.id
-		val createdPatient = patient.api(specJob).crypto.internal.exchangeDataManager.getOrCreateEncryptionDataTo(null, EntityReferenceInGroup(hcp.dataOwnerId, null), false)
-		val retrievedPatient = patient.api(specJob).crypto.internal.exchangeDataManager.getOrCreateEncryptionDataTo(null, EntityReferenceInGroup(hcp.dataOwnerId, null), false)
+		val createdPatient = patient.api(specJob).crypto.internal.exchangeDataManager.getOrCreateEncryptionDataTo(
+            null,
+            EntityReferenceInGroup(hcp.dataOwnerId, null),
+            false,
+            false
+        )
+		val retrievedPatient = patient.api(specJob).crypto.internal.exchangeDataManager.getOrCreateEncryptionDataTo(
+            null,
+            EntityReferenceInGroup(hcp.dataOwnerId, null),
+            false,
+            false
+        )
 		createdPatient.exchangeData.id shouldBe retrievedPatient.exchangeData.id
 	}
 

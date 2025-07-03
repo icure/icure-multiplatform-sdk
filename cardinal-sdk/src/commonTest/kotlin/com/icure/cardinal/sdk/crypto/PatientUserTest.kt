@@ -47,6 +47,7 @@ class PatientUserTest : StringSpec({
 			).shouldNotBeNull()
 		)
 		val patientApi = patientDetails.api(specJob)
+
 		// Data owner api does not decrypt, so we can use that since the current patient can't decrypt his own info
 		val uninitializedPatient = patientApi.dataOwner.getCurrentDataOwner().shouldBeInstanceOf<DataOwnerWithType.PatientDataOwner>().dataOwner
 		shouldThrow<IllegalArgumentException> {

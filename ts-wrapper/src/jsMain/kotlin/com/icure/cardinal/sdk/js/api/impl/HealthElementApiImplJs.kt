@@ -1189,11 +1189,11 @@ internal class HealthElementApiImplJs(
 				secretIdUseOption_fromJs(secretId)
 			}
 			val result = healthElementApi.withEncryptionMetadata(
-				baseConverted,
-				patientConverted,
-				userConverted,
-				delegatesConverted,
-				secretIdConverted,
+                baseConverted,
+                patientConverted,
+                userConverted,
+                delegatesConverted,
+                secretIdConverted,
 			)
 			healthElement_toJs(result)
 		}

@@ -224,7 +224,7 @@ private class AbstractMessageBasicFlavourlessApi(val rawApi: RawMessageApi, priv
 	@Deprecated("Deletion without rev is unsafe")
 	override suspend fun deleteMessagesUnsafe(entityIds: List<String>): List<DocIdentifier> =
 		rawApi.deleteMessages(ListOfIds(entityIds)).successBody()
-		
+
 	override suspend fun deleteMessageById(entityId: String, rev: String): DocIdentifier =
 		rawApi.deleteMessage(entityId, rev).successBodyOrThrowRevisionConflict()
 
@@ -319,32 +319,34 @@ internal class MessageApiImpl(
 		user: User?,
 		delegates: Map<String, AccessLevel>,
 		secretId: SecretIdUseOption,
+		alternateRootDataOwnerReference: EntityReferenceInGroup?,
 		// Temporary, needs a lot more stuff to match typescript implementation
 	): DecryptedMessage =
 		config.crypto.entity.entityWithInitializedEncryptedMetadata(
-			null,
-			(base ?: DecryptedMessage(config.crypto.primitives.strongRandom.randomUUID())).copy(
-				created = base?.created ?: currentEpochMs(),
-				modified = base?.modified ?: currentEpochMs(),
-				responsible = base?.responsible ?: user?.takeIf { config.autofillAuthor }?.dataOwnerId,
-				author = base?.author ?: user?.id?.takeIf { config.autofillAuthor },
-			),
-			EntityWithEncryptionMetadataTypeName.Message,
-			patient?.let {
-				OwningEntityDetails(
-					null,
-					it.id,
-					config.crypto.entity.resolveSecretIdOption(
-						null,
-						it,
-						EntityWithEncryptionMetadataTypeName.Patient,
-						secretId
-					)
-				)
-			},
-			initializeEncryptionKey = true,
-			autoDelegations = (delegates + user?.autoDelegationsFor(DelegationTag.MedicalInformation)
-				.orEmpty()).keyAsLocalDataOwnerReferences(),
+            null,
+            (base ?: DecryptedMessage(config.crypto.primitives.strongRandom.randomUUID())).copy(
+                created = base?.created ?: currentEpochMs(),
+                modified = base?.modified ?: currentEpochMs(),
+                responsible = base?.responsible ?: user?.takeIf { config.autofillAuthor }?.dataOwnerId,
+                author = base?.author ?: user?.id?.takeIf { config.autofillAuthor },
+            ),
+            EntityWithEncryptionMetadataTypeName.Message,
+            patient?.let {
+                OwningEntityDetails(
+                    null,
+                    it.id,
+                    config.crypto.entity.resolveSecretIdOption(
+                        null,
+                        it,
+                        EntityWithEncryptionMetadataTypeName.Patient,
+                        secretId
+                    )
+                )
+            },
+            initializeEncryptionKey = true,
+            autoDelegations = (delegates + user?.autoDelegationsFor(DelegationTag.MedicalInformation)
+                .orEmpty()).keyAsLocalDataOwnerReferences(),
+			alternateRootDataOwnerReference = alternateRootDataOwnerReference,
 		).updatedEntity
 
 	override suspend fun getEncryptionKeysOf(message: Message): Set<HexString> =
