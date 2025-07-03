@@ -62,20 +62,22 @@ class SecureDelegationsManagerImpl (
 		owningEntityIds: Set<String>,
 		owningEntitySecretIds: Set<String>,
 		encryptionKeys: Set<HexString>,
-		autoDelegations: Map<EntityReferenceInGroup, AccessLevel>
+		autoDelegations: Map<EntityReferenceInGroup, AccessLevel>,
+		alternateRootDataOwnerReference: EntityReferenceInGroup?
 	): T {
 		val selfReference = dataOwnerApi.getCurrentDataOwnerReference()
+		val rootDelegationReference = alternateRootDataOwnerReference ?: selfReference
 		val rootDelegationInfo = makeSecureDelegationInfo(
 			entityGroupId = entityGroupId,
 			entityType = entityType,
-			delegateReference = selfReference,
+			delegateReference = rootDelegationReference,
 			shareSecretIds = secretIds,
 			shareOwningEntityIds = owningEntityIds,
 			shareEncryptionKeys = encryptionKeys,
 			permissions = AccessLevel.Write,
 			parentDelegationKey = null
 		)
-		val otherDelegationsInfo = autoDelegations.filterNot { it.key == selfReference }.map { (delegateId, permissions) ->
+		val otherDelegationsInfo = autoDelegations.filterNot { it.key == rootDelegationReference }.map { (delegateId, permissions) ->
 			makeSecureDelegationInfo(
 				entityGroupId = entityGroupId,
 				entityType = entityType,
@@ -90,7 +92,7 @@ class SecureDelegationsManagerImpl (
 		exchangeDataMapManager.createExchangeDataMaps(
 			entityGroupId,
 			ExchangeDataMapCreationBatch(
-				otherDelegationsInfo.mapNotNull { info -> info.encryptedExchangeDataId?.let { info.canonicalAccessControlKey to it } }.toMap()
+				(otherDelegationsInfo + rootDelegationInfo).mapNotNull { info -> info.encryptedExchangeDataId?.let { info.canonicalAccessControlKey to it } }.toMap()
 			)
 		)
 		@Suppress("UNCHECKED_CAST")
@@ -115,6 +117,7 @@ class SecureDelegationsManagerImpl (
 		val exchangeData = exchangeDataManager.getOrCreateEncryptionDataTo(
 			entityGroupId,
 			delegate,
+			false,
 			false
 		)
 		val accessControlKey = exchangeData.unencryptedContent.accessControlSecret.toAccessControlKeyStringFor(
@@ -163,7 +166,8 @@ class SecureDelegationsManagerImpl (
 		val exchangeDataInfo = exchangeDataManager.getOrCreateEncryptionDataTo(
 			entityGroupId,
 			delegateReference,
-			selfNeedsAnonymousDelegations
+			selfNeedsAnonymousDelegations,
+			false
 		)
 		val accessControlKey = exchangeDataInfo.unencryptedContent.accessControlSecret.toAccessControlKeyStringFor(
 			entityType,

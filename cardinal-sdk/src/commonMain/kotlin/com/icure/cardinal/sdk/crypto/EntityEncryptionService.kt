@@ -191,7 +191,8 @@ interface EntityEncryptionService : EntityValidationService {
 		entityType: EntityWithEncryptionMetadataTypeName,
 		owningEntityDetails: OwningEntityDetails?,
 		initializeEncryptionKey: Boolean,
-		autoDelegations: Map<EntityReferenceInGroup, AccessLevel>
+		autoDelegations: Map<EntityReferenceInGroup, AccessLevel>,
+		alternateRootDataOwnerReference: EntityReferenceInGroup? = null,
 	): EntityEncryptionMetadataInitialisationResult<T>
 
 	/**

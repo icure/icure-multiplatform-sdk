@@ -84,6 +84,12 @@ interface CryptoStrategies {
 		data object Deny : KeyGenerationRequestResult
 
 		/**
+		 * The SDK must not generate a new key for the data owner. The SDK initialisation will go through but the initialised
+		 * SDK will run in keyless mode. In keyless mode, exchange data has to be created explicitly before data can be shared.
+		 */
+		data object Keyless : KeyGenerationRequestResult
+
+		/**
 		 * The SDK should use the provided key pair as a new key for the data owner.
 		 */
 		data class Use(val keyPair: RsaKeypair<RsaEncryptionAlgorithm.OaepWithSha256>) : KeyGenerationRequestResult

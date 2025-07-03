@@ -121,10 +121,10 @@ class InterGroupSharingTest : StringSpec({
 			)
 			delegatorApi.healthElement.inGroup.createHealthElement(
 				delegatorApi.healthElement.inGroup.withEncryptionMetadata(
-					entityGroupId = childGroupId,
-					base = baseHe,
-					patient = createdPatient,
-					delegates = mapOf(delegateReference to AccessLevel.Write)
+                    entityGroupId = childGroupId,
+                    base = baseHe,
+                    patient = createdPatient,
+                    delegates = mapOf(delegateReference to AccessLevel.Write)
 				)
 			)
 			checkCanGet(delegatorApi, delegator.groupId, basePatient, baseHe)
@@ -165,10 +165,10 @@ class InterGroupSharingTest : StringSpec({
 			)
 			val he = delegatorApi.healthElement.inGroup.createHealthElement(
 				delegatorApi.healthElement.inGroup.withEncryptionMetadata(
-					entityGroupId = childGroupId,
-					base = baseHe,
-					user = delegatorApi.user.getCurrentUser(),
-					patient = patient
+                    entityGroupId = childGroupId,
+                    base = baseHe,
+                    patient = patient,
+                    user = delegatorApi.user.getCurrentUser()
 				)
 			).shouldNotBeNull()
 			delegatorApi.patient.inGroup.shareWith(

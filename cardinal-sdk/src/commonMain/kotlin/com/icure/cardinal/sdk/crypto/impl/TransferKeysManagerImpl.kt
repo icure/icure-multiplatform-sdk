@@ -6,6 +6,7 @@ import com.icure.cardinal.sdk.crypto.TransferKeysManager
 import com.icure.cardinal.sdk.crypto.UserEncryptionKeysManager
 import com.icure.cardinal.sdk.crypto.entities.CandidateTransferKey
 import com.icure.cardinal.sdk.crypto.entities.CardinalKeyInfo
+import com.icure.cardinal.sdk.crypto.entities.SelfVerifiedKeysSet
 import com.icure.cardinal.sdk.model.EntityReferenceInGroup
 import com.icure.cardinal.sdk.crypto.entities.VerifiedRsaEncryptionKeysSet
 import com.icure.cardinal.sdk.model.CryptoActorStubWithType
@@ -50,14 +51,16 @@ internal class TransferKeysManagerImpl(
 		val exchangeData = exchangeDataManager.getOrCreateEncryptionDataTo(
 			null,
 			EntityReferenceInGroup(selfId, null),
+			false,
 			false
 		)
 		// If the exchange data already existed ensure that it has all the necessary keys
 		exchangeDataManager.base.updateExchangeDataWithDecryptedContent(
-			exchangeData.exchangeData,
-			keysToUse,
-			exchangeData.unencryptedContent
-		)
+			exchangeData = exchangeData.exchangeData,
+			newEncryptionKeys = keysToUse,
+			newDelegatorSignatureKeys = SelfVerifiedKeysSet(emptySet()),
+			unencryptedExchangeDataContent = exchangeData.unencryptedContent
+        )
 		val updatedTransferKeys = self.stub.transferKeys.toList().associate { (identifier, transferKeys) ->
 			identifier.sliceIfNeeded() to transferKeys.toList().associate { (targetIdentifier, key) ->
 				targetIdentifier.sliceIfNeeded() to key

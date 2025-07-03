@@ -30,7 +30,7 @@ import kotlinx.serialization.builtins.ListSerializer
 
 @Serializable
 private class GetKeywordParams(
-	public val frontEndMigrationId: String,
+	public val keywordId: String,
 )
 
 @OptIn(InternalIcureApi::class)
@@ -39,7 +39,7 @@ public fun getKeywordBlocking(sdk: CardinalNonCryptoApis, params: String): Strin
 	val decodedParams = fullLanguageInteropJson.decodeFromString<GetKeywordParams>(params)
 	runBlocking {
 		sdk.keyword.getKeyword(
-			decodedParams.frontEndMigrationId,
+			decodedParams.keywordId,
 		)
 	}
 }.toPyString(Keyword.serializer())
@@ -58,7 +58,7 @@ public fun getKeywordAsync(
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.keyword.getKeyword(
-				decodedParams.frontEndMigrationId,
+				decodedParams.keywordId,
 			)
 		}.toPyStringAsyncCallback(Keyword.serializer(), resultCallback)
 	}
@@ -66,7 +66,7 @@ public fun getKeywordAsync(
 
 @Serializable
 private class CreateKeywordParams(
-	public val frontEndMigration: Keyword,
+	public val keyword: Keyword,
 )
 
 @OptIn(InternalIcureApi::class)
@@ -75,7 +75,7 @@ public fun createKeywordBlocking(sdk: CardinalNonCryptoApis, params: String): St
 	val decodedParams = fullLanguageInteropJson.decodeFromString<CreateKeywordParams>(params)
 	runBlocking {
 		sdk.keyword.createKeyword(
-			decodedParams.frontEndMigration,
+			decodedParams.keyword,
 		)
 	}
 }.toPyString(Keyword.serializer())
@@ -94,7 +94,7 @@ public fun createKeywordAsync(
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.keyword.createKeyword(
-				decodedParams.frontEndMigration,
+				decodedParams.keyword,
 			)
 		}.toPyStringAsyncCallback(Keyword.serializer(), resultCallback)
 	}

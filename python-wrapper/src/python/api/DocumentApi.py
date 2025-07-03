@@ -2,12 +2,12 @@
 import json
 import base64
 import traceback
-from cardinal_sdk.model import DecryptedDocument, Message, User, AccessLevel, SecretIdUseOption, SecretIdUseOptionUseAnySharedWithParent, serialize_message, serialize_secret_id_use_option, Document, serialize_document, EncryptedDocument, deserialize_document, DocIdentifier, IdWithMandatoryRev, DocumentShareOptions
+from typing import Optional
+from cardinal_sdk.model import DecryptedDocument, Message, User, AccessLevel, SecretIdUseOption, SecretIdUseOptionUseAnySharedWithParent, serialize_message, serialize_secret_id_use_option, Document, serialize_document, EncryptedDocument, deserialize_document, DocIdentifier, StoredDocumentIdentifier, DocumentShareOptions
 from cardinal_sdk.async_utils import execute_async_method_job
 from cardinal_sdk.kotlin_types import symbols, CALLBACK_PARAM_DATA_INPUT
 from cardinal_sdk.model.CallResult import create_result_from_json, interpret_kt_error
 from ctypes import cast, c_char_p
-from typing import Optional, Dict, List
 from collections.abc import Callable
 from cardinal_sdk.model.specializations import HexString
 from cardinal_sdk.filters.FilterOptions import FilterOptions, SortableFilterOptions
@@ -16,733 +16,12 @@ from cardinal_sdk.pagination.PaginatedListIterator import PaginatedListIterator
 
 class DocumentApi:
 
-	class DocumentFlavouredEncryptedApi:
-
-		def __init__(self, cardinal_sdk):
-			self.cardinal_sdk = cardinal_sdk
-
-		async def share_with_async(self, delegate_id: str, document: EncryptedDocument, options: Optional[DocumentShareOptions] = None) -> EncryptedDocument:
-			def do_decode(raw_result):
-				return EncryptedDocument._deserialize(raw_result)
-			payload = {
-				"delegateId": delegate_id,
-				"document": document.__serialize__(),
-				"options": options.__serialize__() if options is not None else None,
-			}
-			return await execute_async_method_job(
-				self.cardinal_sdk._executor,
-				True,
-				do_decode,
-				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.encrypted.shareWithAsync,
-				self.cardinal_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-			)
-
-		def share_with_blocking(self, delegate_id: str, document: EncryptedDocument, options: Optional[DocumentShareOptions] = None) -> EncryptedDocument:
-			payload = {
-				"delegateId": delegate_id,
-				"document": document.__serialize__(),
-				"options": options.__serialize__() if options is not None else None,
-			}
-			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.encrypted.shareWithBlocking(
-				self.cardinal_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-			)
-			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-			symbols.DisposeString(call_result)
-			if result_info.failure is not None:
-				raise interpret_kt_error(result_info.failure)
-			else:
-				return_value = EncryptedDocument._deserialize(result_info.success)
-				return return_value
-
-		async def share_with_many_async(self, document: EncryptedDocument, delegates: Dict[str, DocumentShareOptions]) -> EncryptedDocument:
-			def do_decode(raw_result):
-				return EncryptedDocument._deserialize(raw_result)
-			payload = {
-				"document": document.__serialize__(),
-				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
-			}
-			return await execute_async_method_job(
-				self.cardinal_sdk._executor,
-				True,
-				do_decode,
-				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.encrypted.shareWithManyAsync,
-				self.cardinal_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-			)
-
-		def share_with_many_blocking(self, document: EncryptedDocument, delegates: Dict[str, DocumentShareOptions]) -> EncryptedDocument:
-			payload = {
-				"document": document.__serialize__(),
-				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
-			}
-			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.encrypted.shareWithManyBlocking(
-				self.cardinal_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-			)
-			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-			symbols.DisposeString(call_result)
-			if result_info.failure is not None:
-				raise interpret_kt_error(result_info.failure)
-			else:
-				return_value = EncryptedDocument._deserialize(result_info.success)
-				return return_value
-
-		async def filter_documents_by_async(self, filter: FilterOptions[Document]) -> PaginatedListIterator[EncryptedDocument]:
-			def do_decode(raw_result):
-				return PaginatedListIterator[EncryptedDocument](
-					producer = raw_result,
-					deserializer = lambda x: EncryptedDocument._deserialize(x),
-					executor = self.cardinal_sdk._executor
-				)
-			payload = {
-				"filter": filter.__serialize__(),
-			}
-			return await execute_async_method_job(
-				self.cardinal_sdk._executor,
-				False,
-				do_decode,
-				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.encrypted.filterDocumentsByAsync,
-				self.cardinal_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-			)
-
-		def filter_documents_by_blocking(self, filter: FilterOptions[Document]) -> PaginatedListIterator[EncryptedDocument]:
-			payload = {
-				"filter": filter.__serialize__(),
-			}
-			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.encrypted.filterDocumentsByBlocking(
-				self.cardinal_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-			)
-			error_str_pointer = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_failure(call_result)
-			if error_str_pointer is not None:
-				error_data_str = cast(error_str_pointer, c_char_p).value.decode('utf_8')
-				symbols.DisposeString(error_str_pointer)
-				symbols.DisposeStablePointer(call_result.pinned)
-				raise interpret_kt_error(json.loads(error_data_str))
-			else:
-				class_pointer = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_success(call_result)
-				symbols.DisposeStablePointer(call_result.pinned)
-				return PaginatedListIterator[EncryptedDocument](
-					producer = class_pointer,
-					deserializer = lambda x: EncryptedDocument._deserialize(x),
-					executor = self.cardinal_sdk._executor
-				)
-
-		async def filter_documents_by_sorted_async(self, filter: SortableFilterOptions[Document]) -> PaginatedListIterator[EncryptedDocument]:
-			def do_decode(raw_result):
-				return PaginatedListIterator[EncryptedDocument](
-					producer = raw_result,
-					deserializer = lambda x: EncryptedDocument._deserialize(x),
-					executor = self.cardinal_sdk._executor
-				)
-			payload = {
-				"filter": filter.__serialize__(),
-			}
-			return await execute_async_method_job(
-				self.cardinal_sdk._executor,
-				False,
-				do_decode,
-				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.encrypted.filterDocumentsBySortedAsync,
-				self.cardinal_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-			)
-
-		def filter_documents_by_sorted_blocking(self, filter: SortableFilterOptions[Document]) -> PaginatedListIterator[EncryptedDocument]:
-			payload = {
-				"filter": filter.__serialize__(),
-			}
-			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.encrypted.filterDocumentsBySortedBlocking(
-				self.cardinal_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-			)
-			error_str_pointer = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_failure(call_result)
-			if error_str_pointer is not None:
-				error_data_str = cast(error_str_pointer, c_char_p).value.decode('utf_8')
-				symbols.DisposeString(error_str_pointer)
-				symbols.DisposeStablePointer(call_result.pinned)
-				raise interpret_kt_error(json.loads(error_data_str))
-			else:
-				class_pointer = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_success(call_result)
-				symbols.DisposeStablePointer(call_result.pinned)
-				return PaginatedListIterator[EncryptedDocument](
-					producer = class_pointer,
-					deserializer = lambda x: EncryptedDocument._deserialize(x),
-					executor = self.cardinal_sdk._executor
-				)
-
-		async def undelete_document_by_id_async(self, id: str, rev: str) -> EncryptedDocument:
-			def do_decode(raw_result):
-				return EncryptedDocument._deserialize(raw_result)
-			payload = {
-				"id": id,
-				"rev": rev,
-			}
-			return await execute_async_method_job(
-				self.cardinal_sdk._executor,
-				True,
-				do_decode,
-				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.encrypted.undeleteDocumentByIdAsync,
-				self.cardinal_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-			)
-
-		def undelete_document_by_id_blocking(self, id: str, rev: str) -> EncryptedDocument:
-			payload = {
-				"id": id,
-				"rev": rev,
-			}
-			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.encrypted.undeleteDocumentByIdBlocking(
-				self.cardinal_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-			)
-			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-			symbols.DisposeString(call_result)
-			if result_info.failure is not None:
-				raise interpret_kt_error(result_info.failure)
-			else:
-				return_value = EncryptedDocument._deserialize(result_info.success)
-				return return_value
-
-		async def undelete_document_async(self, document: Document) -> EncryptedDocument:
-			def do_decode(raw_result):
-				return EncryptedDocument._deserialize(raw_result)
-			payload = {
-				"document": serialize_document(document),
-			}
-			return await execute_async_method_job(
-				self.cardinal_sdk._executor,
-				True,
-				do_decode,
-				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.encrypted.undeleteDocumentAsync,
-				self.cardinal_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-			)
-
-		def undelete_document_blocking(self, document: Document) -> EncryptedDocument:
-			payload = {
-				"document": serialize_document(document),
-			}
-			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.encrypted.undeleteDocumentBlocking(
-				self.cardinal_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-			)
-			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-			symbols.DisposeString(call_result)
-			if result_info.failure is not None:
-				raise interpret_kt_error(result_info.failure)
-			else:
-				return_value = EncryptedDocument._deserialize(result_info.success)
-				return return_value
-
-		async def modify_document_async(self, entity: EncryptedDocument) -> EncryptedDocument:
-			def do_decode(raw_result):
-				return EncryptedDocument._deserialize(raw_result)
-			payload = {
-				"entity": entity.__serialize__(),
-			}
-			return await execute_async_method_job(
-				self.cardinal_sdk._executor,
-				True,
-				do_decode,
-				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.encrypted.modifyDocumentAsync,
-				self.cardinal_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-			)
-
-		def modify_document_blocking(self, entity: EncryptedDocument) -> EncryptedDocument:
-			payload = {
-				"entity": entity.__serialize__(),
-			}
-			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.encrypted.modifyDocumentBlocking(
-				self.cardinal_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-			)
-			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-			symbols.DisposeString(call_result)
-			if result_info.failure is not None:
-				raise interpret_kt_error(result_info.failure)
-			else:
-				return_value = EncryptedDocument._deserialize(result_info.success)
-				return return_value
-
-		async def get_document_async(self, entity_id: str) -> EncryptedDocument:
-			def do_decode(raw_result):
-				return EncryptedDocument._deserialize(raw_result)
-			payload = {
-				"entityId": entity_id,
-			}
-			return await execute_async_method_job(
-				self.cardinal_sdk._executor,
-				True,
-				do_decode,
-				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.encrypted.getDocumentAsync,
-				self.cardinal_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-			)
-
-		def get_document_blocking(self, entity_id: str) -> EncryptedDocument:
-			payload = {
-				"entityId": entity_id,
-			}
-			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.encrypted.getDocumentBlocking(
-				self.cardinal_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-			)
-			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-			symbols.DisposeString(call_result)
-			if result_info.failure is not None:
-				raise interpret_kt_error(result_info.failure)
-			else:
-				return_value = EncryptedDocument._deserialize(result_info.success)
-				return return_value
-
-		async def get_documents_async(self, entity_ids: List[str]) -> List[EncryptedDocument]:
-			def do_decode(raw_result):
-				return [EncryptedDocument._deserialize(x1) for x1 in raw_result]
-			payload = {
-				"entityIds": [x0 for x0 in entity_ids],
-			}
-			return await execute_async_method_job(
-				self.cardinal_sdk._executor,
-				True,
-				do_decode,
-				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.encrypted.getDocumentsAsync,
-				self.cardinal_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-			)
-
-		def get_documents_blocking(self, entity_ids: List[str]) -> List[EncryptedDocument]:
-			payload = {
-				"entityIds": [x0 for x0 in entity_ids],
-			}
-			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.encrypted.getDocumentsBlocking(
-				self.cardinal_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-			)
-			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-			symbols.DisposeString(call_result)
-			if result_info.failure is not None:
-				raise interpret_kt_error(result_info.failure)
-			else:
-				return_value = [EncryptedDocument._deserialize(x1) for x1 in result_info.success]
-				return return_value
-
-		async def modify_documents_async(self, entities: List[EncryptedDocument]) -> List[EncryptedDocument]:
-			def do_decode(raw_result):
-				return [EncryptedDocument._deserialize(x1) for x1 in raw_result]
-			payload = {
-				"entities": [x0.__serialize__() for x0 in entities],
-			}
-			return await execute_async_method_job(
-				self.cardinal_sdk._executor,
-				True,
-				do_decode,
-				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.encrypted.modifyDocumentsAsync,
-				self.cardinal_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-			)
-
-		def modify_documents_blocking(self, entities: List[EncryptedDocument]) -> List[EncryptedDocument]:
-			payload = {
-				"entities": [x0.__serialize__() for x0 in entities],
-			}
-			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.encrypted.modifyDocumentsBlocking(
-				self.cardinal_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-			)
-			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-			symbols.DisposeString(call_result)
-			if result_info.failure is not None:
-				raise interpret_kt_error(result_info.failure)
-			else:
-				return_value = [EncryptedDocument._deserialize(x1) for x1 in result_info.success]
-				return return_value
-
-	class DocumentFlavouredApi:
-
-		def __init__(self, cardinal_sdk):
-			self.cardinal_sdk = cardinal_sdk
-
-		async def share_with_async(self, delegate_id: str, document: Document, options: Optional[DocumentShareOptions] = None) -> Document:
-			def do_decode(raw_result):
-				return deserialize_document(raw_result)
-			payload = {
-				"delegateId": delegate_id,
-				"document": serialize_document(document),
-				"options": options.__serialize__() if options is not None else None,
-			}
-			return await execute_async_method_job(
-				self.cardinal_sdk._executor,
-				True,
-				do_decode,
-				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.tryAndRecover.shareWithAsync,
-				self.cardinal_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-			)
-
-		def share_with_blocking(self, delegate_id: str, document: Document, options: Optional[DocumentShareOptions] = None) -> Document:
-			payload = {
-				"delegateId": delegate_id,
-				"document": serialize_document(document),
-				"options": options.__serialize__() if options is not None else None,
-			}
-			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.tryAndRecover.shareWithBlocking(
-				self.cardinal_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-			)
-			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-			symbols.DisposeString(call_result)
-			if result_info.failure is not None:
-				raise interpret_kt_error(result_info.failure)
-			else:
-				return_value = deserialize_document(result_info.success)
-				return return_value
-
-		async def share_with_many_async(self, document: Document, delegates: Dict[str, DocumentShareOptions]) -> Document:
-			def do_decode(raw_result):
-				return deserialize_document(raw_result)
-			payload = {
-				"document": serialize_document(document),
-				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
-			}
-			return await execute_async_method_job(
-				self.cardinal_sdk._executor,
-				True,
-				do_decode,
-				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.tryAndRecover.shareWithManyAsync,
-				self.cardinal_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-			)
-
-		def share_with_many_blocking(self, document: Document, delegates: Dict[str, DocumentShareOptions]) -> Document:
-			payload = {
-				"document": serialize_document(document),
-				"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
-			}
-			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.tryAndRecover.shareWithManyBlocking(
-				self.cardinal_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-			)
-			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-			symbols.DisposeString(call_result)
-			if result_info.failure is not None:
-				raise interpret_kt_error(result_info.failure)
-			else:
-				return_value = deserialize_document(result_info.success)
-				return return_value
-
-		async def filter_documents_by_async(self, filter: FilterOptions[Document]) -> PaginatedListIterator[Document]:
-			def do_decode(raw_result):
-				return PaginatedListIterator[Document](
-					producer = raw_result,
-					deserializer = lambda x: deserialize_document(x),
-					executor = self.cardinal_sdk._executor
-				)
-			payload = {
-				"filter": filter.__serialize__(),
-			}
-			return await execute_async_method_job(
-				self.cardinal_sdk._executor,
-				False,
-				do_decode,
-				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.tryAndRecover.filterDocumentsByAsync,
-				self.cardinal_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-			)
-
-		def filter_documents_by_blocking(self, filter: FilterOptions[Document]) -> PaginatedListIterator[Document]:
-			payload = {
-				"filter": filter.__serialize__(),
-			}
-			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.tryAndRecover.filterDocumentsByBlocking(
-				self.cardinal_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-			)
-			error_str_pointer = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_failure(call_result)
-			if error_str_pointer is not None:
-				error_data_str = cast(error_str_pointer, c_char_p).value.decode('utf_8')
-				symbols.DisposeString(error_str_pointer)
-				symbols.DisposeStablePointer(call_result.pinned)
-				raise interpret_kt_error(json.loads(error_data_str))
-			else:
-				class_pointer = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_success(call_result)
-				symbols.DisposeStablePointer(call_result.pinned)
-				return PaginatedListIterator[Document](
-					producer = class_pointer,
-					deserializer = lambda x: deserialize_document(x),
-					executor = self.cardinal_sdk._executor
-				)
-
-		async def filter_documents_by_sorted_async(self, filter: SortableFilterOptions[Document]) -> PaginatedListIterator[Document]:
-			def do_decode(raw_result):
-				return PaginatedListIterator[Document](
-					producer = raw_result,
-					deserializer = lambda x: deserialize_document(x),
-					executor = self.cardinal_sdk._executor
-				)
-			payload = {
-				"filter": filter.__serialize__(),
-			}
-			return await execute_async_method_job(
-				self.cardinal_sdk._executor,
-				False,
-				do_decode,
-				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.tryAndRecover.filterDocumentsBySortedAsync,
-				self.cardinal_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-			)
-
-		def filter_documents_by_sorted_blocking(self, filter: SortableFilterOptions[Document]) -> PaginatedListIterator[Document]:
-			payload = {
-				"filter": filter.__serialize__(),
-			}
-			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.tryAndRecover.filterDocumentsBySortedBlocking(
-				self.cardinal_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-			)
-			error_str_pointer = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_failure(call_result)
-			if error_str_pointer is not None:
-				error_data_str = cast(error_str_pointer, c_char_p).value.decode('utf_8')
-				symbols.DisposeString(error_str_pointer)
-				symbols.DisposeStablePointer(call_result.pinned)
-				raise interpret_kt_error(json.loads(error_data_str))
-			else:
-				class_pointer = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_success(call_result)
-				symbols.DisposeStablePointer(call_result.pinned)
-				return PaginatedListIterator[Document](
-					producer = class_pointer,
-					deserializer = lambda x: deserialize_document(x),
-					executor = self.cardinal_sdk._executor
-				)
-
-		async def undelete_document_by_id_async(self, id: str, rev: str) -> Document:
-			def do_decode(raw_result):
-				return deserialize_document(raw_result)
-			payload = {
-				"id": id,
-				"rev": rev,
-			}
-			return await execute_async_method_job(
-				self.cardinal_sdk._executor,
-				True,
-				do_decode,
-				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.tryAndRecover.undeleteDocumentByIdAsync,
-				self.cardinal_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-			)
-
-		def undelete_document_by_id_blocking(self, id: str, rev: str) -> Document:
-			payload = {
-				"id": id,
-				"rev": rev,
-			}
-			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.tryAndRecover.undeleteDocumentByIdBlocking(
-				self.cardinal_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-			)
-			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-			symbols.DisposeString(call_result)
-			if result_info.failure is not None:
-				raise interpret_kt_error(result_info.failure)
-			else:
-				return_value = deserialize_document(result_info.success)
-				return return_value
-
-		async def undelete_document_async(self, document: Document) -> Document:
-			def do_decode(raw_result):
-				return deserialize_document(raw_result)
-			payload = {
-				"document": serialize_document(document),
-			}
-			return await execute_async_method_job(
-				self.cardinal_sdk._executor,
-				True,
-				do_decode,
-				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.tryAndRecover.undeleteDocumentAsync,
-				self.cardinal_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-			)
-
-		def undelete_document_blocking(self, document: Document) -> Document:
-			payload = {
-				"document": serialize_document(document),
-			}
-			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.tryAndRecover.undeleteDocumentBlocking(
-				self.cardinal_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-			)
-			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-			symbols.DisposeString(call_result)
-			if result_info.failure is not None:
-				raise interpret_kt_error(result_info.failure)
-			else:
-				return_value = deserialize_document(result_info.success)
-				return return_value
-
-		async def modify_document_async(self, entity: Document) -> Document:
-			def do_decode(raw_result):
-				return deserialize_document(raw_result)
-			payload = {
-				"entity": serialize_document(entity),
-			}
-			return await execute_async_method_job(
-				self.cardinal_sdk._executor,
-				True,
-				do_decode,
-				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.tryAndRecover.modifyDocumentAsync,
-				self.cardinal_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-			)
-
-		def modify_document_blocking(self, entity: Document) -> Document:
-			payload = {
-				"entity": serialize_document(entity),
-			}
-			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.tryAndRecover.modifyDocumentBlocking(
-				self.cardinal_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-			)
-			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-			symbols.DisposeString(call_result)
-			if result_info.failure is not None:
-				raise interpret_kt_error(result_info.failure)
-			else:
-				return_value = deserialize_document(result_info.success)
-				return return_value
-
-		async def get_document_async(self, entity_id: str) -> Document:
-			def do_decode(raw_result):
-				return deserialize_document(raw_result)
-			payload = {
-				"entityId": entity_id,
-			}
-			return await execute_async_method_job(
-				self.cardinal_sdk._executor,
-				True,
-				do_decode,
-				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.tryAndRecover.getDocumentAsync,
-				self.cardinal_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-			)
-
-		def get_document_blocking(self, entity_id: str) -> Document:
-			payload = {
-				"entityId": entity_id,
-			}
-			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.tryAndRecover.getDocumentBlocking(
-				self.cardinal_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-			)
-			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-			symbols.DisposeString(call_result)
-			if result_info.failure is not None:
-				raise interpret_kt_error(result_info.failure)
-			else:
-				return_value = deserialize_document(result_info.success)
-				return return_value
-
-		async def get_documents_async(self, entity_ids: List[str]) -> List[Document]:
-			def do_decode(raw_result):
-				return [deserialize_document(x1) for x1 in raw_result]
-			payload = {
-				"entityIds": [x0 for x0 in entity_ids],
-			}
-			return await execute_async_method_job(
-				self.cardinal_sdk._executor,
-				True,
-				do_decode,
-				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.tryAndRecover.getDocumentsAsync,
-				self.cardinal_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-			)
-
-		def get_documents_blocking(self, entity_ids: List[str]) -> List[Document]:
-			payload = {
-				"entityIds": [x0 for x0 in entity_ids],
-			}
-			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.tryAndRecover.getDocumentsBlocking(
-				self.cardinal_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-			)
-			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-			symbols.DisposeString(call_result)
-			if result_info.failure is not None:
-				raise interpret_kt_error(result_info.failure)
-			else:
-				return_value = [deserialize_document(x1) for x1 in result_info.success]
-				return return_value
-
-		async def modify_documents_async(self, entities: List[Document]) -> List[Document]:
-			def do_decode(raw_result):
-				return [deserialize_document(x1) for x1 in raw_result]
-			payload = {
-				"entities": [serialize_document(x0) for x0 in entities],
-			}
-			return await execute_async_method_job(
-				self.cardinal_sdk._executor,
-				True,
-				do_decode,
-				symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.tryAndRecover.modifyDocumentsAsync,
-				self.cardinal_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-			)
-
-		def modify_documents_blocking(self, entities: List[Document]) -> List[Document]:
-			payload = {
-				"entities": [serialize_document(x0) for x0 in entities],
-			}
-			call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.tryAndRecover.modifyDocumentsBlocking(
-				self.cardinal_sdk._native,
-				json.dumps(payload).encode('utf-8'),
-			)
-			result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-			symbols.DisposeString(call_result)
-			if result_info.failure is not None:
-				raise interpret_kt_error(result_info.failure)
-			else:
-				return_value = [deserialize_document(x1) for x1 in result_info.success]
-				return return_value
-
 	def __init__(self, cardinal_sdk):
 		self.cardinal_sdk = cardinal_sdk
-		self.encrypted = DocumentApi.DocumentFlavouredEncryptedApi(self.cardinal_sdk)
-		self.try_and_recover = DocumentApi.DocumentFlavouredApi(self.cardinal_sdk)
+		self.encrypted = DocumentApiEncrypted(self.cardinal_sdk)
+		self.try_and_recover = DocumentApiTryAndRecover(self.cardinal_sdk)
 
-	async def create_document_async(self, entity: DecryptedDocument) -> DecryptedDocument:
-		def do_decode(raw_result):
-			return DecryptedDocument._deserialize(raw_result)
-		payload = {
-			"entity": entity.__serialize__(),
-		}
-		return await execute_async_method_job(
-			self.cardinal_sdk._executor,
-			True,
-			do_decode,
-			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.createDocumentAsync,
-			self.cardinal_sdk._native,
-			json.dumps(payload).encode('utf-8'),
-		)
-
-	def create_document_blocking(self, entity: DecryptedDocument) -> DecryptedDocument:
-		payload = {
-			"entity": entity.__serialize__(),
-		}
-		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.createDocumentBlocking(
-			self.cardinal_sdk._native,
-			json.dumps(payload).encode('utf-8'),
-		)
-		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
-		symbols.DisposeString(call_result)
-		if result_info.failure is not None:
-			raise interpret_kt_error(result_info.failure)
-		else:
-			return_value = DecryptedDocument._deserialize(result_info.success)
-			return return_value
-
-	async def with_encryption_metadata_async(self, base: Optional[DecryptedDocument], message: Optional[Message], user: Optional[User] = None, delegates: Dict[str, AccessLevel] = {}, secret_id: SecretIdUseOption = SecretIdUseOptionUseAnySharedWithParent()) -> DecryptedDocument:
+	async def with_encryption_metadata_async(self, base: Optional[DecryptedDocument], message: Optional[Message], user: Optional[User] = None, delegates: dict[str, AccessLevel] = {}, secret_id: SecretIdUseOption = SecretIdUseOptionUseAnySharedWithParent()) -> DecryptedDocument:
 		def do_decode(raw_result):
 			return DecryptedDocument._deserialize(raw_result)
 		payload = {
@@ -761,7 +40,7 @@ class DocumentApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def with_encryption_metadata_blocking(self, base: Optional[DecryptedDocument], message: Optional[Message], user: Optional[User] = None, delegates: Dict[str, AccessLevel] = {}, secret_id: SecretIdUseOption = SecretIdUseOptionUseAnySharedWithParent()) -> DecryptedDocument:
+	def with_encryption_metadata_blocking(self, base: Optional[DecryptedDocument], message: Optional[Message], user: Optional[User] = None, delegates: dict[str, AccessLevel] = {}, secret_id: SecretIdUseOption = SecretIdUseOptionUseAnySharedWithParent()) -> DecryptedDocument:
 		payload = {
 			"base": base.__serialize__() if base is not None else None,
 			"message": serialize_message(message) if message is not None else None,
@@ -867,7 +146,7 @@ class DocumentApi:
 			return_value = bytearray(base64.b64decode(result_info.success))
 			return return_value
 
-	async def encrypt_and_set_main_attachment_async(self, document: Document, utis: Optional[List[str]], attachment: bytearray) -> EncryptedDocument:
+	async def encrypt_and_set_main_attachment_async(self, document: Document, utis: Optional[list[str]], attachment: bytearray) -> EncryptedDocument:
 		def do_decode(raw_result):
 			return EncryptedDocument._deserialize(raw_result)
 		payload = {
@@ -884,7 +163,7 @@ class DocumentApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def encrypt_and_set_main_attachment_blocking(self, document: Document, utis: Optional[List[str]], attachment: bytearray) -> EncryptedDocument:
+	def encrypt_and_set_main_attachment_blocking(self, document: Document, utis: Optional[list[str]], attachment: bytearray) -> EncryptedDocument:
 		payload = {
 			"document": serialize_document(document),
 			"utis": [x0 for x0 in utis] if utis is not None else None,
@@ -947,7 +226,7 @@ class DocumentApi:
 			return_value = bytearray(base64.b64decode(result_info.success))
 			return return_value
 
-	async def encrypt_and_set_secondary_attachment_async(self, document: Document, key: str, utis: Optional[List[str]], attachment: bytearray) -> EncryptedDocument:
+	async def encrypt_and_set_secondary_attachment_async(self, document: Document, key: str, utis: Optional[list[str]], attachment: bytearray) -> EncryptedDocument:
 		def do_decode(raw_result):
 			return EncryptedDocument._deserialize(raw_result)
 		payload = {
@@ -965,7 +244,7 @@ class DocumentApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def encrypt_and_set_secondary_attachment_blocking(self, document: Document, key: str, utis: Optional[List[str]], attachment: bytearray) -> EncryptedDocument:
+	def encrypt_and_set_secondary_attachment_blocking(self, document: Document, key: str, utis: Optional[list[str]], attachment: bytearray) -> EncryptedDocument:
 		payload = {
 			"document": serialize_document(document),
 			"key": key,
@@ -984,9 +263,9 @@ class DocumentApi:
 			return_value = EncryptedDocument._deserialize(result_info.success)
 			return return_value
 
-	async def get_encryption_keys_of_async(self, document: Document) -> List[HexString]:
+	async def get_encryption_keys_of_async(self, document: Document) -> set[HexString]:
 		def do_decode(raw_result):
-			return [x1 for x1 in raw_result]
+			return {x1 for x1 in raw_result}
 		payload = {
 			"document": serialize_document(document),
 		}
@@ -999,7 +278,7 @@ class DocumentApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def get_encryption_keys_of_blocking(self, document: Document) -> List[HexString]:
+	def get_encryption_keys_of_blocking(self, document: Document) -> set[HexString]:
 		payload = {
 			"document": serialize_document(document),
 		}
@@ -1012,7 +291,7 @@ class DocumentApi:
 		if result_info.failure is not None:
 			raise interpret_kt_error(result_info.failure)
 		else:
-			return_value = [x1 for x1 in result_info.success]
+			return_value = {x1 for x1 in result_info.success}
 			return return_value
 
 	async def has_write_access_async(self, document: Document) -> bool:
@@ -1046,9 +325,9 @@ class DocumentApi:
 			return_value = result_info.success
 			return return_value
 
-	async def decrypt_patient_id_of_async(self, document: Document) -> List[str]:
+	async def decrypt_patient_id_of_async(self, document: Document) -> set[str]:
 		def do_decode(raw_result):
-			return [x1 for x1 in raw_result]
+			return {x1 for x1 in raw_result}
 		payload = {
 			"document": serialize_document(document),
 		}
@@ -1061,7 +340,7 @@ class DocumentApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def decrypt_patient_id_of_blocking(self, document: Document) -> List[str]:
+	def decrypt_patient_id_of_blocking(self, document: Document) -> set[str]:
 		payload = {
 			"document": serialize_document(document),
 		}
@@ -1074,10 +353,10 @@ class DocumentApi:
 		if result_info.failure is not None:
 			raise interpret_kt_error(result_info.failure)
 		else:
-			return_value = [x1 for x1 in result_info.success]
+			return_value = {x1 for x1 in result_info.success}
 			return return_value
 
-	async def create_delegation_de_anonymization_metadata_async(self, entity: Document, delegates: List[str]) -> None:
+	async def create_delegation_de_anonymization_metadata_async(self, entity: Document, delegates: set[str]) -> None:
 		def do_decode(raw_result):
 			return raw_result
 		payload = {
@@ -1093,7 +372,7 @@ class DocumentApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def create_delegation_de_anonymization_metadata_blocking(self, entity: Document, delegates: List[str]) -> None:
+	def create_delegation_de_anonymization_metadata_blocking(self, entity: Document, delegates: set[str]) -> None:
 		payload = {
 			"entity": serialize_document(entity),
 			"delegates": [x0 for x0 in delegates],
@@ -1214,7 +493,7 @@ class DocumentApi:
 			return_value = bytearray(base64.b64decode(result_info.success)) if result_info.success is not None else None
 			return return_value
 
-	async def match_documents_by_async(self, filter: FilterOptions[Document]) -> List[str]:
+	async def match_documents_by_async(self, filter: FilterOptions[Document]) -> list[str]:
 		def do_decode(raw_result):
 			return [x1 for x1 in raw_result]
 		payload = {
@@ -1229,7 +508,7 @@ class DocumentApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def match_documents_by_blocking(self, filter: FilterOptions[Document]) -> List[str]:
+	def match_documents_by_blocking(self, filter: FilterOptions[Document]) -> list[str]:
 		payload = {
 			"filter": filter.__serialize__(),
 		}
@@ -1245,7 +524,7 @@ class DocumentApi:
 			return_value = [x1 for x1 in result_info.success]
 			return return_value
 
-	async def match_documents_by_sorted_async(self, filter: SortableFilterOptions[Document]) -> List[str]:
+	async def match_documents_by_sorted_async(self, filter: SortableFilterOptions[Document]) -> list[str]:
 		def do_decode(raw_result):
 			return [x1 for x1 in raw_result]
 		payload = {
@@ -1260,7 +539,7 @@ class DocumentApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def match_documents_by_sorted_blocking(self, filter: SortableFilterOptions[Document]) -> List[str]:
+	def match_documents_by_sorted_blocking(self, filter: SortableFilterOptions[Document]) -> list[str]:
 		payload = {
 			"filter": filter.__serialize__(),
 		}
@@ -1309,7 +588,7 @@ class DocumentApi:
 			return_value = DocIdentifier._deserialize(result_info.success)
 			return return_value
 
-	async def delete_documents_by_ids_async(self, entity_ids: List[IdWithMandatoryRev]) -> List[DocIdentifier]:
+	async def delete_documents_by_ids_async(self, entity_ids: list[StoredDocumentIdentifier]) -> list[DocIdentifier]:
 		def do_decode(raw_result):
 			return [DocIdentifier._deserialize(x1) for x1 in raw_result]
 		payload = {
@@ -1324,7 +603,7 @@ class DocumentApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def delete_documents_by_ids_blocking(self, entity_ids: List[IdWithMandatoryRev]) -> List[DocIdentifier]:
+	def delete_documents_by_ids_blocking(self, entity_ids: list[StoredDocumentIdentifier]) -> list[DocIdentifier]:
 		payload = {
 			"entityIds": [x0.__serialize__() for x0 in entity_ids],
 		}
@@ -1401,7 +680,7 @@ class DocumentApi:
 			return_value = DocIdentifier._deserialize(result_info.success)
 			return return_value
 
-	async def delete_documents_async(self, documents: List[Document]) -> List[DocIdentifier]:
+	async def delete_documents_async(self, documents: list[Document]) -> list[DocIdentifier]:
 		def do_decode(raw_result):
 			return [DocIdentifier._deserialize(x1) for x1 in raw_result]
 		payload = {
@@ -1416,7 +695,7 @@ class DocumentApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def delete_documents_blocking(self, documents: List[Document]) -> List[DocIdentifier]:
+	def delete_documents_blocking(self, documents: list[Document]) -> list[DocIdentifier]:
 		payload = {
 			"documents": [serialize_document(x0) for x0 in documents],
 		}
@@ -1524,7 +803,7 @@ class DocumentApi:
 			return_value = bytearray(base64.b64decode(result_info.success))
 			return return_value
 
-	async def set_raw_main_attachment_async(self, document_id: str, rev: str, utis: Optional[List[str]], attachment: bytearray, encrypted: bool) -> EncryptedDocument:
+	async def set_raw_main_attachment_async(self, document_id: str, rev: str, utis: Optional[list[str]], attachment: bytearray, encrypted: bool) -> EncryptedDocument:
 		def do_decode(raw_result):
 			return EncryptedDocument._deserialize(raw_result)
 		payload = {
@@ -1543,7 +822,7 @@ class DocumentApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def set_raw_main_attachment_blocking(self, document_id: str, rev: str, utis: Optional[List[str]], attachment: bytearray, encrypted: bool) -> EncryptedDocument:
+	def set_raw_main_attachment_blocking(self, document_id: str, rev: str, utis: Optional[list[str]], attachment: bytearray, encrypted: bool) -> EncryptedDocument:
 		payload = {
 			"documentId": document_id,
 			"rev": rev,
@@ -1563,7 +842,7 @@ class DocumentApi:
 			return_value = EncryptedDocument._deserialize(result_info.success)
 			return return_value
 
-	async def set_raw_secondary_attachment_async(self, document_id: str, key: str, rev: str, utis: Optional[List[str]], attachment: bytearray, encrypted: bool) -> EncryptedDocument:
+	async def set_raw_secondary_attachment_async(self, document_id: str, key: str, rev: str, utis: Optional[list[str]], attachment: bytearray, encrypted: bool) -> EncryptedDocument:
 		def do_decode(raw_result):
 			return EncryptedDocument._deserialize(raw_result)
 		payload = {
@@ -1583,7 +862,7 @@ class DocumentApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def set_raw_secondary_attachment_blocking(self, document_id: str, key: str, rev: str, utis: Optional[List[str]], attachment: bytearray, encrypted: bool) -> EncryptedDocument:
+	def set_raw_secondary_attachment_blocking(self, document_id: str, key: str, rev: str, utis: Optional[list[str]], attachment: bytearray, encrypted: bool) -> EncryptedDocument:
 		payload = {
 			"documentId": document_id,
 			"key": key,
@@ -1707,7 +986,7 @@ class DocumentApi:
 			return_value = DecryptedDocument._deserialize(result_info.success)
 			return return_value
 
-	async def share_with_many_async(self, document: DecryptedDocument, delegates: Dict[str, DocumentShareOptions]) -> DecryptedDocument:
+	async def share_with_many_async(self, document: DecryptedDocument, delegates: dict[str, DocumentShareOptions]) -> DecryptedDocument:
 		def do_decode(raw_result):
 			return DecryptedDocument._deserialize(raw_result)
 		payload = {
@@ -1723,7 +1002,7 @@ class DocumentApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def share_with_many_blocking(self, document: DecryptedDocument, delegates: Dict[str, DocumentShareOptions]) -> DecryptedDocument:
+	def share_with_many_blocking(self, document: DecryptedDocument, delegates: dict[str, DocumentShareOptions]) -> DecryptedDocument:
 		payload = {
 			"document": document.__serialize__(),
 			"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
@@ -1824,6 +1103,37 @@ class DocumentApi:
 				executor = self.cardinal_sdk._executor
 			)
 
+	async def create_document_async(self, entity: DecryptedDocument) -> DecryptedDocument:
+		def do_decode(raw_result):
+			return DecryptedDocument._deserialize(raw_result)
+		payload = {
+			"entity": entity.__serialize__(),
+		}
+		return await execute_async_method_job(
+			self.cardinal_sdk._executor,
+			True,
+			do_decode,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.createDocumentAsync,
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+
+	def create_document_blocking(self, entity: DecryptedDocument) -> DecryptedDocument:
+		payload = {
+			"entity": entity.__serialize__(),
+		}
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.createDocumentBlocking(
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
+		if result_info.failure is not None:
+			raise interpret_kt_error(result_info.failure)
+		else:
+			return_value = DecryptedDocument._deserialize(result_info.success)
+			return return_value
+
 	async def undelete_document_by_id_async(self, id: str, rev: str) -> DecryptedDocument:
 		def do_decode(raw_result):
 			return DecryptedDocument._deserialize(raw_result)
@@ -1919,9 +1229,9 @@ class DocumentApi:
 			return_value = DecryptedDocument._deserialize(result_info.success)
 			return return_value
 
-	async def get_document_async(self, entity_id: str) -> DecryptedDocument:
+	async def get_document_async(self, entity_id: str) -> Optional[DecryptedDocument]:
 		def do_decode(raw_result):
-			return DecryptedDocument._deserialize(raw_result)
+			return DecryptedDocument._deserialize(raw_result) if raw_result is not None else None
 		payload = {
 			"entityId": entity_id,
 		}
@@ -1934,7 +1244,7 @@ class DocumentApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def get_document_blocking(self, entity_id: str) -> DecryptedDocument:
+	def get_document_blocking(self, entity_id: str) -> Optional[DecryptedDocument]:
 		payload = {
 			"entityId": entity_id,
 		}
@@ -1947,10 +1257,10 @@ class DocumentApi:
 		if result_info.failure is not None:
 			raise interpret_kt_error(result_info.failure)
 		else:
-			return_value = DecryptedDocument._deserialize(result_info.success)
+			return_value = DecryptedDocument._deserialize(result_info.success) if result_info.success is not None else None
 			return return_value
 
-	async def get_documents_async(self, entity_ids: List[str]) -> List[DecryptedDocument]:
+	async def get_documents_async(self, entity_ids: list[str]) -> list[DecryptedDocument]:
 		def do_decode(raw_result):
 			return [DecryptedDocument._deserialize(x1) for x1 in raw_result]
 		payload = {
@@ -1965,7 +1275,7 @@ class DocumentApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def get_documents_blocking(self, entity_ids: List[str]) -> List[DecryptedDocument]:
+	def get_documents_blocking(self, entity_ids: list[str]) -> list[DecryptedDocument]:
 		payload = {
 			"entityIds": [x0 for x0 in entity_ids],
 		}
@@ -1981,7 +1291,7 @@ class DocumentApi:
 			return_value = [DecryptedDocument._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
-	async def modify_documents_async(self, entities: List[DecryptedDocument]) -> List[DecryptedDocument]:
+	async def modify_documents_async(self, entities: list[DecryptedDocument]) -> list[DecryptedDocument]:
 		def do_decode(raw_result):
 			return [DecryptedDocument._deserialize(x1) for x1 in raw_result]
 		payload = {
@@ -1996,7 +1306,7 @@ class DocumentApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def modify_documents_blocking(self, entities: List[DecryptedDocument]) -> List[DecryptedDocument]:
+	def modify_documents_blocking(self, entities: list[DecryptedDocument]) -> list[DecryptedDocument]:
 		payload = {
 			"entities": [x0.__serialize__() for x0 in entities],
 		}
@@ -2010,4 +1320,758 @@ class DocumentApi:
 			raise interpret_kt_error(result_info.failure)
 		else:
 			return_value = [DecryptedDocument._deserialize(x1) for x1 in result_info.success]
+			return return_value
+
+
+class DocumentApiEncrypted:
+
+	def __init__(self, cardinal_sdk):
+		self.cardinal_sdk = cardinal_sdk
+
+	async def share_with_async(self, delegate_id: str, document: EncryptedDocument, options: Optional[DocumentShareOptions] = None) -> EncryptedDocument:
+		def do_decode(raw_result):
+			return EncryptedDocument._deserialize(raw_result)
+		payload = {
+			"delegateId": delegate_id,
+			"document": document.__serialize__(),
+			"options": options.__serialize__() if options is not None else None,
+		}
+		return await execute_async_method_job(
+			self.cardinal_sdk._executor,
+			True,
+			do_decode,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.encrypted.shareWithAsync,
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+
+	def share_with_blocking(self, delegate_id: str, document: EncryptedDocument, options: Optional[DocumentShareOptions] = None) -> EncryptedDocument:
+		payload = {
+			"delegateId": delegate_id,
+			"document": document.__serialize__(),
+			"options": options.__serialize__() if options is not None else None,
+		}
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.encrypted.shareWithBlocking(
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
+		if result_info.failure is not None:
+			raise interpret_kt_error(result_info.failure)
+		else:
+			return_value = EncryptedDocument._deserialize(result_info.success)
+			return return_value
+
+	async def share_with_many_async(self, document: EncryptedDocument, delegates: dict[str, DocumentShareOptions]) -> EncryptedDocument:
+		def do_decode(raw_result):
+			return EncryptedDocument._deserialize(raw_result)
+		payload = {
+			"document": document.__serialize__(),
+			"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
+		}
+		return await execute_async_method_job(
+			self.cardinal_sdk._executor,
+			True,
+			do_decode,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.encrypted.shareWithManyAsync,
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+
+	def share_with_many_blocking(self, document: EncryptedDocument, delegates: dict[str, DocumentShareOptions]) -> EncryptedDocument:
+		payload = {
+			"document": document.__serialize__(),
+			"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
+		}
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.encrypted.shareWithManyBlocking(
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
+		if result_info.failure is not None:
+			raise interpret_kt_error(result_info.failure)
+		else:
+			return_value = EncryptedDocument._deserialize(result_info.success)
+			return return_value
+
+	async def filter_documents_by_async(self, filter: FilterOptions[Document]) -> PaginatedListIterator[EncryptedDocument]:
+		def do_decode(raw_result):
+			return PaginatedListIterator[EncryptedDocument](
+				producer = raw_result,
+				deserializer = lambda x: EncryptedDocument._deserialize(x),
+				executor = self.cardinal_sdk._executor
+			)
+		payload = {
+			"filter": filter.__serialize__(),
+		}
+		return await execute_async_method_job(
+			self.cardinal_sdk._executor,
+			False,
+			do_decode,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.encrypted.filterDocumentsByAsync,
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+
+	def filter_documents_by_blocking(self, filter: FilterOptions[Document]) -> PaginatedListIterator[EncryptedDocument]:
+		payload = {
+			"filter": filter.__serialize__(),
+		}
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.encrypted.filterDocumentsByBlocking(
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+		error_str_pointer = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_failure(call_result)
+		if error_str_pointer is not None:
+			error_data_str = cast(error_str_pointer, c_char_p).value.decode('utf_8')
+			symbols.DisposeString(error_str_pointer)
+			symbols.DisposeStablePointer(call_result.pinned)
+			raise interpret_kt_error(json.loads(error_data_str))
+		else:
+			class_pointer = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_success(call_result)
+			symbols.DisposeStablePointer(call_result.pinned)
+			return PaginatedListIterator[EncryptedDocument](
+				producer = class_pointer,
+				deserializer = lambda x: EncryptedDocument._deserialize(x),
+				executor = self.cardinal_sdk._executor
+			)
+
+	async def filter_documents_by_sorted_async(self, filter: SortableFilterOptions[Document]) -> PaginatedListIterator[EncryptedDocument]:
+		def do_decode(raw_result):
+			return PaginatedListIterator[EncryptedDocument](
+				producer = raw_result,
+				deserializer = lambda x: EncryptedDocument._deserialize(x),
+				executor = self.cardinal_sdk._executor
+			)
+		payload = {
+			"filter": filter.__serialize__(),
+		}
+		return await execute_async_method_job(
+			self.cardinal_sdk._executor,
+			False,
+			do_decode,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.encrypted.filterDocumentsBySortedAsync,
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+
+	def filter_documents_by_sorted_blocking(self, filter: SortableFilterOptions[Document]) -> PaginatedListIterator[EncryptedDocument]:
+		payload = {
+			"filter": filter.__serialize__(),
+		}
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.encrypted.filterDocumentsBySortedBlocking(
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+		error_str_pointer = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_failure(call_result)
+		if error_str_pointer is not None:
+			error_data_str = cast(error_str_pointer, c_char_p).value.decode('utf_8')
+			symbols.DisposeString(error_str_pointer)
+			symbols.DisposeStablePointer(call_result.pinned)
+			raise interpret_kt_error(json.loads(error_data_str))
+		else:
+			class_pointer = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_success(call_result)
+			symbols.DisposeStablePointer(call_result.pinned)
+			return PaginatedListIterator[EncryptedDocument](
+				producer = class_pointer,
+				deserializer = lambda x: EncryptedDocument._deserialize(x),
+				executor = self.cardinal_sdk._executor
+			)
+
+	async def create_document_async(self, entity: EncryptedDocument) -> EncryptedDocument:
+		def do_decode(raw_result):
+			return EncryptedDocument._deserialize(raw_result)
+		payload = {
+			"entity": entity.__serialize__(),
+		}
+		return await execute_async_method_job(
+			self.cardinal_sdk._executor,
+			True,
+			do_decode,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.encrypted.createDocumentAsync,
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+
+	def create_document_blocking(self, entity: EncryptedDocument) -> EncryptedDocument:
+		payload = {
+			"entity": entity.__serialize__(),
+		}
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.encrypted.createDocumentBlocking(
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
+		if result_info.failure is not None:
+			raise interpret_kt_error(result_info.failure)
+		else:
+			return_value = EncryptedDocument._deserialize(result_info.success)
+			return return_value
+
+	async def undelete_document_by_id_async(self, id: str, rev: str) -> EncryptedDocument:
+		def do_decode(raw_result):
+			return EncryptedDocument._deserialize(raw_result)
+		payload = {
+			"id": id,
+			"rev": rev,
+		}
+		return await execute_async_method_job(
+			self.cardinal_sdk._executor,
+			True,
+			do_decode,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.encrypted.undeleteDocumentByIdAsync,
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+
+	def undelete_document_by_id_blocking(self, id: str, rev: str) -> EncryptedDocument:
+		payload = {
+			"id": id,
+			"rev": rev,
+		}
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.encrypted.undeleteDocumentByIdBlocking(
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
+		if result_info.failure is not None:
+			raise interpret_kt_error(result_info.failure)
+		else:
+			return_value = EncryptedDocument._deserialize(result_info.success)
+			return return_value
+
+	async def undelete_document_async(self, document: Document) -> EncryptedDocument:
+		def do_decode(raw_result):
+			return EncryptedDocument._deserialize(raw_result)
+		payload = {
+			"document": serialize_document(document),
+		}
+		return await execute_async_method_job(
+			self.cardinal_sdk._executor,
+			True,
+			do_decode,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.encrypted.undeleteDocumentAsync,
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+
+	def undelete_document_blocking(self, document: Document) -> EncryptedDocument:
+		payload = {
+			"document": serialize_document(document),
+		}
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.encrypted.undeleteDocumentBlocking(
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
+		if result_info.failure is not None:
+			raise interpret_kt_error(result_info.failure)
+		else:
+			return_value = EncryptedDocument._deserialize(result_info.success)
+			return return_value
+
+	async def modify_document_async(self, entity: EncryptedDocument) -> EncryptedDocument:
+		def do_decode(raw_result):
+			return EncryptedDocument._deserialize(raw_result)
+		payload = {
+			"entity": entity.__serialize__(),
+		}
+		return await execute_async_method_job(
+			self.cardinal_sdk._executor,
+			True,
+			do_decode,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.encrypted.modifyDocumentAsync,
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+
+	def modify_document_blocking(self, entity: EncryptedDocument) -> EncryptedDocument:
+		payload = {
+			"entity": entity.__serialize__(),
+		}
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.encrypted.modifyDocumentBlocking(
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
+		if result_info.failure is not None:
+			raise interpret_kt_error(result_info.failure)
+		else:
+			return_value = EncryptedDocument._deserialize(result_info.success)
+			return return_value
+
+	async def get_document_async(self, entity_id: str) -> Optional[EncryptedDocument]:
+		def do_decode(raw_result):
+			return EncryptedDocument._deserialize(raw_result) if raw_result is not None else None
+		payload = {
+			"entityId": entity_id,
+		}
+		return await execute_async_method_job(
+			self.cardinal_sdk._executor,
+			True,
+			do_decode,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.encrypted.getDocumentAsync,
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+
+	def get_document_blocking(self, entity_id: str) -> Optional[EncryptedDocument]:
+		payload = {
+			"entityId": entity_id,
+		}
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.encrypted.getDocumentBlocking(
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
+		if result_info.failure is not None:
+			raise interpret_kt_error(result_info.failure)
+		else:
+			return_value = EncryptedDocument._deserialize(result_info.success) if result_info.success is not None else None
+			return return_value
+
+	async def get_documents_async(self, entity_ids: list[str]) -> list[EncryptedDocument]:
+		def do_decode(raw_result):
+			return [EncryptedDocument._deserialize(x1) for x1 in raw_result]
+		payload = {
+			"entityIds": [x0 for x0 in entity_ids],
+		}
+		return await execute_async_method_job(
+			self.cardinal_sdk._executor,
+			True,
+			do_decode,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.encrypted.getDocumentsAsync,
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+
+	def get_documents_blocking(self, entity_ids: list[str]) -> list[EncryptedDocument]:
+		payload = {
+			"entityIds": [x0 for x0 in entity_ids],
+		}
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.encrypted.getDocumentsBlocking(
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
+		if result_info.failure is not None:
+			raise interpret_kt_error(result_info.failure)
+		else:
+			return_value = [EncryptedDocument._deserialize(x1) for x1 in result_info.success]
+			return return_value
+
+	async def modify_documents_async(self, entities: list[EncryptedDocument]) -> list[EncryptedDocument]:
+		def do_decode(raw_result):
+			return [EncryptedDocument._deserialize(x1) for x1 in raw_result]
+		payload = {
+			"entities": [x0.__serialize__() for x0 in entities],
+		}
+		return await execute_async_method_job(
+			self.cardinal_sdk._executor,
+			True,
+			do_decode,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.encrypted.modifyDocumentsAsync,
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+
+	def modify_documents_blocking(self, entities: list[EncryptedDocument]) -> list[EncryptedDocument]:
+		payload = {
+			"entities": [x0.__serialize__() for x0 in entities],
+		}
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.encrypted.modifyDocumentsBlocking(
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
+		if result_info.failure is not None:
+			raise interpret_kt_error(result_info.failure)
+		else:
+			return_value = [EncryptedDocument._deserialize(x1) for x1 in result_info.success]
+			return return_value
+
+
+class DocumentApiTryAndRecover:
+
+	def __init__(self, cardinal_sdk):
+		self.cardinal_sdk = cardinal_sdk
+
+	async def share_with_async(self, delegate_id: str, document: Document, options: Optional[DocumentShareOptions] = None) -> Document:
+		def do_decode(raw_result):
+			return deserialize_document(raw_result)
+		payload = {
+			"delegateId": delegate_id,
+			"document": serialize_document(document),
+			"options": options.__serialize__() if options is not None else None,
+		}
+		return await execute_async_method_job(
+			self.cardinal_sdk._executor,
+			True,
+			do_decode,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.tryAndRecover.shareWithAsync,
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+
+	def share_with_blocking(self, delegate_id: str, document: Document, options: Optional[DocumentShareOptions] = None) -> Document:
+		payload = {
+			"delegateId": delegate_id,
+			"document": serialize_document(document),
+			"options": options.__serialize__() if options is not None else None,
+		}
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.tryAndRecover.shareWithBlocking(
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
+		if result_info.failure is not None:
+			raise interpret_kt_error(result_info.failure)
+		else:
+			return_value = deserialize_document(result_info.success)
+			return return_value
+
+	async def share_with_many_async(self, document: Document, delegates: dict[str, DocumentShareOptions]) -> Document:
+		def do_decode(raw_result):
+			return deserialize_document(raw_result)
+		payload = {
+			"document": serialize_document(document),
+			"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
+		}
+		return await execute_async_method_job(
+			self.cardinal_sdk._executor,
+			True,
+			do_decode,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.tryAndRecover.shareWithManyAsync,
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+
+	def share_with_many_blocking(self, document: Document, delegates: dict[str, DocumentShareOptions]) -> Document:
+		payload = {
+			"document": serialize_document(document),
+			"delegates": {k0: v0.__serialize__() for k0, v0 in delegates.items()},
+		}
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.tryAndRecover.shareWithManyBlocking(
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
+		if result_info.failure is not None:
+			raise interpret_kt_error(result_info.failure)
+		else:
+			return_value = deserialize_document(result_info.success)
+			return return_value
+
+	async def filter_documents_by_async(self, filter: FilterOptions[Document]) -> PaginatedListIterator[Document]:
+		def do_decode(raw_result):
+			return PaginatedListIterator[Document](
+				producer = raw_result,
+				deserializer = lambda x: deserialize_document(x),
+				executor = self.cardinal_sdk._executor
+			)
+		payload = {
+			"filter": filter.__serialize__(),
+		}
+		return await execute_async_method_job(
+			self.cardinal_sdk._executor,
+			False,
+			do_decode,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.tryAndRecover.filterDocumentsByAsync,
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+
+	def filter_documents_by_blocking(self, filter: FilterOptions[Document]) -> PaginatedListIterator[Document]:
+		payload = {
+			"filter": filter.__serialize__(),
+		}
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.tryAndRecover.filterDocumentsByBlocking(
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+		error_str_pointer = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_failure(call_result)
+		if error_str_pointer is not None:
+			error_data_str = cast(error_str_pointer, c_char_p).value.decode('utf_8')
+			symbols.DisposeString(error_str_pointer)
+			symbols.DisposeStablePointer(call_result.pinned)
+			raise interpret_kt_error(json.loads(error_data_str))
+		else:
+			class_pointer = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_success(call_result)
+			symbols.DisposeStablePointer(call_result.pinned)
+			return PaginatedListIterator[Document](
+				producer = class_pointer,
+				deserializer = lambda x: deserialize_document(x),
+				executor = self.cardinal_sdk._executor
+			)
+
+	async def filter_documents_by_sorted_async(self, filter: SortableFilterOptions[Document]) -> PaginatedListIterator[Document]:
+		def do_decode(raw_result):
+			return PaginatedListIterator[Document](
+				producer = raw_result,
+				deserializer = lambda x: deserialize_document(x),
+				executor = self.cardinal_sdk._executor
+			)
+		payload = {
+			"filter": filter.__serialize__(),
+		}
+		return await execute_async_method_job(
+			self.cardinal_sdk._executor,
+			False,
+			do_decode,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.tryAndRecover.filterDocumentsBySortedAsync,
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+
+	def filter_documents_by_sorted_blocking(self, filter: SortableFilterOptions[Document]) -> PaginatedListIterator[Document]:
+		payload = {
+			"filter": filter.__serialize__(),
+		}
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.tryAndRecover.filterDocumentsBySortedBlocking(
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+		error_str_pointer = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_failure(call_result)
+		if error_str_pointer is not None:
+			error_data_str = cast(error_str_pointer, c_char_p).value.decode('utf_8')
+			symbols.DisposeString(error_str_pointer)
+			symbols.DisposeStablePointer(call_result.pinned)
+			raise interpret_kt_error(json.loads(error_data_str))
+		else:
+			class_pointer = symbols.kotlin.root.com.icure.cardinal.sdk.py.utils.PyResult.get_success(call_result)
+			symbols.DisposeStablePointer(call_result.pinned)
+			return PaginatedListIterator[Document](
+				producer = class_pointer,
+				deserializer = lambda x: deserialize_document(x),
+				executor = self.cardinal_sdk._executor
+			)
+
+	async def create_document_async(self, entity: Document) -> Document:
+		def do_decode(raw_result):
+			return deserialize_document(raw_result)
+		payload = {
+			"entity": serialize_document(entity),
+		}
+		return await execute_async_method_job(
+			self.cardinal_sdk._executor,
+			True,
+			do_decode,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.tryAndRecover.createDocumentAsync,
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+
+	def create_document_blocking(self, entity: Document) -> Document:
+		payload = {
+			"entity": serialize_document(entity),
+		}
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.tryAndRecover.createDocumentBlocking(
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
+		if result_info.failure is not None:
+			raise interpret_kt_error(result_info.failure)
+		else:
+			return_value = deserialize_document(result_info.success)
+			return return_value
+
+	async def undelete_document_by_id_async(self, id: str, rev: str) -> Document:
+		def do_decode(raw_result):
+			return deserialize_document(raw_result)
+		payload = {
+			"id": id,
+			"rev": rev,
+		}
+		return await execute_async_method_job(
+			self.cardinal_sdk._executor,
+			True,
+			do_decode,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.tryAndRecover.undeleteDocumentByIdAsync,
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+
+	def undelete_document_by_id_blocking(self, id: str, rev: str) -> Document:
+		payload = {
+			"id": id,
+			"rev": rev,
+		}
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.tryAndRecover.undeleteDocumentByIdBlocking(
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
+		if result_info.failure is not None:
+			raise interpret_kt_error(result_info.failure)
+		else:
+			return_value = deserialize_document(result_info.success)
+			return return_value
+
+	async def undelete_document_async(self, document: Document) -> Document:
+		def do_decode(raw_result):
+			return deserialize_document(raw_result)
+		payload = {
+			"document": serialize_document(document),
+		}
+		return await execute_async_method_job(
+			self.cardinal_sdk._executor,
+			True,
+			do_decode,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.tryAndRecover.undeleteDocumentAsync,
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+
+	def undelete_document_blocking(self, document: Document) -> Document:
+		payload = {
+			"document": serialize_document(document),
+		}
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.tryAndRecover.undeleteDocumentBlocking(
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
+		if result_info.failure is not None:
+			raise interpret_kt_error(result_info.failure)
+		else:
+			return_value = deserialize_document(result_info.success)
+			return return_value
+
+	async def modify_document_async(self, entity: Document) -> Document:
+		def do_decode(raw_result):
+			return deserialize_document(raw_result)
+		payload = {
+			"entity": serialize_document(entity),
+		}
+		return await execute_async_method_job(
+			self.cardinal_sdk._executor,
+			True,
+			do_decode,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.tryAndRecover.modifyDocumentAsync,
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+
+	def modify_document_blocking(self, entity: Document) -> Document:
+		payload = {
+			"entity": serialize_document(entity),
+		}
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.tryAndRecover.modifyDocumentBlocking(
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
+		if result_info.failure is not None:
+			raise interpret_kt_error(result_info.failure)
+		else:
+			return_value = deserialize_document(result_info.success)
+			return return_value
+
+	async def get_document_async(self, entity_id: str) -> Optional[Document]:
+		def do_decode(raw_result):
+			return deserialize_document(raw_result) if raw_result is not None else None
+		payload = {
+			"entityId": entity_id,
+		}
+		return await execute_async_method_job(
+			self.cardinal_sdk._executor,
+			True,
+			do_decode,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.tryAndRecover.getDocumentAsync,
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+
+	def get_document_blocking(self, entity_id: str) -> Optional[Document]:
+		payload = {
+			"entityId": entity_id,
+		}
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.tryAndRecover.getDocumentBlocking(
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
+		if result_info.failure is not None:
+			raise interpret_kt_error(result_info.failure)
+		else:
+			return_value = deserialize_document(result_info.success) if result_info.success is not None else None
+			return return_value
+
+	async def get_documents_async(self, entity_ids: list[str]) -> list[Document]:
+		def do_decode(raw_result):
+			return [deserialize_document(x1) for x1 in raw_result]
+		payload = {
+			"entityIds": [x0 for x0 in entity_ids],
+		}
+		return await execute_async_method_job(
+			self.cardinal_sdk._executor,
+			True,
+			do_decode,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.tryAndRecover.getDocumentsAsync,
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+
+	def get_documents_blocking(self, entity_ids: list[str]) -> list[Document]:
+		payload = {
+			"entityIds": [x0 for x0 in entity_ids],
+		}
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.tryAndRecover.getDocumentsBlocking(
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
+		if result_info.failure is not None:
+			raise interpret_kt_error(result_info.failure)
+		else:
+			return_value = [deserialize_document(x1) for x1 in result_info.success]
+			return return_value
+
+	async def modify_documents_async(self, entities: list[Document]) -> list[Document]:
+		def do_decode(raw_result):
+			return [deserialize_document(x1) for x1 in raw_result]
+		payload = {
+			"entities": [serialize_document(x0) for x0 in entities],
+		}
+		return await execute_async_method_job(
+			self.cardinal_sdk._executor,
+			True,
+			do_decode,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.tryAndRecover.modifyDocumentsAsync,
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+
+	def modify_documents_blocking(self, entities: list[Document]) -> list[Document]:
+		payload = {
+			"entities": [serialize_document(x0) for x0 in entities],
+		}
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.DocumentApi.tryAndRecover.modifyDocumentsBlocking(
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
+		if result_info.failure is not None:
+			raise interpret_kt_error(result_info.failure)
+		else:
+			return_value = [deserialize_document(x1) for x1 in result_info.success]
 			return return_value

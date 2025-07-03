@@ -8,6 +8,7 @@ import com.icure.cardinal.sdk.filters.FilterOptions
 import com.icure.cardinal.sdk.filters.SortableFilterOptions
 import com.icure.cardinal.sdk.model.DecryptedMaintenanceTask
 import com.icure.cardinal.sdk.model.EncryptedMaintenanceTask
+import com.icure.cardinal.sdk.model.EntityReferenceInGroup
 import com.icure.cardinal.sdk.model.MaintenanceTask
 import com.icure.cardinal.sdk.model.StoredDocumentIdentifier
 import com.icure.cardinal.sdk.model.User
@@ -25,7 +26,7 @@ interface MaintenanceTaskBasicFlavourlessApi {
 	suspend fun deleteMaintenanceTaskUnsafe(entityId: String): DocIdentifier
 	@Deprecated("Deletion without rev is unsafe")
 	suspend fun deleteMaintenanceTasksUnsafe(entityIds: List<String>): List<DocIdentifier>
-	
+
 	/**
 	 * Deletes a maintenanceTask. If you don't have write access to the maintenanceTask the method will fail.
 	 * @param entityId id of the maintenanceTask.
@@ -100,7 +101,7 @@ interface MaintenanceTaskBasicFlavouredApi<E : MaintenanceTask> {
 	 */
 	suspend fun undeleteMaintenanceTask(maintenanceTask: MaintenanceTask): MaintenanceTask =
 		undeleteMaintenanceTaskById(maintenanceTask.id, requireNotNull(maintenanceTask.rev) { "Can't delete a maintenanceTask that has no rev" })
-	
+
 	/**
 	 * Restores a maintenanceTask that was marked as deleted.
 	 * @param id the id of the entity
@@ -223,6 +224,7 @@ interface MaintenanceTaskApi : MaintenanceTaskBasicFlavourlessApi, MaintenanceTa
 		user: User? = null,
 		@DefaultValue("emptyMap()")
 		delegates: Map<String, AccessLevel> = emptyMap(),
+		alternateRootDataOwnerReference: EntityReferenceInGroup? = null,
 	): DecryptedMaintenanceTask
 
 	/**

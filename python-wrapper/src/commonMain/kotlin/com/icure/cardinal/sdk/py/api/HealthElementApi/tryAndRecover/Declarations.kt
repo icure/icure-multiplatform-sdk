@@ -245,6 +245,79 @@ public fun filterHealthElementsBySortedAsync(
 }.failureToPyResultAsyncCallback(resultCallback)
 
 @Serializable
+private class CreateHealthElementParams(
+	public val entity: HealthElement,
+)
+
+@OptIn(InternalIcureApi::class)
+public fun createHealthElementBlocking(sdk: CardinalApis, params: String): String =
+		kotlin.runCatching {
+	val decodedParams = fullLanguageInteropJson.decodeFromString<CreateHealthElementParams>(params)
+	runBlocking {
+		sdk.healthElement.tryAndRecover.createHealthElement(
+			decodedParams.entity,
+		)
+	}
+}.toPyString(PolymorphicSerializer(HealthElement::class))
+
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
+public fun createHealthElementAsync(
+	sdk: CardinalApis,
+	params: String,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): COpaquePointer? = kotlin.runCatching {
+	val decodedParams = fullLanguageInteropJson.decodeFromString<CreateHealthElementParams>(params)
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.healthElement.tryAndRecover.createHealthElement(
+				decodedParams.entity,
+			)
+		}.toPyStringAsyncCallback(PolymorphicSerializer(HealthElement::class), resultCallback)
+	}
+}.failureToPyStringAsyncCallback(resultCallback)
+
+@Serializable
+private class CreateHealthElementsParams(
+	public val entities: List<HealthElement>,
+)
+
+@OptIn(InternalIcureApi::class)
+public fun createHealthElementsBlocking(sdk: CardinalApis, params: String): String =
+		kotlin.runCatching {
+	val decodedParams = fullLanguageInteropJson.decodeFromString<CreateHealthElementsParams>(params)
+	runBlocking {
+		sdk.healthElement.tryAndRecover.createHealthElements(
+			decodedParams.entities,
+		)
+	}
+}.toPyString(ListSerializer(PolymorphicSerializer(HealthElement::class)))
+
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
+public fun createHealthElementsAsync(
+	sdk: CardinalApis,
+	params: String,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): COpaquePointer? = kotlin.runCatching {
+	val decodedParams = fullLanguageInteropJson.decodeFromString<CreateHealthElementsParams>(params)
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.healthElement.tryAndRecover.createHealthElements(
+				decodedParams.entities,
+			)
+		}.toPyStringAsyncCallback(ListSerializer(PolymorphicSerializer(HealthElement::class)),
+				resultCallback)
+	}
+}.failureToPyStringAsyncCallback(resultCallback)
+
+@Serializable
 private class UndeleteHealthElementByIdParams(
 	public val id: String,
 	public val rev: String,

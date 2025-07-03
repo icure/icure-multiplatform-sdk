@@ -177,9 +177,9 @@ class SubscriptionsTests : StringSpec({
 					return hcpUserApi
 						.contact
 						.withEncryptionMetadata(
-							DecryptedContact(id = defaultCryptoService.strongRandom.randomUUID()),
-							patient,
-							currentUser
+                            DecryptedContact(id = defaultCryptoService.strongRandom.randomUUID()),
+                            patient,
+                            currentUser
 
 						).let {
 							hcpUserApi.contact.createContact(it)

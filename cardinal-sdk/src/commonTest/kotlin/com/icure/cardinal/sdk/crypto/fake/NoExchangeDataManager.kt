@@ -4,6 +4,7 @@ import com.icure.cardinal.sdk.crypto.BaseExchangeDataManager
 import com.icure.cardinal.sdk.crypto.ExchangeDataManager
 import com.icure.cardinal.sdk.model.EntityReferenceInGroup
 import com.icure.cardinal.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
+import com.icure.cardinal.sdk.crypto.entities.ExchangeDataInjectionDetails
 import com.icure.cardinal.sdk.crypto.entities.ExchangeDataWithPotentiallyDecryptedContent
 import com.icure.cardinal.sdk.crypto.entities.ExchangeDataWithUnencryptedContent
 import com.icure.cardinal.sdk.model.specializations.Base64String
@@ -23,7 +24,8 @@ object NoExchangeDataManager : ExchangeDataManager {
 	override suspend fun getOrCreateEncryptionDataTo(
 		groupId: String?,
 		delegateReference: EntityReferenceInGroup,
-		allowCreationWithoutDelegateKey: Boolean
+		allowCreationWithoutDelegateKey: Boolean,
+		allowCreationWithoutDelegatorKey: Boolean
 	): ExchangeDataWithUnencryptedContent {
 		TODO("Not yet implemented")
 	}
@@ -51,6 +53,14 @@ object NoExchangeDataManager : ExchangeDataManager {
 		groupId: String?,
 		entityType: EntityWithEncryptionMetadataTypeName
 	): List<Base64String>? {
+		TODO("Not yet implemented")
+	}
+
+	override suspend fun injectDecryptedExchangeData(
+		groupId: String?,
+		exchangeDataDetails: List<ExchangeDataInjectionDetails>,
+		reEncryptWithOwnKeys: Boolean,
+	) {
 		TODO("Not yet implemented")
 	}
 }

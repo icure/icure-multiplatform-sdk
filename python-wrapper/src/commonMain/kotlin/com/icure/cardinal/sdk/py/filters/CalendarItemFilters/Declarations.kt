@@ -7,6 +7,8 @@ import com.icure.cardinal.sdk.filters.CalendarItemFilters
 import com.icure.cardinal.sdk.filters.FilterOptions
 import com.icure.cardinal.sdk.filters.SortableFilterOptions
 import com.icure.cardinal.sdk.model.CalendarItem
+import com.icure.cardinal.sdk.model.EntityReferenceInGroup
+import com.icure.cardinal.sdk.model.GroupScoped
 import com.icure.cardinal.sdk.model.Patient
 import com.icure.cardinal.sdk.py.utils.toPyString
 import com.icure.cardinal.sdk.utils.Serialization.fullLanguageInteropJson
@@ -34,6 +36,28 @@ public fun byPatientsStartTimeForDataOwner(params: String): String = kotlin.runC
 			fullLanguageInteropJson.decodeFromString<ByPatientsStartTimeForDataOwnerParams>(params)
 	CalendarItemFilters.byPatientsStartTimeForDataOwner(
 		decodedParams.dataOwnerId,
+		decodedParams.patients,
+		decodedParams.from,
+		decodedParams.to,
+		decodedParams.descending,
+	)
+}.toPyString(SortableFilterOptions.serializer(PolymorphicSerializer(CalendarItem::class)))
+
+@Serializable
+private class ByPatientsStartTimeForDataOwnerInGroupParams(
+	public val dataOwner: EntityReferenceInGroup,
+	public val patients: List<GroupScoped<Patient>>,
+	public val from: Long? = null,
+	public val to: Long? = null,
+	public val descending: Boolean = false,
+)
+
+@OptIn(InternalIcureApi::class)
+public fun byPatientsStartTimeForDataOwnerInGroup(params: String): String = kotlin.runCatching {
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<ByPatientsStartTimeForDataOwnerInGroupParams>(params)
+	CalendarItemFilters.byPatientsStartTimeForDataOwnerInGroup(
+		decodedParams.dataOwner,
 		decodedParams.patients,
 		decodedParams.from,
 		decodedParams.to,
@@ -76,6 +100,29 @@ public fun byPatientSecretIdsStartTimeForDataOwner(params: String): String = kot
 			fullLanguageInteropJson.decodeFromString<ByPatientSecretIdsStartTimeForDataOwnerParams>(params)
 	CalendarItemFilters.byPatientSecretIdsStartTimeForDataOwner(
 		decodedParams.dataOwnerId,
+		decodedParams.secretIds,
+		decodedParams.from,
+		decodedParams.to,
+		decodedParams.descending,
+	)
+}.toPyString(BaseSortableFilterOptions.serializer(PolymorphicSerializer(CalendarItem::class)))
+
+@Serializable
+private class ByPatientSecretIdsStartTimeForDataOwnerInGroupParams(
+	public val dataOwner: EntityReferenceInGroup,
+	public val secretIds: List<String>,
+	public val from: Long? = null,
+	public val to: Long? = null,
+	public val descending: Boolean = false,
+)
+
+@OptIn(InternalIcureApi::class)
+public fun byPatientSecretIdsStartTimeForDataOwnerInGroup(params: String): String =
+		kotlin.runCatching {
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<ByPatientSecretIdsStartTimeForDataOwnerInGroupParams>(params)
+	CalendarItemFilters.byPatientSecretIdsStartTimeForDataOwnerInGroup(
+		decodedParams.dataOwner,
 		decodedParams.secretIds,
 		decodedParams.from,
 		decodedParams.to,
@@ -140,6 +187,24 @@ public fun byPeriodForDataOwner(params: String): String = kotlin.runCatching {
 }.toPyString(BaseFilterOptions.serializer(PolymorphicSerializer(CalendarItem::class)))
 
 @Serializable
+private class ByPeriodForDataOwnerInGroupParams(
+	public val dataOwner: EntityReferenceInGroup,
+	public val from: Long,
+	public val to: Long,
+)
+
+@OptIn(InternalIcureApi::class)
+public fun byPeriodForDataOwnerInGroup(params: String): String = kotlin.runCatching {
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<ByPeriodForDataOwnerInGroupParams>(params)
+	CalendarItemFilters.byPeriodForDataOwnerInGroup(
+		decodedParams.dataOwner,
+		decodedParams.from,
+		decodedParams.to,
+	)
+}.toPyString(BaseFilterOptions.serializer(PolymorphicSerializer(CalendarItem::class)))
+
+@Serializable
 private class ByPeriodForSelfParams(
 	public val from: Long,
 	public val to: Long,
@@ -181,6 +246,26 @@ public fun lifecycleBetweenForDataOwner(params: String): String = kotlin.runCatc
 			fullLanguageInteropJson.decodeFromString<LifecycleBetweenForDataOwnerParams>(params)
 	CalendarItemFilters.lifecycleBetweenForDataOwner(
 		decodedParams.dataOwnerId,
+		decodedParams.startTimestamp,
+		decodedParams.endTimestamp,
+		decodedParams.descending,
+	)
+}.toPyString(BaseFilterOptions.serializer(PolymorphicSerializer(CalendarItem::class)))
+
+@Serializable
+private class LifecycleBetweenForDataOwnerInGroupParams(
+	public val dataOwner: EntityReferenceInGroup,
+	public val startTimestamp: Long?,
+	public val endTimestamp: Long?,
+	public val descending: Boolean,
+)
+
+@OptIn(InternalIcureApi::class)
+public fun lifecycleBetweenForDataOwnerInGroup(params: String): String = kotlin.runCatching {
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<LifecycleBetweenForDataOwnerInGroupParams>(params)
+	CalendarItemFilters.lifecycleBetweenForDataOwnerInGroup(
+		decodedParams.dataOwner,
 		decodedParams.startTimestamp,
 		decodedParams.endTimestamp,
 		decodedParams.descending,

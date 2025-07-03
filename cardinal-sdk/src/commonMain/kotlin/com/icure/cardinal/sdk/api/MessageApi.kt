@@ -31,7 +31,7 @@ interface MessageBasicFlavourlessApi {
 	suspend fun deleteMessageUnsafe(entityId: String): DocIdentifier
 	@Deprecated("Deletion without rev is unsafe")
 	suspend fun deleteMessagesUnsafe(entityIds: List<String>): List<DocIdentifier>
-	
+
 	/**
 	 * Deletes a message. If you don't have write access to the message the method will fail.
 	 * @param entityId id of the message.
@@ -118,7 +118,7 @@ interface MessageBasicFlavouredApi<E : Message> {
 	 */
 	suspend fun undeleteMessage(message: Message): Message =
 		undeleteMessageById(message.id, requireNotNull(message.rev) { "Can't delete a message that has no rev" })
-	
+
 	/**
 	 * Modifies a message. You need to have write access to the entity.
 	 * Flavoured method.
@@ -340,6 +340,7 @@ interface MessageApi : MessageBasicFlavourlessApi, MessageFlavouredApi<Decrypted
 		delegates: Map<String, AccessLevel> = emptyMap(),
 		@DefaultValue("com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption.UseAnySharedWithParent")
 		secretId: SecretIdUseOption = SecretIdUseOption.UseAnySharedWithParent,
+		alternateRootDataOwnerReference: EntityReferenceInGroup? = null,
 	): DecryptedMessage
 
 	/**
@@ -428,7 +429,7 @@ interface MessageApi : MessageBasicFlavourlessApi, MessageFlavouredApi<Decrypted
 	 * ([EntityReferenceInGroup]) to the data owners that the current user knows have access to that secret id.
 	 */
 	suspend fun getSecretIdsOf(message: Message): Map<String, Set<EntityReferenceInGroup>>
-	
+
 	/**
 	 * Give access to the encrypted flavour of the api
 	 */

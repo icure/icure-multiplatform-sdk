@@ -23,8 +23,8 @@ class  ByteArrayPayloadTest : StringSpec({
 		val hcpUser = api.user.getCurrentUser()
 
 		val newDocument = api.document.withEncryptionMetadataUnlinked(
-			base = DecryptedDocument(id = uuid(), name = uuid()),
-			user = hcpUser
+            base = DecryptedDocument(id = uuid(), name = uuid()),
+            user = hcpUser
 		)
 		val createdDocument = api.document.createDocument(newDocument)
 

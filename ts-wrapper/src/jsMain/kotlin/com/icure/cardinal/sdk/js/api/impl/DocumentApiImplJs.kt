@@ -625,11 +625,11 @@ internal class DocumentApiImplJs(
 				secretIdUseOption_fromJs(secretId)
 			}
 			val result = documentApi.withEncryptionMetadataLinkedToMessage(
-				baseConverted,
-				messageConverted,
-				userConverted,
-				delegatesConverted,
-				secretIdConverted,
+                baseConverted,
+                messageConverted,
+                userConverted,
+                delegatesConverted,
+                secretIdConverted,
 			)
 			document_toJs(result)
 		}

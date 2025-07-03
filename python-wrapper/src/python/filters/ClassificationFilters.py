@@ -1,7 +1,7 @@
 # auto-generated file
 import json
-from typing import List, Optional
 from cardinal_sdk.model import Patient, serialize_patient, Classification
+from typing import Optional
 from cardinal_sdk.kotlin_types import symbols
 from cardinal_sdk.model.CallResult import create_result_from_json, interpret_kt_error
 from ctypes import cast, c_char_p
@@ -11,7 +11,7 @@ from cardinal_sdk.filters.FilterOptions import SortableFilterOptions, BaseSortab
 class ClassificationFilters:
 
 	@classmethod
-	def by_patients_created_for_data_owner(cls, data_owner_id: str, patients: List[Patient], from_: Optional[int] = None, to: Optional[int] = None, descending: bool = False) -> SortableFilterOptions[Classification]:
+	def by_patients_created_for_data_owner(cls, data_owner_id: str, patients: list[Patient], from_: Optional[int] = None, to: Optional[int] = None, descending: bool = False) -> SortableFilterOptions[Classification]:
 		payload = {
 			"dataOwnerId": data_owner_id,
 			"patients": [serialize_patient(x0) for x0 in patients],
@@ -31,7 +31,7 @@ class ClassificationFilters:
 			return return_value
 
 	@classmethod
-	def by_patients_created_for_self(cls, patients: List[Patient], from_: Optional[int] = None, to: Optional[int] = None, descending: bool = False) -> SortableFilterOptions[Classification]:
+	def by_patients_created_for_self(cls, patients: list[Patient], from_: Optional[int] = None, to: Optional[int] = None, descending: bool = False) -> SortableFilterOptions[Classification]:
 		payload = {
 			"patients": [serialize_patient(x0) for x0 in patients],
 			"from": from_,
@@ -50,7 +50,7 @@ class ClassificationFilters:
 			return return_value
 
 	@classmethod
-	def by_patient_secret_ids_created_for_data_owner(cls, data_owner_id: str, secret_ids: List[str], from_: Optional[int] = None, to: Optional[int] = None, descending: bool = False) -> BaseSortableFilterOptions[Classification]:
+	def by_patient_secret_ids_created_for_data_owner(cls, data_owner_id: str, secret_ids: list[str], from_: Optional[int] = None, to: Optional[int] = None, descending: bool = False) -> BaseSortableFilterOptions[Classification]:
 		payload = {
 			"dataOwnerId": data_owner_id,
 			"secretIds": [x0 for x0 in secret_ids],
@@ -70,7 +70,7 @@ class ClassificationFilters:
 			return return_value
 
 	@classmethod
-	def by_patient_secret_ids_created_for_self(cls, secret_ids: List[str], from_: Optional[int] = None, to: Optional[int] = None, descending: bool = False) -> SortableFilterOptions[Classification]:
+	def by_patient_secret_ids_created_for_self(cls, secret_ids: list[str], from_: Optional[int] = None, to: Optional[int] = None, descending: bool = False) -> SortableFilterOptions[Classification]:
 		payload = {
 			"secretIds": [x0 for x0 in secret_ids],
 			"from": from_,

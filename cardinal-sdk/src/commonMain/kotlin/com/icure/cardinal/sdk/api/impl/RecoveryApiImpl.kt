@@ -10,6 +10,7 @@ import com.icure.cardinal.sdk.crypto.entities.RecoveryDataUseFailureReason
 import com.icure.cardinal.sdk.crypto.entities.RecoveryKeyOptions
 import com.icure.cardinal.sdk.crypto.entities.RecoveryKeySize
 import com.icure.cardinal.sdk.crypto.entities.RecoveryResult
+import com.icure.cardinal.sdk.crypto.entities.SelfVerifiedKeysSet
 import com.icure.cardinal.sdk.crypto.entities.VerifiedRsaEncryptionKeysSet
 import com.icure.cardinal.sdk.crypto.entities.map
 import com.icure.cardinal.sdk.crypto.entities.toPublicKeyInfo
@@ -103,11 +104,12 @@ internal class RecoveryApiImpl(
 					log.w { "Could not recover exchange data with id ${exchangeDataInfo.exchangeDataId} as it was not found. Ignoring" }
 				} else {
 					crypto.exchangeDataManager.base.updateExchangeDataWithRawDecryptedContent(
-						retrievedData,
-						selfEncryptionKeys,
-						exchangeDataInfo.rawExchangeKey.decode(),
-						exchangeDataInfo.rawAccessControlSecret.decode(),
-						exchangeDataInfo.rawSharedSignatureKey.decode()
+						exchangeData = retrievedData,
+						newEncryptionKeys = selfEncryptionKeys,
+						newDelegatorSignatureKeys = SelfVerifiedKeysSet(emptySet()),
+						rawExchangeKey = exchangeDataInfo.rawExchangeKey.decode(),
+						rawAccessControlSecret = exchangeDataInfo.rawAccessControlSecret.decode(),
+						rawSharedSignatureKey = exchangeDataInfo.rawSharedSignatureKey.decode()
 					)
 				}
 			}

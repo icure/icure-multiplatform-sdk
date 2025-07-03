@@ -1,6 +1,5 @@
 # auto-generated file
 import json
-from typing import List
 from cardinal_sdk.kotlin_types import symbols
 from cardinal_sdk.model.CallResult import create_result_from_json, interpret_kt_error
 from ctypes import cast, c_char_p
@@ -11,7 +10,7 @@ from cardinal_sdk.model import MaintenanceTask, Identifier
 class MaintenanceTaskFilters:
 
 	@classmethod
-	def by_ids(cls, ids: List[str]) -> BaseSortableFilterOptions[MaintenanceTask]:
+	def by_ids(cls, ids: list[str]) -> BaseSortableFilterOptions[MaintenanceTask]:
 		payload = {
 			"ids": [x0 for x0 in ids],
 		}
@@ -27,7 +26,7 @@ class MaintenanceTaskFilters:
 			return return_value
 
 	@classmethod
-	def by_identifiers_for_data_owner(cls, data_owner_id: str, identifiers: List[Identifier]) -> BaseSortableFilterOptions[MaintenanceTask]:
+	def by_identifiers_for_data_owner(cls, data_owner_id: str, identifiers: list[Identifier]) -> BaseSortableFilterOptions[MaintenanceTask]:
 		payload = {
 			"dataOwnerId": data_owner_id,
 			"identifiers": [x0.__serialize__() for x0 in identifiers],
@@ -44,7 +43,7 @@ class MaintenanceTaskFilters:
 			return return_value
 
 	@classmethod
-	def by_identifiers_for_self(cls, identifiers: List[Identifier]) -> SortableFilterOptions[MaintenanceTask]:
+	def by_identifiers_for_self(cls, identifiers: list[Identifier]) -> SortableFilterOptions[MaintenanceTask]:
 		payload = {
 			"identifiers": [x0.__serialize__() for x0 in identifiers],
 		}

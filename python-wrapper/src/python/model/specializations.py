@@ -1,28 +1,25 @@
 # auto-generated file
 
 
-HexString = str
+type HexString = str
 
 
-KeypairFingerprintV1String = str
+type KeypairFingerprintV1String = str
 
 
-Pkcs8Bytes = bytearray
+type Pkcs8Bytes = bytearray
 
 
-AesExchangeKeyEntryKeyString = str
+type AesExchangeKeyEntryKeyString = str
 
 
-AesExchangeKeyEncryptionKeypairIdentifier = str
+type AesExchangeKeyEncryptionKeypairIdentifier = str
 
 
-SpkiHexString = str
+type SpkiHexString = str
 
 
-Base64String = str
+type Base64String = str
 
 
-SecureDelegationKeyString = str
-
-
-Sha256HexString = str
+type SecureDelegationKeyString = str

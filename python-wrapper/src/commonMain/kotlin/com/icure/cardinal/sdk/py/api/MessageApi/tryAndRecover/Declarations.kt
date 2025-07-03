@@ -246,6 +246,77 @@ public fun filterMessagesBySortedAsync(
 }.failureToPyResultAsyncCallback(resultCallback)
 
 @Serializable
+private class CreateMessageParams(
+	public val entity: Message,
+)
+
+@OptIn(InternalIcureApi::class)
+public fun createMessageBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
+	val decodedParams = fullLanguageInteropJson.decodeFromString<CreateMessageParams>(params)
+	runBlocking {
+		sdk.message.tryAndRecover.createMessage(
+			decodedParams.entity,
+		)
+	}
+}.toPyString(PolymorphicSerializer(Message::class))
+
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
+public fun createMessageAsync(
+	sdk: CardinalApis,
+	params: String,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): COpaquePointer? = kotlin.runCatching {
+	val decodedParams = fullLanguageInteropJson.decodeFromString<CreateMessageParams>(params)
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.message.tryAndRecover.createMessage(
+				decodedParams.entity,
+			)
+		}.toPyStringAsyncCallback(PolymorphicSerializer(Message::class), resultCallback)
+	}
+}.failureToPyStringAsyncCallback(resultCallback)
+
+@Serializable
+private class CreateMessageInTopicParams(
+	public val entity: Message,
+)
+
+@OptIn(InternalIcureApi::class)
+public fun createMessageInTopicBlocking(sdk: CardinalApis, params: String): String =
+		kotlin.runCatching {
+	val decodedParams = fullLanguageInteropJson.decodeFromString<CreateMessageInTopicParams>(params)
+	runBlocking {
+		sdk.message.tryAndRecover.createMessageInTopic(
+			decodedParams.entity,
+		)
+	}
+}.toPyString(PolymorphicSerializer(Message::class))
+
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
+public fun createMessageInTopicAsync(
+	sdk: CardinalApis,
+	params: String,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): COpaquePointer? = kotlin.runCatching {
+	val decodedParams = fullLanguageInteropJson.decodeFromString<CreateMessageInTopicParams>(params)
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.message.tryAndRecover.createMessageInTopic(
+				decodedParams.entity,
+			)
+		}.toPyStringAsyncCallback(PolymorphicSerializer(Message::class), resultCallback)
+	}
+}.failureToPyStringAsyncCallback(resultCallback)
+
+@Serializable
 private class UndeleteMessageParams(
 	public val message: Message,
 )

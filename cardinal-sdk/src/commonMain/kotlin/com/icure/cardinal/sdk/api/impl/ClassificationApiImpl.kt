@@ -21,6 +21,7 @@ import com.icure.cardinal.sdk.filters.mapClassificationFilterOptions
 import com.icure.cardinal.sdk.model.Classification
 import com.icure.cardinal.sdk.model.DecryptedClassification
 import com.icure.cardinal.sdk.model.EncryptedClassification
+import com.icure.cardinal.sdk.model.EntityReferenceInGroup
 import com.icure.cardinal.sdk.model.ListOfIds
 import com.icure.cardinal.sdk.model.Patient
 import com.icure.cardinal.sdk.model.User
@@ -226,23 +227,25 @@ internal class ClassificationApiImpl(
 		user: User?,
 		delegates: Map<String, AccessLevel>,
 		secretId: SecretIdUseOption,
+		alternateRootDataOwnerReference: EntityReferenceInGroup?,
 	): DecryptedClassification =
 		crypto.entity.entityWithInitializedEncryptedMetadata(
-			null,
-			(base ?: DecryptedClassification(crypto.primitives.strongRandom.randomUUID())).copy(
-				created = base?.created ?: currentEpochMs(),
-				modified = base?.modified ?: currentEpochMs(),
-				responsible = base?.responsible ?: user?.takeIf { config.autofillAuthor }?.dataOwnerId,
-				author = base?.author ?: user?.id?.takeIf { config.autofillAuthor },
-			),
-			EntityWithEncryptionMetadataTypeName.Classification,
-			OwningEntityDetails(
-				null,
-				patient.id,
-				crypto.entity.resolveSecretIdOption(null, patient, EntityWithEncryptionMetadataTypeName.Patient, secretId),
-			),
-			initializeEncryptionKey = true,
-			autoDelegations = (delegates + user?.autoDelegationsFor(DelegationTag.MedicalInformation).orEmpty()).keyAsLocalDataOwnerReferences(),
+            null,
+            (base ?: DecryptedClassification(crypto.primitives.strongRandom.randomUUID())).copy(
+                created = base?.created ?: currentEpochMs(),
+                modified = base?.modified ?: currentEpochMs(),
+                responsible = base?.responsible ?: user?.takeIf { config.autofillAuthor }?.dataOwnerId,
+                author = base?.author ?: user?.id?.takeIf { config.autofillAuthor },
+            ),
+            EntityWithEncryptionMetadataTypeName.Classification,
+            OwningEntityDetails(
+                null,
+                patient.id,
+                crypto.entity.resolveSecretIdOption(null, patient, EntityWithEncryptionMetadataTypeName.Patient, secretId),
+            ),
+            initializeEncryptionKey = true,
+            autoDelegations = (delegates + user?.autoDelegationsFor(DelegationTag.MedicalInformation).orEmpty()).keyAsLocalDataOwnerReferences(),
+			alternateRootDataOwnerReference = alternateRootDataOwnerReference,
 		).updatedEntity
 
 	override suspend fun getEncryptionKeysOf(classification: Classification): Set<HexString> = crypto.entity.encryptionKeysOf(null, classification, EntityWithEncryptionMetadataTypeName.Classification, null)

@@ -8,6 +8,7 @@ import 'package:cardinal_sdk/crypto/entities/secret_id_use_option.dart';
 import 'dart:convert';
 import 'package:cardinal_sdk/utils/internal/platform_exception_convertion.dart';
 import 'package:cardinal_sdk/model/specializations/hex_string.dart';
+import 'package:cardinal_sdk/model/entity_reference_in_group.dart';
 import 'package:cardinal_sdk/filters/filter_options.dart';
 import 'package:cardinal_sdk/model/couchdb/doc_identifier.dart';
 import 'package:cardinal_sdk/model/stored_document_identifier.dart';
@@ -118,6 +119,19 @@ class MessagePlatformApi {
 		if (res == null) throw AssertionError("received null result from platform method tryDecrypt");
 		final parsedResJson = jsonDecode(res);
 		return Message.fromJSON(parsedResJson);
+	}
+
+	Future<Map<String, Set<EntityReferenceInGroup>>> getSecretIdsOf(String sdkId, Message message) async {
+		final res = await _methodChannel.invokeMethod<String>(
+			'MessageApi.getSecretIdsOf',
+			{
+				"sdkId": sdkId,
+				"message": jsonEncode(Message.encode(message)),
+			}
+		).catchError(convertPlatformException);
+		if (res == null) throw AssertionError("received null result from platform method getSecretIdsOf");
+		final parsedResJson = jsonDecode(res);
+		return (parsedResJson as Map<String, dynamic>).map((k1, v1) => MapEntry((k1 as String), (v1 as List<dynamic>).map((x2) => EntityReferenceInGroup.fromJSON(x2) ).toSet()));
 	}
 
 	Future<List<String>> matchMessagesBy(String sdkId, FilterOptions<Message> filter) async {

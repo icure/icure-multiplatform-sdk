@@ -361,11 +361,11 @@ class ServiceEncryptionTest : StringSpec({
 	"Content of service should be encrypted in full if it contains non compound data" {
 		val contact = sdk.contact.createContact(
 			sdk.contact.withEncryptionMetadata(
-				DecryptedContact(
-					id = uuid(),
-					services = setOf(simpleService1, simpleService2, simpleService3, simpleService4)
-				),
-				patient
+                DecryptedContact(
+                    id = uuid(),
+                    services = setOf(simpleService1, simpleService2, simpleService3, simpleService4)
+                ),
+                patient
 			)
 		)
 		val encryptedContact = sdk.contact.encrypted.getContact(contact.id).shouldNotBeNull()
@@ -382,11 +382,11 @@ class ServiceEncryptionTest : StringSpec({
 	"Content of service should be encrypted recursively on compound data" {
 		val contact = sdk.contact.createContact(
 			sdk.contact.withEncryptionMetadata(
-				DecryptedContact(
-					id = uuid(),
-					services = setOf(compoundService, multiContentCompound, deepCompound)
-				),
-				patient
+                DecryptedContact(
+                    id = uuid(),
+                    services = setOf(compoundService, multiContentCompound, deepCompound)
+                ),
+                patient
 			)
 		)
 		val encryptedContact = sdk.contact.encrypted.getContact(contact.id).shouldNotBeNull()
@@ -403,19 +403,19 @@ class ServiceEncryptionTest : StringSpec({
 	"A mix of compund and simple service should each have their content encrypted as needed" {
 		val contact = sdk.contact.createContact(
 			sdk.contact.withEncryptionMetadata(
-				DecryptedContact(
-					id = uuid(),
-					services = setOf(
-						compoundService,
-						multiContentCompound,
-						deepCompound,
-						simpleService1,
-						simpleService2,
-						simpleService3,
-						simpleService4
-					)
-				),
-				patient
+                DecryptedContact(
+                    id = uuid(),
+                    services = setOf(
+                        compoundService,
+                        multiContentCompound,
+                        deepCompound,
+                        simpleService1,
+                        simpleService2,
+                        simpleService3,
+                        simpleService4
+                    )
+                ),
+                patient
 			)
 		)
 		val encryptedContact = sdk.contact.encrypted.getContact(contact.id).shouldNotBeNull()

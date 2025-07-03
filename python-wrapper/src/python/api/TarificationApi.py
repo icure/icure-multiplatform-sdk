@@ -1,11 +1,11 @@
 # auto-generated file
 import json
-from cardinal_sdk.model import Tarification
 from cardinal_sdk.async_utils import execute_async_method_job
 from cardinal_sdk.kotlin_types import symbols
+from typing import Optional
+from cardinal_sdk.model import Tarification
 from cardinal_sdk.model.CallResult import create_result_from_json, interpret_kt_error
 from ctypes import cast, c_char_p
-from typing import List
 
 
 class TarificationApi:
@@ -13,9 +13,9 @@ class TarificationApi:
 	def __init__(self, cardinal_sdk):
 		self.cardinal_sdk = cardinal_sdk
 
-	async def get_tarification_async(self, tarification_id: str) -> Tarification:
+	async def get_tarification_async(self, tarification_id: str) -> Optional[Tarification]:
 		def do_decode(raw_result):
-			return Tarification._deserialize(raw_result)
+			return Tarification._deserialize(raw_result) if raw_result is not None else None
 		payload = {
 			"tarificationId": tarification_id,
 		}
@@ -28,7 +28,7 @@ class TarificationApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def get_tarification_blocking(self, tarification_id: str) -> Tarification:
+	def get_tarification_blocking(self, tarification_id: str) -> Optional[Tarification]:
 		payload = {
 			"tarificationId": tarification_id,
 		}
@@ -41,7 +41,7 @@ class TarificationApi:
 		if result_info.failure is not None:
 			raise interpret_kt_error(result_info.failure)
 		else:
-			return_value = Tarification._deserialize(result_info.success)
+			return_value = Tarification._deserialize(result_info.success) if result_info.success is not None else None
 			return return_value
 
 	async def create_tarification_async(self, tarification: Tarification) -> Tarification:
@@ -75,7 +75,7 @@ class TarificationApi:
 			return_value = Tarification._deserialize(result_info.success)
 			return return_value
 
-	async def get_tarifications_async(self, tarification_ids: List[str]) -> List[Tarification]:
+	async def get_tarifications_async(self, tarification_ids: list[str]) -> list[Tarification]:
 		def do_decode(raw_result):
 			return [Tarification._deserialize(x1) for x1 in raw_result]
 		payload = {
@@ -90,7 +90,7 @@ class TarificationApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def get_tarifications_blocking(self, tarification_ids: List[str]) -> List[Tarification]:
+	def get_tarifications_blocking(self, tarification_ids: list[str]) -> list[Tarification]:
 		payload = {
 			"tarificationIds": [x0 for x0 in tarification_ids],
 		}

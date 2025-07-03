@@ -20,6 +20,7 @@ import com.icure.cardinal.sdk.filters.SortableFilterOptions
 import com.icure.cardinal.sdk.filters.mapTopicFilterOptions
 import com.icure.cardinal.sdk.model.DecryptedTopic
 import com.icure.cardinal.sdk.model.EncryptedTopic
+import com.icure.cardinal.sdk.model.EntityReferenceInGroup
 import com.icure.cardinal.sdk.model.ListOfIds
 import com.icure.cardinal.sdk.model.ListOfIdsAndRev
 import com.icure.cardinal.sdk.model.Patient
@@ -123,7 +124,7 @@ private class AbstractTopicBasicFlavourlessApi(val rawApi: RawTopicApi, private 
 	@Deprecated("Deletion without rev is unsafe")
 	override suspend fun deleteTopicsUnsafe(entityIds: List<String>): List<DocIdentifier> =
 		rawApi.deleteTopics(ListOfIds(entityIds)).successBody()
-		
+
 	override suspend fun deleteTopicById(entityId: String, rev: String): DocIdentifier =
 		rawApi.deleteTopic(entityId, rev).successBodyOrThrowRevisionConflict()
 
@@ -215,32 +216,34 @@ internal class TopicApiImpl(
 		user: User?,
 		delegates: Map<String, AccessLevel>,
 		secretId: SecretIdUseOption,
+		alternateRootDataOwnerReference: EntityReferenceInGroup?,
 		// Temporary, needs a lot more stuff to match typescript implementation
 	): DecryptedTopic =
 		config.crypto.entity.entityWithInitializedEncryptedMetadata(
-			null,
-			(base ?: DecryptedTopic(config.crypto.primitives.strongRandom.randomUUID())).copy(
-				created = base?.created ?: currentEpochMs(),
-				modified = base?.modified ?: currentEpochMs(),
-				responsible = base?.responsible ?: user?.takeIf { config.autofillAuthor }?.dataOwnerId,
-				author = base?.author ?: user?.id?.takeIf { config.autofillAuthor },
-			),
-			EntityWithEncryptionMetadataTypeName.Topic,
-			patient?.let {
-				OwningEntityDetails(
-					null,
-					it.id,
-					config.crypto.entity.resolveSecretIdOption(
-						null,
-						it,
-						EntityWithEncryptionMetadataTypeName.Patient,
-						secretId
-					)
-				)
-			},
-			initializeEncryptionKey = true,
-			autoDelegations = (delegates + user?.autoDelegationsFor(DelegationTag.MedicalInformation)
-				.orEmpty()).keyAsLocalDataOwnerReferences(),
+            null,
+            (base ?: DecryptedTopic(config.crypto.primitives.strongRandom.randomUUID())).copy(
+                created = base?.created ?: currentEpochMs(),
+                modified = base?.modified ?: currentEpochMs(),
+                responsible = base?.responsible ?: user?.takeIf { config.autofillAuthor }?.dataOwnerId,
+                author = base?.author ?: user?.id?.takeIf { config.autofillAuthor },
+            ),
+            EntityWithEncryptionMetadataTypeName.Topic,
+            patient?.let {
+                OwningEntityDetails(
+                    null,
+                    it.id,
+                    config.crypto.entity.resolveSecretIdOption(
+                        null,
+                        it,
+                        EntityWithEncryptionMetadataTypeName.Patient,
+                        secretId
+                    )
+                )
+            },
+            initializeEncryptionKey = true,
+            autoDelegations = (delegates + user?.autoDelegationsFor(DelegationTag.MedicalInformation)
+                .orEmpty()).keyAsLocalDataOwnerReferences(),
+			alternateRootDataOwnerReference = alternateRootDataOwnerReference,
 		).updatedEntity
 
 	override suspend fun getEncryptionKeysOf(topic: Topic): Set<HexString> =

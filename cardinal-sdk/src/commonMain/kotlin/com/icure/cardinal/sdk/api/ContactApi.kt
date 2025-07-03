@@ -10,6 +10,7 @@ import com.icure.cardinal.sdk.filters.SortableFilterOptions
 import com.icure.cardinal.sdk.model.Contact
 import com.icure.cardinal.sdk.model.DecryptedContact
 import com.icure.cardinal.sdk.model.EncryptedContact
+import com.icure.cardinal.sdk.model.EntityReferenceInGroup
 import com.icure.cardinal.sdk.model.PaginatedList
 import com.icure.cardinal.sdk.model.Patient
 import com.icure.cardinal.sdk.model.StoredDocumentIdentifier
@@ -35,7 +36,7 @@ interface ContactBasicFlavourlessApi {
 	suspend fun deleteContactUnsafe(entityId: String): DocIdentifier
 	@Deprecated("Deletion without rev is unsafe")
 	suspend fun deleteContactsUnsafe(entityIds: List<String>): List<DocIdentifier>
-	
+
 	/**
 	 * Deletes a contact. If you don't have write access to the contact the method will fail.
 	 * @param entityId id of the contact.
@@ -408,6 +409,7 @@ interface ContactApi : ContactBasicFlavourlessApi, ContactFlavouredApi<Decrypted
 		delegates: Map<String, AccessLevel> = emptyMap(),
 		@DefaultValue("com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption.UseAnySharedWithParent")
 		secretId: SecretIdUseOption = SecretIdUseOption.UseAnySharedWithParent,
+		alternateRootDataOwnerReference: EntityReferenceInGroup? = null,
 	): DecryptedContact
 
 	/**

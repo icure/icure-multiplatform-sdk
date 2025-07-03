@@ -70,8 +70,6 @@ okio = { group = "com.squareup.okio", name = "okio", version.ref = "okio" }
 
 #Android
 androidx-datastore = { group = "androidx.datastore", name = "datastore-preferences", version = "1.1.1" }
-
-
 bouncyCastle = { group = "org.bouncycastle", name = "bcprov-jdk15on", version.ref = "bouncyCastle" }
 
 [bundles]

@@ -107,6 +107,41 @@ public fun shareWithManyAsync(
 }.failureToPyStringAsyncCallback(resultCallback)
 
 @Serializable
+private class CreateReceiptParams(
+	public val entity: Receipt,
+)
+
+@OptIn(InternalIcureApi::class)
+public fun createReceiptBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
+	val decodedParams = fullLanguageInteropJson.decodeFromString<CreateReceiptParams>(params)
+	runBlocking {
+		sdk.receipt.tryAndRecover.createReceipt(
+			decodedParams.entity,
+		)
+	}
+}.toPyString(PolymorphicSerializer(Receipt::class))
+
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
+public fun createReceiptAsync(
+	sdk: CardinalApis,
+	params: String,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): COpaquePointer? = kotlin.runCatching {
+	val decodedParams = fullLanguageInteropJson.decodeFromString<CreateReceiptParams>(params)
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.receipt.tryAndRecover.createReceipt(
+				decodedParams.entity,
+			)
+		}.toPyStringAsyncCallback(PolymorphicSerializer(Receipt::class), resultCallback)
+	}
+}.failureToPyStringAsyncCallback(resultCallback)
+
+@Serializable
 private class ModifyReceiptParams(
 	public val entity: Receipt,
 )

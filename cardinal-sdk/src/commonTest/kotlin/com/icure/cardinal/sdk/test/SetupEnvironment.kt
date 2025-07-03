@@ -7,6 +7,7 @@ import com.icure.cardinal.sdk.api.raw.impl.RawUserApiImpl
 import com.icure.cardinal.sdk.model.DatabaseInitialisation
 import com.icure.cardinal.sdk.model.User
 import com.icure.utils.InternalIcureApi
+import io.ktor.http.isSuccess
 
 private var initialized = false
 
@@ -22,6 +23,7 @@ suspend fun initializeTestEnvironment() {
 		println("Group already exist")
 	} else  {
 		println("Creating group")
+		if (
 		groupApi.createGroup(
 			testGroupId,
 			testGroupName,
@@ -30,7 +32,12 @@ suspend fun initializeTestEnvironment() {
 				users = emptyList(),
 				healthcareParties = emptyList(),
 			)
-		)
+		).status.isSuccess()
+		) {
+			println("Group created successfully")
+		} else {
+			throw IllegalStateException("Failed to create group $testGroupId")
+		}
 	}
 	println("Creating admin user - $testGroupAdmin:$testGroupAdminPassword")
 	RawUserApiImpl(baseUrl, superadminAuth, DefaultRawApiConfig).createAdminUserInGroup(

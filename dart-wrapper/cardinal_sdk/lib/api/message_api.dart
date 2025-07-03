@@ -6,6 +6,7 @@ import 'package:cardinal_sdk/model/embed/access_level.dart';
 import 'package:cardinal_sdk/crypto/entities/secret_id_use_option.dart';
 import 'package:cardinal_sdk/plugin/cardinal_sdk_platform_interface.dart';
 import 'package:cardinal_sdk/model/specializations/hex_string.dart';
+import 'package:cardinal_sdk/model/entity_reference_in_group.dart';
 import 'package:cardinal_sdk/filters/filter_options.dart';
 import 'package:cardinal_sdk/model/couchdb/doc_identifier.dart';
 import 'package:cardinal_sdk/model/stored_document_identifier.dart';
@@ -76,6 +77,13 @@ class MessageApi {
 
 	Future<Message> tryDecrypt(EncryptedMessage message) async {
 		return await CardinalSdkPlatformInterface.instance.apis.message.tryDecrypt(
+			_sdkId,
+			message,
+		);
+	}
+
+	Future<Map<String, Set<EntityReferenceInGroup>>> getSecretIdsOf(Message message) async {
+		return await CardinalSdkPlatformInterface.instance.apis.message.getSecretIdsOf(
 			_sdkId,
 			message,
 		);

@@ -1,3 +1,4 @@
+# auto-generated file
 from cardinal_sdk.filters.FormFilters import FormFilters
 from cardinal_sdk.filters.AccessLogFilters import AccessLogFilters
 from cardinal_sdk.filters.ContactFilters import ContactFilters

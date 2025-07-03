@@ -18,6 +18,7 @@ import com.icure.cardinal.sdk.filters.SortableFilterOptions
 import com.icure.cardinal.sdk.filters.mapFormFilterOptions
 import com.icure.cardinal.sdk.model.DecryptedForm
 import com.icure.cardinal.sdk.model.EncryptedForm
+import com.icure.cardinal.sdk.model.EntityReferenceInGroup
 import com.icure.cardinal.sdk.model.Form
 import com.icure.cardinal.sdk.model.FormTemplate
 import com.icure.cardinal.sdk.model.ListOfIds
@@ -157,7 +158,7 @@ private class AbstractFormBasicFlavourlessApi(val rawApi: RawFormApi) : FormBasi
 	@Deprecated("Deletion without rev is unsafe")
 	override suspend fun deleteFormsUnsafe(entityIds: List<String>): List<DocIdentifier> =
 		rawApi.deleteForms(ListOfIds(entityIds)).successBody()
-	
+
 	override suspend fun deleteFormById(entityId: String, rev: String): DocIdentifier =
 		rawApi.deleteForm(entityId, rev).successBodyOrThrowRevisionConflict()
 
@@ -286,29 +287,31 @@ internal class FormApiImpl(
 		user: User?,
 		delegates: Map<String, AccessLevel>,
 		secretId: SecretIdUseOption,
+		alternateRootDataOwnerReference: EntityReferenceInGroup?,
 	): DecryptedForm =
 		config.crypto.entity.entityWithInitializedEncryptedMetadata(
-			null,
-			(base ?: DecryptedForm(config.crypto.primitives.strongRandom.randomUUID())).copy(
-				created = base?.created ?: currentEpochMs(),
-				modified = base?.modified ?: currentEpochMs(),
-				responsible = base?.responsible ?: user?.takeIf { config.autofillAuthor }?.dataOwnerId,
-				author = base?.author ?: user?.id?.takeIf { config.autofillAuthor },
-			),
-			EntityWithEncryptionMetadataTypeName.Form,
-			OwningEntityDetails(
-				null,
-				patient.id,
-				config.crypto.entity.resolveSecretIdOption(
-					null,
-					patient,
-					EntityWithEncryptionMetadataTypeName.Patient,
-					secretId
-				),
-			),
-			initializeEncryptionKey = true,
-			autoDelegations = (delegates + user?.autoDelegationsFor(DelegationTag.MedicalInformation)
-				.orEmpty()).keyAsLocalDataOwnerReferences(),
+            null,
+            (base ?: DecryptedForm(config.crypto.primitives.strongRandom.randomUUID())).copy(
+                created = base?.created ?: currentEpochMs(),
+                modified = base?.modified ?: currentEpochMs(),
+                responsible = base?.responsible ?: user?.takeIf { config.autofillAuthor }?.dataOwnerId,
+                author = base?.author ?: user?.id?.takeIf { config.autofillAuthor },
+            ),
+            EntityWithEncryptionMetadataTypeName.Form,
+            OwningEntityDetails(
+                null,
+                patient.id,
+                config.crypto.entity.resolveSecretIdOption(
+                    null,
+                    patient,
+                    EntityWithEncryptionMetadataTypeName.Patient,
+                    secretId
+                ),
+            ),
+            initializeEncryptionKey = true,
+            autoDelegations = (delegates + user?.autoDelegationsFor(DelegationTag.MedicalInformation)
+                .orEmpty()).keyAsLocalDataOwnerReferences(),
+			alternateRootDataOwnerReference = alternateRootDataOwnerReference,
 		).updatedEntity
 
 	override suspend fun getEncryptionKeysOf(form: Form): Set<HexString> =

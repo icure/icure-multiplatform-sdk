@@ -236,17 +236,20 @@ suspend fun createPatientUser(
 }
 
 @OptIn(InternalIcureApi::class)
-suspend fun createUserFromExistingPatient(patient: Patient): DataOwnerDetails {
+suspend fun createUserFromExistingPatient(patient: Patient, keylessPatient: Boolean = false): DataOwnerDetails {
 	val patientRawApi = RawPatientApiImpl(baseUrl, testGroupAdminAuth, NoAccessControlKeysHeadersProvider, DefaultRawApiConfig)
 	val userRawApi = RawUserApiImpl(baseUrl, testGroupAdminAuth, DefaultRawApiConfig)
 	val login = "patient-${uuid()}"
 	val password = uuid()
 	val keypair = defaultCryptoService.rsa.generateKeyPair(RsaAlgorithm.RsaEncryptionAlgorithm.OaepWithSha256)
-	val updatedPatient = patientRawApi.modifyPatient(
-		patientRawApi.getPatient(patient.id).successBody().copy(
-			publicKeysForOaepWithSha256 = setOf(defaultCryptoService.rsa.exportPublicKeySpki(keypair.public).toHexString().let { SpkiHexString(it) })
-		)
-	).successBody()
+	val updatedPatient = if (!keylessPatient) {
+		patientRawApi.modifyPatient(
+			patientRawApi.getPatient(patient.id).successBody().copy(
+				publicKeysForOaepWithSha256 = setOf(
+					defaultCryptoService.rsa.exportPublicKeySpki(keypair.public).toHexString().let { SpkiHexString(it) })
+			)
+		).successBody()
+	} else patientRawApi.getPatient(patient.id).successBody()
 	userRawApi.createUser(
 		User(
 			uuid(),
@@ -256,5 +259,5 @@ suspend fun createUserFromExistingPatient(patient: Patient): DataOwnerDetails {
 			patientId = updatedPatient.id
 		)
 	).successBody()
-	return DataOwnerDetails(patient.id, login, password, keypair, null, testGroupId)
+	return DataOwnerDetails(patient.id, login, password, keypair.takeIf { !keylessPatient }, null, testGroupId)
 }

@@ -30,7 +30,8 @@ interface SecureDelegationsManager {
 		owningEntityIds: Set<String>,
 		owningEntitySecretIds: Set<String>,
 		encryptionKeys: Set<HexString>,
-		autoDelegations: Map<EntityReferenceInGroup, AccessLevel>
+		autoDelegations: Map<EntityReferenceInGroup, AccessLevel>,
+		alternateRootDataOwnerReference: EntityReferenceInGroup? = null
 	): T
 
 	/**

@@ -18,6 +18,7 @@ import com.icure.cardinal.sdk.exceptions.NotFoundException
 import com.icure.cardinal.sdk.model.DecryptedInvoice
 import com.icure.cardinal.sdk.model.EncryptedInvoice
 import com.icure.cardinal.sdk.model.EntityReference
+import com.icure.cardinal.sdk.model.EntityReferenceInGroup
 import com.icure.cardinal.sdk.model.Invoice
 import com.icure.cardinal.sdk.model.ListOfIds
 import com.icure.cardinal.sdk.model.Patient
@@ -396,6 +397,7 @@ internal class InvoiceApiImpl(
 		user: User?,
 		delegates: Map<String, AccessLevel>,
 		secretId: SecretIdUseOption,
+		alternateRootDataOwnerReference: EntityReferenceInGroup?,
 		// Temporary, needs a lot more stuff to match typescript implementation
 	): DecryptedInvoice =
 		config.crypto.entity.entityWithInitializedEncryptedMetadata(
@@ -424,6 +426,7 @@ internal class InvoiceApiImpl(
 			initializeEncryptionKey = true,
 			autoDelegations = (delegates + user?.autoDelegationsFor(DelegationTag.AdministrativeData)
 				.orEmpty()).keyAsLocalDataOwnerReferences(),
+			alternateRootDataOwnerReference = alternateRootDataOwnerReference,
 		).updatedEntity
 
 	override suspend fun decrypt(invoice: EncryptedInvoice): DecryptedInvoice =

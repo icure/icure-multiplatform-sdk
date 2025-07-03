@@ -1,8 +1,7 @@
 # auto-generated file
-from cardinal_sdk.model import Role
 from cardinal_sdk.async_utils import execute_async_method_job
 from cardinal_sdk.kotlin_types import symbols
-from typing import List
+from cardinal_sdk.model import Role
 from cardinal_sdk.model.CallResult import create_result_from_json, interpret_kt_error
 from ctypes import cast, c_char_p
 
@@ -12,7 +11,7 @@ class RoleApi:
 	def __init__(self, cardinal_sdk):
 		self.cardinal_sdk = cardinal_sdk
 
-	async def get_all_roles_async(self) -> List[Role]:
+	async def get_all_roles_async(self) -> list[Role]:
 		def do_decode(raw_result):
 			return [Role._deserialize(x1) for x1 in raw_result]
 		return await execute_async_method_job(
@@ -23,7 +22,7 @@ class RoleApi:
 			self.cardinal_sdk._native,
 		)
 
-	def get_all_roles_blocking(self) -> List[Role]:
+	def get_all_roles_blocking(self) -> list[Role]:
 		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.RoleApi.getAllRolesBlocking(
 			self.cardinal_sdk._native,
 		)

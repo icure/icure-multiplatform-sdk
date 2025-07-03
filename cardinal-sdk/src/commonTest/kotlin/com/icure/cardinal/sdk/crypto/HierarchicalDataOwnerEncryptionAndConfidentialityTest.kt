@@ -102,26 +102,26 @@ class HierarchicalDataOwnerEncryptionAndConfidentialityTest : StringSpec({
 		val nonConfidentialNote = "Encrypted - non confidential he"
 		val nonConfidentialHe = hcpApi.healthElement.createHealthElement(
 			hcpApi.healthElement.withEncryptionMetadata(
-				DecryptedHealthElement(
-					id = defaultCryptoService.strongRandom.randomUUID(),
-					note = nonConfidentialNote
-				),
-				patient,
-				hcpApi.user.getCurrentUser(),
-				mapOf(parent.dataOwnerId to AccessLevel.Write)
+                DecryptedHealthElement(
+                    id = defaultCryptoService.strongRandom.randomUUID(),
+                    note = nonConfidentialNote
+                ),
+                patient,
+                hcpApi.user.getCurrentUser(),
+                mapOf(parent.dataOwnerId to AccessLevel.Write)
 			)
 		).shouldNotBeNull()
 		val confidentialNote = "Encrypted - confidential he"
 		val confidentialHe = hcpApi.healthElement.createHealthElement(
 			hcpApi.healthElement.withEncryptionMetadata(
-				DecryptedHealthElement(
-					id = defaultCryptoService.strongRandom.randomUUID(),
-					note = confidentialNote
-				),
-				patient,
-				hcpApi.user.getCurrentUser(),
-				mapOf(parent.dataOwnerId to AccessLevel.Write),
-				SecretIdUseOption.UseAnyConfidential
+                DecryptedHealthElement(
+                    id = defaultCryptoService.strongRandom.randomUUID(),
+                    note = confidentialNote
+                ),
+                patient,
+                hcpApi.user.getCurrentUser(),
+                mapOf(parent.dataOwnerId to AccessLevel.Write),
+                SecretIdUseOption.UseAnyConfidential
 			)
 		).shouldNotBeNull()
 

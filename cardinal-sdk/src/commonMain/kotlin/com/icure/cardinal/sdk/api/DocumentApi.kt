@@ -10,6 +10,7 @@ import com.icure.cardinal.sdk.filters.SortableFilterOptions
 import com.icure.cardinal.sdk.model.DecryptedDocument
 import com.icure.cardinal.sdk.model.Document
 import com.icure.cardinal.sdk.model.EncryptedDocument
+import com.icure.cardinal.sdk.model.EntityReferenceInGroup
 import com.icure.cardinal.sdk.model.Message
 import com.icure.cardinal.sdk.model.Patient
 import com.icure.cardinal.sdk.model.StoredDocumentIdentifier
@@ -28,7 +29,7 @@ interface DocumentBasicFlavourlessApi {
 	suspend fun deleteDocumentUnsafe(entityId: String): DocIdentifier
 	@Deprecated("Deletion without rev is unsafe")
 	suspend fun deleteDocumentsUnsafe(entityIds: List<String>): List<DocIdentifier>
-	
+
 	/**
 	 * Deletes a document. If you don't have write access to the document the method will fail.
 	 * @param entityId id of the document.
@@ -83,7 +84,7 @@ interface DocumentBasicFlavourlessApi {
 	suspend fun purgeDocument(document: Document) {
 		purgeDocumentById(document.id, requireNotNull(document.rev) { "Can't delete a document that has no rev" })
 	}
-	
+
 	/**
 	 * Get the main attachment from the document with the provided id as raw bytes. This method will not
 	 * perform any transformation on the attachment, and if the attachment was encrypted the returned data is encrypted.
@@ -130,7 +131,7 @@ interface DocumentBasicFlavourlessApi {
 	 * will not be encrypted by this method.
 	 * If a main attachment already exist on the document it will be replaced.
 	 * @param documentId the id of the document.
-	 * 
+	 *
 	 * @param rev the revision of the document
 	 * @param utis uniform type identifiers for the attachment (https://en.wikipedia.org/wiki/Uniform_Type_Identifier).
 	 * If null and there is already a main attachment for the document the current utis will be reused, otherwise it
@@ -211,7 +212,7 @@ interface DocumentBasicFlavouredApi<E : Document> {
 	 * @throws RevisionConflictException if the provided revision doesn't match the latest known revision
 	 */
 	suspend fun undeleteDocumentById(id: String, rev: String): E
-	
+
 	/**
 	 * Restores a document that was marked as deleted.
 	 * @param document the document to undelete
@@ -375,6 +376,7 @@ interface DocumentApi : DocumentBasicFlavourlessApi, DocumentFlavouredApi<Decryp
 		delegates: Map<String, AccessLevel> = emptyMap(),
 		@DefaultValue("com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption.UseAnySharedWithParent")
 		secretId: SecretIdUseOption = SecretIdUseOption.UseAnySharedWithParent,
+		alternateRootDataOwnerReference: EntityReferenceInGroup? = null,
 	): DecryptedDocument
 
 	/**
@@ -398,6 +400,7 @@ interface DocumentApi : DocumentBasicFlavourlessApi, DocumentFlavouredApi<Decryp
 		delegates: Map<String, AccessLevel> = emptyMap(),
 		@DefaultValue("com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption.UseAnySharedWithParent")
 		secretId: SecretIdUseOption = SecretIdUseOption.UseAnySharedWithParent,
+		alternateRootDataOwnerReference: EntityReferenceInGroup? = null,
 	): DecryptedDocument
 
 	/**
@@ -416,6 +419,7 @@ interface DocumentApi : DocumentBasicFlavourlessApi, DocumentFlavouredApi<Decryp
 		user: User? = null,
 		@DefaultValue("emptyMap()")
 		delegates: Map<String, AccessLevel> = emptyMap(),
+		alternateRootDataOwnerReference: EntityReferenceInGroup? = null,
 	): DecryptedDocument
 
 	/**

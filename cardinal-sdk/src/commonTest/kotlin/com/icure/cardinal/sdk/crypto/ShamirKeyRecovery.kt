@@ -37,8 +37,9 @@ class ShamirKeyRecovery : StringSpec({
 				)
 			)
 		)
+		userDetails.publicKeySpki?.let {}
 		api.crypto.shamirKeysManager.updateSelfSplits(
-			mapOf(userDetails.publicKeySpki.fingerprintV1() to ShamirUpdateRequest(
+			mapOf(userDetails.publicKeySpki.shouldNotBeNull().fingerprintV1() to ShamirUpdateRequest(
 				notariesIds = shareWith.mapTo(mutableSetOf()) { it.dataOwnerId },
 				minShares = askAccessBackTo.size
 			)
