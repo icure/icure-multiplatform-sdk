@@ -72,7 +72,23 @@ sealed interface SecurityMetadataType<DecryptedType : Any> {
 		private val uuidChars = "0123456789abcdefABCDEF-".toSet()
 
 		override fun extractLegacyDelegations(entity: HasEncryptionMetadata) =
-			entity.cryptedForeignKeys
+			if (
+				entity.encryptionKeys.isNotEmpty()
+				|| entity.securityMetadata?.secureDelegations?.any { it.value.encryptionKeys.isNotEmpty() } == true
+			) {
+				// There are some encryption keys defined for the entity (either legacy or in secure delegations)
+				entity.encryptionKeys
+			} else {
+				/*
+				 * There are no encryption keys set for the entity.
+				 * This is either a super-legacy entity that was not yet migrated (uses the value in legacy delegations
+				 * as encryption key), or simply the entity was not encrypted.
+				 * Try to use legacy delegation if present as encryption key.
+				 * This is still needed as there are some cases where users need to migrate data from
+				 * the old "iCure for MAC"; we may lock this behind a configuration value if needed.
+				 */
+				entity.delegations
+			}
 
 		override suspend fun validateLegacyDecrypted(result: String): Boolean =
 			result.all { it in uuidChars } && result.count { it != '-' }.let { hexDigitSize ->
