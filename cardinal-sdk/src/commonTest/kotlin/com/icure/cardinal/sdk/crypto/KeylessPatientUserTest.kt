@@ -18,10 +18,12 @@ import com.icure.cardinal.sdk.test.createHcpUser
 import com.icure.cardinal.sdk.test.createUserFromExistingPatient
 import com.icure.cardinal.sdk.test.initializeTestEnvironment
 import com.icure.cardinal.sdk.test.internal
+import com.icure.cardinal.sdk.utils.RequestStatusException
 import com.icure.cardinal.sdk.utils.currentEpochMs
 import com.icure.kryptom.crypto.CryptoService
 import com.icure.kryptom.crypto.defaultCryptoService
 import com.icure.utils.InternalIcureApi
+import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
@@ -107,9 +109,9 @@ class KeylessPatientUserTest : StringSpec(
 			val patientUser = patientApi.user.getCurrentUser()
 			val patient = patientApi.patient.encrypted.getPatient(patientUser.dataOwnerId).shouldNotBeNull()
 
-			runCatching {
+			shouldThrow<IllegalStateException> {
 				createCalendarItem(patientApi, patient, patientUser)
-			}.isFailure shouldBe true
+			}
 		}
 
 		"A keyless API should allow creation of data and retrieval by delegator and delegate" {
@@ -158,11 +160,10 @@ class KeylessPatientUserTest : StringSpec(
 			)
 
 			// Before injecting exchange data, retrieval should fail
-			runCatching {
+			shouldThrow<RequestStatusException> {
 				newPatientApi.calendarItem.getCalendarItem(ci.id)
-			}.isFailure shouldBe true
+			}.statusCode shouldBe 403 // Forbidden
 
-			// Inject exchange data (simulate what the TS test does)
 			newPatientApi.crypto.injectExchangeData(
 				patientDetails.groupId,
 				listOf(
@@ -185,7 +186,6 @@ class KeylessPatientUserTest : StringSpec(
 		}
 
 		"Keyless SDks do not support the re-encryption of injected exchange data" {
-			// Arrange: initialize test data
 			val (patientApi, exchangeData) = getPatientApi()
 			val patientUser = patientApi.user.getCurrentUser()
 			val patient = patientApi.patient.encrypted.getPatient(patientUser.dataOwnerId).shouldNotBeNull()
@@ -213,8 +213,7 @@ class KeylessPatientUserTest : StringSpec(
 				},
 			)
 
-			runCatching {
-				// Inject exchange data (simulate what the TS test does)
+			shouldThrow<IllegalStateException> {
 				newPatientApiWithKeyAndInjected.crypto.injectExchangeData(
 					patientDetails.groupId,
 					listOf(
@@ -228,11 +227,10 @@ class KeylessPatientUserTest : StringSpec(
 					),
 					true,
 				)
-			}.isFailure shouldBe true
+			}
 		}
 
 		"Should allow re-encryption of exchange data as unverified on injection" {
-			// Arrange: initialize test data
 			val (patientApi, exchangeData) = getPatientApi()
 			val patientUser = patientApi.user.getCurrentUser()
 			val patient = patientApi.patient.encrypted.getPatient(patientUser.dataOwnerId).shouldNotBeNull()
