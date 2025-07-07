@@ -8,9 +8,7 @@ import kotlin.Int
 import kotlin.Long
 import kotlin.String
 
-// WARNING: This file is auto-generated. If you change it manually, your changes will be lost.
-// If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
-sealed interface InvoicingCode : Encryptable {
+public sealed interface InvoicingCode : Encryptable {
 	public val id: String?
 
 	public val dateCode: Long?
@@ -38,6 +36,8 @@ sealed interface InvoicingCode : Encryptable {
 	public val reimbursement: Double?
 
 	public val patientIntervention: Double?
+
+	public val amiIntervention: Double?
 
 	public val doctorSupplement: Double?
 
@@ -115,14 +115,13 @@ sealed interface InvoicingCode : Encryptable {
 
 	public val status: Long?
 
+	public val codeLabel: String?
+
 	override val encryptedSelf: Base64String?
-	// region InvoicingCode-InvoicingCode
-
-	// endregion
 }
 
 @Serializable
-data class DecryptedInvoicingCode(
+public data class DecryptedInvoicingCode(
 	override val id: String?,
 	override val dateCode: Long? = null,
 	override val logicalId: String? = null,
@@ -137,6 +136,7 @@ data class DecryptedInvoicingCode(
 	override val totalAmount: Double? = null,
 	override val reimbursement: Double? = null,
 	override val patientIntervention: Double? = null,
+	override val amiIntervention: Double? = null,
 	override val doctorSupplement: Double? = null,
 	override val conventionAmount: Double? = null,
 	override val vat: Double? = null,
@@ -175,15 +175,12 @@ data class DecryptedInvoicingCode(
 	override val insuranceJustification: Int? = null,
 	override val cancelPatientInterventionReason: Int? = null,
 	override val status: Long? = null,
+	override val codeLabel: String? = null,
 	override val encryptedSelf: Base64String? = null,
-) : InvoicingCode {
-	// region InvoicingCode-DecryptedInvoicingCode
-
-	// endregion
-}
+) : InvoicingCode
 
 @Serializable
-data class EncryptedInvoicingCode(
+public data class EncryptedInvoicingCode(
 	override val id: String?,
 	override val dateCode: Long? = null,
 	override val logicalId: String? = null,
@@ -198,6 +195,7 @@ data class EncryptedInvoicingCode(
 	override val totalAmount: Double? = null,
 	override val reimbursement: Double? = null,
 	override val patientIntervention: Double? = null,
+	override val amiIntervention: Double? = null,
 	override val doctorSupplement: Double? = null,
 	override val conventionAmount: Double? = null,
 	override val vat: Double? = null,
@@ -236,9 +234,6 @@ data class EncryptedInvoicingCode(
 	override val insuranceJustification: Int? = null,
 	override val cancelPatientInterventionReason: Int? = null,
 	override val status: Long? = null,
+	override val codeLabel: String? = null,
 	override val encryptedSelf: Base64String? = null,
-) : InvoicingCode {
-	// region InvoicingCode-EncryptedInvoicingCode
-
-	// endregion
-}
+) : InvoicingCode

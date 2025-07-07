@@ -3,6 +3,7 @@ package com.icure.cardinal.sdk.model
 import com.icure.cardinal.sdk.model.base.CodeStub
 import com.icure.cardinal.sdk.model.base.HasEncryptionMetadata
 import com.icure.cardinal.sdk.model.base.ICureDocument
+import com.icure.cardinal.sdk.model.base.Identifier
 import com.icure.cardinal.sdk.model.base.StoredDocument
 import com.icure.cardinal.sdk.model.embed.DecryptedInvoicingCode
 import com.icure.cardinal.sdk.model.embed.Delegation
@@ -28,9 +29,7 @@ import kotlin.collections.List
 import kotlin.collections.Map
 import kotlin.collections.Set
 
-// WARNING: This file is auto-generated. If you change it manually, your changes will be lost.
-// If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
-sealed interface Invoice :
+public sealed interface Invoice :
 	StoredDocument,
 	ICureDocument<String>,
 	HasEncryptionMetadata,
@@ -38,6 +37,8 @@ sealed interface Invoice :
 	override val id: String
 
 	override val rev: String?
+
+	public val identifier: List<Identifier>
 
 	override val created: Long?
 
@@ -178,15 +179,14 @@ sealed interface Invoice :
 	override val encryptedSelf: Base64String?
 
 	override val securityMetadata: SecurityMetadata?
-	// region Invoice-Invoice
-
-	// endregion
 }
 
 @Serializable
-data class DecryptedInvoice(
+public data class DecryptedInvoice(
 	override val id: String,
 	override val rev: String? = null,
+	@DefaultValue("emptyList()")
+	override val identifier: List<Identifier> = emptyList(),
 	override val created: Long? = null,
 	override val modified: Long? = null,
 	override val author: String? = null,
@@ -266,17 +266,14 @@ data class DecryptedInvoice(
 	override val encryptionKeys: Map<String, Set<Delegation>> = emptyMap(),
 	override val encryptedSelf: Base64String? = null,
 	override val securityMetadata: SecurityMetadata? = null,
-) : Invoice {
-	// region Invoice-DecryptedInvoice
-override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): DecryptedInvoice =
-		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)
-	// endregion
-}
+) : Invoice
 
 @Serializable
-data class EncryptedInvoice(
+public data class EncryptedInvoice(
 	override val id: String,
 	override val rev: String? = null,
+	@DefaultValue("emptyList()")
+	override val identifier: List<Identifier> = emptyList(),
 	override val created: Long? = null,
 	override val modified: Long? = null,
 	override val author: String? = null,
@@ -356,9 +353,4 @@ data class EncryptedInvoice(
 	override val encryptionKeys: Map<String, Set<Delegation>> = emptyMap(),
 	override val encryptedSelf: Base64String? = null,
 	override val securityMetadata: SecurityMetadata? = null,
-) : Invoice {
-	// region Invoice-EncryptedInvoice
-override fun copyWithSecurityMetadata(securityMetadata: SecurityMetadata, secretForeignKeys: Set<String>): EncryptedInvoice =
-		copy(securityMetadata = securityMetadata, secretForeignKeys = secretForeignKeys)
-	// endregion
-}
+) : Invoice
