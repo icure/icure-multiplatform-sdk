@@ -8,6 +8,7 @@ import com.icure.cardinal.sdk.api.raw.wrap
 import com.icure.cardinal.sdk.model.AnonymousMedicalLocation
 import com.icure.cardinal.sdk.model.AppointmentTypeAndPlace
 import com.icure.cardinal.sdk.model.PaginatedList
+import com.icure.cardinal.sdk.model.PublicAgendasAndCalendarItemTypes
 import com.icure.cardinal.sdk.model.UserAndHealthcareParty
 import com.icure.utils.InternalIcureApi
 import io.ktor.client.request.accept
@@ -43,6 +44,39 @@ class RawAnonymousApiImpl(
 				appendPathSegments("rest", "v2", "aa", "appointmentType", "inGroup", groupId, "forUser", userId)
 				parameter("startDate", startDate)
 				parameter("endDate", endDate)
+				parameter("ts", GMTDate().timestamp)
+			}
+			accept(Application.Json)
+		}.wrap()
+
+	override suspend fun listAnonymousAgendaAndAppointmentTypes(
+		groupId: String,
+		userId: String,
+	): HttpResponse<PublicAgendasAndCalendarItemTypes> =
+		get {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "aa", "agendasAndAppointmentTypes", "inGroup", groupId, "forUser", userId)
+				parameter("ts", GMTDate().timestamp)
+			}
+			accept(Application.Json)
+		}.wrap()
+
+	override suspend fun listAnonymousAvailabilities(
+		groupId: String,
+		agendaId: String,
+		calendarItemTypeId: String,
+		startDate: Long,
+		endDate: Long,
+		limit: Int?,
+	): HttpResponse<List<Long>> =
+		get {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "aa", "available", "inGroup", groupId, "agenda", agendaId, "type", calendarItemTypeId)
+				parameter("startDate", startDate)
+				parameter("endDate", endDate)
+				parameter("limit", limit)
 				parameter("ts", GMTDate().timestamp)
 			}
 			accept(Application.Json)

@@ -39,6 +39,8 @@ public sealed external interface InvoicingCodeJs : EncryptableJs {
 
 	public val patientIntervention: Double?
 
+	public val amiIntervention: Double?
+
 	public val doctorSupplement: Double?
 
 	public val conventionAmount: Double?
@@ -115,6 +117,8 @@ public sealed external interface InvoicingCodeJs : EncryptableJs {
 
 	public val status: Double?
 
+	public val codeLabel: String?
+
 	public val isEncrypted: Boolean
 }
 
@@ -149,6 +153,8 @@ public external class DecryptedInvoicingCodeJs(
 	override val reimbursement: Double?
 
 	override val patientIntervention: Double?
+
+	override val amiIntervention: Double?
 
 	override val doctorSupplement: Double?
 
@@ -225,6 +231,8 @@ public external class DecryptedInvoicingCodeJs(
 	override val cancelPatientInterventionReason: Double?
 
 	override val status: Double?
+
+	override val codeLabel: String?
 
 	override val encryptedSelf: String?
 
@@ -263,6 +271,8 @@ public external class EncryptedInvoicingCodeJs(
 
 	override val patientIntervention: Double?
 
+	override val amiIntervention: Double?
+
 	override val doctorSupplement: Double?
 
 	override val conventionAmount: Double?
@@ -338,6 +348,8 @@ public external class EncryptedInvoicingCodeJs(
 	override val cancelPatientInterventionReason: Double?
 
 	override val status: Double?
+
+	override val codeLabel: String?
 
 	override val encryptedSelf: String?
 

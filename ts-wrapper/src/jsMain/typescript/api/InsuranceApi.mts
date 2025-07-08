@@ -22,4 +22,12 @@ export interface InsuranceApi {
 
 	modifyInsurance(insurance: Insurance): Promise<Insurance>;
 
+	createInsurancesInGroup(groupId: string,
+			insuranceBatch: Array<Insurance>): Promise<Array<Insurance>>;
+
+	getInsurancesInGroup(groupId: string, insuranceIds: string): Promise<Array<Insurance>>;
+
+	modifyInsurancesInGroup(groupId: string,
+			insuranceBatch: Array<Insurance>): Promise<Array<Insurance>>;
+
 }

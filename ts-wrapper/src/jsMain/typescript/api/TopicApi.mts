@@ -23,7 +23,7 @@ export interface TopicApi {
 	tryAndRecover: TopicFlavouredApi<Topic>;
 
 	withEncryptionMetadata(base: DecryptedTopic | undefined, patient: Patient | undefined,
-			options?: { user?: User | undefined, delegates?: { [ key: string ]: AccessLevel }, secretId?: SecretIdUseOption }): Promise<DecryptedTopic>;
+			options?: { user?: User | undefined, delegates?: { [ key: string ]: AccessLevel }, secretId?: SecretIdUseOption, alternateRootDelegateId?: string | undefined }): Promise<DecryptedTopic>;
 
 	getEncryptionKeysOf(topic: Topic): Promise<Array<HexString>>;
 

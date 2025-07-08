@@ -718,7 +718,7 @@ private class PatientApiImpl(
 			base: DecryptedPatient?,
 			user: User?,
 			delegates: Map<EntityReferenceInGroup, AccessLevel>,
-			alternateRootDataOwnerReference: EntityReferenceInGroup?,
+			alternateRootDelegateReference: EntityReferenceInGroup?,
 		): GroupScoped<DecryptedPatient> =
 			GroupScoped(
 				doWithEncryptionMetadata(
@@ -726,7 +726,7 @@ private class PatientApiImpl(
 					base,
 					user,
 					delegates,
-					alternateRootDataOwnerReference
+					alternateRootDelegateReference
 				),
 				entityGroupId
 			)
@@ -1009,10 +1009,15 @@ private class PatientApiImpl(
 		base: DecryptedPatient?,
 		user: User?,
 		delegates: Map<String, AccessLevel>,
-		alternateRootDataOwnerReference: EntityReferenceInGroup?,
-		// Temporary, needs a lot more stuff to match typescript implementation
+		alternateRootDelegateId: String?
 	): DecryptedPatient =
-		doWithEncryptionMetadata(null, base, user, delegates.keyAsLocalDataOwnerReferences(), alternateRootDataOwnerReference)
+		doWithEncryptionMetadata(
+			null,
+			base,
+			user,
+			delegates.keyAsLocalDataOwnerReferences(),
+			alternateRootDelegateId?.let { EntityReferenceInGroup(it, null) }
+		)
 
 	private suspend fun doWithEncryptionMetadata(
 		entityGroupId: String?,

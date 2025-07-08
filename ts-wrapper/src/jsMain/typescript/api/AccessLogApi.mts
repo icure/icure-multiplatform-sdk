@@ -20,7 +20,7 @@ export interface AccessLogApi {
 	tryAndRecover: AccessLogFlavouredApi<AccessLog>;
 
 	withEncryptionMetadata(base: DecryptedAccessLog | undefined, patient: Patient,
-			options?: { user?: User | undefined, delegates?: { [ key: string ]: AccessLevel }, secretId?: SecretIdUseOption }): Promise<DecryptedAccessLog>;
+			options?: { user?: User | undefined, delegates?: { [ key: string ]: AccessLevel }, secretId?: SecretIdUseOption, alternateRootDelegateId?: string | undefined }): Promise<DecryptedAccessLog>;
 
 	getEncryptionKeysOf(accessLog: AccessLog): Promise<Array<HexString>>;
 

@@ -491,7 +491,7 @@ private class CalendarItemApiImpl(
 				valueEntryName = "accessLevel"
 			) Map<EntityReferenceInGroup, AccessLevel>,
 			secretId: SecretIdUseOption,
-			alternateRootDataOwnerReference: EntityReferenceInGroup?
+			alternateRootDelegateReference: EntityReferenceInGroup?
 		): GroupScoped<DecryptedCalendarItem> =
 			GroupScoped(
 				doWithEncryptionMetadata(
@@ -501,7 +501,7 @@ private class CalendarItemApiImpl(
 					user,
 					delegates,
 					secretId,
-					alternateRootDataOwnerReference
+					alternateRootDelegateReference
 				),
 				entityGroupId
 			)
@@ -538,7 +538,7 @@ private class CalendarItemApiImpl(
 		user: User?,
 		delegates: Map<String, AccessLevel>,
 		secretId: SecretIdUseOption,
-		alternateRootDataOwnerReference: EntityReferenceInGroup?,
+		alternateRootDelegateId: String?,
 	) =
 		doWithEncryptionMetadata(
 			null,
@@ -547,7 +547,7 @@ private class CalendarItemApiImpl(
 			user,
 			delegates.keyAsLocalDataOwnerReferences(),
 			secretId,
-			alternateRootDataOwnerReference
+			alternateRootDelegateId?.let { EntityReferenceInGroup(it, null) }
 		)
 
 	private suspend fun doWithEncryptionMetadata(

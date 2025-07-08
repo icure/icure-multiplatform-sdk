@@ -20,7 +20,7 @@ export interface MaintenanceTaskApi {
 	tryAndRecover: MaintenanceTaskFlavouredApi<MaintenanceTask>;
 
 	withEncryptionMetadata(maintenanceTask: DecryptedMaintenanceTask | undefined,
-			options?: { user?: User | undefined, delegates?: { [ key: string ]: AccessLevel } }): Promise<DecryptedMaintenanceTask>;
+			options?: { user?: User | undefined, delegates?: { [ key: string ]: AccessLevel }, alternateRootDelegateId?: string | undefined }): Promise<DecryptedMaintenanceTask>;
 
 	getEncryptionKeysOf(maintenanceTask: MaintenanceTask): Promise<Array<HexString>>;
 

@@ -2605,11 +2605,22 @@ internal class PatientApiImplJs(
 				) { delegates: Array<EntityReferenceInGroupToAccessLevelMapObject_delegate_accessLevel> ->
 					EntityReferenceInGroupToAccessLevelMapObject_delegate_accessLevel_fromJs(delegates)
 				}
+				val alternateRootDelegateReferenceConverted: EntityReferenceInGroup? =
+						convertingOptionOrDefaultNullable(
+					_options,
+					"alternateRootDelegateReference",
+					null
+				) { alternateRootDelegateReference: EntityReferenceInGroupJs? ->
+					alternateRootDelegateReference?.let { nonNull1 ->
+						entityReferenceInGroup_fromJs(nonNull1)
+					}
+				}
 				val result = patientApi.inGroup.withEncryptionMetadata(
 					entityGroupIdConverted,
 					baseConverted,
 					userConverted,
 					delegatesConverted,
+					alternateRootDelegateReferenceConverted,
 				)
 				groupScoped_toJs(
 					result,
@@ -3159,10 +3170,18 @@ internal class PatientApiImplJs(
 					},
 				)
 			}
+			val alternateRootDelegateIdConverted: String? = convertingOptionOrDefaultNullable(
+				_options,
+				"alternateRootDelegateId",
+				null
+			) { alternateRootDelegateId: String? ->
+				undefinedToNull(alternateRootDelegateId)
+			}
 			val result = patientApi.withEncryptionMetadata(
 				baseConverted,
 				userConverted,
 				delegatesConverted,
+				alternateRootDelegateIdConverted,
 			)
 			patient_toJs(result)
 		}

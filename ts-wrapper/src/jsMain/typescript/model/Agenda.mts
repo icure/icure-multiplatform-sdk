@@ -4,7 +4,8 @@ import {DecryptedPropertyStub} from './PropertyStub.mjs';
 import {CodeStub} from './base/CodeStub.mjs';
 import {ICureDocument} from './base/ICureDocument.mjs';
 import {StoredDocument} from './base/StoredDocument.mjs';
-import {EmbeddedTimeTable} from './embed/EmbeddedTimeTable.mjs';
+import {AgendaSlottingAlgorithm} from './embed/AgendaSlottingAlgorithm.mjs';
+import {ResourceGroupAllocationSchedule} from './embed/ResourceGroupAllocationSchedule.mjs';
 import {Right} from './embed/Right.mjs';
 import {UserAccessLevel} from './embed/UserAccessLevel.mjs';
 
@@ -33,17 +34,25 @@ export class Agenda implements StoredDocument, ICureDocument<string> {
 
 	deletionDate: number | undefined = undefined;
 
+	daySplitHour: number | undefined = undefined;
+
 	name: string | undefined = undefined;
 
 	userId: string | undefined = undefined;
+
+	zoneId: string | undefined = undefined;
+
+	lockCalendarItemsBeforeInMinutes: number | undefined = undefined;
 
 	rights: Array<Right> = [];
 
 	userRights: { [ key: string ]: UserAccessLevel } = {};
 
+	slottingAlgorithm: AgendaSlottingAlgorithm | undefined = undefined;
+
 	properties: Array<DecryptedPropertyStub> = [];
 
-	timeTables: Array<EmbeddedTimeTable> = [];
+	schedules: Array<ResourceGroupAllocationSchedule> = [];
 
 	constructor(partial: Partial<Agenda>) {
 		this.id = partial.id ?? randomUuid();
@@ -57,12 +66,16 @@ export class Agenda implements StoredDocument, ICureDocument<string> {
 		if ('codes' in partial && partial.codes !== undefined) this.codes = partial.codes;
 		if ('endOfLife' in partial) this.endOfLife = partial.endOfLife;
 		if ('deletionDate' in partial) this.deletionDate = partial.deletionDate;
+		if ('daySplitHour' in partial) this.daySplitHour = partial.daySplitHour;
 		if ('name' in partial) this.name = partial.name;
 		if ('userId' in partial) this.userId = partial.userId;
+		if ('zoneId' in partial) this.zoneId = partial.zoneId;
+		if ('lockCalendarItemsBeforeInMinutes' in partial) this.lockCalendarItemsBeforeInMinutes = partial.lockCalendarItemsBeforeInMinutes;
 		if ('rights' in partial && partial.rights !== undefined) this.rights = partial.rights;
 		if ('userRights' in partial && partial.userRights !== undefined) this.userRights = partial.userRights;
+		if ('slottingAlgorithm' in partial) this.slottingAlgorithm = partial.slottingAlgorithm;
 		if ('properties' in partial && partial.properties !== undefined) this.properties = partial.properties;
-		if ('timeTables' in partial && partial.timeTables !== undefined) this.timeTables = partial.timeTables;
+		if ('schedules' in partial && partial.schedules !== undefined) this.schedules = partial.schedules;
 	}
 
 }

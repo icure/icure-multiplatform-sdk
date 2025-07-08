@@ -33,7 +33,7 @@ export interface ContactApi {
 	matchServicesBySorted(filter: SortableFilterOptions<Service>): Promise<Array<string>>;
 
 	withEncryptionMetadata(base: DecryptedContact | undefined, patient: Patient,
-			options?: { user?: User | undefined, delegates?: { [ key: string ]: AccessLevel }, secretId?: SecretIdUseOption }): Promise<DecryptedContact>;
+			options?: { user?: User | undefined, delegates?: { [ key: string ]: AccessLevel }, secretId?: SecretIdUseOption, alternateRootDelegateId?: string | undefined }): Promise<DecryptedContact>;
 
 	getEncryptionKeysOf(contact: Contact): Promise<Array<HexString>>;
 

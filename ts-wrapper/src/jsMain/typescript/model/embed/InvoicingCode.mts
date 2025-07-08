@@ -34,6 +34,8 @@ export interface InvoicingCode extends Encryptable {
 
 	patientIntervention: number | undefined;
 
+	amiIntervention: number | undefined;
+
 	doctorSupplement: number | undefined;
 
 	conventionAmount: number | undefined;
@@ -110,6 +112,8 @@ export interface InvoicingCode extends Encryptable {
 
 	status: number | undefined;
 
+	codeLabel: string | undefined;
+
 	readonly isEncrypted: boolean;
 
 }
@@ -143,6 +147,8 @@ export class DecryptedInvoicingCode {
 	reimbursement: number | undefined = undefined;
 
 	patientIntervention: number | undefined = undefined;
+
+	amiIntervention: number | undefined = undefined;
 
 	doctorSupplement: number | undefined = undefined;
 
@@ -220,6 +226,8 @@ export class DecryptedInvoicingCode {
 
 	status: number | undefined = undefined;
 
+	codeLabel: string | undefined = undefined;
+
 	encryptedSelf: Base64String | undefined = undefined;
 
 	readonly isEncrypted: false = false;
@@ -240,6 +248,7 @@ export class DecryptedInvoicingCode {
 		if ('totalAmount' in partial) this.totalAmount = partial.totalAmount;
 		if ('reimbursement' in partial) this.reimbursement = partial.reimbursement;
 		if ('patientIntervention' in partial) this.patientIntervention = partial.patientIntervention;
+		if ('amiIntervention' in partial) this.amiIntervention = partial.amiIntervention;
 		if ('doctorSupplement' in partial) this.doctorSupplement = partial.doctorSupplement;
 		if ('conventionAmount' in partial) this.conventionAmount = partial.conventionAmount;
 		if ('vat' in partial) this.vat = partial.vat;
@@ -278,6 +287,7 @@ export class DecryptedInvoicingCode {
 		if ('insuranceJustification' in partial) this.insuranceJustification = partial.insuranceJustification;
 		if ('cancelPatientInterventionReason' in partial) this.cancelPatientInterventionReason = partial.cancelPatientInterventionReason;
 		if ('status' in partial) this.status = partial.status;
+		if ('codeLabel' in partial) this.codeLabel = partial.codeLabel;
 		if ('encryptedSelf' in partial) this.encryptedSelf = partial.encryptedSelf;
 	}
 
@@ -313,6 +323,8 @@ export class EncryptedInvoicingCode {
 
 	patientIntervention: number | undefined = undefined;
 
+	amiIntervention: number | undefined = undefined;
+
 	doctorSupplement: number | undefined = undefined;
 
 	conventionAmount: number | undefined = undefined;
@@ -389,6 +401,8 @@ export class EncryptedInvoicingCode {
 
 	status: number | undefined = undefined;
 
+	codeLabel: string | undefined = undefined;
+
 	encryptedSelf: Base64String | undefined = undefined;
 
 	readonly isEncrypted: true = true;
@@ -409,6 +423,7 @@ export class EncryptedInvoicingCode {
 		if ('totalAmount' in partial) this.totalAmount = partial.totalAmount;
 		if ('reimbursement' in partial) this.reimbursement = partial.reimbursement;
 		if ('patientIntervention' in partial) this.patientIntervention = partial.patientIntervention;
+		if ('amiIntervention' in partial) this.amiIntervention = partial.amiIntervention;
 		if ('doctorSupplement' in partial) this.doctorSupplement = partial.doctorSupplement;
 		if ('conventionAmount' in partial) this.conventionAmount = partial.conventionAmount;
 		if ('vat' in partial) this.vat = partial.vat;
@@ -447,6 +462,7 @@ export class EncryptedInvoicingCode {
 		if ('insuranceJustification' in partial) this.insuranceJustification = partial.insuranceJustification;
 		if ('cancelPatientInterventionReason' in partial) this.cancelPatientInterventionReason = partial.cancelPatientInterventionReason;
 		if ('status' in partial) this.status = partial.status;
+		if ('codeLabel' in partial) this.codeLabel = partial.codeLabel;
 		if ('encryptedSelf' in partial) this.encryptedSelf = partial.encryptedSelf;
 	}
 

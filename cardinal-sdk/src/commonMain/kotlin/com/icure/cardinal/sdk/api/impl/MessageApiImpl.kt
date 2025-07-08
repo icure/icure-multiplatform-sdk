@@ -319,8 +319,7 @@ internal class MessageApiImpl(
 		user: User?,
 		delegates: Map<String, AccessLevel>,
 		secretId: SecretIdUseOption,
-		alternateRootDataOwnerReference: EntityReferenceInGroup?,
-		// Temporary, needs a lot more stuff to match typescript implementation
+		alternateRootDelegateId: String?,
 	): DecryptedMessage =
 		config.crypto.entity.entityWithInitializedEncryptedMetadata(
             null,
@@ -346,7 +345,7 @@ internal class MessageApiImpl(
             initializeEncryptionKey = true,
             autoDelegations = (delegates + user?.autoDelegationsFor(DelegationTag.MedicalInformation)
                 .orEmpty()).keyAsLocalDataOwnerReferences(),
-			alternateRootDataOwnerReference = alternateRootDataOwnerReference,
+			alternateRootDataOwnerReference = alternateRootDelegateId?.let { EntityReferenceInGroup(it, null) },
 		).updatedEntity
 
 	override suspend fun getEncryptionKeysOf(message: Message): Set<HexString> =

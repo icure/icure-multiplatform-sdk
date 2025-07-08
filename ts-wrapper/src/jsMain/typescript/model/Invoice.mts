@@ -3,6 +3,7 @@ import {randomUuid} from '../utils/Id.mjs';
 import {CodeStub} from './base/CodeStub.mjs';
 import {HasEncryptionMetadata} from './base/HasEncryptionMetadata.mjs';
 import {ICureDocument} from './base/ICureDocument.mjs';
+import {Identifier} from './base/Identifier.mjs';
 import {StoredDocument} from './base/StoredDocument.mjs';
 import {Delegation} from './embed/Delegation.mjs';
 import {Encryptable} from './embed/Encryptable.mjs';
@@ -18,6 +19,8 @@ import {Base64String} from './specializations/Base64String.mjs';
 
 
 export interface Invoice extends StoredDocument, ICureDocument<string>, HasEncryptionMetadata, Encryptable {
+
+	identifier: Array<Identifier>;
 
 	invoiceDate: number | undefined;
 
@@ -138,6 +141,8 @@ export class DecryptedInvoice {
 	id: string;
 
 	rev: string | undefined = undefined;
+
+	identifier: Array<Identifier> = [];
 
 	created: number | undefined = undefined;
 
@@ -285,6 +290,7 @@ export class DecryptedInvoice {
 		if (partial.isEncrypted !== undefined && partial.isEncrypted !== false) throw new Error('partial.isEncrypted must be undefined or false');
 		this.id = partial.id ?? randomUuid();
 		if ('rev' in partial) this.rev = partial.rev;
+		if ('identifier' in partial && partial.identifier !== undefined) this.identifier = partial.identifier;
 		if ('created' in partial) this.created = partial.created;
 		if ('modified' in partial) this.modified = partial.modified;
 		if ('author' in partial) this.author = partial.author;
@@ -364,6 +370,8 @@ export class EncryptedInvoice {
 	id: string;
 
 	rev: string | undefined = undefined;
+
+	identifier: Array<Identifier> = [];
 
 	created: number | undefined = undefined;
 
@@ -511,6 +519,7 @@ export class EncryptedInvoice {
 		if (partial.isEncrypted !== undefined && partial.isEncrypted !== true) throw new Error('partial.isEncrypted must be undefined or true');
 		this.id = partial.id ?? randomUuid();
 		if ('rev' in partial) this.rev = partial.rev;
+		if ('identifier' in partial && partial.identifier !== undefined) this.identifier = partial.identifier;
 		if ('created' in partial) this.created = partial.created;
 		if ('modified' in partial) this.modified = partial.modified;
 		if ('author' in partial) this.author = partial.author;

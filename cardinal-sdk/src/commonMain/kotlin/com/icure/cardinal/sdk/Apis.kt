@@ -3,6 +3,8 @@ package com.icure.cardinal.sdk
 import com.icure.cardinal.sdk.api.AccessLogApi
 import com.icure.cardinal.sdk.api.AccessLogBasicApi
 import com.icure.cardinal.sdk.api.AgendaApi
+import com.icure.cardinal.sdk.api.AnonymousAgendaApi
+import com.icure.cardinal.sdk.api.AnonymousHealthcarePartyApi
 import com.icure.cardinal.sdk.api.ApplicationSettingsApi
 import com.icure.cardinal.sdk.api.AuthApi
 import com.icure.cardinal.sdk.api.CalendarItemApi
@@ -134,4 +136,9 @@ interface CardinalBaseApis : CardinalNonCryptoApis {
 	val receipt: ReceiptBasicApi
 	val timeTable: TimeTableApi
 	val topic: TopicBasicApi
+}
+
+interface CardinalAnonymousApis {
+	val agenda: AnonymousAgendaApi
+	val healthcareParty: AnonymousHealthcarePartyApi
 }

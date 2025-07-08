@@ -287,7 +287,7 @@ internal class FormApiImpl(
 		user: User?,
 		delegates: Map<String, AccessLevel>,
 		secretId: SecretIdUseOption,
-		alternateRootDataOwnerReference: EntityReferenceInGroup?,
+		alternateRootDelegateId: String?,
 	): DecryptedForm =
 		config.crypto.entity.entityWithInitializedEncryptedMetadata(
             null,
@@ -311,7 +311,7 @@ internal class FormApiImpl(
             initializeEncryptionKey = true,
             autoDelegations = (delegates + user?.autoDelegationsFor(DelegationTag.MedicalInformation)
                 .orEmpty()).keyAsLocalDataOwnerReferences(),
-			alternateRootDataOwnerReference = alternateRootDataOwnerReference,
+			alternateRootDataOwnerReference = alternateRootDelegateId?.let { EntityReferenceInGroup(it, null) },
 		).updatedEntity
 
 	override suspend fun getEncryptionKeysOf(form: Form): Set<HexString> =

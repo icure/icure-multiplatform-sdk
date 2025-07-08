@@ -145,4 +145,64 @@ internal class InsuranceApiImplJs(
 		)
 		insurance_toJs(result)
 	}
+
+	override fun createInsurancesInGroup(groupId: String, insuranceBatch: Array<InsuranceJs>):
+			Promise<Array<InsuranceJs>> = GlobalScope.promise {
+		val groupIdConverted: String = groupId
+		val insuranceBatchConverted: List<Insurance> = arrayToList(
+			insuranceBatch,
+			"insuranceBatch",
+			{ x1: InsuranceJs ->
+				insurance_fromJs(x1)
+			},
+		)
+		val result = insuranceApi.createInsurancesInGroup(
+			groupIdConverted,
+			insuranceBatchConverted,
+		)
+		listToArray(
+			result,
+			{ x1: Insurance ->
+				insurance_toJs(x1)
+			},
+		)
+	}
+
+	override fun getInsurancesInGroup(groupId: String, insuranceIds: String):
+			Promise<Array<InsuranceJs>> = GlobalScope.promise {
+		val groupIdConverted: String = groupId
+		val insuranceIdsConverted: String = insuranceIds
+		val result = insuranceApi.getInsurancesInGroup(
+			groupIdConverted,
+			insuranceIdsConverted,
+		)
+		listToArray(
+			result,
+			{ x1: Insurance ->
+				insurance_toJs(x1)
+			},
+		)
+	}
+
+	override fun modifyInsurancesInGroup(groupId: String, insuranceBatch: Array<InsuranceJs>):
+			Promise<Array<InsuranceJs>> = GlobalScope.promise {
+		val groupIdConverted: String = groupId
+		val insuranceBatchConverted: List<Insurance> = arrayToList(
+			insuranceBatch,
+			"insuranceBatch",
+			{ x1: InsuranceJs ->
+				insurance_fromJs(x1)
+			},
+		)
+		val result = insuranceApi.modifyInsurancesInGroup(
+			groupIdConverted,
+			insuranceBatchConverted,
+		)
+		listToArray(
+			result,
+			{ x1: Insurance ->
+				insurance_toJs(x1)
+			},
+		)
+	}
 }

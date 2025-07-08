@@ -18,7 +18,7 @@ export interface ClassificationApi {
 	tryAndRecover: ClassificationFlavouredApi<Classification>;
 
 	withEncryptionMetadata(base: DecryptedClassification | undefined, patient: Patient,
-			options?: { user?: User | undefined, delegates?: { [ key: string ]: AccessLevel }, secretId?: SecretIdUseOption }): Promise<DecryptedClassification>;
+			options?: { user?: User | undefined, delegates?: { [ key: string ]: AccessLevel }, secretId?: SecretIdUseOption, alternateRootDelegateId?: string | undefined }): Promise<DecryptedClassification>;
 
 	getEncryptionKeysOf(classification: Classification): Promise<Array<HexString>>;
 

@@ -61,6 +61,9 @@ public fun invoicingCode_toJs(obj: DecryptedInvoicingCode): DecryptedInvoicingCo
 	val patientIntervention = nullToUndefined(
 		obj.patientIntervention
 	)
+	val amiIntervention = nullToUndefined(
+		obj.amiIntervention
+	)
 	val doctorSupplement = nullToUndefined(
 		obj.doctorSupplement
 	)
@@ -175,6 +178,9 @@ public fun invoicingCode_toJs(obj: DecryptedInvoicingCode): DecryptedInvoicingCo
 	val status = nullToUndefined(
 		longToNumber(obj.status)
 	)
+	val codeLabel = nullToUndefined(
+		obj.codeLabel
+	)
 	val encryptedSelf = nullToUndefined(
 		obj.encryptedSelf?.let { nonNull1 ->
 			base64String_toJs(nonNull1)
@@ -195,6 +201,7 @@ public fun invoicingCode_toJs(obj: DecryptedInvoicingCode): DecryptedInvoicingCo
 		"totalAmount:totalAmount," +
 		"reimbursement:reimbursement," +
 		"patientIntervention:patientIntervention," +
+		"amiIntervention:amiIntervention," +
 		"doctorSupplement:doctorSupplement," +
 		"conventionAmount:conventionAmount," +
 		"vat:vat," +
@@ -233,6 +240,7 @@ public fun invoicingCode_toJs(obj: DecryptedInvoicingCode): DecryptedInvoicingCo
 		"insuranceJustification:insuranceJustification," +
 		"cancelPatientInterventionReason:cancelPatientInterventionReason," +
 		"status:status," +
+		"codeLabel:codeLabel," +
 		"encryptedSelf:encryptedSelf" +
 	"}"))
 }
@@ -254,6 +262,7 @@ public fun invoicingCode_fromJs(obj: DecryptedInvoicingCodeJs): DecryptedInvoici
 	val totalAmount = undefinedToNull(obj.totalAmount)
 	val reimbursement = undefinedToNull(obj.reimbursement)
 	val patientIntervention = undefinedToNull(obj.patientIntervention)
+	val amiIntervention = undefinedToNull(obj.amiIntervention)
 	val doctorSupplement = undefinedToNull(obj.doctorSupplement)
 	val conventionAmount = undefinedToNull(obj.conventionAmount)
 	val vat = undefinedToNull(obj.vat)
@@ -293,6 +302,7 @@ public fun invoicingCode_fromJs(obj: DecryptedInvoicingCodeJs): DecryptedInvoici
 	val cancelPatientInterventionReason = numberToInt(obj.cancelPatientInterventionReason,
 			"obj.cancelPatientInterventionReason")
 	val status = numberToLong(obj.status, "obj.status")
+	val codeLabel = undefinedToNull(obj.codeLabel)
 	val encryptedSelf = obj.encryptedSelf?.let { nonNull1 ->
 		base64String_fromJs(nonNull1)
 	}
@@ -311,6 +321,7 @@ public fun invoicingCode_fromJs(obj: DecryptedInvoicingCodeJs): DecryptedInvoici
 		totalAmount = totalAmount,
 		reimbursement = reimbursement,
 		patientIntervention = patientIntervention,
+		amiIntervention = amiIntervention,
 		doctorSupplement = doctorSupplement,
 		conventionAmount = conventionAmount,
 		vat = vat,
@@ -349,6 +360,7 @@ public fun invoicingCode_fromJs(obj: DecryptedInvoicingCodeJs): DecryptedInvoici
 		insuranceJustification = insuranceJustification,
 		cancelPatientInterventionReason = cancelPatientInterventionReason,
 		status = status,
+		codeLabel = codeLabel,
 		encryptedSelf = encryptedSelf,
 	)
 }
@@ -399,6 +411,9 @@ public fun invoicingCode_toJs(obj: EncryptedInvoicingCode): EncryptedInvoicingCo
 	val patientIntervention = nullToUndefined(
 		obj.patientIntervention
 	)
+	val amiIntervention = nullToUndefined(
+		obj.amiIntervention
+	)
 	val doctorSupplement = nullToUndefined(
 		obj.doctorSupplement
 	)
@@ -513,6 +528,9 @@ public fun invoicingCode_toJs(obj: EncryptedInvoicingCode): EncryptedInvoicingCo
 	val status = nullToUndefined(
 		longToNumber(obj.status)
 	)
+	val codeLabel = nullToUndefined(
+		obj.codeLabel
+	)
 	val encryptedSelf = nullToUndefined(
 		obj.encryptedSelf?.let { nonNull1 ->
 			base64String_toJs(nonNull1)
@@ -533,6 +551,7 @@ public fun invoicingCode_toJs(obj: EncryptedInvoicingCode): EncryptedInvoicingCo
 		"totalAmount:totalAmount," +
 		"reimbursement:reimbursement," +
 		"patientIntervention:patientIntervention," +
+		"amiIntervention:amiIntervention," +
 		"doctorSupplement:doctorSupplement," +
 		"conventionAmount:conventionAmount," +
 		"vat:vat," +
@@ -571,6 +590,7 @@ public fun invoicingCode_toJs(obj: EncryptedInvoicingCode): EncryptedInvoicingCo
 		"insuranceJustification:insuranceJustification," +
 		"cancelPatientInterventionReason:cancelPatientInterventionReason," +
 		"status:status," +
+		"codeLabel:codeLabel," +
 		"encryptedSelf:encryptedSelf" +
 	"}"))
 }
@@ -592,6 +612,7 @@ public fun invoicingCode_fromJs(obj: EncryptedInvoicingCodeJs): EncryptedInvoici
 	val totalAmount = undefinedToNull(obj.totalAmount)
 	val reimbursement = undefinedToNull(obj.reimbursement)
 	val patientIntervention = undefinedToNull(obj.patientIntervention)
+	val amiIntervention = undefinedToNull(obj.amiIntervention)
 	val doctorSupplement = undefinedToNull(obj.doctorSupplement)
 	val conventionAmount = undefinedToNull(obj.conventionAmount)
 	val vat = undefinedToNull(obj.vat)
@@ -631,6 +652,7 @@ public fun invoicingCode_fromJs(obj: EncryptedInvoicingCodeJs): EncryptedInvoici
 	val cancelPatientInterventionReason = numberToInt(obj.cancelPatientInterventionReason,
 			"obj.cancelPatientInterventionReason")
 	val status = numberToLong(obj.status, "obj.status")
+	val codeLabel = undefinedToNull(obj.codeLabel)
 	val encryptedSelf = obj.encryptedSelf?.let { nonNull1 ->
 		base64String_fromJs(nonNull1)
 	}
@@ -649,6 +671,7 @@ public fun invoicingCode_fromJs(obj: EncryptedInvoicingCodeJs): EncryptedInvoici
 		totalAmount = totalAmount,
 		reimbursement = reimbursement,
 		patientIntervention = patientIntervention,
+		amiIntervention = amiIntervention,
 		doctorSupplement = doctorSupplement,
 		conventionAmount = conventionAmount,
 		vat = vat,
@@ -687,6 +710,7 @@ public fun invoicingCode_fromJs(obj: EncryptedInvoicingCodeJs): EncryptedInvoici
 		insuranceJustification = insuranceJustification,
 		cancelPatientInterventionReason = cancelPatientInterventionReason,
 		status = status,
+		codeLabel = codeLabel,
 		encryptedSelf = encryptedSelf,
 	)
 }
