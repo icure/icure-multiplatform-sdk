@@ -15,6 +15,7 @@ import io.ktor.client.request.header
 import io.ktor.client.request.request
 import io.ktor.client.request.setBody
 import io.ktor.client.statement.HttpResponse
+import io.ktor.client.statement.bodyAsText
 import io.ktor.http.ContentType
 import io.ktor.http.HttpMethod
 import io.ktor.http.HttpStatusCode
@@ -155,7 +156,8 @@ abstract class BaseRawApi(
 				RequestStatusException(
 					response.call.request.method,
 					response.call.request.url.toString(),
-					response.status.value
+					response.status.value,
+					kotlin.runCatching { response.bodyAsText() }.getOrNull(),
 				),
 				requiredAuthClass
 			)

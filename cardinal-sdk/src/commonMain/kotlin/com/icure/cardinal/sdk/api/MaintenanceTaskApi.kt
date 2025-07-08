@@ -8,7 +8,6 @@ import com.icure.cardinal.sdk.filters.FilterOptions
 import com.icure.cardinal.sdk.filters.SortableFilterOptions
 import com.icure.cardinal.sdk.model.DecryptedMaintenanceTask
 import com.icure.cardinal.sdk.model.EncryptedMaintenanceTask
-import com.icure.cardinal.sdk.model.EntityReferenceInGroup
 import com.icure.cardinal.sdk.model.MaintenanceTask
 import com.icure.cardinal.sdk.model.StoredDocumentIdentifier
 import com.icure.cardinal.sdk.model.User
@@ -224,7 +223,8 @@ interface MaintenanceTaskApi : MaintenanceTaskBasicFlavourlessApi, MaintenanceTa
 		user: User? = null,
 		@DefaultValue("emptyMap()")
 		delegates: Map<String, AccessLevel> = emptyMap(),
-		alternateRootDataOwnerReference: EntityReferenceInGroup? = null,
+		@DefaultValue("null")
+		alternateRootDelegateId: String? = null,
 	): DecryptedMaintenanceTask
 
 	/**

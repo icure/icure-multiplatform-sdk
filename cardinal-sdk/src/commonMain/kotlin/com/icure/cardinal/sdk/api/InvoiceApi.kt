@@ -4,8 +4,6 @@ import com.icure.cardinal.sdk.crypto.entities.InvoiceShareOptions
 import com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption
 import com.icure.cardinal.sdk.model.DecryptedInvoice
 import com.icure.cardinal.sdk.model.EncryptedInvoice
-import com.icure.cardinal.sdk.model.EntityReferenceInGroup
-import com.icure.cardinal.sdk.model.IcureStub
 import com.icure.cardinal.sdk.model.Invoice
 import com.icure.cardinal.sdk.model.PaginatedList
 import com.icure.cardinal.sdk.model.Patient
@@ -258,7 +256,8 @@ interface InvoiceApi : InvoiceBasicFlavourlessApi, InvoiceFlavouredApi<Decrypted
 		delegates: Map<String, AccessLevel> = emptyMap(),
 		@DefaultValue("com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption.UseAnySharedWithParent")
 		secretId: SecretIdUseOption = SecretIdUseOption.UseAnySharedWithParent,
-		alternateRootDataOwnerReference: EntityReferenceInGroup? = null,
+		@DefaultValue("null")
+		alternateRootDelegateId: String? = null,
 	): DecryptedInvoice
 
 	/**

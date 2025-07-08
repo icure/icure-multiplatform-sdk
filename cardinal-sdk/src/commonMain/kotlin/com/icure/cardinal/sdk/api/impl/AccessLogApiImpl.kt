@@ -281,7 +281,7 @@ internal class AccessLogApiImpl(
 		user: User?,
 		delegates: Map<String, AccessLevel>,
 		secretId: SecretIdUseOption,
-		alternateRootDataOwnerReference: EntityReferenceInGroup?,
+		alternateRootDelegateId: String?,
 	): DecryptedAccessLog =
 		crypto.entity.entityWithInitializedEncryptedMetadata(
             entityGroupId = null,
@@ -305,7 +305,7 @@ internal class AccessLogApiImpl(
             ),
             initializeEncryptionKey = true,
             autoDelegations = (delegates + user?.autoDelegationsFor(DelegationTag.AdministrativeData).orEmpty()).keyAsLocalDataOwnerReferences(),
-			alternateRootDataOwnerReference = alternateRootDataOwnerReference,
+			alternateRootDataOwnerReference = alternateRootDelegateId?.let { EntityReferenceInGroup(it, null) },
 		).updatedEntity
 
 	override suspend fun decrypt(accessLog: EncryptedAccessLog): DecryptedAccessLog =

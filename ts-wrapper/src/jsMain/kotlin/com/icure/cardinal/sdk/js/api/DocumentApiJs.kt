@@ -31,11 +31,20 @@ public external interface DocumentApiJs {
 
 	public val tryAndRecover: DocumentFlavouredApiJs<DocumentJs>
 
-	public fun withEncryptionMetadata(
+	public fun withEncryptionMetadataLinkedToMessage(
 		base: DecryptedDocumentJs?,
-		message: MessageJs?,
+		message: MessageJs,
 		options: dynamic,
 	): Promise<DecryptedDocumentJs>
+
+	public fun withEncryptionMetadataLinkedToPatient(
+		base: DecryptedDocumentJs?,
+		patient: PatientJs,
+		options: dynamic,
+	): Promise<DecryptedDocumentJs>
+
+	public fun withEncryptionMetadataUnlinked(base: DecryptedDocumentJs?, options: dynamic):
+			Promise<DecryptedDocumentJs>
 
 	public fun getAndTryDecryptMainAttachment(document: DocumentJs, options: dynamic):
 			Promise<ByteArray?>

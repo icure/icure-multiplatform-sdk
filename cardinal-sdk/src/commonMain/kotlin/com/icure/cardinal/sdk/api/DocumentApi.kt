@@ -10,7 +10,6 @@ import com.icure.cardinal.sdk.filters.SortableFilterOptions
 import com.icure.cardinal.sdk.model.DecryptedDocument
 import com.icure.cardinal.sdk.model.Document
 import com.icure.cardinal.sdk.model.EncryptedDocument
-import com.icure.cardinal.sdk.model.EntityReferenceInGroup
 import com.icure.cardinal.sdk.model.Message
 import com.icure.cardinal.sdk.model.Patient
 import com.icure.cardinal.sdk.model.StoredDocumentIdentifier
@@ -376,7 +375,8 @@ interface DocumentApi : DocumentBasicFlavourlessApi, DocumentFlavouredApi<Decryp
 		delegates: Map<String, AccessLevel> = emptyMap(),
 		@DefaultValue("com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption.UseAnySharedWithParent")
 		secretId: SecretIdUseOption = SecretIdUseOption.UseAnySharedWithParent,
-		alternateRootDataOwnerReference: EntityReferenceInGroup? = null,
+		@DefaultValue("null")
+		alternateRootDelegateId: String? = null,
 	): DecryptedDocument
 
 	/**
@@ -400,7 +400,8 @@ interface DocumentApi : DocumentBasicFlavourlessApi, DocumentFlavouredApi<Decryp
 		delegates: Map<String, AccessLevel> = emptyMap(),
 		@DefaultValue("com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption.UseAnySharedWithParent")
 		secretId: SecretIdUseOption = SecretIdUseOption.UseAnySharedWithParent,
-		alternateRootDataOwnerReference: EntityReferenceInGroup? = null,
+		@DefaultValue("null")
+		alternateRootDelegateId: String? = null,
 	): DecryptedDocument
 
 	/**
@@ -419,7 +420,8 @@ interface DocumentApi : DocumentBasicFlavourlessApi, DocumentFlavouredApi<Decryp
 		user: User? = null,
 		@DefaultValue("emptyMap()")
 		delegates: Map<String, AccessLevel> = emptyMap(),
-		alternateRootDataOwnerReference: EntityReferenceInGroup? = null,
+		@DefaultValue("null")
+		alternateRootDelegateId: String? = null,
 	): DecryptedDocument
 
 	/**

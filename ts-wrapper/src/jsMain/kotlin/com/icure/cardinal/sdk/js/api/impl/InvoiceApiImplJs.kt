@@ -1401,12 +1401,20 @@ internal class InvoiceApiImplJs(
 			) { secretId: SecretIdUseOptionJs ->
 				secretIdUseOption_fromJs(secretId)
 			}
+			val alternateRootDelegateIdConverted: String? = convertingOptionOrDefaultNullable(
+				_options,
+				"alternateRootDelegateId",
+				null
+			) { alternateRootDelegateId: String? ->
+				undefinedToNull(alternateRootDelegateId)
+			}
 			val result = invoiceApi.withEncryptionMetadata(
 				baseConverted,
 				patientConverted,
 				userConverted,
 				delegatesConverted,
 				secretIdConverted,
+				alternateRootDelegateIdConverted,
 			)
 			invoice_toJs(result)
 		}

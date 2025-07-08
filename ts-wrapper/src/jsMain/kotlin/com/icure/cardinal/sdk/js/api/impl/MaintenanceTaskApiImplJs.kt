@@ -21,6 +21,7 @@ import com.icure.cardinal.sdk.js.model.CheckedConverters.listToArray
 import com.icure.cardinal.sdk.js.model.CheckedConverters.nullToUndefined
 import com.icure.cardinal.sdk.js.model.CheckedConverters.objectToMap
 import com.icure.cardinal.sdk.js.model.CheckedConverters.setToArray
+import com.icure.cardinal.sdk.js.model.CheckedConverters.undefinedToNull
 import com.icure.cardinal.sdk.js.model.DecryptedMaintenanceTaskJs
 import com.icure.cardinal.sdk.js.model.EncryptedMaintenanceTaskJs
 import com.icure.cardinal.sdk.js.model.MaintenanceTaskJs
@@ -401,10 +402,18 @@ internal class MaintenanceTaskApiImplJs(
 					},
 				)
 			}
+			val alternateRootDelegateIdConverted: String? = convertingOptionOrDefaultNullable(
+				_options,
+				"alternateRootDelegateId",
+				null
+			) { alternateRootDelegateId: String? ->
+				undefinedToNull(alternateRootDelegateId)
+			}
 			val result = maintenanceTaskApi.withEncryptionMetadata(
 				maintenanceTaskConverted,
 				userConverted,
 				delegatesConverted,
+				alternateRootDelegateIdConverted,
 			)
 			maintenanceTask_toJs(result)
 		}

@@ -7,13 +7,18 @@ import com.icure.cardinal.sdk.js.api.DefaultParametersSupport.convertingOptionOr
 import com.icure.cardinal.sdk.js.model.CheckedConverters.arrayToList
 import com.icure.cardinal.sdk.js.model.CheckedConverters.arrayToSet
 import com.icure.cardinal.sdk.js.model.CheckedConverters.numberToInstant
+import com.icure.cardinal.sdk.js.model.CheckedConverters.numberToLong
+import com.icure.cardinal.sdk.js.model.EntityReferenceInGroupJs
 import com.icure.cardinal.sdk.js.model.MessageJs
 import com.icure.cardinal.sdk.js.model.PatientJs
+import com.icure.cardinal.sdk.js.model.entityReferenceInGroup_fromJs
 import com.icure.cardinal.sdk.js.model.patient_fromJs
+import com.icure.cardinal.sdk.model.EntityReferenceInGroup
 import com.icure.cardinal.sdk.model.Patient
 import kotlin.Array
 import kotlin.Boolean
 import kotlin.Double
+import kotlin.Long
 import kotlin.String
 import kotlin.collections.List
 import kotlin.collections.Set
@@ -266,15 +271,15 @@ public object InternalMessageFiltersObj {
 	public fun byTransportGuidSentDateForDataOwner(
 		dataOwnerId: String,
 		transportGuid: String,
-		from: Double,
-		to: Double,
+		from: Double?,
+		to: Double?,
 		options: dynamic,
 	): BaseSortableFilterOptionsJs<MessageJs> {
 		val _options = options ?: js("{}")
 		val dataOwnerIdConverted: String = dataOwnerId
 		val transportGuidConverted: String = transportGuid
-		val fromConverted: Instant = numberToInstant(from, "from")
-		val toConverted: Instant = numberToInstant(to, "to")
+		val fromConverted: Instant? = numberToInstant(from, "from")
+		val toConverted: Instant? = numberToInstant(to, "to")
 		val descendingConverted: Boolean = convertingOptionOrDefaultNonNull(
 			_options,
 			"descending",
@@ -294,14 +299,14 @@ public object InternalMessageFiltersObj {
 
 	public fun byTransportGuidSentDateForSelf(
 		transportGuid: String,
-		from: Double,
-		to: Double,
+		from: Double?,
+		to: Double?,
 		options: dynamic,
 	): SortableFilterOptionsJs<MessageJs> {
 		val _options = options ?: js("{}")
 		val transportGuidConverted: String = transportGuid
-		val fromConverted: Instant = numberToInstant(from, "from")
-		val toConverted: Instant = numberToInstant(to, "to")
+		val fromConverted: Instant? = numberToInstant(from, "from")
+		val toConverted: Instant? = numberToInstant(to, "to")
 		val descendingConverted: Boolean = convertingOptionOrDefaultNonNull(
 			_options,
 			"descending",
@@ -363,5 +368,59 @@ public object InternalMessageFiltersObj {
 			parentIdsConverted,
 		)
 		return BaseFilterOptionsJsImpl(result)
+	}
+
+	public fun lifecycleBetweenForDataOwner(
+		dataOwnerId: String,
+		startTimestamp: Double?,
+		endTimestamp: Double?,
+		descending: Boolean,
+	): BaseFilterOptionsJs<MessageJs> {
+		val dataOwnerIdConverted: String = dataOwnerId
+		val startTimestampConverted: Long? = numberToLong(startTimestamp, "startTimestamp")
+		val endTimestampConverted: Long? = numberToLong(endTimestamp, "endTimestamp")
+		val descendingConverted: Boolean = descending
+		val result = MessageFilters.lifecycleBetweenForDataOwner(
+			dataOwnerIdConverted,
+			startTimestampConverted,
+			endTimestampConverted,
+			descendingConverted,
+		)
+		return BaseFilterOptionsJsImpl(result)
+	}
+
+	public fun lifecycleBetweenForDataOwnerInGroup(
+		dataOwner: EntityReferenceInGroupJs,
+		startTimestamp: Double?,
+		endTimestamp: Double?,
+		descending: Boolean,
+	): BaseFilterOptionsJs<MessageJs> {
+		val dataOwnerConverted: EntityReferenceInGroup = entityReferenceInGroup_fromJs(dataOwner)
+		val startTimestampConverted: Long? = numberToLong(startTimestamp, "startTimestamp")
+		val endTimestampConverted: Long? = numberToLong(endTimestamp, "endTimestamp")
+		val descendingConverted: Boolean = descending
+		val result = MessageFilters.lifecycleBetweenForDataOwnerInGroup(
+			dataOwnerConverted,
+			startTimestampConverted,
+			endTimestampConverted,
+			descendingConverted,
+		)
+		return BaseFilterOptionsJsImpl(result)
+	}
+
+	public fun lifecycleBetweenForSelf(
+		startTimestamp: Double?,
+		endTimestamp: Double?,
+		descending: Boolean,
+	): FilterOptionsJs<MessageJs> {
+		val startTimestampConverted: Long? = numberToLong(startTimestamp, "startTimestamp")
+		val endTimestampConverted: Long? = numberToLong(endTimestamp, "endTimestamp")
+		val descendingConverted: Boolean = descending
+		val result = MessageFilters.lifecycleBetweenForSelf(
+			startTimestampConverted,
+			endTimestampConverted,
+			descendingConverted,
+		)
+		return FilterOptionsJsImpl(result)
 	}
 }

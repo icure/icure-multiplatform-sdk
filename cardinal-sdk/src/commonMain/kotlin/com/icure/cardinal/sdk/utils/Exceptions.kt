@@ -32,8 +32,9 @@ class RequestStatusException(
 	val requestMethod: HttpMethod,
 	val url: String,
 	val statusCode: Int,
+	val body: String?
 ) : Exception(
-	"Request $requestMethod $url failed with status code $statusCode"
+	"Request $requestMethod $url failed with status code $statusCode${if (body == null) "" else " ($body)"}"
 )
 
 class UnexpectedResponseContentException(message: String) : Exception(message)

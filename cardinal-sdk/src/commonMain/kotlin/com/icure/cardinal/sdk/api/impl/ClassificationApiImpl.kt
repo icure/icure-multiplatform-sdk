@@ -227,7 +227,7 @@ internal class ClassificationApiImpl(
 		user: User?,
 		delegates: Map<String, AccessLevel>,
 		secretId: SecretIdUseOption,
-		alternateRootDataOwnerReference: EntityReferenceInGroup?,
+		alternateRootDelegateId: String?,
 	): DecryptedClassification =
 		crypto.entity.entityWithInitializedEncryptedMetadata(
             null,
@@ -245,7 +245,7 @@ internal class ClassificationApiImpl(
             ),
             initializeEncryptionKey = true,
             autoDelegations = (delegates + user?.autoDelegationsFor(DelegationTag.MedicalInformation).orEmpty()).keyAsLocalDataOwnerReferences(),
-			alternateRootDataOwnerReference = alternateRootDataOwnerReference,
+			alternateRootDataOwnerReference = alternateRootDelegateId?.let { EntityReferenceInGroup(it, null) },
 		).updatedEntity
 
 	override suspend fun getEncryptionKeysOf(classification: Classification): Set<HexString> = crypto.entity.encryptionKeysOf(null, classification, EntityWithEncryptionMetadataTypeName.Classification, null)

@@ -258,7 +258,7 @@ internal class MaintenanceTaskApiImpl(
 		maintenanceTask: DecryptedMaintenanceTask?,
 		user: User?,
 		delegates: Map<String, AccessLevel>,
-		alternateRootDataOwnerReference: EntityReferenceInGroup?
+		alternateRootDelegateId: String?,
 	): DecryptedMaintenanceTask =
 		config.crypto.entity.entityWithInitializedEncryptedMetadata(
             entityGroupId = null,
@@ -273,7 +273,7 @@ internal class MaintenanceTaskApiImpl(
             initializeEncryptionKey = true,
             autoDelegations = (delegates + (user?.autoDelegationsFor(DelegationTag.All)
                 ?: emptyMap())).keyAsLocalDataOwnerReferences(),
-			alternateRootDataOwnerReference = alternateRootDataOwnerReference,
+			alternateRootDataOwnerReference = alternateRootDelegateId?.let { EntityReferenceInGroup(it, null) },
 		).updatedEntity
 
 

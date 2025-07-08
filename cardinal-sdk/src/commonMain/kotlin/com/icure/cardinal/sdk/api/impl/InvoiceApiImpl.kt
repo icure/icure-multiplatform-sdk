@@ -397,8 +397,7 @@ internal class InvoiceApiImpl(
 		user: User?,
 		delegates: Map<String, AccessLevel>,
 		secretId: SecretIdUseOption,
-		alternateRootDataOwnerReference: EntityReferenceInGroup?,
-		// Temporary, needs a lot more stuff to match typescript implementation
+		alternateRootDelegateId: String?
 	): DecryptedInvoice =
 		config.crypto.entity.entityWithInitializedEncryptedMetadata(
 			null,
@@ -426,7 +425,7 @@ internal class InvoiceApiImpl(
 			initializeEncryptionKey = true,
 			autoDelegations = (delegates + user?.autoDelegationsFor(DelegationTag.AdministrativeData)
 				.orEmpty()).keyAsLocalDataOwnerReferences(),
-			alternateRootDataOwnerReference = alternateRootDataOwnerReference,
+			alternateRootDataOwnerReference = alternateRootDelegateId?.let { EntityReferenceInGroup(it, null) },
 		).updatedEntity
 
 	override suspend fun decrypt(invoice: EncryptedInvoice): DecryptedInvoice =

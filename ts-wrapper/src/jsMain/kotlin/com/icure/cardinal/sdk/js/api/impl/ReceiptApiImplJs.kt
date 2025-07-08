@@ -18,6 +18,7 @@ import com.icure.cardinal.sdk.js.model.CheckedConverters.listToArray
 import com.icure.cardinal.sdk.js.model.CheckedConverters.nullToUndefined
 import com.icure.cardinal.sdk.js.model.CheckedConverters.objectToMap
 import com.icure.cardinal.sdk.js.model.CheckedConverters.setToArray
+import com.icure.cardinal.sdk.js.model.CheckedConverters.undefinedToNull
 import com.icure.cardinal.sdk.js.model.DecryptedReceiptJs
 import com.icure.cardinal.sdk.js.model.EncryptedReceiptJs
 import com.icure.cardinal.sdk.js.model.PatientJs
@@ -288,12 +289,20 @@ internal class ReceiptApiImplJs(
 			) { secretId: SecretIdUseOptionJs ->
 				secretIdUseOption_fromJs(secretId)
 			}
+			val alternateRootDelegateIdConverted: String? = convertingOptionOrDefaultNullable(
+				_options,
+				"alternateRootDelegateId",
+				null
+			) { alternateRootDelegateId: String? ->
+				undefinedToNull(alternateRootDelegateId)
+			}
 			val result = receiptApi.withEncryptionMetadata(
 				baseConverted,
 				patientConverted,
 				userConverted,
 				delegatesConverted,
 				secretIdConverted,
+				alternateRootDelegateIdConverted,
 			)
 			receipt_toJs(result)
 		}

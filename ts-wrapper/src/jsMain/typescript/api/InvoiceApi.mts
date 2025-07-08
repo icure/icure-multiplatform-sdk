@@ -27,7 +27,7 @@ export interface InvoiceApi {
 	createInvoices(entities: Array<DecryptedInvoice>): Promise<Array<DecryptedInvoice>>;
 
 	withEncryptionMetadata(base: DecryptedInvoice | undefined, patient: Patient | undefined,
-			options?: { user?: User | undefined, delegates?: { [ key: string ]: AccessLevel }, secretId?: SecretIdUseOption }): Promise<DecryptedInvoice>;
+			options?: { user?: User | undefined, delegates?: { [ key: string ]: AccessLevel }, secretId?: SecretIdUseOption, alternateRootDelegateId?: string | undefined }): Promise<DecryptedInvoice>;
 
 	getEncryptionKeysOf(invoice: Invoice): Promise<Array<HexString>>;
 

@@ -12,9 +12,11 @@ import kotlin.js.JsQualifier
 public external class RegistrationInformationJs(
 	partial: dynamic,
 ) {
-	public val firstName: String
+	public val firstName: String?
 
-	public val lastName: String
+	public val lastName: String?
+
+	public val companyName: String?
 
 	public val emailAddress: String
 
@@ -23,4 +25,6 @@ public external class RegistrationInformationJs(
 	public val userRoles: Array<String>
 
 	public val minimumKrakenVersion: String?
+
+	public val cluster: String?
 }

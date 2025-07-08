@@ -6,6 +6,7 @@ package com.icure.cardinal.sdk.js.model
 import com.icure.cardinal.sdk.js.model.base.CodeStubJs
 import com.icure.cardinal.sdk.js.model.base.HasEncryptionMetadataJs
 import com.icure.cardinal.sdk.js.model.base.ICureDocumentJs
+import com.icure.cardinal.sdk.js.model.base.IdentifierJs
 import com.icure.cardinal.sdk.js.model.base.StoredDocumentJs
 import com.icure.cardinal.sdk.js.model.embed.DecryptedInvoicingCodeJs
 import com.icure.cardinal.sdk.js.model.embed.DelegationJs
@@ -26,6 +27,8 @@ import kotlin.js.JsQualifier
 @JsName("Invoice")
 public sealed external interface InvoiceJs : StoredDocumentJs, ICureDocumentJs<String>,
 		HasEncryptionMetadataJs, EncryptableJs {
+	public val identifier: Array<out IdentifierJs>
+
 	public val invoiceDate: Double?
 
 	public val sentDate: Double?
@@ -146,6 +149,8 @@ public external class DecryptedInvoiceJs(
 	override val id: String
 
 	override val rev: String?
+
+	override val identifier: Array<IdentifierJs>
 
 	override val created: Double?
 
@@ -297,6 +302,8 @@ public external class EncryptedInvoiceJs(
 	override val id: String
 
 	override val rev: String?
+
+	override val identifier: Array<IdentifierJs>
 
 	override val created: Double?
 

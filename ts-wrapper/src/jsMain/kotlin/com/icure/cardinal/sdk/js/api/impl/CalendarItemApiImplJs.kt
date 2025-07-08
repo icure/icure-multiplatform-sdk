@@ -1089,6 +1089,16 @@ internal class CalendarItemApiImplJs(
 				) { secretId: SecretIdUseOptionJs ->
 					secretIdUseOption_fromJs(secretId)
 				}
+				val alternateRootDelegateReferenceConverted: EntityReferenceInGroup? =
+						convertingOptionOrDefaultNullable(
+					_options,
+					"alternateRootDelegateReference",
+					null
+				) { alternateRootDelegateReference: EntityReferenceInGroupJs? ->
+					alternateRootDelegateReference?.let { nonNull1 ->
+						entityReferenceInGroup_fromJs(nonNull1)
+					}
+				}
 				val result = calendarItemApi.inGroup.withEncryptionMetadata(
 					entityGroupIdConverted,
 					baseConverted,
@@ -1096,6 +1106,7 @@ internal class CalendarItemApiImplJs(
 					userConverted,
 					delegatesConverted,
 					secretIdConverted,
+					alternateRootDelegateReferenceConverted,
 				)
 				groupScoped_toJs(
 					result,
@@ -1635,12 +1646,20 @@ internal class CalendarItemApiImplJs(
 			) { secretId: SecretIdUseOptionJs ->
 				secretIdUseOption_fromJs(secretId)
 			}
+			val alternateRootDelegateIdConverted: String? = convertingOptionOrDefaultNullable(
+				_options,
+				"alternateRootDelegateId",
+				null
+			) { alternateRootDelegateId: String? ->
+				undefinedToNull(alternateRootDelegateId)
+			}
 			val result = calendarItemApi.withEncryptionMetadata(
-                baseConverted,
-                patientConverted,
-                userConverted,
-                delegatesConverted,
-                secretIdConverted,
+				baseConverted,
+				patientConverted,
+				userConverted,
+				delegatesConverted,
+				secretIdConverted,
+				alternateRootDelegateIdConverted,
 			)
 			calendarItem_toJs(result)
 		}

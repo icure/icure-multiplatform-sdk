@@ -19,8 +19,14 @@ export interface DocumentApi {
 
 	tryAndRecover: DocumentFlavouredApi<Document>;
 
-	withEncryptionMetadata(base: DecryptedDocument | undefined, message: Message | undefined,
-			options?: { user?: User | undefined, delegates?: { [ key: string ]: AccessLevel }, secretId?: SecretIdUseOption }): Promise<DecryptedDocument>;
+	withEncryptionMetadataLinkedToMessage(base: DecryptedDocument | undefined, message: Message,
+			options?: { user?: User | undefined, delegates?: { [ key: string ]: AccessLevel }, secretId?: SecretIdUseOption, alternateRootDelegateId?: string | undefined }): Promise<DecryptedDocument>;
+
+	withEncryptionMetadataLinkedToPatient(base: DecryptedDocument | undefined, patient: Patient,
+			options?: { user?: User | undefined, delegates?: { [ key: string ]: AccessLevel }, secretId?: SecretIdUseOption, alternateRootDelegateId?: string | undefined }): Promise<DecryptedDocument>;
+
+	withEncryptionMetadataUnlinked(base: DecryptedDocument | undefined,
+			options?: { user?: User | undefined, delegates?: { [ key: string ]: AccessLevel }, alternateRootDelegateId?: string | undefined }): Promise<DecryptedDocument>;
 
 	getAndTryDecryptMainAttachment(document: Document,
 			options?: { decryptedAttachmentValidator?: (x1: Int8Array) => Promise<boolean> }): Promise<Int8Array | undefined>;
@@ -47,7 +53,7 @@ export interface DocumentApi {
 
 	hasWriteAccess(document: Document): Promise<boolean>;
 
-	decryptPatientIdOf(document: Document): Promise<Array<string>>;
+	decryptOwningEntityIdsOf(document: Document): Promise<Array<string>>;
 
 	createDelegationDeAnonymizationMetadata(entity: Document, delegates: Array<string>): Promise<void>;
 

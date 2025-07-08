@@ -20,7 +20,7 @@ export interface HealthElementInGroupApi {
 
 	withEncryptionMetadata(entityGroupId: string, base: DecryptedHealthElement | undefined,
 			patient: GroupScoped<Patient>,
-			options?: { user?: User | undefined, delegates?: ArrayWithUniqueKeys<{ delegate: EntityReferenceInGroup, accessLevel: AccessLevel }, 'delegate'>, secretId?: SecretIdUseOption }): Promise<GroupScoped<DecryptedHealthElement>>;
+			options?: { user?: User | undefined, delegates?: ArrayWithUniqueKeys<{ delegate: EntityReferenceInGroup, accessLevel: AccessLevel }, 'delegate'>, secretId?: SecretIdUseOption, alternateRootDelegateReference?: EntityReferenceInGroup | undefined }): Promise<GroupScoped<DecryptedHealthElement>>;
 
 	getEncryptionKeysOf(healthElement: GroupScoped<HealthElement>): Promise<Array<HexString>>;
 

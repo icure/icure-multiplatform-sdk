@@ -20,7 +20,7 @@ export interface FormApi {
 	tryAndRecover: FormFlavouredApi<Form>;
 
 	withEncryptionMetadata(base: DecryptedForm | undefined, patient: Patient,
-			options?: { user?: User | undefined, delegates?: { [ key: string ]: AccessLevel }, secretId?: SecretIdUseOption }): Promise<DecryptedForm>;
+			options?: { user?: User | undefined, delegates?: { [ key: string ]: AccessLevel }, secretId?: SecretIdUseOption, alternateRootDelegateId?: string | undefined }): Promise<DecryptedForm>;
 
 	getEncryptionKeysOf(form: Form): Promise<Array<HexString>>;
 

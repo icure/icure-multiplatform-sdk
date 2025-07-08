@@ -300,28 +300,19 @@ internal class DocumentApiImpl(
 		user: User?,
 		delegates: Map<String, AccessLevel>,
 		secretId: SecretIdUseOption,
-		alternateRootDataOwnerReference: EntityReferenceInGroup?
+		alternateRootDelegateId: String?
 	): DecryptedDocument =
-		crypto.entity.entityWithInitializedEncryptedMetadata(
-            entityGroupId = null,
-            entity = (base ?: DecryptedDocument(crypto.primitives.strongRandom.randomUUID())).copy(
-                created = base?.created ?: currentEpochMs(),
-                modified = base?.modified ?: currentEpochMs(),
-                responsible = base?.responsible ?: user?.takeIf { config.autofillAuthor }?.dataOwnerId,
-                author = base?.author ?: user?.id?.takeIf { config.autofillAuthor },
-            ),
-            entityType = EntityWithEncryptionMetadataTypeName.Document,
-            owningEntityDetails = patient.let {
-                OwningEntityDetails(
-                    null,
-                    it.id,
-                    crypto.entity.resolveSecretIdOption(null, it, EntityWithEncryptionMetadataTypeName.Patient, secretId)
-                )
-            },
-            initializeEncryptionKey = true,
-            autoDelegations = (delegates + user?.autoDelegationsFor(DelegationTag.MedicalInformation).orEmpty()).keyAsLocalDataOwnerReferences(),
-			alternateRootDataOwnerReference = alternateRootDataOwnerReference,
-		).updatedEntity
+		doWithEncryptionMetadata(
+			base,
+			user,
+			delegates,
+			alternateRootDelegateId,
+			OwningEntityDetails(
+				null,
+				patient.id,
+				crypto.entity.resolveSecretIdOption(null, patient, EntityWithEncryptionMetadataTypeName.Patient, secretId)
+			)
+		)
 
 	override suspend fun withEncryptionMetadataLinkedToMessage(
 		base: DecryptedDocument?,
@@ -329,50 +320,50 @@ internal class DocumentApiImpl(
 		user: User?,
 		delegates: Map<String, AccessLevel>,
 		secretId: SecretIdUseOption,
-		alternateRootDataOwnerReference: EntityReferenceInGroup?,
-		// Temporary, needs a lot more stuff to match typescript implementation
+		alternateRootDelegateId: String?
 	): DecryptedDocument =
-		crypto.entity.entityWithInitializedEncryptedMetadata(
-            entityGroupId = null,
-            entity = (base ?: DecryptedDocument(crypto.primitives.strongRandom.randomUUID())).copy(
-                created = base?.created ?: currentEpochMs(),
-                modified = base?.modified ?: currentEpochMs(),
-                responsible = base?.responsible ?: user?.takeIf { config.autofillAuthor }?.dataOwnerId,
-                author = base?.author ?: user?.id?.takeIf { config.autofillAuthor },
-            ),
-            entityType = EntityWithEncryptionMetadataTypeName.Document,
-            owningEntityDetails = message.let {
-                OwningEntityDetails(
-                    null,
-                    it.id,
-                    crypto.entity.resolveSecretIdOption(null, it, EntityWithEncryptionMetadataTypeName.Message, secretId)
-                )
-            },
-            initializeEncryptionKey = true,
-            autoDelegations = (delegates + user?.autoDelegationsFor(DelegationTag.MedicalInformation).orEmpty()).keyAsLocalDataOwnerReferences(),
-			alternateRootDataOwnerReference = alternateRootDataOwnerReference,
-		).updatedEntity
+		doWithEncryptionMetadata(
+			base,
+			user,
+			delegates,
+			alternateRootDelegateId,
+			OwningEntityDetails(
+				null,
+				message.id,
+				crypto.entity.resolveSecretIdOption(null, message, EntityWithEncryptionMetadataTypeName.Message, secretId)
+			)
+		)
 
 	override suspend fun withEncryptionMetadataUnlinked(
 		base: DecryptedDocument?,
 		user: User?,
 		delegates: Map<String, AccessLevel>,
-		alternateRootDataOwnerReference: EntityReferenceInGroup?
+		alternateRootDelegateId: String?
 	): DecryptedDocument =
+		doWithEncryptionMetadata(base, user, delegates, alternateRootDelegateId, null)
+
+	private suspend fun doWithEncryptionMetadata(
+		base: DecryptedDocument?,
+		user: User?,
+		delegates: Map<String, AccessLevel>,
+		alternateRootDelegateId: String?,
+		owningEntityDetails: OwningEntityDetails?,
+	) =
 		crypto.entity.entityWithInitializedEncryptedMetadata(
-            entityGroupId = null,
-            entity = (base ?: DecryptedDocument(crypto.primitives.strongRandom.randomUUID())).copy(
-                created = base?.created ?: currentEpochMs(),
-                modified = base?.modified ?: currentEpochMs(),
-                responsible = base?.responsible ?: user?.takeIf { config.autofillAuthor }?.dataOwnerId,
-                author = base?.author ?: user?.id?.takeIf { config.autofillAuthor },
-            ),
-            entityType = EntityWithEncryptionMetadataTypeName.Document,
-            owningEntityDetails = null,
-            initializeEncryptionKey = true,
-            autoDelegations = (delegates + user?.autoDelegationsFor(DelegationTag.MedicalInformation).orEmpty()).keyAsLocalDataOwnerReferences(),
-			alternateRootDataOwnerReference = alternateRootDataOwnerReference,
+			entityGroupId = null,
+			entity = (base ?: DecryptedDocument(crypto.primitives.strongRandom.randomUUID())).copy(
+				created = base?.created ?: currentEpochMs(),
+				modified = base?.modified ?: currentEpochMs(),
+				responsible = base?.responsible ?: user?.takeIf { config.autofillAuthor }?.dataOwnerId,
+				author = base?.author ?: user?.id?.takeIf { config.autofillAuthor },
+			),
+			entityType = EntityWithEncryptionMetadataTypeName.Document,
+			owningEntityDetails = owningEntityDetails,
+			initializeEncryptionKey = true,
+			autoDelegations = (delegates + user?.autoDelegationsFor(DelegationTag.MedicalInformation).orEmpty()).keyAsLocalDataOwnerReferences(),
+			alternateRootDataOwnerReference = alternateRootDelegateId?.let { EntityReferenceInGroup(it, null) },
 		).updatedEntity
+
 
 	override suspend fun getAndTryDecryptMainAttachment(
 		document: Document,

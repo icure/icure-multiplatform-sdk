@@ -22,7 +22,7 @@ export interface CalendarItemInGroupApi {
 
 	withEncryptionMetadata(entityGroupId: string, base: DecryptedCalendarItem | undefined,
 			patient: GroupScoped<Patient> | undefined,
-			options?: { user?: User | undefined, delegates?: ArrayWithUniqueKeys<{ delegate: EntityReferenceInGroup, accessLevel: AccessLevel }, 'delegate'>, secretId?: SecretIdUseOption }): Promise<GroupScoped<DecryptedCalendarItem>>;
+			options?: { user?: User | undefined, delegates?: ArrayWithUniqueKeys<{ delegate: EntityReferenceInGroup, accessLevel: AccessLevel }, 'delegate'>, secretId?: SecretIdUseOption, alternateRootDelegateReference?: EntityReferenceInGroup | undefined }): Promise<GroupScoped<DecryptedCalendarItem>>;
 
 	getEncryptionKeysOf(calendarItem: GroupScoped<CalendarItem>): Promise<Array<HexString>>;
 

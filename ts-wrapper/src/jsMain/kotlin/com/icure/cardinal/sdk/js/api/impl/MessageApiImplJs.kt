@@ -1070,12 +1070,20 @@ internal class MessageApiImplJs(
 			) { secretId: SecretIdUseOptionJs ->
 				secretIdUseOption_fromJs(secretId)
 			}
+			val alternateRootDelegateIdConverted: String? = convertingOptionOrDefaultNullable(
+				_options,
+				"alternateRootDelegateId",
+				null
+			) { alternateRootDelegateId: String? ->
+				undefinedToNull(alternateRootDelegateId)
+			}
 			val result = messageApi.withEncryptionMetadata(
 				baseConverted,
 				patientConverted,
 				userConverted,
 				delegatesConverted,
 				secretIdConverted,
+				alternateRootDelegateIdConverted,
 			)
 			message_toJs(result)
 		}
