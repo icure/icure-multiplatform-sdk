@@ -3,6 +3,7 @@ package com.icure.cardinal.sdk.api.raw
 import com.icure.cardinal.sdk.model.AnonymousMedicalLocation
 import com.icure.cardinal.sdk.model.AppointmentTypeAndPlace
 import com.icure.cardinal.sdk.model.PaginatedList
+import com.icure.cardinal.sdk.model.PublicAgendasAndCalendarItemTypes
 import com.icure.cardinal.sdk.model.UserAndHealthcareParty
 import com.icure.utils.InternalIcureApi
 import kotlin.Boolean
@@ -23,6 +24,20 @@ public interface RawAnonymousApi {
 		startDate: Long,
 		endDate: Long,
 	): HttpResponse<List<AppointmentTypeAndPlace>>
+
+	suspend fun listAnonymousAgendaAndAppointmentTypes(
+		groupId: String,
+		userId: String,
+	): HttpResponse<PublicAgendasAndCalendarItemTypes>
+
+	suspend fun listAnonymousAvailabilities(
+		groupId: String,
+		agendaId: String,
+		calendarItemTypeId: String,
+		startDate: Long,
+		endDate: Long,
+		limit: Int? = null,
+	): HttpResponse<List<Long>>
 
 	suspend fun getAvailabilitiesByPeriodAndCalendarItemTypeId(
 		groupId: String,
