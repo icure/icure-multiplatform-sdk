@@ -331,4 +331,4 @@ internal class CardinalAnonymousApisJsImpl(
 
 internal class CardinalAnonymousSdkJsImpl(
 	private val sdk: CardinalAnonymousSdk
-) : CardinalAnonymousSdkJs, CardinalAnonymousApisJs by CardinalAnonymousSdkJsImpl(sdk)
+) : CardinalAnonymousSdkJs, CardinalAnonymousApisJs by CardinalAnonymousApisJsImpl(sdk)
