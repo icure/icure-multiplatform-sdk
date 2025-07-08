@@ -1,7 +1,6 @@
 package com.icure.cardinal.sdk
 
-import com.icure.cardinal.sdk.api.AnonymousApi
-import com.icure.cardinal.sdk.api.impl.AnonymousApiImpl
+import com.icure.cardinal.sdk.api.impl.AnonymousSdkImpl
 import com.icure.cardinal.sdk.api.raw.RawApiConfig
 import com.icure.cardinal.sdk.api.raw.impl.RawAnonymousApiImpl
 import com.icure.cardinal.sdk.options.AnonymousSdkOptions
@@ -9,15 +8,14 @@ import com.icure.cardinal.sdk.options.configuredClientOrDefault
 import com.icure.cardinal.sdk.options.configuredJsonOrDefault
 import com.icure.utils.InternalIcureApi
 
-interface CardinalAnonymousSdk {
+interface CardinalAnonymousSdk : AnonymousApis {
 
 	companion object {
-
 		@OptIn(InternalIcureApi::class)
 		fun initialize(
 			baseUrl: String,
 			options: AnonymousSdkOptions = AnonymousSdkOptions(),
-		): AnonymousApi {
+		): CardinalAnonymousSdk {
 			val rawApiConfig = RawApiConfig(
 				httpClient = options.configuredClientOrDefault(),
 				json = options.configuredJsonOrDefault(),
@@ -25,7 +23,7 @@ interface CardinalAnonymousSdk {
 				additionalHeaders = emptyMap(),
 				retryConfiguration = options.requestRetryConfiguration
 			)
-			return AnonymousApiImpl(
+			return AnonymousSdkImpl(
 				rawAnonymousApi = RawAnonymousApiImpl(
 					apiUrl = baseUrl,
 					rawApiConfig = rawApiConfig

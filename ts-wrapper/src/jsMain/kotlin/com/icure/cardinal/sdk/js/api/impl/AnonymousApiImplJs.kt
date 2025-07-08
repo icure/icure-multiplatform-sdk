@@ -1,7 +1,7 @@
 // auto-generated file
 package com.icure.cardinal.sdk.js.api.`impl`
 
-import com.icure.cardinal.sdk.api.AnonymousApi
+import com.icure.cardinal.sdk.api.AnonymousAgendaApi
 import com.icure.cardinal.sdk.js.api.AnonymousApiJs
 import com.icure.cardinal.sdk.js.model.AnonymousMedicalLocationJs
 import com.icure.cardinal.sdk.js.model.AppointmentTypeAndPlaceJs
@@ -33,7 +33,7 @@ import kotlinx.coroutines.promise
 
 @OptIn(DelicateCoroutinesApi::class)
 internal class AnonymousApiImplJs(
-	private val anonymousApi: AnonymousApi,
+	private val anonymousApi: AnonymousAgendaApi,
 ) : AnonymousApiJs {
 	override fun listAppointmentTypesForUser(
 		groupId: String,
@@ -98,7 +98,7 @@ internal class AnonymousApiImplJs(
 	override fun listHealthcarePartiesInGroup(groupId: String):
 			Promise<Array<UserAndHealthcarePartyJs>> = GlobalScope.promise {
 		val groupIdConverted: String = groupId
-		val result = anonymousApi.listHealthcarePartiesInGroup(
+		val result = anonymousApi.listPublicHealthcarePartiesInGroup(
 			groupIdConverted,
 		)
 		listToArray(
