@@ -13,7 +13,7 @@ export interface AnonymousAgendaApi {
 			calendarItemTypeId: string,
 			startDate: number,
 			endDate: number,
-			limit: number | undefined
+			options?: { limit?: number | undefined }
 	): Promise<Array<number>>;
 
 }

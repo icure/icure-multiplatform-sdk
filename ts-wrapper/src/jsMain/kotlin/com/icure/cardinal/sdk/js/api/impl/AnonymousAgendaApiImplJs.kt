@@ -3,6 +3,7 @@ package com.icure.cardinal.sdk.js.api.`impl`
 
 import com.icure.cardinal.sdk.api.AnonymousAgendaApi
 import com.icure.cardinal.sdk.js.api.AnonymousAgendaApiJs
+import com.icure.cardinal.sdk.js.api.DefaultParametersSupport.convertingOptionOrDefaultNullable
 import com.icure.cardinal.sdk.js.model.CheckedConverters.listToArray
 import com.icure.cardinal.sdk.js.model.CheckedConverters.longToNumber
 import com.icure.cardinal.sdk.js.model.CheckedConverters.numberToInt
@@ -41,27 +42,36 @@ internal class AnonymousAgendaApiImplJs(
 		calendarItemTypeId: String,
 		startDate: Double,
 		endDate: Double,
-		limit: Double?,
-	): Promise<Array<Double>> = GlobalScope.promise {
-		val groupIdConverted: String = groupId
-		val agendaIdConverted: String = agendaId
-		val calendarItemTypeIdConverted: String = calendarItemTypeId
-		val startDateConverted: Long = numberToLong(startDate, "startDate")
-		val endDateConverted: Long = numberToLong(endDate, "endDate")
-		val limitConverted: Int? = numberToInt(limit, "limit")
-		val result = anonymousAgendaApi.listAnonymousAvailabilities(
-			groupIdConverted,
-			agendaIdConverted,
-			calendarItemTypeIdConverted,
-			startDateConverted,
-			endDateConverted,
-			limitConverted,
-		)
-		listToArray(
-			result,
-			{ x1: Long ->
-				longToNumber(x1)
-			},
-		)
+		options: dynamic,
+	): Promise<Array<Double>> {
+		val _options = options ?: js("{}")
+		return GlobalScope.promise {
+			val groupIdConverted: String = groupId
+			val agendaIdConverted: String = agendaId
+			val calendarItemTypeIdConverted: String = calendarItemTypeId
+			val startDateConverted: Long = numberToLong(startDate, "startDate")
+			val endDateConverted: Long = numberToLong(endDate, "endDate")
+			val limitConverted: Int? = convertingOptionOrDefaultNullable(
+				_options,
+				"limit",
+				null
+			) { limit: Double? ->
+				numberToInt(limit, "limit")
+			}
+			val result = anonymousAgendaApi.listAnonymousAvailabilities(
+				groupIdConverted,
+				agendaIdConverted,
+				calendarItemTypeIdConverted,
+				startDateConverted,
+				endDateConverted,
+				limitConverted,
+			)
+			listToArray(
+				result,
+				{ x1: Long ->
+					longToNumber(x1)
+				},
+			)
+		}
 	}
 }

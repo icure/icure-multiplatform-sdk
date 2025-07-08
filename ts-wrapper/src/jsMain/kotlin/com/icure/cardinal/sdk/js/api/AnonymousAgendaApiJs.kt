@@ -22,6 +22,6 @@ public external interface AnonymousAgendaApiJs {
 		calendarItemTypeId: String,
 		startDate: Double,
 		endDate: Double,
-		limit: Double?,
+		options: dynamic,
 	): Promise<Array<Double>>
 }

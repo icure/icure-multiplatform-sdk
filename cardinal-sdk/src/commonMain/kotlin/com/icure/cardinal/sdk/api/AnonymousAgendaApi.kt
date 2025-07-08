@@ -1,6 +1,7 @@
 package com.icure.cardinal.sdk.api
 
 import com.icure.cardinal.sdk.model.PublicAgendasAndCalendarItemTypes
+import com.icure.cardinal.sdk.utils.DefaultValue
 
 interface AnonymousAgendaApi {
 
@@ -15,6 +16,7 @@ interface AnonymousAgendaApi {
 		calendarItemTypeId: String,
 		startDate: Long,
 		endDate: Long,
+		@DefaultValue("null")
 		limit: Int? = null,
 	): List<Long>
 }
