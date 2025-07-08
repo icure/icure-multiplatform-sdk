@@ -12,5 +12,6 @@ data class PublicAgendasAndCalendarItemTypes(
 	public val calendarItemTypes: List<CalendarItemType>,
 ) {
 	// region PublicAgendasAndCalendarItemTypes-PublicAgendasAndCalendarItemTypes
+
 	// endregion
 }

@@ -12,19 +12,18 @@ import kotlin.collections.Set
 // If you want to change the way this class is generated, see [this repo](https://github.com/icure/sdk-codegen).
 
 @Serializable
-data class ResourceGroupAllocationSchedule(
-	public val resourceGroup: CodeStub? = null,
-	@DefaultValue("emptySet()")
-	public val tags: Set<CodeStub> = emptySet(),
+data class EmbeddedTimeTable(
+	public val id: String,
 	@DefaultValue("emptySet()")
 	public val codes: Set<CodeStub> = emptySet(),
+	public val medicalLocationId: String? = null,
+	public val endOfLife: Long? = null,
 	public val name: String? = null,
-	public val startDateTime: Long? = null,
-	public val endDateTime: Long? = null,
+	public val startTime: Long? = null,
+	public val endTime: Long? = null,
 	@DefaultValue("emptyList()")
-	public val items: List<EmbeddedTimeTableItem> = emptyList(),
+	public val items: List<TimeTableItem> = emptyList(),
 ) {
-	// region ResourceGroupAllocationSchedule-ResourceGroupAllocationSchedule
-
+	// region EmbeddedTimeTable-EmbeddedTimeTable
 	// endregion
 }

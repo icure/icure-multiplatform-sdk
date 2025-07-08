@@ -26,5 +26,6 @@ data class EmbeddedTimeTableItem(
 	public val `public`: Boolean = false,
 ) {
 	// region EmbeddedTimeTableItem-EmbeddedTimeTableItem
+
 	// endregion
 }
