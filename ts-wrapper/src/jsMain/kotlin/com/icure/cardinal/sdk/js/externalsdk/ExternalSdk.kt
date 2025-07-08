@@ -4,6 +4,8 @@ package com.icure.cardinal.sdk.js.externalsdk
 import com.icure.cardinal.sdk.js.api.AccessLogApiJs
 import com.icure.cardinal.sdk.js.api.AccessLogBasicApiJs
 import com.icure.cardinal.sdk.js.api.AgendaApiJs
+import com.icure.cardinal.sdk.js.api.AnonymousAgendaApiJs
+import com.icure.cardinal.sdk.js.api.AnonymousHealthcarePartyApiJs
 import com.icure.cardinal.sdk.js.api.ApplicationSettingsApiJs
 import com.icure.cardinal.sdk.js.api.AuthApiJs
 import com.icure.cardinal.sdk.js.api.CalendarItemApiJs
@@ -146,4 +148,14 @@ external interface CardinalBaseApisJs {
 @JsName("CardinalBaseSdk")
 external interface CardinalBaseSdkJs : CardinalBaseApisJs {
 	fun switchGroup(groupId: String): Promise<CardinalBaseSdkJs>
+}
+
+@JsName("CardinalAnonymousApis")
+external interface CardinalAnonymousApisJs {
+	val agenda: AnonymousAgendaApiJs
+	val healthcareParty: AnonymousHealthcarePartyApiJs
+}
+
+@JsName("CardinalAnonymousSdk")
+external interface CardinalAnonymousSdkJs : CardinalAnonymousApisJs {
 }

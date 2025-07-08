@@ -31,6 +31,7 @@ import com.icure.cardinal.sdk.js.model.CheckedConverters.undefinedToNull
 import com.icure.cardinal.sdk.js.model.ContactJs
 import com.icure.cardinal.sdk.js.model.DecryptedContactJs
 import com.icure.cardinal.sdk.js.model.EncryptedContactJs
+import com.icure.cardinal.sdk.js.model.EntityReferenceInGroupJs
 import com.icure.cardinal.sdk.js.model.PaginatedListJs
 import com.icure.cardinal.sdk.js.model.PatientJs
 import com.icure.cardinal.sdk.js.model.StoredDocumentIdentifierJs
@@ -46,6 +47,7 @@ import com.icure.cardinal.sdk.js.model.embed.EncryptedServiceJs
 import com.icure.cardinal.sdk.js.model.embed.ServiceJs
 import com.icure.cardinal.sdk.js.model.embed.service_fromJs
 import com.icure.cardinal.sdk.js.model.embed.service_toJs
+import com.icure.cardinal.sdk.js.model.entityReferenceInGroup_fromJs
 import com.icure.cardinal.sdk.js.model.paginatedList_toJs
 import com.icure.cardinal.sdk.js.model.patient_fromJs
 import com.icure.cardinal.sdk.js.model.specializations.hexString_toJs
@@ -61,6 +63,7 @@ import com.icure.cardinal.sdk.js.utils.pagination.paginatedListIterator_toJs
 import com.icure.cardinal.sdk.model.Contact
 import com.icure.cardinal.sdk.model.DecryptedContact
 import com.icure.cardinal.sdk.model.EncryptedContact
+import com.icure.cardinal.sdk.model.EntityReferenceInGroup
 import com.icure.cardinal.sdk.model.Patient
 import com.icure.cardinal.sdk.model.StoredDocumentIdentifier
 import com.icure.cardinal.sdk.model.User
@@ -1069,6 +1072,7 @@ internal class ContactApiImplJs(
 	override fun withEncryptionMetadata(
 		base: DecryptedContactJs?,
 		patient: PatientJs,
+		alternateRootDataOwnerReference: EntityReferenceInGroupJs?,
 		options: dynamic,
 	): Promise<DecryptedContactJs> {
 		val _options = options ?: js("{}")
@@ -1109,12 +1113,17 @@ internal class ContactApiImplJs(
 			) { secretId: SecretIdUseOptionJs ->
 				secretIdUseOption_fromJs(secretId)
 			}
+			val alternateRootDataOwnerReferenceConverted: EntityReferenceInGroup? =
+					alternateRootDataOwnerReference?.let { nonNull1 ->
+				entityReferenceInGroup_fromJs(nonNull1)
+			}
 			val result = contactApi.withEncryptionMetadata(
-                baseConverted,
-                patientConverted,
-                userConverted,
-                delegatesConverted,
-                secretIdConverted,
+				baseConverted,
+				patientConverted,
+				userConverted,
+				delegatesConverted,
+				secretIdConverted,
+				alternateRootDataOwnerReferenceConverted,
 			)
 			contact_toJs(result)
 		}

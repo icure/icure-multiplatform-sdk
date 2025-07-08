@@ -2,6 +2,7 @@
 import {PaginatedListIterator} from '../cardinal-sdk-ts.mjs';
 import {InvoiceShareOptions} from '../crypto/entities/InvoiceShareOptions.mjs';
 import {SecretIdUseOption} from '../crypto/entities/SecretIdUseOption.mjs';
+import {EntityReferenceInGroup} from '../model/EntityReferenceInGroup.mjs';
 import {DecryptedInvoice, EncryptedInvoice, Invoice} from '../model/Invoice.mjs';
 import {PaginatedList} from '../model/PaginatedList.mjs';
 import {Patient} from '../model/Patient.mjs';
@@ -27,6 +28,7 @@ export interface InvoiceApi {
 	createInvoices(entities: Array<DecryptedInvoice>): Promise<Array<DecryptedInvoice>>;
 
 	withEncryptionMetadata(base: DecryptedInvoice | undefined, patient: Patient | undefined,
+			alternateRootDataOwnerReference: EntityReferenceInGroup | undefined,
 			options?: { user?: User | undefined, delegates?: { [ key: string ]: AccessLevel }, secretId?: SecretIdUseOption }): Promise<DecryptedInvoice>;
 
 	getEncryptionKeysOf(invoice: Invoice): Promise<Array<HexString>>;

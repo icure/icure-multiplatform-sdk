@@ -6,7 +6,8 @@ package com.icure.cardinal.sdk.js.model
 import com.icure.cardinal.sdk.js.model.base.CodeStubJs
 import com.icure.cardinal.sdk.js.model.base.ICureDocumentJs
 import com.icure.cardinal.sdk.js.model.base.StoredDocumentJs
-import com.icure.cardinal.sdk.js.model.embed.EmbeddedTimeTableJs
+import com.icure.cardinal.sdk.js.model.embed.AgendaSlottingAlgorithmJs
+import com.icure.cardinal.sdk.js.model.embed.ResourceGroupAllocationScheduleJs
 import com.icure.cardinal.sdk.js.model.embed.RightJs
 import com.icure.cardinal.sdk.js.utils.Record
 import kotlin.Array
@@ -41,15 +42,23 @@ public external class AgendaJs(
 
 	override val deletionDate: Double?
 
+	public val daySplitHour: Double?
+
 	public val name: String?
 
 	public val userId: String?
+
+	public val zoneId: String?
+
+	public val lockCalendarItemsBeforeInMinutes: Double?
 
 	public val rights: Array<RightJs>
 
 	public val userRights: Record<String, String>
 
+	public val slottingAlgorithm: AgendaSlottingAlgorithmJs?
+
 	public val properties: Array<DecryptedPropertyStubJs>
 
-	public val timeTables: Array<EmbeddedTimeTableJs>
+	public val schedules: Array<ResourceGroupAllocationScheduleJs>
 }

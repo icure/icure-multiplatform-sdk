@@ -18,9 +18,13 @@ export interface HealthElementInGroupApi {
 
 	tryAndRecover: HealthElementFlavouredInGroupApi<HealthElement>;
 
-	withEncryptionMetadata(entityGroupId: string, base: DecryptedHealthElement | undefined,
+	withEncryptionMetadata(
+			entityGroupId: string,
+			base: DecryptedHealthElement | undefined,
 			patient: GroupScoped<Patient>,
-			options?: { user?: User | undefined, delegates?: ArrayWithUniqueKeys<{ delegate: EntityReferenceInGroup, accessLevel: AccessLevel }, 'delegate'>, secretId?: SecretIdUseOption }): Promise<GroupScoped<DecryptedHealthElement>>;
+			alternateRootDataOwnerReference: EntityReferenceInGroup | undefined,
+			options?: { user?: User | undefined, delegates?: ArrayWithUniqueKeys<{ delegate: EntityReferenceInGroup, accessLevel: AccessLevel }, 'delegate'>, secretId?: SecretIdUseOption }
+	): Promise<GroupScoped<DecryptedHealthElement>>;
 
 	getEncryptionKeysOf(healthElement: GroupScoped<HealthElement>): Promise<Array<HexString>>;
 

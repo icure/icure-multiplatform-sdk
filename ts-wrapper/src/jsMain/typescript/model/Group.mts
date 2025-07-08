@@ -20,6 +20,8 @@ export class Group implements StoredDocument, HasTags {
 
 	tags: Array<CodeStub> = [];
 
+	publicTags: Array<CodeStub> = [];
+
 	name: string | undefined = undefined;
 
 	password: string | undefined = undefined;
@@ -51,6 +53,7 @@ export class Group implements StoredDocument, HasTags {
 		if ('rev' in partial) this.rev = partial.rev;
 		if ('deletionDate' in partial) this.deletionDate = partial.deletionDate;
 		if ('tags' in partial && partial.tags !== undefined) this.tags = partial.tags;
+		if ('publicTags' in partial && partial.publicTags !== undefined) this.publicTags = partial.publicTags;
 		if ('name' in partial) this.name = partial.name;
 		if ('password' in partial) this.password = partial.password;
 		if ('servers' in partial) this.servers = partial.servers;

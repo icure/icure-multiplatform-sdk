@@ -2580,6 +2580,7 @@ internal class PatientApiImplJs(
 		override fun withEncryptionMetadata(
 			entityGroupId: String,
 			base: DecryptedPatientJs?,
+			alternateRootDataOwnerReference: EntityReferenceInGroupJs?,
 			options: dynamic,
 		): Promise<GroupScopedJs<DecryptedPatientJs>> {
 			val _options = options ?: js("{}")
@@ -2605,11 +2606,16 @@ internal class PatientApiImplJs(
 				) { delegates: Array<EntityReferenceInGroupToAccessLevelMapObject_delegate_accessLevel> ->
 					EntityReferenceInGroupToAccessLevelMapObject_delegate_accessLevel_fromJs(delegates)
 				}
+				val alternateRootDataOwnerReferenceConverted: EntityReferenceInGroup? =
+						alternateRootDataOwnerReference?.let { nonNull1 ->
+					entityReferenceInGroup_fromJs(nonNull1)
+				}
 				val result = patientApi.inGroup.withEncryptionMetadata(
 					entityGroupIdConverted,
 					baseConverted,
 					userConverted,
 					delegatesConverted,
+					alternateRootDataOwnerReferenceConverted,
 				)
 				groupScoped_toJs(
 					result,
@@ -3127,8 +3133,11 @@ internal class PatientApiImplJs(
 		)
 	}
 
-	override fun withEncryptionMetadata(base: DecryptedPatientJs?, options: dynamic):
-			Promise<DecryptedPatientJs> {
+	override fun withEncryptionMetadata(
+		base: DecryptedPatientJs?,
+		alternateRootDataOwnerReference: EntityReferenceInGroupJs?,
+		options: dynamic,
+	): Promise<DecryptedPatientJs> {
 		val _options = options ?: js("{}")
 		return GlobalScope.promise {
 			val baseConverted: DecryptedPatient? = base?.let { nonNull1 ->
@@ -3159,10 +3168,15 @@ internal class PatientApiImplJs(
 					},
 				)
 			}
+			val alternateRootDataOwnerReferenceConverted: EntityReferenceInGroup? =
+					alternateRootDataOwnerReference?.let { nonNull1 ->
+				entityReferenceInGroup_fromJs(nonNull1)
+			}
 			val result = patientApi.withEncryptionMetadata(
 				baseConverted,
 				userConverted,
 				delegatesConverted,
+				alternateRootDataOwnerReferenceConverted,
 			)
 			patient_toJs(result)
 		}

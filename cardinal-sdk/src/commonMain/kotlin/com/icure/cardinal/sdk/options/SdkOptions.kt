@@ -373,5 +373,5 @@ data class RequestRetryConfiguration(
 	}
 }
 
-internal fun AnonymousSdkOptions.configuredClientOrDefault() = this.httpClient ?: (if (this.lenientJson) CardinalSdk.sharedHttpClientUsingLenientJson else CardinalSdk.sharedHttpClient)
-internal fun AnonymousSdkOptions.configuredJsonOrDefault() = this.httpClientJson ?: (if (this.lenientJson) Serialization.lenientJson else Serialization.json)
+internal fun HttpSdkOptions.configuredClientOrDefault() = this.httpClient ?: (if (this.lenientJson) CardinalSdk.sharedHttpClientUsingLenientJson else CardinalSdk.sharedHttpClient)
+internal fun HttpSdkOptions.configuredJsonOrDefault() = this.httpClientJson ?: (if (this.lenientJson) Serialization.lenientJson else Serialization.json)

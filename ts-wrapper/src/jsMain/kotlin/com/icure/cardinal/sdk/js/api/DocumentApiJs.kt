@@ -9,6 +9,7 @@ import com.icure.cardinal.sdk.js.filters.SortableFilterOptionsJs
 import com.icure.cardinal.sdk.js.model.DecryptedDocumentJs
 import com.icure.cardinal.sdk.js.model.DocumentJs
 import com.icure.cardinal.sdk.js.model.EncryptedDocumentJs
+import com.icure.cardinal.sdk.js.model.EntityReferenceInGroupJs
 import com.icure.cardinal.sdk.js.model.MessageJs
 import com.icure.cardinal.sdk.js.model.PatientJs
 import com.icure.cardinal.sdk.js.model.StoredDocumentIdentifierJs
@@ -31,9 +32,23 @@ public external interface DocumentApiJs {
 
 	public val tryAndRecover: DocumentFlavouredApiJs<DocumentJs>
 
-	public fun withEncryptionMetadata(
+	public fun withEncryptionMetadataLinkedToMessage(
 		base: DecryptedDocumentJs?,
-		message: MessageJs?,
+		message: MessageJs,
+		alternateRootDataOwnerReference: EntityReferenceInGroupJs?,
+		options: dynamic,
+	): Promise<DecryptedDocumentJs>
+
+	public fun withEncryptionMetadataLinkedToPatient(
+		base: DecryptedDocumentJs?,
+		patient: PatientJs,
+		alternateRootDataOwnerReference: EntityReferenceInGroupJs?,
+		options: dynamic,
+	): Promise<DecryptedDocumentJs>
+
+	public fun withEncryptionMetadataUnlinked(
+		base: DecryptedDocumentJs?,
+		alternateRootDataOwnerReference: EntityReferenceInGroupJs?,
 		options: dynamic,
 	): Promise<DecryptedDocumentJs>
 

@@ -31,6 +31,7 @@ import com.icure.cardinal.sdk.js.model.CheckedConverters.undefinedToNull
 import com.icure.cardinal.sdk.js.model.DecryptedDocumentJs
 import com.icure.cardinal.sdk.js.model.DocumentJs
 import com.icure.cardinal.sdk.js.model.EncryptedDocumentJs
+import com.icure.cardinal.sdk.js.model.EntityReferenceInGroupJs
 import com.icure.cardinal.sdk.js.model.MessageJs
 import com.icure.cardinal.sdk.js.model.PatientJs
 import com.icure.cardinal.sdk.js.model.StoredDocumentIdentifierJs
@@ -39,6 +40,7 @@ import com.icure.cardinal.sdk.js.model.couchdb.DocIdentifierJs
 import com.icure.cardinal.sdk.js.model.couchdb.docIdentifier_toJs
 import com.icure.cardinal.sdk.js.model.document_fromJs
 import com.icure.cardinal.sdk.js.model.document_toJs
+import com.icure.cardinal.sdk.js.model.entityReferenceInGroup_fromJs
 import com.icure.cardinal.sdk.js.model.message_fromJs
 import com.icure.cardinal.sdk.js.model.patient_fromJs
 import com.icure.cardinal.sdk.js.model.specializations.hexString_toJs
@@ -50,6 +52,7 @@ import com.icure.cardinal.sdk.js.utils.pagination.paginatedListIterator_toJs
 import com.icure.cardinal.sdk.model.DecryptedDocument
 import com.icure.cardinal.sdk.model.Document
 import com.icure.cardinal.sdk.model.EncryptedDocument
+import com.icure.cardinal.sdk.model.EntityReferenceInGroup
 import com.icure.cardinal.sdk.model.Message
 import com.icure.cardinal.sdk.model.Patient
 import com.icure.cardinal.sdk.model.StoredDocumentIdentifier
@@ -579,9 +582,10 @@ internal class DocumentApiImplJs(
 		}
 	}
 
-	override fun withEncryptionMetadata(
+	override fun withEncryptionMetadataLinkedToMessage(
 		base: DecryptedDocumentJs?,
-		message: MessageJs?,
+		message: MessageJs,
+		alternateRootDataOwnerReference: EntityReferenceInGroupJs?,
 		options: dynamic,
 	): Promise<DecryptedDocumentJs> {
 		val _options = options ?: js("{}")
@@ -589,9 +593,7 @@ internal class DocumentApiImplJs(
 			val baseConverted: DecryptedDocument? = base?.let { nonNull1 ->
 				document_fromJs(nonNull1)
 			}
-			val messageConverted: Message? = message?.let { nonNull1 ->
-				message_fromJs(nonNull1)
-			}
+			val messageConverted: Message = message_fromJs(message)
 			val userConverted: User? = convertingOptionOrDefaultNullable(
 				_options,
 				"user",
@@ -624,12 +626,126 @@ internal class DocumentApiImplJs(
 			) { secretId: SecretIdUseOptionJs ->
 				secretIdUseOption_fromJs(secretId)
 			}
+			val alternateRootDataOwnerReferenceConverted: EntityReferenceInGroup? =
+					alternateRootDataOwnerReference?.let { nonNull1 ->
+				entityReferenceInGroup_fromJs(nonNull1)
+			}
 			val result = documentApi.withEncryptionMetadataLinkedToMessage(
-                baseConverted,
-                messageConverted,
-                userConverted,
-                delegatesConverted,
-                secretIdConverted,
+				baseConverted,
+				messageConverted,
+				userConverted,
+				delegatesConverted,
+				secretIdConverted,
+				alternateRootDataOwnerReferenceConverted,
+			)
+			document_toJs(result)
+		}
+	}
+
+	override fun withEncryptionMetadataLinkedToPatient(
+		base: DecryptedDocumentJs?,
+		patient: PatientJs,
+		alternateRootDataOwnerReference: EntityReferenceInGroupJs?,
+		options: dynamic,
+	): Promise<DecryptedDocumentJs> {
+		val _options = options ?: js("{}")
+		return GlobalScope.promise {
+			val baseConverted: DecryptedDocument? = base?.let { nonNull1 ->
+				document_fromJs(nonNull1)
+			}
+			val patientConverted: Patient = patient_fromJs(patient)
+			val userConverted: User? = convertingOptionOrDefaultNullable(
+				_options,
+				"user",
+				null
+			) { user: UserJs? ->
+				user?.let { nonNull1 ->
+					user_fromJs(nonNull1)
+				}
+			}
+			val delegatesConverted: Map<String, AccessLevel> = convertingOptionOrDefaultNonNull(
+				_options,
+				"delegates",
+				emptyMap()
+			) { delegates: Record<String, String> ->
+				objectToMap(
+					delegates,
+					"delegates",
+					{ x1: String ->
+						x1
+					},
+					{ x1: String ->
+						AccessLevel.valueOf(x1)
+					},
+				)
+			}
+			val secretIdConverted: SecretIdUseOption = convertingOptionOrDefaultNonNull(
+				_options,
+				"secretId",
+				com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption.UseAnySharedWithParent
+			) { secretId: SecretIdUseOptionJs ->
+				secretIdUseOption_fromJs(secretId)
+			}
+			val alternateRootDataOwnerReferenceConverted: EntityReferenceInGroup? =
+					alternateRootDataOwnerReference?.let { nonNull1 ->
+				entityReferenceInGroup_fromJs(nonNull1)
+			}
+			val result = documentApi.withEncryptionMetadataLinkedToPatient(
+				baseConverted,
+				patientConverted,
+				userConverted,
+				delegatesConverted,
+				secretIdConverted,
+				alternateRootDataOwnerReferenceConverted,
+			)
+			document_toJs(result)
+		}
+	}
+
+	override fun withEncryptionMetadataUnlinked(
+		base: DecryptedDocumentJs?,
+		alternateRootDataOwnerReference: EntityReferenceInGroupJs?,
+		options: dynamic,
+	): Promise<DecryptedDocumentJs> {
+		val _options = options ?: js("{}")
+		return GlobalScope.promise {
+			val baseConverted: DecryptedDocument? = base?.let { nonNull1 ->
+				document_fromJs(nonNull1)
+			}
+			val userConverted: User? = convertingOptionOrDefaultNullable(
+				_options,
+				"user",
+				null
+			) { user: UserJs? ->
+				user?.let { nonNull1 ->
+					user_fromJs(nonNull1)
+				}
+			}
+			val delegatesConverted: Map<String, AccessLevel> = convertingOptionOrDefaultNonNull(
+				_options,
+				"delegates",
+				emptyMap()
+			) { delegates: Record<String, String> ->
+				objectToMap(
+					delegates,
+					"delegates",
+					{ x1: String ->
+						x1
+					},
+					{ x1: String ->
+						AccessLevel.valueOf(x1)
+					},
+				)
+			}
+			val alternateRootDataOwnerReferenceConverted: EntityReferenceInGroup? =
+					alternateRootDataOwnerReference?.let { nonNull1 ->
+				entityReferenceInGroup_fromJs(nonNull1)
+			}
+			val result = documentApi.withEncryptionMetadataUnlinked(
+				baseConverted,
+				userConverted,
+				delegatesConverted,
+				alternateRootDataOwnerReferenceConverted,
 			)
 			document_toJs(result)
 		}

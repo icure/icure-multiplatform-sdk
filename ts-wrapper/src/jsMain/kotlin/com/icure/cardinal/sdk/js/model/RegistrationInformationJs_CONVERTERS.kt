@@ -11,8 +11,15 @@ import kotlin.Suppress
 
 @Suppress("UNUSED_VARIABLE")
 public fun registrationInformation_toJs(obj: RegistrationInformation): RegistrationInformationJs {
-	val firstName = obj.firstName
-	val lastName = obj.lastName
+	val firstName = nullToUndefined(
+		obj.firstName
+	)
+	val lastName = nullToUndefined(
+		obj.lastName
+	)
+	val companyName = nullToUndefined(
+		obj.companyName
+	)
 	val emailAddress = obj.emailAddress
 	val userOptions = nullToUndefined(
 		obj.userOptions
@@ -26,19 +33,25 @@ public fun registrationInformation_toJs(obj: RegistrationInformation): Registrat
 	val minimumKrakenVersion = nullToUndefined(
 		obj.minimumKrakenVersion
 	)
+	val cluster = nullToUndefined(
+		obj.cluster
+	)
 	return RegistrationInformationJs(js("{" +
 		"firstName:firstName," +
 		"lastName:lastName," +
+		"companyName:companyName," +
 		"emailAddress:emailAddress," +
 		"userOptions:userOptions," +
 		"userRoles:userRoles," +
-		"minimumKrakenVersion:minimumKrakenVersion" +
+		"minimumKrakenVersion:minimumKrakenVersion," +
+		"cluster:cluster" +
 	"}"))
 }
 
 public fun registrationInformation_fromJs(obj: RegistrationInformationJs): RegistrationInformation {
-	val firstName = obj.firstName
-	val lastName = obj.lastName
+	val firstName = undefinedToNull(obj.firstName)
+	val lastName = undefinedToNull(obj.lastName)
+	val companyName = undefinedToNull(obj.companyName)
 	val emailAddress = obj.emailAddress
 	val userOptions = undefinedToNull(obj.userOptions)
 	val userRoles = arrayToSet(
@@ -49,12 +62,15 @@ public fun registrationInformation_fromJs(obj: RegistrationInformationJs): Regis
 		},
 	)
 	val minimumKrakenVersion = undefinedToNull(obj.minimumKrakenVersion)
+	val cluster = undefinedToNull(obj.cluster)
 	return RegistrationInformation(
 		firstName = firstName,
 		lastName = lastName,
+		companyName = companyName,
 		emailAddress = emailAddress,
 		userOptions = userOptions,
 		userRoles = userRoles,
 		minimumKrakenVersion = minimumKrakenVersion,
+		cluster = cluster,
 	)
 }

@@ -30,6 +30,7 @@ export interface PatientInGroupApi {
 	getEncryptionKeysOf(patient: GroupScoped<Patient>): Promise<Array<HexString>>;
 
 	withEncryptionMetadata(entityGroupId: string, base: DecryptedPatient | undefined,
+			alternateRootDataOwnerReference: EntityReferenceInGroup | undefined,
 			options?: { user?: User | undefined, delegates?: ArrayWithUniqueKeys<{ delegate: EntityReferenceInGroup, accessLevel: AccessLevel }, 'delegate'> }): Promise<GroupScoped<DecryptedPatient>>;
 
 	hasWriteAccess(patient: GroupScoped<DecryptedPatient>): Promise<boolean>;

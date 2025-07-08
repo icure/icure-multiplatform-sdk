@@ -47,6 +47,12 @@ public fun group_toJs(obj: Group): GroupJs {
 			codeStub_toJs(x1)
 		},
 	)
+	val publicTags = setToArray(
+		obj.publicTags,
+		{ x1: CodeStub ->
+			codeStub_toJs(x1)
+		},
+	)
 	val name = nullToUndefined(
 		obj.name
 	)
@@ -125,6 +131,7 @@ public fun group_toJs(obj: Group): GroupJs {
 		"rev:rev," +
 		"deletionDate:deletionDate," +
 		"tags:tags," +
+		"publicTags:publicTags," +
 		"name:name," +
 		"password:password," +
 		"servers:servers," +
@@ -148,6 +155,13 @@ public fun group_fromJs(obj: GroupJs): Group {
 	val tags = arrayToSet(
 		obj.tags,
 		"obj.tags",
+		{ x1: CodeStubJs ->
+			codeStub_fromJs(x1)
+		},
+	)
+	val publicTags = arrayToSet(
+		obj.publicTags,
+		"obj.publicTags",
 		{ x1: CodeStubJs ->
 			codeStub_fromJs(x1)
 		},
@@ -225,6 +239,7 @@ public fun group_fromJs(obj: GroupJs): Group {
 		rev = rev,
 		deletionDate = deletionDate,
 		tags = tags,
+		publicTags = publicTags,
 		name = name,
 		password = password,
 		servers = servers,

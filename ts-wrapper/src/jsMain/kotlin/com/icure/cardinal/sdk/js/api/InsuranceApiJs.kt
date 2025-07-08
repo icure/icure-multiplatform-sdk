@@ -29,4 +29,12 @@ public external interface InsuranceApiJs {
 	public fun listInsurancesByName(insuranceName: String): Promise<Array<InsuranceJs>>
 
 	public fun modifyInsurance(insurance: InsuranceJs): Promise<InsuranceJs>
+
+	public fun createInsurancesInGroup(groupId: String, insuranceBatch: Array<InsuranceJs>):
+			Promise<Array<InsuranceJs>>
+
+	public fun getInsurancesInGroup(groupId: String, insuranceIds: String): Promise<Array<InsuranceJs>>
+
+	public fun modifyInsurancesInGroup(groupId: String, insuranceBatch: Array<InsuranceJs>):
+			Promise<Array<InsuranceJs>>
 }

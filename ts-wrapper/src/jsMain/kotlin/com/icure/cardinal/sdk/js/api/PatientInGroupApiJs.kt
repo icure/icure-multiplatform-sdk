@@ -47,6 +47,7 @@ public external interface PatientInGroupApiJs {
 	public fun withEncryptionMetadata(
 		entityGroupId: String,
 		base: DecryptedPatientJs?,
+		alternateRootDataOwnerReference: EntityReferenceInGroupJs?,
 		options: dynamic,
 	): Promise<GroupScopedJs<DecryptedPatientJs>>
 

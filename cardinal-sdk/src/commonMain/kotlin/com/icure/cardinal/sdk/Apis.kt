@@ -138,7 +138,7 @@ interface CardinalBaseApis : CardinalNonCryptoApis {
 	val topic: TopicBasicApi
 }
 
-interface AnonymousApis {
+interface CardinalAnonymousApis {
 	val agenda: AnonymousAgendaApi
 	val healthcareParty: AnonymousHealthcarePartyApi
 }

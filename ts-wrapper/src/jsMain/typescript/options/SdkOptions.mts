@@ -125,6 +125,17 @@ export interface BasicSdkOptions {
   readonly lenientJson?: boolean
 }
 
+export interface AnonymousSdkOptions {
+  /**
+   * If true the SDK will use lenient deserialization of the entities coming from the backend.
+   *
+   * This could be helpful when developing using the nightly deployments of the backend, as the SDK will ignore minor changes to the data model.
+   *
+   * This option however could cause loss of data when connecting with incompatible versions of the backend, and should be disabled in production.
+   */
+  readonly lenientJson?: boolean
+}
+
 export interface EncryptedFieldsConfiguration {
   readonly accessLog?: Array<string>
   readonly calendarItem?: Array<string>

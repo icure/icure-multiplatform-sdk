@@ -34,6 +34,7 @@ public external interface HealthElementApiJs {
 	public fun withEncryptionMetadata(
 		base: DecryptedHealthElementJs?,
 		patient: PatientJs,
+		alternateRootDataOwnerReference: EntityReferenceInGroupJs?,
 		options: dynamic,
 	): Promise<DecryptedHealthElementJs>
 

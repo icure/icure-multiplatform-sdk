@@ -2,9 +2,11 @@
 
 export class RegistrationInformation {
 
-	firstName: string;
+	firstName: string | undefined = undefined;
 
-	lastName: string;
+	lastName: string | undefined = undefined;
+
+	companyName: string | undefined = undefined;
 
 	emailAddress: string;
 
@@ -14,13 +16,17 @@ export class RegistrationInformation {
 
 	minimumKrakenVersion: string | undefined = undefined;
 
-	constructor(partial: Partial<RegistrationInformation> & Pick<RegistrationInformation, "firstName" | "lastName" | "emailAddress">) {
-		this.firstName = partial.firstName;
-		this.lastName = partial.lastName;
+	cluster: string | undefined = undefined;
+
+	constructor(partial: Partial<RegistrationInformation> & Pick<RegistrationInformation, "emailAddress">) {
+		if ('firstName' in partial) this.firstName = partial.firstName;
+		if ('lastName' in partial) this.lastName = partial.lastName;
+		if ('companyName' in partial) this.companyName = partial.companyName;
 		this.emailAddress = partial.emailAddress;
 		if ('userOptions' in partial) this.userOptions = partial.userOptions;
 		if ('userRoles' in partial && partial.userRoles !== undefined) this.userRoles = partial.userRoles;
 		if ('minimumKrakenVersion' in partial) this.minimumKrakenVersion = partial.minimumKrakenVersion;
+		if ('cluster' in partial) this.cluster = partial.cluster;
 	}
 
 }

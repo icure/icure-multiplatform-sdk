@@ -28,6 +28,8 @@ public external class GroupJs(
 
 	override val tags: Array<CodeStubJs>
 
+	public val publicTags: Array<CodeStubJs>
+
 	public val name: String?
 
 	public val password: String?

@@ -7,7 +7,7 @@ import com.icure.cardinal.sdk.api.raw.RawAnonymousApi
 import com.icure.utils.InternalIcureApi
 
 @InternalIcureApi
-class AnonymousSdkImpl(
+class CardinalAnonymousSdkImpl(
 	private val rawAnonymousApi: RawAnonymousApi,
 ): CardinalAnonymousSdk {
 	override val agenda: AnonymousAgendaApi by lazy { AnonymousAgendaApiImpl(rawAnonymousApi) }

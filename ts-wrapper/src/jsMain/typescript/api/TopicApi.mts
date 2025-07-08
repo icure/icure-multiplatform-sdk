@@ -2,6 +2,7 @@
 import {FilterOptions, PaginatedListIterator, SortableFilterOptions} from '../cardinal-sdk-ts.mjs';
 import {SecretIdUseOption} from '../crypto/entities/SecretIdUseOption.mjs';
 import {TopicShareOptions} from '../crypto/entities/TopicShareOptions.mjs';
+import {EntityReferenceInGroup} from '../model/EntityReferenceInGroup.mjs';
 import {Patient} from '../model/Patient.mjs';
 import {StoredDocumentIdentifier} from '../model/StoredDocumentIdentifier.mjs';
 import {DecryptedTopic, EncryptedTopic, Topic} from '../model/Topic.mjs';
@@ -23,6 +24,7 @@ export interface TopicApi {
 	tryAndRecover: TopicFlavouredApi<Topic>;
 
 	withEncryptionMetadata(base: DecryptedTopic | undefined, patient: Patient | undefined,
+			alternateRootDataOwnerReference: EntityReferenceInGroup | undefined,
 			options?: { user?: User | undefined, delegates?: { [ key: string ]: AccessLevel }, secretId?: SecretIdUseOption }): Promise<DecryptedTopic>;
 
 	getEncryptionKeysOf(topic: Topic): Promise<Array<HexString>>;

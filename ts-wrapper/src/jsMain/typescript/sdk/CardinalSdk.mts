@@ -26,7 +26,7 @@ import {
 } from "../options/AuthenticationMethod.mjs";
 import {StorageFacade} from "../storage/StorageFacade.mjs";
 import {CardinalStorageOptions, InternalSdkInitializers} from "../cardinal-sdk-ts.mjs";
-import {SdkOptions, BasicSdkOptions} from "../options/SdkOptions.mjs";
+import {SdkOptions, BasicSdkOptions, AnonymousSdkOptions} from "../options/SdkOptions.mjs";
 import {ApplicationSettingsApi} from "../api/ApplicationSettingsApi.mjs";
 import {CodeApi} from "../api/CodeApi.mjs";
 import {DocumentTemplateApi} from "../api/DocumentTemplateApi.mjs";
@@ -59,6 +59,8 @@ import {MedicalLocationApi} from "../api/MedicalLocationApi.mjs";
 import {CaptchaOptions} from "../auth/CaptchaOptions.mjs";
 import {AuthApi} from "../api/AuthApi.mjs";
 import {CalendarItemTypeApi} from "../api/CalendarItemTypeApi.mjs";
+import {AnonymousHealthcarePartyApi} from "../api/AnonymousHealthcarePartyApi.mjs";
+import {AnonymousAgendaApi} from "../api/AnonymousAgendaApi.mjs";
 
 export interface CardinalApis {
   readonly auth: AuthApi
@@ -290,6 +292,27 @@ export namespace CardinalBaseSdk {
       applicationId,
       baseUrl,
       authenticationMethod,
+      options
+    )
+  }
+}
+
+
+export interface CardinalAnonymousApis {
+  readonly agenda: AnonymousAgendaApi
+  readonly healthcareParty: AnonymousHealthcarePartyApi
+}
+
+export interface CardinalAnonymousSdk extends CardinalAnonymousApis {
+}
+
+export namespace CardinalAnonymousSdk {
+  export function initialize(
+    baseUrl: string,
+    options?: AnonymousSdkOptions
+  ): CardinalAnonymousSdk {
+    return InternalSdkInitializers.getInstance().initializeAnonymous(
+      baseUrl,
       options
     )
   }

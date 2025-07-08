@@ -1,5 +1,6 @@
 // auto-generated file
 import {BaseFilterOptions, BaseSortableFilterOptions, FilterOptions, InternalMessageFiltersObj, SortableFilterOptions} from '../cardinal-sdk-ts.mjs';
+import {EntityReferenceInGroup} from '../model/EntityReferenceInGroup.mjs';
 import {Message} from '../model/Message.mjs';
 import {Patient} from '../model/Patient.mjs';
 
@@ -38,13 +39,13 @@ interface MessageFiltersFactory {
 	byTransportGuidSentDateForDataOwner(
 			dataOwnerId: string,
 			transportGuid: string,
-			from: number,
-			to: number,
+			from: number | undefined,
+			to: number | undefined,
 			options?: { descending?: boolean }
 	): BaseSortableFilterOptions<Message>;
 
-	byTransportGuidSentDateForSelf(transportGuid: string, from: number, to: number,
-			options?: { descending?: boolean }): SortableFilterOptions<Message>;
+	byTransportGuidSentDateForSelf(transportGuid: string, from: number | undefined,
+			to: number | undefined, options?: { descending?: boolean }): SortableFilterOptions<Message>;
 
 	latestByTransportGuidForDataOwner(dataOwnerId: string,
 			transportGuid: string): BaseFilterOptions<Message>;
@@ -54,6 +55,16 @@ interface MessageFiltersFactory {
 	byInvoiceIds(invoiceIds: Array<string>): BaseFilterOptions<Message>;
 
 	byParentIds(parentIds: Array<string>): BaseFilterOptions<Message>;
+
+	lifecycleBetweenForDataOwner(dataOwnerId: string, startTimestamp: number | undefined,
+			endTimestamp: number | undefined, descending: boolean): BaseFilterOptions<Message>;
+
+	lifecycleBetweenForDataOwnerInGroup(dataOwner: EntityReferenceInGroup,
+			startTimestamp: number | undefined, endTimestamp: number | undefined,
+			descending: boolean): BaseFilterOptions<Message>;
+
+	lifecycleBetweenForSelf(startTimestamp: number | undefined, endTimestamp: number | undefined,
+			descending: boolean): FilterOptions<Message>;
 
 }
 
@@ -75,5 +86,8 @@ export const MessageFilters: MessageFiltersFactory = {
 			latestByTransportGuidForDataOwner: (dataOwnerId, transportGuid) => InternalMessageFiltersObj.getInstance().latestByTransportGuidForDataOwner(dataOwnerId, transportGuid),
 			latestByTransportGuidForSelf: (transportGuid) => InternalMessageFiltersObj.getInstance().latestByTransportGuidForSelf(transportGuid),
 			byInvoiceIds: (invoiceIds) => InternalMessageFiltersObj.getInstance().byInvoiceIds(invoiceIds),
-			byParentIds: (parentIds) => InternalMessageFiltersObj.getInstance().byParentIds(parentIds)
+			byParentIds: (parentIds) => InternalMessageFiltersObj.getInstance().byParentIds(parentIds),
+			lifecycleBetweenForDataOwner: (dataOwnerId, startTimestamp, endTimestamp, descending) => InternalMessageFiltersObj.getInstance().lifecycleBetweenForDataOwner(dataOwnerId, startTimestamp, endTimestamp, descending),
+			lifecycleBetweenForDataOwnerInGroup: (dataOwner, startTimestamp, endTimestamp, descending) => InternalMessageFiltersObj.getInstance().lifecycleBetweenForDataOwnerInGroup(dataOwner, startTimestamp, endTimestamp, descending),
+			lifecycleBetweenForSelf: (startTimestamp, endTimestamp, descending) => InternalMessageFiltersObj.getInstance().lifecycleBetweenForSelf(startTimestamp, endTimestamp, descending)
 		};

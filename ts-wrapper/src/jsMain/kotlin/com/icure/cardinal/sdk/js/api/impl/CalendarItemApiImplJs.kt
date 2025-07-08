@@ -1049,6 +1049,7 @@ internal class CalendarItemApiImplJs(
 			entityGroupId: String,
 			base: DecryptedCalendarItemJs?,
 			patient: GroupScopedJs<PatientJs>?,
+			alternateRootDataOwnerReference: EntityReferenceInGroupJs?,
 			options: dynamic,
 		): Promise<GroupScopedJs<DecryptedCalendarItemJs>> {
 			val _options = options ?: js("{}")
@@ -1089,6 +1090,10 @@ internal class CalendarItemApiImplJs(
 				) { secretId: SecretIdUseOptionJs ->
 					secretIdUseOption_fromJs(secretId)
 				}
+				val alternateRootDataOwnerReferenceConverted: EntityReferenceInGroup? =
+						alternateRootDataOwnerReference?.let { nonNull1 ->
+					entityReferenceInGroup_fromJs(nonNull1)
+				}
 				val result = calendarItemApi.inGroup.withEncryptionMetadata(
 					entityGroupIdConverted,
 					baseConverted,
@@ -1096,6 +1101,7 @@ internal class CalendarItemApiImplJs(
 					userConverted,
 					delegatesConverted,
 					secretIdConverted,
+					alternateRootDataOwnerReferenceConverted,
 				)
 				groupScoped_toJs(
 					result,
@@ -1593,6 +1599,7 @@ internal class CalendarItemApiImplJs(
 	override fun withEncryptionMetadata(
 		base: DecryptedCalendarItemJs?,
 		patient: PatientJs?,
+		alternateRootDataOwnerReference: EntityReferenceInGroupJs?,
 		options: dynamic,
 	): Promise<DecryptedCalendarItemJs> {
 		val _options = options ?: js("{}")
@@ -1635,12 +1642,17 @@ internal class CalendarItemApiImplJs(
 			) { secretId: SecretIdUseOptionJs ->
 				secretIdUseOption_fromJs(secretId)
 			}
+			val alternateRootDataOwnerReferenceConverted: EntityReferenceInGroup? =
+					alternateRootDataOwnerReference?.let { nonNull1 ->
+				entityReferenceInGroup_fromJs(nonNull1)
+			}
 			val result = calendarItemApi.withEncryptionMetadata(
-                baseConverted,
-                patientConverted,
-                userConverted,
-                delegatesConverted,
-                secretIdConverted,
+				baseConverted,
+				patientConverted,
+				userConverted,
+				delegatesConverted,
+				secretIdConverted,
+				alternateRootDataOwnerReferenceConverted,
 			)
 			calendarItem_toJs(result)
 		}

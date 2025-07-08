@@ -26,6 +26,7 @@ export interface CalendarItemApi {
 	inGroup: CalendarItemInGroupApi;
 
 	withEncryptionMetadata(base: DecryptedCalendarItem | undefined, patient: Patient | undefined,
+			alternateRootDataOwnerReference: EntityReferenceInGroup | undefined,
 			options?: { user?: User | undefined, delegates?: { [ key: string ]: AccessLevel }, secretId?: SecretIdUseOption }): Promise<DecryptedCalendarItem>;
 
 	getEncryptionKeysOf(calendarItem: CalendarItem): Promise<Array<HexString>>;

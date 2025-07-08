@@ -7,8 +7,11 @@ import com.icure.cardinal.sdk.js.api.DefaultParametersSupport.convertingOptionOr
 import com.icure.cardinal.sdk.js.model.CheckedConverters.arrayToList
 import com.icure.cardinal.sdk.js.model.CheckedConverters.numberToInstant
 import com.icure.cardinal.sdk.js.model.DocumentJs
+import com.icure.cardinal.sdk.js.model.MessageJs
 import com.icure.cardinal.sdk.js.model.PatientJs
+import com.icure.cardinal.sdk.js.model.message_fromJs
 import com.icure.cardinal.sdk.js.model.patient_fromJs
+import com.icure.cardinal.sdk.model.Message
 import com.icure.cardinal.sdk.model.Patient
 import com.icure.cardinal.sdk.model.embed.DocumentType
 import kotlin.Array
@@ -66,6 +69,51 @@ public object InternalDocumentFiltersObj {
 		return SortableFilterOptionsJsImpl(result)
 	}
 
+	public fun byMessagesCreatedForDataOwner(
+		dataOwnerId: String,
+		messages: Array<MessageJs>,
+		options: dynamic,
+	): SortableFilterOptionsJs<DocumentJs> {
+		val _options = options ?: js("{}")
+		val dataOwnerIdConverted: String = dataOwnerId
+		val messagesConverted: List<Message> = arrayToList(
+			messages,
+			"messages",
+			{ x1: MessageJs ->
+				message_fromJs(x1)
+			},
+		)
+		val fromConverted: Instant? = convertingOptionOrDefaultNullable(
+			_options,
+			"from",
+			null
+		) { from: Double? ->
+			numberToInstant(from, "from")
+		}
+		val toConverted: Instant? = convertingOptionOrDefaultNullable(
+			_options,
+			"to",
+			null
+		) { to: Double? ->
+			numberToInstant(to, "to")
+		}
+		val descendingConverted: Boolean = convertingOptionOrDefaultNonNull(
+			_options,
+			"descending",
+			false
+		) { descending: Boolean ->
+			descending
+		}
+		val result = DocumentFilters.byMessagesCreatedForDataOwner(
+			dataOwnerIdConverted,
+			messagesConverted,
+			fromConverted,
+			toConverted,
+			descendingConverted,
+		)
+		return SortableFilterOptionsJsImpl(result)
+	}
+
 	public fun byPatientsCreatedForSelf(patients: Array<PatientJs>, options: dynamic):
 			SortableFilterOptionsJs<DocumentJs> {
 		val _options = options ?: js("{}")
@@ -106,7 +154,47 @@ public object InternalDocumentFiltersObj {
 		return SortableFilterOptionsJsImpl(result)
 	}
 
-	public fun byPatientSecretIdsCreatedForDataOwner(
+	public fun byMessagesCreatedForSelf(messages: Array<MessageJs>, options: dynamic):
+			SortableFilterOptionsJs<DocumentJs> {
+		val _options = options ?: js("{}")
+		val messagesConverted: List<Message> = arrayToList(
+			messages,
+			"messages",
+			{ x1: MessageJs ->
+				message_fromJs(x1)
+			},
+		)
+		val fromConverted: Instant? = convertingOptionOrDefaultNullable(
+			_options,
+			"from",
+			null
+		) { from: Double? ->
+			numberToInstant(from, "from")
+		}
+		val toConverted: Instant? = convertingOptionOrDefaultNullable(
+			_options,
+			"to",
+			null
+		) { to: Double? ->
+			numberToInstant(to, "to")
+		}
+		val descendingConverted: Boolean = convertingOptionOrDefaultNonNull(
+			_options,
+			"descending",
+			false
+		) { descending: Boolean ->
+			descending
+		}
+		val result = DocumentFilters.byMessagesCreatedForSelf(
+			messagesConverted,
+			fromConverted,
+			toConverted,
+			descendingConverted,
+		)
+		return SortableFilterOptionsJsImpl(result)
+	}
+
+	public fun byOwningEntitySecretIdsCreatedForDataOwner(
 		dataOwnerId: String,
 		secretIds: Array<String>,
 		options: dynamic,
@@ -151,7 +239,7 @@ public object InternalDocumentFiltersObj {
 		return BaseSortableFilterOptionsJsImpl(result)
 	}
 
-	public fun byPatientSecretIdsCreatedForSelf(secretIds: Array<String>, options: dynamic):
+	public fun byOwningEntitySecretIdsCreatedForSelf(secretIds: Array<String>, options: dynamic):
 			SortableFilterOptionsJs<DocumentJs> {
 		val _options = options ?: js("{}")
 		val secretIdsConverted: List<String> = arrayToList(
@@ -213,6 +301,28 @@ public object InternalDocumentFiltersObj {
 		return FilterOptionsJsImpl(result)
 	}
 
+	public fun byMessagesAndTypeForDataOwner(
+		dataOwnerId: String,
+		documentType: String,
+		messages: Array<MessageJs>,
+	): FilterOptionsJs<DocumentJs> {
+		val dataOwnerIdConverted: String = dataOwnerId
+		val documentTypeConverted: DocumentType = DocumentType.valueOf(documentType)
+		val messagesConverted: List<Message> = arrayToList(
+			messages,
+			"messages",
+			{ x1: MessageJs ->
+				message_fromJs(x1)
+			},
+		)
+		val result = DocumentFilters.byMessagesAndTypeForDataOwner(
+			dataOwnerIdConverted,
+			documentTypeConverted,
+			messagesConverted,
+		)
+		return FilterOptionsJsImpl(result)
+	}
+
 	public fun byPatientsAndTypeForSelf(documentType: String, patients: Array<PatientJs>):
 			FilterOptionsJs<DocumentJs> {
 		val documentTypeConverted: DocumentType = DocumentType.valueOf(documentType)
@@ -230,7 +340,24 @@ public object InternalDocumentFiltersObj {
 		return FilterOptionsJsImpl(result)
 	}
 
-	public fun byPatientSecretIdsAndTypeForDataOwner(
+	public fun byMessagesAndTypeForSelf(documentType: String, messages: Array<MessageJs>):
+			FilterOptionsJs<DocumentJs> {
+		val documentTypeConverted: DocumentType = DocumentType.valueOf(documentType)
+		val messagesConverted: List<Message> = arrayToList(
+			messages,
+			"messages",
+			{ x1: MessageJs ->
+				message_fromJs(x1)
+			},
+		)
+		val result = DocumentFilters.byMessagesAndTypeForSelf(
+			documentTypeConverted,
+			messagesConverted,
+		)
+		return FilterOptionsJsImpl(result)
+	}
+
+	public fun byOwningEntitySecretIdsAndTypeForDataOwner(
 		dataOwnerId: String,
 		documentType: String,
 		secretIds: Array<String>,
@@ -252,7 +379,7 @@ public object InternalDocumentFiltersObj {
 		return FilterOptionsJsImpl(result)
 	}
 
-	public fun byPatientSecretIdsAndTypeForSelf(documentType: String, secretIds: Array<String>):
+	public fun byOwningEntitySecretIdsAndTypeForSelf(documentType: String, secretIds: Array<String>):
 			FilterOptionsJs<DocumentJs> {
 		val documentTypeConverted: DocumentType = DocumentType.valueOf(documentType)
 		val secretIdsConverted: List<String> = arrayToList(

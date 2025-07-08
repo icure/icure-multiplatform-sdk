@@ -14,8 +14,11 @@ import com.icure.cardinal.sdk.js.model.CheckedConverters.objectToMap
 import com.icure.cardinal.sdk.js.model.CheckedConverters.setToArray
 import com.icure.cardinal.sdk.js.model.CheckedConverters.undefinedToNull
 import com.icure.cardinal.sdk.js.model.base.CodeStubJs
+import com.icure.cardinal.sdk.js.model.base.IdentifierJs
 import com.icure.cardinal.sdk.js.model.base.codeStub_fromJs
 import com.icure.cardinal.sdk.js.model.base.codeStub_toJs
+import com.icure.cardinal.sdk.js.model.base.identifier_fromJs
+import com.icure.cardinal.sdk.js.model.base.identifier_toJs
 import com.icure.cardinal.sdk.js.model.embed.DecryptedInvoicingCodeJs
 import com.icure.cardinal.sdk.js.model.embed.DelegationJs
 import com.icure.cardinal.sdk.js.model.embed.EncryptedInvoicingCodeJs
@@ -36,6 +39,7 @@ import com.icure.cardinal.sdk.model.DecryptedInvoice
 import com.icure.cardinal.sdk.model.EncryptedInvoice
 import com.icure.cardinal.sdk.model.Invoice
 import com.icure.cardinal.sdk.model.base.CodeStub
+import com.icure.cardinal.sdk.model.base.Identifier
 import com.icure.cardinal.sdk.model.embed.DecryptedInvoicingCode
 import com.icure.cardinal.sdk.model.embed.Delegation
 import com.icure.cardinal.sdk.model.embed.EncryptedInvoicingCode
@@ -54,6 +58,12 @@ public fun invoice_toJs(obj: DecryptedInvoice): DecryptedInvoiceJs {
 	val id = obj.id
 	val rev = nullToUndefined(
 		obj.rev
+	)
+	val identifier = listToArray(
+		obj.identifier,
+		{ x1: Identifier ->
+			identifier_toJs(x1)
+		},
 	)
 	val created = nullToUndefined(
 		longToNumber(obj.created)
@@ -344,6 +354,7 @@ public fun invoice_toJs(obj: DecryptedInvoice): DecryptedInvoiceJs {
 	return DecryptedInvoiceJs(js("{" +
 		"id:id," +
 		"rev:rev," +
+		"identifier:identifier," +
 		"created:created," +
 		"modified:modified," +
 		"author:author," +
@@ -420,6 +431,13 @@ public fun invoice_toJs(obj: DecryptedInvoice): DecryptedInvoiceJs {
 public fun invoice_fromJs(obj: DecryptedInvoiceJs): DecryptedInvoice {
 	val id = obj.id
 	val rev = undefinedToNull(obj.rev)
+	val identifier = arrayToList(
+		obj.identifier,
+		"obj.identifier",
+		{ x1: IdentifierJs ->
+			identifier_fromJs(x1)
+		},
+	)
 	val created = numberToLong(obj.created, "obj.created")
 	val modified = numberToLong(obj.modified, "obj.modified")
 	val author = undefinedToNull(obj.author)
@@ -600,6 +618,7 @@ public fun invoice_fromJs(obj: DecryptedInvoiceJs): DecryptedInvoice {
 	return DecryptedInvoice(
 		id = id,
 		rev = rev,
+		identifier = identifier,
 		created = created,
 		modified = modified,
 		author = author,
@@ -678,6 +697,12 @@ public fun invoice_toJs(obj: EncryptedInvoice): EncryptedInvoiceJs {
 	val id = obj.id
 	val rev = nullToUndefined(
 		obj.rev
+	)
+	val identifier = listToArray(
+		obj.identifier,
+		{ x1: Identifier ->
+			identifier_toJs(x1)
+		},
 	)
 	val created = nullToUndefined(
 		longToNumber(obj.created)
@@ -968,6 +993,7 @@ public fun invoice_toJs(obj: EncryptedInvoice): EncryptedInvoiceJs {
 	return EncryptedInvoiceJs(js("{" +
 		"id:id," +
 		"rev:rev," +
+		"identifier:identifier," +
 		"created:created," +
 		"modified:modified," +
 		"author:author," +
@@ -1044,6 +1070,13 @@ public fun invoice_toJs(obj: EncryptedInvoice): EncryptedInvoiceJs {
 public fun invoice_fromJs(obj: EncryptedInvoiceJs): EncryptedInvoice {
 	val id = obj.id
 	val rev = undefinedToNull(obj.rev)
+	val identifier = arrayToList(
+		obj.identifier,
+		"obj.identifier",
+		{ x1: IdentifierJs ->
+			identifier_fromJs(x1)
+		},
+	)
 	val created = numberToLong(obj.created, "obj.created")
 	val modified = numberToLong(obj.modified, "obj.modified")
 	val author = undefinedToNull(obj.author)
@@ -1224,6 +1257,7 @@ public fun invoice_fromJs(obj: EncryptedInvoiceJs): EncryptedInvoice {
 	return EncryptedInvoice(
 		id = id,
 		rev = rev,
+		identifier = identifier,
 		created = created,
 		modified = modified,
 		author = author,

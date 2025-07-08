@@ -8,6 +8,7 @@ import com.icure.cardinal.sdk.js.filters.FilterOptionsJs
 import com.icure.cardinal.sdk.js.filters.SortableFilterOptionsJs
 import com.icure.cardinal.sdk.js.model.DecryptedFormJs
 import com.icure.cardinal.sdk.js.model.EncryptedFormJs
+import com.icure.cardinal.sdk.js.model.EntityReferenceInGroupJs
 import com.icure.cardinal.sdk.js.model.FormJs
 import com.icure.cardinal.sdk.js.model.FormTemplateJs
 import com.icure.cardinal.sdk.js.model.PatientJs
@@ -33,6 +34,7 @@ public external interface FormApiJs {
 	public fun withEncryptionMetadata(
 		base: DecryptedFormJs?,
 		patient: PatientJs,
+		alternateRootDataOwnerReference: EntityReferenceInGroupJs?,
 		options: dynamic,
 	): Promise<DecryptedFormJs>
 

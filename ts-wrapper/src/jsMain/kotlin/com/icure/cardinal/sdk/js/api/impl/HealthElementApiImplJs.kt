@@ -807,6 +807,7 @@ internal class HealthElementApiImplJs(
 			entityGroupId: String,
 			base: DecryptedHealthElementJs?,
 			patient: GroupScopedJs<PatientJs>,
+			alternateRootDataOwnerReference: EntityReferenceInGroupJs?,
 			options: dynamic,
 		): Promise<GroupScopedJs<DecryptedHealthElementJs>> {
 			val _options = options ?: js("{}")
@@ -845,6 +846,10 @@ internal class HealthElementApiImplJs(
 				) { secretId: SecretIdUseOptionJs ->
 					secretIdUseOption_fromJs(secretId)
 				}
+				val alternateRootDataOwnerReferenceConverted: EntityReferenceInGroup? =
+						alternateRootDataOwnerReference?.let { nonNull1 ->
+					entityReferenceInGroup_fromJs(nonNull1)
+				}
 				val result = healthElementApi.inGroup.withEncryptionMetadata(
 					entityGroupIdConverted,
 					baseConverted,
@@ -852,6 +857,7 @@ internal class HealthElementApiImplJs(
 					userConverted,
 					delegatesConverted,
 					secretIdConverted,
+					alternateRootDataOwnerReferenceConverted,
 				)
 				groupScoped_toJs(
 					result,
@@ -1148,6 +1154,7 @@ internal class HealthElementApiImplJs(
 	override fun withEncryptionMetadata(
 		base: DecryptedHealthElementJs?,
 		patient: PatientJs,
+		alternateRootDataOwnerReference: EntityReferenceInGroupJs?,
 		options: dynamic,
 	): Promise<DecryptedHealthElementJs> {
 		val _options = options ?: js("{}")
@@ -1188,12 +1195,17 @@ internal class HealthElementApiImplJs(
 			) { secretId: SecretIdUseOptionJs ->
 				secretIdUseOption_fromJs(secretId)
 			}
+			val alternateRootDataOwnerReferenceConverted: EntityReferenceInGroup? =
+					alternateRootDataOwnerReference?.let { nonNull1 ->
+				entityReferenceInGroup_fromJs(nonNull1)
+			}
 			val result = healthElementApi.withEncryptionMetadata(
-                baseConverted,
-                patientConverted,
-                userConverted,
-                delegatesConverted,
-                secretIdConverted,
+				baseConverted,
+				patientConverted,
+				userConverted,
+				delegatesConverted,
+				secretIdConverted,
+				alternateRootDataOwnerReferenceConverted,
 			)
 			healthElement_toJs(result)
 		}

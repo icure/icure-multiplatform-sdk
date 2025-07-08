@@ -38,6 +38,7 @@ export interface PatientApi {
 	getEncryptionKeysOf(patient: Patient): Promise<Array<HexString>>;
 
 	withEncryptionMetadata(base: DecryptedPatient | undefined,
+			alternateRootDataOwnerReference: EntityReferenceInGroup | undefined,
 			options?: { user?: User | undefined, delegates?: { [ key: string ]: AccessLevel } }): Promise<DecryptedPatient>;
 
 	hasWriteAccess(patient: Patient): Promise<boolean>;

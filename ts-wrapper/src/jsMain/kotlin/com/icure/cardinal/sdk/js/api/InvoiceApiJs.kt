@@ -6,6 +6,7 @@ package com.icure.cardinal.sdk.js.api
 import com.icure.cardinal.sdk.js.crypto.entities.InvoiceShareOptionsJs
 import com.icure.cardinal.sdk.js.model.DecryptedInvoiceJs
 import com.icure.cardinal.sdk.js.model.EncryptedInvoiceJs
+import com.icure.cardinal.sdk.js.model.EntityReferenceInGroupJs
 import com.icure.cardinal.sdk.js.model.InvoiceJs
 import com.icure.cardinal.sdk.js.model.PaginatedListJs
 import com.icure.cardinal.sdk.js.model.PatientJs
@@ -36,6 +37,7 @@ public external interface InvoiceApiJs {
 	public fun withEncryptionMetadata(
 		base: DecryptedInvoiceJs?,
 		patient: PatientJs?,
+		alternateRootDataOwnerReference: EntityReferenceInGroupJs?,
 		options: dynamic,
 	): Promise<DecryptedInvoiceJs>
 

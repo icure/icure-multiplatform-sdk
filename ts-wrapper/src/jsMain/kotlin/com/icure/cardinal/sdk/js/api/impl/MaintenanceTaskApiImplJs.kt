@@ -23,11 +23,13 @@ import com.icure.cardinal.sdk.js.model.CheckedConverters.objectToMap
 import com.icure.cardinal.sdk.js.model.CheckedConverters.setToArray
 import com.icure.cardinal.sdk.js.model.DecryptedMaintenanceTaskJs
 import com.icure.cardinal.sdk.js.model.EncryptedMaintenanceTaskJs
+import com.icure.cardinal.sdk.js.model.EntityReferenceInGroupJs
 import com.icure.cardinal.sdk.js.model.MaintenanceTaskJs
 import com.icure.cardinal.sdk.js.model.StoredDocumentIdentifierJs
 import com.icure.cardinal.sdk.js.model.UserJs
 import com.icure.cardinal.sdk.js.model.couchdb.DocIdentifierJs
 import com.icure.cardinal.sdk.js.model.couchdb.docIdentifier_toJs
+import com.icure.cardinal.sdk.js.model.entityReferenceInGroup_fromJs
 import com.icure.cardinal.sdk.js.model.maintenanceTask_fromJs
 import com.icure.cardinal.sdk.js.model.maintenanceTask_toJs
 import com.icure.cardinal.sdk.js.model.specializations.hexString_toJs
@@ -42,6 +44,7 @@ import com.icure.cardinal.sdk.js.utils.pagination.PaginatedListIteratorJs
 import com.icure.cardinal.sdk.js.utils.pagination.paginatedListIterator_toJs
 import com.icure.cardinal.sdk.model.DecryptedMaintenanceTask
 import com.icure.cardinal.sdk.model.EncryptedMaintenanceTask
+import com.icure.cardinal.sdk.model.EntityReferenceInGroup
 import com.icure.cardinal.sdk.model.MaintenanceTask
 import com.icure.cardinal.sdk.model.StoredDocumentIdentifier
 import com.icure.cardinal.sdk.model.User
@@ -369,8 +372,11 @@ internal class MaintenanceTaskApiImplJs(
 		}
 	}
 
-	override fun withEncryptionMetadata(maintenanceTask: DecryptedMaintenanceTaskJs?,
-			options: dynamic): Promise<DecryptedMaintenanceTaskJs> {
+	override fun withEncryptionMetadata(
+		maintenanceTask: DecryptedMaintenanceTaskJs?,
+		alternateRootDataOwnerReference: EntityReferenceInGroupJs?,
+		options: dynamic,
+	): Promise<DecryptedMaintenanceTaskJs> {
 		val _options = options ?: js("{}")
 		return GlobalScope.promise {
 			val maintenanceTaskConverted: DecryptedMaintenanceTask? = maintenanceTask?.let { nonNull1 ->
@@ -401,10 +407,15 @@ internal class MaintenanceTaskApiImplJs(
 					},
 				)
 			}
+			val alternateRootDataOwnerReferenceConverted: EntityReferenceInGroup? =
+					alternateRootDataOwnerReference?.let { nonNull1 ->
+				entityReferenceInGroup_fromJs(nonNull1)
+			}
 			val result = maintenanceTaskApi.withEncryptionMetadata(
 				maintenanceTaskConverted,
 				userConverted,
 				delegatesConverted,
+				alternateRootDataOwnerReferenceConverted,
 			)
 			maintenanceTask_toJs(result)
 		}
