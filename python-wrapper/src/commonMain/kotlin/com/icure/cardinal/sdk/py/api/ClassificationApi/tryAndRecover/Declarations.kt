@@ -245,6 +245,42 @@ public fun filterClassificationsBySortedAsync(
 }.failureToPyResultAsyncCallback(resultCallback)
 
 @Serializable
+private class CreateClassificationParams(
+	public val entity: Classification,
+)
+
+@OptIn(InternalIcureApi::class)
+public fun createClassificationBlocking(sdk: CardinalApis, params: String): String =
+		kotlin.runCatching {
+	val decodedParams = fullLanguageInteropJson.decodeFromString<CreateClassificationParams>(params)
+	runBlocking {
+		sdk.classification.tryAndRecover.createClassification(
+			decodedParams.entity,
+		)
+	}
+}.toPyString(PolymorphicSerializer(Classification::class))
+
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
+public fun createClassificationAsync(
+	sdk: CardinalApis,
+	params: String,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): COpaquePointer? = kotlin.runCatching {
+	val decodedParams = fullLanguageInteropJson.decodeFromString<CreateClassificationParams>(params)
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.classification.tryAndRecover.createClassification(
+				decodedParams.entity,
+			)
+		}.toPyStringAsyncCallback(PolymorphicSerializer(Classification::class), resultCallback)
+	}
+}.failureToPyStringAsyncCallback(resultCallback)
+
+@Serializable
 private class ModifyClassificationParams(
 	public val entity: Classification,
 )

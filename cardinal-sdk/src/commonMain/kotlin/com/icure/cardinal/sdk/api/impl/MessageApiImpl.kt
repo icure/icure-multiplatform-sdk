@@ -202,7 +202,11 @@ private abstract class AbstractMessageFlavouredApi<E : Message>(
 
 	override suspend fun filterMessagesBy(filter: FilterOptions<Message>): PaginatedListIterator<E> =
 		IdsPageIterator(rawApi.matchMessagesBy(
-			mapMessageFilterOptions(filter, config.crypto.dataOwnerApi.getCurrentDataOwnerId(), config.crypto.entity)
+			mapMessageFilterOptions(
+				filterOptions = filter,
+				config = config,
+				requestGroup = null
+			)
 		).successBody(), this::getMessages)
 
 	override suspend fun filterMessagesBySorted(filter: SortableFilterOptions<Message>): PaginatedListIterator<E> =
@@ -220,7 +224,7 @@ private class AbstractMessageBasicFlavourlessApi(val rawApi: RawMessageApi, priv
 	@Deprecated("Deletion without rev is unsafe")
 	override suspend fun deleteMessagesUnsafe(entityIds: List<String>): List<DocIdentifier> =
 		rawApi.deleteMessages(ListOfIds(entityIds)).successBody()
-		
+
 	override suspend fun deleteMessageById(entityId: String, rev: String): DocIdentifier =
 		rawApi.deleteMessage(entityId, rev).successBodyOrThrowRevisionConflict()
 
@@ -315,32 +319,34 @@ internal class MessageApiImpl(
 		user: User?,
 		delegates: Map<String, AccessLevel>,
 		secretId: SecretIdUseOption,
+		alternateRootDataOwnerReference: EntityReferenceInGroup?,
 		// Temporary, needs a lot more stuff to match typescript implementation
 	): DecryptedMessage =
 		config.crypto.entity.entityWithInitializedEncryptedMetadata(
-			null,
-			(base ?: DecryptedMessage(config.crypto.primitives.strongRandom.randomUUID())).copy(
-				created = base?.created ?: currentEpochMs(),
-				modified = base?.modified ?: currentEpochMs(),
-				responsible = base?.responsible ?: user?.takeIf { config.autofillAuthor }?.dataOwnerId,
-				author = base?.author ?: user?.id?.takeIf { config.autofillAuthor },
-			),
-			EntityWithEncryptionMetadataTypeName.Message,
-			patient?.let {
-				OwningEntityDetails(
-					null,
-					it.id,
-					config.crypto.entity.resolveSecretIdOption(
-						null,
-						it,
-						EntityWithEncryptionMetadataTypeName.Patient,
-						secretId
-					)
-				)
-			},
-			initializeEncryptionKey = true,
-			autoDelegations = (delegates + user?.autoDelegationsFor(DelegationTag.MedicalInformation)
-				.orEmpty()).keyAsLocalDataOwnerReferences(),
+            null,
+            (base ?: DecryptedMessage(config.crypto.primitives.strongRandom.randomUUID())).copy(
+                created = base?.created ?: currentEpochMs(),
+                modified = base?.modified ?: currentEpochMs(),
+                responsible = base?.responsible ?: user?.takeIf { config.autofillAuthor }?.dataOwnerId,
+                author = base?.author ?: user?.id?.takeIf { config.autofillAuthor },
+            ),
+            EntityWithEncryptionMetadataTypeName.Message,
+            patient?.let {
+                OwningEntityDetails(
+                    null,
+                    it.id,
+                    config.crypto.entity.resolveSecretIdOption(
+                        null,
+                        it,
+                        EntityWithEncryptionMetadataTypeName.Patient,
+                        secretId
+                    )
+                )
+            },
+            initializeEncryptionKey = true,
+            autoDelegations = (delegates + user?.autoDelegationsFor(DelegationTag.MedicalInformation)
+                .orEmpty()).keyAsLocalDataOwnerReferences(),
+			alternateRootDataOwnerReference = alternateRootDataOwnerReference,
 		).updatedEntity
 
 	override suspend fun getEncryptionKeysOf(message: Message): Set<HexString> =
@@ -397,7 +403,11 @@ internal class MessageApiImpl(
 			clientJson = config.rawApiConfig.json,
 			entitySerializer = EncryptedMessage.serializer(),
 			events = events,
-			filter = mapMessageFilterOptions(filter, config.crypto.dataOwnerApi.getCurrentDataOwnerId(), config.crypto.entity),
+			filter = mapMessageFilterOptions(
+				filterOptions = filter,
+				config = config,
+				requestGroup = null
+			),
 			qualifiedName = Message.KRAKEN_QUALIFIED_NAME,
 			subscriptionRequestSerializer = {
 				Serialization.json.encodeToString(SubscriptionSerializer(MessageAbstractFilterSerializer), it)
@@ -408,7 +418,11 @@ internal class MessageApiImpl(
 	}
 
 	override suspend fun matchMessagesBy(filter: FilterOptions<Message>): List<String> =
-		rawApi.matchMessagesBy(mapMessageFilterOptions(filter, config.crypto.dataOwnerApi.getCurrentDataOwnerId(), config.crypto.entity)).successBody()
+		rawApi.matchMessagesBy(mapMessageFilterOptions(
+			filterOptions = filter,
+			config = config,
+			requestGroup = null
+		)).successBody()
 
 	override suspend fun matchMessagesBySorted(filter: SortableFilterOptions<Message>): List<String> =
 		matchMessagesBy(filter)
@@ -433,7 +447,13 @@ internal class MessageBasicApiImpl(
 		entities
 }, MessageBasicFlavourlessApi by AbstractMessageBasicFlavourlessApi(rawApi, config) {
 	override suspend fun matchMessagesBy(filter: BaseFilterOptions<Message>): List<String> =
-		rawApi.matchMessagesBy(mapMessageFilterOptions(filter, null, null)).successBody()
+		rawApi.matchMessagesBy(
+			mapMessageFilterOptions(
+				filterOptions = filter,
+				config = config,
+				requestGroup = null
+			)
+		).successBody()
 
 	override suspend fun matchMessagesBySorted(filter: BaseSortableFilterOptions<Message>): List<String> =
 		matchMessagesBy(filter)
@@ -456,7 +476,11 @@ internal class MessageBasicApiImpl(
 			clientJson = config.rawApiConfig.json,
 			entitySerializer = EncryptedMessage.serializer(),
 			events = events,
-			filter = mapMessageFilterOptions(filter, null, null),
+			filter = mapMessageFilterOptions(
+				filterOptions = filter,
+				config = config,
+				requestGroup = null
+			),
 			qualifiedName = Message.KRAKEN_QUALIFIED_NAME,
 			subscriptionRequestSerializer = {
 				Serialization.json.encodeToString(SubscriptionSerializer(MessageAbstractFilterSerializer), it)

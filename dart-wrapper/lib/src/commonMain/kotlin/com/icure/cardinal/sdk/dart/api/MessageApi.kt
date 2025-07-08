@@ -10,6 +10,7 @@ import com.icure.cardinal.sdk.filters.FilterOptions
 import com.icure.cardinal.sdk.filters.SortableFilterOptions
 import com.icure.cardinal.sdk.model.DecryptedMessage
 import com.icure.cardinal.sdk.model.EncryptedMessage
+import com.icure.cardinal.sdk.model.EntityReferenceInGroup
 import com.icure.cardinal.sdk.model.Message
 import com.icure.cardinal.sdk.model.Patient
 import com.icure.cardinal.sdk.model.StoredDocumentIdentifier
@@ -223,6 +224,29 @@ public object MessageApi {
       dartResultCallback,
       PolymorphicSerializer(Message::class)) {
       NativeReferences.get<CardinalApis>(sdkId).message.tryDecrypt(
+        message,
+      )
+    }
+  }
+
+  public fun getSecretIdsOf(
+    dartResultCallback: (
+      String?,
+      String?,
+      String?,
+      String?,
+    ) -> Unit,
+    sdkId: String,
+    messageString: String,
+  ) {
+    val message = fullLanguageInteropJson.decodeFromString(
+      PolymorphicSerializer(Message::class),
+      messageString
+    )
+    ApiScope.execute(
+      dartResultCallback,
+      MapSerializer(String.serializer(), SetSerializer(EntityReferenceInGroup.serializer()))) {
+      NativeReferences.get<CardinalApis>(sdkId).message.getSecretIdsOf(
         message,
       )
     }

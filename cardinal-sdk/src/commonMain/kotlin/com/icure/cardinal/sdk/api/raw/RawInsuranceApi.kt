@@ -34,4 +34,22 @@ public interface RawInsuranceApi {
 
 	suspend fun modifyInsurance(insuranceDto: Insurance): HttpResponse<Insurance>
 	// endregion
+
+	// region cloud endpoints
+
+	suspend fun createInsurancesInGroup(
+		groupId: String,
+		insuranceBatch: List<Insurance>,
+	): HttpResponse<List<Insurance>>
+
+	suspend fun getInsurancesInGroup(
+		groupId: String,
+		insuranceIds: String,
+	): HttpResponse<List<Insurance>>
+
+	suspend fun modifyInsurancesInGroup(
+		groupId: String,
+		insuranceBatch: List<Insurance>,
+	): HttpResponse<List<Insurance>>
+	// endregion
 }

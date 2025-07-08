@@ -5,9 +5,9 @@ import com.icure.cardinal.sdk.CardinalBaseApis
 import com.icure.cardinal.sdk.filters.BaseFilterOptions
 import com.icure.cardinal.sdk.filters.BaseSortableFilterOptions
 import com.icure.cardinal.sdk.model.EncryptedMessage
-import com.icure.cardinal.sdk.model.StoredDocumentIdentifier
 import com.icure.cardinal.sdk.model.Message
 import com.icure.cardinal.sdk.model.PaginatedList
+import com.icure.cardinal.sdk.model.StoredDocumentIdentifier
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.py.utils.PyResult
 import com.icure.cardinal.sdk.py.utils.failureToPyResultAsyncCallback
@@ -483,6 +483,78 @@ public fun purgeMessageAsync(
 				decodedParams.message,
 			)
 		}.toPyStringAsyncCallback(Unit.serializer(), resultCallback)
+	}
+}.failureToPyStringAsyncCallback(resultCallback)
+
+@Serializable
+private class CreateMessageParams(
+	public val entity: EncryptedMessage,
+)
+
+@OptIn(InternalIcureApi::class)
+public fun createMessageBlocking(sdk: CardinalBaseApis, params: String): String =
+		kotlin.runCatching {
+	val decodedParams = fullLanguageInteropJson.decodeFromString<CreateMessageParams>(params)
+	runBlocking {
+		sdk.message.createMessage(
+			decodedParams.entity,
+		)
+	}
+}.toPyString(EncryptedMessage.serializer())
+
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
+public fun createMessageAsync(
+	sdk: CardinalBaseApis,
+	params: String,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): COpaquePointer? = kotlin.runCatching {
+	val decodedParams = fullLanguageInteropJson.decodeFromString<CreateMessageParams>(params)
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.message.createMessage(
+				decodedParams.entity,
+			)
+		}.toPyStringAsyncCallback(EncryptedMessage.serializer(), resultCallback)
+	}
+}.failureToPyStringAsyncCallback(resultCallback)
+
+@Serializable
+private class CreateMessageInTopicParams(
+	public val entity: EncryptedMessage,
+)
+
+@OptIn(InternalIcureApi::class)
+public fun createMessageInTopicBlocking(sdk: CardinalBaseApis, params: String): String =
+		kotlin.runCatching {
+	val decodedParams = fullLanguageInteropJson.decodeFromString<CreateMessageInTopicParams>(params)
+	runBlocking {
+		sdk.message.createMessageInTopic(
+			decodedParams.entity,
+		)
+	}
+}.toPyString(EncryptedMessage.serializer())
+
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
+public fun createMessageInTopicAsync(
+	sdk: CardinalBaseApis,
+	params: String,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): COpaquePointer? = kotlin.runCatching {
+	val decodedParams = fullLanguageInteropJson.decodeFromString<CreateMessageInTopicParams>(params)
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.message.createMessageInTopic(
+				decodedParams.entity,
+			)
+		}.toPyStringAsyncCallback(EncryptedMessage.serializer(), resultCallback)
 	}
 }.failureToPyStringAsyncCallback(resultCallback)
 

@@ -5,7 +5,7 @@ from cardinal_sdk.model.CallResult import create_result_from_json, interpret_kt_
 from ctypes import cast, c_char_p
 from cardinal_sdk.filters.FilterOptions import BaseFilterOptions, FilterOptions, SortableFilterOptions, BaseSortableFilterOptions
 from cardinal_sdk.model import Contact, Patient, serialize_patient, Identifier
-from typing import List, Optional
+from typing import Optional
 
 
 class ContactFilters:
@@ -39,7 +39,7 @@ class ContactFilters:
 			return return_value
 
 	@classmethod
-	def by_form_ids_for_data_owner(cls, data_owner_id: str, form_ids: List[str]) -> BaseFilterOptions[Contact]:
+	def by_form_ids_for_data_owner(cls, data_owner_id: str, form_ids: set[str]) -> BaseFilterOptions[Contact]:
 		payload = {
 			"dataOwnerId": data_owner_id,
 			"formIds": [x0 for x0 in form_ids],
@@ -56,7 +56,7 @@ class ContactFilters:
 			return return_value
 
 	@classmethod
-	def by_form_ids_for_self(cls, form_ids: List[str]) -> FilterOptions[Contact]:
+	def by_form_ids_for_self(cls, form_ids: set[str]) -> FilterOptions[Contact]:
 		payload = {
 			"formIds": [x0 for x0 in form_ids],
 		}
@@ -72,7 +72,7 @@ class ContactFilters:
 			return return_value
 
 	@classmethod
-	def by_patients_opening_date_for_data_owner(cls, data_owner_id: str, patients: List[Patient], from_: Optional[int] = None, to: Optional[int] = None, descending: bool = False) -> SortableFilterOptions[Contact]:
+	def by_patients_opening_date_for_data_owner(cls, data_owner_id: str, patients: list[Patient], from_: Optional[int] = None, to: Optional[int] = None, descending: bool = False) -> SortableFilterOptions[Contact]:
 		payload = {
 			"dataOwnerId": data_owner_id,
 			"patients": [serialize_patient(x0) for x0 in patients],
@@ -92,7 +92,7 @@ class ContactFilters:
 			return return_value
 
 	@classmethod
-	def by_patients_opening_date_for_self(cls, patients: List[Patient], from_: Optional[int] = None, to: Optional[int] = None, descending: bool = False) -> SortableFilterOptions[Contact]:
+	def by_patients_opening_date_for_self(cls, patients: list[Patient], from_: Optional[int] = None, to: Optional[int] = None, descending: bool = False) -> SortableFilterOptions[Contact]:
 		payload = {
 			"patients": [serialize_patient(x0) for x0 in patients],
 			"from": from_,
@@ -111,7 +111,7 @@ class ContactFilters:
 			return return_value
 
 	@classmethod
-	def by_patient_secret_ids_opening_date_for_data_owner(cls, data_owner_id: str, secret_ids: List[str], from_: Optional[int] = None, to: Optional[int] = None, descending: bool = False) -> BaseSortableFilterOptions[Contact]:
+	def by_patient_secret_ids_opening_date_for_data_owner(cls, data_owner_id: str, secret_ids: list[str], from_: Optional[int] = None, to: Optional[int] = None, descending: bool = False) -> BaseSortableFilterOptions[Contact]:
 		payload = {
 			"dataOwnerId": data_owner_id,
 			"secretIds": [x0 for x0 in secret_ids],
@@ -131,7 +131,7 @@ class ContactFilters:
 			return return_value
 
 	@classmethod
-	def by_patient_secret_ids_opening_date_for_self(cls, secret_ids: List[str], from_: Optional[int] = None, to: Optional[int] = None, descending: bool = False) -> SortableFilterOptions[Contact]:
+	def by_patient_secret_ids_opening_date_for_self(cls, secret_ids: list[str], from_: Optional[int] = None, to: Optional[int] = None, descending: bool = False) -> SortableFilterOptions[Contact]:
 		payload = {
 			"secretIds": [x0 for x0 in secret_ids],
 			"from": from_,
@@ -166,7 +166,7 @@ class ContactFilters:
 			return return_value
 
 	@classmethod
-	def by_identifiers_for_self(cls, identifiers: List[Identifier]) -> SortableFilterOptions[Contact]:
+	def by_identifiers_for_self(cls, identifiers: list[Identifier]) -> SortableFilterOptions[Contact]:
 		payload = {
 			"identifiers": [x0.__serialize__() for x0 in identifiers],
 		}
@@ -182,7 +182,7 @@ class ContactFilters:
 			return return_value
 
 	@classmethod
-	def by_identifiers_for_data_owner(cls, data_owner_id: str, identifiers: List[Identifier]) -> BaseSortableFilterOptions[Contact]:
+	def by_identifiers_for_data_owner(cls, data_owner_id: str, identifiers: list[Identifier]) -> BaseSortableFilterOptions[Contact]:
 		payload = {
 			"dataOwnerId": data_owner_id,
 			"identifiers": [x0.__serialize__() for x0 in identifiers],
@@ -384,7 +384,7 @@ class ContactFilters:
 			return return_value
 
 	@classmethod
-	def by_patients_for_data_owner(cls, data_owner_id: str, patients: List[Patient]) -> SortableFilterOptions[Contact]:
+	def by_patients_for_data_owner(cls, data_owner_id: str, patients: list[Patient]) -> SortableFilterOptions[Contact]:
 		payload = {
 			"dataOwnerId": data_owner_id,
 			"patients": [serialize_patient(x0) for x0 in patients],
@@ -401,7 +401,7 @@ class ContactFilters:
 			return return_value
 
 	@classmethod
-	def by_patients_for_self(cls, patients: List[Patient]) -> SortableFilterOptions[Contact]:
+	def by_patients_for_self(cls, patients: list[Patient]) -> SortableFilterOptions[Contact]:
 		payload = {
 			"patients": [serialize_patient(x0) for x0 in patients],
 		}
@@ -417,7 +417,7 @@ class ContactFilters:
 			return return_value
 
 	@classmethod
-	def by_patients_secret_ids_for_data_owner(cls, data_owner_id: str, secret_ids: List[str]) -> BaseSortableFilterOptions[Contact]:
+	def by_patients_secret_ids_for_data_owner(cls, data_owner_id: str, secret_ids: list[str]) -> BaseSortableFilterOptions[Contact]:
 		payload = {
 			"dataOwnerId": data_owner_id,
 			"secretIds": [x0 for x0 in secret_ids],
@@ -434,7 +434,7 @@ class ContactFilters:
 			return return_value
 
 	@classmethod
-	def by_patients_secret_ids_for_self(cls, secret_ids: List[str]) -> SortableFilterOptions[Contact]:
+	def by_patients_secret_ids_for_self(cls, secret_ids: list[str]) -> SortableFilterOptions[Contact]:
 		payload = {
 			"secretIds": [x0 for x0 in secret_ids],
 		}
@@ -450,7 +450,7 @@ class ContactFilters:
 			return return_value
 
 	@classmethod
-	def by_service_ids(cls, service_ids: List[str]) -> BaseSortableFilterOptions[Contact]:
+	def by_service_ids(cls, service_ids: list[str]) -> BaseSortableFilterOptions[Contact]:
 		payload = {
 			"serviceIds": [x0 for x0 in service_ids],
 		}

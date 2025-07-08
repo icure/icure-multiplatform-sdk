@@ -7,7 +7,6 @@ import com.icure.cardinal.sdk.filters.BaseSortableFilterOptions
 import com.icure.cardinal.sdk.model.EncryptedHealthElement
 import com.icure.cardinal.sdk.model.HealthElement
 import com.icure.cardinal.sdk.model.StoredDocumentIdentifier
-import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.py.utils.PyResult
 import com.icure.cardinal.sdk.py.utils.failureToPyResultAsyncCallback
 import com.icure.cardinal.sdk.py.utils.failureToPyStringAsyncCallback
@@ -205,7 +204,7 @@ public fun deleteHealthElementUnsafeBlocking(sdk: CardinalBaseApis, params: Stri
 			decodedParams.entityId,
 		)
 	}
-}.toPyString(DocIdentifier.serializer())
+}.toPyString(StoredDocumentIdentifier.serializer())
 
 @OptIn(
 	ExperimentalForeignApi::class,
@@ -224,7 +223,7 @@ public fun deleteHealthElementUnsafeAsync(
 			sdk.healthElement.deleteHealthElementUnsafe(
 				decodedParams.entityId,
 			)
-		}.toPyStringAsyncCallback(DocIdentifier.serializer(), resultCallback)
+		}.toPyStringAsyncCallback(StoredDocumentIdentifier.serializer(), resultCallback)
 	}
 }.failureToPyStringAsyncCallback(resultCallback)
 
@@ -243,7 +242,7 @@ public fun deleteHealthElementsUnsafeBlocking(sdk: CardinalBaseApis, params: Str
 			decodedParams.entityIds,
 		)
 	}
-}.toPyString(ListSerializer(DocIdentifier.serializer()))
+}.toPyString(ListSerializer(StoredDocumentIdentifier.serializer()))
 
 @OptIn(
 	ExperimentalForeignApi::class,
@@ -262,14 +261,14 @@ public fun deleteHealthElementsUnsafeAsync(
 			sdk.healthElement.deleteHealthElementsUnsafe(
 				decodedParams.entityIds,
 			)
-		}.toPyStringAsyncCallback(ListSerializer(DocIdentifier.serializer()), resultCallback)
+		}.toPyStringAsyncCallback(ListSerializer(StoredDocumentIdentifier.serializer()), resultCallback)
 	}
 }.failureToPyStringAsyncCallback(resultCallback)
 
 @Serializable
 private class DeleteHealthElementByIdParams(
 	public val entityId: String,
-	public val rev: String?,
+	public val rev: String,
 )
 
 @OptIn(InternalIcureApi::class)
@@ -282,7 +281,7 @@ public fun deleteHealthElementByIdBlocking(sdk: CardinalBaseApis, params: String
 			decodedParams.rev,
 		)
 	}
-}.toPyString(DocIdentifier.serializer())
+}.toPyString(StoredDocumentIdentifier.serializer())
 
 @OptIn(
 	ExperimentalForeignApi::class,
@@ -301,7 +300,7 @@ public fun deleteHealthElementByIdAsync(
 				decodedParams.entityId,
 				decodedParams.rev,
 			)
-		}.toPyStringAsyncCallback(DocIdentifier.serializer(), resultCallback)
+		}.toPyStringAsyncCallback(StoredDocumentIdentifier.serializer(), resultCallback)
 	}
 }.failureToPyStringAsyncCallback(resultCallback)
 
@@ -320,7 +319,7 @@ public fun deleteHealthElementsByIdsBlocking(sdk: CardinalBaseApis, params: Stri
 			decodedParams.entityIds,
 		)
 	}
-}.toPyString(ListSerializer(DocIdentifier.serializer()))
+}.toPyString(ListSerializer(StoredDocumentIdentifier.serializer()))
 
 @OptIn(
 	ExperimentalForeignApi::class,
@@ -339,7 +338,7 @@ public fun deleteHealthElementsByIdsAsync(
 			sdk.healthElement.deleteHealthElementsByIds(
 				decodedParams.entityIds,
 			)
-		}.toPyStringAsyncCallback(ListSerializer(DocIdentifier.serializer()), resultCallback)
+		}.toPyStringAsyncCallback(ListSerializer(StoredDocumentIdentifier.serializer()), resultCallback)
 	}
 }.failureToPyStringAsyncCallback(resultCallback)
 
@@ -396,7 +395,7 @@ public fun deleteHealthElementBlocking(sdk: CardinalBaseApis, params: String): S
 			decodedParams.healthElement,
 		)
 	}
-}.toPyString(DocIdentifier.serializer())
+}.toPyString(StoredDocumentIdentifier.serializer())
 
 @OptIn(
 	ExperimentalForeignApi::class,
@@ -414,7 +413,7 @@ public fun deleteHealthElementAsync(
 			sdk.healthElement.deleteHealthElement(
 				decodedParams.healthElement,
 			)
-		}.toPyStringAsyncCallback(DocIdentifier.serializer(), resultCallback)
+		}.toPyStringAsyncCallback(StoredDocumentIdentifier.serializer(), resultCallback)
 	}
 }.failureToPyStringAsyncCallback(resultCallback)
 
@@ -432,7 +431,7 @@ public fun deleteHealthElementsBlocking(sdk: CardinalBaseApis, params: String): 
 			decodedParams.healthElements,
 		)
 	}
-}.toPyString(ListSerializer(DocIdentifier.serializer()))
+}.toPyString(ListSerializer(StoredDocumentIdentifier.serializer()))
 
 @OptIn(
 	ExperimentalForeignApi::class,
@@ -450,7 +449,7 @@ public fun deleteHealthElementsAsync(
 			sdk.healthElement.deleteHealthElements(
 				decodedParams.healthElements,
 			)
-		}.toPyStringAsyncCallback(ListSerializer(DocIdentifier.serializer()), resultCallback)
+		}.toPyStringAsyncCallback(ListSerializer(StoredDocumentIdentifier.serializer()), resultCallback)
 	}
 }.failureToPyStringAsyncCallback(resultCallback)
 
@@ -487,6 +486,78 @@ public fun purgeHealthElementAsync(
 				decodedParams.healthElement,
 			)
 		}.toPyStringAsyncCallback(Unit.serializer(), resultCallback)
+	}
+}.failureToPyStringAsyncCallback(resultCallback)
+
+@Serializable
+private class CreateHealthElementParams(
+	public val entity: EncryptedHealthElement,
+)
+
+@OptIn(InternalIcureApi::class)
+public fun createHealthElementBlocking(sdk: CardinalBaseApis, params: String): String =
+		kotlin.runCatching {
+	val decodedParams = fullLanguageInteropJson.decodeFromString<CreateHealthElementParams>(params)
+	runBlocking {
+		sdk.healthElement.createHealthElement(
+			decodedParams.entity,
+		)
+	}
+}.toPyString(EncryptedHealthElement.serializer())
+
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
+public fun createHealthElementAsync(
+	sdk: CardinalBaseApis,
+	params: String,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): COpaquePointer? = kotlin.runCatching {
+	val decodedParams = fullLanguageInteropJson.decodeFromString<CreateHealthElementParams>(params)
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.healthElement.createHealthElement(
+				decodedParams.entity,
+			)
+		}.toPyStringAsyncCallback(EncryptedHealthElement.serializer(), resultCallback)
+	}
+}.failureToPyStringAsyncCallback(resultCallback)
+
+@Serializable
+private class CreateHealthElementsParams(
+	public val entities: List<EncryptedHealthElement>,
+)
+
+@OptIn(InternalIcureApi::class)
+public fun createHealthElementsBlocking(sdk: CardinalBaseApis, params: String): String =
+		kotlin.runCatching {
+	val decodedParams = fullLanguageInteropJson.decodeFromString<CreateHealthElementsParams>(params)
+	runBlocking {
+		sdk.healthElement.createHealthElements(
+			decodedParams.entities,
+		)
+	}
+}.toPyString(ListSerializer(EncryptedHealthElement.serializer()))
+
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
+public fun createHealthElementsAsync(
+	sdk: CardinalBaseApis,
+	params: String,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): COpaquePointer? = kotlin.runCatching {
+	val decodedParams = fullLanguageInteropJson.decodeFromString<CreateHealthElementsParams>(params)
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.healthElement.createHealthElements(
+				decodedParams.entities,
+			)
+		}.toPyStringAsyncCallback(ListSerializer(EncryptedHealthElement.serializer()), resultCallback)
 	}
 }.failureToPyStringAsyncCallback(resultCallback)
 

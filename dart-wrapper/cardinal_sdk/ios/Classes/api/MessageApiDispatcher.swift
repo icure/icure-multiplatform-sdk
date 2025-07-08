@@ -21,6 +21,7 @@ class MessageApiDispatcher {
     case "createDelegationDeAnonymizationMetadata": createDelegationDeAnonymizationMetadata(parameters: parameters, resultCallback: resultCallback)
     case "decrypt": decrypt(parameters: parameters, resultCallback: resultCallback)
     case "tryDecrypt": tryDecrypt(parameters: parameters, resultCallback: resultCallback)
+    case "getSecretIdsOf": getSecretIdsOf(parameters: parameters, resultCallback: resultCallback)
     case "matchMessagesBy": matchMessagesBy(parameters: parameters, resultCallback: resultCallback)
     case "matchMessagesBySorted": matchMessagesBySorted(parameters: parameters, resultCallback: resultCallback)
     case "deleteMessageById": deleteMessageById(parameters: parameters, resultCallback: resultCallback)
@@ -161,6 +162,19 @@ class MessageApiDispatcher {
     String?
   ) -> Void) {
     MessageApi.shared.tryDecrypt(
+    	dartResultCallback: resultCallback,
+    	sdkId: parameters["sdkId"]!,
+    	messageString: parameters["message"]!
+    )
+  }
+
+  private static func getSecretIdsOf(parameters: [String : String], resultCallback: @escaping (
+    String?,
+    String?,
+    String?,
+    String?
+  ) -> Void) {
+    MessageApi.shared.getSecretIdsOf(
     	dartResultCallback: resultCallback,
     	sdkId: parameters["sdkId"]!,
     	messageString: parameters["message"]!

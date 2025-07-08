@@ -29,7 +29,7 @@ interface HealthElementBasicFlavourlessApi  {
 	suspend fun deleteHealthElementUnsafe(entityId: String): StoredDocumentIdentifier
 	@Deprecated("Deletion without rev is unsafe")
 	suspend fun deleteHealthElementsUnsafe(entityIds: List<String>): List<StoredDocumentIdentifier>
-	
+
 	/**
 	 * Deletes a healthElement. If you don't have write access to the healthElement the method will fail.
 	 * @param entityId id of the healthElement.
@@ -101,7 +101,7 @@ interface HealthElementBasicFlavourlessInGroupApi  {
 	 * In-group version of [HealthElementBasicFlavourlessApi.purgeHealthElementById]
 	 */
 	// TODO suspend fun purgeHealthElementById(entityId: GroupScoped<StoredDocumentIdentifier>)
-	
+
 	/**
 	 * In-group version of [HealthElementBasicFlavourlessApi.deleteHealthElement]
 	 */
@@ -383,6 +383,7 @@ interface HealthElementApi : HealthElementBasicFlavourlessApi, HealthElementFlav
 		delegates: Map<String, AccessLevel> = emptyMap(),
 		@DefaultValue("com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption.UseAnySharedWithParent")
 		secretId: SecretIdUseOption = SecretIdUseOption.UseAnySharedWithParent,
+		alternateRootDataOwnerReference: EntityReferenceInGroup? = null,
 	): DecryptedHealthElement
 
 	/**
@@ -473,7 +474,7 @@ interface HealthElementApi : HealthElementBasicFlavourlessApi, HealthElementFlav
 	 * respect the manifest.
 	 */
 	suspend fun encryptOrValidate(healthElements: List<HealthElement>): List<EncryptedHealthElement>
-	
+
 	/**
 	 * Get the ids of all health elements matching the provided filter.
 	 *
@@ -523,6 +524,7 @@ interface HealthElementInGroupApi : HealthElementBasicFlavourlessInGroupApi, Hea
 		delegates: @JsMapAsObjectArray(keyEntryName = "delegate", valueEntryName = "accessLevel") Map<EntityReferenceInGroup, AccessLevel> = emptyMap(),
 		@DefaultValue("com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption.UseAnySharedWithParent")
 		secretId: SecretIdUseOption = SecretIdUseOption.UseAnySharedWithParent,
+		alternateRootDataOwnerReference: EntityReferenceInGroup? = null,
 	): GroupScoped<DecryptedHealthElement>
 
 	/**

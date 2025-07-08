@@ -1,11 +1,11 @@
 # auto-generated file
 import json
-from cardinal_sdk.model import Insurance, DocIdentifier
 from cardinal_sdk.async_utils import execute_async_method_job
 from cardinal_sdk.kotlin_types import symbols
+from typing import Optional
+from cardinal_sdk.model import Insurance, DocIdentifier
 from cardinal_sdk.model.CallResult import create_result_from_json, interpret_kt_error
 from ctypes import cast, c_char_p
-from typing import List
 
 
 class InsuranceApi:
@@ -13,9 +13,9 @@ class InsuranceApi:
 	def __init__(self, cardinal_sdk):
 		self.cardinal_sdk = cardinal_sdk
 
-	async def get_insurance_async(self, insurance_id: str) -> Insurance:
+	async def get_insurance_async(self, insurance_id: str) -> Optional[Insurance]:
 		def do_decode(raw_result):
-			return Insurance._deserialize(raw_result)
+			return Insurance._deserialize(raw_result) if raw_result is not None else None
 		payload = {
 			"insuranceId": insurance_id,
 		}
@@ -28,7 +28,7 @@ class InsuranceApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def get_insurance_blocking(self, insurance_id: str) -> Insurance:
+	def get_insurance_blocking(self, insurance_id: str) -> Optional[Insurance]:
 		payload = {
 			"insuranceId": insurance_id,
 		}
@@ -41,10 +41,10 @@ class InsuranceApi:
 		if result_info.failure is not None:
 			raise interpret_kt_error(result_info.failure)
 		else:
-			return_value = Insurance._deserialize(result_info.success)
+			return_value = Insurance._deserialize(result_info.success) if result_info.success is not None else None
 			return return_value
 
-	async def get_insurances_async(self, insurance_ids: List[str]) -> List[Insurance]:
+	async def get_insurances_async(self, insurance_ids: list[str]) -> list[Insurance]:
 		def do_decode(raw_result):
 			return [Insurance._deserialize(x1) for x1 in raw_result]
 		payload = {
@@ -59,7 +59,7 @@ class InsuranceApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def get_insurances_blocking(self, insurance_ids: List[str]) -> List[Insurance]:
+	def get_insurances_blocking(self, insurance_ids: list[str]) -> list[Insurance]:
 		payload = {
 			"insuranceIds": [x0 for x0 in insurance_ids],
 		}
@@ -137,7 +137,7 @@ class InsuranceApi:
 			return_value = DocIdentifier._deserialize(result_info.success)
 			return return_value
 
-	async def list_insurances_by_code_async(self, insurance_code: str) -> List[Insurance]:
+	async def list_insurances_by_code_async(self, insurance_code: str) -> list[Insurance]:
 		def do_decode(raw_result):
 			return [Insurance._deserialize(x1) for x1 in raw_result]
 		payload = {
@@ -152,7 +152,7 @@ class InsuranceApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def list_insurances_by_code_blocking(self, insurance_code: str) -> List[Insurance]:
+	def list_insurances_by_code_blocking(self, insurance_code: str) -> list[Insurance]:
 		payload = {
 			"insuranceCode": insurance_code,
 		}
@@ -168,7 +168,7 @@ class InsuranceApi:
 			return_value = [Insurance._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
-	async def list_insurances_by_name_async(self, insurance_name: str) -> List[Insurance]:
+	async def list_insurances_by_name_async(self, insurance_name: str) -> list[Insurance]:
 		def do_decode(raw_result):
 			return [Insurance._deserialize(x1) for x1 in raw_result]
 		payload = {
@@ -183,7 +183,7 @@ class InsuranceApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def list_insurances_by_name_blocking(self, insurance_name: str) -> List[Insurance]:
+	def list_insurances_by_name_blocking(self, insurance_name: str) -> list[Insurance]:
 		payload = {
 			"insuranceName": insurance_name,
 		}

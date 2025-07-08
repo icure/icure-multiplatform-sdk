@@ -5,8 +5,8 @@ import com.icure.cardinal.sdk.CardinalNonCryptoApis
 import com.icure.cardinal.sdk.filters.BaseFilterOptions
 import com.icure.cardinal.sdk.filters.BaseSortableFilterOptions
 import com.icure.cardinal.sdk.model.Agenda
-import com.icure.cardinal.sdk.model.StoredDocumentIdentifier
 import com.icure.cardinal.sdk.model.PaginatedList
+import com.icure.cardinal.sdk.model.StoredDocumentIdentifier
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.py.utils.PyResult
 import com.icure.cardinal.sdk.py.utils.failureToPyResultAsyncCallback
@@ -586,44 +586,6 @@ public fun getAgendasForUserAsync(
 				decodedParams.userId,
 			)
 		}.toPyStringAsyncCallback(Agenda.serializer(), resultCallback)
-	}
-}.failureToPyStringAsyncCallback(resultCallback)
-
-@Serializable
-private class GetReadableAgendasForUserParams(
-	public val userId: String,
-)
-
-@OptIn(InternalIcureApi::class)
-public fun getReadableAgendasForUserBlocking(sdk: CardinalNonCryptoApis, params: String): String =
-		kotlin.runCatching {
-	val decodedParams =
-			fullLanguageInteropJson.decodeFromString<GetReadableAgendasForUserParams>(params)
-	runBlocking {
-		sdk.agenda.getReadableAgendasForUser(
-			decodedParams.userId,
-		)
-	}
-}.toPyString(ListSerializer(Agenda.serializer()))
-
-@OptIn(
-	ExperimentalForeignApi::class,
-	InternalIcureApi::class,
-)
-public fun getReadableAgendasForUserAsync(
-	sdk: CardinalNonCryptoApis,
-	params: String,
-	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
-			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): COpaquePointer? = kotlin.runCatching {
-	val decodedParams =
-			fullLanguageInteropJson.decodeFromString<GetReadableAgendasForUserParams>(params)
-	GlobalScope.launch {
-		kotlin.runCatching {
-			sdk.agenda.getReadableAgendasForUser(
-				decodedParams.userId,
-			)
-		}.toPyStringAsyncCallback(ListSerializer(Agenda.serializer()), resultCallback)
 	}
 }.failureToPyStringAsyncCallback(resultCallback)
 

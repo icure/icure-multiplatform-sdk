@@ -10,8 +10,8 @@ import com.icure.cardinal.sdk.model.DecryptedForm
 import com.icure.cardinal.sdk.model.EncryptedForm
 import com.icure.cardinal.sdk.model.Form
 import com.icure.cardinal.sdk.model.FormTemplate
-import com.icure.cardinal.sdk.model.StoredDocumentIdentifier
 import com.icure.cardinal.sdk.model.Patient
+import com.icure.cardinal.sdk.model.StoredDocumentIdentifier
 import com.icure.cardinal.sdk.model.User
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.model.embed.AccessLevel
@@ -53,76 +53,6 @@ import kotlinx.serialization.builtins.SetSerializer
 import kotlinx.serialization.builtins.serializer
 
 @Serializable
-private class CreateFormParams(
-	public val entity: DecryptedForm,
-)
-
-@OptIn(InternalIcureApi::class)
-public fun createFormBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
-	val decodedParams = fullLanguageInteropJson.decodeFromString<CreateFormParams>(params)
-	runBlocking {
-		sdk.form.createForm(
-			decodedParams.entity,
-		)
-	}
-}.toPyString(DecryptedForm.serializer())
-
-@OptIn(
-	ExperimentalForeignApi::class,
-	InternalIcureApi::class,
-)
-public fun createFormAsync(
-	sdk: CardinalApis,
-	params: String,
-	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
-			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): COpaquePointer? = kotlin.runCatching {
-	val decodedParams = fullLanguageInteropJson.decodeFromString<CreateFormParams>(params)
-	GlobalScope.launch {
-		kotlin.runCatching {
-			sdk.form.createForm(
-				decodedParams.entity,
-			)
-		}.toPyStringAsyncCallback(DecryptedForm.serializer(), resultCallback)
-	}
-}.failureToPyStringAsyncCallback(resultCallback)
-
-@Serializable
-private class CreateFormsParams(
-	public val entities: List<DecryptedForm>,
-)
-
-@OptIn(InternalIcureApi::class)
-public fun createFormsBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
-	val decodedParams = fullLanguageInteropJson.decodeFromString<CreateFormsParams>(params)
-	runBlocking {
-		sdk.form.createForms(
-			decodedParams.entities,
-		)
-	}
-}.toPyString(ListSerializer(DecryptedForm.serializer()))
-
-@OptIn(
-	ExperimentalForeignApi::class,
-	InternalIcureApi::class,
-)
-public fun createFormsAsync(
-	sdk: CardinalApis,
-	params: String,
-	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
-			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): COpaquePointer? = kotlin.runCatching {
-	val decodedParams = fullLanguageInteropJson.decodeFromString<CreateFormsParams>(params)
-	GlobalScope.launch {
-		kotlin.runCatching {
-			sdk.form.createForms(
-				decodedParams.entities,
-			)
-		}.toPyStringAsyncCallback(ListSerializer(DecryptedForm.serializer()), resultCallback)
-	}
-}.failureToPyStringAsyncCallback(resultCallback)
-
-@Serializable
 private class WithEncryptionMetadataParams(
 	public val base: DecryptedForm?,
 	public val patient: Patient,
@@ -138,11 +68,11 @@ public fun withEncryptionMetadataBlocking(sdk: CardinalApis, params: String): St
 	val decodedParams = fullLanguageInteropJson.decodeFromString<WithEncryptionMetadataParams>(params)
 	runBlocking {
 		sdk.form.withEncryptionMetadata(
-			decodedParams.base,
-			decodedParams.patient,
-			decodedParams.user,
-			decodedParams.delegates,
-			decodedParams.secretId,
+            decodedParams.base,
+            decodedParams.patient,
+            decodedParams.user,
+            decodedParams.delegates,
+            decodedParams.secretId,
 		)
 	}
 }.toPyString(DecryptedForm.serializer())
@@ -161,11 +91,11 @@ public fun withEncryptionMetadataAsync(
 	GlobalScope.launch {
 		kotlin.runCatching {
 			sdk.form.withEncryptionMetadata(
-				decodedParams.base,
-				decodedParams.patient,
-				decodedParams.user,
-				decodedParams.delegates,
-				decodedParams.secretId,
+                decodedParams.base,
+                decodedParams.patient,
+                decodedParams.user,
+                decodedParams.delegates,
+                decodedParams.secretId,
 			)
 		}.toPyStringAsyncCallback(DecryptedForm.serializer(), resultCallback)
 	}
@@ -1260,6 +1190,76 @@ public fun filterFormsBySortedAsync(
 			PaginatedListIteratorWithSerializer(it, DecryptedForm.serializer())}
 	}
 }.failureToPyResultAsyncCallback(resultCallback)
+
+@Serializable
+private class CreateFormParams(
+	public val entity: DecryptedForm,
+)
+
+@OptIn(InternalIcureApi::class)
+public fun createFormBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
+	val decodedParams = fullLanguageInteropJson.decodeFromString<CreateFormParams>(params)
+	runBlocking {
+		sdk.form.createForm(
+			decodedParams.entity,
+		)
+	}
+}.toPyString(DecryptedForm.serializer())
+
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
+public fun createFormAsync(
+	sdk: CardinalApis,
+	params: String,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): COpaquePointer? = kotlin.runCatching {
+	val decodedParams = fullLanguageInteropJson.decodeFromString<CreateFormParams>(params)
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.form.createForm(
+				decodedParams.entity,
+			)
+		}.toPyStringAsyncCallback(DecryptedForm.serializer(), resultCallback)
+	}
+}.failureToPyStringAsyncCallback(resultCallback)
+
+@Serializable
+private class CreateFormsParams(
+	public val entities: List<DecryptedForm>,
+)
+
+@OptIn(InternalIcureApi::class)
+public fun createFormsBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
+	val decodedParams = fullLanguageInteropJson.decodeFromString<CreateFormsParams>(params)
+	runBlocking {
+		sdk.form.createForms(
+			decodedParams.entities,
+		)
+	}
+}.toPyString(ListSerializer(DecryptedForm.serializer()))
+
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
+public fun createFormsAsync(
+	sdk: CardinalApis,
+	params: String,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): COpaquePointer? = kotlin.runCatching {
+	val decodedParams = fullLanguageInteropJson.decodeFromString<CreateFormsParams>(params)
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.form.createForms(
+				decodedParams.entities,
+			)
+		}.toPyStringAsyncCallback(ListSerializer(DecryptedForm.serializer()), resultCallback)
+	}
+}.failureToPyStringAsyncCallback(resultCallback)
 
 @Serializable
 private class ModifyFormParams(

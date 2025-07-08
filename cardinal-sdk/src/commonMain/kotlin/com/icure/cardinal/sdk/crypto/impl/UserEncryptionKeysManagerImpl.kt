@@ -259,25 +259,33 @@ private class KeyLoader(
 				is CryptoStrategies.KeyGenerationRequestResult.Use ->
 					newKeyRequest.keyPair
 
+				is CryptoStrategies.KeyGenerationRequestResult.Keyless ->
+					null // Keyless mode, no new key is created.
+
 				CryptoStrategies.KeyGenerationRequestResult.Deny ->
 					throw IllegalStateException("No verified key available for the current data owner and crypto strategies do not allow for the creation of a new key. Aborting api initialisation")
 			}
-			val newKeySpki = cryptoService.rsa.exportSpkiHex(newKey.public)
-			val selfWithNewKey = selfInfo.asStub().let {
-				it.copy(stub = it.stub.copy(publicKeysForOaepWithSha256 = it.stub.publicKeysForOaepWithSha256 + newKeySpki))
-			}
-			dataOwnerApi.modifyDataOwnerStub(selfWithNewKey)
-			icureStorage.saveEncryptionKeypair(selfInfo.dataOwner.id, newKey, true)
-			KeyData(
-				selfInfo.dataOwner.id,
-				fullyRecoveredKeyData.dropLast(1) + fullyRecoveredKeyData.last().copy(
-					second = fullyRecoveredKeyData.last().second + (newKeySpki.fingerprintV2() to CachedKeypairDetails(
-						CardinalKeyInfo(newKeySpki, newKey),
-						isVerified = true,
-						isDevice = true
-					))
-				)
-			) to CardinalKeyInfo(newKeySpki, newKey)
+			newKey?.let { newKey ->
+				val newKeySpki = cryptoService.rsa.exportSpkiHex(newKey.public)
+				val selfWithNewKey = selfInfo.asStub().let {
+					it.copy(stub = it.stub.copy(publicKeysForOaepWithSha256 = it.stub.publicKeysForOaepWithSha256 + newKeySpki))
+				}
+				dataOwnerApi.modifyDataOwnerStub(selfWithNewKey)
+				icureStorage.saveEncryptionKeypair(selfInfo.dataOwner.id, newKey, true)
+				KeyData(
+					selfInfo.dataOwner.id,
+					fullyRecoveredKeyData.dropLast(1) + fullyRecoveredKeyData.last().copy(
+						second = fullyRecoveredKeyData.last().second + (newKeySpki.fingerprintV2() to CachedKeypairDetails(
+							CardinalKeyInfo(newKeySpki, newKey),
+							isVerified = true,
+							isDevice = true
+						))
+					)
+				) to CardinalKeyInfo(newKeySpki, newKey)
+			} ?: (KeyData(
+				hierarchy.last().dataOwner.id,
+				fullyRecoveredKeyData
+			) to null)
 		} else {
 			KeyData(
 				hierarchy.last().dataOwner.id,

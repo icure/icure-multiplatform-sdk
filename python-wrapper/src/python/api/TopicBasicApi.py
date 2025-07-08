@@ -1,13 +1,13 @@
 # auto-generated file
 import json
 from cardinal_sdk.filters.FilterOptions import BaseFilterOptions, BaseSortableFilterOptions
-from cardinal_sdk.model import Topic, EncryptedTopic, DocIdentifier, IdWithMandatoryRev, serialize_topic, deserialize_topic, TopicRole, SubscriptionEventType, EntitySubscriptionConfiguration
+from cardinal_sdk.model import Topic, EncryptedTopic, DocIdentifier, StoredDocumentIdentifier, serialize_topic, deserialize_topic, TopicRole, SubscriptionEventType, EntitySubscriptionConfiguration
 from cardinal_sdk.async_utils import execute_async_method_job
 from cardinal_sdk.kotlin_types import symbols
-from typing import List, Optional
 from cardinal_sdk.model.CallResult import create_result_from_json, interpret_kt_error
 from ctypes import cast, c_char_p
 from cardinal_sdk.pagination.PaginatedListIterator import PaginatedListIterator
+from typing import Optional
 from cardinal_sdk.subscription.EntitySubscription import EntitySubscription
 
 
@@ -16,7 +16,7 @@ class TopicBasicApi:
 	def __init__(self, cardinal_sdk):
 		self.cardinal_sdk = cardinal_sdk
 
-	async def match_topics_by_async(self, filter: BaseFilterOptions[Topic]) -> List[str]:
+	async def match_topics_by_async(self, filter: BaseFilterOptions[Topic]) -> list[str]:
 		def do_decode(raw_result):
 			return [x1 for x1 in raw_result]
 		payload = {
@@ -31,7 +31,7 @@ class TopicBasicApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def match_topics_by_blocking(self, filter: BaseFilterOptions[Topic]) -> List[str]:
+	def match_topics_by_blocking(self, filter: BaseFilterOptions[Topic]) -> list[str]:
 		payload = {
 			"filter": filter.__serialize__(),
 		}
@@ -47,7 +47,7 @@ class TopicBasicApi:
 			return_value = [x1 for x1 in result_info.success]
 			return return_value
 
-	async def match_topics_by_sorted_async(self, filter: BaseSortableFilterOptions[Topic]) -> List[str]:
+	async def match_topics_by_sorted_async(self, filter: BaseSortableFilterOptions[Topic]) -> list[str]:
 		def do_decode(raw_result):
 			return [x1 for x1 in raw_result]
 		payload = {
@@ -62,7 +62,7 @@ class TopicBasicApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def match_topics_by_sorted_blocking(self, filter: BaseSortableFilterOptions[Topic]) -> List[str]:
+	def match_topics_by_sorted_blocking(self, filter: BaseSortableFilterOptions[Topic]) -> list[str]:
 		payload = {
 			"filter": filter.__serialize__(),
 		}
@@ -195,7 +195,7 @@ class TopicBasicApi:
 			return_value = DocIdentifier._deserialize(result_info.success)
 			return return_value
 
-	async def delete_topics_by_ids_async(self, entity_ids: List[IdWithMandatoryRev]) -> List[DocIdentifier]:
+	async def delete_topics_by_ids_async(self, entity_ids: list[StoredDocumentIdentifier]) -> list[DocIdentifier]:
 		def do_decode(raw_result):
 			return [DocIdentifier._deserialize(x1) for x1 in raw_result]
 		payload = {
@@ -210,7 +210,7 @@ class TopicBasicApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def delete_topics_by_ids_blocking(self, entity_ids: List[IdWithMandatoryRev]) -> List[DocIdentifier]:
+	def delete_topics_by_ids_blocking(self, entity_ids: list[StoredDocumentIdentifier]) -> list[DocIdentifier]:
 		payload = {
 			"entityIds": [x0.__serialize__() for x0 in entity_ids],
 		}
@@ -287,7 +287,7 @@ class TopicBasicApi:
 			return_value = DocIdentifier._deserialize(result_info.success)
 			return return_value
 
-	async def delete_topics_async(self, topics: List[Topic]) -> List[DocIdentifier]:
+	async def delete_topics_async(self, topics: list[Topic]) -> list[DocIdentifier]:
 		def do_decode(raw_result):
 			return [DocIdentifier._deserialize(x1) for x1 in raw_result]
 		payload = {
@@ -302,7 +302,7 @@ class TopicBasicApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def delete_topics_blocking(self, topics: List[Topic]) -> List[DocIdentifier]:
+	def delete_topics_blocking(self, topics: list[Topic]) -> list[DocIdentifier]:
 		payload = {
 			"topics": [serialize_topic(x0) for x0 in topics],
 		}
@@ -345,6 +345,37 @@ class TopicBasicApi:
 		symbols.DisposeString(call_result)
 		if result_info.failure is not None:
 			raise interpret_kt_error(result_info.failure)
+
+	async def create_topic_async(self, entity: EncryptedTopic) -> EncryptedTopic:
+		def do_decode(raw_result):
+			return EncryptedTopic._deserialize(raw_result)
+		payload = {
+			"entity": entity.__serialize__(),
+		}
+		return await execute_async_method_job(
+			self.cardinal_sdk._executor,
+			True,
+			do_decode,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TopicBasicApi.createTopicAsync,
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+
+	def create_topic_blocking(self, entity: EncryptedTopic) -> EncryptedTopic:
+		payload = {
+			"entity": entity.__serialize__(),
+		}
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.TopicBasicApi.createTopicBlocking(
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
+		if result_info.failure is not None:
+			raise interpret_kt_error(result_info.failure)
+		else:
+			return_value = EncryptedTopic._deserialize(result_info.success)
+			return return_value
 
 	async def undelete_topic_async(self, topic: Topic) -> Topic:
 		def do_decode(raw_result):
@@ -441,9 +472,9 @@ class TopicBasicApi:
 			return_value = EncryptedTopic._deserialize(result_info.success)
 			return return_value
 
-	async def get_topic_async(self, entity_id: str) -> EncryptedTopic:
+	async def get_topic_async(self, entity_id: str) -> Optional[EncryptedTopic]:
 		def do_decode(raw_result):
-			return EncryptedTopic._deserialize(raw_result)
+			return EncryptedTopic._deserialize(raw_result) if raw_result is not None else None
 		payload = {
 			"entityId": entity_id,
 		}
@@ -456,7 +487,7 @@ class TopicBasicApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def get_topic_blocking(self, entity_id: str) -> EncryptedTopic:
+	def get_topic_blocking(self, entity_id: str) -> Optional[EncryptedTopic]:
 		payload = {
 			"entityId": entity_id,
 		}
@@ -469,10 +500,10 @@ class TopicBasicApi:
 		if result_info.failure is not None:
 			raise interpret_kt_error(result_info.failure)
 		else:
-			return_value = EncryptedTopic._deserialize(result_info.success)
+			return_value = EncryptedTopic._deserialize(result_info.success) if result_info.success is not None else None
 			return return_value
 
-	async def get_topics_async(self, entity_ids: List[str]) -> List[EncryptedTopic]:
+	async def get_topics_async(self, entity_ids: list[str]) -> list[EncryptedTopic]:
 		def do_decode(raw_result):
 			return [EncryptedTopic._deserialize(x1) for x1 in raw_result]
 		payload = {
@@ -487,7 +518,7 @@ class TopicBasicApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def get_topics_blocking(self, entity_ids: List[str]) -> List[EncryptedTopic]:
+	def get_topics_blocking(self, entity_ids: list[str]) -> list[EncryptedTopic]:
 		payload = {
 			"entityIds": [x0 for x0 in entity_ids],
 		}
@@ -571,7 +602,7 @@ class TopicBasicApi:
 			return_value = EncryptedTopic._deserialize(result_info.success)
 			return return_value
 
-	async def subscribe_to_events_async(self, events: List[SubscriptionEventType], filter: BaseFilterOptions[Topic], subscription_config: Optional[EntitySubscriptionConfiguration] = None) -> EntitySubscription[EncryptedTopic]:
+	async def subscribe_to_events_async(self, events: set[SubscriptionEventType], filter: BaseFilterOptions[Topic], subscription_config: Optional[EntitySubscriptionConfiguration] = None) -> EntitySubscription[EncryptedTopic]:
 		def do_decode(raw_result):
 			return EntitySubscription[EncryptedTopic](
 				producer = raw_result,
@@ -592,7 +623,7 @@ class TopicBasicApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def subscribe_to_events_blocking(self, events: List[SubscriptionEventType], filter: BaseFilterOptions[Topic], subscription_config: Optional[EntitySubscriptionConfiguration] = None) -> EntitySubscription[EncryptedTopic]:
+	def subscribe_to_events_blocking(self, events: set[SubscriptionEventType], filter: BaseFilterOptions[Topic], subscription_config: Optional[EntitySubscriptionConfiguration] = None) -> EntitySubscription[EncryptedTopic]:
 		payload = {
 			"events": [x0.__serialize__() for x0 in events],
 			"filter": filter.__serialize__(),

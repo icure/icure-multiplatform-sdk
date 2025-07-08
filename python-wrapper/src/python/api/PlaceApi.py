@@ -1,11 +1,11 @@
 # auto-generated file
 import json
-from cardinal_sdk.model import Place, DocIdentifier
 from cardinal_sdk.async_utils import execute_async_method_job
 from cardinal_sdk.kotlin_types import symbols
+from typing import Optional
+from cardinal_sdk.model import Place, DocIdentifier
 from cardinal_sdk.model.CallResult import create_result_from_json, interpret_kt_error
 from ctypes import cast, c_char_p
-from typing import List
 
 
 class PlaceApi:
@@ -13,9 +13,9 @@ class PlaceApi:
 	def __init__(self, cardinal_sdk):
 		self.cardinal_sdk = cardinal_sdk
 
-	async def get_place_async(self, place_id: str) -> Place:
+	async def get_place_async(self, place_id: str) -> Optional[Place]:
 		def do_decode(raw_result):
-			return Place._deserialize(raw_result)
+			return Place._deserialize(raw_result) if raw_result is not None else None
 		payload = {
 			"placeId": place_id,
 		}
@@ -28,7 +28,7 @@ class PlaceApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def get_place_blocking(self, place_id: str) -> Place:
+	def get_place_blocking(self, place_id: str) -> Optional[Place]:
 		payload = {
 			"placeId": place_id,
 		}
@@ -41,7 +41,7 @@ class PlaceApi:
 		if result_info.failure is not None:
 			raise interpret_kt_error(result_info.failure)
 		else:
-			return_value = Place._deserialize(result_info.success)
+			return_value = Place._deserialize(result_info.success) if result_info.success is not None else None
 			return return_value
 
 	async def create_place_async(self, place: Place) -> Place:
@@ -106,7 +106,7 @@ class PlaceApi:
 			return_value = Place._deserialize(result_info.success)
 			return return_value
 
-	async def delete_places_async(self, place_ids: List[str]) -> List[DocIdentifier]:
+	async def delete_places_async(self, place_ids: list[str]) -> list[DocIdentifier]:
 		def do_decode(raw_result):
 			return [DocIdentifier._deserialize(x1) for x1 in raw_result]
 		payload = {
@@ -121,7 +121,7 @@ class PlaceApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def delete_places_blocking(self, place_ids: List[str]) -> List[DocIdentifier]:
+	def delete_places_blocking(self, place_ids: list[str]) -> list[DocIdentifier]:
 		payload = {
 			"placeIds": [x0 for x0 in place_ids],
 		}

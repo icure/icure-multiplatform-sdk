@@ -1,11 +1,11 @@
 # auto-generated file
 import json
-from cardinal_sdk.model import DocIdentifier, LabelledOccurence, EncryptedInvoice, EncryptedInvoicingCode, MediumType, InvoiceType
 from cardinal_sdk.async_utils import execute_async_method_job
 from cardinal_sdk.kotlin_types import symbols
+from cardinal_sdk.model import DocIdentifier, LabelledOccurence, EncryptedInvoice, EncryptedInvoicingCode, MediumType, InvoiceType
 from cardinal_sdk.model.CallResult import create_result_from_json, interpret_kt_error
 from ctypes import cast, c_char_p
-from typing import List, Optional
+from typing import Optional
 
 
 class InvoiceBasicApi:
@@ -44,7 +44,7 @@ class InvoiceBasicApi:
 			return_value = DocIdentifier._deserialize(result_info.success)
 			return return_value
 
-	async def get_tarifications_codes_occurrences_async(self, min_occurrence: int) -> List[LabelledOccurence]:
+	async def get_tarifications_codes_occurrences_async(self, min_occurrence: int) -> list[LabelledOccurence]:
 		def do_decode(raw_result):
 			return [LabelledOccurence._deserialize(x1) for x1 in raw_result]
 		payload = {
@@ -59,7 +59,7 @@ class InvoiceBasicApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def get_tarifications_codes_occurrences_blocking(self, min_occurrence: int) -> List[LabelledOccurence]:
+	def get_tarifications_codes_occurrences_blocking(self, min_occurrence: int) -> list[LabelledOccurence]:
 		payload = {
 			"minOccurrence": min_occurrence,
 		}
@@ -106,7 +106,7 @@ class InvoiceBasicApi:
 			return_value = EncryptedInvoice._deserialize(result_info.success)
 			return return_value
 
-	async def modify_invoices_async(self, entities: List[EncryptedInvoice]) -> List[EncryptedInvoice]:
+	async def modify_invoices_async(self, entities: list[EncryptedInvoice]) -> list[EncryptedInvoice]:
 		def do_decode(raw_result):
 			return [EncryptedInvoice._deserialize(x1) for x1 in raw_result]
 		payload = {
@@ -121,7 +121,7 @@ class InvoiceBasicApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def modify_invoices_blocking(self, entities: List[EncryptedInvoice]) -> List[EncryptedInvoice]:
+	def modify_invoices_blocking(self, entities: list[EncryptedInvoice]) -> list[EncryptedInvoice]:
 		payload = {
 			"entities": [x0.__serialize__() for x0 in entities],
 		}
@@ -137,9 +137,9 @@ class InvoiceBasicApi:
 			return_value = [EncryptedInvoice._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
-	async def get_invoice_async(self, entity_id: str) -> EncryptedInvoice:
+	async def get_invoice_async(self, entity_id: str) -> Optional[EncryptedInvoice]:
 		def do_decode(raw_result):
-			return EncryptedInvoice._deserialize(raw_result)
+			return EncryptedInvoice._deserialize(raw_result) if raw_result is not None else None
 		payload = {
 			"entityId": entity_id,
 		}
@@ -152,7 +152,7 @@ class InvoiceBasicApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def get_invoice_blocking(self, entity_id: str) -> EncryptedInvoice:
+	def get_invoice_blocking(self, entity_id: str) -> Optional[EncryptedInvoice]:
 		payload = {
 			"entityId": entity_id,
 		}
@@ -165,10 +165,10 @@ class InvoiceBasicApi:
 		if result_info.failure is not None:
 			raise interpret_kt_error(result_info.failure)
 		else:
-			return_value = EncryptedInvoice._deserialize(result_info.success)
+			return_value = EncryptedInvoice._deserialize(result_info.success) if result_info.success is not None else None
 			return return_value
 
-	async def get_invoices_async(self, entity_ids: List[str]) -> List[EncryptedInvoice]:
+	async def get_invoices_async(self, entity_ids: list[str]) -> list[EncryptedInvoice]:
 		def do_decode(raw_result):
 			return [EncryptedInvoice._deserialize(x1) for x1 in raw_result]
 		payload = {
@@ -183,7 +183,7 @@ class InvoiceBasicApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def get_invoices_blocking(self, entity_ids: List[str]) -> List[EncryptedInvoice]:
+	def get_invoices_blocking(self, entity_ids: list[str]) -> list[EncryptedInvoice]:
 		payload = {
 			"entityIds": [x0 for x0 in entity_ids],
 		}
@@ -230,7 +230,7 @@ class InvoiceBasicApi:
 			return_value = EncryptedInvoice._deserialize(result_info.success)
 			return return_value
 
-	async def merge_to_async(self, invoice_id: str, ids: List[str]) -> EncryptedInvoice:
+	async def merge_to_async(self, invoice_id: str, ids: list[str]) -> EncryptedInvoice:
 		def do_decode(raw_result):
 			return EncryptedInvoice._deserialize(raw_result)
 		payload = {
@@ -246,7 +246,7 @@ class InvoiceBasicApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def merge_to_blocking(self, invoice_id: str, ids: List[str]) -> EncryptedInvoice:
+	def merge_to_blocking(self, invoice_id: str, ids: list[str]) -> EncryptedInvoice:
 		payload = {
 			"invoiceId": invoice_id,
 			"ids": [x0 for x0 in ids],
@@ -298,7 +298,7 @@ class InvoiceBasicApi:
 			return_value = EncryptedInvoice._deserialize(result_info.success)
 			return return_value
 
-	async def append_codes_async(self, user_id: str, type: str, sent_medium_type: str, secret_fkeys: str, invoicing_codes: List[EncryptedInvoicingCode], insurance_id: Optional[str] = None, invoice_id: Optional[str] = None, grace_period: Optional[int] = None) -> List[EncryptedInvoice]:
+	async def append_codes_async(self, user_id: str, type: str, sent_medium_type: str, secret_fkeys: str, invoicing_codes: list[EncryptedInvoicingCode], insurance_id: Optional[str] = None, invoice_id: Optional[str] = None, grace_period: Optional[int] = None) -> list[EncryptedInvoice]:
 		def do_decode(raw_result):
 			return [EncryptedInvoice._deserialize(x1) for x1 in raw_result]
 		payload = {
@@ -320,7 +320,7 @@ class InvoiceBasicApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def append_codes_blocking(self, user_id: str, type: str, sent_medium_type: str, secret_fkeys: str, invoicing_codes: List[EncryptedInvoicingCode], insurance_id: Optional[str] = None, invoice_id: Optional[str] = None, grace_period: Optional[int] = None) -> List[EncryptedInvoice]:
+	def append_codes_blocking(self, user_id: str, type: str, sent_medium_type: str, secret_fkeys: str, invoicing_codes: list[EncryptedInvoicingCode], insurance_id: Optional[str] = None, invoice_id: Optional[str] = None, grace_period: Optional[int] = None) -> list[EncryptedInvoice]:
 		payload = {
 			"userId": user_id,
 			"type": type,
@@ -343,7 +343,7 @@ class InvoiceBasicApi:
 			return_value = [EncryptedInvoice._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
-	async def remove_codes_async(self, user_id: str, service_id: str, secret_fkeys: str, tarification_ids: List[str]) -> List[EncryptedInvoice]:
+	async def remove_codes_async(self, user_id: str, service_id: str, secret_fkeys: str, tarification_ids: list[str]) -> list[EncryptedInvoice]:
 		def do_decode(raw_result):
 			return [EncryptedInvoice._deserialize(x1) for x1 in raw_result]
 		payload = {
@@ -361,7 +361,7 @@ class InvoiceBasicApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def remove_codes_blocking(self, user_id: str, service_id: str, secret_fkeys: str, tarification_ids: List[str]) -> List[EncryptedInvoice]:
+	def remove_codes_blocking(self, user_id: str, service_id: str, secret_fkeys: str, tarification_ids: list[str]) -> list[EncryptedInvoice]:
 		payload = {
 			"userId": user_id,
 			"serviceId": service_id,
@@ -380,7 +380,7 @@ class InvoiceBasicApi:
 			return_value = [EncryptedInvoice._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
-	async def list_invoices_by_hc_party_and_group_id_async(self, hc_party_id: str, group_id: str) -> List[EncryptedInvoice]:
+	async def list_invoices_by_hc_party_and_group_id_async(self, hc_party_id: str, group_id: str) -> list[EncryptedInvoice]:
 		def do_decode(raw_result):
 			return [EncryptedInvoice._deserialize(x1) for x1 in raw_result]
 		payload = {
@@ -396,7 +396,7 @@ class InvoiceBasicApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def list_invoices_by_hc_party_and_group_id_blocking(self, hc_party_id: str, group_id: str) -> List[EncryptedInvoice]:
+	def list_invoices_by_hc_party_and_group_id_blocking(self, hc_party_id: str, group_id: str) -> list[EncryptedInvoice]:
 		payload = {
 			"hcPartyId": hc_party_id,
 			"groupId": group_id,
@@ -413,7 +413,7 @@ class InvoiceBasicApi:
 			return_value = [EncryptedInvoice._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
-	async def list_invoices_by_hc_party_sent_medium_type_invoice_type_sent_date_async(self, hc_party_id: str, sent_medium_type: MediumType, invoice_type: InvoiceType, sent: bool, from_: Optional[int] = None, to: Optional[int] = None) -> List[EncryptedInvoice]:
+	async def list_invoices_by_hc_party_sent_medium_type_invoice_type_sent_date_async(self, hc_party_id: str, sent_medium_type: MediumType, invoice_type: InvoiceType, sent: bool, from_: Optional[int] = None, to: Optional[int] = None) -> list[EncryptedInvoice]:
 		def do_decode(raw_result):
 			return [EncryptedInvoice._deserialize(x1) for x1 in raw_result]
 		payload = {
@@ -433,7 +433,7 @@ class InvoiceBasicApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def list_invoices_by_hc_party_sent_medium_type_invoice_type_sent_date_blocking(self, hc_party_id: str, sent_medium_type: MediumType, invoice_type: InvoiceType, sent: bool, from_: Optional[int] = None, to: Optional[int] = None) -> List[EncryptedInvoice]:
+	def list_invoices_by_hc_party_sent_medium_type_invoice_type_sent_date_blocking(self, hc_party_id: str, sent_medium_type: MediumType, invoice_type: InvoiceType, sent: bool, from_: Optional[int] = None, to: Optional[int] = None) -> list[EncryptedInvoice]:
 		payload = {
 			"hcPartyId": hc_party_id,
 			"sentMediumType": sent_medium_type.__serialize__(),
@@ -454,7 +454,7 @@ class InvoiceBasicApi:
 			return_value = [EncryptedInvoice._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
-	async def list_invoices_by_contact_ids_async(self, contact_ids: List[str]) -> List[EncryptedInvoice]:
+	async def list_invoices_by_contact_ids_async(self, contact_ids: list[str]) -> list[EncryptedInvoice]:
 		def do_decode(raw_result):
 			return [EncryptedInvoice._deserialize(x1) for x1 in raw_result]
 		payload = {
@@ -469,7 +469,7 @@ class InvoiceBasicApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def list_invoices_by_contact_ids_blocking(self, contact_ids: List[str]) -> List[EncryptedInvoice]:
+	def list_invoices_by_contact_ids_blocking(self, contact_ids: list[str]) -> list[EncryptedInvoice]:
 		payload = {
 			"contactIds": [x0 for x0 in contact_ids],
 		}
@@ -485,7 +485,7 @@ class InvoiceBasicApi:
 			return_value = [EncryptedInvoice._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
-	async def list_invoices_by_recipients_ids_async(self, recipients_ids: List[str]) -> List[EncryptedInvoice]:
+	async def list_invoices_by_recipients_ids_async(self, recipients_ids: list[str]) -> list[EncryptedInvoice]:
 		def do_decode(raw_result):
 			return [EncryptedInvoice._deserialize(x1) for x1 in raw_result]
 		payload = {
@@ -500,7 +500,7 @@ class InvoiceBasicApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def list_invoices_by_recipients_ids_blocking(self, recipients_ids: List[str]) -> List[EncryptedInvoice]:
+	def list_invoices_by_recipients_ids_blocking(self, recipients_ids: list[str]) -> list[EncryptedInvoice]:
 		payload = {
 			"recipientsIds": [x0 for x0 in recipients_ids],
 		}
@@ -516,7 +516,7 @@ class InvoiceBasicApi:
 			return_value = [EncryptedInvoice._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
-	async def list_to_insurances_async(self, user_ids: List[str]) -> List[EncryptedInvoice]:
+	async def list_to_insurances_async(self, user_ids: list[str]) -> list[EncryptedInvoice]:
 		def do_decode(raw_result):
 			return [EncryptedInvoice._deserialize(x1) for x1 in raw_result]
 		payload = {
@@ -531,7 +531,7 @@ class InvoiceBasicApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def list_to_insurances_blocking(self, user_ids: List[str]) -> List[EncryptedInvoice]:
+	def list_to_insurances_blocking(self, user_ids: list[str]) -> list[EncryptedInvoice]:
 		payload = {
 			"userIds": [x0 for x0 in user_ids],
 		}
@@ -547,7 +547,7 @@ class InvoiceBasicApi:
 			return_value = [EncryptedInvoice._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
-	async def list_to_insurances_unsent_async(self, user_ids: List[str]) -> List[EncryptedInvoice]:
+	async def list_to_insurances_unsent_async(self, user_ids: list[str]) -> list[EncryptedInvoice]:
 		def do_decode(raw_result):
 			return [EncryptedInvoice._deserialize(x1) for x1 in raw_result]
 		payload = {
@@ -562,7 +562,7 @@ class InvoiceBasicApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def list_to_insurances_unsent_blocking(self, user_ids: List[str]) -> List[EncryptedInvoice]:
+	def list_to_insurances_unsent_blocking(self, user_ids: list[str]) -> list[EncryptedInvoice]:
 		payload = {
 			"userIds": [x0 for x0 in user_ids],
 		}
@@ -578,7 +578,7 @@ class InvoiceBasicApi:
 			return_value = [EncryptedInvoice._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
-	async def list_to_patients_async(self, hc_party_id: str) -> List[EncryptedInvoice]:
+	async def list_to_patients_async(self, hc_party_id: str) -> list[EncryptedInvoice]:
 		def do_decode(raw_result):
 			return [EncryptedInvoice._deserialize(x1) for x1 in raw_result]
 		payload = {
@@ -593,7 +593,7 @@ class InvoiceBasicApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def list_to_patients_blocking(self, hc_party_id: str) -> List[EncryptedInvoice]:
+	def list_to_patients_blocking(self, hc_party_id: str) -> list[EncryptedInvoice]:
 		payload = {
 			"hcPartyId": hc_party_id,
 		}
@@ -609,7 +609,7 @@ class InvoiceBasicApi:
 			return_value = [EncryptedInvoice._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
-	async def list_to_patients_unsent_async(self, hc_party_id: Optional[str]) -> List[EncryptedInvoice]:
+	async def list_to_patients_unsent_async(self, hc_party_id: Optional[str]) -> list[EncryptedInvoice]:
 		def do_decode(raw_result):
 			return [EncryptedInvoice._deserialize(x1) for x1 in raw_result]
 		payload = {
@@ -624,7 +624,7 @@ class InvoiceBasicApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def list_to_patients_unsent_blocking(self, hc_party_id: Optional[str]) -> List[EncryptedInvoice]:
+	def list_to_patients_unsent_blocking(self, hc_party_id: Optional[str]) -> list[EncryptedInvoice]:
 		payload = {
 			"hcPartyId": hc_party_id,
 		}
@@ -640,7 +640,7 @@ class InvoiceBasicApi:
 			return_value = [EncryptedInvoice._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
-	async def list_invoices_by_ids_async(self, ids: List[str]) -> List[EncryptedInvoice]:
+	async def list_invoices_by_ids_async(self, ids: list[str]) -> list[EncryptedInvoice]:
 		def do_decode(raw_result):
 			return [EncryptedInvoice._deserialize(x1) for x1 in raw_result]
 		payload = {
@@ -655,7 +655,7 @@ class InvoiceBasicApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def list_invoices_by_ids_blocking(self, ids: List[str]) -> List[EncryptedInvoice]:
+	def list_invoices_by_ids_blocking(self, ids: list[str]) -> list[EncryptedInvoice]:
 		payload = {
 			"ids": [x0 for x0 in ids],
 		}
@@ -671,7 +671,7 @@ class InvoiceBasicApi:
 			return_value = [EncryptedInvoice._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
-	async def list_invoices_by_hcparty_sending_mode_status_date_async(self, hc_party_id: str, sending_mode: str, status: str, from_: int, to: int) -> List[EncryptedInvoice]:
+	async def list_invoices_by_hcparty_sending_mode_status_date_async(self, hc_party_id: str, sending_mode: str, status: str, from_: int, to: int) -> list[EncryptedInvoice]:
 		def do_decode(raw_result):
 			return [EncryptedInvoice._deserialize(x1) for x1 in raw_result]
 		payload = {
@@ -690,7 +690,7 @@ class InvoiceBasicApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def list_invoices_by_hcparty_sending_mode_status_date_blocking(self, hc_party_id: str, sending_mode: str, status: str, from_: int, to: int) -> List[EncryptedInvoice]:
+	def list_invoices_by_hcparty_sending_mode_status_date_blocking(self, hc_party_id: str, sending_mode: str, status: str, from_: int, to: int) -> list[EncryptedInvoice]:
 		payload = {
 			"hcPartyId": hc_party_id,
 			"sendingMode": sending_mode,

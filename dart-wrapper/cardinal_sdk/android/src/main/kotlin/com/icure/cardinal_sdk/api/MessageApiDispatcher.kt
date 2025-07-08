@@ -25,6 +25,7 @@ public object MessageApiDispatcher {
     "createDelegationDeAnonymizationMetadata" -> createDelegationDeAnonymizationMetadata(parameters, resultCallback)
     "decrypt" -> decrypt(parameters, resultCallback)
     "tryDecrypt" -> tryDecrypt(parameters, resultCallback)
+    "getSecretIdsOf" -> getSecretIdsOf(parameters, resultCallback)
     "matchMessagesBy" -> matchMessagesBy(parameters, resultCallback)
     "matchMessagesBySorted" -> matchMessagesBySorted(parameters, resultCallback)
     "deleteMessageById" -> deleteMessageById(parameters, resultCallback)
@@ -164,6 +165,19 @@ public object MessageApiDispatcher {
     String?,
   ) -> Unit) {
     MessageApi.tryDecrypt(
+      resultCallback,
+      parameters.getValue("sdkId"),
+      parameters.getValue("message"),
+    )
+  }
+
+  private fun getSecretIdsOf(parameters: Map<String, String>, resultCallback: (
+    String?,
+    String?,
+    String?,
+    String?,
+  ) -> Unit) {
+    MessageApi.getSecretIdsOf(
       resultCallback,
       parameters.getValue("sdkId"),
       parameters.getValue("message"),

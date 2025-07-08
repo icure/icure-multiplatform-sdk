@@ -10,6 +10,7 @@ import com.icure.cardinal.sdk.filters.SortableFilterOptions
 import com.icure.cardinal.sdk.model.DecryptedDocument
 import com.icure.cardinal.sdk.model.Document
 import com.icure.cardinal.sdk.model.EncryptedDocument
+import com.icure.cardinal.sdk.model.EntityReferenceInGroup
 import com.icure.cardinal.sdk.model.Message
 import com.icure.cardinal.sdk.model.Patient
 import com.icure.cardinal.sdk.model.StoredDocumentIdentifier
@@ -28,7 +29,7 @@ interface DocumentBasicFlavourlessApi {
 	suspend fun deleteDocumentUnsafe(entityId: String): DocIdentifier
 	@Deprecated("Deletion without rev is unsafe")
 	suspend fun deleteDocumentsUnsafe(entityIds: List<String>): List<DocIdentifier>
-	
+
 	/**
 	 * Deletes a document. If you don't have write access to the document the method will fail.
 	 * @param entityId id of the document.
@@ -83,7 +84,7 @@ interface DocumentBasicFlavourlessApi {
 	suspend fun purgeDocument(document: Document) {
 		purgeDocumentById(document.id, requireNotNull(document.rev) { "Can't delete a document that has no rev" })
 	}
-	
+
 	/**
 	 * Get the main attachment from the document with the provided id as raw bytes. This method will not
 	 * perform any transformation on the attachment, and if the attachment was encrypted the returned data is encrypted.
@@ -130,7 +131,7 @@ interface DocumentBasicFlavourlessApi {
 	 * will not be encrypted by this method.
 	 * If a main attachment already exist on the document it will be replaced.
 	 * @param documentId the id of the document.
-	 * 
+	 *
 	 * @param rev the revision of the document
 	 * @param utis uniform type identifiers for the attachment (https://en.wikipedia.org/wiki/Uniform_Type_Identifier).
 	 * If null and there is already a main attachment for the document the current utis will be reused, otherwise it
@@ -211,7 +212,7 @@ interface DocumentBasicFlavouredApi<E : Document> {
 	 * @throws RevisionConflictException if the provided revision doesn't match the latest known revision
 	 */
 	suspend fun undeleteDocumentById(id: String, rev: String): E
-	
+
 	/**
 	 * Restores a document that was marked as deleted.
 	 * @param document the document to undelete
@@ -366,15 +367,59 @@ interface DocumentApi : DocumentBasicFlavourlessApi, DocumentFlavouredApi<Decryp
 	 * @return a document with initialized encryption metadata.
 	 * @throws IllegalArgumentException if base is not null and has a revision or has encryption metadata.
 	 */
-	suspend fun withEncryptionMetadata(
+	suspend fun withEncryptionMetadataLinkedToMessage(
 		base: DecryptedDocument?,
-		message: Message?,
+		message: Message,
 		@DefaultValue("null")
 		user: User? = null,
 		@DefaultValue("emptyMap()")
 		delegates: Map<String, AccessLevel> = emptyMap(),
 		@DefaultValue("com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption.UseAnySharedWithParent")
 		secretId: SecretIdUseOption = SecretIdUseOption.UseAnySharedWithParent,
+		alternateRootDataOwnerReference: EntityReferenceInGroup? = null,
+	): DecryptedDocument
+
+	/**
+	 * Creates a new document with initialized encryption metadata
+	 * @param base a document with initialized content and uninitialized encryption metadata. The result of this
+	 * method takes the content from [base] if provided.
+	 * @param patient the patient linked to the patient, if any.
+	 * @param user the current user, will be used for the auto-delegations if provided.
+	 * @param delegates additional data owners that will have access to the newly created entity. You may choose the
+	 * permissions that the delegates will have on the entity, but they will have access to all encryption metadata.
+	 * @param secretId specifies which secret id of [message] to use for the new document
+	 * @return a document with initialized encryption metadata.
+	 * @throws IllegalArgumentException if base is not null and has a revision or has encryption metadata.
+	 */
+	suspend fun withEncryptionMetadataLinkedToPatient(
+		base: DecryptedDocument?,
+		patient: Patient,
+		@DefaultValue("null")
+		user: User? = null,
+		@DefaultValue("emptyMap()")
+		delegates: Map<String, AccessLevel> = emptyMap(),
+		@DefaultValue("com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption.UseAnySharedWithParent")
+		secretId: SecretIdUseOption = SecretIdUseOption.UseAnySharedWithParent,
+		alternateRootDataOwnerReference: EntityReferenceInGroup? = null,
+	): DecryptedDocument
+
+	/**
+	 * Creates a new document with initialized encryption metadata
+	 * @param base a document with initialized content and uninitialized encryption metadata. The result of this
+	 * method takes the content from [base] if provided.
+	 * @param user the current user, will be used for the auto-delegations if provided.
+	 * @param delegates additional data owners that will have access to the newly created entity. You may choose the
+	 * permissions that the delegates will have on the entity, but they will have access to all encryption metadata.
+	 * @return a document with initialized encryption metadata.
+	 * @throws IllegalArgumentException if base is not null and has a revision or has encryption metadata.
+	 */
+	suspend fun withEncryptionMetadataUnlinked(
+		base: DecryptedDocument?,
+		@DefaultValue("null")
+		user: User? = null,
+		@DefaultValue("emptyMap()")
+		delegates: Map<String, AccessLevel> = emptyMap(),
+		alternateRootDataOwnerReference: EntityReferenceInGroup? = null,
 	): DecryptedDocument
 
 	/**
@@ -510,7 +555,7 @@ interface DocumentApi : DocumentBasicFlavourlessApi, DocumentFlavouredApi<Decryp
 	 * @return the id of the patient linked to the document, or empty if the current user can't access any patient id
 	 * of the document.
 	 */
-	suspend fun decryptPatientIdOf(document: Document): Set<String>
+	suspend fun decryptOwningEntityIdsOf(document: Document): Set<String>
 
 	/**
 	 * Create metadata to allow other users to identify the anonymous delegates of a document.

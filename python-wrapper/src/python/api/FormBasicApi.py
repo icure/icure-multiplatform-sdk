@@ -2,13 +2,13 @@
 import json
 import base64
 from cardinal_sdk.filters.FilterOptions import BaseFilterOptions, BaseSortableFilterOptions
-from cardinal_sdk.model import Form, EncryptedForm, DocIdentifier, IdWithMandatoryRev, serialize_form, FormTemplate
+from cardinal_sdk.model import Form, EncryptedForm, DocIdentifier, StoredDocumentIdentifier, serialize_form, FormTemplate
 from cardinal_sdk.async_utils import execute_async_method_job
 from cardinal_sdk.kotlin_types import symbols
-from typing import List, Optional
 from cardinal_sdk.model.CallResult import create_result_from_json, interpret_kt_error
 from ctypes import cast, c_char_p
 from cardinal_sdk.pagination.PaginatedListIterator import PaginatedListIterator
+from typing import Optional
 
 
 class FormBasicApi:
@@ -16,7 +16,7 @@ class FormBasicApi:
 	def __init__(self, cardinal_sdk):
 		self.cardinal_sdk = cardinal_sdk
 
-	async def match_forms_by_async(self, filter: BaseFilterOptions[Form]) -> List[str]:
+	async def match_forms_by_async(self, filter: BaseFilterOptions[Form]) -> list[str]:
 		def do_decode(raw_result):
 			return [x1 for x1 in raw_result]
 		payload = {
@@ -31,7 +31,7 @@ class FormBasicApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def match_forms_by_blocking(self, filter: BaseFilterOptions[Form]) -> List[str]:
+	def match_forms_by_blocking(self, filter: BaseFilterOptions[Form]) -> list[str]:
 		payload = {
 			"filter": filter.__serialize__(),
 		}
@@ -47,7 +47,7 @@ class FormBasicApi:
 			return_value = [x1 for x1 in result_info.success]
 			return return_value
 
-	async def match_forms_by_sorted_async(self, filter: BaseSortableFilterOptions[Form]) -> List[str]:
+	async def match_forms_by_sorted_async(self, filter: BaseSortableFilterOptions[Form]) -> list[str]:
 		def do_decode(raw_result):
 			return [x1 for x1 in raw_result]
 		payload = {
@@ -62,7 +62,7 @@ class FormBasicApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def match_forms_by_sorted_blocking(self, filter: BaseSortableFilterOptions[Form]) -> List[str]:
+	def match_forms_by_sorted_blocking(self, filter: BaseSortableFilterOptions[Form]) -> list[str]:
 		payload = {
 			"filter": filter.__serialize__(),
 		}
@@ -195,7 +195,7 @@ class FormBasicApi:
 			return_value = DocIdentifier._deserialize(result_info.success)
 			return return_value
 
-	async def delete_forms_by_ids_async(self, entity_ids: List[IdWithMandatoryRev]) -> List[DocIdentifier]:
+	async def delete_forms_by_ids_async(self, entity_ids: list[StoredDocumentIdentifier]) -> list[DocIdentifier]:
 		def do_decode(raw_result):
 			return [DocIdentifier._deserialize(x1) for x1 in raw_result]
 		payload = {
@@ -210,7 +210,7 @@ class FormBasicApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def delete_forms_by_ids_blocking(self, entity_ids: List[IdWithMandatoryRev]) -> List[DocIdentifier]:
+	def delete_forms_by_ids_blocking(self, entity_ids: list[StoredDocumentIdentifier]) -> list[DocIdentifier]:
 		payload = {
 			"entityIds": [x0.__serialize__() for x0 in entity_ids],
 		}
@@ -287,7 +287,7 @@ class FormBasicApi:
 			return_value = DocIdentifier._deserialize(result_info.success)
 			return return_value
 
-	async def delete_forms_async(self, forms: List[Form]) -> List[DocIdentifier]:
+	async def delete_forms_async(self, forms: list[Form]) -> list[DocIdentifier]:
 		def do_decode(raw_result):
 			return [DocIdentifier._deserialize(x1) for x1 in raw_result]
 		payload = {
@@ -302,7 +302,7 @@ class FormBasicApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def delete_forms_blocking(self, forms: List[Form]) -> List[DocIdentifier]:
+	def delete_forms_blocking(self, forms: list[Form]) -> list[DocIdentifier]:
 		payload = {
 			"forms": [serialize_form(x0) for x0 in forms],
 		}
@@ -505,6 +505,68 @@ class FormBasicApi:
 			return_value = result_info.success
 			return return_value
 
+	async def create_form_async(self, entity: EncryptedForm) -> EncryptedForm:
+		def do_decode(raw_result):
+			return EncryptedForm._deserialize(raw_result)
+		payload = {
+			"entity": entity.__serialize__(),
+		}
+		return await execute_async_method_job(
+			self.cardinal_sdk._executor,
+			True,
+			do_decode,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormBasicApi.createFormAsync,
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+
+	def create_form_blocking(self, entity: EncryptedForm) -> EncryptedForm:
+		payload = {
+			"entity": entity.__serialize__(),
+		}
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormBasicApi.createFormBlocking(
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
+		if result_info.failure is not None:
+			raise interpret_kt_error(result_info.failure)
+		else:
+			return_value = EncryptedForm._deserialize(result_info.success)
+			return return_value
+
+	async def create_forms_async(self, entities: list[EncryptedForm]) -> list[EncryptedForm]:
+		def do_decode(raw_result):
+			return [EncryptedForm._deserialize(x1) for x1 in raw_result]
+		payload = {
+			"entities": [x0.__serialize__() for x0 in entities],
+		}
+		return await execute_async_method_job(
+			self.cardinal_sdk._executor,
+			True,
+			do_decode,
+			symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormBasicApi.createFormsAsync,
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+
+	def create_forms_blocking(self, entities: list[EncryptedForm]) -> list[EncryptedForm]:
+		payload = {
+			"entities": [x0.__serialize__() for x0 in entities],
+		}
+		call_result = symbols.kotlin.root.com.icure.cardinal.sdk.py.api.FormBasicApi.createFormsBlocking(
+			self.cardinal_sdk._native,
+			json.dumps(payload).encode('utf-8'),
+		)
+		result_info = create_result_from_json(cast(call_result, c_char_p).value.decode('utf-8'))
+		symbols.DisposeString(call_result)
+		if result_info.failure is not None:
+			raise interpret_kt_error(result_info.failure)
+		else:
+			return_value = [EncryptedForm._deserialize(x1) for x1 in result_info.success]
+			return return_value
+
 	async def modify_form_async(self, entity: EncryptedForm) -> EncryptedForm:
 		def do_decode(raw_result):
 			return EncryptedForm._deserialize(raw_result)
@@ -600,7 +662,7 @@ class FormBasicApi:
 			return_value = EncryptedForm._deserialize(result_info.success)
 			return return_value
 
-	async def modify_forms_async(self, entities: List[EncryptedForm]) -> List[EncryptedForm]:
+	async def modify_forms_async(self, entities: list[EncryptedForm]) -> list[EncryptedForm]:
 		def do_decode(raw_result):
 			return [EncryptedForm._deserialize(x1) for x1 in raw_result]
 		payload = {
@@ -615,7 +677,7 @@ class FormBasicApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def modify_forms_blocking(self, entities: List[EncryptedForm]) -> List[EncryptedForm]:
+	def modify_forms_blocking(self, entities: list[EncryptedForm]) -> list[EncryptedForm]:
 		payload = {
 			"entities": [x0.__serialize__() for x0 in entities],
 		}
@@ -631,9 +693,9 @@ class FormBasicApi:
 			return_value = [EncryptedForm._deserialize(x1) for x1 in result_info.success]
 			return return_value
 
-	async def get_form_async(self, entity_id: str) -> EncryptedForm:
+	async def get_form_async(self, entity_id: str) -> Optional[EncryptedForm]:
 		def do_decode(raw_result):
-			return EncryptedForm._deserialize(raw_result)
+			return EncryptedForm._deserialize(raw_result) if raw_result is not None else None
 		payload = {
 			"entityId": entity_id,
 		}
@@ -646,7 +708,7 @@ class FormBasicApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def get_form_blocking(self, entity_id: str) -> EncryptedForm:
+	def get_form_blocking(self, entity_id: str) -> Optional[EncryptedForm]:
 		payload = {
 			"entityId": entity_id,
 		}
@@ -659,10 +721,10 @@ class FormBasicApi:
 		if result_info.failure is not None:
 			raise interpret_kt_error(result_info.failure)
 		else:
-			return_value = EncryptedForm._deserialize(result_info.success)
+			return_value = EncryptedForm._deserialize(result_info.success) if result_info.success is not None else None
 			return return_value
 
-	async def get_forms_async(self, entity_ids: List[str]) -> List[EncryptedForm]:
+	async def get_forms_async(self, entity_ids: list[str]) -> list[EncryptedForm]:
 		def do_decode(raw_result):
 			return [EncryptedForm._deserialize(x1) for x1 in raw_result]
 		payload = {
@@ -677,7 +739,7 @@ class FormBasicApi:
 			json.dumps(payload).encode('utf-8'),
 		)
 
-	def get_forms_blocking(self, entity_ids: List[str]) -> List[EncryptedForm]:
+	def get_forms_blocking(self, entity_ids: list[str]) -> list[EncryptedForm]:
 		payload = {
 			"entityIds": [x0 for x0 in entity_ids],
 		}

@@ -8,6 +8,7 @@ import com.icure.cardinal.sdk.crypto.UserEncryptionKeysManager
 import com.icure.cardinal.sdk.crypto.entities.CardinalKeyInfo
 import com.icure.cardinal.sdk.model.EntityReferenceInGroup
 import com.icure.cardinal.sdk.crypto.entities.EntityWithEncryptionMetadataTypeName
+import com.icure.cardinal.sdk.crypto.entities.ExchangeDataInjectionDetails
 import com.icure.cardinal.sdk.crypto.entities.ExchangeDataWithPotentiallyDecryptedContent
 import com.icure.cardinal.sdk.crypto.entities.ExchangeDataWithUnencryptedContent
 import com.icure.cardinal.sdk.crypto.entities.SdkBoundGroup
@@ -22,6 +23,7 @@ import com.icure.cardinal.sdk.model.extensions.algorithmOfEncryptionKey
 import com.icure.cardinal.sdk.model.specializations.Base64String
 import com.icure.cardinal.sdk.model.specializations.SecureDelegationKeyString
 import com.icure.cardinal.sdk.model.specializations.SpkiHexString
+import com.icure.cardinal.sdk.utils.ensure
 import com.icure.kryptom.crypto.CryptoService
 import com.icure.utils.InternalIcureApi
 import kotlinx.coroutines.CoroutineScope
@@ -63,19 +65,20 @@ abstract class AbstractExchangeDataManager(
 			base.getExchangeDataByDelegatorDelegatePair(
 				null,
 				EntityReferenceInGroup(self),
-				EntityReferenceInGroup(otherDataOwner)
+				EntityReferenceInGroup(otherDataOwner),
 			) + base.getExchangeDataByDelegatorDelegatePair(
 				null,
 				EntityReferenceInGroup(otherDataOwner),
-				EntityReferenceInGroup(self)
+				EntityReferenceInGroup(self),
 			)
 		}
 		// Can improve with batch but there should not be many anyway and it is a rare operation
 		allExchangeDataToUpdate.forEach {
 			base.tryUpdateExchangeData(
-				it,
-				decryptionKeys,
-				VerifiedRsaEncryptionKeysSet(listOf(CardinalKeyInfo(newDataOwnerPublicKey, importedNewKey)))
+				exchangeData = it,
+				decryptionKeys = decryptionKeys,
+				newEncryptionKeys = VerifiedRsaEncryptionKeysSet(listOf(CardinalKeyInfo(newDataOwnerPublicKey, importedNewKey))),
+				newDelegatorSignatureKeys = SelfVerifiedKeysSet.empty,
 			)
 		}
 	}
@@ -91,11 +94,13 @@ abstract class AbstractExchangeDataManager(
 	override suspend fun getOrCreateEncryptionDataTo(
 		groupId: String?,
 		delegateReference: EntityReferenceInGroup,
-		allowCreationWithoutDelegateKey: Boolean
+		allowCreationWithoutDelegateKey: Boolean,
+		allowCreationWithoutDelegatorKey: Boolean
 	): ExchangeDataWithUnencryptedContent =
 		getOrCreateManagerInGroup(groupId).getOrCreateEncryptionDataTo(
 			delegateReference,
-			allowCreationWithoutDelegateKey
+			allowCreationWithoutDelegateKey,
+			allowCreationWithoutDelegatorKey
 		)
 
 	override suspend fun getCachedDecryptionDataKeyByAccessControlHash(
@@ -116,6 +121,55 @@ abstract class AbstractExchangeDataManager(
 		entityType: EntityWithEncryptionMetadataTypeName
 	): List<Base64String>? =
 		getOrCreateManagerInGroup(groupId).getEncodedAccessControlKeysValue(entityType)
+
+	override suspend fun injectDecryptedExchangeData(
+		groupId: String?,
+		exchangeDataDetails: List<ExchangeDataInjectionDetails>,
+		reEncryptWithOwnKeys: Boolean,
+	) {
+		val self = dataOwnerApi.getCurrentDataOwnerReference().asReferenceStringInGroup(groupId, sdkBoundGroup)
+		val retrievedExchangeData = base.getExchangeDataByIds(groupId, exchangeDataDetails.map { it.exchangeDataId }.toSet())
+		if (retrievedExchangeData.any { it.delegator != self && it.delegate != self }) {
+			throw IllegalArgumentException("Should only inject exchange data from/to the current user")
+		}
+		val exchangeDataById = retrievedExchangeData.associateBy { it.id }
+
+		if (reEncryptWithOwnKeys) {
+			val selfVerifiedKeys = userEncryptionKeys.getSelfVerifiedKeys()
+			check(!selfVerifiedKeys.isEmpty()) { "Can't re-encrypt injected exchange data with own keys if in keyless mode" }
+
+			val encryptionKeys = VerifiedRsaEncryptionKeysSet(selfVerifiedKeys.map { k -> CardinalKeyInfo(k.pubSpkiHexString, k.toPublicKeyInfo().key) })
+			val signatureKeys = SelfVerifiedKeysSet(selfVerifiedKeys.map { k -> CardinalKeyInfo(k.pubSpkiHexString, k.toPrivateKeyInfo().key) })
+			exchangeDataDetails.forEach { details ->
+				val exchangeData = exchangeDataById[details.exchangeDataId]
+				if (exchangeData != null) {
+					base.updateExchangeDataWithRawDecryptedContent(
+						exchangeData = exchangeData,
+						newEncryptionKeys = encryptionKeys,
+						newDelegatorSignatureKeys = if (exchangeData.delegator == self && details.verified) signatureKeys else SelfVerifiedKeysSet(emptySet()),
+						rawExchangeKey = details.exchangeKey,
+						rawAccessControlSecret = details.accessControlSecret,
+						rawSharedSignatureKey = details.sharedSignatureKey,
+					)
+				}
+			}
+		}
+
+		exchangeDataDetails.mapNotNull { details ->
+			exchangeDataById[details.exchangeDataId]?.let { exchangeData ->
+				ExchangeDataWithUnencryptedContent(
+					exchangeData = exchangeData,
+					unencryptedContent = UnencryptedExchangeDataContent(
+						accessControlSecret = base.importAccessControlSecret(details.accessControlSecret),
+						exchangeKey = base.importExchangeKey(details.exchangeKey),
+						sharedSignatureKey = base.importSharedSignatureKey(details.sharedSignatureKey)
+					)
+				) to details.verified
+			}
+		}.also { importedDetails ->
+			if (importedDetails.isNotEmpty()) { getOrCreateManagerInGroup(groupId).cacheInjectedExchangeData(importedDetails) }
+		}
+	}
 
 	private suspend fun getOrCreateManagerInGroup(groupId: String?): AbstractExchangeDataManagerInGroup {
 		val normalizedGroupId = sdkBoundGroup.resolve(groupId)
@@ -189,15 +243,20 @@ abstract class AbstractExchangeDataManagerInGroup(
 	protected suspend fun createNewExchangeData(
 		delegateReference: EntityReferenceInGroup,
 		newDataId: String?,
-		allowNoDelegateKeys: Boolean
+		allowCreationWithoutDelegateKey: Boolean,
+		allowCreationWithoutDelegatorKey: Boolean,
 	): ExchangeDataWithUnencryptedContent {
+		ensure(!allowCreationWithoutDelegateKey || !allowCreationWithoutDelegatorKey) { "Cannot allow creation of exchange data without both delegate and delegator keys." }
 		val selfEncryptionKeys = userEncryptionKeys.getSelfVerifiedKeys().map { it.toPublicKeyInfo() }
+		if (selfEncryptionKeys.isEmpty()) {
+			check(allowCreationWithoutDelegatorKey) { "If the sdk is initialized in keyless mode you must create exchange data explicitly. Please use CardinalSdk.crypto.keylessCreateExchangeDataTo or CardinalSdk.crypto.injectExchangeData." }
+		}
 		val verifiedDelegateKeys = if (delegateReference != dataOwnerApi.getCurrentDataOwnerReference()) {
 			val delegate =
 				dataOwnerApi.getCryptoActorStubInGroup(delegateReference)
 			val delegateKeys = cryptoService.loadEncryptionKeysForDataOwner(delegate.stub)
 			if (delegateKeys.isEmpty()) {
-				require(allowNoDelegateKeys) { "Delegate $delegateReference has no public keys and the current operation does not allow for creation of exchange data without any delegate keys." }
+				require(allowCreationWithoutDelegateKey) { "Delegate $delegateReference has no public keys and the current operation does not allow for creation of exchange data without any delegate keys." }
 				emptyList()
 			} else {
 				val delegateKeysBySpki = delegateKeys.associateBy { it.pubSpkiHexString }
@@ -211,7 +270,7 @@ abstract class AbstractExchangeDataManagerInGroup(
 						groupId = delegateReference.normalized(sdkBoundGroup).groupId
 					)
 				}
-				require (allowNoDelegateKeys || verifiedSpki.isNotEmpty()) {
+				require (allowCreationWithoutDelegateKey || verifiedSpki.isNotEmpty()) {
 					"Could not create exchange data to $delegateReference as no public key for the delegate could be verified."
 				}
 				verifiedSpki.map {
@@ -234,6 +293,7 @@ abstract class AbstractExchangeDataManagerInGroup(
 	abstract suspend fun getOrCreateEncryptionDataTo(
 		delegateReference: EntityReferenceInGroup,
 		allowCreationWithoutDelegateKey: Boolean,
+		allowCreationWithoutDelegatorKey: Boolean,
 	): ExchangeDataWithUnencryptedContent
 	abstract suspend fun getCachedDecryptionDataKeyByAccessControlHash(
 		hashes: Set<SecureDelegationKeyString>,
@@ -245,5 +305,8 @@ abstract class AbstractExchangeDataManagerInGroup(
 	abstract suspend fun getEncodedAccessControlKeysValue(
 		entityType: EntityWithEncryptionMetadataTypeName
 	): List<Base64String>?
+	abstract suspend fun cacheInjectedExchangeData(
+		exchangeDataDetails: List<Pair<ExchangeDataWithUnencryptedContent, Boolean>>
+	)
 	abstract fun dispose()
 }

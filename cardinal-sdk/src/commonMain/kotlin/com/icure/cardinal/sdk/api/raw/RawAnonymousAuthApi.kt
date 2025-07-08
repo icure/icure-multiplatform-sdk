@@ -26,6 +26,8 @@ public interface RawAnonymousAuthApi {
 	): HttpResponse<JwtResponse>
 
 	suspend fun check(loginCredentials: LoginCredentials): HttpResponse<Unit>
+
+	suspend fun getAuthJwtPublicKey(): HttpResponse<String>
 	// endregion
 
 	// region cloud endpoints

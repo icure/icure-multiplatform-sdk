@@ -39,6 +39,8 @@ sealed interface InvoicingCode : Encryptable {
 
 	public val patientIntervention: Double?
 
+	public val amiIntervention: Double?
+
 	public val doctorSupplement: Double?
 
 	public val conventionAmount: Double?
@@ -115,6 +117,8 @@ sealed interface InvoicingCode : Encryptable {
 
 	public val status: Long?
 
+	public val codeLabel: String?
+
 	override val encryptedSelf: Base64String?
 	// region InvoicingCode-InvoicingCode
 
@@ -137,6 +141,7 @@ data class DecryptedInvoicingCode(
 	override val totalAmount: Double? = null,
 	override val reimbursement: Double? = null,
 	override val patientIntervention: Double? = null,
+	override val amiIntervention: Double? = null,
 	override val doctorSupplement: Double? = null,
 	override val conventionAmount: Double? = null,
 	override val vat: Double? = null,
@@ -175,6 +180,7 @@ data class DecryptedInvoicingCode(
 	override val insuranceJustification: Int? = null,
 	override val cancelPatientInterventionReason: Int? = null,
 	override val status: Long? = null,
+	override val codeLabel: String? = null,
 	override val encryptedSelf: Base64String? = null,
 ) : InvoicingCode {
 	// region InvoicingCode-DecryptedInvoicingCode
@@ -198,6 +204,7 @@ data class EncryptedInvoicingCode(
 	override val totalAmount: Double? = null,
 	override val reimbursement: Double? = null,
 	override val patientIntervention: Double? = null,
+	override val amiIntervention: Double? = null,
 	override val doctorSupplement: Double? = null,
 	override val conventionAmount: Double? = null,
 	override val vat: Double? = null,
@@ -236,6 +243,7 @@ data class EncryptedInvoicingCode(
 	override val insuranceJustification: Int? = null,
 	override val cancelPatientInterventionReason: Int? = null,
 	override val status: Long? = null,
+	override val codeLabel: String? = null,
 	override val encryptedSelf: Base64String? = null,
 ) : InvoicingCode {
 	// region InvoicingCode-EncryptedInvoicingCode

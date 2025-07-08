@@ -187,6 +187,42 @@ public fun setRawReceiptAttachmentAsync(
 }.failureToPyStringAsyncCallback(resultCallback)
 
 @Serializable
+private class CreateReceiptParams(
+	public val entity: EncryptedReceipt,
+)
+
+@OptIn(InternalIcureApi::class)
+public fun createReceiptBlocking(sdk: CardinalBaseApis, params: String): String =
+		kotlin.runCatching {
+	val decodedParams = fullLanguageInteropJson.decodeFromString<CreateReceiptParams>(params)
+	runBlocking {
+		sdk.receipt.createReceipt(
+			decodedParams.entity,
+		)
+	}
+}.toPyString(EncryptedReceipt.serializer())
+
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
+public fun createReceiptAsync(
+	sdk: CardinalBaseApis,
+	params: String,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): COpaquePointer? = kotlin.runCatching {
+	val decodedParams = fullLanguageInteropJson.decodeFromString<CreateReceiptParams>(params)
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.receipt.createReceipt(
+				decodedParams.entity,
+			)
+		}.toPyStringAsyncCallback(EncryptedReceipt.serializer(), resultCallback)
+	}
+}.failureToPyStringAsyncCallback(resultCallback)
+
+@Serializable
 private class ModifyReceiptParams(
 	public val entity: EncryptedReceipt,
 )

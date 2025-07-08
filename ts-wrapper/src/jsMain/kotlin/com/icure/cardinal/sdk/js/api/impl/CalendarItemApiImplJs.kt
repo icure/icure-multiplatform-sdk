@@ -1636,11 +1636,11 @@ internal class CalendarItemApiImplJs(
 				secretIdUseOption_fromJs(secretId)
 			}
 			val result = calendarItemApi.withEncryptionMetadata(
-				baseConverted,
-				patientConverted,
-				userConverted,
-				delegatesConverted,
-				secretIdConverted,
+                baseConverted,
+                patientConverted,
+                userConverted,
+                delegatesConverted,
+                secretIdConverted,
 			)
 			calendarItem_toJs(result)
 		}

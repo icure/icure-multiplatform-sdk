@@ -9,6 +9,7 @@ import com.icure.cardinal.sdk.filters.FilterOptions
 import com.icure.cardinal.sdk.filters.SortableFilterOptions
 import com.icure.cardinal.sdk.model.DecryptedTopic
 import com.icure.cardinal.sdk.model.EncryptedTopic
+import com.icure.cardinal.sdk.model.EntityReferenceInGroup
 import com.icure.cardinal.sdk.model.Patient
 import com.icure.cardinal.sdk.model.StoredDocumentIdentifier
 import com.icure.cardinal.sdk.model.Topic
@@ -28,7 +29,7 @@ interface TopicBasicFlavourlessApi {
 	suspend fun deleteTopicUnsafe(entityId: String): DocIdentifier
 	@Deprecated("Deletion without rev is unsafe")
 	suspend fun deleteTopicsUnsafe(entityIds: List<String>): List<DocIdentifier>
-	
+
 	/**
 	 * Deletes a topic. If you don't have write access to the topic the method will fail.
 	 * @param entityId id of the topic.
@@ -103,7 +104,7 @@ interface TopicBasicFlavouredApi<E : Topic> {
 	 */
 	suspend fun undeleteTopic(topic: Topic): Topic =
 		undeleteTopicById(topic.id, requireNotNull(topic.rev) { "Can't delete a topic that has no rev" })
-	
+
 	/**
 	 * Modifies a topic. You need to have write access to the entity.
 	 * Flavoured method.
@@ -253,6 +254,7 @@ interface TopicApi : TopicBasicFlavourlessApi, TopicFlavouredApi<DecryptedTopic>
 		delegates: Map<String, AccessLevel> = emptyMap(),
 		@DefaultValue("com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption.UseAnySharedWithParent")
 		secretId: SecretIdUseOption = SecretIdUseOption.UseAnySharedWithParent,
+		alternateRootDataOwnerReference: EntityReferenceInGroup? = null,
 	): DecryptedTopic
 
 	/**
@@ -333,7 +335,7 @@ interface TopicApi : TopicBasicFlavourlessApi, TopicFlavouredApi<DecryptedTopic>
 	 * @return the decrypted topic if the decryption was successful or the input if it was not.
 	 */
 	suspend fun tryDecrypt(topic: EncryptedTopic): Topic
-	
+
 	/**
 	 * Give access to the encrypted flavour of the api
 	 */

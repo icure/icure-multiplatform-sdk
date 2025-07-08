@@ -59,7 +59,7 @@ class ShamirKeysManagerApiImpl(
 			"Can't delete non-existing key split. $keySplitsToDelete"
 		}
 		val exchangeDataByDelegate = keySplitsToUpdate.keys.flatMap { keySplitsToUpdate[it]!!.notariesIds }.distinct().associateWith {
-			exchangeDataManager.getOrCreateEncryptionDataTo(null, EntityReferenceInGroup(it, null), false).unencryptedContent.exchangeKey
+			exchangeDataManager.getOrCreateEncryptionDataTo(null, EntityReferenceInGroup(it, null), false, false).unencryptedContent.exchangeKey
 		}
 		val updatedSelf = keySplitsToUpdate.toList().fold(self) { acc, (key, request) ->
 			updateKeySplit(acc, key, request, exchangeDataByDelegate, allKeys)

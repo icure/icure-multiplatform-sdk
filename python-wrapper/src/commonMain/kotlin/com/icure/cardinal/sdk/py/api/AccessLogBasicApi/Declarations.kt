@@ -6,8 +6,8 @@ import com.icure.cardinal.sdk.filters.BaseFilterOptions
 import com.icure.cardinal.sdk.filters.BaseSortableFilterOptions
 import com.icure.cardinal.sdk.model.AccessLog
 import com.icure.cardinal.sdk.model.EncryptedAccessLog
-import com.icure.cardinal.sdk.model.StoredDocumentIdentifier
 import com.icure.cardinal.sdk.model.PaginatedList
+import com.icure.cardinal.sdk.model.StoredDocumentIdentifier
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.py.utils.PyResult
 import com.icure.cardinal.sdk.py.utils.failureToPyResultAsyncCallback
@@ -479,6 +479,42 @@ public fun purgeAccessLogAsync(
 				decodedParams.accessLog,
 			)
 		}.toPyStringAsyncCallback(Unit.serializer(), resultCallback)
+	}
+}.failureToPyStringAsyncCallback(resultCallback)
+
+@Serializable
+private class CreateAccessLogParams(
+	public val entity: EncryptedAccessLog,
+)
+
+@OptIn(InternalIcureApi::class)
+public fun createAccessLogBlocking(sdk: CardinalBaseApis, params: String): String =
+		kotlin.runCatching {
+	val decodedParams = fullLanguageInteropJson.decodeFromString<CreateAccessLogParams>(params)
+	runBlocking {
+		sdk.accessLog.createAccessLog(
+			decodedParams.entity,
+		)
+	}
+}.toPyString(EncryptedAccessLog.serializer())
+
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
+public fun createAccessLogAsync(
+	sdk: CardinalBaseApis,
+	params: String,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): COpaquePointer? = kotlin.runCatching {
+	val decodedParams = fullLanguageInteropJson.decodeFromString<CreateAccessLogParams>(params)
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.accessLog.createAccessLog(
+				decodedParams.entity,
+			)
+		}.toPyStringAsyncCallback(EncryptedAccessLog.serializer(), resultCallback)
 	}
 }.failureToPyStringAsyncCallback(resultCallback)
 

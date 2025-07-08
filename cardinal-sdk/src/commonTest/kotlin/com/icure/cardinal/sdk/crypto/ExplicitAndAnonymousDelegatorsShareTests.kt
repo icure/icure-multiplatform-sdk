@@ -41,13 +41,13 @@ class ExplicitAndAnonymousDelegatorsShareTests : StringSpec({
 		).shouldNotBeNull()
 		val he = delegatorApi.healthElement.createHealthElement(
 			delegatorApi.healthElement.withEncryptionMetadata(
-				base = DecryptedHealthElement(
-					id = defaultCryptoService.strongRandom.randomUUID(),
-					note = heNote,
-				),
-				patient = patient,
-				user = delegatorApi.user.getCurrentUser(),
-				delegates = mapOf(delegate.dataOwnerId to AccessLevel.Write)
+                base = DecryptedHealthElement(
+                    id = defaultCryptoService.strongRandom.randomUUID(),
+                    note = heNote,
+                ),
+                patient = patient,
+                user = delegatorApi.user.getCurrentUser(),
+                delegates = mapOf(delegate.dataOwnerId to AccessLevel.Write)
 			)
 		).shouldNotBeNull()
 		val delegateApi: CardinalSdk = delegate.api(specJob)
@@ -80,12 +80,12 @@ class ExplicitAndAnonymousDelegatorsShareTests : StringSpec({
 		val sfk = delegatorApi.patient.getSecretIdsOf(patient).keys.also { it shouldHaveSize 1 }
 		val he = delegatorApi.healthElement.createHealthElement(
 			delegatorApi.healthElement.withEncryptionMetadata(
-				base = DecryptedHealthElement(
-					id = defaultCryptoService.strongRandom.randomUUID(),
-					note = heNote,
-				),
-				user = delegatorApi.user.getCurrentUser(),
-				patient = patient
+                base = DecryptedHealthElement(
+                    id = defaultCryptoService.strongRandom.randomUUID(),
+                    note = heNote,
+                ),
+                patient = patient,
+                user = delegatorApi.user.getCurrentUser()
 			)
 		).shouldNotBeNull()
 		delegatorApi.patient.shareWith(

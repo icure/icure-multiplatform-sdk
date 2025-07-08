@@ -18,9 +18,9 @@ data class MessageByDataOwnerTransportGuidSentDateFilter(
 	public val dataOwnerId: String,
 	public val transportGuid: String,
 	@Serializable(with = InstantSerializer::class)
-	public val fromDate: Instant,
+	public val fromDate: Instant?,
 	@Serializable(with = InstantSerializer::class)
-	public val toDate: Instant,
+	public val toDate: Instant?,
 	public val descending: Boolean? = null,
 	override val desc: String? = null,
 ) : AbstractFilter<Message> {

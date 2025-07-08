@@ -3,6 +3,7 @@ package com.icure.cardinal.sdk.model
 import com.icure.cardinal.sdk.crypto.entities.SdkBoundGroup
 import com.icure.cardinal.sdk.crypto.entities.resolve
 import com.icure.cardinal.sdk.utils.DefaultValue
+import com.icure.cardinal.sdk.utils.generation.RequireHashable
 import com.icure.utils.InternalIcureApi
 import kotlinx.serialization.Serializable
 
@@ -30,6 +31,7 @@ import kotlinx.serialization.Serializable
  * @param groupId the id of the entity's group. If null it should be interpreted as the same group of the logged user.
  */
 @Serializable
+@RequireHashable
 data class EntityReferenceInGroup(
 	val entityId: String,
 	@DefaultValue("null")

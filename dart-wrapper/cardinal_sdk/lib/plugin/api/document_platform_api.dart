@@ -60,7 +60,7 @@ class DocumentPlatformApi {
 			).catchError(convertPlatformException);
 			if (res == null) throw AssertionError("received null result from platform method getAndTryDecryptMainAttachment");
 			final parsedResJson = jsonDecode(res);
-		return parsedResJson == null ? null : base64Decode(parsedResJson as String);
+			return parsedResJson == null ? null : base64Decode(parsedResJson as String);
 		} finally {
 			if (decryptedAttachmentValidatorCallbackId != null) CallbackReferences.delete(decryptedAttachmentValidatorCallbackId);
 		}
@@ -83,7 +83,7 @@ class DocumentPlatformApi {
 			).catchError(convertPlatformException);
 			if (res == null) throw AssertionError("received null result from platform method getAndDecryptMainAttachment");
 			final parsedResJson = jsonDecode(res);
-		return base64Decode(parsedResJson as String);
+			return base64Decode(parsedResJson as String);
 		} finally {
 			if (decryptedAttachmentValidatorCallbackId != null) CallbackReferences.delete(decryptedAttachmentValidatorCallbackId);
 		}
@@ -122,7 +122,7 @@ class DocumentPlatformApi {
 			).catchError(convertPlatformException);
 			if (res == null) throw AssertionError("received null result from platform method getAndDecryptSecondaryAttachment");
 			final parsedResJson = jsonDecode(res);
-		return base64Decode(parsedResJson as String);
+			return base64Decode(parsedResJson as String);
 		} finally {
 			if (decryptedAttachmentValidatorCallbackId != null) CallbackReferences.delete(decryptedAttachmentValidatorCallbackId);
 		}
@@ -238,7 +238,7 @@ class DocumentPlatformApi {
 			).catchError(convertPlatformException);
 			if (res == null) throw AssertionError("received null result from platform method tryDecryptAttachment");
 			final parsedResJson = jsonDecode(res);
-		return parsedResJson == null ? null : base64Decode(parsedResJson as String);
+			return parsedResJson == null ? null : base64Decode(parsedResJson as String);
 		} finally {
 			if (decryptedAttachmentValidatorCallbackId != null) CallbackReferences.delete(decryptedAttachmentValidatorCallbackId);
 		}

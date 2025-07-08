@@ -43,41 +43,6 @@ import kotlinx.serialization.builtins.SetSerializer
 import kotlinx.serialization.builtins.serializer
 
 @Serializable
-private class CreateReceiptParams(
-	public val entity: DecryptedReceipt,
-)
-
-@OptIn(InternalIcureApi::class)
-public fun createReceiptBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
-	val decodedParams = fullLanguageInteropJson.decodeFromString<CreateReceiptParams>(params)
-	runBlocking {
-		sdk.receipt.createReceipt(
-			decodedParams.entity,
-		)
-	}
-}.toPyString(DecryptedReceipt.serializer())
-
-@OptIn(
-	ExperimentalForeignApi::class,
-	InternalIcureApi::class,
-)
-public fun createReceiptAsync(
-	sdk: CardinalApis,
-	params: String,
-	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
-			CValues<ByteVarOf<Byte>>?) -> Unit>>,
-): COpaquePointer? = kotlin.runCatching {
-	val decodedParams = fullLanguageInteropJson.decodeFromString<CreateReceiptParams>(params)
-	GlobalScope.launch {
-		kotlin.runCatching {
-			sdk.receipt.createReceipt(
-				decodedParams.entity,
-			)
-		}.toPyStringAsyncCallback(DecryptedReceipt.serializer(), resultCallback)
-	}
-}.failureToPyStringAsyncCallback(resultCallback)
-
-@Serializable
 private class WithEncryptionMetadataParams(
 	public val base: DecryptedReceipt?,
 	public val patient: Patient?,
@@ -710,6 +675,41 @@ public fun shareWithManyAsync(
 			sdk.receipt.shareWithMany(
 				decodedParams.receipt,
 				decodedParams.delegates,
+			)
+		}.toPyStringAsyncCallback(DecryptedReceipt.serializer(), resultCallback)
+	}
+}.failureToPyStringAsyncCallback(resultCallback)
+
+@Serializable
+private class CreateReceiptParams(
+	public val entity: DecryptedReceipt,
+)
+
+@OptIn(InternalIcureApi::class)
+public fun createReceiptBlocking(sdk: CardinalApis, params: String): String = kotlin.runCatching {
+	val decodedParams = fullLanguageInteropJson.decodeFromString<CreateReceiptParams>(params)
+	runBlocking {
+		sdk.receipt.createReceipt(
+			decodedParams.entity,
+		)
+	}
+}.toPyString(DecryptedReceipt.serializer())
+
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
+public fun createReceiptAsync(
+	sdk: CardinalApis,
+	params: String,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): COpaquePointer? = kotlin.runCatching {
+	val decodedParams = fullLanguageInteropJson.decodeFromString<CreateReceiptParams>(params)
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.receipt.createReceipt(
+				decodedParams.entity,
 			)
 		}.toPyStringAsyncCallback(DecryptedReceipt.serializer(), resultCallback)
 	}

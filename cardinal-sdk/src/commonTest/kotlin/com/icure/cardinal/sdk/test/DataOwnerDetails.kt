@@ -13,6 +13,7 @@ import com.icure.cardinal.sdk.options.AuthenticationMethod
 import com.icure.cardinal.sdk.options.SdkOptions
 import com.icure.cardinal.sdk.options.getAuthProvider
 import com.icure.cardinal.sdk.storage.CardinalStorageFacade
+import com.icure.cardinal.sdk.storage.StorageFacade
 import com.icure.cardinal.sdk.storage.impl.DefaultStorageEntryKeysFactory
 import com.icure.cardinal.sdk.storage.impl.JsonAndBase64KeyStorage
 import com.icure.cardinal.sdk.storage.impl.VolatileStorageFacade
@@ -30,9 +31,9 @@ data class DataOwnerDetails private constructor (
 	val dataOwnerId: String,
 	val username: String,
 	val password: String,
-	val keypair: RsaKeypair<RsaAlgorithm.RsaEncryptionAlgorithm>,
+	val keypair: RsaKeypair<RsaAlgorithm.RsaEncryptionAlgorithm>?,
 	val parent: DataOwnerDetails?,
-	val publicKeySpki: SpkiHexString,
+	val publicKeySpki: SpkiHexString?,
 	val groupId: String
 ) {
 	companion object {
@@ -42,7 +43,7 @@ data class DataOwnerDetails private constructor (
 			dataOwnerId: String,
 			username: String,
 			password: String,
-			keypair: RsaKeypair<RsaAlgorithm.RsaEncryptionAlgorithm>,
+			keypair: RsaKeypair<RsaAlgorithm.RsaEncryptionAlgorithm>?,
 			parent: DataOwnerDetails?,
 			groupId: String
 		) = DataOwnerDetails(
@@ -51,7 +52,7 @@ data class DataOwnerDetails private constructor (
 			password = password,
 			keypair = keypair,
 			parent = parent,
-			publicKeySpki = SpkiHexString(defaultCryptoService.rsa.exportPublicKeySpki(keypair.public).toHexString()),
+			publicKeySpki = keypair?.let {SpkiHexString( defaultCryptoService.rsa.exportPublicKeySpki(it.public).toHexString())},
 			groupId = groupId
 		)
 	}
@@ -66,6 +67,12 @@ data class DataOwnerDetails private constructor (
 	 */
 	suspend fun api(baseJob: Job, cryptoStrategies: CryptoStrategies = BasicCryptoStrategies): CardinalSdk =
 		initApi(baseJob, cryptoStrategies) { addInitialKeysToStorage(it) }
+
+	/**
+	 * Creates a new api with access to the original key of the user and his parents.
+	 */
+	suspend fun apiWithStorage(baseJob: Job, cryptoStrategies: CryptoStrategies = BasicCryptoStrategies, storageFacade: StorageFacade): CardinalSdk =
+		initApi(baseJob, cryptoStrategies, storageFacade) { addInitialKeysToStorage(it) }
 
 	/**
 	 * Creates a new api with access to the provided keys.
@@ -142,13 +149,14 @@ data class DataOwnerDetails private constructor (
 	private suspend fun initApi(
 		parentJob: Job,
 		cryptoStrategies: CryptoStrategies,
+		storageFacade: StorageFacade = VolatileStorageFacade(),
 		fillStorage: suspend (storage: CardinalStorageFacade) -> Unit
 	): CardinalSdk =
 		CardinalSdk.initialize(
 			null,
 			baseUrl,
 			AuthenticationMethod.UsingCredentials(UsernamePassword(username, password)),
-			VolatileStorageFacade().also {
+			storageFacade.also {
 				fillStorage(CardinalStorageFacade(
 					JsonAndBase64KeyStorage(it),
 					it,
@@ -165,11 +173,13 @@ data class DataOwnerDetails private constructor (
 		)
 
 	private suspend fun addInitialKeysToStorage(storage: CardinalStorageFacade) {
-		storage.saveEncryptionKeypair(
-			dataOwnerId,
-			keypair,
-			true
-		)
+		keypair?.let {
+			storage.saveEncryptionKeypair(
+				dataOwnerId,
+				it,
+				true
+			)
+		}
 		parent?.addInitialKeysToStorage(storage)
 	}
 

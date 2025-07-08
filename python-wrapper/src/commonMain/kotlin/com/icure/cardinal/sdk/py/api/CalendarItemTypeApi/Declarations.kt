@@ -254,3 +254,41 @@ public fun modifyCalendarItemTypeAsync(
 		}.toPyStringAsyncCallback(CalendarItemType.serializer(), resultCallback)
 	}
 }.failureToPyStringAsyncCallback(resultCallback)
+
+@Serializable
+private class ListCalendarItemTypesByAgendaIdParams(
+	public val agendaId: String,
+)
+
+@OptIn(InternalIcureApi::class)
+public fun listCalendarItemTypesByAgendaIdBlocking(sdk: CardinalNonCryptoApis, params: String):
+		String = kotlin.runCatching {
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<ListCalendarItemTypesByAgendaIdParams>(params)
+	runBlocking {
+		sdk.calendarItemType.listCalendarItemTypesByAgendaId(
+			decodedParams.agendaId,
+		)
+	}
+}.toPyString(ListSerializer(CalendarItemType.serializer()))
+
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
+public fun listCalendarItemTypesByAgendaIdAsync(
+	sdk: CardinalNonCryptoApis,
+	params: String,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): COpaquePointer? = kotlin.runCatching {
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<ListCalendarItemTypesByAgendaIdParams>(params)
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.calendarItemType.listCalendarItemTypesByAgendaId(
+				decodedParams.agendaId,
+			)
+		}.toPyStringAsyncCallback(ListSerializer(CalendarItemType.serializer()), resultCallback)
+	}
+}.failureToPyStringAsyncCallback(resultCallback)

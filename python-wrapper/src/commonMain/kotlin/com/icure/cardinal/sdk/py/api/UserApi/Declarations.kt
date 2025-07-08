@@ -12,6 +12,7 @@ import com.icure.cardinal.sdk.model.User
 import com.icure.cardinal.sdk.model.UserGroup
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
 import com.icure.cardinal.sdk.model.security.Enable2faRequest
+import com.icure.cardinal.sdk.model.security.LoginIdentifier
 import com.icure.cardinal.sdk.model.security.TokenWithGroup
 import com.icure.cardinal.sdk.py.utils.PyResult
 import com.icure.cardinal.sdk.py.utils.failureToPyResultAsyncCallback
@@ -1828,6 +1829,136 @@ public fun undeleteUserAsync(
 				decodedParams.user,
 			)
 		}.toPyStringAsyncCallback(User.serializer(), resultCallback)
+	}
+}.failureToPyStringAsyncCallback(resultCallback)
+
+@Serializable
+private class SetUserInheritsPermissionsParams(
+	public val userId: String,
+	public val groupId: String,
+	public val `value`: Boolean,
+)
+
+@OptIn(InternalIcureApi::class)
+public fun setUserInheritsPermissionsBlocking(sdk: CardinalNonCryptoApis, params: String): String =
+		kotlin.runCatching {
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<SetUserInheritsPermissionsParams>(params)
+	runBlocking {
+		sdk.user.setUserInheritsPermissions(
+			decodedParams.userId,
+			decodedParams.groupId,
+			decodedParams.value,
+		)
+	}
+}.toPyString(String.serializer())
+
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
+public fun setUserInheritsPermissionsAsync(
+	sdk: CardinalNonCryptoApis,
+	params: String,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): COpaquePointer? = kotlin.runCatching {
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<SetUserInheritsPermissionsParams>(params)
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.user.setUserInheritsPermissions(
+				decodedParams.userId,
+				decodedParams.groupId,
+				decodedParams.value,
+			)
+		}.toPyStringAsyncCallback(String.serializer(), resultCallback)
+	}
+}.failureToPyStringAsyncCallback(resultCallback)
+
+@Serializable
+private class SetLoginIdentifiersParams(
+	public val userId: String,
+	public val groupId: String,
+	public val identifier: LoginIdentifier,
+	public val replaceExisting: Boolean,
+)
+
+@OptIn(InternalIcureApi::class)
+public fun setLoginIdentifiersBlocking(sdk: CardinalNonCryptoApis, params: String): String =
+		kotlin.runCatching {
+	val decodedParams = fullLanguageInteropJson.decodeFromString<SetLoginIdentifiersParams>(params)
+	runBlocking {
+		sdk.user.setLoginIdentifiers(
+			decodedParams.userId,
+			decodedParams.groupId,
+			decodedParams.identifier,
+			decodedParams.replaceExisting,
+		)
+	}
+}.toPyString(Boolean.serializer())
+
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
+public fun setLoginIdentifiersAsync(
+	sdk: CardinalNonCryptoApis,
+	params: String,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): COpaquePointer? = kotlin.runCatching {
+	val decodedParams = fullLanguageInteropJson.decodeFromString<SetLoginIdentifiersParams>(params)
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.user.setLoginIdentifiers(
+				decodedParams.userId,
+				decodedParams.groupId,
+				decodedParams.identifier,
+				decodedParams.replaceExisting,
+			)
+		}.toPyStringAsyncCallback(Boolean.serializer(), resultCallback)
+	}
+}.failureToPyStringAsyncCallback(resultCallback)
+
+@Serializable
+private class SetExternalJwtAuthByIdentifiersForCurrentUserParams(
+	public val externalJwtConfigId: String,
+	public val externalAuthenticationToken: String,
+)
+
+@OptIn(InternalIcureApi::class)
+public fun setExternalJwtAuthByIdentifiersForCurrentUserBlocking(sdk: CardinalNonCryptoApis,
+		params: String): String = kotlin.runCatching {
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<SetExternalJwtAuthByIdentifiersForCurrentUserParams>(params)
+	runBlocking {
+		sdk.user.setExternalJwtAuthByIdentifiersForCurrentUser(
+			decodedParams.externalJwtConfigId,
+			decodedParams.externalAuthenticationToken,
+		)
+	}
+}.toPyString(Boolean.serializer())
+
+@OptIn(
+	ExperimentalForeignApi::class,
+	InternalIcureApi::class,
+)
+public fun setExternalJwtAuthByIdentifiersForCurrentUserAsync(
+	sdk: CardinalNonCryptoApis,
+	params: String,
+	resultCallback: CPointer<CFunction<(CValues<ByteVarOf<Byte>>?,
+			CValues<ByteVarOf<Byte>>?) -> Unit>>,
+): COpaquePointer? = kotlin.runCatching {
+	val decodedParams =
+			fullLanguageInteropJson.decodeFromString<SetExternalJwtAuthByIdentifiersForCurrentUserParams>(params)
+	GlobalScope.launch {
+		kotlin.runCatching {
+			sdk.user.setExternalJwtAuthByIdentifiersForCurrentUser(
+				decodedParams.externalJwtConfigId,
+				decodedParams.externalAuthenticationToken,
+			)
+		}.toPyStringAsyncCallback(Boolean.serializer(), resultCallback)
 	}
 }.failureToPyStringAsyncCallback(resultCallback)
 
