@@ -10,8 +10,6 @@ import com.icure.utils.InternalIcureApi
 class AnonymousSdkImpl(
 	private val rawAnonymousApi: RawAnonymousApi,
 ): CardinalAnonymousSdk {
-	override val agenda: AnonymousAgendaApi
-		get() = TODO()
-	override val healthcareParty: AnonymousHealthcarePartyApi
-		get() = TODO()
+	override val agenda: AnonymousAgendaApi by lazy { AnonymousAgendaApiImpl(rawAnonymousApi) }
+	override val healthcareParty: AnonymousHealthcarePartyApi by lazy { AnonymousHealthcarePartyApiImpl(rawAnonymousApi) }
 }
