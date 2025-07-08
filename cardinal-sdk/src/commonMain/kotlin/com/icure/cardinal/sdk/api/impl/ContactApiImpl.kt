@@ -536,8 +536,7 @@ internal class ContactApiImpl(
 		user: User?,
 		delegates: Map<String, AccessLevel>,
 		secretId: SecretIdUseOption,
-		alternateRootDataOwnerReference: EntityReferenceInGroup?,
-		// Temporary, needs a lot more stuff to match typescript implementation
+		alternateRootDelegateId: String?,
 	): DecryptedContact =
 		crypto.entity.entityWithInitializedEncryptedMetadata(
             null,
@@ -557,7 +556,7 @@ internal class ContactApiImpl(
             ),
             initializeEncryptionKey = true,
             autoDelegations = (delegates + user?.autoDelegationsFor(DelegationTag.AdministrativeData).orEmpty()).keyAsLocalDataOwnerReferences(),
-			alternateRootDataOwnerReference = alternateRootDataOwnerReference,
+			alternateRootDataOwnerReference = alternateRootDelegateId?.let { EntityReferenceInGroup(it, null) },
 		).updatedEntity
 
 	override suspend fun getEncryptionKeysOf(contact: Contact): Set<HexString> = crypto.entity.encryptionKeysOf(null, contact, EntityWithEncryptionMetadataTypeName.Contact, null)

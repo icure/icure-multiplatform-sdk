@@ -1049,7 +1049,6 @@ internal class CalendarItemApiImplJs(
 			entityGroupId: String,
 			base: DecryptedCalendarItemJs?,
 			patient: GroupScopedJs<PatientJs>?,
-			alternateRootDataOwnerReference: EntityReferenceInGroupJs?,
 			options: dynamic,
 		): Promise<GroupScopedJs<DecryptedCalendarItemJs>> {
 			val _options = options ?: js("{}")
@@ -1090,9 +1089,15 @@ internal class CalendarItemApiImplJs(
 				) { secretId: SecretIdUseOptionJs ->
 					secretIdUseOption_fromJs(secretId)
 				}
-				val alternateRootDataOwnerReferenceConverted: EntityReferenceInGroup? =
-						alternateRootDataOwnerReference?.let { nonNull1 ->
-					entityReferenceInGroup_fromJs(nonNull1)
+				val alternateRootDelegateReferenceConverted: EntityReferenceInGroup? =
+						convertingOptionOrDefaultNullable(
+					_options,
+					"alternateRootDelegateReference",
+					null
+				) { alternateRootDelegateReference: EntityReferenceInGroupJs? ->
+					alternateRootDelegateReference?.let { nonNull1 ->
+						entityReferenceInGroup_fromJs(nonNull1)
+					}
 				}
 				val result = calendarItemApi.inGroup.withEncryptionMetadata(
 					entityGroupIdConverted,
@@ -1101,7 +1106,7 @@ internal class CalendarItemApiImplJs(
 					userConverted,
 					delegatesConverted,
 					secretIdConverted,
-					alternateRootDataOwnerReferenceConverted,
+					alternateRootDelegateReferenceConverted,
 				)
 				groupScoped_toJs(
 					result,
@@ -1599,7 +1604,6 @@ internal class CalendarItemApiImplJs(
 	override fun withEncryptionMetadata(
 		base: DecryptedCalendarItemJs?,
 		patient: PatientJs?,
-		alternateRootDataOwnerReference: EntityReferenceInGroupJs?,
 		options: dynamic,
 	): Promise<DecryptedCalendarItemJs> {
 		val _options = options ?: js("{}")
@@ -1642,9 +1646,12 @@ internal class CalendarItemApiImplJs(
 			) { secretId: SecretIdUseOptionJs ->
 				secretIdUseOption_fromJs(secretId)
 			}
-			val alternateRootDataOwnerReferenceConverted: EntityReferenceInGroup? =
-					alternateRootDataOwnerReference?.let { nonNull1 ->
-				entityReferenceInGroup_fromJs(nonNull1)
+			val alternateRootDelegateIdConverted: String? = convertingOptionOrDefaultNullable(
+				_options,
+				"alternateRootDelegateId",
+				null
+			) { alternateRootDelegateId: String? ->
+				undefinedToNull(alternateRootDelegateId)
 			}
 			val result = calendarItemApi.withEncryptionMetadata(
 				baseConverted,
@@ -1652,7 +1659,7 @@ internal class CalendarItemApiImplJs(
 				userConverted,
 				delegatesConverted,
 				secretIdConverted,
-				alternateRootDataOwnerReferenceConverted,
+				alternateRootDelegateIdConverted,
 			)
 			calendarItem_toJs(result)
 		}

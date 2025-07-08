@@ -35,7 +35,6 @@ public external interface MessageApiJs {
 	public fun withEncryptionMetadata(
 		base: DecryptedMessageJs?,
 		patient: PatientJs?,
-		alternateRootDataOwnerReference: EntityReferenceInGroupJs?,
 		options: dynamic,
 	): Promise<DecryptedMessageJs>
 

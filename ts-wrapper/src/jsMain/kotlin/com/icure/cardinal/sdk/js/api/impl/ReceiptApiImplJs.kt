@@ -18,15 +18,14 @@ import com.icure.cardinal.sdk.js.model.CheckedConverters.listToArray
 import com.icure.cardinal.sdk.js.model.CheckedConverters.nullToUndefined
 import com.icure.cardinal.sdk.js.model.CheckedConverters.objectToMap
 import com.icure.cardinal.sdk.js.model.CheckedConverters.setToArray
+import com.icure.cardinal.sdk.js.model.CheckedConverters.undefinedToNull
 import com.icure.cardinal.sdk.js.model.DecryptedReceiptJs
 import com.icure.cardinal.sdk.js.model.EncryptedReceiptJs
-import com.icure.cardinal.sdk.js.model.EntityReferenceInGroupJs
 import com.icure.cardinal.sdk.js.model.PatientJs
 import com.icure.cardinal.sdk.js.model.ReceiptJs
 import com.icure.cardinal.sdk.js.model.UserJs
 import com.icure.cardinal.sdk.js.model.couchdb.DocIdentifierJs
 import com.icure.cardinal.sdk.js.model.couchdb.docIdentifier_toJs
-import com.icure.cardinal.sdk.js.model.entityReferenceInGroup_fromJs
 import com.icure.cardinal.sdk.js.model.patient_fromJs
 import com.icure.cardinal.sdk.js.model.receipt_fromJs
 import com.icure.cardinal.sdk.js.model.receipt_toJs
@@ -35,7 +34,6 @@ import com.icure.cardinal.sdk.js.model.user_fromJs
 import com.icure.cardinal.sdk.js.utils.Record
 import com.icure.cardinal.sdk.model.DecryptedReceipt
 import com.icure.cardinal.sdk.model.EncryptedReceipt
-import com.icure.cardinal.sdk.model.EntityReferenceInGroup
 import com.icure.cardinal.sdk.model.Patient
 import com.icure.cardinal.sdk.model.Receipt
 import com.icure.cardinal.sdk.model.User
@@ -249,7 +247,6 @@ internal class ReceiptApiImplJs(
 	override fun withEncryptionMetadata(
 		base: DecryptedReceiptJs?,
 		patient: PatientJs?,
-		alternateRootDataOwnerReference: EntityReferenceInGroupJs?,
 		options: dynamic,
 	): Promise<DecryptedReceiptJs> {
 		val _options = options ?: js("{}")
@@ -292,9 +289,12 @@ internal class ReceiptApiImplJs(
 			) { secretId: SecretIdUseOptionJs ->
 				secretIdUseOption_fromJs(secretId)
 			}
-			val alternateRootDataOwnerReferenceConverted: EntityReferenceInGroup? =
-					alternateRootDataOwnerReference?.let { nonNull1 ->
-				entityReferenceInGroup_fromJs(nonNull1)
+			val alternateRootDelegateIdConverted: String? = convertingOptionOrDefaultNullable(
+				_options,
+				"alternateRootDelegateId",
+				null
+			) { alternateRootDelegateId: String? ->
+				undefinedToNull(alternateRootDelegateId)
 			}
 			val result = receiptApi.withEncryptionMetadata(
 				baseConverted,
@@ -302,7 +302,7 @@ internal class ReceiptApiImplJs(
 				userConverted,
 				delegatesConverted,
 				secretIdConverted,
-				alternateRootDataOwnerReferenceConverted,
+				alternateRootDelegateIdConverted,
 			)
 			receipt_toJs(result)
 		}

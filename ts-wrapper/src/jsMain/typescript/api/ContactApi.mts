@@ -3,7 +3,6 @@ import {FilterOptions, PaginatedListIterator, SortableFilterOptions} from '../ca
 import {ContactShareOptions} from '../crypto/entities/ContactShareOptions.mjs';
 import {SecretIdUseOption} from '../crypto/entities/SecretIdUseOption.mjs';
 import {Contact, DecryptedContact, EncryptedContact} from '../model/Contact.mjs';
-import {EntityReferenceInGroup} from '../model/EntityReferenceInGroup.mjs';
 import {PaginatedList} from '../model/PaginatedList.mjs';
 import {Patient} from '../model/Patient.mjs';
 import {StoredDocumentIdentifier} from '../model/StoredDocumentIdentifier.mjs';
@@ -34,8 +33,7 @@ export interface ContactApi {
 	matchServicesBySorted(filter: SortableFilterOptions<Service>): Promise<Array<string>>;
 
 	withEncryptionMetadata(base: DecryptedContact | undefined, patient: Patient,
-			alternateRootDataOwnerReference: EntityReferenceInGroup | undefined,
-			options?: { user?: User | undefined, delegates?: { [ key: string ]: AccessLevel }, secretId?: SecretIdUseOption }): Promise<DecryptedContact>;
+			options?: { user?: User | undefined, delegates?: { [ key: string ]: AccessLevel }, secretId?: SecretIdUseOption, alternateRootDelegateId?: string | undefined }): Promise<DecryptedContact>;
 
 	getEncryptionKeysOf(contact: Contact): Promise<Array<HexString>>;
 

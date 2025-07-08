@@ -28,7 +28,6 @@ public external interface HealthElementInGroupApiJs {
 		entityGroupId: String,
 		base: DecryptedHealthElementJs?,
 		patient: GroupScopedJs<PatientJs>,
-		alternateRootDataOwnerReference: EntityReferenceInGroupJs?,
 		options: dynamic,
 	): Promise<GroupScopedJs<DecryptedHealthElementJs>>
 

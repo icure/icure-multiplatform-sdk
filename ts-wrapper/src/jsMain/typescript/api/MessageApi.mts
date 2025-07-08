@@ -24,8 +24,7 @@ export interface MessageApi {
 	tryAndRecover: MessageFlavouredApi<Message>;
 
 	withEncryptionMetadata(base: DecryptedMessage | undefined, patient: Patient | undefined,
-			alternateRootDataOwnerReference: EntityReferenceInGroup | undefined,
-			options?: { user?: User | undefined, delegates?: { [ key: string ]: AccessLevel }, secretId?: SecretIdUseOption }): Promise<DecryptedMessage>;
+			options?: { user?: User | undefined, delegates?: { [ key: string ]: AccessLevel }, secretId?: SecretIdUseOption, alternateRootDelegateId?: string | undefined }): Promise<DecryptedMessage>;
 
 	getEncryptionKeysOf(message: Message): Promise<Array<HexString>>;
 

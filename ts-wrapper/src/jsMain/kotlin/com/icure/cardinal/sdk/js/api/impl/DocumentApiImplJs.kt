@@ -31,7 +31,6 @@ import com.icure.cardinal.sdk.js.model.CheckedConverters.undefinedToNull
 import com.icure.cardinal.sdk.js.model.DecryptedDocumentJs
 import com.icure.cardinal.sdk.js.model.DocumentJs
 import com.icure.cardinal.sdk.js.model.EncryptedDocumentJs
-import com.icure.cardinal.sdk.js.model.EntityReferenceInGroupJs
 import com.icure.cardinal.sdk.js.model.MessageJs
 import com.icure.cardinal.sdk.js.model.PatientJs
 import com.icure.cardinal.sdk.js.model.StoredDocumentIdentifierJs
@@ -40,7 +39,6 @@ import com.icure.cardinal.sdk.js.model.couchdb.DocIdentifierJs
 import com.icure.cardinal.sdk.js.model.couchdb.docIdentifier_toJs
 import com.icure.cardinal.sdk.js.model.document_fromJs
 import com.icure.cardinal.sdk.js.model.document_toJs
-import com.icure.cardinal.sdk.js.model.entityReferenceInGroup_fromJs
 import com.icure.cardinal.sdk.js.model.message_fromJs
 import com.icure.cardinal.sdk.js.model.patient_fromJs
 import com.icure.cardinal.sdk.js.model.specializations.hexString_toJs
@@ -52,7 +50,6 @@ import com.icure.cardinal.sdk.js.utils.pagination.paginatedListIterator_toJs
 import com.icure.cardinal.sdk.model.DecryptedDocument
 import com.icure.cardinal.sdk.model.Document
 import com.icure.cardinal.sdk.model.EncryptedDocument
-import com.icure.cardinal.sdk.model.EntityReferenceInGroup
 import com.icure.cardinal.sdk.model.Message
 import com.icure.cardinal.sdk.model.Patient
 import com.icure.cardinal.sdk.model.StoredDocumentIdentifier
@@ -585,7 +582,6 @@ internal class DocumentApiImplJs(
 	override fun withEncryptionMetadataLinkedToMessage(
 		base: DecryptedDocumentJs?,
 		message: MessageJs,
-		alternateRootDataOwnerReference: EntityReferenceInGroupJs?,
 		options: dynamic,
 	): Promise<DecryptedDocumentJs> {
 		val _options = options ?: js("{}")
@@ -626,9 +622,12 @@ internal class DocumentApiImplJs(
 			) { secretId: SecretIdUseOptionJs ->
 				secretIdUseOption_fromJs(secretId)
 			}
-			val alternateRootDataOwnerReferenceConverted: EntityReferenceInGroup? =
-					alternateRootDataOwnerReference?.let { nonNull1 ->
-				entityReferenceInGroup_fromJs(nonNull1)
+			val alternateRootDelegateIdConverted: String? = convertingOptionOrDefaultNullable(
+				_options,
+				"alternateRootDelegateId",
+				null
+			) { alternateRootDelegateId: String? ->
+				undefinedToNull(alternateRootDelegateId)
 			}
 			val result = documentApi.withEncryptionMetadataLinkedToMessage(
 				baseConverted,
@@ -636,7 +635,7 @@ internal class DocumentApiImplJs(
 				userConverted,
 				delegatesConverted,
 				secretIdConverted,
-				alternateRootDataOwnerReferenceConverted,
+				alternateRootDelegateIdConverted,
 			)
 			document_toJs(result)
 		}
@@ -645,7 +644,6 @@ internal class DocumentApiImplJs(
 	override fun withEncryptionMetadataLinkedToPatient(
 		base: DecryptedDocumentJs?,
 		patient: PatientJs,
-		alternateRootDataOwnerReference: EntityReferenceInGroupJs?,
 		options: dynamic,
 	): Promise<DecryptedDocumentJs> {
 		val _options = options ?: js("{}")
@@ -686,9 +684,12 @@ internal class DocumentApiImplJs(
 			) { secretId: SecretIdUseOptionJs ->
 				secretIdUseOption_fromJs(secretId)
 			}
-			val alternateRootDataOwnerReferenceConverted: EntityReferenceInGroup? =
-					alternateRootDataOwnerReference?.let { nonNull1 ->
-				entityReferenceInGroup_fromJs(nonNull1)
+			val alternateRootDelegateIdConverted: String? = convertingOptionOrDefaultNullable(
+				_options,
+				"alternateRootDelegateId",
+				null
+			) { alternateRootDelegateId: String? ->
+				undefinedToNull(alternateRootDelegateId)
 			}
 			val result = documentApi.withEncryptionMetadataLinkedToPatient(
 				baseConverted,
@@ -696,17 +697,14 @@ internal class DocumentApiImplJs(
 				userConverted,
 				delegatesConverted,
 				secretIdConverted,
-				alternateRootDataOwnerReferenceConverted,
+				alternateRootDelegateIdConverted,
 			)
 			document_toJs(result)
 		}
 	}
 
-	override fun withEncryptionMetadataUnlinked(
-		base: DecryptedDocumentJs?,
-		alternateRootDataOwnerReference: EntityReferenceInGroupJs?,
-		options: dynamic,
-	): Promise<DecryptedDocumentJs> {
+	override fun withEncryptionMetadataUnlinked(base: DecryptedDocumentJs?, options: dynamic):
+			Promise<DecryptedDocumentJs> {
 		val _options = options ?: js("{}")
 		return GlobalScope.promise {
 			val baseConverted: DecryptedDocument? = base?.let { nonNull1 ->
@@ -737,15 +735,18 @@ internal class DocumentApiImplJs(
 					},
 				)
 			}
-			val alternateRootDataOwnerReferenceConverted: EntityReferenceInGroup? =
-					alternateRootDataOwnerReference?.let { nonNull1 ->
-				entityReferenceInGroup_fromJs(nonNull1)
+			val alternateRootDelegateIdConverted: String? = convertingOptionOrDefaultNullable(
+				_options,
+				"alternateRootDelegateId",
+				null
+			) { alternateRootDelegateId: String? ->
+				undefinedToNull(alternateRootDelegateId)
 			}
 			val result = documentApi.withEncryptionMetadataUnlinked(
 				baseConverted,
 				userConverted,
 				delegatesConverted,
-				alternateRootDataOwnerReferenceConverted,
+				alternateRootDelegateIdConverted,
 			)
 			document_toJs(result)
 		}

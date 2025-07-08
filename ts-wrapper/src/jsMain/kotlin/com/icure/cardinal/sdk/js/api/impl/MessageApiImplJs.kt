@@ -39,7 +39,6 @@ import com.icure.cardinal.sdk.js.model.StoredDocumentIdentifierJs
 import com.icure.cardinal.sdk.js.model.UserJs
 import com.icure.cardinal.sdk.js.model.couchdb.DocIdentifierJs
 import com.icure.cardinal.sdk.js.model.couchdb.docIdentifier_toJs
-import com.icure.cardinal.sdk.js.model.entityReferenceInGroup_fromJs
 import com.icure.cardinal.sdk.js.model.entityReferenceInGroup_toJs
 import com.icure.cardinal.sdk.js.model.message_fromJs
 import com.icure.cardinal.sdk.js.model.message_toJs
@@ -1029,7 +1028,6 @@ internal class MessageApiImplJs(
 	override fun withEncryptionMetadata(
 		base: DecryptedMessageJs?,
 		patient: PatientJs?,
-		alternateRootDataOwnerReference: EntityReferenceInGroupJs?,
 		options: dynamic,
 	): Promise<DecryptedMessageJs> {
 		val _options = options ?: js("{}")
@@ -1072,9 +1070,12 @@ internal class MessageApiImplJs(
 			) { secretId: SecretIdUseOptionJs ->
 				secretIdUseOption_fromJs(secretId)
 			}
-			val alternateRootDataOwnerReferenceConverted: EntityReferenceInGroup? =
-					alternateRootDataOwnerReference?.let { nonNull1 ->
-				entityReferenceInGroup_fromJs(nonNull1)
+			val alternateRootDelegateIdConverted: String? = convertingOptionOrDefaultNullable(
+				_options,
+				"alternateRootDelegateId",
+				null
+			) { alternateRootDelegateId: String? ->
+				undefinedToNull(alternateRootDelegateId)
 			}
 			val result = messageApi.withEncryptionMetadata(
 				baseConverted,
@@ -1082,7 +1083,7 @@ internal class MessageApiImplJs(
 				userConverted,
 				delegatesConverted,
 				secretIdConverted,
-				alternateRootDataOwnerReferenceConverted,
+				alternateRootDelegateIdConverted,
 			)
 			message_toJs(result)
 		}

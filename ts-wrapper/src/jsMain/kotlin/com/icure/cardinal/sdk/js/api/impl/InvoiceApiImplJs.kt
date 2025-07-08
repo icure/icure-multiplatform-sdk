@@ -24,7 +24,6 @@ import com.icure.cardinal.sdk.js.model.CheckedConverters.setToArray
 import com.icure.cardinal.sdk.js.model.CheckedConverters.undefinedToNull
 import com.icure.cardinal.sdk.js.model.DecryptedInvoiceJs
 import com.icure.cardinal.sdk.js.model.EncryptedInvoiceJs
-import com.icure.cardinal.sdk.js.model.EntityReferenceInGroupJs
 import com.icure.cardinal.sdk.js.model.InvoiceJs
 import com.icure.cardinal.sdk.js.model.PaginatedListJs
 import com.icure.cardinal.sdk.js.model.PatientJs
@@ -35,7 +34,6 @@ import com.icure.cardinal.sdk.js.model.couchdb.DocIdentifierJs
 import com.icure.cardinal.sdk.js.model.couchdb.docIdentifier_toJs
 import com.icure.cardinal.sdk.js.model.embed.EncryptedInvoicingCodeJs
 import com.icure.cardinal.sdk.js.model.embed.invoicingCode_fromJs
-import com.icure.cardinal.sdk.js.model.entityReferenceInGroup_fromJs
 import com.icure.cardinal.sdk.js.model.invoice_fromJs
 import com.icure.cardinal.sdk.js.model.invoice_toJs
 import com.icure.cardinal.sdk.js.model.paginatedList_toJs
@@ -47,7 +45,6 @@ import com.icure.cardinal.sdk.js.utils.pagination.PaginatedListIteratorJs
 import com.icure.cardinal.sdk.js.utils.pagination.paginatedListIterator_toJs
 import com.icure.cardinal.sdk.model.DecryptedInvoice
 import com.icure.cardinal.sdk.model.EncryptedInvoice
-import com.icure.cardinal.sdk.model.EntityReferenceInGroup
 import com.icure.cardinal.sdk.model.Invoice
 import com.icure.cardinal.sdk.model.Patient
 import com.icure.cardinal.sdk.model.User
@@ -1362,7 +1359,6 @@ internal class InvoiceApiImplJs(
 	override fun withEncryptionMetadata(
 		base: DecryptedInvoiceJs?,
 		patient: PatientJs?,
-		alternateRootDataOwnerReference: EntityReferenceInGroupJs?,
 		options: dynamic,
 	): Promise<DecryptedInvoiceJs> {
 		val _options = options ?: js("{}")
@@ -1405,9 +1401,12 @@ internal class InvoiceApiImplJs(
 			) { secretId: SecretIdUseOptionJs ->
 				secretIdUseOption_fromJs(secretId)
 			}
-			val alternateRootDataOwnerReferenceConverted: EntityReferenceInGroup? =
-					alternateRootDataOwnerReference?.let { nonNull1 ->
-				entityReferenceInGroup_fromJs(nonNull1)
+			val alternateRootDelegateIdConverted: String? = convertingOptionOrDefaultNullable(
+				_options,
+				"alternateRootDelegateId",
+				null
+			) { alternateRootDelegateId: String? ->
+				undefinedToNull(alternateRootDelegateId)
 			}
 			val result = invoiceApi.withEncryptionMetadata(
 				baseConverted,
@@ -1415,7 +1414,7 @@ internal class InvoiceApiImplJs(
 				userConverted,
 				delegatesConverted,
 				secretIdConverted,
-				alternateRootDataOwnerReferenceConverted,
+				alternateRootDelegateIdConverted,
 			)
 			invoice_toJs(result)
 		}

@@ -3,7 +3,6 @@ import {FilterOptions, PaginatedListIterator, SortableFilterOptions} from '../ca
 import {AccessLogShareOptions} from '../crypto/entities/AccessLogShareOptions.mjs';
 import {SecretIdUseOption} from '../crypto/entities/SecretIdUseOption.mjs';
 import {AccessLog, DecryptedAccessLog, EncryptedAccessLog} from '../model/AccessLog.mjs';
-import {EntityReferenceInGroup} from '../model/EntityReferenceInGroup.mjs';
 import {PaginatedList} from '../model/PaginatedList.mjs';
 import {Patient} from '../model/Patient.mjs';
 import {StoredDocumentIdentifier} from '../model/StoredDocumentIdentifier.mjs';
@@ -21,8 +20,7 @@ export interface AccessLogApi {
 	tryAndRecover: AccessLogFlavouredApi<AccessLog>;
 
 	withEncryptionMetadata(base: DecryptedAccessLog | undefined, patient: Patient,
-			alternateRootDataOwnerReference: EntityReferenceInGroup | undefined,
-			options?: { user?: User | undefined, delegates?: { [ key: string ]: AccessLevel }, secretId?: SecretIdUseOption }): Promise<DecryptedAccessLog>;
+			options?: { user?: User | undefined, delegates?: { [ key: string ]: AccessLevel }, secretId?: SecretIdUseOption, alternateRootDelegateId?: string | undefined }): Promise<DecryptedAccessLog>;
 
 	getEncryptionKeysOf(accessLog: AccessLog): Promise<Array<HexString>>;
 

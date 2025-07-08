@@ -2,7 +2,6 @@
 import {FilterOptions, PaginatedListIterator, SortableFilterOptions} from '../cardinal-sdk-ts.mjs';
 import {FormShareOptions} from '../crypto/entities/FormShareOptions.mjs';
 import {SecretIdUseOption} from '../crypto/entities/SecretIdUseOption.mjs';
-import {EntityReferenceInGroup} from '../model/EntityReferenceInGroup.mjs';
 import {DecryptedForm, EncryptedForm, Form} from '../model/Form.mjs';
 import {FormTemplate} from '../model/FormTemplate.mjs';
 import {Patient} from '../model/Patient.mjs';
@@ -21,8 +20,7 @@ export interface FormApi {
 	tryAndRecover: FormFlavouredApi<Form>;
 
 	withEncryptionMetadata(base: DecryptedForm | undefined, patient: Patient,
-			alternateRootDataOwnerReference: EntityReferenceInGroup | undefined,
-			options?: { user?: User | undefined, delegates?: { [ key: string ]: AccessLevel }, secretId?: SecretIdUseOption }): Promise<DecryptedForm>;
+			options?: { user?: User | undefined, delegates?: { [ key: string ]: AccessLevel }, secretId?: SecretIdUseOption, alternateRootDelegateId?: string | undefined }): Promise<DecryptedForm>;
 
 	getEncryptionKeysOf(form: Form): Promise<Array<HexString>>;
 

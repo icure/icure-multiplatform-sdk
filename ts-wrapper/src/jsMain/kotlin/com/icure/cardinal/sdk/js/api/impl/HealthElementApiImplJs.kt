@@ -807,7 +807,6 @@ internal class HealthElementApiImplJs(
 			entityGroupId: String,
 			base: DecryptedHealthElementJs?,
 			patient: GroupScopedJs<PatientJs>,
-			alternateRootDataOwnerReference: EntityReferenceInGroupJs?,
 			options: dynamic,
 		): Promise<GroupScopedJs<DecryptedHealthElementJs>> {
 			val _options = options ?: js("{}")
@@ -846,9 +845,15 @@ internal class HealthElementApiImplJs(
 				) { secretId: SecretIdUseOptionJs ->
 					secretIdUseOption_fromJs(secretId)
 				}
-				val alternateRootDataOwnerReferenceConverted: EntityReferenceInGroup? =
-						alternateRootDataOwnerReference?.let { nonNull1 ->
-					entityReferenceInGroup_fromJs(nonNull1)
+				val alternateRootDelegateReferenceConverted: EntityReferenceInGroup? =
+						convertingOptionOrDefaultNullable(
+					_options,
+					"alternateRootDelegateReference",
+					null
+				) { alternateRootDelegateReference: EntityReferenceInGroupJs? ->
+					alternateRootDelegateReference?.let { nonNull1 ->
+						entityReferenceInGroup_fromJs(nonNull1)
+					}
 				}
 				val result = healthElementApi.inGroup.withEncryptionMetadata(
 					entityGroupIdConverted,
@@ -857,7 +862,7 @@ internal class HealthElementApiImplJs(
 					userConverted,
 					delegatesConverted,
 					secretIdConverted,
-					alternateRootDataOwnerReferenceConverted,
+					alternateRootDelegateReferenceConverted,
 				)
 				groupScoped_toJs(
 					result,
@@ -1154,7 +1159,6 @@ internal class HealthElementApiImplJs(
 	override fun withEncryptionMetadata(
 		base: DecryptedHealthElementJs?,
 		patient: PatientJs,
-		alternateRootDataOwnerReference: EntityReferenceInGroupJs?,
 		options: dynamic,
 	): Promise<DecryptedHealthElementJs> {
 		val _options = options ?: js("{}")
@@ -1195,9 +1199,12 @@ internal class HealthElementApiImplJs(
 			) { secretId: SecretIdUseOptionJs ->
 				secretIdUseOption_fromJs(secretId)
 			}
-			val alternateRootDataOwnerReferenceConverted: EntityReferenceInGroup? =
-					alternateRootDataOwnerReference?.let { nonNull1 ->
-				entityReferenceInGroup_fromJs(nonNull1)
+			val alternateRootDelegateIdConverted: String? = convertingOptionOrDefaultNullable(
+				_options,
+				"alternateRootDelegateId",
+				null
+			) { alternateRootDelegateId: String? ->
+				undefinedToNull(alternateRootDelegateId)
 			}
 			val result = healthElementApi.withEncryptionMetadata(
 				baseConverted,
@@ -1205,7 +1212,7 @@ internal class HealthElementApiImplJs(
 				userConverted,
 				delegatesConverted,
 				secretIdConverted,
-				alternateRootDataOwnerReferenceConverted,
+				alternateRootDelegateIdConverted,
 			)
 			healthElement_toJs(result)
 		}

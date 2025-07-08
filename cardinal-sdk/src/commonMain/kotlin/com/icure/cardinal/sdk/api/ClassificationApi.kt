@@ -9,7 +9,6 @@ import com.icure.cardinal.sdk.filters.SortableFilterOptions
 import com.icure.cardinal.sdk.model.Classification
 import com.icure.cardinal.sdk.model.DecryptedClassification
 import com.icure.cardinal.sdk.model.EncryptedClassification
-import com.icure.cardinal.sdk.model.EntityReferenceInGroup
 import com.icure.cardinal.sdk.model.Patient
 import com.icure.cardinal.sdk.model.User
 import com.icure.cardinal.sdk.model.couchdb.DocIdentifier
@@ -179,8 +178,9 @@ interface ClassificationApi : ClassificationBasicFlavourlessApi, ClassificationF
 		delegates: Map<String, AccessLevel> = emptyMap(),
 		@DefaultValue("com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption.UseAnySharedWithParent")
 		secretId: SecretIdUseOption = SecretIdUseOption.UseAnySharedWithParent,
-		alternateRootDataOwnerReference: EntityReferenceInGroup? = null,
-		): DecryptedClassification
+		@DefaultValue("null")
+		alternateRootDelegateId: String? = null,
+	): DecryptedClassification
 
 	/**
 	 * Attempts to extract the encryption keys of a classification. If the user does not have access to any encryption key

@@ -216,8 +216,7 @@ internal class TopicApiImpl(
 		user: User?,
 		delegates: Map<String, AccessLevel>,
 		secretId: SecretIdUseOption,
-		alternateRootDataOwnerReference: EntityReferenceInGroup?,
-		// Temporary, needs a lot more stuff to match typescript implementation
+		alternateRootDelegateId: String?,
 	): DecryptedTopic =
 		config.crypto.entity.entityWithInitializedEncryptedMetadata(
             null,
@@ -243,7 +242,7 @@ internal class TopicApiImpl(
             initializeEncryptionKey = true,
             autoDelegations = (delegates + user?.autoDelegationsFor(DelegationTag.MedicalInformation)
                 .orEmpty()).keyAsLocalDataOwnerReferences(),
-			alternateRootDataOwnerReference = alternateRootDataOwnerReference,
+			alternateRootDataOwnerReference = alternateRootDelegateId?.let { EntityReferenceInGroup(it, null) },
 		).updatedEntity
 
 	override suspend fun getEncryptionKeysOf(topic: Topic): Set<HexString> =

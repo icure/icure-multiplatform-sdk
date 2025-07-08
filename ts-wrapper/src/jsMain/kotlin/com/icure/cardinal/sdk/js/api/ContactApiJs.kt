@@ -9,7 +9,6 @@ import com.icure.cardinal.sdk.js.filters.SortableFilterOptionsJs
 import com.icure.cardinal.sdk.js.model.ContactJs
 import com.icure.cardinal.sdk.js.model.DecryptedContactJs
 import com.icure.cardinal.sdk.js.model.EncryptedContactJs
-import com.icure.cardinal.sdk.js.model.EntityReferenceInGroupJs
 import com.icure.cardinal.sdk.js.model.PaginatedListJs
 import com.icure.cardinal.sdk.js.model.PatientJs
 import com.icure.cardinal.sdk.js.model.StoredDocumentIdentifierJs
@@ -49,7 +48,6 @@ public external interface ContactApiJs {
 	public fun withEncryptionMetadata(
 		base: DecryptedContactJs?,
 		patient: PatientJs,
-		alternateRootDataOwnerReference: EntityReferenceInGroupJs?,
 		options: dynamic,
 	): Promise<DecryptedContactJs>
 

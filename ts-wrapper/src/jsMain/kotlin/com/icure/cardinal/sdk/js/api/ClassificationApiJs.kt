@@ -9,7 +9,6 @@ import com.icure.cardinal.sdk.js.filters.SortableFilterOptionsJs
 import com.icure.cardinal.sdk.js.model.ClassificationJs
 import com.icure.cardinal.sdk.js.model.DecryptedClassificationJs
 import com.icure.cardinal.sdk.js.model.EncryptedClassificationJs
-import com.icure.cardinal.sdk.js.model.EntityReferenceInGroupJs
 import com.icure.cardinal.sdk.js.model.PatientJs
 import com.icure.cardinal.sdk.js.model.couchdb.DocIdentifierJs
 import com.icure.cardinal.sdk.js.utils.Record
@@ -31,7 +30,6 @@ public external interface ClassificationApiJs {
 	public fun withEncryptionMetadata(
 		base: DecryptedClassificationJs?,
 		patient: PatientJs,
-		alternateRootDataOwnerReference: EntityReferenceInGroupJs?,
 		options: dynamic,
 	): Promise<DecryptedClassificationJs>
 

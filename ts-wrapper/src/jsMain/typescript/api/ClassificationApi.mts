@@ -3,7 +3,6 @@ import {FilterOptions, PaginatedListIterator, SortableFilterOptions} from '../ca
 import {ClassificationShareOptions} from '../crypto/entities/ClassificationShareOptions.mjs';
 import {SecretIdUseOption} from '../crypto/entities/SecretIdUseOption.mjs';
 import {Classification, DecryptedClassification, EncryptedClassification} from '../model/Classification.mjs';
-import {EntityReferenceInGroup} from '../model/EntityReferenceInGroup.mjs';
 import {Patient} from '../model/Patient.mjs';
 import {User} from '../model/User.mjs';
 import {DocIdentifier} from '../model/couchdb/DocIdentifier.mjs';
@@ -19,8 +18,7 @@ export interface ClassificationApi {
 	tryAndRecover: ClassificationFlavouredApi<Classification>;
 
 	withEncryptionMetadata(base: DecryptedClassification | undefined, patient: Patient,
-			alternateRootDataOwnerReference: EntityReferenceInGroup | undefined,
-			options?: { user?: User | undefined, delegates?: { [ key: string ]: AccessLevel }, secretId?: SecretIdUseOption }): Promise<DecryptedClassification>;
+			options?: { user?: User | undefined, delegates?: { [ key: string ]: AccessLevel }, secretId?: SecretIdUseOption, alternateRootDelegateId?: string | undefined }): Promise<DecryptedClassification>;
 
 	getEncryptionKeysOf(classification: Classification): Promise<Array<HexString>>;
 

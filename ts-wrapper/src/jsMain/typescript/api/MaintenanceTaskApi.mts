@@ -1,7 +1,6 @@
 // auto-generated file
 import {FilterOptions, PaginatedListIterator, SortableFilterOptions} from '../cardinal-sdk-ts.mjs';
 import {MaintenanceTaskShareOptions} from '../crypto/entities/MaintenanceTaskShareOptions.mjs';
-import {EntityReferenceInGroup} from '../model/EntityReferenceInGroup.mjs';
 import {DecryptedMaintenanceTask, EncryptedMaintenanceTask, MaintenanceTask} from '../model/MaintenanceTask.mjs';
 import {StoredDocumentIdentifier} from '../model/StoredDocumentIdentifier.mjs';
 import {User} from '../model/User.mjs';
@@ -21,8 +20,7 @@ export interface MaintenanceTaskApi {
 	tryAndRecover: MaintenanceTaskFlavouredApi<MaintenanceTask>;
 
 	withEncryptionMetadata(maintenanceTask: DecryptedMaintenanceTask | undefined,
-			alternateRootDataOwnerReference: EntityReferenceInGroup | undefined,
-			options?: { user?: User | undefined, delegates?: { [ key: string ]: AccessLevel } }): Promise<DecryptedMaintenanceTask>;
+			options?: { user?: User | undefined, delegates?: { [ key: string ]: AccessLevel }, alternateRootDelegateId?: string | undefined }): Promise<DecryptedMaintenanceTask>;
 
 	getEncryptionKeysOf(maintenanceTask: MaintenanceTask): Promise<Array<HexString>>;
 

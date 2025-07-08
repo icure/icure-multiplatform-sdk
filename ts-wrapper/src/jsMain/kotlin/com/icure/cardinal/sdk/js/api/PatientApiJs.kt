@@ -46,11 +46,8 @@ public external interface PatientApiJs {
 
 	public fun getEncryptionKeysOf(patient: PatientJs): Promise<Array<String>>
 
-	public fun withEncryptionMetadata(
-		base: DecryptedPatientJs?,
-		alternateRootDataOwnerReference: EntityReferenceInGroupJs?,
-		options: dynamic,
-	): Promise<DecryptedPatientJs>
+	public fun withEncryptionMetadata(base: DecryptedPatientJs?, options: dynamic):
+			Promise<DecryptedPatientJs>
 
 	public fun hasWriteAccess(patient: PatientJs): Promise<Boolean>
 

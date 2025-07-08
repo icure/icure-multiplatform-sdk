@@ -353,7 +353,7 @@ private class HealthElementApiImpl(
 				valueEntryName = "accessLevel"
 			) Map<EntityReferenceInGroup, AccessLevel>,
 			secretId: SecretIdUseOption,
-			alternateRootDataOwnerReference: EntityReferenceInGroup?
+			alternateRootDelegateReference: EntityReferenceInGroup?
 		): GroupScoped<DecryptedHealthElement> =
 			GroupScoped(
 				doWithEncryptionMetadata(
@@ -363,7 +363,7 @@ private class HealthElementApiImpl(
 					user,
 					delegates,
 					secretId,
-					alternateRootDataOwnerReference
+					alternateRootDelegateReference
 				),
 				entityGroupId
 			)
@@ -390,8 +390,7 @@ private class HealthElementApiImpl(
 		user: User?,
 		delegates: Map<String, AccessLevel>,
 		secretId: SecretIdUseOption,
-		alternateRootDataOwnerReference: EntityReferenceInGroup?,
-		// Temporary, needs a lot more stuff to match typescript implementation
+		alternateRootDelegateId: String?
 	): DecryptedHealthElement =
 		doWithEncryptionMetadata(
 			null,
@@ -400,7 +399,7 @@ private class HealthElementApiImpl(
 			user,
 			delegates.keyAsLocalDataOwnerReferences(),
 			secretId,
-			alternateRootDataOwnerReference
+			alternateRootDelegateId?.let { EntityReferenceInGroup(it, null) }
 		)
 
 	private suspend fun doWithEncryptionMetadata(

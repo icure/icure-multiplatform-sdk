@@ -347,7 +347,8 @@ interface FormApi : FormBasicFlavourlessApi, FormFlavouredApi<DecryptedForm> {
 		delegates: Map<String, AccessLevel> = emptyMap(),
 		@DefaultValue("com.icure.cardinal.sdk.crypto.entities.SecretIdUseOption.UseAnySharedWithParent")
 		secretId: SecretIdUseOption = SecretIdUseOption.UseAnySharedWithParent,
-		alternateRootDataOwnerReference: EntityReferenceInGroup? = null,
+		@DefaultValue("null")
+		alternateRootDelegateId: String? = null,
 	): DecryptedForm
 
 	/**

@@ -25,8 +25,7 @@ export interface HealthElementApi {
 	inGroup: HealthElementInGroupApi;
 
 	withEncryptionMetadata(base: DecryptedHealthElement | undefined, patient: Patient,
-			alternateRootDataOwnerReference: EntityReferenceInGroup | undefined,
-			options?: { user?: User | undefined, delegates?: { [ key: string ]: AccessLevel }, secretId?: SecretIdUseOption }): Promise<DecryptedHealthElement>;
+			options?: { user?: User | undefined, delegates?: { [ key: string ]: AccessLevel }, secretId?: SecretIdUseOption, alternateRootDelegateId?: string | undefined }): Promise<DecryptedHealthElement>;
 
 	getEncryptionKeysOf(healthElement: HealthElement): Promise<Array<HexString>>;
 

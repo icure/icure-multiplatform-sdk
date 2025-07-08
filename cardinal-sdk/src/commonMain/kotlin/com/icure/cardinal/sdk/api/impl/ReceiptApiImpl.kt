@@ -173,8 +173,7 @@ internal class ReceiptApiImpl(
 		user: User?,
 		delegates: Map<String, AccessLevel>,
 		secretId: SecretIdUseOption,
-		alternateRootDataOwnerReference: EntityReferenceInGroup?,
-		// Temporary, needs a lot more stuff to match typescript implementation
+		alternateRootDelegateId: String?
 	): DecryptedReceipt =
 		config.crypto.entity.entityWithInitializedEncryptedMetadata(
 			null,
@@ -200,7 +199,7 @@ internal class ReceiptApiImpl(
 			initializeEncryptionKey = true,
 			autoDelegations = (delegates + user?.autoDelegationsFor(DelegationTag.MedicalInformation)
 				.orEmpty()).keyAsLocalDataOwnerReferences(),
-			alternateRootDataOwnerReference = alternateRootDataOwnerReference,
+			alternateRootDataOwnerReference = alternateRootDelegateId?.let { EntityReferenceInGroup(it, null) },
 		).updatedEntity
 
 	override suspend fun getAndDecryptReceiptAttachment(receipt: Receipt, attachmentId: String) =
@@ -241,7 +240,7 @@ internal class ReceiptApiImpl(
 			),
 			user = user,
 			patient = null,
-			alternateRootDataOwnerReference = null
+			alternateRootDelegateId = null
 		).let { createReceipt(it) }
 		checkNotNull(newReceipt.rev) {
 			"Receipt creation failed"

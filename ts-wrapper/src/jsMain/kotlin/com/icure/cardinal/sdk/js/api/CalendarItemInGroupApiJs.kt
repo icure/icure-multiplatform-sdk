@@ -32,7 +32,6 @@ public external interface CalendarItemInGroupApiJs {
 		entityGroupId: String,
 		base: DecryptedCalendarItemJs?,
 		patient: GroupScopedJs<PatientJs>?,
-		alternateRootDataOwnerReference: EntityReferenceInGroupJs?,
 		options: dynamic,
 	): Promise<GroupScopedJs<DecryptedCalendarItemJs>>
 
