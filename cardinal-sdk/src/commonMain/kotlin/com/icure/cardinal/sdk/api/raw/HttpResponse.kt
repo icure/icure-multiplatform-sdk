@@ -3,6 +3,7 @@ package com.icure.cardinal.sdk.api.raw
 import com.icure.cardinal.sdk.exceptions.RevisionConflictException
 import com.icure.cardinal.sdk.utils.RequestStatusException
 import com.icure.utils.InternalIcureApi
+import io.ktor.client.statement.bodyAsText
 import io.ktor.http.Headers
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.isSuccess
@@ -14,7 +15,15 @@ class HttpResponse<T>(val response: io.ktor.client.statement.HttpResponse, val p
 	val status: HttpStatusCode = response.status
 	val headers: Map<String, List<String>> = response.headers.mapEntries()
 
-	suspend fun successBody(): T = if (status.isSuccess()) provider.body(response) else throw RequestStatusException(response.call.request.method, response.call.request.url.toString(), status.value)
+	suspend fun successBody(): T = if (status.isSuccess())
+		provider.body(response)
+	else
+		throw RequestStatusException(
+			response.call.request.method,
+			response.call.request.url.toString(),
+			status.value,
+			kotlin.runCatching { response.bodyAsText() }.getOrNull()
+		)
 
 	companion object {
 		private fun Headers.mapEntries(): Map<String, List<String>> {
@@ -55,7 +64,7 @@ inline fun <reified T> io.ktor.client.statement.HttpResponse.wrap(): HttpRespons
 	HttpResponse(this, TypedBodyProvider(typeInfo<T>()))
 
 fun io.ktor.client.statement.HttpResponse.requireSuccess() {
-	if (!status.isSuccess()) throw RequestStatusException(call.request.method, call.request.url.toString(), status.value)
+	if (!status.isSuccess()) throw RequestStatusException(call.request.method, call.request.url.toString(), status.value, null)
 }
 
 @InternalIcureApi
