@@ -12,5 +12,6 @@ data class EmbeddedTimeTableHour(
 	public val endHour: Int,
 ) {
 	// region EmbeddedTimeTableHour-EmbeddedTimeTableHour
+
 	// endregion
 }
