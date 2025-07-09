@@ -14,6 +14,7 @@ import kotlin.collections.Set
 @Serializable
 data class EmbeddedTimeTableItem(
 	public val rrule: String,
+	public val rruleStartDate: Int? = null,
 	public val notBeforeInMinutes: Int? = null,
 	public val notAfterInMinutes: Int? = null,
 	public val hours: List<EmbeddedTimeTableHour>,
@@ -26,5 +27,6 @@ data class EmbeddedTimeTableItem(
 	public val `public`: Boolean = false,
 ) {
 	// region EmbeddedTimeTableItem-EmbeddedTimeTableItem
+
 	// endregion
 }

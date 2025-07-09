@@ -25,5 +25,6 @@ data class ResourceGroupAllocationSchedule(
 	public val items: List<EmbeddedTimeTableItem> = emptyList(),
 ) {
 	// region ResourceGroupAllocationSchedule-ResourceGroupAllocationSchedule
+
 	// endregion
 }
