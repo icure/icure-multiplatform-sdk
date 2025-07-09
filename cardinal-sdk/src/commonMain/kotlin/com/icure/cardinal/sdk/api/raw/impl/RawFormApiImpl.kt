@@ -279,21 +279,6 @@ class RawFormApiImpl(
 			accept(Application.Json)
 		}.wrap()
 
-	override suspend fun getFormTemplatesByGuid(
-		formTemplateGuid: String,
-		specialityCode: String,
-		raw: Boolean?,
-	): HttpResponse<List<FormTemplate>> =
-		get(authProvider) {
-			url {
-				takeFrom(apiUrl)
-				appendPathSegments("rest", "v2", "form", "template", specialityCode, "guid", formTemplateGuid)
-				parameter("raw", raw)
-				parameter("ts", GMTDate().timestamp)
-			}
-			accept(Application.Json)
-		}.wrap()
-
 	override suspend fun listFormTemplatesBySpeciality(
 		specialityCode: String,
 		loadLayout: Boolean?,
