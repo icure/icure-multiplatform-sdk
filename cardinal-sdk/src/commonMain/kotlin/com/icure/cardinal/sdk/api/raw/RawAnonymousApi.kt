@@ -46,7 +46,6 @@ public interface RawAnonymousApi {
 		isNewPatient: Boolean,
 		startDate: Long,
 		endDate: Long,
-		hcpId: String,
 		placeId: String? = null,
 		limit: Int? = null,
 	): HttpResponse<List<Long>>
@@ -55,6 +54,11 @@ public interface RawAnonymousApi {
 	// region anonymous healthcareparty endpoints
 
 	suspend fun listHealthcarePartiesInGroup(groupId: String): HttpResponse<List<UserAndHealthcareParty>>
+	// endregion
+
+	// region anonymous icure endpoints
+
+	suspend fun getPermissions(): HttpResponse<List<String>>
 	// endregion
 
 	// region anonymous medicallocation endpoints

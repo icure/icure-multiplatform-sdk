@@ -83,12 +83,6 @@ public interface RawFormApi {
 		raw: Boolean? = null,
 	): HttpResponse<FormTemplate>
 
-	suspend fun getFormTemplatesByGuid(
-		formTemplateGuid: String,
-		specialityCode: String,
-		raw: Boolean? = null,
-	): HttpResponse<List<FormTemplate>>
-
 	suspend fun listFormTemplatesBySpeciality(
 		specialityCode: String,
 		loadLayout: Boolean? = null,
