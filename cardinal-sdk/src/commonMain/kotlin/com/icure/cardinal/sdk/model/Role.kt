@@ -2,6 +2,7 @@ package com.icure.cardinal.sdk.model
 
 import com.icure.cardinal.sdk.model.base.StoredDocument
 import com.icure.cardinal.sdk.utils.DefaultValue
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlin.Long
 import kotlin.String
@@ -18,7 +19,21 @@ data class Role(
 	public val name: String? = null,
 	@DefaultValue("emptySet()")
 	public val permissions: Set<String> = emptySet(),
+	public val hierarchyIndex: RoleHierarchyLevel,
 ) : StoredDocument {
+	@Serializable
+	public enum class RoleHierarchyLevel(
+		internal val dtoSerialName: String,
+	) {
+		@SerialName("Root")
+		Root("Root"),
+
+		@SerialName("Parent")
+		Parent("Parent"),
+
+		@SerialName("Child")
+		Child("Child"),
+	}
 	// region Role-Role
 
 	// endregion

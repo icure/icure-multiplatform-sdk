@@ -15,5 +15,6 @@ sealed interface AgendaSlottingAlgorithm {
 		public val intervalMinutes: Int,
 	) : AgendaSlottingAlgorithm
 	// region AgendaSlottingAlgorithm-AgendaSlottingAlgorithm
+
 	// endregion
 }

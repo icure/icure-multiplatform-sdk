@@ -15,6 +15,7 @@ import io.ktor.client.request.accept
 import io.ktor.client.request.parameter
 import io.ktor.http.ContentType.Application
 import io.ktor.http.appendPathSegments
+import io.ktor.http.contentType
 import io.ktor.http.takeFrom
 import io.ktor.util.date.GMTDate
 import kotlin.Boolean
@@ -89,7 +90,6 @@ class RawAnonymousApiImpl(
 		isNewPatient: Boolean,
 		startDate: Long,
 		endDate: Long,
-		hcpId: String,
 		placeId: String?,
 		limit: Int?,
 	): HttpResponse<List<Long>> =
@@ -100,7 +100,6 @@ class RawAnonymousApiImpl(
 				parameter("isNewPatient", isNewPatient)
 				parameter("startDate", startDate)
 				parameter("endDate", endDate)
-				parameter("hcpId", hcpId)
 				parameter("placeId", placeId)
 				parameter("limit", limit)
 				parameter("ts", GMTDate().timestamp)
@@ -119,6 +118,20 @@ class RawAnonymousApiImpl(
 				appendPathSegments("rest", "v2", "aa", "hcparty", "inGroup", groupId)
 				parameter("ts", GMTDate().timestamp)
 			}
+			accept(Application.Json)
+		}.wrap()
+
+	// endregion
+
+	// region anonymous icure endpoints
+
+	override suspend fun getPermissions(): HttpResponse<List<String>> =
+		post {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "aa", "icure", "permissions")
+			}
+			contentType(Application.Json)
 			accept(Application.Json)
 		}.wrap()
 
