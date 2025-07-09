@@ -6,6 +6,8 @@ export class EmbeddedTimeTableItem {
 
 	rrule: string;
 
+	rruleStartDate: number | undefined = undefined;
+
 	notBeforeInMinutes: number | undefined = undefined;
 
 	notAfterInMinutes: number | undefined = undefined;
@@ -22,6 +24,7 @@ export class EmbeddedTimeTableItem {
 
 	constructor(partial: Partial<EmbeddedTimeTableItem> & Pick<EmbeddedTimeTableItem, "rrule" | "hours" | "calendarItemTypesIds">) {
 		this.rrule = partial.rrule;
+		if ('rruleStartDate' in partial) this.rruleStartDate = partial.rruleStartDate;
 		if ('notBeforeInMinutes' in partial) this.notBeforeInMinutes = partial.notBeforeInMinutes;
 		if ('notAfterInMinutes' in partial) this.notAfterInMinutes = partial.notAfterInMinutes;
 		this.hours = partial.hours;

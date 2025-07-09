@@ -16,6 +16,9 @@ import kotlin.Suppress
 @Suppress("UNUSED_VARIABLE")
 public fun embeddedTimeTableItem_toJs(obj: EmbeddedTimeTableItem): EmbeddedTimeTableItemJs {
 	val rrule = obj.rrule
+	val rruleStartDate = nullToUndefined(
+		intToNumber(obj.rruleStartDate)
+	)
 	val notBeforeInMinutes = nullToUndefined(
 		intToNumber(obj.notBeforeInMinutes)
 	)
@@ -44,6 +47,7 @@ public fun embeddedTimeTableItem_toJs(obj: EmbeddedTimeTableItem): EmbeddedTimeT
 	val public = obj.public
 	return EmbeddedTimeTableItemJs(js("{" +
 		"rrule:rrule," +
+		"rruleStartDate:rruleStartDate," +
 		"notBeforeInMinutes:notBeforeInMinutes," +
 		"notAfterInMinutes:notAfterInMinutes," +
 		"hours:hours," +
@@ -56,6 +60,7 @@ public fun embeddedTimeTableItem_toJs(obj: EmbeddedTimeTableItem): EmbeddedTimeT
 
 public fun embeddedTimeTableItem_fromJs(obj: EmbeddedTimeTableItemJs): EmbeddedTimeTableItem {
 	val rrule = obj.rrule
+	val rruleStartDate = numberToInt(obj.rruleStartDate, "obj.rruleStartDate")
 	val notBeforeInMinutes = numberToInt(obj.notBeforeInMinutes, "obj.notBeforeInMinutes")
 	val notAfterInMinutes = numberToInt(obj.notAfterInMinutes, "obj.notAfterInMinutes")
 	val hours = arrayToList(
@@ -83,6 +88,7 @@ public fun embeddedTimeTableItem_fromJs(obj: EmbeddedTimeTableItemJs): EmbeddedT
 	val public = obj.public
 	return EmbeddedTimeTableItem(
 		rrule = rrule,
+		rruleStartDate = rruleStartDate,
 		notBeforeInMinutes = notBeforeInMinutes,
 		notAfterInMinutes = notAfterInMinutes,
 		hours = hours,

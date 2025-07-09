@@ -57,9 +57,6 @@ export interface FormApi {
 	getFormTemplate(formTemplateId: string,
 			options?: { raw?: boolean | undefined }): Promise<FormTemplate>;
 
-	getFormTemplatesByGuid(formTemplateGuid: string, specialityCode: string,
-			raw: boolean | undefined): Promise<Array<FormTemplate>>;
-
 	listFormTemplatesBySpeciality(specialityCode: string,
 			options?: { raw?: boolean | undefined }): Promise<Array<FormTemplate>>;
 

@@ -228,27 +228,6 @@ internal class FormBasicApiImplJs(
 		}
 	}
 
-	override fun getFormTemplatesByGuid(
-		formTemplateGuid: String,
-		specialityCode: String,
-		raw: Boolean?,
-	): Promise<Array<FormTemplateJs>> = GlobalScope.promise {
-		val formTemplateGuidConverted: String = formTemplateGuid
-		val specialityCodeConverted: String = specialityCode
-		val rawConverted: Boolean? = undefinedToNull(raw)
-		val result = formBasicApi.getFormTemplatesByGuid(
-			formTemplateGuidConverted,
-			specialityCodeConverted,
-			rawConverted,
-		)
-		listToArray(
-			result,
-			{ x1: FormTemplate ->
-				formTemplate_toJs(x1)
-			},
-		)
-	}
-
 	override fun listFormTemplatesBySpeciality(specialityCode: String, options: dynamic):
 			Promise<Array<FormTemplateJs>> {
 		val _options = options ?: js("{}")

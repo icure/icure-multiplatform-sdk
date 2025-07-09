@@ -175,13 +175,6 @@ private class AbstractFormBasicFlavourlessApi(val rawApi: RawFormApi) : FormBasi
 	) = rawApi.getFormTemplate(formTemplateId, raw).successBody()
 
 	@Deprecated("Use filter instead")
-	override suspend fun getFormTemplatesByGuid(
-		formTemplateGuid: String,
-		specialityCode: String,
-		raw: Boolean?,
-	) = rawApi.getFormTemplatesByGuid(formTemplateGuid, specialityCode, raw).successBody()
-
-	@Deprecated("Use filter instead")
 	override suspend fun listFormTemplatesBySpeciality(
 		specialityCode: String,
 		raw: Boolean?,

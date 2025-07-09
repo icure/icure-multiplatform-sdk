@@ -8,5 +8,5 @@ import com.icure.utils.InternalIcureApi
 internal class RoleApiImpl(
 	private val rawApi: RawRoleApi,
 ) : RoleApi {
-	override suspend fun getAllRoles() = rawApi.getAllRoles().successBody()
+	override suspend fun getAllRoles() = rawApi.getRoles().successBody()
 }
