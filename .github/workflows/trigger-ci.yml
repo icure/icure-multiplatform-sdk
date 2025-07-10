@@ -15,7 +15,7 @@ jobs:
                   repository: icure/cardinal-sdk-ci
                   token: ${{ secrets.CARDINAL_SDK_CI_PAT }}
                   ref: main
-                  submodules: false
+                  submodules: true
 
             - name: Configure Git
               run: |
