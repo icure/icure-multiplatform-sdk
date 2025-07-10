@@ -1,6 +1,6 @@
 [versions]
 kotlin = "2.1.20-RC"
-ktor = "3.1.1"
+ktor = "3.2.1"
 coroutines = "1.10.1"
 kotlinIo = "0.6.0"
 kotlinSerialization = "1.8.0"

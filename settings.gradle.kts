@@ -5,7 +5,6 @@ rootProject.name = "cardinal-multiplatform-sdk"
 include("cardinal-sdk")
 include("ts-wrapper")
 include("python-wrapper")
-include("ktor-curl")
 include("dart-wrapper:lib")
 include("dart-wrapper:cardinal_sdk")
 include("dart-wrapper")
