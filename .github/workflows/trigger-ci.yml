@@ -32,5 +32,5 @@ jobs:
               run: |
                   if ! git diff --cached --quiet; then
                     git commit -m "chore: Update submodule on release ${{ github.event.release.tag_name }}"
-                    git push
+                    git push --follow-tags
                   fi
