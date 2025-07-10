@@ -152,17 +152,17 @@ tasks.named("jvmTest") {
 //tasks.named("jsNodeProductionRun") { dependsOn("jsProductionExecutableCompileSync") }
 
 fun projectHasSignatureProperties() =
-	project.hasProperty("signing.keyId") && project.hasProperty("signing.secretKeyRingFile") && project.hasProperty("signing.password")
-
-if (projectHasSignatureProperties()) {
-	signing {
-		useInMemoryPgpKeys(
-			file(project.property("signing.secretKeyRingFile") as String).readText(),
-			project.property("signing.password") as String
-		)
-		sign(publishing.publications)
-	}
-}
+	project.hasProperty("signingInMemoryKeyId") && project.hasProperty("signingInMemoryKeyPassword") && project.hasProperty("signingInMemoryKey")
+//
+//if (projectHasSignatureProperties()) {
+//	signing {
+//		useInMemoryPgpKeys(
+//			file(project.property("signing.secretKeyRingFile") as String).readText(),
+//			project.property("signing.password") as String
+//		)
+//		sign(publishing.publications)
+//	}
+//}
 
 mavenPublishing {
 	coordinates(group as String, project.name, project.version as String)
