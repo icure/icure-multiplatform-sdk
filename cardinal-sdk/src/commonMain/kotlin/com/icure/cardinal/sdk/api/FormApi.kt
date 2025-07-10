@@ -9,7 +9,6 @@ import com.icure.cardinal.sdk.filters.FilterOptions
 import com.icure.cardinal.sdk.filters.SortableFilterOptions
 import com.icure.cardinal.sdk.model.DecryptedForm
 import com.icure.cardinal.sdk.model.EncryptedForm
-import com.icure.cardinal.sdk.model.EntityReferenceInGroup
 import com.icure.cardinal.sdk.model.Form
 import com.icure.cardinal.sdk.model.FormTemplate
 import com.icure.cardinal.sdk.model.Patient
@@ -89,9 +88,6 @@ interface FormBasicFlavourlessApi {
 		@DefaultValue("null")
 		raw: Boolean? = null
 	): FormTemplate
-
-	@Deprecated("Use filter instead")
-	suspend fun getFormTemplatesByGuid(formTemplateGuid: String, specialityCode: String, raw: Boolean? = null): List<FormTemplate>
 
 	@Deprecated("Use filter instead")
 	suspend fun listFormTemplatesBySpeciality(

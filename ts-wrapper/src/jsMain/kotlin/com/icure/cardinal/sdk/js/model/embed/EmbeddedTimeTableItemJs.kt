@@ -16,6 +16,8 @@ public external class EmbeddedTimeTableItemJs(
 ) {
 	public val rrule: String
 
+	public val rruleStartDate: Double?
+
 	public val notBeforeInMinutes: Double?
 
 	public val notAfterInMinutes: Double?

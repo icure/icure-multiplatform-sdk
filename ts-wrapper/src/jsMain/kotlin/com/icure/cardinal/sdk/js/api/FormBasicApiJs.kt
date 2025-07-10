@@ -12,7 +12,6 @@ import com.icure.cardinal.sdk.js.model.StoredDocumentIdentifierJs
 import com.icure.cardinal.sdk.js.model.couchdb.DocIdentifierJs
 import com.icure.cardinal.sdk.js.utils.pagination.PaginatedListIteratorJs
 import kotlin.Array
-import kotlin.Boolean
 import kotlin.ByteArray
 import kotlin.String
 import kotlin.Unit
@@ -50,12 +49,6 @@ public external interface FormBasicApiJs {
 	public fun purgeForm(form: FormJs): Promise<Unit>
 
 	public fun getFormTemplate(formTemplateId: String, options: dynamic): Promise<FormTemplateJs>
-
-	public fun getFormTemplatesByGuid(
-		formTemplateGuid: String,
-		specialityCode: String,
-		raw: Boolean?,
-	): Promise<Array<FormTemplateJs>>
 
 	public fun listFormTemplatesBySpeciality(specialityCode: String, options: dynamic):
 			Promise<Array<FormTemplateJs>>

@@ -72,12 +72,6 @@ public external interface FormApiJs {
 
 	public fun getFormTemplate(formTemplateId: String, options: dynamic): Promise<FormTemplateJs>
 
-	public fun getFormTemplatesByGuid(
-		formTemplateGuid: String,
-		specialityCode: String,
-		raw: Boolean?,
-	): Promise<Array<FormTemplateJs>>
-
 	public fun listFormTemplatesBySpeciality(specialityCode: String, options: dynamic):
 			Promise<Array<FormTemplateJs>>
 
