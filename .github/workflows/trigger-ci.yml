@@ -16,6 +16,7 @@ jobs:
                   token: ${{ secrets.CARDINAL_SDK_CI_PAT }}
                   ref: main
                   submodules: true
+                  fetch-tags: true
 
             - name: Configure Git
               run: |
