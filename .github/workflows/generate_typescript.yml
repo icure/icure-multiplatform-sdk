@@ -1,9 +1,6 @@
 name: Generate Typescript SDK
 on:
-    workflow_dispatch:
-
-    pull_request:
-        types: [closed]
+    push:
         branches:
             - develop
 env:
@@ -13,7 +10,6 @@ env:
 
 jobs:
     setup:
-        if: github.event.pull_request.merged == true
         runs-on: ubuntu-latest
         name: Setup environment
         env:
