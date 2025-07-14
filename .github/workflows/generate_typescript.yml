@@ -72,7 +72,7 @@ jobs:
 
             -   name: Commit changes
                 run: |
-                    git add ts-wrapper/src/main/resources/cardinal-sdk
+                    git add ts-wrapper/src/jsMain/typescript ts-wrapper/src/jsMain/kotlin
                     git commit -m "chore: Update Typescript SDK on PR merge to develop" || echo "No changes to commit"
 
             -   name: Push changes
