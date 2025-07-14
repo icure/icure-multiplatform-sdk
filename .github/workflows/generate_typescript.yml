@@ -37,6 +37,15 @@ jobs:
                 run: |
                     curl -v -u ${{ secrets.GH_USERNAME }}:${{ secrets.GH_PERSONAL_ACCESS_TOKEN }} -L -o ${{ env.BUILDER_JAR_PATH }} https://maven.pkg.github.com/icure/sdk-codegen/com/icure/multiplatform-codegen/${{ env.SDK_CODEGEN_VERSION }}/multiplatform-codegen-${{ env.SDK_CODEGEN_VERSION }}-runner.jar
 
+            -   name: Write github credentials to local.properties
+                working-directory: ./cardinal-sdk
+                run: |
+                    echo "githubUsername=${{ secrets.GH_USERNAME }}" > local.properties
+                    echo "githubPassword=${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}" >> local.properties
+                    mkdir -p ksp-json-processor
+                    echo "githubUsername=${{ secrets.GH_USERNAME }}" > ksp-json-processor/local.properties
+                    echo "githubPassword=${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}" >> ksp-json-processor/local.properties
+
             -   name: Generate JSON representation
                 run: |
                     ./gradlew :cardinal-sdk:kspKotlin
