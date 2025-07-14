@@ -51,4 +51,3 @@ Wrapper for using the multiplatform sdk from pure typescript.
 
 With multiple modules the yarn lock may have some issues...
 https://youtrack.jetbrains.com/issue/KT-55701/KJS-Gradle-kotlinUpgradeYarnLock-and-kotlinStoreYarnLock-dont-support-configureondemand-if-building-one-module-only
-
