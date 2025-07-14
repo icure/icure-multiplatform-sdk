@@ -65,20 +65,6 @@ jobs:
                 run: |
                     ./gradlew :ts-wrapper:prepareDistributionPackage
 
-            -   name: Configure Git
-                run: |
-                    git config user.name "github-actions[bot]"
-                    git config user.email "github-actions[bot]@users.noreply.github.com"
-
-            -   name: Commit changes
-                run: |
-                    git add ts-wrapper/src/jsMain/typescript ts-wrapper/src/jsMain/kotlin
-                    git commit -m "chore: Update Typescript SDK on PR merge to develop" || echo "No changes to commit"
-
-            -   name: Push changes
-                run: |
-                    git push origin HEAD:${{ github.head_ref }}
-
             -   name: Generate branch name
                 id: generate_branch_name
                 run: |
@@ -89,10 +75,8 @@ jobs:
                 run: |
                     echo "BASE_BRANCH=develop" >> $GITHUB_ENV
 
-
             -   name: Check git diff | if diff -> create a PR
                 run: |
-                    cd ${{ env.REPO_PATH }}
                     git diff --exit-code || echo "::set-output name=changes_detected::true"
                 id: check_diff
 
@@ -105,11 +89,11 @@ jobs:
                 uses: peter-evans/create-pull-request@v7
                 with:
                     token: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
-                    commit-message: "Updated Typescript SDK"
+                    commit-message: "chore: Update Typescript SDK on PR merge to develop"
                     title: "Updated Typescript SDK"
+                    add-paths: ts-wrapper/src/jsMain/typescript,ts-wrapper/src/jsMain/kotlin
                     branch: ${{ env.BRANCH_NAME }}
                     base: ${{ env.BASE_BRANCH }}
-                    path: ${{ env.REPO_PATH }}
                     author: ${{ steps.bot-details.outputs.name-email }}
                     committer: ${{ steps.bot-details.outputs.name-email }}
                     team-reviewers: 'icure/dev'
