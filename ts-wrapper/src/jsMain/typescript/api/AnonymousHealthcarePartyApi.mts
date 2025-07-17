@@ -1,9 +1,9 @@
 // auto-generated file
-import {UserAndHealthcareParty} from '../model/UserAndHealthcareParty.mjs';
+import {HealthcareParty} from '../model/HealthcareParty.mjs';
 
 
 export interface AnonymousHealthcarePartyApi {
 
-	getPublicHealthcarePartiesInGroup(groupId: string): Promise<Array<UserAndHealthcareParty>>;
+	getPublicHealthcarePartiesInGroup(groupId: string): Promise<Array<HealthcareParty>>;
 
 }

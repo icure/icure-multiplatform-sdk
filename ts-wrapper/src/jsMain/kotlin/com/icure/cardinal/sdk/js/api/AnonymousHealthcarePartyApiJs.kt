@@ -3,7 +3,7 @@
 
 package com.icure.cardinal.sdk.js.api
 
-import com.icure.cardinal.sdk.js.model.UserAndHealthcarePartyJs
+import com.icure.cardinal.sdk.js.model.HealthcarePartyJs
 import kotlin.Array
 import kotlin.String
 import kotlin.js.JsName
@@ -12,6 +12,5 @@ import kotlin.js.Promise
 
 @JsName("AnonymousHealthcarePartyApi")
 public external interface AnonymousHealthcarePartyApiJs {
-	public fun getPublicHealthcarePartiesInGroup(groupId: String):
-			Promise<Array<UserAndHealthcarePartyJs>>
+	public fun getPublicHealthcarePartiesInGroup(groupId: String): Promise<Array<HealthcarePartyJs>>
 }
