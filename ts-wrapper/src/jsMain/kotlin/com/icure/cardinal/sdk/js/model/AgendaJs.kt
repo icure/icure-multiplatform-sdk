@@ -11,6 +11,7 @@ import com.icure.cardinal.sdk.js.model.embed.ResourceGroupAllocationScheduleJs
 import com.icure.cardinal.sdk.js.model.embed.RightJs
 import com.icure.cardinal.sdk.js.utils.Record
 import kotlin.Array
+import kotlin.Boolean
 import kotlin.Double
 import kotlin.String
 import kotlin.js.JsName
@@ -43,6 +44,8 @@ public external class AgendaJs(
 	override val deletionDate: Double?
 
 	public val daySplitHour: Double?
+
+	public val unpublished: Boolean
 
 	public val name: String?
 

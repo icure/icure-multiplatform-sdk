@@ -4,8 +4,8 @@ import {PublicAgendasAndCalendarItemTypes} from '../model/PublicAgendasAndCalend
 
 export interface AnonymousAgendaApi {
 
-	listAnonymousAgendaAndAppointmentTypes(groupId: string,
-			userId: string): Promise<PublicAgendasAndCalendarItemTypes>;
+	listAnonymousAgendaAndAppointmentTypes(groupId: string, propertyId: string,
+			propertyValue: string): Promise<PublicAgendasAndCalendarItemTypes>;
 
 	listAnonymousAvailabilities(
 			groupId: string,

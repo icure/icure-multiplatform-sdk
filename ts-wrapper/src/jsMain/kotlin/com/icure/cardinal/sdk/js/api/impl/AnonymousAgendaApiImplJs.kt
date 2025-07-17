@@ -25,13 +25,18 @@ import kotlinx.coroutines.promise
 internal class AnonymousAgendaApiImplJs(
 	private val anonymousAgendaApi: AnonymousAgendaApi,
 ) : AnonymousAgendaApiJs {
-	override fun listAnonymousAgendaAndAppointmentTypes(groupId: String, userId: String):
-			Promise<PublicAgendasAndCalendarItemTypesJs> = GlobalScope.promise {
+	override fun listAnonymousAgendaAndAppointmentTypes(
+		groupId: String,
+		propertyId: String,
+		propertyValue: String,
+	): Promise<PublicAgendasAndCalendarItemTypesJs> = GlobalScope.promise {
 		val groupIdConverted: String = groupId
-		val userIdConverted: String = userId
+		val propertyIdConverted: String = propertyId
+		val propertyValueConverted: String = propertyValue
 		val result = anonymousAgendaApi.listAnonymousAgendaAndAppointmentTypes(
 			groupIdConverted,
-			userIdConverted,
+			propertyIdConverted,
+			propertyValueConverted,
 		)
 		publicAgendasAndCalendarItemTypes_toJs(result)
 	}

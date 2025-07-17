@@ -60,6 +60,11 @@ public fun measure_toJs(obj: Measure): MeasureJs {
 			referenceRange_toJs(x1)
 		},
 	)
+	val valueWithPrecision = nullToUndefined(
+		obj.valueWithPrecision?.let { nonNull1 ->
+			valueWithPrecision_toJs(nonNull1)
+		}
+	)
 	return MeasureJs(js("{" +
 		"value:value," +
 		"ref:ref," +
@@ -71,7 +76,8 @@ public fun measure_toJs(obj: Measure): MeasureJs {
 		"comment:comment," +
 		"comparator:comparator," +
 		"sign:sign," +
-		"referenceRanges:referenceRanges" +
+		"referenceRanges:referenceRanges," +
+		"valueWithPrecision:valueWithPrecision" +
 	"}"))
 }
 
@@ -99,6 +105,9 @@ public fun measure_fromJs(obj: MeasureJs): Measure {
 			referenceRange_fromJs(x1)
 		},
 	)
+	val valueWithPrecision = obj.valueWithPrecision?.let { nonNull1 ->
+		valueWithPrecision_fromJs(nonNull1)
+	}
 	return Measure(
 		value = value,
 		ref = ref,
@@ -111,5 +120,6 @@ public fun measure_fromJs(obj: MeasureJs): Measure {
 		comparator = comparator,
 		sign = sign,
 		referenceRanges = referenceRanges,
+		valueWithPrecision = valueWithPrecision,
 	)
 }
