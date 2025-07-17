@@ -75,6 +75,7 @@ public fun agenda_toJs(obj: Agenda): AgendaJs {
 	val daySplitHour = nullToUndefined(
 		intToNumber(obj.daySplitHour)
 	)
+	val unpublished = obj.unpublished
 	val name = nullToUndefined(
 		obj.name
 	)
@@ -132,6 +133,7 @@ public fun agenda_toJs(obj: Agenda): AgendaJs {
 		"endOfLife:endOfLife," +
 		"deletionDate:deletionDate," +
 		"daySplitHour:daySplitHour," +
+		"unpublished:unpublished," +
 		"name:name," +
 		"userId:userId," +
 		"zoneId:zoneId," +
@@ -169,6 +171,7 @@ public fun agenda_fromJs(obj: AgendaJs): Agenda {
 	val endOfLife = numberToLong(obj.endOfLife, "obj.endOfLife")
 	val deletionDate = numberToLong(obj.deletionDate, "obj.deletionDate")
 	val daySplitHour = numberToInt(obj.daySplitHour, "obj.daySplitHour")
+	val unpublished = obj.unpublished
 	val name = undefinedToNull(obj.name)
 	val userId = undefinedToNull(obj.userId)
 	val zoneId = undefinedToNull(obj.zoneId)
@@ -221,6 +224,7 @@ public fun agenda_fromJs(obj: AgendaJs): Agenda {
 		endOfLife = endOfLife,
 		deletionDate = deletionDate,
 		daySplitHour = daySplitHour,
+		unpublished = unpublished,
 		name = name,
 		userId = userId,
 		zoneId = zoneId,

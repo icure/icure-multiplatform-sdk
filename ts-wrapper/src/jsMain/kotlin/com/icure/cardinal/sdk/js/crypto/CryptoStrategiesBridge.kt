@@ -67,6 +67,8 @@ internal class CryptoStrategiesBridge(
 				CryptoStrategies.KeyGenerationRequestResult.Allow
 			jsResult === false ->
 				CryptoStrategies.KeyGenerationRequestResult.Deny
+			jsResult === "keyless" ->
+				CryptoStrategies.KeyGenerationRequestResult.Keyless
 			jsTypeOf(jsResult.public) === "object" && jsTypeOf(jsResult.private) === "object" -> {
 				val xKeypair = jsResult as XRsaKeypair
 				require(xKeypair.private.algorithm == RsaAlgorithm.RsaEncryptionAlgorithm.OaepWithSha256.identifier) {
@@ -75,7 +77,7 @@ internal class CryptoStrategiesBridge(
 				CryptoStrategies.KeyGenerationRequestResult.Use(xKeypair.toKryptom(RsaAlgorithm.RsaEncryptionAlgorithm.OaepWithSha256))
 			}
 			else ->
-				throw IllegalArgumentException("Unexpected value received from generateNewKeyForDataOwner: neither a boolean nor a key. $jsResult")
+				throw IllegalArgumentException("Unexpected value received from generateNewKeyForDataOwner: only boolean, the string \"keyless\" or a key are accepted. $jsResult")
 		}
 	}
 

@@ -35,4 +35,6 @@ public external class MeasureJs(
 	public val sign: String?
 
 	public val referenceRanges: Array<ReferenceRangeJs>
+
+	public val valueWithPrecision: ValueWithPrecisionJs?
 }

@@ -190,14 +190,14 @@ public interface RawUserApi {
 		request: Enable2faRequest,
 	): HttpResponse<Unit>
 
-	suspend fun disable2faForUser(
-		userId: String,
-		groupId: String,
-	): HttpResponse<Unit>
-
 	suspend fun enable2faForUser(
 		userId: String,
 		request: Enable2faRequest,
+	): HttpResponse<Unit>
+
+	suspend fun disable2faForUser(
+		userId: String,
+		groupId: String,
 	): HttpResponse<Unit>
 
 	suspend fun disable2faForUser(userId: String): HttpResponse<Unit>

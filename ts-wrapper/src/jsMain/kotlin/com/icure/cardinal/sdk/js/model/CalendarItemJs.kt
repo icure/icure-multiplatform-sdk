@@ -68,6 +68,10 @@ public sealed external interface CalendarItemJs : StoredDocumentJs, ICureDocumen
 
 	public val agendaId: String?
 
+	public val resourceGroup: CodeStubJs?
+
+	public val availabilitiesAssignmentStrategy: String?
+
 	public val hcpId: String?
 
 	public val recurrenceId: String?
@@ -144,6 +148,10 @@ public external class DecryptedCalendarItemJs(
 	override val wasMigrated: Boolean?
 
 	override val agendaId: String?
+
+	override val resourceGroup: CodeStubJs?
+
+	override val availabilitiesAssignmentStrategy: String?
 
 	override val hcpId: String?
 
@@ -233,6 +241,10 @@ public external class EncryptedCalendarItemJs(
 	override val wasMigrated: Boolean?
 
 	override val agendaId: String?
+
+	override val resourceGroup: CodeStubJs?
+
+	override val availabilitiesAssignmentStrategy: String?
 
 	override val hcpId: String?
 

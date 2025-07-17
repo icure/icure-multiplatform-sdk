@@ -24,6 +24,7 @@ import com.icure.cardinal.sdk.model.specializations.SpkiHexString
 import com.icure.cardinal.sdk.serialization.ByteArraySerializer
 import com.icure.cardinal.sdk.utils.DefaultValue
 import kotlinx.serialization.Serializable
+import kotlin.Boolean
 import kotlin.ByteArray
 import kotlin.Deprecated
 import kotlin.Int
@@ -105,6 +106,8 @@ data class HealthcareParty(
 	public val options: Map<String, String> = emptyMap(),
 	@DefaultValue("emptySet()")
 	override val properties: Set<DecryptedPropertyStub> = emptySet(),
+	@DefaultValue("false")
+	public val `public`: Boolean = false,
 	override val cryptoActorProperties: Set<DecryptedPropertyStub>? = null,
 	@DefaultValue("emptyMap()")
 	override val hcPartyKeys: Map<String, List<HexString>> = emptyMap(),

@@ -374,6 +374,16 @@ class RawPatientApiImpl(
 			accept(Application.Json)
 		}.wrap()
 
+	override suspend fun undeletePatient(patientIds: String): HttpResponse<List<DocIdentifier>> =
+		put(authProvider) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "patient", "undelete", patientIds)
+			}
+			contentType(Application.Json)
+			accept(Application.Json)
+		}.wrap()
+
 	override suspend fun undeletePatients(ids: ListOfIdsAndRev): HttpResponse<List<EncryptedPatient>> =
 		post(authProvider) {
 			url {
@@ -433,16 +443,6 @@ class RawPatientApiImpl(
 				parameter("lastName", lastName)
 				parameter("ts", GMTDate().timestamp)
 			}
-			accept(Application.Json)
-		}.wrap()
-
-	override suspend fun undeletePatient(patientIds: String): HttpResponse<List<DocIdentifier>> =
-		put(authProvider) {
-			url {
-				takeFrom(apiUrl)
-				appendPathSegments("rest", "v2", "patient", "undelete", patientIds)
-			}
-			contentType(Application.Json)
 			accept(Application.Json)
 		}.wrap()
 

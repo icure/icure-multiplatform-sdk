@@ -7,6 +7,7 @@ import com.icure.cardinal.sdk.api.raw.RawApiConfig
 import com.icure.cardinal.sdk.api.raw.wrap
 import com.icure.cardinal.sdk.model.AnonymousMedicalLocation
 import com.icure.cardinal.sdk.model.AppointmentTypeAndPlace
+import com.icure.cardinal.sdk.model.HealthcareParty
 import com.icure.cardinal.sdk.model.PaginatedList
 import com.icure.cardinal.sdk.model.PublicAgendasAndCalendarItemTypes
 import com.icure.cardinal.sdk.model.UserAndHealthcareParty
@@ -52,12 +53,23 @@ class RawAnonymousApiImpl(
 
 	override suspend fun listAnonymousAgendaAndAppointmentTypes(
 		groupId: String,
-		userId: String,
+		propertyId: String,
+		propertyValue: String,
 	): HttpResponse<PublicAgendasAndCalendarItemTypes> =
 		get {
 			url {
 				takeFrom(apiUrl)
-				appendPathSegments("rest", "v2", "aa", "agendasAndAppointmentTypes", "inGroup", groupId, "forUser", userId)
+				appendPathSegments(
+					"rest",
+					"v2",
+					"aa",
+					"agendasAndAppointmentTypes",
+					"inGroup",
+					groupId,
+					"withStringProperty",
+					propertyId,
+					propertyValue,
+				)
 				parameter("ts", GMTDate().timestamp)
 			}
 			accept(Application.Json)
@@ -116,6 +128,16 @@ class RawAnonymousApiImpl(
 			url {
 				takeFrom(apiUrl)
 				appendPathSegments("rest", "v2", "aa", "hcparty", "inGroup", groupId)
+				parameter("ts", GMTDate().timestamp)
+			}
+			accept(Application.Json)
+		}.wrap()
+
+	override suspend fun listPublicHealthcarePartiesInGroup(groupId: String): HttpResponse<List<HealthcareParty>> =
+		get {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "aa", "hcparty", "public", "inGroup", groupId)
 				parameter("ts", GMTDate().timestamp)
 			}
 			accept(Application.Json)

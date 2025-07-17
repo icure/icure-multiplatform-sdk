@@ -1,5 +1,6 @@
 // auto-generated file
 import {randomUuid} from '../utils/Id.mjs';
+import {CalendarItem as CalendarItem_} from './CalendarItem.mjs';
 import {CodeStub} from './base/CodeStub.mjs';
 import {HasEncryptionMetadata} from './base/HasEncryptionMetadata.mjs';
 import {ICureDocument} from './base/ICureDocument.mjs';
@@ -54,6 +55,10 @@ export interface CalendarItem extends StoredDocument, ICureDocument<string>, Has
 	wasMigrated: boolean | undefined;
 
 	agendaId: string | undefined;
+
+	resourceGroup: CodeStub | undefined;
+
+	availabilitiesAssignmentStrategy: CalendarItem.AvailabilitiesAssignmentStrategy | undefined;
 
 	hcpId: string | undefined;
 
@@ -131,6 +136,10 @@ export class DecryptedCalendarItem {
 
 	agendaId: string | undefined = undefined;
 
+	resourceGroup: CodeStub | undefined = undefined;
+
+	availabilitiesAssignmentStrategy: CalendarItem_.AvailabilitiesAssignmentStrategy | undefined = undefined;
+
 	hcpId: string | undefined = undefined;
 
 	recurrenceId: string | undefined = undefined;
@@ -186,6 +195,8 @@ export class DecryptedCalendarItem {
 		if ('details' in partial) this.details = partial.details;
 		if ('wasMigrated' in partial) this.wasMigrated = partial.wasMigrated;
 		if ('agendaId' in partial) this.agendaId = partial.agendaId;
+		if ('resourceGroup' in partial) this.resourceGroup = partial.resourceGroup;
+		if ('availabilitiesAssignmentStrategy' in partial) this.availabilitiesAssignmentStrategy = partial.availabilitiesAssignmentStrategy;
 		if ('hcpId' in partial) this.hcpId = partial.hcpId;
 		if ('recurrenceId' in partial) this.recurrenceId = partial.recurrenceId;
 		if ('meetingTags' in partial && partial.meetingTags !== undefined) this.meetingTags = partial.meetingTags;
@@ -264,6 +275,10 @@ export class EncryptedCalendarItem {
 
 	agendaId: string | undefined = undefined;
 
+	resourceGroup: CodeStub | undefined = undefined;
+
+	availabilitiesAssignmentStrategy: CalendarItem_.AvailabilitiesAssignmentStrategy | undefined = undefined;
+
 	hcpId: string | undefined = undefined;
 
 	recurrenceId: string | undefined = undefined;
@@ -319,6 +334,8 @@ export class EncryptedCalendarItem {
 		if ('details' in partial) this.details = partial.details;
 		if ('wasMigrated' in partial) this.wasMigrated = partial.wasMigrated;
 		if ('agendaId' in partial) this.agendaId = partial.agendaId;
+		if ('resourceGroup' in partial) this.resourceGroup = partial.resourceGroup;
+		if ('availabilitiesAssignmentStrategy' in partial) this.availabilitiesAssignmentStrategy = partial.availabilitiesAssignmentStrategy;
 		if ('hcpId' in partial) this.hcpId = partial.hcpId;
 		if ('recurrenceId' in partial) this.recurrenceId = partial.recurrenceId;
 		if ('meetingTags' in partial && partial.meetingTags !== undefined) this.meetingTags = partial.meetingTags;
@@ -329,6 +346,15 @@ export class EncryptedCalendarItem {
 		if ('encryptionKeys' in partial && partial.encryptionKeys !== undefined) this.encryptionKeys = partial.encryptionKeys;
 		if ('encryptedSelf' in partial) this.encryptedSelf = partial.encryptedSelf;
 		if ('securityMetadata' in partial) this.securityMetadata = partial.securityMetadata;
+	}
+
+}
+
+export namespace CalendarItem {
+
+	export enum AvailabilitiesAssignmentStrategy {
+		Strict = "Strict",
+		Loose = "Loose"
 	}
 
 }

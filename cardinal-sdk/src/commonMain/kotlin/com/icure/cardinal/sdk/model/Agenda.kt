@@ -9,6 +9,7 @@ import com.icure.cardinal.sdk.model.embed.Right
 import com.icure.cardinal.sdk.model.embed.UserAccessLevel
 import com.icure.cardinal.sdk.utils.DefaultValue
 import kotlinx.serialization.Serializable
+import kotlin.Boolean
 import kotlin.Deprecated
 import kotlin.Int
 import kotlin.Long
@@ -36,6 +37,8 @@ data class Agenda(
 	override val endOfLife: Long? = null,
 	override val deletionDate: Long? = null,
 	public val daySplitHour: Int? = null,
+	@DefaultValue("false")
+	public val unpublished: Boolean = false,
 	public val name: String? = null,
 	public val userId: String? = null,
 	public val zoneId: String? = null,
