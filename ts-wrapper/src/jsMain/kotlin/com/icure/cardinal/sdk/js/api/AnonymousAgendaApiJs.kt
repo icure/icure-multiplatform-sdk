@@ -13,8 +13,11 @@ import kotlin.js.Promise
 
 @JsName("AnonymousAgendaApi")
 public external interface AnonymousAgendaApiJs {
-	public fun listAnonymousAgendaAndAppointmentTypes(groupId: String, userId: String):
-			Promise<PublicAgendasAndCalendarItemTypesJs>
+	public fun listAnonymousAgendaAndAppointmentTypes(
+		groupId: String,
+		propertyId: String,
+		propertyValue: String,
+	): Promise<PublicAgendasAndCalendarItemTypesJs>
 
 	public fun listAnonymousAvailabilities(
 		groupId: String,

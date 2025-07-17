@@ -1,6 +1,7 @@
 // auto-generated file
 import {CodeStub} from '../base/CodeStub.mjs';
 import {ReferenceRange} from './ReferenceRange.mjs';
+import {ValueWithPrecision} from './ValueWithPrecision.mjs';
 
 
 export class Measure {
@@ -27,6 +28,8 @@ export class Measure {
 
 	referenceRanges: Array<ReferenceRange> = [];
 
+	valueWithPrecision: ValueWithPrecision | undefined = undefined;
+
 	constructor(partial: Partial<Measure>) {
 		if ('value' in partial) this.value = partial.value;
 		if ('ref' in partial) this.ref = partial.ref;
@@ -39,6 +42,7 @@ export class Measure {
 		if ('comparator' in partial) this.comparator = partial.comparator;
 		if ('sign' in partial) this.sign = partial.sign;
 		if ('referenceRanges' in partial && partial.referenceRanges !== undefined) this.referenceRanges = partial.referenceRanges;
+		if ('valueWithPrecision' in partial) this.valueWithPrecision = partial.valueWithPrecision;
 	}
 
 }

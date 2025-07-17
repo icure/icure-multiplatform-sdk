@@ -140,6 +140,16 @@ public fun calendarItem_toJs(obj: DecryptedCalendarItem): DecryptedCalendarItemJ
 	val agendaId = nullToUndefined(
 		obj.agendaId
 	)
+	val resourceGroup = nullToUndefined(
+		obj.resourceGroup?.let { nonNull1 ->
+			codeStub_toJs(nonNull1)
+		}
+	)
+	val availabilitiesAssignmentStrategy = nullToUndefined(
+		obj.availabilitiesAssignmentStrategy?.let { nonNull1 ->
+			nonNull1.name
+		}
+	)
 	val hcpId = nullToUndefined(
 		obj.hcpId
 	)
@@ -247,6 +257,8 @@ public fun calendarItem_toJs(obj: DecryptedCalendarItem): DecryptedCalendarItemJ
 		"details:details," +
 		"wasMigrated:wasMigrated," +
 		"agendaId:agendaId," +
+		"resourceGroup:resourceGroup," +
+		"availabilitiesAssignmentStrategy:availabilitiesAssignmentStrategy," +
 		"hcpId:hcpId," +
 		"recurrenceId:recurrenceId," +
 		"meetingTags:meetingTags," +
@@ -306,6 +318,12 @@ public fun calendarItem_fromJs(obj: DecryptedCalendarItemJs): DecryptedCalendarI
 	val details = undefinedToNull(obj.details)
 	val wasMigrated = undefinedToNull(obj.wasMigrated)
 	val agendaId = undefinedToNull(obj.agendaId)
+	val resourceGroup = obj.resourceGroup?.let { nonNull1 ->
+		codeStub_fromJs(nonNull1)
+	}
+	val availabilitiesAssignmentStrategy = obj.availabilitiesAssignmentStrategy?.let { nonNull1 ->
+		CalendarItem.AvailabilitiesAssignmentStrategy.valueOf(nonNull1)
+	}
 	val hcpId = undefinedToNull(obj.hcpId)
 	val recurrenceId = undefinedToNull(obj.recurrenceId)
 	val meetingTags = arrayToSet(
@@ -411,6 +429,8 @@ public fun calendarItem_fromJs(obj: DecryptedCalendarItemJs): DecryptedCalendarI
 		details = details,
 		wasMigrated = wasMigrated,
 		agendaId = agendaId,
+		resourceGroup = resourceGroup,
+		availabilitiesAssignmentStrategy = availabilitiesAssignmentStrategy,
 		hcpId = hcpId,
 		recurrenceId = recurrenceId,
 		meetingTags = meetingTags,
@@ -525,6 +545,16 @@ public fun calendarItem_toJs(obj: EncryptedCalendarItem): EncryptedCalendarItemJ
 	val agendaId = nullToUndefined(
 		obj.agendaId
 	)
+	val resourceGroup = nullToUndefined(
+		obj.resourceGroup?.let { nonNull1 ->
+			codeStub_toJs(nonNull1)
+		}
+	)
+	val availabilitiesAssignmentStrategy = nullToUndefined(
+		obj.availabilitiesAssignmentStrategy?.let { nonNull1 ->
+			nonNull1.name
+		}
+	)
 	val hcpId = nullToUndefined(
 		obj.hcpId
 	)
@@ -632,6 +662,8 @@ public fun calendarItem_toJs(obj: EncryptedCalendarItem): EncryptedCalendarItemJ
 		"details:details," +
 		"wasMigrated:wasMigrated," +
 		"agendaId:agendaId," +
+		"resourceGroup:resourceGroup," +
+		"availabilitiesAssignmentStrategy:availabilitiesAssignmentStrategy," +
 		"hcpId:hcpId," +
 		"recurrenceId:recurrenceId," +
 		"meetingTags:meetingTags," +
@@ -691,6 +723,12 @@ public fun calendarItem_fromJs(obj: EncryptedCalendarItemJs): EncryptedCalendarI
 	val details = undefinedToNull(obj.details)
 	val wasMigrated = undefinedToNull(obj.wasMigrated)
 	val agendaId = undefinedToNull(obj.agendaId)
+	val resourceGroup = obj.resourceGroup?.let { nonNull1 ->
+		codeStub_fromJs(nonNull1)
+	}
+	val availabilitiesAssignmentStrategy = obj.availabilitiesAssignmentStrategy?.let { nonNull1 ->
+		CalendarItem.AvailabilitiesAssignmentStrategy.valueOf(nonNull1)
+	}
 	val hcpId = undefinedToNull(obj.hcpId)
 	val recurrenceId = undefinedToNull(obj.recurrenceId)
 	val meetingTags = arrayToSet(
@@ -796,6 +834,8 @@ public fun calendarItem_fromJs(obj: EncryptedCalendarItemJs): EncryptedCalendarI
 		details = details,
 		wasMigrated = wasMigrated,
 		agendaId = agendaId,
+		resourceGroup = resourceGroup,
+		availabilitiesAssignmentStrategy = availabilitiesAssignmentStrategy,
 		hcpId = hcpId,
 		recurrenceId = recurrenceId,
 		meetingTags = meetingTags,

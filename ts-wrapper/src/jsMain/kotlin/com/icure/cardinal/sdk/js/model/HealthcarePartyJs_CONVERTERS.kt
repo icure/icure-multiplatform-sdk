@@ -274,6 +274,7 @@ public fun healthcareParty_toJs(obj: HealthcareParty): HealthcarePartyJs {
 			propertyStub_toJs(x1)
 		},
 	)
+	val public = obj.public
 	val cryptoActorProperties = nullToUndefined(
 		setToArray(
 			obj.cryptoActorProperties,
@@ -407,6 +408,7 @@ public fun healthcareParty_toJs(obj: HealthcareParty): HealthcarePartyJs {
 		"importedData:importedData," +
 		"options:options," +
 		"properties:properties," +
+		"public:public," +
 		"cryptoActorProperties:cryptoActorProperties," +
 		"hcPartyKeys:hcPartyKeys," +
 		"aesExchangeKeys:aesExchangeKeys," +
@@ -576,6 +578,7 @@ public fun healthcareParty_fromJs(obj: HealthcarePartyJs): HealthcareParty {
 			propertyStub_fromJs(x1)
 		},
 	)
+	val public = obj.public
 	val cryptoActorProperties = arrayToSet(
 		obj.cryptoActorProperties,
 		"obj.cryptoActorProperties",
@@ -715,6 +718,7 @@ public fun healthcareParty_fromJs(obj: HealthcarePartyJs): HealthcareParty {
 		importedData = importedData,
 		options = options,
 		properties = properties,
+		public = public,
 		cryptoActorProperties = cryptoActorProperties,
 		hcPartyKeys = hcPartyKeys,
 		aesExchangeKeys = aesExchangeKeys,

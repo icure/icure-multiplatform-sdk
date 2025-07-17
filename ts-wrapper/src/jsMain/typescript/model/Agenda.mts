@@ -36,6 +36,8 @@ export class Agenda implements StoredDocument, ICureDocument<string> {
 
 	daySplitHour: number | undefined = undefined;
 
+	unpublished: boolean = false;
+
 	name: string | undefined = undefined;
 
 	userId: string | undefined = undefined;
@@ -67,6 +69,7 @@ export class Agenda implements StoredDocument, ICureDocument<string> {
 		if ('endOfLife' in partial) this.endOfLife = partial.endOfLife;
 		if ('deletionDate' in partial) this.deletionDate = partial.deletionDate;
 		if ('daySplitHour' in partial) this.daySplitHour = partial.daySplitHour;
+		if ('unpublished' in partial && partial.unpublished !== undefined) this.unpublished = partial.unpublished;
 		if ('name' in partial) this.name = partial.name;
 		if ('userId' in partial) this.userId = partial.userId;
 		if ('zoneId' in partial) this.zoneId = partial.zoneId;

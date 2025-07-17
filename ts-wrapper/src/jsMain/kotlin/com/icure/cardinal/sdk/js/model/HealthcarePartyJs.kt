@@ -19,6 +19,7 @@ import com.icure.cardinal.sdk.js.model.embed.HealthcarePartyHistoryStatusJs
 import com.icure.cardinal.sdk.js.model.embed.PersonNameJs
 import com.icure.cardinal.sdk.js.utils.Record
 import kotlin.Array
+import kotlin.Boolean
 import kotlin.ByteArray
 import kotlin.Double
 import kotlin.String
@@ -124,6 +125,8 @@ public external class HealthcarePartyJs(
 	public val options: Record<String, String>
 
 	override val properties: Array<DecryptedPropertyStubJs>
+
+	public val `public`: Boolean
 
 	override val cryptoActorProperties: Array<DecryptedPropertyStubJs>?
 
