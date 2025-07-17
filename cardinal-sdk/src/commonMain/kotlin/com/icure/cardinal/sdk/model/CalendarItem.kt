@@ -16,8 +16,10 @@ import com.icure.cardinal.sdk.model.embed.FlowItem
 import com.icure.cardinal.sdk.model.embed.SecurityMetadata
 import com.icure.cardinal.sdk.model.specializations.Base64String
 import com.icure.cardinal.sdk.utils.DefaultValue
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlin.Boolean
+import kotlin.Deprecated
 import kotlin.Long
 import kotlin.String
 import kotlin.collections.Map
@@ -76,14 +78,19 @@ sealed interface CalendarItem :
 
 	public val endTime: Long?
 
+	@Deprecated("Ignored by availabilities algorithm, will be replaced by another more descriptive field")
 	public val confirmationTime: Long?
 
+	@Deprecated("Ignored by availabilities algorithm, will be replaced by another more descriptive field")
 	public val cancellationTimestamp: Long?
 
+	@Deprecated("Ignored by availabilities algorithm, will be replaced by another more descriptive field")
 	public val confirmationId: String?
 
+	@Deprecated("Ignored by availabilities algorithm, use appropriate startTime and endTime")
 	public val duration: Long?
 
+	@Deprecated("Ignored by availabilities algorithm, use appropriate startTime and endTime")
 	public val allDay: Boolean?
 
 	public val details: String?
@@ -91,6 +98,10 @@ sealed interface CalendarItem :
 	public val wasMigrated: Boolean?
 
 	public val agendaId: String?
+
+	public val resourceGroup: CodeStub?
+
+	public val availabilitiesAssignmentStrategy: AvailabilitiesAssignmentStrategy?
 
 	public val hcpId: String?
 
@@ -111,6 +122,17 @@ sealed interface CalendarItem :
 	override val encryptedSelf: Base64String?
 
 	override val securityMetadata: SecurityMetadata?
+
+	@Serializable
+	public enum class AvailabilitiesAssignmentStrategy(
+		internal val dtoSerialName: String,
+	) {
+		@SerialName("S")
+		Strict("S"),
+
+		@SerialName("L")
+		Loose("L"),
+	}
 	// region CalendarItem-CalendarItem
 
 	companion object {
@@ -146,14 +168,22 @@ data class DecryptedCalendarItem(
 	override val addressText: String? = null,
 	override val startTime: Long? = null,
 	override val endTime: Long? = null,
+	@Deprecated("Ignored by availabilities algorithm, will be replaced by another more descriptive field")
 	override val confirmationTime: Long? = null,
+	@Deprecated("Ignored by availabilities algorithm, will be replaced by another more descriptive field")
 	override val cancellationTimestamp: Long? = null,
+	@Deprecated("Ignored by availabilities algorithm, will be replaced by another more descriptive field")
 	override val confirmationId: String? = null,
+	@Deprecated("Ignored by availabilities algorithm, use appropriate startTime and endTime")
 	override val duration: Long? = null,
+	@Deprecated("Ignored by availabilities algorithm, use appropriate startTime and endTime")
 	override val allDay: Boolean? = null,
 	override val details: String? = null,
 	override val wasMigrated: Boolean? = null,
 	override val agendaId: String? = null,
+	override val resourceGroup: CodeStub? = null,
+	override val availabilitiesAssignmentStrategy: CalendarItem.AvailabilitiesAssignmentStrategy? =
+		null,
 	override val hcpId: String? = null,
 	override val recurrenceId: String? = null,
 	@DefaultValue("emptySet()")
@@ -217,14 +247,22 @@ data class EncryptedCalendarItem(
 	override val addressText: String? = null,
 	override val startTime: Long? = null,
 	override val endTime: Long? = null,
+	@Deprecated("Ignored by availabilities algorithm, will be replaced by another more descriptive field")
 	override val confirmationTime: Long? = null,
+	@Deprecated("Ignored by availabilities algorithm, will be replaced by another more descriptive field")
 	override val cancellationTimestamp: Long? = null,
+	@Deprecated("Ignored by availabilities algorithm, will be replaced by another more descriptive field")
 	override val confirmationId: String? = null,
+	@Deprecated("Ignored by availabilities algorithm, use appropriate startTime and endTime")
 	override val duration: Long? = null,
+	@Deprecated("Ignored by availabilities algorithm, use appropriate startTime and endTime")
 	override val allDay: Boolean? = null,
 	override val details: String? = null,
 	override val wasMigrated: Boolean? = null,
 	override val agendaId: String? = null,
+	override val resourceGroup: CodeStub? = null,
+	override val availabilitiesAssignmentStrategy: CalendarItem.AvailabilitiesAssignmentStrategy? =
+		null,
 	override val hcpId: String? = null,
 	override val recurrenceId: String? = null,
 	@DefaultValue("emptySet()")

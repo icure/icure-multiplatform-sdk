@@ -532,18 +532,6 @@ class RawUserApiImpl(
 			setBody(request)
 		}.wrap()
 
-	override suspend fun disable2faForUser(
-		userId: String,
-		groupId: String,
-	): HttpResponse<Unit> =
-		delete(authProvider) {
-			url {
-				takeFrom(apiUrl)
-				appendPathSegments("rest", "v2", "user", userId, "inGroup", groupId, "2fa")
-			}
-			accept(Application.Json)
-		}.wrap()
-
 	override suspend fun enable2faForUser(
 		userId: String,
 		request: Enable2faRequest,
@@ -556,6 +544,18 @@ class RawUserApiImpl(
 			contentType(Application.Json)
 			accept(Application.Json)
 			setBody(request)
+		}.wrap()
+
+	override suspend fun disable2faForUser(
+		userId: String,
+		groupId: String,
+	): HttpResponse<Unit> =
+		delete(authProvider) {
+			url {
+				takeFrom(apiUrl)
+				appendPathSegments("rest", "v2", "user", userId, "inGroup", groupId, "2fa")
+			}
+			accept(Application.Json)
 		}.wrap()
 
 	override suspend fun disable2faForUser(userId: String): HttpResponse<Unit> =
