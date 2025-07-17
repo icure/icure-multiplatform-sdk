@@ -11,10 +11,12 @@ class AnonymousAgendaApiImpl(
 ): AnonymousAgendaApi {
 	override suspend fun listAnonymousAgendaAndAppointmentTypes(
 		groupId: String,
-		userId: String
+		propertyId: String,
+		propertyValue: String,
 	): PublicAgendasAndCalendarItemTypes = raw.listAnonymousAgendaAndAppointmentTypes(
 		groupId,
-		userId
+		propertyId,
+		propertyValue
 	).successBody()
 
 	override suspend fun listAnonymousAvailabilities(

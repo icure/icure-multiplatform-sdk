@@ -7,7 +7,8 @@ interface AnonymousAgendaApi {
 
 	suspend fun listAnonymousAgendaAndAppointmentTypes(
 		groupId: String,
-		userId: String,
+		propertyId: String,
+		propertyValue: String,
 	): PublicAgendasAndCalendarItemTypes
 
 	suspend fun listAnonymousAvailabilities(

@@ -136,6 +136,8 @@ public interface RawPatientApi {
 		rev: String,
 	): HttpResponse<EncryptedPatient>
 
+	suspend fun undeletePatient(patientIds: String): HttpResponse<List<DocIdentifier>>
+
 	suspend fun undeletePatients(ids: ListOfIdsAndRev): HttpResponse<List<EncryptedPatient>>
 
 	suspend fun purgePatient(
@@ -156,8 +158,6 @@ public interface RawPatientApi {
 		firstName: String? = null,
 		lastName: String? = null,
 	): HttpResponse<List<EncryptedPatient>>
-
-	suspend fun undeletePatient(patientIds: String): HttpResponse<List<DocIdentifier>>
 
 	suspend fun getPatients(patientIds: ListOfIds): HttpResponse<List<EncryptedPatient>>
 

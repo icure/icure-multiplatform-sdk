@@ -2,6 +2,7 @@ package com.icure.cardinal.sdk.api.raw
 
 import com.icure.cardinal.sdk.model.AnonymousMedicalLocation
 import com.icure.cardinal.sdk.model.AppointmentTypeAndPlace
+import com.icure.cardinal.sdk.model.HealthcareParty
 import com.icure.cardinal.sdk.model.PaginatedList
 import com.icure.cardinal.sdk.model.PublicAgendasAndCalendarItemTypes
 import com.icure.cardinal.sdk.model.UserAndHealthcareParty
@@ -27,7 +28,8 @@ public interface RawAnonymousApi {
 
 	suspend fun listAnonymousAgendaAndAppointmentTypes(
 		groupId: String,
-		userId: String,
+		propertyId: String,
+		propertyValue: String,
 	): HttpResponse<PublicAgendasAndCalendarItemTypes>
 
 	suspend fun listAnonymousAvailabilities(
@@ -54,6 +56,8 @@ public interface RawAnonymousApi {
 	// region anonymous healthcareparty endpoints
 
 	suspend fun listHealthcarePartiesInGroup(groupId: String): HttpResponse<List<UserAndHealthcareParty>>
+
+	suspend fun listPublicHealthcarePartiesInGroup(groupId: String): HttpResponse<List<HealthcareParty>>
 	// endregion
 
 	// region anonymous icure endpoints
